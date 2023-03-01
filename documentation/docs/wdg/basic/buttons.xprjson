@@ -1,0 +1,288 @@
+{
+	"meta": {
+		"version": "1.440.7868",
+		"date": "Wed Jul 21 2021 10:19:48 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "buttons",
+		"description": "Demonstration of buttons widgets : for execution trigger or file upload",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Basic"
+			},			
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "REST-API"
+			},
+			{
+				"text": "File-upload"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"version": 1,
+		"allow_edit": true,
+		"plugins": [],
+		"panes": [],
+		"datasources": [
+			{
+				"name": "Input",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "Input",
+					"json_var": "{\"length\":4, \"width\":5}"
+				}
+			},
+			{
+				"name": "Surface",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "Surface",
+					"url": "https://compute20190425045435.azurewebsites.net/ComputeService.asmx/Surface",
+					"use_xproxy": true,
+					"sampleTime": 0,
+					"autoStart": true,
+					"explicitTrig": true,
+					"req_data_type": "JSON",
+					"resp_data_type": "JSON",
+					"method": "POST",
+					"body": "return { \n    \"X\": dataNodes.Input.length, \n    \"Y\": dataNodes.Input.width \n};\n",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					]
+				}
+			},
+			{
+				"name": "file",
+				"type": "Generic_file_reader_plugin",
+				"settings": {
+					"name": "file",
+					"data_path": "emtpy.txt",
+					"content": {
+						"type": "text/plain",
+						"size": 0,
+						"name": "emtpy.txt",
+						"content": "",
+						"isBinary": false
+					}
+				}
+			}
+		],
+		"reIndexMap": [
+			1,
+			2,
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"scaling": {
+		"widthPx": 1045,
+		"heightPx": 605,
+		"scrollWidthPx": 1045,
+		"scrollHeightPx": 605,
+		"widthVw": 68.03385416666667,
+		"heightVh": 80.23872679045093,
+		"scrollWidthVw": 68.03385416666667,
+		"scrollHeightVh": 80.23872679045093,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {}
+	},
+	"dashboard": {
+		"flatUiValueN": {
+			"layout": {
+				"top": "2.71996vh",
+				"left": "12.1948vw",
+				"height": "5.43991vh",
+				"width": "25.6732vw",
+				"minHeight": "32px",
+				"minWidth": "150px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiValueN",
+				"instanceId": "flatUiValueN",
+				"modelJsonId": "flatUiValue",
+				"widgetTypeName": "Value(flatUiValueN)"
+			},
+			"modelParameters": {
+				"label": "rectangle surface",
+				"inheritLabelFromData": false,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "50%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"isNumber": false,
+				"decimalDigits": 3,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"displayBorder": true,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"flatUiButtonE": {
+			"layout": {
+				"top": "1.42773vh",
+				"left": "0.651042vw",
+				"height": "8.97586vh",
+				"width": "8.9856vw",
+				"minHeight": "50px",
+				"minWidth": "55px",
+				"z-index": "4"
+			},
+			"container": {
+				"id": "flatUiButtonE",
+				"instanceId": "flatUiButtonE",
+				"modelJsonId": "flatUiButton",
+				"widgetTypeName": "Push button(flatUiButtonE)"
+			},
+			"modelParameters": {
+				"text": "Run web-service",
+				"numberOfTriggers": 1,
+				"fileInput": false,
+				"buttonFontFamily": "Helvetica Neue",
+				"buttonDefaultColor": "#447bdc",
+				"buttonHoverColor": "#a9c3ef",
+				"buttonActiveColor": "#2154ab",
+				"buttonTextColor": "#ffffff"
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiButtonJ": {
+			"layout": {
+				"top": "14.5629vh",
+				"left": "0.651042vw",
+				"height": "8.97586vh",
+				"width": "8.9856vw",
+				"minHeight": "50px",
+				"minWidth": "55px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "flatUiButtonJ",
+				"instanceId": "flatUiButtonJ",
+				"modelJsonId": "flatUiButton",
+				"widgetTypeName": "Push button(flatUiButtonJ)"
+			},
+			"modelParameters": {
+				"text": "Read text file",
+				"numberOfTriggers": 1,
+				"fileInput": true,
+				"buttonFontFamily": "Helvetica Neue",
+				"buttonDefaultColor": "#447bdc",
+				"buttonHoverColor": "#a9c3ef",
+				"buttonActiveColor": "#2154ab",
+				"buttonTextColor": "#ffffff"
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiValueO": {
+			"layout": {
+				"top": "15.9906vh",
+				"left": "12.1948vw",
+				"height": "5.43991vh",
+				"width": "25.6732vw",
+				"minHeight": "32px",
+				"minWidth": "150px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiValueO",
+				"instanceId": "flatUiValueO",
+				"modelJsonId": "flatUiValue",
+				"widgetTypeName": "Value(flatUiValueO)"
+			},
+			"modelParameters": {
+				"label": "file content",
+				"inheritLabelFromData": false,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueWidthProportion": "50%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"isNumber": false,
+				"isPassword": false,
+				"decimalDigits": 3,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiValueN": {
+			"value": {
+				"name": "value",
+				"dataSource": "Surface",
+				"dataFields": [
+					"Msg"
+				],
+				"dataSourceIndex": 1
+			}
+		},
+		"flatUiButtonE": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataSource": "Surface",
+				"dataFields": [],
+				"dataSourceIndex": 1
+			}
+		},
+		"flatUiButtonJ": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataSource": "file",
+				"dataFields": [
+					"content"
+				],
+				"dataSourceIndex": 2
+			}
+		},
+		"flatUiValueO": {
+			"value": {
+				"name": "value",
+				"dataSource": "file",
+				"dataFields": [
+					"content",
+					"content"
+				],
+				"dataSourceIndex": 2
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"checkExportOptions": false
+}

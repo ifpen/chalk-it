@@ -1,0 +1,236 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 14:28:22 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "rest-pandas-pyodide-covid",
+		"description": "",
+		"groupName": "Mixed",
+		"tags": [
+			{
+				"text": "pyodide"
+			},
+			{
+				"text": "Pandas"
+			},
+			{
+				"text": "rest-api"
+			},
+			{
+				"text": "echarts"
+			},
+			{
+				"text": "python"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "countriesList",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "countriesList",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "covid = dataNodes[\"covidDataFrame\"]\nreturn covid.index.tolist()\n"
+				}
+			},
+			{
+				"name": "covidDataFrame",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "covidDataFrame",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "from io import StringIO\nimport pandas as pd\n\ncovid = pd.read_csv(StringIO(dataNodes[\"covidDataJohnHopkins\"][\"content\"]))\n\ncovid = covid.drop(columns=['Lat', 'Long']).groupby('Country/Region').sum()\n\nreturn covid"
+				}
+			},
+			{
+				"name": "covidDataJohnHopkins",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "covidDataJohnHopkins",
+					"url": "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
+					"use_xproxy": true,
+					"sampleTime": 0,
+					"autoStart": true,
+					"explicitTrig": false,
+					"req_data_type": "JSON",
+					"resp_data_type": "JSON",
+					"method": "GET",
+					"body": "",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0NTU0VHSVNhbmREYXRhL0NPVklELTE5L21hc3Rlci9jc3NlX2NvdmlkXzE5X2RhdGEvY3NzZV9jb3ZpZF8xOV90aW1lX3Nlcmllcy90aW1lX3Nlcmllc19jb3ZpZDE5X2NvbmZpcm1lZF9nbG9iYWwuY3N2IiwiSG9zdCI6InhkYXNoIn0=",
+					"proxySig": "5TM10MtZYvnW/sf2ZrpNxn/fpTeOoUHXzV23CzlL95mni7uOrscQQSlcUagf1btXos2wf1ZA+eGBSZhc1/bPlk5lyaqX3oHfc4Sq0kUugOLuSZa8ZHH9jyGOBNVXZpzZLBXBrEJXDUTQjJP4Ff5kbg3nxePCRPPNVb6JmHC0QC+UgImzwqbGWkZOxL545KsxsXmCKlOkGYDu2jd6zmLHnShUZI8ODQReB+wKMAnJVWe31W4CRGL6cujvyE5t0ycX"
+				}
+			},
+			{
+				"name": "covidFiltered",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "covidFiltered",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "covid = dataNodes[\"covidDataFrame\"]\n\nsel = covid.loc[dataNodes[\"selectedCountry\"]]\n\nreturn sel.to_dict('split')\n"
+				}
+			},
+			{
+				"name": "option",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "option",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var series = [];\n\nvar yAxisName = '';\n\n\nvar countries = [];\n\nfor (let k=0; k < dataNodes[\"selectedCountry\"].length; k++) {\n    selectedCountry = dataNodes[\"selectedCountry\"][k];\n\tseries.push(        {\n            name: 'Death ' + ' for ' + selectedCountry, \n            type: 'line',\n            animation: false,\n            areaStyle: {},\n            lineStyle: {\n                width: 1\n            },\n            markArea: {\n                silent: true\n            },\n            data:  dataNodes[\"covidFiltered\"][\"data\"][k] \n        });\n    \n    countries.push(selectedCountry);\n}\n\nvar option = {\n    title: {\n        text: 'Covid data for ' + countries,\n        subtext: 'CSSE at Johns Hopkins University',\n        left: 'center',\n        align: 'right'\n    },\n    grid: {\n        bottom: 80\n    },\n    toolbox: {\n        feature: {\n            dataZoom: {\n                yAxisIndex: 'none'\n            },\n            restore: {},\n            saveAsImage: {}\n        }\n    },\n    tooltip: {\n        trigger: 'axis',\n        axisPointer: {\n            type: 'cross',\n            animation: false,\n            label: {\n                backgroundColor: '#505765'\n            }\n        }\n    },\n    dataZoom: [\n        {\n            show: true,\n            realtime: true,\n            start: 80,\n            end: 100\n        },\n        {\n            type: 'inside',\n            realtime: true,\n            start: 80,\n            end: 100\n        }\n    ],\n    xAxis: [\n        {\n            type: 'category',\n            boundaryGap: false,\n            axisLine: {onZero: false},\n            data:  dataNodes[\"covidFiltered\"][\"columns\"] \n        }\n    ],\n    yAxis: [\n        {\n            name: yAxisName,\n            type: 'value',\n        }\n    ],\n    series: series\n};\n\nreturn option;\n"
+				}
+			},
+			{
+				"name": "selectedCountry",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "selectedCountry",
+					"json_var": "[\"France\",\"Germany\",\"United Kingdom\"]"
+				}
+			}
+		],
+		"reIndexMap": [
+			5,
+			2,
+			1,
+			3,
+			4,
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiListC": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "0.953908vw",
+				"height": "77.1984vh",
+				"width": "20.3333vw",
+				"minHeight": "75px",
+				"minWidth": "80px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiListC",
+				"instanceId": "flatUiListC",
+				"modelJsonId": "flatUiList",
+				"widgetTypeName": "List(flatUiListC)"
+			},
+			"modelParameters": {
+				"addControls": false,
+				"listValueFontSize": 0.5,
+				"listValueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"displayBorder": true,
+				"borderColor": "#447bdc",
+				"listBackgroundColor": "#ffffff",
+				"selectValueColor": "#34495e",
+				"selectValueBackgroundColor": "#cecece"
+			},
+			"modelHiddenParams": {
+				"value": [],
+				"selectedValue": ""
+			}
+		},
+		"echartsGenericK": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "22.7431vw",
+				"height": "77.1984vh",
+				"width": "58.9414vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "echartsGenericK",
+				"instanceId": "echartsGenericK",
+				"modelJsonId": "echartsGeneric",
+				"widgetTypeName": "Echarts generic(echartsGenericK)"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"option": {},
+				"selection": {}
+			}
+		}
+	},
+	"connections": {
+		"flatUiListC": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "countriesList",
+				"dataNodeIndex": 0
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataFields": [],
+				"dataNode": "selectedCountry",
+				"dataNodeIndex": 5
+			}
+		},
+		"echartsGenericK": {
+			"option": {
+				"name": "option",
+				"dataFields": [],
+				"dataNode": "option",
+				"dataNodeIndex": 4
+			},
+			"selection": {
+				"name": "selection",
+				"dataFields": [],
+				"dataNode": "None",
+				"dataNodeIndex": -1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

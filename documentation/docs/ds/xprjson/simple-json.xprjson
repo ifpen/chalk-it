@@ -1,0 +1,73 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Fri Feb 03 2023 10:26:11 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "simple-json",
+		"description": "Simple JSON variable example",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "Variable"
+			},
+			{
+				"text": "JSON"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "jsonVar",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "jsonVar",
+					"json_var": "{\"x\":[0,1,2,3],\"y\":[0,1,4,9],\"rectangle\":{\"length\":1.23,\"width\":5.5},\"message\":\"example\"}"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1302,
+		"heightPx": 591,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 591,
+		"widthVw": 84.765625,
+		"heightVh": 78.38196286472149,
+		"scrollWidthVw": 84.765625,
+		"scrollHeightVh": 78.38196286472149,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {},
+	"connections": {},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

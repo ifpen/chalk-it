@@ -1,0 +1,191 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 15:50:18 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "combo-box-py",
+		"description": "select (combo-box) widget example",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Basic"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "selected",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "selected",
+					"json_var": "\"option1\""
+				}
+			},
+			{
+				"name": "options",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "options",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "return [\"option1\",\"option2\",\"option3\"]\n"
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1639,
+		"heightPx": 685,
+		"scrollWidthPx": 1639,
+		"scrollHeightPx": 685,
+		"widthVw": 87.50667378537106,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.50667378537106,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiSelect4": {
+			"layout": {
+				"top": "1.07116vh",
+				"left": "1.12532vw",
+				"height": "10.4973vh",
+				"width": "23.8996vw",
+				"minHeight": "32px",
+				"minWidth": "80px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiSelect4",
+				"instanceId": "flatUiSelect4",
+				"modelJsonId": "flatUiSelect",
+				"widgetTypeName": "Select(flatUiSelect4)"
+			},
+			"modelParameters": {
+				"label": "choose",
+				"inheritLabelFromData": false,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"selectWidthProportion": "70%",
+				"isNumber": false,
+				"selectValueFontSize": 0.5,
+				"selectedValueColor": "#ffffff",
+				"selectedItemDefaultColor": "#447bdc",
+				"selectedItemHoverColor": "#a9c3ef",
+				"isKeyValuePairs": false
+			},
+			"modelHiddenParams": {
+				"values": [],
+				"keys": [],
+				"value": [],
+				"selectedValue": ""
+			}
+		},
+		"kpiCardi": {
+			"layout": {
+				"top": "14.2464vh",
+				"left": "1.12532vw",
+				"height": "14.5677vh",
+				"width": "23.8996vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "kpiCardi",
+				"instanceId": "kpiCardi",
+				"modelJsonId": "kpiCard",
+				"widgetTypeName": "KPI value(kpiCardi)"
+			},
+			"modelParameters": {
+				"label": "selected",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valuePosition": "bottom",
+				"valueFontSize": 2,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"decimalDigits": 3,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"unitColor": "#2154ab",
+				"borderShadow": false
+			},
+			"modelHiddenParams": {
+				"value": "--"
+			}
+		}
+	},
+	"connections": {
+		"flatUiSelect4": {
+			"keys": {
+				"name": "keys",
+				"dataNode": "options",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			},
+			"values": {
+				"name": "values",
+				"dataNode": "options",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataNode": "selected",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		},
+		"kpiCardi": {
+			"value": {
+				"name": "value",
+				"dataNode": "selected",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

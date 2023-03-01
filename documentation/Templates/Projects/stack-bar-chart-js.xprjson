@@ -1,0 +1,200 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 21:00:45 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "stack-bar-chart-js",
+		"description": "Stack-bar chart with Plotly library",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Plots"
+			},
+			{
+				"text": "Plotly"
+			},
+			{
+				"text": "Bar"
+			},
+			{
+				"text": "Stack-bar"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "data",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "data",
+					"json_var_formula": "var trace1 = {\n  x: [2015, 2016, 2017],\n  BHEVs: [247482, 409000, 652000],\n};\n\nvar trace2 = {\n  x: [2015, 2016, 2017],\n  PHEVs: [83610, 98000, 125000],\n};\n\nvar data = [trace1, trace2];\n\nreturn data;",
+					"autoStart": true,
+					"explicitTrig": false
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"plotlyBarK": {
+			"layout": {
+				"top": "1.6647vh",
+				"left": "0.806654vw",
+				"height": "47.5005vh",
+				"width": "54.8311vw",
+				"minHeight": "100px",
+				"minWidth": "100px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "plotlyBarK",
+				"instanceId": "plotlyBarK",
+				"modelJsonId": "plotlyBar",
+				"widgetTypeName": "Plotly bar(plotlyBarK)"
+			},
+			"modelParameters": {
+				"numberOfAxis": 2,
+				"layout": {
+					"title": {
+						"text": "Sales of NEVs in China by years"
+					},
+					"barmode": "stack",
+					"xaxis": {
+						"title": {
+							"text": "year"
+						},
+						"type": "category",
+						"range": [
+							-0.5,
+							2.5
+						],
+						"autorange": true
+					},
+					"yaxis": {
+						"title": {
+							"text": "units"
+						},
+						"type": "linear",
+						"range": [
+							0,
+							817894.7368421053
+						],
+						"autorange": true
+					},
+					"paper_bgcolor": "rgba(0, 0, 0, 0)",
+					"plot_bgcolor": "rgba(0, 0, 0, 0)",
+					"showlegend": true,
+					"margin": {
+						"l": 70,
+						"r": 50,
+						"b": 100,
+						"t": 100,
+						"pad": 4
+					},
+					"autosize": true
+				},
+				"hideModeBar": false
+			},
+			"modelHiddenParams": {
+				"data": [
+					{
+						"type": "bar",
+						"x": [
+							"first",
+							"second"
+						],
+						"y": [
+							1,
+							2
+						]
+					}
+				],
+				"selection": [
+					{}
+				]
+			}
+		}
+	},
+	"connections": {
+		"plotlyBarK": {
+			"x1": {
+				"name": "x1",
+				"dataFields": [
+					"0",
+					"x"
+				],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			},
+			"y1": {
+				"name": "y1",
+				"dataFields": [
+					"0",
+					"BHEVs"
+				],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			},
+			"x2": {
+				"name": "x2",
+				"dataFields": [
+					"1",
+					"x"
+				],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			},
+			"y2": {
+				"name": "y2",
+				"dataFields": [
+					"1",
+					"PHEVs"
+				],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

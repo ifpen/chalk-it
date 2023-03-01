@@ -1,0 +1,99 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Fri Feb 03 2023 23:28:49 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "plotly-density-heatmap-py",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "fig",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "fig",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import plotly.express as px\ndf = px.data.tips()\n\nfig = px.density_heatmap(df, x=\"total_bill\", y=\"tip\")\n\nreturn fig\n"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": [
+			"plotly"
+		]
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"plotlyPyGenericD": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "1.4094vw",
+				"height": "56.0942vh",
+				"width": "47.7181vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "plotlyPyGenericD",
+				"instanceId": "plotlyPyGenericD",
+				"modelJsonId": "plotlyPyGeneric",
+				"widgetTypeName": "Plotly Python generic(plotlyPyGenericD)"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"fig": ""
+			}
+		}
+	},
+	"connections": {
+		"plotlyPyGenericD": {
+			"fig": {
+				"name": "fig",
+				"dataNode": "fig",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

@@ -1,0 +1,111 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 13:48:29 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "snowballstemmer",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "snowballstemmer",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "snowballstemmer",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import snowballstemmer\n\nstemmer = snowballstemmer.stemmer('english');\nreturn stemmer.stemWords(\"We are the world\".split())"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"snowballstemmer"
+		]
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiTableE": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.06781vw",
+				"height": "30.9498vh",
+				"width": "25.8943vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiTableE",
+				"instanceId": "flatUiTableE",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTableE)"
+			},
+			"modelParameters": {
+				"headerLine": false,
+				"tableValueFontSize": 0.5,
+				"striped": true,
+				"valueColor": "#2154ab",
+				"valueFontFamily": "Helvetica Neue",
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[]"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		}
+	},
+	"connections": {
+		"flatUiTableE": {
+			"value": {
+				"name": "value",
+				"dataNode": "snowballstemmer",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

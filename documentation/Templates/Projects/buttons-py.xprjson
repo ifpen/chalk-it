@@ -1,0 +1,449 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Sun Feb 12 2023 20:59:59 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "buttons-py",
+		"description": "Demonstration of buttons widgets : for execution trigger or file upload",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Basic"
+			},
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "REST-API"
+			},
+			{
+				"text": "File-upload"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "code_view",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "code_view",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "if (dataNodes[\"file\"] is None):\n  return ''\nreturn '<code>' + str(dataNodes[\"file\"][\"content\"]) + '</code>';\n"
+				}
+			},
+			{
+				"name": "file",
+				"type": "Generic_file_reader_plugin",
+				"settings": {
+					"name": "file",
+					"data_path": "empty.txt",
+					"content": ""
+				}
+			},
+			{
+				"name": "Input",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "Input",
+					"json_var": "{\"length\":4, \"width\":5}"
+				}
+			},
+			{
+				"name": "Surface",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "Surface",
+					"url": "https://compute20190425045435.azurewebsites.net/ComputeService.asmx/Surface",
+					"use_xproxy": true,
+					"sampleTime": 0,
+					"autoStart": true,
+					"explicitTrig": true,
+					"req_data_type": "JSON",
+					"resp_data_type": "JSON",
+					"method": "POST",
+					"body": "return { \n    \"X\": datasources.Input.length, \n    \"Y\": datasources.Input.width \n};\n",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9jb21wdXRlMjAxOTA0MjUwNDU0MzUuYXp1cmV3ZWJzaXRlcy5uZXQvQ29tcHV0ZVNlcnZpY2UuYXNteC9TdXJmYWNlIiwiSG9zdCI6InhkYXNoIn0=",
+					"proxySig": "5TM10MtZYvnW/sf2ZrpNxroEC5/u3IzDOTvHwTGaJC7Ve8mvIFTHNTSRJC01sF4++1mTDAzHz2vWI03ypu1tkethTosHJxRjcAnrj3nUMMB9B3vlYUwnXguGTw5Y8ov0ALcr1kk5cAZ8fzNPMNTExA=="
+				}
+			}
+		],
+		"reIndexMap": [
+			1,
+			0,
+			2,
+			3
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"pandas"
+		],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiButtonE": {
+			"layout": {
+				"top": "5.40166vh",
+				"left": "4.36242vw",
+				"height": "13.0194vh",
+				"width": "10.7383vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "4"
+			},
+			"container": {
+				"id": "flatUiButtonE",
+				"instanceId": "flatUiButtonE",
+				"modelJsonId": "flatUiButton",
+				"widgetTypeName": "Push button(flatUiButtonE)"
+			},
+			"modelParameters": {
+				"text": "Run web-service",
+				"numberOfTriggers": 1,
+				"fileInput": false,
+				"buttonFontFamily": "Helvetica Neue",
+				"buttonDefaultColor": "#447bdc",
+				"buttonHoverColor": "#a9c3ef",
+				"buttonActiveColor": "#2154ab",
+				"buttonTextColor": "#ffffff"
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiValueDisplayN": {
+			"layout": {
+				"top": "5.40166vh",
+				"left": "16.1745vw",
+				"height": "13.0194vh",
+				"width": "50.1342vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiValueDisplayN",
+				"instanceId": "flatUiValueDisplayN",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayN)"
+			},
+			"modelParameters": {
+				"label": "web-service response:",
+				"inheritLabelFromData": false,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "50%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"isNumber": false,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"displayBorder": false,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"loadFileb": {
+			"layout": {
+				"top": "27.4238vh",
+				"left": "13.6913vw",
+				"height": "25.4848vh",
+				"width": "28.1879vw",
+				"minHeight": "70px",
+				"minWidth": "420px",
+				"z-index": "5"
+			},
+			"container": {
+				"id": "loadFileb",
+				"instanceId": "loadFileb",
+				"modelJsonId": "loadFile",
+				"widgetTypeName": "Load file(loadFileb)"
+			},
+			"modelParameters": {
+				"label": "Or load file also here",
+				"displayLabel": true,
+				"labelFontSize": 0.1,
+				"labelColor": "#757479",
+				"labelFontFamily": "Helvetica Neue",
+				"labelAlign": "left",
+				"textColor": "#3e3f47",
+				"subTextColor": "#88878e",
+				"textSize": 0.1,
+				"binaryFileInput": false,
+				"displayBorder": true,
+				"borderColor": "#aaaaaa",
+				"backgroundColor": "#f1f2f6",
+				"labelBackgroundColor": "#ffffff",
+				"browseButtonTextColor": "#e0807f",
+				"browseButtonDefaultColor": "#ffffff",
+				"browseButtonActiveColor": "#f1d7d7",
+				"browseButtonHoverColor": "#ffffff",
+				"deleteButtonDefaultColor": "#e8eaf1",
+				"deleteButtonActiveColor": "#e0807f",
+				"deleteButtonHoverColor": "#e0807f",
+				"deleteButtonIconColor": "#000000",
+				"deleteButtonIconHoverColor": "#ffffff"
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiButtonZ": {
+			"layout": {
+				"top": "33.6565vh",
+				"left": "1.20805vw",
+				"height": "12.0499vh",
+				"width": "11.2081vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "6"
+			},
+			"container": {
+				"id": "flatUiButtonZ",
+				"instanceId": "flatUiButtonZ",
+				"modelJsonId": "flatUiButton",
+				"widgetTypeName": "Push button(flatUiButtonZ)"
+			},
+			"modelParameters": {
+				"text": "Load text file here",
+				"numberOfTriggers": 1,
+				"fileInput": true,
+				"buttonFontFamily": "Helvetica Neue",
+				"buttonDefaultColor": "#447bdc",
+				"buttonHoverColor": "#a9c3ef",
+				"buttonActiveColor": "#2154ab",
+				"buttonTextColor": "#ffffff"
+			},
+			"modelHiddenParams": {}
+		},
+		"saveToFileButton7": {
+			"layout": {
+				"top": "33.6565vh",
+				"left": "44.094vw",
+				"height": "12.0499vh",
+				"width": "11.2081vw",
+				"minHeight": "50px",
+				"minWidth": "55px",
+				"z-index": "7"
+			},
+			"container": {
+				"id": "saveToFileButton7",
+				"instanceId": "saveToFileButton7",
+				"modelJsonId": "saveToFileButton",
+				"widgetTypeName": "Save to file button(saveToFileButton7)"
+			},
+			"modelParameters": {
+				"text": "Save to text file here",
+				"fileName": "export.txt",
+				"buttonFontSize": 0.5,
+				"buttonFontFamily": "var(--widget-font-family)",
+				"buttonTextColor": "var(--widget-button-primary-text)",
+				"buttonDefaultColor": "var(--widget-button-primary-color)",
+				"buttonActiveColor": "var(--widget-button-active-color)",
+				"buttonHoverColor": "var(--widget-button-hover-color)"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"annotationLabelv": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "0.671141vw",
+				"height": "21.8837vh",
+				"width": "73.6913vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "annotationLabelv",
+				"instanceId": "annotationLabelv",
+				"modelJsonId": "annotationLabel",
+				"widgetTypeName": "Label(annotationLabelv)"
+			},
+			"modelParameters": {
+				"text": "",
+				"enableActuator": false,
+				"fontsize": 0.5,
+				"backgroundColor": "#daddd984",
+				"textColor": "var(--widget-label-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		},
+		"annotationHtmlj": {
+			"layout": {
+				"top": "55.4017vh",
+				"left": "1.87919vw",
+				"height": "32.133vh",
+				"width": "71.2752vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "8"
+			},
+			"container": {
+				"id": "annotationHtmlj",
+				"instanceId": "annotationHtmlj",
+				"modelJsonId": "annotationHtml",
+				"widgetTypeName": "Generic html(annotationHtmlj)"
+			},
+			"modelParameters": {
+				"fontsize": 0.3,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "var(--widget-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {
+				"html": ""
+			}
+		},
+		"annotationLabelp": {
+			"layout": {
+				"top": "24.2382vh",
+				"left": "0.671141vw",
+				"height": "65.5125vh",
+				"width": "73.6913vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "annotationLabelp",
+				"instanceId": "annotationLabelp",
+				"modelJsonId": "annotationLabel",
+				"widgetTypeName": "Label(annotationLabelp)"
+			},
+			"modelParameters": {
+				"text": "",
+				"enableActuator": false,
+				"fontsize": 0.5,
+				"backgroundColor": "#daddd984",
+				"textColor": "var(--widget-label-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		}
+	},
+	"connections": {
+		"flatUiButtonE": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataFields": [],
+				"dataNode": "Surface",
+				"dataNodeIndex": 3
+			}
+		},
+		"flatUiValueDisplayN": {
+			"value": {
+				"name": "value",
+				"dataNode": "Surface",
+				"dataFields": [
+					"Msg"
+				],
+				"dataNodeIndex": 3
+			}
+		},
+		"loadFileb": {
+			"outputFile": {
+				"name": "outputFile",
+				"dataNode": "file",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			}
+		},
+		"flatUiButtonZ": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataNode": "file",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			}
+		},
+		"saveToFileButton7": {
+			"value": {
+				"name": "value",
+				"dataNode": "code_view",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		},
+		"annotationLabelv": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataNode": "file",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			}
+		},
+		"annotationHtmlj": {
+			"html": {
+				"name": "html",
+				"dataNode": "code_view",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		},
+		"annotationLabelp": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataNode": "file",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

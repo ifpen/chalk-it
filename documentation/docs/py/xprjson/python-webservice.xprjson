@@ -1,0 +1,83 @@
+{
+	"meta": {
+		"version": "1.440.7868",
+		"date": "Wed Jul 21 2021 17:05:32 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "python-webservice",
+		"description": "Using Flask via REST API dataNode-type to call Python code",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},		
+			{
+				"text": "Python"
+			},
+			{
+				"text": "Flask"
+			},
+			{
+				"text": "REST-API"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"version": 1,
+		"allow_edit": true,
+		"plugins": [],
+		"panes": [],
+		"datasources": [
+			{
+				"name": "vectorFunctions",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "vectorFunctions",
+					"url": "http://127.0.0.1:5000/basicVect",
+					"use_xproxy": false,
+					"resp_data_type": "JSON",
+					"autoStart": false,
+					"explicitTrig": false,
+					"method": "POST",
+					"body": "{\n\"A\": [0, 1, 2, 3],\n\"B\": [10, 11, 12, 13] \n}",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"sampleTime": 0
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"scaling": {
+		"widthPx": 1045,
+		"heightPx": 605,
+		"scrollWidthPx": 1045,
+		"scrollHeightPx": 605,
+		"widthVw": 68.03385416666667,
+		"heightVh": 80.23872679045093,
+		"scrollWidthVw": 68.03385416666667,
+		"scrollHeightVh": 80.23872679045093,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {}
+	},
+	"dashboard": {},
+	"connections": {},
+	"exportOptions": "projectToTargetWindow",
+	"checkExportOptions": false
+}

@@ -1,0 +1,210 @@
+{
+	"meta": {
+		"version": "2.190.8313",
+		"date": "Wed Oct 05 2022 09:50:25 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "python-inline-interpolate.full",
+		"description": "Data interpolation using Python",
+		"tags": [
+			{
+				"text": "Python"
+			},
+			{
+				"text": "Docker"
+			},
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Plotly"
+			},
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "Plots"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "parametres",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "parametres",
+					"json_var": "{\"points\":57}"
+				}
+			},
+			{
+				"name": "plots",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "plots",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var original = {\n  x:  dataNodes[\"data\"][\"time\"],\n  y:  dataNodes[\"data\"][\"value\"],\n  mode: 'lines+markers',\n  type: 'scatter',\n  name: 'original'\n};\n\nvar interpolated = {\n  x:   dataNodes[\"interp\"][\"timeInterp\"],\n  y:   dataNodes[\"interp\"][\"valueInterp\"],\n  mode: 'markers',\n  type: 'scatter',\n  name : 'interpolated'\n};\n\nreturn [original, interpolated];"
+				}
+			},
+			{
+				"name": "data",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "data",
+					"json_var": "{\"time\":[0,10,20,30,40,50],\"value\":[0,5,15,35,65,90]}"
+				}
+			},
+			{
+				"name": "interp",
+				"type": "Python_inline_plugin",
+				"settings": {
+					"name": "interp",
+					"autoStart": true,
+					"explicitTrig": false,
+					"dockerImage": {
+						"name": "default",
+						"id": ""
+					},
+					"content": "import numpy as np\n\n\nx = dataNodes[\"data\"][\"time\"]\ny = dataNodes[\"data\"][\"value\"]\nnbPoints = dataNodes[\"parametres\"][\"points\"]\n\n\nxvals = np.linspace(0, max(x), nbPoints)\nyinterp = np.interp(xvals, x, y)\n\nreturn {\"timeInterp\": xvals, \"valueInterp\": yinterp}\n",
+					"signature": "107d83587f59dd54fb8c1959431049884f0ec1e365961bc24409dfdcfe4f9b493a10ab8c6d782165d2efc1fee5aefedc601b744181e651000295a9e31f741f66aef1fb98566144e50adcf8e6231d8a721a78b77e6f9955ba2d7e4df8890e0f8384da67c0e53da1b5663875de2d67dfa620acf0460aa26910b851aa48652c9272aaa999915a0c741f12ad8dae33699cf7fda40aee3f9ac23a6a91e9fbb8a3d8de0d7f8ae19c500ea9989fe0049954d7dfdaed53a9a035107f5b91f5033d91bbea35c7506454c1ee43c2d8bc9ff8e29c472a65803edfb0b57938c223af07e27e6c6ae7ff49d41088111432e18dde28b4787fd1c3ca5b7fa3cb13171c4b41e5bad21d901a1dcbdef725f10595c54f5ff10de485efe7d13099e82ea2cbd60bafb7fb1882680243f67577485c313112c3906c36d35d1f7dc84241063fb8b7efe2f76ecfd6b118af92c3c86301de899f17319534a803778a8edec553eabedfb7273b3a6bb42de12c240933a57b9d9b48d50f31c8ece559ab0f7a47bd266879f30f6705cf6cc1f6ba18cff710991d9f8b4a7db1532d4067f7ca0e80a95fde5e1b42d8cbfd1c10c85931977e834514ece71c69e51108bd5b19e6569a0e2547d81df111937ed7146cc7a09cac268e1ddb0e7dfe7fead7a966a3dbe94d41ab5984301686571885059c6c74107873873f450a8e6c0834487366010a9420edc3f462bbcae5eb"
+				}
+			}
+		],
+		"reIndexMap": [
+			1,
+			3,
+			0,
+			2
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1679,
+		"heightPx": 685,
+		"scrollWidthPx": 1679,
+		"scrollHeightPx": 685,
+		"widthVw": 87.49348619072434,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.49348619072434,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"plotlyGenericq": {
+			"layout": {
+				"top": "9.31106vh",
+				"left": "0.853056vw",
+				"height": "51.9023vh",
+				"width": "80.6796vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "plotlyGenericq",
+				"instanceId": "plotlyGenericq",
+				"modelJsonId": "plotlyGeneric",
+				"widgetTypeName": "Plotly JavaScript generic(plotlyGenericq)"
+			},
+			"modelParameters": {
+				"layout": null,
+				"hideModeBar": false
+			},
+			"modelHiddenParams": {
+				"data": [
+					{}
+				],
+				"layout": [
+					{}
+				],
+				"selection": [
+					{}
+				]
+			}
+		},
+		"flatUiHorizontalSliderC": {
+			"layout": {
+				"top": "2.21252vh",
+				"left": "5.75338vw",
+				"height": "5.06576vh",
+				"width": "30.4731vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderC",
+				"instanceId": "flatUiHorizontalSliderC",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderC)"
+			},
+			"modelParameters": {
+				"label": "points",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		}
+	},
+	"connections": {
+		"plotlyGenericq": {
+			"data": {
+				"name": "data",
+				"dataFields": [],
+				"dataNode": "plots",
+				"dataNodeIndex": 1
+			},
+			"layout": {
+				"name": "layout",
+				"dataFields": [],
+				"dataNode": "None",
+				"dataNodeIndex": -1
+			}
+		},
+		"flatUiHorizontalSliderC": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"points"
+				],
+				"dataNode": "parametres",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

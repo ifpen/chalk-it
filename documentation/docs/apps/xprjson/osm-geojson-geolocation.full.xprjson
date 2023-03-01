@@ -1,0 +1,161 @@
+{
+	"meta": {
+		"version": "1.999.7454",
+		"date": "Thu May 28 2020 21:56:53 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "osm-geojson-geolocation",
+		"description": "",
+		"tags": []
+	},
+	"data": {
+		"version": 1,
+		"allow_edit": true,
+		"plugins": [],
+		"panes": [],
+		"datasources": [
+			{
+				"name": "locate",
+				"type": "Geolocation-plugin",
+				"settings": {
+					"name": "locate",
+					"autoStart": true
+				}
+			},
+			{
+				"name": "point",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "point",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "return {\n  \"type\": \"FeatureCollection\",\n  \"features\": [\n    {\n      \"type\": \"Feature\",\n      \"geometry\": {\n        \"type\": \"Point\",\n        \"coordinates\": [\n           dataNodes[\"locate\"][\"lng\"] ,\n           dataNodes[\"locate\"][\"lat\"] \n        ]\n      },\n      \"properties\": {\n        \"comment\": \"click to display the contents of the properties object\"\n      }\n    }\n  ],\n  \"properties\": {\n    \"description\": \"Arc de triomphe\"\n  }\n};\n"
+				}
+			}
+		],
+		"columns": 3,
+		"reIndexMap": [
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"scaling": {
+		"widthPx": 1060,
+		"heightPx": 590,
+		"scrollWidthPx": 1060,
+		"scrollHeightPx": 590,
+		"widthVw": 69.01041666666667,
+		"heightVh": 78.24933687002653,
+		"scrollWidthVw": 69.01041666666667,
+		"scrollHeightVh": 78.24933687002653,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {}
+	},
+	"dashboard": {
+		"openStreetMapsl": {
+			"layout": {
+				"top": "1.32626vh",
+				"left": "0.651042vw",
+				"height": "67.5066vh",
+				"width": "66.276vw",
+				"minHeight": "",
+				"minWidth": "",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "openStreetMapsl",
+				"instanceId": "openStreetMapsl",
+				"modelJsonId": "openStreetMaps"
+			},
+			"modelParameters": {
+				"geoJson": {
+					"numberOfLayers": 1
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false,
+					"densityHeatMap": false
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
+				"drawingFeatures": false,
+				"drawingFeaturesOptions": {
+					"point": true,
+					"line": true,
+					"polygone": true,
+					"rectangle": true,
+					"modal": false
+				},
+				"captureClickEvent": false
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000"
+				]
+			}
+		}
+	},
+	"connections": {
+		"openStreetMapsl": {
+			"geoJson1": {
+				"name": "geoJson1",
+				"dataSource": "point",
+				"dataFields": [],
+				"dataSourceIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"checkExportOptions": false
+}

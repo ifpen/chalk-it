@@ -1,0 +1,247 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 22:56:54 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "formula-py",
+		"description": "Pyodide formula simple example",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "Formula"
+			},
+			{
+				"text": "python"
+			},
+			{
+				"text": "pyodide"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "input",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "input",
+					"json_var": "{\"length\":30,\"width\":65}"
+				}
+			},
+			{
+				"name": "multiply",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "multiply",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "return dataNodes[\"input\"][\"length\"]*dataNodes[\"input\"][\"width\"]"
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiHorizontalSlider0": {
+			"layout": {
+				"top": "1.66469vh",
+				"left": "0.806654vw",
+				"height": "6.83907vh",
+				"width": "27.777vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiHorizontalSlider0",
+				"instanceId": "flatUiHorizontalSlider0",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSlider0)"
+			},
+			"modelParameters": {
+				"label": "length",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSliderZ": {
+			"layout": {
+				"top": "10.6938vh",
+				"left": "0.806654vw",
+				"height": "6.83907vh",
+				"width": "27.777vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderZ",
+				"instanceId": "flatUiHorizontalSliderZ",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderZ)"
+			},
+			"modelParameters": {
+				"label": "width",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiValueDisplayn": {
+			"layout": {
+				"top": "22.5067vh",
+				"left": "6.02539vw",
+				"height": "6.86396vh",
+				"width": "21.9807vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiValueDisplayn",
+				"instanceId": "flatUiValueDisplayn",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayn)"
+			},
+			"modelParameters": {
+				"label": "multiply",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "70%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"isNumber": false,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"valueTextAlign": "center",
+				"displayBorder": true,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiHorizontalSlider0": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"length"
+				],
+				"dataNode": "input",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiHorizontalSliderZ": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"width"
+				],
+				"dataNode": "input",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiValueDisplayn": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "multiply",
+				"dataNodeIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

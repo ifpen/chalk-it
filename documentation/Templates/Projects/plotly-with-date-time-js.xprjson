@@ -1,0 +1,155 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Fri Feb 10 2023 15:18:55 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "plotly-with-date-time-js",
+		"description": "x-axis with data and time for Plotly scatter plot",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Plots"
+			},
+			{
+				"text": "Plotly"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "data",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "data",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "return  [{\n    x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],\n    y: [1, 3, 6],\n    type: 'scatter'\n  }];"
+				}
+			},
+			{
+				"name": "layout",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "layout",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var layout = {\n  title: 'Custom Range',\n  xaxis: {\n    type: 'date'\n  }\n};\n\nreturn layout;"
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"plotlyGenericy": {
+			"layout": {
+				"top": "1.39474vh",
+				"left": "0.807296vw",
+				"height": "37.8616vh",
+				"width": "77.3531vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "plotlyGenericy",
+				"instanceId": "plotlyGenericy",
+				"modelJsonId": "plotlyGeneric",
+				"widgetTypeName": "Plotly JavaScript generic(plotlyGenericy)"
+			},
+			"modelParameters": {
+				"layout": {
+					"title": {
+						"text": "Custom Range"
+					},
+					"xaxis": {
+						"type": "date",
+						"range": [
+							"2013-10-01 06:41:23.5346",
+							"2013-12-08 14:04:36.4654"
+						],
+						"autorange": true
+					},
+					"yaxis": {
+						"type": "linear",
+						"range": [
+							0.5982142857142858,
+							6.401785714285714
+						],
+						"autorange": true
+					}
+				},
+				"hideModeBar": false
+			},
+			"modelHiddenParams": {
+				"data": [
+					{}
+				],
+				"layout": [
+					{}
+				],
+				"selection": [
+					{}
+				]
+			}
+		}
+	},
+	"connections": {
+		"plotlyGenericy": {
+			"data": {
+				"name": "data",
+				"dataFields": [],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			},
+			"layout": {
+				"name": "layout",
+				"dataFields": [],
+				"dataNode": "layout",
+				"dataNodeIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

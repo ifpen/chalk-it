@@ -1,0 +1,175 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 17:22:29 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "osm-geojson-points",
+		"description": "Multiple points display with geoJSON on map",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Maps"
+			},
+			{
+				"text": "Geo&Time"
+			},
+			{
+				"text": "geoJSON"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "geoJsonParkings",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "geoJsonParkings",
+					"json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.342773091449471,48.85565848878775]},\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 46 33 97 48\",\"objectid\":84,\"tmoto_1ehe\":\"ND\",\"abmoto_1me\":\"89\",\"pr_1a_maxe\":\"ND\",\"adress_geo\":\"40 BIS QUAI DES ORFEVRES\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1,1\",\"tf_2h_e\":\"8,8\",\"tf_12h_e\":\"39,6\",\"id\":41,\"abmoto_1ae\":\"925,6\",\"pr_1a_maxm\":\"ND\",\"abpmr_1t_e\":\"ND\",\"deleg\":\"INDIGO\",\"tf_11h_e\":\"39,6\",\"autopart\":\"OUI\",\"tf_15mn_mo\":\"ND\",\"ab_1m_e\":\"246\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2,2\",\"tf_24h_e\":\"39,6\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"ND\",\"tf_1h_e\":\"4,4\",\"v_elec_ch\":\"NON\",\"tf_9h_e\":\"39,6\",\"parc_amod\":\"NON\"}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.341282707608166,48.8621266179414]},\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 42 60 19 14\",\"objectid\":85,\"tmoto_1ehe\":\"1,5\",\"abmoto_1me\":\"94,5\",\"pr_1a_maxe\":\"2160\",\"adress_geo\":\"7 PLACE DU LOUVRE\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1,1\",\"tf_2h_e\":\"8,8\",\"tf_12h_e\":\"39,6\",\"id\":46,\"abmoto_1ae\":\"945\",\"pr_1a_maxm\":\"756\",\"abpmr_1t_e\":\"376,5\",\"deleg\":\"SPIE AUTOCITE\",\"tf_11h_e\":\"39,6\",\"autopart\":\"NON\",\"tf_15mn_mo\":\"0,4\",\"ab_1m_e\":\"270\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2,2\",\"tf_24h_e\":\"39,6\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"0,8\",\"tf_1h_e\":\"4,4\",\"v_elec_ch\":\"OUI\",\"tf_9h_e\":\"39,6\",\"parc_amod\":\"NON\"}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.333777698372947,48.866242960394615]},\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 47 03 02 88\",\"objectid\":87,\"tmoto_1ehe\":\"1,4\",\"abmoto_1me\":\"94,5\",\"pr_1a_maxe\":\"2000\",\"adress_geo\":\"29 TER RUE DES PYRAMIDES\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1\",\"tf_2h_e\":\"8\",\"tf_12h_e\":\"36\",\"id\":177,\"abmoto_1ae\":\"954,45\",\"pr_1a_maxm\":\"700\",\"abpmr_1t_e\":\"371,5\",\"deleg\":\"SAEMES\",\"tf_11h_e\":\"36\",\"autopart\":\"NON\",\"tf_15mn_mo\":\"0,35\",\"ab_1m_e\":\"270\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2\",\"tf_24h_e\":\"36\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"0,7\",\"tf_1h_e\":\"4\",\"v_elec_ch\":\"OUI\",\"tf_9h_e\":\"36\",\"parc_amod\":\"NON\"}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.34937911467182,48.86101522004842]},\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 40 13 00 65\",\"objectid\":88,\"tmoto_1ehe\":\"ND\",\"abmoto_1me\":\"72\",\"pr_1a_maxe\":\"ND\",\"adress_geo\":\"37 TER BOULEVARD SEBASTOPOL\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1,1\",\"tf_2h_e\":\"8,8\",\"tf_12h_e\":\"39,6\",\"id\":147,\"abmoto_1ae\":\"728\",\"pr_1a_maxm\":\"ND\",\"abpmr_1t_e\":\"ND\",\"deleg\":\"INDIGO\",\"tf_11h_e\":\"39,6\",\"autopart\":\"NON\",\"tf_15mn_mo\":\"ND\",\"ab_1m_e\":\"245\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2,2\",\"tf_24h_e\":\"39,6\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"ND\",\"tf_1h_e\":\"4,4\",\"v_elec_ch\":\"OUI\",\"tf_9h_e\":\"39,6\",\"parc_amod\":\"NON\"}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.3301979075673183,48.8678975600126]},\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 42 60 50 00\",\"objectid\":89,\"tmoto_1ehe\":\"1,6\",\"abmoto_1me\":\"76,5\",\"pr_1a_maxe\":\"ND\",\"adress_geo\":\"26 TER PLACE VENDOME\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1,2\",\"tf_2h_e\":\"9,6\",\"tf_12h_e\":\"39,6\",\"id\":6,\"abmoto_1ae\":\"795,6\",\"pr_1a_maxm\":\"ND\",\"abpmr_1t_e\":\"ND\",\"deleg\":\"INDIGO\",\"tf_11h_e\":\"39,6\",\"autopart\":\"NON\",\"tf_15mn_mo\":\"0,4\",\"ab_1m_e\":\"294\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2,4\",\"tf_24h_e\":\"39,6\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"0,8\",\"tf_1h_e\":\"4,8\",\"v_elec_ch\":\"NON\",\"tf_9h_e\":\"39,6\",\"parc_amod\":\"NON\"}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.346551896305018,48.86014793509658]},\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 42 36 57 37\",\"objectid\":31,\"tmoto_1ehe\":\"1,3\",\"abmoto_1me\":\"91\",\"pr_1a_maxe\":\"2080\",\"adress_geo\":\"22 RUE DES HALLES\",\"tf_res_1am\":\"765\",\"tf_15mn_e\":\"0,95\",\"tf_2h_e\":\"7,6\",\"tf_12h_e\":\"34,2\",\"id\":8,\"abmoto_1ae\":\"910\",\"pr_1a_maxm\":\"ND\",\"abpmr_1t_e\":\"360\",\"deleg\":\"SAEMES\",\"tf_11h_e\":\"34,2\",\"autopart\":\"OUI\",\"tf_15mn_mo\":\"0,35\",\"ab_1m_e\":\"260\",\"tf_res_mo\":\"OUI\",\"h_parc_cm\":185,\"tf_30mn_e\":\"1,9\",\"tf_24h_e\":\"34,2\",\"point_x\":652057.879,\"point_y\":6862433.174,\"tf_30mn_mo\":\"0,7\",\"tf_1h_e\":\"3,8\",\"v_elec_ch\":\"OUI\",\"tarif_pr\":\"OUI\",\"tf_9h_e\":\"34,2\",\"parc_amod\":\"NON\"}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.339968016158395,48.86325431210127]},\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 47 03 92 21\",\"objectid\":83,\"tmoto_1ehe\":\"1,6\",\"abmoto_1me\":\"112,2\",\"pr_1a_maxe\":\"ND\",\"adress_geo\":\"14 RUE CROIX DES PETITS CHAMPS\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1,15\",\"tf_2h_e\":\"9,2\",\"tf_12h_e\":\"39,6\",\"id\":104,\"abmoto_1ae\":\"1167,7\",\"pr_1a_maxm\":\"ND\",\"abpmr_1t_e\":\"537\",\"deleg\":\"INDIGO\",\"tf_11h_e\":\"39,6\",\"autopart\":\"OUI\",\"tf_15mn_mo\":\"0,4\",\"ab_1m_e\":\"377\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2,3\",\"tf_24h_e\":\"39,6\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"0,8\",\"tf_1h_e\":\"4,6\",\"v_elec_ch\":\"NON\",\"tf_9h_e\":\"39,6\",\"parc_amod\":\"NON\"}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.333264515214272,48.865102106721615]},\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 47 03 02 88\",\"objectid\":86,\"tmoto_1ehe\":\"1,4\",\"abmoto_1me\":\"94,5\",\"pr_1a_maxe\":\"2000\",\"adress_geo\":\"14 TER RUE DES PYRAMIDES\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1\",\"tf_2h_e\":\"8\",\"tf_12h_e\":\"36\",\"id\":52,\"abmoto_1ae\":\"954,45\",\"pr_1a_maxm\":\"700\",\"abpmr_1t_e\":\"371,5\",\"deleg\":\"SAEMES\",\"tf_11h_e\":\"36\",\"autopart\":\"NON\",\"tf_15mn_mo\":\"0,35\",\"ab_1m_e\":\"270\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2\",\"tf_24h_e\":\"36\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"0,7\",\"tf_1h_e\":\"4\",\"v_elec_ch\":\"OUI\",\"tf_9h_e\":\"36\",\"parc_amod\":\"NON\"}}],\"properties\":{\"description\":\"Some parkings information in Paris\"}}"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1639,
+		"heightPx": 685,
+		"scrollWidthPx": 1639,
+		"scrollHeightPx": 685,
+		"widthVw": 87.50667378537106,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.50667378537106,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleIdent",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"openStreetMapsv": {
+			"layout": {
+				"top": "1.32626vh",
+				"left": "0.651042vw",
+				"height": "69.2891vh",
+				"width": "68.0208vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "openStreetMapsv",
+				"instanceId": "openStreetMapsv",
+				"modelJsonId": "openStreetMaps",
+				"widgetTypeName": "Leaflet maps(openStreetMapsv)"
+			},
+			"modelParameters": {
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"geoJson": {
+					"numberOfLayers": 1
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false
+				},
+				"offlineSupport": false,
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"choropleth": {
+					"numberOfLayers": 0
+				}
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
+		}
+	},
+	"connections": {
+		"openStreetMapsv": {
+			"geoJson1": {
+				"name": "geoJson1",
+				"dataFields": [],
+				"dataNode": "geoJsonParkings",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
