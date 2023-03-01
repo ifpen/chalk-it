@@ -1,0 +1,324 @@
+<h2>About the dashboard</h2>
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="basic icn-dashboard"></i>Dashboard</a>
+
+  <div class="aspect__col-right">
+    <button
+      class="btn btn-rounded-fill primary"
+      style="width: 60px; padding: 0 0.5em; margin: 0;"
+      ng-disabled="!vm.widgetExists"
+      ng-click="vm.clearDashboard()"
+      title="Clear dashboard to create a new empty one"
+    >
+      Clear
+    </button>
+  </div>
+</div>
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-data-connection"></i>DataNode connection</a>
+  <div class="aspect__col-right">
+    <button
+      class="btn btn-rounded-fill primary"
+      style="width: 60px; padding: 0 0.5em; margin: 0;"
+      ng-disabled="!vm.connectionsExists"
+      ng-click="vm.clearAllConnections()"
+      ng-attr-title="{{vm.connectionsExists ? 'Clear all dataNode connections' : 'All dataNode connections are cleared'}}"
+    >
+      Clear
+    </button>
+  </div>
+</div>
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-grid"></i>Dashboard grid</a>
+  <div class="aspect__col-right">
+    <label class="switch">
+      <input type="checkbox" ng-click="vm.showGrid=!vm.showGrid;vm.updateShowGrid()" />
+      <span class="slider round"></span>
+    </label>
+  </div>
+</div>
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-board"></i>Responsive layout</a>
+</div>
+
+<form class="dashboard-form Table ng-pristine ng-valid" style="padding-top: 5px; padding-bottom: 5px; display: block;">
+  <div class="Row">
+    <div class="CellH">
+      <label style="font-size: calc(8px + 0.4vw); font-weight: bold;">Row</label>
+    </div>
+    <div class="Cell">
+      <select class="inputList" style="width: 100px;" name="select-rows" id="select-rows">
+        <option selected="selected" value="0">None</option>
+        <option value="1" id="row1">1</option>
+        <option value="2" id="row2">2</option>
+        <option value="3" id="row3">3</option>
+        <option value="4" id="row4">4</option>
+        <option value="5" id="row5">5</option>
+        <option value="6" id="row6">6</option>
+        <option value="7" id="row7">7</option>
+        <option value="8" id="row8">8</option>
+        <option value="9" id="row9">9</option>
+        <option value="10" id="row10">10</option>
+      </select>
+    </div>
+    <div class="Cell" style="vertical-align: middle;">
+      <!--<a href="#" title="Configure row's height" onclick="layoutMgr.configureRowHeight()" style="display: table-cell; padding: 4px 8px;">
+                <button id="height-row-button" class="btn" style="width:30px;height:30px;color:#333;" ng-disabled=true><i class="glyphicon-resize-small glyphicon"></i></button>
+            </a>-->
+      <a href="#" title="Configure row's name" onclick="layoutMgr.configureRowName()" style="display: table-cell; padding: 4px 8px;">
+        <button id="height-row-button" class="btn" style="width: auto; height: 26px; color: #333; vertical-align: center;" ng-disabled="true">
+          <i class="basic icn-rename"></i>
+        </button>
+      </a>
+    </div>
+  </div>
+  <div class="Row" id="row-device-col" style="display: table-row;">
+    <div class="CellH">
+      <label style="font-size: calc(8px + 0.4vw); font-weight: bold;">Column</label>
+    </div>
+    <div class="Cell">
+      <select class="inputList" style="width: 100px;" name="select-cols" id="select-cols">
+        <option selected="selected" value="1" id="col1">1</option>
+        <option value="2" id="col2">2</option>
+        <option value="3" id="col3">3</option>
+        <option value="4" id="col4">4</option>
+      </select>
+    </div>
+  </div>
+  <div class="aspect__row">
+    <div class="aspect__col-right">
+      <button class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0;" onclick="layoutMgr.applyCells()" id="buttonDevice">
+        Apply
+      </button>
+    </div>
+  </div>
+</form>
+<br />
+<h2>About the colors</h2>
+<div class="aspect__row">
+  <a class="aspect__col-left jsoneditor-field" title=""><i class="aspects icn-dashboard-color"></i>Background color</a>
+  <div class="aspect__col-right">
+    <input
+      type="color"
+      id="inputDashBgColor"
+      style="padding: 0; margin: 0px; height: 2rem; width: 4rem; border: none; background: none; box-shadow: none;"
+      oninput="layoutMgr.setDashBgColor()"
+    />
+    <button
+      type="button"
+      onclick="layoutMgr.resetDashBgColor()"
+      ng-click="updateFlagDirty(true)"
+      title="Reset Dashboard background color"
+      class="btn btn-icon-only"
+    >
+      <i class="fa fa-undo" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
+<div ng-if="xDashFullVersion" class="aspect__row">
+  <div class="aspect__col-left"><i class="aspects icn-dashboard-color" aria-hidden="true"></i>Theme</div>
+</div>
+<div ng-if="xDashFullVersion" class="aspect__row theme">
+  <button class="theme__toggler" ng-click="isThemeOpen = !isThemeOpen" aria-label="Current theme">
+    <div id="current-theme" class="theme__item" data-theme="default">
+      <div class="theme__color-box" title="Text color"></div>
+      <div class="theme__color-box" title="Main color"></div>
+      <div class="theme__color-box" title="Active color"></div>
+      <div class="theme__color-box" title="Hover color"></div>
+      <div class="theme__color-box" title="Accent color 1"></div>
+      <div class="theme__color-box" title="Accent color 2"></div>
+      <div class="theme__color-box" title="Accent color 3"></div>
+    </div>
+  </button>
+  <ul class="dashboard-dropdown visible theme__list" ng-init="!isThemeOpen" ng-show="isThemeOpen">
+    <li
+      class="theme__item"
+      data-theme="default"
+      ng-click="isThemeOpen = !isThemeOpen"
+      aria-label="Default Theme"
+      onclick="layoutMgr.onChangeDashboardTheme('default')"
+      role="button"
+    >
+      <div class="theme__color-box" title="Text color"></div>
+      <div class="theme__color-box" title="Main color"></div>
+      <div class="theme__color-box" title="Active color"></div>
+      <div class="theme__color-box" title="Hover color"></div>
+      <div class="theme__color-box" title="Accent color 1"></div>
+      <div class="theme__color-box" title="Accent color 2"></div>
+      <div class="theme__color-box" title="Accent color 3"></div>
+    </li>
+    <li
+      class="theme__item"
+      data-theme="pink"
+      ng-click="isThemeOpen = !isThemeOpen"
+      onclick="layoutMgr.onChangeDashboardTheme('pink')"
+      aria-label="Pink Theme"
+      role="button"
+    >
+      <div class="theme__color-box" title="Text color"></div>
+      <div class="theme__color-box" title="Main color"></div>
+      <div class="theme__color-box" title="Active color"></div>
+      <div class="theme__color-box" title="Hover color"></div>
+      <div class="theme__color-box" title="Accent color 1"></div>
+      <div class="theme__color-box" title="Accent color 2"></div>
+      <div class="theme__color-box" title="Accent color 3"></div>
+    </li>
+    <li
+      class="theme__item"
+      data-theme="green"
+      ng-click="isThemeOpen = !isThemeOpen"
+      aria-label="Green Theme"
+      onclick="layoutMgr.onChangeDashboardTheme('green')"
+      role="button"
+    >
+      <div class="theme__color-box" title="Text color"></div>
+      <div class="theme__color-box" title="Main color"></div>
+      <div class="theme__color-box" title="Active color"></div>
+      <div class="theme__color-box" title="Hover color"></div>
+      <div class="theme__color-box" title="Accent color 1"></div>
+      <div class="theme__color-box" title="Accent color 2"></div>
+      <div class="theme__color-box" title="Accent color 3"></div>
+    </li>
+    <li
+      class="theme__item"
+      data-theme="dark"
+      ng-click="isThemeOpen = !isThemeOpen"
+      aria-label="Dark Theme"
+      onclick="layoutMgr.onChangeDashboardTheme('dark')"
+      role="button"
+    >
+      <div class="theme__color-box" title="Text color"></div>
+      <div class="theme__color-box" title="Main color"></div>
+      <div class="theme__color-box" title="Active color"></div>
+      <div class="theme__color-box" title="Hover color"></div>
+      <div class="theme__color-box" title="Accent color 1"></div>
+      <div class="theme__color-box" title="Accent color 2"></div>
+      <div class="theme__color-box" title="Accent color 3"></div>
+    </li>
+  </ul>
+</div>
+<br />
+<h2>About the widgets</h2>
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""> <i class="icn-object-align-left"></i>Align and resize widgets</a>
+</div>
+<div class="aspect__row" style="margin: 0px 10px;">
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333;"
+    ng-disabled="!vm.hasMultiSelection()"
+    ng-click="vm.alignLeft();"
+    ng-attr-title="{{vm.hasMultiSelection() ? 'Align left' : 'Please select multiple widgets'}}"
+    title="Please select multiple widgets"
+  >
+    <i class="icn-object-align-left"></i>
+  </button>
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333;"
+    ng-disabled="!vm.hasMultiSelection()"
+    ng-click="vm.alignTop();"
+    ng-attr-title="{{vm.hasMultiSelection() ? 'Align top' : 'Please select multiple widgets'}}"
+    title="Align top"
+  >
+    <i class="icn-object-align-top"></i>
+  </button>
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333;"
+    ng-disabled="!vm.hasMultiSelection()"
+    ng-click="vm.alignHorizontal();"
+    ng-attr-title="{{vm.hasMultiSelection() ? 'Align horizontal' : 'Please select multiple widgets'}}"
+    title="Align horizontal"
+  >
+    <i class="icn-object-align-horizontal"></i>
+  </button>
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333;"
+    ng-disabled="!vm.hasMultiSelection()"
+    ng-click="vm.alignVertical();"
+    ng-attr-title="{{vm.hasMultiSelection() ? 'Align vertical' : 'Please select multiple widgets'}}"
+    title="Please select multiple widgets"
+  >
+    <i class="icn-object-align-vertical"></i>
+  </button>
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333;"
+    ng-disabled="!vm.hasMultiSelection()"
+    ng-click="vm.alignBottom();"
+    ng-attr-title="{{vm.hasMultiSelection() ? 'Align bottom' : 'Please select multiple widgets'}}"
+    title="Align bottom"
+  >
+    <i class="icn-object-align-bottom"></i>
+  </button>
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333;"
+    ng-disabled="!vm.hasMultiSelection()"
+    ng-click="vm.alignRight();"
+    ng-attr-title="{{vm.hasMultiSelection() ? 'Align right' : 'Please select multiple widgets'}}"
+    title="Please select multiple widgets"
+  >
+    <i class="icn-object-align-right"></i></button
+  ><br />
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333;"
+    ng-disabled="!vm.hasMultiSelection()"
+    ng-click="vm.resizeSame('HeightWidth');"
+    ng-attr-title="{{vm.hasMultiSelection() ? 'Resize Same' : 'Please select multiple widgets'}}"
+    title="Please select multiple widgets"
+  >
+    <i class="icn-resize-full"></i>
+  </button>
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333;"
+    ng-disabled="!vm.hasMultiSelection()"
+    ng-click="vm.resizeSame('Height');"
+    ng-attr-title="{{vm.hasMultiSelection() ? 'Resize Same Height' : 'Please select multiple widgets'}}"
+    title="Please select multiple widgets"
+  >
+    <i class="icn-resize-vertical"></i>
+  </button>
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333;"
+    ng-disabled="!vm.hasMultiSelection()"
+    ng-click="vm.resizeSame('Width');"
+    ng-attr-title="{{vm.hasMultiSelection() ? 'Resize Same Width' : 'Please select multiple widgets'}}"
+    title="Please select multiple widgets"
+  >
+    <i class="icn-resize-horizontal"></i>
+  </button>
+</div>
+
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-border"></i>Widget's border</a>
+  <div class="aspect__col-right">
+    <label class="switch" ng-attr-title="{{vm.borderInWidgets ? 'Hide widget borders' : 'Show widget borders'}}">
+      <input type="checkbox" ng-click="vm.borderInWidgets=!vm.borderInWidgets;vm.updateBorderInWidgets()" checked />
+      <span class="slider round"></span>
+    </label>
+  </div>
+</div>
+<!--<div class="aspect__row">
+    <a class="aspect__col-left" title=""><i class="aspects icn-stretch"></i>Stretch width</a>
+    <div class="aspect__col-right">
+        <label class="switch">
+            <input type="checkbox" id="stretchWidth">
+            <span class="slider round"></span>
+        </label>
+    </div>
+</div>
+<div class="aspect__row">
+    <a class="aspect__col-left" title=""><i class="aspects icn-scale"></i>Keep proportion</a>
+    <div class="aspect__col-right">
+        <label class="switch">
+            <input type="checkbox" id="keepProportion">
+            <span class="slider round"></span>
+        </label>
+    </div>
+</div>-->

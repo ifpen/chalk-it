@@ -1,0 +1,35 @@
+/*
+ * Multiselect Widgets
+ * @description: All multiselect rules. ONLY FOR WIDGETS inside the drag and drop zone
+ * 
+ */
+
+// Multi Selects
+%widget-preview-wrapper {
+  .multi-select-div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: stretch;
+    overflow-y: scroll;
+  }
+
+  .multi-select-div > label > span {
+    display: inline-block;
+    text-align: center;
+    margin: 0 0.3rem;
+    padding: 0 0.6rem;
+    border-radius: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+
+  .multi-select-div > label > input[type='checkbox'] {
+    display: none;
+  }
+}

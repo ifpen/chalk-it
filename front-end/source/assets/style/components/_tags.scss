@@ -1,0 +1,76 @@
+/*
+ * Tags
+ * @desription: Used in Filters, Cards footer, Dependecy graph and Datanodes
+ * 
+ */
+
+.tags__list--wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 0.5em;
+}
+
+.tags__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+
+  li {
+    display: inline-block;
+    max-width: 13em;
+    padding: 0.125em 0.45em;
+    background: var(--surface-c);
+    border-radius: br("2");
+    font-size: fs("xs");
+    font-weight: fw("bold");
+    text-transform: uppercase;
+    color: var(--text-color-secondary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    &.active {
+      background: var(--primary-color);
+      color: var(--surface-a);
+    }
+
+    &.tag {
+      line-height: unset;
+
+      &--ok {
+        background: var(--success-color);
+        color: var(--success-color-text);
+      }
+
+      &--none {
+        background: var(--secondary-color);
+        color: var(--secondary-color-text);
+      }
+
+      &--pending {
+        background: var(--warning-color);
+        color: var(--warning-color-text);
+      }
+
+      &--error {
+        background: var(--danger-color);
+        color: var(--danger-color-text);
+      }
+    }
+
+    > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    i {
+      margin-right: 0.15em;
+    }
+
+    > a:hover {
+      color: var(--primary-color);
+    }
+  }
+}

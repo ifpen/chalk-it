@@ -1,0 +1,22 @@
+/*
+ * Footer 
+ * @description: Contains Version and Legal links.
+ * 
+ */
+
+footer {
+  margin-top: auto;
+  padding: 1em 2.1875em;
+
+  ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    gap: 2em;
+
+    li a:hover {
+      color: var(--primary-color);
+    }
+  }
+}

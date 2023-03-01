@@ -1,0 +1,65 @@
+/*
+ * Progress bars in widgets
+ * @description: All progress bars related rules. ONLY FOR WIDGETS inside the drag and drop zone
+ * 
+ */
+
+%widget-preview-wrapper {
+  .progress {
+    height: 12px;
+    margin-bottom: 20px;
+    border-radius: var(--widget-radius-full);
+    background-color: var(--widget-segment-color);
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    float: left;
+    width: 0%;
+    height: 100%;
+    border-radius: var(--widget-radius-full);
+    background-color: var(--widget-range-color);
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    transition: width 0.6s ease;
+  }
+
+  .progress-bar-widget {
+    display: table;
+    float: right;
+    width: inherit;
+    height: inherit;
+  }
+
+  .progress-bar-value-div {
+    display: table-cell;
+    padding-left: 10px;
+    vertical-align: middle;
+  }
+
+  // widgetDiv
+  #progress-bar-div {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  // widgetCore
+  #progress-bar-div > div {
+    margin: 0;
+    border-radius: var(--widget-radius-full);
+  }
+
+  .label-progress-bar {
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 10px;
+    color: var(--widget-label-color);
+    font-size: var(--widget-label-font-size);
+    line-height: 12px;
+    text-align: right;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,14 @@
+/*
+ * Divider 
+ * @description: Divider component
+ * 
+ */
+
+.divider {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  height: 0.0625em;
+  border-radius: br("1");
+  background-color: var(--surface-c);
+}

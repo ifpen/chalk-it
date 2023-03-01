@@ -1,0 +1,344 @@
+/*
+ * Buttons 
+ * @description: Gather all buttons related rules and overrides
+ * 
+ */
+
+.btn {
+  padding: 2px;
+  border: none;
+  border-radius: br("2");
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 2em;
+  text-align: center;
+  text-decoration: none;
+  appearance: none;
+  -webkit-font-smoothing: subpixel-antialiased;
+  transition-duration: 0.25s;
+  transition-timing-function: linear;
+  transition-property: border, color, background-color;
+  cursor: pointer;
+
+  &:focus,
+  &:active:focus,
+  &.active:focus,
+  &.focus,
+  &:active.focus,
+  &.active.focus {
+    outline: 0;
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: var(--active-color-text);
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+  }
+
+  &.disabled,
+  &[disabled],
+  &.disabled:hover,
+  &[disabled]:hover,
+  &.disabled:focus,
+  &[disabled]:focus,
+  &.disabled.focus,
+  &[disabled].focus,
+  &.disabled:active,
+  &[disabled]:active,
+  &.disabled.active,
+  &[disabled].active {
+    background-color: var(--disabled-color);
+    box-shadow: none;
+    opacity: var(--disabled-opacity);
+    cursor: not-allowed;
+  }
+
+  &:not(.btn-circle):not(.btn-icon-only):not(.btn-back) {
+    &:hover {
+      box-shadow: var(--default-box-shadow);
+    }
+  }
+}
+
+// Color variations
+$btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
+
+@each $color in $btn-colors {
+  %dashboard-btn-#{$color} {
+    background-color: var(--#{$color}-color);
+    border-color: var(--#{$color}-color);
+    color: var(--#{$color}-color-text);
+
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: var(--#{$color}-hover-color);
+      border-color: var(--#{$color}-hover-color);
+      color: var(--#{$color}-color-text);
+    }
+
+    &:active,
+    &.active {
+      background-image: none;
+      background-color: var(--#{$color}-active-color);
+      border-color: var(--#{$color}-active-color);
+      color: var(--#{$color}-color-text);
+    }
+
+    &.disabled,
+    &[disabled],
+    &.disabled:hover,
+    &[disabled]:hover,
+    &.disabled:focus,
+    &[disabled]:focus,
+    &.disabled.focus,
+    &[disabled].focus,
+    &.disabled:active,
+    &[disabled]:active,
+    &.disabled.active,
+    &[disabled].active {
+      background-color: var(--disabled-color);
+      border-color: var(--#{$color}-color);
+      color: var(--#{$color}-color-text);
+    }
+
+    .badge {
+      background-color: var(--#{$color}-color-text);
+      color: var(--#{$color}-color);
+    }
+  }
+
+  .btn-#{$color} {
+    @extend %dashboard-btn-#{$color};
+  }
+}
+
+.btn-rounded {
+  padding: 0.25em 1em;
+  border: 0.125em solid var(--text-color-secondary);
+  border-radius: br("20");
+  background-color: transparent;
+  background-origin: padding-box;
+  color: var(--text-color-secondary);
+  font-weight: fw("bold");
+
+  i {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5em;
+  }
+
+  &:hover {
+    border: 0.125em solid var(--primary-color);
+    color: var(--primary-color);
+  }
+
+  &.btn-rounded-light {
+    background-color: var(--surface-b);
+  }
+}
+
+.btn-rounded-fill {
+  display: inline-flex;
+  align-items: center;
+  font-weight: fw("bold");
+  border-radius: br("20");
+  background-origin: padding-box;
+  transition: var(--default-transition);
+
+  i {
+    margin-right: 0.5em;
+  }
+
+  &.primary {
+    @extend %dashboard-btn-primary;
+
+    padding: 0.5em 2em;
+  }
+
+  &.cancel {
+    @extend %dashboard-btn-secondary;
+    padding: 0.5em 2em;
+  }
+
+  &:hover {
+    box-shadow: var(--default-box-shadow);
+  }
+}
+
+.btn-min-width {
+  min-width: 8em;
+  justify-content: center;
+  text-align: center;
+}
+
+.btn-icon-only {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: var(--text-color);
+  line-height: 1em;
+
+  &:hover,
+  &:focus {
+    color: var(--active-color-text);
+  }
+
+  &.disabled,
+  &[disabled],
+  &.disabled:hover,
+  &[disabled]:hover,
+  &.disabled:focus,
+  &[disabled]:focus,
+  &.disabled.focus,
+  &[disabled].focus,
+  &.disabled:active,
+  &[disabled]:active,
+  &.disabled.active,
+  &[disabled].active {
+    background-color: transparent;
+  }
+}
+
+.btn-circle-mini {
+  width: 2em;
+  height: 2em;
+  line-height: 2.5em;
+  border: 0.125em solid var(--text-color);
+  border-radius: br("full");
+  background-color: transparent;
+  color: var(--text-color);
+  text-align: center;
+
+  &:hover,
+  &:focus {
+    background-color: var(--active-color);
+    color: var(--active-color-text);
+    border-color: var(--active-color-text);
+  }
+}
+
+.btn-circle {
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  color: var(--active-color-text);
+  font-weight: fw("bold");
+
+  .icon__container {
+    @extend %dashboard-btn-primary;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5em;
+    height: 3.5em;
+    border-radius: br("full");
+
+    &.icon__container--active {
+      border: 0.175em var(--primary-hover-color) solid;
+      background-color: var(--primary-color-text); 
+      color: var(--primary-hover-color); 
+    }
+
+    &.alt {
+      background-color: var(--active-color);
+      border-color: var(--active-color-text);
+      color: var(--active-color-text);
+      box-shadow: none;
+    }
+  }
+
+  &:hover {
+    color: var(--active-color-text);
+
+    .icon__container {
+      box-shadow: var(--default-box-shadow);
+    }
+
+    .icon__container.alt {
+      box-shadow: none;
+    }
+  }
+}
+
+.btn__see-more {
+  padding: 0.5em 0.75em;
+  border: none;
+  border-radius: br("full");
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+  white-space: nowrap;
+
+  > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &:hover,
+  &:focus {
+    color: var(--primary-color-text);
+  }
+
+  &[disabled] {
+    background-color: var(--disabled-color);
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+// Close buttons (for asides, tabs...)
+.close-aside {
+  background-color: var(--surface-c);
+  color: var(--text-color);
+  border-radius: br("full");
+  font-size: 2em;
+  cursor: pointer;
+}
+
+.close-aside:hover {
+  background-color: var(--danger-color-text);
+  color: var(--danger-color);
+}
+
+// Bootstrap close button
+.close {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 24px;
+  border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: fw("bold");
+  font-size: fs("xl");
+  line-height: 24px;
+  color: var(--text-color);
+  text-shadow: 0 1px 0 var(--text-color-inverted);
+}
+
+.close:hover,
+.close:focus {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

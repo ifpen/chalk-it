@@ -1,0 +1,144 @@
+/*
+ * Load File widget
+ * @description: used in plugin-load-file-widgets.js
+ * 
+ */
+
+.load-file-widget-html {
+  width: inherit;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.load-file-widget-html--border {
+  border: 1px dashed #aaaaaa;
+}
+
+.label-container {
+  font-weight: 600;
+  padding: 0.12rem;
+}
+
+.loaded-file,
+.drag-area {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 1rem 0rem;
+}
+
+.drag-area-container {
+  background-color: #f1f2f6;
+}
+
+.drag-area-container i {
+  font-size: 2.5rem;
+  color: var(--widget-color);
+}
+
+.drag-area {
+  background-color: var(--widget-dropzone-background-color);
+  color: var(--widget-color);
+}
+
+.drag-area__icon {
+  margin: 0rem 1rem;
+}
+
+.drag-area__text {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  flex-grow: 98;
+  line-height: 1.8rem;
+}
+
+.drag-area__text span:nth-child(2) {
+  color: #88878e;
+}
+
+.drag-area__text span:nth-child(1) {
+  color: #3e3f47;
+  font-weight: bold;
+}
+
+.drag-area__browse-btn,
+.loaded-file__close-btn {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  margin: 0rem 2rem;
+  justify-content: flex-end;
+}
+
+.drag-area__browse-btn > input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.drag-area__browse-btn > input + label {
+  background-color: #ffffff;
+  padding: 0 0.6rem;
+  border: 1px solid #e0807f;
+  border-radius: 5px;
+  color: #e0807f;
+}
+
+.drag-area__browse-btn > input + label:hover {
+  cursor: pointer;
+}
+
+/* Display loaded file */
+.loaded-file__icon {
+  margin: 0 1rem;
+}
+
+.loaded-file__icon > i {
+  color: var(--widget-color);
+}
+
+.loaded-file__info-file {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 98;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.loaded-file__info-file__name {
+  color: #3e3f47;
+  font-weight: bold;
+  margin-right: 0.6rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.loaded-file__info-file__size {
+  color: #88878e;
+  overflow: none;
+}
+
+.loaded-file__close-btn > i {
+  padding: 0.6rem 0.8rem;
+  background-color: #e8eaf1;
+  box-shadow: 0 0 2px 3px #e8eaf1;
+  border-radius: 50%;
+}
+
+.loaded-file__close-btn > i:hover {
+  background-color: #e0807f;
+  box-shadow: 0 0 2px 3px #e0807f;
+  color: #fff;
+  cursor: pointer;
+}

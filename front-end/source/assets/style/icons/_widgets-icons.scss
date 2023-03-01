@@ -1,0 +1,249 @@
+/*
+ * Widgets Icons
+ * @desription: Set all CSS rules for widgets icons
+ * Widgets icons are used in the lateral panel of the editor tool, in the Widgets tab. They help the user to quickly identify the widget to add.
+ * As they are multi colored icons, they cannot be used in icon fonts and cann't be merged with xdash-icons.
+ * 
+ */
+
+.widgets {
+  display: block;
+  width: 1.5em;
+  height: 1.5em;
+  margin: auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.widgets.icn-address-autocompletion {
+  background-image: url("../icon/widgets/address-autocompletion.svg");
+}
+
+.widgets.icn-arch-circular-gauge {
+  background-image: url("../icon/widgets/arch-circular-gauge.svg");
+}
+
+.widgets.icn-board {
+  background-image: url("../icon/widgets/board.svg");
+}
+.widgets.icn-board::before {
+  content: none; // Same name as xdash-icons' "board" icon
+}
+
+.widgets.icn-button {
+  background-image: url("../icon/widgets/button.svg");
+}
+
+.widgets.icn-calendar {
+  background-image: url("../icon/widgets/calendar.svg");
+}
+
+.widgets.icn-camera {
+  background-image: url("../icon/widgets/camera.svg");
+}
+
+.widgets.icn-checkbox {
+  background-image: url("../icon/widgets/checkbox.svg");
+}
+
+.widgets.icn-clock {
+  background-image: url("../icon/widgets/clock.svg");
+}
+
+.widgets.icn-compass {
+  background-image: url("../icon/widgets/compass.svg");
+}
+
+.widgets.icn-date-range-calendar {
+  background-image: url("../icon/widgets/date-range-calendar.svg");
+}
+
+.widgets.icn-year-calendar {
+    background-image: url("../icon/widgets/year-calendar.svg");
+}
+
+.widgets.icn-double-slider {
+  background-image: url("../icon/widgets/double-slider.svg");
+}
+
+.widgets.icn-echarts-generic-javascript {
+  background-image: url("../icon/widgets/echarts-generic-javascript.svg");
+}
+
+.widgets.icn-export-to-file {
+  background-image: url("../icon/widgets/export-to-file.svg");
+}
+
+.widgets.icn-full-circular-gauge {
+  background-image: url("../icon/widgets/full-circular-gauge.svg");
+}
+
+.widgets.icn-generic-html {
+  background-image: url("../icon/widgets/generic-html.svg");
+}
+
+.widgets.icn-horizontal-slider {
+  background-image: url("../icon/widgets/horizontal-slider.svg");
+}
+
+.widgets.icn-image {
+  background-image: url("../icon/widgets/image.svg");
+}
+
+.widgets.icn-info {
+  background-image: url("../icon/widgets/info.svg");
+}
+.widgets.icn-info::before {
+  content: none; // Same name as xdash-icons' "info" icon
+}
+
+.widgets.icn-kpi {
+  background-image: url("../icon/widgets/kpi.svg");
+}
+
+.widgets.icn-kpi-advanced {
+  background-image: url("../icon/widgets/kpi-advanced.svg");
+}
+
+.widgets.icn-label {
+  background-image: url("../icon/widgets/label.svg");
+}
+
+.widgets.icn-list {
+  background-image: url("../icon/widgets/list.svg");
+}
+
+.widgets.icn-load-file {
+  background-image: url("../icon/widgets/load-file.svg");
+}
+
+.widgets.icn-map {
+  background-image: url("../icon/widgets/map.svg");
+}
+
+.widgets.icn-markdown {
+  background-image: url("../icon/widgets/markdown.svg");
+}
+
+.widgets.icn-matplolib-generic {
+  background-image: url("../icon/widgets/matplolib-generic.svg");
+}
+
+.widgets.icn-multi-select {
+  background-image: url("../icon/widgets/multi-select.svg");
+}
+
+.widgets.icn-multi-switch {
+  background-image: url("../icon/widgets/multi-switch.svg");
+}
+
+.widgets.icn-numeric-input {
+  background-image: url("../icon/widgets/numeric-input.svg");
+}
+
+.widgets.icn-plotly-3D {
+  background-image: url("../icon/widgets/plotly-3D.svg");
+}
+
+.widgets.icn-plotly-bar {
+  background-image: url("../icon/widgets/plotly-bar.svg");
+}
+
+.widgets.icn-plotly-javascript-generic {
+  background-image: url("../icon/widgets/plotly-generic.svg");
+}
+
+.widgets.icn-plotly-line {
+  background-image: url("../icon/widgets/plotly-line.svg");
+}
+
+.widgets.icn-plotly-pie {
+  background-image: url("../icon/widgets/plotly-pie.svg");
+}
+
+.widgets.icn-plotly-python-generic {
+  background-image: url("../icon/widgets/plotly-python-generic.svg");
+}
+
+.widgets.icn-plotly-real-time {
+  background-image: url("../icon/widgets/plotly-real-time.svg");
+}
+
+.widgets.icn-progress-bar {
+  background-image: url("../icon/widgets/progress-bar.svg");
+}
+
+.widgets.icn-range {
+  background-image: url("../icon/widgets/range.svg");
+}
+
+.widgets.icn-select {
+  background-image: url("../icon/widgets/select.svg");
+}
+
+.widgets.icn-semi-circular-gauge {
+  background-image: url("../icon/widgets/semi-circular-gauge.svg");
+}
+
+.widgets.icn-simple-meter {
+  background-image: url("../icon/widgets/simple-meter.svg");
+}
+
+.widgets.icn-status {
+  background-image: url("../icon/widgets/status.svg");
+}
+
+.widgets.icn-switch {
+  background-image: url("../icon/widgets/switch.svg");
+}
+
+.widgets.icn-tachometer {
+  background-image: url("../icon/widgets/tachometer.svg");
+}
+
+.widgets.icn-text-input {
+  background-image: url("../icon/widgets/text-input.svg");
+}
+
+.widgets.icn-value {
+  background-image: url("../icon/widgets/value.svg");
+}
+
+.widgets.icn-vega-generic-javascript {
+  background-image: url("../icon/widgets/vega-generic.svg");
+}
+
+.widgets.icn-vertical-slider {
+  background-image: url("../icon/widgets/vertical-slider.svg");
+}
+
+.widgets.icn-wind-circle {
+  background-image: url("../icon/widgets/wind-circle.svg");
+}
+
+/* Unused Widgets icons */
+/*
+.widgets.icn-echarts-generic {
+    background-image: url('../icon/widgets/echarts-generic.svg');
+}
+
+.widgets.icn-execute-datanode {
+    background-image: url('../icon/widgets/execute-datanode.svg');
+}
+
+.widgets.icn-numeric-display {
+    background-image: url('../icon/widgets/numeric-display.svg');
+}
+
+.widgets.icn-plotly-generic {
+    background-image: url('../icon/widgets/plotly-generic.svg');
+}
+
+.widgets.icn-text-display {
+    background-image: url('../icon/widgets/text-display.svg');
+}
+
+.widgets.icn-vega-generic {
+    background-image: url('../icon/widgets/vega-generic.svg');
+}
+*/

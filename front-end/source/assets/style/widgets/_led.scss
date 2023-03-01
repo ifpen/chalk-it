@@ -1,0 +1,30 @@
+/*
+ * Led Light Widgets
+ * @description: Show statuses
+ * Used in plugin-led-light.js
+ */
+
+.led-span {
+  white-space: nowrap;
+  color: var(--widget-label-color);
+  display: table-cell;
+  vertical-align: middle;
+  text-align: left;
+  padding-right: 5px;
+}
+
+.svg-content {
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+// TODO: also used in Plotly => change name?
+.svg-container {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  overflow: hidden;
+}

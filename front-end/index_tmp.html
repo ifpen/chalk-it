@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="source/assets/img/chalk-it-icon.ico" />
+    <title>Chalk'it - App</title>
+    <meta http-equiv="Cache-control" content="no-store, no-cache, must-revalidate" />
+    <meta name="robots" content="nosnippet, noindex" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="source/starter-browser-compatibility.js"></script>
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- third:js -->
+    <!-- endinject -->
+  </head>
+
+  <body ng-app="xCLOUD" ng-class="{'nav-sm':true}" id="app">
+    <div id="loading-overlay" ng-if="isLoading"></div>
+    <div ui-view></div>
+    <div id="_otherUse"></div>
+  </body>
+</html>

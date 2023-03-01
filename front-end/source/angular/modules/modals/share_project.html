@@ -1,0 +1,67 @@
+<div ng-controller="ShareProjectController" class="cancel__box cancel__box--xl">
+  <div class="cancel__box__container">
+    <div class="cancel__box__top">
+      <button ng-click="closeShareProject(sharePrj.flag);" class="btn btn-icon-only" style="float: right" title="Close">
+        <i class="basic icn-close close-aside"></i>
+      </button>
+      <div class="cancel__title" style="margin: 1em 0 2em">
+        {{ sharedUserEmail.fileType=== "project" ? "Project" : "Page" }} sharing management
+      </div>
+      <label class="setting-description"
+        >The configuration of users list restriction is available in private access mode only. In case of public access,
+        the page can be opened by anyone that have the link.</label
+      >
+    </div>
+    <div class="cancel__text text-left">
+      <p>
+        {{ sharedUserEmail.fileType === "project" ? "Project" : "Page" }} "{{sharedUserEmail.fileName}}" is shared with:
+      </p>
+    </div>
+    <div class="cancel__box__body">
+      <div class="row h-full">
+        <div class="col-lg-6 dashboard-form">
+          <select
+            name="select-email"
+            id="selectEmail"
+            size="10"
+            class="multiple h-full"
+            ng-options="selectedEmail as selectedEmail.name for selectedEmail in sharedEmails "
+            ng-model="sharedUserEmail.selected"
+            ng-change="updateTypedEmail()"
+          >
+            <option label="User email" value="" id="0" selected="selected" style="font-weight: bold">User email</option>
+          </select>
+        </div>
+        <div class="col-lg-6">
+          <form class="dashboard-form">
+            <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+              <label class="dashboard-form__label" for="projectGroup">Owner's Email</label>
+              <div>{{ownerEmail}}</div>
+            </div>
+            <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+              <label class="dashboard-form__label" for="projectGroup">User Email</label>
+              <input
+                name="userE"
+                ng-model="sharedUserEmail.typed"
+                class="ng-pristine ng-untouched ng-empty"
+                type="email"
+              />
+            </div>
+            <div class="dashboard-form__group dashboard-form__group--inline justify-content-center">
+              <button class="btn btn-rounded-fill primary" js-reset-toggle="" ng-click="shareProjectWithEmail()">
+                Share {{ sharedUserEmail.fileType }}
+              </button>
+              <button class="btn btn-rounded-fill primary" js-reset-toggle="" ng-click="unshareProjectWithEmail()">
+                Unshare {{ sharedUserEmail.fileType }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="cancel__box__bottom">
+        <button class="btn btn-rounded-fill primary" ng-click="closeShareProject()">OK</button>
+    </div> -->
+  </div>
+</div>
+<div class="cancel__overlay"></div>

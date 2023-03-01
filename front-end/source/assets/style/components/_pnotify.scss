@@ -1,0 +1,201 @@
+/*
+ * PNotify
+ * @description: Flash messages that display infos at the top right of the screen
+ * TODO: Any simplifications possible?
+ * 
+ */
+
+/*!
+Author  : Hunter Perrin
+Version : 3.2.0
+Link    : http://sciactive.com/pnotify/
+*/
+.ui-pnotify {
+  position: absolute;
+  height: auto;
+  top: 36px;
+  right: 36px;
+  z-index: 2;
+
+  .alert {
+    margin-bottom: 0;
+  }
+}
+body > .ui-pnotify {
+  position: fixed;
+  z-index: $zindex-pnotify;
+}
+.ui-pnotify-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.4);
+  top: 0;
+  left: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+body > .ui-pnotify-modal-overlay {
+  position: fixed;
+  z-index: $zindex-pnotify - 1;
+}
+.ui-pnotify.ui-pnotify-in {
+  display: block !important;
+}
+.ui-pnotify.ui-pnotify-move {
+  transition: left 0.5s ease, top 0.5s ease, right 0.5s ease, bottom 0.5s ease;
+}
+.ui-pnotify.ui-pnotify-fade-slow {
+  transition: opacity 0.4s linear;
+  opacity: 0;
+}
+.ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move {
+  transition: opacity 0.4s linear, left 0.5s ease, top 0.5s ease,
+    right 0.5s ease, bottom 0.5s ease;
+}
+.ui-pnotify.ui-pnotify-fade-normal {
+  transition: opacity 0.25s linear;
+  opacity: 0;
+}
+.ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move {
+  transition: opacity 0.25s linear, left 0.5s ease, top 0.5s ease,
+    right 0.5s ease, bottom 0.5s ease;
+}
+.ui-pnotify.ui-pnotify-fade-fast {
+  transition: opacity 0.1s linear;
+  opacity: 0;
+}
+.ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move {
+  transition: opacity 0.1s linear, left 0.5s ease, top 0.5s ease,
+    right 0.5s ease, bottom 0.5s ease;
+}
+.ui-pnotify.ui-pnotify-fade-in {
+  opacity: 1;
+}
+.ui-pnotify .ui-pnotify-shadow {
+  -webkit-box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 28px 0 rgba(0, 0, 0, 0.1);
+}
+.ui-pnotify-container {
+  background-position: 0 0;
+  padding: 0.8em;
+  height: 100%;
+  margin: 0;
+}
+.ui-pnotify-container:after {
+  content: " ";
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+.ui-pnotify-container.ui-pnotify-sharp {
+  border-radius: br("0");
+}
+.ui-pnotify-title {
+  display: block;
+  margin-bottom: 0.4em;
+  margin-top: 0;
+}
+.ui-pnotify-text {
+  display: block;
+}
+.ui-pnotify-icon,
+.ui-pnotify-icon span {
+  display: block;
+  float: left;
+  margin-right: 0.2em;
+}
+.ui-pnotify.stack-bottomleft,
+.ui-pnotify.stack-topleft {
+  left: 25px;
+  right: auto;
+}
+.ui-pnotify.stack-bottomleft,
+.ui-pnotify.stack-bottomright {
+  bottom: 25px;
+  top: auto;
+}
+.ui-pnotify.stack-modal {
+  left: 50%;
+  right: auto;
+  margin-left: -150px;
+}
+
+// Nonblock
+.ui-pnotify.ui-pnotify-nonblock-fade {
+  opacity: 0.2;
+}
+.ui-pnotify.ui-pnotify-nonblock-hide {
+  display: none !important;
+}
+
+// Button
+.ui-pnotify-closer,
+.ui-pnotify-sticker {
+  float: right;
+  margin-left: 0.2em;
+}
+
+// Alerts
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: br("2");
+}
+
+.alert h4 {
+  margin-top: 0;
+  color: inherit;
+}
+
+.alert .alert-link {
+  font-weight: bold;
+}
+
+.alert > p,
+.alert > ul {
+  margin-bottom: 0;
+}
+
+.alert > p + p {
+  margin-top: 5px;
+}
+
+.alert-dismissable,
+.alert-dismissible {
+  padding-right: 35px;
+}
+
+// Alerts colors
+.alert-success {
+  border-color: var(--success-color);
+  background-color: var(--success-color);
+  color: var(--success-color-text);
+}
+
+.alert-info {
+  border-color: var(--info-color);
+  background-color: var(--info-color);
+  color: var(--info-color-text);
+}
+
+.alert-warning {
+  border-color: var(--warning-color);
+  background-color: var(--warning-color);
+  color: var(--warning-color-text);
+}
+
+.alert-danger,
+.alert-error {
+  border-color: var(--danger-color);
+  background-color: var(--danger-color);
+  color: var(--danger-color-text);
+}
+
+.ui-pnotify.dark .ui-pnotify-container {
+  color: #e9edef;
+  background-color: rgba(52, 73, 94, 0.88);
+  border-color: rgba(52, 73, 94, 0.88);
+}

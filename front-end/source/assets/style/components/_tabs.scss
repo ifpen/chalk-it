@@ -1,0 +1,85 @@
+/*
+ * Tabs 
+ * @description: Header tabs for opened projects
+ * 
+ */
+
+.tabs-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 0.5em;
+  margin-right: auto;
+  margin-left: 4em;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 1rem 1rem 1rem 1.5rem;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom: none;
+  background: var(--surface-b);
+
+  &:hover {
+    &:not(.tab--inactive) {
+      background-color: var(--active-color);
+
+      .tab__name {
+        color: var(--active-color-text);
+      }
+    }
+  }
+
+  &.changed {
+    background-color: var(--danger-color);
+
+    .tab__name {
+      color: var(--danger-color-text);
+    }
+  }
+}
+
+.tab__name {
+  max-width: 16em;
+  color: var(--text-color);
+  font-weight: fw("bold");
+  font-size: fs("sm");
+  transition: var(--default-transition);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: default;
+}
+
+.tab__close {
+  @extend .close-aside;
+  font-size: fs("md");
+}
+
+.tab--inactive:not(.changed) {
+  background: var(--primary-color);
+
+  .tab__name {
+    max-width: 16em;
+    color: var(--primary-color-text);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .tab__close {
+    background: var(--primary-color);
+    color: var(--primary-color-text);
+
+    &:hover {
+      background-color: var(--danger-color-text);
+      color: var(--danger-color);
+    }
+  }
+}

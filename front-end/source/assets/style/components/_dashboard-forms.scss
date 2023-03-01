@@ -1,0 +1,362 @@
+/*
+ * Dashboard Forms 
+ * @description: All forms related rules for input, select, textareas and so on... FOR DASHBOARD ONLY
+ * We use unique classes so the rules will not collide with widgets
+ * 
+ */
+
+// Global forms rules
+.dashboard-form {
+  ::placeholder {
+    -webkit-text-security: none;
+    pointer-events: none;
+    color: var(--placeholder-color);
+    font-weight: fw('light');
+    font-size: fs('sm');
+  }
+
+  select,
+  textarea,
+  input,
+  tags-input {
+    width: 100%;
+    border: none;
+    border-radius: br('8');
+    padding: 0.5em 1em;
+    box-shadow: none;
+    background-color: var(--surface-c);
+    color: var(--text-color);
+    line-height: 2;
+    appearance: none;
+
+    &:focus,
+    &:focus-within {
+      outline: thin solid var(--active-color-text);
+      box-shadow: none;
+    }
+
+    // For auto filled forms by the browser
+    &:-webkit-autofill + i {
+      color: fieldtext;
+    }
+
+    &:autofill + i {
+      color: fieldtext;
+    }
+  }
+
+  input[type='radio'],
+  input[type='checkbox'] {
+    width: 1em;
+    line-height: normal;
+    appearance: auto;
+  }
+
+  select:not([multiple]) {
+    padding-right: 2em;
+    background-image: var(--dropdown-arrow-url);
+    background-repeat: no-repeat;
+    background-position: calc(100% - 0.5rem) center;
+    background-size: 1.5rem;
+    cursor: pointer;
+
+    &::-ms-expand {
+      display: none;
+    }
+  }
+
+  select[multiple],
+  select.multiple {
+    background-color: var(--surface-b);
+    background-image: none;
+    border: thin solid;
+    cursor: pointer;
+  }
+
+  label {
+    display: inline-block;
+    max-width: 100%;
+    margin: 0;
+    font-weight: fw('light');
+    text-transform: uppercase;
+    font-size: fs('xs');
+    line-height: 2;
+
+    @include media-breakpoint-up('md') {
+      padding: 1em 0;
+    }
+  }
+}
+
+// Color variation
+.dashboard-form--light {
+  select,
+  textarea,
+  input,
+  tags-input {
+    background-color: var(--surface-b);
+  }
+}
+
+// Form groups represents rows in the form: can contain label, input (or input wrapper), feedback messages, buttons...
+.dashboard-form__group {
+  margin: 0.625rem 0;
+}
+
+// Variant for inlining elements
+.dashboard-form__group--inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+
+  @include media-breakpoint-up('md') {
+    flex-wrap: nowrap;
+    gap: 1rem;
+  }
+}
+
+// Wrapper for input + icons
+.dashboard-form__input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.dashboard-form__input-wrapper i {
+  position: absolute;
+  top: 50%;
+  bottom: 0;
+  width: 1em;
+  height: 1em;
+  left: 1em;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.dashboard-form__input-wrapper input,
+.dashboard-form__input-wrapper select,
+.dashboard-form__input-wrapper textarea {
+  text-indent: 2em; // Move text to the left when there is an icon
+}
+
+.dashboard-form__input-wrapper .dashboard-form__input--search {
+  text-indent: 3em;
+}
+
+.dashboard-form__label {
+  flex-shrink: 0;
+  max-width: 100%;
+  min-width: 100%;
+
+  @include media-breakpoint-up('md') {
+    min-width: 20%;
+  }
+}
+
+.dashboard-form__group--inline .dashboard-form__label {
+  @include media-breakpoint-up('md') {
+    text-align: right;
+  }
+}
+
+.form-group {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+// Used in PluginEditor
+input.table--row-value {
+  min-width: 150px;
+  width: 90%;
+  margin: 0px;
+}
+
+.input--suffix {
+  @extend label;
+  min-width: 16px;
+  padding-top: 0.5em;
+
+  @include media-breakpoint-up('md') {
+    width: 20%;
+    padding: 1em;
+  }
+}
+
+// Used in PluginEditor && python-images
+.validation--error {
+  margin-top: 3px;
+  margin-bottom: 7px;
+  color: var(--danger-color);
+  font-size: fs('2xs');
+}
+
+// Tags input for projects (project infos)
+tags-input {
+  display: block;
+}
+
+tags-input *,
+tags-input :after,
+tags-input :before {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+tags-input .host {
+  position: relative;
+}
+
+tags-input .host:active {
+  outline: 0;
+}
+
+tags-input .tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4px;
+  overflow: hidden;
+  word-wrap: break-word;
+  cursor: text;
+}
+
+tags-input .tag-list {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+tags-input .tag-item {
+  display: inline-flex;
+  padding: 0 0 0 5px;
+  height: 26px;
+  font-size: fs('sm');
+  font-family: var(--font-family-base);
+  line-height: 26px;
+  border-radius: br('2');
+  background: var(--active-color-item);
+  color: var(--active-color-item-text);
+  cursor: default;
+}
+
+tags-input .tag-item.selected {
+  background: var(--danger-color);
+  color: var(--danger-color-text);
+}
+
+tags-input ti-tag-item {
+  display: inline-flex;
+}
+
+tags-input .remove-button {
+  display: inline-block;
+  width: 24px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: fs('md');
+  line-height: 24px;
+  font-weight: fw('bold');
+  text-align: center;
+  cursor: pointer;
+}
+
+tags-input .input.invalid-tag,
+tags-input .remove-button:active {
+  background: var(--danger-color);
+  color: var(--danger-color-text);
+}
+
+tags-input .input {
+  border: 0;
+  outline: 0;
+  padding: 0 0 0 5px;
+  border-radius: br('2');
+  height: 26px;
+  font-size: fs('sm');
+  font-family: var(--font-family-base);
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+tags-input .input::-ms-clear {
+  display: none;
+}
+
+tags-input.ng-invalid .tags {
+  -webkit-box-shadow: 0 0 3px 1px rgba(255, 0, 0, 0.6);
+  -moz-box-shadow: 0 0 3px 1px rgba(255, 0, 0, 0.6);
+  box-shadow: 0 0 3px 1px rgba(255, 0, 0, 0.6);
+}
+
+tags-input[disabled] .host:focus {
+  cursor: not-allowed;
+}
+
+tags-input[disabled] .host:focus {
+  outline: 0;
+}
+
+tags-input[disabled] .tags {
+  cursor: not-allowed;
+}
+
+tags-input[disabled] .tag-item {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+tags-input[disabled] .remove-button {
+  cursor: not-allowed;
+}
+
+tags-input[disabled] .input {
+  display: none;
+}
+
+tags-input .autocomplete {
+  margin-top: 5px;
+  position: absolute;
+  padding: 5px 0;
+  z-index: $zindex-dropdown;
+  width: 100%;
+  background-color: var(--surface-c);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+tags-input .autocomplete .suggestion-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  max-height: 280px;
+  overflow-y: auto;
+  position: relative;
+}
+
+tags-input .autocomplete .suggestion-item {
+  padding: 5px 10px;
+  font-size: fs('md');
+  font-family: var(--font-family-base);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+tags-input .autocomplete .suggestion-item em {
+  font-size: fs('md');
+  font-weight: fw('bold');
+  font-family: var(--font-family-base);
+}
+
+tags-input .autocomplete .suggestion-item.selected,
+tags-input .autocomplete .suggestion-item.selected em {
+  background-color: var(--active-color-item);
+  color: var(--active-color-item-text);
+}

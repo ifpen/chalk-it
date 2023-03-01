@@ -1,0 +1,82 @@
+/*
+ * Notifications
+ * @description: Header notifications under the bell icon
+ * 
+ */
+
+.notification {
+  position: relative;
+  background: var(--surface-a);
+  margin-top: 0.5rem;
+  padding: 1rem 1.5rem 1rem;
+  border-radius: br("4");
+}
+
+.notification__btn-close {
+  position: absolute;
+  top: 0.25em;
+  right: 0.25em;
+}
+
+.notification__top {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+
+  + * {
+    padding-top: 1rem;
+  }
+}
+
+.notification__top__title {
+  font-weight: fw("bold");
+}
+
+.notification__top__time {
+  font-size: fs("sm");
+}
+
+.notification__top__toggle {
+  &:before {
+    content: "\002B";
+    display: block;
+    font-size: fs("3xl");
+  }
+}
+
+.notification__content {
+  overflow: hidden;
+  display: block;
+}
+
+.notification__closed {
+  .notification__content {
+    height: 0;
+    padding-top: 0;
+  }
+}
+
+.notification__open {
+  .notification__top__toggle {
+    &:before {
+      content: "\2212";
+    }
+  }
+}
+
+.notification__success {
+  border: 2px solid var(--success-color);
+}
+
+.notification__danger {
+  border: 2px solid var(--danger-color);
+}
+
+.notification__info {
+  border: 2px solid var(--primary-color);
+}
+
+.notification__warning {
+  border: 2px solid var(--warning-color);
+}

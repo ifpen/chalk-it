@@ -1,0 +1,159 @@
+/*
+ * Sass variables
+ *
+ */
+
+// Base color
+$text-color: #050038 !default;
+
+// Grid
+$grid-columns: 12;
+$grid-gutter-width: 30px;
+$grid-row-columns: 6;
+
+// Breakpoints
+$breakpoints: (
+  'xs': 0,
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px,
+  'xxl': 1440px,
+);
+
+// Spacings
+$spacer: 1rem; // 16px
+$spacers: ();
+$spacers: map-merge(
+  (
+    '1': 0.125rem,
+    // 2px
+    '2': 0.25rem,
+    // 4px
+    '3': 0.375rem,
+    // 6px
+    '4': 0.5rem,
+    // 8px
+    '5': 0.625rem,
+    //10px
+    '6': 0.75rem,
+    //12px
+    '8': $spacer,
+    //16px
+    '10': 1.25rem,
+    //20px
+    '12': 1.5rem,
+    //24px
+    '16': 2rem,
+    //32px
+    '20': 2.5rem,
+    //40px
+    '24': 3rem,
+    //48px
+    '36': 4.5rem,
+    //72px
+    '48': 6rem,
+    //96px
+  ),
+  $spacers
+);
+
+// Font sizes
+$font-size: 1rem; // 16px
+$font-sizes: ();
+$font-sizes: map-merge(
+  (
+    '2xs': 0.625rem,
+    // 10px
+    'xs': 0.75rem,
+    // 12px
+    'sm': 0.875rem,
+    // 14px
+    'md': $font-size,
+    // 16px
+    'lg': 1.16875rem,
+    // 18.7px
+    'xl': 1.3rem,
+    // 20.8px
+    '2xl': 1.5rem,
+    // 24px
+    '3xl': 2rem,
+    // 32px
+  ),
+  $font-sizes
+);
+
+// Font weights
+$font-weight: 400;
+$font-weights: ();
+$font-weights: map-merge(
+  (
+    'light': 300,
+    'normal': $font-weight,
+    'medium': 500,
+    'semi': 600,
+    'bold': 700,
+  ),
+  $font-weights
+);
+
+// Border radius
+$border-radius: 0.5rem;
+$border-radiuses: ();
+$border-radiuses: map-merge(
+  (
+    '0': 0,
+    '1': 0.125rem,
+    // 2px
+    '2': 0.25rem,
+    // 4px
+    '3': 0.375rem,
+    // 6px
+    '4': 0.5rem,
+    // 8px
+    '5': 0.625rem,
+    //10px
+    '6': 0.75rem,
+    //12px
+    '8': 1rem,
+    //16px
+    '10': 1.25rem,
+    //20px
+    '12': 1.5rem,
+    //24px
+    '16': 2rem,
+    //32px
+    '20': 2.5rem,
+    //40px
+    '24': 3rem,
+    //48px
+    '36': 4.5rem,
+    //72px
+    '48': 6rem,
+    //96px
+    'full': 999rem,
+  ),
+  $border-radiuses
+);
+
+// Z-indexes
+$zindex-sticky: 899;
+$zindex-dropdown: 999;
+$zindex-aside: 1001;
+$zindex-overlay: 9999;
+$zindex-pnotify: 10001;
+
+/*
+ * CSS Variables
+ *
+ */
+
+:root {
+  --font-family-base: 'OpenSans', sans-serif;
+  --font-family-alt: 'Montserrat', sans-serif;
+  --font-family-mono: monospace, monospace;
+  --selection-background-color: rgba(246, 192, 68, 0.15);
+  --line-height-base: 1.25em;
+  --overlay-color: rgb(10, 15, 40);
+  --disabled-opacity: 0.7;
+}

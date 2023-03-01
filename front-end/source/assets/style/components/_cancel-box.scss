@@ -1,0 +1,167 @@
+/*
+ * Cancel box 
+ * @description: Modals that show datanodes content for example or datanodes deletion confirmation.
+ * TODO: rework templates (html/js) to change all modals to Sweet alerts, then remove this file
+ * 
+ */
+
+.cancel {
+  &__container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &__overlay {
+    background: var(--overlay-color);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: var(--default-transition);
+  }
+
+  &__box {
+    max-width: 400px;
+    width: 100%;
+    padding: 2rem;
+    border-radius: br('16');
+    background: var(--surface-a);
+    transition: var(--default-transition);
+    z-index: 2;
+
+    &--lg {
+      max-width: 725px;
+    }
+
+    &--xl {
+      max-width: 80%;
+      height: 80%;
+    }
+
+    &__container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overflow-y: auto;
+    }
+
+    &__top {
+      ~ * {
+        margin-top: 2rem;
+      }
+    }
+
+    &__body {
+      height: 100%;
+    }
+
+    &__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > * {
+        margin: 0 4px;
+      }
+    }
+
+    &__close {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+    }
+  }
+
+  &__title {
+    @extend h2;
+    text-align: center;
+  }
+
+  &__text {
+    margin: 1em;
+    text-align: center;
+  }
+
+  &__container {
+    &:not(.open) {
+      height: 0;
+      transition-delay: 300ms;
+
+      .cancel__overlay {
+        opacity: 0;
+      }
+
+      .cancel__box {
+        opacity: 0;
+        transform: translateY(200%);
+      }
+    }
+
+    &.open {
+      height: 100%;
+      z-index: $zindex-overlay;
+
+      .cancel__overlay {
+        opacity: 0.75;
+      }
+
+      .cancel__box {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+// Code preview for Python datanodes for example
+
+.code-window {
+  min-width: 495px;
+  min-height: 350px;
+
+  @include media-breakpoint-up('md') {
+    width: 80%;
+    height: 87%;
+  }
+}
+
+.code-widget-window-preview {
+  @extend %widget-preview-wrapper;
+  margin: 20px;
+  background-color: white;
+}
+
+.code-window-header {
+  font-size: fs('xs');
+
+  @include media-breakpoint-up('md') {
+    font-size: calc(7px + 0.5vw);
+  }
+}
+
+.code-mirror-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.CodeMirror {
+  width: 100%;
+  height: 100% !important;
+}
+
+// Overrides the value in show-hint.css. Needed for the hints to show over dialog windows (z=5000)
+.CodeMirror-hints {
+  z-index: $zindex-overlay + 1;
+}

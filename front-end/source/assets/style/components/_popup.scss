@@ -1,0 +1,363 @@
+/*
+ * Popup
+ * @description: Old popups that needs to be rewrited
+ * TODO: remove when replaced by sweet alert
+ * 
+ */
+
+// From Bootstrap
+.modal-open {
+  overflow: hidden;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+
+.modal.fade .modal-dialog {
+  -webkit-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  -o-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: -webkit-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out,
+    -o-transform 0.3s ease-out;
+}
+
+.modal.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+
+.modal-content {
+  position: relative;
+  background-color: var(--surface-a);
+  background-clip: padding-box;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: br("4");
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  outline: 0;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: var(--overlay-color);
+}
+
+.modal-backdrop.fade {
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+
+.modal-backdrop.in {
+  filter: alpha(opacity=75);
+  opacity: 0.75;
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-header .close {
+  margin-top: -2px;
+}
+
+.modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+
+.modal-body {
+  position: relative;
+  /*padding: 15px;*/
+}
+
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+.modal-footer .btn + .btn {
+  margin-bottom: 0;
+  margin-left: 5px;
+}
+
+.modal-footer .btn-group .btn + .btn {
+  margin-left: -1px;
+}
+
+.modal-footer .btn-block + .btn-block {
+  margin-left: 0;
+}
+
+.modal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 600px;
+    margin: 30px auto;
+  }
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  }
+  .modal-sm {
+    width: 300px;
+  }
+}
+
+@media (min-width: 992px) {
+  .modal-lg {
+    width: 900px;
+  }
+}
+
+// Custom
+.modalDialog {
+  position: fixed;
+  font-family: var(--font-family-base);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #050038c7;
+  z-index: $zindex-overlay;
+  opacity: 0;
+  transition: opacity 400ms ease-in;
+  pointer-events: none;
+  min-width: 314px;
+  overflow: auto;
+}
+
+.modalDialogOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modalDialog:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modalDialog__wrapper {
+  position: relative;
+  max-width: 1050px;
+  min-width: 614px;
+  width: 85vw;
+  max-height: 100%;
+  margin: 2% auto;
+  padding: 5px 20px 13px 20px;
+  border-radius: br("16");
+  background-color: var(--surface-a);
+  color: var(--text-color);
+  overflow: auto;
+}
+
+.modalDialog__header h2 {
+  position: relative;
+  display: block;
+  margin: 25px 0;
+  padding: 0;
+  font-weight: 600;
+  text-transform: none;
+  text-align: center;
+  line-height: 40px;
+}
+
+.modalDialog__content {
+  overflow: auto;
+  max-height: 78vh;
+  padding-top: 15px;
+  min-height: 100px;
+}
+
+.modalDialog__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
+  margin-top: 1rem;
+}
+
+.modal-panel-heading {
+  background: #a2a2a2;
+  color: #535353;
+}
+
+.modal-panel-heading:hover {
+  background: #dcdcdc;
+}
+
+.panel-heading-anchor {
+  text-decoration: none;
+  color: #535353;
+}
+
+.panel-heading-anchor:hover,
+.panel-heading-anchor:focus {
+  text-decoration: none;
+  color: #535353;
+}
+
+.text {
+  color: rgba(255, 255, 255, 0);
+  cursor: pointer;
+  position: absolute;
+}
+
+.text:hover {
+  color: #000;
+  background-color: #fff;
+  font-weight: fw("bold");
+  font-family: var(--font-family-base);
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  border: 1px dotted black;
+  line-height: 40px;
+  padding-left: 11px;
+  padding-right: 11px;
+}
+
+.Row {
+  display: table-row;
+}
+
+.Cell {
+  display: table-cell;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+  width: 8em;
+}
+
+.Cell p {
+  font-weight: fw("bold");
+  font-size: fs("md");
+}
+
+.Cell select {
+  width: 180px;
+}
+
+.CellH {
+  font-weight: fw("normal");
+  display: table-cell;
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 8em;
+}
+
+.CellH label {
+  font-weight: fw("bold");
+  font-size: fs("md");
+}
+
+.bouton {
+  width: 100px;
+  font-family: var(--font-family-base);
+  font-weight: fw("bold");
+  text-align: center;
+  background: #606061;
+  color: #ffffff;
+  line-height: 25px;
+  border-radius: br("4");
+  -moz-box-shadow: 1px 1px 3px #000;
+  -webkit-box-shadow: 1px 1px 3px #000;
+  box-shadow: 1px 1px 3px #000;
+  margin: 5px;
+  text-decoration: none;
+}
+
+.bouton:hover {
+  background: #00d9ff;
+  background: -moz-linear-gradient(#00d9ff, #333);
+  background: -webkit-linear-gradient(#00d9ff, #333);
+  background: -o-linear-gradient(#00d9ff, #333);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.bouton.disabled {
+  color: #ffffff;
+  background: #dddddd;
+  text-decoration: none;
+  cursor: default;
+}
+
+.bouton:hover.disabled {
+  color: #ffffff;
+  background: #dddddd;
+  text-decoration: none;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* used in xdsjson */
+
+.check-option1 {
+  cursor: pointer;
+  height: 16px;
+  width: 23px;
+  margin: 0;
+}
+
+.check-option2 {
+  cursor: pointer;
+  height: 16px;
+  width: 23px;
+  margin: 0;
+}
+
+data-check-input {
+}
+
+.data-radio {
+  margin: 0 0px 0 5px;
+  vertical-align: middle;
+}
+
+.data-radio-span {
+  padding: 5px 10px 5px 5px;
+  vertical-align: middle;
+}

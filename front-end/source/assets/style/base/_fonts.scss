@@ -1,0 +1,46 @@
+/*
+ * Fonts 
+ * @description: Set all @font-face rules
+ * @author: Guillaume Corbelin
+ * 
+ */
+
+@font-face {
+  font-weight: 300;
+  font-style: normal;
+  font-family: 'OpenSans';
+  src: url('../fonts/open-sans/OpenSans-Light.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: 'OpenSans';
+  src: url('../fonts/open-sans/OpenSans-Regular.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 600;
+  font-style: normal;
+  font-family: 'OpenSans';
+  src: url('../fonts/open-sans/OpenSans-Semibold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 700;
+  font-style: normal;
+  font-family: 'OpenSans';
+  src: url('../fonts/open-sans/OpenSans-Bold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 600;
+  font-style: normal;
+  font-family: 'Montserrat';
+  src: url('../fonts/montserrat/Montserrat-SemiBold.ttf');
+  font-display: swap;
+}

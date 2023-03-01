@@ -1,0 +1,39 @@
+<div id="info-project-ctrl" ng-controller="InfoProjectController" class="cancel__box cancel__box--lg">
+    <form name="form.projectForm{{info.idForm}}" ng-submit="saveInfoProject(currentInfoProject.name);" data-parsley-validate="" novalidate class="dashboard-form">
+        <div class="cancel__box__top">
+            <div class="cancel__title">{{info.title}}</div>
+            <br>
+            <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+                <label class="dashboard-form__label" for="projectName">Name <span class="required">*</span></label>
+                <input ng-model="currentInfoProject.name" name="projectName" required="required" class="ng-not-empty ng-pristine ng-untouched ng-valid ng-valid-required" type="text" ng-disabled="!info.showCheckbox">
+            </div>
+            <div class="dashboard-form__group" ng-if="!currentInfoProject.name && projectFormSubmitted ">
+                <div class="text-danger">invalid Name</div>
+            </div>
+            <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+                <label class="dashboard-form__label" for="projectDescription">Description</label>
+                <input ng-model="currentInfoProject.description" name="projectDescription" class="ng-empty ng-pristine ng-untouched" type="text" ng-disabled="info.origin==='template'">
+            </div>
+            <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+                <label class="dashboard-form__label" for="projectGroup">Group name</label>
+                <input ng-model="currentInfoProject.groupName" name="projectGroup" class="ng-pristine ng-untouched ng-empty" type="text" ng-disabled="info.origin==='template'">
+            </div>
+            <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+                <label class="dashboard-form__label">Tags</label>
+                <!--display-property="text"-->
+                <tags-input ng-model="currentInfoProject.tags" load-on-focus="true" load-on-empty="true" ng-disabled="info.origin==='template'">
+                    <auto-complete source="loadTagsList($query)"></auto-complete>
+                </tags-input>
+            </div>
+            <div class="divider"></div>
+        </div>
+        <div class="cancel__box__bottom">
+            <button ng-if="info.origin!=='template'" type="button" class="btn btn-rounded-fill cancel" ng-click="cancelInfoProject(currentInfoProject.name)">Cancel</button>
+            <button ng-if="info.origin!=='template'" type="submit" class="btn btn-rounded-fill primary">Save</button>
+            <button ng-if="info.origin==='template'" type="button" class="btn btn-rounded-fill primary" ng-click="cancelInfoProject(currentInfoProject.name)">OK</button>
+            <input ng-if="info.showCheckbox" type="checkbox" ng-model="info.checkboxModelLater" style="margin-left: 10px;">
+            <span ng-if="info.showCheckbox" style="margin: 4px 4px 0;"> Do it later</span>
+        </div>
+    </form>
+</div>
+<div class="cancel__overlay"></div>

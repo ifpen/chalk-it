@@ -1,0 +1,77 @@
+/*
+ * View Mode
+ * @description: By oppposition of the "Edit mode". Has custom actions for export for example
+ * 
+ */
+
+.view-mode {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  li {
+    + li {
+      margin-left: 1rem;
+    }
+    a {
+      text-align: center;
+      position: relative;
+      &.active {
+        opacity: 1;
+      }
+      &.mute {
+        opacity: 0.5;
+      }
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__export {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    .dashboard-dropdown {
+      top: calc(100% + 0.5rem);
+      right: 0;
+    }
+  }
+
+  &__button {
+    background: var(--primary-color);
+    height: 56px;
+    width: 56px;
+    display: block;
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    background-position: center;
+    border-radius: br("full");
+    box-shadow: var(--small-box-shadow);
+    &--mobile {
+      background-image: url("../icon/views/smartphone.svg");
+    }
+    &--tablet {
+      background-image: url("../icon/views/tablet_android.svg");
+    }
+    &--desktop {
+      background-image: url("../icon/views/laptop.svg");
+    }
+    &:hover {
+      box-shadow: var(--small-box-shadow-hover);
+    }
+  }
+  &__label {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    padding-top: 0.25rem;
+    font-weight: fw("bold");
+    font-size: fs("xs");
+    color: var(--primary-color);
+    opacity: 1;
+  }
+}

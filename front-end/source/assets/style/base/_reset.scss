@@ -1,0 +1,126 @@
+/*
+ * Reset 
+ * @description: Remove browsers settings and set common rules for basic elements
+ * @author: Guillaume Corbelin
+ * 
+ */
+
+*,
+::before,
+::after {
+  margin-top: 0;
+  padding-top: 0;
+  position: relative;
+  box-sizing: border-box;
+}
+
+::selection {
+  background-size: initial;
+  background-clip: initial;
+  background-image: initial;
+  background-origin: initial;
+  background-repeat: initial;
+  background-attachment: initial;
+  background-position-x: initial;
+  background-position-y: initial;
+  background-color: var(--selection-background-color);
+}
+
+body,
+html {
+  display: block;
+  max-width: 100%;
+  min-width: 20em;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--surface-a);
+  color: var(--text-color);
+  font-size: 62.5%;
+  font-size: fs('md');
+  font-weight: fw('light');
+  line-height: var(--line-height-base);
+  font-family: var(--font-family-base);
+  letter-spacing: 0.046em;
+}
+
+p,
+ul,
+input,
+button {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  font-size: inherit;
+  list-style: none;
+}
+
+select {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+
+  &::-ms-expand {
+    display: none;
+  }
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  width: 100%;
+  object-fit: cover;
+}
+
+a,
+a:visited,
+a:focus,
+a:hover {
+  color: inherit;
+  text-decoration: inherit;
+  cursor: pointer;
+}
+
+a:focus {
+  outline: none; // TODO: not a good practice for accessibility
+}
+
+a > * {
+  vertical-align: middle;
+}
+
+// Custom scroll bar (rounded)
+::-webkit-scrollbar {
+  width: 14px;
+  height: auto;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d3d3d3;
+  border-radius: br('8');
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+// Bakcdrop background color for full screen elements
+::backdrop {
+  background-color: white;
+}
+
+// Tables
+table {
+  max-width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+}

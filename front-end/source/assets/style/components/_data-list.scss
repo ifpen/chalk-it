@@ -1,0 +1,39 @@
+/*
+ * Data list
+ * @description: Used in modalDialog for listing datanodes to download
+ * 
+ */
+
+.datalist {
+  @extend .row;
+  @extend .no-gutters;
+
+  p {
+    @extend .col-12;
+    margin-bottom: 1rem;
+    padding: 0;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+}
+
+.datalist__elems,
+.datalist__actions {
+  max-height: 220px;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.datalist__elems {
+  @extend .col-8;
+  border-radius: br("8");
+  background-color: var(--surface-c);
+}
+
+.datalist__actions {
+  @extend .col-4;
+}

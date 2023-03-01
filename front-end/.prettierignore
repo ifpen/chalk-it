@@ -1,0 +1,16 @@
+**/.git
+**/.svn
+**/.hg
+**/bower_components
+**/node_modules
+
+**/.tmp
+**/build
+**/reports
+**/thirdparty
+**/.idea
+**/.dccache
+
+**/*.bat
+**/*.min.*
+**/*.css

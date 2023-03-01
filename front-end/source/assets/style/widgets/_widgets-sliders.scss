@@ -1,0 +1,169 @@
+/*
+ * Sliders in widgets
+ * @description: All input with slider bar and handle related rules. ONLY FOR WIDGETS inside the drag and drop zone
+ * 
+ */
+
+%widget-preview-wrapper {
+  // Sliders Wrapper
+  .sliderInput {
+    display: inline-block;
+    width: inherit;
+    height: inherit;
+  }
+
+  // Sliders bar & handles
+  .ui-slider {
+    position: relative;
+    height: 12px;
+    margin-bottom: 20px;
+    border-radius: var(--widget-radius-full);
+    background: var(--widget-segment-color);
+    // box-shadow: none;
+    cursor: pointer;
+  }
+
+  .ui-slider-handle {
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    border-radius: var(--widget-radius-full);
+    background-color: var(--widget-handle-default-color);
+    transition: background-color 0.25s;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .ui-slider-handle:hover,
+  .ui-slider-handle:focus {
+    background-color: var(--widget-handle-hover-color);
+    outline: none;
+  }
+
+  .ui-slider-handle:active {
+    background-color: var(--widget-handle-active-color);
+  }
+
+  .ui-slider-range {
+    position: absolute;
+    display: block;
+    height: 100%;
+    background-color: var(--widget-range-color);
+    z-index: 1;
+  }
+
+  .ui-slider-segment {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--widget-radius-full);
+  }
+
+  // horizontal slider widget
+  // label
+  .label-h-slider {
+    display: table-cell;
+    vertical-align: middle;
+    margin-top: 0;
+    padding-right: 10px;
+    color: var(--widget-label-color);
+    font-size: var(--widget-label-font-size);
+    line-height: 12px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  // bar
+  #h-slider-div {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 9px;
+  }
+
+  .h-slider-div-div {
+    display: table-cell;
+    width: 100%;
+    float: left;
+    min-width: 40px;
+    margin: 14px 0px 14px 0px;
+    cursor: inherit;
+  }
+
+  .ui-slider-horizontal .ui-slider-handle {
+    margin-left: -9px;
+    top: -3px;
+  }
+
+  .ui-slider-horizontal .ui-slider-handle[style*='100'] {
+    margin-left: -15px;
+  }
+
+  .ui-slider-horizontal .ui-slider-range {
+    border-radius: var(--widget-radius-full) 0 0 var(--widget-radius-full);
+  }
+
+  .ui-slider-horizontal .ui-slider-segment {
+    float: left;
+    margin: 3px -6px 0 0;
+  }
+
+  // value
+  .h-slider-value-div {
+    display: table-cell;
+    padding-left: 10px;
+    vertical-align: middle;
+  }
+
+  input[type='text'].hslider-input {
+    display: table-cell;
+    min-width: 50px;
+    max-width: 100%;
+    width: 100%;
+    text-align: right;
+  }
+
+  // Vertical sliders
+  // label
+  .v-slider-div {
+    width: inherit;
+    text-align: center;
+    padding-top: 11px;
+    height: 20%;
+  }
+
+  .label-v-slider {
+    margin-top: 8px;
+    color: var(--widget-label-color);
+    font-size: var(--widget-label-font-size);
+    line-height: 12px;
+    text-align: center;
+  }
+
+  // bar & handles
+  .ui-slider-vertical {
+    width: 12px;
+    height: 10vh;
+  }
+
+  .ui-slider-vertical .ui-slider-handle {
+    margin-left: -3px;
+    margin-bottom: -11px;
+    top: auto;
+  }
+
+  .ui-slider-vertical .ui-slider-range {
+    width: 100%;
+    bottom: 0;
+    border-radius: 0 0 var(--widget-radius-full) var(--widget-radius-full);
+  }
+
+  .ui-slider-vertical .ui-slider-segment {
+    position: absolute;
+    right: 3px;
+  }
+
+  .v-slider-div-div {
+    text-align: left;
+    cursor: inherit;
+    margin: auto;
+  }
+}

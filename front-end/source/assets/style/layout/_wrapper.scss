@@ -1,0 +1,16 @@
+/*
+ * Main wrapper 
+ * @description: Wraps header, asides and main content
+ * 
+ */
+
+.main__wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+
+  &.module-opened {
+    background-color: var(--surface-c);
+  }
+}

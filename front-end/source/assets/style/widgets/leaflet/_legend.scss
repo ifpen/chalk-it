@@ -1,0 +1,24 @@
+/*
+ * Legend
+ * @description: graph legend in leaflet
+ * 
+ */
+
+.legend {
+  text-align: left;
+  line-height: 18px;
+  color: var(--widget-color);
+}
+
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.legend span {
+  float: right;
+  height: 18px;
+}

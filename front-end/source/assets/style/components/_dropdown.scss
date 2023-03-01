@@ -1,0 +1,10 @@
+/*
+ * Dropdown 
+ * @description: Dropdown component for "My projects" page title.
+ * 
+ */
+
+select.dropdown__current {
+  border: 1px solid var(--surface-b);
+  background-color: var(--surface-a);
+}

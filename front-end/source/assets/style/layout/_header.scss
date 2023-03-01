@@ -1,0 +1,115 @@
+/*
+ * Header 
+ * @description: Dashboard top actions
+ * 
+ */
+
+@import "../components/tabs";
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  max-width: 17em;
+  width: 100%;
+  height: 100%;
+  padding: 0.5em 1em;
+  color: var(--header-color-text);
+
+  &:hover,
+  &:focus {
+    color: var(--header-color-text);
+  }
+}
+
+.brand__placeholder {
+  display: block;
+  width: 100%;
+  height: 3em;
+  background-image: var(--header-logo-url);
+  background-position: left center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.user__actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user__actions--avatar {
+  flex-shrink: 0;
+  width: 2.1875em;
+  height: 2.1875em;
+  margin: 0 0.625em;
+  border-radius: br("full");
+  border: 0.125em solid var(--header-color-text);
+
+  // Disponibility indicator
+  &.available::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0.5625em;
+    height: 0.5625em;
+    transform: translate(25%, -25%);
+    border-radius: br("full");
+    border: 0.125em solid var(--surface-a);
+    background-color: var(--success-color);
+    color: var(--success-color-text);
+  }
+}
+
+.profile_img {
+  width: 100%;
+  height: 100%;
+}
+
+.user__actions--name {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: fw("bold");
+  color: var(--header-color-text);
+  cursor: pointer;
+}
+
+.user__actions--notifications {
+  margin-left: 2.25em;
+}
+
+.user__actions--notifications__link {
+  padding: 0.5em;
+  border-radius: br("full");
+  color: var(--header-color-text);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--surface-c);
+    color: var(--text-color);
+  }
+}
+
+.user__actions--notifications__counter {
+  background: var(--danger-color);
+  color: var(--danger-color-text);
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: br("full");
+  font-size: fs("2xs");
+  font-weight: fw("bold");
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(25%, -25%);
+  z-index: 2;
+}
+
+.user__actions--notifications__list {
+  width: 380px;
+}

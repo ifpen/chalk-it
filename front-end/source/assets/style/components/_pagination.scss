@@ -1,0 +1,42 @@
+/*
+ * Pagination
+ * @description: For projects listing
+ * 
+ */
+
+.dashboard-pagination__list {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.dashboard-pagination__link {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0.5em;
+  border-radius: br("full");
+  border: 1px solid var(--active-color-text);
+  background-color: var(--active-color-text);
+  color: var(--active-color);
+  font-size: fs("xs");
+  font-weight: fw("bold");
+  outline: none;
+  transition: var(--default-transition);
+  transition-property: background-color, color;
+
+  .active:not(.disabled) > &,
+  :not(.disabled) > &:hover,
+  :not(.disabled) > &:focus {
+    background-color: var(--active-color);
+    color: var(--active-color-text);
+  }
+
+  .disabled > & {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+}

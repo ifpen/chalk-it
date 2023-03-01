@@ -1,0 +1,289 @@
+/* 
+ * Main Widgets theme file
+ * 
+ * @description: All widgets related variables for theming. ONLY FOR WIDGETS inside the drag and drop zone
+ * 
+ */
+
+$themes: (
+  'default': (
+    'hue': 'light',
+    0: #fff,
+    // Background color
+    1: #354a5f,
+    // Main text
+    2: #447bdc,
+    // Main color
+    3: #2154ab,
+    // Active color
+    4: #a9c3ef,
+    // Light color
+    5: #9a7fd1,
+    // Accent 1
+    6: #ffb980,
+    // Accent 2
+    7: #07a2a4,
+    // Accent 3
+  ),
+  'pink': (
+    'hue': 'light',
+    0: #fff,
+    // Background color
+    1: #3a0ca3,
+    // Main text
+    2: #f72585,
+    // Main color
+    3: #b5179e,
+    // Active color
+    4: #f964a7,
+    // Light color
+    5: #8fd3e8,
+    // Accent 1
+    6: #71669e,
+    // Accent 2
+    7: #cc70af,
+    // Accent 3
+  ),
+  'green': (
+    'hue': 'light',
+    0: #fff,
+    // Background color
+    1: #081c15,
+    // Main text
+    2: #2d6a4f,
+    // Main color
+    3: #1b4332,
+    // Active color
+    4: #40916c,
+    // Light color
+    5: #e69d87,
+    // Accent 1
+    6: #dd6b66,
+    // Accent 2
+    7: #7289ab,
+    // Accent 3
+  ),
+  'dark': (
+    'hue': 'dark',
+    0: #333333,
+    // Background color
+    1: #fff,
+    // Main text
+    2: #ea7e53,
+    // Main color
+    3: #dd6b66,
+    // Active color
+    4: #e69d87,
+    // Light color
+    5: #8dc1a9,
+    // Accent 1
+    6: #7289ab,
+    // Accent 2
+    7: #eedd78,
+    // Accent 3
+  ),
+);
+
+// Default colors
+html {
+  --widget-color-danger: #e74c3c;
+  --widget-color-neutral: #bdc3c7;
+
+  // Global
+  --widget-font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  --widget-color: var(--widget-color-1);
+  // --widget-subtext-color: #{lighten(map-get($widget-default-colors, 1), 20%)}; // inside calculated colors
+  --widget-border-color: var(--widget-color-2);
+  --widget-label-color: var(--widget-color-3);
+  --widget-label-font-size: calc(7px + 0.5vw + 0.4vh);
+  --widget-radius: 6px;
+  --widget-radius-sm: 4px;
+  --widget-radius-full: 999px;
+
+  // Progress and sliders
+  --widget-segment-color: #ebedef;
+  --widget-range-color: var(--widget-color-2);
+  --widget-handle-default-color: var(--widget-color-3);
+  --widget-handle-hover-color: var(--widget-color-4);
+  --widget-handle-active-color: var(--widget-color-4);
+
+  // Dropzone
+  // --widget-dropzone-background-color: #{darken(map-get($widget-default-colors, 0), 6%)}; // inside calculated colors
+  // --widget-dropzone-label-background-color: #{darken(map-get($widget-default-colors, 0), 3%)}; // inside calculated colors
+  // --widget-delete-button-default-color: #{darken(map-get($widget-default-colors, 0), 6%)}; // inside calculated colors
+  --widget-delete-button-active-color: var(--widget-color-danger);
+  --widget-delete-button-hover-color: var(--widget-color-danger);
+  --widget-delete-button-icon-color: var(--widget-color-danger);
+  --widget-delete-button-icon-hover-color: hsl(0, 0%, 100%);
+
+  // Tables
+  --widget-table-color: var(--widget-color-0);
+  --widget-table-caption-color: var(--widget-subtext-color);
+  --widget-table-value-color: var(--widget-color);
+  // --widget-table-border-color: #{darken(map-get($widget-default-colors, 0), 13%)}; // inside calculated colors
+  // --widget-table-striped-odd: #{darken(map-get($widget-default-colors, 0), 2%)}; // inside calculated colors
+  // --widget-table-striped-hover: #{darken(map-get($widget-default-colors, 0), 4%)}; // inside calculated colors
+  // --widget-table-active: #{darken(map-get($widget-default-colors, 0), 4%)}; // inside calculated colors
+  // --widget-table-active-hover: #{darken(map-get($widget-default-colors, 0), 9%)}; // inside calculated colors
+
+  // Forms
+  --widget-input-color: var(--widget-color-0);
+  --widget-input-text: var(--widget-color-1);
+  --widget-input-font-size: calc(7px + 0.5vw + 0.4vh);
+  // --widget-placeholder-text: #{lighten(map-get($widget-default-colors, 1), 30%)}; // inside calculated colors
+  --widget-input-disabled-color: var(--widget-color-neutral);
+  --widget-input-disabled-opacity: 0.7;
+  --widget-input-unchecked-color: var(--widget-color-neutral);
+  --widget-input-checked-color: var(--widget-color-2);
+  --widget-input-checked-text: var(--widget-input-checked-text);
+  // --widget-input-checked-disabled-text: #{lighten(map-get($widget-default-colors, 1), 30%)}; // inside calculated colors
+  --widget-input-checked-indeterminate-text: var(--widget-color-neutral);
+  --widget-input-group-color: var(--widget-color-2);
+  --widget-input-group-hover-color: var(--widget-color-4);
+  --widget-input-group-active-color: var(--widget-color-3);
+  --widget-input-group-disabled-color: var(--widget-color-neutral);
+  // --widget-input-group-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+
+  // Buttons
+  --widget-button-color: var(--widget-color-2);
+  // --widget-button-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  --widget-button-active-color: var(--widget-color-3);
+  --widget-button-primary-hover-color: var(--widget-color-4);
+  --widget-button-primary-color: var(--widget-color-2);
+  // --widget-button-primary-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  --widget-button-primary-active-color: var(--widget-color-3);
+  --widget-button-hover-color: var(--widget-color-4);
+  --widget-button-disabled-color: var(--widget-color-neutral);
+  --widget-button-default-color: var(--widget-color-neutral);
+  // --widget-button-default-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  // --widget-button-default-active-color: #{darken(map-get($widget-default-colors, 2), 10%)}; // inside calculated colors
+  // --widget-button-default-hover-color: #{darken(map-get($widget-default-colors, 2), 5%)}; // inside calculated colors
+  --widget-button-success-color: #2ecc71;
+  --widget-button-success-text: #fff;
+  --widget-button-success-active-color: #27ad60;
+  --widget-button-success-hover-color: #58d68d;
+  --widget-button-info-color: #3498db;
+  --widget-button-info-text: #fff;
+  --widget-button-info-active-color: #2c81ba;
+  --widget-button-info-hover-color: #5dade2;
+  --widget-button-warning-color: #f1c40f;
+  --widget-button-warning-text: #fff;
+  --widget-button-warning-active-color: #cda70d;
+  --widget-button-warning-hover-color: #f4d313;
+  --widget-button-danger-color: var(--widget-color-danger);
+  --widget-button-danger-text: #fff;
+  --widget-button-danger-active-color: #c44133;
+  --widget-button-danger-hover-color: #ec7063;
+
+  // Select2 dropdowns are created as direct children of the body element
+  // --widget-select-drop-color: #{darken(map-get($widget-default-colors, 0), 3%)}; // inside calculated colors
+  --widget-select-drop-text: var(--widget-color-1);
+  --widget-select-option-highlighted-color: var(--widget-color-2);
+  // --widget-select-option-highlighted-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  --widget-select-option-hover-color: var(--widget-color-3);
+  // --widget-select-option-hover-text: #{color-yiq(map-get($widget-default-colors, 3))}; // inside calculated colors
+
+  // Multi Select
+  --widget-multiselect-text: var(--widget-color-3);
+  --widget-multiselect-color: var(--widget-color-0);
+  --widget-multiselect-border-color: var(--widget-color-3);
+  // --widget-multiselect-hover-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  --widget-multiselect-hover-color: var(--widget-color-2);
+  --widget-multiselect-hover--border-color: var(--widget-color-2);
+  // --widget-multiselect-checked-text: #{color-yiq(map-get($widget-default-colors, 3))}; // inside calculated colors
+  --widget-multiselect-checked-color: var(--widget-color-3);
+  --widget-multiselect-checked-border-color: var(--widget-color-3);
+}
+
+// Overrides for each theme
+@each $key, $theme in $themes {
+  // Colors definitions
+  html[data-theme='#{$key}'],
+  .theme__item[data-theme='#{$key}'] {
+    @each $indice, $color in $theme {
+      @if $indice != 'hue' {
+        --widget-color-#{$indice}: #{$color};
+      }
+    }
+  }
+
+  // Calculated colors
+  html[data-theme='#{$key}'] {
+    @if (map-get($theme, 'hue') == 'light') {
+      // Global
+      --widget-subtext-color: #{darken(map-get($theme, 1), 20%)};
+
+      // Dropzone
+      --widget-dropzone-background-color: #{darken(map-get($theme, 0), 6%)};
+      --widget-dropzone-label-background-color: #{darken(map-get($theme, 0), 3%)};
+      --widget-delete-button-default-color: #{darken(map-get($theme, 0), 6%)};
+
+      // Tables
+      --widget-table-border-color: #{darken(map-get($theme, 0), 13%)};
+      --widget-table-striped-odd: #{darken(map-get($theme, 0), 2%)};
+      --widget-table-striped-hover: #{darken(map-get($theme, 0), 4%)};
+      --widget-table-active: #{darken(map-get($theme, 0), 4%)};
+      --widget-table-active-hover: #{darken(map-get($theme, 0), 9%)};
+
+      // Forms
+      --widget-placeholder-text: #{darken(map-get($theme, 1), 30%)};
+      --widget-input-checked-disabled-text: #{darken(map-get($theme, 1), 30%)};
+
+      // Buttons
+      --widget-button-default-active-color: #{darken(map-get($theme, 2), 10%)};
+      --widget-button-default-hover-color: #{darken(map-get($theme, 2), 5%)};
+
+      // Select2 dropdowns are created as direct children of the body element
+      --widget-select-drop-color: #{darken(map-get($theme, 0), 3%)};
+    } @else {
+      // Global
+      --widget-subtext-color: #{darken(map-get($theme, 1), 20%)};
+
+      // Dropzone
+      --widget-dropzone-background-color: #{lighten(map-get($theme, 0), 6%)};
+      --widget-dropzone-label-background-color: #{lighten(map-get($theme, 0), 3%)};
+      --widget-delete-button-default-color: #{lighten(map-get($theme, 0), 6%)};
+
+      // Tables
+      --widget-table-border-color: #{lighten(map-get($theme, 0), 13%)};
+      --widget-table-striped-odd: #{lighten(map-get($theme, 0), 2%)};
+      --widget-table-striped-hover: #{lighten(map-get($theme, 0), 4%)};
+      --widget-table-active: #{lighten(map-get($theme, 0), 4%)};
+      --widget-table-active-hover: #{lighten(map-get($theme, 0), 9%)};
+
+      // Forms
+      --widget-placeholder-text: #{darken(map-get($theme, 1), 30%)};
+      --widget-input-checked-disabled-text: #{darken(map-get($theme, 1), 30%)};
+
+      // Buttons
+      --widget-button-default-active-color: #{lighten(map-get($theme, 2), 10%)};
+      --widget-button-default-hover-color: #{lighten(map-get($theme, 2), 5%)};
+
+      // Select2 dropdowns are created as direct children of the body element
+      --widget-select-drop-color: #{lighten(map-get($theme, 0), 3%)};
+    }
+
+    // Contrasted text color
+    // Forms
+    --widget-input-group-text: #{color-yiq(map-get($theme, 2))};
+
+    // Buttons
+    --widget-button-text: #{color-yiq(map-get($theme, 2))};
+    --widget-button-primary-text: #{color-yiq(map-get($theme, 2))};
+    --widget-button-default-text: #{color-yiq(map-get($theme, 2))};
+
+    // Select2 dropdowns are created as direct children of the body element
+    --widget-select-option-highlighted-text: #{color-yiq(map-get($theme, 2))};
+    --widget-select-option-hover-text: #{color-yiq(map-get($theme, 3))};
+
+    // Multi Select
+    --widget-multiselect-hover-text: #{color-yiq(map-get($theme, 2))};
+    --widget-multiselect-checked-text: #{color-yiq(map-get($theme, 3))};
+  }
+}
+
+.daterangepicker,
+%widget-preview-wrapper {
+  font-family: var(--widget-font-family);
+  color: initial;
+}

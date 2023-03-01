@@ -1,0 +1,65 @@
+<!-- for future version  with multiple projects -->
+<!-- <div class="tabs-container" style="left:4em" ng-style="{ display: xdashLogoEditor == 'EditorInactive' ? 'none' : 'inherit' }">
+    <a class="tab tab--active" ng-click="moduleOpenedFunction(true)" title="Back to Chalk'it editor">
+        <span class="tab__name">{{currentProject.name}}{{currentProject.dirty}}</span>
+        <i class="tab__close basic icn-close"></i>
+    </a>
+
+</div> -->
+<div ng-if="xDashFullVersion" class="tabs-container" ng-style="{ display: currentProject.name === '' ? 'none' : 'inherit' }">
+    <div class="tab tab--active tab--inactive">
+        <span class="tab__name ng-binding" ng-click="moduleOpenedFunction(true)" style="cursor:pointer"
+              title="Back to Chalk'it editor">{{currentProject.name}}{{currentPrjDirty}}</span>
+        <a ng-click="closeProject(currentProject.name)" title="Close project">
+            <i class="tab__close basic icn-close"></i>
+        </a>
+    </div>
+    <!-- <div class="tab tab--inactive">
+        <span class="tab__name">Tab name</span>
+        <a ng-click="" title="Close project">
+            <i class="tab__close basic icn-close"></i>
+        </a>
+    </div> -->
+</div>
+
+<div ng-if="xDashFullVersion" class="user__actions">
+    <div class="user__actions--avatar available">
+        <a ng-click="openAvatarManager()" title="open user avatar manager">
+            <img ng-src="{{UserProfile.userAvatar}}" onerror="this.src='source/assets/img/flat-icon/user-m.png'"
+                 alt="User avatar" class="img-circle profile_img" />
+        </a>
+    </div>
+    <div class="user__actions--name--wrapper">
+        <p id="isLogoutOpen" class="user__actions--name" ng-click="isNavOpen = !isNavOpen">
+            Welcome, {{UserProfile.userName}}
+            <i class="basic icn-miniarrowbottom"></i>
+        </p>
+        <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
+            <li ng-click="logout(); isNavOpen = !isNavOpen">
+                <a title=""> <i class="basic icn-logout"></i>Sign out </a>
+            </li>
+        </ul>
+    </div>
+    <!-- <div class="user__actions--notifications">
+        <i class="basic icn-notifications"></i>
+    </div> -->
+    <div class="user__actions--notifications" ng-show="isMaintenanceInfo">
+        <div ng-click="isFilterOpen = !isFilterOpen;" class="user__actions--notifications__link">
+            <span class="user__actions--notifications__counter">{{1}}</span>
+            <i class="basic icn-notifications"></i>
+        </div>
+        <div class="dashboard-dropdown visible user__actions--notifications__list" ng-init="!isFilterOpen"
+             ng-show="isFilterOpen">
+            <ul style="max-height: 435px;overflow: auto">
+                <li class="notification notification__info">
+                    <div class="notification__top" style="width:100%">
+                        <div class="notification__top__left">
+                            <div class="notification__top__title">Maintenance Info</div>
+                        </div>
+                    </div>
+                    <div class="notification__content">{{msgMaintenanceInfo}}</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div ng-controller="ManagePageShareController" class="cancel__box cancel__box--lg dashboard-form">
+    <button ng-click="infoPage.isManagePageOpen=false" class="btn btn-icon-only cancel__box__close" title="Close">
+        <i class="basic icn-close close-aside"></i>
+    </button>
+    <div class="cancel__box__top">
+        <div class="cancel__title">{{infoPage.title}}</div>
+        <br>
+
+        <div ng-if="!infoPage.exportPage">
+            <p style="text-align:center">'{{infoPage.name}}.html'</p>
+        </div>
+
+        <div ng-if="infoPage.exportPage" class="dashboard-form__group dashboard-form__group--inline">
+            <label class="dashboard-form__label" for="managePage">File name</label>
+            <input ng-model="infoPage.name" name="managePage" type="text" placeholder="please write file name here ...">
+        </div>
+
+        <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+            <div class="dashboard-form__label">File Access</div>
+            <div class="switch__wrapper">
+                <p>Public</p>
+                <label class="switch">
+                    <input type="checkbox" ng-model="infoPage.isPrivatePage">
+                    <span class="slider round"></span>
+                </label>
+                <p>Private</p>
+            </div>
+        </div>
+
+        <p class="setting-description">The 'Manage sharing' option is available with the private access mode only.</p>
+        
+        <div class="divider"></div>
+    </div>
+    <div class="cancel__box__bottom">
+        <button type="button" class="btn btn-rounded-fill primary" ng-click="okPage()"
+            ng-disabled="infoPage.name==''">{{infoPage.btnTxt}}</button>
+    </div>
+</div>
+
+<div class="cancel__overlay"></div>

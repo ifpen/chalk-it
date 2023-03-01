@@ -1,0 +1,45 @@
+<div ng-if="moduleOpened" class="sidebar__brand">
+    <span class="brand__placeholder" aria-hidden="true"></span>
+    <span class="sr-only">Chalk'it logo</span>
+</div>
+
+<div class="sidebar__menu">
+    <div ng-class="{'sidebar__actions': moduleOpened}">
+        <button class="btn btn-circle" ng-click="newProject()" title="My project">
+            <span class="icon__container" ng-class="{'icon__container--active': !moduleOpened}">
+                <i class="basic icn-edit"></i>
+            </span>
+            My project
+        </button>
+        <button class="btn btn-circle" ng-click="openFromLocal()" title="Open a project">
+            <span class="icon__container">
+                <i class="basic icn-file-import"></i>
+            </span>
+            Open
+        </button>
+        <ul class="sidebar__list">
+            <li>
+                <a ui-sref="modules.cards.layout({action: 'templateGallery'})" ng-click="toggleMenuOptionDisplay('gallery')" ng-class="{'active' :  displayedId==='gallery'}">
+                    <i class="basic icn-template"></i>Template Gallery
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="divider"></div>
+    <div ng-class="{'sidebar__actions': moduleOpened}">
+        <button class="btn btn-circle" style="cursor:default">
+            <span class="icon__container alt">
+                <i class="basic icn-help-big"></i>
+            </span>
+            Help
+        </button>
+        <ul class="sidebar__list">
+            <li>
+                <a ng-class="{'active' :  displayedId==='discover'}" ui-sref="modules.discover.layout" ng-click="toggleMenuOptionDisplay('discover')">Discover Chalk'it</a>
+            </li>
+            <li>
+                <a ng-class="{'active' :  displayedId==='training'}" ui-sref="modules.training.layout" ng-click="toggleMenuOptionDisplay('training')">Training document</a>
+            </li>
+        </ul>
+    </div>
+</div>

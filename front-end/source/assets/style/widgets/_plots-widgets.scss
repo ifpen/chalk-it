@@ -1,0 +1,17 @@
+/*
+ * Plotly widgets modebar
+ * @description: Used in plotly.js
+ */
+
+.plot-container a,
+.plot-container a:visited,
+.plot-container a:focus,
+.plot-container a:hover {
+  display: inline;
+  text-decoration: none;
+  background: none;
+}
+
+.plot-container a > * {
+  vertical-align: top;
+}

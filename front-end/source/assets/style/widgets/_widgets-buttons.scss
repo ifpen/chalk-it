@@ -1,0 +1,214 @@
+/*
+ * Buttons in widgets
+ * @description: All buttons related rules from Bootstrap styles
+ * 
+ */
+
+$widget-btn-colors: 'default', 'primary', 'info', 'success', 'warning', 'danger';
+
+%widget-btn {
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.4;
+  -webkit-font-smoothing: subpixel-antialiased;
+  transition-duration: 0.25s;
+  transition-timing-function: linear;
+  transition-property: border, color, background-color;
+
+  &:focus,
+  &:active:focus,
+  &.active:focus,
+  &.focus,
+  &:active.focus,
+  &.active.focus {
+    outline: 0;
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: var(--widget-button-text);
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: var(--widget-button-disabled-color);
+    opacity: var(--widget-input-disabled-opacity);
+    cursor: not-allowed;
+  }
+}
+
+@each $color in $widget-btn-colors {
+  %widget-btn-#{$color} {
+    background-color: var(--widget-button-#{$color}-color);
+    border-color: var(--widget-button-#{$color}-color);
+    color: var(--widget-button-#{$color}-text);
+
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: var(--widget-button-#{$color}-hover-color);
+      border-color: var(--widget-button-#{$color}-hover-color);
+      color: var(--widget-button-#{$color}-text);
+    }
+
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle {
+      background-image: none;
+      background-color: var(--widget-button-#{$color}-active-color);
+      border-color: var(--widget-button-#{$color}-active-color);
+      color: var(--widget-button-#{$color}-text);
+    }
+
+    &.disabled,
+    &[disabled],
+    &.disabled:hover,
+    &[disabled]:hover,
+    fieldset[disabled] &:hover,
+    &.disabled:focus,
+    &[disabled]:focus,
+    fieldset[disabled] &:focus,
+    &.disabled.focus,
+    &[disabled].focus,
+    fieldset[disabled] &.focus,
+    &.disabled:active,
+    &[disabled]:active,
+    fieldset[disabled] &:active,
+    &.disabled.active,
+    &[disabled].active,
+    fieldset[disabled] &.active {
+      background-color: var(--widget-button-disabled-color);
+      border-color: var(--widget-button-#{$color}-color);
+      color: var(--widget-button-#{$color}-text);
+      box-shadow: none;
+    }
+
+    .badge {
+      background-color: var(--widget-button-#{$color}-text);
+      color: var(--widget-button-#{$color}-color);
+    }
+  }
+}
+
+%widget-btn-link {
+  border-color: transparent;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--widget-button-active-color);
+  font-weight: 400;
+
+  &:hover,
+  &:focus {
+    border-color: transparent;
+    background-color: transparent;
+    color: var(--widget-button-color);
+    text-decoration: underline;
+  }
+
+  &[disabled]:hover,
+  fieldset[disabled] &:hover,
+  &[disabled]:focus,
+  fieldset[disabled] &:focus {
+    color: var(--widget-button-disabled-color);
+    text-decoration: none;
+  }
+}
+
+%widget-btn-lg {
+  padding: 12px 16px;
+  line-height: 1.6;
+  border-radius: var(--widget-radius);
+}
+
+%widget-btn-sm {
+  padding: 9px 13px;
+  line-height: 1.25;
+  border-radius: var(--widget-radius-sm);
+}
+
+%widget-btn-xs {
+  padding: 6px 9px;
+  line-height: 1.1;
+  border-radius: var(--widget-radius-sm);
+}
+
+%widget-btn-block {
+  display: block;
+  width: 100%;
+  white-space: normal;
+
+  & + & {
+    margin-top: 5px;
+  }
+}
+
+.daterangepicker,
+%widget-preview-wrapper {
+  .btn {
+    @extend %widget-btn;
+  }
+
+  a.btn.disabled,
+  fieldset[disabled] a.btn {
+    pointer-events: none;
+  }
+
+  .btn-default {
+    @extend %widget-btn-default;
+  }
+
+  .btn-primary {
+    @extend %widget-btn-primary;
+  }
+
+  .btn-success {
+    @extend %widget-btn-success;
+  }
+
+  .btn-info {
+    @extend %widget-btn-info;
+  }
+
+  .btn-warning {
+    @extend %widget-btn-warning;
+  }
+
+  .btn-danger {
+    @extend %widget-btn-danger;
+  }
+
+  .btn-blue {
+    @extend %widget-btn-primary;
+  }
+
+  .btn-link {
+    @extend %widget-btn-link;
+  }
+
+  .btn-lg {
+    @extend %widget-btn-lg;
+  }
+
+  .btn-sm {
+    @extend %widget-btn-sm;
+  }
+
+  .btn-xs {
+    @extend %widget-btn-xs;
+  }
+
+  .btn-block {
+    @extend %widget-btn-block;
+  }
+}

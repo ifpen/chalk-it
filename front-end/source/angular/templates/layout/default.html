@@ -1,0 +1,16 @@
+<main class="main__wrapper" ng-if="UserProfile.userId" ng-class="{'module-opened': moduleOpened}">
+    <div id="avatar-ctrl" ng-controller="UserAvatarController" ng-include="'source/angular/modules/modals/userAvatar.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : openUserAvatar}" ng-show="openUserAvatar"></div>
+    <aside id="sidebar-ctrl" ng-controller="SidebarController" class="sidebar" ng-show="moduleOpened" ng-include="xDashFullVersion ? 'source/angular/modules/sidebar/sidebar.html' : 'source/angular/modules/sidebar/sidebar-basic.html'"></aside>
+
+    <!-- page content -->
+    <section id="dash-ctrl" ng-controller="DashboardController" class="main__layout project-view" ng-show="!moduleOpened" ng-include="'source/angular/modules/dashboard/dashboard.html'">
+    </section>
+    <section class="main__layout" ng-show="moduleOpened">
+        <header id="headerbar-ctrl" ng-controller="HeaderbarController" ng-include="'source/angular/modules/headerbar/headerbar.html'"></header>
+        <div ui-view class="main__layout--content"></div>
+        <footer ng-include="'source/angular/templates/partials/footerBar.html'"></footer>
+    </section>
+    <!-- /page content -->
+
+</main>
+<main class="main__wrapper" ng-if="!UserProfile.userId"></main>

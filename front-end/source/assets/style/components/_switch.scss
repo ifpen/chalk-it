@@ -1,0 +1,159 @@
+/*
+ * Reset 
+ * @description: ON/OFF togglers
+ * 
+ */
+
+// Used for datanodes edition (squared)
+.onoffswitch {
+  position: relative;
+  width: 78px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.onoffswitch-checkbox {
+  display: none;
+}
+
+label.onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--switch-wrapper-background-color);
+  border-radius: br("full");
+  padding: 0;
+  margin: 0;
+}
+
+.onoffswitch-inner {
+  width: 200%;
+  margin-left: -100%;
+  transition: var(--default-transition);
+
+  .on,
+  .off {
+    float: left;
+    width: 50%;
+    height: 34px;
+    padding: 0;
+    line-height: 34px;
+    font-size: fs("md");
+    box-sizing: border-box;
+  }
+
+  .on {
+    padding-left: .75em;
+    background-color: var(--checked-switch-background-color);
+    color: var(--checked-switch-text-color);
+  }
+
+  .off {
+    padding-right: .75em;
+    background-color: var(--switch-wrapper-background-color);
+    color: var(--switch-wrapper-text-color);
+    text-align: right;
+  }
+}
+
+.onoffswitch-switch {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 42px;
+  width: 26px;
+  margin: 4px;
+  border-radius: br("full");
+  background-color: var(--switch-background-color);
+  transition: var(--default-transition);
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label {
+  .onoffswitch-inner {
+    margin-left: 0;
+  }
+
+  .onoffswitch-switch {
+    right: 0px;
+  }
+}
+
+// Used for aspect or edit/view (Rounded)
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 3.75rem;
+  height: 2.125rem;
+  font-size: unset;
+
+  input {
+    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--switch-background-color);
+  cursor: pointer;
+  -webkit-transition: background-color 0.4s ease-in-out;
+  transition: background-color 0.4s ease-in-out;
+
+  &::before {
+    content: "";
+    width: 26px;
+    height: 26px;
+    left: 4px;
+    bottom: 4px;
+    position: absolute;
+    background-color: white;
+    -webkit-transition: transform 0.4s ease-in-out;
+    transition: transform 0.4s ease-in-out;
+  }
+  &.round {
+    border-radius: br("full");
+  }
+  &.round:before {
+    border-radius: br("full");
+  }
+}
+
+input:checked + .slider {
+  background-color: var(--checked-switch-background-color);
+}
+
+input:disabled + .slider {
+  background-color: var(--disabled-switch-background-color);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--checked-switch-background-color);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.switch__wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.switch__wrapper .switch {
+  margin: 0 1em;
+}
+
+.switch__wrapper .slider {
+  background-color: var(--switch-wrapper-background-color);
+}

@@ -1,0 +1,49 @@
+/* 
+ * Common rules for Studio and Runtime
+ * 
+ */
+
+// Structure variables (SCSS), function and mixins
+@import './utils/variables';
+@import './utils/mixins';
+@import './utils/functions';
+
+// Themes colors | CSS variables
+@import './themes/themes.scss';
+
+// Custom reset and base styles
+@import './base/reset';
+@import './base/fonts';
+@import './base/typography';
+@import './icons/fontawesome';
+
+// Widgets
+@import './widgets/widgets';
+@import './widgets/widgets-tables';
+@import './widgets/widgets-forms';
+@import './widgets/widgets-select2';
+@import './widgets/widgets-buttons';
+@import './widgets/widgets-progress-bars';
+@import './widgets/widgets-sliders';
+@import './widgets/widgets-multiselect';
+@import './widgets/rzslider';
+@import './widgets/map';
+@import './widgets/cards';
+@import './widgets/load-file';
+@import './widgets/led';
+@import './widgets/plots-widgets';
+@import './widgets/editors-widgets-reset';
+@import './widgets/datepicker';
+@import './widgets/daterangepicker';
+@import './widgets/bootstrap-clockpicker';
+@import './widgets/info';
+
+// Components
+@import './components/buttons';
+@import './components/popover';
+@import './components/export-messages'; // TODO: check if its really used in both cases (runtime & studio)
+@import './components/popup'; // TODO: check if its really used in both cases (runtime & studio)
+
+// Layout parts
+@import './layout/common';
+@import './layout/bs-grid';

@@ -1,0 +1,273 @@
+/*
+ * Plugin Editor
+ * @description: Forms and displays for Datanodes & Python images
+ * 
+ */
+
+$form-label-width: 145px;
+
+.form-table td {
+  vertical-align: top;
+}
+
+.form-label {
+  @extend .dashboard-form__label;
+  padding: 0;
+
+  @include media-breakpoint-up("md") {
+    width: $form-label-width;
+    text-align: right;
+  }
+}
+
+.form-value {
+  flex-grow: 1;
+
+  @include media-breakpoint-up("md") {
+    width: 100%;
+    padding-bottom: 10px;
+    float: none;
+  }
+}
+
+.form-row {
+  @extend .dashboard-form__group;
+  @extend .dashboard-form__group--inline;
+}
+
+.btn-wrapper--no-label {
+  @extend .dashboard-form__group;
+  @extend .dashboard-form__group--inline;
+
+  margin-top: 1em;
+  margin-bottom: 1em;
+
+  @include media-breakpoint-up("md") {
+    // Simulate label to align buttons with inputs
+    &::before {
+      content: "";
+      display: block;
+      width: $form-label-width;
+      min-width: 20%;
+    }
+  }
+}
+
+input.table-row-value {
+  min-width: 150px;
+  width: 90%;
+  margin: 0px;
+}
+
+.sub-table {
+  margin-bottom: 3px;
+  text-align-last: left;
+}
+
+.sub-table th,
+.sub-table td {
+  padding: 0.25em;
+  border: none;
+  vertical-align: middle;
+}
+
+.form-table-value-subtable {
+  max-height: 110px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 2px solid #b7b7b7;
+  width: calc(39vw + 15px);
+  min-width: 407px;
+  float: left;
+}
+
+td.form-table-value > input[type="checkbox"] {
+  height: 15px;
+  margin-top: 7px;
+}
+
+.table-row-operation > i {
+  cursor: pointer;
+}
+
+ul.board-toolbar {
+  padding: 0px;
+  margin: 0px;
+  text-transform: uppercase;
+  font-size: fs("2xs");
+}
+
+ul.board-toolbar.vertical {
+  display: inline-block;
+}
+
+.board-toolbar li,
+label.board-toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.5em;
+  padding: 1em 0.5em;
+  border-radius: br("8");
+  background-color: var(--active-color);
+  color: var(--active-color-text);
+  transition: var(--default-transition);
+  cursor: pointer;
+
+  @include media-breakpoint-up("md") {
+    max-width: 94px;
+    margin-top: 0;
+    margin-left: 0.5em;
+  }
+
+  &:hover {
+    background-color: var(--active-color-text);
+    color: var(--active-color);
+  }
+}
+
+.board-toolbar.vertical li {
+  float: none;
+}
+
+.board-toolbar li label {
+  cursor: pointer;
+  font-size: fs("2xs");
+  line-height: 1;
+}
+
+.setting-description {
+  font-size: fs("2xs");
+  text-shadow: none;
+  color: rgb(var(--text-color-rgb) / 0.6);
+  margin-top: 2px;
+  margin-bottom: 5px;
+  max-width: 900px;
+  width: calc(100% - 1em);
+  line-height: 1.5em;
+  text-transform: none;
+  padding-right: 10px;
+
+  @include media-breakpoint-up("md") {
+    width: 80%;
+  }
+}
+
+.calculated-setting-row {
+  display: flex;
+  flex-direction: column;
+  height: 220px;
+
+  @include media-breakpoint-up("md") {
+    margin: 5px 0;
+  }
+}
+
+.codemirror-wrapper {
+  width: calc(100% - 1em);
+
+  @include media-breakpoint-up("md") {
+    width: 80%;
+  }
+}
+
+.codemirror-wrapper__top {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+
+  @include media-breakpoint-up("md") {
+    justify-content: flex-end;
+    margin: 0.5em 0 0.25em;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    text-transform: uppercase;
+    font-size: fs("xs");
+
+    @include media-breakpoint-up("md") {
+      padding: 0.25em 0.5em;
+    }
+
+    &:hover {
+      background-color: var(--active-color);
+      color: var(--active-color-text);
+    }
+  }
+}
+
+.codemirror-wrapper__content {
+  position: relative;
+  flex-grow: 1;
+
+  .CodeMirror {
+    position: absolute; // A bit hacky but prevents overflowing width inside flex parent
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+textarea.calculated-value-input {
+  max-width: 900px;
+  padding: 4px 6px;
+  height: 100px;
+  resize: none;
+  white-space: nowrap;
+  overflow: auto;
+  z-index: 3000;
+  float: left;
+  min-height: 70px;
+  width: 78%;
+}
+
+ul.datasource-input-suffix {
+  margin-left: 409px;
+}
+
+.form-label .board-toolbar li {
+  float: right;
+}
+
+.styled-select select {
+  width: 80%;
+  max-width: 900px;
+}
+
+.form-value input[type="checkbox"] {
+  margin-top: 8px;
+}
+
+.form-value input,
+.form-value select,
+.form-value textarea {
+  width: calc(100% - 1em);
+
+  @include media-breakpoint-up("md") {
+    width: 80%;
+  }
+}
+
+// Errors in JSEditor
+
+.lint-error {
+  padding: 2px 5px 3px;
+  background: var(--danger-color-text);
+  border: 1px solid var(--danger-color);
+  font-family: var(--font-family-mono);
+  font-size: 70%;
+  color: var(--danger-color);
+}
+
+.lint-error-icon {
+  margin-right: 7px;
+  padding: 0 3px;
+  border-radius: br("full");
+  background-color: var(--danger-color);
+  color: var(--danger-color-text);
+  font-weight: fw("bold");
+}

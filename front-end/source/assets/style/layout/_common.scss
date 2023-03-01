@@ -1,0 +1,25 @@
+/*
+ * Common layout rules
+ * @description: Rules that are used in Studio (editor or view) AND runtime
+ * 
+ */
+
+// Overrides all container rules
+.container {
+  width: 100%;
+  padding: 0;
+}
+
+// Appearance of draggable widgets
+div[id*='WidgetContainer'],
+div[id*='div-for-ng-gauge'] {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.dropperR {
+  @extend %widget-preview-wrapper;
+  background-color: var(--widget-color-0);
+  @include make-row();
+  @extend .no-gutters;
+}

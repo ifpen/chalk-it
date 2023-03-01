@@ -1,0 +1,92 @@
+/*
+ * Login page
+ * @description: Login, Reset password, new password and registration forms
+ * 
+ */
+
+// Wrapper
+.login__wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto;
+  padding-top: 5%;
+}
+
+// Logo
+.login__avatar {
+  display: inline-block;
+  width: 170px;
+  height: 100%;
+  margin-bottom: 1.25rem;
+}
+
+// Form wrapper
+.login__section {
+  position: relative;
+  margin: 0 auto;
+  padding: 25px 0 0;
+  max-width: 400px;
+  width: 100%;
+  min-width: 280px;
+  text-align: center;
+}
+
+// Links and buttons
+.login__section a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+.login__section a:hover,
+.login__section .btn-default:hover {
+  text-decoration: underline;
+}
+
+// Titles
+.login__section h1 {
+  letter-spacing: -0.05em;
+  margin-bottom: 30px;
+}
+
+.login__section h1:before,
+.login__section h1:after {
+  content: "";
+  height: 1px;
+  position: absolute;
+  top: 10px;
+  width: 20%;
+}
+
+.login__section h1:after {
+  background: currentColor;
+  right: 0;
+}
+
+.login__section h1:before {
+  background: currentColor;
+  left: 0;
+}
+
+// Secondary action: login, register or forgot password links
+.login__secondary-action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin: 1em 0;
+}
+
+// Submit button
+.login__section .btn {
+  width: 13em;
+  margin-top: 1em;
+  justify-content: center;
+}
+
+// Footer
+.login__footer {
+  padding: 40px 0;
+  text-align: center;
+}

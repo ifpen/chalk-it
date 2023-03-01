@@ -1,0 +1,13 @@
+/* 
+ * File that will be injected for Runtime build
+ * 
+ */
+
+// Base file
+@import './style.scss';
+
+// Components
+@import './components/runtime-toolbar';
+
+// Utils
+@import './utils';

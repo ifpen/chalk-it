@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "version": "2.600.8461",
+    "date": "Wed Mar 01 2023 17:34:01 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": "Untitled",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [],
+    "reIndexMap": [],
+    "noTopologicalSortAtSerialize": true
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1421,
+    "heightPx": 616,
+    "scrollWidthPx": 1421,
+    "scrollHeightPx": 616,
+    "widthVw": 85.86102719033232,
+    "heightVh": 76.80798004987531,
+    "scrollWidthVw": 85.86102719033232,
+    "scrollHeightVh": 76.80798004987531,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "#ffffff",
+    "theme": "default"
+  },
+  "dashboard": {},
+  "connections": {},
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

@@ -1,0 +1,50 @@
+/*
+ * Export messages
+ * @description: List messages
+ * Used in exportdownloadPage.html
+ * 
+ */
+
+ul.messages {
+  padding: 0;
+  list-style: none;
+}
+
+ul.messages li,
+.tasks li {
+  border-bottom: 1px dotted #e6e6e6;
+  padding: 8px 0;
+}
+
+ul.messages li img.avatar,
+img.avatar {
+  display: inline-block;
+  float: left;
+  height: 32px;
+  width: 32px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  padding-left: 90px;
+  padding-right: 90px;
+  border-radius: br("1");
+  /*background: #f7f7f7;
+    border: 1px solid #e6e6e6;*/
+}
+
+ul.messages li .message_date {
+  float: right;
+  text-align: right;
+}
+
+ul.messages li .message_wrapper {
+  margin-left: 50px;
+  margin-right: 40px;
+}
+
+ul.messages li .message_wrapper h4.heading {
+  font-weight: fw("semi");
+  margin: 0;
+  cursor: pointer;
+  margin-bottom: 10px;
+  line-height: 100%;
+}

@@ -1,0 +1,66 @@
+/*
+ * Sidebar
+ * @description: Wraps main navigation (outside of project)
+ * 
+ */
+
+.sidebar {
+  max-width: 17em;
+  background: var(--surface-a);
+}
+
+.sidebar__brand {
+  margin-bottom: 2em;
+  padding: 0.5em 1em;
+  width: 100%;
+
+  .brand__placeholder {
+    background-image: var(--main-logo-url);
+  }
+}
+
+.sidebar__menu {
+  padding: 1em 0.8125em;
+
+  input[class*="--search"]:focus {
+    + i {
+      color: var(--active-color-text);
+    }
+  }
+}
+
+.sidebar__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  margin-top: 2em;
+}
+
+.sidebar__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.sidebar__list a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+  padding: 0.5em 0.5em 0.5em 1em;
+  border-radius: br("8");
+  line-height: 2.5em;
+  color: inherit;
+  text-decoration: none;
+
+  &:active,
+  &:visited {
+    color: inherit;
+  }
+
+  &:hover,
+  &.active {
+    background-color: var(--active-color);
+    color: var(--active-color-text);
+  }
+}

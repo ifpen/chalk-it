@@ -1,0 +1,46 @@
+/*
+ * Cards widgets 
+ * @description: For widgets like KPI
+ * 
+ */
+
+.card-mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.card-mt-0 {
+  margin-top: 0 !important;
+}
+
+.card-value {
+  margin-top: 0.75rem !important;
+  padding-top: 0.375rem !important;
+}
+
+.card-kpi {
+  border: none;
+  -webkit-box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+
+.card-body {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1.5rem;
+}
+
+.card-shadow {
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+
+.card-kpi-container {
+  cursor: inherit;
+  width: inherit;
+  height: inherit;
+  display: table-cell;
+  flex-direction: column;
+  vertical-align: middle;
+  justify-content: center;
+}

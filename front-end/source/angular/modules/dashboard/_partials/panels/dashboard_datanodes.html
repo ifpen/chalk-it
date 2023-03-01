@@ -1,0 +1,260 @@
+<div class="btn__new">
+    <button ng-click="newDataNode()" class="btn btn-circle"
+        title="Create a new dataNode and add it to the dataNodes list" ng-show="!editorView.checkboxModelView">
+        <span class="icon__container">
+            <i class="basic icn-add"></i>
+        </span>
+        New
+    </button>
+</div>
+
+<div ng-if="xDashFullVersion" class="btn__help">
+    <button ng-click="openFileData('server');" class="btn btn-circle" title="Load dataNodes from xdsjson file"
+        ng-show="!editorView.checkboxModelView">
+        <span class="icon__container alt">
+            <i class="basic icn-folder"></i>
+        </span>
+        Open
+    </button>
+</div>
+<div class="datanode__wrap--info">
+    <p>{{filtredNodes}} dataNodes</p>
+    <div class="datanode__wrap--info__right">
+        <button class="btn btn-circle-mini" ng-click="getUniqTypes();isFilterOpen = !isFilterOpen">
+            <i class="basic icn-filters"></i>
+        </button>
+        <div class="filters open" style="max-width: 16.5em;" ng-init="!isFilterOpen" ng-show="isFilterOpen">
+            <div class="filters__section">
+                <!--<div class="filters__section__title">Filter by Connexion:</div>
+                <ul class="tags__list">
+                    <li toggle-class="active" ng-click="filterByConnection(true,$event.currentTarget)"><i class="basic icn-tag"></i>Singleton Nodes</li>
+                    <li toggle-class="active" ng-click="filterByConnection(false,$event.currentTarget)"><i class="basic icn-tag"></i>Connected Nodes</li>
+                </ul>-->
+                <div class="filters__section__title">Filter by Type:</div>
+                <ul class="tags__list">
+                    <li toggle-class="active" ng-repeat="type in uniqGraphNodesTypes"
+                        ng-click="filterByType(type,$event.currentTarget)"><i class="basic icn-tag"></i>{{type}}</li>
+                </ul>
+            </div>
+            <div class="filters__footer" style="margin-top: 1rem;">
+                <button clear-toggle-class="active" class="btn btn-rounded-fill cancel"
+                    ng-click="resetNodesFilters($event);">Reset</button>
+                <button class="btn btn-rounded-fill primary" ng-click="isFilterOpen = !isFilterOpen">Validate</button>
+            </div>
+        </div>
+
+        <button id="isDataSortNavOpen" class="btn btn-circle-mini"
+            ng-click="isDataSortNavOpen=!isDataSortNavOpen;isFilterOpen=false;" ng-init="isDataSortNavOpen">
+            <i class="basic icn-sorting"></i>
+        </button>
+        <ul class="dashboard-dropdown" style="padding:1em 0.75em" ng-class="{visible:isDataSortNavOpen}">
+            <form name="myForm">
+                <li><label style="cursor: pointer;">
+                        <input type="radio" ng-model="editorView.sortValue"
+                            ng-click="sortNodes('typeA');isDataSortNavOpen=false;" value="typeA">
+                        Type in ascending order
+                    </label>
+                </li>
+                <li><label style="cursor: pointer;">
+                        <input type="radio" ng-model="editorView.sortValue"
+                            ng-click="sortNodes('typeD');isDataSortNavOpen=false;" value="typeD">
+                        Type in descending order
+                    </label>
+                </li>
+                <li><label style="cursor: pointer;">
+                        <input type="radio" ng-model="editorView.sortValue"
+                            ng-click="sortNodes('nameA');isDataSortNavOpen=false;" value="nameA">
+                        Name in ascending order
+                    </label>
+                </li>
+                <li><label style="cursor: pointer;">
+                        <input type="radio" ng-model="editorView.sortValue"
+                            ng-click="sortNodes('nameD');isDataSortNavOpen=false;" value="nameD">
+                        Name in descending order
+                    </label>
+                </li>
+                <li><label style="cursor: pointer;">
+                        <input type="radio" ng-model="editorView.sortValue"
+                            ng-click="sortNodes('statusA');isDataSortNavOpen=false;" value="statusA">
+                        Status in ascending order
+                    </label>
+                </li>
+                <li><label style="cursor: pointer;">
+                        <input type="radio" ng-model="editorView.sortValue"
+                            ng-click="sortNodes('statusD');isDataSortNavOpen=false;" value="statusD">
+                        Status in descending order
+                    </label>
+                </li>
+                <li><label style="cursor: pointer;">
+                        <input type="radio" ng-model="editorView.sortValue"
+                            ng-click="sortNodes('lastUpdateA');isDataSortNavOpen=false;" value="lastUpdateA">
+                        Last update in ascending order
+                    </label>
+                </li>
+                <li><label style="cursor: pointer;">
+                        <input type="radio" ng-model="editorView.sortValue"
+                            ng-click="sortNodes('lastUpdateD');isDataSortNavOpen=false;" value="lastUpdateD">
+                        Last update in descending order
+                    </label>
+                </li>
+            </form>
+        </ul>
+
+        <!-- <ul class="dashboard-dropdown" ng-class="{visible:isDataListNavOpen}" js-actions>
+            <li>
+                <a title="Type in ascending order" ng-click="isDataListNavOpen=false;">
+                    <i class="basic icn-upload"></i>Type in ascending order
+                </a>
+            </li>
+            <li>
+                <a title="Type in descending order" ng-click="isDataListNavOpen=false;">
+                    <i class="basic icn-download"></i>Type in descending order
+                </a>
+            </li>
+            <li>
+                <a title="Name in ascending order" ng-click="isDataListNavOpen=false;">
+                    <i class="basic icn-sorting"></i>Name in ascending order
+                </a>
+            </li>
+            <li>
+                <a title="Name in descending order" ng-click="isDataListNavOpen=false;">
+                    <i class="basic icn-stop"></i>Name in descending order
+                </a>
+            </li>
+            <li>
+                <a title="Status in ascending order" ng-click="isDataListNavOpen=false;">
+                    <i class="basic icn-delete"></i>Status in ascending order
+                </a>
+            </li>
+            <li>
+                <a title="Status in descending order" ng-click="isDataListNavOpen=false;">
+                    <i class="basic icn-remove"></i>Status in descending order
+                </a>
+            </li>
+            <li>
+                <a title="Last update in ascending order" ng-click="isDataListNavOpen=false;">
+                    <i class="basic icn-delete"></i>Last update in ascending order
+                </a>
+            </li>
+            <li>
+                <a title="Last update in descending order" ng-click="isDataListNavOpen=false;">
+                    <i class="basic icn-remove"></i>Last update in descending order
+                </a>
+            </li>
+        </ul> -->
+        <button id="dataListDisplay" class="btn btn-icon-only"
+            ng-click="isDataListNavOpen=!isDataListNavOpen;isFilterOpen=false;" ng-init="isDataListNavOpen">
+            <i class="basic icn-more"></i>
+        </button>
+
+        <ul class="dashboard-dropdown" ng-class="{visible:isDataListNavOpen}">
+            <li ng-if="xDashFullVersion">
+                <a title="Load dataNodes from xdjson file" ng-click="openFileData('local');isDataListNavOpen=false;">
+                    <i class="basic icn-upload"></i>Load dataNodes from xdjson
+                </a>
+            </li>
+            <li ng-if="xDashFullVersion">
+                <a title="Save dataNodes to xdjson file" ng-click="saveJson();isDataListNavOpen=false;">
+                    <i class="basic icn-download"></i> Save dataNodes to xdjson
+                </a>
+            </li>
+            <li>
+                <a title="Stop schedulinig progress" ng-click="stopSchedule();isDataListNavOpen=false;">
+                    <i class="basic icn-stop"></i>Stop scheduler
+                </a>
+            </li>
+            <li>
+                <a title="Clear dataNodes list" ng-click="clearAllData();isDataListNavOpen=false;">
+                    <i class="basic icn-delete"></i>Clear dataNodes list
+                </a>
+            </li>
+            <li>
+                <a title="Remove unused dataNodes" ng-click="RemoveUnusedDatanodes();isDataListNavOpen=false;">
+                    <i class="basic icn-remove"></i>Remove unused dataNodes
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="dashboard-form">
+    <div class="dashboard-form__input-wrapper">
+        <input type="search" placeholder="Search DataNode" class="dashboard-form__input--search"
+            ng-change="applyDatanodeFilter()" ng-model="searchDatanodeByName">
+        <i class="basic icn-search"></i>
+    </div>
+</div>
+
+<div class="datanode__card" ng-class="{open:displayedShowIndex==$index}" ng-repeat="data in alldatanodes"
+    ng-if="!data.hide">
+    <div class="datanode__card--top">
+        <div class="datanode__card--top__flags">
+            <img title="{{data.type()}}" ng-src="{{data.iconType()}}"
+                onerror="this.src='source/assets/icon/datanodes/JSON_Variable.svg'">
+            <p ng-attr-title="{{data.name()}}">{{data.name()}}</p>
+            <ul class="tags__list">
+                <li title="DataNode status" ng-class="{'tag tag--error': data.status()==='Error', 
+                 'tag tag--pending':data.status()==='Pending',
+                 'tag tag--ok': (data.status()==='OK'|| data.status()==='Running'),
+                 'tag tag--none': data.status()==='None'}">
+                    {{data.status()}}
+                </li>
+            </ul>
+            <a ng-click="toggleDataNodeDisplay($index)"><i class="basic icn-miniarrowbottom"></i></a>
+        </div>
+        <div class="datanode__card--top__actions">
+            <div class="datanode__card--top__flags__update">Last update : {{data.last_updated()}}</div>
+            <ul class="datanode__card--top__actions--wrap">
+                <li><a title="See JSON result" ng-click="getDataNodeDetail(data)"><i class="basic icn-eye"></i></a></li>
+                <li><a title="Refresh dataNode" ng-click="refreshDataNode(data)"><i class="basic icn-refresh"></i></a>
+                </li>
+                <li><a title="Edit dataNode" ng-click="openDataNode(data);toggleDataNodeDisplay($index)"><i
+                            class="basic icn-edit"></i></a></li>
+                <li><a title="Show dataNodes dependency graph" ng-click="showDepGraph(data.name());"><i
+                            class="specific icn-graph"></i></a></li>
+                <li>
+                    <a id="dataNavDisplay" ng-click="toggleDataNavDisplay($index)"><i class="basic icn-more"></i></a>
+                    <ul class="dashboard-dropdown" ng-class="{visible:($index === displayedNavIndex)}">
+                        <li>
+                            <a title="Duplicate dataNode" ng-click="duplicateDataNode(data)">
+                                <i class="basic icn-duplicate"></i>Duplicate
+                            </a>
+                        </li>
+                        <li>
+                            <a title="Interrupt dataNode" ng-click="interruptDataNode(data)">
+                                <i class="basic icn-stop"></i>Interrupt
+                            </a>
+                        </li>
+                        <li>
+                            <a title="Download JSON result" ng-click="showDataNodeInfo(data)">
+                                <i class="basic icn-download"></i>Download JSON result
+                            </a>
+                        </li>
+                        <li>
+                            <a title="Delete dataNode" ng-click="deleteDataNode(data)">
+                                <i class="basic icn-delete"></i>Delete
+                            </a>
+                        </li>
+                        <li>
+                            <a title="Notifications" ng-click="getDataNodeDetailsAndNotifications(data)">
+                                <i class="basic icn-notifications"></i>Notification
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a title="See JSON result" ng-click="getDataNodeDetail(data)">
+                                <i class="basic icn-eye"></i>See
+                            </a>
+                        </li> -->
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="datanode__card--content">
+        <div class="datanode__card--content__graph">
+            <div class="css-treeview" style="background-color: #f8f8f8;user-select: text;">
+                <div ng-bind-html="beautifulStringFromHtml(data)">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
