@@ -11,7 +11,7 @@ Currently, Chalk'it allows to export and share standalone HTML apps with Python 
 ### Install
 
 ```sh
-pip install chalk-it
+pip install py-chalk-it
 ```
 
 ### Run
