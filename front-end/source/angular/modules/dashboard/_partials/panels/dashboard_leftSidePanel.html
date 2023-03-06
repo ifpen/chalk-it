@@ -54,14 +54,9 @@
 
 <div>
     <div ng-if="!xDashFullVersion && !isTemplateOpen" class="menu-sidebar-panel">
-        <ul>
-            <li id="li_menu-sidebar">
-                <a id="menu-sidebar" ng-click="setLeftContent('Menu')">
-                    <i class="basic {{ editorView.leftSidePanel.view ? 'icn-menu-close' : 'icn-menu-open' }}"></i>
-                </a>
-                <span class="tooltip">Sidebar</span>
-            </li>
-        </ul>
+        <a id="menu-sidebar" ng-click="setLeftContent('Menu')">
+            <i class="basic {{ editorView.leftSidePanel.view ? 'icn-menu-close' : 'icn-menu-open' }}"></i>
+        </a>
     </div>
     <div class="aside__panel--nav">
         <ul class="aside__panel--nav--wrapper ltr">
