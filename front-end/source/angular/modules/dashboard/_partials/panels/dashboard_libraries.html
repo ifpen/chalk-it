@@ -6,40 +6,32 @@
     </div>
 </div>
 
-<div style="user-select: text">
-    <div class="legend_wrapper" ng-class="{'active':displayedLibIndex== 1||displayedLibIndex== 0}" ng-click="toggleLibsDisplay(1);updateLibsList();">
-        <h2>Standard Libraries</h2>
+<div class="legend-wrapper" ng-class="{'active':displayedLibIndex== 1||displayedLibIndex== 0}" ng-click="toggleLibsDisplay(1);">
+    <h2>Standard Libraries</h2>
+</div>
+
+<div id="list_standard" class="toggle-wrapper" ng-class="{'open':displayedLibIndex== 1||displayedLibIndex== 0}">
+    <div class="toggle-wrapper__item" ng-repeat="standardLib in pyodideLibsObj.standardLibs | filter:searchLib | orderBy:sortByLoadStatus">
+        <label>
+            <input type="checkbox" id="{{standardLib.name}}_lib" name="standardLibs" ng-model="selectedLibs[standardLib.name]" ng-disabled="standardLib.loaded" />
+            <span>{{standardLib.name}}</span>
+        </label>
     </div>
+</div>
 
-    <ul id="list_standard" class="toggle_wrapper" ng-class="{'open':displayedLibIndex== 1||displayedLibIndex== 0}">
-        <div ng-repeat="standardLib in pyodideLibsObj.standardLibs | filter:searchLib | orderBy:sortByLoadStatus">
-            <li class="item_wrapper">
-                <label>
-                    <input type="checkbox" id="{{standardLib.name}}_lib" name="standard" ng-model="selectedLibs[standardLib.name]" ng-checked="standardLib.loaded" 
-                    ng-disabled="standardLib.loaded" />
-                    {{standardLib.name}}
-                </label>
-            </li>
-        </div>
-    </ul>
+<div class="legend-wrapper" ng-class="{'active':displayedLibIndex== 2||displayedLibIndex== 0}" ng-click="toggleLibsDisplay(2);">
+    <h2>Micropip Libraries</h2>
+</div>
 
-    <div class="legend_wrapper" ng-class="{'active':displayedLibIndex== 2||displayedLibIndex== 0}" ng-click="toggleLibsDisplay(2);updateLibsList();">
-        <h2>Micropip Libraries</h2>
+<div id="list_micropip" class="toggle-wrapper" ng-class="{'open':displayedLibIndex== 2||displayedLibIndex== 0}">
+    <div class="toggle-wrapper__item" ng-repeat="micropipLib in pyodideLibsObj.micropipLibs | filter:searchLib | orderBy:sortByLoadStatus">
+        <label>
+            <input type="checkbox" id="{{micropipLib.name}}_lib" name="micropipLibs" ng-model="selectedLibs[micropipLib.name]" ng-disabled="micropipLib.loaded" />
+            <span>{{micropipLib.name}}</span>
+        </label>
     </div>
+</div>
 
-    <ul id="list_micropip" class="toggle_wrapper" ng-class="{'open':displayedLibIndex== 2||displayedLibIndex== 0}">
-        <div ng-repeat="micropipLib in pyodideLibsObj.micropipLibs | filter:searchLib | orderBy:sortByLoadStatus">
-            <li class="item_wrapper">
-                <label>
-                    <input type="checkbox" id="{{micropipLib.name}}_lib" name="micropip" ng-model="selectedLibs[micropipLib.name]" ng-checked="micropipLib.loaded" 
-                    ng-disabled="micropipLib.loaded" />
-                    {{micropipLib.name}}
-                </label>
-            </li>
-        </div>
-    </ul>
-
-    <div class="btn_wrapper">
-        <button ng-click="loadPyodideLibs()" class="btn btn_load" title="Load libraries" ng-disabled="isSelectedLibsEmpty(selectedLibs)">Load</button>
-    </div>
+<div class="btn-wrapper">
+    <button ng-click="loadPyodideLibs()" class="btn btn-wrapper__load" title="Load libraries" ng-disabled="isSelectedLibsEmpty(selectedLibs)">Load</button>
 </div>

@@ -15,7 +15,7 @@ server_url = f"http://localhost:{run_port}"
 
 dir_home = os.path.expanduser("~")
 
-dir_settings_path = os.path.join(dir_home, '.xdash')
+dir_settings_path = os.path.join(dir_home, '.chalk-it')
 settings_file_path = os.path.join(dir_settings_path, 'settings.json')
 
 if (DEBUG):

@@ -34,7 +34,8 @@ var xdash = (function() {
 
         $rootScope.currentPrjDirty = "";
 
-        $rootScope.resetPyodideLibs(); // GHI for issue #189
+        const $scopeLibs = angular.element(document.getElementById("library__wrap")).scope();
+        $scopeLibs.resetPyodideLibs(); // GHI for issue #189
         layoutMgr.resetDashBgColor(); // GHI for issue #228
         layoutMgr.resetDashboardTheme();
     }
