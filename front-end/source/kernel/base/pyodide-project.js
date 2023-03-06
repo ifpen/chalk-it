@@ -13,8 +13,8 @@ var pyodideLib = (function () {
     function serialize() {
         const { standardLibs, micropipLibs } = pyodideManager.getProjectLibs();
         const libsObj = {
-            'pyodideStandard': standardLibs,
-            'pyodideMicropip': micropipLibs
+            'pyodideStandard': standardLibs.sort(),
+            'pyodideMicropip': micropipLibs.sort()
         };
 
         return libsObj;

@@ -593,93 +593,101 @@ aside {
 }
 
 // Libraries - Left aside
-.legend_wrapper {
-  display: inline-block;
-  width: 100%;
-  margin: 20px 0px 0px 0px;
-  padding: 10px 0px;
-  border-radius: br("4");
+.legend-wrapper {
+  margin-top: spacer('12');
+  padding: spacer('6') 0;
+  border-radius: br('4');
   background-color: var(--surface-c);
   color: var(--text-color);
-  text-align: left;
   cursor: pointer;
+
+  &.active {
+    border-radius: br('4') br('4') 0 0;
+
+    h2:after {
+      content: "\2212";
+    }
+  }
+
+  &.active,
+  &:hover {
+    background-color: var(--active-color-text);
+    color: var(--active-color);
+  }
+
+  h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: spacer('2') spacer('12');
+    font-size: fs('md');
+
+    &:after {
+      content: "\002B";
+      font-size: fs('2xl');
+    }
+  }
 }
 
-.legend_wrapper.active {
-  border-radius: br("4") br("4") 0 0;
-}
-
-.legend_wrapper.active,
-.legend_wrapper:hover {
-  background-color: var(--active-color-text);
-  color: var(--active-color);
-}
-
-.legend_wrapper > h2 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5em;
-  margin: 0.5em 1em;
-  font-size: fs("md");
-}
-
-.legend_wrapper > h2:after {
-  content: "\002B";
-  font-size: fs("2xl");
-  font-weight: fw("bold");
-}
-
-.legend_wrapper.active > h2:after {
-  content: "\2212";
-}
-
-.toggle_wrapper {
-  max-height: 50vh;
-  border-radius: 0 0 br("4") br("4");
-  background-color: var(--surface-a);
+.toggle-wrapper {
   color: var(--text-color);
+  background-color: var(--surface-a);
+  border-radius: 0 0 br('4') br('4');
+  max-height: 50vh; 
   overflow-y: scroll;
+
+  &:not(.open) {
+    display: none;
+  }
 }
 
-.toggle_wrapper .open {
-  display: block;
+.toggle-wrapper__item {
+  
+  label {
+    display: block;
+    font-weight: fw('medium');
+    padding-left: spacer('12');
+    line-height: 2;
+    border-top: 1px solid;
+    border-color: var(--surface-b);
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--active-color);
+      color: var(--active-color-text);
+    }
+
+    &:has(input[type='checkbox']:checked) {
+      background-color: var(--active-color);
+      color: var(--active-color-text);
+    }
+
+    &:has(input[type='checkbox']:disabled) {
+      color: var(--placeholder-color);
+      cursor: default;
+
+      input[type='checkbox'] {
+        display:none;
+      }
+    }
+
+    span {
+      padding: 0 spacer('2');
+    }
+  }
 }
 
-.toggle_wrapper:not(.open) {
-  display: none;
-}
-
-.item_wrapper {
-  padding: 0.1rem 1.2rem;
-}
-
-.item_wrapper:hover {
-  background-color: var(--active-color);
-  color: var(--active-color-text);
-}
-
-.item_wrapper > input {
-  vertical-align: bottom;
-  position: relative;
-}
-
-.item_wrapper > label {
-  display: block;
-  line-height: 2;
-}
-
-.btn_wrapper {
-  padding: 1.8em;
+.btn-wrapper {
+  margin: spacer('12');
   text-align: center;
 }
 
-.btn_load {
+.btn-wrapper__load {
   @extend .btn-rounded-fill;
   @extend .primary;
 }
 
-// Sidebar - List projects: for open source version
+// Sidebar - Open list projects: for open source version
 .list-project {
   background: var(--surface-b);
   border-radius: br('8');
@@ -722,11 +730,11 @@ aside {
       }
     }
   
-    input[type="radio"] {
+    input[type='radio'] {
       display: none;
     }
   
-    input[type="radio"]:checked + .list-project__container__label {
+    input[type='radio']:checked + .list-project__container__label {
       background-color: var(--primary-hover-color);
       color: var(--primary-color-text);
     }
@@ -973,16 +981,17 @@ aside {
   margin-bottom: spacer('16');
 
   a { 
-    font-size: fs("lg"); 
-    padding: 0.4em 0.9em; 
-    border-radius: 0 br("full") br("full") 0; 
-    background-color: var(--primary-color);
+    display: flex;
+    font-size: fs('lg'); 
+    padding: spacer('3') spacer('8'); 
+    border-radius: 0 br('full') br('full') 0; 
     color: var(--primary-color-text);
+    background-color: var(--primary-color);
     filter: var(--panel-filter);
 
     &:hover {
-      background-color: var(--active-color);
       color: var(--active-color-text);
+      background-color: var(--active-color);
     }
   }
 }

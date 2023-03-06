@@ -9,7 +9,7 @@
 
 angular.module('modules.dashboard')
     .controller('DashboardLibrariesController', ['$scope', '$rootScope',
-        function($scope, $rootScope) {
+        function ($scope, $rootScope) {
 
             const self = this;
 
@@ -22,39 +22,27 @@ angular.module('modules.dashboard')
                 micropipLibs: microPipAvailablePyodideLibs.sort()
             }
 
-            /*--------------addLoadState--------------*/
-            self.initLoadState = function(listLibs) {
-                const loadedLibs = { 
-                    standardLibs: [], 
-                    micropipLibs: [] 
+            /*--------------_initLoadState--------------*/
+            function _initLoadState(libList) {
+                return {
+                    standardLibs: libList.standardLibs.map(name => ({ name, loaded: false })),
+                    micropipLibs: libList.micropipLibs.map(name => ({ name, loaded: false }))
                 };
-                for (const key in listLibs) {
-                    listLibs[key].forEach(lib => {
-                        loadedLibs[key].push({
-                            name: lib,
-                            loaded: false
-                        });
-                    });
-                }
-                return loadedLibs;
             };
 
-            $scope.pyodideLibsObj = self.initLoadState(listPyodideLibs);
+            $scope.pyodideLibsObj = _initLoadState(listPyodideLibs);
 
             /*--------------updateLibsList--------------*/
-            $scope.updateLibsList = function() {
+            $scope.updateLibsList = function () {
                 const projectLibs = pyodideManager.getProjectLibs();
                 const listLibs = $scope.pyodideLibsObj;
                 for (const key in listLibs) {
-                    listLibs[key].forEach((lib, index) => {
-                        if (projectLibs[key].indexOf(lib.name) !== -1) {
-                            lib.loaded = true;
-                        } else {
-                            lib.loaded = false;
-                        }
-                    });
+                    listLibs[key] = listLibs[key].map(lib => ({
+                        ...lib,
+                        loaded: projectLibs[key].includes(lib.name),
+                    }));
                 }
-                self.scrollToTop();
+                _scrollToTop();
             };
 
             // ├────────────────────────────────────────────────────────────────────┤ \\
@@ -62,29 +50,22 @@ angular.module('modules.dashboard')
             // ├────────────────────────────────────────────────────────────────────┤ \\
             /*--------------selectedLibs--------------*/
             $scope.selectedLibs = {};
-            $scope.isSelectedLibsEmpty = function(selectedLibs) {
-                let result = true;
-                angular.forEach(selectedLibs, (selected, lib) => {
-                    if (selected)
-                        result = false;
-                });
-                return result;
-             }
-            
+            $scope.isSelectedLibsEmpty = function (selectedLibs) {
+                return !Object.values(selectedLibs).some(selected => selected);
+            }
+
             /*--------------loadPyodideLibs--------------*/
-            $scope.loadPyodideLibs = async function() {
-                const libsToLoad = { 
-                    standardLibs: [], 
-                    micropipLibs: [] 
+            $scope.loadPyodideLibs = async function () {
+                const libsToLoad = {
+                    standardLibs: [],
+                    micropipLibs: []
                 };
-                angular.forEach($scope.selectedLibs, (selected, lib) => {
-                    const libraryType = $("#" + lib + "_lib").attr("name");
-                    switch (libraryType) {
-                        case "standard": libsToLoad.standardLibs.push(lib); break;
-                        case "micropip": libsToLoad.micropipLibs.push(lib); break;
-                        default: break;
+                for (const [lib, selected] of Object.entries($scope.selectedLibs)) {
+                    if (selected) {
+                        const libraryType = $("#" + lib + "_lib").attr("name");
+                        libsToLoad[libraryType].push(lib);
                     }
-                });
+                }
                 await pyodideManager.loadPyodideLibs(libsToLoad);
                 $scope.updateLibsList(); // update display
                 $scope.selectedLibs = {};
@@ -95,44 +76,39 @@ angular.module('modules.dashboard')
             // |                      Reset Pyodide Libraries                       | \\
             // ├────────────────────────────────────────────────────────────────────┤ \\
             /*--------------resetPyodideLibs--------------*/
-            $rootScope.resetPyodideLibs = function() {
+            $scope.resetPyodideLibs = function () {
                 pyodideManager.resetProjectLibs();
-                $scope.pyodideLibsObj = self.initLoadState(listPyodideLibs);
+                $scope.pyodideLibsObj = _initLoadState(listPyodideLibs);
                 $("#inputSearchLib").val("");
                 $scope.displayedLibIndex = -1;
                 if (!_.isUndefined(self.searchCtrl))
                     self.searchCtrl.searchLib = "";
             };
+
             // ├────────────────────────────────────────────────────────────────────┤ \\
             // |                         Filters & Display                          | \\
             // ├────────────────────────────────────────────────────────────────────┤ \\
             /*--------------sortByLoadStatus--------------*/
-            $scope.sortByLoadStatus = function(lib) {
-                if (lib.loaded)
-                    return -1;
-                return lib.name;
+            $scope.sortByLoadStatus = function (lib) {
+                return lib.loaded ? -1 : lib.name;
             };
+
             /*--------------searchLibsDisplay--------------*/
-            $scope.searchLibsDisplay = function() {
+            $scope.searchLibsDisplay = function () {
                 self.searchCtrl = this;
-                const value = $("#inputSearchLib").val();
-                if (!value) {
-                    $scope.displayedLibIndex = -1;
-                } else {
-                    $scope.displayedLibIndex = 0;
-                }
+                const inputValue = $("#inputSearchLib").val();
+                $scope.displayedLibIndex = inputValue ? 0 : -1;
             };
+
             /*--------------toggleLibsDisplay--------------*/
             $scope.displayedLibIndex = -1;
-            $scope.toggleLibsDisplay = function(index) {
-                if (index == $scope.displayedLibIndex)
-                    $scope.displayedLibIndex = -1;
-                else
-                    $scope.displayedLibIndex = index;
+            $scope.toggleLibsDisplay = function (index) {
+                $scope.displayedLibIndex = (index === $scope.displayedLibIndex) ? -1 : index;
             };
+
             /*--------------scrollToTop--------------*/
-            self.scrollToTop = function() {
-                $("#list_micropip, #list_standard").each(function() {
+            function _scrollToTop() {
+                $("#list_micropip, #list_standard").each(function () {
                     this.scrollTo({
                         top: 0,
                         left: 0,
