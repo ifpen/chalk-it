@@ -408,7 +408,7 @@ angular
 
             /*----------  Open template btn ----------------*/
             $scope.openTemplateToNewTab = function(projectName) {
-                let templUrl = xDashConfig.urlBase + '?template=' + escape(projectName);
+                let templUrl = xDashConfig.urlBase + 'index.html?template=' + escape(projectName);
                 var tab = window.open(templUrl, "_blank");
                 tab.focus();
             };
