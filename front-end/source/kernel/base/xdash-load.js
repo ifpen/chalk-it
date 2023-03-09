@@ -272,7 +272,6 @@ var angularModule = angular.module('xCLOUD', [
                                 // ///
                             } else {
                                 // This section will not be executed when opening the guided tour project
-                                // If isDiscoverDone == true : the routing is done within head.js
                                 if ( $rootScope.origin !== "projectEdition") {
                                     $rootScope.toggleMenuOptionDisplay('discover');
                                     $state.go("modules.discover.layout");

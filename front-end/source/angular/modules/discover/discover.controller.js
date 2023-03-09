@@ -44,7 +44,7 @@ angular
         $scope.getConfigDiscover(); 
 
         $scope.startGuidedTour = function() {
-            const projectName = $rootScope.xDashFullVersion ? "live-demo" : "live-demo-js"; //
+            const projectName = $rootScope.xDashFullVersion ? "live-demo" : "live-demo-py";
             if (!_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== "" &&
                 $rootScope.currentProject.name !== projectName) {
                 swal({
