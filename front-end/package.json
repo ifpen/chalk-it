@@ -1,6 +1,6 @@
 {
   "name": "xdash",
-  "version": "1.40.0",
+  "version": "2.61.0",
   "description": "xDash front-end build tools",
   "author": "Chalk'it Team",
   "updater": "AR (migration to gulp v4 && use node >= 12.x.x)",
@@ -13,7 +13,6 @@
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "babel-cli": "^6.26.0",
-    "browser-sync": "^2.26.14",
     "codeceptjs": "^1.4.6",
     "del": "^5.1.0",
     "eslint-html-reporter": "^0.7.4",
@@ -41,14 +40,15 @@
     "gulp-uglify-es": "^2.0.0",
     "gulp-usemin": "^0.3.30",
     "imagemin-pngquant": "^9.0.2",
-    "jshint": "^2.12.0",
     "prettier": "2.8.2",
     "purify-css": "^1.2.5",
     "sass": "^1.56.1"
   },
   "dependencies": {
+    "browser-sync": "^2.28.3",
     "cors": "^2.8.5",
     "dotenv": "^5.0.1",
+    "jshint": "^2.13.6",
     "jsoneditor": "^9.5.7",
     "marked": "^4.1.0",
     "mime-types": "^2.1.30",
