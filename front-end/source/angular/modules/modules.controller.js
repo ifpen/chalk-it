@@ -59,8 +59,6 @@ angular
                 tags: $rootScope.listAvailablesTags
             };
 
-            $rootScope.isTemplateOpen = window.location.href.includes('template');
-
             $rootScope.getAvailableState = function () {
                 if ($rootScope.xDashFullVersion) {
                     $rootScope.toggleMenuOptionDisplay('recent');
@@ -163,9 +161,20 @@ angular
                         $rootScope.currentProject = xdash.initMeta();
                         $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
                         if (!$rootScope.xDashFullVersion) {
-                            if ($rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) {
-                                const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
-                                sidebarController.newProject();
+                            if ($rootScope.isDiscoverDone) {
+                                if (!$rootScope.isTemplateOpen) {
+                                    const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
+                                    sidebarController.newProject();
+                                }
+                                $state.go("modules.discover.layout").then(() => {
+                                    $rootScope.toggleMenuOptionDisplay('none');
+                                    $state.go("modules", {});
+                                });
+                            } else if ($rootScope.isTemplateOpen) {
+                                $state.go("modules.discover.layout").then(() => {
+                                    $rootScope.toggleMenuOptionDisplay('none');
+                                    $state.go("modules", {});
+                                });
                             }
                             freeboardUIInst.showLoadingIndicator(false);
                         }
