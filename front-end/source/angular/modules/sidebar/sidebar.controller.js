@@ -21,7 +21,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
     };
 
     /*---------- New project ----------------*/
-    $rootScope.newProject = function () {
+    $scope.newProject = function () {
       if (!$rootScope.moduleOpened) {
         return;
       }
