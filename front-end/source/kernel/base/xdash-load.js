@@ -178,9 +178,10 @@ var angularModule = angular.module('xCLOUD', [
         cfpLoadingBarProvider.includeBar = true; // Show the bar.
     }])
     .config(['$urlRouterProvider', function ($urlRouterProvider) {
-        $urlRouterProvider.otherwise(function (injector) {
+        $urlRouterProvider.otherwise(async function (injector) {
             injector.invoke(['$state', '$rootScope', 'SessionUser', 'ApisFactory', async function ($state, $rootScope, SessionUser, ApisFactory) {
 
+                //
                 $rootScope.isTemplateOpen = window.location.href.includes('template');
                 $rootScope.isDiscoverDone = false;
                 $rootScope.getConfigDiscover = async function () {
@@ -207,7 +208,13 @@ var angularModule = angular.module('xCLOUD', [
                     }
                 };
 
-                await $rootScope.getConfigDiscover();
+                if ($rootScope.xDashFullVersion) {
+                    $rootScope.getConfigDiscover();
+                } else {
+                    await $rootScope.getConfigDiscover();
+                }
+                
+                /////
 
                 if (!$rootScope.UserProfile) {
                     if (SessionUser.getUserId() && SessionUser.getUserName() && $rootScope.xDashFullVersion) {

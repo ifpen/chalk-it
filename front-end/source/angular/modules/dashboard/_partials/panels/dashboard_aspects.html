@@ -115,10 +115,10 @@
     </button>
   </div>
 </div>
-<div ng-if="xDashFullVersion" class="aspect__row">
+<div ng-if="xDashFullVersion && !xDashFullVersion" class="aspect__row">
   <div class="aspect__col-left"><i class="aspects icn-dashboard-color" aria-hidden="true"></i>Theme</div>
 </div>
-<div ng-if="xDashFullVersion" class="aspect__row theme">
+<div ng-if="xDashFullVersion && !xDashFullVersion" class="aspect__row theme">
   <button class="theme__toggler" ng-click="isThemeOpen = !isThemeOpen" aria-label="Current theme">
     <div id="current-theme" class="theme__item" data-theme="default">
       <div class="theme__color-box" title="Text color"></div>
