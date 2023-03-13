@@ -815,7 +815,7 @@ PluginEditor = function(jsEditor) {
                     let ul = $('<ul></ul>').appendTo(datanodeWrap);
 
                     for (let j = 0; j < typeOptGp[labels[i].name].length; j++) {
-                        a = $('<a title="Open Javascript dataNode" ng-click="openDataNodeTypePlugin(\'' + typeOptGp[labels[i].name][j].type + '\')"></a>').appendTo($('<li></li>').appendTo(ul));
+                        a = $('<a title="Open ' + labels[i].name + ' : ' + typeOptGp[labels[i].name][j].name + ' dataNode" ng-click="openDataNodeTypePlugin(\'' + typeOptGp[labels[i].name][j].type + '\')"></a>').appendTo($('<li></li>').appendTo(ul));
                         a.text(typeOptGp[labels[i].name][j].name);
                         $('<i class="basic icn-miniarrowright"></i>').appendTo(a);
                     }
