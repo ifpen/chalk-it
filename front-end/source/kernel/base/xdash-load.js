@@ -178,7 +178,7 @@ var angularModule = angular.module('xCLOUD', [
         cfpLoadingBarProvider.includeBar = true; // Show the bar.
     }])
     .config(['$urlRouterProvider', function ($urlRouterProvider) {
-        $urlRouterProvider.otherwise(function (injector) {
+        $urlRouterProvider.otherwise(async function (injector) {
             injector.invoke(['$state', '$rootScope', 'SessionUser', 'ApisFactory', async function ($state, $rootScope, SessionUser, ApisFactory) {
 
                 $rootScope.isTemplateOpen = window.location.href.includes('template');
