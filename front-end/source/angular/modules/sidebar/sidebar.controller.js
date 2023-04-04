@@ -67,9 +67,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
     };
 
     function _newPrj(scopeDash) {
-      if ($rootScope.xDashFullVersion || (!$rootScope.xDashFullVersion && !$rootScope.isDiscoverDone)) {
-        $state.go('modules', {});
-      }
+      $state.go('modules', {});
       ManagePrjService.clearForNewProject();
       $rootScope.currentInfoProject = angular.copy($rootScope.currentProject);
       scopeDash.info.tmp = angular.copy($rootScope.currentProject);

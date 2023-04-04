@@ -114,16 +114,7 @@ var angularModule = angular.module('xCLOUD', [
                                 $rootScope.UserProfile = {};
                                 $rootScope.UserProfile.userId = -1;
                                 $rootScope.UserProfile.userName = "Guest";
-
-                                if ($rootScope.isDiscoverDone) {
-                                    window.location.href = "";
-                                    $state.go('modules', {});
-                                } else {
-                                    $state.go("modules.discover.layout").then(() => {
-                                        $rootScope.toggleMenuOptionDisplay('discover');
-                                    });
-                                }
-
+                                $state.transitionTo('modules', {});
                                 event.preventDefault();
                             } else {
                                 $rootScope.UserProfile = {};
@@ -187,9 +178,11 @@ var angularModule = angular.module('xCLOUD', [
         cfpLoadingBarProvider.includeBar = true; // Show the bar.
     }])
     .config(['$urlRouterProvider', function ($urlRouterProvider) {
-        $urlRouterProvider.otherwise(function (injector) {
+        $urlRouterProvider.otherwise(async function (injector) {
             injector.invoke(['$state', '$rootScope', 'SessionUser', 'ApisFactory', async function ($state, $rootScope, SessionUser, ApisFactory) {
 
+                /////
+                $rootScope.isTemplateOpen = window.location.href.includes('template');
                 $rootScope.isDiscoverDone = false;
                 $rootScope.getConfigDiscover = async function () {
                     const settings = await ApisFactory.getSettings();
@@ -215,7 +208,13 @@ var angularModule = angular.module('xCLOUD', [
                     }
                 };
 
-                await $rootScope.getConfigDiscover();
+                if ($rootScope.xDashFullVersion) {
+                    $rootScope.getConfigDiscover();
+                } else {
+                    await $rootScope.getConfigDiscover();
+                }
+                
+                /////
 
                 if (!$rootScope.UserProfile) {
                     if (SessionUser.getUserId() && SessionUser.getUserName() && $rootScope.xDashFullVersion) {
@@ -224,18 +223,14 @@ var angularModule = angular.module('xCLOUD', [
                         $rootScope.origin = "reload"; //AEF
                         $state.go('modules');
                     } else {
+                        // This section is executed when reloading the dashboard
                         if (!$rootScope.xDashFullVersion) { // no authentication needed
                             $rootScope.UserProfile = {};
                             $rootScope.UserProfile.userId = -1;
                             $rootScope.UserProfile.userName = "Guest";
-                            if ($rootScope.isDiscoverDone) {
-                                window.location.href = "";
-                                $state.go('modules', {});
-                            } else {
-                                $state.go("modules.discover.layout").then(() => {
-                                    $rootScope.toggleMenuOptionDisplay('discover');
-                                });
-                            }
+                            $state.go("modules.discover.layout").then(() => {
+                                $rootScope.toggleMenuOptionDisplay('discover');
+                            });
                         } else {
                             $state.go('login.user');
                         }
@@ -283,12 +278,8 @@ var angularModule = angular.module('xCLOUD', [
                                 // });
                                 // ///
                             } else {
-                                if ($rootScope.isDiscoverDone || $rootScope.origin === "projectEdition" || $rootScope.isTemplateOpen) {
-                                    $state.go("modules.discover.layout").then(() => {
-                                        $rootScope.toggleMenuOptionDisplay('none');
-                                        $state.go("modules", {});
-                                    });
-                                } else {
+                                // This section will not be executed when opening the guided tour project
+                                if ( $rootScope.origin !== "projectEdition") {
                                     $rootScope.toggleMenuOptionDisplay('discover');
                                     $state.go("modules.discover.layout");
                                 }

@@ -13,237 +13,217 @@
   margin: auto;
   background-size: contain;
   background-repeat: no-repeat;
-}
 
-.widgets.icn-address-autocompletion {
-  background-image: url("../icon/widgets/address-autocompletion.svg");
-}
+  &.icn-address-autocompletion {
+    @include icon-background('address-autocompletion.svg', 'widget');
+  }
 
-.widgets.icn-arch-circular-gauge {
-  background-image: url("../icon/widgets/arch-circular-gauge.svg");
-}
+  &.icn-arch-circular-gauge {
+    @include icon-background('arch-circular-gauge.svg', 'widget');
+  }
 
-.widgets.icn-board {
-  background-image: url("../icon/widgets/board.svg");
-}
-.widgets.icn-board::before {
-  content: none; // Same name as xdash-icons' "board" icon
-}
+  &.icn-board {
+    @include icon-background('board.svg', 'widget');
+  }
 
-.widgets.icn-button {
-  background-image: url("../icon/widgets/button.svg");
-}
+  &.icn-board::before {
+    content: none; // Same name as xdash-icons' "board" icon
+  }
 
-.widgets.icn-calendar {
-  background-image: url("../icon/widgets/calendar.svg");
-}
+  &.icn-button {
+    @include icon-background('button.svg', 'widget');
+  }
 
-.widgets.icn-camera {
-  background-image: url("../icon/widgets/camera.svg");
-}
+  &.icn-calendar {
+    @include icon-background('calendar.svg', 'widget');
+  }
 
-.widgets.icn-checkbox {
-  background-image: url("../icon/widgets/checkbox.svg");
-}
+  &.icn-camera {
+    @include icon-background('camera.svg', 'widget');
+  }
 
-.widgets.icn-clock {
-  background-image: url("../icon/widgets/clock.svg");
-}
+  &.icn-checkbox {
+    @include icon-background('checkbox.svg', 'widget');
+  }
 
-.widgets.icn-compass {
-  background-image: url("../icon/widgets/compass.svg");
-}
+  &.icn-clock {
+    @include icon-background('clock.svg', 'widget');
+  }
 
-.widgets.icn-date-range-calendar {
-  background-image: url("../icon/widgets/date-range-calendar.svg");
-}
+  &.icn-compass {
+    @include icon-background('compass.svg', 'widget');
+  }
 
-.widgets.icn-year-calendar {
-    background-image: url("../icon/widgets/year-calendar.svg");
-}
+  &.icn-date-range-calendar {
+    @include icon-background('date-range-calendar.svg', 'widget');
+  }
 
-.widgets.icn-double-slider {
-  background-image: url("../icon/widgets/double-slider.svg");
-}
+  &.icn-year-calendar {
+    @include icon-background('year-calendar.svg', 'widget');
+  }
 
-.widgets.icn-echarts-generic-javascript {
-  background-image: url("../icon/widgets/echarts-generic-javascript.svg");
-}
+  &.icn-double-slider {
+    @include icon-background('double-slider.svg', 'widget');
+  }
 
-.widgets.icn-export-to-file {
-  background-image: url("../icon/widgets/export-to-file.svg");
-}
+  &.icn-echarts-generic-javascript {
+    @include icon-background('echarts-generic-javascript.svg', 'widget');
+  }
 
-.widgets.icn-full-circular-gauge {
-  background-image: url("../icon/widgets/full-circular-gauge.svg");
-}
+  &.icn-export-to-file {
+    @include icon-background('export-to-file.svg', 'widget');
+  }
 
-.widgets.icn-generic-html {
-  background-image: url("../icon/widgets/generic-html.svg");
-}
+  &.icn-full-circular-gauge {
+    @include icon-background('full-circular-gauge.svg', 'widget');
+  }
 
-.widgets.icn-horizontal-slider {
-  background-image: url("../icon/widgets/horizontal-slider.svg");
-}
+  &.icn-generic-html {
+    @include icon-background('generic-html.svg', 'widget');
+  }
 
-.widgets.icn-image {
-  background-image: url("../icon/widgets/image.svg");
-}
+  &.icn-horizontal-slider {
+    @include icon-background('horizontal-slider.svg', 'widget');
+  }
 
-.widgets.icn-info {
-  background-image: url("../icon/widgets/info.svg");
-}
-.widgets.icn-info::before {
-  content: none; // Same name as xdash-icons' "info" icon
-}
+  &.icn-image {
+    @include icon-background('image.svg', 'widget');
+  }
 
-.widgets.icn-kpi {
-  background-image: url("../icon/widgets/kpi.svg");
-}
+  &.icn-info {
+    @include icon-background('info.svg', 'widget');
+  }
 
-.widgets.icn-kpi-advanced {
-  background-image: url("../icon/widgets/kpi-advanced.svg");
-}
+  &.icn-info::before {
+    content: none; // Same name as xdash-icons' "info" icon
+  }
 
-.widgets.icn-label {
-  background-image: url("../icon/widgets/label.svg");
-}
+  &.icn-kpi {
+    @include icon-background('kpi.svg', 'widget');
+  }
 
-.widgets.icn-list {
-  background-image: url("../icon/widgets/list.svg");
-}
+  &.icn-kpi-advanced {
+    @include icon-background('kpi-advanced.svg', 'widget');
+  }
 
-.widgets.icn-load-file {
-  background-image: url("../icon/widgets/load-file.svg");
-}
+  &.icn-label {
+    @include icon-background('label.svg', 'widget');
+  }
 
-.widgets.icn-map {
-  background-image: url("../icon/widgets/map.svg");
-}
+  &.icn-list {
+    @include icon-background('list.svg', 'widget');
+  }
 
-.widgets.icn-markdown {
-  background-image: url("../icon/widgets/markdown.svg");
-}
+  &.icn-load-file {
+    @include icon-background('load-file.svg', 'widget');
+  }
 
-.widgets.icn-matplolib-generic {
-  background-image: url("../icon/widgets/matplolib-generic.svg");
-}
+  &.icn-map {
+    @include icon-background('map.svg', 'widget');
+  }
 
-.widgets.icn-multi-select {
-  background-image: url("../icon/widgets/multi-select.svg");
-}
+  &.icn-folium {
+    @include icon-background('folium.svg', 'widget');
+  }
 
-.widgets.icn-multi-switch {
-  background-image: url("../icon/widgets/multi-switch.svg");
-}
 
-.widgets.icn-numeric-input {
-  background-image: url("../icon/widgets/numeric-input.svg");
-}
+  &.icn-markdown {
+    @include icon-background('markdown.svg', 'widget');
+  }
 
-.widgets.icn-plotly-3D {
-  background-image: url("../icon/widgets/plotly-3D.svg");
-}
+  &.icn-matplolib-generic {
+    @include icon-background('matplolib-generic.svg', 'widget');
+  }
 
-.widgets.icn-plotly-bar {
-  background-image: url("../icon/widgets/plotly-bar.svg");
-}
+  &.icn-multi-select {
+    @include icon-background('multi-select.svg', 'widget');
+  }
 
-.widgets.icn-plotly-javascript-generic {
-  background-image: url("../icon/widgets/plotly-generic.svg");
-}
+  &.icn-multi-switch {
+    @include icon-background('multi-switch.svg', 'widget');
+  }
 
-.widgets.icn-plotly-line {
-  background-image: url("../icon/widgets/plotly-line.svg");
-}
+  &.icn-numeric-input {
+    @include icon-background('numeric-input.svg', 'widget');
+  }
 
-.widgets.icn-plotly-pie {
-  background-image: url("../icon/widgets/plotly-pie.svg");
-}
+  &.icn-plotly-3D {
+    @include icon-background('plotly-3D.svg', 'widget');
+  }
 
-.widgets.icn-plotly-python-generic {
-  background-image: url("../icon/widgets/plotly-python-generic.svg");
-}
+  &.icn-plotly-bar {
+    @include icon-background('plotly-bar.svg', 'widget');
+  }
 
-.widgets.icn-plotly-real-time {
-  background-image: url("../icon/widgets/plotly-real-time.svg");
-}
+  &.icn-plotly-javascript-generic {
+    @include icon-background('plotly-javascript-generic.svg', 'widget');
+  }
 
-.widgets.icn-progress-bar {
-  background-image: url("../icon/widgets/progress-bar.svg");
-}
+  &.icn-plotly-line {
+    @include icon-background('plotly-line.svg', 'widget');
+  }
 
-.widgets.icn-range {
-  background-image: url("../icon/widgets/range.svg");
-}
+  &.icn-plotly-pie {
+    @include icon-background('plotly-pie.svg', 'widget');
+  }
 
-.widgets.icn-select {
-  background-image: url("../icon/widgets/select.svg");
-}
+  &.icn-plotly-python-generic {
+    @include icon-background('plotly-python-generic.svg', 'widget');
+  }
 
-.widgets.icn-semi-circular-gauge {
-  background-image: url("../icon/widgets/semi-circular-gauge.svg");
-}
+  &.icn-plotly-real-time {
+    @include icon-background('plotly-real-time.svg', 'widget');
+  }
 
-.widgets.icn-simple-meter {
-  background-image: url("../icon/widgets/simple-meter.svg");
-}
+  &.icn-progress-bar {
+    @include icon-background('progress-bar.svg', 'widget');
+  }
 
-.widgets.icn-status {
-  background-image: url("../icon/widgets/status.svg");
-}
+  &.icn-range {
+    @include icon-background('range.svg', 'widget');
+  }
 
-.widgets.icn-switch {
-  background-image: url("../icon/widgets/switch.svg");
-}
+  &.icn-select {
+    @include icon-background('select.svg', 'widget');
+  }
 
-.widgets.icn-tachometer {
-  background-image: url("../icon/widgets/tachometer.svg");
-}
+  &.icn-semi-circular-gauge {
+    @include icon-background('semi-circular-gauge.svg', 'widget');
+  }
 
-.widgets.icn-text-input {
-  background-image: url("../icon/widgets/text-input.svg");
-}
+  &.icn-simple-meter {
+    @include icon-background('simple-meter.svg', 'widget');
+  }
 
-.widgets.icn-value {
-  background-image: url("../icon/widgets/value.svg");
-}
+  &.icn-status {
+    @include icon-background('status.svg', 'widget');
+  }
 
-.widgets.icn-vega-generic-javascript {
-  background-image: url("../icon/widgets/vega-generic.svg");
-}
+  &.icn-switch {
+    @include icon-background('switch.svg', 'widget');
+  }
 
-.widgets.icn-vertical-slider {
-  background-image: url("../icon/widgets/vertical-slider.svg");
-}
+  &.icn-tachometer {
+    @include icon-background('tachometer.svg', 'widget');
+  }
 
-.widgets.icn-wind-circle {
-  background-image: url("../icon/widgets/wind-circle.svg");
-}
+  &.icn-text-input {
+    @include icon-background('text-input.svg', 'widget');
+  }
 
-/* Unused Widgets icons */
-/*
-.widgets.icn-echarts-generic {
-    background-image: url('../icon/widgets/echarts-generic.svg');
-}
+  &.icn-value {
+    @include icon-background('value.svg', 'widget');
+  }
 
-.widgets.icn-execute-datanode {
-    background-image: url('../icon/widgets/execute-datanode.svg');
-}
+  &.icn-vega-generic-javascript {
+    @include icon-background('vega-generic-javascript.svg', 'widget');
+  }
 
-.widgets.icn-numeric-display {
-    background-image: url('../icon/widgets/numeric-display.svg');
-}
+  &.icn-vertical-slider {
+    @include icon-background('vertical-slider.svg', 'widget');
+  }
 
-.widgets.icn-plotly-generic {
-    background-image: url('../icon/widgets/plotly-generic.svg');
+  &.icn-wind-circle {
+    @include icon-background('wind-circle.svg', 'widget');
+  }
 }
-
-.widgets.icn-text-display {
-    background-image: url('../icon/widgets/text-display.svg');
-}
-
-.widgets.icn-vega-generic {
-    background-image: url('../icon/widgets/vega-generic.svg');
-}
-*/

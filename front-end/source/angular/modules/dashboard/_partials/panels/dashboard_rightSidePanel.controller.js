@@ -626,6 +626,7 @@ angular.module('modules.editor')
         function _resetEditorContent() {
             _resetWidgetParamEditor();
             vm.widgetConnection = jQuery.extend(true, {}, vm.originalWidgetConnection);
+            vm.currentWidgetConnection = jQuery.extend(true, {}, vm.originalWidgetConnection);
     
             vm.dirty = false;
         }

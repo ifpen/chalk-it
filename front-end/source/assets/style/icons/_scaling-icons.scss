@@ -1,0 +1,46 @@
+/*
+ * Scaling Methods Icons
+ * @desription: Set all CSS rules for scaling methods icons
+ * Scaling methods icons are used in the export setting modal window, in the scaling method fields. They help the user to quickly identify the method to select.
+ * As they are multi colored icons, they cannot be used in icon fonts and cannot be merged with xdash-icons.
+ * 
+ */
+
+.scaling-method {
+  display: block;
+  width: 13rem;
+  height: 13rem;
+  margin: 0 auto spacer('10');
+  border: 1px solid;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  &.icn-adjust-to-full-width {
+    background-image: url("../icon/scaling/adjust-to-full-width.svg");
+  }
+
+  &.icn-ajust-to-target-window {
+    background-image: url("../icon/scaling/ajust-to-target-window.svg");
+  }
+  
+  &.icn-custom-navigation {
+    background-image: url("../icon/scaling/custom-navigation.svg");
+  }
+  
+  &.icn-keep-original-width {
+    background-image: url("../icon/scaling/keep-original-width.svg");
+  }
+  
+  &.icn-project-to-target-window {
+    background-image: url("../icon/scaling/project-to-target-window.svg");
+  }
+  
+  &.icn-row-to-page {
+    background-image: url("../icon/scaling/row-to-page.svg");
+  }
+  
+  &.icn-row-to-tab {
+    background-image: url("../icon/scaling/row-to-tab.svg");
+  }
+}
+

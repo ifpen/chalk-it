@@ -6,6 +6,11 @@
 
 $aside-panel-max-width: 25em;
 $aside-panel-nav-width: 65px;
+
+// Use it to display the shadow on the side panel
+$aside-panel-nav-width-l: 70px;
+
+$aside-panel-nav-height: 705px;
 $aside-panel-gap: 0.5em;
 
 aside {
@@ -78,6 +83,26 @@ aside {
     }
   }
 
+  @media (max-height: #{$aside-panel-nav-height}) {
+    &#panel--left {
+      display: flex;
+      align-items: start;
+      overflow: auto;
+      margin-left: calc(#{$aside-panel-max-width * -1} + calc(#{$aside-panel-nav-width-l} + #{$aside-panel-gap}));
+
+      /* Hide the scroll bar */
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      &.open {
+        .aside__panel--content--left {
+          height: auto;
+        }
+      }
+    }
+  }
+
   &#panel--right {
     max-width: $aside-panel-max-width;
     margin-right: calc(#{$aside-panel-max-width * -1} + calc(#{$aside-panel-nav-width} + #{$aside-panel-gap}));
@@ -103,6 +128,14 @@ aside {
   }
 }
 
+@media (max-height: #{$aside-panel-nav-height}) {
+  /* Spacers for left side panel nav */
+  .aside__panel--nav--left {
+    margin-right: spacer('3');
+    padding-top: spacer('24');
+  }
+}
+
 // Inside the panel
 .aside__panel--content {
   width: 100%;
@@ -121,6 +154,12 @@ aside {
 
   .btn-circle {
     margin: 2em 0;
+  }
+}
+
+@media (max-height: #{$aside-panel-nav-height}) {
+  .aside__panel--content--left {
+    min-height: #{$aside-panel-nav-height};
   }
 }
 
@@ -593,7 +632,12 @@ aside {
 }
 
 // Libraries - Left aside
-.legend-wrapper {
+.lib-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.lib-container__label-wrapper {
   margin-top: spacer('12');
   padding: spacer('6') 0;
   border-radius: br('4');
@@ -629,7 +673,7 @@ aside {
   }
 }
 
-.toggle-wrapper {
+.lib-container__list-wrapper {
   color: var(--text-color);
   background-color: var(--surface-a);
   border-radius: 0 0 br('4') br('4');
@@ -641,7 +685,7 @@ aside {
   }
 }
 
-.toggle-wrapper__item {
+.lib-container__list-wrapper__item {
   
   label {
     display: block;
@@ -677,68 +721,9 @@ aside {
   }
 }
 
-.btn-wrapper {
+.lib-container__btn-wrapper {
   margin: spacer('12');
   text-align: center;
-}
-
-.btn-wrapper__load {
-  @extend .btn-rounded-fill;
-  @extend .primary;
-}
-
-// Sidebar - Open list projects: for open source version
-.list-project {
-  background: var(--surface-b);
-  border-radius: br('8');
-
-  .list-project__container {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    line-height: 2;
-  
-    .list-project__container__label {
-      font-size: fs('md');
-      font-weight: fw('medium');
-      text-transform: capitalize;
-      cursor: pointer;
-      border-top: 1px solid;
-      border-bottom: 1px solid;
-      border-color: var(--surface-a);
-  
-      &:hover,
-      &:active {
-        background-color: var(--active-color);
-        color: var(--active-color-text);
-      }
-    }
-
-    &:first-child {
-      .list-project__container__label {
-        border-top-left-radius: br('8');
-        border-top-right-radius: br('8');
-        border-top: none;
-      }
-    }
-
-    &:last-child {
-      .list-project__container__label {
-        border-bottom-left-radius: br('8');
-        border-bottom-right-radius: br('8');
-        border-bottom: none;
-      }
-    }
-  
-    input[type='radio'] {
-      display: none;
-    }
-  
-    input[type='radio']:checked + .list-project__container__label {
-      background-color: var(--primary-hover-color);
-      color: var(--primary-color-text);
-    }
-  }
 }
 
 // Aspects - Left aside
@@ -840,6 +825,35 @@ aside {
   }
 }
 
+// Help - Left aside
+.help-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.help-container__actions-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  margin-bottom: spacer('3');
+
+  i {
+    padding-left: spacer('3');
+  }
+}
+
+.help-container__iframe-wrapper {
+  iframe {
+    height: 72vh; 
+    width: 100%;
+  }
+}
+
+.help-container__btn-wrapper {
+  margin-top: spacer('8');
+  text-align: center;
+}
+
 // Datanodes connections - Right aside
 .dataconnection__row {
   display: flex;
@@ -922,12 +936,20 @@ aside {
   &.rtl {
     span.tooltip {
       right: calc(100% + 0.25em);
+
+      @media (max-height: #{$aside-panel-nav-height}) {
+        display: none;
+      }
     }
   }
 
   &.ltr {
     span.tooltip {
       left: calc(100% + 0.25em);
+
+      @media (max-height: #{$aside-panel-nav-height}) {
+        display: none;
+      }
     }
   }
 
@@ -976,8 +998,8 @@ aside {
   }
 }
 
-// Button open/close menu sidebar
-.menu-sidebar-panel {
+// Button open/close menu sidebar  (for opensource version)
+.aside__panel--nav--btn-menu {
   margin-bottom: spacer('16');
 
   a { 

@@ -60,10 +60,11 @@ angular.module('modules.dashboard')
                     standardLibs: [],
                     micropipLibs: []
                 };
+                const libTypes = Object.keys(listPyodideLibs);      
                 for (const [lib, selected] of Object.entries($scope.selectedLibs)) {
                     if (selected) {
-                        const libraryType = $("#" + lib + "_lib").attr("name");
-                        libsToLoad[libraryType].push(lib);
+                        const libType = libTypes.find(key => listPyodideLibs[key].includes(lib)) || "Unknown library type";
+                        libsToLoad[libType].push(lib);
                     }
                 }
                 await pyodideManager.loadPyodideLibs(libsToLoad);
@@ -79,10 +80,7 @@ angular.module('modules.dashboard')
             $scope.resetPyodideLibs = function () {
                 pyodideManager.resetProjectLibs();
                 $scope.pyodideLibsObj = _initLoadState(listPyodideLibs);
-                $("#inputSearchLib").val("");
-                $scope.displayedLibIndex = -1;
-                if (!_.isUndefined(self.searchCtrl))
-                    self.searchCtrl.searchLib = "";
+                $scope.clearSearchLib();
             };
 
             // ├────────────────────────────────────────────────────────────────────┤ \\
@@ -105,6 +103,14 @@ angular.module('modules.dashboard')
             $scope.toggleLibsDisplay = function (index) {
                 $scope.displayedLibIndex = (index === $scope.displayedLibIndex) ? -1 : index;
             };
+
+            /*--------------scrollToTop--------------*/
+            $scope.clearSearchLib = function () {
+                $("#inputSearchLib").val("");
+                $scope.displayedLibIndex = -1;
+                if (!_.isUndefined(self.searchCtrl))
+                    self.searchCtrl.searchLib = "";
+            }
 
             /*--------------scrollToTop--------------*/
             function _scrollToTop() {

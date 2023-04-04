@@ -678,6 +678,18 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     };
 
     // +--------------------------------------------------------------------¦ \\
+    // |                           Table widget                             | \\
+    // +--------------------------------------------------------------------¦ \\
+    this.valueAlign = function () {
+        // Backward compatibility
+        if (_.isUndefined(modelsParameters[idInstance].valueAlign)) {
+            modelsParameters[idInstance].valueAlign = "left";
+        }
+        const textAlign = ' text-align: ' + modelsParameters[idInstance].valueAlign + '; ';
+        return textAlign;
+    }
+
+    // +--------------------------------------------------------------------¦ \\
     // |                     Scoring & Gauges widgets                       | \\
     // +--------------------------------------------------------------------¦ \\
     this.thicknessBackgroundColor = function () {

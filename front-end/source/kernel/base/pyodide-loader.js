@@ -62,7 +62,9 @@ var pyodideManager = (function () {
         await _addProjectLoadedLibs(pyodideLibs);
 
         const $scopeLibs = angular.element(document.getElementById("library__wrap")).scope();
-        $scopeLibs.updateLibsList();
+        if (!_.isUndefined($scopeLibs)) {
+            $scopeLibs.updateLibsList();
+        }
         
         if (self.isLoading) {
              _endLoadingIndicator();

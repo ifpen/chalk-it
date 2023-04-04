@@ -71,6 +71,7 @@ modelsParameters.flatUiTable = {
     "striped": true,
     "valueColor": "var(--widget-table-value-color)",
     "valueFontFamily": "var(--widget-font-family)",
+    "ValueAlign": "left",
     "bordered": true,
     "noBorder": false,
     "editableCols": "[]"
@@ -882,8 +883,8 @@ function flatUiComplexWidgetsPluginClass() {
                         tableContent = tableContent + '<thead><tr>';
                         for (var j = 0; j < val[0].length; j++) {
                             tableContent = tableContent +
-                                '<th><span style="' + this.valueColor() + this.valueFontFamily() +
-                                ' font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)"><b>' +
+                                '<th style="' + this.valueAlign() + '"><span style="' + this.valueColor() + this.valueFontFamily() +
+                                ' font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw);"><b>' +
                                 val[0][j] + '</b></span></th>';
                         }
                         tableContent = tableContent + '</tr></thead>';
@@ -906,9 +907,8 @@ function flatUiComplexWidgetsPluginClass() {
                                     cursorEditable = 'style="cursor: cell;"';
                                 }
                             }
-                            tableContent = tableContent + '<td ' + cursorEditable +
-                                ' data-editable="' + isEditable +
-                                '"><span style="' + this.valueColor() + this.valueFontFamily() +
+                            tableContent = tableContent + '<td ' + cursorEditable + ' data-editable="' + isEditable +
+                                '" style="' + this.valueAlign() + '"><span style="' + this.valueColor() + this.valueFontFamily() +
                                 ' font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)">' +
                                 val[i][j] + '</span></td>';
                         }

@@ -147,7 +147,7 @@ if (!(xDashConfig.xDashBasicVersion == "true")) {
             // **display_name** : The pretty name that will be used for display purposes for this plugin. If the name is not defined, type_name will be used instead.
             display_name: "Geolocation",
             // **icon_type** : icon of the datanode type displayed in data list
-            icon_type: "Geolocation.svg",
+            icon_type: "geolocation.svg",
             // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
             description: "A geolocation plugin",
             // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.

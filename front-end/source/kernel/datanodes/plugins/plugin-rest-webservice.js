@@ -620,7 +620,7 @@
         type_name: "REST_web-service_from_datasource",
         display_name: "REST Web-service",
         // **icon_type** : icon of the datanode type displayed in data list
-        icon_type: "WebServiceDataSource.svg",
+        icon_type: "web-service-datasource.svg",
         description: "REST Web-service from dataNode workspace",
         settings: [{
             name: "url",
@@ -756,7 +756,7 @@
             type_name: "REST_web-service_from_JSON_editor",
             display_name: "REST Web-service from JSON editor",
             // **icon_type** : icon of the datanode type displayed in data list
-            icon_type: "WebServiceJsonEditor.svg",
+            icon_type: "web-service-json-editor.svg",
             description: "REST Web-service from JSON editor",
             settings: [{
                 name: "url",

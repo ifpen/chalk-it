@@ -11,8 +11,6 @@ angular.module('modules.dashboard')
     .controller('DashboardWdgtLibsController', ['$scope', '$rootScope', '$state',
         function($scope, $rootScope, $state) {
 
-
-
             //toggle window of widget lib 
             $scope.displayedWdgtIndex = 0;
             $scope.toggleWidgetLibDisplay = function(index) {
@@ -21,9 +19,5 @@ angular.module('modules.dashboard')
                 else
                     $scope.displayedWdgtIndex = index;
             };
-
-
-
-
         }
     ]);

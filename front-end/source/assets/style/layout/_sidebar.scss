@@ -64,3 +64,57 @@
     color: var(--active-color-text);
   }
 }
+
+// Open projects list (for open source version)
+.list-project {
+  background: var(--surface-b);
+  border-radius: br('8');
+}
+
+.list-project__container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  line-height: 2;
+
+  &:first-child {
+    .list-project__container__label {
+      border-top-left-radius: br('8');
+      border-top-right-radius: br('8');
+      border-top: none;
+    }
+  }
+
+  &:last-child {
+    .list-project__container__label {
+      border-bottom-left-radius: br('8');
+      border-bottom-right-radius: br('8');
+      border-bottom: none;
+    }
+  }
+
+  input[type='radio'] {
+    display: none;
+
+    &:checked + .list-project__container__label {
+      background-color: var(--primary-hover-color);
+      color: var(--primary-color-text);
+    }
+  }
+}
+
+.list-project__container__label {
+  font-size: fs('md');
+  font-weight: fw('medium');
+  text-transform: capitalize;
+  cursor: pointer;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-color: var(--surface-a);
+
+  &:hover,
+  &:active {
+    background-color: var(--active-color);
+    color: var(--active-color-text);
+  }
+}
