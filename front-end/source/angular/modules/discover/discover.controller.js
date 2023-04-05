@@ -41,7 +41,9 @@ angular
             }
         };
 
-        $scope.getConfigDiscover(); 
+        if ($rootScope.enableLocalServer) {
+            $scope.getConfigDiscover(); 
+        }
 
         $scope.startGuidedTour = function() {
             const projectName = "live-demo-py";
@@ -85,13 +87,15 @@ angular
         };
 
         $scope.saveConfigDiscover = async function(index) {
-            $scope.discoverSteps[index] = 1; // to validate step
-            const settings = await ApisFactory.getSettings();
-            if (!settings.help) {
-                settings.help = {};
+            if ($rootScope.enableLocalServer) {
+                $scope.discoverSteps[index] = 1; // to validate step
+                const settings = await ApisFactory.getSettings();
+                if (!settings.help) {
+                    settings.help = {};
+                }
+                settings.help.discoverSteps = $scope.discoverSteps;
+                ApisFactory.saveSettings(settings);
             }
-            settings.help.discoverSteps = $scope.discoverSteps;
-            ApisFactory.saveSettings(settings);
         };
 
         // For basic version

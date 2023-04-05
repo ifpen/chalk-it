@@ -4,7 +4,7 @@
 // │ Copyright © 2016-2023 IFPEN                                          │ \\
 // | Licensed under the Apache License, Version 2.0                       │ \\
 // ├──────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                    │ \\
+// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ghiles HIDEUR     │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
 
 angular.module('modules.sidebar').controller('SidebarController', [
@@ -22,6 +22,14 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- New project ----------------*/
     $scope.newProject = function () {
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+      
+      // If the local server is disabled
+      if (!$rootScope.xDashFullVersion && !$rootScope.enableLocalServer) {
+        _newPrj(scopeDash);
+        return;
+      }
+
       if (!$rootScope.moduleOpened) {
         return;
       }
@@ -31,9 +39,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
         $rootScope.toggleMenuOptionDisplay('none');
         return;
       }
-
-      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-
+      
       if (!_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== '') {
         swal(
           {
@@ -84,8 +90,10 @@ angular.module('modules.sidebar').controller('SidebarController', [
       } else {
         scopeDash.info.checkboxModelLater = true;
         scopeDash.info.openProjectInfo = false; // close display info
-        const $scopeInfoProject = angular.element(document.getElementById('info-project-ctrl')).scope();
-        $scopeInfoProject.saveInfoProject();
+        if (!$rootScope.enableLocalServer) {
+          const $scopeInfoProject = angular.element(document.getElementById('info-project-ctrl')).scope();
+          $scopeInfoProject.saveInfoProject();
+        }
       }
     }
 
@@ -154,5 +162,12 @@ angular.module('modules.sidebar').controller('SidebarController', [
       });
     }
 
+    /*---------- Import project from local ----------------*/
+    $scope.importFromLocal = function () {
+      $rootScope.origin = "openProject";
+      $rootScope.toggleMenuOptionDisplay('none');
+      $state.go("modules", {});
+      xdash.openFile('project', 'local');
+    };
   },
 ]);

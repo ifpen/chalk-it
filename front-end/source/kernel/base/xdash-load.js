@@ -40,7 +40,9 @@ var angularModule = angular.module('xCLOUD', [
         if ($rootScope.xDashFullVersion)
             $rootScope.urlCredits = xDashConfig.urlWebSite + 'terms-credits/Credits.html';
         else
-            $rootScope.urlCredits = xDashConfig.urlWebSite + '/blob/main/credits.html'
+            $rootScope.urlCredits = xDashConfig.urlWebSite + '/blob/main/credits.html';
+            
+        $rootScope.enableLocalServer = !(xDashConfig.disableLocalServer == "true");
 
         if ($rootScope.xDashFullVersion) {
             document.title = "Chalk'it - SaaS version";
@@ -160,7 +162,6 @@ var angularModule = angular.module('xCLOUD', [
                 cfpLoadingBar.complete();
                 $rootScope.isLoading = false;
             }, 10000);
-
         };
 
         $rootScope.loadingBarStop = function () {
@@ -181,7 +182,6 @@ var angularModule = angular.module('xCLOUD', [
         $urlRouterProvider.otherwise(async function (injector) {
             injector.invoke(['$state', '$rootScope', 'SessionUser', 'ApisFactory', async function ($state, $rootScope, SessionUser, ApisFactory) {
 
-                /////
                 $rootScope.isTemplateOpen = window.location.href.includes('template');
                 $rootScope.isDiscoverDone = false;
                 $rootScope.getConfigDiscover = async function () {
@@ -208,13 +208,13 @@ var angularModule = angular.module('xCLOUD', [
                     }
                 };
 
-                if ($rootScope.xDashFullVersion) {
-                    $rootScope.getConfigDiscover();
-                } else {
-                    await $rootScope.getConfigDiscover();
+                if ($rootScope.enableLocalServer) {
+                    if ($rootScope.xDashFullVersion) {
+                        $rootScope.getConfigDiscover();
+                    } else {
+                        await $rootScope.getConfigDiscover();
+                    }
                 }
-                
-                /////
 
                 if (!$rootScope.UserProfile) {
                     if (SessionUser.getUserId() && SessionUser.getUserName() && $rootScope.xDashFullVersion) {
@@ -276,7 +276,6 @@ var angularModule = angular.module('xCLOUD', [
                                 //         notice.remove();
                                 //     });
                                 // });
-                                // ///
                             } else {
                                 // This section will not be executed when opening the guided tour project
                                 if ( $rootScope.origin !== "projectEdition") {

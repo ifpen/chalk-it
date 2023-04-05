@@ -57,7 +57,7 @@
         Save <i class="gg-chevron-right"></i>
     </button>
 
-    <button ng-if="!xDashFullVersion" ng-disabled="isTemplateOpen || isLiveDemo" class="btn btn__see-more" ng-class="{hidden:editorView.checkboxModelView}" title="Save project" js-edit-mode ng-click="saveProjectToLocal();">
+    <button ng-if="!xDashFullVersion" ng-disabled="isTemplateOpen || isLiveDemo || !enableLocalServer" class="btn btn__see-more" ng-class="{hidden:editorView.checkboxModelView}" title="Save project" js-edit-mode ng-click="saveProjectToLocal();">
             <i class="basic icn-save" style="margin-right: 5px;"></i> Save <i class="gg-chevron-right"></i>
     </button>
 
