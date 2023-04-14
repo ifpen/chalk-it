@@ -68,7 +68,7 @@ angular
                     $rootScope.currentProject.name = name; //important here for Untitled
                     $("#projectName")[0].value = $rootScope.xDashFullVersion ? $rootScope.currentInfoProject.name : $rootScope.currentProject.name;
 
-                    if ($rootScope.enableLocalServer) {
+                    if ($rootScope.enableLocalServer || $rootScope.xDashFullVersion) {
                         fileManager.getFileListExtended('project', name, undefined, undefined, is_defaultOverwrite);
                     }
 

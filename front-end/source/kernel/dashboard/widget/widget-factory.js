@@ -11,8 +11,10 @@
 
 function widgetFactoryClass() {
 
-    const POSSIBLE_ANSI = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    const POSSIBLE_HINDI = "कखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसहक्षत्रज्ञ";
+    const POSSIBLE_ANSI = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; // to 62 possible values
+    const POSSIBLE_HINDI = "कखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसहक्षत्रज्ञ"; // Hindi chars
+    const POSSIBLE_DEVANAGARI = "अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह"; // Devanagari chars
+    const POSSIBLE_JAPANESE = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん"; // Japanese chars
 
     /**
      * Widget abstract factory
@@ -120,56 +122,34 @@ function widgetFactoryClass() {
         return [cln, div, targetDiv];
     }
 
-    // to 62 possible values
-    function makeid() {
-        var text = "";
-        text = POSSIBLE_ANSI.charAt(Math.floor(Math.random() * POSSIBLE_ANSI.length));
-        return text;
-    }
-
-    // Use Hindi chars
-    function makeidNext() {
-        var text = "";
-        text = POSSIBLE_HINDI.charAt(Math.floor(Math.random() * POSSIBLE_HINDI.length));
-        return text;
-    }
-
     /**
      * @description Creates unique instanceId (for edit, play and (se/dese)rialization)
      * @param {any} modelJsonId
      */
-    this.createUniqueInstanceId = function(modelJsonId) {
-        var bFoundIndex = true;
-        var instanceId;
-        var attempt = 0;
-        while ((bFoundIndex) && (attempt < POSSIBLE_ANSI.length)) {
-            var character = ".";
-            character = makeid();
-            instanceId = modelJsonId.toString() + character;
-            bFoundIndex = false;
-            for (var i = 0; i < widgetEditor.modelsId.length; i++) {
-                if (widgetEditor.modelsId[i] == instanceId) { // TODO : ask dashboard for unicity check
-                    bFoundIndex = true;
-                    break;
-                }
-            }
-            attempt++;
+    this.createUniqueInstanceId = function(modelJsonId) {       
+        const modelsIdLength = widgetEditor.modelsId.length;
+        const usedIds = new Set(widgetEditor.modelsId);
+        const makeid = charset => charset.charAt(Math.floor(Math.random() * charset.length));
+        const ids = [...POSSIBLE_ANSI, ...POSSIBLE_HINDI, ...POSSIBLE_DEVANAGARI, ...POSSIBLE_JAPANESE].map(character => modelJsonId + makeid(character));
+        const instanceId = ids.find(id => !usedIds.has(id));
+        if (!instanceId) {
+            // handle case where all possible IDs are taken
+            const notice = new PNotify({
+                title: "Annotation label",
+                text: "The number of label instances is reached",
+                type: "warning",
+                delay: 1800,
+                styling: "bootstrap3",
+            });
+            $('.ui-pnotify-container').on('click', function() {
+                notice.remove();
+            });
+
+            // TODO throw an error
+        } else {
+            usedIds.add(instanceId);
+            widgetEditor.modelsId[modelsIdLength] = instanceId;
         }
-        if (attempt == POSSIBLE_ANSI.length) {
-            bFoundIndex = true;
-            while (bFoundIndex) {
-                character = makeidNext(); // Use Hindi chars
-                instanceId = modelJsonId.toString() + character;
-                bFoundIndex = false;
-                for (var i = 0; i < widgetEditor.modelsId.length; i++) {
-                    if (widgetEditor.modelsId[i] == instanceId) { // TODO : ask dashboard for unicity check
-                        bFoundIndex = true;
-                        break;
-                    }
-                }
-            }
-        }
-        widgetEditor.modelsId[widgetEditor.modelsId.length] = instanceId; // TODO 
         return instanceId;
     }
 }
