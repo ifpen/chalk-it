@@ -23,52 +23,47 @@ angular.module('modules.sidebar').controller('SidebarController', [
     /*---------- New project ----------------*/
     $scope.newProject = function () {
       const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      
-      // If the local server is disabled
-      if (!$rootScope.xDashFullVersion && !$rootScope.enableLocalServer) {
-        _newPrj(scopeDash);
-        return;
-      }
+      const isCurrentPrjDirty = !_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== '';
+      const hasCurrentPrjName = $rootScope.currentProject.name !== "";
 
-      if (!$rootScope.moduleOpened) {
-        return;
-      }
-
-      if (!$rootScope.xDashFullVersion && ($rootScope.currentProject.name !== "") && !$rootScope.isLiveDemo) {
-        $state.go("modules", {});
-        $rootScope.toggleMenuOptionDisplay('none');
-        return;
-      }
-      
-      if (!_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== '') {
-        swal(
-          {
-            title: 'Are you sure?',
-            text: 'Your current project will be saved and closed before starting a new project.',
-            type: 'warning',
-            showCancelButton: true,
-            showConfirmButton: false,
-            showConfirmButton1: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Abandon',
-            closeOnConfirm: true,
-            closeOnConfirm1: true,
-            closeOnCancel: true,
-          },
-          function (isConfirm) {
-            if (isConfirm) {
-              var endAction = function () {
-                _newPrj(scopeDash);
-              };
-              //save current project
-              fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
-            } else {
-              //nothing
-            }
-          }
-        );
+      if (!$rootScope.xDashFullVersion) {
+        if (((isCurrentPrjDirty && !hasCurrentPrjName) || hasCurrentPrjName) && !$rootScope.isLiveDemo) {
+          $state.go("modules", {});
+          $rootScope.toggleMenuOptionDisplay('none');
+        } else {
+          _newPrj(scopeDash);
+        }
       } else {
-        _newPrj(scopeDash);
+        if (isCurrentPrjDirty) {
+          swal(
+            {
+              title: 'Are you sure?',
+              text: 'Your current project will be saved and closed before starting a new project.',
+              type: 'warning',
+              showCancelButton: true,
+              showConfirmButton: false,
+              showConfirmButton1: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'Abandon',
+              closeOnConfirm: true,
+              closeOnConfirm1: true,
+              closeOnCancel: true,
+            },
+            function (isConfirm) {
+              if (isConfirm) {
+                var endAction = function () {
+                  _newPrj(scopeDash);
+                };
+                //save current project
+                fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
+              } else {
+                //nothing
+              }
+            }
+          );
+        } else {
+          _newPrj(scopeDash);
+        }
       }
     };
 
