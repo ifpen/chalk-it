@@ -11,10 +11,15 @@
 
 function widgetFactoryClass() {
 
-    const POSSIBLE_ANSI = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; // to 62 possible values
-    const POSSIBLE_HINDI = "कखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसहक्षत्रज्ञ"; // Hindi chars
-    const POSSIBLE_DEVANAGARI = "अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह"; // Devanagari chars
-    const POSSIBLE_JAPANESE = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん"; // Japanese chars
+    const POSSIBLE_ANSI = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; // (62 characters)
+    const POSSIBLE_HINDI = "कखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसहक्षत्रज्ञ"; // Hindi chars (34 characters)
+    const POSSIBLE_DEVANAGARI = "अआइईउऊऋएऐओऔकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह"; // Devanagari chars (46 characters)
+    const POSSIBLE_JAPANESE = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん"; // Japanese chars (46 characters)
+    const POSSIBLE_RUSSIAN = "БГДЁЖИЙЛПФЦЧШЩЪЫЭЮЯ"; // 33 characters
+    const POSSIBLE_ARABIC = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي"; // 28 characters
+    const POSSIBLE_HEBREW = "אבגדהוזחטיכךלמםנןסעפףצץקרשת"; // 22 characters
+    const POSSIBLE_GREEK = "βΓΔδεζηΘθκΛλμΞξΠπΣτΦφχΨψΩω"; // 24 characters
+    const POSSIBLE_CHINESE = "一二三四五六七八九十百千万亿中人天地日月金木水火风雷"; // 26 characters
 
     /**
      * Widget abstract factory
@@ -130,7 +135,7 @@ function widgetFactoryClass() {
         const modelsIdLength = widgetEditor.modelsId.length;
         const usedIds = new Set(widgetEditor.modelsId);
         const makeid = charset => charset.charAt(Math.floor(Math.random() * charset.length));
-        const ids = [...POSSIBLE_ANSI, ...POSSIBLE_HINDI, ...POSSIBLE_DEVANAGARI, ...POSSIBLE_JAPANESE].map(character => modelJsonId + makeid(character));
+        const ids = [...POSSIBLE_ANSI, ...POSSIBLE_HINDI, ...POSSIBLE_DEVANAGARI, ...POSSIBLE_JAPANESE, ...POSSIBLE_RUSSIAN, ...POSSIBLE_ARABIC, ...POSSIBLE_HEBREW, ...POSSIBLE_GREEK, ...POSSIBLE_CHINESE].map(character => modelJsonId + makeid(character));
         const instanceId = ids.find(id => !usedIds.has(id));
         if (!instanceId) {
             // handle case where all possible IDs are taken
