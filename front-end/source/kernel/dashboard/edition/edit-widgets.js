@@ -1083,6 +1083,8 @@ function initEditWidget() {
 
     /*--------resizeDashboard--------*/
     function resizeDashboard() {
+        editorDimensionsSnapshot = getCurrentDashZoneDims();
+        scalingHelper.setDimensions(editorDimensionsSnapshot);
         scalingHelper.setScalingMethod(editorScalingMethod);
         scalingHelper.resizeDashboard();
 
@@ -1182,7 +1184,6 @@ function initEditWidget() {
 
     /*--------getSnapshotDashZoneDims--------*/
     function getSnapshotDashZoneDims() {
-        //console.log("getSnapshotDashZoneDims at editor");
         return editorDimensionsSnapshot;
     }
 

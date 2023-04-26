@@ -71,7 +71,7 @@ modelsParameters.flatUiTable = {
     "striped": true,
     "valueColor": "var(--widget-table-value-color)",
     "valueFontFamily": "var(--widget-font-family)",
-    "ValueAlign": "left",
+    "valueAlign": "left",
     "bordered": true,
     "noBorder": false,
     "editableCols": "[]"
@@ -904,11 +904,11 @@ function flatUiComplexWidgetsPluginClass() {
                             } else {
                                 isEditable = "true";
                                 if (this.bIsInteractive) {
-                                    cursorEditable = 'style="cursor: cell;"';
+                                    cursorEditable = "cursor: cell;";
                                 }
                             }
-                            tableContent = tableContent + '<td ' + cursorEditable + ' data-editable="' + isEditable +
-                                '" style="' + this.valueAlign() + '"><span style="' + this.valueColor() + this.valueFontFamily() +
+                            tableContent = tableContent + '<td style="' + cursorEditable + this.valueAlign() + '" data-editable="' + isEditable +
+                                '"><span style="' + this.valueColor() + this.valueFontFamily() +
                                 ' font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)">' +
                                 val[i][j] + '</span></td>';
                         }
@@ -926,7 +926,7 @@ function flatUiComplexWidgetsPluginClass() {
                     for (var i = startIndex; i < val.length; i++) {
                         token = val[i];
                         tableContent = tableContent +
-                            '<td><span style="' + this.valueColor() + this.valueFontFamily() +
+                            '<td style="' + this.valueAlign() + '"><span style="' + this.valueColor() + this.valueFontFamily() +
                             ' font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)">' +
                             token + '</span></td>';
                     }

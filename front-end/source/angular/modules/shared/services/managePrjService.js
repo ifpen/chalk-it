@@ -391,7 +391,15 @@ angular
                             var endAction = function(msg1, msg2, type) {
                                 renameFileCallback(type, fileName, inputValue, flag, fileType);
                             };
-                            fileManager.renameFile(fileType, fileName, inputValue, endAction, flag);
+                            if ($rootScope.xDashFullVersion) {
+                                fileManager.renameFile(fileType, fileName, inputValue, endAction, flag);
+                            } else {
+                                if (fileName === "Untitled" || fileName === "") {
+                                    fileManager.saveOnServer('project', inputValue, null, true, null);
+                                } else {
+                                    fileManager.renameFile(fileType, fileName, inputValue, endAction, flag);
+                                }
+                            }
                         }
                     }
                 );

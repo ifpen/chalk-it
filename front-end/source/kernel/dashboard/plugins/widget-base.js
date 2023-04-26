@@ -682,6 +682,9 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // +--------------------------------------------------------------------¦ \\
     this.valueAlign = function () {
         // Backward compatibility
+        if (!_.isUndefined(modelsParameters[idInstance].ValueAlign)) {
+            delete modelsParameters[idInstance].ValueAlign;
+        }
         if (_.isUndefined(modelsParameters[idInstance].valueAlign)) {
             modelsParameters[idInstance].valueAlign = "left";
         }
