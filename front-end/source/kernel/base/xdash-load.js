@@ -208,8 +208,10 @@ var angularModule = angular.module('xCLOUD', [
                     }
                 };
 
-                if (!$rootScope.xDashFullVersion && $rootScope.enableLocalServer) {
-                    await $rootScope.getConfigDiscover();
+                if (!$rootScope.xDashFullVersion) {
+                    if ($rootScope.enableLocalServer) {
+                        await $rootScope.getConfigDiscover();
+                    }
                 } else {
                     $rootScope.getConfigDiscover();
                 }
