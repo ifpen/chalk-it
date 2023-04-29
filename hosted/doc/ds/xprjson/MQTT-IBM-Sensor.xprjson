@@ -1,0 +1,58 @@
+{
+	"meta": {
+		"version": "0.709.6561",
+		"date": "Tue Dec 19 2017 13:53:05 GMT+0100 (Paris, Madrid)",
+		"name": "MQTT-IBM-Sensor"
+	},
+	"data": {
+		"version": 1,
+		"allow_edit": true,
+		"plugins": [],
+		"panes": [],
+		"datasources": [
+			{
+				"name": "demo",
+				"type": "mqtt",
+				"settings": {
+					"name": "demo",
+					"topic": "iot-2/type/+/id/4d6c9ad749d3/evt/+/fmt/json",
+					"server": "quickstart.messaging.internetofthings.ibmcloud.com",
+					"port": 8883,
+					"use_encryption": true,
+					"client_id": "quickstart",
+					"api_key": "",
+					"api_auth_token": "",
+					"json_data": true
+				}
+			}
+		],
+		"columns": 3,
+		"reIndexMap": [
+			0
+		]
+	},
+	"scaling": {
+		"widthPx": 1399,
+		"heightPx": 796,
+		"scrollWidthPx": 1399,
+		"scrollHeightPx": 796,
+		"widthVw": 72.86458333333333,
+		"heightVh": 72.10144927536231,
+		"scrollWidthVw": 72.86458333333333,
+		"scrollHeightVh": 72.10144927536231,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"value": "none",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {}
+	},
+	"dashboard": {},
+	"connections": {}
+}

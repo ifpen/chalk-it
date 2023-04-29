@@ -1,0 +1,110 @@
+{
+	"meta": {
+		"version": "0.960.7060",
+		"date": "Fri May 03 2019 11:45:08 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "csv-array-table-display",
+		"description": "",
+		"tags": []
+	},
+	"data": {
+		"version": 1,
+		"allow_edit": true,
+		"plugins": [],
+		"panes": [],
+		"datasources": [
+			{
+				"name": "csv",
+				"type": "CSV_file_reader_plugin",
+				"settings": {
+					"name": "csv",
+					"data_path": "CH4-short.csv",
+					"content": "\"lat\",\"lng\",\"CH4\"\r\n48.876684, 2.175765, 1.94\r\n48.876684, 2.175765, 1.95\r\n48.876684, 2.175765, 1.92\r\n48.876705, 2.175806, 1.93\r\n48.876705, 2.175806, 1.99\r\n",
+					"delimiter": "",
+					"eol": "",
+					"quote_char": "\"",
+					"head": true,
+					"skip_empty_lines": true,
+					"dynamic_typing": true,
+					"pluck": true,
+					"embedding_object": false
+				}
+			},
+			{
+				"name": "table",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "table",
+					"json_var_formula": "var t= _.unzip(_.values(dataNodes[\"csv\"]),3);\nt.unshift(_.keys(dataNodes[\"csv\"]));\n\nreturn t;"
+				}
+			}
+		],
+		"columns": 3,
+		"reIndexMap": [
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"scaling": {
+		"widthPx": 1333,
+		"heightPx": 793,
+		"scrollWidthPx": 1333,
+		"scrollHeightPx": 793,
+		"widthVw": 69.42708333333333,
+		"heightVh": 72.1565059144677,
+		"scrollWidthVw": 69.42708333333333,
+		"scrollHeightVh": 72.1565059144677,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {}
+	},
+	"dashboard": {
+		"flatUiTableq": {
+			"layout": {
+				"top": "3.09372vh",
+				"left": "11.0938vw",
+				"height": "53.1034vh",
+				"width": "41.1979vw",
+				"minHeight": "79px",
+				"minWidth": "88px"
+			},
+			"container": {
+				"id": "flatUiTableq",
+				"instanceId": "flatUiTableq",
+				"modelJsonId": "flatUiTable"
+			},
+			"modelParameters": {
+				"headerLine": true,
+				"striped": true,
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[]"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		}
+	},
+	"connections": {
+		"flatUiTableq": {
+			"value": {
+				"name": "value",
+				"dataSource": "table",
+				"dataFields": [],
+				"dataSourceIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"checkExportOptions": false
+}

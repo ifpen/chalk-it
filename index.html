@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Chalk'it | templates gallery</title>
+    <meta name="author" content="IFPEN" />
+    <meta name="title" content="Chalk'it | demos and templates gallery" />
+
+
+    <!-- Favicons -->
+    <link href="img/chalk-it-logo.svg" rel="icon">
+    <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Bootstrap CSS File -->
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+      Theme Name: NewBiz
+      Theme URL: https://bootstrapmade.com/newbiz-bootstrap-business-template/
+      Author: BootstrapMade.com
+      Licensed to IFPEN
+    ======================================================= -->
+</head>
+
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var chalkitWebSiteXprjson = "https://ifpen.github.io/chalk-it/xprjson";
+            var chalkitEditor = "https://ifpen.github.io/chalk-it/hosted/index.html?projectUrl=" + chalkitWebSiteXprjson + '/';
+            var chalkitViewer = "https://ifpen.github.io/chalk-it/hosted/index-view-2.720.8520.html?projectUrl=" + chalkitWebSiteXprjson + '/';
+            var divDemo = ''
+
+            function addCategories(cats) {
+                var fc = '';
+                for (var k = 0; k < cats.length; k++) {
+                    fc = fc + 'filter-' + cats[k] + ' ';
+                }
+                return fc;
+            }
+			
+			demosTitleArray = demosArray;
+
+            for (i = 0; i < demosArray.length; i++) {
+                divDemo = divDemo +
+                    '<div class="col-lg-4 col-md-6 portfolio-item ' + addCategories(demoCategoryArray[i]) + '">' +
+                    '  <div class="portfolio-wrap">' +
+                    '      <h4>' + demosTitleArray[i] + '</h4>' +
+                    '    <img src="img/portfolio/' + demosArray[i] + '.png" class="img-fluid" alt="">' +
+                    '    <div class="portfolio-info">' +
+                    '      <p></p>' +
+                    '    </div>' +
+                    '  </div>' +
+                    '  <div style="text-align: center; background: #ecf5ff">' +
+                    '    <a href="' + chalkitViewer + demosArray[i] + '.xprjson"' +
+                    '      target="_blank" data-title="' + demosArray[i] + '" class="link-preview" title="Preview" style="margin-right: 24px">' +
+                    '      <span>Preview <i class="ion ion-eye"></i></span>' +
+                    '    </a>' +
+                    '    <a href="' + chalkitEditor + demosArray[i] + '.xprjson"' +
+                    '      target="_blank" class="link-details" title = "Edit" style="margin-left: 24px">' +
+                    '      <span>Edit <i class="ion ion-android-open"></i></span>' +
+                    '    </a > ' +
+                    '  </div>' +
+                    '<p style="font-size: 14px">' + demoCaptionArray[i] + '</p>' +
+                    '</div>';
+            }
+            var demoZone = document.getElementById('demo-portfolio');
+            demoZone.innerHTML = divDemo;
+
+        }, false);
+
+    </script>
+    <!--==========================
+    Header
+    ============================-->
+    <header id="header" class="fixed-top">
+        <div class="container">
+
+            <div class="logo float-left">
+                <a href="#header"><img src="img/chalk-it-logo.svg" alt="Chalk'it Logo" class="img-fluid" style="max-height: 45px; margin-top: 0px;"></a>
+            </div>
+
+            <nav class="main-nav float-right d-none d-lg-block">
+                <ul>
+                    <li><a href="https://ifpen.github.io/chalk-it/hosted/doc/index.html">Docs</a></li>
+                    <li class="li-button">
+                        <button type="button" class="btn-run" id="btnRun">
+                            <a href="https://ifpen.github.io/chalk-it/hosted/index.html" target="_blank">
+                                <img src="img/chalk-it-icon.svg" width="28" alt="Chalk'it small icon" />
+                                Run Chalk'it hosted
+                            </a>
+                        </button>
+                    </li>
+                </ul>
+            </nav><!-- .main-nav -->
+
+        </div>
+    </header><!-- #header -->
+    <main id="main">
+        <!--==========================
+          Portfolio Section
+        ============================-->
+        <section id="portfolio" class="clearfix">
+            <div class="container" style="margin-top:40px">
+
+                <header class="section-header">
+                    <h3 class="section-title">Chalk'it templates gallery</h3>
+                    <p>This gallery illustrates, with simple examples, the basic features of Chalk'it. You can either view dashboard or edit them to explore their code</p>
+                </header>
+
+                <!--div class="row">
+                    <div class="col-lg-12">
+                        <div id="portfolio-flters">
+                            <ul>
+                                <li data-filter="*" class="filter-active">All</li>
+                                <li data-filter=".filter-mobility">Mobility</li>
+                                <li data-filter=".filter-environmental-monitoring">Environmental monitoring</li>
+                                <li data-filter=".filter-geology">Geology</li>
+                                <li data-filter=".filter-open-data">Open data</li>
+                            </ul>
+                            <ul>
+                                <li data-filter=".filter-rest-api">REST API</li>
+                                <li data-filter=".filter-csv-reader">CSV reader</li>
+                                <li data-filter=".filter-csv-player">CSV player</li>
+                                <li data-filter=".filter-python">Python</li>
+                                <li data-filter=".filter-real-time">Real-time</li>
+                                <li data-filter=".filter-geolocation">Geolocation</li>
+                            </ul>
+                            <ul>
+                                <li data-filter=".filter-plotly">Plotly</li>
+                                <li data-filter=".filter-echarts">ECharts</li>
+                                <li data-filter=".filter-maps">Maps</li>
+                                <li data-filter=".filter-map-input">Map input</li>
+                                <li data-filter=".filter-camera">Camera</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div-->
+
+                <div id="demo-portfolio" class="row portfolio-container">
+                </div>
+
+            </div>
+        </section><!-- #portfolio -->
+
+    </main>
+
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    <!-- Uncomment below i you want to use a preloader -->
+    <!-- <div id="preloader"></div> -->
+    <!-- JavaScript Libraries -->
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/jquery/jquery-migrate.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/mobile-nav/mobile-nav.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+    <!-- Contact Form JavaScript File -->
+    <!--script src="contactform/contactform.js"></script-->
+    <!-- Template Main Javascript File -->
+    <script src="js/main.js"></script>
+	<script src="demosArray.js"></script>
+	<script src="tagsArray.js"></script>	
+	<script src="titlesArray.js"></script>	
+</body>
+</html>

@@ -1,0 +1,1515 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+    
+    
+      
+        <title>Geo & Time - Chalk'it Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.c382b1dc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#geo-time" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Chalk&#39;it Documentation" class="md-header__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
+      
+  <img src="../../_media/chalk-it-icon.ico" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Chalk'it Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Geo & Time
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Chalk&#39;it Documentation" class="md-nav__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
+      
+  <img src="../../_media/chalk-it-icon.ico" alt="logo">
+
+    </a>
+    Chalk'it Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../basics/" class="md-nav__link">
+        Basics
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          DataNodes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="DataNodes" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          DataNodes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ds/ds/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ds/ds-basics/" class="md-nav__link">
+        Basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ds/ds-execution-engine/" class="md-nav__link">
+        Execution engine
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ds/ds-reference/" class="md-nav__link">
+        Reference
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Widgets
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Widgets" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Widgets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-common-concept/" class="md-nav__link">
+        Common concepts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-basic-inputs/" class="md-nav__link">
+        Basic inputs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-basic-displays/" class="md-nav__link">
+        Basic displays
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-plots/" class="md-nav__link">
+        Plots
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Geo & Time
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Geo & Time
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#leaflet-maps" class="md-nav__link">
+    Leaflet maps
+  </a>
+  
+    <nav class="md-nav" aria-label="Leaflet maps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#geojson-layers" class="md-nav__link">
+    geoJson layers
+  </a>
+  
+    <nav class="md-nav" aria-label="geoJson layers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#point" class="md-nav__link">
+    Point
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#line" class="md-nav__link">
+    Line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#polygon" class="md-nav__link">
+    Polygon
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heatmap-layers" class="md-nav__link">
+    heatMap layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lineheatmap-layers" class="md-nav__link">
+    lineHeatMap layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choropleth-layers" class="md-nav__link">
+    Choropleth layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imageoverlay-layers" class="md-nav__link">
+    imageOverlay layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svgoverlay-layers" class="md-nav__link">
+    svgOverlay layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawing-features" class="md-nav__link">
+    Drawing features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#folium-maps" class="md-nav__link">
+    Folium Maps
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#address-autocompletion" class="md-nav__link">
+    Address autocompletion
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-calendar" class="md-nav__link">
+    Simple calendar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#date-range-calendar" class="md-nav__link">
+    Date-range calendar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d3-year-heatmap-caldendar" class="md-nav__link">
+    D3 year heatmap caldendar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-clock" class="md-nav__link">
+    Simple clock
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-annotation-video/" class="md-nav__link">
+        Annotation & Video
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_8">
+          Additions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Additions" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_8">
+          <span class="md-nav__icon md-icon"></span>
+          Additions
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../selection/plot-selection/" class="md-nav__link">
+        Selection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plot-themes/" class="md-nav__link">
+        Themes
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../export/export/" class="md-nav__link">
+        Export
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Python" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../py/py-index/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../py/py-pyodide/" class="md-nav__link">
+        Pyodide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../py/py-proto-flask/" class="md-nav__link">
+        Local prototyping with Flask
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Recipes & interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Recipes & interfaces" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Recipes & interfaces
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/" class="md-nav__link">
+        Recipes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../xdashapi/" class="md-nav__link">
+        xDashApi
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#leaflet-maps" class="md-nav__link">
+    Leaflet maps
+  </a>
+  
+    <nav class="md-nav" aria-label="Leaflet maps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#geojson-layers" class="md-nav__link">
+    geoJson layers
+  </a>
+  
+    <nav class="md-nav" aria-label="geoJson layers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#point" class="md-nav__link">
+    Point
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#line" class="md-nav__link">
+    Line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#polygon" class="md-nav__link">
+    Polygon
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heatmap-layers" class="md-nav__link">
+    heatMap layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lineheatmap-layers" class="md-nav__link">
+    lineHeatMap layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#choropleth-layers" class="md-nav__link">
+    Choropleth layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#imageoverlay-layers" class="md-nav__link">
+    imageOverlay layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#svgoverlay-layers" class="md-nav__link">
+    svgOverlay layers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawing-features" class="md-nav__link">
+    Drawing features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#folium-maps" class="md-nav__link">
+    Folium Maps
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#address-autocompletion" class="md-nav__link">
+    Address autocompletion
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-calendar" class="md-nav__link">
+    Simple calendar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#date-range-calendar" class="md-nav__link">
+    Date-range calendar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d3-year-heatmap-caldendar" class="md-nav__link">
+    D3 year heatmap caldendar
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-clock" class="md-nav__link">
+    Simple clock
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="geo-time">Geo &amp; Time<a class="headerlink" href="#geo-time" title="Permanent link">&para;</a></h1>
+<p>This category includes widgets related to location, date and time.</p>
+<h2 id="leaflet-maps">Leaflet maps<a class="headerlink" href="#leaflet-maps" title="Permanent link">&para;</a></h2>
+<p><strong>Leaflet maps</strong> widget has rich and versatile features for displaying various information on maps. It also has selection and interaction features. It is based on <a href="https://leafletjs.com/">Leaflet</a> library and its various plugins.</p>
+<p>When a new <strong>Leaflet maps</strong> widget is added to the dashboard, only one actuator named <strong>geoJSON1</strong> is available in the "Data connection" tab. But this widget allows up to 5 types of display layers, according to the value of the associated parameter <em>numberOfLayers</em>. This parameter can be set in the "Graphical properties" tab as shown in the following picture:</p>
+<p><img alt="leaflet-maps-graphical-properties" src="../maps/leaflet-maps-graphical-properties.png" /></p>
+<p>Depending on the parametrization, new actuators may appear in "Data connection" tab and offer :</p>
+<ul>
+<li>0 to 8 possible layers of <a href="#geojson-layers">GeoJSON</a> objects. Writing GeoJSON objects is described <a href="https://en.wikipedia.org/wiki/GeoJSON">here</a>.</li>
+<li>0 to 8 possible layers of <a href="#heatmap-layers">heatMap</a> objects</li>
+<li>0 to 8 possible layers of <a href="#lineheatmap-layers">lineHeatMap</a> objects</li>
+<li>0 to 8 possible layers of <a href="#choropleth-layers">choropleth</a> objects</li>
+<li>0 to 8 possible layer of <a href="#imageoverlay-layers">imageOverlay</a> objects</li>
+<li>0 to 8 possible layer of <a href="#svgoverlay-layers">svgOverlay</a> objects</li>
+</ul>
+<p>In addition to these pure display layers, selection controls can be activated by enabling the <a href="#drawing-features">drawingFeatures</a> option. Regions of the map can thus be selected using the mouse. When this option is enabled, the <strong>selectedGeoJson</strong> actuator receives user selection as geoJson, and needs to be connected to a <a href="../../ds/ds-basics/#variable">variable</a>-type dataNode. This features are based on the <a href="https://geoman.io/">Geoman</a> plugin.</p>
+<p>Enabling the <em>drawingFeatures</em> option enables the <strong>drawingFeaturesOptions</strong> parameters set which manages selection options (point, line, polygone, rectangle).</p>
+<p>Other parameters :</p>
+<ul>
+<li><strong>offlineSupport</strong> : displays controls on the maps that allow to store tiles for the current displayed geographic area. Useful when using the map offline (i.e. with no Internet connection)</li>
+<li><strong>tileServer</strong> : currently there is support for <em>MapboxStreets</em> and <em>HereHybridDay</em></li>
+</ul>
+<h3 id="geojson-layers">geoJson layers<a class="headerlink" href="#geojson-layers" title="Permanent link">&para;</a></h3>
+<p>geoJson1 to geoJson8 inputs expect a geoJson object. Basic examples are shown below.</p>
+<h4 id="point">Point<a class="headerlink" href="#point" title="Permanent link">&para;</a></h4>
+<p>Single point on a single layer of the map</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;features&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;geometry&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Point&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;coordinates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="mf">2.295</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">48.8738</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;html&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;See &lt;a href=\&quot;https://en.wikipedia.org/wiki/Place_Charles_de_Gaulle\&quot; target=\&quot;_blank\&quot;&gt;Place Charles de Gaulle&lt;/a&gt;&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;awesomeMarker&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="s2">&quot;icon&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;fa-asterisk&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;prefix&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;fa&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;markerColor&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;red&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;description&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Arc de triomphe&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;disableAutoscale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>which will be displayed as :</p>
+<p><img alt="osm-geojson-point" src="../maps/osm-geojson-point.png" /></p>
+<p>Properties field of each feature allows to configure it. It comprises the following items :</p>
+<ul>
+<li><strong>html</strong> : allows to write html call to be rendered inside the popup.</li>
+<li><strong>awesomeMarker</strong> : JSON configuration object for the <a href="https://github.com/lvoogdt/Leaflet.awesome-markers">Leaflet.awesome-markers</a> library, allowing colorful iconic &amp; retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. <strong>Only Font-Awesome icons</strong> are supported with xDash.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+<th>Default Value</th>
+<th>Possible  values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>icon</td>
+<td>Name of the icon</td>
+<td>'home'</td>
+<td>See glyphicons or font-awesome</td>
+</tr>
+<tr>
+<td>prefix</td>
+<td>Select the icon library</td>
+<td>'glyphicon'</td>
+<td>'fa' for font-awesome or 'glyphicon' for bootstrap 3</td>
+</tr>
+<tr>
+<td>markerColor</td>
+<td>Color of the marker</td>
+<td>'blue'</td>
+<td>'red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpurple', 'cadetblue'</td>
+</tr>
+<tr>
+<td>iconColor</td>
+<td>Color of the icon</td>
+<td>'white'</td>
+<td>'white', 'black' or css code (hex, rgba etc)</td>
+</tr>
+<tr>
+<td>spin</td>
+<td>Make the icon spin</td>
+<td>false</td>
+<td>true or false. Font-awesome required</td>
+</tr>
+<tr>
+<td>extraClasses</td>
+<td>Additional classes in the created <i> tag</td>
+<td>''</td>
+<td>'fa-rotate90 myclass' eller other custom configuration</td>
+</tr>
+</tbody>
+</table>
+<p>Examples :</p>
+<ul>
+<li>Single point : <a href="/wdg/maps/osm-geojson-point.xprjson">osm-geojson-point.xprjson</a></li>
+<li>Multiple points : <a href="/wdg/maps/osm-geojson-points.xprjson">osm-geojson-points.xprjson</a></li>
+<li>Awesome markers : <a href="/wdg/maps/osm-geojson-point-awesome-marker.xprjson">osm-geojson-point-awesome-marker.xprjson</a></li>
+<li>Disable autoscale with geoJSON point : <a href="/wdg/maps/osm-geojson-point-disable-autoscale.xprjson">osm-geojson-point-disable-autoscale.xprjson</a></li>
+</ul>
+<h4 id="line">Line<a class="headerlink" href="#line" title="Permanent link">&para;</a></h4>
+<p>Single line on a single layer of the map</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;features&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;geometry&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LineString&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;coordinates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">[</span>
+<span class="w">            </span><span class="mf">2.295</span><span class="p">,</span>
+<span class="w">            </span><span class="mf">48.8738</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="p">[</span>
+<span class="w">            </span><span class="mf">2.321125</span><span class="p">,</span>
+<span class="w">            </span><span class="mf">48.865487</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;style&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="s2">&quot;color&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;#FF0000&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;weight&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;opacity&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;description&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&lt;span style=\&quot;color: #FF0000\&quot;&gt;Champs-Élysées&lt;/span&gt;&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>which will be displayed as :</p>
+<p><img alt="osm-geojson-line" src="../maps/osm-geojson-line.png" /></p>
+<p>Examples :</p>
+<ul>
+<li>Single line : <a href="/wdg/maps/osm-geojson-line.xprjson">osm-geojson-line.xprjson</a></li>
+<li>Multiple lines :  <a href="/wdg/maps/osm-geojson-lines.xprjson">osm-geojson-lines.xprjson</a></li>
+</ul>
+<h4 id="polygon">Polygon<a class="headerlink" href="#polygon" title="Permanent link">&para;</a></h4>
+<p>A polygon on a single layer of the map</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;features&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;geometry&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Polygon&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;coordinates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">[</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">              </span><span class="mf">2.300815</span><span class="p">,</span>
+<span class="w">              </span><span class="mf">48.871943</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">              </span><span class="mf">2.30158</span><span class="p">,</span>
+<span class="w">              </span><span class="mf">48.864638</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">              </span><span class="mf">2.310094</span><span class="p">,</span>
+<span class="w">              </span><span class="mf">48.868996</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;style&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="s2">&quot;color&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;#01DF01&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;weight&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;opacity&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0.9</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;fillColor&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;#01DF01&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;fillOpacity&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0.4</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;description&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&lt;span style=\&quot;color: #01DF01\&quot;&gt;Triangle d&#39;or&lt;/span&gt;&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>which will be displayed as :</p>
+<p><img alt="osm-geojson-polygon" src="../maps/osm-geojson-polygon.png" /></p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/maps/osm-geojson-polygon.xprjson">osm-geojson-polygon.xprjson</a></li>
+</ul>
+<p>See also : <a href="https://leafletjs.com/examples/geojson/">Using GeoJSON with Leaflet</a></p>
+<h3 id="heatmap-layers">heatMap layers<a class="headerlink" href="#heatmap-layers" title="Permanent link">&para;</a></h3>
+<p><em>heatMap1</em> to <em>heatMap8</em> inputs expect a JSON object like the following one :</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;data&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">44.78857833333333</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;lng&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0.20539333333333332</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;H2O&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">58.0183</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">44.78858</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;lng&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0.20539333333333332</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;H2O&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">58.0187</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="s2">&quot;config&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;opacity&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;radius&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;disableAutoscale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;min&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;max&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">100</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;colorScale&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;interpolateSpectral&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;reverseColorScale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>When <strong>min</strong> and/or <strong>max</strong> config parameters are not specified, they are automatically computed from the data set. <strong>colorScale</strong> is a string from interpolate-type colorscales of D3.js : <a href="https://github.com/d3/d3-scale-chromatic">https://github.com/d3/d3-scale-chromatic</a>.</p>
+<p>Example of display (for a larger data set) :</p>
+<p><img alt="osm-heatmap" src="../maps/osm-heatmap.png" /></p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/maps/osm-heatmap-view.xprjson">osm-heatmap-view.xprjson</a></li>
+</ul>
+<p>Several parameters control the display of the heatmap, in particular :</p>
+<ul>
+<li>
+<p><strong>sampledDisplay</strong> : allows to feed the map in real-time with instantaneous measures (single heatmap point). The config of the first point will be used. See corresponding examples: </p>
+</li>
+<li>
+<p><a href="/wdg/maps/osm-heatmap-play-py.xprjson">osm-heatmap-play-py.xprjson</a></p>
+</li>
+<li><a href="/wdg/maps/osm-heatmap-play-js.xprjson">osm-heatmap-play-js.xprjson</a></li>
+</ul>
+<h3 id="lineheatmap-layers">lineHeatMap layers<a class="headerlink" href="#lineheatmap-layers" title="Permanent link">&para;</a></h3>
+<p><em>lineHeatMap1</em> to <em>lineHeatMap8</em> inputs expect a JSON object like the following one :</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;data&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;coordinates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">[</span>
+<span class="w">          </span><span class="mf">4.84112</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">45.74968</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="p">[</span>
+<span class="w">          </span><span class="mf">4.84091</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">45.74981</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s2">&quot;CO2&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">6</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;coordinates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">[</span>
+<span class="w">          </span><span class="mf">4.84138</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">45.74953</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="p">[</span>
+<span class="w">          </span><span class="mf">4.84112</span><span class="p">,</span>
+<span class="w">          </span><span class="mf">45.74968</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s2">&quot;CO2&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="s2">&quot;config&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;opacity&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0.9</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;weight&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;disableAutoscale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;min&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;max&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;colorScale&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;interpolateSpectral&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;reverseColorScale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w">    </span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>When <strong>min</strong> and/or <strong>max</strong> config parameters are not specified, they are automatically computed from the data set. <strong>colorScale</strong> is a string from interpolate-type colorscales of D3.js : <a href="https://github.com/d3/d3-scale-chromatic">https://github.com/d3/d3-scale-chromatic</a>.</p>
+<p>Example of display (for a larger data set) :</p>
+<p><img alt="osm-lineheatmap" src="../maps/osm-lineheatmap.png" /></p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/maps/osm-lineheatmap.xprjson">osm-lineheatmap.xprjson</a></li>
+</ul>
+<h3 id="choropleth-layers">Choropleth layers<a class="headerlink" href="#choropleth-layers" title="Permanent link">&para;</a></h3>
+<p><em>choropleth1</em> to <em>choropleth8</em> inputs expect a JSON object like the following one :</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;data&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;geometry&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Polygon&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;coordinates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">[</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">              </span><span class="mf">2.329144745999656</span><span class="p">,</span>
+<span class="w">              </span><span class="mf">48.87299590267482</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">              </span><span class="mf">2.329453736347205</span><span class="p">,</span>
+<span class="w">              </span><span class="mf">48.8723745764414</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">              </span><span class="mf">2.331221849053691</span><span class="p">,</span>
+<span class="w">              </span><span class="mf">48.8721034501072</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="s2">&quot;CO2&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">6</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;geometry&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Polygon&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;coordinates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">[</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">              </span><span class="mf">2.331445008712763</span><span class="p">,</span>
+<span class="w">              </span><span class="mf">48.87264570173727</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">              </span><span class="mf">2.332766800791433</span><span class="p">,</span>
+<span class="w">              </span><span class="mf">48.870849470245</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="p">[</span>
+<span class="w">              </span><span class="mf">2.3349983986918237</span><span class="p">,</span>
+<span class="w">              </span><span class="mf">48.87142562719721</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="s2">&quot;CO2&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="s2">&quot;config&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;opacity&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0.9</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;weight&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;disableAutoscale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;min&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;max&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;colorScale&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;interpolateOranges&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;reverseColorScale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>When <strong>min</strong> and/or <strong>max</strong> config parameters are not specified, they are automatically computed from the data set. <strong>colorScale</strong> is a string from interpolate-type colorscales of D3.js : <a href="https://github.com/d3/d3-scale-chromatic">https://github.com/d3/d3-scale-chromatic</a>.</p>
+<p>Example of display (for a larger data set) :</p>
+<p><img alt="osm-choropleth" src="../maps/osm-choropleth.png" /></p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/maps/osm-choropleth-py.xprjson">osm-choropleth-py.xprjson</a></li>
+<li><a href="/wdg/maps/osm-choropleth-js.xprjson">osm-choropleth-js.xprjson</a></li>
+</ul>
+<h3 id="imageoverlay-layers">imageOverlay layers<a class="headerlink" href="#imageoverlay-layers" title="Permanent link">&para;</a></h3>
+<p><em>imageOverlay1</em> to <em>imageOverlay8</em> inputs expect a geoJson object like the following one :</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;imageUrl&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;http://www.fondation-tuck.fr/upload/docs/image/jpeg/2015-01/logo-ifpen.jpg&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="s2">&quot;imageBounds&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">[</span><span class="mf">48.874875</span><span class="p">,</span><span class="w"> </span><span class="mf">2.171738</span><span class="p">],</span>
+<span class="w">        </span><span class="p">[</span><span class="mf">48.877923</span><span class="p">,</span><span class="w"> </span><span class="mf">2.179484</span><span class="p">]</span>
+<span class="w">    </span><span class="p">];</span>
+<span class="w">    </span><span class="s2">&quot;title&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;IFPEN location&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="s2">&quot;addAs&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;overlay&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// overlay or baseLayer</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>As shown in the code snippet above, the <strong>addAs</strong> parameter may take two values:
+ <em>overlay</em> which adds a checkbox control, or <em>baseLayer</em> which adds a radio button control.</p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/maps/osm-image-overlay.xprjson">osm-image-overlay.xprjson</a></li>
+</ul>
+<h3 id="svgoverlay-layers">svgOverlay layers<a class="headerlink" href="#svgoverlay-layers" title="Permanent link">&para;</a></h3>
+<p><em>svgOverlay1</em> to <em>svgOverlay8</em> inputs expect a JSON object like the following one :</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;data&quot;</span><span class="o">:</span><span class="w"> </span>
+<span class="w">  </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876684999999995</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;lng&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175765</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;rotation&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">255</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876684999999995</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;lng&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175765</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;rotation&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">256</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="s2">&quot;config&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;marker&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;arrow&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;title&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Wind direction&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;opacity&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;length&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">9.3</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;disableAutoscale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;addAs&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;overlay&quot;</span><span class="w"> </span><span class="c1">// overlay or baseLayer</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Example of display (for a larger data set) :</p>
+<p><img alt="osm-svg-layer-view" src="../maps/osm-svg-layer-view.png" /></p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/maps/osm-svg-layer-view-js.xprjson">osm-svg-layer-view-js.xprjson</a></li>
+</ul>
+<h3 id="drawing-features">Drawing features<a class="headerlink" href="#drawing-features" title="Permanent link">&para;</a></h3>
+<p>It is possible to allow the user to manually select points, lines, rectangles or polygone regions in the map. This is possible by enable the <em>drawingFeatures</em> option.</p>
+<p><img alt="osm-drawing-features" src="../maps/osm-drawing-features.png" /></p>
+<p>Selection result will be written to the <em>selectedGeoJson</em> actuator.</p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/maps/osm-drawing-features.xprjson">osm-drawing-features.xprjson</a></li>
+</ul>
+<h2 id="folium-maps">Folium Maps<a class="headerlink" href="#folium-maps" title="Permanent link">&para;</a></h2>
+<p><a href="https://python-visualization.github.io/folium/">Folium</a> is a Python library used for visualizing geospatial data. It leverages the power of the Leaflet.js library and provides a simple way to create interactive maps. Folium can be used to create various types of maps such as choropleth maps, bubble maps, and scatter maps, and provides an easy-to-use interface for adding markers, popups, and other interactive features to the maps.</p>
+<p>Folium is built on top of the Python data analysis library pandas, which makes it easy to manipulate and visualize large datasets. It also supports several tilesets such as OpenStreetMap, Mapbox, and Stamen, which can be used to customize the look and feel of the maps.</p>
+<p>Usage examples:</p>
+<ul>
+<li><a href="/wdg/maps/folium-point.xprjson">folium-point.xprjson</a></li>
+</ul>
+<h2 id="address-autocompletion">Address autocompletion<a class="headerlink" href="#address-autocompletion" title="Permanent link">&para;</a></h2>
+<p>This widget uses the <a href="https://developer.here.com/documentation/geocoder-autocomplete/dev_guide/topics/example-location-id.html">here geocoder autocomplete API</a> to provide suggestion as the user types an address location.</p>
+<p>The parameter <em>countryIsoCodes</em> restricts the provided suggestions to the specifed country.</p>
+<h2 id="simple-calendar">Simple calendar<a class="headerlink" href="#simple-calendar" title="Permanent link">&para;</a></h2>
+<p>Use the <em>Simple calendar</em> widget to select a date.</p>
+<p><img alt="calendar" src="../date-time/calendar.png" /></p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/date-time/date-picker.xprjson">date-picker.xprjson</a></li>
+</ul>
+<h2 id="date-range-calendar">Date-range calendar<a class="headerlink" href="#date-range-calendar" title="Permanent link">&para;</a></h2>
+<p>Enables the selection of a date interval.</p>
+<h2 id="d3-year-heatmap-caldendar">D3 year heatmap caldendar<a class="headerlink" href="#d3-year-heatmap-caldendar" title="Permanent link">&para;</a></h2>
+<p>Allows to associate range heatmap to a yearly-based calendar. Very useful to visually identify sporadic information. Date selection is also possible. </p>
+<p><img alt="D3 year heatmap caldendar" src="../date-time/d3-year-heatmap-calendar.png" /></p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/date-time/d3-year-heatmap-calendar.xprjson">d3-year-heatmap-calendar.xprjson</a></li>
+</ul>
+<h2 id="simple-clock">Simple clock<a class="headerlink" href="#simple-clock" title="Permanent link">&para;</a></h2>
+<p>Use the <em>Simple clock</em> widget to select a time.</p>
+<p><img alt="clock" src="../date-time/clock.png" /></p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/date-time/time-picker.xprjson">time-picker.xprjson</a></li>
+</ul>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../wdg-plots/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Plots" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Plots
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../wdg-annotation-video/" class="md-footer__link md-footer__link--next" aria-label="Next: Annotation &amp; Video" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Annotation & Video
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      
+        <script src="../../mkdocs-open-xprjson.js"></script>
+      
+    
+  </body>
+</html>

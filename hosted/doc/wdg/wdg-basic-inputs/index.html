@@ -1,0 +1,1085 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+    
+    
+      
+        <title>Basic inputs - Chalk'it Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.c382b1dc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#basic-inputs-and-controls" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Chalk&#39;it Documentation" class="md-header__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
+      
+  <img src="../../_media/chalk-it-icon.ico" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Chalk'it Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Basic inputs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Chalk&#39;it Documentation" class="md-nav__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
+      
+  <img src="../../_media/chalk-it-icon.ico" alt="logo">
+
+    </a>
+    Chalk'it Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick-start/quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../basics/" class="md-nav__link">
+        Basics
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          DataNodes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="DataNodes" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          DataNodes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ds/ds/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ds/ds-basics/" class="md-nav__link">
+        Basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ds/ds-execution-engine/" class="md-nav__link">
+        Execution engine
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ds/ds-reference/" class="md-nav__link">
+        Reference
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Widgets
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Widgets" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Widgets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-common-concept/" class="md-nav__link">
+        Common concepts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Basic inputs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Basic inputs
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#numeric-input" class="md-nav__link">
+    Numeric input
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-input" class="md-nav__link">
+    Text input
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#horizontal-slider" class="md-nav__link">
+    Horizontal slider
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vertical-slider" class="md-nav__link">
+    Vertical slider
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#double-slider" class="md-nav__link">
+    Double slider
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checkbox" class="md-nav__link">
+    Checkbox
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#switch" class="md-nav__link">
+    Switch
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-switch" class="md-nav__link">
+    Simple switch
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#push-button" class="md-nav__link">
+    Push button
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#select" class="md-nav__link">
+    Select
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list" class="md-nav__link">
+    List
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-select" class="md-nav__link">
+    Multi-select
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    Table
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-basic-displays/" class="md-nav__link">
+        Basic displays
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-plots/" class="md-nav__link">
+        Plots
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-geo-time/" class="md-nav__link">
+        Geo & Time
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wdg-annotation-video/" class="md-nav__link">
+        Annotation & Video
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_8">
+          Additions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Additions" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_8">
+          <span class="md-nav__icon md-icon"></span>
+          Additions
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../selection/plot-selection/" class="md-nav__link">
+        Selection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plot-themes/" class="md-nav__link">
+        Themes
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../export/export/" class="md-nav__link">
+        Export
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Python" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../py/py-index/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../py/py-pyodide/" class="md-nav__link">
+        Pyodide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../py/py-proto-flask/" class="md-nav__link">
+        Local prototyping with Flask
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Recipes & interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Recipes & interfaces" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Recipes & interfaces
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../recipes/" class="md-nav__link">
+        Recipes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../xdashapi/" class="md-nav__link">
+        xDashApi
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#numeric-input" class="md-nav__link">
+    Numeric input
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-input" class="md-nav__link">
+    Text input
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#horizontal-slider" class="md-nav__link">
+    Horizontal slider
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vertical-slider" class="md-nav__link">
+    Vertical slider
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#double-slider" class="md-nav__link">
+    Double slider
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checkbox" class="md-nav__link">
+    Checkbox
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#switch" class="md-nav__link">
+    Switch
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-switch" class="md-nav__link">
+    Simple switch
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#push-button" class="md-nav__link">
+    Push button
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#select" class="md-nav__link">
+    Select
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list" class="md-nav__link">
+    List
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-select" class="md-nav__link">
+    Multi-select
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table" class="md-nav__link">
+    Table
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="basic-inputs-and-controls">Basic inputs and controls<a class="headerlink" href="#basic-inputs-and-controls" title="Permanent link">&para;</a></h1>
+<p><strong>Basic inputs and controls</strong> widgets allow the dashboard end-user to set numeric values (such as <a href="#horizontal-slider">Horizontal slider</a> or <a href="#numeric-input">Numeric input</a> widgets), binary values (such as <a href="#checkbox">Checkbox</a> or <a href="#switch">Switch</a> widgets) or text values (such as <a href="#text-input">Text input</a> widget). More complex ones operate on lists or arrays (like <a href="#select">select</a> or <a href="#list">list</a>). Some examples are illustrated below. </p>
+<p>All these widgets can only be connected to a dataNode-types with <a href="../../ds/ds-execution-engine/#setvalue-from-widget">setValue from widget</a> or <a href="../../ds/ds-execution-engine/#setvalue-from-file">setValue from file</a> capabilities.</p>
+<h2 id="numeric-input">Numeric input<a class="headerlink" href="#numeric-input" title="Permanent link">&para;</a></h2>
+<p><strong>Numeric input</strong> is a numeric input widget, which is intended to operate on the primitive datatype <em>number</em>.</p>
+<p>Among its parameters (in tab, "Graphical Properties") :</p>
+<ul>
+<li><em>validationButton</em> : adds a validation button to the right of the widget. When the validation button is clicked, the widget content is written to the connected dataNode.</li>
+<li><em>validationOnFocusOut</em> : when focus is lost, widget content is written to the connected dataNode. The default value is <em>true</em>.</li>
+<li><em>isPassword</em> : hides edited text as a password</li>
+<li><em>decimalDigits</em> : decimal precision of number. Default value is 3</li>
+</ul>
+<h2 id="text-input">Text input<a class="headerlink" href="#text-input" title="Permanent link">&para;</a></h2>
+<p><strong>text input</strong> is a text input widget, which is intended to operate on the primitive datatype <em>number</em>.</p>
+<p>Among its parameters (in tab, "Graphical Properties") :</p>
+<ul>
+<li><em>validationButton</em> : adds a validation button to the right of the widget. When the validation button is clicked, the widget content is written to the connected dataNode.</li>
+<li><em>validationOnFocusOut</em> : when focus is lost, widget content is written to the connected dataNode. The default value is <em>true</em>.</li>
+<li><em>isPassword</em> : hides edited text as a password</li>
+</ul>
+<h2 id="horizontal-slider">Horizontal slider<a class="headerlink" href="#horizontal-slider" title="Permanent link">&para;</a></h2>
+<p><strong>Horizontal slider</strong> allows to set the value of a dataNode field of primitive datatype "number", between its <em>min</em> and <em>max</em> parameters. The <em>step</em> parameter controls the slider increment value.</p>
+<h2 id="vertical-slider">Vertical slider<a class="headerlink" href="#vertical-slider" title="Permanent link">&para;</a></h2>
+<p>Similar to the <a href="#horizontal-slider">Horizontal slider</a> above with a different orientation.</p>
+<h2 id="double-slider">Double slider<a class="headerlink" href="#double-slider" title="Permanent link">&para;</a></h2>
+<p>This slider has two handles, allowing to set both a <em>minValue</em> and a <em>maxValue</em> ranging between the values of <em>minRange</em> and <em>maxRange</em> parameters. When <em>rangeActuator</em> parameter is set to <em>true</em>, new <em>minRange</em> and <em>maxRange</em> actuators appear in the "Data connection" tab, enabling to set these actuators from other dataNodes.</p>
+<h2 id="checkbox">Checkbox<a class="headerlink" href="#checkbox" title="Permanent link">&para;</a></h2>
+<p><strong>Checkbox</strong> widget allows to set the value of a boolean dataNode field.</p>
+<h2 id="switch">Switch<a class="headerlink" href="#switch" title="Permanent link">&para;</a></h2>
+<p>Similar to <a href="#checkbox">Checkbox</a></p>
+<h2 id="simple-switch">Simple switch<a class="headerlink" href="#simple-switch" title="Permanent link">&para;</a></h2>
+<p>Allows to set discrete values.</p>
+<h2 id="push-button">Push button<a class="headerlink" href="#push-button" title="Permanent link">&para;</a></h2>
+<p><strong>Push button</strong> widget has two different behaviors, depending on its <em>fileInput</em> parameter (located in "Graphical Properties" tab).</p>
+<ul>
+<li>If <em>fileInput</em> is false, the button works as a trigger for connected dataNode (i.e. when the user clicks the button, dataNode execution is forced)</li>
+<li>If <em>fileInput</em> is true, the button works as file reader. When the user selects a file, its content is copied to:</li>
+<li><a href="../../ds/ds-basics/#variable">Variable</a></li>
+<li><a href="../../ds/ds-reference/#csv-file-reader">CSV file reader</a></li>
+<li><a href="../../ds/ds-reference/#csv-file-player">CSV file player</a></li>
+<li>Generic file reader</li>
+</ul>
+<p>Examples :</p>
+<ul>
+<li>First, create a sample file Input.json with the following content</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;length&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">25</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;width&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Then run <a href="/wdg/basic/buttons.xprjson">buttons.xprjson</a></p>
+<h2 id="select">Select<a class="headerlink" href="#select" title="Permanent link">&para;</a></h2>
+<p><strong>Select</strong> widget has three actuators:</p>
+<ul>
+<li><strong>keys</strong>: an array describing the options that can be selected.</li>
+<li><strong>values</strong>: an array describing the corresponding values that can be written. This actuator is optional.</li>
+<li><strong>selectedValue</strong>: the dataNode where the selected output will be written, the selected <em>key</em> or its corresponding <em>value</em>, if an array of values has been specified.</li>
+</ul>
+<p>With the following array of <strong>keys</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="s2">&quot;choice1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;choice2&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>and an (optional) array of <strong>values</strong> that the widget will output to the <strong>selectedValue</strong> actuator when the corresponding option is selected</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">]</span>
+</code></pre></div>
+<p>If <strong>values</strong> actuator is not specifed, the <strong>selectedValue</strong> will contain the value of the item selected in the <strong>keys</strong> array.
+Otherwise, the <strong>selectedValue</strong> will contain the item from the <strong>values</strong> array corresponding to the selected key.</p>
+<ul>
+<li><a href="/wdg/basic/combo-box-py.xprjson">combo-box-py.xprjson</a></li>
+<li><a href="/wdg/basic/combo-box-js.xprjson">combo-box-js.xprjson</a></li>
+</ul>
+<p><img alt="combo-box" src="../basic/combo-box.png" /></p>
+<h2 id="list">List<a class="headerlink" href="#list" title="Permanent link">&para;</a></h2>
+<p><strong>List</strong> widget expects a JavaScript array as its <strong>value</strong> input, such as :</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="s2">&quot;one&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;two&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;three&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p><strong>selectedValue</strong> specifies the data source that will contain the selected item from the list.</p>
+<p><img alt="list" src="../basic/list.png" /></p>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/basic/list-py.xprjson">list-py.xprjson</a></li>
+<li><a href="/wdg/basic/list-js.xprjson">list-js.xprjson</a></li>
+</ul>
+<h2 id="multi-select">Multi-select<a class="headerlink" href="#multi-select" title="Permanent link">&para;</a></h2>
+<p>Example :</p>
+<ul>
+<li><a href="/wdg/basic/multi-select-py.xprjson">multi-select-py.xprjson</a></li>
+<li><a href="/wdg/basic/multi-select-js.xprjson">multi-select-js.xprjson</a></li>
+</ul>
+<h2 id="table">Table<a class="headerlink" href="#table" title="Permanent link">&para;</a></h2>
+<p><strong>Table</strong> widget expects its <strong>value</strong> input to reference a JavaScript array, containing subarrays, all of the same dimension, such as :</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">    </span><span class="p">[</span><span class="s2">&quot;Jan&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Feb&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Mar&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Apr&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;May&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Jun&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Jul&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Aug&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Sep&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Oct&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Nov&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Dec&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="mf">6</span><span class="p">,</span><span class="w"> </span><span class="mf">9</span><span class="p">,</span><span class="w"> </span><span class="mf">11</span><span class="p">,</span><span class="w"> </span><span class="mf">15</span><span class="p">,</span><span class="w"> </span><span class="mf">16</span><span class="p">,</span><span class="w"> </span><span class="mf">20</span><span class="p">,</span><span class="w"> </span><span class="mf">20</span><span class="p">,</span><span class="w"> </span><span class="mf">16</span><span class="p">,</span><span class="w"> </span><span class="mf">12</span><span class="p">,</span><span class="w"> </span><span class="mf">7</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">]</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>This array will be displayed as :</p>
+<p><img alt="table" src="../tables/table.png" /></p>
+<p>Example : <a href="/wdg/tables/table.xprjson">table.xprjson</a></p>
+<p>Table may be editable if it is connected to a <a href="../../ds/ds-basics/#variable">variable</a>-type dataNode. <em>Editable</em> property can be set in a column-basis using the parameter <em>editableCols</em>. For example, if editableCols equals [0,1,2], columns 0, 1 and 2 are editable (i.e. cells in these columns, excluding headers, can be modified). The modifications will be assigned to the connected <a href="../../ds/ds-basics/#variable">variable</a>-type dataNode.</p>
+<p>Tables and editable tables may also be two dimentional.</p>
+<p><img alt="editable-table-2D" src="../tables/editable-table-2D.png" /></p>
+<p>Examples : </p>
+<ul>
+<li><a href="/wdg/tables/table-editable.xprjson">table-editable.xprjson</a></li>
+<li><a href="/wdg/tables/editable-table-2D.xprjson">editable-table-2D.xprjson</a></li>
+</ul>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../wdg-common-concept/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Common concepts" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Common concepts
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../wdg-basic-displays/" class="md-footer__link md-footer__link--next" aria-label="Next: Basic displays" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Basic displays
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      
+        <script src="../../mkdocs-open-xprjson.js"></script>
+      
+    
+  </body>
+</html>

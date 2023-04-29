@@ -1,0 +1,410 @@
+{
+	"meta": {
+		"version": "2.400.8411",
+		"date": "Wed Feb 08 2023 13:55:14 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "echarts-covid-comparison-js",
+		"description": "Covid real-time dashboard using data from CSSE at Johns Hopkins University",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "Covid"
+			},
+			{
+				"text": "ECharts"
+			},
+			{
+				"text": "widgets"
+			},
+			{
+				"text": "REST-API"
+			},
+			{
+				"text": "CSV"
+			},
+			{
+				"text": "Plots"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "source",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "source",
+					"json_var": "[[\"Data from CSSE at Johns Hopkins University at <a href=\\\"https://github.com/CSSEGISandData\\\">https://github.com/CSSEGISandData</a>\"]]"
+				}
+			},
+			{
+				"name": "option",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "option",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var series = [];\n\nvar yAxisName = '';\n\nif  (dataNodes[\"cumulative\"])\n\tyAxisName = 'cumulative number';\nelse\n    yAxisName = 'daily number';\n\nvar countries = [];\n\n_.each(dataNodes[\"country\"], (selectedCountry)=> {\n\tseries.push(        {\n            name: dataNodes[\"dataset\"] + ' for ' + selectedCountry, \n            type: 'line',\n            animation: false,\n            areaStyle: {},\n            lineStyle: {\n                width: 1\n            },\n            markArea: {\n                silent: true\n            },\n            data:  dataNodes[\"countryForDisplay\"][selectedCountry] \n        });\n    \n    countries.push(selectedCountry);\n}); \n\nvar option = {\n    title: {\n        text: 'Covid data for ' + countries,\n        subtext: 'CSSE at Johns Hopkins University',\n        left: 'center',\n        align: 'right'\n    },\n    grid: {\n        bottom: 80\n    },\n    toolbox: {\n        feature: {\n            dataZoom: {\n                yAxisIndex: 'none'\n            },\n            restore: {},\n            saveAsImage: {}\n        }\n    },\n    tooltip: {\n        trigger: 'axis',\n        axisPointer: {\n            type: 'cross',\n            animation: false,\n            label: {\n                backgroundColor: '#505765'\n            }\n        }\n    },\n    dataZoom: [\n        {\n            show: true,\n            realtime: true,\n            start: 80,\n            end: 100\n        },\n        {\n            type: 'inside',\n            realtime: true,\n            start: 80,\n            end: 100\n        }\n    ],\n    xAxis: [\n        {\n            type: 'category',\n            boundaryGap: false,\n            axisLine: {onZero: false},\n            data:  dataNodes[\"countryForDisplay\"][\"time\"] \n        }\n    ],\n    yAxis: [\n        {\n            name: yAxisName,\n            type: 'value',\n        }\n    ],\n    series: series\n};\n\nreturn option;\n"
+				}
+			},
+			{
+				"name": "json",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "json",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "return Papa.parse( dataNodes[\"covid\"].content,{\n\tdynamicTyping: true\n});"
+				}
+			},
+			{
+				"name": "cumulative",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "cumulative",
+					"json_var": "true"
+				}
+			},
+			{
+				"name": "countries",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "countries",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var s = new Set();\n\nfor (var i=1; i < dataNodes[\"json\"][\"data\"].length - 1; i++) {\n\ts.add(dataNodes[\"json\"][\"data\"][i][1]);\n}\n\nreturn Array.from(s);"
+				}
+			},
+			{
+				"name": "countryData",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "countryData",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var countryData = {};\n_.each(dataNodes[\"json\"][\"data\"],(country)=> {\n    _.each(dataNodes[\"country\"], (selectedCountry)=> {\n        if (country[1] == selectedCountry ) {\n            countryData[selectedCountry] = [];\n            countryData[selectedCountry].push(country);\n        }\n    });\n});\n\nreturn countryData;"
+				}
+			},
+			{
+				"name": "countryForDisplay",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "countryForDisplay",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var length = dataNodes[\"json\"][\"data\"][0].length;\nvar header = dataNodes[\"json\"][\"data\"][0];\nvar countryData = {};\nvar time =  [];\nfor (var i=5; i < length; i ++) {\n\ttime.push(header[i]);\n}\n\nvar bCumulative =  dataNodes[\"cumulative\"];\n\nvar loopStart = 6;\nif (bCumulative) loopStart = 5;\n\n_.each(dataNodes[\"country\"], (selectedCountry)=> {\n    countryData[selectedCountry]=[];\n    for (var k=0; k < dataNodes[\"countryData\"][selectedCountry].length; k++) {\n        for (var i=loopStart; i < length; i++) {\n            if (bCumulative) \n            \tcountryData[selectedCountry].push(dataNodes[\"countryData\"][selectedCountry][k][i]);\n            else\n                countryData[selectedCountry].push((dataNodes[\"countryData\"][selectedCountry][k][i]-dataNodes[\"countryData\"][selectedCountry][k][i-1]));\n        }\n    }\n});\n\ncountryData[\"time\"] = time;\n\nreturn countryData;"
+				}
+			},
+			{
+				"name": "covid",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "covid",
+					"url": "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series",
+					"use_xproxy": true,
+					"sampleTime": 0,
+					"autoStart": true,
+					"explicitTrig": false,
+					"req_data_type": "JSON",
+					"resp_data_type": "text",
+					"method": "GET",
+					"body": "return {\"urlAppend\": \"/\" +  dataNodes[\"dataset\"]  + \".csv\"};",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0NTU0VHSVNhbmREYXRhL0NPVklELTE5L21hc3Rlci9jc3NlX2NvdmlkXzE5X2RhdGEvY3NzZV9jb3ZpZF8xOV90aW1lX3NlcmllcyIsIkhvc3QiOiJ4ZGFzaCJ9",
+					"proxySig": "5TM10MtZYvnW/sf2ZrpNxn/fpTeOoUHXzV23CzlL95mni7uOrscQQSlcUagf1btXos2wf1ZA+eGBSZhc1/bPlk5lyaqX3oHfc4Sq0kUugOLuSZa8ZHH9jyGOBNVXZpzZLBXBrEJXDUTQjJP4Ff5kbos1NUPOwAegxsUNhkW2giUOiVEWA61kkj2Ww+5R9wLU"
+				}
+			},
+			{
+				"name": "country",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "country",
+					"json_var": "[\"France\"]"
+				}
+			},
+			{
+				"name": "datasets",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "datasets",
+					"json_var": "[\"time_series_covid19_confirmed_global\", \"time_series_covid19_deaths_global\", \"time_series_covid19_recovered_global\"]"
+				}
+			},
+			{
+				"name": "dataset",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "dataset",
+					"json_var": "\"time_series_covid19_deaths_global\""
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			10,
+			4,
+			1,
+			5,
+			8,
+			9,
+			3,
+			7,
+			6,
+			2
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"echartsGenerich": {
+			"layout": {
+				"top": "12.511vh",
+				"left": "24.1189vw",
+				"height": "65.3801vh",
+				"width": "59.4504vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "5"
+			},
+			"container": {
+				"id": "echartsGenerich",
+				"instanceId": "echartsGenerich",
+				"modelJsonId": "echartsGeneric",
+				"widgetTypeName": "Echarts generic(echartsGenerich)"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"option": {},
+				"selection": {}
+			}
+		},
+		"flatUiSelectZ": {
+			"layout": {
+				"top": "1.41707vh",
+				"left": "47.9153vw",
+				"height": "6.4573vh",
+				"width": "34.0408vw",
+				"minHeight": "32px",
+				"minWidth": "80px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiSelectZ",
+				"instanceId": "flatUiSelectZ",
+				"modelJsonId": "flatUiSelect",
+				"widgetTypeName": "Select(flatUiSelectZ)"
+			},
+			"modelParameters": {
+				"label": "dataset",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"selectWidthProportion": "70%",
+				"isNumber": false,
+				"selectValueFontSize": 0.5,
+				"isKeyValuePairs": false,
+				"selectedValueColor": "#ffffff",
+				"selectedItemDefaultColor": "#447bdc",
+				"selectedItemHoverColor": "#a9c3ef"
+			},
+			"modelHiddenParams": {
+				"values": [],
+				"keys": [],
+				"value": [],
+				"selectedValue": ""
+			}
+		},
+		"flatUiLists": {
+			"layout": {
+				"top": "12.511vh",
+				"left": "1.37131vw",
+				"height": "64.9765vh",
+				"width": "21.5376vw",
+				"minHeight": "75px",
+				"minWidth": "80px",
+				"z-index": "4"
+			},
+			"container": {
+				"id": "flatUiLists",
+				"instanceId": "flatUiLists",
+				"modelJsonId": "flatUiList",
+				"widgetTypeName": "List(flatUiLists)"
+			},
+			"modelParameters": {
+				"addControls": false,
+				"listValueFontSize": 0.5,
+				"listValueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"displayBorder": false,
+				"listBackgroundColor": "#ffffff",
+				"selectValueColor": "#34495e",
+				"selectValueBackgroundColor": "#cecece"
+			},
+			"modelHiddenParams": {
+				"value": [],
+				"selectedValue": ""
+			}
+		},
+		"flatUiTable5": {
+			"layout": {
+				"top": "1.41707vh",
+				"left": "1.37131vw",
+				"height": "11.195vh",
+				"width": "45.818vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "5"
+			},
+			"container": {
+				"id": "flatUiTable5",
+				"instanceId": "flatUiTable5",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTable5)"
+			},
+			"modelParameters": {
+				"headerLine": false,
+				"tableValueFontSize": 0.5,
+				"striped": false,
+				"valueColor": "#2154ab",
+				"valueFontFamily": "Helvetica Neue",
+				"bordered": false,
+				"noBorder": true,
+				"editableCols": "[]"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		},
+		"flatUiCheckboxe": {
+			"layout": {
+				"top": "7.66803vh",
+				"left": "57.2725vw",
+				"height": "4.70844vh",
+				"width": "17.4237vw",
+				"minHeight": "24px",
+				"minWidth": "32px",
+				"z-index": "6"
+			},
+			"container": {
+				"id": "flatUiCheckboxe",
+				"instanceId": "flatUiCheckboxe",
+				"modelJsonId": "flatUiCheckbox",
+				"widgetTypeName": "Checkbox(flatUiCheckboxe)"
+			},
+			"modelParameters": {
+				"label": "cumulative",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"checkboxSize": 1,
+				"checkboxColor": "#447bdc",
+				"labelFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": false
+			}
+		}
+	},
+	"connections": {
+		"echartsGenerich": {
+			"option": {
+				"name": "option",
+				"dataFields": [],
+				"dataNode": "option",
+				"dataNodeIndex": 1
+			}
+		},
+		"flatUiSelectZ": {
+			"keys": {
+				"name": "keys",
+				"dataFields": [],
+				"dataNode": "datasets",
+				"dataNodeIndex": 9
+			},
+			"values": {
+				"name": "values",
+				"dataFields": [],
+				"dataNode": "datasets",
+				"dataNodeIndex": 9
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataFields": [],
+				"dataNode": "dataset",
+				"dataNodeIndex": 10
+			}
+		},
+		"flatUiLists": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "countries",
+				"dataNodeIndex": 4
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataFields": [],
+				"dataNode": "country",
+				"dataNodeIndex": 8
+			}
+		},
+		"flatUiTable5": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "source",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiCheckboxe": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "cumulative",
+				"dataNodeIndex": 3
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

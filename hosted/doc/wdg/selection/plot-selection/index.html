@@ -1,0 +1,1181 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+    
+    
+      
+        <title>Selection - Chalk'it Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.c382b1dc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#select-and-filter-data" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Chalk&#39;it Documentation" class="md-header__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
+      
+  <img src="../../../_media/chalk-it-icon.ico" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Chalk'it Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Selection
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Chalk&#39;it Documentation" class="md-nav__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
+      
+  <img src="../../../_media/chalk-it-icon.ico" alt="logo">
+
+    </a>
+    Chalk'it Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quick-start/quickstart/" class="md-nav__link">
+        Quickstart
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../basics/" class="md-nav__link">
+        Basics
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          DataNodes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="DataNodes" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          DataNodes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ds/ds/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ds/ds-basics/" class="md-nav__link">
+        Basics
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ds/ds-execution-engine/" class="md-nav__link">
+        Execution engine
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ds/ds-reference/" class="md-nav__link">
+        Reference
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Widgets
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Widgets" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Widgets
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wdg/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wdg-common-concept/" class="md-nav__link">
+        Common concepts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wdg-basic-inputs/" class="md-nav__link">
+        Basic inputs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wdg-basic-displays/" class="md-nav__link">
+        Basic displays
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wdg-plots/" class="md-nav__link">
+        Plots
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wdg-geo-time/" class="md-nav__link">
+        Geo & Time
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../wdg-annotation-video/" class="md-nav__link">
+        Annotation & Video
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_8">
+          Additions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Additions" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_8">
+          <span class="md-nav__icon md-icon"></span>
+          Additions
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Selection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Selection
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#main-data-and-global-index" class="md-nav__link">
+    main data and global index
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-the-selection-from-a-graph-to-draw-another-one" class="md-nav__link">
+    How to use the selection from a graph to draw another one
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-draw-a-graph-with-different-sources-of-selection" class="md-nav__link">
+    How to draw a graph with different sources of selection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-synchronize-selection-to-have-a-single-global-selection" class="md-nav__link">
+    How to synchronize selection to have a single global selection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-the-selection-event-if-the-index-selected-are-different-from-the-data-index" class="md-nav__link">
+    How to use the selection event if the index selected are different from the data index
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-reset-selection-action" class="md-nav__link">
+    Create a reset selection action
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#good-practices" class="md-nav__link">
+    Good Practices
+  </a>
+  
+    <nav class="md-nav" aria-label="Good Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-one-datanode-for-the-layout-and-one-for-the-data" class="md-nav__link">
+    Create one datanode for the layout and one for the data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#never-use-the-same-layout-datanode-for-multiple-graphs" class="md-nav__link">
+    Never use the same layout DataNode for multiple graphs.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-1-plotly-selection-and-chalkit-selection" class="md-nav__link">
+    Appendix 1 : Plotly Selection and Chalk'it Selection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-1-plotly-selection-and-xdash-selection" class="md-nav__link">
+    Appendix 1 : Plotly Selection and xDash Selection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-2-how-to-handle-all-selection-behaviors-from-plotly-without-creating-trouble" class="md-nav__link">
+    Appendix 2 : how to handle all selection behaviors from plotly without creating trouble
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plot-themes/" class="md-nav__link">
+        Themes
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../export/export/" class="md-nav__link">
+        Export
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Python" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../py/py-index/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../py/py-pyodide/" class="md-nav__link">
+        Pyodide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../py/py-proto-flask/" class="md-nav__link">
+        Local prototyping with Flask
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Recipes & interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Recipes & interfaces" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Recipes & interfaces
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../recipes/" class="md-nav__link">
+        Recipes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../xdashapi/" class="md-nav__link">
+        xDashApi
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#main-data-and-global-index" class="md-nav__link">
+    main data and global index
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-the-selection-from-a-graph-to-draw-another-one" class="md-nav__link">
+    How to use the selection from a graph to draw another one
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-draw-a-graph-with-different-sources-of-selection" class="md-nav__link">
+    How to draw a graph with different sources of selection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-synchronize-selection-to-have-a-single-global-selection" class="md-nav__link">
+    How to synchronize selection to have a single global selection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-the-selection-event-if-the-index-selected-are-different-from-the-data-index" class="md-nav__link">
+    How to use the selection event if the index selected are different from the data index
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-reset-selection-action" class="md-nav__link">
+    Create a reset selection action
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#good-practices" class="md-nav__link">
+    Good Practices
+  </a>
+  
+    <nav class="md-nav" aria-label="Good Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-one-datanode-for-the-layout-and-one-for-the-data" class="md-nav__link">
+    Create one datanode for the layout and one for the data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#never-use-the-same-layout-datanode-for-multiple-graphs" class="md-nav__link">
+    Never use the same layout DataNode for multiple graphs.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-1-plotly-selection-and-chalkit-selection" class="md-nav__link">
+    Appendix 1 : Plotly Selection and Chalk'it Selection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-1-plotly-selection-and-xdash-selection" class="md-nav__link">
+    Appendix 1 : Plotly Selection and xDash Selection
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-2-how-to-handle-all-selection-behaviors-from-plotly-without-creating-trouble" class="md-nav__link">
+    Appendix 2 : how to handle all selection behaviors from plotly without creating trouble
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="select-and-filter-data">Select and Filter data<a class="headerlink" href="#select-and-filter-data" title="Permanent link">&para;</a></h1>
+<p><strong>Selection</strong> and <strong>Filter</strong> are important tools in interactive data analysis and visualisation.</p>
+<p>With Plotly JavaScript generic graph, the Chalk'it platform gives you access to selected events which contain all fields necessary in order to use selected element in the dataflow (transfer selection to another graph, filter data according to selection,  ...) </p>
+<blockquote>
+<p>For those familiar with Plotly select events, "appendix I" will explain how xDash selection events are created. </p>
+</blockquote>
+<h2 id="main-data-and-global-index">main data and global index<a class="headerlink" href="#main-data-and-global-index" title="Permanent link">&para;</a></h2>
+<p>When user wants to create a graph from a selection of another graph, or to transfer the selection from one graph to another (or from one graph to a script), there is a logic of a main shared data.</p>
+<p>This could be the result of a CSV import, a global JSON or GeoJSON.</p>
+<p>This shared data is considered and referenced as the global data in our exemples and will be present in the dataNode [data].</p>
+<p>Each global shared data is indexed (In the CSV exemple, the index is the lane of each datum) and we will use the term "global index" as a generic expression to reference this main indexation. </p>
+<h2 id="how-to-use-the-selection-from-a-graph-to-draw-another-one">How to use the selection from a graph to draw another one<a class="headerlink" href="#how-to-use-the-selection-from-a-graph-to-draw-another-one" title="Permanent link">&para;</a></h2>
+<p>First example :</p>
+<ul>
+<li><a href="/wdg/selection/selection-example-1.xprjson">selection-example-1.xprjson</a></li>
+</ul>
+<p>In this first exemple we :  </p>
+<ul>
+<li>Plot all data in one scatter plot graph (Plotly Generic)</li>
+<li>Recover the selection from the scatter </li>
+<li>Build an histogram using only the selected data</li>
+</ul>
+<p>The main data is an array of datum that each contains 3 values [Alpha, Beta, Delta]. Typically obtained from a CSV import. The cross plot will be done between [alpha vs beta] and [delta] will be used to draw the histogram.</p>
+<p><img alt="example-1-graph" src="../graph.png" /></p>
+<p>The dataFlow contains 5 dataNodes and 2 associated widgets</p>
+<ul>
+<li>One DataNode that contains the global data.</li>
+<li>Two DataNodes are created for each Plotly Graph (data and layout)</li>
+<li>One DataNode which contains the selection</li>
+<li>One widget [plotly generic] is the scatter plot </li>
+<li>One widget  [plotly generic] is the histogram </li>
+</ul>
+<p>The data for the Plotly histogram is dependant of the selection DataNode.</p>
+<blockquote>
+<p>The graphs and DataNodes associated (PloltlyData and PlotlyLayout) dont know each others and dont have direct relationship. </p>
+</blockquote>
+<p>In order to have a clean change in the histogram,  the X axis limit and bin limits are defined via all the data. </p>
+<h2 id="how-to-draw-a-graph-with-different-sources-of-selection">How to draw a graph with different sources of selection<a class="headerlink" href="#how-to-draw-a-graph-with-different-sources-of-selection" title="Permanent link">&para;</a></h2>
+<p>Now, lets imagine that what you want to draw is defined by the addition of different incoming selections.</p>
+<p>Example 2:</p>
+<ul>
+<li><a href="/wdg/selection/selection-example-2.xprjson">selection-example-2.xprjson</a></li>
+</ul>
+<p>In Exemple 2 </p>
+<ul>
+<li>We draw 2 scatter plots </li>
+<li>Both selection are used to draw the histogram.</li>
+</ul>
+<p>This exemple is similar than the last one except that :</p>
+<ul>
+<li>the selection datanode has now one field for each cross plot selection</li>
+<li>one dataNode is now present to process the selection [MultiSelectionProcess]</li>
+</ul>
+<p>The process node does the addition of each selection.</p>
+<p>The structure of the selection node has changed, there is now one field for each graph which will aggregate their selection.</p>
+<p>Each selection actuator from the cross plot now is now linked with one field of the selection node.</p>
+<blockquote>
+<p>It is relevant that the code of the process DataNode dont know the number and the origin of each incoming selections. You can so add and remove origin of  selection without changing the code of the process datanode</p>
+</blockquote>
+<p>The PlotlyData datanode used for the histogram takes information from the process node.</p>
+<blockquote>
+<p>A datanode is used to collect information and create the "global" selection. This is not done in the datanode used for plotly data. This global selection could be used for other graphs or script without copy/paste. </p>
+</blockquote>
+<h2 id="how-to-synchronize-selection-to-have-a-single-global-selection">How to synchronize selection to have a single global selection<a class="headerlink" href="#how-to-synchronize-selection-to-have-a-single-global-selection" title="Permanent link">&para;</a></h2>
+<p>The different selection on each graph are independant.</p>
+<p>In some case we want a "global" selection" which regroup all selection and that all graph show the selected data.</p>
+<p>Example 3</p>
+<ul>
+<li><a href="/wdg/selection/selection-example-3.xprjson">selection-example-3.xprjson</a></li>
+</ul>
+<p>In this exemple we do 2 scatter plots from the same global data.
+As exemple 2, we use a process node to concatenate the information but on both graphs we want to see all the selected data.</p>
+<p>Plotly graphs are mainly correlated with their own selection. </p>
+<blockquote>
+<p>Trying to use the "selectedpoints" field present in plotly data is a bad idea. This fied is ok if the graph dont has his own selection behavior. But this field is erased when using "rectangle" or "lasso" selection. It is better to consider external selection as a complement of the possible present selection. "appendix II" will enter deeper  in exposing the selection </p>
+</blockquote>
+<p>The additional selected items are not drawn last, so we see clearly a difference between the selection from the graph and the selection from other sources. In next exemple we propose a solution to handle this.</p>
+<h2 id="how-to-use-the-selection-event-if-the-index-selected-are-different-from-the-data-index">How to use the selection event if the index selected are different from the data index<a class="headerlink" href="#how-to-use-the-selection-event-if-the-index-selected-are-different-from-the-data-index" title="Permanent link">&para;</a></h2>
+<p>Example 4:
+* <a href="/wdg/selection/selection-example-4.xprjson">selection-example-4.xprjson</a></p>
+<p>For the moment, in the different exemples we have assumed that the [index] given by the selection is the same that the index of the data.</p>
+<p>It means that if the data selected is "4" it is the same index on the global data index. </p>
+<p>But it is not always the case, for multiple reasons, the index given by the selection could be different, for exemple</p>
+<ul>
+<li>you need to draw only a part of the data   </li>
+<li>you need to sort the data X vs Y in order to draw a line</li>
+<li>you need to sort the global data before drawing in order to control
+   the Z order of the draw</li>
+<li>...</li>
+</ul>
+<p>Each plotly trace contains a [customdata] field that can help us to resolve this problem</p>
+<p>In exemple [nom de l'exemple] we used the same But in the data for plotly DataNode we order the drawn order with all selected data at the end. </p>
+<blockquote>
+<p>it is not possible to give a drawn order to plotly (V2.16.3). The element and the trace are drawn in the order given by the user. Last element of last trace are drawn last.</p>
+</blockquote>
+<p>In the data for plotly Datanode we sort the element but we keep the change in an array called "orderForGraph" which will be transfer to plotly in the "customdata" field. This field is present in the selection of the dataflow and can be used in the selectionProcess node to obtain the equivalent index. </p>
+<h2 id="create-a-reset-selection-action">Create a reset selection action<a class="headerlink" href="#create-a-reset-selection-action" title="Permanent link">&para;</a></h2>
+<p>Example 5:
+* <a href="/wdg/selection/selection-example-5.xprjson">selection-example-5.xprjson</a></p>
+<p>in our exemple, selection is in an independant DataNode, and no more only a graphical features. </p>
+<p>In order to reset the selection, we need to clean all the DataFlow and all the graphics. In exemple 5 we create a reset selection script which is triggered by a push button. </p>
+<p>3 significant addition in the dataNode have to be done in order to have a clean result. </p>
+<ul>
+<li>Reset the DataNode [Selection] via the xDashApi function. This will reset the selection and the plotly data (done in [ResetSelection] dataNode)</li>
+<li>Add the field "selections : []" in all layout impacted in order to remove all the visible rectangle or lasso drawn</li>
+<li>Create a relation between the resetSelection action script and the different layout to trigger the layout dataNodes.</li>
+</ul>
+<h2 id="good-practices">Good Practices<a class="headerlink" href="#good-practices" title="Permanent link">&para;</a></h2>
+<h3 id="create-one-datanode-for-the-layout-and-one-for-the-data">Create one datanode for the layout and one for the data<a class="headerlink" href="#create-one-datanode-for-the-layout-and-one-for-the-data" title="Permanent link">&para;</a></h3>
+<p>If one dataNode is used to give the Data and the Layout for the widget, some unexpected graphical behavior can happen. </p>
+<p>Usually data often change according to action, but user like to keep element of visualisation (zoom, factor, element selected, ... )  </p>
+<p>When data changed, plotly will also reset the layout if they are in the same datanode, which can change your view according to what is defined in the original layout. </p>
+<h3 id="never-use-the-same-layout-datanode-for-multiple-graphs">Never use the same layout DataNode for multiple graphs.<a class="headerlink" href="#never-use-the-same-layout-datanode-for-multiple-graphs" title="Permanent link">&para;</a></h3>
+<p>Plotly keeps in memory each layout for its own internal use. It never makes copy.</p>
+<p>If the same layout is used for exemple for 2 scatter plots each pan/zoom/selection done on one plot ... will be passed to the other graph but not at the same time. </p>
+<p>The repercution will be done next time plotly via the dataFlow needs to check the current layout.</p>
+<p>And you dont know when it will happens (often when the widget is selected) </p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:documentation/docs/wdg/selection/plot-selection.md</p>
+<h2 id="appendix-1-plotly-selection-and-chalkit-selection">Appendix 1 : Plotly Selection and Chalk'it Selection<a class="headerlink" href="#appendix-1-plotly-selection-and-chalkit-selection" title="Permanent link">&para;</a></h2>
+<p>=======</p>
+<h2 id="appendix-1-plotly-selection-and-xdash-selection">Appendix 1 : Plotly Selection and xDash Selection<a class="headerlink" href="#appendix-1-plotly-selection-and-xdash-selection" title="Permanent link">&para;</a></h2>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>master:HowTos/docs/wdg/selection/plot-selection.md</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Structures of the plotly selection are discribe in </p>
+<p><a href="https://plotly.com/javascript/plotlyjs-events/#event-data">https://plotly.com/javascript/plotlyjs-events/#event-data</a></p>
+<p>So plotly selection events are dependant from the kind of the original graph (2D, 3D, map, ...) </p>
+<p>Plotly selection cannot directly be transformed in JSON because it is a circular structure.</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:documentation/docs/wdg/selection/plot-selection.md
+Chalk'it selection event is one unified selection containing an array for each trace which contains the index of the element and the metadata if those one were present in the original trace. 
+=======
+xDash selection event is one unified selection containing an array for each trace which contains the index of the element and the metadata if those one were present in the original trace. </p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>master:HowTos/docs/wdg/selection/plot-selection.md</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>[curveNumber (trace number)]
+ - indexSelected : []
+ - customdata : [] (if customdata field is present in original DataTrace)</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:documentation/docs/wdg/selection/plot-selection.md
+For exemple if you have 2 traces in your Plotly graph, Chalk'it selection would return :
+=======
+For exemple if you have 2 traces in your Plotly graph, xDash selection would return :</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>master:HowTos/docs/wdg/selection/plot-selection.md</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>[ 0 : {Data : [1, 10, 120, 123], customData: [1, 10, 120, 123]}]
+[ 1 : {Data : [1, 10, 120, 123], customData: [1, 10, 120, 123]}]</p>
+<h2 id="appendix-2-how-to-handle-all-selection-behaviors-from-plotly-without-creating-trouble">Appendix 2 : how to handle all selection behaviors from plotly without creating trouble<a class="headerlink" href="#appendix-2-how-to-handle-all-selection-behaviors-from-plotly-without-creating-trouble" title="Permanent link">&para;</a></h2>
+<p>In some situation you want to have a total control of filter/selection and the way plotly control the selection can create confusion.</p>
+<p>The behavior you need can visualy enter in "conflict" with plotly internal behavior, or can provoke non wanted behaviors. </p>
+<p>When you draw a selection via plotly, each attributes dont used the standard fields (color, size, ...) but used the fields that are under the 2 fields "selected" and "unselected" .. and this is true only for plotly graph which accept this fields; </p>
+<p>"selected" and "unselected" are used by plotly when
+ - a "rectangle" selection is done
+ - a "lasso" selection is done
+ - if the field "selectionpoints" is given as a plotly data</p>
+<p>In those cases, data are divided in two groups (selected and unselected) and are drawn according to these fields. If you dont define them, plotly used internal behavior to create them (mainly reducing the tone and the opacity)</p>
+<ul>
+<li>
+<p>the "regular" way (for exemple [data][marker] in scatter plot) to
+   render graph are no more used when graph is in selection
+   mode.</p>
+</li>
+<li>
+<p>A "rectangle" or "lasso" selection reset the field "selectionpoints"</p>
+</li>
+</ul>
+<p>In exemple 3 and 4 we want to keep the plotly behavior for drawing and moving selection, but we also  want to keep the way we draw things. So we copy the style on the "selected" and "unselected" fields because we want a global selection and not a selection which takes into account only the graph;</p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../wdg-annotation-video/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Annotation &amp; Video" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Annotation & Video
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../plot-themes/" class="md-footer__link md-footer__link--next" aria-label="Next: Themes" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Themes
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.a6c66575.min.js"></script>
+      
+        <script src="../../../mkdocs-open-xprjson.js"></script>
+      
+    
+  </body>
+</html>

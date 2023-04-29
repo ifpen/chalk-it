@@ -1,0 +1,298 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 23:13:24 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "csv-read-write-js",
+		"description": "CSV read from file then download to file",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "CSV"
+			},
+			{
+				"text": "File-download"
+			},
+			{
+				"text": "Table"
+			},
+			{
+				"text": "Button"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "convertToCSV",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "convertToCSV",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "\nvar keys = Object.keys(datasources[\"csvFile\"]);    \nvar values = _.zip(..._.values(datasources[\"csvFile\"]));\n    \nvar csv = Papa.unparse({\n\t\"fields\": keys,\n\t\"data\": values\n},\n{\n\tquotes: false, //or array of booleans\n\tquoteChar: '\"',\n\tescapeChar: '\"',\n\tdelimiter: \";\",\n\theader: true,\n\tnewline: \"\\r\\n\",\n\tskipEmptyLines: false, //or 'greedy',\n\tcolumns: null //or array of strings\n});\n\nreturn csv;"
+				}
+			},
+			{
+				"name": "saveFile",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "saveFile",
+					"autoStart": false,
+					"explicitTrig": true,
+					"json_var_formula": "var data, filename, link;\n\t\t\nvar csv = datasources.convertToCSV;\nif (csv === null) return;\n\nfilename = datasources.fileName.value;\n\nif (!csv.match(/^data:text\\/csv/i)) {\n\tcsv = 'data:text/csv;charset=utf-8,' + csv;\n}\ndata = encodeURI(csv);\nlink = document.createElement('a');\nlink.setAttribute('href', data);\nlink.setAttribute('download', filename);\nlink.click();\n\nreturn true;"
+				}
+			},
+			{
+				"name": "tableDisplay",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "tableDisplay",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var vals = _.unzip(_.values(datasources[\"csvFile\"]));\nvar keys = _.keys(datasources[\"csvFile\"]);\nvals.unshift(keys);\nreturn vals;\n"
+				}
+			},
+			{
+				"name": "csvFile",
+				"type": "CSV_file_reader_plugin",
+				"settings": {
+					"name": "csvFile",
+					"data_path": "CH4-short.csv",
+					"content": "\"lat\",\"lng\",\"CH4\"\r\n48.876684, 2.175765, 1.94\r\n48.876684, 2.175765, 1.95\r\n48.876684, 2.175765, 1.92\r\n48.876705, 2.175806, 1.93\r\n48.876705, 2.175806, 1.99\r\n",
+					"delimiter": "",
+					"eol": "",
+					"quote_char": "\"",
+					"head": true,
+					"skip_empty_lines": true,
+					"dynamic_typing": true,
+					"pluck": true,
+					"embedding_object": false,
+					"nb_meta_lines": 0,
+					"nb_subheader_lines": 0
+				}
+			},
+			{
+				"name": "fileName",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "fileName",
+					"json_var": "{\"value\":\"export.csv\"}"
+				}
+			}
+		],
+		"reIndexMap": [
+			2,
+			4,
+			1,
+			0,
+			3
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiButtonF": {
+			"layout": {
+				"top": "1.50644vh",
+				"left": "2.50135vw",
+				"height": "6.97372vh",
+				"width": "9.63017vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiButtonF",
+				"instanceId": "flatUiButtonF",
+				"modelJsonId": "flatUiButton",
+				"widgetTypeName": "Push button(flatUiButtonF)"
+			},
+			"modelParameters": {
+				"text": "Read CSV",
+				"numberOfTriggers": 1,
+				"fileInput": true,
+				"binaryFileInput": false,
+				"buttonFontSize": 0.5,
+				"buttonFontFamily": "Helvetica Neue",
+				"buttonDefaultColor": "#447bdc",
+				"buttonHoverColor": "#a9c3ef",
+				"buttonActiveColor": "#2154ab",
+				"buttonTextColor": "#ffffff"
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiButtonX": {
+			"layout": {
+				"top": "1.50644vh",
+				"left": "14.5703vw",
+				"height": "6.97372vh",
+				"width": "9.63017vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "4"
+			},
+			"container": {
+				"id": "flatUiButtonX",
+				"instanceId": "flatUiButtonX",
+				"modelJsonId": "flatUiButton",
+				"widgetTypeName": "Push button(flatUiButtonX)"
+			},
+			"modelParameters": {
+				"text": "Save CSV",
+				"numberOfTriggers": 1,
+				"fileInput": false,
+				"binaryFileInput": false,
+				"buttonFontSize": 0.5,
+				"buttonFontFamily": "Helvetica Neue",
+				"buttonDefaultColor": "#447bdc",
+				"buttonHoverColor": "#a9c3ef",
+				"buttonActiveColor": "#2154ab",
+				"buttonTextColor": "#ffffff"
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiTablec": {
+			"layout": {
+				"top": "14.4617vh",
+				"left": "1.06307vw",
+				"height": "48.9087vh",
+				"width": "80.3556vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiTablec",
+				"instanceId": "flatUiTablec",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTablec)"
+			},
+			"modelParameters": {
+				"headerLine": true,
+				"tableValueFontSize": 0.5,
+				"striped": true,
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[]",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		},
+		"flatUiTextInputJ": {
+			"layout": {
+				"top": "1.39474vh",
+				"left": "30.6415vw",
+				"height": "5.52357vh",
+				"width": "22.8247vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "flatUiTextInputJ",
+				"instanceId": "flatUiTextInputJ",
+				"modelJsonId": "flatUiTextInput",
+				"widgetTypeName": "Text Input(flatUiTextInputJ)"
+			},
+			"modelParameters": {
+				"label": "file name",
+				"inheritLabelFromData": false,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "70%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"valueTextAlign": "left",
+				"displayBorder": false,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueFontFamily": "Helvetica Neue",
+				"validationBtnDefaultColor": "#447bdc",
+				"validationBtnHoverColor": "#a9c3ef",
+				"validationBtnActiveColor": "#2154ab"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiButtonF": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataFields": [],
+				"dataNode": "csvFile",
+				"dataNodeIndex": 3
+			}
+		},
+		"flatUiButtonX": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataFields": [],
+				"dataNode": "saveFile",
+				"dataNodeIndex": 1
+			}
+		},
+		"flatUiTablec": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "tableDisplay",
+				"dataNodeIndex": 2
+			}
+		},
+		"flatUiTextInputJ": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"value"
+				],
+				"dataNode": "fileName",
+				"dataNodeIndex": 4
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

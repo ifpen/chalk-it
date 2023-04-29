@@ -1,0 +1,380 @@
+{
+	"meta": {
+		"version": "2.000.8015",
+		"date": "Wed Dec 15 2021 12:34:35 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "python-inline-make-blobs.full",
+		"description": "Random sets generation with Python",
+		"tags": [
+			{
+				"text": "Python"
+			},
+			{
+				"text": "Docker"
+			},
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "Plotly"
+			},
+			{
+				"text": "Plots"
+			},
+			{
+				"text": "Widgets"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"version": 1,
+		"allow_edit": true,
+		"plugins": [],
+		"panes": [],
+		"datasources": [
+			{
+				"name": "plot_points",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "plot_points",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var data = {\n  x:  dataNodes[\"blobs\"][\"x\"] ,\n  y:  dataNodes[\"blobs\"][\"y\"] ,\n  mode: 'markers',\n  type: 'scatter'\n};\n\nvar layout = {\n  xaxis: {\n    autotick: true,\n    ticks: 'outside',\n\tzeroline : false,\n\tshowline: true, \n    linewidth:2,\n    linecolor: 'black',\n    mirror: true      \n  },\n  yaxis: {\n    autotick: true,\n    ticks: 'outside',\n    zeroline : false,\n\tshowline: true, \n    linewidth:2,\n    linecolor: 'black',\n    mirror: true\n  }\n};\n\nreturn {\"data\": [data], \"layout\": layout};\n"
+				}
+			},
+			{
+				"name": "blobs",
+				"type": "Python_inline_plugin",
+				"settings": {
+					"name": "blobs",
+					"autoStart": true,
+					"explicitTrig": false,
+					"dockerImage": {
+						"name": "default",
+						"id": ""
+					},
+					"content": "from sklearn.datasets import make_blobs\n\n# generate 2d classification dataset\nX, y = make_blobs(n_samples=dataNodes[\"inputs\"][\"n_samples\"], centers=dataNodes[\"inputs\"][\"centers\"], n_features=dataNodes[\"inputs\"][\"n_features\"], random_state=dataNodes[\"inputs\"][\"random_state\"])\n\nx_coord = X[ : , 0]\ny_coord = X[ : , 1]\nint_labels = y\n\nreturn {\"x\" : x_coord, \"y\" : y_coord};",
+					"signature": "3044d444755fdd1ec2f7d25cb48c7b832d6c5f1341295a0be1da67d4ba187093522754d8b144a75c3faff7ad5f2a3880d17aba228fc3da63baef2a3db115aac53aca89664ceb25edad7e0ee2a0f8c58c97f3fcedb6b27d70c71a8c9901e8392dc7f53ec566a9ff677f1e84068ebbf27e259c4d95527b29a987e8e010c845e81aee4bcd21baf0aff006971d0f583ff00e395dbe3d938221b37342228f071b72e5108cbd8450f86e9d9fb1a1d19ee6926474e9099b6b5f348596698492bb7eb1d84c48119c318805aa7bf5d1865868bcaf0460a63bed9559dc79e5c73bfab32541fca738aa39057d3ff7f685a56af2d70e7b2ac0ace0d6039363ece8edbef69a1c5a89878cbe10e11efc1a608a6d478ae0d0fbc33d8ae811fbcc2866cf54bda8b296c9b6e301f4d42b08bf6449043cb9fc6955b60e328b06cc1afdec947ba3b1279b6f5b419908d112b3471dacd5d701fad558afa8b60ec7472a258b5d30fcebbe7c05b6e5c3ede9a4e4f1ab988918c7f8f3079fa85649cdd809618881e034deefe8ed5d357e4eae291ee1f6174646939c03f6d0380326320686b108d776096e04b4d44dd3b406c26c81d9f5425d36eeab5d668375269b70c661eed8d377f261f6bf38c3a52854cd8c693d53c9fa6781815ac235e3722cf2c86dca25ae041b3f03bc2141931c914b1821fc9b1503e170edeccc47f2c163f0298d81d6905b266ec1"
+				}
+			},
+			{
+				"name": "inputs",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "inputs",
+					"json_var": "{\"n_samples\":500,\"centers\":3,\"n_features\":4,\"random_state\":18}"
+				}
+			}
+		],
+		"reIndexMap": [
+			2,
+			1,
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"scaling": {
+		"widthPx": 1296,
+		"heightPx": 591,
+		"scrollWidthPx": 1296,
+		"scrollHeightPx": 591,
+		"widthVw": 84.375,
+		"heightVh": 78.38196286472149,
+		"scrollWidthVw": 84.375,
+		"scrollHeightVh": 78.38196286472149,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {}
+	},
+	"dashboard": {
+		"plotlyGenerice": {
+			"layout": {
+				"top": "17.111vh",
+				"left": "0.822651vw",
+				"height": "45.5664vh",
+				"width": "84.4363vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "plotlyGenerice",
+				"instanceId": "plotlyGenerice",
+				"modelJsonId": "plotlyGeneric",
+				"widgetTypeName": "Plotly generic(plotlyGenerice)"
+			},
+			"modelParameters": {
+				"layout": {
+					"xaxis": {
+						"ticks": "outside",
+						"zeroline": false,
+						"showline": true,
+						"linewidth": 2,
+						"linecolor": "black",
+						"mirror": true,
+						"tickmode": "auto",
+						"type": "linear",
+						"range": [
+							-10.59901339644038,
+							2.8672325722945247
+						],
+						"autorange": true
+					},
+					"yaxis": {
+						"ticks": "outside",
+						"zeroline": false,
+						"showline": true,
+						"linewidth": 2,
+						"linecolor": "black",
+						"mirror": true,
+						"tickmode": "auto",
+						"type": "linear",
+						"range": [
+							-7.30049011973708,
+							9.17125269404614
+						],
+						"autorange": true
+					},
+					"autosize": true
+				},
+				"hideModeBar": false
+			},
+			"modelHiddenParams": {
+				"data": [
+					{}
+				],
+				"layout": [
+					{}
+				],
+				"selection": [
+					{}
+				]
+			}
+		},
+		"flatUiHorizontalSlider3": {
+			"layout": {
+				"top": "1.37271vh",
+				"left": "0.822651vw",
+				"height": "5.22547vh",
+				"width": "35.8407vw",
+				"minHeight": "32px",
+				"minWidth": "200px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiHorizontalSlider3",
+				"instanceId": "flatUiHorizontalSlider3",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSlider3)"
+			},
+			"modelParameters": {
+				"label": "n_samples",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 10000,
+				"step": 10,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSlider6": {
+			"layout": {
+				"top": "8.81157vh",
+				"left": "0.822651vw",
+				"height": "5.22547vh",
+				"width": "35.8407vw",
+				"minHeight": "32px",
+				"minWidth": "200px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiHorizontalSlider6",
+				"instanceId": "flatUiHorizontalSlider6",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSlider6)"
+			},
+			"modelParameters": {
+				"label": "centers",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSlider1": {
+			"layout": {
+				"top": "1.37271vh",
+				"left": "40.0499vw",
+				"height": "5.22547vh",
+				"width": "35.8407vw",
+				"minHeight": "32px",
+				"minWidth": "200px",
+				"z-index": "4"
+			},
+			"container": {
+				"id": "flatUiHorizontalSlider1",
+				"instanceId": "flatUiHorizontalSlider1",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSlider1)"
+			},
+			"modelParameters": {
+				"label": "n_features",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 10,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSliderF": {
+			"layout": {
+				"top": "8.70913vh",
+				"left": "40.305vw",
+				"height": "5.22547vh",
+				"width": "35.8407vw",
+				"minHeight": "32px",
+				"minWidth": "200px",
+				"z-index": "5"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderF",
+				"instanceId": "flatUiHorizontalSliderF",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderF)"
+			},
+			"modelParameters": {
+				"label": "random_state",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 20,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		}
+	},
+	"connections": {
+		"plotlyGenerice": {
+			"data": {
+				"name": "data",
+				"dataSource": "plot_points",
+				"dataFields": [
+					"data"
+				],
+				"dataSourceIndex": 0
+			},
+			"layout": {
+				"name": "layout",
+				"dataSource": "plot_points",
+				"dataFields": [
+					"layout"
+				],
+				"dataSourceIndex": 0
+			}
+		},
+		"flatUiHorizontalSlider3": {
+			"value": {
+				"name": "value",
+				"dataSource": "inputs",
+				"dataFields": [
+					"n_samples"
+				],
+				"dataSourceIndex": 2
+			}
+		},
+		"flatUiHorizontalSlider6": {
+			"value": {
+				"name": "value",
+				"dataSource": "inputs",
+				"dataFields": [
+					"centers"
+				],
+				"dataSourceIndex": 2
+			}
+		},
+		"flatUiHorizontalSlider1": {
+			"value": {
+				"name": "value",
+				"dataSource": "inputs",
+				"dataFields": [
+					"n_features"
+				],
+				"dataSourceIndex": 2
+			}
+		},
+		"flatUiHorizontalSliderF": {
+			"value": {
+				"name": "value",
+				"dataSource": "inputs",
+				"dataFields": [
+					"random_state"
+				],
+				"dataSourceIndex": 2
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

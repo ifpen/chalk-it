@@ -1,0 +1,123 @@
+{
+	"meta": {
+		"version": "2.660.8494",
+		"date": "Wed Apr 05 2023 17:32:59 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "folium-point",
+		"description": "Simple demo with geopandas and folium",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "Python"
+			},
+			{
+				"text": "maps"
+			},
+			{
+				"text": "folium"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "map",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "map",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import geopandas as gpd\nfrom shapely.geometry import shape\nimport folium\n\n\n# Read the GeoJSON file with GeoPandas\ngdf = gpd.GeoDataFrame.from_features(dataNodes[\"eiffel_tour\"][\"features\"])\n\n# Get the latitude and longitude of the Eiffel Tower\neiffel_tower = gdf.loc[0, \"geometry\"]\nlatitude, longitude = eiffel_tower.y, eiffel_tower.x\n\n# Create a folium map centered at the Eiffel Tower\nmap = folium.Map(location=[latitude, longitude], zoom_start=15)\n\n# Add a marker for the Eiffel Tower\nfolium.Marker(\n    location=[latitude, longitude],\n    popup=\"Eiffel Tower\",\n    icon=folium.Icon(color=\"blue\", icon=\"info-sign\"),\n).add_to(map)\n\nreturn map._repr_html_()\n"
+				}
+			},
+			{
+				"name": "eiffel_tour",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "eiffel_tour",
+					"json_var": "{   \"type\": \"FeatureCollection\",   \"features\": [     {       \"type\": \"Feature\",       \"geometry\": {         \"type\": \"Point\",         \"coordinates\": [2.2945, 48.8584]       },       \"properties\": {         \"name\": \"Eiffel Tower\",         \"city\": \"Paris\"       }     }   ] }"
+				}
+			}
+		],
+		"reIndexMap": [
+			1,
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"geopandas"
+		],
+		"pyodideMicropip": [
+			"folium"
+		]
+	},
+	"scaling": {
+		"widthPx": 1302,
+		"heightPx": 575,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 575,
+		"widthVw": 84.765625,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.765625,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"foliumMapsE": {
+			"layout": {
+				"top": "2.07756vh",
+				"left": "0.651042vw",
+				"height": "63.7119vh",
+				"width": "66.6016vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "foliumMapsE",
+				"instanceId": "foliumMapsE",
+				"modelJsonId": "foliumMaps",
+				"widgetTypeName": "Folium Map(foliumMapsE)"
+			},
+			"modelParameters": {
+				"backgroundColor": "rgba(0, 0, 0, 0)"
+			},
+			"modelHiddenParams": {
+				"map": ""
+			}
+		}
+	},
+	"connections": {
+		"foliumMapsE": {
+			"_repr_html_": {
+				"name": "_repr_html_",
+				"dataNode": "map",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
