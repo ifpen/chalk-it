@@ -5,7 +5,8 @@
         </a>
 	</div>
 	<div class="help-container__iframe-wrapper">
-		<iframe id="helpFrame" src="{{urlDocs}}" frameborder="0" scrolling="yes" seamless="seamless"></iframe>
+		<!-- The 'src' property is defined in the 'initFrame()' function -->
+		<iframe id="helpFrame" frameborder="0" scrolling="yes" seamless="seamless"></iframe>
 	</div>
 	<div class="help-container__btn-wrapper">
 		<button ng-click="initFrame()" class="btn btn-rounded-fill primary" title="Load libraries" ng-disabled="isSelectedLibsEmpty(selectedLibs)">
