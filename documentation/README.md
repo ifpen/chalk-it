@@ -1,4 +1,4 @@
-# User manual of xDash
+# User manual of chalk-it
 
 The documentation is built using MkDocs
 
