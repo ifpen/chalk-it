@@ -22,6 +22,8 @@ chalk-it
 
 Chalk'it will be automatically launched in your web browser.
 
+Your can also use the [online hosted version](https://ifpen.github.io/chalk-it/hosted/).
+
 ### Add needed Python (Pyodide) librairies
 
 ![live demo](./assets/home/pyodide-libs.gif)
@@ -54,4 +56,6 @@ If you are a developer, and wish to contribute, please read the [contribution ru
 
 ## User documentation
 
-[User documentation](/documentation/README.md) : how to run the concise user documentation with demo examples.
+- [User documentation online](https://ifpen.github.io/chalk-it/hosted/doc/) 
+
+- [Documentation contribution instructions](/documentation/README.md) : how to run the concise user documentation with demo examples. 
