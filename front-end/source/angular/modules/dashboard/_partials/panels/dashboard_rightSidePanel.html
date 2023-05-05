@@ -1,18 +1,18 @@
 <div class="aside__panel--nav">
     <ul class="aside__panel--nav--wrapper rtl">
-        <li>
+        <li ng-class="{'active':(editorView.rightSidePanel.target==='DataNode Connection' && editorView.rightSidePanel.view)}">
             <a id="open-datanodes-widget-connect" ng-click="setRightContent('DataNode Connection',vmd);">
                 <i class="specific icn-data-connection right-panel-toggle"></i>
             </a>
             <span class="tooltip">DataNode connection</span>
         </li>
-        <li>
+        <li ng-class="{'active':(editorView.rightSidePanel.target==='Graphical Properties' && editorView.rightSidePanel.view)}">
             <a ng-click="setRightContent('Graphical Properties',vmd);">
                 <i class="specific icn-graphical-properties right-panel-toggle"></i>
             </a>
             <span class="tooltip">Graphical Properties</span>
         </li>
-        <li>
+        <li ng-class="{'active':(editorView.rightSidePanel.target==='Aspect' && editorView.rightSidePanel.view)}">
             <a ng-click="setRightContent('Aspect',vmd)">
                 <i class="specific icn-aspect"></i>
             </a>

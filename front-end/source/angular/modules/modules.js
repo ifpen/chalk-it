@@ -27,17 +27,17 @@ angular
                     abstract: false,
                     resolve: {
                         _settings: ['ApisFactory', '$rootScope', function (ApisFactory, $rootScope) {
-                            // if ($rootScope.enableServer) {
+                            if (!$rootScope.xDashFullVersion && !$rootScope.enableLocalServer) {
+                                return {
+                                    "info": {},
+                                    "settings": {},
+                                    "profile": { "userName": "Guest", "Id": "-1" },
+                                    "help": { "isDiscoverDone": false, "displayHelp": true }
+                                };
+                            } else {
                                 return ApisFactory.getSettings();
-                            // } else {
-                            //     return {
-                            //         "info": {},
-                            //         "settings": {},
-                            //         "profile": { "userName": "Guest", "Id": "-1" },
-                            //         "help": { "isDiscoverDone": false, "displayHelp": true }
-                            //     };
                             }
-                        // }
+                        }
                     ],
 
                     },

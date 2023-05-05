@@ -11,15 +11,21 @@
             </span>
             My project
         </button>
-        <button class="btn btn-circle" ng-click="openFromLocal()" title="Open a project">
+        <button ng-if="enableLocalServer" title="Open a project" class="btn btn-circle" ng-click="openFromLocal()">
             <span class="icon__container">
                 <i class="basic icn-file-import"></i>
             </span>
             Open
         </button>
-        <ul class="sidebar__list">
+        <button ng-if="!enableLocalServer" title="Import a project" class="btn btn-circle" ng-click="importFromLocal()">
+            <span class="icon__container">
+                <i class="basic icn-file-local-import"></i>
+            </span>
+            Import
+        </button>
+        <ul class="sidebar__list" ng-class="{'sidebar__list--disabled': !enableLocalServer}">
             <li>
-                <a ui-sref="modules.cards.layout({action: 'templateGallery'})" ng-click="toggleMenuOptionDisplay('gallery')" ng-class="{'active' :  displayedId==='gallery'}">
+                <a ui-sref="modules.cards.layout({action: 'templateGallery'})" ng-click="toggleMenuOptionDisplay('gallery')" ng-class="{'active' :  displayedId==='gallery', 'disabled': !enableLocalServer}">
                     <i class="basic icn-template"></i>Template Gallery
                 </a>
             </li>

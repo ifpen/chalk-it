@@ -71,6 +71,7 @@ module.exports.config = {
     xDashConfig: {
         'xDashBasicVersion': process.env.DISABLE_AUTH,
         'disableRegistration': process.env.DISABLE_REGISTRATION,
+        'disableLocalServer': process.env.DISABLE_LOCAL_SERVER,
         'urlDoc': process.env.URL_DOC ? process.env.URL_DOC : "/doc/",
         'urlBase': process.env.URL_BASE ? process.env.URL_BASE : "",
         'urlBaseForExport': process.env.URL_BASE_FOR_EXPORT,
@@ -94,7 +95,7 @@ module.exports.config = {
         'copyright': '\u00A9 2016-' + new Date().getFullYear() + ' IFP Energies nouvelles',
     },
     xServConfig: {
-        'url': disableAuth ? process.env.URL_SERVER_LOCAL : process.env.URL_SERVER,
+        'url': disableAuth ? process.env.URL_LOCAL_SERVER : process.env.URL_SERVER,
         'urlApi': disableAuth ? null : process.env.URL_API,
         'urlApiFMI': disableAuth ? null : process.env.URL_FMI_API,
         'urlxProxy': process.env.URL_XPROXY

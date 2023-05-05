@@ -41,10 +41,12 @@ angular
             }
         };
 
-        $scope.getConfigDiscover(); 
+        if ($rootScope.enableLocalServer) {
+            $scope.getConfigDiscover(); 
+        }
 
         $scope.startGuidedTour = function() {
-            const projectName = $rootScope.xDashFullVersion ? "live-demo" : "live-demo-py";
+            const projectName = "live-demo-py";
             if (!_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== "" &&
                 $rootScope.currentProject.name !== projectName) {
                 swal({
@@ -85,13 +87,15 @@ angular
         };
 
         $scope.saveConfigDiscover = async function(index) {
-            $scope.discoverSteps[index] = 1; // to validate step
-            const settings = await ApisFactory.getSettings();
-            if (!settings.help) {
-                settings.help = {};
+            if ($rootScope.enableLocalServer) {
+                $scope.discoverSteps[index] = 1; // to validate step
+                const settings = await ApisFactory.getSettings();
+                if (!settings.help) {
+                    settings.help = {};
+                }
+                settings.help.discoverSteps = $scope.discoverSteps;
+                ApisFactory.saveSettings(settings);
             }
-            settings.help.discoverSteps = $scope.discoverSteps;
-            ApisFactory.saveSettings(settings);
         };
 
         // For basic version

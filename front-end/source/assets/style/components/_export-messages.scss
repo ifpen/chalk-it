@@ -37,8 +37,8 @@ ul.messages li .message_date {
 }
 
 ul.messages li .message_wrapper {
-  margin-left: 50px;
-  margin-right: 40px;
+  margin-left: spacer('24');
+  margin-right: spacer('20');
 }
 
 ul.messages li .message_wrapper h4.heading {

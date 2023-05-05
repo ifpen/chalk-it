@@ -1,0 +1,81 @@
+/*
+ * DataNodes Icons
+ * @desription: Set all CSS rules for datanode icons
+ * DataNode icons are used in the lateral panel of the editor tool, in the DataNodes tab. They help the user to quickly identify the datanode to add.
+ * As they are multi colored icons, they cannot be used in icon fonts and cannot be merged with xdash-icons.
+ * 
+ */
+
+.datanodes {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  margin-right: spacer('2');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  &.icn-clock {
+    @include icon-background('clock.svg', 'datanode');
+  }
+
+  &.icn-csv-player {
+    @include icon-background('csv-player.svg', 'datanode');
+  }
+
+  &.icn-csv-reader {
+    @include icon-background('csv-reader.svg', 'datanode');
+  }
+
+  &.icn-delay {
+    @include icon-background('delay.svg', 'datanode');
+  }
+
+  &.icn-file-reader {
+    @include icon-background('file-reader.svg', 'datanode');
+  }
+
+  &.icn-fmi {
+    @include icon-background('fmi.svg', 'datanode');
+  }
+
+  &.icn-geolocation {
+    @include icon-background('geolocation.svg', 'datanode');
+  }
+
+  &.icn-json-formula {
+    @include icon-background('json-formula.svg', 'datanode');
+  }
+
+  &.icn-json-variable {
+    @include icon-background('json-variable.svg', 'datanode');
+  }
+
+  &.icn-mqtt {
+    @include icon-background('mqtt.svg', 'datanode');
+  }
+
+  &.icn-python {
+    @include icon-background('python.svg', 'datanode');
+  }
+  
+  &.icn-python::before {
+    content: none; // Same name as xdash-icons' "python" icon
+  }
+
+  &.icn-text-file-reader {
+    @include icon-background('text-file-reader.svg', 'datanode');
+  }
+
+  &.icn-web-service-datasource {
+    @include icon-background('web-service-datasource.svg', 'datanode');
+  }
+
+  &.icn-web-service-json-editor {
+    @include icon-background('web-service-json-editor.svg', 'datanode');
+  }
+
+  &.icn-websocket {
+    @include icon-background('websocket.svg', 'datanode');
+  }
+}

@@ -80,10 +80,7 @@ angular.module('modules.dashboard')
             $scope.resetPyodideLibs = function () {
                 pyodideManager.resetProjectLibs();
                 $scope.pyodideLibsObj = _initLoadState(listPyodideLibs);
-                $("#inputSearchLib").val("");
-                $scope.displayedLibIndex = -1;
-                if (!_.isUndefined(self.searchCtrl))
-                    self.searchCtrl.searchLib = "";
+                $scope.clearSearchLib();
             };
 
             // ├────────────────────────────────────────────────────────────────────┤ \\
@@ -107,7 +104,7 @@ angular.module('modules.dashboard')
                 $scope.displayedLibIndex = (index === $scope.displayedLibIndex) ? -1 : index;
             };
 
-            /*--------------clearSearchLib--------------*/
+            /*--------------scrollToTop--------------*/
             $scope.clearSearchLib = function () {
                 $("#inputSearchLib").val("");
                 $scope.displayedLibIndex = -1;

@@ -265,7 +265,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
     this.pluginDefinition = {
         'name': 'flatUiAddressCompletion',
         'widgetsDefinitionList': {
-            flatUiHereAutocompleteValue: { factory: "hereAutocompleteValueFlatUiWidget", title: "Address autocompletion", iconWidth: 70, icn: "address-autocompletion", help: "wdg/wdg-geo-time/#address-autocompletion" },
+            flatUiHereAutocompleteValue: { factory: "hereAutocompleteValueFlatUiWidget", title: "Address auto-completion", iconWidth: 70, icn: "address-autocompletion", help: "wdg/wdg-geo-time/#address-autocompletion" },
         },
     };
 

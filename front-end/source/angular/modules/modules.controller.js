@@ -78,7 +78,6 @@ angular
             };
 
             $rootScope.moduleOpenedFunction = function (toEditor) {
-                // $scope.xdashLogoEditor = "EditorInactive2";
                 if (toEditor) {
                     if ($rootScope.currentProject.name !== "") {
                         $rootScope.moduleOpened = false;
@@ -92,10 +91,9 @@ angular
                         scopeDashDn.searchDatanodeByName = "";
                         ManageDatanodeService.applyDatanodeFilter();
 
-                        if ($rootScope.xDashFullVersion)
+                        if ($rootScope.xDashFullVersion) {
                             ManagePgSharingService.verifyPageExistence($rootScope.currentProject.name);
-                    } else {
-                        //$scope.xdashLogoEditor = "EditorInactive";
+                        }
                     }
                 } else {
                     if ($rootScope.currentPrjDirty === "") {

@@ -4,7 +4,7 @@
 // │ Copyright © 2016-2023 IFPEN                                          │ \\
 // | Licensed under the Apache License, Version 2.0                       │ \\
 // ├──────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                    │ \\
+// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ghiles HIDEUR     │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
 
 angular.module('modules.sidebar').controller('SidebarController', [
@@ -22,47 +22,48 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- New project ----------------*/
     $scope.newProject = function () {
-      if (!$rootScope.moduleOpened) {
-        return;
-      }
-
-      if (!$rootScope.xDashFullVersion && ($rootScope.currentProject.name !== "") && !$rootScope.isLiveDemo) {
-        $state.go("modules", {});
-        $rootScope.toggleMenuOptionDisplay('none');
-        return;
-      }
-
       const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+      const isCurrentPrjDirty = !_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== '';
+      const hasCurrentPrjName = $rootScope.currentProject.name !== "";
 
-      if (!_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== '') {
-        swal(
-          {
-            title: 'Are you sure?',
-            text: 'Your current project will be saved and closed before starting a new project.',
-            type: 'warning',
-            showCancelButton: true,
-            showConfirmButton: false,
-            showConfirmButton1: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Abandon',
-            closeOnConfirm: true,
-            closeOnConfirm1: true,
-            closeOnCancel: true,
-          },
-          function (isConfirm) {
-            if (isConfirm) {
-              var endAction = function () {
-                _newPrj(scopeDash);
-              };
-              //save current project
-              fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
-            } else {
-              //nothing
-            }
-          }
-        );
+      if (!$rootScope.xDashFullVersion) {
+        if (((isCurrentPrjDirty && !hasCurrentPrjName) || hasCurrentPrjName) && !$rootScope.isLiveDemo) {
+          $state.go("modules", {});
+          $rootScope.toggleMenuOptionDisplay('none');
+        } else {
+          _newPrj(scopeDash);
+        }
       } else {
-        _newPrj(scopeDash);
+        if (isCurrentPrjDirty) {
+          swal(
+            {
+              title: 'Are you sure?',
+              text: 'Your current project will be saved and closed before starting a new project.',
+              type: 'warning',
+              showCancelButton: true,
+              showConfirmButton: false,
+              showConfirmButton1: true,
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'Abandon',
+              closeOnConfirm: true,
+              closeOnConfirm1: true,
+              closeOnCancel: true,
+            },
+            function (isConfirm) {
+              if (isConfirm) {
+                var endAction = function () {
+                  _newPrj(scopeDash);
+                };
+                //save current project
+                fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
+              } else {
+                //nothing
+              }
+            }
+          );
+        } else {
+          _newPrj(scopeDash);
+        }
       }
     };
 
@@ -84,8 +85,10 @@ angular.module('modules.sidebar').controller('SidebarController', [
       } else {
         scopeDash.info.checkboxModelLater = true;
         scopeDash.info.openProjectInfo = false; // close display info
-        const $scopeInfoProject = angular.element(document.getElementById('info-project-ctrl')).scope();
-        $scopeInfoProject.saveInfoProject();
+        if (!$rootScope.enableLocalServer) {
+          const $scopeInfoProject = angular.element(document.getElementById('info-project-ctrl')).scope();
+          $scopeInfoProject.saveInfoProject();
+        }
       }
     }
 
@@ -154,5 +157,12 @@ angular.module('modules.sidebar').controller('SidebarController', [
       });
     }
 
+    /*---------- Import project from local ----------------*/
+    $scope.importFromLocal = function () {
+      $rootScope.origin = "openProject";
+      $rootScope.toggleMenuOptionDisplay('none');
+      $state.go("modules", {});
+      xdash.openFile('project', 'local');
+    };
   },
 ]);

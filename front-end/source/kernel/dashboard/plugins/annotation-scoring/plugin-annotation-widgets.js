@@ -79,7 +79,7 @@ modelsParameters.annotationVideo = {
 
 // Layout (default dimensions)
 modelsLayout.annotationIconInfo = { 'height': '4vh', 'width': '2vw' };
-modelsLayout.annotationLabel = { 'height': '5vh', 'width': '12vw' };
+modelsLayout.annotationLabel = { 'height': '5vh', 'width': '12vw', 'minWidth': '5px', 'minHeight': '5px' };
 modelsLayout.annotationImage = { 'height': '20vh', 'width': '17vw' };
 modelsLayout.annotationVideo = { 'height': '30vh', 'width': '20vw' };
 

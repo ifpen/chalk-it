@@ -4,7 +4,7 @@
     datanodesManager.loadDatanodePlugin({
         "type_name": "mqtt",
         "display_name": "MQTT",
-        "icon_type": "MQTT.svg",
+        "icon_type": "mqtt.svg",
         // "description": "MQTT 3.1.1 is an ISO standard publish-subscribe based message protocol for fast and secure IoT communication over TCP/IP." +
         //     "<div style='text-transform:initial;padding:14px 0px;'> For a quick demo, try the <a href='https://quickstart.internetofthings.ibmcloud.com/iotsensor/' target='_blank'>IBM Watson IoT Quickstart</a>. Enter any name for this plugin, substitute the DEVICEID shown in the upper right of the quickstart in the topic setting, save, and then add a pane and text widget in datanodesManager to show the data returned from your datanode.<br>This opensource plugin is community supported with help from <a href='https://www.clearobject.com' target='_blank'>ClearObject</a>, <a href='https://www.eclipse.org/paho/' target='_blank'>Eclipse Paho</a>, and <a href='https://internetofthings.ibmcloud.com' target='_blank'>IBM Watson IoT</a>. Contact <a href='mailto:benjamin.chodroff@clearobject.com'>Benjamin Chodroff</a> for IoT assistance.</div>",
         "description": "MQTT (Message Queuing Telemetry Transport) ISO standard publish-subscribe",

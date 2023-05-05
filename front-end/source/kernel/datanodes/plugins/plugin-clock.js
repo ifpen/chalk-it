@@ -84,7 +84,7 @@
         "type_name": "Clock_web-service",
         "display_name": "Clock",
         // **icon_type** : icon of the datanode type displayed in data list
-        "icon_type": "Clock.svg",
+        "icon_type": "clock.svg",
         "description": "Clock trigger",
         "settings": [{
                 "name": "sampleTime",

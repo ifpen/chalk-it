@@ -68,7 +68,9 @@ angular
                     $rootScope.currentProject.name = name; //important here for Untitled
                     $("#projectName")[0].value = $rootScope.xDashFullVersion ? $rootScope.currentInfoProject.name : $rootScope.currentProject.name;
 
-                    fileManager.getFileListExtended('project', name, undefined, undefined, is_defaultOverwrite);
+                    if ($rootScope.enableLocalServer || $rootScope.xDashFullVersion) {
+                        fileManager.getFileListExtended('project', name, undefined, undefined, is_defaultOverwrite);
+                    }
 
                     scopeDash.info.openProjectInfo = false; // reset display info
                     scopeDash.projectFormSubmitted = false; // reset form
@@ -88,7 +90,6 @@ angular
                 scopeDash.projectFormSubmitted = false; // reset form
                 scopeDash.info.checkboxModelLater = false; // reset checkbox*
                 if ($scope.form.projectForm2.$dirty) {
-
                     $rootScope.currentProject = angular.copy($rootScope.currentInfoProject);
                     $rootScope.updateFlagDirty(true);
                 }

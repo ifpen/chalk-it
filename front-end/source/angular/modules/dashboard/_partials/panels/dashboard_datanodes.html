@@ -183,13 +183,11 @@
         <i class="basic icn-search"></i>
     </div>
 </div>
-
 <div class="datanode__card" ng-class="{open:displayedShowIndex==$index}" ng-repeat="data in alldatanodes"
     ng-if="!data.hide">
     <div class="datanode__card--top">
         <div class="datanode__card--top__flags">
-            <img title="{{data.type()}}" ng-src="{{data.iconType()}}"
-                onerror="this.src='source/assets/icon/datanodes/JSON_Variable.svg'">
+            <i title="{{data.type()}}" class="datanodes {{data.iconType()}}"></i>
             <p ng-attr-title="{{data.name()}}">{{data.name()}}</p>
             <ul class="tags__list">
                 <li title="DataNode status" ng-class="{'tag tag--error': data.status()==='Error', 

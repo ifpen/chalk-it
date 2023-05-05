@@ -255,17 +255,8 @@ const __SCHEMA_HEATMAP_DENSITY_CONFIG = {
         radius: { type: "number", "minimum": 0 },
         blur: { type: "number", "minimum": 0 },
         disableAutoscale: { type: "boolean" },
-        gradient: {
-            type: "string",
-            properties: {
-                blue: { type: "number", "minimum": 0, "maximum": 1 },
-                cyan: { type: "number", "minimum": 0, "maximum": 1 },
-                lime: { type: "number", "minimum": 0, "maximum": 1 },
-                yellow: { type: "number", "minimum": 0, "maximum": 1 },
-                red: { type: "number", "minimum": 0, "maximum": 1 },
-            },
-            required: ["blue", "cyan", "lime", "yellow", "red"],
-        },
+        colorScale : { type: "string" },
+        reverseColorScale : { type: "boolean" },
     },
 };
 
@@ -281,6 +272,8 @@ const __SCHEMA_HEATMAP_CONFIG = {
         min: { type: "number" },
         disableAutoscale: { type: "boolean" },
         addTextLabel: { type: "boolean" },
+        colorScale : { type: "string" },
+        reverseColorScale : { type: "boolean" },
     },
 };
 
@@ -417,6 +410,8 @@ const _SCHEMA_LINE_HEATMAP = [
                     max: { type: "number" },
                     min: { type: "number" },
                     disableAutoscale: { type: "boolean" },
+                    colorScale: { type: "string" },
+                    reverseColorScale : { type: "boolean" },
                 },
                 required: ["weight"],
             },
@@ -541,6 +536,8 @@ const _SCHEMA_CHOROPLETH = [
                     max: { type: "number" },
                     min: { type: "number" },
                     disableAutoscale: { type: "boolean" },
+                    colorScale : {type :"string"},
+                    reverseColorScale : { type: "boolean" }
                 },
             },
         },
@@ -748,10 +745,10 @@ function mapWidgetsPluginClass() {
         var body = d3.select("body");
         var length = 100;
         var colorStops = [0, 25, 50, 75, 100];
-        var color = d3.scaleLinear().domain(colorStops)
-            .interpolate(d3.interpolateHcl)
-            .range([d3.rgb("blue"), d3.rgb("cyan"), d3.rgb("lime"), d3.rgb("yellow"), d3.rgb("red")]);
-        // End HeatMap legends
+
+
+  
+
 
         this.numberOfGeoJsonLayers = modelsParameters[idInstance].geoJson.numberOfLayers;
         if (modelsParameters[idInstance].choropleth) {
@@ -892,6 +889,24 @@ function mapWidgetsPluginClass() {
 
         if (self.mapLayers.svgOverlay.svgLayers.length > self.numberOfSvgLayers) {
             self.mapLayers.svgOverlay.svgLayers.splice(self.numberOfSvgLayers);
+        }
+
+
+        this.getColorScale = function (colorScaleName, reverseColorScale, min, max) {
+
+            // Default interpolator
+            var interpolator = d3["interpolateYlOrRd"];
+            // Availlable interpolator : https://github.com/d3/d3-scale-chromatic
+            
+            if(  !(_.isUndefined(colorScaleName)) && !(_.isUndefined(d3[colorScaleName])) && (colorScaleName.includes("interpolate")) ) {
+                interpolator = d3[colorScaleName];
+            }
+            
+            if(!(_.isUndefined(reverseColorScale)) && reverseColorScale) {
+                return d3.scaleSequential().interpolator(interpolator).domain([max,min]);
+            }else{
+                return d3.scaleSequential().interpolator(interpolator).domain([min,max]);
+            }   
         }
 
         this.goToFirstRadioButton = function () {
@@ -1809,6 +1824,7 @@ function mapWidgetsPluginClass() {
             var minValue = _.min(_.pluck(choroplethData.data, featureTitle));
             var weight = 4;
             var opacity = 0.7;
+            let colorScale;
 
             try {
                 if (!_.isUndefined(choroplethData.config.max))
@@ -1819,9 +1835,12 @@ function mapWidgetsPluginClass() {
                     weight = choroplethData.config.weight;
                 if (!_.isUndefined(choroplethData.config.opacity))
                     opacity = choroplethData.config.opacity;
+
+                    colorScale = self.getColorScale(choroplethData.config.colorScale, choroplethData.config.reverseColorScale, 0, 1);
+
             } catch (e) { }
 
-            self.createChoroplethLegend(minValue, maxValue, featureTitle);
+            self.createChoroplethLegend(minValue, maxValue, featureTitle, colorScale);
             self.showLegend(featureTitle);
 
             self.mapLayers.choropleth.choroplethLayers[layerIndex - 1] = L.geoJSON(choroplethStruct, {
@@ -1832,7 +1851,7 @@ function mapWidgetsPluginClass() {
                         color: 'white',
                         dashArray: '3',
                         fillOpacity: opacity,
-                        fillColor: getColor(minValue, maxValue, feature.properties.density)
+                        fillColor: getColor(minValue, maxValue, feature.properties.density, colorScale)
                     };
                 }
             }).addTo(self.map);
@@ -1886,20 +1905,14 @@ function mapWidgetsPluginClass() {
             return gj;
         }
 
-        // get color depending on population density value
-        function getColor(min, max, d) {
-            var step = (max - min) / 8;
-            return d > max ? '#800026' :
-                d > min + (step * 6) ? '#BD0026' :
-                    d > min + (step * 5) ? '#E31A1C' :
-                        d > min + (step * 4) ? '#FC4E2A' :
-                            d > min + (step * 3) ? '#FD8D3C' :
-                                d > min + (step * 2) ? '#FEB24C' :
-                                    d > (min + step) ? '#FED976' :
-                                        '#FFEDA0';
+        function getColor(min, max, d, colorScale) {
+            var step = (max - min) / 8.0;
+
+            var stepDraw = Math.floor((d-min)/step);
+            return colorScale(stepDraw * (1.0/8.0))
         }
 
-        this.createChoroplethLegend = function (min, max, featureTitle) {
+        this.createChoroplethLegend = function (min, max, featureTitle,colorScale) {
             if (!_.isUndefined(modelsHiddenParams[idInstance].legends[featureTitle])) {
                 self.map.removeControl(modelsHiddenParams[idInstance].legends[featureTitle]); // MBG 18/09/2018
             }
@@ -1912,13 +1925,13 @@ function mapWidgetsPluginClass() {
                     labels = [],
                     from, to;
 
+                 //   div.innerHTML += '<h6>              </h6>';
                 for (var i = 0; i < grades.length; i++) {
                     from = grades[i];
                     to = grades[i + 1];
-
                     labels.push(
-                        '<i style="background:' + getColor(min, max, from + 1) + '"></i> ' +
-                        '<span>' + from + (to ? '&ndash;' + to : '+') + '</span>');
+                        '<i style="background:' + getColor(min, max, from + 1, colorScale) + '"></i> ' +
+                        '<span>' + d3.format("~s")(from) + (to ? '&ndash;' +  d3.format("~s")(to) : '+') + '</span>') + '<br>' ;
                 }
 
                 div.innerHTML = labels.join('<br>');
@@ -1927,16 +1940,6 @@ function mapWidgetsPluginClass() {
         }
 
         this.convertToGeoJSONObject = function (LineHeatMapObject) {
-            // colorization function (as in plugin-map-widgets.js for heatMaps)
-            function colorize(input) {
-                var colorStops = [0, 25, 50, 75, 100];
-
-                var color = d3.scaleLinear().domain(colorStops)
-                    .interpolate(d3.interpolateHcl)
-                    .range([d3.rgb("blue"), d3.rgb("cyan"), d3.rgb("lime"), d3.rgb("yellow"), d3.rgb("red")]);
-
-                return color(input);
-            }
 
             function normalize(value) {
                 var minNox = LineHeatMapObject["config"]["min"];
@@ -1966,7 +1969,7 @@ function mapWidgetsPluginClass() {
                     },
                     "properties": {
                         "style": {
-                            "color": colorize(normalize(data[property])),
+                            "color": self.getColorScale(LineHeatMapObject["config"]["colorScale"], LineHeatMapObject["config"]["reverseColorScale"],0, 100)(normalize(data[property])),
                             "weight": LineHeatMapObject["config"]["weight"],
                             "opacity": LineHeatMapObject["config"]["opacity"]
                         }
@@ -2026,7 +2029,10 @@ function mapWidgetsPluginClass() {
                 if (!_.isUndefined(lineHeatMap.config.min))
                     minValue = lineHeatMap.config.min;
             } catch (e) { }
-            self.createLegend(color, length, colorStops, minValue, maxValue, featureTitle);
+
+            var colorScaleInLegend =  self.getColorScale(lineHeatMap.config.colorScale, lineHeatMap.config.reverseColorScale, 0, 100);
+
+            self.createLegend(colorScaleInLegend, length, colorStops, minValue, maxValue, featureTitle);
 
             self.showLegend(featureTitle);
 
@@ -2411,6 +2417,7 @@ function mapWidgetsPluginClass() {
             let minValue;
             let disableAutoscale = false;
             let addTextLabel = false;
+            let colorScale;
 
             try {
                 heatMapConfig = heatMapObject.config;
@@ -2420,6 +2427,10 @@ function mapWidgetsPluginClass() {
                 minValue = heatMapConfig.min;
                 disableAutoscale = heatMapConfig.disableAutoscale;
                 addTextLabel = heatMapConfig.addTextLabel;
+
+                colorScale =  self.getColorScale(heatMapConfig.colorScale, heatMapConfig.reverseColorScale, 0, 100);
+
+
             } catch (exc) { }
 
             const formattedHeatMap = [];
@@ -2479,7 +2490,7 @@ function mapWidgetsPluginClass() {
             var currentColor = "#000000";
             for (k = 0; k < formattedHeatMap.length; k++) {
                 if (normVals[k] !== null) {
-                    currentColor = color(normVals[k]);
+                    currentColor = colorScale(normVals[k]);
                 } else {
                     currentColor = "#000000";
                 }
@@ -2498,7 +2509,7 @@ function mapWidgetsPluginClass() {
             }
 
             // save config for real-time pset
-            self.configStore[layerIndex - 1] = { 'color': color, 'fillOpacity': circleFillOpacity, 'radius': circleRadius, 'minValue': minValue, 'maxValue': maxValue };
+            self.configStore[layerIndex - 1] = { 'color': colorScale, 'fillOpacity': circleFillOpacity, 'radius': circleRadius, 'minValue': minValue, 'maxValue': maxValue };
 
             var circlesLayerGroup = L.layerGroup(circles);
 
@@ -2516,7 +2527,7 @@ function mapWidgetsPluginClass() {
 
             self.map.invalidateSize();
 
-            self.createLegend(color, length, colorStops, minValue, maxValue, featureTitle);
+            self.createLegend(colorScale, length, colorStops, minValue, maxValue, featureTitle);
 
             self.showLegend(featureTitle);
 
@@ -2607,6 +2618,7 @@ function mapWidgetsPluginClass() {
             var layerRadius;
             var layerBlur;
             var disableAutoscale = false;
+            var colorScale;
 
             // no problem if no config
 
@@ -2619,38 +2631,10 @@ function mapWidgetsPluginClass() {
                 layerBlur = heatMapConfig.blur;
                 disableAutoscale = heatMapConfig.disableAutoscale;
 
-                var gradientBlue = 0.4;
-                var gradientCyan = 0.6;
-                var gradientLime = 0.7;
-                var gradientYellow = 0.8;
-                var gradientRed = 1;
-
                 formattedGradient = new Object();
+                colorScale = self.getColorScale(heatMapConfig.colorScale, heatMapConfig.reverseColorScale, 0, 1);
+                d3.range(11).forEach(d =>  (formattedGradient[(d*0.1)] = colorScale(d*0.1)));
 
-                formattedGradient[0.4] = 'blue';
-                formattedGradient[0.6] = 'cyan';
-                formattedGradient[0.7] = 'lime';
-                formattedGradient[0.8] = 'yellow';
-                formattedGradient[1.0] = 'red';
-
-                // TODO : securities
-                if (!_.isUndefined(heatMapConfig.gradient)) {
-
-                    gradientBlue = heatMapConfig.gradient.blue;
-                    gradientCyan = heatMapConfig.gradient.cyan;
-                    gradientLime = heatMapConfig.gradient.lime;
-                    gradientYellow = heatMapConfig.gradient.yellow;
-                    gradientRed = heatMapConfig.gradient.red;
-
-                    if (self.checkColors(gradientBlue, gradientCyan, gradientLime, gradientYellow, gradientRed)) {
-
-                        formattedGradient[gradientBlue] = 'blue';
-                        formattedGradient[gradientCyan] = 'cyan';
-                        formattedGradient[gradientLime] = 'lime';
-                        formattedGradient[gradientYellow] = 'yellow';
-                        formattedGradient[gradientRed] = 'red';
-                    }
-                }
             } catch (e) {
                 formattedGradient = null;
             }
@@ -2674,18 +2658,6 @@ function mapWidgetsPluginClass() {
                 self.map.fitBounds(bounds);
             }
             self.map.invalidateSize();
-        };
-
-        this.checkColors = function (gradientBlue, gradientCyan, gradientLime, gradientYellow, gradientRed) {
-            if ((gradientBlue < 0) || (gradientCyan < 0) || (gradientLime < 0) || (gradientYellow < 0) || (gradientRed < 0)) {
-                console.log('[heatMap] Color value has to be non-negative. Using default gradient');
-                return false;
-            }
-            if ((gradientBlue > 1) || (gradientCyan > 1) || (gradientLime > 1) || (gradientYellow > 1) || (gradientRed > 1)) {
-                console.log('[heatMap] Color value has to be less or equal to 1. Using default gradient');
-                return false;
-            }
-            return true;
         };
 
         // Heatmap choice

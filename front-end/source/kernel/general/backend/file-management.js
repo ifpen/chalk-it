@@ -273,6 +273,9 @@ var fileManager = (function () {
             xdashFile = JSON.stringify(temp, null, '\t');
         }
         const $rootScope = angular.element(document.body).scope().$root;
+
+        // Needed to rename the file
+        // The new name is taken from xdashFile
         if (!$rootScope.xDashFullVersion) {
             inputValue = $rootScope.oldFileName;
         }

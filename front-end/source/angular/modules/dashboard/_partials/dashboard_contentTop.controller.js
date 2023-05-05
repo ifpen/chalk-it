@@ -92,10 +92,11 @@ angular
             };
 
             /**
-             * For basic version
+             * For opensource version
+             * Saves the current project to local storage and optionally triggers the openProjectCallback.
+             * This function also handles renaming projects and provides appropriate user notifications.
              * 
-             * @param {*} openProjectCallback 
-             * @returns 
+             * @param {function} openProjectCallback - Optional callback function to be triggered after the project is saved. 
              */
             $scope.saveProjectToLocal = function (openProjectCallback) {
                 const is_defaultOverwrite = true;
@@ -106,44 +107,46 @@ angular
                 $rootScope.oldFileName = currentProjectName;
                 const flag = false;
                 const fileName = currentProjectName;
-                const inputValue = inputProjectName;
+
                 if (inputProjectName === "Untitled" || inputProjectName === "") {
                     $scope.renameProject(currentProjectName, flag);
-                } else if (inputProjectName !== currentProjectName) {
+                } else if ((inputProjectName !== currentProjectName) && (currentProjectName !== "")) {
                     const endAction = function (msg1, msg2, type) {
+                        const noticeConfig = {
+                            title: inputProjectName,
+                            type,
+                            styling: "bootstrap3"
+                        };
+
                         if (type === "success") {
-                            const notice = new PNotify({
-                                title: inputValue,
-                                text: "'" + currentProjectName + "' has been successfully renamed to " + inputValue + "'!",
-                                type: type,
-                                styling: "bootstrap3",
-                            });
-                            $('.ui-pnotify-container').on('click', function () {
-                                notice.remove();
-                            });
-                            $("#projectName")[0].value = inputValue;
-                            $rootScope.currentProject.name = inputValue;
+                            noticeConfig.text = `'${currentProjectName}' has been successfully renamed to '${inputProjectName}'!`;
+                            $("#projectName")[0].value = inputProjectName;
+                            $rootScope.currentProject.name = inputProjectName;
                             $rootScope.loadingBarStop();
                             fileManager.saveOnServer('project', inputProjectName, undefined, is_defaultOverwrite, openProjectCallback);
                         } else if (type === "error") {
-                            const notice = new PNotify({
-                                title: inputValue,
-                                text: "Fail to rename your " + fileType + " '" + currentProjectName + "' to '" + inputValue + "'!",
-                                type: type,
-                                styling: "bootstrap3",
-                            });
+                            noticeConfig.text = `Fail to rename your ${fileType} '${currentProjectName}' to '${inputProjectName}'!`;
+                        }
+
+                        if (noticeConfig.hasOwnProperty("text")) {
+                            const notice = new PNotify(noticeConfig);
                             $('.ui-pnotify-container').on('click', function () {
                                 notice.remove();
                             });
                         }
                     };
-                    fileManager.renameFile(fileType, fileName, inputValue, endAction, flag);
+                    fileManager.renameFile(fileType, fileName, inputProjectName, endAction, flag);
                 } else {
                     fileManager.saveOnServer('project', inputProjectName, undefined, is_defaultOverwrite, openProjectCallback);
                 }
             }
-
-            /*---------- Rename input ----------------*/
+            
+           /**
+            * For opensource version
+            * Watches for changes in the value of the #projectName element.
+            * When the value changes, it checks if the new value is different from the old value.
+            * If so, it updates the $rootScope.currentPrjDirty property to indicate the project is dirty (has unsaved changes).
+            */
             $scope.$watch(function() {
                 return $("#projectName").val();
               }, function(newName) {

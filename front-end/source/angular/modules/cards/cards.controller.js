@@ -408,7 +408,7 @@ angular
 
             /*----------  Open template btn ----------------*/
             $scope.openTemplateToNewTab = function(projectName) {
-                const templUrl = `${xDashConfig.urlBase}${$rootScope.xDashFullVersion ? '?template=' : 'index.html?template='}${encodeURIComponent(projectName)}`;
+                let templUrl = xDashConfig.urlBase + 'index.html?template=' + escape(projectName);
                 var tab = window.open(templUrl, "_blank");
                 tab.focus();
             };

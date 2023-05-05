@@ -71,6 +71,7 @@ modelsParameters.flatUiTable = {
     "striped": true,
     "valueColor": "var(--widget-table-value-color)",
     "valueFontFamily": "var(--widget-font-family)",
+    "valueAlign": "left",
     "bordered": true,
     "noBorder": false,
     "editableCols": "[]"
@@ -93,7 +94,7 @@ function flatUiComplexWidgetsPluginClass() {
     // +--------------------------------------------------------------------¦ \\
     this.selectFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
         this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-        var self = this;
+        const self = this;
         this.bFirstExec = true;
         this.tmpSelectedValue = "";
 
@@ -118,15 +119,15 @@ function flatUiComplexWidgetsPluginClass() {
         };
 
         this.render = function () {
-            var widgetHtml = document.createElement('div');
+            const widgetHtml = document.createElement('div');
             widgetHtml.setAttribute("id", "select-widget-html" + idWidget);
             widgetHtml.setAttribute("class", "select-widget-html");
-            var valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
-            var divContent = '';
+            let valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
+            let divContent = '';
             if (modelsParameters[idInstance].label != "" && modelsParameters[idInstance].displayLabel) {
                 valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
                 if (!_.isUndefined(modelsParameters[idInstance].selectWidthProportion)) {
-                    var proportion = Math.max(0, 100 - parseFloat(modelsParameters[idInstance].selectWidthProportion)) + "%";
+                    const proportion = Math.max(0, 100 - parseFloat(modelsParameters[idInstance].selectWidthProportion)) + "%";
                     divContent = '<span id="select-span' + idWidget + '" class="select-span" style="width:' + proportion +
                         '; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '">' +
                         modelsParameters[idInstance].label + '</span>';
@@ -136,12 +137,10 @@ function flatUiComplexWidgetsPluginClass() {
                         modelsParameters[idInstance].label + '</span>';
             }
 
-            var styleDef = '';
-
             if (_.isUndefined(modelsParameters[idInstance].selectValueFontSize)) {
                 modelsParameters[idInstance].selectValueFontSize = modelsParameters[idInstance].labelFontSize;
             }
-            var selectOptions = [];
+            let selectOptions = [];
 
             // MBG backward compatibility at exported dashboard
             if (_.isUndefined(modelsParameters[idInstance].isKeyValuePairs)) { //AEF: modif for issue#61
@@ -149,25 +148,24 @@ function flatUiComplexWidgetsPluginClass() {
             }
 
             //AEF
-            var i = 0;
             if (!_.isUndefined(modelsHiddenParams[idInstance].value)) { // MBG backward compatibility at exported dashboard
                 if (modelsHiddenParams[idInstance].value.length != 0) {
                     selectOptions = modelsHiddenParams[idInstance].value;
                 } else if (modelsHiddenParams[idInstance].values.length != 0) {
-                    for (i = 0; i < modelsHiddenParams[idInstance].values.length; i++) {
+                    for (let i = 0; i < modelsHiddenParams[idInstance].values.length; i++) {
                         selectOptions[i] = {};
                         selectOptions[i].value = modelsHiddenParams[idInstance].values[i];
                     }
-                    for (i = 0; i < modelsHiddenParams[idInstance].keys.length; i++) {
+                    for (let i = 0; i < modelsHiddenParams[idInstance].keys.length; i++) {
                         selectOptions[i].key = modelsHiddenParams[idInstance].keys[i];
                     }
                 }
             }
 
             divContent = divContent + '<select data-toggle="select" id="select' + idWidget +
-                '" class="select-div form-control select select-primary select-block mbl" style="display:table;' + styleDef + ' height: ' + valueHeightPx + 'px;">';
+                '" class="select-div form-control select select-primary select-block mbl" style="height: ' + valueHeightPx + 'px;">';
 
-            for (i = 0; i < selectOptions.length; i++) {
+            for (let i = 0; i < selectOptions.length; i++) {
                 divContent = divContent + '<option value="' + selectOptions[i].value + '">' + selectOptions[i].key + '</option>';
             }
             divContent = divContent + '</select>';
@@ -205,7 +203,7 @@ function flatUiComplexWidgetsPluginClass() {
         };
 
         this.findInSelect = function (val) {
-            var obj = {};
+            let obj = {};
             if (!_.isUndefined(self.values)) {
                 obj = self.values;
             } else if (!_.isUndefined(self.keyValuePairs)) {
@@ -289,7 +287,7 @@ function flatUiComplexWidgetsPluginClass() {
             updateCallback: function () { },
             setValue: function (val) { //AEF: modif for issue#61
                 self.tmpSelectedValue = val;
-                var bFind = self.findInSelect(val);
+                const bFind = self.findInSelect(val);
                 if (bFind) {
                     $('#select' + idWidget)[0].value = val;
                     modelsHiddenParams[idInstance].selectedValue = val;
@@ -337,8 +335,8 @@ function flatUiComplexWidgetsPluginClass() {
                         //modelsHiddenParams[idInstance].keys = []; // MBG & ABK meeting 26/11/2020 : à faire (à décider) ???
                         self.render();
                     } else {
-                        var msg1 = '"keys" must be an array (in widget' + idInstance + ')';
-                        var msg2 = 'Example: ["choice1","choice2"]';
+                        const msg1 = '"keys" must be an array (in widget' + idInstance + ')';
+                        const msg2 = 'Example: ["choice1","choice2"]';
                         if (!Array.isArray(val)) {
                             swal(msg1, msg2, "info");
                             return;
@@ -348,7 +346,7 @@ function flatUiComplexWidgetsPluginClass() {
                             return;
                         }
 
-                        for (var i = 0; i < val.length; i++) {
+                        for (let i = 0; i < val.length; i++) {
                             this.selectionValues[i] = val[i];
                         }
                         modelsHiddenParams[idInstance].value = [];
@@ -377,8 +375,8 @@ function flatUiComplexWidgetsPluginClass() {
                         //modelsHiddenParams[idInstance].values = []; // MBG & ABK meeting 26/11/2020 : à faire (à décider) ???
                         self.render();
                     } else {
-                        var msg1 = '"value" must be an array (in widget' + idInstance + ')';
-                        var msg2 = 'Example: [1, 2]';
+                        const msg1 = '"value" must be an array (in widget' + idInstance + ')';
+                        const msg2 = 'Example: [1, 2]';
                         if (_.isNull(val)) {
                             val = modelsHiddenParams[idInstance].keys; //AEF: values are optional, take keys if not provided
                         }
@@ -391,7 +389,7 @@ function flatUiComplexWidgetsPluginClass() {
                             return;
                         }
 
-                        for (var i = 0; i < val.length; i++) {
+                        for (let i = 0; i < val.length; i++) {
                             this.selectionValues[i] = val[i];
                         }
                         modelsHiddenParams[idInstance].value = [];
@@ -420,14 +418,14 @@ function flatUiComplexWidgetsPluginClass() {
                         modelsHiddenParams[idInstance].value = val;
                         self.render();
                     } else {
-                        var msg1 = '"keyValuePairs" must be an array of key or an array of key/value pairs (in widget' + idInstance + ')';
-                        var msg2 = 'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
+                        const msg1 = '"keyValuePairs" must be an array of key or an array of key/value pairs (in widget' + idInstance + ')';
+                        const msg2 = 'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
                         if (!Array.isArray(val)) {
                             swal(msg1, msg2, "info"); //ABK
                             //swal({ title: msg1, text: msg2, type: "info", timer: 2000 });//ABK autoclose2s
                             return;
                         }
-                        for (var i = 0; i < val.length; i++) {
+                        for (let i = 0; i < val.length; i++) {
                             if (_.isUndefined(val[i].key)) { //AEF: key is mandatory
                                 swal(msg1, msg2, "info");
                                 return;
@@ -463,7 +461,7 @@ function flatUiComplexWidgetsPluginClass() {
     // +--------------------------------------------------------------------¦ \\
     this.multiSelectFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
         this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-        var self = this;
+        const self = this;
 
         this.enable = function () {
             $("#multi-select" + idWidget).on("click", function (e) {
@@ -485,17 +483,15 @@ function flatUiComplexWidgetsPluginClass() {
         }
 
         this.render = function () {
-            var widgetHtml = document.createElement('div');
-            valueHeightPx = $("#" + idDivContainer).height();
+            const widgetHtml = document.createElement('div');
+            const valueHeightPx = $("#" + idDivContainer).height();
             widgetHtml.setAttribute("style", "width: inherit; height: " + valueHeightPx + "px; cursor: inherit;");
 
-            var divContent = '<div class="multi-select-div" id="multi-select' + idWidget +
-                '" style="width: 100%; height: ' + valueHeightPx +
-                'px;/*background-color: rgba(255, 255, 255, 0)*/; border-radius: 6px; ' +
-                this.valueDefaultColor() + this.border() + '; box-sizing: border-box; cursor: inherit; max-width : 2000px">';
+            let divContent = '<div class="multi-select-div" id="multi-select' + idWidget +
+                '" style="height: ' + valueHeightPx + 'px; ' + this.valueDefaultColor() + this.border() + '">';
 
-            var val = modelsHiddenParams[idInstance].value;
-            var cursorElem = '';
+            const val = modelsHiddenParams[idInstance].value;
+            let cursorElem = '';
             if (this.bIsInteractive) {
                 cursorElem = "cursor: pointer; "
             } else {
@@ -521,14 +517,14 @@ function flatUiComplexWidgetsPluginClass() {
             widgetHtml.innerHTML = divContent;
             $("#" + idDivContainer).html(widgetHtml);
 
-            var hasScrollBar = self.hasScrollBar($('#multi-select' + idWidget));
+            const hasScrollBar = self.hasScrollBar($('#multi-select' + idWidget));
             if (!hasScrollBar) {
                 $('#multi-select' + idWidget + '.multi-select-div').css("align-content", "center");
             }
 
             //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
-            var isMobileOrTablet = window.mobileAndTabletCheck();
-            var touchDevice = ('ontouchstart' in document.documentElement); // Only mobiles
+            const isMobileOrTablet = window.mobileAndTabletCheck();
+            const touchDevice = ('ontouchstart' in document.documentElement); // Only mobiles
             //AEF: can keep only one isMobileOrTablet or touchDevice 
             if (touchDevice || isMobileOrTablet) {
                 $("#multi-select" + idWidget)[0].style.height = "auto";
@@ -573,6 +569,7 @@ function flatUiComplexWidgetsPluginClass() {
             setValue: function (val) {
                 modelsHiddenParams[idInstance].value = val;
                 self.render();
+                self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
             },
             getValue: function () {
                 if (modelsParameters[idInstance].isNumber) {
@@ -602,7 +599,7 @@ function flatUiComplexWidgetsPluginClass() {
                 modelsHiddenParams[idInstance].selectedValue = val;
             },
             getValue: function () {
-                var selectedVal = [];
+                const selectedVal = [];
                 $("#multi-select" + idWidget + " > label > input[type='checkbox']:checked").each(function () {
                     if (modelsParameters[idInstance].isNumber) {
                         selectedVal.push(Number($(this).val()));
@@ -632,11 +629,11 @@ function flatUiComplexWidgetsPluginClass() {
     // +--------------------------------------------------------------------¦ \\
     this.listFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
         this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-        var self = this;
+        const self = this;
 
         this.enable = function () {
-            var fired = false; //fire keyup event only once
-            var lastkeyup = false; //click+ctrl then ctrl+a
+            let fired = false; //fire keyup event only once
+            let lastkeyup = false; //click+ctrl then ctrl+a
 
             $("#list" + idWidget).on("keyup", function (e) {
                 if (lastkeyup) { // in case of: click+ctrl then ctrl+a, no click event between two ctrl keyup events
@@ -692,13 +689,13 @@ function flatUiComplexWidgetsPluginClass() {
         };
 
         this.render = function () {
-            var widgetHtml = document.createElement('div');
+            const widgetHtml = document.createElement('div');
             valueHeightPx = $("#" + idDivContainer).height();
             widgetHtml.setAttribute("style", "width: inherit; height: " + valueHeightPx + "px; cursor: inherit;");
 
-            var border = this.border();
+            const border = this.border();
 
-            var divContent = '<select class="form-control" id="list' + idWidget +
+            let divContent = '<select class="form-control" id="list' + idWidget +
                 '" multiple size="10" style="width: 100%; height: ' + valueHeightPx +
                 'px;/*background-color: rgba(255, 255, 255, 0)*/; border-radius: 6px; color: ' +
                 modelsParameters[idInstance].listValueColor + '; ' + border + '; ' + this.valueFontFamily() +
@@ -706,16 +703,15 @@ function flatUiComplexWidgetsPluginClass() {
                 modelsParameters[idInstance].listValueFontSize * getFontFactor() + 'vw + 0.4vh); ' +
                 'cursor: inherit; max-width : 2000px">';
 
-            var val = modelsHiddenParams[idInstance].value;
-            var cursorElem = '';
+            const val = modelsHiddenParams[idInstance].value;
+            let cursorElem = '';
             if (this.bIsInteractive) {
                 cursorElem = "cursor: pointer; "
             } else {
                 cursorElem = "cursor: inherit; "
             }
             if (Array.isArray(val)) {
-                var i;
-                for (i = 0; i < val.length; i++) {
+                for (let i = 0; i < val.length; i++) {
                     divContent = divContent + '<option style="' + cursorElem + '">' + val[i] + '</option>';
                 }
             }
@@ -723,8 +719,8 @@ function flatUiComplexWidgetsPluginClass() {
             widgetHtml.innerHTML = divContent;
             $("#" + idDivContainer).html(widgetHtml);
             //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
-            var isMobileOrTablet = window.mobileAndTabletCheck();
-            var touchDevice = ('ontouchstart' in document.documentElement); // Only mobiles
+            const isMobileOrTablet = window.mobileAndTabletCheck();
+            const touchDevice = ('ontouchstart' in document.documentElement); // Only mobiles
             // var touchDevice = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement); // desktops with a touch screen and mobiles
             //AEF: can keep only one isMobileOrTablet or touchDevice 
             if (touchDevice || isMobileOrTablet) {
@@ -772,6 +768,7 @@ function flatUiComplexWidgetsPluginClass() {
             setValue: function (val) {
                 modelsHiddenParams[idInstance].value = val;
                 self.render();
+                self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
             },
             getValue: function () {
                 return modelsHiddenParams[idInstance].value;
@@ -791,17 +788,17 @@ function flatUiComplexWidgetsPluginClass() {
                 modelsHiddenParams[idInstance].selectedValue = val;
             },
             getValue: function () {
-                var x = document.getElementById('list' + idWidget);
-                var selectedVal = $('#list' + idWidget).val();
+                const x = document.getElementById('list' + idWidget);
+                const selectedVal = $('#list' + idWidget).val();
                 //var selectedIndex = x.selectedIndex;
-                var selectedOptions = x.selectedOptions;
-                var listLength = 0;
+                const selectedOptions = x.selectedOptions;
+                let listLength = 0;
                 if (Array.isArray(modelsHiddenParams[idInstance].value)) {
                     listLength = modelsHiddenParams[idInstance].value.length;
                 }
                 if (selectedOptions.length === 0)
                     return "";
-                for (var i = 0; i < selectedOptions.length; i++) {
+                for (let i = 0; i < selectedOptions.length; i++) {
                     if ((selectedOptions[i].index < 0) || (selectedOptions[i].index >= listLength))
                         return "";
                 }
@@ -882,8 +879,8 @@ function flatUiComplexWidgetsPluginClass() {
                         tableContent = tableContent + '<thead><tr>';
                         for (var j = 0; j < val[0].length; j++) {
                             tableContent = tableContent +
-                                '<th><span style="' + this.valueColor() + this.valueFontFamily() +
-                                ' font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)"><b>' +
+                                '<th style="' + this.valueAlign() + '"><span style="' + this.valueColor() + this.valueFontFamily() +
+                                ' font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw);"><b>' +
                                 val[0][j] + '</b></span></th>';
                         }
                         tableContent = tableContent + '</tr></thead>';
@@ -903,11 +900,10 @@ function flatUiComplexWidgetsPluginClass() {
                             } else {
                                 isEditable = "true";
                                 if (this.bIsInteractive) {
-                                    cursorEditable = 'style="cursor: cell;"';
+                                    cursorEditable = "cursor: cell;";
                                 }
                             }
-                            tableContent = tableContent + '<td ' + cursorEditable +
-                                ' data-editable="' + isEditable +
+                            tableContent = tableContent + '<td style="' + cursorEditable + this.valueAlign() + '" data-editable="' + isEditable +
                                 '"><span style="' + this.valueColor() + this.valueFontFamily() +
                                 ' font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)">' +
                                 val[i][j] + '</span></td>';
@@ -926,7 +922,7 @@ function flatUiComplexWidgetsPluginClass() {
                     for (var i = startIndex; i < val.length; i++) {
                         token = val[i];
                         tableContent = tableContent +
-                            '<td><span style="' + this.valueColor() + this.valueFontFamily() +
+                            '<td style="' + this.valueAlign() + '"><span style="' + this.valueColor() + this.valueFontFamily() +
                             ' font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)">' +
                             token + '</span></td>';
                     }

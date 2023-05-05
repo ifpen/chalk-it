@@ -344,6 +344,11 @@
     border-color: var(--primary-color);
   }
 
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
   h3 {
     margin: 1em 0;
     font-weight: fw("normal");
