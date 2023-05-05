@@ -1,7 +1,7 @@
 {
 	"meta": {
-		"version": "2.410.8418",
-		"date": "Fri Feb 10 2023 16:59:59 GMT+0100 (heure normale d’Europe centrale)",
+		"version": "2.670.8496",
+		"date": "Wed Apr 05 2023 17:11:57 GMT+0200 (heure d’été d’Europe centrale)",
 		"name": "osm-choropleth-py",
 		"description": "",
 		"groupName": "Python",
@@ -18,6 +18,14 @@
 	"data": {
 		"datanodes": [
 			{
+				"name": "config",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "config",
+					"json_var": "{\"opacity\":0.8,\"weight\":2,\"disableAutoscale\":false,\"min\":0,\"max\":12000000,\"colorScale\":\"interpolateOranges\",\"reverseColorScale\":false}"
+				}
+			},
+			{
 				"name": "coropleth",
 				"type": "Python_pyodide_plugin",
 				"settings": {
@@ -25,14 +33,6 @@
 					"autoStart": true,
 					"explicitTrig": false,
 					"content": "data = []\nfor region in dataNodes[\"regionsFranceGeoJson\"][\"features\"]:\n    data.append({\"geometry\": region[\"geometry\"], \"population\": region[\"properties\"][\"population\"]})\n\ncfg = dataNodes[\"config\"]\n\nresult = {\"data\": data, \"config\": cfg}\n\nreturn result\n\n"
-				}
-			},
-			{
-				"name": "config",
-				"type": "JSON_var_plugin",
-				"settings": {
-					"name": "config",
-					"json_var": "{\"opacity\":0.8,\"weight\":2,\"disableAutoscale\":false,\"min\":0,\"max\":12000000}"
 				}
 			},
 			{
@@ -45,8 +45,8 @@
 			}
 		],
 		"reIndexMap": [
-			2,
 			0,
+			2,
 			1
 		],
 		"noTopologicalSortAtSerialize": true
@@ -56,13 +56,13 @@
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1256,
+		"widthPx": 1302,
 		"heightPx": 575,
-		"scrollWidthPx": 1256,
+		"scrollWidthPx": 1302,
 		"scrollHeightPx": 575,
-		"widthVw": 84.29530201342281,
+		"widthVw": 84.765625,
 		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.29530201342281,
+		"scrollWidthVw": 84.765625,
 		"scrollHeightVh": 79.6398891966759,
 		"scalingMethod": "scaleTwh",
 		"media": "large",
@@ -77,15 +77,16 @@
 			"classType": ""
 		},
 		"droppers": {},
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#ffffff",
+		"theme": "default"
 	},
 	"dashboard": {
 		"openStreetMapsJ": {
 			"layout": {
 				"top": "1.38504vh",
-				"left": "0.671141vw",
+				"left": "0.675404vw",
 				"height": "52.2161vh",
-				"width": "82.5503vw",
+				"width": "83.0746vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "1"
@@ -182,9 +183,9 @@
 		"flatUiHorizontalSlidert": {
 			"layout": {
 				"top": "56.9252vh",
-				"left": "0.80601vw",
+				"left": "0.81113vw",
 				"height": "4.98615vh",
-				"width": "24.0459vw",
+				"width": "24.1986vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "2"
@@ -227,9 +228,9 @@
 		"flatUiHorizontalSliderk": {
 			"layout": {
 				"top": "64.4044vh",
-				"left": "0.738843vw",
+				"left": "0.743536vw",
 				"height": "4.98615vh",
-				"width": "24.0459vw",
+				"width": "24.1986vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "3"
@@ -276,7 +277,7 @@
 				"name": "choropleth1",
 				"dataNode": "coropleth",
 				"dataFields": [],
-				"dataNodeIndex": 0
+				"dataNodeIndex": 1
 			}
 		},
 		"flatUiHorizontalSlidert": {
@@ -286,7 +287,7 @@
 				"dataFields": [
 					"opacity"
 				],
-				"dataNodeIndex": 1
+				"dataNodeIndex": 0
 			}
 		},
 		"flatUiHorizontalSliderk": {
@@ -296,7 +297,7 @@
 				"dataFields": [
 					"weight"
 				],
-				"dataNodeIndex": 1
+				"dataNodeIndex": 0
 			}
 		}
 	},

@@ -1,10 +1,10 @@
 {
 	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 17:40:58 GMT+0100 (heure normale d’Europe centrale)",
+		"version": "2.700.8500",
+		"date": "Sun Apr 09 2023 09:58:35 GMT+0200 (heure d’été d’Europe centrale)",
 		"name": "osm-heatmap-play-py",
 		"description": "Real-time heatmap draw on map",
-		"groupName": "JavaScript",
+		"groupName": "Python",
 		"tags": [
 			{
 				"text": "Widgets"
@@ -27,21 +27,11 @@
 	"data": {
 		"datanodes": [
 			{
-				"name": "CH4_data_points",
-				"type": "Python_pyodide_plugin",
-				"settings": {
-					"name": "CH4_data_points",
-					"autoStart": true,
-					"explicitTrig": false,
-					"content": "return {\n    \"data\": {\n        \"lat\": dataNodes[\"measures\"][\"lat\"],\n        \"lng\": dataNodes[\"measures\"][\"lng\"],\n        \"CH4\": dataNodes[\"measures\"][\"CH4\"]\n\t},\n\t\"config\" : dataNodes[\"CH4_heatmap_config\"]        \n}"
-				}
-			},
-			{
 				"name": "CH4_heatmap_config",
 				"type": "JSON_var_plugin",
 				"settings": {
 					"name": "CH4_heatmap_config",
-					"json_var": "{\"opacity\":0.9,\"radius\":4,\"disableAutoscale\":true,\"min\":0,\"max\":4}"
+					"json_var": "{\"opacity\":0.9,\"radius\":4,\"disableAutoscale\":true,\"min\":0,\"max\":4,\"colorScale\":\"interpolateSpectral\",\"reverseColorScale\":true}"
 				}
 			},
 			{
@@ -63,12 +53,22 @@
 					"nb_meta_lines": 0,
 					"nb_subheader_lines": 0
 				}
+			},
+			{
+				"name": "CH4_data_points",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "CH4_data_points",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "return {\n    \"data\": {\n        \"lat\": dataNodes[\"measures\"][\"lat\"],\n        \"lng\": dataNodes[\"measures\"][\"lng\"],\n        \"CH4\": dataNodes[\"measures\"][\"CH4\"]\n\t},\n\t\"config\" : dataNodes[\"CH4_heatmap_config\"]        \n}"
+				}
 			}
 		],
 		"reIndexMap": [
-			2,
 			0,
-			1
+			1,
+			2
 		],
 		"noTopologicalSortAtSerialize": true
 	},
@@ -77,14 +77,14 @@
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1640,
-		"heightPx": 685,
-		"scrollWidthPx": 1640,
-		"scrollHeightPx": 685,
-		"widthVw": 87.56006406833956,
-		"heightVh": 73.10565635005337,
-		"scrollWidthVw": 87.56006406833956,
-		"scrollHeightVh": 73.10565635005337,
+		"widthPx": 1302,
+		"heightPx": 575,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 575,
+		"widthVw": 84.765625,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.765625,
+		"scrollHeightVh": 79.6398891966759,
 		"scalingMethod": "scaleTwSp",
 		"media": "large",
 		"colDims": null
@@ -98,15 +98,16 @@
 			"classType": ""
 		},
 		"droppers": {},
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#ffffff",
+		"theme": "default"
 	},
 	"dashboard": {
 		"openStreetMapsA": {
 			"layout": {
-				"top": "1.70758vh",
-				"left": "0.854245vw",
-				"height": "63.6073vh",
-				"width": "82.5948vw",
+				"top": "1.80056vh",
+				"left": "0.846354vw",
+				"height": "65.5125vh",
+				"width": "79.9479vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "1"
@@ -196,8 +197,8 @@
 		"openStreetMapsA": {
 			"heatMapPoint1": {
 				"name": "heatMapPoint1",
+				"dataNode": "CH4_data_points",
 				"dataFields": [],
-				"dataNode": "CH4_data_point",
 				"dataNodeIndex": 2
 			}
 		}

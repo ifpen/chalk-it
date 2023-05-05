@@ -1,10 +1,21 @@
 {
 	"meta": {
-		"version": "2.410.8418",
-		"date": "Mon Feb 27 2023 23:05:26 GMT+0100 (heure normale d’Europe centrale)",
+		"version": "2.650.8490",
+		"date": "Mon Apr 03 2023 11:37:57 GMT+0200 (heure d’été d’Europe centrale)",
 		"name": "live-demo-js",
 		"description": "",
-		"tags": [],
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "maps"
+			},
+			{
+				"text": "rest-api"
+			},
+			{
+				"text": "Plotly"
+			}
+		],
 		"schedulerLogOff": true
 	},
 	"data": {
@@ -94,7 +105,7 @@
 						}
 					],
 					"proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly94ZGFzaGdhdGV3YXkuYXp1cmUtYXBpLm5ldC93ZWF0aGVyIiwiSG9zdCI6InhkYXNoIn0=",
-					"proxySig": "5TM10MtZYvnW/sf2ZrpNxgEoPlQszlhbXIZlWF7Df21VbLelYW7dBKK0zgoYLCuj2fYre+BD6RVAckscLqoZ3sAsZUZkSPrcWxwHhXtRyEc="
+					"proxySig": "5TM10MtZYvnW/sf2ZrpNxgEoPlQszlhbXIZlWF7Df21VbLelYW7dBKK0zgoYLCuj2fYre+BD6RVAckscLqoZ3rzyqq+AyBnNIdPA5BUu4/o="
 				}
 			},
 			{
@@ -118,7 +129,7 @@
 						}
 					],
 					"proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly94ZGFzaGdhdGV3YXkuYXp1cmUtYXBpLm5ldC9nZW9jb2RlL2dlb2NvZGUuanNvbiIsIkhvc3QiOiJ4ZGFzaCJ9",
-					"proxySig": "5TM10MtZYvnW/sf2ZrpNxgEoPlQszlhbXIZlWF7Df205pf+wQwmnKe7dVKDZZQD4bwYRQKuGdGFjOo0pbTthc1+3g8xAPNBgPqJfHniQG2v8AeSEBivkGxb5cDsf+I5z"
+					"proxySig": "5TM10MtZYvnW/sf2ZrpNxgEoPlQszlhbXIZlWF7Df205pf+wQwmnKe7dVKDZZQD4bwYRQKuGdGFjOo0pbTthc1+3g8xAPNBgPqJfHniQG2tQiUQJs90e5Sc9/K5cpX9N"
 				}
 			}
 		],
@@ -140,20 +151,20 @@
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1256,
+		"widthPx": 1302,
 		"heightPx": 575,
-		"scrollWidthPx": 1256,
+		"scrollWidthPx": 1302,
 		"scrollHeightPx": 575,
-		"widthVw": 84.29530201342281,
+		"widthVw": 84.765625,
 		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.29530201342281,
+		"scrollWidthVw": 84.765625,
 		"scrollHeightVh": 79.6398891966759,
 		"scalingMethod": "scaleTwh",
 		"media": "large",
 		"colDims": {
-			"widthPx": 628.4,
+			"widthPx": 651.4,
 			"heightPx": 644.4,
-			"widthVw": 42.1744966442953,
+			"widthVw": 42.408854166666664,
 			"heightVh": 89.25207756232687,
 			"rowHeightPercent": 112
 		}
@@ -174,7 +185,7 @@
 				"component3": "flatUiTableM",
 				"component4": "annotationLabelU",
 				"component5": "plotlyGenericb",
-				"component6": "flatUiValueDisplayV"
+				"component6": "flatUiTextInputV"
 			},
 			"dpr2": {
 				"component0": "flatUiHereAutocompleteValueU",
@@ -184,15 +195,16 @@
 				"component4": "flatUiTable8"
 			}
 		},
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#ffffff",
+		"theme": "default"
 	},
 	"dashboard": {
 		"flatUiHorizontalSliderj": {
 			"layout": {
 				"top": "12.8116vh",
-				"left": "0.792669vw",
+				"left": "0.797074vw",
 				"height": "7.11738vh",
-				"width": "38.0481vw",
+				"width": "38.2596vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "1"
@@ -234,9 +246,9 @@
 		"flatUiHorizontalSliderZ": {
 			"layout": {
 				"top": "21.3525vh",
-				"left": "0.792669vw",
+				"left": "0.797074vw",
 				"height": "7.11738vh",
-				"width": "38.0481vw",
+				"width": "38.2596vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "1"
@@ -277,10 +289,10 @@
 		},
 		"annotationLabelT": {
 			"layout": {
-				"top": "1.38504vh",
-				"left": "0.805369vw",
-				"height": "10.5263vh",
-				"width": "39.5973vw",
+				"top": "1.42804vh",
+				"left": "0.798718vw",
+				"height": "10.5674vh",
+				"width": "39.8559vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "10"
@@ -305,9 +317,9 @@
 		"flatUiTableM": {
 			"layout": {
 				"top": "47.3559vh",
-				"left": "1.00715vw",
+				"left": "1.01275vw",
 				"height": "38.8609vh",
-				"width": "10.6217vw",
+				"width": "10.6808vw",
 				"minHeight": "79px",
 				"minWidth": "88px",
 				"z-index": "15"
@@ -326,7 +338,8 @@
 				"noBorder": false,
 				"editableCols": "[1]",
 				"valueColor": "#34495e",
-				"valueFontFamily": "Helvetica Neue"
+				"valueFontFamily": "Helvetica Neue",
+				"valueAlign": "left"
 			},
 			"modelHiddenParams": {
 				"value": null
@@ -335,9 +348,9 @@
 		"annotationLabelU": {
 			"layout": {
 				"top": "37.9857vh",
-				"left": "0.794304vw",
+				"left": "0.798718vw",
 				"height": "10.139vh",
-				"width": "38.2059vw",
+				"width": "38.4182vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "11"
@@ -362,9 +375,9 @@
 		"plotlyGenericb": {
 			"layout": {
 				"top": "46.9104vh",
-				"left": "11.897vw",
+				"left": "11.9631vw",
 				"height": "40.7819vh",
-				"width": "28.6409vw",
+				"width": "28.8vw",
 				"minHeight": "32px",
 				"minWidth": "50px",
 				"z-index": "15"
@@ -424,9 +437,9 @@
 		"flatUiHereAutocompleteValueU": {
 			"layout": {
 				"top": "13.7484vh",
-				"left": "1.189vw",
+				"left": "1.19561vw",
 				"height": "6.87423vh",
-				"width": "39.4749vw",
+				"width": "39.6943vw",
 				"minHeight": "32px",
 				"minWidth": "150px",
 				"z-index": "10"
@@ -435,7 +448,7 @@
 				"id": "flatUiHereAutocompleteValueU",
 				"instanceId": "flatUiHereAutocompleteValueU",
 				"modelJsonId": "flatUiHereAutocompleteValue",
-				"widgetTypeName": "Address autocompletion(flatUiHereAutocompleteValueU)"
+				"widgetTypeName": "Address auto-completion(flatUiHereAutocompleteValueU)"
 			},
 			"modelParameters": {
 				"label": "address",
@@ -457,9 +470,9 @@
 		"openStreetMapsb": {
 			"layout": {
 				"top": "23.9103vh",
-				"left": "0.871935vw",
+				"left": "0.876781vw",
 				"height": "40.498vh",
-				"width": "39.4749vw",
+				"width": "39.6943vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "10"
@@ -555,10 +568,10 @@
 		},
 		"annotationLabel8": {
 			"layout": {
-				"top": "1.80055vh",
-				"left": "0.872483vw",
-				"height": "9.9723vh",
-				"width": "39.396vw",
+				"top": "1.85644vh",
+				"left": "0.878589vw",
+				"height": "9.99623vh",
+				"width": "39.6164vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "12"
@@ -582,10 +595,10 @@
 		},
 		"annotationLabelZ": {
 			"layout": {
-				"top": "65.928vh",
-				"left": "1.4094vw",
-				"height": "10.1108vh",
-				"width": "38.8591vw",
+				"top": "65.975vh",
+				"left": "1.43769vw",
+				"height": "10.139vh",
+				"width": "39.0571vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "13"
@@ -610,9 +623,9 @@
 		"flatUiTable8": {
 			"layout": {
 				"top": "76.0059vh",
-				"left": "1.50607vw",
+				"left": "1.51444vw",
 				"height": "11.8057vh",
-				"width": "38.7613vw",
+				"width": "38.9767vw",
 				"minHeight": "79px",
 				"minWidth": "88px",
 				"z-index": "10"
@@ -637,21 +650,21 @@
 				"value": null
 			}
 		},
-		"flatUiValueDisplayV": {
+		"flatUiTextInputV": {
 			"layout": {
 				"top": "29.9888vh",
-				"left": "4.44809vw",
+				"left": "4.4728vw",
 				"height": "7.14017vh",
-				"width": "34.3933vw",
+				"width": "34.5845vw",
 				"minHeight": "24px",
 				"minWidth": "150px",
 				"z-index": "14"
 			},
 			"container": {
-				"id": "flatUiValueDisplayV",
-				"instanceId": "flatUiValueDisplayV",
-				"modelJsonId": "flatUiValueDisplay",
-				"widgetTypeName": "Value Display(flatUiValueDisplayV)"
+				"id": "flatUiTextInputV",
+				"instanceId": "flatUiTextInputV",
+				"modelJsonId": "flatUiTextInput",
+				"widgetTypeName": "Text Input(flatUiTextInputV)"
 			},
 			"modelParameters": {
 				"label": "Rectangle surface",
@@ -661,7 +674,6 @@
 				"valueWidthProportion": "20%",
 				"validationButton": false,
 				"validationOnFocusOut": true,
-				"isNumber": false,
 				"isPassword": false,
 				"valueFontSize": 0.5,
 				"valueColor": "#34495e",
@@ -673,7 +685,10 @@
 				"labelColor": "#2154ab",
 				"labelFontFamily": "Helvetica Neue",
 				"valueFontFamily": "Helvetica Neue",
-				"borderColor": "#447bdc"
+				"borderColor": "#447bdc",
+				"validationBtnDefaultColor": "#2154ab",
+				"validationBtnHoverColor": "#a9c3ef",
+				"validationBtnActiveColor": "#2154ab"
 			},
 			"modelHiddenParams": {
 				"value": ""
@@ -701,6 +716,7 @@
 				"dataNodeIndex": 3
 			}
 		},
+		"annotationLabelT": {},
 		"flatUiTableM": {
 			"value": {
 				"name": "value",
@@ -748,6 +764,7 @@
 				"dataNodeIndex": 4
 			}
 		},
+		"annotationLabel8": {},
 		"annotationLabelZ": {},
 		"flatUiTable8": {
 			"value": {
@@ -757,16 +774,14 @@
 				"dataNodeIndex": 5
 			}
 		},
-		"flatUiValueDisplayV": {
+		"flatUiTextInputV": {
 			"value": {
 				"name": "value",
 				"dataFields": [],
 				"dataNode": "Surface",
 				"dataNodeIndex": 2
 			}
-		},
-		"annotationLabelT": {},
-		"annotationLabel8": {}
+		}
 	},
 	"exportOptions": "projectToTargetWindow",
 	"pages": {
