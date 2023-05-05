@@ -66,10 +66,7 @@
 		"noTopologicalSortAtSerialize": true
 	},
 	"libraries": {
-		"pyodideStandard": [
-			"numpy",
-			"pandas"
-		],
+		"pyodideStandard": [],
 		"pyodideMicropip": []
 	},
 	"scaling": {

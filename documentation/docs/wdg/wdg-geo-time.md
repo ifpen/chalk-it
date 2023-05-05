@@ -73,7 +73,7 @@ which will be displayed as :
 Properties field of each feature allows to configure it. It comprises the following items :
 
 - **html** : allows to write html call to be rendered inside the popup.
-- **awesomeMarker** : JSON configuration object for the [Leaflet.awesome-markers](https://github.com/lvoogdt/Leaflet.awesome-markers) library, allowing colorful iconic & retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons.
+- **awesomeMarker** : JSON configuration object for the [Leaflet.awesome-markers](https://github.com/lvoogdt/Leaflet.awesome-markers) library, allowing colorful iconic & retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. **Only Font-Awesome icons** are supported with xDash.
 
   | Property        | Description            | Default Value | Possible  values                                     |
   | --------------- | ---------------------- | ------------- | ---------------------------------------------------- |
@@ -217,12 +217,14 @@ See also : [Using GeoJSON with Leaflet](https://leafletjs.com/examples/geojson/)
     "radius": 1,
     "disableAutoscale": false,
     "min": 0,
-    "max": 100
+    "max": 100,
+    "colorScale": "interpolateSpectral",
+    "reverseColorScale": true
   }
 }
 ```
 
-When **min** and/or **max** config parameters are not specified, they are automatically computed from the data set.
+When **min** and/or **max** config parameters are not specified, they are automatically computed from the data set. **colorScale** is a string from interpolate-type colorscales of D3.js : <https://github.com/d3/d3-scale-chromatic>.
 
 Example of display (for a larger data set) :
 
@@ -278,12 +280,14 @@ Several parameters control the display of the heatmap, in particular :
     "weight": 4,
     "disableAutoscale": false,
     "min": 0,
-    "max": 10
+    "max": 10,
+    "colorScale": "interpolateSpectral",
+    "reverseColorScale": true    
   }
 }
 ```
 
-When **min** and/or **max** config parameters are not specified, they are automatically computed from the data set.
+When **min** and/or **max** config parameters are not specified, they are automatically computed from the data set. **colorScale** is a string from interpolate-type colorscales of D3.js : <https://github.com/d3/d3-scale-chromatic>.
 
 Example of display (for a larger data set) :
 
@@ -350,10 +354,14 @@ Example :
     "weight": 4,
     "disableAutoscale": false,
     "min": 0,
-    "max": 10
+    "max": 10,
+    "colorScale": "interpolateOranges",
+    "reverseColorScale": false
   }
 }
 ```
+
+When **min** and/or **max** config parameters are not specified, they are automatically computed from the data set. **colorScale** is a string from interpolate-type colorscales of D3.js : <https://github.com/d3/d3-scale-chromatic>.
 
 Example of display (for a larger data set) :
 
@@ -437,6 +445,17 @@ Example :
 
 * [osm-drawing-features.xprjson](/wdg/maps/osm-drawing-features.xprjson)
 
+## Folium Maps
+
+[Folium](https://python-visualization.github.io/folium/
+) is a Python library used for visualizing geospatial data. It leverages the power of the Leaflet.js library and provides a simple way to create interactive maps. Folium can be used to create various types of maps such as choropleth maps, bubble maps, and scatter maps, and provides an easy-to-use interface for adding markers, popups, and other interactive features to the maps.
+
+Folium is built on top of the Python data analysis library pandas, which makes it easy to manipulate and visualize large datasets. It also supports several tilesets such as OpenStreetMap, Mapbox, and Stamen, which can be used to customize the look and feel of the maps.
+
+Usage examples:
+
+* [folium-point.xprjson](/wdg/maps/folium-point.xprjson)
+
 ## Address autocompletion
 
 This widget uses the [here geocoder autocomplete API](https://developer.here.com/documentation/geocoder-autocomplete/dev_guide/topics/example-location-id.html) to provide suggestion as the user types an address location.
@@ -452,6 +471,20 @@ Use the *Simple calendar* widget to select a date.
 Example :
 
 * [date-picker.xprjson](/wdg/date-time/date-picker.xprjson)
+
+## Date-range calendar
+
+Enables the selection of a date interval.
+
+## D3 year heatmap caldendar
+
+Allows to associate range heatmap to a yearly-based calendar. Very useful to visually identify sporadic information. Date selection is also possible. 
+
+![D3 year heatmap caldendar](date-time/d3-year-heatmap-calendar.png)
+
+Example :
+
+* [d3-year-heatmap-calendar.xprjson](/wdg/date-time/d3-year-heatmap-calendar.xprjson)
 
 ## Simple clock
 

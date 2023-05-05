@@ -27,6 +27,12 @@ Examples :
 
 For displaying binary status (on/off)
 
+## Progress bar
+
+Enables to display a progress over a range. See example :
+
+* [progress-bar.xprjson](/wdg/basic/progress-bar.xprjson)
+
 ## Full-circular, semi-circular or arch-circular gauges
 
 Are adapted for displaying score values, that have a well defined min/max range.

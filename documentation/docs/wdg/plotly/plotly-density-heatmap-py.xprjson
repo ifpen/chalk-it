@@ -1,11 +1,21 @@
 {
 	"meta": {
-		"version": "2.410.8418",
-		"date": "Fri Feb 03 2023 23:28:49 GMT+0100 (heure normale d’Europe centrale)",
+		"version": "2.650.8490",
+		"date": "Mon Apr 03 2023 15:26:10 GMT+0200 (heure d’été d’Europe centrale)",
 		"name": "plotly-density-heatmap-py",
-		"description": "",
-		"groupName": "",
-		"tags": [],
+		"description": "Plotly Python widget example based on Pyodide for heatmap display",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "plotly"
+			},
+			{
+				"text": "heatmap"
+			},
+			{
+				"text": "Pyodide"
+			}
+		],
 		"schedulerLogOff": true
 	},
 	"data": {
@@ -27,19 +37,22 @@
 		"noTopologicalSortAtSerialize": true
 	},
 	"libraries": {
-		"pyodideStandard": [],
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
 		"pyodideMicropip": [
 			"plotly"
 		]
 	},
 	"scaling": {
-		"widthPx": 1256,
+		"widthPx": 1302,
 		"heightPx": 575,
-		"scrollWidthPx": 1256,
+		"scrollWidthPx": 1302,
 		"scrollHeightPx": 575,
-		"widthVw": 84.29530201342281,
+		"widthVw": 84.765625,
 		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.29530201342281,
+		"scrollWidthVw": 84.765625,
 		"scrollHeightVh": 79.6398891966759,
 		"scalingMethod": "scaleTwh",
 		"media": "large",
@@ -54,15 +67,16 @@
 			"classType": ""
 		},
 		"droppers": {},
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#ffffff",
+		"theme": "default"
 	},
 	"dashboard": {
 		"plotlyPyGenericD": {
 			"layout": {
 				"top": "1.38504vh",
-				"left": "1.4094vw",
+				"left": "1.41617vw",
 				"height": "56.0942vh",
-				"width": "47.7181vw",
+				"width": "47.9475vw",
 				"minHeight": "32px",
 				"minWidth": "50px",
 				"z-index": "1"

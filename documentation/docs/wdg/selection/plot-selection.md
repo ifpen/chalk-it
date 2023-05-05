@@ -4,7 +4,7 @@
 
 With Plotly JavaScript generic graph, the Chalk'it platform gives you access to selected events which contain all fields necessary in order to use selected element in the dataflow (transfer selection to another graph, filter data according to selection,  ...) 
 
->For those familiar with Plotly select events, "appendix I" will explain how XDash selection events are created. 
+>For those familiar with Plotly select events, "appendix I" will explain how xDash selection events are created. 
 
 ## main data and global index
 
@@ -133,7 +133,7 @@ In order to reset the selection, we need to clean all the DataFlow and all the g
 
 3 significant addition in the dataNode have to be done in order to have a clean result. 
 
-- Reset the DataNode [Selection] via the XDashApi function. This will reset the selection and the plotly data (done in [ResetSelection] dataNode)
+- Reset the DataNode [Selection] via the xDashApi function. This will reset the selection and the plotly data (done in [ResetSelection] dataNode)
 - Add the field "selections : []" in all layout impacted in order to remove all the visible rectangle or lasso drawn
 - Create a relation between the resetSelection action script and the different layout to trigger the layout dataNodes.
 
@@ -159,7 +159,11 @@ The repercution will be done next time plotly via the dataFlow needs to check th
 And you dont know when it will happens (often when the widget is selected) 
 
   
+<<<<<<< HEAD:documentation/docs/wdg/selection/plot-selection.md
 ## Appendix 1 : Plotly Selection and Chalk'it Selection
+=======
+## Appendix 1 : Plotly Selection and xDash Selection
+>>>>>>> master:HowTos/docs/wdg/selection/plot-selection.md
 
 Structures of the plotly selection are discribe in 
 
@@ -169,13 +173,21 @@ So plotly selection events are dependant from the kind of the original graph (2D
  
 Plotly selection cannot directly be transformed in JSON because it is a circular structure.
 
+<<<<<<< HEAD:documentation/docs/wdg/selection/plot-selection.md
 Chalk'it selection event is one unified selection containing an array for each trace which contains the index of the element and the metadata if those one were present in the original trace. 
+=======
+xDash selection event is one unified selection containing an array for each trace which contains the index of the element and the metadata if those one were present in the original trace. 
+>>>>>>> master:HowTos/docs/wdg/selection/plot-selection.md
 
 [curveNumber (trace number)]
  - indexSelected : []
  - customdata : [] (if customdata field is present in original DataTrace)
 
+<<<<<<< HEAD:documentation/docs/wdg/selection/plot-selection.md
 For exemple if you have 2 traces in your Plotly graph, Chalk'it selection would return :
+=======
+For exemple if you have 2 traces in your Plotly graph, xDash selection would return :
+>>>>>>> master:HowTos/docs/wdg/selection/plot-selection.md
 
 [ 0 : {Data : [1, 10, 120, 123], customData: [1, 10, 120, 123]}]
 [ 1 : {Data : [1, 10, 120, 123], customData: [1, 10, 120, 123]}]

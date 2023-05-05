@@ -2,9 +2,9 @@
 
 Plots in Chalk'it may be made either with Python or JavaScript code:
 
-* Python-based plots are available using [Plolty Python](https://plotly.com/python/) or [Matplotlib] (https://matplotlib.org/), currenly only with the [Python Script (Pyodide)](../ds/ds-reference.md#python-script-pyodide)-type dataNode
+* Python-based plots are available using [Plolty Python](https://plotly.com/python/) or [Matplotlib](https://matplotlib.org/), currenly only with the [Python Script (Pyodide)](../ds/ds-reference.md#python-script-pyodide)-type dataNode
 * JavaScript-based plots are available using  [Plotly.js](<https://plot.ly/javascript/>), [Apache ECharts](https://echarts.apache.org/) or [Vega](https://vega.github.io/vega/)
-* Simplified usage (array actuators) is available for [Plotly line](#plotly-line), [Plotly bar](#plotly-bar), [Plotly pie](#plotly-pie) and [Plotly 3D surface](#plotly-3d-surface). Otherwise, use the [Plotly generic](#plotly-generic) for a complete Plotly.js options and configurations
+* Simplified usage (array actuators) is available for [Plotly line](#plotly-line), [Plotly bar](#plotly-bar), [Plotly pie](#plotly-pie) and [Plotly 3D surface](#plotly-3d-surface). Otherwise, use the [Plotly generic](#plotly-javascript-generic) for a complete Plotly.js options and configurations
 
 Plotly.js-based widgets share common parameters, especially *hideModeBar* which allows to hide plot options toolbar at dashboard play.
 
@@ -32,11 +32,10 @@ Some examples :
 
 ## Plotly pie
 
-This widget has three actuators :
+This widget has two actuators :
 
 * **values**: an array of values to be displayed as pie chart
 * **labels**: an optional array of labels associated to values
-* **Colors**: an optional array of HTML-based colors used for each value display
 
 ![pie-chart](plotly/pie-chart.png)
 
@@ -55,6 +54,12 @@ This widget has three actuators :
 ![3d-surface](plotly/3d-surface.png)
 
 Example : [3d-surface.xprjson](/wdg/plotly/3d-surface.xprjson)
+
+## Plotly Real-time
+
+The widget provides a real-time graph for displaying numeric-based dataNode inputs, having a given sample-time.
+
+Example : [real-time-kpi-plotly-js.xprjson](/wdg/plotly/real-time-kpi-plotly-js.xprjson)
 
 ## Plotly JavaScript generic
 
@@ -124,13 +129,13 @@ All receipes may be found in [Matplotlib documentation](https://matplotlib.org/s
 
 Example:
 
-- [matplotlib-bar-color-py.xprjson](/wdg/plotly/matplotlib-bar-color-py.xprjson)
+- [matplotlib-bar-color-py.xprjson](/wdg/plots/matplotlib-bar-color-py.xprjson)
 
 ## Vega
 
-In the same spirit as [Plotly generic](#plotly-generic) widget above, you can visualize [Vega](https://vega.github.io/vega/) specifications and connect them to data from other dataNodes.
+In the same spirit as [Plotly generic](#plotly-javascript-generic) widget above, you can visualize [Vega](https://vega.github.io/vega/) specifications and connect them to data from other dataNodes.
 
-Browse [Vega examples gallery](https://vega.github.io/vega/examples/). Copy and paste the appropriate visualization to a [JavaScript Formula](../../ds/ds-basics#formula) dataNode. Finally, connect this dataNode to the **specification** widget actuator.
+Browse [Vega examples gallery](https://vega.github.io/vega/examples/). Copy and paste the appropriate visualization to a [JavaScript Formula](../../ds/ds-reference/#javascript-script) dataNode. Finally, connect this dataNode to the **specification** widget actuator.
 
 In this examples gallery, data is typically read from URL referenced sources using the Vega *url* keyword. You can connect to Chalk'it dataNodes using the Vega *values* keyword instead.
 

@@ -1,4 +1,4 @@
-﻿
+﻿3. Play
 # Reference
 
 DataNodes of type [Variable](../../ds/ds-basics/#variable) was described in the basics section.
@@ -303,7 +303,7 @@ Follow instructions below to first build a WebSockets test server.
 ![server listening](ws/server-listening.png)
 * Open the [websocket-demo.xprjson](/ds/ws/websocket-demo.xprjson)  example with Chalk'it.
 
-* Go to tab **"3. Play"**.
+* Switch to **View** mode.
 * Test the communication with the server.
   * The server should display:
 

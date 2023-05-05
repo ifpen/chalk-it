@@ -1,7 +1,7 @@
 {
 	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 17:31:38 GMT+0100 (heure normale d’Europe centrale)",
+		"version": "2.670.8496",
+		"date": "Wed Apr 05 2023 17:22:40 GMT+0200 (heure d’été d’Europe centrale)",
 		"name": "osm-lineheatmap",
 		"description": "Line heatmap on map with display configuration parameters",
 		"groupName": "Neutral",
@@ -28,7 +28,7 @@
 				"type": "JSON_var_plugin",
 				"settings": {
 					"name": "lineHeatMap",
-					"json_var": "{\"data\":[{\"coordinates\":[[4.84112,45.74968],[4.84091,45.74981]],\"CO2\":6},{\"coordinates\":[[4.84138,45.74953],[4.84112,45.74968]],\"CO2\":10},{\"coordinates\":[[4.84158,45.74941],[4.84138,45.74953]],\"CO2\":0}],\"config\":{\"opacity\":0.7,\"weight\":4,\"disableAutoscale\":false,\"min\":4,\"max\":10}}"
+					"json_var": "{\"data\":[{\"coordinates\":[[4.84112,45.74968],[4.84091,45.74981]],\"CO2\":6},{\"coordinates\":[[4.84138,45.74953],[4.84112,45.74968]],\"CO2\":10},{\"coordinates\":[[4.84158,45.74941],[4.84138,45.74953]],\"CO2\":0}],\"config\":{\"opacity\":0.7,\"weight\":4,\"disableAutoscale\":false,\"min\":4,\"max\":10,\"colorScale\":\"interpolateSpectral\",\"reverseColorScale\":true}}"
 				}
 			}
 		],
@@ -42,14 +42,14 @@
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1639,
-		"heightPx": 685,
-		"scrollWidthPx": 1639,
-		"scrollHeightPx": 685,
-		"widthVw": 87.50667378537106,
-		"heightVh": 73.10565635005337,
-		"scrollWidthVw": 87.50667378537106,
-		"scrollHeightVh": 73.10565635005337,
+		"widthPx": 1302,
+		"heightPx": 575,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 575,
+		"widthVw": 84.765625,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.765625,
+		"scrollHeightVh": 79.6398891966759,
 		"scalingMethod": "scaleTwSp",
 		"media": "large",
 		"colDims": null
@@ -63,15 +63,16 @@
 			"classType": ""
 		},
 		"droppers": {},
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#ffffff",
+		"theme": "default"
 	},
 	"dashboard": {
 		"openStreetMapsq": {
 			"layout": {
-				"top": "2.20597vh",
-				"left": "1.42815vw",
-				"height": "67.9956vh",
-				"width": "83.0274vw",
+				"top": "2.27423vh",
+				"left": "1.38341vw",
+				"height": "70.0996vh",
+				"width": "80.4267vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "4"
@@ -166,10 +167,10 @@
 		},
 		"flatUiCheckboxw": {
 			"layout": {
-				"top": "84.5261vh",
-				"left": "3.2151vw",
-				"height": "6.84591vh",
-				"width": "14.0485vw",
+				"top": "87.1415vh",
+				"left": "3.11439vw",
+				"height": "7.05774vh",
+				"width": "13.6084vw",
 				"minHeight": "24px",
 				"minWidth": "32px",
 				"z-index": "6"
@@ -196,10 +197,10 @@
 		},
 		"flatUiHorizontalSliderj": {
 			"layout": {
-				"top": "73.2094vh",
-				"left": "54.0975vw",
-				"height": "7.12533vh",
-				"width": "29.9145vw",
+				"top": "75.4747vh",
+				"left": "52.403vw",
+				"height": "7.34581vh",
+				"width": "28.9775vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "3"
@@ -240,10 +241,10 @@
 		},
 		"flatUiHorizontalSliderX": {
 			"layout": {
-				"top": "82.57vh",
-				"left": "54.0975vw",
-				"height": "7.12533vh",
-				"width": "29.9145vw",
+				"top": "85.1249vh",
+				"left": "52.403vw",
+				"height": "7.34581vh",
+				"width": "28.9775vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "2"
@@ -284,10 +285,10 @@
 		},
 		"flatUiDoubleSliderw": {
 			"layout": {
-				"top": "71.8122vh",
-				"left": "0.838722vw",
-				"height": "11.4564vh",
-				"width": "29.9145vw",
+				"top": "74.0342vh",
+				"left": "0.81245vw",
+				"height": "11.8109vh",
+				"width": "28.9775vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "5"

@@ -144,4 +144,12 @@ Example : [table.xprjson](/wdg/tables/table.xprjson)
 
 Table may be editable if it is connected to a [variable](../../ds/ds-basics/#variable)-type dataNode. *Editable* property can be set in a column-basis using the parameter *editableCols*. For example, if editableCols equals [0,1,2], columns 0, 1 and 2 are editable (i.e. cells in these columns, excluding headers, can be modified). The modifications will be assigned to the connected [variable](../../ds/ds-basics/#variable)-type dataNode.
 
-Example : [table-editable.xprjson](/wdg/tables/table-editable.xprjson)
+Tables and editable tables may also be two dimentional.
+
+![editable-table-2D](tables/editable-table-2D.png)
+
+Examples : 
+
+* [table-editable.xprjson](/wdg/tables/table-editable.xprjson)
+* [editable-table-2D.xprjson](/wdg/tables/editable-table-2D.xprjson)
+
