@@ -302,8 +302,8 @@ angular
 
             /*---------- help button ----------------*/
             $scope.initFrame = function() {
-                let iframe = document.getElementById('helpFrame');
-                iframe.src = xDashConfig.urlDoc + '/index.html';
+                const iframe = document.getElementById('helpFrame');
+                iframe.src = xDashConfig.urlDoc + 'index.html';
             };
 
 
