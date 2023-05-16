@@ -6,6 +6,8 @@ Welcome to Chalk'it. Chalk'it ambition is to allow technicians, scientists or en
 
 Currently, Chalk'it allows to export and share standalone HTML apps with Python and/or JavaScript code, thanks to Pyodide.
 
+See the [templates gallery](https://ifpen.github.io/chalk-it/) for examples with code.
+
 ## Usage
 
 ### Install
