@@ -1,6 +1,6 @@
 {
   "name": "xdash",
-  "version": "1.40.0",
+  "version": "2.73.0",
   "description": "xDash front-end build tools",
   "author": "Chalk'it Team",
   "updater": "AR (migration to gulp v4 && use node >= 12.x.x)",
@@ -47,8 +47,10 @@
     "sass": "^1.56.1"
   },
   "dependencies": {
+    "browser-sync": "^2.28.3",
     "cors": "^2.8.5",
     "dotenv": "^5.0.1",
+    "jshint": "^2.13.6",
     "jsoneditor": "^9.5.7",
     "marked": "^4.1.0",
     "mime-types": "^2.1.30",
