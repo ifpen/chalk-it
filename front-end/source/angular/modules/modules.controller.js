@@ -59,8 +59,6 @@ angular
                 tags: $rootScope.listAvailablesTags
             };
 
-            $rootScope.isTemplateOpen = window.location.href.includes('template');
-
             $rootScope.getAvailableState = function () {
                 if ($rootScope.xDashFullVersion) {
                     $rootScope.toggleMenuOptionDisplay('recent');
