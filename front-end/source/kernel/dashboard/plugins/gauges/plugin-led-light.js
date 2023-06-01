@@ -115,20 +115,6 @@ function ledWidgetsPluginClass() {
 
         this.disable = function () { };
 
-        this.backwardCompatibility = function () {
-            if (modelsParameters[idInstance].redAtStateOff) {
-                delete modelsParameters[idInstance].redAtStateOff;
-            }
-            if (_.isUndefined(modelsParameters[idInstance].onColor)) {
-                modelsParameters[idInstance].onColor = "#00b700";
-            }
-            if (_.isUndefined(modelsParameters[idInstance].offColor)) {
-                modelsParameters[idInstance].offColor = "#004d00";
-            }
-        };
-
-        this.backwardCompatibility();
-
         this.insertLabel = function (widgetHtml) {
             var widgetLabel = document.createElement('span');
             var textLabel = document.createTextNode(modelsParameters[idInstance].label);

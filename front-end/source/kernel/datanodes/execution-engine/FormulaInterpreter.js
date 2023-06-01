@@ -136,13 +136,6 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
                     } else {
                         script = script.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1'); //AEF: to remove comments from script
                     }
-                    // MBG 25/10/2021 : enlever les \n faits perdre des infos sur les blocs de code. A garder
-                    // script = script.replaceAll('\n', ""); //AEF: remove first empty line after removing comments
-                    script = script.replace(/datasources/g, "dataNodes");
-                    script = script.replace(/headersFromDatasourceWS/g, "headersFromDataNodeWS");
-                    if (_.isArray(script)) {
-                        script = "[" + script.join(",") + "]";
-                    }
 
                     // If there is no return, add one
                     if ((script.match(/;/g) || []).length <= 1 && script.indexOf("return") == -1) {

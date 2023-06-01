@@ -22,7 +22,6 @@ String.prototype.repeat = function (num) {
 modelsHiddenParams.flatUiHorizontalSlider = { "value": 0 };
 modelsHiddenParams.flatUiVerticalSlider = { "value": 0 };
 modelsHiddenParams.flatUiProgressBar = { "value": 0 };
-modelsHiddenParams.flatUiValue = { "value": "" };
 modelsHiddenParams.flatUiTextInput = { "value": "" };
 modelsHiddenParams.flatUiNumericInput = { "value": "" };
 modelsHiddenParams.flatUiValueDisplay = { "value": "" };
@@ -91,32 +90,6 @@ modelsParameters.flatUiProgressBar = {
     "progressBarSegmentColor": "var(--widget-segment-color)",
     "valueColor": "var(--widget-color)",
 };
-modelsParameters.flatUiValue = {
-    "label": "labelText",
-    "inheritLabelFromData": true,
-    "displayLabel": true,
-    "labelFontSize": 0.5,
-    "labelColor": "var(--widget-label-color)",
-    "labelFontFamily": "var(--widget-font-family)",
-    "valueWidthProportion": '70%',
-    "validationButton": false,
-    "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-    "validationBtnActiveColor": "var(--widget-button-active-color)",
-    "validationBtnHoverColor": "var(--widget-button-hover-color)",
-    "validationOnFocusOut": true,
-    "isNumber": false,
-    "isPassword": false,
-    "decimalDigits": 3,
-    "valueFontSize": 0.5,
-    "valueColor": "var(--widget-input-text)",
-    "valueFontFamily": "var(--widget-font-family)",
-    "valueTextAlign": "left",
-    "displayBorder": true,
-    "borderColor": "var(--widget-border-color)",
-    "unit": "unitText",
-    "displayUnit": false,
-    "unitFontSize": 0.5,
-};
 modelsParameters.flatUiTextInput = {
     "label": "labelText",
     "inheritLabelFromData": true,
@@ -169,7 +142,6 @@ modelsParameters.flatUiValueDisplay = {
     "labelColor": "var(--widget-label-color)",
     "labelFontFamily": "var(--widget-font-family)",
     "valueWidthProportion": '70%',
-    "decimalDigits": 3,
     "valueFontSize": 0.5,
     "valueColor": "var(--widget-input-text)",
     "valueFontFamily": "var(--widget-font-family)",
@@ -197,7 +169,6 @@ modelsParameters.flatUiButton = {
 modelsLayout.flatUiHorizontalSlider = { 'height': '5vh', 'width': '24vw', 'minWidth': '200px', 'minHeight': '24px' };
 modelsLayout.flatUiVerticalSlider = { 'height': '20vh', 'width': '5vw', 'minWidth': '32px', 'minHeight': '50px' };
 modelsLayout.flatUiProgressBar = { 'height': '5vh', 'width': '24vw', 'minWidth': '200px', 'minHeight': '24px' };
-modelsLayout.flatUiValue = { 'height': '5vh', 'width': '19vw', 'minWidth': '150px', 'minHeight': '24px' };
 modelsLayout.flatUiTextInput = { 'height': '5vh', 'width': '19vw', 'minWidth': '150px', 'minHeight': '24px' };
 modelsLayout.flatUiNumericInput = { 'height': '5vh', 'width': '19vw', 'minWidth': '150px', 'minHeight': '24px' };
 modelsLayout.flatUiValueDisplay = { 'height': '5vh', 'width': '19vw', 'minWidth': '150px', 'minHeight': '24px' };
@@ -240,7 +211,7 @@ function flatUiWidgetsPluginClass() {
     // +--------------------------------------------------------------------¦ \\
     this.buttonFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
         this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-        var self = this;
+        const self = this;
 
         this.numberOfTriggers = modelsParameters[idInstance].numberOfTriggers;
 
@@ -281,7 +252,8 @@ function flatUiWidgetsPluginClass() {
                         result.content = data;
                         result.isBinary = false;
                     }
-                    updateDataSourceFileFromWidget(idInstance, result);
+
+                    self.notifyNewValue(result);
                 });
 
                 if (modelsParameters[idInstance].binaryFileInput) {
@@ -294,6 +266,14 @@ function flatUiWidgetsPluginClass() {
                 e.preventDefault();
                 input.trigger("click");
             });
+        }
+
+        this.notifyNewValue = function (value) {
+            this.fileContent = value;
+            for (let i = 1; i <= this.numberOfTriggers; i++) {
+                const act = this[`trigger${i}`];
+                act.updateCallback(act);
+            }
         }
 
         this.rescale = function () {
@@ -348,7 +328,7 @@ function flatUiWidgetsPluginClass() {
                 for (let i = 1; i <= data.numberOfTriggers; i++) {
                     const name = 'trigger' + i;
                     if(isFile) {
-                        result.push(new WidgetActuatorDescription(name, "File content", WidgetActuatorDescription.FILE));
+                        result.push(new WidgetActuatorDescription(name, "File content", WidgetActuatorDescription.WRITE));
                     } else {
                         result.push(new WidgetActuatorDescription(name, "Node to trigger/re-evaluate", WidgetActuatorDescription.TRIGGER, WidgetPrototypesManager.SCHEMA_ANYTHING));
                     }
@@ -360,6 +340,11 @@ function flatUiWidgetsPluginClass() {
         for (let i = 1; i <= this.numberOfTriggers; i++) {
             const triggerName = 'trigger' + i;
             this[triggerName] = {
+                setValue: function (val) {  },
+                getValue: function () {   
+                    return self.fileContent;
+                },
+
                 updateCallback: function () { },
                 addValueChangedHandler: function (updateDataFromWidget) {
                     this.updateCallback = updateDataFromWidget;
@@ -1071,36 +1056,35 @@ function flatUiWidgetsPluginClass() {
     // |                       valueFlatUiWidgetModel                       | \\
     // +--------------------------------------------------------------------¦ \\
     this.valueFlatUiWidgetModel = function (idDivContainer, idWidget, idInstance, bInteractive, scope, nameWidget) {
-        var self = scope;
-        var doubleTrig = true; //AEF to define for all widgets with double trigger issue of setvalue
+        const self = scope;
         self.updateValue = function (e) {
-            var val = $("#" + nameWidget + idWidget)[0].value;
+            const val = $("#" + nameWidget + idWidget)[0].value;
             // TODO : type check at assignement. Highlight error and type mismatch
             modelsHiddenParams[idInstance].value = val;
-            self.value.updateCallback(self.value, self.value.getValue(), doubleTrig);
+            self.value.updateCallback(self.value, self.value.getValue());
             e.preventDefault();
         };
 
         self.enable = function () {
-            $("#" + nameWidget + idWidget).prop("disabled", false);
-            if (modelsParameters[idInstance].validationButton) {
-                $("#" + nameWidget + "-valid-btn" + idWidget).prop("disabled", false);
-            }
-            $("#" + nameWidget + idWidget).on('keypress', function (e, ui) {
-                if (e.which == 13) {
+            const $widget = $(`#${nameWidget}${idWidget}`);
+            $widget.prop("disabled", false);
+
+            $widget.off('keypress').on('keypress', function (e) {
+                if (e.which === 13) {
                     self.updateValue(e);
                 }
             });
+
+            $widget.off('focusout');
             if (modelsParameters[idInstance].validationOnFocusOut) {
-                $("#" + nameWidget + idWidget).on('focusout', function (e, ui) {
-                    self.updateValue(e);
-                });
-            } else {
-                $("#" + nameWidget + idWidget).on('focusout', function (e, ui) { }); // nothing to do
+                $widget.on('focusout', (e) => self.updateValue(e));
             }
-            $("#" + nameWidget + "-valid-btn" + idWidget).off('click').on('click', function (e, ui) {
-                self.updateValue(e);
-            });
+
+            if (modelsParameters[idInstance].validationButton) {
+                const $widgetBtn = $(`#${nameWidget}-valid-btn${idWidget}`);
+                $widgetBtn.prop("disabled", false);
+                $widgetBtn.off('click').on('click', (e) => self.updateValue(e));
+            }
         };
         self.disable = function () {
             //$("#" + nameWidget + idWidget).prop("disabled", true);
@@ -1138,7 +1122,6 @@ function flatUiWidgetsPluginClass() {
             //}
             let typeInput;
             switch (nameWidget) {
-                case "value":
                 case "text-input":
                     if (modelsParameters[idInstance].isPassword) {
                         typeInput = "password";
@@ -1231,7 +1214,6 @@ function flatUiWidgetsPluginClass() {
             },
             getValue: function () {
                 switch (nameWidget) {
-                    case "value":
                     case "value-display":
                         if (modelsParameters[idInstance].isNumber) {
                             return Number(modelsHiddenParams[idInstance].value);
@@ -1265,24 +1247,6 @@ function flatUiWidgetsPluginClass() {
 
         self.render();
     };
-
-    // +--------------------------------------------------------------------¦ \\
-    // |                              Value                                 | \\
-    // +--------------------------------------------------------------------¦ \\
-    this.valueFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
-        this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-        self.valueFlatUiWidgetModel(idDivContainer, idWidget, idInstance, bInteractive, this, "value");
-
-        const _NUMBER_DESCRIPTOR = new WidgetActuatorDescription("value", "Current number", WidgetActuatorDescription.READ_WRITE, WidgetPrototypesManager.SCHEMA_NUMBER);
-        const _STRING_DESCRIPTOR = new WidgetActuatorDescription("value", "Current string", WidgetActuatorDescription.READ_WRITE, WidgetPrototypesManager.SCHEMA_STRING);
-        this.getActuatorDescriptions = function (params = undefined) {
-            params = params || modelsParameters[idInstance];
-            return [(params && params.isNumber) ? _NUMBER_DESCRIPTOR : _STRING_DESCRIPTOR];
-        }
-    };
-
-    // Inherit from baseWidget class
-    this.valueFlatUiWidget.prototype = baseWidget.prototype;
 
     // +--------------------------------------------------------------------¦ \\
     // |                              Text Input                            | \\
@@ -1333,7 +1297,6 @@ function flatUiWidgetsPluginClass() {
             flatUiHorizontalSlider: { factory: "horizontalSliderFlatUiWidget", title: "Horizontal slider", icn: "horizontal-slider", help: "wdg-basics/#horizontal-slider" },
             flatUiVerticalSlider: { factory: "verticalSliderFlatUiWidget", title: "Vertical slider", icn: "vertical-slider", help: "wdg/wdg-basics/#vertical-slider" },
             flatUiProgressBar: { factory: "progressBarFlatUiWidget", title: "Progress bar", icn: "progress-bar", help: "wdg-basics/#progress-bar" },
-            flatUiValue: { factory: "valueFlatUiWidget", title: "Value", icn: "value", help: "wdg/wdg-basics/#value" },
             flatUiTextInput: { factory: "textInputFlatUiWidget", title: "Text Input", icn: "text-input", help: "wdg/wdg-basics/#text-input" },
             flatUiNumericInput: { factory: "numericInputFlatUiWidget", title: "Numeric Input", icn: "numeric-input", help: "wdg/wdg-basics/#numeric-input" },
             flatUiValueDisplay: { factory: "valueDisplayFlatUiWidget", title: "Value Display", icn: "value", help: "wdg/wdg-basics/#value-display" },

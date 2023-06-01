@@ -74,17 +74,6 @@ function flatUiBooleanWidgetsPluginClass() {
             this.render();
         };
 
-        this.backwardCompatibility = function () {
-            if (_.isUndefined(modelsParameters[idInstance]["checkboxSize"])) {
-                modelsParameters[idInstance]["checkboxSize"] = 1;
-            }
-            if (_.isUndefined(modelsParameters[idInstance]["checkboxColor"])) {
-                modelsParameters[idInstance]["checkboxColor"] = "#447bdc";
-            }
-        }
-
-        this.backwardCompatibility();
-
         this.render = function () {
             //AEF
             var checkboxHeight = 20; // default value in class icons of flatui

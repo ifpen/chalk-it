@@ -53,98 +53,57 @@
     // -------------------
     // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
     var genericFilePlugin = function(settings, updateCallback, statusCallback) {
-        // initialize bad result value in case of error
-        var badResult = null;
-        //initialize error at new instance
-        error = false;
         // Always a good idea...
-        var self = this;
+        const self = this;
 
         // Good idea to create a variable to hold on to our settings, because they might change in the future. See below.
-        var currentSettings = settings;
-        // save past setting in case of cancelling modification in datanodeS
-        var pastSettings = settings;
-        var pastStatus = "None";
-
-        // Parser results to memorize
-        var fileStruct;
+        let currentSettings = settings;
+       
+        function checkValue(value) {
+            return value?.content && value?.isBinary;
+        }
 
         // **onSettingsChanged(newSettings)** (required) : A public function we must implement that will be called when a user makes a change to the settings.
         self.onSettingsChanged = function(newSettings, status) {
-            if (status === "OK") {
-                pastStatus = status;
-                pastSettings = currentSettings;
-            }
             // Here we update our current settings with the variable that is passed in.
-            currentSettings = newSettings;
-            return self.isFileReadingSuccess();
-        };
-
-        self.isFileReadingSuccess = function() {
-            statusCallback("Pending");
-            fileStruct = self.readFileContent();
-            if (fileStruct == badResult) {
-                // case of bad parse at edition
-                statusCallback("Error", "Error in file struct");
-                return false;
-            } else {
-                pastSettings = currentSettings;
+            if(checkValue(newSettings?.content)) {
+                currentSettings = newSettings;
                 return true;
+            } else {
+                return false;
             }
         };
 
         self.isSettingNameChanged = function(newName) {
-            if (currentSettings.name != newName) return true;
-            else return false;
-        };
-
-        self.getSavedSettings = function() {
-            return [pastStatus, pastSettings];
+            return currentSettings.name !== newName;
         };
 
         // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
         self.updateNow = function() {
-            pastStatus = "OK";
             statusCallback("OK");
-            updateCallback(fileStruct); //AEF: always put statusCallback before updateCallback. Mandatory for scheduler.
+            updateCallback(currentSettings.content); //AEF: always put statusCallback before updateCallback. Mandatory for scheduler.
             return true;
         };
 
         // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
         self.onDispose = function() {};
 
-        self.isSetValueValid = function() {
-            return false;
+        this.canSetValue = function() {
+            return {
+                acceptPath: false,
+                hasPostProcess: false,
+            };
         };
 
-        self.isSetFileValid = function() {
-            return true;
+        self.setValue = function (path, value) {
+            if (checkValue(value)) {
+                currentSettings.content = { ...value };
+                currentSettings.data_path = value?.name;
+            }
         };
 
         self.isInternetNeeded = function() {
             return false;
         };
-
-        self.readFileContent = function() {
-            if (!_.isUndefined(currentSettings.content)) {
-                var newData = { content: currentSettings.content };
-                return newData;
-            } else return badResult;
-        };
-
-        self.setFile = function(newContent) {
-            currentSettings.content = newContent;
-            currentSettings.data_path = newContent.name; //AEF: fix big update the path in the data settings
-            return self.isFileReadingSuccess();
-        };
-
-        // Parse file
-        fileStruct = self.readFileContent();
-        if (fileStruct == badResult) {
-            // case of bad parse at creation
-            error = true; //ABK
-        } else {
-            error = false; // MBG : reset error flag
-        }
     };
 })();

@@ -16,14 +16,10 @@
         var reqDataType = "JSON";
         var body = "";
         var requestURL = "";
-        var RestResponseData = "";
         var jqXHR; //AEF
         var jqXHR_hash; //AEF
         var jbody = {};
 
-        this.getRestResponseData = function () {
-            return RestResponseData;
-        };
         this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
 
             // explicit trig!
@@ -62,24 +58,6 @@
                 case "text":
                     reqDataType = "text";
                     break;
-            }
-
-            // Backward compatibility
-            if (!_.isUndefined(currentSettings.use_jsonp)) {
-                currentSettings.use_jsonp = false;
-            }
-
-            if (currentSettings.use_jsonp) {
-                reqDataType = "JSONP";
-            }
-
-            // Backward compatibility
-            if (!_.isUndefined(currentSettings.use_thingproxy)) {
-                if (currentSettings.use_thingproxy) {
-                    currentSettings.use_xproxy = true;
-                } else {
-                    currentSettings.use_xproxy = false;
-                }
             }
 
             if (currentSettings.use_xproxy) {
@@ -138,12 +116,6 @@
 
                 //AEF: to add headers from datanodes; e.g for token
                 if ((!_.isUndefined(jbody)) && (!_.isNull(jbody))) {
-                    //for compatibility
-                    if (!_.isUndefined(jbody.headersFromDatasourceWS)) {
-                        jbody.headersFromDataNodeWS = jbody.headersFromDatasourceWS;
-                        delete jbody.headersFromDatasourceWS;
-                    }
-                    //
                     if (!_.isUndefined(jbody.headersFromDataNodeWS)) {
                         for (var param in jbody.headersFromDataNodeWS) {
                             headers[param] = jbody.headersFromDataNodeWS[param];
@@ -156,11 +128,6 @@
                 if (body) {
                     let tpbody = JSON.parse(body);
                     if ((!_.isUndefined(tpbody)) && (!_.isNull(tpbody))) {
-                        //for compatibility
-                        if (!_.isUndefined(tpbody.headersFromDatasourceWS)) {
-                            delete tpbody.headersFromDatasourceWS;
-                        }
-                        //
                         if (!_.isUndefined(tpbody.headersFromDataNodeWS)) {
                             delete tpbody.headersFromDataNodeWS;
                         }
@@ -185,11 +152,6 @@
                     try {
                         let tpbody = JSON.parse(body);
                         if ((!_.isUndefined(tpbody)) && (!_.isNull(tpbody))) {
-                            //for compatibility
-                            if (!_.isUndefined(tpbody.headersFromDatasourceWS)) {
-                                delete tpbody.headersFromDatasourceWS;
-                            }
-                            //
                             if (!_.isUndefined(tpbody.headersFromDataNodeWS)) {
                                 delete tpbody.headersFromDataNodeWS;
                             }
@@ -210,7 +172,7 @@
 
             // with xProxy we ask for JSON return, to get xProxy status and response headers (issue #154)
             if (currentSettings.use_xproxy) {
-                reqDataType = "JSON";
+                reqDataType = "json";
             }
             //-------------------------------------------------------
             //AEF:  secured xproxy
@@ -290,12 +252,8 @@
         }
 
         function callWebservice(requestURL, reqDataType, body) {
-            var interval = null; //AEF
-            var text = "";
-            var useMethod = currentSettings.method;
-            if (currentSettings.use_xproxy) {
-                useMethod = "POST";
-            }
+            let interval = null; //AEF
+            const useMethod = currentSettings.use_xproxy ? "POST" : currentSettings.method;
             jqXHR = $.ajax({
                 url: requestURL,
                 //headers: { "Content-Type": "application/json", "ProxyCode-Hash": proxyHash, "ProxyCode-Sig": proxySig },
@@ -317,12 +275,6 @@
                             });
                             //AEF: to add headers from datanodes; e.g for token
                             if ((!_.isUndefined(jbody)) && (!_.isNull(jbody))) {
-                                //for compatibility
-                                if (!_.isUndefined(jbody.headersFromDatasourceWS)) {
-                                    jbody.headersFromDataNodeWS = jbody.headersFromDatasourceWS;
-                                    delete jbody.headersFromDatasourceWS;
-                                }
-                                //
                                 if (!_.isUndefined(jbody.headersFromDataNodeWS)) {
                                     for (var param in jbody.headersFromDataNodeWS) {
                                         xhr.setRequestHeader(param, jbody.headersFromDataNodeWS[param]);
@@ -349,36 +301,24 @@
                         return false;
                     }
                     jqXHR = undefined; //AEF
-                    var respType = xhr.getResponseHeader("Content-Type");
-                    //var respHdr = xhr.getAllResponseHeaders();
+                    const respType = xhr.getResponseHeader("Content-Type");
                     // handling asp.net servers
-                    if (_.isNull(respType)) { // case of DELETE
-                        statusCallback("OK"); // MBG for scheduler
-                        updateCallback(null);
-                        pastStatus = "OK";
-                        return true;
-                    } else if (respType.match("application/json")) {
-                        RestResponseData = data;
-                        var names = [];
-                        var i = 0;
-                        for (var prop in data) {
-                            names[i] = prop;
-                            i++;
-                        }
-                        if ((names.length == 1) && (names[0] == "d")) {
-                            // data = data.d; // TODO MBG : infinite loop in matching box to solve
-                            try {
-                                data = JSON.parseMore(data.d);
-                            } catch (err) {
-                                statusCallback("Error", "Data parse error");
-                                pastStatus = "Error";
-                                notificationCallback("error", currentSettings.name, "Data parse error : " + err.message);
-                                bFinishTick = true;
-                                return;
-                            }
-
+                    if (reqDataType === 'json') {
+                        if (currentSettings.use_xproxy) {
                             // xProxy handling
-                            if (currentSettings.use_xproxy) {
+                            const names = Object.keys(data);
+                            if (names.length === 1 && names[0] === "d") { 
+                                // data = data.d; // TODO MBG : infinite loop in matching box to solve
+                                try {
+                                    data = JSON.parseMore(data.d);
+                                } catch (err) {
+                                    statusCallback("Error", "Data parse error");
+                                    pastStatus = "Error";
+                                    notificationCallback("error", currentSettings.name, "Data parse error : " + err.message);
+                                    bFinishTick = true;
+                                    return;
+                                }
+
                                 if (data.Success) {
                                     if (!_.isUndefined(data.Body)) { // safety.  MBG : is it really needed ?
                                         if (_.isUndefined(data.Headers["Content-Type"])) {
@@ -390,7 +330,9 @@
                                                 return true;
                                             }
                                         } else {
-                                            var wsrespType = data.Headers["Content-Type"];
+                                            const wsrespType = data.Headers["Content-Type"];
+                                            const [type, charset] = decodeMimeType(wsrespType);
+                                            const mime = stripUndefined({ type, charset });
                                             if (wsrespType.match("application/json")) {
                                                 try {
                                                     data = JSON.parseMore(data.Body);
@@ -401,17 +343,14 @@
                                                     bFinishTick = true;
                                                     return;
                                                 }
-                                            } else if (wsrespType.match("text")) {
-                                                data = { "content": data.Body, "type": wsrespType };
-                                            } else if (wsrespType.match("image")) {
-                                                var b64 = data.Body;
-                                                data = "base64ImageDetected" + b64;
+                                            } else if (wsrespType.startsWith("text")) {
+                                                data = { content: data.Body, ...mime };
                                             } else {
-                                                data = { "content": data.Body, "type": wsrespType };
+                                                const content = data.Body; // Already base 64
+                                                data = { content, isBinary: true, ...mime };
                                             }
-                                            text = "Response status " + xhr.status + " : " + xhr.statusText;
+                                            const text = `Response status ${xhr.status}: ${xhr.statusText}`;
                                             notificationCallback("success", currentSettings.name, text);
-                                            //
                                         }
                                     }
                                 } else {
@@ -423,7 +362,7 @@
                                         ErrorMessage = "xProxy returned error at dataNode \"" + currentSettings.name + "\"";
                                     }
                                     //AEF
-                                    text = "Response status " + xhr.status + " :" + ErrorMessage;
+                                    const text = "Response status " + xhr.status + " :" + ErrorMessage;
                                     notificationCallback("error", currentSettings.name, text);
                                     //
                                     pastStatus = "Error";
@@ -431,30 +370,23 @@
                                     return false;
                                 }
                             } else {
-                                text = "Response status " + xhr.status + " : " + xhr.statusText;
+                                const text = `Response status ${xhr.status}: ${xhr.statusText}`;
                                 notificationCallback("success", currentSettings.name, text);
                             }
                         } else {
-                            text = "Response status " + xhr.status + " : " + xhr.statusText;
+                            const text = `Response status ${xhr.status}: ${xhr.statusText}`;
                             notificationCallback("success", currentSettings.name, text);
                         }
-                    } else if (respType.match("image")) {
-                        var b64 = base64ArrayBuffer(data);
-                        data = "base64ImageDetected" + b64;
-                        //AEF 
-                        text = "Response status " + xhr.status + " : " + xhr.statusText;
-                        notificationCallback("success", currentSettings.name, text);
-                        //
-                    } else if (respType.match("text")) {
-                        data = { "content": data, "type": respType };
-                        //AEF 
-                        text = "Response status " + xhr.status + " : " + xhr.statusText;
-                        notificationCallback("success", currentSettings.name, text);
-                        //
-                    } else {
-                        var b64 = base64ArrayBuffer(data);
-                        data = { "content": b64, "type": respType };
-                        text = "Response status " + xhr.status + " : " + xhr.statusText;
+                    } else { 
+                        // reqDataType is either 'text' or 'binary'
+                        const isBinary = reqDataType !== 'text';
+
+                        const [type, charset] = decodeMimeType(respType);
+                        const mime = stripUndefined({ type, charset });
+                        const content = isBinary ? base64ArrayBuffer(data) : data;
+                        data = { content, isBinary, ...mime };
+
+                        const text = `Response status ${xhr.status}: ${xhr.statusText}`;
                         notificationCallback("success", currentSettings.name, text);
                     }
                     statusCallback("OK"); // MBG for scheduler
@@ -472,8 +404,7 @@
                         statusType = "None";
                     }
                     //
-                    text = "Response status " + xhr.status + " : " + xhr.statusText;
-                    text = text + ". Ajax status: " + status; // MBG 29/01/2021
+                    const text = `Response status ${xhr.status}: ${xhr.statusText}. Ajax status: ${status}.`;
                     pastStatus = "Error";
                     if (!_.isUndefined(xhr.responseText)) {
                         var errorMessage = "";
@@ -562,11 +493,7 @@
             return jqXHR;
         };
 
-        this.isSetValueValid = function () {
-            return false;
-        };
-
-        self.isSetFileValid = function () {
+        this.canSetValue = function() {
             return false;
         };
 

@@ -874,7 +874,7 @@ class WidgetActuatorBase extends WidgetActuator {
 }
 
 /**
- * Provides information on a actuator for user feedback (description, validation, filtering of datasources)
+ * Provides information on a actuator for user feedback (description, validation, filtering of datanodes)
  */
 class WidgetActuatorDescription {
     // Directions
@@ -882,7 +882,6 @@ class WidgetActuatorDescription {
     static READ = 1;
     static WRITE = 2;
     static READ_WRITE = WidgetActuatorDescription.READ | WidgetActuatorDescription.WRITE;
-    static FILE = 4;
 
     constructor(name, summary, readwrite, schema = null, validator = null) {
         this._name = name;
@@ -909,8 +908,8 @@ class WidgetActuatorDescription {
     }
 
     /**
-     * Advertise wether the actuator reads/writes data, pushes a file's content, or is a mere trigger.
-     * @type {!number} one of TRIGGER, READ, WRITE, READ_WRITE or FILE
+     * Advertise wether the actuator reads/writes data or is a mere trigger.
+     * @type {!number} one of TRIGGER, READ, WRITE or READ_WRITE
      */
     get direction() {
         return this._readwrite;
@@ -918,7 +917,7 @@ class WidgetActuatorDescription {
 
     /**
      * Json Schema that will be provided to `WidgetPrototypesManager` to validate data bound to the actuator.
-     * Pointless for files and triggers, or when a validator function is directly provided.
+     * Pointless for triggers, or when a validator function is directly provided.
      * 
      * Json Schema version should be `WidgetPrototypesManager.SCHEMA_VERSION`.
      * Providing a globally unique `$id` is mandatory. Advised form is `${WidgetPrototypesManager.ID_URI_SCHEME}xdash:widgetName_actuatorName`.

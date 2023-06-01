@@ -9,12 +9,10 @@ DatanodeModel = function (
   timeManager
 ) {
   var self = this;
-  var doubleSetValueEventTrigger = true;
   this.datanodeRefreshNotifications = {};
   this.calculatedSettingScripts = {};
   this.formulaInterpreter = new FormulaInterpreter(datanodesListModel, self, datanodePlugins, datanodesDependency);
   this.execInstance = ko.observable(null);
-  this.dataPreviewFormat = new DataPreviewFormat();
 
   function disposeDatanodeInstance() {
     if (!_.isUndefined(self.datanodeInstance)) {
@@ -28,7 +26,6 @@ DatanodeModel = function (
 
   this.name = ko.observable();
   this.latestData = ko.observable();
-  this.beautifulString = ko.observable(); // MBG
   this.status = ko.observable('None');
   this.last_updated = ko.observable('never');
   this.last_error = ko.observable();
@@ -151,24 +148,19 @@ DatanodeModel = function (
   };
 
   this.updateCallback = function (newData, status) {
-    let dnName = self.name();
+    const dnName = self.name();
+    const now = new Date();
 
-    var now = new Date();
-
-    var formatRet = self.dataPreviewFormat.format(newData);
-    newData = formatRet.newData;
-
-    self.beautifulString(formatRet.previewData);
     datanodesListModel.processDatanodeUpdate(dnName, newData);
     self.latestData(newData);
     self.last_updated(now.toLocaleTimeString());
     if (status !== 'Error' && status !== 'None' && status !== 'Running') self.completeExecution();
 
     // question to Ameur : why this code?
-    var $body = angular.element(document.body);
-    var $rootScope = $body.scope().$root;
+    const $body = angular.element(document.body);
+    const $rootScope = $body.scope().$root;
     $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-    $rootScope.safeApply();
+    $rootScope.safeApply(); // TODO ?
 
     widgetConnector.refreshDatanodeConsumers(newData, self.name(), self.status(), self.last_updated());
   };
@@ -562,15 +554,11 @@ DatanodeModel = function (
     disposeDatanodeInstance();
   };
 
-  this.isSetValueValid = function () {
-    return self.datanodeInstance.isSetValueValid();
+  this.canSetValue = function () {
+    return self.datanodeInstance.canSetValue();
   };
 
-  this.isSetFileValid = function () {
-    return self.datanodeInstance.isSetFileValid();
-  };
-
-  this.setValue = function (propertyName, val, doubleTrig, explicitTrig) {
+  this.setValue = function (propertyName, val, explicitTrig = false) {
     // dirty flag handling
     if (_.isFunction(self.datanodeInstance.getValue)) {
       if (val != self.datanodeInstance.getValue(propertyName)) {
@@ -582,43 +570,8 @@ DatanodeModel = function (
 
     self.datanodeInstance.setValue(propertyName, val);
 
-    if (!explicitTrig && (doubleSetValueEventTrigger || !doubleTrig)) {
-      //AEF as long as double event trigger is not handled we must use this restriction
+    if (!explicitTrig) {
       self.schedulerStart([self.name()], self.name(), 'setValue');
-    }
-    if (doubleTrig) doubleSetValueEventTrigger = !doubleSetValueEventTrigger;
-  };
-
-  // MBG 06/02/2021 : for Flairmap : set value and propagate to be visible in consuming formulas
-  // when scheduler is in progress
-  this.setValueSpec = function (propertyName, val, doubleTrig) {
-    let dnName = self.name();
-    self.setValue(propertyName, val, doubleTrig);
-
-    newData = JSON.parse(self.settings()['json_var']);
-    var now = new Date();
-    var formatRet = self.dataPreviewFormat.format(newData);
-    newData = formatRet.newData;
-    self.beautifulString(formatRet.previewData);
-    datanodesListModel.processDatanodeUpdate(dnName, newData);
-    self.latestData(newData);
-    self.last_updated(now.toLocaleTimeString());
-    setDirtyFlagSafe(true);
-  };
-
-  // Parameter:
-  // interface FileContent {
-  //     type : string; // Mime Type
-  //     size : number; // File size
-  //     name : string; // File name
-  //     content : string; // File content
-  //     isBinary : boolean; // if true, content is base64-encoded binary
-  // }
-  this.setFile = function (fileContent) {
-    // MBG refactoring : to do the same thing as setValue
-    if (self.datanodeInstance.setFile(fileContent)) {
-      self.schedulerStart([self.name()], self.name(), 'setFile');
-      setDirtyFlagSafe(true);
     }
   };
 

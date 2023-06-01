@@ -23,9 +23,9 @@
             name: "data_path",
             display_name: "Data file",
             description: "Browse to select zipped file.",
-            // **type "boolean"** : Will display a checkbox indicating a true/false setting.
-            type: "unzip",
-            required: true, //ABK
+            type: "browseBinary",
+            accept: 'application/x-zip-compressed',
+            required: true,
         }, ],
         // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
         // * **settings** : A javascript object with the initial settings set by the user. The names of the properties in the object will correspond to the setting names defined above.
@@ -35,11 +35,12 @@
             settings,
             newInstanceCallback,
             updateCallback,
-            statusCallback
+            statusCallback,
+            notificationCallback,
         ) {
             // unzipFilePlugin is defined below.
             newInstanceCallback(
-                new unzipFilePlugin(settings, updateCallback, statusCallback)
+                new unzipFilePlugin(settings, updateCallback, statusCallback, notificationCallback)
             );
             if (error)
             //ABK
@@ -52,99 +53,88 @@
     //
     // -------------------
     // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
-    var unzipFilePlugin = function(settings, updateCallback, statusCallback) {
-        // initialize bad result value in case of error
-        var badResult = null;
-        //initialize error at new instance
-        error = false;
+    var unzipFilePlugin = function(settings, updateCallback, statusCallback, notificationCallback) {
         // Always a good idea...
-        var self = this;
+        const self = this;
 
         // Good idea to create a variable to hold on to our settings, because they might change in the future. See below.
-        var currentSettings = settings;
-        // save past setting in case of cancelling modification in datanodeS
-        var pastSettings = settings;
-        var pastStatus = "None";
+        let currentSettings = settings;
 
         // Parser results to memorize
-        var fileStruct;
+        let fileStruct = undefined;
 
         // **onSettingsChanged(newSettings)** (required) : A public function we must implement that will be called when a user makes a change to the settings.
         self.onSettingsChanged = function(newSettings, status) {
-            if (status === "OK") {
-                pastStatus = status;
-                pastSettings = currentSettings;
-            }
             // Here we update our current settings with the variable that is passed in.
             currentSettings = newSettings;
-            return self.isFileReadingSuccess();
-        };
-
-        self.isFileReadingSuccess = function() {
-            statusCallback("Pending");
-            fileStruct = self.readFileContent();
-            if (fileStruct == badResult) {
-                // case of bad parse at edition
-                statusCallback("Error", "Error in file struct");
-                return false;
-            } else {
-                pastSettings = currentSettings;
-                return true;
-            }
+            fileStruct = undefined;
+            return true;
         };
 
         self.isSettingNameChanged = function(newName) {
-            if (currentSettings.name != newName) return true;
-            else return false;
+            return currentSettings.name !== newName;
         };
 
-        self.getSavedSettings = function() {
-            return [pastStatus, pastSettings];
+        self.updateAsync = async function() {
+            if (fileStruct === undefined) {
+                try {
+                    await self.parseFile();
+                } catch (error) {
+                    notificationCallback("error", currentSettings.name, error.message);
+                    fileStruct = null; // setting null will prevent unzipping bad data until we have a new value
+                }
+            }
+            statusCallback(fileStruct ? "OK" : "Error");
+            updateCallback(fileStruct); //AEF: always put statusCallback before updateCallback. Mandatory for scheduler.
         };
 
         // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
         self.updateNow = function() {
-            pastStatus = "OK";
-            statusCallback("OK");
-            updateCallback(fileStruct); //AEF: always put statusCallback before updateCallback. Mandatory for scheduler.
+            self.updateAsync();
             return true;
         };
 
         // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
         self.onDispose = function() {};
 
-        self.isSetValueValid = function() {
-            return false;
+        self.canSetValue = function() {
+            return {
+                acceptPath: false,
+                hasPostProcess: true,
+            };
         };
 
-        self.isSetFileValid = function() {
-            return true;
+        self.setValue = function (path, value) {
+            if (value?.content && value?.isBinary) {
+                currentSettings.content = { ...value };
+                currentSettings.data_path = value?.name;
+                fileStruct = undefined;
+            }
+            // TODO error ?
         };
 
         self.isInternetNeeded = function() {
             return false;
         };
 
-        self.readFileContent = function() {
-            if (!_.isUndefined(currentSettings.content)) {
-                var newData = currentSettings.content;
-                return newData;
-            } else return badResult;
+        self.parseFile = async function() {
+            if(currentSettings.content && Array.isArray(currentSettings.content.content)) {
+                // Old conf.
+                // TODO update data
+                fileStruct = currentSettings.content;
+            } else if (currentSettings.content) {
+                const data = currentSettings.content;
+                if(!data.content || !data.isBinary) {
+                    throw new Error("Error in file struct");
+                }
+                fileStruct = await self.parseContent(data);
+            } else {
+                throw new Error("No data");
+            }
         };
 
-        self.setFile = function(newContent) {
-            currentSettings.content = newContent.content; // MBG 13/01/2022
-            currentSettings.data_path = newContent.name; //AEF: fix big update the path in the data settings
-            return self.isFileReadingSuccess();
+        self.parseContent = async function(content) {
+           return await zipToObject(content);
         };
-
-        // Parse file
-        fileStruct = self.readFileContent();
-        if (fileStruct == badResult) {
-            // case of bad parse at creation
-            error = true; //ABK
-        } else {
-            error = false; // MBG : reset error flag
-        }
     };
 })();

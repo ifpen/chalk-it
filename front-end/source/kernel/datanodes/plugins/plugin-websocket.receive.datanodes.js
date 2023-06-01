@@ -203,13 +203,10 @@
             if (wsConn) wsConn.close();
         };
 
-        self.isSetValueValid = function() {
+        self.canSetValue = function() {
             return false;
         };
 
-        self.isSetFileValid = function() {
-            return false;
-        };
         statusForSchedulerCallback("Wait");
         bFirstTime = true;
         createWebSocket();

@@ -83,9 +83,10 @@ if (!(xDashConfig.xDashBasicVersion == "true")) {
                 }
             };
 
-            self.isSetValueValid = function() {
+            self.canSetValue = function() {
                 return false;
             };
+
             //AEF
             // self.isSettingSampleTimeChanged = function(newSampleTime) {
             //     if (currentSettings.sampleTime != newSampleTime)

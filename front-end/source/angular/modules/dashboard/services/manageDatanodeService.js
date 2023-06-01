@@ -244,7 +244,7 @@ angular
 
         /*---------- updateNodesCountAndFontColor----------------*/
         self.updateNodesCountAndFontColor = function() {
-            $rootScope.filtredNodes = $rootScope.alldatanodes.filter(el => el.hide == false).length;
+            $rootScope.filtredNodes = $rootScope.alldatanodes.filter(el => !el.hide).length;
             if ($rootScope.filtredNodes !== $rootScope.alldatanodes.length)
                 $(".datanode__wrap--info p")[0].style.setProperty('color', 'var(--danger-color)');
             else

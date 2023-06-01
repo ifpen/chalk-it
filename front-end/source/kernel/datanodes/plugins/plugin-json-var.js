@@ -47,24 +47,23 @@
     // -------------------
     // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
     var jsonVarPlugin = function(settings, updateCallback, statusCallback) {
-        //initialize error at new instance
-        error = false;
         // Always a good idea...
-        var self = this;
-        var json_var_value = {};
+        const self = this;
+
+        let json_var_value = {};
 
         // Good idea to create a variable to hold on to our settings, because they might change in the future. See below.
-        var currentSettings = settings;
-
-        // save past setting in case of cancelling modification in datanodeS
-        var pastSettings = settings;
-        var pastStatus = "None";
+        let currentSettings = settings;
 
         // **onSettingsChanged(newSettings)** (required) : A public function we must implement that will be called when a user makes a change to the settings.
         self.onSettingsChanged = function(newSettings) {
-            // Here we update our current settings with the variable that is passed in.			
-            currentSettings = newSettings;
-            return self.isJsonParsingSuccess();
+            // Here we update our current settings with the variable that is passed in.
+            if(self.isJsonParsingSuccess()) {
+                currentSettings = newSettings;
+                return true;
+            } else {
+                return false;
+            }
         };
 
         self.isJsonParsingSuccess = function() {
@@ -80,23 +79,12 @@
         };
 
         self.isSettingNameChanged = function(newName) {
-            if (currentSettings.name != newName)
-                return true;
-            else
-                return false;
-        };
-
-        // AEF don't comment here to inhibite memory of past values
-        // needed when after error parse then cancel
-        self.getSavedSettings = function() {
-            return [pastStatus, pastSettings];
+            return currentSettings.name !== newName;
         };
 
         // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
         self.updateNow = function() {
             statusCallback('OK'); // MBG for scheduler : put statusCallback before updateCallback      
-            pastStatus = 'OK';
-            pastSettings = currentSettings;
             updateCallback(json_var_value);
             return true; //ABK
         };
@@ -104,80 +92,49 @@
         // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
         self.onDispose = function() {};
 
-        this.isSetValueValid = function() {
-            return true;
-        };
-
-        self.isSetFileValid = function() {
-            return true;
+        this.canSetValue = function() {
+            return {
+                acceptPath: true,
+                hasPostProcess: false,
+            };
         };
 
         self.isInternetNeeded = function() {
             return false;
         };
 
-        self.setFile = function(newContent) {
-            if (newContent.type === "application/json") {
-                if (newContent.isBinary) {
-                    currentSettings.json_var = atob(newContent.content);
-                } else {
-                    currentSettings.json_var = newContent.content;
-                }
-            } else {
-                currentSettings.json_var = JSON.stringify(newContent);
-            }
-            return self.isJsonParsingSuccess();
-        };
-
         // **setValue()** (optional)
-        self.setValue = function(propertyName, val) {
-            if (propertyName.length == 0) {
-                json_var_value = val; // MBG 27/05/2020 for issue #271
-                currentSettings.json_var = JSON.stringify(json_var_value); // MBG 25/11/2020
-                return;
-            } else if (propertyName.length == 1) {
-                json_var_value[propertyName[0]] = val;
-            } else {
-                var varInter;
-                for (var deep = 0; deep < propertyName.length - 1; deep++) {
-                    if (deep == 0)
-                        varInter = json_var_value[propertyName[deep]];
-                    else
-                        varInter = varInter[propertyName[deep]];
+        self.setValue = function(propertyNames, val) {
+            if (propertyNames.length) {
+                const lastIndex = propertyNames.length - 1;
+                let target = json_var_value;
+                for (let i = 0; i < lastIndex; i++) {
+                    target = target[propertyNames[i]];
                 }
-                varInter[propertyName[propertyName.length - 1]] = val;
-
+                target[propertyNames[lastIndex]] = val;
+            } else {
+                json_var_value = val;
             }
+            
+            // Ensure angular will detect a change for the preview, etc...
+            if(Array.isArray(json_var_value)) json_var_value = [...json_var_value];
+            else if(json_var_value && json_var_value.contructor === Object) json_var_value = {...json_var_value};
+               
             currentSettings.json_var = JSON.stringify(json_var_value);
         };
 
         // **getValue()** (optional)
         // MBG 28/10/2021 for dirty flag
-        self.getValue = function(propertyName) {
-            if (propertyName.length == 0) {
-                return json_var_value;
-            } else if (propertyName.length == 1) {
-                return json_var_value[propertyName[0]];
-            } else {
-                var varInter;
-                for (var deep = 0; deep < propertyName.length - 1; deep++) {
-                    if (deep == 0)
-                        varInter = json_var_value[propertyName[deep]];
-                    else
-                        varInter = varInter[propertyName[deep]];
+        self.getValue = function(propertyNames) {
+            let result = json_var_value;
+            if(propertyNames) {
+                for (const key of propertyNames) {
+                    result = result[key];
                 }
-                return varInter[propertyName[propertyName.length - 1]];
             }
+            return result;
         };
 
-
-        try {
-            json_var_value = JSON.parse(currentSettings.json_var);
-            error = false;
-        } catch (err) {
-            swal("JSON Parse error", err.message, "error");
-            error = true;
-        }
+        self.isJsonParsingSuccess();
     };
-
 }());

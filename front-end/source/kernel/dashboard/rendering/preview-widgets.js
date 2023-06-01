@@ -207,12 +207,6 @@ var widgetPreview = (function() {
         let key;
         for (key in widgetConnector.widgetsConnection) {
             for (var actuator in connectObj[key]) {
-                if (_.isUndefined(connectObj[key][actuator].dataNode)) { //compatibility
-                    connectObj[key][actuator].dataNode = connectObj[key][actuator].dataSource;
-                    connectObj[key][actuator].dataNodeIndex = connectObj[key][actuator].dataSourceIndex;
-                    delete connectObj[key][actuator].dataSource;
-                    delete connectObj[key][actuator].dataSourceIndex;
-                }
                 widgetConnector.widgetsConnection[key].sliders[actuator] = connectObj[key][actuator];
             }
         }
@@ -230,43 +224,40 @@ var widgetPreview = (function() {
      * @param {string} instanceId : widget's instanceId
      */
     function plotConstantData(instanceId, bCaptionManuallyChanged) {
-        var actuator = null;
-        if (!_.isUndefined(widgetConnector.widgetsConnection[instanceId])) {
-            for (var i in widgetConnector.widgetsConnection[instanceId].sliders) {
-                if (widgetConnector.widgetsConnection[instanceId].sliders[i].name != "None") {
-                    actuator = null;
-                    if (widgetConnector.widgetsConnection[instanceId].widgetObjEdit != null) {
-                        actuator = widgetConnector.widgetsConnection[instanceId].widgetObjEdit.getByName(widgetConnector.widgetsConnection[instanceId].sliders[i].name);
-                    } else if (widgetConnector.widgetsConnection[instanceId].widgetObjConnect != null) {
-                        actuator = widgetConnector.widgetsConnection[instanceId].widgetObjConnect.getByName(widgetConnector.widgetsConnection[instanceId].sliders[i].name);
+        const widgetConnection = widgetConnector.widgetsConnection[instanceId];
+        if (!_.isUndefined(widgetConnection)) {
+            for (const actuatorName in widgetConnection.sliders) {
+                const slider = widgetConnection.sliders[actuatorName];
+                if (slider.name !== "None") {
+                    let actuator = null;
+                    if (widgetConnection.widgetObjEdit != null) {
+                        actuator = widgetConnection.widgetObjEdit.getByName(slider.name);
+                    } else if (widgetConnection.widgetObjConnect != null) {
+                        actuator = widgetConnection.widgetObjConnect.getByName(slider.name);
                     }
 
                     if (actuator != null) {
-                        if (widgetConnector.widgetsConnection[instanceId].sliders[i].dataNode != "None") {
-                            var index = widgetConnector.widgetsConnection[instanceId].sliders[i].dataNodeIndex;
-                            if (index != -1) {
-                                var newData = datanodesManager.getAllDataNodes()[index].latestData();
-                                var dnName = datanodesManager.getAllDataNodes()[index].name();
-                                var status = datanodesManager.getAllDataNodes()[index].status();
-                                var last_updated = datanodesManager.getAllDataNodes()[index].last_updated();
-                                if ((datanodesManager.getDataNodeByName(dnName).type() == 'Python_pyodide_plugin') && (i == "fig")) {
-                                    setDataOnWidget(instanceId, i, actuator, dnName, status, last_updated, bCaptionManuallyChanged);
-                                } else {
-                                    setDataOnWidget(instanceId, i, actuator, newData, status, last_updated, bCaptionManuallyChanged);
-                                }
+                        if (slider.dataNode !== "None") {
+                            const index = slider.dataNodeIndex;
+                            if (index !== -1) {
+                                const dataNode = datanodesManager.getAllDataNodes()[index];
+                                const newData = dataNode.latestData();
+                                const status = dataNode.status();
+                                const last_updated = dataNode.last_updated();
+                                setDataOnWidget(instanceId, actuatorName, actuator, newData, status, last_updated, bCaptionManuallyChanged);
                             } else {
-                                msg = "Invalid connection with data";
-                                displayErrorOnWidget(instanceId, i, msg);
+                                const msg = "Invalid connection with data";
+                                displayErrorOnWidget(instanceId, actuatorName, msg);
                             }
-                        } else {
-                            if ($("#collapse-matching-box").hasClass("collapse in"))
-                                widgetPreview.clearDataFromWidget(instanceId, i, actuator, true);
+                        } else if ($("#collapse-matching-box").hasClass("collapse in")) {
+                            widgetPreview.clearDataFromWidget(instanceId, i, actuator, true);
                         }
                     }
                 }
             }
-        } else
+        } else {
             console.log("connection of " + instanceId + " is undefned");
+        }
     }
 
     /**
@@ -406,45 +397,48 @@ var widgetPreview = (function() {
         }
     }
 
+
+    /**
+     * Finds a slider/binding from an actuator instance
+     * @param {*} actuator 
+     * @returns 
+     */
+    function findBindingFromActuator(actuator) {
+        for (let widgetId in widgetConnector.widgetsConnection) {
+            const widgetConnections = widgetConnector.widgetsConnection[widgetId];
+            if (widgetConnections.widgetObjConnect) {
+                const slider = Object.values(widgetConnections.sliders).find(slider => widgetConnections.widgetObjConnect.getByName(slider.name) === actuator);
+                if(slider) {
+                    return slider;
+                }
+            }
+        }
+
+        return null;
+    }
+    
     /**
      * Update data from widget
      * @param {any} sender
      * @param {any} e
-     * @param {any} doubleTrig
      */
-    function updateDataFromWidget(sender, e, doubleTrig) {
-        var actuator = null;
-        if (datanodesManager.getAllDataNodes().length == 0) {} else {
-            var bFound = false;
-            for (var elm in widgetConnector.widgetsConnection) {
-                for (var i in widgetConnector.widgetsConnection[elm].sliders) {
-                    if (widgetConnector.widgetsConnection[elm].widgetObjConnect != null) {
-                        if (widgetConnector.widgetsConnection[elm].widgetObjConnect.getByName(widgetConnector.widgetsConnection[elm].sliders[i].name) != null) {
-                            if (sender == widgetConnector.widgetsConnection[elm].widgetObjConnect.getByName(widgetConnector.widgetsConnection[elm].sliders[i].name)) {
-                                bFound = true; // found the slider i  and the widget elm
-                                actuator = widgetConnector.widgetsConnection[elm].sliders[i];
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            if (bFound) {
-                if (actuator.dataNode != "None") {
-                    var alldataNodes = datanodesManager.getAllDataNodes()[actuator.dataNodeIndex];
-                    if (!_.isUndefined(alldataNodes)) {
-                        if (alldataNodes.isSetValueValid() && !_.isUndefined(sender.getValue)) { // MBG 12/05/2017
-                            try {
-                                alldataNodes.setValue(actuator.dataFields, sender.getValue(), doubleTrig);
-                            } catch (exc) {
-                                console.log("setValue got exception with data: " + alldataNodes.name() + ". " + exc.message);
-                            }
-                        } else {
-                            console.log("setValue is not possible with data: " + alldataNodes.name());
+    function updateDataFromWidget(sender, e) {
+        let binding = findBindingFromActuator(sender);
+        if (binding) {
+            if (binding.dataNode !== "None") {
+                const dataNode = datanodesManager.getAllDataNodes()[binding.dataNodeIndex];
+                if (!_.isUndefined(dataNode)) {
+                    if (dataNode.canSetValue() && !_.isUndefined(sender.getValue)) { // MBG 12/05/2017
+                        try {
+                            dataNode.setValue(binding.dataFields, sender.getValue());
+                        } catch (exc) {
+                            console.log("setValue got exception with data: " + dataNode.name() + ". " + exc.message);
                         }
                     } else {
-                        console.log("data was removed or data index was modified!");
+                        console.log("setValue is not possible with data: " + dataNode.name());
                     }
+                } else {
+                    console.log("data was removed or data index was modified!");
                 }
             }
         }

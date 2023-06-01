@@ -286,7 +286,8 @@ function DatanodeScheduler(datanodesDependency, startNodes, initiatorNode, callO
         }
         break;
       }
-      case 'NOP': { // NOP is for handling explicit_trig case when called from scheduler (behave like in error)
+      case 'NOP': {
+        // NOP is for handling explicit_trig case when called from scheduler (behave like in error)
         if (datanodesManager.getDataNodeByName(dsName).status() === 'OK') {
           // ds has already ok status, even it is not explicitly triggered, their successors can be computed
           operationsTerminated.add(dsName);

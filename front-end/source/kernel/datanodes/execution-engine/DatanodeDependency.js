@@ -272,13 +272,13 @@ function DatanodeDependency() {
   }
 
   /*-----------------getExtraStartNodes-----------------*/
-  // returs the extra start nodes came from user refresh, setvalue, setfile, edit and add
+  // returs the extra start nodes came from user refresh, setvalue, edit and add
   function getExtraStartNodes() {
     return extraStartNodes;
   }
 
   /*-----------------setExtraStartNodes-----------------*/
-  // add the extra start node came from user refresh, setvalue, setfile, edit and add
+  // add the extra start node came from user refresh, setvalue, edit and add
   function setExtraStartNodes(dsName, callOrigin) {
     if (!_.isUndefined(extraStartNodes[dsName])) {
       xdashNotifications.manageNotification(
@@ -291,7 +291,7 @@ function DatanodeDependency() {
   }
 
   /*-----------------clearExtraStartNodes-----------------*/
-  // clear the extra start nodes came from user refresh, setvalue, setfile, edit and add
+  // clear the extra start nodes came from user refresh, setvalue, edit and add
   function clearExtraStartNodes() {
     for (var prop in extraStartNodes) {
       delete extraStartNodes[prop];
@@ -391,7 +391,6 @@ function DatanodeDependency() {
   // then use it to get topological order
   function topologicalSort() {
     var graph = buildGraphDS();
-    //AEF: reindexMap correction at source before save
     //remove nodes from graph that doesn't exist as datanodes
     graph.nodes().forEach(function (nodeName) {
       if (!datanodesManager.foundDatanode(nodeName)) {

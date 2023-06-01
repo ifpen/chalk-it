@@ -1,6 +1,5 @@
 <header ng-controller="DashboardHeaderController" ng-include="'source/angular/modules/dashboard/_partials/headerbar/dashboard_header.html'" class="with__brand"></header>
 <div ng-include="'source/angular/modules/modals/info_project.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : info.openProjectInfo}" ng-show="info.openProjectInfo"></div>
-<div ng-include="'source/angular/modules/modals/datanode_info.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : popup.datanodeInfo}" ng-show="popup.datanodeInfo"></div>
 <div ng-include="'source/angular/modules/modals/share_project.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : isSharePrjOpen}" ng-show="isSharePrjOpen"></div>
 <div ng-include="'source/angular/modules/modals/manage_page_share.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : infoPage.isManagePageOpen}" ng-show="infoPage.isManagePageOpen"></div>
 <div class="project__layout" ng-controller="EditorController as vm">
@@ -51,8 +50,7 @@
 </div>
 
 
-<div id="datanode-notif-ctrl" ng-controller="DatanodeNotifController" ng-include="'source/angular/modules/dashboard/_partials/modals/datanode_notif.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : popup.datanodeNotif}"
-    ng-show="popup.datanodeNotif"></div>
+<div ng-if="popup.datanodeNotif" ng-controller="DatanodeNotifController" ng-include="'source/angular/modules/dashboard/_partials/modals/datanode_notif.html'" class="cancel__container open"></div>
 
 <div class="cancel__container" ng-class="{'open':$root.isPopupWindow}" style="z-index:1000;">
     <div class="cancel__box">

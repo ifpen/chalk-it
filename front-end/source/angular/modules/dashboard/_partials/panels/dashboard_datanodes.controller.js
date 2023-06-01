@@ -8,11 +8,90 @@
 // └────────────────────────────────────────────────────────────────────────────────┘ \\
 
 angular.module('modules.dashboard')
-    .controller('DashboardDatanodesController', ['$scope', '$rootScope', '$state', 'DepGraphService', 'JsonDisplayService', 'ManageDatanodeService',
-        function($scope, $rootScope, $state, DepGraphService, JsonDisplayService, ManageDatanodeService) {
+    .component('xdashDataNodeInfo', {
+        bindings: {
+            name: '=',
+            data: '=',
+            show: '=',
+        },
+        bindToController: true,
+        controller: ['UiNotifications', class DataNodeInfo {
+            constructor(uiNotifications) {
+                this.options = VIEW_JSON_FORMAT;
+                this.uiNotifications = uiNotifications;
+            }
+
+            download() {
+                const blob = new Blob([JSON.stringify(this.data, null, '\t')], { type: 'application/json' });
+                saveAs(blob, `${this.name}-result.json`);
+            }
+
+            async copy() {
+                const title = 'Copy content';
+                try {
+                    const content = JSON.stringify(this.data, null, '\t');
+                    await navigator.clipboard.writeText(content);
+
+                    this.uiNotifications.notifyMessage(title, 'Content was copied to the clipboard.', UiNotifications.TYPE_SUCCESS);
+                }
+                catch (err) {
+                    this.uiNotifications.notifyMessage(title, `Copying to the clipboard failed: ${err}`, UiNotifications.TYPE_ERROR);
+                }
+            }
+        }],
+        template: `
+        <div class="cancel__container" ng-class="{open: $ctrl.show}">
+            <div class="cancel__box cancel__box--xl">
+                <div class="cancel__title">DataNode JSON result: {{$ctrl.name}}</div>
+                <div class="cancel__text" id="popup-text" style="overflow: auto;height:84%;min-height:50px;text-align: initial;">
+                    <div json-display="$ctrl.data" options="$ctrl.options"></div>
+                </div>
+
+                <div class="cancel__box__bottom">
+                    <button class="btn btn-rounded-fill primary" ng-click="$ctrl.show = false; $ctrl.data = undefined">Close</button>
+                    <button class="btn btn-rounded-fill cancel" ng-click="$ctrl.copy()"><i class="basic icn-duplicate"></i>Copy</button>
+                    <button class="btn btn-rounded-fill cancel" ng-click="$ctrl.download()"><i class="basic icn-download"></i>Download</button>
+
+                </div>
+            </div>
+            <div class="cancel__overlay"></div>
+        </div>
+        `,
+    })
+    .component('xdashDataNodePreview', {
+        bindings: {
+            data: '<',
+        },
+        bindToController: true,
+        controller: ['$scope', class DataNodePreview {
+            constructor($scope) {
+                this.jsonOptions = PREVIEW_JSON_FORMAT;
+
+                $scope.$watch('$ctrl.data', (data) => {
+                    if (data && data.isBinary && data.content && BROWSER_SUPPORTED_IMAGES.includes(data.type)) {
+                        this.image = `data:${data.type};base64,${data.content}`;
+                    } else {
+                        this.image = undefined;
+                    }
+                });
+            }
+        }],
+        template: `
+        <span ng-if="!$ctrl.image">
+            <div json-display="$ctrl.data" options="$ctrl.jsonOptions"></div>
+        </span>
+        <img ng-if="$ctrl.image" src="{{$ctrl.image}}" style="object-fit: contain;" />
+        `,
+    })
+    .controller('DashboardDatanodesController', ['$scope', '$rootScope', '$state', 'DepGraphService', 'ManageDatanodeService',
+        function ($scope, $rootScope, $state, DepGraphService, ManageDatanodeService) {
+            $scope.nodeInfo = {
+                name: '',
+                data: null,
+                show: false,
+            };
 
             $scope.searchDatanodeByName = "";
-
 
             /**************************************************************/
             /*******************DataNode left side panel*******************/
@@ -129,29 +208,13 @@ angular.module('modules.dashboard')
                     $scope.displayedShowIndex = index;
             };
 
-            /*---------- json result display ----------------*/
-            $scope.beautifulStringFromHtml = function(data) {
-                return JsonDisplayService.beautifulStringFromHtml(data);
-            };
-
             /*---------- see json result button ----------------*/
             $scope.getDataNodeDetail = function(data) {
-                let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-                let scopedataNotifCtrl = angular.element(document.getElementById('datanode-notif-ctrl')).scope();
-                scopedataNotifCtrl.showOneDatanodeData = data;
-                data._beautifulString = JsonDisplayService.beautifulStringFromHtml(data);
-                let contentElement = document.createElement('div');
-                contentElement.setAttribute("style", "height:100%");
-                let divContent = '<div class="css-treeview" style="background-color: #f8f8f8;user-select: text;">';
-                divContent = divContent + data._beautifulString;
-                divContent = divContent + "</div>";
-                contentElement.innerHTML = divContent;
-                scopeDash.popup.datanodeInfo = true;
-                scopeDash.popup.title = data.name();
-                scopeDash.popup.text = "";
-                $("#popup-text").html('');
-                $("#popup-text").append(contentElement);
-                scopeDash.copyContentValue = JSON.stringify(datanodesManager.getDataNodeByName(data.settings().name).latestData(), null, 2);
+                $scope.nodeInfo = {
+                    name: data.name(),
+                    data: data.latestData(),
+                    show: true,
+                };
             };
 
             /*---------- refresh button ----------------*/
@@ -204,7 +267,7 @@ angular.module('modules.dashboard')
 
             /*---------- Download JSON result button----------------*/
             $scope.showDataNodeInfo = function(dataNode) {
-                var result = dataNode.latestData();
+                const result = dataNode.latestData();
                 saveAs(new Blob([JSON.stringify(result, null, '\t')], { 'type': 'application/octet-stream' }), dataNode.name() + '-result.json');
             };
 
@@ -219,9 +282,7 @@ angular.module('modules.dashboard')
 
                 scopeDash.popup.datanodeNotif = true;
                 scopeDash.popup.title = data.name();
-                scopeDash.data = data;
-                let scopedataNotifCtrl = angular.element(document.getElementById('datanode-notif-ctrl')).scope();
-                scopedataNotifCtrl.showOneDatanodeData = data;
+                scopeDash.popup.data = data;
             };
         }
     ]);

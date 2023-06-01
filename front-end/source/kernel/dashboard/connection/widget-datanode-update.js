@@ -120,21 +120,3 @@ function updateDataSourceFromWidgetwithspinButton(idInstance, idWidget) {
         }
     }
 }
-
-// ├────────────────────────────────────────────────────────────────────┤ \\
-// |                   updateDataSourceFileFromWidget                   | \\
-// ├────────────────────────────────────────────────────────────────────┤ \\
-function updateDataSourceFileFromWidget(idInstance, fileContent) {
-    if (_.isUndefined(widgetConnector.widgetsConnection[idInstance])) return;
-    var sliders = widgetConnector.widgetsConnection[idInstance].sliders;
-    if (!_.isUndefined(sliders)) {
-        for (var trigger in sliders) {
-            var dataNodeIndex = sliders[trigger].dataNodeIndex;
-            if (dataNodeIndex != -1) {
-                if (datanodesManager.getAllDataNodes()[dataNodeIndex].isSetFileValid()) {
-                    datanodesManager.getAllDataNodes()[dataNodeIndex].setFile(fileContent);
-                }
-            }
-        }
-    }
-}

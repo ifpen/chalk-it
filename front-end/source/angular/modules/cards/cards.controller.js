@@ -314,7 +314,7 @@ angular
                     $scope.findFilesByFilters('xprjson');
                 else if (selected === "My pages")
                     $scope.findFilesByFilters('html');
-                else if (selected === "My  dataNodes")
+                else if (selected === "My dataNodes")
                     $scope.findFilesByFilters('xdsjson');
             };
 

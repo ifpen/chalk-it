@@ -60,7 +60,6 @@ var datanodesManager = (function () {
     $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
     $rootScope.filtredNodes = $rootScope.alldatanodes.length;
 
-    $rootScope.showNotifications = false;
     $rootScope.updateFlagDirty(true);
     $rootScope.safeApply();
 
@@ -156,7 +155,7 @@ var datanodesManager = (function () {
 
         newViewModel.settings(newSettings.settings);
         newViewModel.type(newSettings.type);
-        const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, "");
+        const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
         newViewModel.iconType(iconName);
         if (newViewModel.error()) {
           //ABK
@@ -189,7 +188,6 @@ var datanodesManager = (function () {
         var $body = angular.element(document.body); // 1
         var $rootScope = $body.scope().$root;
         $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-        $rootScope.showNotifications = false;
         $rootScope.safeApply();
       }
     } else if (options.operation == 'edit') {
@@ -243,7 +241,7 @@ var datanodesManager = (function () {
 
       viewModel.type(newSettings.type);
       viewModel.settings(newSettings.settings);
-      const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, "");
+      const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
       viewModel.iconType(iconName);
       if (viewModel.error()) {
         //ABK
@@ -431,16 +429,8 @@ var datanodesManager = (function () {
         return datanode;
       }
     },
-    getDatasourceByName: function (datanodeName) {
-      //compatibility
-      return datanodesManager.getDataNodeByName(datanodeName);
-    },
     getAllDataNodes: function () {
       return datanodesListModel.datanodes();
-    },
-    getAllDataSources: function () {
-      //compatibility
-      return datanodesManager.getAllDataNodes();
     },
     clear: function () {
       schedulerProfiling = {}; // GHI for issue #188

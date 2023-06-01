@@ -1,4 +1,6 @@
-﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
+﻿"use strict";
+
+// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ pyodideManager                                                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Copyright © 2022-2023 IFPEN                                        │ \\
@@ -7,235 +9,239 @@
 // │ Original authors(s): Ghiles HIDEUR, Mongi BEN GAID                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var pyodideManager = (function () {
+// TODO decide on handling of notifications
+// TODO decide on UI block ?
 
-    const self = this;
-    self.pyodideLibs = {
-        standardLibs: [],
-        micropipLibs: []
-    }
+function notifyInfo(title, text = '') {
+    console.log(`${title}${text !== '' ? (':\n' + text) : ''}`);
 
-    // ├────────────────────────────────────────────────────────────────────┤ \\
-    // |                          Load Pyodide                              | \\
-    // ├────────────────────────────────────────────────────────────────────┤ \\
-    /*--------------_loadPyodide--------------*/
-    async function _loadPyodide() {
-        try {
-            console.log("Loading Pyodide");
-            const pyodide = await loadPyodide({
-                indexURL: xDashConfig['pyodide'].pyodide_index
-            });
-            pyodide.runPython("globalScope = {}");
-            console.log("End of loading Pyodide");
-            return pyodide;
-        } catch (error) {
-            console.error("Error while loading Pyodide\n" + error);
+    const notice = new PNotify({ title, text, type: 'info', styling: "bootstrap3" });
+    $('.ui-pnotify-container').on('click', () => notice.remove());
+    return notice;
+}
+
+function notifyError(text, error) {
+    console.error(text, error);
+
+    let msg = error;
+    if(typeof msg !== 'string') {
+        if(typeof msg.error === 'string') {
+            msg = msg.error;
+        } else if(typeof msg.message === 'string') {
+            msg = msg.message;
         }
     }
-    self.pyodideReadyPromise = _loadPyodide();
+    const notice = new PNotify({ title: 'Pyodide error', text: `${text}\n${msg}`, type: 'error', styling: "bootstrap3" });
+    $('.ui-pnotify-container').on('click', () => notice.remove());
+}
 
-    /*--------------_getPyodide--------------*/
-    function _getPyodide() {
-        return self.pyodideReadyPromise;
+
+class PyodideManager {
+    static PYODIDE_STATE_NONE = "NONE";
+    static PYODIDE_STATE_LOADING = "LOADING";
+    static PYODIDE_STATE_READY = "READY";
+    static PYODIDE_STATE_ERROR = "ERROR";
+
+    constructor() {
+        this._listeners = [];
+        this.msgIdIterator = 0;
+        this.reset(true, false);
     }
 
-    /*--------------runPythonScript--------------*/
-    async function runPythonScript(script) {
+    _getDefaultLibs() {
+        return  {
+            standard: JSON.parse(xDashConfig['pyodide'].standard_pyodide_packages || "[]"),
+            micropip: JSON.parse(xDashConfig['pyodide'].micropip_pyodide_packages || "[]"),
+        };
+    }
+
+    reset(clearPackages = true) {
+        if (this.pyodideWorker) {
+            this.pyodideWorker.terminate();
+            this.pyodideWorker = null;
+        }
+        this.callbacks = null;
+        this.pyodideState = PyodideManager.PYODIDE_STATE_NONE;
+
+        if (clearPackages) {
+            // Desired packages
+            const { standard, micropip } = this._getDefaultLibs();
+            this._packages = {
+                standard: new Set(standard),
+                micropip: new Set(micropip),
+            };
+        }
+
+        // Currently loaded packages
+        this._loadedPackages = {
+            standard: new Set(),
+            micropip: new Set(),
+        };
+
+        this._notifyChanges();
+    }
+
+    addPackages(newPackages) {
+        newPackages.standard.forEach(_ => this._packages.standard.add(_));
+        newPackages.micropip.forEach(_ => this._packages.micropip.add(_));
+
+        this._notifyChanges();
+    }
+
+    set packages(packages) {
+        this._packages = {
+            standard: new Set(packages.standard),
+            micropip: new Set(packages.micropip),
+        };
+
+        this._notifyChanges();
+    }
+
+    get packages() {
+        return {
+            standard: new Set(this._packages.standard),
+            micropip: new Set(this._packages.micropip),
+        };
+    }
+
+    get loadedPackages() {
+        return {
+            standard: new Set(this._loadedPackages.standard),
+            micropip: new Set(this._loadedPackages.micropip),
+        };
+    }
+
+    async _loadPackages() {
+        const missingStandardPackages = [...this._packages.standard].filter(_ => !this._loadedPackages.standard.has(_));
+        const missingMicropipPackages = [...this._packages.micropip].filter(_ => !this._loadedPackages.micropip.has(_));
+
+        await this.postMessage({
+            type: "loadPackages",
+            standardPackages: missingStandardPackages,
+            micropipPackages: missingMicropipPackages,
+        });
+
+        // TODO errors, state on worker ?
+        missingStandardPackages.forEach(_ => this._loadedPackages.standard.add(_));
+        missingMicropipPackages.forEach(_ => this._loadedPackages.micropip.add(_));
+
+        this._notifyChanges();
+    }
+
+    async loadPackages() {
+        // TODO should block exec ?
+        await this.ensureStarted();
+
+        const moduleNotice = notifyInfo("Loading Pyodide packages...");
         try {
-            const pyodide = await _getPyodide();
-            const result = pyodide.runPython(script);
+            this.pyodideState = PyodideManager.PYODIDE_STATE_LOADING;
+
+            const result = await this._loadPackages();
+            notifyInfo("Pyodide packages loaded");
             return result;
         } catch (error) {
+            notifyError("Error while loading Pyodide packages", error);
             throw error;
+        } finally {
+            this.pyodideState = PyodideManager.PYODIDE_STATE_READY;
+            this._notifyChanges();
+
+            moduleNotice.remove();
         }
     }
 
-    // ├────────────────────────────────────────────────────────────────────┤ \\
-    // |                      Load Pyodide Libraries                        | \\
-    // ├────────────────────────────────────────────────────────────────────┤ \\
-    /*--------------loadPyodideLibs--------------*/
-    async function loadPyodideLibs(pyodideLibs) {
-        self.isLoading = false;
-        const { standardLibs, micropipLibs } = await _getLibsToLoad(pyodideLibs);
-        await _loadStandardLibs(standardLibs);
-        await _loadMicropipLibs(micropipLibs);
-        await _addProjectLoadedLibs(pyodideLibs);
+    postMessage(msg) {
+        const id = this.msgIdIterator++;
 
-        const $scopeLibs = angular.element(document.getElementById("library__wrap")).scope();
-        if (!_.isUndefined($scopeLibs)) {
-            $scopeLibs.updateLibsList();
-        }
-        
-        if (self.isLoading) {
-             _endLoadingIndicator();
-        }
-    }
-
-    /*--------------_loadStandardLibs--------------*/
-    async function _loadStandardLibs(standardLibs) {
-        if (!standardLibs.length)
-            return;
-        try {
-            const notice = _notifyLoad("info", "Loading standard libraries");
-            _startLoadingIndicator();
-            const pyodide = await _getPyodide();
-            await pyodide.loadPackage(standardLibs);
-            self.isLoading = true;
-            notice.remove();
-        } catch (error) {
-            _errorIndicator("standard", error);
-        }
-    }
-
-    /*--------------_loadMicropipLibs--------------*/
-    async function _loadMicropipLibs(micropipLibs) {
-        if (!micropipLibs.length)
-            return;
-        try {
-            const notice = _notifyLoad("info", "Loading micropip libraries");
-            _startLoadingIndicator();
-            const micropip = await _getMicropipLoader();
-            await micropip.install(micropipLibs);
-            self.isLoading = true;
-            notice.remove();
-        } catch (error) {
-            _errorIndicator("micropip", error);
-        }
-    }
-
-    // ├────────────────────────────────────────────────────────────────────┤ \\
-    // |                          Pyodide Libraries                         | \\
-    // ├────────────────────────────────────────────────────────────────────┤ \\
-    /*--------------getDefaultLibs--------------*/
-    function getDefaultLibs() {
-        const defaultLibs = {
-            standardLibs: JSON.parse(xDashConfig['pyodide'].standard_pyodide_packages),
-            micropipLibs: JSON.parse(xDashConfig['pyodide'].micropip_pyodide_packages)
-        };
-        return defaultLibs;
-    }
-
-    /*--------------getProjectLibs--------------*/
-    function getProjectLibs() {
-        return self.pyodideLibs;
-    }
-
-    /*--------------resetProjectLibs--------------*/
-    function resetProjectLibs() {
-        self.pyodideLibs = {
-            standardLibs: [],
-            micropipLibs: []
-        }
-    }
-
-    /*--------------_addPyodideLibs--------------*/
-    function _addPyodideLibs(libsObj) {
-        for (const key in libsObj) {
-            self.pyodideLibs[key] = _.union(self.pyodideLibs[key], libsObj[key])
-        }
-    }
-
-    /*--------------_getPyodideLoadedLibs--------------*/
-    async function _getPyodideLoadedLibs() {
-        const pyodide = await _getPyodide();
-        const pyodideLoadedLibs = pyodide.loadedPackages;
-        const loadedLibs = {
-            standardLibs: [],
-            micropipLibs: []
-        }
-        for (let key in pyodideLoadedLibs) {
-            if (pyodideLoadedLibs[key] === "default channel") {
-                loadedLibs.standardLibs.push(key);
-            } else if (pyodideLoadedLibs[key] === "pypi") {
-                loadedLibs.micropipLibs.push(key);
-            }
-        }
-        return loadedLibs;
-    }
-
-    /*--------------_getLibs--------------*/
-    async function _getLibs(libsObj, compareFn) {
-        const pyodideLoadedLibs = await _getPyodideLoadedLibs();
-        const projectLibs = {
-            standardLibs: [],
-            micropipLibs: []
-        }
-        for (const key in libsObj) {
-            libsObj[key].forEach(lib => {
-                if (compareFn(pyodideLoadedLibs[key], lib))
-                    projectLibs[key].push(lib);
+        return new Promise((resolve, reject) => {
+            this.callbacks[id] = { resolve, reject };
+            this.pyodideWorker.postMessage({
+                id,
+                ...msg,
             });
-        }
-        return projectLibs;
-    }
-
-    /*--------------_addProjectLoadedLibs--------------*/
-    async function _addProjectLoadedLibs(libsObj) {
-        const projectLoadeLibs = await _getLibs(libsObj, (pyodideLibs, lib) => pyodideLibs.includes(lib));
-        _addPyodideLibs(projectLoadeLibs)
-    }
-
-    /*--------------_getLibsToLoad--------------*/
-    async function _getLibsToLoad(libsObj) {
-        const projectLibsToLoad = await _getLibs(libsObj, (pyodideLibs, lib) => !pyodideLibs.includes(lib));
-        return projectLibsToLoad;
-    }
-
-    /*--------------_getMicropipLoader--------------*/
-    async function _getMicropipLoader() {
-        const pyodide = await _getPyodide();
-        const micropipLib = pyodide.loadedPackages["micropip"];
-        if (_.isUndefined(micropipLib)) {
-            await pyodide.loadPackage("micropip");
-        }
-        const micropip = await pyodide.pyimport("micropip");
-        return micropip;
-    }
-
-    // ├────────────────────────────────────────────────────────────────────┤ \\
-    // |                   Notifications & Indicators                       | \\
-    // ├────────────────────────────────────────────────────────────────────┤ \\
-    /*--------------_notifyLoad--------------*/
-    function _notifyLoad(notifyType, notifyText) {
-        const notice = new PNotify({
-            title: "Loading Pyodide libraries",
-            text: notifyText,
-            type: notifyType,
-            styling: "bootstrap3"
         });
-        $('.ui-pnotify-container').on('click', function () {
-            notice.remove();
+    }
+
+    async _loadPyodide() {
+        this.pyodideState = PyodideManager.PYODIDE_STATE_LOADING;
+        this._notifyChanges();
+
+        const pyodideNotice = notifyInfo("Starting Pyodide...");
+        try {
+            this.pyodideWorker = new Worker("source/kernel/base/pyodide-worker.js");
+            this.callbacks = {};
+
+            this.pyodideWorker.onmessage = (event) => {
+                const { id, ...data } = event.data;
+                const { resolve, reject } = this.callbacks[id];
+                delete this.callbacks[id];
+                if (data.error) {
+                    reject(data);
+                } else {
+                    resolve(data);
+                }
+            };
+
+            await this.postMessage({
+                type: "start",
+                indexURL: xDashConfig['pyodide'].pyodide_index,
+                xdashLibUrl: xDashConfig['pyodide'].xdash_lib_url,
+            });
+        } catch (error) {
+            this.pyodideState = PyodideManager.PYODIDE_STATE_ERROR;
+            this._notifyChanges();
+            notifyError("Error while loading Pyodide", error);
+            throw error;
+        } finally {
+            pyodideNotice.remove();
+        }
+
+        const moduleNotice = notifyInfo("Loading Pyodide packages...");
+        try {
+            await this._loadPackages();
+        } catch (error) {
+            notifyError("Error while loading Pyodide packages", error);
+            throw error;
+        } finally {
+            this.pyodideState = PyodideManager.PYODIDE_STATE_READY;
+            this._notifyChanges();
+
+            moduleNotice.remove();
+        }
+
+        notifyInfo("Pyodide is ready");
+    }
+
+    async ensureStarted() {
+        if (this.pyodideState === PyodideManager.PYODIDE_STATE_ERROR) {
+            throw new Error("Pyodide did not start")
+        } else if (this.pyodideState === PyodideManager.PYODIDE_STATE_NONE) {
+            this.startPromise = this._loadPyodide();
+        }
+        await this.startPromise;
+    }
+
+    async runPythonAsync(code, jsGlobals = undefined) {
+        await this.ensureStarted();
+        const result = await this.postMessage({
+            type: "run",
+            script: code,
+            globals: jsGlobals,
         });
-        (notifyType == "info") ? console.log(notifyText) : console.error(notifyText);
-        return notice;
+        return result;
     }
 
-    /*--------------_startLoadingIndicator--------------*/
-    function _startLoadingIndicator() {
-        datanodesManager.showLoadingIndicator(true);
+    _notifyChanges() {
+        this._listeners.forEach(_ => _());
     }
 
-    /*--------------_endLoadingIndicator--------------*/
-    function _endLoadingIndicator() {
-        datanodesManager.showLoadingIndicator(false);
-        _notifyLoad("info", "End of loading libraries");
+    addListener(listener) {
+        this._listeners.push(listener);
     }
 
-    /*--------------_errorIndicator--------------*/
-    function _errorIndicator(libraryType, error) {
-        datanodesManager.showLoadingIndicator(false);
-        _notifyLoad("error", "Error of loading " + libraryType + " libraries\n" + error);
+    removeListener(listener) {
+        this._listeners = this._listeners.filter(_ => _ != listener);
     }
+}
 
-    //----------------------------------------------------------------------
-
-    // public functions
-    return {
-        getProjectLibs: getProjectLibs,
-        resetProjectLibs: resetProjectLibs,
-        getDefaultLibs: getDefaultLibs,
-        loadPyodideLibs: loadPyodideLibs,
-        runPythonScript: runPythonScript
-    };
-
-})();
+var pyodideManager = new PyodideManager();

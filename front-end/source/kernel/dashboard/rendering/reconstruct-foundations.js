@@ -96,31 +96,14 @@ var reconstructFoundations = (function() {
 
     /*--------constructWidgetsDivs--------*/
     function constructWidgetsDivs(xprjson) {
-        var widget, widgetId;
-        var noCols;
-        if (_.isEmpty(xprjson.device)) {
-            noCols = true;
-        } else {
-            if (_.isEmpty(xprjson.device.droppers)) {
-                noCols = true;
-            } else {
-                noCols = false;
-            }
-        }
-
+        const droppers = xprjson.device.droppers;
+        const noCols = _.isEmpty(droppers);
         if (noCols) {
-            for (widgetId in xprjson.dashboard) {
-                widget = xprjson.dashboard[widgetId];
-                appendToContainingDropper(widget, 'DropperDroitec');
-            }
+            Object.values(xprjson.dashboard).forEach((widget) => appendToContainingDropper(widget, 'DropperDroitec'));
         } else {
-            for (var dprId in xprjson.device.droppers) {
-                var dprWidgets = _.values(xprjson.device.droppers[dprId]);
-                for (var widgetIdx in dprWidgets) {
-                    widget = xprjson.dashboard[dprWidgets[widgetIdx]];
-                    appendToContainingDropper(widget, dprId + 'c');
-                }
-            }
+            Object.entries(droppers).forEach(([dprId, dprWidgets]) => {
+                Object.values(dprWidgets).forEach((widgetId) => appendToContainingDropper(xprjson.dashboard[widgetId], dprId + 'c'));  
+            });
         }
     }
 

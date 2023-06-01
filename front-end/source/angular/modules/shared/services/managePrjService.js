@@ -60,7 +60,6 @@ angular
         };
 
         function _openProject(projectName, fileType, projectVue, callback) {
-            $rootScope.showNotifications = false;
             $rootScope.origin = "openProject";
             $rootScope.loadingBarStart();
             $rootScope.toggleMenuOptionDisplay('none');
@@ -183,7 +182,6 @@ angular
 
         /*---------- clearForNewProject ----------------*/
         self.clearForNewProject = function() {
-            $rootScope.showNotifications = false;
             $rootScope.isLiveDemo = false;
 
             let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();

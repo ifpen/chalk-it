@@ -24,7 +24,6 @@ function navigationHelperClass() {
         var $body = angular.element(document.body); // 1
         var $rootScope = $body.scope().$root;
         var $state = $body.scope().$state; //AEF
-        $rootScope.showNotifications = false;
         $rootScope.origin = "openProject";
         $rootScope.loadingBarStart();
         $rootScope.toggleMenuOptionDisplay('none');

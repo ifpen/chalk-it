@@ -1,41 +1,41 @@
 <div class="lib-container">
     <div class="dashboard-form">
         <div class="dashboard-form__input-wrapper">
-            <input type="search" id="inputSearchLib" placeholder="Search Pyodide Libraries" class="dashboard-form__input--search ng-pristine ng-valid ng-empty ng-touched" 
-            ng-change="searchLibsDisplay()" ng-model="searchLib" />
+            <input id="inputSearchLibrary" type="search" placeholder="Search Pyodide Libraries" class="dashboard-form__input--search ng-pristine ng-valid ng-empty ng-touched" ng-model="ctrl.search" />
             <i class="basic icn-search"></i>
         </div>
     </div>
-    
-    <div class="lib-container__label-wrapper" ng-class="{'active':displayedLibIndex== 1||displayedLibIndex== 0}" ng-click="toggleLibsDisplay(1);">
+
+    <div class="lib-container__label-wrapper" ng-class="{'active': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_STANDARD)}" ng-click="ctrl.togglePythonLibDisplay(ctrl.LIBS_STANDARD)">
         <h2>Standard Libraries</h2>
     </div>
-    
-    <div id="list_standard" class="lib-container__list-wrapper" ng-class="{'open':displayedLibIndex== 1||displayedLibIndex== 0}">
-        <div class="lib-container__list-wrapper__item" ng-repeat="standardLib in pyodideLibsObj.standardLibs | filter:searchLib | orderBy:sortByLoadStatus">
-            <label>
-                <input type="checkbox" id="{{standardLib.name}}_lib" name="standardLibs" ng-model="selectedLibs[standardLib.name]" ng-disabled="standardLib.loaded" />
-                <span>{{standardLib.name}}</span>
+
+    <div class="lib-container__list-wrapper" ng-class="{'open': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_STANDARD)}">
+        <div class="lib-container__list-wrapper__item" ng-repeat="package in ctrl.standardPyodideLibrariesStates | filter: {name: ctrl.search} | orderBy: ctrl.itemSortValue">
+            <label ng-style="{'font-weight': package.loaded ? 'bold' : 'normal'}">
+                <input type="checkbox" id="{{package.name}}_lib" name="base_package" ng-model="package.selected" ng-click="ctrl.toggleStandardLib(package.name)"/>
+                <span>{{package.name}}</span>
             </label>
         </div>
     </div>
-    
-    <div class="lib-container__label-wrapper" ng-class="{'active':displayedLibIndex== 2||displayedLibIndex== 0}" ng-click="toggleLibsDisplay(2);">
+
+    <div class="lib-container__label-wrapper" ng-class="{'active': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_MICROPIP)}" ng-click="ctrl.togglePythonLibDisplay(ctrl.LIBS_MICROPIP)">
         <h2>Micropip Libraries</h2>
     </div>
-    
-    <div id="list_micropip" class="lib-container__list-wrapper" ng-class="{'open':displayedLibIndex== 2||displayedLibIndex== 0}">
-        <div class="lib-container__list-wrapper__item" ng-repeat="micropipLib in pyodideLibsObj.micropipLibs | filter:searchLib | orderBy:sortByLoadStatus">
-            <label>
-                <input type="checkbox" id="{{micropipLib.name}}_lib" name="micropipLibs" ng-model="selectedLibs[micropipLib.name]" ng-disabled="micropipLib.loaded" />
-                <span>{{micropipLib.name}}</span>
+
+    <div class="lib-container__list-wrapper" ng-class="{'open': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_MICROPIP)}">
+        <div class="lib-container__list-wrapper__item" ng-repeat="package in ctrl.micropipPyodideLibrariesStates | filter: {name: ctrl.search} | orderBy: ctrl.itemSortValue">
+            <label ng-style="{'font-weight': package.loaded ? 'bold' : 'normal'}">
+                <input type="checkbox" id="{{package.name}}_lib" name="micropip_package" ng-model="package.selected" ng-click="ctrl.toggleMicropipLib(package.name)"/>
+                <span>{{package.name}}</span>
             </label>
         </div>
     </div>
-    
-    <div class="lib-container__btn-wrapper">
-        <button ng-click="clearSearchLib();loadPyodideLibs()" class="btn btn-rounded-fill primary" title="Load libraries" ng-disabled="isSelectedLibsEmpty(selectedLibs)">
-            Load
+
+    <div class="lib-container__btn-wrapper">   
+        <button ng-click="ctrl.resetPyodide()" class="btn btn-rounded-fill cancel" title="Reset libraries" ng-disabled="!ctrl.canReset()">Reset</button>
+        <button ng-click="ctrl.loadPyodideLibraries()" class="btn btn-rounded-fill primary" title="Load libraries" ng-disabled="!ctrl.canLoad()">
+            <i ng-if="ctrl.isLoading()"class="fa fa-cog fa-spin fa-fw"></i>Load
         </button>
-    </div>    
+    </div>
 </div>

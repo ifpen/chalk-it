@@ -77,7 +77,7 @@ angular.module('modules.editor')
          *   latestData?: any,
          *   validated: {[sliderName: string]: boolean | undefined},
          *   supportsWrites: boolean,
-         *   supportsFiles: boolean,
+         *   supportsPath: boolean,
          * }[] // Sorted by names.
          */
         dataNodes = [];
@@ -89,7 +89,6 @@ angular.module('modules.editor')
          *     description?: WidgetActuatorDescription,
          *     read?: boolean,
          *     write?: boolean,
-         *     file?: boolean,
          *     trigger?: boolean,
          *     highlight?: string,
          *     dsFilter: (ds:dataNodes) => boolean,
@@ -217,24 +216,18 @@ angular.module('modules.editor')
             if(connections && connections.widgetObjEdit) {
                 for (const description of widgetActuatorDescriptions) {
                     const actuatorName = description.name;
-                    result[actuatorName] = {
-                        dsFilter: () => true,
-                        showFields: true,
-                    };
                     const validator = this._createValidationFct(description);
                     const read = description.direction !== undefined && (description.direction & WidgetActuatorDescription.READ) !== 0;
                     const write = description.direction !== undefined && (description.direction & WidgetActuatorDescription.WRITE) !== 0;
-                    const file = description.direction === WidgetActuatorDescription.FILE;
                     result[actuatorName] = {
                         description,
                         validator,
                         read,
                         write,
-                        file,
                         trigger: description.direction === WidgetActuatorDescription.TRIGGER,
                         highlight: description.summary,
-                        dsFilter: write ? ds => ds.supportsWrites : (file ? ds => ds.supportsFiles : () => true), // Assumes supportsWrites and supportsFiles are exclusive
-                        showFields: description.direction === undefined || (description.direction & WidgetActuatorDescription.READ_WRITE) !== 0,
+                        dsFilter: write ? ds => ds.supportsWrites : () => true,
+                        showFields: description.direction !== WidgetActuatorDescription.TRIGGER,
                     };
                 }
             }
@@ -267,8 +260,8 @@ angular.module('modules.editor')
                     index,
                     latestData: ds.latestData(), 
                     validated: {},
-                    supportsWrites: ds.isSetValueValid(),
-                    supportsFiles: ds.isSetFileValid(),
+                    supportsWrites: !!ds.canSetValue(),
+                    supportsPath: !!ds.canSetValue() && ds.canSetValue().acceptPath,
                 }));
                 this.dataNodes = _.sortBy(this.dataNodes, ds => ds.name.toLowerCase());
             }
@@ -421,7 +414,7 @@ angular.module('modules.editor')
 
             const desc = this.sliderDescriptions[slider.name];
 
-            if(!desc.showFields) {
+            if(!desc.showFields || (desc.write && ds && !ds.supportsPath)) {
                 const result = {
                     fieldsCombos: [],
                     validationErrors: undefined

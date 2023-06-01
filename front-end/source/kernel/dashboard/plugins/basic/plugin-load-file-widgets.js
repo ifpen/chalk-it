@@ -38,9 +38,6 @@ modelsParameters.loadFile = {
   deleteButtonIconHoverColor: "var(--widget-delete-button-icon-hover-color)",
 };
 
-//Temporary params (not to be serialized)
-modelsTempParams.outputFile = {};
-
 // Layout (default dimensions)
 modelsLayout.loadFile = {
   height: "19.75vh",
@@ -61,13 +58,11 @@ function loadFileWidgetsPluginClass() {
     bInteractive
   ) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-    var self = this;
+    const self = this;
 
     this.enable = function () {};
 
     this.disable = function () {};
-
-    this.updateValue = function (e) {};
 
     this.getFileSize = function (fileSize) {
       if (fileSize < 1024) {
@@ -91,7 +86,7 @@ function loadFileWidgetsPluginClass() {
         $(".ui-pnotify-container").on("click", function () {
           notice.remove();
         });
-        return -1;
+        return;
       }
 
       const result = {
@@ -101,132 +96,62 @@ function loadFileWidgetsPluginClass() {
         content: "",
       };
 
-      const fileExtension = file.name.split(".").pop();
-      const arrayTypes = ["", "application/json"];
-      if (arrayTypes.indexOf(result.type) !== -1) {
-        result.type = fileExtension;
-      }
-
-      if (fileExtension === "zip") {
-        JSZip.loadAsync(file).then(
-          function (zip) {
-            var promises = [];
-            var zipContent = [];
-            const extensionsText = [
-              "txt",
-              "json",
-              "xprjson",
-              "xml",
-              "svg",
-              "html",
-              "css",
-            ];
-            const extensionsBinary = [
-              "xls",
-              "xlsx",
-              "jpg",
-              "jpeg",
-              "png",
-              "tiff",
-              "gif",
-            ];
-            zip.forEach(function (relativePath, zipEntry) {
-              // zipEntry == zip.files[relativePath]
-              let fileExtension = relativePath.split(".").pop();
-              if (extensionsText.includes(fileExtension)) {
-                promises.push(
-                  zipEntry.async("string").then(function (fileData) {
-                    let content = "";
-                    if (
-                      fileExtension === "json" ||
-                      fileExtension === "xprjson"
-                    ) {
-                      content = JSON.parse(fileData, null, 2);
-                    } else {
-                      content = fileData;
-                    }
-                    zipContent.push({ name: relativePath, content: content });
-                  })
-                );
-              } else if (!fileExtension.includes("/")) {
-                promises.push(
-                  zipEntry.async("uint8array").then(function (fileData) {
-                    let content = btoa(
-                      [].reduce.call(
-                        new Uint8Array(fileData),
-                        function (p, c) {
-                          return p + String.fromCharCode(c);
-                        },
-                        ""
-                      )
-                    );
-                    zipContent.push({ name: relativePath, content: content });
-                  })
-                );
-              }
-            });
-            Promise.all(promises).then(function () {
-              result.content = zipContent;
-              modelsTempParams[idInstance].outputFile = result;
-              updateDataSourceFileFromWidget(idInstance, result);
-            });
-          },
-          function (event) {
-            let notice = new PNotify({
-              title: "Unzip file",
-              text: "Error reading " + file.name + ": " + event.message,
-              type: "error",
-              styling: "bootstrap3",
-            });
-            $(".ui-pnotify-container").on("click", function () {
-              notice.remove();
-            });
-            console.error("Error reading " + file.name + ": " + event.message);
-          }
-        );
-      } else {
-        var reader = new FileReader();
-        reader.addEventListener("load", function (event) {
-          const data = event.target.result;
-          if (data instanceof ArrayBuffer) {
-            result.content = btoa(
-              [].reduce.call(
-                new Uint8Array(data),
-                function (p, c) {
-                  return p + String.fromCharCode(c);
-                },
-                ""
-              )
-            );
-            result.isBinary = true;
-          } else {
-            let content = "";
-            if (fileExtension === "json" || fileExtension === "xprjson") {
-              content = JSON.parse(data, null, 2);
-            } else {
-              content = data;
-            }
-            result.content = content;
-            result.isBinary = false;
-          }
-          modelsTempParams[idInstance].outputFile = result;
-          updateDataSourceFileFromWidget(idInstance, result);
-        });
-
-        if (modelsParameters[idInstance].binaryFileInput) {
-          reader.readAsArrayBuffer(file);
+      const reader = new FileReader();
+      reader.addEventListener("load", function (event) {
+        const data = event.target.result;
+        if (data instanceof ArrayBuffer) {
+          result.content = btoa(
+            [].reduce.call(
+              new Uint8Array(data),
+              function (p, c) {
+                return p + String.fromCharCode(c);
+              },
+              ""
+            )
+          );
+          result.isBinary = true;
         } else {
-          reader.readAsText(file);
+          result.content = data;
+          result.isBinary = false;
         }
+        self.notifyNewValue(result);
+      });
+
+      if (modelsParameters[idInstance].binaryFileInput) {
+        reader.readAsArrayBuffer(file);
+      } else {
+        reader.readAsText(file);
       }
     };
+
+    this.notifyNewValue = function (value) {
+      modelsTempParams[idInstance].outputFile = value;
+      self.outputFile.updateCallback(self.outputFile);
+      self.updateFileDisplay();
+    }
 
     this.rescale = function () {
       this.render();
     };
 
+    this.updateFileDisplay = function () {
+      const file = modelsTempParams[idInstance].outputFile;
+      if(file && file.content && typeof file.content === "string") {
+        const name = file.name ?? "";
+        const sizeBytes = file.isBinary ? b64StrSize(file.content) : file.content.length;
+        const sizeTxt = self.getFileSize(sizeBytes);
+
+        if ($("#file-content-" + idWidget).length) {
+          $("#file-name-" + idWidget).text(name);
+          $("#file-size-" + idWidget).text(sizeTxt);
+        } else {
+          self.getDivFile(name, sizeBytes);
+        }
+      }
+    };
+
     this.render = function () {
-      var widgetHtml = document.createElement("div");
+      const widgetHtml = document.createElement("div");
       widgetHtml.setAttribute("id", "load-file-widget-html" + idWidget);
 
       if (modelsParameters[idInstance].displayBorder) {
@@ -238,7 +163,7 @@ function loadFileWidgetsPluginClass() {
         widgetHtml.setAttribute("class", "load-file-widget-html");
       }
 
-      var divContent = "";
+      let divContent = "";
 
       if (modelsParameters[idInstance].displayLabel) {
         divContent =
@@ -408,60 +333,14 @@ function loadFileWidgetsPluginClass() {
         );
 
         $("#close-file-btn-" + idWidget).on("click", function () {
-          $("#button_" + idWidget + "_select_file").val("");
-          $("#file-content-" + idWidget).remove();
-          delete modelsTempParams[idInstance].fileName;
-          delete modelsTempParams[idInstance].fileSize;
-          modelsTempParams[idInstance].outputFile = {};
-          updateDataSourceFileFromWidget(idInstance, {});
-          self.render();
+          self.outputFile.setValue({});
+          self.outputFile.updateCallback(self.outputFile);
         });
       };
 
       if (!_.isUndefined(modelsTempParams[idInstance].outputFile)) {
-        if (_.isEmpty(modelsTempParams[idInstance].outputFile)) {
-          updateDataSourceFileFromWidget(idInstance, {});
-          delete modelsTempParams[idInstance].fileName;
-          delete modelsTempParams[idInstance].fileSize;
-        } else {
-          updateDataSourceFileFromWidget(
-            idInstance,
-            modelsTempParams[idInstance].outputFile
-          );
-        }
+        self.updateFileDisplay();
       }
-
-      if (
-        !_.isUndefined(modelsTempParams[idInstance].fileName) &&
-        !_.isUndefined(modelsTempParams[idInstance].fileSize)
-      ) {
-        const name = modelsTempParams[idInstance].fileName;
-        const size = modelsTempParams[idInstance].fileSize;
-        self.getDivFile(name, size);
-      }
-
-      this.readFileEvent = function (event) {
-        let file = {};
-        if (event.type == "change") {
-          file = event.target.files[0];
-        } else if (event.type == "drop") {
-          file = event.originalEvent.dataTransfer.files[0];
-        }
-        let readFile = self.readFile(file);
-        if (readFile != -1) {
-          const name = file.name;
-          const size = self.getFileSize(file.size);
-          modelsTempParams[idInstance].fileName = name;
-          modelsTempParams[idInstance].fileSize = size;
-
-          if ($("#file-content-" + idWidget).length) {
-            $("#file-name-" + idWidget).text(name);
-            $("#file-size-" + idWidget).text(size);
-          } else {
-            self.getDivFile(name, size);
-          }
-        }
-      };
 
       this.displayFile = function () {
         modelsTempParams[idInstance].counter = 0;
@@ -497,14 +376,15 @@ function loadFileWidgetsPluginClass() {
           ) {
             event.preventDefault();
             event.stopPropagation();
-            self.readFileEvent(event);
+            self.readFile(event.originalEvent.dataTransfer.files[0]);
           }
         });
 
         $("#button_" + idWidget + "_select_file").on("change", function (
           event
         ) {
-          self.readFileEvent(event);
+          const file = event.target.files[0];
+          self.readFile(file);
         });
       };
 
@@ -514,7 +394,8 @@ function loadFileWidgetsPluginClass() {
     const _OUTPUT_DESCRIPTOR = new WidgetActuatorDescription(
       "outputFile",
       "File content",
-      WidgetActuatorDescription.FILE
+      WidgetActuatorDescription.READ_WRITE,
+      WidgetPrototypesManager.SCHEMA_FILE_LIKE,
     );
     this.getActuatorDescriptions = function () {
       return [_OUTPUT_DESCRIPTOR];
@@ -522,9 +403,12 @@ function loadFileWidgetsPluginClass() {
 
     this.outputFile = {
       updateCallback: function () {},
-      setValue: function (val) {},
+      setValue: function (val) {
+        modelsTempParams[idInstance].outputFile = val;
+        self.render();
+      },
       getValue: function () {
-        return modelsHiddenParams[idInstance].outputFile;
+        return modelsTempParams[idInstance].outputFile;
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;

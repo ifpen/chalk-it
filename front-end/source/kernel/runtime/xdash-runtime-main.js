@@ -70,60 +70,6 @@ var RuntimeDashboard = (function () {
 
         $('#DropperDroitec')[0].style["overflow-y"] = "auto";
 
-        if (!_.isUndefined(jsonContent.device)) {
-            // backward compatibility // to refactor (copied from toolbox-editor.js)
-            if (_.isUndefined(jsonContent.device.cols.valueRow)) {
-                if (_.isUndefined(jsonContent.device.cols.value)) {
-                    jsonContent.device.cols.valueRow = "none";
-                } else {
-                    switch (jsonContent.device.cols.value) {
-                        case "none":
-                            jsonContent.device.cols.valueRow = "none";
-                            break;
-                        case "1":
-                        case "3":
-                            jsonContent.device.cols.valueRow = "1";
-                            break;
-                        case "6":
-                            jsonContent.device.cols.valueRow = "6";
-                            break;
-                        default:
-                            jsonContent.device.cols.valueRow = "none";
-                    }
-                }
-            }
-            if (_.isUndefined(jsonContent.device.cols.valueCol)) {
-                if (_.isUndefined(jsonContent.device.cols.value)) {
-                    jsonContent.device.cols.valueCol = "1";
-                } else {
-                    switch (jsonContent.device.cols.value) {
-                        case "none":
-                        case "1":
-                            jsonContent.device.cols.valueCol = "1";
-                            break;
-                        case "3":
-                        case "6":
-                            jsonContent.device.cols.valueCol = "3";
-                            break;
-                        default:
-                            jsonContent.device.cols.valueCol = "1";
-                    }
-                }
-            }
-            // end of backward compatibility     
-        } else {
-            // very old backward compatibility
-            jsonContent.device = {
-                "cols": {
-                    "valueRow": "none",
-                    "valueCol": "1",
-                    "maxCells": 0,
-                    "maxCols": 0,
-                    "classType": ""
-                }
-            };
-        }
-
         const cols = jsonContent.device.cols.maxCols;
         const maxCells = jsonContent.device.cols.maxCells;
         const rows = maxCells / (cols ? cols : 1);

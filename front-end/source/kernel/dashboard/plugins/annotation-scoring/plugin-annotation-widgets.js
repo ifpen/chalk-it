@@ -18,9 +18,6 @@ modelsHiddenParams.annotationLabel = {};
 modelsHiddenParams.annotationImage = {
     "fileContentBase64": "",
     "mimeType": "",
-    "widthPx": 100,
-    "heightPx": 100,
-    "ratio": 1
 };
 modelsHiddenParams.annotationVideo = {
     "screenshotBase64": "",
@@ -294,22 +291,12 @@ function annotationWidgetsPluginClass() {
         this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
         var self = this;
 
-        // backward compatibility
-        if (_.isUndefined(modelsHiddenParams[idInstance].ratio)) {
-            var divContainer = $('#' + idDivContainer);
-            var w = divContainer.width();
-            var v = divContainer.height();
-            modelsHiddenParams[idInstance].ratio = w / v;
-        }
-
         this.enable = function() {};
 
         this.disable = function() {};
 
         // MBG : attention, cela ne marche qu'en édition
-        this.renderOriginalSize = function() {
-            var w = modelsHiddenParams[idInstance].widthPx;
-            var h = modelsHiddenParams[idInstance].heightPx;
+        this.renderOriginalSize = function(w, h) {
             var topContainer = $('#' + idInstance);
             topContainer.width(unitW(w + 2));
             topContainer.height(unitH(h + 2));
@@ -318,7 +305,6 @@ function annotationWidgetsPluginClass() {
             divContainer.height(unitH(h));
             divContainer.css('left', 0 + 'px');
             divContainer.css('top', 0 + 'px');
-            divContainer.css('position', 'absolute');
             var imgContainer = $('#' + "imgContainer" + idWidget);
             imgContainer.attr("style",
                 'width: ' + unitW(w) + '; ' +
@@ -331,7 +317,7 @@ function annotationWidgetsPluginClass() {
 
         this.render = function() {
             var widgetHtml = document.createElement('div');
-            widgetHtml.setAttribute("style", "width: inherit; height: inherit; margin: auto; position: absolute; top: 0; left: 0"); // MBG 09/10/2019 : margin auto for centering
+            widgetHtml.setAttribute("style", "width: inherit; height: inherit; margin: auto; top: 0; left: 0"); // MBG 09/10/2019 : margin auto for centering
             widgetHtml.setAttribute("id", "imgContainer" + idWidget);
             var divContent = '';
             if (modelsHiddenParams[idInstance].fileContentBase64 != "") {
@@ -349,7 +335,6 @@ function annotationWidgetsPluginClass() {
                 divContainer.height(inheritWcHeightFromIdInst(idInstance));
                 divContainer.css('left', 0 + 'px');
                 divContainer.css('top', 0 + 'px');
-                divContainer.css('position', 'absolute');
 
                 widgetHtml.setAttribute("style", "width: inherit; height: inherit; margin: auto;");
 
@@ -365,7 +350,7 @@ function annotationWidgetsPluginClass() {
 
                 divContent = divContent + '</div>';
                 var parent = document.getElementById('_otherUse');
-                var newChild = '<input type="file" id="image-file' + idWidget + '" name="files[]" accept=".jpg,.jpeg,.png,.gif" style="padding-bottom: 15px; display: none" required="">';
+                var newChild = '<input type="file" id="image-file' + idWidget + '" name="files[]" accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.avif" style="padding-bottom: 15px; display: none" required="">';
                 parent.insertAdjacentHTML('beforeend', newChild);
             }
 
@@ -377,23 +362,24 @@ function annotationWidgetsPluginClass() {
 
                 inputElt.addEventListener("click", function (e) {
                     e.stopPropagation();
-                    var imageFileElt = document.getElementById("image-file" + idWidget);
+                    const imageFileElt = document.getElementById("image-file" + idWidget);
                     imageFileElt.addEventListener("change", function (e) {
-                        e.stopPropagation();                       
-                        var reader = new FileReader();
+                        e.stopPropagation();
+
+                        const file = e.target.files[0];
+                        const fileMimeType = file.type;
+                        const reader = new FileReader();
 
                         reader.addEventListener("load", function (event) {
                             event.stopPropagation();
-                            var imageFile = event.target;
-                            modelsHiddenParams[idInstance].mimeType = getRealMimeType(imageFile.result);
+                            const imageFile = event.target;
+                            const realMimeType = getRealMimeType(imageFile.result);
+                            modelsHiddenParams[idInstance].mimeType = realMimeType === 'unknown' ? fileMimeType : realMimeType;
                             modelsHiddenParams[idInstance].fileContentBase64 = encodeURIComponent(base64ArrayBuffer(imageFile.result));
                             var i = new Image();
 
                             i.onload = function() {
-                                modelsHiddenParams[idInstance].widthPx = i.width;
-                                modelsHiddenParams[idInstance].heightPx = i.height;
-                                modelsHiddenParams[idInstance].ratio = i.width / i.height;
-                                self.renderOriginalSize();
+                                self.renderOriginalSize(i.width, i.height);
                             };
 
                             i.src = 'data:' + modelsHiddenParams[idInstance].mimeType + ';base64,' + modelsHiddenParams[idInstance].fileContentBase64;
@@ -402,7 +388,7 @@ function annotationWidgetsPluginClass() {
                             return false;
                         }, false);
 
-                        reader.readAsArrayBuffer(e.target.files[0]);
+                        reader.readAsArrayBuffer(file);
 
                         modelsParameters[idInstance].hideImageURL = true; // MBG 04/06/2021
 
@@ -417,16 +403,32 @@ function annotationWidgetsPluginClass() {
             }
         };
 
-        const _base64_regex = '^data:image\/([a-zA-Z]*);base64,([^\"]*)$';
+        const _base64_regex = '^data:(image\/[a-zA-Z\\+-]*);base64,([^\"]*)$';
         const _IMAGE_DESCRIPTOR = new WidgetActuatorDescription(
             "base64Image",
-            "Image encoded as a data URL",
+            "Image file content or image encoded as a data URL",
              WidgetActuatorDescription.READ,
             {
                 $schema: WidgetPrototypesManager.SCHEMA_VERSION,
                 $id: WidgetPrototypesManager.ID_URI_SCHEME + "xdash:imageAnnotationWidget",
-                type: "string",
-                pattern: _base64_regex,
+                anyOf: [
+                    {
+                        type: "string",
+                        pattern: _base64_regex,
+                    },
+                    {
+                        type: "object",
+                        properties: {
+                            content: { type: "string" }, // TODO regex ?
+                            isBinary: { const: true },
+                            type: {
+                                type: "string",
+                                pattern: "^image/.*",
+                            },
+                        },
+                        required: ["content", "isBinary", "type"],
+                    },
+                ],
             }
         );
 
@@ -438,18 +440,23 @@ function annotationWidgetsPluginClass() {
 
         this.base64Image = {
             setValue: function(val) {
-                if (val != "") {
-                    var reg = new RegExp(_base64_regex)
-                    var res = reg.exec(val);
-                    if (res == null) {
-                        modelsHiddenParams[idInstance].fileContentBase64 = val;
-                    } else {
-                        if (res.length != 3) {
+                if (val) {
+                    if (typeof val === 'string') {
+                        const reg = new RegExp(_base64_regex)
+                        const res = reg.exec(val);
+                        if (res == null) {
                             modelsHiddenParams[idInstance].fileContentBase64 = val;
                         } else {
-                            modelsHiddenParams[idInstance].mimeType = res[1];
-                            modelsHiddenParams[idInstance].fileContentBase64 = res[2];
+                            if (res.length != 3) {
+                                modelsHiddenParams[idInstance].fileContentBase64 = val;
+                            } else {
+                                modelsHiddenParams[idInstance].mimeType = res[1];
+                                modelsHiddenParams[idInstance].fileContentBase64 = res[2];
+                            }
                         }
+                    } else if (typeof val === 'object' && val.isBinary) {
+                        modelsHiddenParams[idInstance].mimeType = val.type;
+                        modelsHiddenParams[idInstance].fileContentBase64 = val.content;
                     }
                     self.render();
                 }

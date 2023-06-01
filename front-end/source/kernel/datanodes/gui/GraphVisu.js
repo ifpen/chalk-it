@@ -200,14 +200,8 @@ function GraphVisu(datanodesDependency) {
     }
 
     function htmlTitle(dsName) {
-        let htmlContent = datanodesManager.getDataNodeByName(dsName).beautifulString();
-        if (htmlContent === undefined) {
-            htmlContent = "NO DATA";
-        }
-        var contentElement = document.createElement("div");
-        contentElement.innerHTML = htmlContent;
-
-        return contentElement;
+        const data = datanodesManager.getDataNodeByName(dsName)?.latestData();
+        return jsonDataToBasicHtmlElement(data, { jsonFormat: PREVIEW_JSON_FORMAT });
     }
 
     function selectNodebyName(nodeName) {

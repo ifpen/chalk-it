@@ -11,47 +11,30 @@ var pyodideLib = (function () {
 
     /*--------serialize--------*/
     function serialize() {
-        const { standardLibs, micropipLibs } = pyodideManager.getProjectLibs();
-        const libsObj = {
-            'pyodideStandard': standardLibs.sort(),
-            'pyodideMicropip': micropipLibs.sort()
+        const packages = pyodideManager.packages;
+        const libraries = {
+            'pyodideStandard': [...packages.standard].sort(),
+            'pyodideMicropip': [...packages.micropip].sort(),
         };
 
-        return libsObj;
+        return libraries;
     }
 
     /*--------deserialize--------*/
     async function deserialize(jsonContent) {
-        if (_.isUndefined(jsonContent.data.datanodes)) //compatibility
-            jsonContent.data.datanodes = jsonContent.data.datasources;
-
-        const datanodesList = jsonContent.data.datanodes;
-        let isPythonDataNode = false;
-        let libsToLoad = {
-            standardLibs: [],
-            micropipLibs: []
-        };
-        datanodesList.forEach(_ => {
-            if (_.type === "Python_pyodide_plugin")
-                isPythonDataNode = true;
-        });
-        if (isPythonDataNode) {
-            const defaultLibs = pyodideManager.getDefaultLibs();
-            for (const key in libsToLoad) {
-                libsToLoad[key] = _.union(libsToLoad[key], defaultLibs[key]);
-            }
-        }
+        pyodideManager.reset();
         if (!_.isUndefined(jsonContent.libraries)) {
             const { pyodideStandard, pyodideMicropip } = jsonContent.libraries;
-            const libsObj = {
-                standardLibs: pyodideStandard,
-                micropipLibs: pyodideMicropip
-            }
-            for (const key in libsToLoad) {
-                libsToLoad[key] = _.union(libsToLoad[key], libsObj[key]);
-            }
+            pyodideManager.packages = {
+                standard: pyodideStandard,
+                micropip: pyodideMicropip,
+            };
         }
-        await pyodideManager.loadPyodideLibs(libsToLoad);
+
+        if (jsonContent.data.datanodes.find(_ => _.type === "Python_pyodide_plugin")) {
+            // TODO let nodes handle this ? do wait ?
+            pyodideManager.ensureStarted();
+        }
     }
 
     //----------------------------------------------------------------------

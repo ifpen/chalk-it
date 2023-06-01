@@ -19,12 +19,12 @@ var widgetsEditorToolboxDefinition = {
     "collapse-gauges": {
         "name": "Basic displays",
         "widgets": ["flatUiValueDisplay", "kpiCard", "advancedKpiCard", "ledStatus", "flatUiProgressBar",
-            "scoringFullCircularGauge", "scoringSemiCircularGauge", "scoringArchCircularGauge"
+            "scoringFullCircularGauge", "scoringSemiCircularGauge", "scoringArchCircularGauge", "anyDisplay"
         ]
     },
     "collapse-plotly": {
         "name": "Plots",
-        "widgets": ["plotlyLine", "plotlyBar", "plotlyPie", "plotly3dSurface", "plotlyGeneric", "plotlyPyGeneric", "matplotlib", "plotlyRealTime", "vegaGeneric", "echartsGeneric"]
+        "widgets": ["plotlyLine", "plotlyBar", "plotlyPie", "plotly3dSurface", "plotlyGeneric", "plotlyRealTime", "vegaGeneric", "echartsGeneric"]
     },
     "collapse-geotime": {
         "name": "Geo & Time",

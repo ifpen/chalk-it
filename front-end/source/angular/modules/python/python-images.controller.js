@@ -162,7 +162,7 @@ angular.module('modules.python-images')
         $scope.getSize = (image) => {
             if ($scope.states.hasOwnProperty(image.Id)) {
                 const state = $scope.states[image.Id];
-                return PythonImagesManager.imageSizeToText(state.size);
+                return formatDataSize(state.size);
             } else {
                 return undefined;
             }

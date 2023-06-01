@@ -411,35 +411,9 @@ angular.module('modules.python-images', [])
             }
 
             if (fileSize && fileSize > 0) {
-                result += " (" + _imageSizeToText(fileSize) + ")";
+                result += " (" + formatDataSize(fileSize) + ")";
             }
 
             return result;
         }
-
-        function _imageSizeToText(imageSizeBytes) {
-            if (!imageSizeBytes) {
-                return "";
-            }
-
-            var unit = 1;
-            var unitStr = "";
-            if (imageSizeBytes > 1000000000) {
-                unit = 1000000000;
-                unitStr = "Go"
-            } else if (imageSizeBytes > 1000000) {
-                unit = 1000000;
-                unitStr = "Mo"
-            } else if (imageSizeBytes > 1000) {
-                unit = 1000;
-                unitStr = "ko"
-            }
-
-            var size = imageSizeBytes / unit;
-            size = Math.round(size * 100) / 100;
-
-            return "" + size + unitStr;
-        }
-
-        this.imageSizeToText = _imageSizeToText;
     }]);

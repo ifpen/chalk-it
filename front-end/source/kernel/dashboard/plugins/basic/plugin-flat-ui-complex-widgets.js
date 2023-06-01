@@ -13,7 +13,7 @@
 /*******************************************************************/
 
 // Models
-modelsHiddenParams.flatUiSelect = { "values": [], "keys": [], "value": [], "selectedValue": "" };
+modelsHiddenParams.flatUiSelect = { "values": [], "keys": [], "selectedValue": "" };
 modelsHiddenParams.flatUiMultiSelect = { "value": [], "selectedValue": "" };
 modelsHiddenParams.flatUiList = { "value": [], "selectedValue": "" };
 modelsHiddenParams.flatUiTable = { "value": null };
@@ -95,13 +95,12 @@ function flatUiComplexWidgetsPluginClass() {
     this.selectFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
         this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
         const self = this;
-        this.bFirstExec = true;
-        this.tmpSelectedValue = "";
 
         this.enable = function () {
             $("#select" + idWidget).off('click').on("click", function (e, ui) {
-                modelsHiddenParams[idInstance].selectedValue = self.selectedValue.getValue();
-                self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+                const val = self.selectedValue.getValue();
+                modelsHiddenParams[idInstance].selectedValue = val;
+                self.selectedValue.updateCallback(self.selectedValue, val);
             });
             $("#select" + idWidget).prop("disabled", false);
          
@@ -140,35 +139,19 @@ function flatUiComplexWidgetsPluginClass() {
             if (_.isUndefined(modelsParameters[idInstance].selectValueFontSize)) {
                 modelsParameters[idInstance].selectValueFontSize = modelsParameters[idInstance].labelFontSize;
             }
-            let selectOptions = [];
 
-            // MBG backward compatibility at exported dashboard
-            if (_.isUndefined(modelsParameters[idInstance].isKeyValuePairs)) { //AEF: modif for issue#61
-                modelsParameters[idInstance].isKeyValuePairs = true;
+            const keys =  modelsHiddenParams[idInstance].keys;
+            const values = modelsHiddenParams[idInstance].values;
+            const nbOptions = Math.min(values.length, keys.length);
+
+            divContent += '<select data-toggle="select" id="select' + idWidget +
+                '" class="select-div form-control select select-primary select-block mbl" style="display:table;' + styleDef + ' height: ' + valueHeightPx + 'px;">';
+
+
+            for (let i = 0; i < nbOptions; i++) {
+                divContent += `<option value="${values[i]}">${keys[i]}</option>`;
             }
-
-            //AEF
-            if (!_.isUndefined(modelsHiddenParams[idInstance].value)) { // MBG backward compatibility at exported dashboard
-                if (modelsHiddenParams[idInstance].value.length != 0) {
-                    selectOptions = modelsHiddenParams[idInstance].value;
-                } else if (modelsHiddenParams[idInstance].values.length != 0) {
-                    for (let i = 0; i < modelsHiddenParams[idInstance].values.length; i++) {
-                        selectOptions[i] = {};
-                        selectOptions[i].value = modelsHiddenParams[idInstance].values[i];
-                    }
-                    for (let i = 0; i < modelsHiddenParams[idInstance].keys.length; i++) {
-                        selectOptions[i].key = modelsHiddenParams[idInstance].keys[i];
-                    }
-                }
-            }
-
-            divContent = divContent + '<select data-toggle="select" id="select' + idWidget +
-                '" class="select-div form-control select select-primary select-block mbl" style="height: ' + valueHeightPx + 'px;">';
-
-            for (let i = 0; i < selectOptions.length; i++) {
-                divContent = divContent + '<option value="' + selectOptions[i].value + '">' + selectOptions[i].key + '</option>';
-            }
-            divContent = divContent + '</select>';
+            divContent += '</select>';
 
             widgetHtml.innerHTML = divContent;
             widgetHtml.setAttribute("id", "select-div-container" + idWidget);
@@ -181,39 +164,10 @@ function flatUiComplexWidgetsPluginClass() {
                 self.disable();
             }
 
-            if (modelsHiddenParams[idInstance].selectedValue != "") {
-                $('#select' + idWidget)[0].value = modelsHiddenParams[idInstance].selectedValue;
-            }
+            $('#select' + idWidget)[0].value = String(modelsHiddenParams[idInstance].selectedValue);
 
-            if (this.findInSelect(this.tmpSelectedValue)) {
-                $('#select' + idWidget)[0].value = this.tmpSelectedValue;
-            }
             $('#select' + idWidget).select2();
-            self.bFirstExec = false;
-
-            //old code: modif is made now directly in flat-ui.js
-            //AEF: make fontsize, in dynamic combobox part, able to be changed
-            // for (let i = 0; i < $(".select2-chosen").length; i++) {
-            //     if ($(".select2-chosen")[i].parentNode.parentNode.parentNode.id == "select-div-container" + idWidget) {
-            //         var selectChosenId = $(".select2-chosen")[i].id;
-            //         $("#" + selectChosenId)[0].style.fontSize = 'calc(7px + ' +
-            //             modelsParameters[idInstance].labelFontSize * getFontFactor() + 'vw + 0.4vh)';
-            //     }
-            // }
         };
-
-        this.findInSelect = function (val) {
-            let obj = {};
-            if (!_.isUndefined(self.values)) {
-                obj = self.values;
-            } else if (!_.isUndefined(self.keyValuePairs)) {
-                obj = self.keyValuePairs;
-            }
-            bFind = _.find(obj.selectionValues, function found(num) {
-                return num == val;
-            });
-            return bFind;
-        }
 
         // selectedValue
         const _VALUE_NUMBER_DESCRIPTOR = new WidgetActuatorDescription("selectedValue", "Selected value", WidgetActuatorDescription.READ_WRITE, WidgetPrototypesManager.SCHEMA_NUMBER);
@@ -286,19 +240,15 @@ function flatUiComplexWidgetsPluginClass() {
         this.selectedValue = {
             updateCallback: function () { },
             setValue: function (val) { //AEF: modif for issue#61
-                self.tmpSelectedValue = val;
-                const bFind = self.findInSelect(val);
-                if (bFind) {
-                    $('#select' + idWidget)[0].value = val;
-                    modelsHiddenParams[idInstance].selectedValue = val;
-                    self.render();
-                }
+                modelsHiddenParams[idInstance].selectedValue = val;
+                self.render();
             },
             getValue: function () {
+                const val = $('#select' + idWidget)[0].value;
                 if (modelsParameters[idInstance].isNumber) {
-                    return Number($('#select' + idWidget)[0].value);
+                    return Number(val);
                 } else {
-                    return $('#select' + idWidget)[0].value;
+                    return val;
                 }
             },
             addValueChangedHandler: function (updateDataFromWidget) {
@@ -327,37 +277,21 @@ function flatUiComplexWidgetsPluginClass() {
 
         if (!modelsParameters[idInstance].isKeyValuePairs) { //AEF: new created widget and newer loaded project
             this.keys = { //AEF: in this slider put array of keys (madatory)
-                selectionValues: [],
                 setValue: function (val) {
-                    if (val === "") { //ABK
-                        selectionValues = [];
-                        modelsHiddenParams[idInstance].value = val;
-                        //modelsHiddenParams[idInstance].keys = []; // MBG & ABK meeting 26/11/2020 : à faire (à décider) ???
-                        self.render();
-                    } else {
-                        const msg1 = '"keys" must be an array (in widget' + idInstance + ')';
-                        const msg2 = 'Example: ["choice1","choice2"]';
-                        if (!Array.isArray(val)) {
-                            swal(msg1, msg2, "info");
-                            return;
-                        }
-                        if (typeof (val[0]) === "object") { //AEF: prevetn old format here [{},{}]
-                            swal(msg1, msg2, "info");
-                            return;
-                        }
-
-                        for (let i = 0; i < val.length; i++) {
-                            this.selectionValues[i] = val[i];
-                        }
-                        modelsHiddenParams[idInstance].value = [];
-                        modelsHiddenParams[idInstance].keys = val;
-                        self.render();
+                    const msg1 = '"keys" must be an array (in widget' + idInstance + ')';
+                    const msg2 = 'Example: ["choice1","choice2"]';
+                    if (!Array.isArray(val)) {
+                        swal(msg1, msg2, "info");
+                        return;
                     }
-
+                    if (val.length && typeof val[0] === "object") { //AEF: prevent old format here [{},{}]
+                        swal(msg1, msg2, "info");
+                        return;
+                    }
+                    modelsHiddenParams[idInstance].keys = val;
+                    self.render();
                 },
-                getValue: function () {
-                    return modelsHiddenParams[idInstance].value;
-                },
+                getValue: function () {},
                 addValueChangedHandler: function (updateDataFromWidget) {
                     self.enable();
                 },
@@ -367,40 +301,25 @@ function flatUiComplexWidgetsPluginClass() {
             };
 
             this.values = { //AEF: in this slider put array of values (optional)
-                selectionValues: [],
                 setValue: function (val) {
-                    if (val === "") { //ABK
-                        selectionValues = [];
-                        modelsHiddenParams[idInstance].value = val;
-                        //modelsHiddenParams[idInstance].values = []; // MBG & ABK meeting 26/11/2020 : à faire (à décider) ???
-                        self.render();
-                    } else {
-                        const msg1 = '"value" must be an array (in widget' + idInstance + ')';
-                        const msg2 = 'Example: [1, 2]';
-                        if (_.isNull(val)) {
-                            val = modelsHiddenParams[idInstance].keys; //AEF: values are optional, take keys if not provided
-                        }
-                        if (!Array.isArray(val)) {
-                            swal(msg1, msg2, "info");
-                            return;
-                        }
-                        if (typeof (val[0]) === "object") { //AEF: prevetn old format here [{},{}]
-                            swal(msg1, msg2, "info");
-                            return;
-                        }
-
-                        for (let i = 0; i < val.length; i++) {
-                            this.selectionValues[i] = val[i];
-                        }
-                        modelsHiddenParams[idInstance].value = [];
-                        modelsHiddenParams[idInstance].values = val;
-                        self.render();
+                    const msg1 = '"value" must be an array (in widget' + idInstance + ')';
+                    const msg2 = 'Example: [1, 2]';
+                    if (val === null || val === undefined) {
+                        val = modelsHiddenParams[idInstance].keys; //AEF: values are optional, take keys if not provided
                     }
+                    if (!Array.isArray(val)) {
+                        swal(msg1, msg2, "info");
+                        return;
+                    }
+                    if (val.length && typeof val[0] === "object") { //AEF: prevent old format here [{},{}]
+                        swal(msg1, msg2, "info");
+                        return;
+                    }
+                    modelsHiddenParams[idInstance].values = val;
+                    self.render();
 
                 },
-                getValue: function () {
-                    return modelsHiddenParams[idInstance].value;
-                },
+                getValue: function () {},
                 addValueChangedHandler: function (updateDataFromWidget) {
                     self.enable();
                 },
@@ -409,40 +328,29 @@ function flatUiComplexWidgetsPluginClass() {
                 }
             };
         } else { //AEF: older project (before issue#61)
-
             this.keyValuePairs = { //AEF: in this slider put array of key or array of key/value pairs
-                selectionValues: [],
                 setValue: function (val) {
-                    if (val == "") { //ABK
-                        selectionValues = [];
-                        modelsHiddenParams[idInstance].value = val;
-                        self.render();
-                    } else {
-                        const msg1 = '"keyValuePairs" must be an array of key or an array of key/value pairs (in widget' + idInstance + ')';
-                        const msg2 = 'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
-                        if (!Array.isArray(val)) {
-                            swal(msg1, msg2, "info"); //ABK
-                            //swal({ title: msg1, text: msg2, type: "info", timer: 2000 });//ABK autoclose2s
+                    modelsHiddenParams[idInstance].keys = [];
+                    modelsHiddenParams[idInstance].values = [];
+
+                    const msg1 = '"keyValuePairs" must be an array of key or an array of key/value pairs (in widget' + idInstance + ')';
+                    const msg2 = 'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
+                    if (!Array.isArray(val)) {
+                        swal(msg1, msg2, "info");
+                        return;
+                    }
+                    for (const item of val) {
+                        if (_.isUndefined(item.key)) { //AEF: key is mandatory
+                            swal(msg1, msg2, "info");
                             return;
                         }
-                        for (let i = 0; i < val.length; i++) {
-                            if (_.isUndefined(val[i].key)) { //AEF: key is mandatory
-                                swal(msg1, msg2, "info");
-                                return;
-                            }
-                            if (_.isUndefined(val[i].value)) { //AEF: value is optional
-                                //AEF: modif for issue#61: accept key table without value
-                                val[i].value = val[i].key;
-                            }
-                            this.selectionValues[i] = val[i].value;
-                        }
-                        modelsHiddenParams[idInstance].value = val;
-                        self.render();
+
+                        modelsHiddenParams[idInstance].keys.push(item.key);
+                        modelsHiddenParams[idInstance].values.push(item.value ?? item.key); //AEF: value is optional
                     }
+                    self.render();
                 },
-                getValue: function () {
-                    return modelsHiddenParams[idInstance].value;
-                },
+                getValue: function () {},
                 addValueChangedHandler: function (updateDataFromWidget) {
                     self.enable();
                 },
@@ -937,27 +845,21 @@ function flatUiComplexWidgetsPluginClass() {
         };
 
         this.render = function () {
-            var widgetHtml = document.createElement('div');
-            if (this.bIsInteractive) {
-                widgetHtml.setAttribute('style', 'cursor: auto; width: inherit; height: inherit; overflow: auto');
-            } else {
-                widgetHtml.setAttribute('style', 'cursor: inherit; width: inherit; height: inherit; overflow: auto');
-            }
-            var divContent = '<table style="margin: 0; height: 90%;" class="table';
-            if (modelsParameters[idInstance].striped) divContent = divContent + ' table-striped ';
-            if (modelsParameters[idInstance].bordered) divContent = divContent + ' table-bordered ';
-            if (!_.isUndefined(modelsParameters[idInstance].noBorder)) { // backward compatibiliy
-                if (modelsParameters[idInstance].noBorder == true) divContent = divContent + ' no-border ';
-            } else {
-                modelsParameters[idInstance].noBorder = false; // update
-            }
-            divContent = divContent + ' table-responsive" id="table' + idWidget + '" >';
-            var val = modelsHiddenParams[idInstance].value;
-            var insideTable = self.buildTable(val);
-            if (insideTable == '') {
+            const widgetHtml = document.createElement('div');
+            widgetHtml.setAttribute('style', `cursor: ${this.bIsInteractive?'auto':'inherit'}; width: inherit; height: inherit; overflow: auto`);
+
+            let divContent = '<table style="margin: 0; height: 90%;" class="table';
+            if (modelsParameters[idInstance].striped) divContent += ' table-striped ';
+            if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
+            if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
+            divContent += ' table-responsive" id="table' + idWidget + '" >';
+            const val = modelsHiddenParams[idInstance].value;
+            let insideTable = self.buildTable(val);
+            if (insideTable === '') {
                 insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
             }
-            divContent = divContent + insideTable + '</table>';
+            divContent += insideTable + '</table>';
+
             widgetHtml.innerHTML = divContent;
             $("#" + idDivContainer).html(widgetHtml);
             if (this.bIsInteractive) {

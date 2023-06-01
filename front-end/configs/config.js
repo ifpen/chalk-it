@@ -66,6 +66,11 @@ if (process.env.PYODIDE_INDEX != undefined) {
     pyodide_index = process.env.PYODIDE_INDEX;
 }
 
+var xdash_lib_url = "";
+if (process.env.XDASH_LIB_URL != undefined) {
+    xdash_lib_url = process.env.XDASH_LIB_URL;
+}
+
 module.exports.config = {
     port: process.env.PORT ? process.env.PORT : 7854,
     xDashConfig: {
@@ -89,7 +94,8 @@ module.exports.config = {
         'pyodide': {
             'standard_pyodide_packages': standard_pyodide_packages,
             'micropip_pyodide_packages': micropip_pyodide_packages,
-            'pyodide_index': pyodide_index
+            'pyodide_index': pyodide_index,
+            'xdash_lib_url': xdash_lib_url
         },
         'disablePythonSlim': process.env.DISABLE_PYTHON_SLIM,
         'copyright': '\u00A9 2016-' + new Date().getFullYear() + ' IFP Energies nouvelles',

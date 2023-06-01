@@ -214,11 +214,7 @@
             if (wsConn) wsConn.close();
         };
 
-        self.isSetValueValid = function() {
-            return false;
-        };
-
-        self.isSetFileValid = function() {
+        this.canSetValue = function() {
             return false;
         };
 

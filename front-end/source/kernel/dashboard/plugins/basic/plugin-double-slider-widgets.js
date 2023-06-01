@@ -92,10 +92,6 @@ function doubleSliderWidgetsPluginClass() {
             this.render();
         };
 
-        if (_.isUndefined(modelsParameters[idInstance].forceValuesToMinAndMax)) { // backward compatibility
-            modelsParameters[idInstance].forceValuesToMinAndMax = false;
-        }
-
         this.render = function () {
 
             var widgetHtml = document.createElement('div');

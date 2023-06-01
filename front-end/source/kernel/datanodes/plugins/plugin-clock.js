@@ -66,11 +66,7 @@
                 return false;
         };
 
-        this.isSetValueValid = function() {
-            return false;
-        };
-
-        self.isSetFileValid = function() {
+        self.canSetValue = function() {
             return false;
         };
 

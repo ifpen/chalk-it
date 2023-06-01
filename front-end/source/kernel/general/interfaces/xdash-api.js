@@ -11,7 +11,7 @@ var xDashApi = (function () {
   function setVariable(varDateNodeName, varJsonValue, explicitTrig) {
     //AEF: add explicit trig
     var dN = datanodesManager.getDataNodeByName(varDateNodeName);
-    dN.setValue([], varJsonValue, false, explicitTrig);
+    dN.setValue([], varJsonValue, explicitTrig);
   }
 
   function setVariables(dataNodeNames, varJsonValues) {
@@ -19,7 +19,7 @@ var xDashApi = (function () {
     for (let i = 0; i < dataNodeNames.length; i++) {
       let dN = datanodesManager.getDataNodeByName(dataNodeNames[i]);
       let varJsonValue = varJsonValues[i];
-      dN.setValue([], varJsonValue, false, true); //don't start schedule here
+      dN.setValue([], varJsonValue, true); //don't start schedule here
     }
     dN0.schedulerStart(dataNodeNames, dataNodeNames[0], 'setValue');
   }

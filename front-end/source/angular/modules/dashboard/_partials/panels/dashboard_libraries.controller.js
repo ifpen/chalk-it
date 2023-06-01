@@ -7,120 +7,121 @@
 // │ Original authors(s): Ghiles HIDEUR, Abir EL FEKI                              │ \\
 // └───────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules.dashboard')
-    .controller('DashboardLibrariesController', ['$scope', '$rootScope',
-        function ($scope, $rootScope) {
+angular.module('modules.dashboard').controller('DashboardLibrariesController', ['$scope', '$rootScope', '$element',
+    class DashboardLibrariesController {
+        constructor($scope, $rootScope, $element) {
+            this.LIBS_NONE = 0;
+            this.LIBS_MICROPIP = 1;
+            this.LIBS_STANDARD = 2;
+            this.LIBS_ALL = this.LIBS_MICROPIP | this.LIBS_STANDARD;
 
-            const self = this;
+            this.$rootScope = $rootScope;
+            this.$element = $element;
 
-            // ├────────────────────────────────────────────────────────────────────┤ \\
-            // |                           Pyodide Libraries                        | \\
-            // ├────────────────────────────────────────────────────────────────────┤ \\
-            /*--------------listPyodideLibs--------------*/
-            const listPyodideLibs = {
-                standardLibs: standardAvailablePyodideLibs.sort(),
-                micropipLibs: microPipAvailablePyodideLibs.sort()
-            }
+            //toggles which python lib panel is displayed
+            this.displayedLibs = this.LIBS_NONE;
 
-            /*--------------_initLoadState--------------*/
-            function _initLoadState(libList) {
-                return {
-                    standardLibs: libList.standardLibs.map(name => ({ name, loaded: false })),
-                    micropipLibs: libList.micropipLibs.map(name => ({ name, loaded: false }))
-                };
-            };
+            this.search = "";
 
-            $scope.pyodideLibsObj = _initLoadState(listPyodideLibs);
+            this.standardPyodideLibrariesStates = standardAvailablePyodideLibs.map(name => ({ name, loaded: false, selected: false }));
+            this.micropipPyodideLibrariesStates = microPipAvailablePyodideLibs.map(name => ({ name, loaded: false, selected: false }));
 
-            /*--------------updateLibsList--------------*/
-            $scope.updateLibsList = function () {
-                const projectLibs = pyodideManager.getProjectLibs();
-                const listLibs = $scope.pyodideLibsObj;
-                for (const key in listLibs) {
-                    listLibs[key] = listLibs[key].map(lib => ({
-                        ...lib,
-                        loaded: projectLibs[key].includes(lib.name),
-                    }));
+            this._updateLibStates();
+
+            this._pyodideManagerListener = () => { this._updateLibStates(); $scope.$applyAsync(); }
+            pyodideManager.addListener(this._pyodideManagerListener);
+        }
+
+        async loadPyodideLibraries() {
+            // TODO feedback
+            await pyodideManager.loadPackages();
+            for (let iElement = 0; iElement < this.$element.length; iElement++) {
+                const element = this.$element[iElement];
+                const lists = element.getElementsByClassName('toggle_wrapper');
+                for (let iList = 0; iList < lists.length; iList++) {
+                    lists[iList].scrollTop = 0;
                 }
-                _scrollToTop();
-            };
-
-            // ├────────────────────────────────────────────────────────────────────┤ \\
-            // |                       Load Pyodide Libraries                       | \\
-            // ├────────────────────────────────────────────────────────────────────┤ \\
-            /*--------------selectedLibs--------------*/
-            $scope.selectedLibs = {};
-            $scope.isSelectedLibsEmpty = function (selectedLibs) {
-                return !Object.values(selectedLibs).some(selected => selected);
-            }
-
-            /*--------------loadPyodideLibs--------------*/
-            $scope.loadPyodideLibs = async function () {
-                const libsToLoad = {
-                    standardLibs: [],
-                    micropipLibs: []
-                };
-                const libTypes = Object.keys(listPyodideLibs);      
-                for (const [lib, selected] of Object.entries($scope.selectedLibs)) {
-                    if (selected) {
-                        const libType = libTypes.find(key => listPyodideLibs[key].includes(lib)) || "Unknown library type";
-                        libsToLoad[libType].push(lib);
-                    }
-                }
-                await pyodideManager.loadPyodideLibs(libsToLoad);
-                $scope.updateLibsList(); // update display
-                $scope.selectedLibs = {};
-                $rootScope.updateFlagDirty(true);
-            };
-
-            // ├────────────────────────────────────────────────────────────────────┤ \\
-            // |                      Reset Pyodide Libraries                       | \\
-            // ├────────────────────────────────────────────────────────────────────┤ \\
-            /*--------------resetPyodideLibs--------------*/
-            $scope.resetPyodideLibs = function () {
-                pyodideManager.resetProjectLibs();
-                $scope.pyodideLibsObj = _initLoadState(listPyodideLibs);
-                $scope.clearSearchLib();
-            };
-
-            // ├────────────────────────────────────────────────────────────────────┤ \\
-            // |                         Filters & Display                          | \\
-            // ├────────────────────────────────────────────────────────────────────┤ \\
-            /*--------------sortByLoadStatus--------------*/
-            $scope.sortByLoadStatus = function (lib) {
-                return lib.loaded ? -1 : lib.name;
-            };
-
-            /*--------------searchLibsDisplay--------------*/
-            $scope.searchLibsDisplay = function () {
-                self.searchCtrl = this;
-                const inputValue = $("#inputSearchLib").val();
-                $scope.displayedLibIndex = inputValue ? 0 : -1;
-            };
-
-            /*--------------toggleLibsDisplay--------------*/
-            $scope.displayedLibIndex = -1;
-            $scope.toggleLibsDisplay = function (index) {
-                $scope.displayedLibIndex = (index === $scope.displayedLibIndex) ? -1 : index;
-            };
-
-            /*--------------scrollToTop--------------*/
-            $scope.clearSearchLib = function () {
-                $("#inputSearchLib").val("");
-                $scope.displayedLibIndex = -1;
-                if (!_.isUndefined(self.searchCtrl))
-                    self.searchCtrl.searchLib = "";
-            }
-
-            /*--------------scrollToTop--------------*/
-            function _scrollToTop() {
-                $("#list_micropip, #list_standard").each(function () {
-                    this.scrollTo({
-                        top: 0,
-                        left: 0,
-                        behavior: "auto",
-                    });
-                });
             }
         }
-    ]);
+
+        isLoading() {
+            return pyodideManager.pyodideState === PyodideManager.PYODIDE_STATE_LOADING;
+        }
+
+        canLoad() {
+            if (pyodideManager.pyodideState === PyodideManager.PYODIDE_STATE_LOADING || pyodideManager.pyodideState === PyodideManager.PYODIDE_STATE_ERROR) {
+                return false;
+            } else {
+                return pyodideManager.pyodideState === PyodideManager.PYODIDE_STATE_NONE
+                    || this.standardPyodideLibrariesStates.find(_ => _.selected && !_.loaded)
+                    || this.micropipPyodideLibrariesStates.find(_ => _.selected && !_.loaded);
+            }
+        }
+
+        canReset() {
+            return pyodideManager.pyodideState !== PyodideManager.PYODIDE_STATE_NONE;
+        }
+
+        resetPyodide() {
+            pyodideManager.reset(false);
+        }
+
+        toggleStandardLib(name) {
+            const packages = pyodideManager.packages;
+            if (packages.standard.has(name)) {
+                packages.standard.delete(name);
+            } else {
+                packages.standard.add(name);
+            }
+            pyodideManager.packages = packages;
+
+            this.$rootScope.updateFlagDirty(true);
+        }
+
+        toggleMicropipLib(name) {
+            const packages = pyodideManager.packages;
+            if (packages.micropip.has(name)) {
+                packages.micropip.delete(name);
+            } else {
+                packages.micropip.add(name);
+            }
+            pyodideManager.packages = packages;
+
+            this.$rootScope.updateFlagDirty(true);
+        }
+
+        _updateLibStates() {
+            const packages = pyodideManager.packages;
+            const loadedPackages = pyodideManager.loadedPackages;
+
+            this.standardPyodideLibrariesStates.forEach(state => {
+                state.selected = packages.standard.has(state.name);
+                state.loaded = loadedPackages.standard.has(state.name);
+            });
+            this.micropipPyodideLibrariesStates.forEach(state => {
+                state.selected = packages.micropip.has(state.name);
+                state.loaded = loadedPackages.micropip.has(state.name);
+            });
+        }
+
+        togglePythonLibDisplay(panel) {
+            if (panel === this.displayedLibs) {
+                this.displayedLibs = this.LIBS_NONE;
+            } else {
+                this.displayedLibs = panel;
+            }
+        }
+
+        isPythonLibDisplayOpen(panel) {
+            return !!this.search || ((this.displayedLibs & panel) !== 0);
+        }
+
+        itemSortValue(item) {
+            return `${item.loaded ? '0' : '1'}/${item.name}`;
+        }
+
+        $onDestroy() {
+            pyodideManager.removeListener(this._pyodideManagerListener);
+        }
+    }
+]);

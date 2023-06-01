@@ -384,11 +384,6 @@ function plotlyWidgetsPluginClass() {
     }
     var self = this;
 
-    // Backward compatibility
-    if (_.isUndefined(modelsParameters[idInstance].hideModeBar)) {
-      modelsParameters[idInstance].hideModeBar = false;
-    }
-
     // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
     this.getColorValueFromCSSProperty = function(value) {
       var color = value;
@@ -1125,7 +1120,7 @@ function plotlyWidgetsPluginClass() {
       plotly3dSurface: { factory: "d3surfacePlotlyWidget", title: "Plotly 3D surface", icn: "plotly-3D", help: "wdg/wdg-plots/#plotly-3d-surface" },
       plotlyGeneric: {
         factory: "genericPlotlyWidget",
-        title: "Plotly JavaScript generic",
+        title: "Plotly generic",
         icn: "plotly-javascript-generic",
         help: "wdg/wdg-plots/#plotly-generic",
       },

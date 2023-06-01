@@ -19,16 +19,43 @@ var xdsjson = (function () {
 
     /*--------openJsonManager--------*/
     function openJsonManager(data) {
-        var jsonObject;
+        let jsonObject; 
         try {
             jsonObject = JSON.parse(data);
         } catch (err) {
+            console.error(err);
             swal("Unable to load file", "Project loading will be interrupted.", "error");
             return;
         }
 
-        if (datanodesManager.getAllDataNodes().length == 0) {
-            datanodesManager.load(jsonObject, true);
+        const forUpdate = jsonObject.meta ? jsonObject : { meta: {}, data: { datanodes: jsonObject.datanodes } };
+        if(!xdashUpdateEngine.hasCurrentVersion(forUpdate)) {
+            try {
+                const notifications = xdashUpdateEngine.update(forUpdate, false);
+                xdashUpdateEngine.displayNotifications(notifications, false);
+            } catch (ex) {
+                console.error(ex);
+                swal({
+                    title: `Import failed`,
+                    icon: 'warning',
+                    text: ex?.message ?? "The data could not be updated and may be invalid.",
+                });
+                return;
+            }
+        }
+
+
+        const refresh = () => {
+            const $body = angular.element(document.body);
+            const $rootScope = $body.scope().$root;
+            $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
+            $rootScope.filtredNodes = $rootScope.alldatanodes.length;
+            $rootScope.safeApply();
+            $rootScope.updateFlagDirty(true);
+        };
+
+        if (datanodesManager.getAllDataNodes().length === 0) {
+            datanodesManager.load(forUpdate.data, true, refresh);
         } else {
             swal({
                 title: "Loading dataNodes from xdsjson file",
@@ -44,19 +71,8 @@ var xdsjson = (function () {
                 closeOnCancel1: true
             },
                 function (isConfirm) {
-                    var bClear = true;
-                    if (isConfirm) {
-                        bClear = false;
-                    } else {
-                        bClear = true;
-                    }
-                    datanodesManager.load(jsonObject, bClear, function () {
-                        //AEF
-                        var $body = angular.element(document.body);
-                        var $rootScope = $body.scope().$root;
-                        $rootScope.filtredNodes = $rootScope.alldatanodes.length;
-                        $rootScope.updateFlagDirty(true);
-                    });
+                    const bClear = !isConfirm;
+                    datanodesManager.load(forUpdate.data, bClear, refresh);
                 });
         }
         datanodesManager.showLoadingIndicator(false);
@@ -73,67 +89,41 @@ var xdsjson = (function () {
     /*--------saveJson--------*/
     function saveJson() {
         //AEF only on server
-        selectDataToSave("server");
+        selectDataToSave((dataToSave) => {
+            const saveDatanodes = datanodesManager.serialize();
+            saveDatanodes.datanodes = saveDatanodes.datanodes
+                .filter(node => dataToSave.includes(node.name))
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            const meta = {
+                [XdashDataUpdateEngine.VERSION_METADATA_KEY]: XdashDataUpdateEngine.CURRENT_VERSION,
+                date: Date(),
+                name: "",
+                description: "",
+                groupName: "",
+                tags: [],
+            };
+            const json = { meta, data: saveDatanodes };
+
+            fileManager.saveOnServer("datanode", null, json);
+        });
     }
 
     /*--------selectDataToSave--------*/
-    function selectDataToSave(dest) {
-        var data = datanodesManager.getAllDataNodes();
-        var sortedData = data.sort((a, b) => a.name().localeCompare(b.name()));
+    function selectDataToSave(callback) {
+        const data = datanodesManager.getAllDataNodes();
+        const sortedData = data.sort((a, b) => a.name().localeCompare(b.name()));
 
-        var dataToSave = [];
-        var bFound = false;
-        var contentElement = getDataList(sortedData, "Please check data to be saved in the xdsjson file: ");
-        var i, j;
+        const contentElement = getDataList(sortedData, "Please check data to be saved in the xdsjson file: ");
 
         new DialogBoxForData(contentElement, "List of data", "Save", "Cancel", function () {
-            for (i = 0; i < data.length; i++) {
-                if ($('#data-checkbox-' + i).is(':checked')) {
-                    dataToSave[i] = data[i].name();
-                    bFound = true;
-                }
+            const dataToSave = sortedData.filter((_, i) => $('#data-checkbox-' + i).is(':checked')).map(node => node.name());
+            if (dataToSave.length) {
+                callback(dataToSave);
+            } else {
+                // do not close modal
+                return true;
             }
-            if (bFound) {
-                var saveDatanodes = datanodesManager.serialize();
-                var isDataFound = false;
-                for (i = 0; i < saveDatanodes.datanodes.length; i++) {
-                    isDataFound = false;
-                    for (j = 0; j < dataToSave.length; j++) {
-                        if (saveDatanodes.datanodes[i].name == dataToSave[j]) {
-                            isDataFound = true;
-                            break;
-                        }
-                    }
-                    if (!isDataFound) { //delete unchecked data
-                        delete saveDatanodes.datanodes[i];
-                        delete saveDatanodes.reIndexMap[i];
-                    }
-                }
-                var cleanData = [];
-                var cleanIndex = [];
-                var k = 0;
-                for (i = 0; i < saveDatanodes.datanodes.length; i++) {
-                    if (!_.isUndefined(saveDatanodes.datanodes[i])) {
-                        cleanData[k] = saveDatanodes.datanodes[i];
-                        cleanIndex[k] = saveDatanodes.reIndexMap[i];
-                        k++;
-                    }
-                }
-                saveDatanodes.datanodes = cleanData;
-
-                var sortedIndexMap = _.sortBy(cleanIndex, function list(a) { return a; });
-                var cleanIndexMap = [];
-
-                for (j = 0; j < sortedIndexMap.length; j++) {
-                    cleanIndexMap[j] = _.indexOf(sortedIndexMap, cleanIndex[j]);
-                }
-
-                saveDatanodes.reIndexMap = cleanIndexMap; // MBG 11/07/2018 : fix issue #67
-                if (dest == "server") {
-                    fileManager.saveOnServer("datanode", null, saveDatanodes);
-                }
-            } else
-                return true; //do not close modal
         });
     }
 
@@ -226,7 +216,6 @@ var xdsjson = (function () {
                     $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
                     $rootScope.filtredNodes = $rootScope.alldatanodes.length;
                     $rootScope.showOneDatasource = false;
-                    $rootScope.showNotifications = false;
                     $rootScope.updateFlagDirty(true);
                     $rootScope.safeApply();
                 } else {
