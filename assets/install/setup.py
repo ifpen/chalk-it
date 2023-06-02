@@ -2,11 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 NAME = "py-chalk-it"
-<<<<<<< HEAD
 VERSION = "0.2.0"
-=======
-VERSION = "0.1.3"
->>>>>>> opensource
 
 with open("README.MD", "r") as fh:
     readme = fh.read()
@@ -37,11 +33,8 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
-<<<<<<< HEAD
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",		
-=======
->>>>>>> opensource
         "Topic :: Database :: Front-Ends",
         "Topic :: Scientific/Engineering :: Information Analysis",
         "Topic :: Scientific/Engineering :: Visualization",
