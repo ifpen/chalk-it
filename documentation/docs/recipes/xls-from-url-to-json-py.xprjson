@@ -1,0 +1,157 @@
+{
+	"meta": {
+		"version": "2.470.8480",
+		"date": "Wed Mar 22 2023 11:35:15 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "xls-from-url-to-json-py",
+		"description": "Read xlsx file from URL, convert it to JSON and display it on table",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "REST-API"
+			},
+			{
+				"text": "EXCEL"
+			},
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Table"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "simpleXls",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "simpleXls",
+					"url": "https://app.xdash.io/public-examples/very-simple.xlsx",
+					"use_xproxy": true,
+					"sampleTime": 0,
+					"autoStart": true,
+					"explicitTrig": false,
+					"req_data_type": "none",
+					"resp_data_type": "binary",
+					"method": "GET",
+					"headers": [],
+					"proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9hcHAueGRhc2guaW8vcHVibGljLWV4YW1wbGVzL3Zlcnktc2ltcGxlLnhsc3giLCJIb3N0IjoieGRhc2gifQ==",
+					"proxySig": "5TM10MtZYvnW/sf2ZrpNxsx7Jz+k8HgNRDhDWBlJcDHYZzMpS79rsYnIJH3rebDPhA11gAy0mEhudPdNCu5DsZjfZebQTDiJ2HZ+28c14vlVJkBvd5EcBSuKQv1PKRmG"
+				}
+			},
+			{
+				"name": "tab",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "tab",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import pandas as pd\n\ndf_dict = datasources[\"xlsxToJson\"]\nheaders = list(df_dict.keys())\ntab = []\n\nfor header in headers:\n    tab.append(list(df_dict[header].values()))\n\ntab_of_rows = list(map(list, zip(*tab)))\n\ntab_of_rows.insert(0, headers)\nreturn tab_of_rows"
+				}
+			},
+			{
+				"name": "xlsxToJson",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "xlsxToJson",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import pandas as pd\nimport base64\nimport io\n\nbuffer = io.BytesIO(base64.b64decode(datasources[\"simpleXls\"][\"content\"]))\niso = pd.read_excel(buffer, sheet_name='Feuil1')\n\nreturn iso.to_dict()"
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			2,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"openpyxl"
+		]
+	},
+	"scaling": {
+		"widthPx": 1302,
+		"heightPx": 575,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 575,
+		"widthVw": 84.765625,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.765625,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiTablew": {
+			"layout": {
+				"top": "1.39474vh",
+				"left": "0.973386vw",
+				"height": "55.9631vh",
+				"width": "30.0938vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiTablew",
+				"instanceId": "flatUiTablew",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTablew)"
+			},
+			"modelParameters": {
+				"headerLine": true,
+				"tableValueFontSize": 0.5,
+				"striped": true,
+				"valueColor": "#2154ab",
+				"valueFontFamily": "Helvetica Neue",
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[]"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		}
+	},
+	"connections": {
+		"flatUiTablew": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "tab",
+				"dataNodeIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

@@ -1,0 +1,265 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 22:30:39 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "webservice-post-input-py",
+		"description": "HTTP POST using REST API dataNode-type, with body defined in a Variable dataNode-type",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "REST-API"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "Surface",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "Surface",
+					"url": "https://compute20190425045435.azurewebsites.net/ComputeService.asmx/Surface",
+					"use_xproxy": false,
+					"sampleTime": 0,
+					"autoStart": true,
+					"explicitTrig": false,
+					"req_data_type": "JSON",
+					"resp_data_type": "JSON",
+					"method": "POST",
+					"body": "return dataNodes[\"InputBody\"];\n",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					]
+				}
+			},
+			{
+				"name": "InputBody",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "InputBody",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "return { \n    \"X\": dataNodes[\"Input\"][\"length\"], \n    \"Y\": dataNodes[\"Input\"][\"width\"] \n};"
+				}
+			},
+			{
+				"name": "Input",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "Input",
+					"json_var": "{\"length\":25,\"width\":10}"
+				}
+			}
+		],
+		"reIndexMap": [
+			2,
+			1,
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiHorizontalSliderO": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "0.806654vw",
+				"height": "5.47719vh",
+				"width": "27.7651vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderO",
+				"instanceId": "flatUiHorizontalSliderO",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderO)"
+			},
+			"modelParameters": {
+				"label": "length",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSliderv": {
+			"layout": {
+				"top": "8.41048vh",
+				"left": "0.806654vw",
+				"height": "5.47719vh",
+				"width": "27.7651vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderv",
+				"instanceId": "flatUiHorizontalSliderv",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderv)"
+			},
+			"modelParameters": {
+				"label": "width",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiValueDisplayN": {
+			"layout": {
+				"top": "16.3017vh",
+				"left": "0.806654vw",
+				"height": "5.29547vh",
+				"width": "27.5963vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiValueDisplayN",
+				"instanceId": "flatUiValueDisplayN",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayN)"
+			},
+			"modelParameters": {
+				"label": "rectangle surface",
+				"inheritLabelFromData": false,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "50%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"isNumber": false,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"displayBorder": true,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiHorizontalSliderO": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"length"
+				],
+				"dataNode": "Input",
+				"dataNodeIndex": 2
+			}
+		},
+		"flatUiHorizontalSliderv": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"width"
+				],
+				"dataNode": "Input",
+				"dataNodeIndex": 2
+			}
+		},
+		"flatUiValueDisplayN": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"Msg"
+				],
+				"dataNode": "Surface",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

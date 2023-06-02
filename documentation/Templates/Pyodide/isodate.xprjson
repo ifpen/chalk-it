@@ -1,0 +1,119 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 16:03:13 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "isodate",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "date",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "date",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import isodate\n\ntimestamp = isodate.parse_datetime(\"2016-06-07T23:46:03+00:00\")\n  \nreturn timestamp.strftime(\"%A, %d. %B %Y %I:%M%p\")"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"isodate"
+		]
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"kpiCardC": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "2.88308vw",
+				"height": "25.1868vh",
+				"width": "50.4004vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "kpiCardC",
+				"instanceId": "kpiCardC",
+				"modelJsonId": "kpiCard",
+				"widgetTypeName": "KPI value(kpiCardC)"
+			},
+			"modelParameters": {
+				"label": "date",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valuePosition": "bottom",
+				"valueFontSize": 2,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"decimalDigits": 3,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"unitColor": "#2154ab",
+				"borderShadow": false
+			},
+			"modelHiddenParams": {
+				"value": "--"
+			}
+		}
+	},
+	"connections": {
+		"kpiCardC": {
+			"value": {
+				"name": "value",
+				"dataNode": "date",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

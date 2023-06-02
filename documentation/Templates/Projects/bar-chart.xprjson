@@ -1,0 +1,175 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 23:27:53 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "bar-chart",
+		"description": "bar graph with Plotly library",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Plots"
+			},
+			{
+				"text": "Plotly"
+			},
+			{
+				"text": "Bar"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "data",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "data",
+					"json_var": "{\"fuel\":[\"Gasoline\",\"Diesel\",\"Biofuel\",\"LPG\",\"NGV\"],\"consumption\":[1010,821,69,25,38]}"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"plotlyBarh": {
+			"layout": {
+				"top": "1.66469vh",
+				"left": "0.806654vw",
+				"height": "65.1579vh",
+				"width": "65.7371vw",
+				"minHeight": "100px",
+				"minWidth": "100px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "plotlyBarh",
+				"instanceId": "plotlyBarh",
+				"modelJsonId": "plotlyBar",
+				"widgetTypeName": "Plotly bar(plotlyBarh)"
+			},
+			"modelParameters": {
+				"numberOfAxis": 1,
+				"layout": {
+					"title": {
+						"text": "Fuel in transport sector"
+					},
+					"barmode": "group",
+					"xaxis": {
+						"title": {
+							"text": "fuel"
+						},
+						"type": "category",
+						"range": [
+							-0.5,
+							4.5
+						],
+						"autorange": true
+					},
+					"yaxis": {
+						"title": {
+							"text": "consumption"
+						},
+						"type": "linear",
+						"range": [
+							0,
+							1063.157894736842
+						],
+						"autorange": true
+					},
+					"paper_bgcolor": "rgba(0, 0, 0, 0)",
+					"plot_bgcolor": "rgba(0, 0, 0, 0)",
+					"showlegend": false,
+					"margin": {
+						"l": 50,
+						"r": 50,
+						"b": 100,
+						"t": 100,
+						"pad": 4
+					},
+					"autosize": true
+				},
+				"hideModeBar": false
+			},
+			"modelHiddenParams": {
+				"data": [
+					{
+						"type": "bar",
+						"x": [
+							"first",
+							"second"
+						],
+						"y": [
+							1,
+							2
+						]
+					}
+				],
+				"selection": [
+					{}
+				]
+			}
+		}
+	},
+	"connections": {
+		"plotlyBarh": {
+			"x1": {
+				"name": "x1",
+				"dataFields": [
+					"fuel"
+				],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			},
+			"y1": {
+				"name": "y1",
+				"dataFields": [
+					"consumption"
+				],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

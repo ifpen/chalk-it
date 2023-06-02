@@ -1,0 +1,170 @@
+{
+	"meta": {
+		"version": "2.470.8480",
+		"date": "Mon Apr 03 2023 17:44:35 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "d3-year-heatmap-calendar",
+		"description": "Example with D3.js year calendar",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "D3.js"
+			},
+			{
+				"text": "Calendar"
+			},
+			{
+				"text": "Yearly"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "CalendarVal2",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "CalendarVal2",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var dateForVal = d3.timeDay.range(new Date(2020, 5, 2), Date.now());\nvar lawForValue = d3.randomLogNormal(3, 2.2);\nvar formatDate = d3.timeFormat(\"%Y-%m-%d\");   \n            \nvar tableForCalendar = dateForVal.map( d => { return { \"date\" : formatDate(d), \"value\" : lawForValue() };});\n\nreturn _.shuffle(tableForCalendar);"
+				}
+			},
+			{
+				"name": "SelectedDate",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "SelectedDate",
+					"json_var": "\"2022-09-17\""
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1302,
+		"heightPx": 575,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 575,
+		"widthVw": 85.54533508541392,
+		"heightVh": 81.56028368794327,
+		"scrollWidthVw": 85.54533508541392,
+		"scrollHeightVh": 81.56028368794327,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"calendarD3c": {
+			"layout": {
+				"top": "7.51773vh",
+				"left": "0.919842vw",
+				"height": "62.695vh",
+				"width": "60.5125vw",
+				"minHeight": "100px",
+				"minWidth": "100px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "calendarD3c",
+				"instanceId": "calendarD3c",
+				"modelJsonId": "calendarD3",
+				"widgetTypeName": "Year Calenddar(calendarD3c)"
+			},
+			"modelParameters": {
+				"AllYearsVisible": true,
+				"UndefinedValueColor": "#ffffff"
+			},
+			"modelHiddenParams": {}
+		},
+		"kpiCard1": {
+			"layout": {
+				"top": "14.3262vh",
+				"left": "61.8265vw",
+				"height": "18.0142vh",
+				"width": "18.9225vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "kpiCard1",
+				"instanceId": "kpiCard1",
+				"modelJsonId": "kpiCard",
+				"widgetTypeName": "KPI value(kpiCard1)"
+			},
+			"modelParameters": {
+				"label": "SelectedDate",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valuePosition": "bottom",
+				"valueFontSize": 2,
+				"valueColor": "var(--widget-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"decimalDigits": 3,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"unitColor": "var(--widget-label-color)",
+				"borderShadow": false
+			},
+			"modelHiddenParams": {
+				"value": "--"
+			}
+		}
+	},
+	"connections": {
+		"calendarD3c": {
+			"CalendarValues": {
+				"name": "CalendarValues",
+				"dataNode": "CalendarVal2",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			},
+			"SelectedDate": {
+				"name": "SelectedDate",
+				"dataNode": "SelectedDate",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			}
+		},
+		"kpiCard1": {
+			"value": {
+				"name": "value",
+				"dataNode": "SelectedDate",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

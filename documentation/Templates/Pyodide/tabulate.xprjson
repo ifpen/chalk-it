@@ -1,0 +1,110 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 15:30:15 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "tabulate",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "tabulate",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "tabulate",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "from tabulate import tabulate\n\ntable = [[\"Sun\",696000,1989100000],[\"Earth\",6371,5973.6],\n         [\"Moon\",1737,73.5],[\"Mars\",3390,641.85]]\nreturn tabulate(table, tablefmt=\"html\")"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"tabulate"
+		]
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"annotationHtmln": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.06781vw",
+				"height": "22.8388vh",
+				"width": "16.1773vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "annotationHtmln",
+				"instanceId": "annotationHtmln",
+				"modelJsonId": "annotationHtml",
+				"widgetTypeName": "Generic html(annotationHtmln)"
+			},
+			"modelParameters": {
+				"fontsize": 0.3,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#000",
+				"valueFontFamily": "Helvetica Neue",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {
+				"html": ""
+			}
+		}
+	},
+	"connections": {
+		"annotationHtmln": {
+			"html": {
+				"name": "html",
+				"dataNode": "tabulate",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

@@ -1,0 +1,177 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 17:00:58 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "osm-basic-geojson",
+		"description": "basic geoJSON display on map",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Maps"
+			},
+			{
+				"text": "Geo&Time"
+			},
+			{
+				"text": "geoJSON"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "basicGeoJSON",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "basicGeoJSON",
+					"json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[102,0.5]},\"properties\":{\"prop0\":\"value0\"}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[102,0],[103,1],[104,0],[105,1]]},\"properties\":{\"prop0\":\"value0\",\"prop1\":0}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[100,0],[101,0],[101,1],[100,1],[100,0]]]},\"properties\":{\"prop0\":\"value0\",\"prop1\":{\"this\":\"that\"}}}],\"properties\":{\"description\":\"GeoJSON example\"}}"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1639,
+		"heightPx": 685,
+		"scrollWidthPx": 1639,
+		"scrollHeightPx": 685,
+		"widthVw": 87.50667378537106,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.50667378537106,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"openStreetMapsK": {
+			"layout": {
+				"top": "1.67388vh",
+				"left": "1.251vw",
+				"height": "82.396vh",
+				"width": "71.7442vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "openStreetMapsK",
+				"instanceId": "openStreetMapsK",
+				"modelJsonId": "openStreetMaps",
+				"widgetTypeName": "Leaflet maps(openStreetMapsK)"
+			},
+			"modelParameters": {
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"geoJson": {
+					"numberOfLayers": 1
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false,
+					"densityHeatMap": true
+				},
+				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"choropleth": {
+					"numberOfLayers": 0
+				}
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
+		}
+	},
+	"connections": {
+		"openStreetMapsK": {
+			"geoJson1": {
+				"name": "geoJson1",
+				"dataFields": [],
+				"dataNode": "basicGeoJSON",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

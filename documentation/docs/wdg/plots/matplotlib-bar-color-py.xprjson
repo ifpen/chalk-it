@@ -1,0 +1,109 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Fri Feb 10 2023 09:40:58 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "matplotlib-bar-color-py",
+		"description": "",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "widgets"
+			},
+			{
+				"text": "Matplotlib"
+			},
+			{
+				"text": "pyodide"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "fig",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "fig",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import matplotlib.pyplot as plt\n\nfig, ax = plt.subplots()\n\nfruits = ['apple', 'blueberry', 'cherry', 'orange']\ncounts = [40, 100, 30, 55]\nbar_labels = ['red', 'blue', '_red', 'orange']\nbar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']\n\nax.bar(fruits, counts, label=bar_labels, color=bar_colors)\n\nax.set_ylabel('fruit supply')\nax.set_title('Fruit supply by kind and color')\nax.legend(title='Fruit color')\n\nreturn fig\n"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"matplotlib"
+		],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"matplotlib3": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "1.4094vw",
+				"height": "64.6814vh",
+				"width": "52.349vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "matplotlib3",
+				"instanceId": "matplotlib3",
+				"modelJsonId": "matplotlib",
+				"widgetTypeName": "Matplotlib generic(matplotlib3)"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"fig": ""
+			}
+		}
+	},
+	"connections": {
+		"matplotlib3": {
+			"fig": {
+				"name": "fig",
+				"dataNode": "fig",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

@@ -1,0 +1,112 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 16:12:42 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "generic-html-js",
+		"description": "",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "widget"
+			},
+			{
+				"text": "annotation&video"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "htmlStr",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "htmlStr",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "return `\n <h1>This is heading 1</h1>\n<h2>This is heading 2</h2>\n<h3>This is heading 3</h3>\n<h4>This is heading 4</h4>\n<h5>This is heading 5</h5>\n<h6>This is heading 6</h6>\n    <section>\n      <h2>A Simple HTML5 Page</h2>\n      <p>\n        This is an example of a simple HTML5 webpage using some of it's basic elements.\n        </p>\n      </section>\n    \n    <section>\n      <h2> CSS3 for Styling</h2>\n      <p>\n        To make this webpage visually appealing we'll use some of the basic CSS3 code in another example. CSS Makes styling of the page more easy and convinient.\n        </p>\n      </section>\n    \n    <section>\n      <h2> Progress bar </h2>\n       <p>\n        Progress you'll make<br>\n        When you undertand HTML5 code<progress max=\"100\" value=50></progress><br>\n        When you understand CSS3 Code <progress max=\"100\" value=50></progress><br>\n        When you understand HTML5+CSS3 Code<progress max=100 value=100></progress>\n      </p>\n    </section>\n  \n  <section>\n    <mark> For more understandibility how css works this page doesn't inlude any CSS3 code.</mark>\n  </section>\n    \n    \n    <footer>\n      <p>\n        This is the modified example of the code taught by Colleen van Lent in her Introduction to CSS3 course on coursera.</p>\n    </footer>\n`;"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1639,
+		"heightPx": 685,
+		"scrollWidthPx": 1639,
+		"scrollHeightPx": 685,
+		"widthVw": 87.50667378537106,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.50667378537106,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"annotationHtmlc": {
+			"layout": {
+				"top": "4.26894vh",
+				"left": "3.10802vw",
+				"height": "60.9392vh",
+				"width": "66.2329vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "annotationHtmlc",
+				"instanceId": "annotationHtmlc",
+				"modelJsonId": "annotationHtml",
+				"widgetTypeName": "Generic html(annotationHtmlc)"
+			},
+			"modelParameters": {
+				"fontsize": 0.3,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#000",
+				"valueFontFamily": "Helvetica Neue",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {
+				"html": ""
+			}
+		}
+	},
+	"connections": {
+		"annotationHtmlc": {
+			"html": {
+				"name": "html",
+				"dataNode": "htmlStr",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

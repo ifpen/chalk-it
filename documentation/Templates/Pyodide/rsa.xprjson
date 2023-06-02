@@ -1,0 +1,71 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 22:10:30 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "rsa",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "rsa",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "rsa",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import rsa\n(pubkey, privkey) = rsa.newkeys(512)\n\nreturn pubkey"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"rsa"
+		]
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {},
+	"connections": {},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

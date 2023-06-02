@@ -1,0 +1,110 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 14:20:45 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "openpyxl",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "openpyxl",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "openpyxl",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "from openpyxl import Workbook\nfrom openpyxl.utils import get_column_letter\n\nimport pandas as pd\n\nwb = Workbook()\n\ndest_filename = 'empty_book.xlsx'\n\nws1 = wb.active\nws1.title = \"range names\"\n\nfor row in range(1, 40):\n    ws1.append(range(600))\n\nws2 = wb.create_sheet(title=\"Pi\")\n\nws2['F5'] = 3.14\n\nws3 = wb.create_sheet(title=\"Data\")\nfor row in range(10, 20):\n    for col in range(27, 54):\n        _ = ws3.cell(column=col, row=row, value=\"{0}\".format(get_column_letter(col)))\n\ndf = pd.DataFrame(ws3.values)\n\nreturn df.to_html()\n"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"openpyxl"
+		]
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"annotationHtmlw": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.06781vw",
+				"height": "55.4963vh",
+				"width": "68.393vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "annotationHtmlw",
+				"instanceId": "annotationHtmlw",
+				"modelJsonId": "annotationHtml",
+				"widgetTypeName": "Generic html(annotationHtmlw)"
+			},
+			"modelParameters": {
+				"fontsize": 0.3,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#000",
+				"valueFontFamily": "Helvetica Neue",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {
+				"html": ""
+			}
+		}
+	},
+	"connections": {
+		"annotationHtmlw": {
+			"html": {
+				"name": "html",
+				"dataNode": "openpyxl",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

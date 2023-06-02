@@ -1,0 +1,86 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 23:08:10 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "csv-player",
+		"description": "CSV player example",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "CSV"
+			},
+			{
+				"text": "Real-time"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "csv",
+				"type": "CSV_file_player_plugin",
+				"settings": {
+					"name": "csv",
+					"data_path": "CH4-short.csv",
+					"content": "\"lat\",\"lng\",\"CH4\"\r\n48.876684, 2.175765, 1.94\r\n48.876684, 2.175765, 1.95\r\n48.876684, 2.175765, 1.92\r\n48.876705, 2.175806, 1.93\r\n48.876705, 2.175806, 1.99\r\n",
+					"delimiter": "",
+					"eol": "",
+					"quote_char": "\"",
+					"head": true,
+					"skip_empty_lines": true,
+					"dynamic_typing": true,
+					"time_included": false,
+					"playback": true,
+					"nb_meta_lines": 0,
+					"nb_subheader_lines": 0,
+					"sampleTime": 1
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {},
+	"connections": {},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
