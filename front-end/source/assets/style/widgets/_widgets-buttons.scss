@@ -211,4 +211,9 @@ $widget-btn-colors: 'default', 'primary', 'info', 'success', 'warning', 'danger'
   .btn-block {
     @extend %widget-btn-block;
   }
+
+  .btn-table-cell {
+    display: table-cell;;
+    @extend %widget-btn-block;
+  }
 }

@@ -391,7 +391,6 @@ function DatanodeDependency() {
   // then use it to get topological order
   function topologicalSort() {
     var graph = buildGraphDS();
-    //AEF: reindexMap correction at source before save
     //remove nodes from graph that doesn't exist as datanodes
     graph.nodes().forEach(function (nodeName) {
       if (!datanodesManager.foundDatanode(nodeName)) {

@@ -46,14 +46,6 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
   this.serialize = function () {
     var datanodes = [];
 
-    // MBG : reorder datanodes according to their dependencies
-    var reIndexMap = [];
-    var orderedDatanodesNames = datanodesDependency.topologicalSort();
-
-    _.each(self.datanodes(), function (datanodes) {
-      reIndexMap.push(_.indexOf(orderedDatanodesNames, datanodes.name()));
-    });
-
     _.each(self.datanodes(), function (datanode) {
       datanodes.push(datanode.serialize());
     });
@@ -65,8 +57,6 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
     $rootScope.safeApply();
     return {
       datanodes: datanodes,
-      reIndexMap: reIndexMap,
-      noTopologicalSortAtSerialize: true, // MBG for issue #41
     };
   };
 
@@ -84,10 +74,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
     function finishLoad() {
       self.error = ko.observable(false); // MBG 09/07/2018. error better as ko observable
       storeData = []; //ABK
-      var idx = 0;
-      var reIndexMap = object.reIndexMap;
-      var orderedDatanodes = [];
-      var deserializedDsCount = 0;
+      var datanodes = [];
 
       if (_.isUndefined(object.datanodes)) {
         object.datanodes = object.datasources; //compatibility
@@ -111,38 +98,10 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
         }
       }
 
-      deserializedDsCount = object.datanodes.length;
-
-      // MBG for issue #41
-      if (object.noTopologicalSortAtSerialize == true) {
-        for (idx = 0; idx < deserializedDsCount; idx++) {
-          orderedDatanodes[reIndexMap[idx]] = object.datanodes[idx];
-        }
-      } else {
-        orderedDatanodes = object.datanodes;
-      }
-
-      //AEF: reindexMap problem is fixed at save but for old project we add security
-      // to alert problem with reindexMap. User can load other projects after this error
-      var nbError = 0;
-      var missedNumber = [];
-      for (var k = 0; k < orderedDatanodes.length; k++) {
-        if (orderedDatanodes[k] == undefined) {
-          missedNumber[nbError] = k;
-          nbError++;
-        }
-      }
-      if (nbError) {
-        swal('The project file is corrupt', 'Project is opened in fail safe mode. Please save this new file.', 'error');
-        console.log('Error in deserialization because reindexMap ' + k + ' is missing in your xprjson.');
-        for (k = missedNumber.length - 1; k >= 0; k--) {
-          orderedDatanodes.splice(missedNumber[k], 1);
-        }
-      }
-      //
+      datanodes = object.datanodes;
 
       //_.each(object.datanodes, function(datanodeConfig) // MBG for issue #41
-      _.each(orderedDatanodes, function (datanodeConfig) {
+      _.each(datanodes, function (datanodeConfig) {
         if (!_checkDatanodeExistance(datanodeConfig.name)) {
           if (!_createDatanodeInstance(datanodeConfig)) {
             return false;
@@ -151,47 +110,6 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
           storeData.push(datanodeConfig); // MBG 11/07/2018: storeData has now datanodeConfig instead of datanodes
         }
       });
-
-      // MBG for issue #41
-      // Not optimal implemention. To improve with sort() function of ObservableArray
-      // rearrange only if bClear is true : code simplification right now. to be improved later
-      if (object.noTopologicalSortAtSerialize == true && bClear) {
-        var unsortedDs = [];
-        var sortedDs = [];
-        // first save
-        for (idx = 0; idx < deserializedDsCount; idx++) {
-          unsortedDs[idx] = jQuery.extend(true, {}, self.datanodes()[idx + appendPosition]);
-        }
-
-        //AEF: reindexMap problem is fixed at save but for old project we add security
-        // to alert problem with reindexMap. User can load other projects after this error
-        var max_of_reIndexMap = Math.max.apply(Math, missedNumber);
-        var min_of_reIndexMap = Math.min.apply(Math, missedNumber);
-        var newReIndexMap = [];
-        var i = 1;
-        for (idx = 0; idx < reIndexMap.length; idx++) {
-          if (reIndexMap[idx] > max_of_reIndexMap) {
-            newReIndexMap[idx] = reIndexMap[idx] - nbError;
-          } else if (reIndexMap[idx] < min_of_reIndexMap) {
-            newReIndexMap[idx] = reIndexMap[idx];
-          } else if (reIndexMap[idx] > min_of_reIndexMap && reIndexMap[idx] < max_of_reIndexMap) {
-            newReIndexMap[idx] = reIndexMap[idx] - nbError + i; //un nbre quelconque dans ]0, nbError[
-            i++;
-          }
-        }
-        // then sort
-        for (idx = 0; idx < orderedDatanodes.length; idx++) {
-          sortedDs[idx] = jQuery.extend(true, {}, unsortedDs[newReIndexMap[idx]]);
-        }
-        //
-
-        // clear datanodes list
-        self.datanodes.splice(appendPosition, deserializedDsCount);
-        // finally assign
-        for (idx = 0; idx < sortedDs.length; idx++) {
-          self.datanodes.push(sortedDs[idx]);
-        }
-      }
 
       if (storeData.length != 0) {
         //ABK
@@ -204,12 +122,12 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
         // this case is possible when in formula for example user define a datanodes that doesn't exist
         // and forget to create it later
         var bFound = false;
-        var diff = Object.keys(datanodesDependency.dependencyStructure).length - orderedDatanodes.length; // always positif
+        var diff = Object.keys(datanodesDependency.dependencyStructure).length - datanodes.length; // always positif
         if (diff != 0) {
           for (var prop in datanodesDependency.dependencyStructure) {
             bFound = false;
-            for (var j = 0; j < orderedDatanodes.length; j++) {
-              if (prop === orderedDatanodes[j].name) {
+            for (var j = 0; j < datanodes.length; j++) {
+              if (prop === datanodes[j].name) {
                 bFound = true;
                 break;
               }

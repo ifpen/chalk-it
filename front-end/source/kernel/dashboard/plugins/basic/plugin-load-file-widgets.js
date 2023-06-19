@@ -241,6 +241,8 @@ function loadFileWidgetsPluginClass() {
       var divContent = "";
 
       if (modelsParameters[idInstance].displayLabel) {
+        // conversion to enable HTML tags
+        const labelText = this.getTransformedText("label");
         divContent =
           divContent +
           '<div class="label-container" style="' +
@@ -251,7 +253,7 @@ function loadFileWidgetsPluginClass() {
           modelsParameters[idInstance].labelAlign +
           '">';
         divContent =
-          divContent + "<p>" + modelsParameters[idInstance].label + "</p>";
+          divContent + "<p>" + labelText + "</p>";
         divContent = divContent + "</div>";
       }
 

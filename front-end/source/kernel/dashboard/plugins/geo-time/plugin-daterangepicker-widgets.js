@@ -36,6 +36,7 @@ modelsParameters.dateRangePicker = {
     "valueTextAlign": "left",
     "displayBorder": true,
     "borderColor": "var(--widget-border-color)",
+    "backgroundColor": "var(--widget-input-color)"
 };
 
 // Layout (default dimensions)
@@ -90,7 +91,8 @@ function dateRangePickerWidgetsPluginClass() {
 
             if (modelsParameters[idInstance].displayLabel == true) {
                 if (!_.isUndefined(modelsParameters[idInstance].label)) {
-                    labelText = modelsParameters[idInstance].label;
+                    // conversion to enable HTML tags
+                    labelText = this.getTransformedText("label");
                 }
                 if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
                     labelProportion = modelsParameters[idInstance].labelWidthProportion;
@@ -122,13 +124,11 @@ function dateRangePickerWidgetsPluginClass() {
 
             var daterangepickerHtml = '<div id="daterangepicker' + idWidget + '" >' +
                 '<input type="text" autocomplete="off" ' + dateRangePickerDisabled + ' placeholder="Choose a date range" id="daterangepickerInput' + idWidget + '" ' +
-                'style="' + cursorIcon + ' height: ' + divHeight + 'px; border-radius: 6px; ' +
-                'color: #34495e;' +
-                border +
+                'style="' + cursorIcon + ' height: ' + divHeight + 'px; border-radius: 6px; ' + border +
                 'float: right;' +
                 'padding-right: ' + valueFontSize.replace('(', '(3*(').replace(')', '))') + ';' +
                 'text-align: ' + modelsParameters[idInstance].valueTextAlign + '; ' +
-                'font-size: ' + valueFontSize + '; ' + this.valueColor() + this.valueFontFamily() + '" ' +
+                'font-size: ' + valueFontSize + '; ' + this.valueColor() + this.valueFontFamily() + this.backgroundColor() + '" ' +
                 'class="value-input form-control ng-pristine ng-untouched ng-valid ng-empty" />' +
                 '<span class="form-control-feedback" style="' + cursorIcon +
                 'height: ' + divHeight + 'px; ' +

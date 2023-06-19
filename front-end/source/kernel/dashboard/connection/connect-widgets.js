@@ -83,33 +83,7 @@ var widgetConnector = (function () {
         const slider = widgetConnection.sliders[key];
         slider.dataNode = 'None';
         slider.dataFields.length = 0;
-        slider.dataNodeIndex = -1;
       }
-    }
-  
-    /*--------update Data Node Index--------*/
-    function updateDataNodeIndex(instanceId) {
-      if (widgetsConnection[instanceId]) {
-        var selectSliderName = '';
-        var value = '';
-        var indexDataNode = -1;
-        var dataNodeName = '';
-        for (let c1 in widgetsConnection[instanceId].sliders) {
-          if (widgetsConnection[instanceId].sliders[c1].dataNode != 'None') {
-            selectSliderName = widgetsConnection[instanceId].sliders[c1].name;
-            value = widgetsConnection[instanceId].sliders[c1].dataNode;
-            for (let f = 0; f < datanodesManager.getAllDataNodes().length; f++) {
-              dataNodeName = datanodesManager.getAllDataNodes()[f].name();
-              if (value == dataNodeName) {
-                indexDataNode = f;
-              }
-            }
-            widgetsConnection[instanceId].sliders[c1].dataNodeIndex = indexDataNode; //update index
-          }
-        }
-      }
-  
-      _onConnectionsChanged();
     }
   
     /*--------serialize--------*/
@@ -141,9 +115,7 @@ var widgetConnector = (function () {
           if (_.isUndefined(connectObj[key][actuator].dataNode)) {
             //compatibility
             connectObj[key][actuator].dataNode = connectObj[key][actuator].dataSource;
-            connectObj[key][actuator].dataNodeIndex = connectObj[key][actuator].dataSourceIndex;
             delete connectObj[key][actuator].dataSource;
-            delete connectObj[key][actuator].dataSourceIndex;
           }
           widgetsConnection[key].sliders[actuator] = connectObj[key][actuator];
         }
@@ -152,7 +124,6 @@ var widgetConnector = (function () {
       for (let key in widgetsConnection) {
         try {
           // MBG tmp to handle pb of long requests
-          widgetConnector.updateDataNodeIndex(key); // MBG 03/06/2021 : sanity safety (Elsie issue)
           widgetPreview.plotConstantData(key, false);
           // widgetsConnection[key].widgetObjEdit = null; //AEF: comment  for issue#152
         } catch (exc) {
@@ -230,8 +201,7 @@ var widgetConnector = (function () {
       serialize: serialize,
       deserialize: deserialize,
       clear: clear,
-      updateDataNodeIndex: updateDataNodeIndex,
       duplicateConnection: duplicateConnection,
       refreshDatanodeConsumers: refreshDatanodeConsumers,
     };
-  })();
+})();
