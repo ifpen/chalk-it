@@ -68,9 +68,9 @@ function updateDataSourceFromWidget(idInstance, e) {
 }
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// |                     updateDataSourceFromWidgetwithspinButton       | \\
+// |               updateDataNodeFromWidgetwithspinButton               | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function updateDataSourceFromWidgetwithspinButton(idInstance, idWidget) {
+function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
   var widgetElement = document.getElementById('button' + idWidget);
   var iElement = document.createElement('i');
   iElement.setAttribute('id', 'icon' + idWidget);
@@ -112,9 +112,9 @@ function updateDataSourceFromWidgetwithspinButton(idInstance, idWidget) {
 }
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// |                   updateDataSourceFileFromWidget                   | \\
+// |                   updateDataNodeFileFromWidget                     | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function updateDataSourceFileFromWidget(idInstance, fileContent) {
+function updateDataNodeFileFromWidget(idInstance, fileContent) {
   if (_.isUndefined(widgetConnector.widgetsConnection[idInstance])) return;
   var sliders = widgetConnector.widgetsConnection[idInstance].sliders;
   if (!_.isUndefined(sliders)) {

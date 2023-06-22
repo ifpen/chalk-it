@@ -287,7 +287,7 @@ function flatUiWidgetsPluginClass() {
                         result.content = data;
                         result.isBinary = false;
                     }
-                    updateDataSourceFileFromWidget(idInstance, result);
+                    updateDataNodeFileFromWidget(idInstance, result);
                 });
 
                 if (modelsParameters[idInstance].binaryFileInput) {
@@ -337,7 +337,7 @@ function flatUiWidgetsPluginClass() {
                     const fileInput = '<input onclick="displaySpinnerOnInputFileButton(\'' + idWidget + '\')" type="file" style="display : none;" id="button' + idWidget + '_select_file"></input>';
                     divContent = '<a ' + styleDef + '" id="button' + idWidget + '">' + icon  + " " +  text + " " + fileInput + '</a>';
                 } else {
-                    divContent = '<a onclick="updateDataSourceFromWidgetwithspinButton( \'' + idInstance + '\', \'' + idWidget + '\')" ' + styleDef +
+                    divContent = '<a onclick="updateDataNodeFromWidgetwithspinButton( \'' + idInstance + '\', \'' + idWidget + '\')" ' + styleDef +
                         '" id="button' + idWidget + '">' + icon + " " + text + "  " + '</a>';
                 }
                 self.enable();

@@ -238,11 +238,7 @@ function doubleSliderWidgetsPluginClass() {
             removeValueChangedHandler: function (updateDataFromWidget) {
                 self.disable();
             },
-            setCaption: function (caption, bCaptionManuallyChanged) {
-                if (modelsParameters[idInstance].inheritLabelFromData) {
-                    self.captionHelper(caption, self.bIsInteractive, bCaptionManuallyChanged);
-                }
-            },
+            setCaption: function (caption, bCaptionManuallyChanged) {},
             clearCaption: function () {
                 modelsParameters[idInstance].label = "";
                 self.render();
