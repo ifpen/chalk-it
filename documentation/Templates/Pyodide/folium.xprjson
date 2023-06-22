@@ -1,0 +1,110 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 13:38:45 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "folium",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "foliumMap",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "foliumMap",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import folium\nimport json\nimport io\nimport pandas as pd\n\nfrom pyodide.http import open_url\n\nurl = (\n    \"https://raw.githubusercontent.com/python-visualization/folium/master/examples/data\"\n)\nstate_geo = f\"{url}/us-states.json\"\nstate_unemployment = f\"{url}/US_Unemployment_Oct2012.csv\"\nstate_data = pd.read_csv(open_url(state_unemployment))\ngeo_json = json.loads(open_url(state_geo).read())\n\nm = folium.Map(location=[48, -102], zoom_start=3)\n\nfolium.Choropleth(\n    geo_data=geo_json,\n    name=\"choropleth\",\n    data=state_data,\n    columns=[\"State\", \"Unemployment\"],\n    key_on=\"feature.id\",\n    fill_color=\"YlGn\",\n    fill_opacity=0.7,\n    line_opacity=0.2,\n    legend_name=\"Unemployment Rate (%)\",\n).add_to(m)\n\nfolium.LayerControl().add_to(m)\n\nreturn m._repr_html_()"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"folium"
+		]
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"annotationHtml3": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.06781vw",
+				"height": "58.1644vh",
+				"width": "52.3759vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "annotationHtml3",
+				"instanceId": "annotationHtml3",
+				"modelJsonId": "annotationHtml",
+				"widgetTypeName": "Generic html(annotationHtml3)"
+			},
+			"modelParameters": {
+				"fontsize": 0.3,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#000",
+				"valueFontFamily": "Helvetica Neue",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {
+				"html": ""
+			}
+		}
+	},
+	"connections": {
+		"annotationHtml3": {
+			"html": {
+				"name": "html",
+				"dataNode": "foliumMap",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

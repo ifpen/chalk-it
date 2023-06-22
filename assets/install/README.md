@@ -1,0 +1,3 @@
+# Chalk'it
+
+Chalk'it is an open-source framework that helps to convert Python scripts into shareable web application dashboards. It relies on drag-and-drop widget design to build an interface connected to a dataflow that ties together Python code and other data sources. It supports several Python graphical libraries, such as Plotly and Matplolib, as well as Leaflet for map interaction and visualization.

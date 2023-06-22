@@ -1,0 +1,117 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 14:49:10 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "idna",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "idna",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "idna",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import idna.codec\nb = 'домен.испытание'.encode('idna')\n\nreturn str(b)\n"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"kpiCardW": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.06781vw",
+				"height": "18.0363vh",
+				"width": "76.9354vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "kpiCardW",
+				"instanceId": "kpiCardW",
+				"modelJsonId": "kpiCard",
+				"widgetTypeName": "KPI value(kpiCardW)"
+			},
+			"modelParameters": {
+				"label": "idna",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valuePosition": "bottom",
+				"valueFontSize": 2,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"decimalDigits": 3,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"unitColor": "#2154ab",
+				"borderShadow": false
+			},
+			"modelHiddenParams": {
+				"value": "--"
+			}
+		}
+	},
+	"connections": {
+		"kpiCardW": {
+			"value": {
+				"name": "value",
+				"dataNode": "idna",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

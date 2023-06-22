@@ -1,0 +1,134 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 22:38:22 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "webservice-post-simple-js",
+		"description": "HTTP POST using REST API dataNode-type",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "REST-API"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "Surface",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "Surface",
+					"url": "https://compute20190425045435.azurewebsites.net/ComputeService.asmx/Surface",
+					"use_xproxy": false,
+					"sampleTime": 0,
+					"autoStart": true,
+					"explicitTrig": false,
+					"req_data_type": "JSON",
+					"resp_data_type": "JSON",
+					"method": "POST",
+					"body": "{ \"X\": \"1.25\", \"Y\": \"4.0\" }",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					]
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiValueDisplayN": {
+			"layout": {
+				"top": "1.70085vh",
+				"left": "0.806012vw",
+				"height": "5.52277vh",
+				"width": "21.9632vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiValueDisplayN",
+				"instanceId": "flatUiValueDisplayN",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayN)"
+			},
+			"modelParameters": {
+				"label": "Msg",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "70%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"isNumber": false,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"displayBorder": true,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiValueDisplayN": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"Msg"
+				],
+				"dataNode": "Surface",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

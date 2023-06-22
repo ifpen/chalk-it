@@ -1,0 +1,53 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Fri Feb 03 2023 10:31:54 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "py-script",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [],
+		"reIndexMap": [],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1302,
+		"heightPx": 562,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 562,
+		"widthVw": 84.765625,
+		"heightVh": 80.74712643678161,
+		"scrollWidthVw": 84.765625,
+		"scrollHeightVh": 80.74712643678161,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {},
+	"connections": {},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

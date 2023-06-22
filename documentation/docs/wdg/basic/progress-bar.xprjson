@@ -1,0 +1,169 @@
+{
+	"meta": {
+		"version": "2.470.8480",
+		"date": "Mon Mar 20 2023 13:49:04 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "test55",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "v",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "v",
+					"json_var": "54"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1302,
+		"heightPx": 575,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 575,
+		"widthVw": 84.765625,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.765625,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiProgressBark": {
+			"layout": {
+				"top": "8.44875vh",
+				"left": "1.30208vw",
+				"height": "4.98615vh",
+				"width": "19.401vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiProgressBark",
+				"instanceId": "flatUiProgressBark",
+				"modelJsonId": "flatUiProgressBar",
+				"widgetTypeName": "Progress bar(flatUiProgressBark)"
+			},
+			"modelParameters": {
+				"label": "v",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"rangeActuator": false,
+				"min": 0,
+				"max": 100,
+				"displayValue": false,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "var(--widget-font-family)",
+				"labelWidthProportion": "20%",
+				"progressBarWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"progressBarRangeColor": "var(--widget-range-color)",
+				"progressBarSegmentColor": "var(--widget-segment-color)",
+				"valueColor": "var(--widget-color)"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSliderp": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "1.30208vw",
+				"height": "4.98615vh",
+				"width": "24.0234vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderp",
+				"instanceId": "flatUiHorizontalSliderp",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderp)"
+			},
+			"modelParameters": {
+				"label": "v",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"rangeActuator": false,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"validationOnFocusOut": true,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueBorderColor": "var(--widget-border-color)",
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"sliderRangeColor": "var(--widget-range-color)",
+				"sliderSegmentColor": "var(--widget-segment-color)",
+				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
+				"valueColor": "var(--widget-color)"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		}
+	},
+	"connections": {
+		"flatUiProgressBark": {
+			"value": {
+				"name": "value",
+				"dataNode": "v",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiHorizontalSliderp": {
+			"value": {
+				"name": "value",
+				"dataNode": "v",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

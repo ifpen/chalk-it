@@ -1,0 +1,179 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 18:24:06 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "osm-image-overlay",
+		"description": "Image overlay on map",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Maps"
+			},
+			{
+				"text": "Geo&Time"
+			},
+			{
+				"text": "Image-overlay"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "imageOverlay",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "imageOverlay",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var imgStruct = {};\n\nimgStruct.imageUrl = \"https://www.ifpenergiesnouvelles.fr/sites/ifpen.fr/files/logo_ifpen_2.jpg\";\nimgStruct.imageBounds =  [[48.874875, 2.171738], [48.877923, 2.179484]];\nimgStruct.title = \"IFPEN location\";\nimgStruct.addAs =\"overlay\";\n\nreturn imgStruct;\n"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1639,
+		"heightPx": 685,
+		"scrollWidthPx": 1639,
+		"scrollHeightPx": 685,
+		"widthVw": 87.50667378537106,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.50667378537106,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"openStreetMapsZ": {
+			"layout": {
+				"top": "1.96834vh",
+				"left": "0.984696vw",
+				"height": "81.6205vh",
+				"width": "80.2199vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "openStreetMapsZ",
+				"instanceId": "openStreetMapsZ",
+				"modelJsonId": "openStreetMaps",
+				"widgetTypeName": "Leaflet maps(openStreetMapsZ)"
+			},
+			"modelParameters": {
+				"defaultCenter": {
+					"latitude": 48.87808,
+					"longitude": 2.171738,
+					"zoom": 16
+				},
+				"geoJson": {
+					"numberOfLayers": 0
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false,
+					"densityHeatMap": true
+				},
+				"imageOverlay": {
+					"numberOfLayers": 1
+				},
+				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"choropleth": {
+					"numberOfLayers": 0
+				}
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
+		}
+	},
+	"connections": {
+		"openStreetMapsZ": {
+			"imageOverlay1": {
+				"name": "imageOverlay1",
+				"dataFields": [],
+				"dataNode": "imageOverlay",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

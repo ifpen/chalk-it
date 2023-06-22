@@ -1,0 +1,169 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 15:49:30 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "cached",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "cached",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "cached",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "\nfrom cachetools import cached\nimport time\n  \n  \n# Without cached\ndef old_fib(n):\n    return n if n<2 else old_fib(n-1) + old_fib(n-2)\n  \ns = time.time()\nprint(old_fib(35))\nnoCache = time.time() - s\n  \n# Now using cached\ns = time.time()\n  \n# Use this decorator to enable caching\n@cached(cache ={})\ndef fib(n):\n    return n if n<2 else fib(n-1) + fib(n-2)\n  \nprint(fib(35))\ncache = time.time() - s\n\nreturn {\"no cache\": noCache, \"cache\": cache}"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"cachetools"
+		]
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"kpiCardj": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.06781vw",
+				"height": "16.0085vh",
+				"width": "17.9925vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "kpiCardj",
+				"instanceId": "kpiCardj",
+				"modelJsonId": "kpiCard",
+				"widgetTypeName": "KPI value(kpiCardj)"
+			},
+			"modelParameters": {
+				"label": "cache",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valuePosition": "bottom",
+				"valueFontSize": 2,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"decimalDigits": 3,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"unitColor": "#2154ab",
+				"borderShadow": false
+			},
+			"modelHiddenParams": {
+				"value": "--"
+			}
+		},
+		"kpiCardv": {
+			"layout": {
+				"top": "20.2775vh",
+				"left": "1.1212vw",
+				"height": "16.0085vh",
+				"width": "17.9925vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "kpiCardv",
+				"instanceId": "kpiCardv",
+				"modelJsonId": "kpiCard",
+				"widgetTypeName": "KPI value(kpiCardv)"
+			},
+			"modelParameters": {
+				"label": "no cache",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valuePosition": "bottom",
+				"valueFontSize": 2,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"decimalDigits": 3,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"unitColor": "#2154ab",
+				"borderShadow": false
+			},
+			"modelHiddenParams": {
+				"value": "--"
+			}
+		}
+	},
+	"connections": {
+		"kpiCardj": {
+			"value": {
+				"name": "value",
+				"dataNode": "cached",
+				"dataFields": [
+					"cache"
+				],
+				"dataNodeIndex": 0
+			}
+		},
+		"kpiCardv": {
+			"value": {
+				"name": "value",
+				"dataNode": "cached",
+				"dataFields": [
+					"no cache"
+				],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

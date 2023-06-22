@@ -1,0 +1,748 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Mon Feb 27 2023 23:02:23 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "live-demo-py",
+		"description": "",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "Python"
+			},
+			{
+				"text": "Maps"
+			},
+			{
+				"text": "pyodide"
+			},
+			{
+				"text": "plotly"
+			},
+			{
+				"text": "API"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "geoJSON",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "geoJSON",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "try:\n    return {\n      \"type\": \"FeatureCollection\",\n      \"features\": [\n        {\n          \"type\": \"Feature\",\n          \"geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n              dataNodes[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"DisplayPosition\"][\"Longitude\"] ,\n              dataNodes[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"DisplayPosition\"][\"Latitude\"] \n            ]\n          },\n          \"properties\": {\n            \"comment\": \"Geo-location of filled address\"\n          }\n        }\n      ],\n      \"properties\": {\n        \"description\": \"Address location\"\n      }\n    }\n\nexcept:\n    return {};\n\n\n"
+				}
+			},
+			{
+				"name": "geocode",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "geocode",
+					"url": "https://xdashgateway.azure-api.net/geocode/geocode.json",
+					"use_xproxy": true,
+					"sampleTime": 0,
+					"autoStart": true,
+					"explicitTrig": false,
+					"req_data_type": "JSON",
+					"resp_data_type": "JSON",
+					"method": "GET",
+					"body": "return {\n    \"urlAppend\": \"?searchtext=\" +  datasources[\"address\"][\"location\"] \n};",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly94ZGFzaGdhdGV3YXkuYXp1cmUtYXBpLm5ldC9nZW9jb2RlL2dlb2NvZGUuanNvbiIsIkhvc3QiOiJ4ZGFzaCJ9",
+					"proxySig": "5TM10MtZYvnW/sf2ZrpNxgEoPlQszlhbXIZlWF7Df205pf+wQwmnKe7dVKDZZQD4bwYRQKuGdGFjOo0pbTthc1+3g8xAPNBgPqJfHniQG2slJU2VsJwjKy8tIGT1JFk0"
+				}
+			},
+			{
+				"name": "weather",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "weather",
+					"url": "https://xdashgateway.azure-api.net/weather",
+					"use_xproxy": true,
+					"sampleTime": 0,
+					"autoStart": true,
+					"explicitTrig": false,
+					"req_data_type": "JSON",
+					"resp_data_type": "JSON",
+					"method": "GET",
+					"body": "var city =  datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"City\"];\nvar state =  datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"State\"];\nvar country =  datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"County\"];\nreturn {\"urlAppend\": \"?q=\" + encodeURIComponent(city+', ' + state + ', ' + country) + \"&units=metric\"};",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly94ZGFzaGdhdGV3YXkuYXp1cmUtYXBpLm5ldC93ZWF0aGVyIiwiSG9zdCI6InhkYXNoIn0=",
+					"proxySig": "5TM10MtZYvnW/sf2ZrpNxgEoPlQszlhbXIZlWF7Df21VbLelYW7dBKK0zgoYLCuj2fYre+BD6RVAckscLqoZ3gzamFn5ZF7go+wk5Byeg4c="
+				}
+			},
+			{
+				"name": "address",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "address",
+					"json_var": "{\"location\":\"1, Avenue du Bois-Préau, 92500, Rueil-Malmaison, Hauts-de-Seine, Île-de-France, France\"}"
+				}
+			},
+			{
+				"name": "inputs",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "inputs",
+					"json_var": "{\"Width\":13,\"Length\":12}"
+				}
+			},
+			{
+				"name": "plot",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "plot",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import plotly.express as px\nimport pandas as pd\n\ntab = dataNodes[\"table\"][\"value\"]\ndf = pd.DataFrame(tab[1:],columns=tab[0])\nfig = px.line(df, x=\"x\", y=\"y\")\n\nfig.update_layout(\n    margin=dict(\n        l=10,\n        r=10,\n        b=10,\n        t=10,\n        pad=4\n    )\n)\n\nreturn fig\n"
+				}
+			},
+			{
+				"name": "Surface",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "Surface",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "return dataNodes[\"inputs\"][\"Width\"] * dataNodes[\"inputs\"][\"Length\"];"
+				}
+			},
+			{
+				"name": "table",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "table",
+					"json_var": "{\"value\":[[\"x\",\"y\"],[0,0],[1,2],[2,4],[3,7]]}"
+				}
+			},
+			{
+				"name": "results",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "results",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "return [\n\t[\"City\", \"Temperature\", \"Humidity\"],\n    [ dataNodes[\"weather\"][\"name\"],  dataNodes[\"weather\"][\"main\"][\"temp\"] , dataNodes[\"weather\"][\"main\"][\"humidity\"] ]\n];"
+				}
+			}
+		],
+		"reIndexMap": [
+			4,
+			3,
+			5,
+			2,
+			7,
+			1,
+			8,
+			0,
+			6
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"plotly"
+		]
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 628.4,
+			"heightPx": 644.4,
+			"widthVw": 42.1744966442953,
+			"heightVh": 89.25207756232687,
+			"rowHeightPercent": 112
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "2",
+			"maxCells": 2,
+			"maxCols": 2,
+			"classType": "col-md-6"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "flatUiHorizontalSliderj",
+				"component1": "flatUiHorizontalSliderZ",
+				"component2": "annotationLabelT",
+				"component3": "flatUiTableM",
+				"component4": "annotationLabelU",
+				"component5": "flatUiValueDisplayV",
+				"component6": "plotlyPyGeneric2"
+			},
+			"dpr2": {
+				"component0": "flatUiHereAutocompleteValueU",
+				"component1": "openStreetMapsb",
+				"component2": "annotationLabel8",
+				"component3": "annotationLabelZ",
+				"component4": "flatUiTable8"
+			}
+		},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiHorizontalSliderj": {
+			"layout": {
+				"top": "12.8116vh",
+				"left": "0.792669vw",
+				"height": "7.11738vh",
+				"width": "38.0481vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderj",
+				"instanceId": "flatUiHorizontalSliderj",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderj)"
+			},
+			"modelParameters": {
+				"label": "Width",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSliderZ": {
+			"layout": {
+				"top": "21.3525vh",
+				"left": "0.792669vw",
+				"height": "7.11738vh",
+				"width": "38.0481vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderZ",
+				"instanceId": "flatUiHorizontalSliderZ",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderZ)"
+			},
+			"modelParameters": {
+				"label": "Length",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"annotationLabelT": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "0.805369vw",
+				"height": "10.5263vh",
+				"width": "39.5973vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "10"
+			},
+			"container": {
+				"id": "annotationLabelT",
+				"instanceId": "annotationLabelT",
+				"modelJsonId": "annotationLabel",
+				"widgetTypeName": "Label(annotationLabelT)"
+			},
+			"modelParameters": {
+				"text": "In Chalk'it you find simple widgets. Change sliders value to execute rectange surface computation function.",
+				"fontsize": 0.5,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#2154ab",
+				"textAlign": "left",
+				"valueFontFamily": "Helvetica Neue",
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiTableM": {
+			"layout": {
+				"top": "49.0305vh",
+				"left": "1.14094vw",
+				"height": "36.8421vh",
+				"width": "10.604vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "15"
+			},
+			"container": {
+				"id": "flatUiTableM",
+				"instanceId": "flatUiTableM",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTableM)"
+			},
+			"modelParameters": {
+				"headerLine": true,
+				"tableValueFontSize": 0.5,
+				"striped": true,
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[1]",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		},
+		"annotationLabelU": {
+			"layout": {
+				"top": "37.9857vh",
+				"left": "0.794304vw",
+				"height": "10.139vh",
+				"width": "38.2059vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "11"
+			},
+			"container": {
+				"id": "annotationLabelU",
+				"instanceId": "annotationLabelU",
+				"modelJsonId": "annotationLabel",
+				"widgetTypeName": "Label(annotationLabelU)"
+			},
+			"modelParameters": {
+				"text": "Edit the \"y\" column of this table to define your own function.",
+				"fontsize": 0.5,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#2154ab",
+				"textAlign": "left",
+				"valueFontFamily": "Helvetica Neue",
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiHereAutocompleteValueU": {
+			"layout": {
+				"top": "13.7484vh",
+				"left": "1.189vw",
+				"height": "6.87423vh",
+				"width": "39.4749vw",
+				"minHeight": "32px",
+				"minWidth": "150px",
+				"z-index": "10"
+			},
+			"container": {
+				"id": "flatUiHereAutocompleteValueU",
+				"instanceId": "flatUiHereAutocompleteValueU",
+				"modelJsonId": "flatUiHereAutocompleteValue",
+				"widgetTypeName": "Address autocompletion(flatUiHereAutocompleteValueU)"
+			},
+			"modelParameters": {
+				"label": "address",
+				"inheritLabelFromData": false,
+				"displayLabel": false,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "80%",
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"displayBorder": true,
+				"countryIsoCodes": "FRA",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"openStreetMapsb": {
+			"layout": {
+				"top": "23.9103vh",
+				"left": "0.871935vw",
+				"height": "40.498vh",
+				"width": "39.4749vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "10"
+			},
+			"container": {
+				"id": "openStreetMapsb",
+				"instanceId": "openStreetMapsb",
+				"modelJsonId": "openStreetMaps",
+				"widgetTypeName": "Leaflet maps(openStreetMapsb)"
+			},
+			"modelParameters": {
+				"drawingFeatures": false,
+				"drawingFeaturesOptions": {
+					"point": true,
+					"line": true,
+					"polygone": true,
+					"rectangle": true,
+					"modal": false
+				},
+				"captureClickEvent": false,
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"geoJson": {
+					"numberOfLayers": 1
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false,
+					"densityHeatMap": false
+				},
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
+				"choropleth": {
+					"numberOfLayers": 0
+				}
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
+		},
+		"annotationLabel8": {
+			"layout": {
+				"top": "1.80055vh",
+				"left": "0.872483vw",
+				"height": "9.9723vh",
+				"width": "39.396vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "12"
+			},
+			"container": {
+				"id": "annotationLabel8",
+				"instanceId": "annotationLabel8",
+				"modelJsonId": "annotationLabel",
+				"widgetTypeName": "Label(annotationLabel8)"
+			},
+			"modelParameters": {
+				"text": "Fill a location address. Chalk'it will call an API to perform geo-location.",
+				"fontsize": 0.5,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#2154ab",
+				"textAlign": "left",
+				"valueFontFamily": "Helvetica Neue",
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		},
+		"annotationLabelZ": {
+			"layout": {
+				"top": "65.928vh",
+				"left": "1.4094vw",
+				"height": "10.1108vh",
+				"width": "38.8591vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "13"
+			},
+			"container": {
+				"id": "annotationLabelZ",
+				"instanceId": "annotationLabelZ",
+				"modelJsonId": "annotationLabel",
+				"widgetTypeName": "Label(annotationLabelZ)"
+			},
+			"modelParameters": {
+				"text": "Based on the location, Chalk'it calls OpenWeatherMap API to get the weather at this location.",
+				"fontsize": 0.5,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#2154ab",
+				"textAlign": "left",
+				"valueFontFamily": "Helvetica Neue",
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiTable8": {
+			"layout": {
+				"top": "76.0059vh",
+				"left": "1.50607vw",
+				"height": "11.8057vh",
+				"width": "38.7613vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "10"
+			},
+			"container": {
+				"id": "flatUiTable8",
+				"instanceId": "flatUiTable8",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTable8)"
+			},
+			"modelParameters": {
+				"headerLine": true,
+				"tableValueFontSize": 0.5,
+				"striped": true,
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[]",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		},
+		"flatUiValueDisplayV": {
+			"layout": {
+				"top": "29.9888vh",
+				"left": "4.44809vw",
+				"height": "7.14017vh",
+				"width": "34.3933vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "14"
+			},
+			"container": {
+				"id": "flatUiValueDisplayV",
+				"instanceId": "flatUiValueDisplayV",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayV)"
+			},
+			"modelParameters": {
+				"label": "Rectangle surface",
+				"inheritLabelFromData": false,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "20%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"isNumber": false,
+				"isPassword": false,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"valueTextAlign": "right",
+				"displayBorder": true,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"plotlyPyGeneric2": {
+			"layout": {
+				"top": "48.892vh",
+				"left": "12.953vw",
+				"height": "30.7479vh",
+				"width": "25.9732vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "16"
+			},
+			"container": {
+				"id": "plotlyPyGeneric2",
+				"instanceId": "plotlyPyGeneric2",
+				"modelJsonId": "plotlyPyGeneric",
+				"widgetTypeName": "Plotly Python generic(plotlyPyGeneric2)"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"fig": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiHorizontalSliderj": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"Width"
+				],
+				"dataNode": "inputs",
+				"dataNodeIndex": 4
+			}
+		},
+		"flatUiHorizontalSliderZ": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"Length"
+				],
+				"dataNode": "inputs",
+				"dataNodeIndex": 4
+			}
+		},
+		"annotationLabelT": {},
+		"flatUiTableM": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"value"
+				],
+				"dataNode": "table",
+				"dataNodeIndex": 7
+			}
+		},
+		"annotationLabelU": {},
+		"flatUiHereAutocompleteValueU": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"location"
+				],
+				"dataNode": "address",
+				"dataNodeIndex": 3
+			}
+		},
+		"openStreetMapsb": {
+			"geoJson1": {
+				"name": "geoJson1",
+				"dataFields": [],
+				"dataNode": "geoJSON",
+				"dataNodeIndex": 0
+			}
+		},
+		"annotationLabel8": {},
+		"annotationLabelZ": {},
+		"flatUiTable8": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "results",
+				"dataNodeIndex": 8
+			}
+		},
+		"flatUiValueDisplayV": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "Surface",
+				"dataNodeIndex": 6
+			}
+		},
+		"plotlyPyGeneric2": {
+			"fig": {
+				"name": "fig",
+				"dataNode": "plot",
+				"dataFields": [],
+				"dataNodeIndex": 5
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

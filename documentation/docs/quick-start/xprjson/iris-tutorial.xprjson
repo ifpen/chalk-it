@@ -1,0 +1,429 @@
+{
+	"meta": {
+		"version": "2.999.8415",
+		"date": "Sat Jan 14 2023 15:38:04 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "iris-tutorial",
+		"description": "",
+		"groupName": "",
+		"tags": [
+			{
+				"text": "Tutorial"
+			},
+			{
+				"text": "pyodide"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "classifier",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "classifier",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "from sklearn.ensemble import RandomForestClassifier\nclf=RandomForestClassifier()\nclf.fit(dataNodes[\"dataset\"].data,dataNodes[\"dataset\"].target)\nreturn clf\n"
+				}
+			},
+			{
+				"name": "dataset",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "dataset",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "from sklearn import datasets\niris=datasets.load_iris()\nreturn iris"
+				}
+			},
+			{
+				"name": "datasetDataframe",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "datasetDataframe",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import pandas as pd\n\niris=dataNodes[\"dataset\"]\n\ndf = pd.DataFrame(data=iris.data, columns=iris.feature_names)\ndf[\"target\"] = iris.target\ntarget_names = {0: \"Setosa\", 1: \"Versicolour\", 2:\"Virginica\" }\ndf['target'] =df['target'].map(target_names)\n\nreturn df"
+				}
+			},
+			{
+				"name": "inputs",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "inputs",
+					"json_var": "{\"sepal_width\":5.4,\"sepal_length\":2.7,\"petal_length\":3,\"petal_width\":0.5}"
+				}
+			},
+			{
+				"name": "plot",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "plot",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import plotly.express as px\n\ndf = dataNodes[\"datasetDataframe\"]\nfig = px.scatter(df, x=\"sepal width (cm)\", y=\"sepal length (cm)\", color=\"target\", size='petal length (cm)', hover_data=['petal width (cm)'])\n\nreturn fig\n\n"
+				}
+			},
+			{
+				"name": "predict",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "predict",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import pandas as pd\nfrom sklearn.ensemble import RandomForestClassifier\n\ndf =pd.DataFrame(dataNodes[\"inputs\"],index=[0])\nclf = dataNodes[\"classifier\"]\n\nprediction=clf.predict(df)\n\nreturn dataNodes[\"dataset\"].target_names[prediction][0]"
+				}
+			}
+		],
+		"reIndexMap": [
+			4,
+			1,
+			2,
+			0,
+			3,
+			5
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"scikit-learn",
+			"pandas",
+			"numpy"
+		],
+		"pyodideMicropip": [
+			"plotly"
+		]
+	},
+	"scaling": {
+		"widthPx": 1640,
+		"heightPx": 685,
+		"scrollWidthPx": 1640,
+		"scrollHeightPx": 685,
+		"widthVw": 87.56006406833956,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.56006406833956,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"plotlyPyGenerice": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.06781vw",
+				"height": "49.6265vh",
+				"width": "37.1596vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "plotlyPyGenerice",
+				"instanceId": "plotlyPyGenerice",
+				"modelJsonId": "plotlyPyGeneric",
+				"widgetTypeName": "Plotly Python generic(plotlyPyGenerice)"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"fig": ""
+			}
+		},
+		"flatUiHorizontalSliderG": {
+			"layout": {
+				"top": "7.79082vh",
+				"left": "40.9503vw",
+				"height": "5.01601vh",
+				"width": "24.0256vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderG",
+				"instanceId": "flatUiHorizontalSliderG",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderG)"
+			},
+			"modelParameters": {
+				"label": "sepal_width",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"rangeActuator": false,
+				"min": 4.3,
+				"max": 7.9,
+				"step": 0.1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "Helvetica Neue",
+				"valueBorderColor": "#447bdc",
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"sliderRangeColor": "#447bdc",
+				"sliderSegmentColor": "#ebedef",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueColor": "#34495e"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSlidert": {
+			"layout": {
+				"top": "12.8068vh",
+				"left": "40.9503vw",
+				"height": "5.01601vh",
+				"width": "24.0256vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiHorizontalSlidert",
+				"instanceId": "flatUiHorizontalSlidert",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSlidert)"
+			},
+			"modelParameters": {
+				"label": "sepal_length",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"rangeActuator": false,
+				"min": 2,
+				"max": 4.4,
+				"step": 0.1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "Helvetica Neue",
+				"valueBorderColor": "#447bdc",
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"sliderRangeColor": "#447bdc",
+				"sliderSegmentColor": "#ebedef",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueColor": "#34495e"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSlidera": {
+			"layout": {
+				"top": "22.8388vh",
+				"left": "40.9503vw",
+				"height": "5.01601vh",
+				"width": "24.0256vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "4"
+			},
+			"container": {
+				"id": "flatUiHorizontalSlidera",
+				"instanceId": "flatUiHorizontalSlidera",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSlidera)"
+			},
+			"modelParameters": {
+				"label": "petal_width",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"rangeActuator": false,
+				"min": 0.1,
+				"max": 2.5,
+				"step": 0.1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "Helvetica Neue",
+				"valueBorderColor": "#447bdc",
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"sliderRangeColor": "#447bdc",
+				"sliderSegmentColor": "#ebedef",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueColor": "#34495e"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSliderY": {
+			"layout": {
+				"top": "17.8228vh",
+				"left": "40.9503vw",
+				"height": "5.01601vh",
+				"width": "24.0256vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "5"
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderY",
+				"instanceId": "flatUiHorizontalSliderY",
+				"modelJsonId": "flatUiHorizontalSlider",
+				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderY)"
+			},
+			"modelParameters": {
+				"label": "petal_length",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"rangeActuator": false,
+				"min": 1,
+				"max": 6.9,
+				"step": 0.1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "Helvetica Neue",
+				"valueBorderColor": "#447bdc",
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"sliderRangeColor": "#447bdc",
+				"sliderSegmentColor": "#ebedef",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueColor": "#34495e"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"kpiCardc": {
+			"layout": {
+				"top": "9.39168vh",
+				"left": "66.9514vw",
+				"height": "16.0085vh",
+				"width": "17.9925vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "6"
+			},
+			"container": {
+				"id": "kpiCardc",
+				"instanceId": "kpiCardc",
+				"modelJsonId": "kpiCard",
+				"widgetTypeName": "KPI value(kpiCardc)"
+			},
+			"modelParameters": {
+				"label": "predict",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valuePosition": "bottom",
+				"valueFontSize": 2,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"decimalDigits": 3,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"unitColor": "#2154ab",
+				"borderShadow": false
+			},
+			"modelHiddenParams": {
+				"value": "--"
+			}
+		}
+	},
+	"connections": {
+		"plotlyPyGenerice": {
+			"fig": {
+				"name": "fig",
+				"dataNode": "plot",
+				"dataFields": [],
+				"dataNodeIndex": 5
+			}
+		},
+		"flatUiHorizontalSliderG": {
+			"value": {
+				"name": "value",
+				"dataNode": "inputs",
+				"dataFields": [
+					"sepal_width"
+				],
+				"dataNodeIndex": 1
+			}
+		},
+		"flatUiHorizontalSlidert": {
+			"value": {
+				"name": "value",
+				"dataNode": "inputs",
+				"dataFields": [
+					"sepal_length"
+				],
+				"dataNodeIndex": 1
+			}
+		},
+		"flatUiHorizontalSlidera": {
+			"value": {
+				"name": "value",
+				"dataNode": "inputs",
+				"dataFields": [
+					"petal_width"
+				],
+				"dataNodeIndex": 1
+			}
+		},
+		"flatUiHorizontalSliderY": {
+			"value": {
+				"name": "value",
+				"dataNode": "inputs",
+				"dataFields": [
+					"petal_length"
+				],
+				"dataNodeIndex": 1
+			}
+		},
+		"kpiCardc": {
+			"value": {
+				"name": "value",
+				"dataNode": "predict",
+				"dataFields": [],
+				"dataNodeIndex": 2
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

@@ -1,0 +1,153 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 23:42:37 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "advanced-kpi-js",
+		"description": "",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "widget"
+			},
+			{
+				"text": "real-time"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "clock",
+				"type": "Clock_web-service",
+				"settings": {
+					"name": "clock",
+					"sampleTime": 1,
+					"autoStart": true
+				}
+			},
+			{
+				"name": "kpiVal",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "kpiVal",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "return {\n\n    \"value\": dataNodes[\"random\"],\n    \"subLabel\": Math.round(dataNodes[\"random\"]-dataNodes[\"lastRandom\"]*100) +\"%\",\n    \"window\" : -1 // - 1 for unlimited\n};"
+				}
+			},
+			{
+				"name": "lastRandom",
+				"type": "JSON_memory_plugin",
+				"settings": {
+					"name": "lastRandom",
+					"json_init": "0",
+					"json_input": "dataNodes[\"random\"]"
+				}
+			},
+			{
+				"name": "random",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "random",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "let dep = dataNodes[\"clock\"];\n\nreturn Math.random();"
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			3,
+			2,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"advancedKpiCardn": {
+			"layout": {
+				"top": "10.5799vh",
+				"left": "7.82742vw",
+				"height": "35.9252vh",
+				"width": "13.4973vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "advancedKpiCardn",
+				"instanceId": "advancedKpiCardn",
+				"modelJsonId": "advancedKpiCard",
+				"widgetTypeName": "Advanced KPI value(advancedKpiCardn)"
+			},
+			"modelParameters": {
+				"label": "kpiVal",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valuePosition": "bottom",
+				"valueFontSize": 3,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"decimalDigits": 3,
+				"subLabelFontSize": 0.5,
+				"subLabelColor": "#34495e",
+				"subLabelFontFamily": "Helvetica Neue",
+				"borderShadow": false,
+				"graphColor": "#007a87"
+			},
+			"modelHiddenParams": {
+				"value": "--",
+				"subLabel": "--"
+			}
+		}
+	},
+	"connections": {
+		"advancedKpiCardn": {
+			"extendedValue": {
+				"name": "extendedValue",
+				"dataNode": "kpiVal",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

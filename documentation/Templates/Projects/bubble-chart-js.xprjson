@@ -1,0 +1,155 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 13:26:22 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "bubble-chart-js",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "widgets"
+			},
+			{
+				"text": "plotly"
+			},
+			{
+				"text": "plots"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "data",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "data",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var trace1 = {\n  x: [1, 2, 3, 4],\n  y: [10, 11, 12, 13],\n  mode: 'markers',\n  marker: {\n    size: [40, 60, 80, 100]\n  }\n};\n\nvar data = [trace1];\n\nreturn data;"
+				}
+			},
+			{
+				"name": "layout",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "layout",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var layout = {\n  title: 'Marker Size',\n  showlegend: false\n};\n\nreturn layout;"
+				}
+			}
+		],
+		"reIndexMap": [
+			1,
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1257,
+		"heightPx": 575,
+		"scrollWidthPx": 1257,
+		"scrollHeightPx": 575,
+		"widthVw": 84.36241610738254,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.36241610738254,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"plotlyGenericz": {
+			"layout": {
+				"top": "1.6647vh",
+				"left": "1.02432vw",
+				"height": "55.0857vh",
+				"width": "48.0224vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "plotlyGenericz",
+				"instanceId": "plotlyGenericz",
+				"modelJsonId": "plotlyGeneric",
+				"widgetTypeName": "Plotly JavaScript generic(plotlyGenericz)"
+			},
+			"modelParameters": {
+				"layout": {
+					"title": "Marker Size",
+					"showlegend": false,
+					"height": 600,
+					"width": 600,
+					"xaxis": {
+						"type": "linear",
+						"range": [
+							0.5429497568881685,
+							4.821717990275527
+						],
+						"autorange": true
+					},
+					"yaxis": {
+						"type": "linear",
+						"range": [
+							9.524956970740103,
+							13.862306368330465
+						],
+						"autorange": true
+					}
+				},
+				"hideModeBar": false
+			},
+			"modelHiddenParams": {
+				"data": [
+					{}
+				],
+				"layout": [
+					{}
+				],
+				"selection": [
+					{}
+				]
+			}
+		}
+	},
+	"connections": {
+		"plotlyGenericz": {
+			"data": {
+				"name": "data",
+				"dataFields": [],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			},
+			"layout": {
+				"name": "layout",
+				"dataFields": [],
+				"dataNode": "layout",
+				"dataNodeIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
