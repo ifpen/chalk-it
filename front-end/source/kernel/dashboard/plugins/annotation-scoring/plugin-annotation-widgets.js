@@ -123,10 +123,10 @@ function annotationWidgetsPluginClass() {
           var labelHeight = iconHeight * modelsParameters[idInstance].iconSize;
           var divMarginTop = (divContainerHeightPx - labelHeight) / 2;
           //
-          var transformedText = modelsParameters[idInstance].text.replace(
-            "\n",
-            "&#10;"
-          ); //conversion to enable mutiline
+        //   var transformedText = modelsParameters[idInstance].text.replace(
+        //     "\n",
+        //     "&#10;"
+        //   ); //conversion to enable mutiline
           var widgetHtml = document.createElement("div");
           // [FontAwesome]
           var divContent = '<i class="fa fa-' + modelsParameters[idInstance].iconSign + '" style="line-height:normal;zoom:' + modelsParameters[idInstance].iconSize + '"></i>';
@@ -154,7 +154,10 @@ function annotationWidgetsPluginClass() {
           );
           $("#" + idDivContainer).html(widgetHtml);
 
-          $("#annotationiconInfo" + idWidget).bt(transformedText, {
+          // conversion to enable HTML tags
+          const text = this.getTransformedText("text");
+
+          $("#annotationiconInfo" + idWidget).bt(text, {
             fill: this.tipBackgroundColor(),
             cssStyles: {
               color: modelsParameters[idInstance].textColor,
@@ -240,6 +243,9 @@ function annotationWidgetsPluginClass() {
                 var displayDiv2 = "table";
             }
 
+            // conversion to enable HTML tags
+            const text = this.getTransformedText("text");
+
             //AEF: modif to allow multilines
             //AEF: adapt height depending if text is in simple line or multilines
             //MBG : fix for Mozilla Firefox. No distinction between single line and multline. To check.
@@ -251,7 +257,7 @@ function annotationWidgetsPluginClass() {
                 '; text-align: ' + modelsParameters[idInstance].textAlign +
                 '; padding: 4px; resize: inherit; margin: auto; vertical-align: middle ; border-radius: 6px; ' +
                 this.fontSize() + this.valueFontFamily() + this.border() + 'display: ' + displayDiv2 + '" readonly>' +
-                modelsParameters[idInstance].text + '</textarea>';
+                text + '</textarea>';
 
             widgetHtml.innerHTML = divContent;
             widgetHtml.setAttribute("style", "width: inherit; height: inherit; display: " + displayDiv1 + "; " +

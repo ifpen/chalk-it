@@ -130,8 +130,9 @@ function ledWidgetsPluginClass() {
         this.backwardCompatibility();
 
         this.insertLabel = function (widgetHtml) {
-            var widgetLabel = document.createElement('span');
-            var textLabel = document.createTextNode(modelsParameters[idInstance].label);
+            // conversion to enable HTML tags
+            const labelText = this.getTransformedText("label");
+            const widgetLabel = document.createElement('span');
             widgetLabel.setAttribute('class', 'led-span');
             widgetLabel.setAttribute('id', 'led-span' + idWidget);
             if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
@@ -140,7 +141,7 @@ function ledWidgetsPluginClass() {
             } else {
                 widgetLabel.setAttribute('style', 'height: inherit; width: 20%; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily());
             }
-            widgetLabel.appendChild(textLabel);
+            widgetLabel.innerHTML = labelText;
             widgetHtml.appendChild(widgetLabel);
         };
 

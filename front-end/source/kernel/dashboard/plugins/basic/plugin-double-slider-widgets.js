@@ -124,7 +124,8 @@ function doubleSliderWidgetsPluginClass() {
 
             if (modelsParameters[idInstance].displayLabel == true) {
                 if (!_.isUndefined(modelsParameters[idInstance].label)) {
-                    labelText = modelsParameters[idInstance].label;
+                    // conversion to enable HTML tags
+                    labelText = this.getTransformedText("label");
                 }
                 if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
                     labelProportion = modelsParameters[idInstance].labelWidthProportion;
@@ -132,7 +133,7 @@ function doubleSliderWidgetsPluginClass() {
                 if (!_.isUndefined(modelsParameters[idInstance].labelFontSize)) {
                     fontSize = this.labelFontSize();
                 }
-                LabelHtml = '<span class="label-h-slider" id="h-slider-span" style="width:' + labelProportion +
+                LabelHtml = '<span class="label-h-slider" id="h-slider-span" style="heigh: auto; width:' + labelProportion +
                     '; ' + fontSize + this.labelColor() + this.labelFontFamily() + ';">' + labelText + '</span>';
             }
             var divContent = angular.element(
@@ -237,11 +238,7 @@ function doubleSliderWidgetsPluginClass() {
             removeValueChangedHandler: function (updateDataFromWidget) {
                 self.disable();
             },
-            setCaption: function (caption, bCaptionManuallyChanged) {
-                if (modelsParameters[idInstance].inheritLabelFromData) {
-                    self.captionHelper(caption, self.bIsInteractive, bCaptionManuallyChanged);
-                }
-            },
+            setCaption: function (caption, bCaptionManuallyChanged) {},
             clearCaption: function () {
                 modelsParameters[idInstance].label = "";
                 self.render();
