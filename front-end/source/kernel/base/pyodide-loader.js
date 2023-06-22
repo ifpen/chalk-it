@@ -12,6 +12,8 @@
 // TODO decide on handling of notifications
 // TODO decide on UI block ?
 
+const WORKER_URL = "pyodide-worker-dev.js";
+
 function notifyInfo(title, text = '') {
     console.log(`${title}${text !== '' ? (':\n' + text) : ''}`);
 
@@ -168,7 +170,8 @@ class PyodideManager {
 
         const pyodideNotice = notifyInfo("Starting Pyodide...");
         try {
-            this.pyodideWorker = new Worker("source/kernel/base/pyodide-worker.js");
+            this.pyodideWorker = new Worker(WORKER_URL);
+
             this.callbacks = {};
 
             this.pyodideWorker.onmessage = (event) => {
@@ -182,11 +185,7 @@ class PyodideManager {
                 }
             };
 
-            await this.postMessage({
-                type: "start",
-                indexURL: xDashConfig['pyodide'].pyodide_index,
-                xdashLibUrl: xDashConfig['pyodide'].xdash_lib_url,
-            });
+            await this.postMessage({ type: "start" });
         } catch (error) {
             this.pyodideState = PyodideManager.PYODIDE_STATE_ERROR;
             this._notifyChanges();

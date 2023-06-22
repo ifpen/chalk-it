@@ -28,7 +28,7 @@ let browsersync = require('browser-sync').create(),
   connect = require('gulp-connect'),
   fs = require('fs'),
   exec = require('child_process').exec,
-  Env = 'dev',
+  Env = argv.env ?? 'dev',
   addVersion = true,
   GlobalConfig = [],
   filesName = configuration.filesName,
@@ -47,6 +47,8 @@ let browsersync = require('browser-sync').create(),
   xdashRuntimeCss = filesName.xdash_runtime.css,
   xdashRuntimeHeader = filesName.xdash_runtime.header,
   xdashRuntimeBody = filesName.xdash_runtime.body,
+  getXdashWorkerPyodideFile = () => `${filesName.workers.pyodide}${(addVersion && Env === 'prod') ? GlobalConfig.config.xDashConfig.version.fullVersion : Env}.js` ;
+
   ListTasksBeforeInject = 'createConfigurationFile';
 
 const nodeVersion = pkg.engines.node;
@@ -99,9 +101,6 @@ task('sass', () => {
 });
 
 task('init', (cb) => {
-  Env = argv.env ? argv.env : 'dev';
-  console.log('EV ENV :', Env);
-
   if (Env === 'prod') {
     ListTasksBeforeInject =
       ('createConfigurationFile', 'usemin:xdash_editor:header', 'usemin:xdash_editor:body', 'usemin:xdash_editor:css');
@@ -302,6 +301,7 @@ task(
         })
       )
       .pipe(concat(filesName.xdash_runtime.header + '.min.js'))
+      .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
       .pipe(replace('source/assets/', 'assets/'))
       .pipe(
         dest(
@@ -325,6 +325,7 @@ task(
         })
       )
       .pipe(concat(filesName.xdash_editor.header + '.min.js'))
+      .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
       .pipe(replace('source/assets/', 'assets/'))
       .pipe(
         dest(
@@ -375,6 +376,52 @@ task(
             '/assets'
         )
       );
+  })
+);
+
+task(
+  'inject:files:pyodide_worker',
+  series('init', () => {
+    Env = argv.env ?? 'dev';
+    const isProd = Env === 'prod';
+
+    let destination = '../';
+    if (isProd) {
+      destination =
+        '../' +
+        configuration.paths.buildDirectory +
+        '/xdash_' +
+        GlobalConfig.config.xDashConfig.version.fullVersion +
+        '/';
+    }
+
+    const configFile = '../configs/config.' + Env + '.js';
+    const dependenciesFiles = ['../thirdparty/pyodide.js'];
+    const workerFile = '../source/kernel/base/pyodide-worker.js';
+
+
+    let pipe = src([configFile, ...dependenciesFiles, workerFile])
+      .pipe(debug())
+      .pipe(sourcemaps.init())
+      .pipe(concat(getXdashWorkerPyodideFile()));
+
+    if (isProd) {
+      pipe = pipe.pipe(
+        uglify().on('error', function (e) {
+          console.log(e);
+          return this.end();
+        })
+      );
+    }
+    pipe = pipe
+      .pipe(sourcemaps.write('.'))
+      .pipe(dest(destination));
+
+    if (!isProd) {
+      pipe = pipe.pipe(connect.reload());
+    } 
+
+    return pipe;
   })
 );
 
@@ -922,6 +969,7 @@ task(
     //'usemin:xdash_editor:header',
     //'usemin:xdash_editor:body',
     //'usemin:xdash_editor:css',
+    'inject:files:pyodide_worker',
     'inject:files:prod',
     //'usemin:_runtime:header',
     //'usemin:_runtime:body',
@@ -981,7 +1029,7 @@ task('watch_', parallel(watchSassFiles, watchFiles, browserSync));
 /*--------------------------------------------*/
 task(
   'serve',
-  series('clear:cache', 'sass', 'init', 'inject:files', 'watch_', (cb) => {
+  series('clear:cache', 'sass', 'init', 'inject:files:pyodide_worker', 'inject:files', 'watch_', (cb) => {
     let src = '../';
     if (Env === 'prod') {
       src = '../build/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion + '/';

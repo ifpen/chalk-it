@@ -20,6 +20,9 @@ module.exports = {
             header: "header-all-js-runtime-",
             body: "body-all-js-runtime-",
             path: "xdash_runtime:"
+        },
+        workers: {
+            pyodide: "pyodide-worker-"
         }
     }
 

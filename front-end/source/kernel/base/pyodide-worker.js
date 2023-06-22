@@ -1,19 +1,17 @@
 "use strict";
 
-console.log("Pyodide worker started")
 
-importScripts("/thirdparty/pyodide.js");
-
+console.log("Pyodide worker started");
 
 let pyodidePromise = null;
 
 async function _loadPyodide(msg) {
-    const pyodide = await loadPyodide({ indexURL: msg.indexURL });
+    const pyodide = await loadPyodide({ indexURL: xDashConfig['pyodide'].pyodide_index });
 
     await pyodide.loadPackage("micropip");
     const micropip = pyodide.pyimport("micropip");
     try {
-        await micropip.install(msg.xdashLibUrl);
+        await micropip.install(xDashConfig['pyodide'].xdash_lib_url);
     } finally {
         micropip.destroy();
     }
