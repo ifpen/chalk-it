@@ -662,4 +662,4 @@ resRet
         self.runScriptSettings();
     };
 })();
-}
+
