@@ -1,0 +1,128 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Thu Feb 09 2023 22:23:52 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "json-to-table-linewise-js",
+		"description": "key/value JSON to table (linewise)",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "JSON"
+			},
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Table"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "vehicle",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "vehicle",
+					"json_var": "{\"carConsumption\":4.5,\"carMass\":1508,\"carPower\":110,\"carTypeIndex\":5,\"carEngineIndex\":2,\"carGearboxIndex\":3,\"sportinessFactor\":1,\"name\":\"\",\"toGenerateArgus\":false,\"longueur\":463,\"largeur\":183,\"hauteur\":166,\"ptr\":2190,\"genRev\":\"VP\",\"modelDetailed\":\"1.6 TDI 110ch BlueMotion Technology FAP Allstar DSG7 5 places / Touran III / Ph1\",\"empat\":279,\"equaNox\":\"A+\",\"CO2_gkm\":116,\"Energie\":\"Diesel\",\"OEM\":\"Volkswagen\",\"ModelShort\":\"Touran\",\"ModelLong\":\"Touran\",\"ENG_CYL_CC\":1598,\"Date1erCir\":20160216,\"ID_ExhLine\":-1,\"Norme_Nb\":-1,\"CG_Carrosserie\":\"MONOSPACE COMPACT\",\"CG_tpBoiteVit\":\"MECANIQUE\",\"CG_nbVitesse\":6,\"ENG_nc\":4,\"CG_Turbo_type\":\"TURBO\",\"InjMode\":\"AUTR. CARBURATIONS\",\"ValveNb\":0,\"CG_Depollution\":\"OUI\",\"GearBox_nbVitesse\":-1,\"SCORE_NOX_NEDC\":-1,\"Vmax_kmh\":-1,\"Trq_max_Nm\":-1,\"Ne_Trq_max_rpm\":-1,\"Ne_P_max_rpm\":-1,\"ENG_Turbo\":-1,\"Hybrid_type\":-1}"
+				}
+			},
+			{
+				"name": "table-line",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "table-line",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "return [_.keys(datasources[\"vehicle\"]), _.values(datasources[\"vehicle\"])];"
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiTablei": {
+			"layout": {
+				"top": "6.26039vh",
+				"left": "0.684569vw",
+				"height": "39.3352vh",
+				"width": "77.1141vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiTablei",
+				"instanceId": "flatUiTablei",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTablei)"
+			},
+			"modelParameters": {
+				"headerLine": false,
+				"tableValueFontSize": 0.5,
+				"striped": true,
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[]",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		}
+	},
+	"connections": {
+		"flatUiTablei": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataNode": "table-line",
+				"dataNodeIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

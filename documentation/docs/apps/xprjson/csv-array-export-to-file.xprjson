@@ -1,0 +1,148 @@
+{
+	"meta": {
+		"version": "0.950.7109",
+		"date": "Tue Jun 18 2019 13:25:19 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "csv-array-export-to-file",
+		"description": "",
+		"tags": []
+	},
+	"data": {
+		"version": 1,
+		"allow_edit": true,
+		"plugins": [],
+		"panes": [],
+		"datasources": [
+			{
+				"name": "csv",
+				"type": "CSV_file_reader_plugin",
+				"settings": {
+					"name": "csv",
+					"data_path": "CH4-short.csv",
+					"content": "\"lat\",\"lng\",\"CH4\"\r\n48.876684, 2.175765, 1.94\r\n48.876684, 2.175765, 1.95\r\n48.876684, 2.175765, 1.92\r\n48.876705, 2.175806, 1.93\r\n48.876705, 2.175806, 1.99\r\n",
+					"delimiter": "",
+					"eol": "",
+					"quote_char": "\"",
+					"head": true,
+					"skip_empty_lines": true,
+					"dynamic_typing": true,
+					"pluck": true,
+					"embedding_object": false
+				}
+			},
+			{
+				"name": "table",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "table",
+					"json_var_formula": "var t= _.unzip(_.values(dataNodes[\"csv\"]),3);\nt.unshift(_.keys(dataNodes[\"csv\"]));\n\nreturn t;"
+				}
+			},
+			{
+				"name": "download",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "download",
+					"json_var_formula": "function convertArrayOfObjectsToCSV(args) {  \n\tvar result, ctr, keys, columnDelimiter, lineDelimiter, data;\n\n\tdata = args.data || null;\n\tif (data === null || !data.length) {\n    \treturn null;\n    }\n\n    columnDelimiter = args.columnDelimiter || ';';\n    lineDelimiter = args.lineDelimiter || '\\n';\n\n    keys = Object.keys(data[0]);\n    \n    result = '';\n\n    data.forEach(function(item) {\n        ctr = 0;\n        keys.forEach(function(key) {\n            if (ctr > 0) result += columnDelimiter;\n            result += item[key];\n            ctr++;\n        });\n        result += lineDelimiter;\n    });\n    return result;\n}\n\nfunction downloadCSV() {\n                   \n    var csv = convertArrayOfObjectsToCSV({    \n        data: dataNodes.table        \n    });\n    \n    if (csv === null) return;\n        \n    filename = 'example.csv';\n    \n    if (!csv.match(/^data:text\\/csv/i)) {    \n        csv = 'data:text/csv;charset=utf-8,' + csv;        \n    }\n    \n    data = encodeURI(csv);    \n    link = document.createElement('a');    \n    link.setAttribute('href', data);    \n    link.setAttribute('download', filename);    \n    link.click();\n    \n    return csv;\n}\n\nreturn downloadCSV();\n\n"
+				}
+			}
+		],
+		"columns": 3,
+		"reIndexMap": [
+			0,
+			1,
+			2
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"scaling": {
+		"widthPx": 1333,
+		"heightPx": 793,
+		"scrollWidthPx": 1333,
+		"scrollHeightPx": 793,
+		"widthVw": 69.42708333333333,
+		"heightVh": 72.1565059144677,
+		"scrollWidthVw": 69.42708333333333,
+		"scrollHeightVh": 72.1565059144677,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {}
+	},
+	"dashboard": {
+		"flatUiTableq": {
+			"layout": {
+				"top": "1.81984vh",
+				"left": "2.60417vw",
+				"height": "53.1034vh",
+				"width": "41.1979vw",
+				"minHeight": "",
+				"minWidth": ""
+			},
+			"container": {
+				"id": "flatUiTableq",
+				"instanceId": "flatUiTableq",
+				"modelJsonId": "flatUiTable"
+			},
+			"modelParameters": {
+				"headerLine": true,
+				"striped": true,
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[]"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		},
+		"flatUiButtonv": {
+			"layout": {
+				"top": "56.8699vh",
+				"left": "30.625vw",
+				"height": "7.7343vh",
+				"width": "12.5vw",
+				"minHeight": "50px",
+				"minWidth": "55px"
+			},
+			"container": {
+				"id": "flatUiButtonv",
+				"instanceId": "flatUiButtonv",
+				"modelJsonId": "flatUiButton"
+			},
+			"modelParameters": {
+				"text": "Export to CSV file",
+				"numberOfTriggers": 1,
+				"fileInput": false
+			},
+			"modelHiddenParams": {}
+		}
+	},
+	"connections": {
+		"flatUiTableq": {
+			"value": {
+				"name": "value",
+				"dataSource": "table",
+				"dataFields": [],
+				"dataSourceIndex": 1
+			}
+		},
+		"flatUiButtonv": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataSource": "download",
+				"dataFields": [],
+				"dataSourceIndex": 2
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"checkExportOptions": false
+}

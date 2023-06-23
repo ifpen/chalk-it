@@ -1,0 +1,120 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 17:06:36 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "itsdangerous",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "itsdangerous",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "itsdangerous",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "from itsdangerous import URLSafeSerializer\nauth_s = URLSafeSerializer(\"secret key\", \"auth\")\ntoken = auth_s.dumps({\"id\": 5, \"name\": \"itsdangerous\"})\n\nreturn token"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"itsdangerous"
+		]
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiValueDisplayz": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.06781vw",
+				"height": "11.4194vh",
+				"width": "81.2066vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiValueDisplayz",
+				"instanceId": "flatUiValueDisplayz",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayz)"
+			},
+			"modelParameters": {
+				"label": "itsdangerous",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueWidthProportion": "70%",
+				"decimalDigits": 3,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "#447bdc",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiValueDisplayz": {
+			"value": {
+				"name": "value",
+				"dataNode": "itsdangerous",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

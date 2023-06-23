@@ -1,0 +1,154 @@
+{
+	"meta": {
+		"version": "2.470.8480",
+		"date": "Mon Mar 20 2023 14:47:31 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "editable-table-2D",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "md",
+				"type": "Generic_file_reader_plugin",
+				"settings": {
+					"name": "md",
+					"data_path": "editable-table.md",
+					"content": "Editable table must be connected to a variable-type dataNode. In this example, the `editableCols` parameter of widget's graphical properties was set to `[1,2,3,4]`. You can also use html formatting inside tables."
+				}
+			},
+			{
+				"name": "two-dims-editable-table",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "two-dims-editable-table",
+					"json_var": "[[\"Activities\",\"Car\",\"Carpooling\",\"Public transport\",\"Soft mobility\"],[\"<b>Work</b>\",0.35,0.05,0.5,0.1],[\"<b>School</b>\",0.5,0,0,0.5],[\"<b>Shopping</b>\",0.4,0,0.1,0.5],[\"<b>Extra activities</b>\",0.25,0,0.25,0.5],[\"<b>Hangout</b>\",0.3,0.5,0.2,0],[\"<b>Vacation</b>\",0.3,0.5,0.2,0]]"
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1302,
+		"heightPx": 575,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 575,
+		"widthVw": 84.765625,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.765625,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiTablek": {
+			"layout": {
+				"top": "19.0028vh",
+				"left": "4.64844vw",
+				"height": "54.2936vh",
+				"width": "57.8776vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiTablek",
+				"instanceId": "flatUiTablek",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTablek)"
+			},
+			"modelParameters": {
+				"headerLine": true,
+				"tableValueFontSize": 0.5,
+				"striped": true,
+				"valueColor": "var(--widget-table-value-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[1,2,3,4]"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		},
+		"annotationMarkdown0": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "4.81771vw",
+				"height": "13.9889vh",
+				"width": "57.6823vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "annotationMarkdown0",
+				"instanceId": "annotationMarkdown0",
+				"modelJsonId": "annotationMarkdown",
+				"widgetTypeName": "Markdown(annotationMarkdown0)"
+			},
+			"modelParameters": {
+				"fontsize": 0.3,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "var(--widget-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {
+				"text": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiTablek": {
+			"value": {
+				"name": "value",
+				"dataNode": "two-dims-editable-table",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		},
+		"annotationMarkdown0": {
+			"text": {
+				"name": "text",
+				"dataNode": "md",
+				"dataFields": [
+					"content"
+				],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

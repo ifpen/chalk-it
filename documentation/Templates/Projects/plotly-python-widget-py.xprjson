@@ -1,0 +1,118 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 14:14:45 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "plotly-python-widget",
+		"description": "",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "widget"
+			},
+			{
+				"text": "Plots"
+			},
+			{
+				"text": "Plotly"
+			},
+			{
+				"text": "pyodide"
+			},
+			{
+				"text": "Python"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "px",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "px",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import plotly.express as px\n\ndf = px.data.gapminder().query(\"country=='Canada'\")\nfig = px.line(df, x=\"year\", y=\"lifeExp\", title='Life expectancy in Canada')\n\nreturn fig"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"plotly"
+		]
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"plotlyPyGenerica": {
+			"layout": {
+				"top": "5.34807vh",
+				"left": "2.26296vw",
+				"height": "59.9915vh",
+				"width": "50.6594vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "plotlyPyGenerica",
+				"instanceId": "plotlyPyGenerica",
+				"modelJsonId": "plotlyPyGeneric",
+				"widgetTypeName": "Plotly Python generic(plotlyPyGenerica)"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"fig": ""
+			}
+		}
+	},
+	"connections": {
+		"plotlyPyGenerica": {
+			"fig": {
+				"name": "fig",
+				"dataNode": "px",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

@@ -1,0 +1,75 @@
+{
+	"meta": {
+		"version": "1.440.7868",
+		"date": "Wed Jul 21 2021 22:55:14 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "csv-json",
+		"description": "CSV dataNode example with flat JSON conversion",
+		"tags": [
+			{
+				"text": "DataNodes"
+			},
+			{
+				"text": "CSV"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"version": 1,
+		"allow_edit": true,
+		"plugins": [],
+		"panes": [],
+		"datasources": [
+			{
+				"name": "csv",
+				"type": "CSV_file_reader_plugin",
+				"settings": {
+					"name": "csv",
+					"data_path": "CH4-short.csv",
+					"content": "\"lat\",\"lng\",\"CH4\"\r\n48.876684, 2.175765, 1.94\r\n48.876684, 2.175765, 1.95\r\n48.876684, 2.175765, 1.92\r\n48.876705, 2.175806, 1.93\r\n48.876705, 2.175806, 1.99\r\n",
+					"delimiter": "",
+					"eol": "",
+					"quote_char": "\"",
+					"head": true,
+					"skip_empty_lines": true,
+					"dynamic_typing": true,
+					"pluck": false,
+					"embedding_object": false,
+					"nb_meta_lines": 0,
+					"nb_subheader_lines": 0
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"scaling": {
+		"widthPx": 1045,
+		"heightPx": 571,
+		"scrollWidthPx": 1045,
+		"scrollHeightPx": 571,
+		"widthVw": 68.03385416666667,
+		"heightVh": 82.04022988505747,
+		"scrollWidthVw": 68.03385416666667,
+		"scrollHeightVh": 82.04022988505747,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {}
+	},
+	"dashboard": {},
+	"connections": {},
+	"exportOptions": "projectToTargetWindow",
+	"checkExportOptions": false
+}

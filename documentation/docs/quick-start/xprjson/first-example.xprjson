@@ -1,0 +1,208 @@
+{
+	"meta": {
+		"version": "0.950.7059",
+		"date": "Mon Apr 29 2019 17:52:54 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "first-example",
+		"description": "",
+		"tags": []
+	},
+	"data": {
+		"version": 1,
+		"allow_edit": true,
+		"plugins": [],
+		"panes": [],
+		"datasources": [
+			{
+				"name": "jsvar",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "jsvar",
+					"json_var": "{\"Length\":50,\"Width\":66}"
+				}
+			},
+			{
+				"name": "surface",
+				"type": "REST_web-service_from_datasource",
+				"settings": {
+					"name": "surface",
+					"url": "https://compute20190425045435.azurewebsites.net/ComputeService.asmx/Surface",
+					"use_xproxy": true,
+					"resp_data_type": "JSON",
+					"refresh": 0,
+					"autoStart": false,
+					"explicitTrig": false,
+					"method": "POST",
+					"body": "return {\"X\": dataNodes.jsvar.Length, \"Y\": dataNodes.jsvar.Width};\n",
+					"headers": [
+						{
+							"name": "Content-Type",
+							"value": "application/json"
+						}
+					]
+				}
+			}
+		],
+		"columns": 3,
+		"reIndexMap": [
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"scaling": {
+		"widthPx": 1333,
+		"heightPx": 793,
+		"scrollWidthPx": 1333,
+		"scrollHeightPx": 793,
+		"widthVw": 69.42708333333333,
+		"heightVh": 72.1565059144677,
+		"scrollWidthVw": 69.42708333333333,
+		"scrollHeightVh": 72.1565059144677,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {}
+	},
+	"dashboard": {
+		"flatUiHorizontalSliderR": {
+			"layout": {
+				"top": "5.00455vh",
+				"left": "2.13542vw",
+				"height": "5vh",
+				"width": "24vw",
+				"minHeight": "",
+				"minWidth": ""
+			},
+			"container": {
+				"id": "flatUiHorizontalSliderR",
+				"instanceId": "flatUiHorizontalSliderR",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "Length",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSlideri": {
+			"layout": {
+				"top": "12.4659vh",
+				"left": "2.13542vw",
+				"height": "5vh",
+				"width": "24vw",
+				"minHeight": "",
+				"minWidth": ""
+			},
+			"container": {
+				"id": "flatUiHorizontalSlideri",
+				"instanceId": "flatUiHorizontalSlideri",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "Width",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiValueB": {
+			"layout": {
+				"top": "23.0209vh",
+				"left": "3.75vw",
+				"height": "5.00455vh",
+				"width": "19.0104vw",
+				"minHeight": "",
+				"minWidth": ""
+			},
+			"container": {
+				"id": "flatUiValueB",
+				"instanceId": "flatUiValueB",
+				"modelJsonId": "flatUiValue"
+			},
+			"modelParameters": {
+				"label": "Surface",
+				"inheritLabelFromData": false,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "70%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"isNumber": false,
+				"decimalDigits": 3,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"valueTextAlign": "center",
+				"displayBorder": true
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiHorizontalSliderR": {
+			"value": {
+				"name": "value",
+				"dataSource": "jsvar",
+				"dataFields": [
+					"Length"
+				],
+				"dataSourceIndex": 0
+			}
+		},
+		"flatUiHorizontalSlideri": {
+			"value": {
+				"name": "value",
+				"dataSource": "jsvar",
+				"dataFields": [
+					"Width"
+				],
+				"dataSourceIndex": 0
+			}
+		},
+		"flatUiValueB": {
+			"value": {
+				"name": "value",
+				"dataSource": "surface",
+				"dataFields": [
+					"Msg"
+				],
+				"dataSourceIndex": 1
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"checkExportOptions": true
+}

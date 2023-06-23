@@ -1,0 +1,121 @@
+{
+	"meta": {
+		"version": "2.999.8403",
+		"date": "Mon Jan 02 2023 15:04:37 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "jsonschema",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "jsonschema",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "jsonschema",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "from jsonschema import validate\n\nschema = dataNodes[\"schema\"]\n\ntry:\n    validate(instance={\"name\" : \"Eggs\", \"price\" : 34.99}, schema=schema)\n    return True\n  \nexcept Exception as inst:\n    return False\n  "
+				}
+			},
+			{
+				"name": "schema",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "schema",
+					"json_var": "{\"type\":\"object\",\"properties\":{\"price\":{\"type\":\"number\"},\"name\":{\"type\":\"string\"}}}"
+				}
+			}
+		],
+		"reIndexMap": [
+			1,
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"numpy",
+			"pandas"
+		],
+		"pyodideMicropip": [
+			"jsonschema"
+		]
+	},
+	"scaling": {
+		"widthPx": 1633,
+		"heightPx": 685,
+		"scrollWidthPx": 1633,
+		"scrollHeightPx": 685,
+		"widthVw": 87.18633208756006,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.18633208756006,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"ledStatusY": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.06781vw",
+				"height": "26.254vh",
+				"width": "32.5681vw",
+				"minHeight": "40px",
+				"minWidth": "40px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "ledStatusY",
+				"instanceId": "ledStatusY",
+				"modelJsonId": "ledStatus",
+				"widgetTypeName": "Status led(ledStatusY)"
+			},
+			"modelParameters": {
+				"label": "jsonschema",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"labelWidthProportion": "60%",
+				"onColor": "#00b700",
+				"offColor": "#004d00"
+			},
+			"modelHiddenParams": {
+				"status": false
+			}
+		}
+	},
+	"connections": {
+		"ledStatusY": {
+			"status": {
+				"name": "status",
+				"dataNode": "jsonschema",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
