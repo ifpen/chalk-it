@@ -110,8 +110,71 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         return ff;
     }
 
+    this.border = function () {
 
+        var border = 'border: none; ';
+        if (modelsParameters[idInstance].displayBorder) {
+            if (_.isUndefined(modelsParameters[idInstance].borderColor)) {
+                modelsParameters[idInstance].borderColor = "#447bdc";
+            }
+            border = ' border: 2px solid ' + modelsParameters[idInstance].borderColor + '; ';
+        } else {
+            border = border + '-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border = border + '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border = border + 'box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+        }
 
+        return border;
+    }
+
+    this.captionHelper = function (caption, bIsInteractive, bCaptionManuallyChanged) {
+        if (!bIsInteractive) {
+            if (bCaptionManuallyChanged) {
+                modelsParameters[idInstance].inheritLabelFromData = false;
+            } else {
+                modelsParameters[idInstance].label = caption;
+            }
+        } else { // est-ce qu'on a intérêt à l'héritage en runtime ?
+            modelsParameters[idInstance].label = caption;
+        }
+    }
+
+    this.backgroundColor = function () {
+        // Backward compatibility
+        if (_.isUndefined(modelsParameters[idInstance].backgroundColor)) {
+            modelsParameters[idInstance].backgroundColor = "#ffffff";
+        }
+        const bc = 'background-color:' + modelsParameters[idInstance].backgroundColor + "; ";
+        return bc;
+    }
+
+    /**
+     * Conversion to enable HTML tags
+     * Retrieves the transformed text by handling HTML tags.
+     * 
+     * @param {string} prop - The property to retrieve the text from.
+     * @returns {string} The transformed text.
+     */
+    this.getTransformedText = function (prop) {
+        let text = modelsParameters[idInstance][prop] || '';
+    
+        if (text) {
+            // Check if the text has HTML tags
+            const hasHtmlTags = $('<div>').html(text).children().length > 0;
+        
+            if (!hasHtmlTags) {
+                // If the text does not have HTML tags, parse it as HTML
+                const parser = new DOMParser();
+                text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
+            }
+        }
+    
+        return text;
+    }
+
+    // +--------------------------------------------------------------------¦ \\
+    // |                            Button widget                           | \\
+    // +--------------------------------------------------------------------¦ \\
     this.buttonFontFamily = function () {
         // Backward compatibility
         if (_.isUndefined(modelsParameters[idInstance].buttonFontFamily)) {
@@ -194,34 +257,20 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         }
     }
 
-    this.border = function () {
-
-        var border = 'border: none; ';
-        if (modelsParameters[idInstance].displayBorder) {
-            if (_.isUndefined(modelsParameters[idInstance].borderColor)) {
-                modelsParameters[idInstance].borderColor = "#447bdc";
-            }
-            border = ' border: 2px solid ' + modelsParameters[idInstance].borderColor + '; ';
-        } else {
-            border = border + '-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
-            border = border + '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
-            border = border + 'box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+    this.displayIcon = function () {
+        if (_.isUndefined(modelsParameters[idInstance].displayIcon)) {
+            modelsParameters[idInstance].displayIcon = false;
         }
-
-        return border;
+        return modelsParameters[idInstance].displayIcon;
     }
 
-    this.captionHelper = function (caption, bIsInteractive, bCaptionManuallyChanged) {
-        if (!bIsInteractive) {
-            if (bCaptionManuallyChanged) {
-                modelsParameters[idInstance].inheritLabelFromData = false;
-            } else {
-                modelsParameters[idInstance].label = caption;
-            }
-        } else { // est-ce qu'on a intérêt à l'héritage en runtime ?
-            modelsParameters[idInstance].label = caption;
+    this.fontAwesomeIcon = function () {
+        if (_.isUndefined(modelsParameters[idInstance].fontAwesomeIcon)) {
+            modelsParameters[idInstance].fontAwesomeIcon = "";
         }
+        return modelsParameters[idInstance].fontAwesomeIcon;
     }
+    
     // +--------------------------------------------------------------------¦ \\
     // |                            Value  widget                           | \\
     // +--------------------------------------------------------------------¦ \\

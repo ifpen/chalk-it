@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 NAME = "py-chalk-it"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
 with open("README.MD", "r") as fh:
     readme = fh.read()

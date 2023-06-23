@@ -143,11 +143,11 @@ function widgetContainerClass() {
      * @description Computes the maxWidth property of widget considering its container
      * @param {any} element
      */
-    this.getMaxWidth = function (element) {
-        var widgetLayoutPx = getElementLayoutPx(element);
-        var containerId = widgetEditor.lastContainingDrpr[element.id];
-        var absoluteContainerLayoutPx = getElementLayoutPx(document.getElementById(containerId));
-        var maxWidthPx = computeMaxWidthPx(widgetLayoutPx, absoluteContainerLayoutPx);
+    this.getMaxWidth = function(element) {
+        const widgetLayoutPx = getElementLayoutPx(element);
+        const container = widgetEditor.getContainer(element);
+        const absoluteContainerLayoutPx = getElementLayoutPx(container);
+        const maxWidthPx = computeMaxWidthPx(widgetLayoutPx, absoluteContainerLayoutPx);
         return maxWidthPx;
     }
 
@@ -155,12 +155,11 @@ function widgetContainerClass() {
      * @description Computes the maxHeight property of widget considering its container
      * @param {any} element
      */
-    this.getMaxHeight = function (element) {
-        var widgetLayoutPx = getElementLayoutPx(element);
-        var containerId = widgetEditor.lastContainingDrpr[element.id];
-        var absoluteContainerLayoutPx = getElementLayoutPx(document.getElementById(containerId));
-        var relativeContainerLayoutPx = computeContainerRelativeLayout(absoluteContainerLayoutPx); // ?
-        var maxHeightPx = computeMaxHeightPx(widgetLayoutPx, absoluteContainerLayoutPx);
+    this.getMaxHeight = function(element) {
+        const widgetLayoutPx = getElementLayoutPx(element);
+        const container = widgetEditor.getContainer(element);
+        const absoluteContainerLayoutPx = getElementLayoutPx(container);
+        const maxHeightPx = computeMaxHeightPx(widgetLayoutPx, absoluteContainerLayoutPx);
         return maxHeightPx;
     }
 
@@ -171,7 +170,7 @@ function widgetContainerClass() {
      */
     this.getFloatingState = function (element) {
         if (layoutMgr.isRowColMode()) {
-            if (element.parentNode.parentNode.id == 'DropperDroite') {
+            if (element.parentNode.parentNode.id === 'DropperDroite') {
                 return 'FLOATING';
             } else {
                 return 'FIXED';
@@ -210,14 +209,13 @@ function widgetContainerClass() {
         let containerLayoutPx;
 
         if (layoutMgr.isRowColMode()) { // RowColMode
-            if (this.getFloatingState(element) == 'FIXED') { // work in relative coordinates
-                const containerDiv = document.getElementById(element.parentNode.parentNode.id);
+            const containerDiv = widgetEditor.getContainer(element);
+            if (this.getFloatingState(element) === 'FIXED') { // work in relative coordinates
                 containerLayoutPx = getElementLayoutPx(containerDiv);
 
                 // Make container relative
                 containerLayoutPx = computeContainerRelativeLayout(containerLayoutPx);
             } else { // work in absolute coordinates
-                const containerDiv = document.getElementById(widgetEditor.lastContainingDrpr[element.id]);
                 if (containerDiv.id === 'DropperDroite') {
                     // getElementLayoutPx fails because DropperDroite has an offset we don't care about
                     containerLayoutPx = {
@@ -270,17 +268,15 @@ function widgetContainerClass() {
         }
 
         // relative coordinates update
+        const $element = $(element);
+        const $container = $(element.parentNode.parentNode);
         if (bIsResize) {
-            widgetEditor.widthRatioModels[element.id] = $("#" + element.id).width() /
-                $("#" + $("#" + element.id)[0].parentNode.parentNode.id).width();
-            widgetEditor.heightRatioModels[element.id] = $("#" + element.id).height() /
-                $("#" + $("#" + element.id)[0].parentNode.parentNode.id).height();
+            widgetEditor.widthRatioModels[element.id] = $element.width() / $container.width();
+            widgetEditor.heightRatioModels[element.id] = $element.height() / $container.height();
         }
-        widgetEditor.leftRatioModels[element.id] = $("#" + element.id).position().left /
-            $("#" + $("#" + element.id)[0].parentNode.parentNode.id).width();
-        widgetEditor.topRatioModels[element.id] = $("#" + element.id).position().top /
-            $("#" + $("#" + element.id)[0].parentNode.parentNode.id).height();
-
+        widgetEditor.leftRatioModels[element.id] = $element.position().left / $container.width();
+        widgetEditor.topRatioModels[element.id] = $element.position().top / $container.height();
+ 
         return consTranslatedWidgetPx;
     }
 
@@ -324,11 +320,12 @@ function widgetContainerClass() {
             width: widgetLayoutPx.width,
             height: widgetLayoutPx.height
         };
+        const constrainedLayout = this.constrainLayout(element, requestedLayoutPx)
         let wLayout = {};
-        wLayout.top = unitH(requestedLayoutPx.top);
-        wLayout.left = unitW(requestedLayoutPx.left);
-        wLayout.height = unitH(requestedLayoutPx.height);
-        wLayout.width = unitW(requestedLayoutPx.width);
+        wLayout.top = unitH(constrainedLayout.top);
+        wLayout.left = unitW(constrainedLayout.left);
+        wLayout.height = unitH(constrainedLayout.height);
+        wLayout.width = unitW(constrainedLayout.width);
 
         // MBG : TODO : factory have to automatically create instance ID
         if (!instanceId) {
@@ -340,8 +337,7 @@ function widgetContainerClass() {
         modelsHiddenParams[instanceId] = jQuery.extend(true, {}, modelsHiddenParams[element.id]);
         modelsParameters[instanceId] = jQuery.extend(true, {}, modelsParameters[element.id]);
 
-        let targetDivId = widgetEditor.lastContainingDrpr[element.id];
-        let targetDiv = document.getElementById(targetDivId);
+        const targetDiv = widgetEditor.getContainer(element);
         widgetEditor.addWidget(modelJsonIdStr, targetDiv, instanceId, wLayout);
         return instanceId;
     }

@@ -226,7 +226,6 @@ JSEditor = function () {
               instanceId,
               true
             );
-            widgetConnector.updateDataNodeIndex(instanceId);
             if (widgetConnector.widgetsConnection[instanceId] != null) {
               widgetConnector.widgetsConnection[instanceId].widgetObjEdit = null;
               widgetConnector.widgetsConnection[instanceId].widgetObjConnect = wd;
@@ -274,7 +273,6 @@ JSEditor = function () {
         // MBG 25/03/2021
         if ($('#dialog-widget').text() == 'Hide widget') {
           instanceId = prop[0];
-          widgetConnector.updateDataNodeIndex(instanceId);
           if (widgetConnector.widgetsConnection[instanceId] != null) {
             widgetConnector.widgetsConnection[instanceId].widgetObjEdit = null;
             widgetConnector.widgetsConnection[instanceId].widgetObjConnect = null;

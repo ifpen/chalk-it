@@ -102,6 +102,9 @@ function flatUiBooleanWidgetsPluginClass() {
             var widgetHtml = document.createElement('div');
             var divContainerHeightPx = $('#' + idDivContainer).height(); // in px
             if (modelsParameters[idInstance].label != "" && modelsParameters[idInstance].displayLabel) { //ABK
+                // conversion to enable HTML tags
+                const labelText = this.getTransformedText("label");
+
                 divContent = '<label class="checkbox" id="label' + idWidget +
                     '" style="cursor: inherit; display: flex; align-items: center; margin:auto; ' +
                     this.labelFontSize() + this.labelColor() +
@@ -110,7 +113,7 @@ function flatUiBooleanWidgetsPluginClass() {
                     '<input type="checkbox" class="nohover" data-toggle="radio" style="zoom:' + modelsParameters[idInstance].checkboxSize +
                     '" value="" id="checkbox' + idWidget +
                     '" disabled></input>' +
-                    modelsParameters[idInstance].label + '</label>';
+                    labelText + '</label>';
             } else {
                 divContent = '<label class="checkbox" id="label' + idWidget +
                     '" style="cursor: inherit; display: flex; align-items: center; margin: auto;" for="checkbox' +
@@ -291,9 +294,12 @@ function flatUiBooleanWidgetsPluginClass() {
             divContent = divContent + '</label>';
             divContent = divContent + '</div>';
             if (modelsParameters[idInstance].label != "" && modelsParameters[idInstance].displayLabel) {
+                // conversion to enable HTML tags
+                const labelText = this.getTransformedText("label");
+
                 divContent = divContent + '<span id="switch-span' + idWidget +
                     '" class="switch-span" style="' + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '">' +
-                    modelsParameters[idInstance].label + '</span>';
+                    labelText + '</span>';
             }
             widgetHtml.innerHTML = divContent;
             $("#" + idDivContainer).html(widgetHtml);

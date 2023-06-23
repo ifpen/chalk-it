@@ -454,16 +454,17 @@ PluginEditor = function(jsEditor) {
                             );
                             input.mousedown(function(event) {
                                 event.preventDefault();
-                                $("#select_file").change(function(event) {
+                                $("#select_file").change(async function(event) {
+                                    const freeboardUIInst = new FreeboardUI();
                                     const file = event.target.files[0];
                                     const fileSize = file.size;
                                     let fileSizeFormat = "";
 
                                     if (fileSize < 1024) {
                                         fileSizeFormat = `${fileSize} bytes`;
-                                    } else if (fileSize >= 1024 && fileSize < 1_048_576) {
+                                    } else if (fileSize < 1_048_576) {
                                         fileSizeFormat = `${(fileSize / 1024).toFixed(1)} KB`;
-                                    } else if (fileSize >= 1_048_576) {
+                                    } else {
                                         fileSizeFormat = `${(fileSize / 1_048_576).toFixed(1)} MB`;
                                     }
 
@@ -474,57 +475,65 @@ PluginEditor = function(jsEditor) {
                                         content: ""
                                     }
 
-                                    JSZip.loadAsync(file)
-                                    .then(
-                                        function (zip) {
-                                            var promises = [];
-                                            var zipContent = [];
-                                            const extensionsText = ["txt", "json", "xprjson", "xml", "svg", "html", "css"];
-                                            const extensionsBinary = ["xls", "xlsx", "jpg", "jpeg", "png", "tiff", "gif"];
-                                            zip.forEach(function (relativePath, zipEntry) {  // zipEntry == zip.files[relativePath]
-                                                let fileExtension = relativePath.split('.').pop();
-                                                if (extensionsText.includes(fileExtension)) {
-                                                    promises.push(
-                                                        zipEntry.async('string').then(function (fileData) {
-                                                            let content = "";
-                                                            if (fileExtension === "json" || fileExtension === "xprjson") {
-                                                                content = JSON.parse(fileData, null, 2);
-                                                            } else {
-                                                                content = fileData;
-                                                            }
-                                                            zipContent.push({ "name": relativePath, "content": content});
-                                                        })
-                                                    );
-                                                } else if (!fileExtension.includes("/")) {
-                                                    promises.push(
-                                                        zipEntry.async('uint8array').then(function (fileData) {
-                                                            let content = btoa([].reduce.call(new Uint8Array(fileData), function(p, c) { return p + String.fromCharCode(c); }, ""));
-                                                            zipContent.push({ "name": relativePath, "content": content});
-                                                        })
-                                                    );
-                                                }
-                                            });
-                                            Promise.all(promises).then(function() {
-                                                result.content = zipContent;
-                                                newSettings.settings["content"] = result;
-                                            });
-                                        },
-                                        function (event) {
-                                            let notice = new PNotify({
-                                                title: "Unzip file",
-                                                text: "Error reading " + file.name + ": " + event.message,
-                                                type: "error",
-                                                styling: "bootstrap3"
-                                            });
-                                            $('.ui-pnotify-container').on('click', function () {
-                                                notice.remove();
-                                            });
-                                            console.error("Error reading " + file.name + ": " + event.message); 
-                                        }
-                                    );
+                                    const fileExtension = file.name.split(".").pop();;
+                                    const extensionsText = ["txt", "json", "xprjson", "xml", "svg", "html", "css", "js", "ts", "md", "csv"];
+                                    const extensionsBinary = ["xls", "xlsx", "jpg", "jpeg", "png", "tiff", "gif"];
+                                    const fileTypes = ["", "application/json"];
+                                    const zipContent = [];
 
-                                    var fakeFilePath = this.value;
-                                    var fileName = Path2FileName(fakeFilePath);
+                                    if (fileExtension && fileTypes.includes(result.type)) {
+                                        result.type = fileExtension;
+                                    }
+
+                                    try {
+                                        freeboardUIInst.showLoadingIndicator(true);
+                                        const zip = await JSZip.loadAsync(file);
+                                        for (const relativePath in zip.files) {
+                                            const zipEntry = zip.files[relativePath];
+                                            const isDir = zipEntry.dir;
+                                            if (isDir) {
+                                                continue;
+                                            }
+                                            const fileExtension = relativePath.split(".").pop();
+                                            const fileSize = zipEntry._data.uncompressedSize; // Get the compressed size of the zipEntry
+
+                                            // do not increase this value otherwise the browser will crash
+                                            if (fileSize > 73_400_320) {
+                                                // 73_400_320 bytes == 70 MB
+                                                continue;
+                                            }
+                    
+                                            if (fileExtension && extensionsText.includes(fileExtension)) {
+                                                const fileData = await zipEntry.async("string");
+                                                zipContent.push({
+                                                    name: relativePath,
+                                                    content: ["json", "xprjson"].includes(fileExtension) ? JSON.parse(JSON.stringify(eval('(' + fileData + ')')), null, 2) : fileData,
+                                                });
+                                            } else {
+                                                const fileData = await zipEntry.async("uint8array");
+                                                zipContent.push({
+                                                    name: relativePath,
+                                                    content: btoa([].reduce.call(new Uint8Array(fileData), (p, c) => p + String.fromCharCode(c), "")),
+                                                });
+                                            }
+                                        }
+                                        result.content = zipContent;
+                                    } catch (error) {
+                                        const notice = new PNotify({
+                                            title: "Unzip file",
+                                            text: "Error reading " + file.name + ": " + error,
+                                            type: "error",
+                                            styling: "bootstrap3",
+                                        });
+                                        $(".ui-pnotify-container").on("click", () => notice.remove());
+                                        console.error("Error reading " + file.name + ": " + error);
+                                    } finally {
+                                        freeboardUIInst.showLoadingIndicator(false);
+                                    }
+
+                                    newSettings.settings["content"] = result;
+                                    const fakeFilePath = this.value;
+                                    const fileName = Path2FileName(fakeFilePath);
                                     $("#select_file_path").val(fileName);
                                 });
                                 $("#select_file").trigger("click");
