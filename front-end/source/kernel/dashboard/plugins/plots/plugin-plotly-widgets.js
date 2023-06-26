@@ -408,38 +408,33 @@ function plotlyWidgetsPluginClass() {
 
     /**
     * Retrieves the transformed text by handling HTML tags.
+    * If the text does not contain HTML tags, it is returned as is.
     * 
-    * @param {string} prop - The property to retrieve the text from.
-    * @returns {string} The transformed text.
+    * @param {string} text - The input text to transform.
+    * @returns {string} The transformed text without HTML tags.
     */
-    this.getTransformedText = function (prop) {
-        let text = "";
-        const layout = modelsParameters[idInstance]?.layout;
-        if (!_.isUndefined(layout?.title?.text)) {
-          text = layout.title.text;
-        } else if (!_.isUndefined(layout?.title)) {
-          text = layout.title;
-        }
-
-        if (text) {
-            // Check if the text has HTML tags
-            const hasHtmlTags = $('<div>').html(text).children().length > 0;
-            if (!hasHtmlTags) {
-                // If the text does not have HTML tags, parse it as HTML
-                const parser = new DOMParser();
-                text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
-            }
-        }
-        return text;
+    this.getTransformedText = function (text) {
+      if (text) {
+          // Check if the text has HTML tags
+          const hasHtmlTags = $('<div>').html(text).children().length > 0;
+          if (!hasHtmlTags) {
+              // If the text does not have HTML tags, parse it as HTML
+              const parser = new DOMParser();
+              text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
+          }
+      }
+      return text;
     }
 
     this.render = function () {
       /* Conversion to enable HTML tags */
-      const layout = modelsParameters[idInstance]?.layout;
-      if (!_.isUndefined(layout?.title?.text)) {
-        layout.title.text = this.getTransformedText();
-      } else if (!_.isUndefined(layout?.title)) {
-        layout.title = this.getTransformedText();
+      const layout = modelsParameters[idInstance].layout;
+      if (!_.isUndefined(layout) && !_.isUndefined(layout.title)) {
+        if (!_.isUndefined(layout.title.text)) {
+          layout.title.text = this.getTransformedText(layout.title.text);
+        } else {
+          layout.title = this.getTransformedText(layout.title);
+        }
       }
 
       /* Apply colors from modelsParameters */
