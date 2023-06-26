@@ -1,6 +1,6 @@
 function setupGallery(demosArray, demoCategoryArray, demoCaptionArray) {
 
-    var chalkitWebSiteXprjson = "https://ifpen.github.io/chalk-it/xprjson";
+    var chalkitWebSiteXprjson = "https://ifpen.github.io/chalk-it/demos-gallery/xprjson";
     var chalkitEditor = "https://ifpen.github.io/chalk-it/hosted/index.html?projectUrl=" + chalkitWebSiteXprjson + '/';
     var chalkitViewer = "https://ifpen.github.io/chalk-it/hosted/index-view-2.720.8520.html?projectUrl=" + chalkitWebSiteXprjson + '/';
     var divDemo = ''
