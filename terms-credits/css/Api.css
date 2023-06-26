@@ -1,0 +1,172 @@
+﻿/* define tabulation styles */
+dummydeclaration { padding-left: 4em; } /* Firefox ignores first declaration for some reason */
+tab1 { padding-left: 2em; }
+tab2 { padding-left: 4em; }
+tab3 { padding-left: 6em; }
+tab4 { padding-left: 8em; }
+tab5 { padding-left: 10em; }
+tab6 { padding-left: 12em; }
+tab7 { padding-left: 14em; }
+tab8 { padding-left: 16em; }
+tab9 { padding-left: 18em; }
+tab10 { padding-left: 20em; }
+
+/* Set height of body and the document to 100% to enable "full page tabs" */
+html {
+  height: 100vh;
+}
+
+body {
+  min-height: 100vh;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial;
+  overflow:hidden;
+}
+
+.fullpage {
+    height: 100vh;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0px;
+    height: 5px;
+}
+
+.logocontainer {
+   position: fixed;
+   top:60px;
+   right:20px;
+}
+
+.logo {
+    float:right;
+    height:144px;
+}
+
+/* Style tab links */
+.tablink {
+    background-color: #555;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 20%;
+}
+
+.tablink:hover {
+    background-color: #777;
+    color: white;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+    color: black;
+    display: block;
+    padding: 100px 0px 100px 20px;
+    height: 100%;
+}
+
+/* Style the methods definition list */
+dl.table-methods {
+    width: 41.1em;
+    margin: 2em 0;
+    padding: 0;
+    font-family: Arial;
+}
+
+.table-methods dt {
+    width: 15em;
+    float: left;
+    margin: 0 0 0 0;
+    padding: .5em;
+    border-top: 1px solid #999;
+    font-weight: bold;
+}
+
+/* hack de commentaire avec un antislash pour ie5 mac \*/
+dt {
+    clear: both;
+}
+/* end hack */
+
+/* style the list of methods */
+.table-methods dd {
+    float: left;
+    width: 24em;
+    margin: 0 0 0 0;
+    padding: .5em;
+    border-top: 1px solid #999;
+}
+
+dl.table-methods {
+    width: 41.1em;
+    margin: 2em 0;
+    padding: 0;
+    font-family: Arial;
+}
+
+.table-methods dt {
+    width: 15em;
+    float: left;
+    margin: 0 0 0 0;
+    padding: .5em;
+    border-top: 1px solid #999;
+    font-weight: bold;
+}
+
+.top-div {
+    display:inline;
+    margin-bottom:20px;
+}
+
+.scroll-div {
+    margin-top:50px;
+    height: 600px; 
+    overflow-y : auto;
+}
+
+/* style the methods description */
+dl.table-methods-desc {
+    margin: 2em 0;
+    padding: 0;
+    font-family: Arial;
+}
+
+.table-methods-desc dt {
+    position: relative;
+    left: 0;
+    top: 1.2em;
+    width: 5em;
+    font-weight: bold;
+    margin-top: 0.5em;
+}
+
+.table-methods-desc dd {
+    border-left: 1px solid #000;
+    margin: 0 0 0 12em;
+    padding: 0 0 .5em .5em;
+}
+
+.column {
+    float: left;
+    width: 50%;
+}
+
+@media screen and (max-width: 1000px) {
+    .column {
+        width: 100%;
+    }
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+

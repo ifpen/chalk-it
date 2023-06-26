@@ -1,0 +1,339 @@
+.modalDialog {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+    min-width:314px;
+    overflow:auto;
+}
+
+.modalDialogOpen {
+	opacity:1;
+	pointer-events: auto;
+}
+
+.modalDialog:target {
+	opacity:1;
+	pointer-events: auto;
+}
+
+.modalDialog > div {
+	width: 85vw; /*45vw;*/
+	position: relative;
+	margin: 2% auto; /*6% auto;*/
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+	background: #fff;
+	background: -moz-linear-gradient(#f2f2f2, #999);
+	background: -webkit-linear-gradient(#f2f2f2, #999);
+	background: -o-linear-gradient(#fff, #f2f2f2);
+	overflow:auto;
+	max-height:93%; /*87%;*/
+    min-width: 614px
+}
+
+.modalDialog > div > a{
+    text-decoration:none; 
+}
+
+.modalDialog > div > div::-webkit-scrollbar-thumb {
+	background: #939292;/*#a2a2a2*//*ABK*/
+}
+
+.modalDialog > div > div{
+	overflow:auto;
+    max-height:53vh; /*68vh;*/
+}
+
+.modal-panel-heading {
+	background: #a2a2a2;
+    color:#535353; 
+}
+
+.modal-panel-heading:hover {
+	background: #dcdcdc;
+}
+
+.panel-heading-anchor{
+    text-decoration: none;
+    color:#535353; 
+}
+
+.panel-heading-anchor:hover, .panel-heading-anchor:focus{
+    text-decoration: none;
+    color:#535353; 
+}
+
+.close {
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: +1px;/*-12px;*/
+	text-align: center;
+	top: -1px;/*-10px;*/
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover { 
+    background: #00d9ff; 
+}
+
+.text
+ {
+    color: rgba(255, 255, 255, 0);
+	/*margin-left: 52px;
+	margin-top: 55px;
+	text-align: center;*/
+	cursor: pointer;
+    /*text-decoration: none;*/
+	position:absolute;	
+   }
+
+.text:hover
+ {
+	color: #000;
+	/*margin-left: 52px;
+	margin-top: 55px;*/
+	background-color: #fff;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+	cursor: pointer;
+    /*text-decoration: underline;*/
+	position:absolute;
+	border:1px dotted black;
+	line-height: 40px;
+	padding-left: 11px;
+	padding-right: 11px;
+	 
+ } 
+
+.Table
+{
+	width: 20vw;/*30vw;*/
+    display: table;
+	/*margin-left: auto;*/
+	/*margin-right: auto;*/
+}
+
+.Title
+{
+    display: table-caption;
+    text-align: center;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.Heading
+{
+		
+    display: table-row;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Row
+{
+    display: table-row;
+}
+	
+.Cell
+{	
+    display: table-cell;
+    /*border: solid;*/
+    border-width: thin;
+    padding-left: 5px;
+    padding-right: 5px;
+	text-align: center;
+    font-size: calc(8px + 0.4vw);
+}
+
+.Cell.colspan {
+    display: none;
+    /* collapse border */
+    margin-top: -1px;
+    margin-bottom: -1px;
+	}
+
+.Cell p
+{
+	font-weight: bold;
+    font-size: 16px;
+}
+
+.Cell select
+{
+	width: 180px;
+}
+
+.CellW
+{
+    display: table-cell;
+	font-weight: bold;
+	font-size: calc(8px + 0.4vw);
+    border-width: thin;
+    /*padding: 13px 0px;
+	text-align: center;*/
+	vertical-align: middle;
+    padding-left: 5px;
+}
+
+.CellText
+{
+    display: table-cell;
+    border: thin solid rgba(243, 243, 243, 0.2);
+	font-weight: bold;
+	font-size: calc(8px + 0.4vw);
+    padding: 3px 0px;
+	/*text-align: center;*/
+	vertical-align: middle;
+    text-align:left;
+    /*width: 60%;*/
+    padding-left: 5px;
+}
+
+.CellIcon
+{
+    display: table-cell;
+    border: thin solid rgba(243, 243, 243, 0.2);
+	font-weight: bold;
+	/*font-size: 16px;*/
+    /*padding: 13px 0px;*/
+	/*text-align: center;*/
+	vertical-align: middle;
+    width:40%;
+}
+
+.CellH
+{
+    font-weight: bold;
+    display: table-cell;
+    /*border: solid;*/
+    border-width: thin;
+    padding-left: 5px;
+    padding-right: 5px;
+	/*text-align: center;*/
+}
+
+.CellH label
+{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.bouton
+{
+	width:100px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+    text-align: center;
+	background: #606061;
+	
+	color: #FFFFFF;
+	line-height: 25px;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+	margin:5px;
+	text-decoration:none; 
+}
+
+.bouton:hover 
+{ 
+	background: #00d9ff; 
+	background: -moz-linear-gradient(#00d9ff, #333);
+	background: -webkit-linear-gradient(#00d9ff, #333);
+	background: -o-linear-gradient(#00d9ff, #333);
+	cursor: pointer;
+	text-decoration:none; 
+}
+
+.bouton.disabled {
+   color:#ffffff;
+   background:#dddddd;
+   text-decoration:none;
+   cursor: default;
+}
+
+.bouton:hover.disabled {
+   color:#ffffff;
+   background:#dddddd;
+   text-decoration:none; 
+   cursor: default;
+   pointer-events: none;
+}
+
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+}
+
+.accordion.active, .accordion:hover {
+    background-color: #ddd;
+}
+
+.accordion:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.accordion.active:after {
+    content: "\2212";
+}
+
+.erase:hover{
+    background-color: #e9e9e9;
+    -webkit-transition: 250ms linear;
+    -moz-transition: 250ms linear;
+    -o-transition: 250ms linear;
+    transition: 250ms linear;
+     margin: 0px;
+}
+
+.check-option1 {
+    float: left;
+    cursor: pointer;
+    height: 16px;
+    width: 23px;
+    margin:0;
+}
+
+.check-option2 {
+    float: left;
+    cursor: pointer;
+    height: 16px;
+    width: 23px;
+    margin:0;
+}

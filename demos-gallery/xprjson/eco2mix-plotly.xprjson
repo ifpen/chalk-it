@@ -1,0 +1,504 @@
+{
+  "meta": {
+    "version": "2.730.8554",
+    "date": "Tue Jun 20 2023 23:28:00 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "name": "emix-plotly",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "date",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "date",
+          "json_var": "\"2023-06-19\""
+        }
+      },
+      {
+        "name": "bSampling",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "bSampling",
+          "json_var": "true"
+        }
+      },
+      {
+        "name": "df",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "df",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import pandas as pd\nimport re\ndf = pd.json_normalize(dataNodes[\"eco2mix-national-tr\"][\"records\"]).dropna().reset_index(drop=True)\ndf.rename(columns=lambda x: re.sub('^fields\\.', '', x), inplace=True)\n# Convert the column to datetime\ndf['date_heure'] = pd.to_datetime(df['date_heure'])\n\n# Set the column as the index\ndf.set_index('date_heure', inplace=True)\n\n# dictionary mapping old column names to new column names\ncolumn_mapping = {\n    'nucleaire': 'Nuclear',\n    'hydraulique': 'Hydraulic',\n    'eolien': 'Wind',\n    'gaz': 'Gas',\n    'bioenergies': 'Bioenergies',\n    'solaire': 'Solar',\n    'fioul': 'Fuel oil'\n}\n\n# rename the columns\ndf.rename(columns=column_mapping, inplace=True)\nfili\u00e8res = ['Nuclear', 'Hydraulic', 'Wind', 'Gas', 'Bioenergies', 'Solar', 'Fuel oil']\nreturn df[fili\u00e8res]"
+        }
+      },
+      {
+        "name": "energy",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "energy",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "df = dataNodes[\"df\"]\ndff = df.resample('H').mean()\nreturn dff.sum()\n"
+        }
+      },
+      {
+        "name": "eco2mix-national-tr",
+        "type": "REST_web-service_from_datasource",
+        "settings": {
+          "name": "eco2mix-national-tr",
+          "url": "https://odre.opendatasoft.com/api/records/1.0/search/?dataset=eco2mix-national-tr&q=&rows=96&sort=-date_heure&facet=nature&facet=date_heure&refine.date_heure=",
+          "use_xproxy": true,
+          "sampleTime": 0,
+          "autoStart": true,
+          "explicitTrig": false,
+          "req_data_type": "JSON",
+          "resp_data_type": "JSON",
+          "method": "GET",
+          "body": "return {\"urlAppend\" : dataNodes[\"queryUrl\"]};",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9vZHJlLm9wZW5kYXRhc29mdC5jb20vYXBpL3JlY29yZHMvMS4wL3NlYXJjaC8/ZGF0YXNldD1lY28ybWl4LW5hdGlvbmFsLXRyJnE9JnJvd3M9OTYmc29ydD0tZGF0ZV9oZXVyZSZmYWNldD1uYXR1cmUmZmFjZXQ9ZGF0ZV9oZXVyZSZyZWZpbmUuZGF0ZV9oZXVyZT0iLCJIb3N0IjoieGRhc2gifQ==",
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxm7n7xMRSmS0vaKVTvnnHUpQXDuiAK8UT50OI6IYxNjTL/6mZXHelVFeAL//uXTr+mWk3utjhZIoEyPYl0lY8hZ3JJNeiElWllG/8hiiKJhfIlN+OJjLMIB0Ke7ngTDLFbOcXFcrkjEM5FOSIO9kcEVglb4QhshdkjTOlNjtZSryv6nvbP6KNT5YeunoRF5hTuoh53qV657Dn8qpZvvk6xsqJir54hNt2ZQkPxkVFJ3e"
+        }
+      },
+      {
+        "name": "plot",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "plot",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import pandas as pd\nimport plotly.graph_objects as go\nimport plotly.express as px\n\nfig = go.Figure()\n\ndf = dataNodes[\"df\"]\n\n# Define common layout\nlayout = dict(\n    showlegend=True,\n    xaxis_type='date',\n    yaxis=dict(\n        type='linear',\n        range = [0,90000],\n        ticksuffix=' MW'  # Set y-axis units as 'MW' \n    ),\n    xaxis_title=\"Time\",\n    yaxis_title=\"Power [MW]\",\n    title=\"Daily electrical power for \" + dataNodes[\"date\"]\n)\n\nif (not dataNodes[\"bSampling\"]):\n\n    # Loop over DataFrame columns\n    for col in df.columns[0:]:\n        fig.add_trace(go.Scatter(\n            x=df.index, y=df[col],\n            hoverinfo='x+y',\n            mode='lines',\n            line=dict(width=0.5),\n            name=col,  # Set the trace name to the column name\n            stackgroup='one' # define stack group\n        ))\n\n    fig.update_layout(layout)\n\nelse:\n    dff = df.resample('H').mean()\n    fig = px.bar(dff, barmode='stack')\n    fig.update_layout(layout)\n\nreturn fig\n"
+        }
+      },
+      {
+        "name": "queryUrl",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "queryUrl",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "dateStr = dataNodes[\"date\"]\ndateUrl = dateStr.replace('-','%2F')\nreturn dateUrl\n"
+        }
+      },
+      {
+        "name": "infos",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "infos",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "return '''\n# Real-time \u00e9CO2mix national data\n\nThis dataset, refreshed once an hour, presents \"real-time\" data from the eCO2mix application. The data comes from telemetry of the structures, supplemented by packages and estimates.\n\nThis Chalk'it dashboard currently inclues:\n\n- The production according to the different sectors composing the energy mix.\n\nMore information : <https://odre.opendatasoft.com/explore/dataset/eco2mix-national-tr/information/>\n'''\n"
+        }
+      },
+      {
+        "name": "pie",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "pie",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import plotly.graph_objects as go\n\ntotal_energy_GWh = dataNodes[\"energy\"]/1000\n\n# Create new labels with units\nlabels_with_units = [f'{label} (GWh)' for label in total_energy_GWh.index]\n\n# Create the pie chart\nfig = go.Figure(data=[go.Pie(labels=labels_with_units, \n                             values=total_energy_GWh.values,\n                             hole=.3)])  # Adjust hole parameter to create a donut chart\n\n# Give the chart a title\nfig.update_layout(title_text=\"Total energy production by sector\")\n\n# Show the chart\nreturn fig"
+        }
+      }
+    ],
+    "reIndexMap": [
+      1,
+      0,
+      4,
+      6,
+      3,
+      5,
+      2,
+      8,
+      7
+    ],
+    "noTopologicalSortAtSerialize": true
+  },
+  "libraries": {
+    "pyodideStandard": [
+      "pandas"
+    ],
+    "pyodideMicropip": [
+      "plotly"
+    ]
+  },
+  "scaling": {
+    "widthPx": 1302,
+    "heightPx": 575,
+    "scrollWidthPx": 1302,
+    "scrollHeightPx": 575,
+    "widthVw": 84.765625,
+    "heightVh": 79.6398891966759,
+    "scrollWidthVw": 84.765625,
+    "scrollHeightVh": 79.6398891966759,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": {
+      "widthPx": 1303.4,
+      "heightPx": 575.4,
+      "widthVw": 84.85677083333334,
+      "heightVh": 79.69529085872576,
+      "rowHeightPercent": 100
+    }
+  },
+  "device": {
+    "cols": {
+      "valueRow": "2",
+      "valueCol": "1",
+      "maxCells": 2,
+      "maxCols": 1,
+      "classType": "col-md-12"
+    },
+    "droppers": {
+      "dpr1": {
+        "component0": "datepickerSimpleA",
+        "component1": "annotationLabelA",
+        "component2": "plotlyPyGenericA",
+        "component3": "flatUiSwitchA",
+        "component4": "annotationLabelB",
+        "component5": "annotationLabelC",
+        "component6": "plotlyPyGenericC",
+        "component7": "annotationIconInfoA"
+      },
+      "dpr2": {
+        "component0": "annotationMarkdownA"
+      }
+    },
+    "backgroundColor": "#f2f2f2",
+    "theme": "default"
+  },
+  "dashboard": {
+    "datepickerSimpleA": {
+      "layout": {
+        "top": "11.0803vh",
+        "left": "0.651042vw",
+        "height": "4.98615vh",
+        "width": "23.5026vw",
+        "minHeight": "32px",
+        "minWidth": "150px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "datepickerSimpleA",
+        "instanceId": "datepickerSimpleA",
+        "modelJsonId": "datepickerSimple",
+        "widgetTypeName": "Simple calender(datepickerSimpleA)"
+      },
+      "modelParameters": {
+        "label": "Choose date",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelWidthProportion": "30%",
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)",
+        "labelFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "value": "",
+        "visibility": false
+      }
+    },
+    "annotationLabelA": {
+      "layout": {
+        "top": "1.38504vh",
+        "left": "0.651042vw",
+        "height": "8.17175vh",
+        "width": "82.6172vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "2"
+      },
+      "container": {
+        "id": "annotationLabelA",
+        "instanceId": "annotationLabelA",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label(annotationLabelA)"
+      },
+      "modelParameters": {
+        "text": "Daily electricity production of France",
+        "enableActuator": false,
+        "fontsize": 1.5,
+        "backgroundColor": "#c0bebe",
+        "textColor": "#ffffff",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "center",
+        "displayBorder": false,
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "plotlyPyGenericA": {
+      "layout": {
+        "top": "19.2521vh",
+        "left": "0.651042vw",
+        "height": "57.7562vh",
+        "width": "55.599vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "3"
+      },
+      "container": {
+        "id": "plotlyPyGenericA",
+        "instanceId": "plotlyPyGenericA",
+        "modelJsonId": "plotlyPyGeneric",
+        "widgetTypeName": "Plotly Python generic(plotlyPyGenericA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "fig": ""
+      }
+    },
+    "flatUiSwitchA": {
+      "layout": {
+        "top": "11.0803vh",
+        "left": "39.1276vw",
+        "height": "4.98615vh",
+        "width": "5.07812vw",
+        "minHeight": "24px",
+        "minWidth": "50px",
+        "z-index": "4"
+      },
+      "container": {
+        "id": "flatUiSwitchA",
+        "instanceId": "flatUiSwitchA",
+        "modelJsonId": "flatUiSwitch",
+        "widgetTypeName": "Switch(flatUiSwitchA)"
+      },
+      "modelParameters": {
+        "label": "bSampling",
+        "inheritLabelFromData": true,
+        "displayLabel": false,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "switchWidthProportion": "100%",
+        "switchOnColor": "var(--widget-input-checked-color)",
+        "switchOffColor": "var(--widget-input-unchecked-color)"
+      },
+      "modelHiddenParams": {
+        "value": false
+      }
+    },
+    "annotationLabelB": {
+      "layout": {
+        "top": "11.0803vh",
+        "left": "44.4661vw",
+        "height": "4.98615vh",
+        "width": "8.85417vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "5"
+      },
+      "container": {
+        "id": "annotationLabelB",
+        "instanceId": "annotationLabelB",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label(annotationLabelB)"
+      },
+      "modelParameters": {
+        "text": "Hourly",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "annotationLabelC": {
+      "layout": {
+        "top": "11.0803vh",
+        "left": "30.0781vw",
+        "height": "4.98615vh",
+        "width": "8.85417vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "6"
+      },
+      "container": {
+        "id": "annotationLabelC",
+        "instanceId": "annotationLabelC",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label(annotationLabelC)"
+      },
+      "modelParameters": {
+        "text": "Minimal",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "right",
+        "displayBorder": false,
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "annotationMarkdownA": {
+      "layout": {
+        "top": "4.98615vh",
+        "left": "2.01823vw",
+        "height": "67.036vh",
+        "width": "80.5339vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "7"
+      },
+      "container": {
+        "id": "annotationMarkdownA",
+        "instanceId": "annotationMarkdownA",
+        "modelJsonId": "annotationMarkdown",
+        "widgetTypeName": "Markdown(annotationMarkdownA)"
+      },
+      "modelParameters": {
+        "fontsize": 0.3,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "centerVertically": false
+      },
+      "modelHiddenParams": {
+        "text": ""
+      }
+    },
+    "plotlyPyGenericC": {
+      "layout": {
+        "top": "19.2521vh",
+        "left": "57.1615vw",
+        "height": "57.7562vh",
+        "width": "25.9766vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "9"
+      },
+      "container": {
+        "id": "plotlyPyGenericC",
+        "instanceId": "plotlyPyGenericC",
+        "modelJsonId": "plotlyPyGeneric",
+        "widgetTypeName": "Plotly Python generic(plotlyPyGenericC)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "fig": ""
+      }
+    },
+    "annotationIconInfoA": {
+      "layout": {
+        "top": "10.9418vh",
+        "left": "24.4141vw",
+        "height": "4.01662vh",
+        "width": "2.01823vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "10"
+      },
+      "container": {
+        "id": "annotationIconInfoA",
+        "instanceId": "annotationIconInfoA",
+        "modelJsonId": "annotationIconInfo",
+        "widgetTypeName": "Info(annotationIconInfoA)"
+      },
+      "modelParameters": {
+        "text": "Available data up to 1 year",
+        "enableActuator": false,
+        "fontSize": "medium",
+        "fontWeight": "bold",
+        "fontFamily": "var(--widget-font-family)",
+        "textColor": "var(--widget-button-text)",
+        "textPadding": 10,
+        "tipBackgroundColor": "var(--widget-button-color)",
+        "tipBorderColor": "var(--widget-button-text)",
+        "tipWidth": 200,
+        "tipPositions": [
+          "right"
+        ],
+        "tipEventTrigger": "hover",
+        "iconColor": "var(--widget-label-color)",
+        "iconSize": 1,
+        "iconSign": "info-circle",
+        "cornerRadius": 10,
+        "spikeLength": 15,
+        "spikeGirth": 5
+      },
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "datepickerSimpleA": {
+      "dateValue": {
+        "name": "dateValue",
+        "dataNode": "date",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "annotationLabelA": {},
+    "plotlyPyGenericA": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "plot",
+        "dataFields": [],
+        "dataNodeIndex": 5
+      }
+    },
+    "flatUiSwitchA": {
+      "value": {
+        "name": "value",
+        "dataNode": "bSampling",
+        "dataFields": [],
+        "dataNodeIndex": 1
+      }
+    },
+    "annotationLabelB": {},
+    "annotationLabelC": {},
+    "annotationMarkdownA": {
+      "text": {
+        "name": "text",
+        "dataNode": "infos",
+        "dataFields": [],
+        "dataNodeIndex": 7
+      }
+    },
+    "plotlyPyGenericC": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "pie",
+        "dataFields": [],
+        "dataNodeIndex": 8
+      }
+    },
+    "annotationIconInfoA": {}
+  },
+  "exportOptions": "rowToTab",
+  "pages": {
+    "pageNames": [
+      "Production",
+      "Meta-information"
+    ],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

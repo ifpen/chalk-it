@@ -1,0 +1,6 @@
+/* TEAM */
+	Company: IFP Energies nouvelles - Digital Science & Technology Division - Scientific Computing Department
+	Location: Rueil-Malmaison, Hauts-de-Seine, France
+	Contact: xdash@ifpen.fr
+	
+	

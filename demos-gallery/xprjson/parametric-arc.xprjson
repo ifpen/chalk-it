@@ -1,0 +1,327 @@
+{
+  "meta": {
+    "version": "2.730.8554",
+    "date": "Tue Jun 20 2023 21:31:45 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "name": "parametric-arc",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "description",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "description",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "return '''\n# Interactive 3D Helix Dashboard\n\nThis interactive dashboard allows the user to create and visualize a 3D helix with customizable parameters. \n\nThere are three sliders that allow the user to adjust the following parameters of the helix:\n\n- **Radius**: This slider adjusts the radius of the helix. The radius can be any real number between 0.1 and 10. The default value is 1.\n- **Frequency**: This slider adjusts the frequency of the helix. The frequency can be any real number between 0.1 and 10. The default value is 1.\n- **Rotations**: This slider adjusts the number of rotations in the helix. The number of rotations can be any integer between 1 and 10. The default value is 5.\n\nThe plot itself is a 3D scatter plot, where the x, y, and z coordinates of the points are defined by the parametric equations of the helix. The line of the helix is colored according to a color scale that is mapped to the parameter 't' of the parametric equations, resulting in a gradient effect along the helix.\n'''\n"
+        }
+      },
+      {
+        "name": "params",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "params",
+          "json_var": "{\"radius\":2,\"frequency\":1,\"n_rotations\":5}"
+        }
+      },
+      {
+        "name": "Scatter3d",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "Scatter3d",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import numpy as np\nimport plotly.graph_objects as go\n\nn_rotations = dataNodes[\"params\"][\"n_rotations\"]\nr = dataNodes[\"params\"][\"radius\"]\nf = dataNodes[\"params\"][\"frequency\"]\n\nt = np.linspace(0, n_rotations*2*np.pi, 1000)  # parameter t\nx = r * np.cos(f*t)\ny = r * np.sin(f*t)\nz = t\n\nfig = go.Figure(data=go.Scatter3d(\n    x=x, y=y, z=z,\n    mode='lines',\n    line=dict(color=t, colorscale='Viridis', width=6)\n))\n\n# Set axes labels\nfig.update_layout(scene=dict(\n    xaxis_title='X',\n    yaxis_title='Y',\n    zaxis_title='Z'\n))\n\n# Set axes labels and reduce the margins\nfig.update_layout(scene=dict(\n    xaxis_title='X',\n    yaxis_title='Y',\n    zaxis_title='Z'\n), title=\"3D Parametric Helix\", \n   margin=dict(l=10, r=10, b=10, t=30))\n\nreturn fig"
+        }
+      }
+    ],
+    "reIndexMap": [
+      2,
+      0,
+      1
+    ],
+    "noTopologicalSortAtSerialize": true
+  },
+  "libraries": {
+    "pyodideStandard": [
+      "numpy"
+    ],
+    "pyodideMicropip": [
+      "plotly"
+    ]
+  },
+  "scaling": {
+    "widthPx": 1302,
+    "heightPx": 575,
+    "scrollWidthPx": 1302,
+    "scrollHeightPx": 575,
+    "widthVw": 84.765625,
+    "heightVh": 79.6398891966759,
+    "scrollWidthVw": 84.765625,
+    "scrollHeightVh": 79.6398891966759,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "#ffffff",
+    "theme": "default"
+  },
+  "dashboard": {
+    "plotlyPyGenericA": {
+      "layout": {
+        "top": "1.38504vh",
+        "left": "48.5026vw",
+        "height": "74.9307vh",
+        "width": "33.9193vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "plotlyPyGenericA",
+        "instanceId": "plotlyPyGenericA",
+        "modelJsonId": "plotlyPyGeneric",
+        "widgetTypeName": "Plotly Python generic(plotlyPyGenericA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "fig": ""
+      }
+    },
+    "flatUiHorizontalSliderA": {
+      "layout": {
+        "top": "62.7424vh",
+        "left": "0.651042vw",
+        "height": "4.98615vh",
+        "width": "46.4844vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "2"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderA",
+        "instanceId": "flatUiHorizontalSliderA",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderA)"
+      },
+      "modelParameters": {
+        "label": "Frequency",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 0.1,
+        "max": 10,
+        "step": 0.01,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "layout": {
+        "top": "54.4321vh",
+        "left": "0.651042vw",
+        "height": "4.98615vh",
+        "width": "46.4844vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "3"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderB",
+        "instanceId": "flatUiHorizontalSliderB",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderB)"
+      },
+      "modelParameters": {
+        "label": "Radius",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "flatUiHorizontalSliderC": {
+      "layout": {
+        "top": "71.0526vh",
+        "left": "0.651042vw",
+        "height": "4.98615vh",
+        "width": "46.4844vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "4"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderC",
+        "instanceId": "flatUiHorizontalSliderC",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderC)"
+      },
+      "modelParameters": {
+        "label": "Rotations",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "annotationMarkdownA": {
+      "layout": {
+        "top": "1.38504vh",
+        "left": "0.651042vw",
+        "height": "51.8006vh",
+        "width": "46.4844vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "5"
+      },
+      "container": {
+        "id": "annotationMarkdownA",
+        "instanceId": "annotationMarkdownA",
+        "modelJsonId": "annotationMarkdown",
+        "widgetTypeName": "Markdown(annotationMarkdownA)"
+      },
+      "modelParameters": {
+        "fontsize": 0.3,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "centerVertically": true
+      },
+      "modelHiddenParams": {
+        "text": ""
+      }
+    }
+  },
+  "connections": {
+    "plotlyPyGenericA": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "Scatter3d",
+        "dataFields": [],
+        "dataNodeIndex": 2
+      }
+    },
+    "flatUiHorizontalSliderA": {
+      "value": {
+        "name": "value",
+        "dataNode": "params",
+        "dataFields": [
+          "frequency"
+        ],
+        "dataNodeIndex": 1
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "value": {
+        "name": "value",
+        "dataNode": "params",
+        "dataFields": [
+          "radius"
+        ],
+        "dataNodeIndex": 1
+      }
+    },
+    "flatUiHorizontalSliderC": {
+      "value": {
+        "name": "value",
+        "dataNode": "params",
+        "dataFields": [
+          "n_rotations"
+        ],
+        "dataNodeIndex": 1
+      }
+    },
+    "annotationMarkdownA": {
+      "text": {
+        "name": "text",
+        "dataNode": "description",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    }
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

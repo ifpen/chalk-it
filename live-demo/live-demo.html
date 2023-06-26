@@ -1,0 +1,888 @@
+﻿<!DOCTYPE html PUBLIC "null" "null"><html lang="en"><head><title>live-demo</title><meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/><link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" href="https://app.xdash.io/assets/all-css-21.230.7607.min.css" />
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="https://app.xdash.io/header-all-js-runtime-1.230.7607.min.js"></script></head><body ng-app="xCLOUD"><script xmlns="http://www.w3.org/1999/xhtml" src="https://app.xdash.io/body-all-js-runtime-1.230.7607.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml">
+urlBase = "https://app.xdash.io/";
+navBarNotification = "false" ;
+$(function()
+{
+ratioScroll = 0;
+jsonContent = {
+  "meta": {
+    "version": "1.230.7607",
+    "date": "Wed Oct 28 2020 17:30:05 GMT+0100 (heure normale d’Europe centrale)",
+    "name": "live-demo",
+    "description": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "version": 1,
+    "allow_edit": true,
+    "plugins": [],
+    "panes": [],
+    "datasources": [
+      {
+        "name": "inputs",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "inputs",
+          "json_var": "{\"Width\":10,\"Length\":5}"
+        }
+      },
+      {
+        "name": "Surface",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "Surface",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "return datasources[\"inputs\"][\"Width\"] * datasources[\"inputs\"][\"Length\"];"
+        }
+      },
+      {
+        "name": "table",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "table",
+          "json_var": "{\"value\":[[\"x\",\"y\"],[0,0],[1,2],[2,4],[3,7]]}"
+        }
+      },
+      {
+        "name": "plot",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "plot",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "var x = [];\nvar y = [];\n\nvar table =  datasources[\"table\"][\"value\"];\n\nfor (var i=1; i &lt; table.length; i++) {\n    x.push(table[i][0]);\n    y.push(table[i][1]);\n}\n\nvar trace = {\n    x: x,\n    y: y,\n    type: 'scatter'\n};\n\nvar layout = {\n    showlegend: false,\n    xaxis: {title:\"x\"},\n    yaxis: {title:\"y\"},\n    margin: {\n        b: 50,\n        l: 50,\n        t: 20,\n        r: 20\n\t}\n};\n\nreturn {\"data\": [trace], \"layout\": layout};"
+        }
+      },
+      {
+        "name": "address",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "address",
+          "json_var": "{\"location\":\"1, Avenue du Bois-Préau, 92500, Rueil-Malmaison, Hauts-de-Seine, Île-de-France, France\"}"
+        }
+      },
+      {
+        "name": "geocode",
+        "type": "REST_web-service_from_datasource",
+        "settings": {
+          "name": "geocode",
+          "url": "https://xdashgateway.azure-api.net/geocode/geocode.json",
+          "use_xproxy": true,
+          "sampleTime": 0,
+          "autoStart": true,
+          "explicitTrig": false,
+          "req_data_type": "JSON",
+          "resp_data_type": "JSON",
+          "method": "GET",
+          "body": "return {\n    \"urlAppend\": \"?searchtext=\" +  datasources[\"address\"][\"location\"] \n};",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        }
+      },
+      {
+        "name": "geoJSON",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "geoJSON",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "try {\n    return {\n      \"type\": \"FeatureCollection\",\n      \"features\": [\n        {\n          \"type\": \"Feature\",\n          \"geometry\": {\n            \"type\": \"Point\",\n            \"coordinates\": [\n              datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"DisplayPosition\"][\"Longitude\"] ,\n              datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"DisplayPosition\"][\"Latitude\"] \n            ]\n          },\n          \"properties\": {\n            \"comment\": \"Geo-location of filled address\"\n          }\n        }\n      ],\n      \"properties\": {\n        \"description\": \"Address location\"\n      }\n    };\n} catch (ex){\n    return {};\n}\n\n"
+        }
+      },
+      {
+        "name": "weather",
+        "type": "REST_web-service_from_datasource",
+        "settings": {
+          "name": "weather",
+          "url": "https://xdashgateway.azure-api.net/weather",
+          "use_xproxy": true,
+          "sampleTime": 0,
+          "autoStart": true,
+          "explicitTrig": false,
+          "req_data_type": "JSON",
+          "resp_data_type": "JSON",
+          "method": "GET",
+          "body": "var city =  datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"City\"];\nvar state =  datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"State\"];\nvar country =  datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"County\"];\nreturn {\"urlAppend\": \"?q=\" + encodeURIComponent(city+', ' + state + ', ' + country) + \"&amp;units=metric\"};",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        }
+      },
+      {
+        "name": "results",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "results",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "return [\n\t[\"City\", \"Temperature\", \"Humidity\"],\n    [ datasources[\"weather\"][\"name\"],  datasources[\"weather\"][\"main\"][\"temp\"] , datasources[\"weather\"][\"main\"][\"humidity\"] ]\n];"
+        }
+      }
+    ],
+    "columns": 3,
+    "reIndexMap": [
+      7,
+      8,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "noTopologicalSortAtSerialize": true
+  },
+  "scaling": {
+    "widthPx": 1045,
+    "heightPx": 592,
+    "scrollWidthPx": 1031,
+    "scrollHeightPx": 619,
+    "widthVw": 68.03385416666667,
+    "heightVh": 78.51458885941645,
+    "scrollWidthVw": 67.12239583333333,
+    "scrollHeightVh": 82.09549071618036,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": {
+      "widthPx": 514,
+      "heightPx": 617,
+      "widthVw": 33.463541666666664,
+      "heightVh": 81.83023872679045,
+      "rowHeightPercent": 112
+    }
+  },
+  "device": {
+    "cols": {
+      "valueRow": "1",
+      "valueCol": "2",
+      "maxCells": 2,
+      "maxCols": 2,
+      "classType": "col-sm-6"
+    },
+    "droppers": {
+      "dpr1": {
+        "component0": "flatUiHorizontalSliderZ",
+        "component1": "flatUiHorizontalSliderj",
+        "component2": "annotationLabelT",
+        "component3": "annotationLabelU",
+        "component4": "flatUiValueV",
+        "component5": "flatUiTableM",
+        "component6": "plotlyGenericb"
+      },
+      "dpr2": {
+        "component0": "flatUiHereAutocompleteValueU",
+        "component1": "openStreetMapsb",
+        "component2": "flatUiTable8",
+        "component3": "annotationLabel8",
+        "component4": "annotationLabelZ"
+      }
+    }
+  },
+  "dashboard": {
+    "flatUiHorizontalSliderj": {
+      "layout": {
+        "top": "11.7462vh",
+        "left": "0.651042vw",
+        "height": "6.52553vh",
+        "width": "30.1895vw",
+        "minHeight": "32px",
+        "minWidth": "200px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderj",
+        "instanceId": "flatUiHorizontalSliderj",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider"
+      },
+      "modelParameters": {
+        "label": "Width",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "displayValue": true,
+        "valueFontSize": 0.5,
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Helvetica Neue",
+        "valueColor": "#34495e",
+        "valueFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "flatUiHorizontalSliderZ": {
+      "layout": {
+        "top": "19.5769vh",
+        "left": "0.651042vw",
+        "height": "6.52553vh",
+        "width": "30.1895vw",
+        "minHeight": "32px",
+        "minWidth": "200px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderZ",
+        "instanceId": "flatUiHorizontalSliderZ",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider"
+      },
+      "modelParameters": {
+        "label": "Length",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "displayValue": true,
+        "valueFontSize": 0.5,
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Helvetica Neue",
+        "valueColor": "#34495e",
+        "valueFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "annotationLabelT": {
+      "layout": {
+        "top": "1.32626vh",
+        "left": "0.651042vw",
+        "height": "9.68869vh",
+        "width": "31.4491vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "10"
+      },
+      "container": {
+        "id": "annotationLabelT",
+        "instanceId": "annotationLabelT",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label"
+      },
+      "modelParameters": {
+        "text": "In Chalk'it you find simple widgets. Change sliders value to execute rectange surface computation function.",
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "#2154ab",
+        "textAlign": "left",
+        "valueFontFamily": "Helvetica Neue",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiTableM": {
+      "layout": {
+        "top": "43.418vh",
+        "left": "0.799129vw",
+        "height": "35.6294vh",
+        "width": "8.42787vw",
+        "minHeight": "79px",
+        "minWidth": "88px",
+        "z-index": "15"
+      },
+      "container": {
+        "id": "flatUiTableM",
+        "instanceId": "flatUiTableM",
+        "modelJsonId": "flatUiTable",
+        "widgetTypeName": "Table"
+      },
+      "modelParameters": {
+        "headerLine": true,
+        "tableValueFontSize": 0.5,
+        "striped": true,
+        "bordered": true,
+        "noBorder": false,
+        "editableCols": "[1]",
+        "valueColor": "#34495e",
+        "valueFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "value": null
+      }
+    },
+    "flatUiValueV": {
+      "layout": {
+        "top": "27.4951vh",
+        "left": "3.52935vw",
+        "height": "6.54642vh",
+        "width": "27.2896vw",
+        "minHeight": "32px",
+        "minWidth": "150px",
+        "z-index": "14"
+      },
+      "container": {
+        "id": "flatUiValueV",
+        "instanceId": "flatUiValueV",
+        "modelJsonId": "flatUiValue",
+        "widgetTypeName": "Value"
+      },
+      "modelParameters": {
+        "label": "Rectangle surface",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "valueWidthProportion": "20%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isNumber": false,
+        "isPassword": false,
+        "decimalDigits": 3,
+        "valueFontSize": 0.5,
+        "valueColor": "#34495e",
+        "valueTextAlign": "right",
+        "displayBorder": true,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Helvetica Neue",
+        "valueFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "annotationLabelU": {
+      "layout": {
+        "top": "34.827vh",
+        "left": "0.651042vw",
+        "height": "9.29592vh",
+        "width": "30.3147vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "11"
+      },
+      "container": {
+        "id": "annotationLabelU",
+        "instanceId": "annotationLabelU",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label"
+      },
+      "modelParameters": {
+        "text": "Edit the \"y\" column of this table to define your own function.",
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "#2154ab",
+        "textAlign": "left",
+        "valueFontFamily": "Helvetica Neue",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "plotlyGenericb": {
+      "layout": {
+        "top": "43.0095vh",
+        "left": "9.43971vw",
+        "height": "37.3906vh",
+        "width": "22.7252vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "15"
+      },
+      "container": {
+        "id": "plotlyGenericb",
+        "instanceId": "plotlyGenericb",
+        "modelJsonId": "plotlyGeneric",
+        "widgetTypeName": "Plotly generic"
+      },
+      "modelParameters": {
+        "layout": {
+          "showlegend": false,
+          "xaxis": {
+            "title": {
+              "text": "x"
+            },
+            "type": "linear",
+            "range": [
+              -0.21741778319123026,
+              3.2174177831912303
+            ],
+            "autorange": true
+          },
+          "yaxis": {
+            "title": {
+              "text": "y"
+            },
+            "type": "linear",
+            "range": [
+              -0.5480087288597926,
+              7.548008728859792
+            ],
+            "autorange": true
+          },
+          "margin": {
+            "b": 50,
+            "l": 50,
+            "t": 20,
+            "r": 20
+          }
+        },
+        "hideModeBar": false
+      },
+      "modelHiddenParams": {
+        "data": [
+          {}
+        ],
+        "layout": [
+          {}
+        ]
+      }
+    },
+    "flatUiHereAutocompleteValueU": {
+      "layout": {
+        "top": "12.6051vh",
+        "left": "0.943419vw",
+        "height": "6.3026vh",
+        "width": "31.3215vw",
+        "minHeight": "32px",
+        "minWidth": "150px",
+        "z-index": "10"
+      },
+      "container": {
+        "id": "flatUiHereAutocompleteValueU",
+        "instanceId": "flatUiHereAutocompleteValueU",
+        "modelJsonId": "flatUiHereAutocompleteValue",
+        "widgetTypeName": "Address autocompletion"
+      },
+      "modelParameters": {
+        "label": "address",
+        "inheritLabelFromData": false,
+        "displayLabel": false,
+        "labelFontSize": 0.5,
+        "valueWidthProportion": "80%",
+        "valueFontSize": 0.5,
+        "valueColor": "#34495e",
+        "displayBorder": true,
+        "countryIsoCodes": "FRA",
+        "valueFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "openStreetMapsb": {
+      "layout": {
+        "top": "21.922vh",
+        "left": "0.691841vw",
+        "height": "37.1303vh",
+        "width": "31.3215vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "10"
+      },
+      "container": {
+        "id": "openStreetMapsb",
+        "instanceId": "openStreetMapsb",
+        "modelJsonId": "openStreetMaps",
+        "widgetTypeName": "Leaflet maps"
+      },
+      "modelParameters": {
+        "drawingFeatures": false,
+        "drawingFeaturesOptions": {
+          "point": true,
+          "line": true,
+          "polygone": true,
+          "rectangle": true,
+          "modal": false
+        },
+        "captureClickEvent": false,
+        "defaultCenter": {
+          "latitude": 48.872063,
+          "longitude": 2.331773,
+          "zoom": 16
+        },
+        "geoJson": {
+          "numberOfLayers": 1
+        },
+        "lineHeatMap": {
+          "numberOfLayers": 0
+        },
+        "heatMap": {
+          "numberOfLayers": 0,
+          "sampledDisplay": false,
+          "densityHeatMap": false
+        },
+        "imageOverlay": {
+          "numberOfLayers": 0
+        },
+        "svgOverlay": {
+          "numberOfLayers": 0
+        },
+        "offlineSupport": false,
+        "tileServer": "MapboxStreets"
+      },
+      "modelHiddenParams": {
+        "geoJson": {
+          "geoJsonLayers": [],
+          "geoJsonBounds": []
+        },
+        "lineHeatMap": {
+          "lineHeatMapLayers": [],
+          "lineHeatMapBounds": []
+        },
+        "heatMap": {
+          "heatMapData": [],
+          "heatMapBuffer": []
+        },
+        "imageOverlay": {
+          "imageData": []
+        },
+        "svgOverlay": {
+          "svgData": [],
+          "svgElements": []
+        },
+        "legends": [],
+        "colors": [
+          "#800080",
+          "#FF00FF",
+          "#000080",
+          "#0000FF",
+          "#008080",
+          "#00FFFF",
+          "#FFFF00",
+          "#800000",
+          "#6666ff",
+          "#cc6699",
+          "#66ff66",
+          "#666699",
+          "#996633",
+          "#ff0000",
+          "#669999",
+          "#ffff99"
+        ]
+      }
+    },
+    "annotationLabel8": {
+      "layout": {
+        "top": "1.70206vh",
+        "left": "0.693268vw",
+        "height": "9.16498vh",
+        "width": "31.2601vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "12"
+      },
+      "container": {
+        "id": "annotationLabel8",
+        "instanceId": "annotationLabel8",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label"
+      },
+      "modelParameters": {
+        "text": "Fill a location address. Chalk'it will call HERE Maps API to perform geo-location.",
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "#2154ab",
+        "textAlign": "left",
+        "valueFontFamily": "Helvetica Neue",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "annotationLabelZ": {
+      "layout": {
+        "top": "60.4888vh",
+        "left": "1.13444vw",
+        "height": "9.29592vh",
+        "width": "30.8188vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "13"
+      },
+      "container": {
+        "id": "annotationLabelZ",
+        "instanceId": "annotationLabelZ",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label"
+      },
+      "modelParameters": {
+        "text": "Based on the location, Chalk'it calls OpenWeatherMap API to get the weather at this location.",
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "#2154ab",
+        "textAlign": "left",
+        "valueFontFamily": "Helvetica Neue",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiTable8": {
+      "layout": {
+        "top": "69.7397vh",
+        "left": "1.195vw",
+        "height": "10.824vh",
+        "width": "30.7554vw",
+        "minHeight": "79px",
+        "minWidth": "88px",
+        "z-index": "10"
+      },
+      "container": {
+        "id": "flatUiTable8",
+        "instanceId": "flatUiTable8",
+        "modelJsonId": "flatUiTable",
+        "widgetTypeName": "Table"
+      },
+      "modelParameters": {
+        "headerLine": true,
+        "tableValueFontSize": 0.5,
+        "striped": true,
+        "bordered": true,
+        "noBorder": false,
+        "editableCols": "[]",
+        "valueColor": "#34495e",
+        "valueFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "value": null
+      }
+    }
+  },
+  "connections": {
+    "flatUiHorizontalSliderZ": {
+      "value": {
+        "name": "value",
+        "dataSource": "inputs",
+        "dataFields": [
+          "Length"
+        ],
+        "dataSourceIndex": 0
+      }
+    },
+    "flatUiHorizontalSliderj": {
+      "value": {
+        "name": "value",
+        "dataSource": "inputs",
+        "dataFields": [
+          "Width"
+        ],
+        "dataSourceIndex": 0
+      }
+    },
+    "annotationLabelT": {},
+    "annotationLabelU": {},
+    "flatUiValueV": {
+      "value": {
+        "name": "value",
+        "dataSource": "Surface",
+        "dataFields": [],
+        "dataSourceIndex": 1
+      }
+    },
+    "flatUiTableM": {
+      "value": {
+        "name": "value",
+        "dataSource": "table",
+        "dataFields": [
+          "value"
+        ],
+        "dataSourceIndex": 2
+      }
+    },
+    "plotlyGenericb": {
+      "data": {
+        "name": "data",
+        "dataSource": "plot",
+        "dataFields": [
+          "data"
+        ],
+        "dataSourceIndex": 3
+      },
+      "layout": {
+        "name": "layout",
+        "dataSource": "plot",
+        "dataFields": [
+          "layout"
+        ],
+        "dataSourceIndex": 3
+      }
+    },
+    "flatUiHereAutocompleteValueU": {
+      "value": {
+        "name": "value",
+        "dataSource": "address",
+        "dataFields": [
+          "location"
+        ],
+        "dataSourceIndex": 4
+      }
+    },
+    "openStreetMapsb": {
+      "geoJson1": {
+        "name": "geoJson1",
+        "dataSource": "geoJSON",
+        "dataFields": [],
+        "dataSourceIndex": 6
+      }
+    },
+    "flatUiTable8": {
+      "value": {
+        "name": "value",
+        "dataSource": "results",
+        "dataFields": [],
+        "dataSourceIndex": 8
+      }
+    },
+    "annotationLabel8": {},
+    "annotationLabelZ": {}
+  },
+  "exportOptions": "projectToTargetWindow",
+  "checkExportOptions": false
+};
+tabActive = "play";
+execOutisdeEditor = true;
+urlBase = "https://app.xdash.io/"
+freeboard.setAssetRoot("/freeboard-ui/");
+freeboard.initialize(true);
+xprjson = jsonContent;
+reconstructFoundations.buildDivsFromXprjson(xprjson);
+exportOptions = xprjson.exportOptions;
+checkExportOptions = xprjson.checkExportOptions;
+navBarNotification = xprjson.navBarNotification ;
+DashbordSaver.dashDownload(jsonContent, exportOptions);
+});
+</script>
+<div xmlns="http://www.w3.org/1999/xhtml" class="top_nav" ng-if="showNavBar">
+    <div class="nav_menu" id="nav-menu" style="height:50px">
+        <nav style="height:inherit">
+            <ul class="nav navbar-nav" style="float:left;width:50%;margin:0; height:100%">
+               <li role="presentation" class="dropdown" style="float:left; height:100%">
+                   <h5 style="margin:20px 5px 20px 10px;font-size:10px; line-height:10px">Powered by Chalk'it</h5>
+               </li>
+               <li role="presentation" class="dropdown" style="height:100%">
+                  <a class="dropdown-toggle info-number" target="_blank" href="https://xdash.io/index.html" title="Chalk'it website" style="height:100%; padding:3px 10px">
+                       <img src="https://app.xdash.io//assets/Images/Logo_xDash.png" style="width:30px" />
+                  </a>
+               </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="width:50%; height:100%">
+                <li class="" ng-if="UserConnected &amp;&amp; UserConnected.username" style="height:100%">
+                    <a class="user-profile dropdown-toggle ng-binding" data-toggle="dropdown" aria-expanded="false" style="height:100%">
+                        <img href="https://xdash.io/index.html" src="https://app.xdash.io//assets/Images/flat-icon/user-m.png" alt="" />{{UserConnected.username}}
+                        <span class=" fa fa-angle-down"></span>
+
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+
+                        <li ng-click="logout()"><a href="#"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+
+                    </ul>
+
+                </li>
+
+                <li role="presentation" class="dropdown" ng-if="navBarNotification" style="height:100%">
+
+                    <a class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false" style="height:100%">
+
+                        <i class="fa fa-envelope-o"></i>
+
+                        <span class="badge bg-red">{{nbNotifications}}</span>
+
+                    </a>
+
+                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" style="max-height: 600px ;width:600px;padding:0px;overflow:auto" role="menu">
+
+                        <form>
+
+                            <li ng-if="nbNotifications">
+
+                                <div class="text-center">
+
+                                    <div ng-show="!searchFrom" style="display: inline-block; width:80%;margin:13px">
+
+                                        <h3 style="margin:0; line-height:normal"> Notifications list</h3>
+
+                                    </div>
+
+                                    <div ng-show="searchFrom" style="display: inline-block; width:80%;margin:13px">
+
+                                        <span><strong>Filter on data: </strong></span>
+
+                                        <input ng-change="notificationDataFilters(filter.searchFiledByName)" ng-model="filter.searchFiledByName" style=" background-color: #ffffff ;height:15px;width:60%" type="text" />
+
+                                    </div>
+
+                                    <ul style="width: 10%; float: right; padding:0px 10px">
+
+                                        <li ng-show="!searchFrom"><a title="Click to open filter"><i class="fa fa-search" ng-click="searchFrom=!searchFrom"></i></a>
+
+                                        </li>
+
+                                    </ul>
+
+                                    <ul style="width: 10%; float: right; padding:0px 10px">
+
+                                        <li ng-show="searchFrom"><a title="Click to close filter"><i class="fa fa-close" ng-click="searchFrom=!searchFrom"></i></a>
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </li>
+
+                            <li ng-if="nbNotifications&gt;shownNotificationsMax">
+
+                                <div class="text-center">
+
+                                    <strong>..too many notifications! Please acquit a few to display more.</strong>
+
+                                </div>
+
+                            </li>
+
+                            <li ng-repeat="notification in listNotifications | limitTo:- shownNotificationsLength |orderBy:-$index " ng-show="!notification.hide&amp;&amp;(notification.dataSource.indexOf(notificationFilterDataValue)&gt;=0||notificationFilterDataValue=='')">
+                                <a class="test" ng-click="hideNotificationFromNavBar(notification)" title="Click to acquit this notification">
+                                    <span class="image"><img ng-src="{{urlBase+notification.img}}" alt="error Message" /></span>
+                                    <span>
+                                        <span>{{notification.title || 'Error'}}</span>
+                                    <span class="data">{{'Data: '}} {{notification.dataSource}}</span>
+                                    </span>
+                                    <span class="message">{{notification.text + '. '}}</span>
+                                    <span class="time">{{notification.time}}</span>
+                                </a>
+                            </li>
+                            <li ng-if="nbNotifications">
+                                <div class="text-center">
+                                    <a ng-click="clearAllNotifications()">
+                                        <strong>Clear All Notifications</strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </form>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div xmlns="http://www.w3.org/1999/xhtml" class="gridster responsive-column-width">
+<ul data-bind="grid: true"></ul>
+</div>
+<div xmlns="http://www.w3.org/1999/xhtml" id="dashboard-zone" class="panel-body" style="height: calc(160px + 59vh); padding: 0px"><div id="DropperDroitec" class="dropperR" ng-app="xCLOUD"></div></div></body></html>

@@ -1,0 +1,735 @@
+{
+  "meta": {
+    "version": "2.730.8554",
+    "date": "Thu Jun 22 2023 09:06:28 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "name": "velib-stats",
+    "description": "Velib bike sharing system in Paris live information",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "capacity",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "capacity",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import pandas as pd\nimport plotly.express as px\n\ndfg = dataNodes[\"dfg\"]\n\nfig = px.histogram(dfg, x='capacity')\nfig.update_layout(margin=dict(l=0, r=0, b=5, t=5))\n\n\nreturn fig"
+        }
+      },
+      {
+        "name": "df_rt",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "df_rt",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import pandas as pd\n\ndf_rt = pd.json_normalize(dataNodes[\"stations_status_json\"][\"data\"][\"stations\"])\ndf_rt = df_rt.drop('numBikesAvailable', axis=1)\ndf_rt = df_rt.drop('numDocksAvailable', axis=1)\ndf_rt = df_rt.drop('num_bikes_available_types', axis=1)\n\nreturn df_rt"
+        }
+      },
+      {
+        "name": "df_st_inf",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "df_st_inf",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import pandas as pd\n\ndfs = pd.json_normalize(dataNodes[\"stations_information\"][\"data\"][\"stations\"])\n\nreturn dfs\n"
+        }
+      },
+      {
+        "name": "dfg",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "dfg",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import pandas as pd\nimport geopandas as gpd\nfrom shapely.geometry import Point\n\ndfg = pd.merge(dataNodes[\"df_rt\"], dataNodes[\"df_st_inf\"], on='station_id')\ndfg['bikes_availability_rate'] = dfg['num_bikes_available'] / dfg['capacity']\ndfg['station_full'] = (dfg['num_bikes_available'] == dfg['capacity']).astype(int)\ndfg['station_empty'] = (dfg['num_bikes_available'] == 0).astype(int)\n\n\n# Convert DataFrame to GeoDataFrame\ngeometry = [Point(xy) for xy in zip(dfg['lon'], dfg['lat'])]\ngeo_df = gpd.GeoDataFrame(dfg, geometry=geometry)\n\nif (not dataNodes[\"selected_gpd\"].empty):\n\n  # Assume selected_gpd is a single polygon for simplicity\n  selected_polygon = dataNodes[\"selected_gpd\"].iloc[0]['geometry']\n\n  # Create a boolean mask where each value is True if the point is within the selected geometry\n  mask = geo_df.within(selected_polygon)\n\n  # Use the mask to filter the GeoDataFrame\n  filtered_geo_df = geo_df[mask]\n\n  return filtered_geo_df\n\nelse:\n  return geo_df\n"
+        }
+      },
+      {
+        "name": "heatmap",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "heatmap",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "filtered_df = dataNodes[\"dfg\"][[\"lat\",\"lon\",\"bikes_availability_rate\"]]\n\navailability_data = filtered_df.rename(columns={'lon':'lng', 'bikes_availability_rate': 'Bikes availability rate'}).to_dict('records')\n\nreturn {\"data\": availability_data, \"config\": dataNodes[\"heatmap_cfg\"]}\n"
+        }
+      },
+      {
+        "name": "heatmap_cfg",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "heatmap_cfg",
+          "json_var": "{\"opacity\":0.9,\"radius\":80,\"disableAutoscale\":false,\"min\":0,\"max\":1,\"colorScale\":\"interpolateRdYlBu\",\"reverseColorScale\":false}"
+        }
+      },
+      {
+        "name": "last_update",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "last_update",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import datetime\ndt_object = datetime.datetime.fromtimestamp(dataNodes[\"stations_status_json\"][\"lastUpdatedOther\"])\ndt_string = dt_object.strftime(\"%Y-%m-%d %H:%M:%S\")\n\nreturn dt_string"
+        }
+      },
+      {
+        "name": "num_bikes_available",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "num_bikes_available",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import plotly.express as px\nfig = px.histogram(dataNodes[\"dfg\"], x='num_bikes_available')\nfig.update_layout(margin=dict(l=0, r=0, b=5, t=5))\n\nreturn fig\n\n"
+        }
+      },
+      {
+        "name": "num_docks_available",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "num_docks_available",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import pandas as pd\nimport plotly.express as px\n\ndfg = dataNodes[\"dfg\"]\n\nfig = px.histogram(dfg, x='num_docks_available')\nfig.update_layout(margin=dict(l=0, r=0, b=5, t=5))\n\nreturn fig"
+        }
+      },
+      {
+        "name": "options",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "options",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "#return [\"Availability rate\", \"Available number\"];\nreturn [\"Availability rate\"];\n"
+        }
+      },
+      {
+        "name": "selected_gpd",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "selected_gpd",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import geopandas as gpd\n\n# Load your GeoJSON file containing polygons\npolygons = gpd.GeoDataFrame.from_features(dataNodes[\"selected_polygon\"])\n\nreturn polygons"
+        }
+      },
+      {
+        "name": "selected_indicator",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "selected_indicator",
+          "json_var": "\"Availability rate\""
+        }
+      },
+      {
+        "name": "selected_polygon",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "selected_polygon",
+          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[]}"
+        }
+      },
+      {
+        "name": "stations_information",
+        "type": "REST_web-service_from_datasource",
+        "settings": {
+          "name": "stations_information",
+          "url": "https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_information.json",
+          "use_xproxy": true,
+          "sampleTime": 0,
+          "autoStart": true,
+          "explicitTrig": false,
+          "req_data_type": "JSON",
+          "resp_data_type": "JSON",
+          "method": "GET",
+          "body": "",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly92ZWxpYi1tZXRyb3BvbGUtb3BlbmRhdGEuc21vb3ZlLnByby9vcGVuZGF0YS9WZWxpYl9NZXRyb3BvbGUvc3RhdGlvbl9pbmZvcm1hdGlvbi5qc29uIiwiSG9zdCI6InhkYXNoIn0=",
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxgfyebkw8sSxp+sjv4KcONYaxLWDtpw7fvjt2I/CjyxjmVH5PYwJEtnvond2sxA3KK4XWC8ELoji1w08k+aNGjhlQafL6qOGbj9j5O1xDUtLzRO6Fts+R6qki9H1/BlMpXkj7idMNr+27Xbm5Ho/uck="
+        }
+      },
+      {
+        "name": "stations_on_map",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "stations_on_map",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import geopandas as gpd\nimport json\n\ndfs = dataNodes[\"dfg\"][[\"geometry\",\"name\",\"capacity\",\"num_bikes_available\"]]\ndfs_json = dfs.to_json()\ndfs_dict = json.loads(dfs_json)\ndfs_dict[\"properties\"] = {\"description\": \"Velib stations\"}\nreturn dfs_dict\n"
+        }
+      },
+      {
+        "name": "stations_status_json",
+        "type": "REST_web-service_from_datasource",
+        "settings": {
+          "name": "stations_status_json",
+          "url": "https://velib-metropole-opendata.smoove.pro/opendata/Velib_Metropole/station_status.json",
+          "use_xproxy": true,
+          "sampleTime": 0,
+          "autoStart": true,
+          "explicitTrig": false,
+          "req_data_type": "JSON",
+          "resp_data_type": "JSON",
+          "method": "GET",
+          "body": "",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly92ZWxpYi1tZXRyb3BvbGUtb3BlbmRhdGEuc21vb3ZlLnByby9vcGVuZGF0YS9WZWxpYl9NZXRyb3BvbGUvc3RhdGlvbl9zdGF0dXMuanNvbiIsIkhvc3QiOiJ4ZGFzaCJ9",
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxgfyebkw8sSxp+sjv4KcONYaxLWDtpw7fvjt2I/CjyxjmVH5PYwJEtnvond2sxA3KK4XWC8ELoji1w08k+aNGjiWeXHdFYFUrvVJ461nYH28IX/LloKaCfmxuQ+ZeTnTZJ9PUh6vD0zCLL9eFADtcXc="
+        }
+      }
+    ],
+    "reIndexMap": [
+      15,
+      4,
+      6,
+      10,
+      14,
+      7,
+      3,
+      11,
+      12,
+      1,
+      9,
+      0,
+      8,
+      5,
+      13,
+      2
+    ],
+    "noTopologicalSortAtSerialize": true
+  },
+  "libraries": {
+    "pyodideStandard": [
+      "geopandas",
+      "pandas"
+    ],
+    "pyodideMicropip": [
+      "plotly"
+    ]
+  },
+  "scaling": {
+    "widthPx": 1302,
+    "heightPx": 575,
+    "scrollWidthPx": 1302,
+    "scrollHeightPx": 575,
+    "widthVw": 84.765625,
+    "heightVh": 79.6398891966759,
+    "scrollWidthVw": 84.765625,
+    "scrollHeightVh": 79.6398891966759,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": {
+      "widthPx": 1302.4,
+      "heightPx": 575.4,
+      "widthVw": 84.79166666666667,
+      "heightVh": 79.69529085872576,
+      "rowHeightPercent": 100
+    }
+  },
+  "device": {
+    "cols": {
+      "valueRow": "1",
+      "valueCol": "1",
+      "maxCells": 1,
+      "maxCols": 1,
+      "classType": "col-md-12"
+    },
+    "droppers": {
+      "dpr1": {
+        "component0": "openStreetMapsA",
+        "component1": "flatUiHorizontalSliderA",
+        "component2": "flatUiHorizontalSliderB",
+        "component3": "annotationLabelA",
+        "component4": "flatUiSelectA",
+        "component5": "flatUiValueDisplayA",
+        "component6": "plotlyPyGenericA",
+        "component7": "plotlyPyGenericB",
+        "component8": "plotlyPyGenericC"
+      }
+    },
+    "backgroundColor": "#efe6e6",
+    "theme": "default"
+  },
+  "dashboard": {
+    "openStreetMapsA": {
+      "layout": {
+        "top": "18.0055vh",
+        "left": "0.716146vw",
+        "height": "52.4931vh",
+        "width": "44.401vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "openStreetMapsA",
+        "instanceId": "openStreetMapsA",
+        "modelJsonId": "openStreetMaps",
+        "widgetTypeName": "Leaflet maps(openStreetMapsA)"
+      },
+      "modelParameters": {
+        "geoJson": {
+          "numberOfLayers": 1
+        },
+        "choropleth": {
+          "numberOfLayers": 0
+        },
+        "heatMap": {
+          "numberOfLayers": 1,
+          "sampledDisplay": false,
+          "densityHeatMap": false
+        },
+        "lineHeatMap": {
+          "numberOfLayers": 0
+        },
+        "imageOverlay": {
+          "numberOfLayers": 0
+        },
+        "svgOverlay": {
+          "numberOfLayers": 0
+        },
+        "defaultCenter": {
+          "latitude": 48.872063,
+          "longitude": 2.331773,
+          "zoom": 16
+        },
+        "offlineSupport": false,
+        "tileServer": "MapboxStreets",
+        "drawingFeatures": true,
+        "drawingFeaturesOptions": {
+          "point": false,
+          "line": false,
+          "polygone": true,
+          "rectangle": true,
+          "modal": false
+        },
+        "captureClickEvent": false,
+        "markerCluster": true
+      },
+      "modelHiddenParams": {
+        "geoJson": {
+          "geoJsonLayers": [],
+          "geoJsonBounds": []
+        },
+        "choropleth": {
+          "choroplethLayers": [],
+          "choroplethBounds": []
+        },
+        "lineHeatMap": {
+          "lineHeatMapLayers": [],
+          "lineHeatMapBounds": []
+        },
+        "heatMap": {
+          "heatMapData": [],
+          "heatMapBuffer": []
+        },
+        "imageOverlay": {
+          "imageData": []
+        },
+        "svgOverlay": {
+          "svgData": [],
+          "svgElements": []
+        },
+        "legends": [],
+        "colors": [
+          "#800080",
+          "#FF00FF",
+          "#000080",
+          "#0000FF",
+          "#008080",
+          "#00FFFF",
+          "#FFFF00",
+          "#800000",
+          "#6666ff",
+          "#cc6699",
+          "#66ff66",
+          "#666699",
+          "#996633",
+          "#ff0000",
+          "#669999",
+          "#ffff99"
+        ]
+      }
+    },
+    "flatUiHorizontalSliderA": {
+      "layout": {
+        "top": "72.2992vh",
+        "left": "0.716146vw",
+        "height": "4.98615vh",
+        "width": "20.7031vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "3"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderA",
+        "instanceId": "flatUiHorizontalSliderA",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderA)"
+      },
+      "modelParameters": {
+        "label": "radius",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "layout": {
+        "top": "72.2992vh",
+        "left": "24.4792vw",
+        "height": "4.98615vh",
+        "width": "20.7031vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "4"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderB",
+        "instanceId": "flatUiHorizontalSliderB",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderB)"
+      },
+      "modelParameters": {
+        "label": "opacity",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "annotationLabelA": {
+      "layout": {
+        "top": "1.66205vh",
+        "left": "0.78125vw",
+        "height": "7.34072vh",
+        "width": "83.138vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "5"
+      },
+      "container": {
+        "id": "annotationLabelA",
+        "instanceId": "annotationLabelA",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label(annotationLabelA)"
+      },
+      "modelParameters": {
+        "text": "Velib bike sharing system statistics",
+        "enableActuator": false,
+        "fontsize": 1.5,
+        "backgroundColor": "#988f8f",
+        "textColor": "#ffffff",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "center",
+        "displayBorder": false,
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiSelectA": {
+      "layout": {
+        "top": "10.8033vh",
+        "left": "0.716146vw",
+        "height": "4.84765vh",
+        "width": "17.3828vw",
+        "minHeight": "32px",
+        "minWidth": "80px",
+        "z-index": "12"
+      },
+      "container": {
+        "id": "flatUiSelectA",
+        "instanceId": "flatUiSelectA",
+        "modelJsonId": "flatUiSelect",
+        "widgetTypeName": "Select(flatUiSelectA)"
+      },
+      "modelParameters": {
+        "label": "Indicator",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "selectWidthProportion": "70%",
+        "isNumber": false,
+        "selectValueFontSize": 0.5,
+        "selectedValueColor": "var(--widget-select-option-highlighted-text)",
+        "selectedItemDefaultColor": "var(--widget-select-option-highlighted-color)",
+        "selectedItemHoverColor": "var(--widget-select-option-highlighted-color)",
+        "isKeyValuePairs": false
+      },
+      "modelHiddenParams": {
+        "values": [],
+        "keys": [],
+        "value": [],
+        "selectedValue": ""
+      }
+    },
+    "flatUiValueDisplayA": {
+      "layout": {
+        "top": "10.8033vh",
+        "left": "21.3542vw",
+        "height": "4.84765vh",
+        "width": "23.6979vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "18"
+      },
+      "container": {
+        "id": "flatUiValueDisplayA",
+        "instanceId": "flatUiValueDisplayA",
+        "modelJsonId": "flatUiValueDisplay",
+        "widgetTypeName": "Value Display(flatUiValueDisplayA)"
+      },
+      "modelParameters": {
+        "label": "Last update",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "valueWidthProportion": "70%",
+        "decimalDigits": 3,
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-input-text)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "plotlyPyGenericA": {
+      "layout": {
+        "top": "9.8338vh",
+        "left": "45.7682vw",
+        "height": "21.8837vh",
+        "width": "38.151vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "19"
+      },
+      "container": {
+        "id": "plotlyPyGenericA",
+        "instanceId": "plotlyPyGenericA",
+        "modelJsonId": "plotlyPyGeneric",
+        "widgetTypeName": "Plotly Python generic(plotlyPyGenericA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "fig": ""
+      }
+    },
+    "plotlyPyGenericB": {
+      "layout": {
+        "top": "32.8255vh",
+        "left": "45.8984vw",
+        "height": "21.8837vh",
+        "width": "38.0208vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "20"
+      },
+      "container": {
+        "id": "plotlyPyGenericB",
+        "instanceId": "plotlyPyGenericB",
+        "modelJsonId": "plotlyPyGeneric",
+        "widgetTypeName": "Plotly Python generic(plotlyPyGenericB)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "fig": ""
+      }
+    },
+    "plotlyPyGenericC": {
+      "layout": {
+        "top": "55.9557vh",
+        "left": "45.9635vw",
+        "height": "21.8837vh",
+        "width": "37.9557vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "21"
+      },
+      "container": {
+        "id": "plotlyPyGenericC",
+        "instanceId": "plotlyPyGenericC",
+        "modelJsonId": "plotlyPyGeneric",
+        "widgetTypeName": "Plotly Python generic(plotlyPyGenericC)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "fig": ""
+      }
+    }
+  },
+  "connections": {
+    "openStreetMapsA": {
+      "selectedGeoJson": {
+        "name": "selectedGeoJson",
+        "dataNode": "selected_polygon",
+        "dataFields": [],
+        "dataNodeIndex": 12
+      },
+      "geoJson1": {
+        "name": "geoJson1",
+        "dataNode": "stations_on_map",
+        "dataFields": [],
+        "dataNodeIndex": 14
+      },
+      "heatMapData1": {
+        "name": "heatMapData1",
+        "dataNode": "heatmap",
+        "dataFields": [],
+        "dataNodeIndex": 4
+      }
+    },
+    "flatUiHorizontalSliderA": {
+      "value": {
+        "name": "value",
+        "dataNode": "heatmap_cfg",
+        "dataFields": [
+          "radius"
+        ],
+        "dataNodeIndex": 5
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "value": {
+        "name": "value",
+        "dataNode": "heatmap_cfg",
+        "dataFields": [
+          "opacity"
+        ],
+        "dataNodeIndex": 5
+      }
+    },
+    "annotationLabelA": {},
+    "flatUiSelectA": {
+      "keys": {
+        "name": "keys",
+        "dataNode": "options",
+        "dataFields": [],
+        "dataNodeIndex": 9
+      },
+      "values": {
+        "name": "values",
+        "dataNode": "options",
+        "dataFields": [],
+        "dataNodeIndex": 9
+      },
+      "selectedValue": {
+        "name": "selectedValue",
+        "dataNode": "selected_indicator",
+        "dataFields": [],
+        "dataNodeIndex": 11
+      }
+    },
+    "flatUiValueDisplayA": {
+      "value": {
+        "name": "value",
+        "dataNode": "last_update",
+        "dataFields": [],
+        "dataNodeIndex": 6
+      }
+    },
+    "plotlyPyGenericA": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "capacity",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "plotlyPyGenericB": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "num_bikes_available",
+        "dataFields": [],
+        "dataNodeIndex": 7
+      }
+    },
+    "plotlyPyGenericC": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "num_docks_available",
+        "dataFields": [],
+        "dataNodeIndex": 8
+      }
+    }
+  },
+  "exportOptions": "projectToTargetWindow",
+  "pages": {
+    "pageNames": [
+      "Page 1"
+    ],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

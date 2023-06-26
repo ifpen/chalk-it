@@ -1,0 +1,407 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Chalk'it | Connect & visualize APIs in your browser</title>
+    <meta name="author" content="IFPEN" />
+    <meta name="title" content="Chalk'it | Open-source framework for Python rapid web applications" />
+    <meta name="description"
+          content="Chalk'it allows technicians, scientists or engineers, not specialists in web technologies, to turn their Python scripts into shareable web application dashboards" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords"
+          content="connect and visualize APIs, Python, API, data science, dashboard, dashboarding, web application, visualization, REST, web-service, JavaScript, Python, rapid-prototyping, leaflet, reproductible science, simulation, transport, mobility, digital, open data, testing my API" />
+
+    <!--  robots and humans -->
+    <meta name="robots" content="follow" />
+    <link type="text/plain" rel="author" href="https://ifpen.github.io/chalk-it/humans.txt" />
+
+    <!-- Favicons -->
+    <link href="img/chalk-it-icon.svg" rel="icon" />
+    <link href="img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Bootstrap CSS File -->
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Libraries CSS Files -->
+    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="lib/ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
+
+    <!-- Main Stylesheet File -->
+    <link href="css/style.css" rel="stylesheet" />
+
+    <!-- =======================================================
+      Theme Name: NewBiz
+      Theme URL: https://bootstrapmade.com/newbiz-bootstrap-business-template/
+      Author: BootstrapMade.com
+      Licensed to IFPEN
+    ======================================================= -->
+</head>
+
+<body>
+    <script>
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+                setupGallery(demosArray, demoCategoryArray, demoCaptionArray);
+
+                var iframe = document.getElementById("xDashLiveDemo");
+                iframe.src = "live-demo/live-demo.html"; // here goes your url
+            },
+            false
+        );
+    </script>
+
+    <!--==========================
+    Header
+    ============================-->
+    <header id="header" class="fixed-top">
+        <div class="container">
+            <div class="logo float-left" style="width: 10em">
+                <span alt="Chalk'it Logo" class="brand__placeholder"></span>
+            </div>
+
+            <nav class="main-nav float-right d-none d-lg-block">
+                <ul>
+                    <li class="active"><a href="#intro">Home</a></li>
+                    <li><a href="#about">What is Chalk'it ?</a></li>
+                    <li><a href="#services">Chalk'it in action</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#contactUs">Contact Us</a></li>
+                    <li><a href="https://ifpen.github.io/chalk-it/hosted/doc/index.html">Docs</a></li>
+                    <li class="li-button">
+                        <button type="button" class="btn-run" id="btnRun">
+                            <a href="https://ifpen.github.io/chalk-it/hosted/index.html" target="_blank">
+                                <img src="img/chalk-it-icon.svg" width="28" alt="Chalk'it small icon" />
+                                Run Chalk'it
+                            </a>
+                        </button>
+                    </li>
+                    <li>
+                        <a href="https://github.com/ifpen/chalk-it" target="_blank" style="padding: 0 0 0 40px">
+                            <img src="img/github-mark.png" class="img-fluid" alt="Github logo" style="width: 3em" />
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- .main-nav -->
+        </div>
+    </header>
+    <!-- #header -->
+    <!--==========================
+      Intro Section
+    ============================-->
+    <section id="intro" class="clearfix">
+        <div class="container">
+            <div id="carouselExampleSlidesOnly" class="carousel slide intro-img" data-ride="carousel" data-interval="3500" style="padding-top: 15px">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="img/caroussel/cityStatistics.jpg" alt="Gecoair city statistics" />
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="img/caroussel/illustration.jpg" alt="Environmental monitoring" />
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="img/caroussel/cartography.jpg" alt="Pollution projection" />
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="img/caroussel/deepLearning3D.jpg" alt="Deep Learning" />
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="img/caroussel/inverseModel.jpg" alt="Environmental monitoring" />
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="img/caroussel/iris.jpg" alt="Deep Learning" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="intro-info">
+                <h2>Python dashboards in your browser with dataflow and drag-and-drop </h2>
+                <div>
+                    <a href="#about" class="btn-get-started scrollto">What is Chalk'it ?</a>
+                </div>
+                <div>
+                    <a href="#services" class="btn-services scrollto">Chalk'it in action</a>
+                </div>
+                <div>
+                    <a href="#portfolio" class="btn-services scrollto">Portfolio</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- #intro -->
+
+    <main id="main">
+        <!--==========================
+            About Us Section
+          ============================-->
+        <section id="about">
+            <div class="container">
+                <header class="section-header">
+                    <h3>What is Chalk'it ?</h3>
+                    <p>
+                        Chalk'it is an open-source framework that allows technicians, scientists or engineers, not specialists in web technologies, to build their own web
+                        applications based on the Python code, JavaScript code or web-services they develop.
+                    </p>
+                </header>
+                <div class="row about-container">
+                    <div class="col-lg-6 content order-lg-1 order-2">
+                        <p>
+                            With Chalk'it you can transform Python scripts into rich distributable web-application dashboards. It utilizes drag-and-drop widgets to establish an interface linked to a dataflow connecting Python code and various data sources. The user experience is similar to rapid prototyping tools.
+                        </p>
+
+                        <div class="icon-box wow fadeInUp">
+                            <div class="icon"><i class="fa fa-link"></i></div>
+                            <h4 class="title"><a href="">Python scripts, APIs, data and files aggregation</a></h4>
+                            <p class="description">
+                                Use a synchronous-reactive execution engine to connect Python scripts, restful APIs, data and files. A workspace of JSON and Python objects is maintained.
+                            </p>
+                        </div>
+
+                        <div class="icon-box wow fadeInUp" data-wow-delay="0.2s">
+                            <div class="icon"><i class="fa fa-bar-chart"></i></div>
+                            <h4 class="title"><a href="">Drag-and-drop dashboard edition</a></h4>
+                            <p class="description">Drag and drop widgets to quickly build your dashboard. Connect them to JSON variables workspace.</p>
+                        </div>
+
+                        <div class="icon-box wow fadeInUp" data-wow-delay="0.4s">
+                            <div class="icon"><i class="fa fa-share"></i></div>
+                            <h4 class="title"><a href="">Share your application</a></h4>
+                            <p class="description">Share your application in three clicks.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 background order-lg-2 order-1 wow fadeInUp">
+                        <img src="img/edition2.jpg" class="img-fluid" alt="What is Chalk'it" />
+                    </div>
+                </div>
+
+                <div class="row about-extra">
+                    <div class="col-lg-6 wow fadeInUp">
+                        <img src="img/graph2.jpg" class="img-fluid" alt="Application logic" />
+                    </div>
+                    <div class="col-lg-6 wow fadeInUp pt-5 pt-lg-0">
+                        <h4>Application logic</h4>
+                        <p>
+                            Application is programmed in Chalk'it by creating and connecting operations called dataNodes. Execution engine relies on a synchronous/reactive
+                            language, executed on a direct acyclic graph of dataNodes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row about-extra">
+                    <div class="col-lg-6 wow fadeInUp order-1 order-lg-2">
+                        <img src="img/datanodes2.jpg" class="img-fluid" alt="Application building blocks" />
+                    </div>
+                    <div class="col-lg-6 wow fadeInUp pt-4 pt-lg-0 order-2 order-lg-1">
+                        <h4>Application building blocks</h4>
+                        <p>
+                            DataNodes are similar to a cell of a Jupyter Notebook. It can be seen as a function that produce a Python object output or a JSON result.
+                            DataNodes are application building blocks that may execute Python or JavaScript codes, call Restful webservices, load file (JSON, CSV, binary,
+                            etc. ). They include also Real-time connectivity features via timed execution, web-sockets and MQTT.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row about-extra">
+                    <div class="col-lg-6 wow fadeInUp">
+                        <img src="img/widgets4.jpg" class="img-fluid" alt="Intuitive dashboard edition" />
+                    </div>
+
+                    <div class="col-lg-6 wow fadeInUp pt-5 pt-lg-0">
+                        <h4>Intuitive dashboard edition</h4>
+                        <p>Use drag-and-drop to build rich and responsive dashboards. Then connect them to dataNodes.</p>
+                        <p>
+                            A wide variety of widgets is available, from simple sliders and checkboxes to rich graphical libraries in Python such as Matplotlib and Plotly
+                            and in JavaScript such as ECharts, Vega, Plolty.js.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row about-extra">
+                    <div class="col-lg-6 wow fadeInUp order-1 order-lg-2">
+                        <img src="img/Python-logo-notext.svg" style="display: block; margin: auto" class="img-fluid" alt="Python logo" />
+                        <img src="img/pyodide.jfif" style="width: 29%; padding: 5px" alt="Pyodide logo" />
+                        <img src="img/flask-horizontal.webp" style="width: 29%; padding: 5px" class="img-fluid" alt="Flask logo" />
+                        <img src="img/django-logo-positive.png" style="width: 29%; padding: 5px" class="img-fluid" alt="Django logo" />
+                    </div>
+                    <div class="col-lg-6 wow fadeInUp pt-4 pt-lg-0 order-2 order-lg-1">
+                        <h4>Integrate your Python algorithms</h4>
+                        <p>Multiple solutions to build a dashboard for your Python code:</p>
+                        <ul>
+                            <li>You may use Pyodide which allows installing and runing Python packages in the browser.</li>
+                            <li>You may also choose to use Python from the server-side with webapp frameworks such as Django or Flask</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row about-extra">
+                    <div class="col-lg-6 wow fadeInUp">
+                        <img src="img/github-mark.png" class="img-fluid" alt="Github logo" />
+                    </div>
+
+                    <div class="col-lg-6 wow fadeInUp pt-5 pt-lg-0">
+                        <h4>Open-source framwork</h4>
+                        <p>
+                            Please visit our <a href="https://github.com/ifpen/chalk-it" target="_blank">Github repository</a>. You can simply install Chalk'it with
+                            <b>pip</b> or use the <a href="https://ifpen.github.io/chalk-it/hosted/#/discover/" target="_blank">online hosted version</a>.
+                        </p>
+                        <p>
+                            See the <a href="https://ifpen.github.io/chalk-it/" target="_blank">templates gallery</a> for simple examples that illustrate the basic features
+                            of Chalk'it.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- #about -->
+        <!--==========================
+            liveDemos Section
+          ============================-->
+        <section id="services" class="section-bg">
+            <div class="container">
+                <header class="section-header">
+                    <h3>Chalk'it in action</h3>
+                    <p>This is simple interactive dashboard example. It includes some basic widgets.</p>
+                </header>
+
+                <div class="row">
+                    <div id="xDashInside" class="col-lg-12">
+                        <iframe id="xDashLiveDemo" title="Live demos" height="700" max-width="100%" style="width: 100%; border: none" src="about:blank"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- #liveDemos -->
+        <!--==========================
+            Portfolio Section
+          ============================-->
+        <section id="portfolio" class="clearfix">
+            <div class="container">
+                <header class="section-header">
+                    <h3 class="section-title">Portfolio</h3>
+                    <p>
+                        The examples showcased below were constructed with Chalk'it, requiring only a minimal amount of Python code to create these robust web dashboards.
+                        For dashboards building blocks, see the <a href="https://ifpen.github.io/chalk-it/hosted/templates-gallery/index.html">templates gallery</a>.
+
+                    </p>
+                </header>
+
+                <!--<div class="row">
+                    <div class="col-lg-12">
+                        <ul id="portfolio-flters">
+                            <li data-filter="*" class="filter-active">All</li>
+                            <li data-filter=".filter-mobility">Mobility</li>
+                            <li data-filter=".filter-python">Python</li>
+                            <li data-filter=".filter-environmental-monitoring">Environmental monitoring</li>
+                            <li data-filter=".filter-open-data">Open data</li>
+                        </ul>
+                    </div>
+                </div>-->
+
+                <div id="demo-portfolio" class="row portfolio-container"></div>
+            </div>
+        </section>
+        <!-- #portfolio -->
+    </main>
+
+    <!--==========================
+      Footer
+    ============================-->
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 footer-info">
+                        <div class="box">
+                            <img src="img/chalk-it-icon.svg" style="height: 96px; width: 96px" />
+                        </div>
+                        <div class="box">
+                            <p>
+                                <b>Chalk'it</b> allows technicians, scientists or engineers, not specialists in web technologies, to build their own web applications based on
+                                the Python code, JavaScript code or web-services they develop.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#about">What is Chalk'it ?</a></li>
+                            <li><a href="#services">Live demos</a></li>
+                            <li><a href="terms-credits/xDashTermsofUse10062020.html">Terms of service</a></li>
+                            <li><a href="terms-credits/Credits.html#openModalCredits" target="_blank">Credits</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h4 id="contactUs">Contact Us</h4>
+                        <p>
+                            <a href="https://www.ifpenergiesnouvelles.com/">IFP Energies nouvelles</a> <br />
+                            1 et 4 avenue de Bois-Preau <br />
+                            92852 Rueil-Malmaison Cedex<br />
+                            France <br />
+                            <strong>Email:</strong> <a href="mailto:chalk-it@ifpen.fr">chalk-it@ifpen.fr</a><br />
+                        </p>
+
+                        <div class="social-links">
+                            <a href="https://twitter.com/IFPENinnovation" class="twitter"><i class="fa fa-twitter"></i></a>
+                            <a href="https://fr.linkedin.com/company/ifp-energies-nouvelles" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 footer-newsletter">
+                        <h4>About us</h4>
+                        <a href="https://www.ifpenergiesnouvelles.com/">
+                            <img src="img/IFPEN_LogoBlanc.png" style="padding-bottom: 10px; max-width: 150px" alt="IFPEN logo" />
+                        </a>
+                        <a href="https://www.ifpenergiesnouvelles.com/innovation-and-industry/support-innovative-smes-and-start-ups/ifpen-transports-energie-carnot-institute">
+                            <img src="img/Carnot-IFPEN-Transports-Energie_Logo.png"
+                                 style="padding-left: 10px; max-width: 150px"
+                                 alt="Institut Carnot IFPEN Transports Energie logo" />
+                        </a>
+                        <p>
+                            IFP Energies nouvelles (IFPEN) is a major research and training player in the fields of energy, transport and the environment. From research to
+                            industry, technological innovation is central to all its activities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">&copy; Copyright <strong>IFP Energies nouvelles</strong>. All Rights Reserved</div>
+        </div>
+    </footer>
+    <!-- #footer -->
+
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    <!-- Uncomment below i you want to use a preloader -->
+    <!-- <div id="preloader"></div> -->
+    <!-- JavaScript Libraries -->
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/jquery/jquery-migrate.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/mobile-nav/mobile-nav.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+    <!-- Contact Form JavaScript File -->
+    <script src="contactform/contactform.js"></script>
+
+    <!-- Template Main Javascript File -->
+    <script src="js/main.js"></script>
+    <script src="demos-gallery/demosArray.js"></script>
+    <script src="demos-gallery/tagsArray.js"></script>
+    <script src="demos-gallery/titlesArray.js"></script>
+    <script src="demos-gallery/setup-gallery.js"></script>
+</body>
+</html>

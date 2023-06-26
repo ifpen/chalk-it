@@ -1,0 +1,179 @@
+html {
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background: #fff;
+    background: -moz-linear-gradient(#fff, #999);
+    background: -webkit-linear-gradient(#fff, #999);
+    background: -o-linear-gradient(#fff, #999);
+}
+
+.pagetitle
+{
+    width : 95%;
+    height : 100%;
+    padding-left : 10px;
+}
+
+.logocontainer
+{
+    float:right;
+    position:relative;
+    width:14%;
+}
+
+.buttononright
+{
+    float:right;
+    position:relative;
+    width:100px;
+    height:32px;
+    margin-left:10px;
+    font-size:large;
+    background-color:dimgrey;
+    color:white;
+	line-height: 25px;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+	text-decoration:none; 
+}
+
+.textonright
+{
+    float:right;
+    position:relative;
+    height:28px;
+    font-size:large;
+}
+
+.elementonright
+{
+    float:right;
+    position:relative;
+}
+
+.logo
+{
+    float:right;
+    width:100%;
+}
+
+.content
+{
+    margin : 0;
+    padding : 20px 20px;
+    padding-bottom : 20px;
+    min-height : 600px;
+    min-width : 1000px;
+}
+
+.container
+{
+    width : 95%;
+    padding : 20px;
+    border : 2px;
+    border-style : solid;
+    border-color : #000000;
+    margin-left : 10px;
+    margin-bottom : 10px;
+}
+
+.container > label
+{
+    width : 130px;
+    display: inline-block;
+}
+
+.container > input
+{
+    width : 150px;
+    margin-right : 50px;
+}
+
+.container > a > input
+{
+    margin-right : 20px;
+}
+
+.container > button
+{
+    margin-right : 20px;
+    background : #D8D8D8;
+}
+
+.button
+{
+    background : #D8D8D8;
+}
+
+.formButton
+{
+    background : #D8D8D8;
+    margin-bottom:10px;
+}
+
+input.mediumbutton
+{
+    background-color : silver;
+    padding: 10px;
+    width:48px;
+    height:48px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+input.bigbutton
+{
+    background-color : silver;
+    padding: 10px;
+    width:60%;
+    padding-top:60%;
+    background-size: 95%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+input.toolbarbutton
+{
+    background-color : silver;
+    padding: 10px;
+    width:120px;
+    height:120px;
+    background-size: 95%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.combobox
+{
+    margin-right : 50px;
+}
+
+.textbox
+{
+    margin-right : 20px;
+}
+
+h1
+{
+    display:inline;
+    margin-left:10px;
+}
+
+h2
+{
+    margin-top : 0px;
+}
+
+.credits
+{
+    padding-bottom : 20px;
+}

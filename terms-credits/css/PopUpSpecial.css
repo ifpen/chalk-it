@@ -1,0 +1,298 @@
+﻿.modalDialogSpecial
+{
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+}
+
+.modalDialogSpecial:target
+{
+	opacity:1;
+	pointer-events: auto;
+}
+
+#openModalDisplay > div
+{
+    width: 85vw;
+    height: 85vh;
+}
+
+#openModalEdit > div
+{
+    width: 40vw;
+}
+
+.modalDialogSpecial > div
+{
+	position: relative;
+	overflow: auto;
+	margin: 5% auto;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+	background: #fff;
+	background: -moz-linear-gradient(#fff, #999);
+	background: -webkit-linear-gradient(#fff, #999);
+	background: -o-linear-gradient(#fff, #999);
+	overflow:auto;
+	max-height:75%;
+}
+
+.modalDialogSpecial > div::-webkit-scrollbar
+{
+	height: auto;
+	width: auto;
+}
+
+.modalDialogSpecial > div::-webkit-scrollbar-thumb
+{
+	background: #dedede;
+}
+
+/*
+.close
+{
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: +1px;//-12px;
+	text-align: center;
+	top: -1px;//-10px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover
+{
+    background: #00d9ff;
+}
+
+.text
+ {
+    color: rgba(255, 255, 255, 0);
+	cursor: pointer;
+	position:absolute;	
+}
+
+.text:hover
+ {
+	color: #000;
+	background-color: #fff;
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+	cursor: pointer;
+	position:absolute;
+	border:1px dotted black;
+	line-height: 40px;
+	padding-left: 11px;
+	padding-right: 11px;	 
+ } 
+*/
+
+ .Display
+{
+	width:90vw;
+    display: table;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+ .LargeTable
+{
+	width:80vw;
+    display: table;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.Title
+{
+    display: table-caption;
+    text-align: center;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.Heading
+{
+    display: table-row;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Row
+{
+    display: table-row;
+}
+	
+.SpecialCell
+{
+	display: table-cell;
+    border-width: thin;
+    padding-left: 5px;
+    padding-right: 5px;
+	text-align: right;
+}
+
+.SpecialCellW
+{
+    display: table-cell;
+	font-weight: bold;
+	font-size: 16px;
+    border-width: thin;
+	vertical-align: middle;
+}
+
+.SpecialCellH
+{
+	font-weight: bold;
+    display: table-cell;
+    border-width: thin;
+    padding-left: 5px;
+    padding-right: 5px;
+    width : 80%;
+}
+
+.SpecialCellName
+{
+	font-weight: bold;
+    display: table-cell;
+    border-width: thin;
+    padding-left: 5px;
+    padding-right: 5px;
+    max-width : 30%;
+    overflow:auto;
+}
+
+.SpecialCellDesc
+{
+	font-weight: bold;
+    display: table-cell;
+    border-width: thin;
+    padding-left: 5px;
+    padding-right: 5px;
+    max-width : 60%;
+    overflow:visible;
+}
+
+.SpecialCell.colspan
+{
+    display: none;
+    /* collapse border */
+    margin-top: -1px;
+    margin-bottom: -1px;
+}
+
+form
+{
+    width:50vw;
+}
+
+.textcell
+{
+    width : 8vw;
+    text-align : right;
+}
+
+ .modalDialogSpecial > div > a
+{
+    text-decoration:none; 
+}
+
+#drop_zone
+{
+    border: 2px dashed #929292;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 25px;
+    text-align: center;
+
+    color: #fff;
+}
+
+.example
+{
+    padding: 10px;
+    border: 1px solid #929292;
+    margin: 30px;
+}
+
+.bouton.disabled
+{
+    color:#ffffff;
+    background-color:#dddddd;
+    text-decoration:none;
+}
+
+.bouton:hover.disabled
+{
+    color:#ffffff;
+    background-color:#dddddd;
+    text-decoration:none; 
+    cursor: default;
+    pointer-events: none;
+}
+
+#preview
+{
+	position:absolute;
+	border:1px solid #ccc;
+	background:#333;
+	padding:5px;
+	display:none;
+	color:#fff;
+}
+
+#screenshot
+{
+	position:absolute;
+	border:1px solid #ccc;
+	background:#333;
+	padding:5px;
+	display:none;
+	color:#fff;
+	font-size: 12px;
+}
+
+
+/* Create four equal columns that floats next to each other */
+.fcolumn {
+    float: left;
+    width: 24%;
+    padding: 2px;
+}
+
+/* Clear floats after the columns */
+.frow:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media (max-width: 800px) {
+    .fcolumn {
+        width: 100%;
+    }
+}
+
+
