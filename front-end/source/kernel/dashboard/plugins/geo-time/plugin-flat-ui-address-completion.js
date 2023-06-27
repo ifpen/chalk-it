@@ -64,7 +64,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
         };
 
         this.enable = function () {
-            $("#ac-value" + idWidget).prop("disabled", false);
+            //$("#ac-value" + idWidget).prop("disabled", false);
             $("#ac-value" + idWidget).bind('typeahead:selected', function (e, val, name) {
                 modelsHiddenParams[idInstance].value = val.word;
                 self.value.updateCallback(self.value, val.word);
@@ -86,7 +86,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
         };
 
         this.disable = function () {
-            $("#ac-value" + idWidget).prop("disabled", true);
+            //$("#ac-value" + idWidget).prop("disabled", true);
         };
 
         this.formatHereSuggestTable = function (data) {

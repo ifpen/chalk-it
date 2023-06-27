@@ -75,6 +75,10 @@ modelsParameters.flatUiTable = {
   bordered: true,
   noBorder: false,
   editableCols: '[]',
+  backgroundColor: {
+    primary: "var(--widget-color-0)",
+    secondary: "var(--widget-table-striped-odd)"
+  }
 };
 
 // Layout (default dimensions)
@@ -1015,7 +1019,7 @@ function flatUiComplexWidgetsPluginClass() {
         if (bIsArray) {
           if (modelsParameters[idInstance].headerLine) {
             startIndex = 1;
-            tableContent = tableContent + '<thead><tr>';
+            tableContent += '<thead><tr>';
             for (var j = 0; j < val[0].length; j++) {
               tableContent =
                 tableContent +
@@ -1030,11 +1034,18 @@ function flatUiComplexWidgetsPluginClass() {
                 val[0][j] +
                 '</b></span></th>';
             }
-            tableContent = tableContent + '</tr></thead>';
+            tableContent += '</tr></thead>';
           }
           tableContent = tableContent + '<tbody>';
           for (var i = startIndex; i < val.length; i++) {
-            tableContent = tableContent + '<tr>';
+            if (modelsParameters[idInstance].striped) {
+              if (i%2 !== 0) {
+                tableContent += '<tr style="' + this.tableBackgroundColor("secondary") + '">';
+              }
+            } else {
+              tableContent += '<tr>';
+            }
+            
             for (var j = 0; j < val[i].length; j++) {
               var ParsedEditableCols = [];
               try {
@@ -1104,30 +1115,37 @@ function flatUiComplexWidgetsPluginClass() {
     };
 
     this.render = function () {
-      var widgetHtml = document.createElement('div');
-      if (this.bIsInteractive) {
-        widgetHtml.setAttribute('style', 'cursor: auto; width: inherit; height: inherit; overflow: auto');
-      } else {
-        widgetHtml.setAttribute('style', 'cursor: inherit; width: inherit; height: inherit; overflow: auto');
+      const widgetHtml = document.createElement('div');
+      const displayStyle = 'display: flex; align-items: center; cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto';
+      widgetHtml.setAttribute('style', displayStyle);
+      let divContent = '<table style="margin: 0; height: 90%; ' + this.tableBackgroundColor("primary") + '" class="table';
+      
+      // Instead, the primary and secondary background colour is used.
+      // if (modelsParameters[idInstance].striped) {
+      //   divContent = divContent + ' table-striped '; 
+      // }
+
+      if (modelsParameters[idInstance].bordered) {
+        divContent += ' table-bordered ';
       }
-      var divContent = '<table style="margin: 0; height: 90%;" class="table';
-      if (modelsParameters[idInstance].striped) divContent = divContent + ' table-striped ';
-      if (modelsParameters[idInstance].bordered) divContent = divContent + ' table-bordered ';
       if (!_.isUndefined(modelsParameters[idInstance].noBorder)) {
         // backward compatibiliy
-        if (modelsParameters[idInstance].noBorder == true) divContent = divContent + ' no-border ';
+        if (modelsParameters[idInstance].noBorder) {
+          divContent += ' no-border ';
+        }
       } else {
         modelsParameters[idInstance].noBorder = false; // update
       }
-      divContent = divContent + ' table-responsive" id="table' + idWidget + '" >';
-      var val = modelsHiddenParams[idInstance].value;
-      var insideTable = self.buildTable(val);
+      divContent += ' table-responsive" id="table' + idWidget + '" >';
+      const val = modelsHiddenParams[idInstance].value;
+      let insideTable = self.buildTable(val);
       if (insideTable == '') {
         insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
       }
-      divContent = divContent + insideTable + '</table>';
+      divContent += insideTable + '</table>';
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
+      
       if (this.bIsInteractive) {
         self.enable();
       } else {
