@@ -87,6 +87,7 @@ def get_files():
             "Success": True,
             "Msg": None,
             "FileList": file_list,
+            "Path": path_dir,
             "Python": None
         })
     except Exception as err:
