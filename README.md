@@ -48,9 +48,17 @@ Your can also use the [online hosted version](https://ifpen.github.io/chalk-it/h
 
 ## Roadmap
 
+- Working with your favorite code editor !
+- Local Python code execution (no Browser or Pyodide limitations)
+- More widgets
+- Enriched framework (adding state, cache …)
+- Dashboard themes
+- 3 clicks dashboard cloud sharing
 - Mixing Pyodide and classic Python execution
 - Command line interface (project open, render ...)
-- PyDeck and Folium support
+- PyDeck support
+
+
 
 ## Contributing
 
