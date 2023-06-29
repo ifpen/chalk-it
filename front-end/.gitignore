@@ -1,0 +1,26 @@
+node_modules
+bower_components
+reports
+config.prod.js
+jshint-output.html
+doc
+.idea
+.dccache
+.suo
+
+# Ignore all css generated files
+source/assets/style/**/*.css
+source/assets/style/**/*.css.map
+
+# Generated from build
+configs/config.prod.js
+configs/config.dev.js
+
+index.html
+index-view.html
+test/jshint/*
+
+doc/
+.vs
+source/.vs/ 
+__pycache__/
