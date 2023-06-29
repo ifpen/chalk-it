@@ -58,8 +58,6 @@ Your can also use the [online hosted version](https://ifpen.github.io/chalk-it/h
 - Command line interface (project open, render ...)
 - PyDeck support
 
-
-
 ## Contributing
 
 If you are a developer, and wish to contribute, please read the [contribution rules](CONTRIBUTING.md).
