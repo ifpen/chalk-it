@@ -30,10 +30,11 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     this.setColorValueFromModelParameters = function (value, defaultValue) {
         const paramValue = modelsParameters[idInstance][value];
 
-        if (!paramValue || paramValue.startsWith("#")) {
-          modelsParameters[idInstance][value] = defaultValue;
-          return defaultValue;
-        }
+        // TODO theme backwards compatibility
+        // if (!paramValue || paramValue.startsWith("#")) {
+        //   modelsParameters[idInstance][value] = defaultValue;
+        //   return defaultValue;
+        // }
         
         return paramValue;
     }
