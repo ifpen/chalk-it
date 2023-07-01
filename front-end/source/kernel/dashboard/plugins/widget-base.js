@@ -27,18 +27,25 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     }
 
     // Helper function to set the color value from the modelParameters (for backward compatibility)
-    this.setColorValueFromModelParameters = function (value, defaultValue) {
-        const paramValue = modelsParameters[idInstance][value];
-
+    this.setColorValueFromModelParameters = function (prop, defaultValue) {
+        let colorValue = defaultValue;
+        if (_.isUndefined(modelsParameters[idInstance][prop])) {
+            modelsParameters[idInstance][prop] = defaultValue;
+        } else {
+            colorValue =  modelsParameters[idInstance][prop];
+        }
         // TODO theme backwards compatibility
         // if (!paramValue || paramValue.startsWith("#")) {
         //   modelsParameters[idInstance][value] = defaultValue;
         //   return defaultValue;
         // }
-        
-        return paramValue;
+        const colorHex = this.getColorValueFromCSSProperty(colorValue);
+        return colorHex;
     }
 
+    // +--------------------------------------------------------------------¦ \\
+    // |                          Global functions                          | \\
+    // +--------------------------------------------------------------------¦ \\
     this.labelFontSize = function () {
         const fs = 'font-size: calc(7px + ' +
             modelsParameters[idInstance].labelFontSize * getFontFactor() +
@@ -52,7 +59,6 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
             'vw + 0.4vh); ';
         return fs;
     };
-
 
     this.valueFormat = function (val) {
 
@@ -116,7 +122,7 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         let border = 'border: none; ';
         if (modelsParameters[idInstance].displayBorder) {
             const borderColor = this.setColorValueFromModelParameters("borderColor", "var(--widget-border-color)");
-            border = ' border: 2px solid ' + borderColor + '; ';
+            border = 'border: 2px solid ' + borderColor + '; ';
         } else {
             border += + '-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
             border += '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
@@ -140,10 +146,8 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
 
     this.backgroundColor = function () {
         // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].backgroundColor)) {
-            modelsParameters[idInstance].backgroundColor = "#ffffff";
-        }
-        const bc = 'background-color:' + modelsParameters[idInstance].backgroundColor + "; ";
+        const color = this.setColorValueFromModelParameters("backgroundColor", "#ffffff");
+        const bc = 'background-color:' + color + "; ";
         return bc;
     }
 
@@ -297,7 +301,7 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // +--------------------------------------------------------------------¦ \\
     this.graphColor = function () {
         const color = this.setColorValueFromModelParameters("graphColor", "var(--widget-label-color)");
-        return this.getColorValueFromCSSProperty(color);
+        return color;
     };
 
     this.subLabelFontFamily = function () {
@@ -320,6 +324,24 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
             'vw + 0.4vh); ';
         return fs;
     };
+
+    // +--------------------------------------------------------------------¦ \\
+    // |                            Checkbox widget                         | \\
+    // +--------------------------------------------------------------------¦ \\
+    this.checkedColor = function () {
+        if (!_.isUndefined(modelsParameters[idInstance].checkboxColor)) {
+            delete modelsParameters[idInstance].checkboxColor;
+        }
+        const color = this.setColorValueFromModelParameters("checkedColor", "var(--widget-input-checked-color)");
+        const fc = 'color: ' + color + "; ";
+        return fc;
+    }
+
+    this.uncheckedColor = function () {
+        const color = this.setColorValueFromModelParameters("uncheckedColor", "var(--widget-input-unchecked-color)");
+        const fc = 'color: ' + color + "; ";
+        return fc;
+    }
 
     // +--------------------------------------------------------------------¦ \\
     // |                            Switch widget                           | \\
@@ -618,13 +640,13 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // +--------------------------------------------------------------------¦ \\
     this.thicknessBackgroundColor = function () {
         const color = this.setColorValueFromModelParameters("thicknessBackgroundColor", "var(--widget-segment-color)");
-        const bc = ' background-color="' + this.getColorValueFromCSSProperty(color) + '" ';
+        const bc = ' background-color="' + color + '" ';
         return bc;
     };
 
     this.thicknessColor = function () {
         const color = this.setColorValueFromModelParameters("thicknessColor", "var(--widget-range-color)");
-        const bc = ' foreground-color="' + this.getColorValueFromCSSProperty(color) + '" ';
+        const bc = ' foreground-color="' + color + '" ';
         return bc;
     };
 
@@ -633,14 +655,12 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // +--------------------------------------------------------------------¦ \\
     this.tipBackgroundColor = function () {
         const color = this.setColorValueFromModelParameters("tipBackgroundColor", "var(--widget-button-color)");
-        const bc = this.getColorValueFromCSSProperty(color);
-        return bc;
+        return color;
     };
 
     this.tipBorderColor = function () {
         const color = this.setColorValueFromModelParameters("tipBorderColor", "var(--widget-button-text)");
-        const bc = this.getColorValueFromCSSProperty(color);
-        return bc;
+        return color;
     };
 
 }

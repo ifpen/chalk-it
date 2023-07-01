@@ -132,17 +132,19 @@ function ledWidgetsPluginClass() {
         this.insertLabel = function (widgetHtml) {
             // conversion to enable HTML tags
             const labelText = this.getTransformedText("label");
-            const widgetLabel = document.createElement('span');
-            widgetLabel.setAttribute('class', 'led-span');
-            widgetLabel.setAttribute('id', 'led-span' + idWidget);
+            const widgetLabel = $('<span>', {
+                class: 'led-span',
+                id: 'led-span' + idWidget,
+                html: labelText
+            });
+            let labelStyle = "height: inherit; " + this.labelFontSize() + this.labelColor() + this.labelFontFamily();
             if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
-                widgetLabel.setAttribute('style', 'height: inherit; width:' + modelsParameters[idInstance].labelWidthProportion +
-                    ';' + this.labelFontSize());
+                labelStyle += modelsParameters[idInstance].labelWidthProportion + "; ";
             } else {
-                widgetLabel.setAttribute('style', 'height: inherit; width: 20%; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily());
+                labelStyle += " width: 20%; ";
             }
-            widgetLabel.innerHTML = labelText;
-            widgetHtml.appendChild(widgetLabel);
+            widgetLabel.attr('style', labelStyle);
+            widgetHtml.append(widgetLabel[0]);
         };
 
         this.rescale = function () {

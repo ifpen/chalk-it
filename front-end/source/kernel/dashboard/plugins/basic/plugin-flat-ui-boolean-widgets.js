@@ -26,7 +26,8 @@ modelsParameters.flatUiCheckbox = {
     "labelColor": "var(--widget-label-color)",
     "labelFontFamily": "var(--widget-font-family)",
     "checkboxSize": 1,
-    "checkboxColor": "var(--widget-input-checked-color)"
+    "checkedColor": "var(--widget-input-checked-color)",
+    "uncheckedColor": "var(--widget-input-unchecked-color)"
 };
 modelsParameters.flatUiSwitch = {
     "label": "labelText",
@@ -74,16 +75,9 @@ function flatUiBooleanWidgetsPluginClass() {
             this.render();
         };
 
-        this.backwardCompatibility = function () {
-            if (_.isUndefined(modelsParameters[idInstance]["checkboxSize"])) {
-                modelsParameters[idInstance]["checkboxSize"] = 1;
-            }
-            if (_.isUndefined(modelsParameters[idInstance]["checkboxColor"])) {
-                modelsParameters[idInstance]["checkboxColor"] = "#447bdc";
-            }
-        }
 
-        this.backwardCompatibility();
+
+
 
         this.render = function () {
             //AEF
@@ -95,6 +89,12 @@ function flatUiBooleanWidgetsPluginClass() {
             if (!_.isNull($(".icons").width())) {
                 checkboxWidth = $(".icons").width();
             }
+
+            // backward compatibility
+            if (_.isUndefined(modelsParameters[idInstance].checkboxSize)) {
+                modelsParameters[idInstance].checkboxSize = 1;
+            }
+
             var padding = modelsParameters[idInstance].checkboxSize * checkboxWidth + 12;
             var lineHeight = modelsParameters[idInstance].checkboxSize * checkboxHeight;
             //
@@ -135,26 +135,16 @@ function flatUiBooleanWidgetsPluginClass() {
             $('[data-toggle="checkbox"]').radiocheck();
             $('[data-toggle="radio"]').radiocheck();
 
-            //AEF
-            if ($(".icons").length >= 1) {
-                for (let i = 0; i < $(".icons").length; i++) {
-                    if ($(".icons")[i].parentNode.id == "label" + idWidget) {
-                        $(".icons")[i].style.zoom = modelsParameters[idInstance].checkboxSize;
-                        $(".icons")[i].style.color = modelsParameters[idInstance].checkboxColor;
-                        //for (let j = 0; j < $(".icons")[i].childNodes.length; j++) {
-                        // if ($(".icons")[i].childNodes[j].className == "icon-checked") {
-                        //   $(".icons")[i].childNodes[j].style.color = modelsParameters[idInstance].checkboxColor;
-                        // }
-                        // }
-                    }
-                }
-            }
             //
             if (modelsHiddenParams[idInstance].value == true) {
                 $("#checkbox" + idWidget).radiocheck('check');
             } else if (modelsHiddenParams[idInstance].value == false) {
                 $("#checkbox" + idWidget).radiocheck('uncheck');
             }
+
+            document.styleSheets[0].addRule('#label' + idWidget + ' .icons *' , 'zoom: ' + modelsParameters[idInstance].checkboxSize);
+            document.styleSheets[0].addRule('#label' + idWidget + ' .icons .icon-checked' , this.checkedColor());
+            document.styleSheets[0].addRule('#label' + idWidget + ' .icons .icon-unchecked' , this.uncheckedColor());
 
             if (this.bIsInteractive) {
                 self.enable();
