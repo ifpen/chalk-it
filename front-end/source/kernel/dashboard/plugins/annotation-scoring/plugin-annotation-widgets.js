@@ -60,6 +60,7 @@ modelsParameters.annotationLabel = {
     "valueFontFamily": "var(--widget-font-family)",
     "textAlign": "left",
     "displayBorder": false,
+    "borderColor": "var(--widget-border-color)",
     "centerVertically": true
 };
 modelsParameters.annotationImage = {
@@ -255,13 +256,13 @@ function annotationWidgetsPluginClass() {
                 ' height: inherit; white-space: pre-wrap' +
                 '; color:' + modelsParameters[idInstance].textColor +
                 '; text-align: ' + modelsParameters[idInstance].textAlign +
+                '; background-color: ' + modelsParameters[idInstance].backgroundColor +
                 '; padding: 4px; resize: inherit; margin: auto; vertical-align: middle ; border-radius: 6px; ' +
                 this.fontSize() + this.valueFontFamily() + this.border() + 'display: ' + displayDiv2 + '" readonly>' +
                 text + '</textarea>';
 
             widgetHtml.innerHTML = divContent;
-            widgetHtml.setAttribute("style", "width: inherit; height: inherit; display: " + displayDiv1 + "; " +
-                "justify-content: center; background-color:" + modelsParameters[idInstance].backgroundColor);
+            widgetHtml.setAttribute("style", "width: inherit; height: inherit; display: " + displayDiv1 + "; justify-content: center;");
             $("#" + idDivContainer).html(widgetHtml);
         };
 
