@@ -31,13 +31,10 @@
                         <div>
                             <select class="inputList" style="width:240px; height:auto;" ng-model="scalingMethod"
                                 name="select-export-settings" id="select-export-settings">
-                                <option value="projectToTargetWindow" ng-if="nbRows >= 1">projectToTargetWindow</option>
-                                <option value="adjustToFullWidth" id="row1" ng-if="nbRows === 0">adjustToFullWidth
-                                </option>
-                                <option value="ajustToTargetWindow" id="row2" ng-if="nbRows === 0">ajustToTargetWindow
-                                </option>
-                                <option value="keepOriginalWidth" id="row3" ng-if="nbRows === 0">keepOriginalWidth
-                                </option>
+                                <option value="projectToTargetWindow" id="row0" ng-if="nbRows >= 1">projectToTargetWindow</option>
+                                <option value="adjustToFullWidth" id="row1" ng-if="nbRows === 0">adjustToFullWidth</option>
+                                <option value="ajustToTargetWindow" id="row2" ng-if="nbRows === 0">ajustToTargetWindow</option>
+                                <option value="keepOriginalWidth" id="row3" ng-if="nbRows === 0">keepOriginalWidth</option>
                                 <option value="rowToPage" id="row4" ng-if="nbRows >= 1">rowToPage</option>
                                 <option value="rowToTab" id="row5" ng-if="nbRows >= 1">rowToTab</option>
                                 <option value="customNavigation" id="row6" ng-if="nbRows >= 1">customNavigation</option>

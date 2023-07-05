@@ -44,7 +44,6 @@ class LayoutMgrClass {
 
         // Dashboard background color
         this.dashBgColor = "";
-        this.basicDashBgColor = "#ffffff";
         this.dashboardTheme = "default";
         this.$rootScope = angular.element(document.body).scope().$root;
     }
@@ -250,20 +249,9 @@ class LayoutMgrClass {
             undoManagerService.execute(action);
         }]);
 
-        this._setExportOptions();
+        this._updateExportOptions();
         this.updateDashBgColor();
-        this._initRowNames();
-    }
-
-    _setExportOptions() {
-        const exportOptions = htmlExport.exportOptions;
-        const singleRow = ["adjustToFullWidth", "ajustToTargetWindow", "keepOriginalWidth"];
-        const multiRow = ["projectToTargetWindow", "rowToPage", "rowToTab", "customNavigation"];
-        if ((this.getRows() == 0) && !singleRow.includes(exportOptions))  {
-            htmlExport.exportOptions = "adjustToFullWidth";
-        } else if ((this.getRows() >= 1) && !multiRow.includes(exportOptions)) {
-            htmlExport.exportOptions = "projectToTargetWindow";
-        }
+        this._updateRowNames();
     }
 
     setLayout(newRows, newColls, newHeights, ui = false) {
@@ -529,7 +517,7 @@ class LayoutMgrClass {
     // ├────────────────────────────────────────────────────────────────────┤ \\
     // |                      DashboardBackgroundColor                      | \\
     // ├────────────────────────────────────────────────────────────────────┤ \\
-    setDashBgColor() {
+    onInputDashBgColor() {
         this.dashBgColor = $("#inputDashBgColor")[0].value;
         $(".dropperR").css("background-color", this.dashBgColor);
         this.$rootScope.updateFlagDirty(true);
@@ -541,9 +529,9 @@ class LayoutMgrClass {
     }
 
     resetDashBgColor() {
-        this.dashBgColor = this.basicDashBgColor;
-        $("#inputDashBgColor").val(this.basicDashBgColor);
-        $(".dropperR").css("background-color", this.basicDashBgColor);
+        this.dashBgColor = "";
+        $("#inputDashBgColor").val("");
+        $(".dropperR").css("background-color", "");
     }
 
     serializeDashBgColor() {
@@ -556,7 +544,6 @@ class LayoutMgrClass {
     deserializeDashBgColor(deviceObj) {
         if(!_.isUndefined(deviceObj.backgroundColor)){
             this.dashBgColor = deviceObj.backgroundColor;
-            this.basicDashBgColor = deviceObj.backgroundColor;
             this.updateDashBgColor();
         }
     }
@@ -599,84 +586,103 @@ class LayoutMgrClass {
     }
 
     // ├────────────────────────────────────────────────────────────────────┤ \\
-    // |                           Row Names                               | \\
+    // |                           Export options                           | \\
+    // ├────────────────────────────────────────────────────────────────────┤ \\
+    /*--------_updateExportOptions--------*/
+    _updateExportOptions() {
+        const exportOptions = htmlExport.exportOptions || "";
+        const singleRow = ["adjustToFullWidth", "ajustToTargetWindow", "keepOriginalWidth"];
+        const multiRow = ["projectToTargetWindow", "rowToPage", "rowToTab", "customNavigation"];
+        const nbRows = this.getRows();
+        if ((nbRows == 0) && !singleRow.includes(exportOptions))  {
+            htmlExport.exportOptions = "adjustToFullWidth";
+        } else if ((nbRows >= 1) && !multiRow.includes(exportOptions)) {
+            htmlExport.exportOptions = "projectToTargetWindow";
+        }
+    }
+
+    /*--------serializeExportOptions--------*/
+    serializeExportOptions() {
+        return htmlExport.exportOptions;
+    }
+
+    /*--------deserializeExportOptions--------*/
+    deserializeExportOptions(exportOptions) {
+        if (!_.isUndefined(exportOptions)) {
+           htmlExport.exportOptions = exportOptions;
+        }
+        
+        // backward compatibility
+        this._updateExportOptions();
+    }
+
+    // ├────────────────────────────────────────────────────────────────────┤ \\
+    // |                           Row Names                                | \\
     // ├────────────────────────────────────────────────────────────────────┤ \\
     /*--------configureRowName--------*/
     configureRowName() {
-        const nbRows = this._readRows();
+        const nbRows = this.getRows();
         if (!nbRows) {
-            // Button should only be visible when rows >= 1, so this should not happen.
+            // Button should only be visible when nbRows >= 1
             return;
         }
 
-        if (this.rowNames.length !== nbRows) {
-            for (let i = 0; i < nbRows; i++) {
-                this.rowNames[i] = "Page " + (i + 1);
-            }
-        }
+        this._updateRowNames();
 
-        let divContent = '<div class="dashboard-form">';
-        for (let i = 1; i <= nbRows; i++) {
-            divContent += '<div class="dashboard-form__group dashboard-form__group--inline">';
-            divContent += '<div class="dashboard-form__label"><label>row ' + i + '</label></div>';
-            divContent += '<input type="text" name="row_' + i + '" id="row_' + i + '" value="' + this.rowNames[i-1] + '" />';
-            divContent += '</div>';
-        }
-        divContent += '</div>';
+        const divContent = Array.from({ length: nbRows }, (_, i) => `
+            <div class="dashboard-form__group dashboard-form__group--inline">
+                <div class="dashboard-form__label">
+                    <label>row ${i + 1}</label>
+                </div>
+                <input type="text" name="row_${i + 1}" id="row_${i + 1}" value="${this.rowNames[i]}" />
+            </div>
+        `).join('');
 
         const contentElement = document.createElement('div');
         contentElement.innerHTML = divContent;
         contentElement.setAttribute("style", "display: inline-block; width: 100%;");
 
-        const self = this;
         new DialogBoxForToolboxEdit(contentElement, "Configuration of each row's name", "OK", "Cancel", function() {
-            for (let i = 1; i <= nbRows; i++) {
-                const rowName = $("#row_" + i).val();
-                if (rowName !== undefined) {
-                    // Discard invalid values
-                    self.rowNames[i-1] = rowName;
-                }
+            const nbRowNames = this.rowNames.length;
+            for (let i = 0; i < nbRowNames; i++) {
+                const rowName = $("#row_" + (i + 1)).val();
+                this.rowNames[i] = rowName;
             }
-        });
+        }.bind(this));
     }
     
-    /*--------_initRowNames--------*/
-    _initRowNames() {
-        const nbRows = this._readRows(); 
-        if (nbRows > 0) {
-            if (nbRows < this.rowNames.length) {
-                this.rowNames.splice(nbRows, this.rowNames.length);
-            }
-            for (let i = 1; i <= nbRows; i++) {
-                if (_.isUndefined(this.rowNames[i-1])) {
-                    this.rowNames[i-1] = "Page " + i;
-                }
+    /*--------_updateRowNames--------*/
+    _updateRowNames() {
+        const nbRows = this.getRows();
+        this.rowNames.length = nbRows;
+
+        for (let i = 0; i < nbRows; i++) {
+            if (!this.rowNames[i]) {
+                this.rowNames[i] = "Page " + (i + 1);
             }
         }
     }
 
-    /*--------getRowNames--------*/
-    getRowNames() {
-        this._initRowNames();
+    /*--------_getRowNames--------*/
+    _getRowNames() {
+        this._updateRowNames();
         return this.rowNames;
     }
 
     /*--------getRowNamesObj--------*/
     getRowNamesObj() {
-        let rowNames = this.getRowNames();
-        let rowNamesObj = [];
-        for (let i=0; i<rowNames.length; i++) {
-            rowNamesObj.push({
-                id: (i+1),
-                name: rowNames[i]
-            })
-        }
+        const rowNames = this._getRowNames();
+        const rowNamesObj = rowNames.map((name, i) => ({
+            id: (i + 1),
+            name
+        }));
+
         return rowNamesObj;
     }
 
     /*--------serializeRowNames--------*/
     serializeRowNames() {
-        const rowNames = this.rowNames;
+        const rowNames = this._getRowNames();
         return {
             'pageNames': rowNames
         };
@@ -692,27 +698,23 @@ class LayoutMgrClass {
     // ├────────────────────────────────────────────────────────────────────┤ \\
     // |                           Default Row                              | \\
     // ├────────────────────────────────────────────────────────────────────┤ \\
-    /*--------getDefaultRow--------*/
-    getDefaultRow() {
+    /*--------_getDefaultRow--------*/
+    _getDefaultRow() {
         if (!_.isEmpty(this.defaultRow)) {
             return this.defaultRow;
-        } else {
-            let firstPage = this.getRowNames()[0];
-            return {
-                id: '1',
-                name: firstPage
-            };
         }
+
+        const firstPage = this._getRowNames()[0];
+        return {
+            id: '1',
+            name: firstPage
+        };
     }
 
     getDefaultRowID() {
-        const defaultRow = this.getDefaultRow();
-        const nbRows = this._readRows();
-        if (defaultRow.id < nbRows) {
-            return defaultRow.id;
-        } else {
-            return '1';
-        }
+        const defaultRow = this._getDefaultRow();
+        const nbRows = this.getRows();
+        return (defaultRow.id < nbRows) ? defaultRow.id : '1';
     }
     
     /*--------setDefaultRow--------*/
@@ -722,10 +724,7 @@ class LayoutMgrClass {
 
     /*--------serializeDefaultRow--------*/
     serializeDefaultRow() {
-        let defaultRow = {}; 
-        if (htmlExport.exportOptions.indexOf("customNavigation") !== -1) {
-            defaultRow = this.getDefaultRow();
-        }
+        const defaultRow = htmlExport.exportOptions.includes("customNavigation") ? this._getDefaultRow() : {};
         return {
             'defaultPage': defaultRow
         };

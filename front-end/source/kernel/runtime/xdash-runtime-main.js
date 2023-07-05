@@ -190,12 +190,11 @@ var RuntimeDashboard = (function () {
 
         $(".dropperR").css("background-color", jsonContent.device.backgroundColor);
 
-        if (jsonContent.exportOptions == 'rowToPage') {
-            rowToPageRuntime.rowToPageModeInit(jsonContent);
-        } else if (jsonContent.exportOptions == 'rowToTab') {
-            rowToTabRuntime.rowToTabModeInit(jsonContent);
-        } else if (jsonContent.exportOptions == 'customNavigation') {
-            customNavigationRuntime.customNavigationModeInit(jsonContent);
+        switch (jsonContent.exportOptions) {
+            case "rowToPage": rowToPageRuntime.rowToPageModeInit(jsonContent); break;
+            case "rowToTab": rowToTabRuntime.rowToTabModeInit(jsonContent); break;
+            case "customNavigation": customNavigationRuntime.customNavigationModeInit(jsonContent); break;
+            case "projectToTargetWindow": customNavigationRuntime.setJsonContent(jsonContent); break;
         }
 
         setTimeout(() => {

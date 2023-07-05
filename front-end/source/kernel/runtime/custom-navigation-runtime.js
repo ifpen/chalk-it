@@ -10,111 +10,148 @@
 
 var customNavigationRuntime = (function () {
 
-    var nbRows = 1;
-    var nbCols = 1;
+    const self = this;
+    self.jsonContent = {};
+    self.grid = {
+        rows: 1,
+        cols: 1
+    };
 
     /**
+     * setJsonContent
      * 
-     * @param {any} valueRow : jsonContent.device.cols.valueRow
-     * @param {any} valueCol : jsonContent.device.cols.valueCol
+     * @param { Object } jsonContent - project xprjson
+     */
+    function setJsonContent(jsonContent) {
+        self.jsonContent = jsonContent;
+    }
+
+    /**
+     * _getJsonContent
+     * 
+     * @return { Object } - project xprjson
+     */
+    function _getJsonContent() {
+        return self.jsonContent;
+    }
+
+    /**
+     * Retrieves the dashboard grid.
+     * 
+     * @return { Object } The grid object, which contains the number of rows and columns in the grid.
+     * @property { Number } rows - The number of rows in the grid.
+     * @property { Number } cols - The number of columns in the grid.
+     */
+    function _getGrid() {
+        return self.grid;
+    }
+
+    /**
+     * Setting the dashboard grid.
+     * 
+     * @param { Object } grid - jsonContent.device.cols
+     */
+    function _setGrid(grid) {
+        self.grid = grid;
+    }
+
+    /**
+     * customNavigationPrepareRescale
+     * 
+     * @param { Number | String } valueRow - jsonContent.device.cols.valueRow
+     * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
      */
     function customNavigationPrepareRescale(valueRow, valueCol) {
-        var rows = 1;
-        if (valueRow != "none") {
-            rows = Number(valueRow);
-        }
+        let { rows, cols } = _getGrid();
 
-        var cols = 1;
-        if (valueCol > 1) {
-            cols = Number(valueCol);
-        }
+        rows = Number(valueRow) || 1;
+        cols = Number(valueCol) || 1;
+
+        _setGrid({ rows, cols });
 
         if (rows > 1) {
-            if (cols > 1) {
-                let nbDiv = cols * rows;
-                for (var k = 1; k <= nbDiv; k++) {
-                    $('#dpr' + k + 'c').show();
-                }
-            } else {
-                for (var k = 1; k <= rows; k++) {
-                    $('#dpr' + k + 'c').show();
-                }
-            }
+            $('[id^=dpr][id$=c]').show();
         }
     }
 
+    /**
+     * customNavigationModeInit
+     * 
+     * @param { Object } jsonContent - project xprjson
+     */
     function customNavigationModeInit(jsonContent) {
+        const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
+        let { rows, cols } = _getGrid();
 
-        // pagination mode
-        let numDefaultPage = Number(jsonContent.pages.defaultPage.id);
+        rows = Number(jsonContent.device.cols.valueRow) || 1;
+        cols = Number(jsonContent.device.cols.valueCol) || 1;
 
-        var rows = 1;
-        if (jsonContent.device.cols.valueRow != "none") {
-            rows = Number(jsonContent.device.cols.valueRow);
-        }
-
-        var cols = 1;
-        if (jsonContent.device.cols.valueCol > 1) {
-            cols = Number(jsonContent.device.cols.valueCol);
-        }
-
-        nbRows = rows;
-        nbCols = cols;
+        _setGrid({ rows, cols });
 
         if (rows > 1) {
+            $('[id^=dpr][id$=c]').hide();
             if (cols > 1) {
-                let nbDiv = cols * rows;
-                let firstRowDivId = ((numDefaultPage -1) * cols) + 1;
-                let lastRowDivId = firstRowDivId + cols;
-                for (var k = 1; k <= nbDiv; k++) {
-                    if (k >= firstRowDivId && k < lastRowDivId) {
-                        $('#dpr' + k + 'c').show();
-                    } else {
-                        $('#dpr' + k + 'c').hide();
-                    }
+                const nbLastRowDiv = numDefaultPage * cols;
+                const nbFirstRowDiv = nbLastRowDiv - cols + 1;
+                for (let k = nbFirstRowDiv; k <= nbLastRowDiv; k++) {
+                    $('#dpr' + k + 'c').show();
                 }
             } else {
-                for (var k = 1; k <= rows; k++) {
-                    if (k == numDefaultPage) {
+                $('#dpr' + numDefaultPage + 'c').show();
+            }
+        }
+    }
+
+    /**
+     * customNavigationGoToPage
+     * 
+     * @param { Number } numPage - target page number
+     */
+    function customNavigationGoToPage(numPage) {
+        const $rootScope = angular.element(document.body).scope().$root;
+        $rootScope.pageNumber = numPage;
+
+        const jsonContent = _getJsonContent();
+        let exportOptions = "";
+        let { rows, cols } = _getGrid();
+
+        if (_.isEmpty(jsonContent)) {
+            // View mode
+            rows = layoutMgr.getRows() || 1;
+            cols = layoutMgr.getCols() || 1;
+            exportOptions = htmlExport.exportOptions;
+        } else { 
+            // Preview mode
+            rows = Number(jsonContent.device.cols.valueRow) || 1;
+            cols = Number(jsonContent.device.cols.valueCol) || 1;
+            exportOptions = jsonContent.exportOptions;
+        }
+
+        _setGrid({ rows, cols });
+
+        if (rows > 1) {
+            if (exportOptions == "projectToTargetWindow") {
+                const numDiv = numPage * cols;
+                $('#dpr' + numDiv + 'c')[0].scrollIntoView();
+            } else {
+                $('[id^=dpr][id$=c]').hide();
+                if (cols > 1) {
+                    const nbLastRowDiv = numPage * cols;
+                    const nbFirstRowDiv = nbLastRowDiv - cols + 1;
+                    for (let k = nbFirstRowDiv; k <= nbLastRowDiv; k++) {
                         $('#dpr' + k + 'c').show();
-                    } else {
-                        $('#dpr' + k + 'c').hide();
                     }
+                } else {
+                    $('#dpr' + numPage + 'c').show();
                 }
             }
         }
     }
 
-    function goToPage(numPage) { 
-
-        if (typeof layoutMgr !== "undefined") {
-            nbRows = layoutMgr.getRows();
-            nbCols = layoutMgr.getCols();
-        }
-
-        if (nbRows > 1) {
-            if (nbCols > 1) {
-                let nbDiv = nbCols * nbRows;
-                let firstRowDivId = ((numPage -1) * nbCols) + 1;
-                let lastRowDivId = firstRowDivId + nbCols;
-                for (var k = 1; k <= nbDiv; k++) {
-                    if (k >= firstRowDivId && k < lastRowDivId) {
-                        $('#dpr' + k + 'c').show();
-                    } else {
-                        $('#dpr' + k + 'c').hide();
-                    }
-                }
-            } else {
-                for (var k = 1; k <= nbRows; k++) {
-                    if (k == numPage) {
-                        $('#dpr' + k + 'c').show();
-                    } else {
-                        $('#dpr' + k + 'c').hide();
-                    }
-                }
-            }
-        }
-    }
-
-    return { customNavigationPrepareRescale, customNavigationModeInit, goToPage};
+    return {
+        customNavigationPrepareRescale,
+        customNavigationModeInit,
+        setJsonContent,
+        customNavigationGoToPage
+    };
 }());
