@@ -12,7 +12,7 @@
 /*******************************************************************/
 
 // Models
-modelsHiddenParams.outputFile = {};
+modelsHiddenParams.loadFile = { outputFile: "" };
 
 // Parameters
 modelsParameters.loadFile = {
