@@ -154,6 +154,16 @@ angular
                     xdashEditorBodyJsList,
                     // *** Load more plugins here ***
                     function () {
+                        const startTime = new Date().getTime();
+                        const timeLimit = 10000; // in milliseconds
+                        let count = 0;
+                        // Wait for the datanodeManager to finish loading
+                        while (count < timeLimit) {
+                            count = new Date().getTime() - startTime;
+                            if (typeof datanodesManager !== "undefined") {
+                                break;
+                            }
+                        }
                         $rootScope.availableTags = $rootScope.listAvailablesTags;
                         datanodesManager.initialize(false);
                         $rootScope.currentProject = xdash.initMeta();
