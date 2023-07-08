@@ -12,17 +12,17 @@
     '               </a>',
     '           </li>',
     `           <li ng-if="showPagination && (exportOptions == 'rowToPage')" class="top-nav__nav-item top-nav__nav-item--row-to-page">
-                  <button class="top-nav__btn top-nav__btn--rounded" ng-click="prevDpr()">
+                  <button class="top-nav__btn top-nav__btn--rounded" ng-click="rowToPageChange('previous')">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                   </button>
                   <div class="top-nav__title">Page {{pageNumber}} / {{totalPages}}</div>
-                  <button class="top-nav__btn top-nav__btn--rounded" ng-click="nextDpr()">
+                  <button class="top-nav__btn top-nav__btn--rounded" ng-click="rowToPageChange('next')">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                   </button>
                 </li>
                 <li ng-if="showPagination && (exportOptions == 'rowToTab')" class="top-nav__nav-item top-nav__nav-item--row-to-tab">
                   <div class="top-nav__btn-wrapper" ng-repeat="pageName in pageNames">
-                    <button id="page-{{$index + 1}}" class="btn btn-rounded-fill cancel" ng-click="displayPage($index + 1)">
+                    <button id="btn-page-{{$index + 1}}" class="btn btn-rounded-fill primary" ng-class="{'cancel': pageNumber != $index + 1}"  ng-click="rowToTabChange($index + 1)">
                       {{pageName}}
                     </button>
                   </div>

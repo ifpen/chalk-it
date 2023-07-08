@@ -13,7 +13,6 @@ var xdash = (function () {
   var prjName = ''; //AEF
   var pageLoad = true;
 
-  var exportOptions = 'ajustToTargetWindow';
   const $rootScope = angular.element(document.body).scope().$root;
 
   /*--------clear project--------*/
@@ -72,7 +71,7 @@ var xdash = (function () {
   /*--------serialize--------*/
   function serialize() {
     const meta = initMeta();
-    meta.name = $('#projectName')[0].value;
+    meta.name = $('#projectName')[0].value || 'Untitled';
 
     if ($rootScope.currentProject) {
       meta.description = $rootScope.currentProject.description;
@@ -80,8 +79,8 @@ var xdash = (function () {
       meta.groupName = $rootScope.currentProject.groupName;
     }
 
-    let data = datanodesManager.serialize();
-    let libraries = pyodideLib.serialize();
+    const data = datanodesManager.serialize();
+    const libraries = pyodideLib.serialize();
     let scale;
     if (
       !$rootScope.moduleOpened &&
@@ -94,18 +93,18 @@ var xdash = (function () {
       scale = widgetEditor.getSnapshotDashZoneDims();
     }
 
-    let dash = widgetEditor.serialize();
-    let deviceCols = layoutMgr.serializeCols();
-    let backgroundColor = layoutMgr.serializeDashBgColor();
-    let theme = layoutMgr.serializeDashboardTheme();
-    let conn = widgetConnector.serialize();
-    let rowNames = layoutMgr.serializeRowNames();
-    let defaultRow = layoutMgr.serializeDefaultRow();
+    const dash = widgetEditor.serialize();
+    const deviceCols = layoutMgr.serializeCols();
+    const backgroundColor = layoutMgr.serializeDashBgColor();
+    const theme = layoutMgr.serializeDashboardTheme();
+    const conn = widgetConnector.serialize();
+    const rowNames = layoutMgr.serializeRowNames();
+    const defaultRow = layoutMgr.serializeDefaultRow();
 
-    exportOptions = htmlExport.exportOptions; //AEF
+    const exportOptions = layoutMgr.serializeExportOptions();
     navBarNotification = htmlExport.navBarNotification;
 
-    let xdashPrj = {
+    const xdashPrj = {
       meta: meta,
       data: data,
       libraries: libraries,
@@ -168,9 +167,7 @@ var xdash = (function () {
         layoutMgr.deserializeDefaultRow(jsonObject.pages);
       }
 
-      if (!_.isUndefined(jsonObject.exportOptions)) {
-        htmlExport.exportOptions = jsonObject.exportOptions;
-      }
+      layoutMgr.deserializeExportOptions(jsonObject.exportOptions);
 
       if (!_.isUndefined(jsonObject.navBarNotification)) {
         // MBG 21/09/2021
@@ -848,6 +845,5 @@ var xdash = (function () {
     pageLoad: pageLoad,
     readFileFromServer: readFileFromServer,
     readFileFromUrl: readFileFromUrl,
-    exportOptions: exportOptions,
   };
 })();

@@ -175,39 +175,37 @@ function flatUiAddressCompletionWidgetsPluginClass() {
         };
 
         this.render = function () {
-            var valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
-            var widgetHtml = document.createElement('div');
+            let valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
+            const widgetHtml = document.createElement('div');
             widgetHtml.setAttribute('id', 'ac-value-widget-html' + idWidget);
             widgetHtml.setAttribute('class', 'ac-value-widget-html');
-            var divContent = '';
-            let widthStyle = "";
+            let divContent = '';
             if (modelsParameters[idInstance].label != "" && modelsParameters[idInstance].displayLabel) {
+                let widthStyle = "";
                 valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
                 if (!_.isUndefined(modelsParameters[idInstance].valueWidthProportion)) {
-                    var proportion = Math.max(0, 100 - parseFloat(modelsParameters[idInstance].valueWidthProportion)) + "%";
-                    widthStyle = "width: " + proportion + '; ';
+                    const proportion = Math.max(0, 100 - parseFloat(modelsParameters[idInstance].valueWidthProportion)) + "%";
+                    widthStyle = "width: " + proportion + "; ";
                 } else {
                     widthStyle = "max-width: 45%; ";
                 }
+
+                // conversion to enable HTML tags
+                const label = this.getTransformedText("label");
+                divContent += '<span id ="ac-value-span' + idWidget + '" class="ac-value-span" style="' + this.labelFontSize() + 
+                    this.labelColor() + this.labelFontFamily() + widthStyle + '">' + label + '</span>';
             }
 
-            // conversion to enable HTML tags
-            const label = this.getTransformedText("label");
+            const border = this.border();
 
-            divContent = '<span id ="ac-value-span' + idWidget + '" class="ac-value-span" style="' + widthStyle + 
-            + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '">' +
-            label + '</span>';
-
-            var border = this.border();
-
-            divContent = divContent + '<div id="ac-value-no-input-group">';
-            divContent = divContent + '<input id="ac-value' + idWidget +
+            divContent += '<div id="ac-value-no-input-group">';
+            divContent += '<input id="ac-value' + idWidget +
                 '" type="text" placeholder="Type an address" autocomplete="off" spellcheck="false" class="value-input form-control" style="height: ' +
                 valueHeightPx + 'px; ' + border +
                 '; float: right; ' + this.valueFontSize() + this.valueColor() + this.valueFontFamily() + this.backgroundColor() +
                 'text-align: left;">';
-            divContent = divContent + '</input>';
-            divContent = divContent + '</div>';
+            divContent += '</input>';
+            divContent += '</div>';
 
             widgetHtml.innerHTML = divContent;
 

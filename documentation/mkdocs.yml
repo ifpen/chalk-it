@@ -29,7 +29,7 @@ nav:
         - xDashApi: xdashapi.md
 theme: 
   name: material
-  logo: _media/chalk-it-icon.ico
+  logo: media/chalk-it-icon.ico
   font: false
 use_directory_urls: true
 markdown_extensions:

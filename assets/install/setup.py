@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 NAME = "py-chalk-it"
-VERSION = "0.3.0"
+VERSION = "0.3.3"
 
 with open("README.MD", "r") as fh:
     readme = fh.read()
@@ -22,7 +22,7 @@ setup(
     author_email="xdash@ifpen.fr",
     license="Apache License 2.0",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Environment :: Console",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",

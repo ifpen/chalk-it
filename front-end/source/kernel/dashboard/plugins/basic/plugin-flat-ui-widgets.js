@@ -249,13 +249,9 @@ function flatUiWidgetsPluginClass() {
 
         this.numberOfTriggers = modelsParameters[idInstance].numberOfTriggers;
 
-        this.enable = function () {
-            $("#button" + idWidget).attr('class', "btn btn-block btn-lg " + idInstance + 'widgetCustomColor');
-        }
+        this.enable = function () {}
 
-        this.disable = function () {
-            $("#button" + idWidget).attr('class', "btn btn-block btn-lg /*disabled*/ " + idInstance + 'widgetCustomColor');
-        };
+        this.disable = function () {}
 
         this.readFileEvt = function () {
             const input = $('#button' + idWidget + '_select_file')

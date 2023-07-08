@@ -128,25 +128,26 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     function _responseCallback(result, msg2, type) {
       const projectList = result.FileList;
-      const absolutePath = !projectList.length ? "" : " from <br>" + projectList[0].Path;
-
-      const divContent = document.createElement('div');
-      divContent.classList.add("list-project");
-
-      for (const project of projectList) {
-        const divItemContent = document.createRange().createContextualFragment(`
-          <div class="list-project__container ">
-            <input type="radio" id="${project.Name}" name="localProject" value="${project.Name}"/>
-            <label for="${project.Name}" class="list-project__container__label">${project.Name}</label>
-          </div>
-        `);
-        divContent.appendChild(divItemContent);
-      }
+      const absolutePath = result.Path;
 
       const contentElement = document.createElement('div');
-      contentElement.innerHTML = divContent.outerHTML;
+      const divContent = document.createElement('div');
+      
+      if (projectList.length) {
+        divContent.classList.add("list-project");
+        for (const project of projectList) {
+          const divItemContent = document.createRange().createContextualFragment(`
+            <div class="list-project__container ">
+              <input type="radio" id="${project.Name}" name="localProject" value="${project.Name}"/>
+              <label for="${project.Name}" class="list-project__container__label">${project.Name}</label>
+            </div>
+          `);
+          divContent.appendChild(divItemContent);
+        }       
+        contentElement.innerHTML = divContent.outerHTML;
+      }
 
-      new DialogBoxForToolboxEdit(contentElement, "Select a project" + absolutePath, "OK", "Cancel", function () {
+      new DialogBoxForToolboxEdit(contentElement, "Select a project from <br>" + absolutePath, "OK", "Cancel", function () {
         const selectedProject = document.querySelector('input[name="localProject"]:checked');
         if (selectedProject) {
           const projectName = selectedProject.value;

@@ -259,7 +259,12 @@ DatanodeModel = function (
     self.settings(object.settings);
     self.name(object.name);
     self.type(object.type);
-    const iconName = 'icn-' + datanodePlugins[object.type].icon_type.replace(/\.[^/.]+$/, '');
+    let iconName = 'icn-';
+    if (_.isUndefined(datanodePlugins[object.type])) {
+      iconName += 'json-variable';
+    } else {
+      iconName += datanodePlugins[object.type].icon_type.replace(/\.[^/.]+$/, '');
+    }
     self.iconType(iconName);
     if (self.error())
       //ABK

@@ -6,9 +6,21 @@ from base64 import b64decode, b64encode
 import logging
 import webbrowser
 import threading
+import argparse
 
+# create the top-level parser
+parser = argparse.ArgumentParser()
+parser.add_argument('--dev', action='store_true', help='run in development mode')
 
-DEBUG = False
+args = parser.parse_args()
+
+if args.dev:
+    print("Running in development mode")
+    DEBUG = True
+else:
+    print("Running in production mode")
+    DEBUG = False
+
 app = Flask(__name__)
 run_port = 7854
 server_url = f"http://localhost:{run_port}"
@@ -87,6 +99,7 @@ def get_files():
             "Success": True,
             "Msg": None,
             "FileList": file_list,
+            "Path": path_dir,
             "Python": None
         })
     except Exception as err:

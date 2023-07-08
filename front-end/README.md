@@ -69,7 +69,7 @@ To run the server ,run :<br>
 - **Environment dev**
 
 ```sh
-python server.py
+python server.py --dev
 ```
 
 clear the cache

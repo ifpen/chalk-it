@@ -287,7 +287,6 @@
         return codeMirrorEditor;
     }
 
-    if (urlPython) {
     // ## A Datanode Plugin
     //
     // -------------------
@@ -382,7 +381,6 @@
             else return true;
         },
     });
-    }
 
     // ### Datanode Implementation
     //
