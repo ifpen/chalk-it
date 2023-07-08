@@ -14,7 +14,10 @@
 
 
 // models
-modelsHiddenParams.calendarD3 = { "CalendarValues": undefined, "SelectedDate": undefined };
+modelsHiddenParams.calendarD3 = { 
+    "CalendarValues": [],
+    "SelectedDate": ""
+};
 
 // Parameters
 modelsParameters.calendarD3 = {
@@ -72,7 +75,7 @@ function calendarD3WidgetPluginClass() {
             var formatOut = d3.timeFormat("%Y-%m-%d");
             // Create Data 
 
-            if (!_.isUndefined(modelsHiddenParams[idInstance].CalendarValues)) {
+            if (!_.isUndefined(modelsHiddenParams[idInstance].CalendarValues) && modelsHiddenParams[idInstance].CalendarValues.length) {
                 tableForCalendar = modelsHiddenParams[idInstance].CalendarValues;
             } else {
 
