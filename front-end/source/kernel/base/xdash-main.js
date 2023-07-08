@@ -71,7 +71,7 @@ var xdash = (function () {
   /*--------serialize--------*/
   function serialize() {
     const meta = initMeta();
-    meta.name = $('#projectName')[0].value;
+    meta.name = $('#projectName')[0].value || 'Untitled';
 
     if ($rootScope.currentProject) {
       meta.description = $rootScope.currentProject.description;
