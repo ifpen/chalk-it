@@ -4,7 +4,7 @@ import os
 NAME = "py-chalk-it"
 VERSION = "0.3.3"
 
-with open("README.MD", "r") as fh:
+with open("README.md", "r") as fh:
     readme = fh.read()
 
 setup(
