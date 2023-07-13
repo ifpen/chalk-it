@@ -559,12 +559,24 @@ var FileMngrFct = function () {
         if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
           txtErr = jqXHR.responseJSON.Message;
         var l_callback = PopCallBack("GetList", fileType, "");
-        EndOfOperation(
-          "Sorry, could not get the list of available files",
-          textStatus + " :\n" + txtErr,
-          "error",
-          l_callback
-        );
+        const $rootScope = angular.element(document.body).scope().$root;
+        if ($rootScope.xDashFullVersion) {
+          EndOfOperation(
+            "Sorry, could not get the list of available files",
+            textStatus + " :\n" + txtErr,
+            "error",
+            l_callback
+          );
+        } else {
+          const err = "the Flask server is not responding";
+          datanodesManager.showLoadingIndicator(false)
+          EndOfOperation(
+            "Please check and restart the command line",
+            textStatus + " :\n" + err,
+            "error",
+            l_callback
+          );
+        }
       },
     });
   } // Fin de GetList
