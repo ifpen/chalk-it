@@ -35,8 +35,9 @@ if (BUILD_FRONT_END):
         shutil.copy('front-end/.env.sample', 'front-end/.env.prod')
 
     def run_npm(*args):
+        shell = os.name == 'nt'  # True on Windows, False on Unix/Linux/MacOS
         try:
-            subprocess.run(args, shell=True, check=True, cwd='./front-end')
+            subprocess.run(args, shell=shell, check=True, cwd='./front-end')
         except subprocess.CalledProcessError as e:
             print(f"Error running '{' '.join(args)}': {e}")
             exit(1)
@@ -68,5 +69,21 @@ for filename in os.listdir(src_dir):
     dst_path = os.path.join(dst_dir, filename)
     shutil.copy(src_path, dst_path)
 
+# This function checks if various Python commands exist in the system PATH.
+def get_python_command():
+    # Need to keep this order
+    commands_to_check = ['python', 'python3', 'python2', 'py']
+
+    for cmd in commands_to_check:
+        if shutil.which(cmd):
+            # Returns the available command
+            return cmd
+
+    # If no Python command was found
+    raise SystemExit("Python not found. Please install Python.")
+
+# Get available python command
+python_cmd = get_python_command()
+
 # Run setup.py command from ./assets directory
-subprocess.run(['python', '../build/setup.py', 'sdist'], cwd='./build/')
+subprocess.run([python_cmd, '../build/setup.py', 'sdist'], cwd='./build/')
