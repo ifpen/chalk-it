@@ -95,6 +95,10 @@ def get_files():
             "URL": f'{server_url}/GetImages?image={file.stem}',
             "Path": str(file.parent)
         } for file in files]
+
+        # sort the file list by 'Name' key in ascending order
+        file_list = sorted(file_list, key=lambda k: k['Name'], reverse=False)
+
         return send_success({
             "Success": True,
             "Msg": None,
