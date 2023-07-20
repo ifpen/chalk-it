@@ -119,6 +119,13 @@ var datanodesManager = (function () {
         function (isConfirm) {
           if (isConfirm) {
             deleteDn(viewModel);
+            let $body = angular.element(document.body);
+            let $rootScope = $body.scope().$root;
+            if ($rootScope.bIsPlayMode) {
+              for (key in widgetConnector.widgetsConnection) {
+                widgetPreview.plotConstantData(key, false);
+              }
+            }
           }
         }
       );
@@ -156,7 +163,7 @@ var datanodesManager = (function () {
 
         newViewModel.settings(newSettings.settings);
         newViewModel.type(newSettings.type);
-        const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, "");
+        const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
         newViewModel.iconType(iconName);
         if (newViewModel.error()) {
           //ABK
@@ -243,7 +250,7 @@ var datanodesManager = (function () {
 
       viewModel.type(newSettings.type);
       viewModel.settings(newSettings.settings);
-      const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, "");
+      const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
       viewModel.iconType(iconName);
       if (viewModel.error()) {
         //ABK
