@@ -344,6 +344,9 @@ angular
                     slider.dataNode,
                     "' dataNode does not exist!"
                   );
+                  let vm = angular.element(document.getElementById('panel--right')).scope();
+                  vm.$parent.vmd.resetPanel();
+                  vm.$parent.vmd.savePanel();
                 }
                 slider = undefined;
               }
