@@ -231,6 +231,7 @@ var widgetPreview = (function () {
     var actuator = null;
     if (!_.isUndefined(widgetConnector.widgetsConnection[instanceId])) {
       for (var i in widgetConnector.widgetsConnection[instanceId].sliders) {
+        removeDisplayErrorOnWidget(instanceId);
         if (widgetConnector.widgetsConnection[instanceId].sliders[i].name != 'None') {
           actuator = null;
           if (widgetConnector.widgetsConnection[instanceId].widgetObjEdit != null) {
@@ -247,14 +248,19 @@ var widgetPreview = (function () {
             if (widgetConnector.widgetsConnection[instanceId].sliders[i].dataNode != 'None') {
               let dataNodeName = widgetConnector.widgetsConnection[instanceId].sliders[i].dataNode;
               if (dataNodeName != 'None') {
-                var newData = datanodesManager.getDataNodeByName(dataNodeName).latestData();
-                var dnName = datanodesManager.getDataNodeByName(dataNodeName).name();
-                var status = datanodesManager.getDataNodeByName(dataNodeName).status();
-                var last_updated = datanodesManager.getDataNodeByName(dataNodeName).last_updated();
-                if (datanodesManager.getDataNodeByName(dnName).type() == 'Python_pyodide_plugin' && i == 'fig') {
-                  setDataOnWidget(instanceId, i, actuator, dnName, status, last_updated, bCaptionManuallyChanged);
+                if (!_.isUndefined(datanodesManager.getDataNodeByName(dataNodeName))) {
+                  let newData = datanodesManager.getDataNodeByName(dataNodeName).latestData();
+                  let dnName = datanodesManager.getDataNodeByName(dataNodeName).name();
+                  let status = datanodesManager.getDataNodeByName(dataNodeName).status();
+                  let last_updated = datanodesManager.getDataNodeByName(dataNodeName).last_updated();
+                  if (datanodesManager.getDataNodeByName(dnName).type() == 'Python_pyodide_plugin' && i == 'fig') {
+                    setDataOnWidget(instanceId, i, actuator, dnName, status, last_updated, bCaptionManuallyChanged);
+                  } else {
+                    setDataOnWidget(instanceId, i, actuator, newData, status, last_updated, bCaptionManuallyChanged);
+                  }
                 } else {
-                  setDataOnWidget(instanceId, i, actuator, newData, status, last_updated, bCaptionManuallyChanged);
+                  msg = 'Invalid connection with data';
+                  displayErrorOnWidget(instanceId, i, msg);
                 }
               } else {
                 msg = 'Invalid connection with data';
