@@ -24,7 +24,7 @@ In the following, we describe the remaining dataNode types of Chalk'it.
 
 ## Python script (Pyodide)
 
-It allows the evaluation of a Python script in client-side using [Pyodide](https://pyodide.org/). Executed Python code may use the librairies available for installation in the *Project librairies* main tab. For further information, please read the [Client-side execution with Pyodide](../../py/py-mngt/#client-side-execution-with-pyodide) section under [Chalk'it Python Management](../../py/py-mngt/#xdash-python-management).
+It allows the evaluation of a Python script in client-side using [Pyodide](https://pyodide.org/). Executed Python code may use the librairies available for installation in the *Project librairies* main tab. For further information, please read the [Client-side execution with Pyodide](../../py/py-pyodide/)
 
 Some examples:
 
