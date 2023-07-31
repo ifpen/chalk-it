@@ -375,36 +375,34 @@ var xdash = (function () {
     $rootScope.origin = 'openProject';
 
     $rootScope.toggleMenuOptionDisplay('none');
-      $state.go('modules', {}).then(function () {
-          $rootScope.moduleOpened = false;
-          FileMngrInst.ReadFile(fileTypeServer, projectName + '.xprjson', function (msg1, msg2, type) {
-              if ($rootScope.$state.current.controller != 'ModulesController') {
-                  //add test
-                  $state.go('modules', {});
-                  console.log('switch to modules controller...'); //watch if this case occurs
-              }
-              //AEF: fix bug add params and test on it
-              if (type === 'success') {
-                  xdash.openProjectManager(msg1);
-                  let notice = new PNotify({
-                      title: projectName,
-                      text: 'Your ' + fileTypeServer + ' ' + projectName + ' is ready!',
-                      type: 'success',
-                      delay: 1800,
-                      styling: 'bootstrap3',
-                  });
-                  $('.ui-pnotify-container').on('click', function () {
-                      notice.remove();
-                  });
-                  $rootScope.loadingBarStop();
-                  $rootScope.currentProject.name = projectName;
-              } else {
-                  swal(msg1, msg2, type);
-              }
+    $state.go('modules', {}).then(function () {
+      $rootScope.moduleOpened = false;
+      FileMngrInst.ReadFile(fileTypeServer, projectName + '.xprjson', function (msg1, msg2, type) {
+        if ($rootScope.$state.current.controller != 'ModulesController') {
+          //add test
+          $state.go('modules', {});
+          console.log('switch to modules controller...'); //watch if this case occurs
+        }
+        //AEF: fix bug add params and test on it
+        if (type === 'success') {
+          xdash.openProjectManager(msg1);
+          let notice = new PNotify({
+            title: projectName,
+            text: 'Your ' + fileTypeServer + ' ' + projectName + ' is ready!',
+            type: 'success',
+            delay: 1800,
+            styling: 'bootstrap3',
           });
-
-
+          $('.ui-pnotify-container').on('click', function () {
+            notice.remove();
+          });
+          $rootScope.loadingBarStop();
+          $rootScope.currentProject.name = projectName;
+        } else {
+          swal(msg1, msg2, type);
+        }
       });
+    });
   }
 
   /*--------readFileFromUrl--------*/
