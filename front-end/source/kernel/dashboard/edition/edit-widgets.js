@@ -15,7 +15,6 @@ function initEditWidget() {
 
     // all indexed by widgetObject "Instance Id"
     var widgetObject = []; // widgetObject object from plugin
-    var lastContainingDrpr = []; // TODO rm
     // relative widget coordinates. Used for media change rescale
     var widthRatioModels = [];
     var heightRatioModels = [];
@@ -1121,7 +1120,6 @@ function initEditWidget() {
         editorScalingMethod = "scaleTwh"; // MBG 14/02/2022
 
         reset();
-        this.lastContainingDrpr = [];
 
         widgetConnector.clear();
         widgetPreview.clear();
@@ -1348,7 +1346,6 @@ function initEditWidget() {
         heightRatioModels,
         leftRatioModels,
         topRatioModels,
-        lastContainingDrpr,
         selectWidget,
         selectAllWidgets,
         unselectWidget,

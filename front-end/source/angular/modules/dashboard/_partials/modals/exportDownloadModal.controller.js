@@ -7,14 +7,14 @@ angular.module('modules')
             $scope.keepChoice = true;
             $scope.status = htmlExport.navBarNotification; // AEF: changed to keep last choice of notification
 
-            $scope.changeStatus = function () {
-                $scope.status = !$scope.status;
-            };
-
             $scope.scalingMethod = htmlExport.exportOptions;
             $scope.nbRows = layoutMgr.getRows();
             $scope.pageNamesObj = layoutMgr.getRowNamesObj();
             $scope.defaultPageID = layoutMgr.getDefaultRowID();
+
+            $scope.changeStatus = function () {
+                $scope.status = !$scope.status;
+            };
 
             $scope.submitForm = function () {
                 if ($scope.form.userForm.$valid) {
@@ -22,12 +22,14 @@ angular.module('modules')
                     htmlExport.exportOptions = $scope.scalingMethod;
                     htmlExport.navBarNotification = $scope.status;
 
-                    let rowName = $('#select-default-page').find(":selected").text();
-                    let rowNumber = $('#select-default-page').find(":selected").val();
-                    layoutMgr.setDefaultRow({
-                        id: rowNumber,
-                        name: rowName
-                    });
+                    if (htmlExport.exportOptions === "customNavigation") {
+                        const rowName = $('#select-default-page').find(":selected").text();
+                        const rowNumber = $('#select-default-page').find(":selected").val();
+                        layoutMgr.setDefaultRow({
+                            id: rowNumber,
+                            name: rowName
+                        });
+                    }
                     
                     $rootScope.updateFlagDirty(true);
 

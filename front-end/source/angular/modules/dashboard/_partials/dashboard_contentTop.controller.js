@@ -55,7 +55,7 @@ angular
             /*---------- Export button   ----------------*/
             $scope.exportProjectToLocal = function() {
                 const xdashFileSerialized = xdash.serialize();
-                const fileName = $rootScope.currentProject.name;
+                const fileName = $('#projectName').val() || 'Untitled';
                 saveAs(new Blob([JSON.stringify(xdashFileSerialized, null, '\t')], { 'type': 'application/octet-stream' }), fileName + ".xprjson");
             };
 

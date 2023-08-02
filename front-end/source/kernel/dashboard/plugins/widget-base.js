@@ -7,8 +7,6 @@
 // │ Original authors(s): Mongi BEN GAID, Ghiles HIDEUR, Tristan BARTEMENT │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
-
-
 // +--------------------------------------------------------------------¦ \\
 // |                           Widget base                              | \\
 // +--------------------------------------------------------------------¦ \\
@@ -19,36 +17,55 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     this.bIsInteractive = bInteractive;
 
     // Get Hexadecimal value of CSS Custom property
-    this.getColorValueFromCSSProperty = function(value) {
-        var color = value;
+    this.getColorValueFromCSSProperty = function (value) {
+        let color = value;
         if(color.includes('var(--')) {
-            var realValue = value.substring(4, value.length - 1);
+            const realValue = value.substring(4, value.length - 1);
             color = window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
         }
         return color;
     }
 
+    // Helper function to set the color value from the modelParameters (for backward compatibility)
+    this.setColorValueFromModelParameters = function (prop, defaultValue) {
+        let colorValue = defaultValue;
+        if (_.isUndefined(modelsParameters[idInstance][prop])) {
+            modelsParameters[idInstance][prop] = defaultValue;
+        } else {
+            colorValue =  modelsParameters[idInstance][prop];
+        }
+        // TODO theme backwards compatibility
+        // if (!paramValue || paramValue.startsWith("#")) {
+        //   modelsParameters[idInstance][value] = defaultValue;
+        //   return defaultValue;
+        // }
+        const colorHex = this.getColorValueFromCSSProperty(colorValue);
+        return colorHex;
+    }
+
+    // +--------------------------------------------------------------------¦ \\
+    // |                          Global functions                          | \\
+    // +--------------------------------------------------------------------¦ \\
     this.labelFontSize = function () {
-        var fs = 'font-size: calc(7px + ' +
+        const fs = 'font-size: calc(7px + ' +
             modelsParameters[idInstance].labelFontSize * getFontFactor() +
             'vw + 0.4vh); ';
         return fs;
     };
 
     this.valueFontSize = function () {
-        var fs = 'font-size: calc(7px + ' +
+        const fs = 'font-size: calc(7px + ' +
             modelsParameters[idInstance].valueFontSize * getFontFactor() +
             'vw + 0.4vh); ';
         return fs;
     };
 
-
     this.valueFormat = function (val) {
 
-        var decDigits = parseInt(modelsParameters[idInstance].decimalDigits, 10);
+        const decDigits = parseInt(modelsParameters[idInstance].decimalDigits, 10);
         if (isNaN(decDigits)) return val;
 
-        var procVal = val;
+        let procVal = val;
         if (decDigits != -1) {
             if (!isNaN(val)) {
                 procVal = parseFloat(val);
@@ -60,152 +77,56 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     }
 
     this.fontSize = function () {
-        var fs = 'font-size: calc(7px + ' +
+        const fs = 'font-size: calc(7px + ' +
             modelsParameters[idInstance].fontsize * getFontFactor() +
             'vw + 0.4vh); ';
         return fs;
     };
 
     this.selectFontSize = function () {
-        var fs = 'font-size: calc(7px + ' +
+        const fs = 'font-size: calc(7px + ' +
             modelsParameters[idInstance].selectValueFontSize * getFontFactor() +
             'vw + 0.4vh); ';
         return fs;
     };
 
     this.labelColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].labelColor)) {
-            modelsParameters[idInstance].labelColor = "#2154ab";
-        }
-        var fc = 'color:' + modelsParameters[idInstance].labelColor + "; ";
+        const color = this.setColorValueFromModelParameters("labelColor", "var(--widget-label-color)");
+        const fc = 'color:' + color + "; ";
         return fc;
     };
 
     this.valueColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].valueColor)) {
-            modelsParameters[idInstance].valueColor = "#34495e";
-        }
-        var fc = 'color:' + modelsParameters[idInstance].valueColor + "; ";
-
+        const color = this.setColorValueFromModelParameters("valueColor", "var(--widget-color)");
+        const fc = 'color:' + color + "; ";
         return fc;
     };
 
     this.labelFontFamily = function () {
-        // Backward compatibility
         if (_.isUndefined(modelsParameters[idInstance].labelFontFamily)) {
             modelsParameters[idInstance].labelFontFamily = 'Helvetica Neue';
         }
-        var ff = 'font-family: ' + modelsParameters[idInstance].labelFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        const ff = 'font-family: ' + modelsParameters[idInstance].labelFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
         return ff;
     }
 
     this.valueFontFamily = function () {
-        // Backward compatibility
         if (_.isUndefined(modelsParameters[idInstance].valueFontFamily)) {
             modelsParameters[idInstance].valueFontFamily = 'Helvetica Neue';
         }
-        var ff = 'font-family: ' + modelsParameters[idInstance].valueFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        const ff = 'font-family: ' + modelsParameters[idInstance].valueFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
         return ff;
-    }
-
-
-
-    this.buttonFontFamily = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].buttonFontFamily)) {
-            modelsParameters[idInstance].buttonFontFamily = 'Helvetica Neue';
-        }
-        var ff = 'font-family: ' + modelsParameters[idInstance].buttonFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
-        return ff;
-    }
-
-    this.setButtonColorStyle = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].buttonDefaultColor)) {
-            modelsParameters[idInstance].buttonDefaultColor = '#447bdc';
-        }
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].buttonHoverColor)) {
-            modelsParameters[idInstance].buttonHoverColor = '#a9c3ef';
-        }
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].buttonActiveColor)) {
-            modelsParameters[idInstance].buttonActiveColor = '#2154ab';
-        }
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].buttonTextColor)) {
-            modelsParameters[idInstance].buttonTextColor = '#ffffff';
-        }
-
-        var styleNormalId = 'styleNormalFor' + idInstance + 'widgetCustomColor';
-        var styleNormal = document.getElementById(styleNormalId);
-        var styleNormalHtml = '.' + idInstance + 'widgetCustomColor' +
-            '{ ' +
-            'color: ' + modelsParameters[idInstance].buttonTextColor + ';' +
-            'background-color: ' + modelsParameters[idInstance].buttonDefaultColor + ';' +
-            'border-color: ' + modelsParameters[idInstance].buttonDefaultColor + ';' +
-            ' }';
-        if (styleNormal == null) {
-            styleNormal = document.createElement('style');
-            styleNormal.type = 'text/css';
-            styleNormal.id = styleNormalId;
-            styleNormal.innerHTML = styleNormalHtml;
-            document.getElementsByTagName('head')[0].appendChild(styleNormal);
-        } else {
-            styleNormal.innerHTML = styleNormalHtml;
-        }
-
-        if (bInteractive) {
-            var styleHoverId = 'styleHoverFor' + idInstance + 'widgetCustomColor';
-            var styleHover = document.getElementById(styleHoverId);
-            var styleHoverHtml = '.' + idInstance + 'widgetCustomColor:hover' +
-                '{ ' +
-                'background-color: ' + modelsParameters[idInstance].buttonHoverColor + ';' +
-                'border-color: ' + modelsParameters[idInstance].buttonHoverColor + ';' +
-                '}';
-            if (styleHover == null) {
-                styleHover = document.createElement('style');
-                styleHover.type = 'text/css';
-                styleHover.id = styleHoverId;
-                styleHover.innerHTML = styleHoverHtml;
-                document.getElementsByTagName('head')[0].appendChild(styleHover);
-            } else {
-                styleHover.innerHTML = styleHoverHtml;
-            }
-
-            var styleActiveId = 'styleActiveFor' + idInstance + 'widgetCustomColor';
-            var styleActive = document.getElementById(styleActiveId);
-            var styleActiveHtml = '.' + idInstance + 'widgetCustomColor:active' +
-                '{ ' +
-                'background-color: ' + modelsParameters[idInstance].buttonActiveColor + ';' +
-                'border-color: ' + modelsParameters[idInstance].buttonActiveColor + ';' +
-                '}';
-            if (styleActive == null) {
-                styleActive = document.createElement('style');
-                styleActive.type = 'text/css';
-                styleActive.id = styleActiveId;
-                styleActive.innerHTML = styleActiveHtml;
-                document.getElementsByTagName('head')[0].appendChild(styleActive);
-            } else {
-                styleActive.innerHTML = styleActiveHtml;
-            }
-        }
     }
 
     this.border = function () {
-
-        var border = 'border: none; ';
+        let border = 'border: none; ';
         if (modelsParameters[idInstance].displayBorder) {
-            if (_.isUndefined(modelsParameters[idInstance].borderColor)) {
-                modelsParameters[idInstance].borderColor = "#447bdc";
-            }
-            border = ' border: 2px solid ' + modelsParameters[idInstance].borderColor + '; ';
+            const borderColor = this.setColorValueFromModelParameters("borderColor", "var(--widget-border-color)");
+            border = 'border: 2px solid ' + borderColor + '; ';
         } else {
-            border = border + '-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
-            border = border + '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
-            border = border + 'box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border += + '-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border += '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border += 'box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
         }
 
         return border;
@@ -222,48 +143,154 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
             modelsParameters[idInstance].label = caption;
         }
     }
+
+    this.backgroundColor = function () {
+        // Backward compatibility
+        const color = this.setColorValueFromModelParameters("backgroundColor", "#ffffff");
+        const bc = 'background-color:' + color + "; ";
+        return bc;
+    }
+
+    /**
+     * Conversion to enable HTML tags
+     * Retrieves the transformed text by handling HTML tags.
+     * 
+     * @param {string} prop - The property to retrieve the text from.
+     * @returns {string} The transformed text.
+     */
+    this.getTransformedText = function (prop) {
+        let text = modelsParameters[idInstance][prop] || '';
+    
+        if (text) {
+            // Check if the text has HTML tags
+            const hasHtmlTags = $('<div>').html(text).children().length > 0;
+        
+            if (!hasHtmlTags) {
+                // If the text does not have HTML tags, parse it as HTML
+                const parser = new DOMParser();
+                text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
+            }
+        }
+    
+        return text;
+    }
+
     // +--------------------------------------------------------------------¦ \\
-    // |                            Value  widget                           | \\
+    // |                            Button widget                           | \\
+    // +--------------------------------------------------------------------¦ \\
+    this.buttonFontFamily = function () {
+        if (_.isUndefined(modelsParameters[idInstance].buttonFontFamily)) {
+            modelsParameters[idInstance].buttonFontFamily = 'Helvetica Neue';
+        }
+        const ff = 'font-family: ' + modelsParameters[idInstance].buttonFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        return ff;
+    }
+
+    this.setButtonColorStyle = function () {
+        const defaultColor = this.setColorValueFromModelParameters("buttonDefaultColor", "var(--widget-button-color)");
+        const hoverColor = this.setColorValueFromModelParameters("buttonHoverColor", "var(--widget-button-hover-color)");
+        const activeColor = this.setColorValueFromModelParameters("buttonActiveColor", "var(--widget-button-active-color)")
+        const textColor = this.setColorValueFromModelParameters("buttonTextColor", "var(--widget-button-text)");
+
+        const styleNormalId = 'styleNormalFor' + idInstance + 'widgetCustomColor';
+        let styleNormal = document.getElementById(styleNormalId);
+        const styleNormalHtml = '.' + idInstance + 'widgetCustomColor' +
+            '{ ' +
+            'color: ' + textColor + ';' +
+            'background-color: ' + defaultColor + ';' +
+            'border-color: ' + defaultColor + ';' +
+            ' }';
+        if (styleNormal == null) {
+            styleNormal = document.createElement('style');
+            styleNormal.type = 'text/css';
+            styleNormal.id = styleNormalId;
+            styleNormal.innerHTML = styleNormalHtml;
+            document.getElementsByTagName('head')[0].appendChild(styleNormal);
+        } else {
+            styleNormal.innerHTML = styleNormalHtml;
+        }
+
+        if (bInteractive) {
+            const styleHoverId = 'styleHoverFor' + idInstance + 'widgetCustomColor';
+            let styleHover = document.getElementById(styleHoverId);
+            const styleHoverHtml = '.' + idInstance + 'widgetCustomColor:hover' +
+                '{ ' +
+                'background-color: ' + hoverColor + ';' +
+                'border-color: ' + hoverColor + ';' +
+                '}';
+            if (styleHover == null) {
+                styleHover = document.createElement('style');
+                styleHover.type = 'text/css';
+                styleHover.id = styleHoverId;
+                styleHover.innerHTML = styleHoverHtml;
+                document.getElementsByTagName('head')[0].appendChild(styleHover);
+            } else {
+                styleHover.innerHTML = styleHoverHtml;
+            }
+
+            const styleActiveId = 'styleActiveFor' + idInstance + 'widgetCustomColor';
+            let styleActive = document.getElementById(styleActiveId);
+            const styleActiveHtml = '.' + idInstance + 'widgetCustomColor:active' +
+                '{ ' +
+                'background-color: ' + activeColor + ';' +
+                'border-color: ' + activeColor + ';' +
+                '}';
+            if (styleActive == null) {
+                styleActive = document.createElement('style');
+                styleActive.type = 'text/css';
+                styleActive.id = styleActiveId;
+                styleActive.innerHTML = styleActiveHtml;
+                document.getElementsByTagName('head')[0].appendChild(styleActive);
+            } else {
+                styleActive.innerHTML = styleActiveHtml;
+            }
+        }
+    }
+
+    this.displayIcon = function () {
+        if (_.isUndefined(modelsParameters[idInstance].displayIcon)) {
+            modelsParameters[idInstance].displayIcon = false;
+        }
+        return modelsParameters[idInstance].displayIcon;
+    }
+
+    this.fontAwesomeIcon = function () {
+        if (_.isUndefined(modelsParameters[idInstance].fontAwesomeIcon)) {
+            modelsParameters[idInstance].fontAwesomeIcon = "";
+        }
+        return modelsParameters[idInstance].fontAwesomeIcon;
+    }
+    
+    // +--------------------------------------------------------------------¦ \\
+    // |          Value widget (text input, numeric input, display)         | \\
     // +--------------------------------------------------------------------¦ \\
     this.validationButtonDefaultColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].validationBtnDefaultColor)) {
-            modelsParameters[idInstance].validationBtnDefaultColor = "#447bdc";
-        }
-        var bc = 'background-color:' + modelsParameters[idInstance].validationBtnDefaultColor + "; ";
+        const color = this.setColorValueFromModelParameters("validationBtnDefaultColor", "var(--widget-button-primary-color)");
+        const bc = 'background-color:' + color + "; ";
         return bc;
     };
 
     this.validationButtonHoverColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].validationBtnHoverColor)) {
-            modelsParameters[idInstance].validationBtnHoverColor = "#a9c3ef";
-        }
-        var bc = 'background-color:' + modelsParameters[idInstance].validationBtnHoverColor + "; ";
+        const color = this.setColorValueFromModelParameters("validationBtnHoverColor", "var(--widget-button-hover-color)");
+        const bc = 'background-color:' + color + "; ";
         return bc;
     };
 
     this.validationButtonActiveColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].validationBtnActiveColor)) {
-            modelsParameters[idInstance].validationBtnActiveColor = "#2154ab";
-        }
-        var bc = 'background-color:' + modelsParameters[idInstance].validationBtnActiveColor + "; ";
+        const color = this.setColorValueFromModelParameters("validationBtnActiveColor", "var(--widget-button-active-color)");
+        const bc = 'background-color:' + color + "; ";
         return bc;
     };
 
     this.validationButtonBorderColor = function () {
-        // Backward compatibility
-        var border = 'border: none; ';
+        let border = 'border: none; ';
         if (modelsParameters[idInstance].displayBorder) {
-            if (_.isUndefined(modelsParameters[idInstance].validationBtnDefaultColor)) {
-                modelsParameters[idInstance].validationBtnDefaultColor = "#2154ab";
-            }
-            border = 'border: 2px solid ' + modelsParameters[idInstance].validationBtnDefaultColor + "; ";
+            const color = this.setColorValueFromModelParameters("validationBtnDefaultColor", "var(--widget-border-color)");
+            border = 'border: 2px solid ' + color + "; ";
         } else {
-            border = border + '-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
-            border = border + '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
-            border = border + 'box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border += '-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border += '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border += 'box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
         }
 
         return border;
@@ -273,65 +300,67 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // |                          KPI Advanced widget                       | \\
     // +--------------------------------------------------------------------¦ \\
     this.graphColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].graphColor)) {
-            modelsParameters[idInstance].graphColor = "#007a87";
-        }
-        return this.getColorValueFromCSSProperty(modelsParameters[idInstance].graphColor);
+        const color = this.setColorValueFromModelParameters("graphColor", "var(--widget-label-color)");
+        return color;
     };
 
     this.subLabelFontFamily = function () {
-        // Backward compatibility
         if (_.isUndefined(modelsParameters[idInstance].subLabelFontFamily)) {
             modelsParameters[idInstance].subLabelFontFamily = 'Helvetica Neue';
         }
-        var ff = 'font-family: ' + modelsParameters[idInstance].subLabelFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        const ff = 'font-family: ' + modelsParameters[idInstance].subLabelFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
         return ff;
     }
 
     this.subLabelColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].subLabelColor)) {
-            modelsParameters[idInstance].subLabelColor = "#34495e";
-        }
-        var fc = 'color:' + modelsParameters[idInstance].subLabelColor + "; ";
+        const color = this.setColorValueFromModelParameters("subLabelColor", "var(--widget-subtext-color)");
+        const fc = 'color:' + color + "; ";
         return fc;
     };
 
     this.subLabelFontSize = function () {
-        var fs = 'font-size: calc(7px + ' +
+        const fs = 'font-size: calc(7px + ' +
             modelsParameters[idInstance].subLabelFontSize * getFontFactor() +
             'vw + 0.4vh); ';
         return fs;
     };
 
     // +--------------------------------------------------------------------¦ \\
+    // |                            Checkbox widget                         | \\
+    // +--------------------------------------------------------------------¦ \\
+    this.checkedColor = function () {
+        if (!_.isUndefined(modelsParameters[idInstance].checkboxColor)) {
+            delete modelsParameters[idInstance].checkboxColor;
+        }
+        const color = this.setColorValueFromModelParameters("checkedColor", "var(--widget-input-checked-color)");
+        const fc = 'color: ' + color + "; ";
+        return fc;
+    }
+
+    this.uncheckedColor = function () {
+        const color = this.setColorValueFromModelParameters("uncheckedColor", "var(--widget-input-unchecked-color)");
+        const fc = 'color: ' + color + "; ";
+        return fc;
+    }
+
+    // +--------------------------------------------------------------------¦ \\
     // |                            Switch widget                           | \\
     // +--------------------------------------------------------------------¦ \\
     this.switchOnColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].switchOnColor)) {
-            modelsParameters[idInstance].switchOnColor = "#447bdc";
-        }
-        var bc = 'background-color: ' + modelsParameters[idInstance].switchOnColor + "; ";
+        const color = this.setColorValueFromModelParameters("switchOnColor", "var(--widget-input-checked-color)");
+        const bc = 'background-color: ' + color + "; ";
         return bc;
     };
 
     this.switchOffColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].switchOffColor)) {
-            modelsParameters[idInstance].switchOffColor = "#ccc";
-        }
-        var bc = 'background-color: ' + modelsParameters[idInstance].switchOffColor + "; ";
+        const color = this.setColorValueFromModelParameters("switchOffColor", "var(--widget-input-unchecked-color)");
+        const bc = 'background-color: ' + color + "; ";
         return bc;
     };
 
     this.switchShadowColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].switchOnColor)) {
-            modelsParameters[idInstance].switchOnColor = "#447bdc";
-        }
-        var sc = 'box-shadow: 0 0 1px ' + modelsParameters[idInstance].switchOnColor + "; ";
+        const color = this.setColorValueFromModelParameters("switchOnColor", "var(--widget-input-checked-color)");
+        const sc = 'box-shadow: 0 0 1px ' + color + "; ";
         return sc;
     };
 
@@ -339,20 +368,14 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // |                        Progress bar widget                         | \\
     // +--------------------------------------------------------------------¦ \\
     this.progressBarRangeColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].progressBarRangeColor)) {
-            modelsParameters[idInstance].progressBarRangeColor = "#447bdc";
-        }
-        var bc = 'background-color: ' + modelsParameters[idInstance].progressBarRangeColor + "; ";
+        const color = this.setColorValueFromModelParameters("progressBarRangeColor", "var(--widget-range-color)");
+        const bc = 'background-color: ' + color + "; ";
         return bc;
     };
 
     this.progressBarSegmentColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].progressBarSegmentColor)) {
-            modelsParameters[idInstance].progressBarSegmentColor = "#ebedef";
-        }
-        var bc = 'background-color: ' + modelsParameters[idInstance].progressBarSegmentColor + "; ";
+        const color = this.setColorValueFromModelParameters("progressBarSegmentColor", "var(--widget-segment-color)");
+        const bc = 'background-color: ' + color + "; ";
         return bc;
     };
 
@@ -360,56 +383,38 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // |            Horizontal & Vertical & double sliders widgets          | \\
     // +--------------------------------------------------------------------¦ \\
     this.sliderRangeColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].sliderRangeColor)) {
-            modelsParameters[idInstance].sliderRangeColor = "#447bdc";
-        }
-        var bc = 'background-color: ' + modelsParameters[idInstance].sliderRangeColor + "; ";
+        const color = this.setColorValueFromModelParameters("sliderRangeColor", "var(--widget-range-color)");
+        const bc = 'background-color: ' + color + "; ";
         return bc;
     };
 
     this.sliderSegmentColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].sliderSegmentColor)) {
-            modelsParameters[idInstance].sliderSegmentColor = "#ebedef";
-        }
-        var bc = 'background-color: ' + modelsParameters[idInstance].sliderSegmentColor + "; ";
+        const color = this.setColorValueFromModelParameters("sliderSegmentColor", "var(--widget-segment-color)");
+        const bc = 'background-color: ' + color + "; ";
         return bc;
     };
 
     this.sliderHandleDefaultColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].sliderHandleDefaultColor)) {
-            modelsParameters[idInstance].sliderHandleDefaultColor = "#2154ab";
-        }
-        var bc = 'background-color: ' + modelsParameters[idInstance].sliderHandleDefaultColor + "; ";
+        const color = this.setColorValueFromModelParameters("sliderHandleDefaultColor", "var(--widget-handle-default-color)");
+        const bc = 'background-color: ' + color + "; ";
         return bc;
     };
 
     this.sliderHandleHoverColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].sliderHandleHoverColor)) {
-            modelsParameters[idInstance].sliderHandleHoverColor = "#a9c3ef";
-        }
-        var bc = 'background-color: ' + modelsParameters[idInstance].sliderHandleHoverColor + "; ";
+        const color = this.setColorValueFromModelParameters("sliderHandleHoverColor", "var(--widget-handle-hover-color)");
+        const bc = 'background-color: ' + color + "; ";
         return bc;
     };
 
     this.sliderHandleActiveColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].sliderHandleActiveColor)) {
-            modelsParameters[idInstance].sliderHandleActiveColor = "#a9c3ef";
-        }
-        var bc = 'background-color: ' + modelsParameters[idInstance].sliderHandleActiveColor + "; ";
+        const color = this.setColorValueFromModelParameters("sliderHandleActiveColor", "var(--widget-handle-active-color)");
+        const bc = 'background-color: ' + color + "; ";
         return bc;
     };
 
     this.valueBorderColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].valueBorderColor)) {
-            modelsParameters[idInstance].valueBorderColor = "#447bdc";
-        }
-        var bc = 'border-color: ' + modelsParameters[idInstance].valueBorderColor + "; ";
+        const color = this.setColorValueFromModelParameters("valueBorderColor", "var(--widget-border-color)");
+        const bc = 'border-color: ' + color + "; ";
         return bc;
     };
 
@@ -417,125 +422,88 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // |                         Load file widget                           | \\
     // +--------------------------------------------------------------------¦ \\
     this.textSize = function () {
-        var fs = 'font-size: calc(7px + ' +
+        const fs = 'font-size: calc(7px + ' +
             modelsParameters[idInstance].textSize * getFontFactor() +
             'vw + 0.4vh); ';
         return fs;
     };
 
     this.textColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].textColor)) {
-            modelsParameters[idInstance].textColor = "#3e3f47";
-        }
-        var tc = 'color: ' + modelsParameters[idInstance].textColor + "; ";
+        const color = this.setColorValueFromModelParameters("textColor", "var(--widget-color)");
+        const tc = 'color: ' + color + "; ";
         return tc;
     };
 
     this.subTextColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].subTextColor)) {
-            modelsParameters[idInstance].subTextColor = "#88878e";
-        }
-        var tc = 'color: ' + modelsParameters[idInstance].subTextColor + "; ";
+        const color = this.setColorValueFromModelParameters("subTextColor", "var(--widget-color)");
+        const tc = 'color: ' + color + "; ";
         return tc;
     };
 
     this.browseButtonTextColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].browseButtonTextColor)) {
-            modelsParameters[idInstance].browseButtonTextColor = "#e0807f";
-        }
-        var tc = ' color: ' + modelsParameters[idInstance].browseButtonTextColor + "; ";
-        tc = tc + ' border-color: ' + modelsParameters[idInstance].browseButtonTextColor + "; ";
+        const color = this.setColorValueFromModelParameters("browseButtonTextColor", "var(--widget-button-text)");
+        let tc = ' color: ' + color + "; ";
+        tc += ' border-color: ' + color + "; ";
         return tc;
     };
 
     this.browseButtonDefaultColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].browseButtonDefaultColor)) {
-            modelsParameters[idInstance].browseButtonDefaultColor = "#ffffff";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].browseButtonDefaultColor + "; ";
+        const color = this.setColorValueFromModelParameters("browseButtonDefaultColor", "var(--widget-button-color)");
+        const bc = ' background-color: ' + color + "; ";
         return bc;
     };
 
     this.browseButtonHoverColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].browseButtonHoverColor)) {
-            modelsParameters[idInstance].browseButtonHoverColor = "#ffffff";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].browseButtonHoverColor + "; ";
+        const color = this.setColorValueFromModelParameters("browseButtonHoverColor", "var(--widget-button-hover-color)");
+        const bc = ' background-color: ' + color + "; ";
         return bc;
     };
 
     this.browseButtonActiveColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].browseButtonActiveColor)) {
-            modelsParameters[idInstance].browseButtonActiveColor = "#ffffff";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].browseButtonActiveColor + "; ";
+        const color = this.setColorValueFromModelParameters("browseButtonActiveColor", "var(--widget-button-active-color)");
+        const bc = ' background-color: ' + color + "; ";
         return bc;
     };
 
     this.deleteButtonDefaultColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].deleteButtonDefaultColor)) {
-            modelsParameters[idInstance].deleteButtonDefaultColor = "#e8eaf1";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].deleteButtonDefaultColor + "; ";
-        bc = bc + ' box-shadow: 0 0 2px 3px ' + modelsParameters[idInstance].deleteButtonDefaultColor + "; ";
+        const color = this.setColorValueFromModelParameters("deleteButtonDefaultColor", "var(--widget-delete-button-default-color)");
+        let bc = ' background-color: ' + color + "; ";
+        bc += ' box-shadow: 0 0 2px 3px ' + color + "; ";
         return bc;
     };
 
     this.deleteButtonActiveColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].deleteButtonActiveColor)) {
-            modelsParameters[idInstance].deleteButtonActiveColor = "#e0807f";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].deleteButtonActiveColor + "; ";
-        bc = bc + ' box-shadow: 0 0 2px 3px ' + modelsParameters[idInstance].deleteButtonActiveColor + "; ";
+        const color = this.setColorValueFromModelParameters("deleteButtonActiveColor", "var(--widget-delete-button-active-color)");
+        let bc = ' background-color: ' + color + "; ";
+        bc += ' box-shadow: 0 0 2px 3px ' + color + "; ";
         return bc;
     };
 
     this.deleteButtonHoverColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].deleteButtonHoverColor)) {
-            modelsParameters[idInstance].deleteButtonHoverColor = "#e0807f";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].deleteButtonHoverColor + "; ";
-        bc = bc + ' box-shadow: 0 0 2px 3px ' + modelsParameters[idInstance].deleteButtonHoverColor + "; ";
+        const color = this.setColorValueFromModelParameters("deleteButtonHoverColor", "var(--widget-delete-button-hover-color)");
+        let bc = ' background-color: ' + color + "; ";
+        bc += ' box-shadow: 0 0 2px 3px ' + color + "; ";
         return bc;
     };
-
 
     // +--------------------------------------------------------------------¦ \\
     // |                              List widget                           | \\
     // +--------------------------------------------------------------------¦ \\
     this.listBackgroundColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].listBackgroundColor)) {
-            modelsParameters[idInstance].listBackgroundColor = "#ffffff";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].listBackgroundColor + '; ';
+        const color = this.setColorValueFromModelParameters("listBackgroundColor", "var(--widget-select-drop-color)");
+        const bc = ' background-color: ' + color + '; ';
         return bc;
     };
 
     this.selectValueColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].selectValueColor)) {
-            modelsParameters[idInstance].selectValueColor = "#34495e";
-        }
-        var vc = ' color: ' + modelsParameters[idInstance].selectValueColor + '; ';
+        const color = this.setColorValueFromModelParameters("selectValueColor", "var(--widget-select-option-highlighted-text)");
+        const vc = ' color: ' + color + '; ';
         return vc;
     };
 
     this.selectValueBackgroundColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].selectValueBackgroundColor)) {
-            modelsParameters[idInstance].selectValueBackgroundColor = "#cecece";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].selectValueBackgroundColor + '; ';
+        const color = this.setColorValueFromModelParameters("selectValueBackgroundColor", "var(--widget-select-option-highlighted-color)");
+        const bc = ' background-color: ' + color + '; ';
         return bc;
     };
 
@@ -543,106 +511,78 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // |                         Multi-select widget                        | \\
     // +--------------------------------------------------------------------¦ \\
     this.valueDefaultColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].valueDefaultColor)) {
-            modelsParameters[idInstance].valueDefaultColor = "#666666";
-        }
-        var vc = ' color: ' + modelsParameters[idInstance].valueDefaultColor + '; ';
+        const color = this.setColorValueFromModelParameters("valueDefaultColor", "var(--widget-label-color)");
+        const vc = ' color: ' + color + '; ';
         return vc;
     };
 
     this.valueFocusColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].valueFocusColor)) {
-            modelsParameters[idInstance].valueFocusColor = "#666666";
-        }
-        var vc = ' color: ' + modelsParameters[idInstance].valueFocusColor + '; ';
+        const color = this.setColorValueFromModelParameters("valueFocusColor", "var(--widget-multiselect-checked-text)");
+        const vc = ' color: ' + color + '; ';
         return vc;
     };
 
     this.valueHoverColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].valueHoverColor)) {
-            modelsParameters[idInstance].valueHoverColor = "#000000";
-        }
-        var vc = ' color: ' + modelsParameters[idInstance].valueHoverColor + '; ';
+        const color = this.setColorValueFromModelParameters("valueHoverColor", "var(--widget-multiselect-hover-text)");
+        const vc = ' color: ' + color + '; ';
         return vc;
     };
 
     this.checkboxDefaultColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].checkboxDefaultColor)) {
-            modelsParameters[idInstance].checkboxDefaultColor = "#ffffff";
-        }
-        var vc = ' background-color: ' + modelsParameters[idInstance].checkboxDefaultColor + '; ';
+        const color = this.setColorValueFromModelParameters("checkboxDefaultColor", "var(--widget-multiselect-color)");
+        const vc = ' background-color: ' + color + '; ';
         return vc;
     };
 
     this.checkboxFocusColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].checkboxFocusColor)) {
-            modelsParameters[idInstance].checkboxFocusColor = "#bdd7ee";
-        }
-        var vc = ' background-color: ' + modelsParameters[idInstance].checkboxFocusColor + '; ';
+        const color = this.setColorValueFromModelParameters("checkboxFocusColor", "var(--widget-multiselect-checked-color)");
+        const vc = ' background-color: ' + color + '; ';
         return vc;
     };
 
     this.checkboxHoverColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].checkboxHoverColor)) {
-            modelsParameters[idInstance].checkboxHoverColor = "#ffffff";
-        }
-        var vc = ' background-color: ' + modelsParameters[idInstance].checkboxHoverColor + '; ';
+        const color = this.setColorValueFromModelParameters("checkboxHoverColor", "var(--widget-multiselect-hover-color)");
+        const vc = ' background-color: ' + color + '; ';
         return vc;
     };
 
     this.checkboxHoverBorderColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].checkboxHoverBorderColor)) {
-            modelsParameters[idInstance].checkboxHoverBorderColor = "#171819";
-        }
-        var vc = " border-color: " + modelsParameters[idInstance].checkboxHoverBorderColor + "; ";
+        const color = this.setColorValueFromModelParameters("checkboxHoverBorderColor", "var(--widget-multiselect-hover-border-color)");
+        const vc = " border-color: " + color + "; ";
         return vc;
     };
 
     this.checkboxFocusBorderColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].checkboxFocusBorderColor)) {
-            modelsParameters[idInstance].checkboxFocusBorderColor = "#171819";
-        }
-        var vc = " border-color: " + modelsParameters[idInstance].checkboxFocusBorderColor + "; ";
+        const color = this.setColorValueFromModelParameters("checkboxFocusBorderColor", "var(--widget-multiselect-checked-border-color)");
+        const vc = " border-color: " + color + "; ";
         return vc;
     };
 
     this.checkboxWidth = function () {
-        // Backward compatibility
         if (_.isUndefined(modelsParameters[idInstance].checkboxWidth)) {
             modelsParameters[idInstance].checkboxWidth = 7;
         }
-        var cw = ' width: ' + modelsParameters[idInstance].checkboxWidth + 'rem; ';
+        const cw = ' width: ' + modelsParameters[idInstance].checkboxWidth + 'rem; ';
         return cw;
     };
 
     this.checkboxHeight = function () {
-        // Backward compatibility
         if (_.isUndefined(modelsParameters[idInstance].checkboxHeight)) {
             modelsParameters[idInstance].checkboxHeight = 1.5;
         }
-        var ch = ' line-height: ' + modelsParameters[idInstance].checkboxHeight + '; ';
+        const ch = ' line-height: ' + modelsParameters[idInstance].checkboxHeight + '; ';
         return ch;
     };
 
     this.checkboxBorder = function () {
-        var border = 'border: none; ';
+        let border = 'border: none; ';
         if (modelsParameters[idInstance].displayBorder) {
-            if (_.isUndefined(modelsParameters[idInstance].checkboxBorderColor)) {
-                modelsParameters[idInstance].checkboxBorderColor = "#171819";
-            }
-            border = ' border: 1.5px solid ' + modelsParameters[idInstance].checkboxBorderColor + '; ';
+            const color = this.setColorValueFromModelParameters("checkboxBorderColor", "var(--widget-multiselect-border-color)");
+            border = ' border: 1.5px solid ' + color + '; ';
         } else {
-            border = border + '-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
-            border = border + '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
-            border = border + 'box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border += '-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border += '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
+            border += 'box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
         }
         return border;
     }
@@ -651,29 +591,20 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // |                          Select widget                             | \\
     // +--------------------------------------------------------------------¦ \\
     this.selectedValueColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].selectedValueColor)) {
-            modelsParameters[idInstance].selectedValueColor = "#ffffff";
-        }
-        var vc = ' color: ' + modelsParameters[idInstance].selectedValueColor + '; ';
+        const color = this.setColorValueFromModelParameters("selectedValueColor", "var(--widget-select-option-highlighted-text)");
+        const vc = ' color: ' + color + '; ';
         return vc;
     };
 
     this.selectedItemDefaultColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].selectedItemDefaultColor)) {
-            modelsParameters[idInstance].selectedItemDefaultColor = "#447bdc";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].selectedItemDefaultColor + '; ';
+        const color = this.setColorValueFromModelParameters("selectedItemDefaultColor", "var(--widget-select-option-highlighted-color)");
+        const bc = ' background-color: ' + color + '; ';
         return bc;
     };
 
     this.selectedItemHoverColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].selectedItemHoverColor)) {
-            modelsParameters[idInstance].selectedItemHoverColor = "#a9c3ef";
-        }
-        var bc = ' background-color: ' + modelsParameters[idInstance].selectedItemHoverColor + '; ';
+        const color = this.setColorValueFromModelParameters("selectedItemHoverColor", "var(--widget-select-option-highlighted-color)");
+        const bc = ' background-color: ' + color + '; ';
         return bc;
     };
 
@@ -681,10 +612,11 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // |                           Table widget                             | \\
     // +--------------------------------------------------------------------¦ \\
     this.valueAlign = function () {
-        // Backward compatibility
+        // Remove ValueAlign which uses kamel case
         if (!_.isUndefined(modelsParameters[idInstance].ValueAlign)) {
             delete modelsParameters[idInstance].ValueAlign;
         }
+        // Backward compatibility
         if (_.isUndefined(modelsParameters[idInstance].valueAlign)) {
             modelsParameters[idInstance].valueAlign = "left";
         }
@@ -692,45 +624,29 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         return textAlign;
     }
 
-    // +--------------------------------------------------------------------¦ \\
-    // |                     Scoring & Gauges widgets                       | \\
-    // +--------------------------------------------------------------------¦ \\
-    this.thicknessBackgroundColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].thicknessBackgroundColor)) {
-            modelsParameters[idInstance].thicknessBackgroundColor = "#ebedef";
+    this.tableBackgroundColor = function (prop) {
+        if (_.isUndefined(modelsParameters[idInstance].backgroundColor)) {
+            modelsParameters[idInstance].backgroundColor = {
+              primary: "var(--widget-color-0)",
+              secondary: "var(--widget-table-striped-odd)"
+            }
         }
-        var bc = ' background-color="' + this.getColorValueFromCSSProperty(modelsParameters[idInstance].thicknessBackgroundColor) + '" ';
+        const bc = ' background-color: ' + this.getColorValueFromCSSProperty(modelsParameters[idInstance].backgroundColor[prop]) + '; ';
         return bc;
-    };
-
-    this.thicknessColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].thicknessColor)) {
-            modelsParameters[idInstance].thicknessColor = "#447bdc";
-        }
-        var bc = ' foreground-color="' + this.getColorValueFromCSSProperty(modelsParameters[idInstance].thicknessColor) + '" ';
-        return bc;
-    };
+    }
 
     // +--------------------------------------------------------------------¦ \\
     // |                     Scoring & Gauges widgets                       | \\
     // +--------------------------------------------------------------------¦ \\
     this.thicknessBackgroundColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].thicknessBackgroundColor)) {
-            modelsParameters[idInstance].thicknessBackgroundColor = "#ebedef";
-        }
-        var bc = ' background-color="' + this.getColorValueFromCSSProperty(modelsParameters[idInstance].thicknessBackgroundColor) + '" ';
+        const color = this.setColorValueFromModelParameters("thicknessBackgroundColor", "var(--widget-segment-color)");
+        const bc = ' background-color="' + color + '" ';
         return bc;
     };
 
     this.thicknessColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].thicknessColor)) {
-            modelsParameters[idInstance].thicknessColor = "#447bdc";
-        }
-        var bc = ' foreground-color="' + this.getColorValueFromCSSProperty(modelsParameters[idInstance].thicknessColor) + '" ';
+        const color = this.setColorValueFromModelParameters("thicknessColor", "var(--widget-range-color)");
+        const bc = ' foreground-color="' + color + '" ';
         return bc;
     };
 
@@ -738,21 +654,13 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // |                     Annotations widgets                            | \\
     // +--------------------------------------------------------------------¦ \\
     this.tipBackgroundColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].tipBackgroundColor)) {
-            modelsParameters[idInstance].tipBackgroundColor = "#2A3F54";
-        }
-        var bc = this.getColorValueFromCSSProperty(modelsParameters[idInstance].tipBackgroundColor);
-        return bc;
+        const color = this.setColorValueFromModelParameters("tipBackgroundColor", "var(--widget-button-color)");
+        return color;
     };
 
     this.tipBorderColor = function () {
-        // Backward compatibility
-        if (_.isUndefined(modelsParameters[idInstance].tipBorderColor)) {
-            modelsParameters[idInstance].tipBorderColor = "#FFF";
-        }
-        var bc = this.getColorValueFromCSSProperty(modelsParameters[idInstance].tipBorderColor);
-        return bc;
+        const color = this.setColorValueFromModelParameters("tipBorderColor", "var(--widget-button-text)");
+        return color;
     };
 
 }

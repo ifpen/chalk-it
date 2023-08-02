@@ -36,6 +36,7 @@ modelsParameters.flatUiSelect = {
 };
 modelsParameters.flatUiMultiSelect = {
   addControls: false,
+  resetPastSelection: false,
   valueFontSize: 0.4,
   valueFontFamily: 'var(--widget-font-family)',
   checkboxWidth: 7,
@@ -74,6 +75,10 @@ modelsParameters.flatUiTable = {
   bordered: true,
   noBorder: false,
   editableCols: '[]',
+  backgroundColor: {
+    primary: "var(--widget-color-0)",
+    secondary: "var(--widget-table-striped-odd)"
+  }
 };
 
 // Layout (default dimensions)
@@ -133,6 +138,9 @@ function flatUiComplexWidgetsPluginClass() {
       let valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
       let divContent = '';
       if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+        // conversion to enable HTML tags
+        const labelText = this.getTransformedText("label");
+
         valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
         if (!_.isUndefined(modelsParameters[idInstance].selectWidthProportion)) {
           const proportion = Math.max(0, 100 - parseFloat(modelsParameters[idInstance].selectWidthProportion)) + '%';
@@ -146,7 +154,7 @@ function flatUiComplexWidgetsPluginClass() {
             this.labelColor() +
             this.labelFontFamily() +
             '">' +
-            modelsParameters[idInstance].label +
+            labelText +
             '</span>';
         } else
           divContent =
@@ -157,7 +165,7 @@ function flatUiComplexWidgetsPluginClass() {
             this.labelColor() +
             this.labelFontFamily() +
             '">' +
-            modelsParameters[idInstance].label +
+            labelText +
             '</span>';
       }
 
@@ -398,7 +406,6 @@ function flatUiComplexWidgetsPluginClass() {
         setValue: function (val) {
           modelsHiddenParams[idInstance].keys = [];
           modelsHiddenParams[idInstance].values = [];
-
           const msg1 =
             '"keyValuePairs" must be an array of key or an array of key/value pairs (in widget' + idInstance + ')';
           const msg2 =
@@ -522,14 +529,17 @@ function flatUiComplexWidgetsPluginClass() {
       if (touchDevice || isMobileOrTablet) {
         $('#multi-select' + idWidget)[0].style.height = 'auto';
       }
-      if (!_.isEmpty(modelsHiddenParams[idInstance].selectedValue)) {
-        $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
-          for (let i = 0; i < modelsHiddenParams[idInstance].selectedValue.length; i++) {
-            if ($(this).val() == modelsHiddenParams[idInstance].selectedValue[i]) {
-              $(this).attr('checked', true);
+      //uncheck when change list
+      if (!modelsParameters[idInstance].resetPastSelection) {
+        if (!_.isEmpty(modelsHiddenParams[idInstance].selectedValue)) {
+          $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
+            for (let i = 0; i < modelsHiddenParams[idInstance].selectedValue.length; i++) {
+              if ($(this).val() == modelsHiddenParams[idInstance].selectedValue[i]) {
+                $(this).attr('checked', true);
+              }
             }
-          }
-        });
+          });
+        }
       }
 
       document.styleSheets[0].addRule('#multi-select-label' + idWidget, this.valueDefaultColor());
@@ -910,7 +920,7 @@ function flatUiComplexWidgetsPluginClass() {
         if (bIsArray) {
           if (modelsParameters[idInstance].headerLine) {
             startIndex = 1;
-            tableContent = tableContent + '<thead><tr>';
+            tableContent += '<thead><tr>';
             for (var j = 0; j < val[0].length; j++) {
               tableContent =
                 tableContent +
@@ -925,11 +935,18 @@ function flatUiComplexWidgetsPluginClass() {
                 val[0][j] +
                 '</b></span></th>';
             }
-            tableContent = tableContent + '</tr></thead>';
+            tableContent += '</tr></thead>';
           }
           tableContent = tableContent + '<tbody>';
           for (var i = startIndex; i < val.length; i++) {
-            tableContent = tableContent + '<tr>';
+            if (modelsParameters[idInstance].striped) {
+              if (i%2 !== 0) {
+                tableContent += '<tr style="' + this.tableBackgroundColor("secondary") + '">';
+              }
+            } else {
+              tableContent += '<tr>';
+            }
+            
             for (var j = 0; j < val[i].length; j++) {
               var ParsedEditableCols = [];
               try {
@@ -1002,11 +1019,10 @@ function flatUiComplexWidgetsPluginClass() {
       const widgetHtml = document.createElement('div');
       widgetHtml.setAttribute(
         'style',
-        `cursor: ${this.bIsInteractive ? 'auto' : 'inherit'}; width: inherit; height: inherit; overflow: auto`
+        `display: flex; align-items: center; cursor: ${this.bIsInteractive ? 'auto' : 'inherit'}; width: inherit; height: inherit; overflow: auto`
       );
 
-      let divContent = '<table style="margin: 0; height: 90%;" class="table';
-      if (modelsParameters[idInstance].striped) divContent += ' table-striped ';
+      let divContent = `<table style="margin: 0; height: 90%; ${this.tableBackgroundColor("primary")}" class="table`;
       if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
       if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
       divContent += ' table-responsive" id="table' + idWidget + '" >';
@@ -1016,9 +1032,9 @@ function flatUiComplexWidgetsPluginClass() {
         insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
       }
       divContent += insideTable + '</table>';
-
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
+      
       if (this.bIsInteractive) {
         self.enable();
       } else {

@@ -80,7 +80,7 @@ var xDashApi = (function () {
   }
 
   function goToPage(numPage) {
-    customNavigationRuntime.goToPage(numPage);
+    customNavigationRuntime.customNavigationGoToPage(numPage);
   }
 
   return {

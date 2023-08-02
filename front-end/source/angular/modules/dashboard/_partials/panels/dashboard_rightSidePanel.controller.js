@@ -231,16 +231,22 @@ angular
           if (connections && connections.widgetObjEdit) {
             for (const description of widgetActuatorDescriptions) {
               const actuatorName = description.name;
+              result[actuatorName] = {
+                dsFilter: () => true,
+                showFields: true,
+              };
               const validator = this._createValidationFct(description);
               const read =
                 description.direction !== undefined && (description.direction & WidgetActuatorDescription.READ) !== 0;
               const write =
                 description.direction !== undefined && (description.direction & WidgetActuatorDescription.WRITE) !== 0;
+              const file = description.direction === WidgetActuatorDescription.FILE;
               result[actuatorName] = {
                 description,
                 validator,
                 read,
                 write,
+                file,
                 trigger: description.direction === WidgetActuatorDescription.TRIGGER,
                 highlight: description.summary,
                 dsFilter: write ? (ds) => ds.supportsWrites : () => true,
@@ -323,7 +329,7 @@ angular
               }
 
               if (ds && desc.dsFilter(ds)) {
-                slider = { ...slider, name: actuatorName, dataNodeIndex: ds.index };
+                slider = { ...slider, name: actuatorName };
 
                 this.selectionCombos[actuatorName] = this._createSelectionCombos(slider);
                 slider.dataFields = this.selectionCombos[actuatorName].fieldsCombos
@@ -336,6 +342,9 @@ angular
                     slider.dataNode,
                     "' dataNode does not exist!"
                   );
+                  let vm = angular.element(document.getElementById('panel--right')).scope();
+                  vm.$parent.vmd.resetPanel();
+                  vm.$parent.vmd.savePanel();
                 }
                 slider = undefined;
               }
@@ -345,7 +354,6 @@ angular
                 name: actuatorName,
                 dataNode: 'None',
                 dataFields: [],
-                dataNodeIndex: -1,
               };
             }
             this.currentConnections.sliders[actuatorName] = slider;
@@ -528,12 +536,6 @@ angular
         onDatasourceChange(sliderName) {
           const slider = this.currentConnections.sliders[sliderName];
           slider.dataFields = [];
-          const ds = this.dataNodes.find((ds) => ds.name === slider.dataNode);
-          if (ds) {
-            slider.dataNodeIndex = ds.index;
-          } else {
-            slider.dataNodeIndex = -1;
-          }
 
           this.selectionCombos[sliderName] = this._createSelectionCombos(slider);
 
@@ -686,7 +688,6 @@ angular
           result[slider.name] = {
             dataNode: slider.dataNode,
             dataFields: slider.dataFields,
-            dataNodeIndex: slider.dataNodeIndex,
           };
         }
         return result;
@@ -764,7 +765,6 @@ angular
           for (const slider in vm.widgetConnection.sliders) {
             vm.widgetConnection.sliders[slider].dataNode = 'None';
             vm.widgetConnection.sliders[slider].dataFields = [];
-            vm.widgetConnection.sliders[slider].dataNodeIndex = -1;
           }
           vm.currentWidgetConnection = vm.widgetConnection;
           vm.dirty = true;

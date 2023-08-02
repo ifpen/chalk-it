@@ -251,7 +251,12 @@ DatanodeModel = function (
     self.settings(object.settings);
     self.name(object.name);
     self.type(object.type);
-    const iconName = 'icn-' + datanodePlugins[object.type].icon_type.replace(/\.[^/.]+$/, "");
+    let iconName = 'icn-';
+    if (_.isUndefined(datanodePlugins[object.type])) {
+      iconName += 'json-variable';
+    } else {
+      iconName += datanodePlugins[object.type].icon_type.replace(/\.[^/.]+$/, '');
+    }
     self.iconType(iconName);
     if (self.error())
       //ABK
@@ -310,11 +315,20 @@ DatanodeModel = function (
     RunningList.disconSourceNodes.forEach(function (source, index) {
       if (datanodesManager.foundDatanode(source[0])) {
         if (datanodesManager.getDataNodeByName(source[0]).execInstance() == null) {
-          sourceNodes = source;
-          initiatorNode = source[0];
+          let triggeredNodes = Object.assign({}, source); //needed for sourceNodes with explicitTrig flag
+          sourceNodes = updateSourceNodes(source);
+          initiatorNode = sourceNodes[0];
+          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+            console.log('new scheduler instance with sourceNodes:', sourceNodes, ' and initiator:', initiatorNode);
 
           //Create schedulers as much as disconnected graphs are.
-          var dsSched = new DatanodeScheduler(datanodesDependency, sourceNodes, initiatorNode, callOriginArg);
+          var dsSched = new DatanodeScheduler(
+            datanodesDependency,
+            sourceNodes,
+            triggeredNodes,
+            initiatorNode,
+            callOriginArg
+          );
           // propagate execution instance pointer only to datanodes that belong to same connected graph of sourcesNodes
           currentGraph = RunningList.disconGraphs[index]; //datanodesDependency.getBelongingDisconnectedGraph(source, allDisconnectedGraphs);
           // propagate execution instance pointer to all other datanodes that belong
@@ -330,7 +344,6 @@ DatanodeModel = function (
                 }
               } else {
                 text = "Datanode '" + name + "' does not exist but referenced in another datanode";
-                //self.notificationCallback("error", self.name(), text, "Bad datanode reference");
                 if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log(text);
                 return;
               }
@@ -347,6 +360,7 @@ DatanodeModel = function (
                 ', clkTime(s):' +
                 timeManager.getCurrentTime()
             );
+            let initiatorNode = datanodesManager.getDataNodeByName(sourceNodes[0]).execInstance().getInitiatorNode();
             console.log('scheduling instance of started with ' + initiatorNode);
           }
           datanodesManager.getDataNodeByName(sourceNodes[0]).execInstance().launchSchedule();
@@ -622,5 +636,17 @@ DatanodeModel = function (
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log('error in building disconnected graphs');
       }
     });
+  };
+
+  updateSourceNodes = function (sourceNodes) {
+    let startNodes = new Set(sourceNodes);
+    descendants = datanodesDependency.getDescendants(sourceNodes);
+    let commonNodes = new Set(Array.from(descendants).filter((element) => startNodes.has(element)));
+    //remove startnodes if they belong to other starnodes descendants
+    commonNodes.forEach(function (node) {
+      sourceNodes.splice(sourceNodes.indexOf(node), 1);
+    });
+
+    return sourceNodes;
   };
 };

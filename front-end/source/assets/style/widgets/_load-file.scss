@@ -5,76 +5,67 @@
  */
 
 .load-file-widget-html {
-  width: inherit;
   display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  align-items: stretch;
+  flex-direction: column;
+  height: 100%;
+  width: inherit;
 }
 
 .load-file-widget-html--border {
-  border: 1px dashed #aaaaaa;
+  border: 1px dashed;
 }
 
-.label-container {
-  font-weight: 600;
-  padding: 0.12rem;
+.label-wrapper {
+  font-weight: fw('semi');
+  padding-left: spacer('1');
 }
 
-.loaded-file,
 .drag-area {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
   align-items: center;
-  padding: 1rem 0rem;
+  height: inherit;
+  padding: spacer('4');
 }
 
-.drag-area-container {
-  background-color: #f1f2f6;
-}
-
-.drag-area-container i {
-  font-size: 2.5rem;
-  color: var(--widget-color);
-}
-
-.drag-area {
-  background-color: var(--widget-dropzone-background-color);
-  color: var(--widget-color);
-}
-
-.drag-area__icon {
-  margin: 0rem 1rem;
-}
-
-.drag-area__text {
-  display: flex;
-  flex-flow: column nowrap;
+.drag-area--column {
+  flex-direction: column;
   justify-content: center;
-  flex-grow: 98;
-  line-height: 1.8rem;
+
+  & .drag-area__browse-btn-wrapper {
+    flex-grow: 0;
+  }
 }
 
-.drag-area__text span:nth-child(2) {
-  color: #88878e;
+.drag-area__icon-wrapper {
+  margin-right: spacer('8');
 }
 
-.drag-area__text span:nth-child(1) {
-  color: #3e3f47;
-  font-weight: bold;
+.drag-area__icon-wrapper--hidden {
+  display: none;
 }
 
-.drag-area__browse-btn,
-.loaded-file__close-btn {
+.drag-area__text-wrapper {
+  display: flex;
+  flex-direction: column;
+  line-height: spacer('12');
+  align-items: center;
+  justify-content: center;
+  margin-right: spacer('4');
+}
+
+.drag-area__text-wrapper__span--hidden {
+  display: none;
+}
+
+.drag-area__browse-btn-wrapper {
   display: flex;
   align-items: center;
   flex-grow: 1;
-  margin: 0rem 2rem;
   justify-content: flex-end;
 }
 
-.drag-area__browse-btn > input {
+.drag-area__browse-btn-wrapper > input {
   width: 0.1px;
   height: 0.1px;
   opacity: 0;
@@ -83,62 +74,95 @@
   z-index: -1;
 }
 
-.drag-area__browse-btn > input + label {
-  background-color: #ffffff;
-  padding: 0 0.6rem;
-  border: 1px solid #e0807f;
+.drag-area__browse-btn-wrapper > input + label {
+  padding: spacer('3') spacer('5');
   border-radius: 5px;
-  color: #e0807f;
+  text-align: center;
+  line-height: normal;
 }
 
-.drag-area__browse-btn > input + label:hover {
+.drag-area__browse-btn-wrapper > input + label:hover {
   cursor: pointer;
 }
 
-/* Display loaded file */
-.loaded-file__icon {
-  margin: 0 1rem;
+
+
+/**************** Display loaded file ****************/
+
+.loaded-file {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: spacer('4');
 }
 
-.loaded-file__icon > i {
-  color: var(--widget-color);
+.loaded-file__icon-wrapper {
+  margin-right: spacer('8');
+
+  i {
+    font-size: fs('2xl');
+  }
 }
 
-.loaded-file__info-file {
+.loaded-file__icon-wrapper--hidden {
+  display: none;
+}
+
+.loaded-file__info-file-wrapper {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
-  align-items: center;
   flex-grow: 98;
+  align-items: center;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  margin-right: spacer('8');
 }
 
-.loaded-file__info-file__name {
-  color: #3e3f47;
+.loaded-file__info-file-wrapper__name {
   font-weight: bold;
-  margin-right: 0.6rem;
+  margin-right: spacer('5');
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.loaded-file__info-file__size {
-  color: #88878e;
+.loaded-file__info-file-wrapper__size {
   overflow: none;
 }
 
-.loaded-file__close-btn > i {
-  padding: 0.6rem 0.8rem;
-  background-color: #e8eaf1;
-  box-shadow: 0 0 2px 3px #e8eaf1;
-  border-radius: 50%;
+.loaded-file__close-btn-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  i {
+    border-radius: 50%;
+    padding: 0.2rem 0.4rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
-.loaded-file__close-btn > i:hover {
-  background-color: #e0807f;
-  box-shadow: 0 0 2px 3px #e0807f;
-  color: #fff;
-  cursor: pointer;
+
+/**************** Load spinner ****************/
+
+.load-spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background: var(--disabled-color);
+}
+
+.load-spinner-wrapper__icon {
+  font-size: fs('xl');
 }

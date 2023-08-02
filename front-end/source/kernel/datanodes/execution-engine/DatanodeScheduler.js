@@ -27,7 +27,7 @@ generalizing the "called from orchestrator" boolean introduced
 var schedulerProfiling = {};
 var schedulerProfilingItem = {};
 
-function DatanodeScheduler(datanodesDependency, startNodes, initiatorNode, callOrigin) {
+function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, initiatorNode, callOrigin) {
   // safety
   if (_.isUndefined(datanodesManager)) return;
 
@@ -59,7 +59,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, initiatorNode, callO
   // Discussion with AEF : inform user when update cannot be executed because one predecessor has error (with notification)
 
   function isCalledFromOrchestrator(nodeName) {
-    if (_.contains(startNodes, nodeName)) {
+    if (_.contains(triggeredNodes, nodeName)) {
       // MBG 10/05/2019 : more general condition
       switch (callOrigin) {
         case 'triggerButton':
@@ -82,15 +82,19 @@ function DatanodeScheduler(datanodesDependency, startNodes, initiatorNode, callO
 
   // AEF temp function, to factorize for autostart and explicit use
   function isForceAutoStart(nodeName) {
-    switch (callOrigin) {
-      case 'triggerButton':
-      case 'vignette':
-      case 'setValue':
-      case 'setFile':
-      case 'refresh':
-        return true;
-      default:
-        return false;
+    if (_.contains(triggeredNodes, nodeName)) {
+      switch (callOrigin) {
+        case 'triggerButton':
+        case 'vignette':
+        case 'setValue':
+        case 'setFile':
+        case 'refresh':
+          return true;
+        default:
+          return false;
+      }
+    } else {
+      return false;
     }
   }
 
@@ -225,6 +229,16 @@ function DatanodeScheduler(datanodesDependency, startNodes, initiatorNode, callO
     }
   }
 
+  /*-----------------alreadyExecuted-----------------*/
+  function alreadyExecuted(node) {
+    var operationsMarked = union(operationsTerminated, OperationsOutOK);
+    if (operationsMarked.has(node)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /*-----------------notExecutedPredecessors-----------------*/
   function notExecutedPredecessors(node) {
     var result = '[';
@@ -249,7 +263,13 @@ function DatanodeScheduler(datanodesDependency, startNodes, initiatorNode, callO
         operationsToWaitFor.delete(dsName);
         datanodesDependency.dependencyStructure[dsName].forEach(function (successor) {
           if (allPredecessorsExecuted(successor)) {
-            operationsToExecute.add(successor);
+            if (!alreadyExecuted(successor)) {
+              operationsToExecute.add(successor);
+            } else {
+              if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+                console.log('operation ' + successor + ' not added because already executed');
+              }
+            }
           }
         });
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
@@ -292,6 +312,17 @@ function DatanodeScheduler(datanodesDependency, startNodes, initiatorNode, callO
           // ds has already ok status, even it is not explicitly triggered, their successors can be computed
           operationsTerminated.add(dsName);
           operationsToWaitFor.delete(dsName);
+          datanodesDependency.dependencyStructure[dsName].forEach(function (successor) {
+            if (allPredecessorsExecuted(successor)) {
+              if (!alreadyExecuted(successor)) {
+                operationsToExecute.add(successor);
+              } else {
+                if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+                  console.log('operation ' + successor + ' not added because already executed');
+                }
+              }
+            }
+          });
           if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
             console.log('operation ' + dsName + ' completed with status ' + status);
           }

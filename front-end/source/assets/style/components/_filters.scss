@@ -14,7 +14,7 @@
   padding: 1rem;
   border-radius: br("8");
   transition: var(--default-transition);
-  z-index: 50;
+  z-index: $zindex-dropdown;
 
   &:not(.open) {
     opacity: 0;

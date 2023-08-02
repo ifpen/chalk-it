@@ -163,7 +163,6 @@ var widgetPreview = (function () {
         widget[instanceId] = widgetsPluginsHandler.copyWidget(wcId, modelJsonId, null, instanceId, true);
       }
       handleWidgetBorder(instanceId);
-      widgetConnector.updateDataNodeIndex(instanceId);
       if (widgetConnector.widgetsConnection[instanceId] != null) {
         widgetConnector.widgetsConnection[instanceId].widgetObjEdit = null;
         widgetConnector.widgetsConnection[instanceId].widgetObjConnect = widget[instanceId];
@@ -237,10 +236,10 @@ var widgetPreview = (function () {
           }
 
           if (actuator != null) {
-            if (slider.dataNode !== 'None') {
-              const index = slider.dataNodeIndex;
-              if (index !== -1) {
-                const dataNode = datanodesManager.getAllDataNodes()[index];
+            const dataNodeName = slider.dataNode;
+            if (dataNodeName !== 'None') {
+              const dataNode = datanodesManager.getDataNodeByName(dataNodeName);
+              if (dataNode) {
                 const newData = dataNode.latestData();
                 const status = dataNode.status();
                 const last_updated = dataNode.last_updated();
@@ -264,7 +263,7 @@ var widgetPreview = (function () {
         }
       }
     } else {
-      console.log('connection of ' + instanceId + ' is undefned');
+      console.log('connection of ' + instanceId + ' is undefined');
     }
   }
 
@@ -446,7 +445,7 @@ var widgetPreview = (function () {
     let binding = findBindingFromActuator(sender);
     if (binding) {
       if (binding.dataNode !== 'None') {
-        const dataNode = datanodesManager.getAllDataNodes()[binding.dataNodeIndex];
+        const dataNode = datanodesManager.getDataNodeByName(binding.dataNode);
         if (!_.isUndefined(dataNode)) {
           if (dataNode.canSetValue() && !_.isUndefined(sender.getValue)) {
             // MBG 12/05/2017
@@ -547,7 +546,6 @@ var widgetPreview = (function () {
         let elementId = instanceId + 'c';
         scalingHelper.resizeWidgetOnMediaChange(instanceId, elementId);
         rebuildWidgetInPreviewMode(instanceId);
-        widgetConnector.updateDataNodeIndex(instanceId);
         if (widgetConnector.widgetsConnection[instanceId] != null) {
           widgetConnector.widgetsConnection[instanceId].widgetObjConnect = widget[instanceId];
           plotConstantData(instanceId);

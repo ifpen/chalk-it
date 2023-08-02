@@ -26,10 +26,11 @@ modelsParameters.datepickerSimple = {
     "labelWidthProportion": "30%",
     "valueFontSize": 0.5,
     "valueColor": "var(--widget-color)",
-    "valueFontFamily": "var(--widget-font-famiily)",
+    "valueFontFamily": "var(--widget-font-family)",
     "valueTextAlign": "left",
     "displayBorder": true,
     "borderColor": "var(--widget-border-color)",
+    "backgroundColor": "var(--widget-input-color)"
 };
 modelsParameters.datepickerVisible = {
     "label": "labelText",
@@ -37,10 +38,10 @@ modelsParameters.datepickerVisible = {
     "displayLabel": true,
     "labelFontSize": 0.5,
     "labelColor": "var(--widget-label-color)",
-    "labelFontFamily": "var(--widget-font-famiily)",
+    "labelFontFamily": "var(--widget-font-family)",
     "valueFontSize": 0.5,
     "valueColor": "var(--widget-color)",
-    "valueFontFamily": "var(--widget-font-famiily)"
+    "valueFontFamily": "var(--widget-font-family)"
 };
 
 // Layout (default dimensions)
@@ -134,7 +135,8 @@ function datePickerWidgetsPluginClass() {
 
             if (modelsParameters[idInstance].displayLabel == true) {
                 if (!_.isUndefined(modelsParameters[idInstance].label)) {
-                    labelText = modelsParameters[idInstance].label;
+                    // conversion to enable HTML tags
+                    labelText = this.getTransformedText("label");
                 }
                 if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
                     labelProportion = modelsParameters[idInstance].labelWidthProportion;
@@ -175,9 +177,8 @@ function datePickerWidgetsPluginClass() {
                 '<div style="cursor: inherit">' +
                 '<input  id="' + idCalender + '" class="value-input form-control " ' +
                 'style="' + cursorIcon + ' height: ' + heightCalender + 'px; border-radius: 6px; ' +
-                display + 'color: #34495e;' +
-                border +
-                'float: right; font-size: ' + valueFontSize + ';' + this.valueColor() + this.valueFontFamily() +
+                display + border + 
+                'float: right; font-size: ' + valueFontSize + ';' + this.valueColor() + this.valueFontFamily() + this.backgroundColor() +
                 'padding-right: ' + valueFontSize.replace('(', '(3*(').replace(')', '))') + ';' +
                 'text-align: ' + modelsParameters[idInstance].valueTextAlign + ';' +
                 ' " ' +

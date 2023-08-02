@@ -40,7 +40,6 @@ var xdsjson = (function () {
         return;
       }
     }
-
     const refresh = () => {
       const $body = angular.element(document.body);
       const $rootScope = $body.scope().$root;
@@ -49,7 +48,6 @@ var xdsjson = (function () {
       $rootScope.safeApply();
       $rootScope.updateFlagDirty(true);
     };
-
     if (datanodesManager.getAllDataNodes().length === 0) {
       datanodesManager.load(forUpdate.data, true, refresh);
     } else {
@@ -109,10 +107,13 @@ var xdsjson = (function () {
   function selectDataToSave(callback) {
     const data = datanodesManager.getAllDataNodes();
     const sortedData = data.sort((a, b) => a.name().localeCompare(b.name()));
-
     const contentElement = getDataList(sortedData, 'Please check data to be saved in the xdsjson file: ');
-
     new DialogBoxForData(contentElement, 'List of data', 'Save', 'Cancel', function () {
+            for (i = 0; i < data.length; i++) {
+                if ($('#data-checkbox-' + i).is(':checked')) {
+                    dataToSave[i] = data[i].name();
+                    bFound = true;
+                }
       const dataToSave = sortedData
         .filter((_, i) => $('#data-checkbox-' + i).is(':checked'))
         .map((node) => node.name());
@@ -121,7 +122,26 @@ var xdsjson = (function () {
       } else {
         // do not close modal
         return true;
+      for (i = 0; i < data.length; i++) {
+        if ($('#data-checkbox-' + i).is(':checked')) {
+          dataToSave[i] = data[i].name();
+          bFound = true;
+        }
       }
+          }
+          if (!isDataFound) {
+            delete saveDatanodes.datanodes[i];
+          }
+        }
+        var cleanData = [];
+        var k = 0;
+        for (i = 0; i < saveDatanodes.datanodes.length; i++) {
+          if (!_.isUndefined(saveDatanodes.datanodes[i])) {
+            cleanData[k] = saveDatanodes.datanodes[i];
+            k++;
+          }
+        }
+        saveDatanodes.datanodes = cleanData;
     });
   }
 

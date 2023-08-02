@@ -37,7 +37,7 @@ function widgetFactoryClass() {
         // create mainDiv and containerDiv, with right layout in right targetDiv
         [cln, div, targetDiv] = createNewDiv(modelJsonId, targetDiv, wLayout);
         cln.id = instanceId;
-        widgetEditor.lastContainingDrpr[instanceId] = targetDiv.id;
+        
         // add editable widget css classes
         // TODO clean
         $("#" + cln.id).addClass("drsElement");

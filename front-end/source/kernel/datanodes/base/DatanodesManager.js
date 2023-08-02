@@ -118,6 +118,13 @@ var datanodesManager = (function () {
         function (isConfirm) {
           if (isConfirm) {
             deleteDn(viewModel);
+            let $body = angular.element(document.body);
+            let $rootScope = $body.scope().$root;
+            if ($rootScope.bIsPlayMode) {
+              for (key in widgetConnector.widgetsConnection) {
+                widgetPreview.plotConstantData(key, false);
+              }
+            }
           }
         }
       );

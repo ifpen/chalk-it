@@ -22,7 +22,6 @@ modelsHiddenParams.dateRangePicker = {
 // Parameters
 modelsParameters.dateRangePicker = {
     "label": "labelText",
-    "inheritLabelFromData": false,
     "displayLabel": true,
     "displayTimePicker": false,
     "displayTimePicker24Hour": false,
@@ -36,6 +35,7 @@ modelsParameters.dateRangePicker = {
     "valueTextAlign": "left",
     "displayBorder": true,
     "borderColor": "var(--widget-border-color)",
+    "backgroundColor": "var(--widget-input-color)"
 };
 
 // Layout (default dimensions)
@@ -56,17 +56,16 @@ function dateRangePickerWidgetsPluginClass() {
     this.dateRangePickerWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
         this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
-        var self = this;
+        const self = this;
         this.formatDateValue = "";
-
-        this.enable = function () { };
-
-        this.disable = function () { };
 
         this.updateDateValue = function (e) {
             if (this.bIsInteractive) {
-                self.dateValue.updateCallback(self.dateValue, self.dateValue.getValue());
-                modelsHiddenParams[idInstance] = self.dateValue.getValue();
+                self.endDateValue.updateCallback(self.endDateValue, self.endDateValue.getValue());
+                modelsHiddenParams[idInstance].endDateValue = self.endDateValue.getValue();
+
+                self.startDateValue.updateCallback(self.startDateValue, self.startDateValue.getValue());
+                modelsHiddenParams[idInstance].startDateValue = self.startDateValue.getValue();
             }          
         };
 
@@ -75,22 +74,27 @@ function dateRangePickerWidgetsPluginClass() {
         };
 
         this.render = function () {
-
-            var widgetHtml = document.createElement('div');
+            const widgetHtml = document.createElement('div');
             widgetHtml.setAttribute("style", 'display: table;text-align: left; height: inherit; width: inherit; cursor: inherit');
             widgetHtml.setAttribute("id", "div-for-daterangepicker" + idWidget);
             $("#" + idDivContainer).html(widgetHtml);
 
-            var labelProportion = "0%";
-            var labelText = "labelText";
-            var widthInput = $("#div-for-daterangepicker" + idWidget).width();
-            var LabelHtml = "",
+            let labelProportion = "0%";
+            let labelText = "labelText";
+            let widthInput = $("#div-for-daterangepicker" + idWidget).width();
+            let LabelHtml = "",
                 labelFontSize = "calc(7px + 0.5vw + 0.4vh)",
                 valueFontSize = "calc(7px + 0.5vw + 0.4vh)";
 
+            // remove inheritLabelFromData because there is more than one actuator
+            if (!_.isUndefined(modelsParameters[idInstance].inheritLabelFromData)) {
+                delete modelsParameters[idInstance].inheritLabelFromData;
+            }
+
             if (modelsParameters[idInstance].displayLabel == true) {
                 if (!_.isUndefined(modelsParameters[idInstance].label)) {
-                    labelText = modelsParameters[idInstance].label;
+                    // conversion to enable HTML tags
+                    labelText = this.getTransformedText("label");
                 }
                 if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
                     labelProportion = modelsParameters[idInstance].labelWidthProportion;
@@ -109,26 +113,23 @@ function dateRangePickerWidgetsPluginClass() {
                     ';">' + labelText + '</span>';
             }
 
-            var dateRangePickerDisabled = 'disabled';
-            var cursorIcon = 'cursor: inherit; ';
+            let dateRangePickerDisabled = 'disabled';
+            let cursorIcon = 'cursor: inherit; ';
             if (this.bIsInteractive) {
                 dateRangePickerDisabled = '';
                 cursorIcon = 'cursor: pointer; ';
             }
 
-            var border = this.border();
+            const border = this.border();
+            const divHeight = $("#div-for-daterangepicker" + idWidget).height();
 
-            var divHeight = $("#div-for-daterangepicker" + idWidget).height();
-
-            var daterangepickerHtml = '<div id="daterangepicker' + idWidget + '" >' +
+            const daterangepickerHtml = '<div id="daterangepicker' + idWidget + '" >' +
                 '<input type="text" autocomplete="off" ' + dateRangePickerDisabled + ' placeholder="Choose a date range" id="daterangepickerInput' + idWidget + '" ' +
-                'style="' + cursorIcon + ' height: ' + divHeight + 'px; border-radius: 6px; ' +
-                'color: #34495e;' +
-                border +
+                'style="' + cursorIcon + ' height: ' + divHeight + 'px; border-radius: 6px; ' + border +
                 'float: right;' +
                 'padding-right: ' + valueFontSize.replace('(', '(3*(').replace(')', '))') + ';' +
                 'text-align: ' + modelsParameters[idInstance].valueTextAlign + '; ' +
-                'font-size: ' + valueFontSize + '; ' + this.valueColor() + this.valueFontFamily() + '" ' +
+                'font-size: ' + valueFontSize + '; ' + this.valueColor() + this.valueFontFamily() + this.backgroundColor() + '" ' +
                 'class="value-input form-control ng-pristine ng-untouched ng-valid ng-empty" />' +
                 '<span class="form-control-feedback" style="' + cursorIcon +
                 'height: ' + divHeight + 'px; ' +
@@ -137,7 +138,7 @@ function dateRangePickerWidgetsPluginClass() {
                 cursorIcon + 'font-size: ' + valueFontSize + ';" ' +
                 '></i></span>' +
                 '</div>';
-            var divContent = (
+            const divContent = (
                 LabelHtml +
                 '<div style="height:100% ' +
                 'width: ' + widthInput + 'px;">' +
@@ -152,8 +153,8 @@ function dateRangePickerWidgetsPluginClass() {
                 self.formatDateValue = 'YYYY-MM-DD';
             }
 
-            var startDate = "";
-            var endDate = "";
+            let startDate = "";
+            let endDate = "";
 
             if (modelsHiddenParams[idInstance].startDateValue !== "") {
                 startDate = modelsHiddenParams[idInstance].startDateValue
@@ -186,12 +187,6 @@ function dateRangePickerWidgetsPluginClass() {
                 modelsHiddenParams[idInstance].endDateValue = picker.endDate.format(self.formatDateValue);
                 self.updateDateValue();
             });
-
-            if (this.bIsInteractive) {
-                self.enable();
-            } else {
-                self.disable();
-            }
         };
 
         const _DATE_SCHEMA = {
@@ -206,37 +201,49 @@ function dateRangePickerWidgetsPluginClass() {
             return [_DATE_START_DESCRIPTOR, _DATE_END_DESCRIPTOR];
         };
 
-        this.dateValue = {
+        this.startDateValue = {
             updateCallback: function () { },
             setValue: function (val) {
-                if (moment(val.startDateValue, self.formatDateValue, true).isValid() && moment(val.endDateValue, self.formatDateValue, true).isValid()) {
-                    modelsHiddenParams[idInstance] = val;
+                if (moment(val, self.formatDateValue, true).isValid()) {
+                    modelsHiddenParams[idInstance].startDateValue = val;
                     $('input[id="daterangepickerInput' + idWidget + '"]').data('daterangepicker').setStartDate(modelsHiddenParams[idInstance].startDateValue);
-                    $('input[id="daterangepickerInput' + idWidget + '"]').data('daterangepicker').setEndDate(modelsHiddenParams[idInstance].endDateValue);
                 }
             },
             getValue: function () {
-                return modelsHiddenParams[idInstance];
+                return modelsHiddenParams[idInstance].startDateValue;
             },
             addValueChangedHandler: function (updateDataFromWidget) {
                 this.updateCallback = updateDataFromWidget;
-                self.enable();
             },
-            removeValueChangedHandler: function (updateDataFromWidget) {
-                self.disable();
-            },
-            setCaption: function (caption, bCaptionManuallyChanged) {
-                if (modelsParameters[idInstance].inheritLabelFromData) {
-                    self.captionHelper(caption, self.bIsInteractive, bCaptionManuallyChanged);
-                    $("#date-label-span" + idWidget).text(modelsParameters[idInstance].label);
-                }
-            },
+            removeValueChangedHandler: function (updateDataFromWidget) {},
+            setCaption: function (caption, bCaptionManuallyChanged) {},
             clearCaption: function () {
                 modelsParameters[idInstance].label = "";
                 self.render();
             }
         };
 
+        this.endDateValue = {
+            updateCallback: function () { },
+            setValue: function (val) {
+                if (moment(val, self.formatDateValue, true).isValid()) {
+                    modelsHiddenParams[idInstance].endDateValue = val
+                    $('input[id="daterangepickerInput' + idWidget + '"]').data('daterangepicker').setEndDate(modelsHiddenParams[idInstance].endDateValue);
+                }
+            },
+            getValue: function () {
+                return modelsHiddenParams[idInstance].endDateValue;
+            },
+            addValueChangedHandler: function (updateDataFromWidget) {
+                this.updateCallback = updateDataFromWidget;
+            },
+            removeValueChangedHandler: function (updateDataFromWidget) {},
+            setCaption: function (caption, bCaptionManuallyChanged) {},
+            clearCaption: function () {
+                modelsParameters[idInstance].label = "";
+                self.render();
+            }
+        };
         self.render();
     };
 

@@ -29,7 +29,7 @@ angular
 
         /*---------- Duplicate button ----------------*/
         self.duplicateDataNode = function(data, scopeDash) {
-            let dnName = data.name();
+            const dnName = data.name();
             swal({
                     title: "Duplicate DataNode",
                     text: "You can write another name here:",
@@ -56,8 +56,8 @@ angular
                             return false;
                         }
 
-                        let endAction = function(text) {
-                            let notice = new PNotify({
+                        const endAction = function(text) {
+                            const notice = new PNotify({
                                 title: dnName,
                                 text: text,
                                 type: "success",
@@ -69,18 +69,18 @@ angular
                             $rootScope.loadingBarStop();
                         };
 
-                        let viewModel = {};
-                        let options = {
+                        const viewModel = {};
+                        const options = {
                             type: "datanode",
                             operation: "add",
                         };
 
-                        let type = data.type();
-                        let types = datanodesManager.getDataNodePluginTypes();
-                        let selectedType = types[type];
-                        let settings = data.settings();
+                        const type = data.type();
+                        const types = datanodesManager.getDataNodePluginTypes();
+                        const selectedType = types[type];
+                        const settings = { ...data.settings() };
                         settings.name = inputValue;
-                        let newSettings = {
+                        const newSettings = {
                             type: type,
                             iconType: selectedType.icon_type,
                             settings: settings

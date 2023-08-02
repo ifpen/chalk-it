@@ -26,7 +26,8 @@ modelsParameters.flatUiCheckbox = {
     "labelColor": "var(--widget-label-color)",
     "labelFontFamily": "var(--widget-font-family)",
     "checkboxSize": 1,
-    "checkboxColor": "var(--widget-input-checked-color)"
+    "checkedColor": "var(--widget-input-checked-color)",
+    "uncheckedColor": "var(--widget-input-unchecked-color)"
 };
 modelsParameters.flatUiSwitch = {
     "label": "labelText",
@@ -91,6 +92,9 @@ function flatUiBooleanWidgetsPluginClass() {
             var widgetHtml = document.createElement('div');
             var divContainerHeightPx = $('#' + idDivContainer).height(); // in px
             if (modelsParameters[idInstance].label != "" && modelsParameters[idInstance].displayLabel) { //ABK
+                // conversion to enable HTML tags
+                const labelText = this.getTransformedText("label");
+
                 divContent = '<label class="checkbox" id="label' + idWidget +
                     '" style="cursor: inherit; display: flex; align-items: center; margin:auto; ' +
                     this.labelFontSize() + this.labelColor() +
@@ -99,7 +103,7 @@ function flatUiBooleanWidgetsPluginClass() {
                     '<input type="checkbox" class="nohover" data-toggle="radio" style="zoom:' + modelsParameters[idInstance].checkboxSize +
                     '" value="" id="checkbox' + idWidget +
                     '" disabled></input>' +
-                    modelsParameters[idInstance].label + '</label>';
+                    labelText + '</label>';
             } else {
                 divContent = '<label class="checkbox" id="label' + idWidget +
                     '" style="cursor: inherit; display: flex; align-items: center; margin: auto;" for="checkbox' +
@@ -121,26 +125,16 @@ function flatUiBooleanWidgetsPluginClass() {
             $('[data-toggle="checkbox"]').radiocheck();
             $('[data-toggle="radio"]').radiocheck();
 
-            //AEF
-            if ($(".icons").length >= 1) {
-                for (let i = 0; i < $(".icons").length; i++) {
-                    if ($(".icons")[i].parentNode.id == "label" + idWidget) {
-                        $(".icons")[i].style.zoom = modelsParameters[idInstance].checkboxSize;
-                        $(".icons")[i].style.color = modelsParameters[idInstance].checkboxColor;
-                        //for (let j = 0; j < $(".icons")[i].childNodes.length; j++) {
-                        // if ($(".icons")[i].childNodes[j].className == "icon-checked") {
-                        //   $(".icons")[i].childNodes[j].style.color = modelsParameters[idInstance].checkboxColor;
-                        // }
-                        // }
-                    }
-                }
-            }
             //
             if (modelsHiddenParams[idInstance].value == true) {
                 $("#checkbox" + idWidget).radiocheck('check');
             } else if (modelsHiddenParams[idInstance].value == false) {
                 $("#checkbox" + idWidget).radiocheck('uncheck');
             }
+
+            document.styleSheets[0].addRule('#label' + idWidget + ' .icons *' , 'zoom: ' + modelsParameters[idInstance].checkboxSize);
+            document.styleSheets[0].addRule('#label' + idWidget + ' .icons .icon-checked' , this.checkedColor());
+            document.styleSheets[0].addRule('#label' + idWidget + ' .icons .icon-unchecked' , this.uncheckedColor());
 
             if (this.bIsInteractive) {
                 self.enable();
@@ -280,9 +274,12 @@ function flatUiBooleanWidgetsPluginClass() {
             divContent = divContent + '</label>';
             divContent = divContent + '</div>';
             if (modelsParameters[idInstance].label != "" && modelsParameters[idInstance].displayLabel) {
+                // conversion to enable HTML tags
+                const labelText = this.getTransformedText("label");
+
                 divContent = divContent + '<span id="switch-span' + idWidget +
                     '" class="switch-span" style="' + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '">' +
-                    modelsParameters[idInstance].label + '</span>';
+                    labelText + '</span>';
             }
             widgetHtml.innerHTML = divContent;
             $("#" + idDivContainer).html(widgetHtml);
