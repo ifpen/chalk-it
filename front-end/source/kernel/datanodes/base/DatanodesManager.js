@@ -142,135 +142,135 @@ var datanodesManager = (function () {
     }
   }
 
-  function settingsSavedCallback(viewModel, isNewDatanode, newSettings) {
-    if (isNewDatanode) {
+  function createDatanode(newSettings) {
+    if (datanodesManager.foundDatanode(newSettings.settings.name)) {
+      swal(
+        "A dataNode with name '" + newSettings.settings.name + "' adready exists.",
+        'Please specify a different name',
+        'error'
+      );
+      //DialogBox('A datanode with name "' + newSettings.settings.name + '" adready exists. Please specify a different name', 'Already exists', "Ok", "Cancel", null);
+      return true; //ABK
+    }
+    const newViewModel = new DatanodeModel(datanodesListModel, datanodePlugins, datanodesDependency, timeManager);
+    newViewModel.name(newSettings.settings.name);
+
+    //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
+
+    newViewModel.settings(newSettings.settings);
+    newViewModel.type(newSettings.type);
+    const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
+    newViewModel.iconType(iconName);
+    if (newViewModel.error()) {
+      //ABK
+      //swal("DataNode creation failure", "Error on some dataNode fields.", "error");
+      return true;
+    }
+    newViewModel.isSchedulerStartSafe(true); //AEF
+    datanodesListModel.addDatanode(newViewModel); //ABK put here if error, we don't add data
+
+    //AEF: recompute graphs after adding a new datanode
+    datanodesDependency.updateDisconnectedGraphsList(newViewModel.name(), 'add');
+    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      console.log('All disconnected Graphs after add: ', datanodesDependency.getAllDisconnectedGraphs());
+    //
+
+    //AEF
+    if (_.isUndefined(newSettings.settings.sampleTime) || newSettings.settings.sampleTime == 0) {
+      newViewModel.schedulerStart(undefined, undefined, 'unidentified');
+    } else {
+      newViewModel.sampleTime(newSettings.settings.sampleTime);
+      timeManager.registerDatanode(newViewModel.sampleTime(), newViewModel.name(), 'unidentified');
+    }
+    //datanodesListModel.launchFirstUpdate(newViewModel); //AEF // AEF & MBG réunion du 11/04/2019
+
+    angular
+      .element(document.body)
+      .injector()
+      .invoke(['$rootScope', function ($rootScope) {}]);
+
+    var $body = angular.element(document.body); // 1
+    var $rootScope = $body.scope().$root;
+    $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
+    $rootScope.safeApply();
+  }
+
+  function updateDatanode(viewModel, newSettings) {
+    if (viewModel.isSettingNameChanged(newSettings.settings.name)) {
+      //avoid to compare with the same datanode if the name wasn't changed
       if (datanodesManager.foundDatanode(newSettings.settings.name)) {
         swal(
           "A dataNode with name '" + newSettings.settings.name + "' adready exists.",
           'Please specify a different name',
           'error'
         );
-        //DialogBox('A datanode with name "' + newSettings.settings.name + '" adready exists. Please specify a different name', 'Already exists', "Ok", "Cancel", null);
-        return true; //ABK
-      }
-      const newViewModel = new DatanodeModel(datanodesListModel, datanodePlugins, datanodesDependency, timeManager);
-      newViewModel.name(newSettings.settings.name);
-
-      //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
-
-      newViewModel.settings(newSettings.settings);
-      newViewModel.type(newSettings.type);
-      const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
-      newViewModel.iconType(iconName);
-      if (newViewModel.error()) {
-        //ABK
-        //swal("DataNode creation failure", "Error on some dataNode fields.", "error");
         return true;
       }
-      newViewModel.isSchedulerStartSafe(true); //AEF
-      datanodesListModel.addDatanode(newViewModel); //ABK put here if error, we don't add data
-
-      //AEF: recompute graphs after adding a new datanode
-      datanodesDependency.updateDisconnectedGraphsList(newViewModel.name(), 'add');
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
-        console.log('All disconnected Graphs after add: ', datanodesDependency.getAllDisconnectedGraphs());
+      if (datanodesDependency.hasSuccessors(viewModel.name())) {
+        var successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
+        // warning the user to set modification in formula for example
+        swal(
+          'Renaming dataNode side effects',
+          'Old name "' +
+            viewModel.name() +
+            '" is used in dataNode(s) "' +
+            successors +
+            '" and should be changed by the new one "' +
+            newSettings.settings.name +
+            '".',
+          'warning'
+        );
+        //remove dependencies with former name of datanode, new dependency will be added after, when edit datanode
+        //to avoid error alert on datanode that doesn't exist anymore
+        //in the mean time user can add a new datanode with the older name OR can change the formula
+        datanodesDependency.addNode(viewModel.name());
+      }
+      //AEF: before renaming datanode, must stop its scheduling before it disappears
+      if (viewModel.execInstance() != null) {
+        // scheduling is in progress
+        viewModel.execInstance().stopOperation(viewModel.name());
+      }
       //
-
-      //AEF
-      if (_.isUndefined(newSettings.settings.sampleTime) || newSettings.settings.sampleTime == 0) {
-        newViewModel.schedulerStart(undefined, undefined, 'unidentified');
-      } else {
-        newViewModel.sampleTime(newSettings.settings.sampleTime);
-        timeManager.registerDatanode(newViewModel.sampleTime(), newViewModel.name(), 'unidentified');
-      }
-      //datanodesListModel.launchFirstUpdate(newViewModel); //AEF // AEF & MBG réunion du 11/04/2019
-
-      angular
-        .element(document.body)
-        .injector()
-        .invoke(['$rootScope', function ($rootScope) {}]);
-
-      var $body = angular.element(document.body); // 1
-      var $rootScope = $body.scope().$root;
-      $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-      $rootScope.safeApply();
-    } else {
-      if (viewModel.isSettingNameChanged(newSettings.settings.name)) {
-        //avoid to compare with the same datanode if the name wasn't changed
-        if (datanodesManager.foundDatanode(newSettings.settings.name)) {
-          swal(
-            "A dataNode with name '" + newSettings.settings.name + "' adready exists.",
-            'Please specify a different name',
-            'error'
-          );
-          return true;
-        }
-        if (datanodesDependency.hasSuccessors(viewModel.name())) {
-          var successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
-          // warning the user to set modification in formula for example
-          swal(
-            'Renaming dataNode side effects',
-            'Old name "' +
-              viewModel.name() +
-              '" is used in dataNode(s) "' +
-              successors +
-              '" and should be changed by the new one "' +
-              newSettings.settings.name +
-              '".',
-            'warning'
-          );
-          //remove dependencies with former name of datanode, new dependency will be added after, when edit datanode
-          //to avoid error alert on datanode that doesn't exist anymore
-          //in the mean time user can add a new datanode with the older name OR can change the formula
-          datanodesDependency.addNode(viewModel.name());
-        }
-        //AEF: before renaming datanode, must stop its scheduling before it disappears
-        if (viewModel.execInstance() != null) {
-          // scheduling is in progress
-          viewModel.execInstance().stopOperation(viewModel.name());
-        }
-        //
-        datanodesListModel.renameDatanodeData(viewModel.name(), newSettings.settings.name);
-      }
-
-
-      datanodesDependency.renameNode(viewModel.name(), newSettings.settings.name);
-      viewModel.name(newSettings.settings.name);
-      //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
-      if (!_.isUndefined(newSettings.settings.sampleTime)) {
-        if (viewModel.isSettingSampleTimeChanged(newSettings.settings.sampleTime)) {
-          viewModel.sampleTime(newSettings.settings.sampleTime);
-        }
-      }
-
-      viewModel.type(newSettings.type);
-      viewModel.settings(newSettings.settings);
-      const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
-      viewModel.iconType(iconName);
-
-      if (viewModel.error()) {
-        //ABK
-        //swal("DataNode edition failure", "Error on some dataNode fields.", "error");
-        return true;
-      }
-
-      //AEF: recompute graphs after renaming and/or editing datanode
-      datanodesDependency.computeAllDisconnectedGraphs();
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
-        console.log('All disconnected Graphs after rename: ', datanodesDependency.getAllDisconnectedGraphs()); //To optimize after
-      //
-      if (!_.isUndefined(newSettings.settings.sampleTime)) {
-        if (viewModel.sampleTime() != 0) {
-          //new periodic or still periodic
-          timeManager.registerDatanode(viewModel.sampleTime(), viewModel.name(), 'edit');
-        } else if (timeManager.isRegisteredDatanode(viewModel.name())) {
-          //from periodic to no periodic
-          timeManager.unregisterDatanode(viewModel.name());
-          viewModel.schedulerStart(undefined, undefined, 'edit');
-        }
-      } // No period
-      else viewModel.schedulerStart(undefined, undefined, 'edit');
+      datanodesListModel.renameDatanodeData(viewModel.name(), newSettings.settings.name);
     }
+
+
+    datanodesDependency.renameNode(viewModel.name(), newSettings.settings.name);
+    viewModel.name(newSettings.settings.name);
+    //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
+    if (!_.isUndefined(newSettings.settings.sampleTime)) {
+      if (viewModel.isSettingSampleTimeChanged(newSettings.settings.sampleTime)) {
+        viewModel.sampleTime(newSettings.settings.sampleTime);
+      }
+    }
+
+    viewModel.type(newSettings.type);
+    viewModel.settings(newSettings.settings);
+    const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
+    viewModel.iconType(iconName);
+
+    if (viewModel.error()) {
+      //ABK
+      //swal("DataNode edition failure", "Error on some dataNode fields.", "error");
+      return true;
+    }
+
+    //AEF: recompute graphs after renaming and/or editing datanode
+    datanodesDependency.computeAllDisconnectedGraphs();
+    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      console.log('All disconnected Graphs after rename: ', datanodesDependency.getAllDisconnectedGraphs()); //To optimize after
+    //
+    if (!_.isUndefined(newSettings.settings.sampleTime)) {
+      if (viewModel.sampleTime() != 0) {
+        //new periodic or still periodic
+        timeManager.registerDatanode(viewModel.sampleTime(), viewModel.name(), 'edit');
+      } else if (timeManager.isRegisteredDatanode(viewModel.name())) {
+        //from periodic to no periodic
+        timeManager.unregisterDatanode(viewModel.name());
+        viewModel.schedulerStart(undefined, undefined, 'edit');
+      }
+    } // No period
+    else viewModel.schedulerStart(undefined, undefined, 'edit');
   }
 
   function getOldSettingsCallback(viewModel) {
@@ -516,9 +516,11 @@ var datanodesManager = (function () {
     createPluginEditor: function (types, instanceType, settings, flag) {
       createPluginEditor(types, instanceType, settings, flag);
     },
-    settingsSavedCallback: function (viewModel, isNewDatanode, newSettings, selectedType) {
-      return pluginEditor.saveSettings(selectedType, newSettings, () => 
-        settingsSavedCallback(viewModel, isNewDatanode, newSettings)
+    settingsSavedCallback: function (viewModel, newSettings, selectedType) {
+      return pluginEditor.saveSettings(
+        selectedType,
+        newSettings,
+        () => !!(viewModel ? updateDatanode(viewModel, newSettings) : createDatanode(newSettings))
       );
     },
     getOldSettingsCallback: function (viewModel) {

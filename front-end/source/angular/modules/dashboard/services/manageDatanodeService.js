@@ -69,8 +69,6 @@ angular
                             $rootScope.loadingBarStop();
                         };
 
-                        const viewModel = {};
-
                         const type = data.type();
                         const types = datanodesManager.getDataNodePluginTypes();
                         const selectedType = types[type];
@@ -82,7 +80,7 @@ angular
                             settings: settings
                         };
 
-                        if (!datanodesManager.settingsSavedCallback(viewModel, true, newSettings, selectedType)) {
+                        if (!datanodesManager.settingsSavedCallback(null, newSettings, selectedType)) {
                             scopeDash.displayedShowIndex = 0;
                             swal.close();
                             $rootScope.updateFlagDirty(true);
@@ -111,12 +109,12 @@ angular
             let types = datanodesManager.getDataNodePluginTypes();
 
             const isNewDatanode = _.isEmpty($rootScope.dataNodeViewModel);
-            let viewModel = $rootScope.dataNodeViewModel;
+            const viewModel = isNewDatanode ? null : $rootScope.dataNodeViewModel;
 
             let newSettings = datanodesManager.getDataNodeNewSettings();
 
             let selectedType = types[newSettings.type];
-            if (!datanodesManager.settingsSavedCallback(viewModel, isNewDatanode, newSettings, selectedType)) {
+            if (!datanodesManager.settingsSavedCallback(viewModel, newSettings, selectedType)) {
                 if (!isFromJsEditor) {
                     scopeDash.editorView.newDatanodePanel.view = false;
                     scopeDash.editorView.newDatanodePanel.list = false;
