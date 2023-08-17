@@ -7,6 +7,13 @@
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
+/**
+ * Listener callbacks for events
+ *
+ * @callback listenerCallback
+ * @param {?any} message
+ * @returns {void}
+ */
 
 /**
  * Allows to register listeners for 'events' and post notifications
@@ -19,8 +26,8 @@ class EventCenter {
 
     /**
      * @description adds change a listener. Remember to unsubscribe when appropriate to avoir leaks (ex: when listener gets out of scope)
-     * @param {string} event the event to listen for
-     * @param {()=>void} listener will be called whenever an action is added, removed or moved.
+     * @param {string} event the event type to listen for
+     * @param {listenerCallback} listener will be called whenever an event is sent.
      */
     addListener(event, listener) {
         let listeners = this._listeners.get(event);
@@ -33,8 +40,8 @@ class EventCenter {
 
     /**
      * @description removes change a listener
-     * @param {string} event the event to stop listening listen for
-     * @param {()=>void} listener 
+     * @param {string} event the event type to stop listening listen for
+     * @param {listenerCallback} listener 
      */
     removeListener(event, listener) {
         const listeners = this._listeners.get(event);
@@ -49,11 +56,12 @@ class EventCenter {
     /**
      * @description posts an event
      * @param {string} event 
+     * @param {?any} msg optional event data
      */
-    sendEvent(event) {
+    sendEvent(event, msg = null) {
         const listeners = this._listeners.get(event);
         if (listeners) {
-            listeners.forEach(listener => listener());
+            listeners.forEach(listener => listener(msg));
         }
     }
 }
