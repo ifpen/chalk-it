@@ -70,10 +70,6 @@ angular
                         };
 
                         const viewModel = {};
-                        const options = {
-                            type: "datanode",
-                            operation: "add",
-                        };
 
                         const type = data.type();
                         const types = datanodesManager.getDataNodePluginTypes();
@@ -86,7 +82,7 @@ angular
                             settings: settings
                         };
 
-                        if (!datanodesManager.settingsSavedCallback(viewModel, options, newSettings, selectedType)) {
+                        if (!datanodesManager.settingsSavedCallback(viewModel, true, newSettings, selectedType)) {
                             scopeDash.displayedShowIndex = 0;
                             swal.close();
                             $rootScope.updateFlagDirty(true);
@@ -114,25 +110,19 @@ angular
         self.saveDataNodeSettings = function(isFromJsEditor, scopeDash) {
             let types = datanodesManager.getDataNodePluginTypes();
 
-            let options = {
-                type: "datanode",
-                operation: "edit",
-            };
-            if (_.isEmpty($rootScope.dataNodeViewModel)) {
-                options.operation = "add";
-            }
+            const isNewDatanode = _.isEmpty($rootScope.dataNodeViewModel);
             let viewModel = $rootScope.dataNodeViewModel;
 
             let newSettings = datanodesManager.getDataNodeNewSettings();
 
             let selectedType = types[newSettings.type];
-            if (!datanodesManager.settingsSavedCallback(viewModel, options, newSettings, selectedType)) {
+            if (!datanodesManager.settingsSavedCallback(viewModel, isNewDatanode, newSettings, selectedType)) {
                 if (!isFromJsEditor) {
                     scopeDash.editorView.newDatanodePanel.view = false;
                     scopeDash.editorView.newDatanodePanel.list = false;
                     scopeDash.editorView.newDatanodePanel.type = false;
                 }
-                if (options.operation == "add")
+                if (isNewDatanode)
                     scopeDash.displayedShowIndex = 0;
             }
             $rootScope.filtredNodes = $rootScope.alldatanodes.length;
