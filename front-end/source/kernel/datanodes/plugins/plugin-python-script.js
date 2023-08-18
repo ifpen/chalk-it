@@ -666,6 +666,7 @@
             $(valueCell).append(wrapperDiv);
           },
           description: 'Python script to evaluate.',
+          expose_as_file: { extension: "py" }
         },
       ],
       // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.

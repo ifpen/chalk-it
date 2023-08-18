@@ -25,7 +25,8 @@
             name: "json_var",
             display_name: "Variable",
             type: "json",
-            description: "JSON, array or primitive data type variable (with read/write permissions)"
+            description: "JSON, array or primitive data type variable (with read/write permissions)",
+            expose_as_file: { extension: "json" }
         }],
         // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
         // * **settings** : A javascript object with the initial settings set by the user. The names of the properties in the object will correspond to the setting names defined above.
@@ -58,7 +59,7 @@
         // **onSettingsChanged(newSettings)** (required) : A public function we must implement that will be called when a user makes a change to the settings.
         self.onSettingsChanged = function(newSettings) {
             // Here we update our current settings with the variable that is passed in.
-            if(self.isJsonParsingSuccess()) {
+            if(self.isJsonParsingSuccess(newSettings)) {
                 currentSettings = newSettings;
                 return true;
             } else {
@@ -66,10 +67,10 @@
             }
         };
 
-        self.isJsonParsingSuccess = function() {
+        self.isJsonParsingSuccess = function(settings) {
             statusCallback('Pending');
             try {
-                json_var_value = JSON.parse(currentSettings.json_var);
+                json_var_value = JSON.parse(settings.json_var);
                 return true;
             } catch (err) {
                 swal("JSON Parse error", err.message, "error");
@@ -135,6 +136,6 @@
             return result;
         };
 
-        self.isJsonParsingSuccess();
+        self.isJsonParsingSuccess(currentSettings);
     };
 }());

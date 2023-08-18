@@ -11,6 +11,11 @@ import argparse
 # create the top-level parser
 parser = argparse.ArgumentParser()
 parser.add_argument('--dev', action='store_true', help='run in development mode')
+parser.add_argument('--syncDir', dest='sync', help='''if given a directory, the edited dashboard
+ will project the definition of some datanodes (like scripts) as files.
+ Requires "pathvalidate", "watchdog" and "flask-sock".''')
+parser.add_argument('--clearSyncDir', dest='sync_clear', action='store_true',
+                    help='if set, the "syncDir" directory will be cleared on startup. Please use responsively.')
 
 args = parser.parse_args()
 
@@ -24,6 +29,15 @@ else:
 app = Flask(__name__)
 run_port = 7854
 server_url = f"http://localhost:{run_port}"
+
+if args.sync:
+    from server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
+
+    server_ws_url = f"{server_url.replace('http', 'ws')}{FILE_SYNC_WS_ENDPOINT}"
+    blueprint = create_file_sync_blueprint(args.sync, args.sync_clear, server_ws_url)
+    app.register_blueprint(blueprint)
+    app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 25}
+
 
 dir_home = os.path.expanduser("~")
 
@@ -353,4 +367,6 @@ def main():
 
 
 if __name__ == '__main__':
+    logging.basicConfig()
+
     main()

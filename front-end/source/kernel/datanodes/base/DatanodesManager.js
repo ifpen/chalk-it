@@ -570,6 +570,7 @@ var datanodesManager = (function () {
         () => !!(viewModel ? updateDatanode(viewModel, newSettings) : createDatanode(newSettings))
       );
     },
+    updateDatanode,
     getOldSettingsCallback: function (viewModel) {
       getOldSettingsCallback(viewModel);
     },
