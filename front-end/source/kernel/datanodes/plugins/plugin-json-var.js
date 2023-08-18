@@ -26,8 +26,13 @@
             display_name: "Variable",
             type: "json",
             description: "JSON, array or primitive data type variable (with read/write permissions)",
-            expose_as_file: { extension: "json" }
         }],
+        expose_as_files: [
+            {
+                key: "json_var",
+                nameSuffix: "value.json",
+            },
+        ],
         // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
         // * **settings** : A javascript object with the initial settings set by the user. The names of the properties in the object will correspond to the setting names defined above.
         // * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.

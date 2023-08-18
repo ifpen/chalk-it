@@ -14,8 +14,19 @@
  * It will use the EventCenterService to monitor datanode changes and allow them to expose some
  * settings as files.
  *
- * Participating datanodes should mark settings to expose as a file with a 'expose_as_file' property
- * and provide an extension for the files. Ex: 'expose_as_file: { extension: "json" }'
+ * Participating datanode plugins should include a 'expose_as_files' property in their definition. Its
+ * value must be an array of objects defining the exposed files :
+ * {
+ *    key: mandatory. string. Identify the file internally. May be a key in the datanode settings.
+ *    nameSuffix: mandatory. string or function accepting the datanode settings and returning a string. Suffix 
+ *                used to build the file name. Expected to end with the file extension (and may be only the extension)
+ *    getter: optional. string or function accepting the datanode settings and returning the file's content 
+ *            as a base64 endoded string. Strings are interpreted as the name of a property in the datanode's settings, which 
+ *            should be a string. If omitted, 'key' is used.
+ *    setter: optional. string or function accepting the datanode settings and the new value (as a base64 encoded string
+ *            which is expected to update the settings accordingly. Strings are interpreted as the name of a property in the 
+ *            datanode's settings, which should be a string. If omitted, 'key' is used.
+ * }
  */
 class FileSyncManager {
   /**
@@ -55,10 +66,10 @@ class FileSyncManager {
       case 'file_modified':
         const fileStruct = this._filesPerId[event.id];
         if (fileStruct) {
-          const content = b64DecodeUnicode(event.content);
+          const content = event.content;
           const dnModel = datanodesManager.getDataNodeByName(fileStruct.dnName);
-          const newSettings = { ...dnModel.settings(), [fileStruct.propKey]: content };
-
+          const newSettings = { ...dnModel.settings() };
+          fileStruct.setterFct(newSettings, content);
           fileStruct.content = content;
 
           const type = dnModel.type();
@@ -90,6 +101,38 @@ class FileSyncManager {
     }
   }
 
+  _createGetterFct(propKey, getter) {
+    if (getter) {
+      if (typeof getter === 'string') {
+        return (settings) => b64EncodeUnicode(settings[getter]);
+      } else {
+        return getter;
+      }
+    } else {
+      return (settings) => b64EncodeUnicode(settings[propKey]);
+    }
+  }
+
+  _createSetterFct(propKey, setter) {
+    if (setter) {
+      if (typeof setter === 'string') {
+        return (settings, value) => (settings[setter] = b64DecodeUnicode(value));
+      } else {
+        return setter;
+      }
+    } else {
+      return (settings, value) => (settings[propKey] = b64DecodeUnicode(value));
+    }
+  }
+
+  _createNameSuffixFct(fileName) {
+    if (typeof fileName === 'string') {
+      return () => fileName;
+    } else {
+      return fileName;
+    }
+  }
+
   _onDatanodeCreated(event) {
     const files = [];
     event.forEach((dnName) => {
@@ -98,33 +141,38 @@ class FileSyncManager {
       const settings = dnModel.settings();
 
       const typeDef = datanodesManager.getDataNodePluginTypes()[dnModel.type()];
-      const settingsDef = typeDef.settings;
-      settingsDef
-        .filter((_) => _.expose_as_file)
-        .forEach((s) => {
-          const id = this._nextId++;
-          const propKey = s.name;
-          const content = settings[propKey];
-          const fileName = `${dnName}__${s.display_name}.${s.expose_as_file.extension}`;
+      const fileDefs = typeDef.expose_as_files ?? [];
+      fileDefs.forEach((fd) => {
+        const id = this._nextId++;
 
-          const fileStruct = {
-            id,
-            dnName,
-            propKey,
-            fileName,
-            content,
-          };
+        const propKey = fd.key;
+        const nameSuffixFct = this._createNameSuffixFct(fd.nameSuffix);
+        const getterFct = this._createGetterFct(propKey, fd.getter);
+        const setterFct = this._createSetterFct(propKey, fd.setter);
 
-          this._filesPerId[id] = fileStruct;
-          if (!this._filesPerDatanode[dnName]) this._filesPerDatanode[dnName] = {};
-          this._filesPerDatanode[dnName][propKey] = fileStruct;
+        const content = getterFct(settings);
+        const fileName = `${dnName}__${nameSuffixFct(settings)}`;
 
-          files.push({
-            id,
-            name: fileName,
-            content: b64EncodeUnicode(content),
-          });
+        const fileStruct = {
+          id,
+          dnName,
+          propKey,
+          nameSuffixFct,
+          getterFct,
+          setterFct,
+          content,
+        };
+
+        this._filesPerId[id] = fileStruct;
+        if (!this._filesPerDatanode[dnName]) this._filesPerDatanode[dnName] = {};
+        this._filesPerDatanode[dnName][propKey] = fileStruct;
+
+        files.push({
+          id,
+          name: fileName,
+          content: content,
         });
+      });
     });
     if (files.length) {
       this._webSocket.send(
@@ -172,13 +220,14 @@ class FileSyncManager {
       const filesDescs = this._filesPerDatanode[newName];
       if (filesDescs) {
         Object.values(filesDescs).forEach((f) => {
-          const newContent = settings[f.propKey];
+          const newContent = f.getterFct(settings);
           if (newContent !== f.content) {
             f.content = newContent;
+
             files.push({
               id: f.id,
-              name: f.fileName,
-              content: b64EncodeUnicode(newContent),
+              name: `${newName}__${f.nameSuffixFct(settings)}`,
+              content: newContent,
             });
           }
         });

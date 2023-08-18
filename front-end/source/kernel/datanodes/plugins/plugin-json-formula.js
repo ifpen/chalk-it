@@ -42,7 +42,12 @@
                 type: "calculated",
                 description1: "Write Javascript formula that returns a JSON, array or primitive data type ouptput",
                 description2: "Browse and select a dataNode from workspace to use it in the formula." /*ABK*/,
-                expose_as_file: { extension: "js" }
+            },
+        ],
+        expose_as_files: [
+            {
+                key: "json_var_formula",
+                nameSuffix: "formula.js",
             },
         ],
         // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.

@@ -167,6 +167,28 @@
                 "default_value": false
             }
         ],
+        expose_as_files: [
+            {
+                key: "content",
+                nameSuffix: (settings) => settings?.content?.name ?? "data.csv",
+                getter: (settings) => {
+                    const content = settings.content;
+                    if (typeof content === 'string') {
+                        return b64EncodeUnicode(content);
+                    } else {
+                        return content.isBinary ? content.content : b64EncodeUnicode(content.content);
+                    }
+                },
+                setter: (settings, value) => {
+                    const content = settings.content;
+                    if (typeof settings.content === 'string') {
+                        settings.content = b64DecodeUnicode(value);
+                    } else {
+                        settings.content = {...settings.content, content: value, isBinary: true };
+                    } 
+                },
+            },
+        ],
         // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
         // * **settings** : A javascript object with the initial settings set by the user. The names of the properties in the object will correspond to the setting names defined above.
         // * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
