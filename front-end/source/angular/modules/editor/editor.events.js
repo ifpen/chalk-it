@@ -72,3 +72,13 @@ const EVENTS_EDITOR_WIDGET_MOVED = 'WidgetMovedEvent';
 const EVENTS_EDITOR_SELECTION_CHANGED = 'EditorSelectionChanged';
 const EVENTS_EDITOR_ADD_REMOVE_WIDGET = 'EditorAddRemoveWidget';
 const EVENTS_EDITOR_CONNECTIONS_CHANGED = 'EditorConnectionsChanged';
+
+/** Datanode(s) have been added. Message is the array of their names. */
+const EVENTS_EDITOR_DATANODE_CREATED = 'DatanodeCreated';
+
+/** Datanode(s) have been deleted. Message is the array of their names. */
+const EVENTS_EDITOR_DATANODE_DELETED = 'DatanodeDeleted';
+
+/** A data node has been updated. Message is an object: '{oldName: str, newName: str}'
+ * (both names will be the same if the datanode has not been renamed) */
+const EVENTS_EDITOR_DATANODE_UPDATED = 'DatanodeUpdated';

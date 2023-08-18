@@ -34,21 +34,33 @@ var datanodesManager = (function () {
   var jsEditor = new JSEditor();
   var pluginEditor = new PluginEditor(jsEditor);
 
+  let eventCenter = null;
+  angular
+    .element(document.body)
+    .injector()
+    .invoke([
+      'EventCenterService',
+      (eventCenterService) => {
+        eventCenter = eventCenterService;
+      },
+    ]);
+
   // deleteDn: delete a datanode
   function deleteDn(viewModel) {
+    const dnName = viewModel.name();
     //AEF
     if (viewModel.sampleTime()) {
-      timeManager.unregisterDatanode(viewModel.name());
+      timeManager.unregisterDatanode(dnName);
     }
     //
-    if (datanodesDependency.hasSuccessors(viewModel.name())) {
-      let successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
+    if (datanodesDependency.hasSuccessors(dnName)) {
+      let successors = Array.from(datanodesDependency.getSuccessors(dnName));
       let str = successors.toString();
       str = str.replaceAll(',', ', ');
       // warning the user to set modification in formula for example
       swal(
         'Deleting dataNode side effects',
-        'This dataNode "' + viewModel.name() + '" is still used in dataNode(s) "' + str + '".\n It must be changed.',
+        'This dataNode "' + dnName + '" is still used in dataNode(s) "' + str + '".\n It must be changed.',
         'warning'
       );
     }
@@ -64,11 +76,15 @@ var datanodesManager = (function () {
     $rootScope.safeApply();
 
     //AEF: recompute graphs after deleting a datanode
-    datanodesDependency.updateDisconnectedGraphsList(viewModel.name(), 'delete');
+    datanodesDependency.updateDisconnectedGraphsList(dnName, 'delete');
 
     if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs after delete: ', datanodesDependency.getAllDisconnectedGraphs());
     //
+
+    if (eventCenter) {
+      eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_DELETED, [dnName]);
+    }
   }
 
   // isConnected: returns info if datanode is connected, and if true it returns also the corresponding widgetName
@@ -184,6 +200,10 @@ var datanodesManager = (function () {
     }
     //datanodesListModel.launchFirstUpdate(newViewModel); //AEF // AEF & MBG réunion du 11/04/2019
 
+    if (eventCenter) {
+      eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_CREATED, [newViewModel.name()]);
+    }
+
     angular
       .element(document.body)
       .injector()
@@ -196,47 +216,46 @@ var datanodesManager = (function () {
   }
 
   function updateDatanode(viewModel, newSettings) {
-    if (viewModel.isSettingNameChanged(newSettings.settings.name)) {
+    const oldName = viewModel.name();
+    const newName = newSettings.settings.name;
+
+    if (viewModel.isSettingNameChanged(newName)) {
       //avoid to compare with the same datanode if the name wasn't changed
-      if (datanodesManager.foundDatanode(newSettings.settings.name)) {
-        swal(
-          "A dataNode with name '" + newSettings.settings.name + "' adready exists.",
-          'Please specify a different name',
-          'error'
-        );
+      if (datanodesManager.foundDatanode(newName)) {
+        swal(`A dataNode with name '${newName}' adready exists.`, 'Please specify a different name', 'error');
         return true;
       }
-      if (datanodesDependency.hasSuccessors(viewModel.name())) {
-        var successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
+      if (datanodesDependency.hasSuccessors(oldName)) {
+        const successors = Array.from(datanodesDependency.getSuccessors(oldName));
         // warning the user to set modification in formula for example
         swal(
           'Renaming dataNode side effects',
           'Old name "' +
-            viewModel.name() +
+            oldName +
             '" is used in dataNode(s) "' +
             successors +
             '" and should be changed by the new one "' +
-            newSettings.settings.name +
+            newName +
             '".',
           'warning'
         );
         //remove dependencies with former name of datanode, new dependency will be added after, when edit datanode
         //to avoid error alert on datanode that doesn't exist anymore
         //in the mean time user can add a new datanode with the older name OR can change the formula
-        datanodesDependency.addNode(viewModel.name());
+        datanodesDependency.addNode(voldName);
       }
       //AEF: before renaming datanode, must stop its scheduling before it disappears
       if (viewModel.execInstance() != null) {
         // scheduling is in progress
-        viewModel.execInstance().stopOperation(viewModel.name());
+        viewModel.execInstance().stopOperation(oldName);
       }
       //
-      datanodesListModel.renameDatanodeData(viewModel.name(), newSettings.settings.name);
+      datanodesListModel.renameDatanodeData(oldName, newName);
     }
 
 
-    datanodesDependency.renameNode(viewModel.name(), newSettings.settings.name);
-    viewModel.name(newSettings.settings.name);
+    datanodesDependency.renameNode(oldName, newName);
+    viewModel.name(newName);
     //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
     if (!_.isUndefined(newSettings.settings.sampleTime)) {
       if (viewModel.isSettingSampleTimeChanged(newSettings.settings.sampleTime)) {
@@ -248,6 +267,10 @@ var datanodesManager = (function () {
     viewModel.settings(newSettings.settings);
     const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
     viewModel.iconType(iconName);
+
+    if (eventCenter) {
+      eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_UPDATED, {oldName, newName});
+    }
 
     if (viewModel.error()) {
       //ABK
@@ -371,9 +394,33 @@ var datanodesManager = (function () {
     },
 
     load: function (configuration, bool, callback) {
+      const oldDnNames = datanodesListModel.datanodes().map(_ => _.name())
+
       datanodesListModel.load(configuration, bool, callback);
-      if (datanodesListModel.error()) return false;
-      else return true;
+
+      if (datanodesListModel.error()) {
+        return false;
+      } else {
+        if (eventCenter) {
+          const newDnNames = datanodesListModel.datanodes().map(_ => _.name())
+          if(bool) {
+            if (oldDnNames.length) {
+              eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_DELETED, oldDnNames)
+            }
+            if (newDnNames.length) {
+              eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_CREATED, newDnNames);
+            }
+          } else {
+            // TODO name conflicts
+            const newDnNames = configuration.datanodes.map(_ => _.name);
+            if (newDnNames.length) {
+              eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_CREATED, newDnNames);
+            }
+          }
+        }
+
+        return true;
+      }
     },
     serialize: function () {
       return datanodesListModel.serialize();
@@ -419,23 +466,23 @@ var datanodesManager = (function () {
       }
     },
     getDataNodeByName: function (datanodeName) {
-      var datanodes = datanodesListModel.datanodes();
+      const datanodes = datanodesListModel.datanodes();
 
       // Find the datanode with the name specified
-      datanode = _.find(datanodes, function (datanodeModel) {
-        return datanodeModel.name() === datanodeName;
-      });
-
-      if (datanode) {
-        return datanode;
-      }
+      return _.find(datanodes, (datanodeModel) => datanodeModel.name() === datanodeName);
     },
     getAllDataNodes: function () {
       return datanodesListModel.datanodes();
     },
     clear: function () {
       schedulerProfiling = {}; // GHI for issue #188
-      return datanodesListModel.clear();
+
+      const allDnNames = datanodesListModel.datanodes().map(_ => _.name())
+      datanodesListModel.clear();
+
+      if (self.eventCenter && allDnNames.length) {
+        self.eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_DELETED, allDnNames);
+      }
     },
     showDepGraph: function (name) {
       graphVisu.showDepGraph(name);
