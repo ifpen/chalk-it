@@ -172,12 +172,6 @@ angular.module('modules.python-images', [])
         };
 
         function _loadFileData(id) {
-            function b64DecodeUnicode(str) {
-                return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-            }
-
             return new Promise((resolve, reject) => {
                 var FileMngrInst = new FileMngrFct();
                 FileMngrInst.ReadFile("pydata", id, (result, msg, type) => {

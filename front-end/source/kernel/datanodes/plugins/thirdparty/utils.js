@@ -102,6 +102,7 @@ function syntaxHighlight(json) {
     return json;
 }
 
+
 function base64ArrayBuffer(arrayBuffer) {
     var base64 = ''
     var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
@@ -823,6 +824,16 @@ function b64EncodeUnicode(str) {
     }));
 }
 
+function b64DecodeUnicode(str) {
+    return decodeURIComponent(
+      Array.prototype.map
+        .call(atob(str), function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("") 
+    );
+}
+
 // MIME types of images we expect the browser to be able to display
 const BROWSER_SUPPORTED_IMAGES = [
     'image/apng',
@@ -912,8 +923,35 @@ function jsonDataToBasicHtmlElement(data, options = undefined) {
     return span;
 };
 
+/**
+ * Format file size in bytes to a readable string.
+ *
+ * @param {number} fileSize - The file size in bytes.
+ * @returns {string} Formatted file size.
+ */
+function formatFileSize(fileSize) {
+    if (fileSize < 1024) {
+        return `${fileSize} bytes`;
+    } else if (fileSize < 1_048_576) {
+        return `${(fileSize / 1024).toFixed(1)} KB`; // 1024 * 1024
+    } else {
+        return `${(fileSize / 1_048_576).toFixed(1)} MB`; // 1024 * 1024
+    }
+}
 
-async function zipToObject(file, textExtensions = ["txt", "json", "xprjson", "xml", "svg", "html", "css"]) {
+/**
+ * Retrieves the file extension from a given file name.
+ *
+ * @function
+ * @param {string} fileName - The file name to extract the extension from.
+ * @returns {string} The file extension without the dot (e.g. "txt" for "example.txt").
+ */
+function getFileExtension(fileName) {
+    const extension = fileName.split(".").pop();
+    return extension;
+}
+
+async function zipToObject(file, textExtensions = ["txt", "json", "xprjson", "xml", "svg", "html", "css", "js", "ts", "md", "csv"]) {
     let size = 0;
     let data = null;
     let name = undefined;
@@ -938,15 +976,7 @@ async function zipToObject(file, textExtensions = ["txt", "json", "xprjson", "xm
         size = b64StrSize(data);
     }
 
-    let fileSizeFormat = "";
-    if (size < 1024) {
-        fileSizeFormat = `${size} bytes`;
-    } else if (size >= 1024 && size < 1_048_576) {
-        fileSizeFormat = `${(size / 1024).toFixed(1)} KB`;
-    } else if (size >= 1_048_576) {
-        fileSizeFormat = `${(size / 1_048_576).toFixed(1)} MB`;
-    }
-
+    const fileSizeFormat = formatFileSize(size);
 
     const zip = await JSZip.loadAsync(data, { base64 });
     const zipEntries = [];
@@ -956,7 +986,7 @@ async function zipToObject(file, textExtensions = ["txt", "json", "xprjson", "xm
         zipEntries
             .filter(entry => !entry.relativePath.endsWith('/'))
             .map(async entry => {
-                const fileExtension = entry.relativePath.split('.').pop();
+                const fileExtension = getFileExtension(entry.relativePath);
                 const isBinary = !textExtensions.includes(fileExtension);
                 const content = await entry.zipEntry.async(isBinary ? 'base64' : 'text');
                 return {
@@ -972,7 +1002,7 @@ async function zipToObject(file, textExtensions = ["txt", "json", "xprjson", "xm
         size: fileSizeFormat,
         name,
         entries,
-    }
+    };
 }
 
 function decodeMimeType(mime) {

@@ -24,6 +24,23 @@ const colorway = [
 ];
 const textColor = "var(--widget-color)";
 
+const axisParams = {
+  title: "",
+  tickfont: {
+    color: textColor,
+  }
+}
+const plotlyColorParams = {
+  paper_bgcolor: "rgba(0,0,0,0)",
+  plot_bgcolor: "rgba(0,0,0,0)",
+  colorway: colorway,
+  legend: {
+    font: {
+      color: textColor,
+    }
+  }
+};
+
 // Very minimalistic plotly validation
 const _SCHEMA_PLOTLY_DATA = {
   $schema: WidgetPrototypesManager.SCHEMA_VERSION,
@@ -401,7 +418,37 @@ function plotlyWidgetsPluginClass() {
       return this.checkNested(obj[level], ...rest)
     }    
 
+    /**
+    * Retrieves the transformed text by handling HTML tags.
+    * If the text does not contain HTML tags, it is returned as is.
+    * 
+    * @param {string} text - The input text to transform.
+    * @returns {string} The transformed text without HTML tags.
+    */
+    this.getTransformedText = function (text) {
+      if (text) {
+          // Check if the text has HTML tags
+          const hasHtmlTags = $('<div>').html(text).children().length > 0;
+          if (!hasHtmlTags) {
+              // If the text does not have HTML tags, parse it as HTML
+              const parser = new DOMParser();
+              text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
+          }
+      }
+      return text;
+    }
+
     this.render = function () {
+      /* Conversion to enable HTML tags */
+      const layout = modelsParameters[idInstance].layout;
+      if (!_.isUndefined(layout) && !_.isUndefined(layout.title)) {
+        if (!_.isUndefined(layout.title.text)) {
+          layout.title.text = this.getTransformedText(layout.title.text);
+        } else {
+          layout.title = this.getTransformedText(layout.title);
+        }
+      }
+
       /* Apply colors from modelsParameters */
       if (modelsHiddenParams[idInstance].layout) {
         let modelLayout = JSON.parse(JSON.stringify(modelsHiddenParams[idInstance].layout))
@@ -413,18 +460,12 @@ function plotlyWidgetsPluginClass() {
         if (this.checkNested(modelLayout, 'colorway')) {
           modelsHiddenParams[idInstance].layout.colorway = modelLayout.colorway.map((color) => this.getColorValueFromCSSProperty(color))
         }
-        // Set x Axis ticks color
-        if (this.checkNested(modelLayout, 'xaxis', 'tickfont', 'color')) {
-          modelsHiddenParams[idInstance].layout.xaxis.tickfont.color = this.getColorValueFromCSSProperty(modelLayout.xaxis.tickfont.color)
-        }
-        // Set y Axis ticks color
-        if (this.checkNested(modelLayout, 'yaxis', 'tickfont', 'color')) {
-          modelsHiddenParams[idInstance].layout.yaxis.tickfont.color = this.getColorValueFromCSSProperty(modelLayout.yaxis.tickfont.color)
-        }
-        // Set z Axis ticks color
-        if (this.checkNested(modelLayout, 'zaxis', 'tickfont', 'color')) {
-          modelsHiddenParams[idInstance].layout.zaxis.tickfont.color = this.getColorValueFromCSSProperty(modelLayout.zaxis.tickfont.color)
-        }
+        // Set x, y, z Axis ticks color
+        ['xaxis', 'yaxis', 'zaxis'].forEach(axis => {
+          if (this.checkNested(modelLayout, axis, 'tickfont', 'color')) {
+            modelsHiddenParams[idInstance].layout[axis].tickfont.color = this.getColorValueFromCSSProperty(modelLayout[axis].tickfont.color);
+          }
+        });
         // Set legend color
         if (this.checkNested(modelLayout, 'legend', 'font', 'color')) {
           modelsHiddenParams[idInstance].layout.legend.font.color = this.getColorValueFromCSSProperty(modelLayout.legend.font.color)
@@ -598,6 +639,17 @@ function plotlyWidgetsPluginClass() {
 
     this.numberOfAxis = modelsParameters[idInstance].numberOfAxis;
 
+    /* Theme backward compatibility */
+    if (!_.isUndefined(modelsParameters[idInstance].layout)) {
+      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };  
+      // Set axis ticks color
+      ['xaxis', 'yaxis'].forEach(axis => {
+        if (!_.isUndefined(modelsParameters[idInstance].layout[axis])) {
+          modelsParameters[idInstance].layout[axis] = { ...axisParams, ...modelsParameters[idInstance].layout[axis] };
+        }
+      });
+    }
+
     // cleanup first
     if (modelsHiddenParams[idInstance].data.length > this.numberOfAxis) {
       modelsHiddenParams[idInstance].data.splice(this.numberOfAxis, modelsHiddenParams[idInstance].data.length);
@@ -716,6 +768,17 @@ function plotlyWidgetsPluginClass() {
 
     this.numberOfAxis = modelsParameters[idInstance].numberOfAxis;
 
+    /* Theme backward compatibility */
+    if (!_.isUndefined(modelsParameters[idInstance].layout)) {
+      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };       
+      // Set axis ticks color
+      ['xaxis', 'yaxis'].forEach(axis => {
+        if (!_.isUndefined(modelsParameters[idInstance].layout[axis])) {
+          modelsParameters[idInstance].layout[axis] = { ...axisParams, ...modelsParameters[idInstance].layout[axis] };
+        }
+      });
+    }
+
     this.getActuatorDescriptions = function (model = null) {
       const data = model || modelsParameters[idInstance];
       const result = [];
@@ -790,6 +853,11 @@ function plotlyWidgetsPluginClass() {
 
     var self = this;
 
+    /* Theme backward compatibility */
+    if (!_.isUndefined(modelsParameters[idInstance].layout)) {
+      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };
+    }
+
     const _LABELS_DESCRIPTOR = new WidgetActuatorDescription(
       "labels",
       "Array of labels",
@@ -863,6 +931,13 @@ function plotlyWidgetsPluginClass() {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
     const self = this;
+
+    /* Theme backward compatibility */
+    if (!_.isUndefined(modelsParameters[idInstance].layout)) {
+      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };
+      delete modelsParameters[idInstance].layout.colorway;
+      delete modelsParameters[idInstance].layout.legend;
+    }
 
     const _X_DESCRIPTOR = new WidgetActuatorDescription(
       "x",

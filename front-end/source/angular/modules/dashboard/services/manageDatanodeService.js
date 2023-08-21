@@ -29,7 +29,7 @@ angular
 
         /*---------- Duplicate button ----------------*/
         self.duplicateDataNode = function(data, scopeDash) {
-            let dnName = data.name();
+            const dnName = data.name();
             swal({
                     title: "Duplicate DataNode",
                     text: "You can write another name here:",
@@ -56,8 +56,8 @@ angular
                             return false;
                         }
 
-                        let endAction = function(text) {
-                            let notice = new PNotify({
+                        const endAction = function(text) {
+                            const notice = new PNotify({
                                 title: dnName,
                                 text: text,
                                 type: "success",
@@ -69,24 +69,18 @@ angular
                             $rootScope.loadingBarStop();
                         };
 
-                        let viewModel = {};
-                        let options = {
-                            type: "datanode",
-                            operation: "add",
-                        };
-
-                        let type = data.type();
-                        let types = datanodesManager.getDataNodePluginTypes();
-                        let selectedType = types[type];
-                        let settings = data.settings();
+                        const type = data.type();
+                        const types = datanodesManager.getDataNodePluginTypes();
+                        const selectedType = types[type];
+                        const settings = { ...data.settings() };
                         settings.name = inputValue;
-                        let newSettings = {
+                        const newSettings = {
                             type: type,
                             iconType: selectedType.icon_type,
                             settings: settings
                         };
 
-                        if (!datanodesManager.settingsSavedCallback(viewModel, options, newSettings, selectedType)) {
+                        if (!datanodesManager.settingsSavedCallback(null, newSettings, selectedType)) {
                             scopeDash.displayedShowIndex = 0;
                             swal.close();
                             $rootScope.updateFlagDirty(true);
@@ -114,25 +108,19 @@ angular
         self.saveDataNodeSettings = function(isFromJsEditor, scopeDash) {
             let types = datanodesManager.getDataNodePluginTypes();
 
-            let options = {
-                type: "datanode",
-                operation: "edit",
-            };
-            if (_.isEmpty($rootScope.dataNodeViewModel)) {
-                options.operation = "add";
-            }
-            let viewModel = $rootScope.dataNodeViewModel;
+            const isNewDatanode = _.isEmpty($rootScope.dataNodeViewModel);
+            const viewModel = isNewDatanode ? null : $rootScope.dataNodeViewModel;
 
             let newSettings = datanodesManager.getDataNodeNewSettings();
 
             let selectedType = types[newSettings.type];
-            if (!datanodesManager.settingsSavedCallback(viewModel, options, newSettings, selectedType)) {
+            if (!datanodesManager.settingsSavedCallback(viewModel, newSettings, selectedType)) {
                 if (!isFromJsEditor) {
                     scopeDash.editorView.newDatanodePanel.view = false;
                     scopeDash.editorView.newDatanodePanel.list = false;
                     scopeDash.editorView.newDatanodePanel.type = false;
                 }
-                if (options.operation == "add")
+                if (isNewDatanode)
                     scopeDash.displayedShowIndex = 0;
             }
             $rootScope.filtredNodes = $rootScope.alldatanodes.length;

@@ -78,8 +78,11 @@ function saveToFileButtonWidgetsPluginClass() {
 
             this.setButtonColorStyle();
 
+            // conversion to enable HTML tags
+            const text = this.getTransformedText("text");
+
             var divContent = '';
-            divContent = '<a ' + styleDef + '" id="button-save-to-file' + idWidget + '">' + "  " + modelsParameters[idInstance].text + "  " + '</a>';
+            divContent = '<a ' + styleDef + '" id="button-save-to-file' + idWidget + '">' + "  " + text + "  " + '</a>';
 
             widgetHtml.innerHTML = divContent;
             widgetHtml.setAttribute("style", "height: " + valueHeightPx + "px;");

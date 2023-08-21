@@ -559,12 +559,24 @@ var FileMngrFct = function () {
         if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
           txtErr = jqXHR.responseJSON.Message;
         var l_callback = PopCallBack("GetList", fileType, "");
-        EndOfOperation(
-          "Sorry, could not get the list of available files",
-          textStatus + " :\n" + txtErr,
-          "error",
-          l_callback
-        );
+        const $rootScope = angular.element(document.body).scope().$root;
+        if ($rootScope.xDashFullVersion) {
+          EndOfOperation(
+            "Sorry, could not get the list of available files",
+            textStatus + " :\n" + txtErr,
+            "error",
+            l_callback
+          );
+        } else {
+          const err = "the Flask server is not responding";
+          datanodesManager.showLoadingIndicator(false)
+          EndOfOperation(
+            "Please check and restart the command line",
+            textStatus + " :\n" + err,
+            "error",
+            l_callback
+          );
+        }
       },
     });
   } // Fin de GetList
@@ -2107,31 +2119,6 @@ var FileMngrFct = function () {
       } else l_callback(msg1, msg2, localType);
     }
   } // Fin de EndOfOperation
-  //=============================================================================================
-  //  b64EncodeUnicode
-  //=============================================================================================
-
-  function b64EncodeUnicode(str) {
-    return btoa(
-      encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
-        return String.fromCharCode(parseInt(p1, 16));
-      })
-    );
-  } // Fin de b64EncodeUnicode
-
-  //=============================================================================================
-  //  b64DecodeUnicode
-  //=============================================================================================
-
-  function b64DecodeUnicode(str) {
-    return decodeURIComponent(
-      Array.prototype.map
-        .call(atob(str), function (c) {
-          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join("")
-    );
-  } // Fin de b64DecodeUnicode
 
   //=============================================================================================
   // RemoveFileExtension

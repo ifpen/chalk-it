@@ -110,6 +110,7 @@ modelsParameters.flatUiTextInput = {
     "valueTextAlign": "left",
     "displayBorder": true,
     "borderColor": "var(--widget-border-color)",
+    "backgroundColor": "var(--widget-input-color)"
 };
 modelsParameters.flatUiNumericInput = {
     "label": "labelText",
@@ -130,6 +131,7 @@ modelsParameters.flatUiNumericInput = {
     "valueTextAlign": "left",
     "displayBorder": true,
     "borderColor": "var(--widget-border-color)",
+    "backgroundColor": "var(--widget-input-color)",
     "unit": "unitText",
     "displayUnit": false,
     "unitFontSize": 0.5,
@@ -148,6 +150,7 @@ modelsParameters.flatUiValueDisplay = {
     "valueTextAlign": "left",
     "displayBorder": true,
     "borderColor": "var(--widget-border-color)",
+    "backgroundColor": "var(--widget-input-color)",
     "unit": "unitText",
     "displayUnit": false,
     "unitFontSize": 0.5,
@@ -157,7 +160,9 @@ modelsParameters.flatUiButton = {
     "numberOfTriggers": 1,
     "fileInput": false,
     "binaryFileInput": false,
-    "buttonFontSize": 0.5,
+    "buttonFontSize": 0.3,
+    "displayIcon": false,
+    "fontAwesomeIcon": "",
     "buttonFontFamily":  "var(--widget-font-family)",
     "buttonTextColor": "var(--widget-button-primary-text)",
     "buttonDefaultColor": "var(--widget-button-primary-color)",
@@ -172,7 +177,7 @@ modelsLayout.flatUiProgressBar = { 'height': '5vh', 'width': '24vw', 'minWidth':
 modelsLayout.flatUiTextInput = { 'height': '5vh', 'width': '19vw', 'minWidth': '150px', 'minHeight': '24px' };
 modelsLayout.flatUiNumericInput = { 'height': '5vh', 'width': '19vw', 'minWidth': '150px', 'minHeight': '24px' };
 modelsLayout.flatUiValueDisplay = { 'height': '5vh', 'width': '19vw', 'minWidth': '150px', 'minHeight': '24px' };
-modelsLayout.flatUiButton = { 'height': '5vh', 'width': '8vw', 'minWidth': '55px', 'minHeight': '24px' };
+modelsLayout.flatUiButton = { 'height': '6vh', 'width': '8vw', 'minWidth': '55px', 'minHeight': '24px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -215,29 +220,26 @@ function flatUiWidgetsPluginClass() {
 
         this.numberOfTriggers = modelsParameters[idInstance].numberOfTriggers;
 
-        this.enable = function () {
-            $("#button" + idWidget).attr('class', "btn btn-block btn-lg " + idInstance + 'widgetCustomColor');
-        }
+        this.enable = function () {}
 
-        this.disable = function () {
-            $("#button" + idWidget).attr('class', "btn btn-block btn-lg /*disabled*/ " + idInstance + 'widgetCustomColor');
-        };
+        this.disable = function () {}
 
         this.readFileEvt = function () {
-            var input = $('#button' + idWidget + '_select_file')
+            const input = $('#button' + idWidget + '_select_file')
             input.on('change', function (e) {
-                var reader = new FileReader();
+                const reader = new FileReader();
                 const file = e.target.files[0];
                 const fileSize = file.size;
                 let fileSizeFormat = "";
 
                 if (fileSize < 1024) {
                     fileSizeFormat = `${fileSize} bytes`;
-                } else if (fileSize >= 1024 && fileSize < 1_048_576) {
-                    fileSizeFormat = `${(fileSize / 1024).toFixed(1)} KB`;
-                } else if (fileSize >= 1_048_576) {
-                    fileSizeFormat = `${(fileSize / 1_048_576).toFixed(1)} MB`;
+                } else if (fileSize < 1_048_576) {
+                    fileSizeFormat = `${(fileSize / 1024).toFixed(1)} KB`; // 1024 * 1024
+                } else {
+                    fileSizeFormat = `${(fileSize / 1_048_576).toFixed(1)} MB`; // 1024 * 1024
                 }
+
                 const result = {
                     type: file.type,
                     size: fileSizeFormat,
@@ -281,33 +283,42 @@ function flatUiWidgetsPluginClass() {
         };
 
         this.render = function () {
-            var widgetHtml = document.createElement('div');
+            const widgetHtml = document.createElement('div');
             widgetHtml.setAttribute('id', 'button-widget-html' + idWidget);
             widgetHtml.setAttribute('class', 'button-widget-html');
-            var valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
-            var fontSize = 0.5;
+            const valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
+            let fontSize = 0.5;
             if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
                 fontSize = modelsParameters[idInstance].buttonFontSize;
             }
-            var styleDef = 'style="text-align: center; vertical-align: middle;' +
-                'font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw + 0.4vh); height: ' +
-                valueHeightPx + 'px; display:table-cell; ' + this.buttonFontFamily() +
-                '" class="btn btn-block btn-lg ' + idInstance + 'widgetCustomColor';
+            const styleDef = 'style="font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw + 0.4vh); height: ' +
+                valueHeightPx + 'px; ' + this.buttonFontFamily() +
+                '" class="btn btn-table-cell btn-lg button-widget-html__a ' + idInstance + 'widgetCustomColor';
 
             this.setButtonColorStyle();
-            var divContent = '';
+            let divContent = '';
+
+            const iconClass = this.fontAwesomeIcon();
+            const hasIcon = this.displayIcon();
+            let icon = "";
+            if (hasIcon) {
+               icon = '<i class="' + iconClass + '"></i>';
+            }
+
+            // conversion to enable HTML tags
+            const text = this.getTransformedText("text");
 
             if (this.bIsInteractive) {
                 if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
-                    var fileInput = '<input onclick="displaySpinnerOnInputFileButton( \'' + idInstance + '\', \'' + idWidget + '\')" type="file" style="display : none" id="button' + idWidget + '_select_file"></input>';
-                    divContent = '<a ' + styleDef + '" id="button' + idWidget + '">' + modelsParameters[idInstance].text + " " + fileInput + '</a>';
+                    const fileInput = '<input onclick="displaySpinnerOnInputFileButton(\'' + idWidget + '\')" type="file" style="display : none;" id="button' + idWidget + '_select_file"></input>';
+                    divContent = '<a ' + styleDef + '" id="button' + idWidget + '">' + icon  + " " +  text + " " + fileInput + '</a>';
                 } else {
-                    divContent = '<a onclick="updateDataSourceFromWidgetwithspinButton( \'' + idInstance + '\', \'' + idWidget + '\')" ' + styleDef +
-                        '" id="button' + idWidget + '">' + "  " + modelsParameters[idInstance].text + "  " + '</a>';
+                    divContent = '<a onclick="updateDataNodeFromWidgetwithspinButton( \'' + idInstance + '\', \'' + idWidget + '\')" ' + styleDef +
+                        '" id="button' + idWidget + '">' + icon + " " + text + "  " + '</a>';
                 }
                 self.enable();
             } else {
-                divContent = '<a ' + styleDef + ' /*disabled*/" id="button' + idWidget + '">' + modelsParameters[idInstance].text + '</a>';
+                divContent = '<a ' + styleDef + ' /*disabled*/" id="button' + idWidget + '">' + icon  + " " + text + '</a>';
                 self.disable();
             }
             widgetHtml.innerHTML = divContent;
@@ -414,8 +425,9 @@ function flatUiWidgetsPluginClass() {
         //  self.labelWidthPx = 0;
 
         this.insertLabel = function (widgetHtml) {
-            var widgetLabel = document.createElement('span');
-            var textLabel = document.createTextNode(modelsParameters[idInstance].label);
+            // conversion to enable HTML tags
+            const labelText = this.getTransformedText("label");
+            const widgetLabel = document.createElement('span');
             widgetLabel.setAttribute('class', 'label-h-slider');
             widgetLabel.setAttribute('id', 'h-slider-span');
             if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
@@ -424,7 +436,7 @@ function flatUiWidgetsPluginClass() {
             } else {
                 widgetLabel.setAttribute('style', 'width: 20%; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily());
             }
-            widgetLabel.appendChild(textLabel);
+            widgetLabel.innerHTML = labelText;
             widgetHtml.appendChild(widgetLabel);
         };
 
@@ -664,13 +676,14 @@ function flatUiWidgetsPluginClass() {
         };
 
         this.insertLabel = function (widgetHtml) {
-            var widgetLabelDiv = document.createElement('div');
+            // conversion to enable HTML tags
+            const labelText = this.getTransformedText("label");
+            const widgetLabelDiv = document.createElement('div');
             widgetLabelDiv.setAttribute('class', 'v-slider-div');
-            var widgetLabel = document.createElement('span');
-            var textLabel = document.createTextNode(modelsParameters[idInstance].label);
+            const widgetLabel = document.createElement('span');
             widgetLabel.setAttribute('class', 'v-slider-span label-v-slider');
             widgetLabel.setAttribute('style', this.labelFontSize() + this.labelColor() + this.labelFontFamily());
-            widgetLabel.appendChild(textLabel);
+            widgetLabel.innerHTML = labelText;
             widgetLabelDiv.appendChild(widgetLabel);
             widgetHtml.appendChild(widgetLabelDiv);
         };
@@ -831,8 +844,9 @@ function flatUiWidgetsPluginClass() {
         };
 
         this.insertLabel = function (widgetHtml) {
-            var widgetLabel = document.createElement('span');
-            var textLabel = document.createTextNode(modelsParameters[idInstance].label);
+            // conversion to enable HTML tags
+            const labelText = this.getTransformedText("label");
+            const widgetLabel = document.createElement('span');
             widgetLabel.setAttribute('class', 'label-progress-bar');
             widgetLabel.setAttribute('id', 'progress-bar-span');
             if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
@@ -841,7 +855,7 @@ function flatUiWidgetsPluginClass() {
             } else {
                 widgetLabel.setAttribute('style', 'width: 20%; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily());
             }
-            widgetLabel.appendChild(textLabel);
+            widgetLabel.innerHTML = labelText;
             widgetHtml.appendChild(widgetLabel);
         };
 
@@ -1098,25 +1112,27 @@ function flatUiWidgetsPluginClass() {
         };
 
         self.render = function () {
-            var valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
-            var widgetHtml = document.createElement('div');
+            let valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
+            const widgetHtml = document.createElement('div');
             widgetHtml.setAttribute('id', nameWidget + '-widget-html' + idWidget);
             widgetHtml.setAttribute('class', 'value-widget-html');
-            var divContent = '';
+            let divContent = '';
             if (modelsParameters[idInstance].label != "" && modelsParameters[idInstance].displayLabel) {
+                // conversion to enable HTML tags
+                const labelText = this.getTransformedText("label");
                 valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
                 if (!_.isUndefined(modelsParameters[idInstance].valueWidthProportion)) {
-                    var proportion = Math.max(0, 100 - parseFloat(modelsParameters[idInstance].valueWidthProportion)) + "%";
+                    const proportion = Math.max(0, 100 - parseFloat(modelsParameters[idInstance].valueWidthProportion)) + "%";
                     divContent = '<span id ="' + nameWidget + '-span' + idWidget + '" class="value-span" style="width:' + proportion +
                         '; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '">' +
-                        modelsParameters[idInstance].label + '</span>';
+                        labelText + '</span>';
                 } else {
                     divContent = '<span id ="' + nameWidget + '-span' + idWidget + '" class="value-span" style="max-width: 45%;' +
-                        + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '">' + modelsParameters[idInstance].label + '</span>';
+                        + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '">' + labelText + '</span>';
                 }
             }
 
-            var valuedisabled = 'disabled ';
+            let valuedisabled = 'disabled ';
             //if (this.bIsInteractive) {
             valuedisabled = '';
             //}
@@ -1137,37 +1153,46 @@ function flatUiWidgetsPluginClass() {
                     break;
             }
 
-            var readOnlyValue = "";
-            var opacityValue = "";
+            let readOnlyValue = "";
+            let opacityValue = "";
             if (nameWidget === "value-display") {
                 readOnlyValue = "readonly ";
                 opacityValue = "opacity: 1; ";
             }
 
+            let inputGroup = "";
+            let inputStyle = "";
+            let btnCtrl = "";
+
             if (modelsParameters[idInstance].validationButton) {
-                divContent = divContent + '<div class="input-group">';
-                divContent = divContent + '<input ' + valuedisabled + readOnlyValue + ' id="'+ nameWidget + idWidget +
-                    '" type=' + typeInput + ' placeholder="" class="value-input form-control " style="height: ' +
-                    valueHeightPx + 'px; ' + opacityValue + this.valueColor() + this.valueFontFamily() + '; ' + this.border() +
-                    '; border-bottom-right-radius: 0; border-top-right-radius: 0;' +
-                    this.valueFontSize() + this.valueColor() + this.valueFontFamily() + 'text-align:' +
-                    modelsParameters[idInstance].valueTextAlign + ';"></input>';
-                var btnCtrl = '<span class="input-group-btn">' + 
-                    '<button id="' + nameWidget + '-valid-btn' + idWidget + '" class="/*ui-value-button*/ btn btn-primary" type="button" style="height:' + valueHeightPx + 'px; width:' +valueHeightPx + 'px; ">' + 
-                    '<span class="fa fa-check" style="color: #ffffff"/>' + 
-                    '</button>' + 
+                inputGroup = '<div class="input-group">';
+                inputStyle = 'border-bottom-right-radius: 0; border-top-right-radius: 0; ';
+                btnCtrl = '<span class="input-group-btn">' +
+                    '<button id="' + nameWidget + '-valid-btn' + idWidget + '" class="/*ui-value-button*/ btn btn-primary" type="button" ' + 
+                    'style="height:' + valueHeightPx + 'px; width:' + valueHeightPx + 'px; ">' +
+                    '<span class="fa fa-check" style="color: #ffffff"/>' +
+                    '</button>' +
                     '</span>';
-                divContent = divContent + btnCtrl;
-                divContent = divContent + '</div>';
             } else {
-                divContent = divContent + '<div id="value-no-input-group">';
-                divContent = divContent + '<input ' + valuedisabled + readOnlyValue + '  id="' + nameWidget + idWidget +
-                    '" type=' + typeInput + ' placeholder="" class="value-input form-control" style="height: ' +
-                    valueHeightPx + 'px; ' + opacityValue +
-                    this.border() + '; float: right;' + this.valueFontSize() + this.valueColor() + this.valueFontFamily() +
-                    'text-align:' + modelsParameters[idInstance].valueTextAlign + ';"></input>';
-                divContent = divContent + '</div>';
+                inputGroup = '<div id="value-no-input-group">';
+                inputStyle = 'float: right;'
             }
+
+            divContent += inputGroup;
+            divContent += '<input ' + valuedisabled + readOnlyValue + ' id="' + nameWidget + idWidget +
+                '" type=' + typeInput + ' placeholder="" class="value-input form-control" ' + 
+                'style="height: ' + valueHeightPx + 'px; ' +
+                opacityValue +
+                this.valueColor() +
+                this.backgroundColor() +
+                this.valueFontFamily() +
+                this.border() +
+                this.valueFontSize() +
+                inputStyle +
+                ' text-align:' + modelsParameters[idInstance].valueTextAlign + ';"' +
+                '</input>';
+            divContent += btnCtrl;
+            divContent += '</div>';
 
             if (nameWidget != "text-input") {
                 //AEF: add unitText

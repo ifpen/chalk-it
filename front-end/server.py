@@ -6,12 +6,38 @@ from base64 import b64decode, b64encode
 import logging
 import webbrowser
 import threading
+import argparse
 
+# create the top-level parser
+parser = argparse.ArgumentParser()
+parser.add_argument('--dev', action='store_true', help='run in development mode')
+parser.add_argument('--syncDir', dest='sync', help='''if given a directory, the edited dashboard
+ will project the definition of some datanodes (like scripts) as files.
+ Requires "pathvalidate", "watchdog" and "flask-sock".''')
+parser.add_argument('--clearSyncDir', dest='sync_clear', action='store_true',
+                    help='if set, the "syncDir" directory will be cleared on startup. Please use responsively.')
 
-DEBUG = False
+args = parser.parse_args()
+
+if args.dev:
+    print("Running in development mode")
+    DEBUG = True
+else:
+    print("Running in production mode")
+    DEBUG = False
+
 app = Flask(__name__)
 run_port = 7854
 server_url = f"http://localhost:{run_port}"
+
+if args.sync:
+    from server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
+
+    server_ws_url = f"{server_url.replace('http', 'ws')}{FILE_SYNC_WS_ENDPOINT}"
+    blueprint = create_file_sync_blueprint(args.sync, args.sync_clear, server_ws_url)
+    app.register_blueprint(blueprint)
+    app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 25}
+
 
 dir_home = os.path.expanduser("~")
 
@@ -83,10 +109,15 @@ def get_files():
             "URL": f'{server_url}/GetImages?image={file.stem}',
             "Path": str(file.parent)
         } for file in files]
+
+        # sort the file list by 'Name' key in ascending order
+        file_list = sorted(file_list, key=lambda k: k['Name'], reverse=False)
+
         return send_success({
             "Success": True,
             "Msg": None,
             "FileList": file_list,
+            "Path": path_dir,
             "Python": None
         })
     except Exception as err:
@@ -336,4 +367,6 @@ def main():
 
 
 if __name__ == '__main__':
+    logging.basicConfig()
+
     main()

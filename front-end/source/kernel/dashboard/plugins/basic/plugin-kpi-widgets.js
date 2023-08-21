@@ -81,10 +81,12 @@ function kpiWidgetsPluginClass() {
 
             var labelContent = '';
             if (modelsParameters[idInstance].displayLabel) {
+                // conversion to enable HTML tags
+                const labelText = this.getTransformedText("label");
                 labelContent = labelContent + '<h5 class="card-mt-0 text-truncate"';
                 labelContent = labelContent + ' style="text-align:center;' +
                     this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '">' +
-                    modelsParameters[idInstance].label;
+                    labelText;
                 labelContent = labelContent + '</h5>';
             }
 

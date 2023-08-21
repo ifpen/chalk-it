@@ -34,21 +34,33 @@ var datanodesManager = (function () {
   var jsEditor = new JSEditor();
   var pluginEditor = new PluginEditor(jsEditor);
 
+  let eventCenter = null;
+  angular
+    .element(document.body)
+    .injector()
+    .invoke([
+      'EventCenterService',
+      (eventCenterService) => {
+        eventCenter = eventCenterService;
+      },
+    ]);
+
   // deleteDn: delete a datanode
   function deleteDn(viewModel) {
+    const dnName = viewModel.name();
     //AEF
     if (viewModel.sampleTime()) {
-      timeManager.unregisterDatanode(viewModel.name());
+      timeManager.unregisterDatanode(dnName);
     }
     //
-    if (datanodesDependency.hasSuccessors(viewModel.name())) {
-      let successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
+    if (datanodesDependency.hasSuccessors(dnName)) {
+      let successors = Array.from(datanodesDependency.getSuccessors(dnName));
       let str = successors.toString();
       str = str.replaceAll(',', ', ');
       // warning the user to set modification in formula for example
       swal(
         'Deleting dataNode side effects',
-        'This dataNode "' + viewModel.name() + '" is still used in dataNode(s) "' + str + '".\n It must be changed.',
+        'This dataNode "' + dnName + '" is still used in dataNode(s) "' + str + '".\n It must be changed.',
         'warning'
       );
     }
@@ -64,11 +76,15 @@ var datanodesManager = (function () {
     $rootScope.safeApply();
 
     //AEF: recompute graphs after deleting a datanode
-    datanodesDependency.updateDisconnectedGraphsList(viewModel.name(), 'delete');
+    datanodesDependency.updateDisconnectedGraphsList(dnName, 'delete');
 
     if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs after delete: ', datanodesDependency.getAllDisconnectedGraphs());
     //
+
+    if (eventCenter) {
+      eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_DELETED, [dnName]);
+    }
   }
 
   // isConnected: returns info if datanode is connected, and if true it returns also the corresponding widgetName
@@ -118,6 +134,13 @@ var datanodesManager = (function () {
         function (isConfirm) {
           if (isConfirm) {
             deleteDn(viewModel);
+            let $body = angular.element(document.body);
+            let $rootScope = $body.scope().$root;
+            if ($rootScope.bIsPlayMode) {
+              for (key in widgetConnector.widgetsConnection) {
+                widgetPreview.plotConstantData(key, false);
+              }
+            }
           }
         }
       );
@@ -135,141 +158,142 @@ var datanodesManager = (function () {
     }
   }
 
-  function settingsSavedCallback(viewModel, options, newSettings) {
-    if (options.operation == 'add') {
-      var newViewModel;
-      if (options.type == 'datanode') {
-        if (datanodesManager.foundDatanode(newSettings.settings.name)) {
-          swal(
-            "A dataNode with name '" + newSettings.settings.name + "' adready exists.",
-            'Please specify a different name',
-            'error'
-          );
-          //DialogBox('A datanode with name "' + newSettings.settings.name + '" adready exists. Please specify a different name', 'Already exists', "Ok", "Cancel", null);
-          return true; //ABK
-        }
-        newViewModel = new DatanodeModel(datanodesListModel, datanodePlugins, datanodesDependency, timeManager);
-        newViewModel.name(newSettings.settings.name);
+  function createDatanode(newSettings) {
+    if (datanodesManager.foundDatanode(newSettings.settings.name)) {
+      swal(
+        "A dataNode with name '" + newSettings.settings.name + "' adready exists.",
+        'Please specify a different name',
+        'error'
+      );
+      //DialogBox('A datanode with name "' + newSettings.settings.name + '" adready exists. Please specify a different name', 'Already exists', "Ok", "Cancel", null);
+      return true; //ABK
+    }
+    const newViewModel = new DatanodeModel(datanodesListModel, datanodePlugins, datanodesDependency, timeManager);
+    newViewModel.name(newSettings.settings.name);
 
-        //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
+    //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
 
-        newViewModel.settings(newSettings.settings);
-        newViewModel.type(newSettings.type);
-        const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
-        newViewModel.iconType(iconName);
-        if (newViewModel.error()) {
-          //ABK
-          //swal("DataNode creation failure", "Error on some dataNode fields.", "error");
-          return true;
-        }
-        newViewModel.isSchedulerStartSafe(true); //AEF
-        datanodesListModel.addDatanode(newViewModel); //ABK put here if error, we don't add data
+    newViewModel.settings(newSettings.settings);
+    newViewModel.type(newSettings.type);
+    const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
+    newViewModel.iconType(iconName);
+    if (newViewModel.error()) {
+      //ABK
+      //swal("DataNode creation failure", "Error on some dataNode fields.", "error");
+      return true;
+    }
+    newViewModel.isSchedulerStartSafe(true); //AEF
+    datanodesListModel.addDatanode(newViewModel); //ABK put here if error, we don't add data
 
-        //AEF: recompute graphs after adding a new datanode
-        datanodesDependency.updateDisconnectedGraphsList(newViewModel.name(), 'add');
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
-          console.log('All disconnected Graphs after add: ', datanodesDependency.getAllDisconnectedGraphs());
-        //
+    //AEF: recompute graphs after adding a new datanode
+    datanodesDependency.updateDisconnectedGraphsList(newViewModel.name(), 'add');
+    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      console.log('All disconnected Graphs after add: ', datanodesDependency.getAllDisconnectedGraphs());
+    //
 
-        //AEF
-        if (_.isUndefined(newSettings.settings.sampleTime) || newSettings.settings.sampleTime == 0) {
-          newViewModel.schedulerStart(undefined, undefined, 'unidentified');
-        } else {
-          newViewModel.sampleTime(newSettings.settings.sampleTime);
-          timeManager.registerDatanode(newViewModel.sampleTime(), newViewModel.name(), 'unidentified');
-        }
-        //datanodesListModel.launchFirstUpdate(newViewModel); //AEF // AEF & MBG réunion du 11/04/2019
+    //AEF
+    if (_.isUndefined(newSettings.settings.sampleTime) || newSettings.settings.sampleTime == 0) {
+      newViewModel.schedulerStart(undefined, undefined, 'unidentified');
+    } else {
+      newViewModel.sampleTime(newSettings.settings.sampleTime);
+      timeManager.registerDatanode(newViewModel.sampleTime(), newViewModel.name(), 'unidentified');
+    }
+    //datanodesListModel.launchFirstUpdate(newViewModel); //AEF // AEF & MBG réunion du 11/04/2019
 
-        angular
-          .element(document.body)
-          .injector()
-          .invoke(['$rootScope', function ($rootScope) {}]);
+    if (eventCenter) {
+      eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_CREATED, [newViewModel.name()]);
+    }
 
-        var $body = angular.element(document.body); // 1
-        var $rootScope = $body.scope().$root;
-        $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-        $rootScope.safeApply();
-      }
-    } else if (options.operation == 'edit') {
-      if (options.type == 'datanode') {
-        if (viewModel.isSettingNameChanged(newSettings.settings.name)) {
-          //avoid to compare with the same datanode if the name wasn't changed
-          if (datanodesManager.foundDatanode(newSettings.settings.name)) {
-            swal(
-              "A dataNode with name '" + newSettings.settings.name + "' adready exists.",
-              'Please specify a different name',
-              'error'
-            );
-            return true;
-          }
-          if (datanodesDependency.hasSuccessors(viewModel.name())) {
-            var successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
-            // warning the user to set modification in formula for example
-            swal(
-              'Renaming dataNode side effects',
-              'Old name "' +
-                viewModel.name() +
-                '" is used in dataNode(s) "' +
-                successors +
-                '" and should be changed by the new one "' +
-                newSettings.settings.name +
-                '".',
-              'warning'
-            );
-            //remove dependencies with former name of datanode, new dependency will be added after, when edit datanode
-            //to avoid error alert on datanode that doesn't exist anymore
-            //in the mean time user can add a new datanode with the older name OR can change the formula
-            datanodesDependency.addNode(viewModel.name());
-          }
-          //AEF: before renaming datanode, must stop its scheduling before it disappears
-          if (viewModel.execInstance() != null) {
-            // scheduling is in progress
-            viewModel.execInstance().stopOperation(viewModel.name());
-          }
-          //
-          datanodesListModel.renameDatanodeData(viewModel.name(), newSettings.settings.name);
-        }
-        datanodesDependency.renameNode(viewModel.name(), newSettings.settings.name);
-        viewModel.name(newSettings.settings.name);
-        //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
-        if (!_.isUndefined(newSettings.settings.sampleTime)) {
-          if (viewModel.isSettingSampleTimeChanged(newSettings.settings.sampleTime)) {
-            viewModel.sampleTime(newSettings.settings.sampleTime);
-          }
-        }
-      }
+    angular
+      .element(document.body)
+      .injector()
+      .invoke(['$rootScope', function ($rootScope) {}]);
 
-      viewModel.type(newSettings.type);
-      viewModel.settings(newSettings.settings);
-      const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
-      viewModel.iconType(iconName);
-      if (viewModel.error()) {
-        //ABK
-        //swal("DataNode edition failure", "Error on some dataNode fields.", "error");
+    var $body = angular.element(document.body); // 1
+    var $rootScope = $body.scope().$root;
+    $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
+    $rootScope.safeApply();
+  }
+
+  function updateDatanode(viewModel, newSettings) {
+    const oldName = viewModel.name();
+    const newName = newSettings.settings.name;
+
+    if (viewModel.isSettingNameChanged(newName)) {
+      //avoid to compare with the same datanode if the name wasn't changed
+      if (datanodesManager.foundDatanode(newName)) {
+        swal(`A dataNode with name '${newName}' adready exists.`, 'Please specify a different name', 'error');
         return true;
       }
+      if (datanodesDependency.hasSuccessors(oldName)) {
+        const successors = Array.from(datanodesDependency.getSuccessors(oldName));
+        // warning the user to set modification in formula for example
+        swal(
+          'Renaming dataNode side effects',
+          'Old name "' +
+            oldName +
+            '" is used in dataNode(s) "' +
+            successors +
+            '" and should be changed by the new one "' +
+            newName +
+            '".',
+          'warning'
+        );
+        //remove dependencies with former name of datanode, new dependency will be added after, when edit datanode
+        //to avoid error alert on datanode that doesn't exist anymore
+        //in the mean time user can add a new datanode with the older name OR can change the formula
+        datanodesDependency.addNode(voldName);
+      }
+      //AEF: before renaming datanode, must stop its scheduling before it disappears
+      if (viewModel.execInstance() != null) {
+        // scheduling is in progress
+        viewModel.execInstance().stopOperation(oldName);
+      }
+      //
+      datanodesListModel.renameDatanodeData(oldName, newName);
+    }
 
-      //AEF
-      if (options.type == 'datanode') {
-        //AEF: recompute graphs after renaming and/or editing datanode
-        datanodesDependency.computeAllDisconnectedGraphs();
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
-          console.log('All disconnected Graphs after rename: ', datanodesDependency.getAllDisconnectedGraphs()); //To optimize after
-        //
-        if (!_.isUndefined(newSettings.settings.sampleTime)) {
-          if (viewModel.sampleTime() != 0) {
-            //new periodic or still periodic
-            timeManager.registerDatanode(viewModel.sampleTime(), viewModel.name(), 'edit');
-          } else if (timeManager.isRegisteredDatanode(viewModel.name())) {
-            //from periodic to no periodic
-            timeManager.unregisterDatanode(viewModel.name());
-            viewModel.schedulerStart(undefined, undefined, 'edit');
-          }
-        } // No period
-        else viewModel.schedulerStart(undefined, undefined, 'edit');
+
+    datanodesDependency.renameNode(oldName, newName);
+    viewModel.name(newName);
+    //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
+    if (!_.isUndefined(newSettings.settings.sampleTime)) {
+      if (viewModel.isSettingSampleTimeChanged(newSettings.settings.sampleTime)) {
+        viewModel.sampleTime(newSettings.settings.sampleTime);
       }
     }
-    return false; //ABK
+
+    viewModel.type(newSettings.type);
+    viewModel.settings(newSettings.settings);
+    const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
+    viewModel.iconType(iconName);
+
+    if (eventCenter) {
+      eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_UPDATED, {oldName, newName});
+    }
+
+    if (viewModel.error()) {
+      //ABK
+      //swal("DataNode edition failure", "Error on some dataNode fields.", "error");
+      return true;
+    }
+
+    //AEF: recompute graphs after renaming and/or editing datanode
+    datanodesDependency.computeAllDisconnectedGraphs();
+    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      console.log('All disconnected Graphs after rename: ', datanodesDependency.getAllDisconnectedGraphs()); //To optimize after
+    //
+    if (!_.isUndefined(newSettings.settings.sampleTime)) {
+      if (viewModel.sampleTime() != 0) {
+        //new periodic or still periodic
+        timeManager.registerDatanode(viewModel.sampleTime(), viewModel.name(), 'edit');
+      } else if (timeManager.isRegisteredDatanode(viewModel.name())) {
+        //from periodic to no periodic
+        timeManager.unregisterDatanode(viewModel.name());
+        viewModel.schedulerStart(undefined, undefined, 'edit');
+      }
+    } // No period
+    else viewModel.schedulerStart(undefined, undefined, 'edit');
   }
 
   function getOldSettingsCallback(viewModel) {
@@ -370,9 +394,33 @@ var datanodesManager = (function () {
     },
 
     load: function (configuration, bool, callback) {
+      const oldDnNames = datanodesListModel.datanodes().map(_ => _.name())
+
       datanodesListModel.load(configuration, bool, callback);
-      if (datanodesListModel.error()) return false;
-      else return true;
+
+      if (datanodesListModel.error()) {
+        return false;
+      } else {
+        if (eventCenter) {
+          const newDnNames = datanodesListModel.datanodes().map(_ => _.name())
+          if(bool) {
+            if (oldDnNames.length) {
+              eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_DELETED, oldDnNames)
+            }
+            if (newDnNames.length) {
+              eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_CREATED, newDnNames);
+            }
+          } else {
+            // TODO name conflicts
+            const newDnNames = configuration.datanodes.map(_ => _.name);
+            if (newDnNames.length) {
+              eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_CREATED, newDnNames);
+            }
+          }
+        }
+
+        return true;
+      }
     },
     serialize: function () {
       return datanodesListModel.serialize();
@@ -418,23 +466,23 @@ var datanodesManager = (function () {
       }
     },
     getDataNodeByName: function (datanodeName) {
-      var datanodes = datanodesListModel.datanodes();
+      const datanodes = datanodesListModel.datanodes();
 
       // Find the datanode with the name specified
-      datanode = _.find(datanodes, function (datanodeModel) {
-        return datanodeModel.name() === datanodeName;
-      });
-
-      if (datanode) {
-        return datanode;
-      }
+      return _.find(datanodes, (datanodeModel) => datanodeModel.name() === datanodeName);
     },
     getAllDataNodes: function () {
       return datanodesListModel.datanodes();
     },
     clear: function () {
       schedulerProfiling = {}; // GHI for issue #188
-      return datanodesListModel.clear();
+
+      const allDnNames = datanodesListModel.datanodes().map(_ => _.name())
+      datanodesListModel.clear();
+
+      if (self.eventCenter && allDnNames.length) {
+        self.eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_DELETED, allDnNames);
+      }
     },
     showDepGraph: function (name) {
       graphVisu.showDepGraph(name);
@@ -515,15 +563,14 @@ var datanodesManager = (function () {
     createPluginEditor: function (types, instanceType, settings, flag) {
       createPluginEditor(types, instanceType, settings, flag);
     },
-    settingsSavedCallback: function (viewModel, options, newSettings, selectedType) {
-      if (
-        pluginEditor.saveSettings(selectedType, newSettings, function () {
-          return settingsSavedCallback(viewModel, options, newSettings);
-        })
-      )
-        return true;
-      else return false;
+    settingsSavedCallback: function (viewModel, newSettings, selectedType) {
+      return pluginEditor.saveSettings(
+        selectedType,
+        newSettings,
+        () => !!(viewModel ? updateDatanode(viewModel, newSettings) : createDatanode(newSettings))
+      );
     },
+    updateDatanode,
     getOldSettingsCallback: function (viewModel) {
       getOldSettingsCallback(viewModel);
     },

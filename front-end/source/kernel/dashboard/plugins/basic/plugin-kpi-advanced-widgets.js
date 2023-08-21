@@ -261,7 +261,9 @@ function advancedKpiWidgetsPluginClass() {
 
             /**************************label*********************/
             if (modelsParameters[idInstance].displayLabel) {
-                $("#advanced-card-label-" + idWidget)[0].innerText = modelsParameters[idInstance].label;
+                // conversion to enable HTML tags
+                const labelText = this.getTransformedText("label");
+                $("#advanced-card-label-" + idWidget)[0].innerHTML = labelText;
             } else {
                 $("#advanced-card-label-" + idWidget).hide();
             }

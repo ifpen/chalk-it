@@ -13,7 +13,6 @@ var xdash = (function () {
   var prjName = ''; //AEF
   var pageLoad = true;
 
-  var exportOptions = 'ajustToTargetWindow';
   const $rootScope = angular.element(document.body).scope().$root;
 
   /*--------clear project--------*/
@@ -73,7 +72,7 @@ var xdash = (function () {
   /*--------serialize--------*/
   function serialize() {
     const meta = initMeta();
-    meta.name = $('#projectName')[0].value;
+    meta.name = $('#projectName')[0].value || 'Untitled';
 
     if ($rootScope.currentProject) {
       meta.description = $rootScope.currentProject.description;
@@ -81,8 +80,8 @@ var xdash = (function () {
       meta.groupName = $rootScope.currentProject.groupName;
     }
 
-    let data = datanodesManager.serialize();
-    let libraries = pyodideLib.serialize();
+    const data = datanodesManager.serialize();
+    const libraries = pyodideLib.serialize();
     let scale;
     if (
       !$rootScope.moduleOpened &&
@@ -95,18 +94,18 @@ var xdash = (function () {
       scale = widgetEditor.getSnapshotDashZoneDims();
     }
 
-    let dash = widgetEditor.serialize();
-    let deviceCols = layoutMgr.serializeCols();
-    let backgroundColor = layoutMgr.serializeDashBgColor();
-    let theme = layoutMgr.serializeDashboardTheme();
-    let conn = widgetConnector.serialize();
-    let rowNames = layoutMgr.serializeRowNames();
-    let defaultRow = layoutMgr.serializeDefaultRow();
+    const dash = widgetEditor.serialize();
+    const deviceCols = layoutMgr.serializeCols();
+    const backgroundColor = layoutMgr.serializeDashBgColor();
+    const theme = layoutMgr.serializeDashboardTheme();
+    const conn = widgetConnector.serialize();
+    const rowNames = layoutMgr.serializeRowNames();
+    const defaultRow = layoutMgr.serializeDefaultRow();
 
-    exportOptions = htmlExport.exportOptions; //AEF
+    const exportOptions = layoutMgr.serializeExportOptions();
     navBarNotification = htmlExport.navBarNotification;
 
-    let xdashPrj = {
+    const xdashPrj = {
       meta: meta,
       data: data,
       libraries: libraries,
@@ -182,9 +181,7 @@ var xdash = (function () {
         layoutMgr.deserializeDefaultRow(jsonObject.pages);
       }
 
-      if (!_.isUndefined(jsonObject.exportOptions)) {
-        htmlExport.exportOptions = jsonObject.exportOptions;
-      }
+      layoutMgr.deserializeExportOptions(jsonObject.exportOptions);
 
       if (!_.isUndefined(jsonObject.navBarNotification)) {
         // MBG 21/09/2021
@@ -194,8 +191,8 @@ var xdash = (function () {
       }
 
       /*if (!_.isUndefined(jsonObject.checkExportOptions)) {
-                htmlExport.checkExportOptions = jsonObject.checkExportOptions;
-            }*/ // MBG 21/09/2021 : simplify export
+                      htmlExport.checkExportOptions = jsonObject.checkExportOptions;
+                  }*/ // MBG 21/09/2021 : simplify export
       return true;
     } catch (ex) {
       console.log(ex);
@@ -375,36 +372,34 @@ var xdash = (function () {
     $rootScope.origin = 'openProject';
 
     $rootScope.toggleMenuOptionDisplay('none');
-      $state.go('modules', {}).then(function () {
-          $rootScope.moduleOpened = false;
-          FileMngrInst.ReadFile(fileTypeServer, projectName + '.xprjson', function (msg1, msg2, type) {
-              if ($rootScope.$state.current.controller != 'ModulesController') {
-                  //add test
-                  $state.go('modules', {});
-                  console.log('switch to modules controller...'); //watch if this case occurs
-              }
-              //AEF: fix bug add params and test on it
-              if (type === 'success') {
-                  xdash.openProjectManager(msg1);
-                  let notice = new PNotify({
-                      title: projectName,
-                      text: 'Your ' + fileTypeServer + ' ' + projectName + ' is ready!',
-                      type: 'success',
-                      delay: 1800,
-                      styling: 'bootstrap3',
-                  });
-                  $('.ui-pnotify-container').on('click', function () {
-                      notice.remove();
-                  });
-                  $rootScope.loadingBarStop();
-                  $rootScope.currentProject.name = projectName;
-              } else {
-                  swal(msg1, msg2, type);
-              }
+    $state.go('modules', {}).then(function () {
+      $rootScope.moduleOpened = false;
+      FileMngrInst.ReadFile(fileTypeServer, projectName + '.xprjson', function (msg1, msg2, type) {
+        if ($rootScope.$state.current.controller != 'ModulesController') {
+          //add test
+          $state.go('modules', {});
+          console.log('switch to modules controller...'); //watch if this case occurs
+        }
+        //AEF: fix bug add params and test on it
+        if (type === 'success') {
+          xdash.openProjectManager(msg1);
+          let notice = new PNotify({
+            title: projectName,
+            text: 'Your ' + fileTypeServer + ' ' + projectName + ' is ready!',
+            type: 'success',
+            delay: 1800,
+            styling: 'bootstrap3',
           });
-
-
+          $('.ui-pnotify-container').on('click', function () {
+            notice.remove();
+          });
+          $rootScope.loadingBarStop();
+          $rootScope.currentProject.name = projectName;
+        } else {
+          swal(msg1, msg2, type);
+        }
       });
+    });
   }
 
   /*--------readFileFromUrl--------*/
@@ -527,6 +522,5 @@ var xdash = (function () {
     pageLoad: pageLoad,
     readFileFromServer: readFileFromServer,
     readFileFromUrl: readFileFromUrl,
-    exportOptions: exportOptions,
   };
 })();

@@ -10,137 +10,134 @@
 
 var rowToTabRuntime = (function () {
 
+    const self = this;
+    self.grid = {
+        rows: 1,
+        cols: 1
+    };
+
     /**
+     * Retrieves the dashboard grid.
      * 
-     * @param {any} valueRow : jsonContent.device.cols.valueRow
-     * @param {any} valueCol : jsonContent.device.cols.valueCol
+     * @return { Object } The grid object, which contains the number of rows and columns in the grid.
+     * @property { Number } rows - The number of rows in the grid.
+     * @property { Number } cols - The number of columns in the grid.
+     */
+    function _getGrid() {
+        return self.grid;
+    }
+
+    /**
+     * Setting the dashboard grid.
+     * 
+     * @param { Object } grid - jsonContent.device.cols
+     */
+    function _setGrid(grid) {
+        self.grid = grid;
+    }
+
+    /**
+     * rowToTabPrepareRescale
+     * 
+     * @param { Number | String } valueRow - jsonContent.device.cols.valueRow
+     * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
      */
     function rowToTabPrepareRescale(valueRow, valueCol) {
-        var rows = 1;
-        if (valueRow != "none") {
-            rows = Number(valueRow);
-        }
+        let { rows, cols } = _getGrid();
 
-        var cols = 1;
-        if (valueCol > 1) {
-            cols = Number(valueCol);
-        }
+        rows = Number(valueRow) || 1;
+        cols = Number(valueCol) || 1;
+
+        _setGrid({ rows, cols });
 
         if (rows > 1) {
-            if (cols > 1) {
-                let nbDiv = cols * rows;
-                for (var k = 1; k <= nbDiv; k++) {
-                    $('#dpr' + k + 'c').show();
-                }
-            } else {
-                for (var k = 1; k <= rows; k++) {
-                    $('#dpr' + k + 'c').show();
-                }
-            }
+            $('[id^=dpr][id$=c]').show();
         }
     }
 
     /**
+     * rowToTabFinishRescale
      * 
-     * @param {any} valueRow : jsonContent.device.cols.valueRow
-     * @param {any} valueCol : jsonContent.device.cols.valueCol
+     * @param { Number | String } valueRow - jsonContent.device.cols.valueRow
+     * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
      */
     function rowToTabFinishRescale(valueRow, valueCol) {
+        const $rootScope = angular.element(document.body).scope().$root;
+        const currentPage = $rootScope.pageNumber;
+        let { rows, cols } = _getGrid();
 
-        var $body = angular.element(document.body);
-        var $rootScope = $body.scope().$root;
+        rows = Number(valueRow) || 1;
+        cols = Number(valueCol) || 1;
 
-        // pagination mode
-        var currentPage = $rootScope.pageNumber;
-        var rows = 1;
-        if (valueRow!= "none") {
-            rows = Number(valueRow);
-        }
+        _setGrid({ rows, cols });
 
-        var cols = 1;
-        if (valueCol > 1) {
-            cols = Number(valueCol);
-        }
         $('#page-' + currentPage).removeClass('cancel').addClass('primary');
 
         if (rows > 1) {
+            $('[id^=dpr][id$=c]').hide();
             if (cols > 1) {
-                let nbDiv = cols * rows;
-                let firstRowDivId = ((currentPage -1) * cols) + 1;
-                let lastRowDivId = firstRowDivId + cols;
-                for (var k = 1; k <= nbDiv; k++) {
-                    if (k >= firstRowDivId && k < lastRowDivId) {
-                        $('#dpr' + k + 'c').show();
-                    } else {
-                        $('#dpr' + k + 'c').hide();
-                    }
+                const nbLastRowDiv = currentPage * cols;
+                const nbFirstRowDiv = nbLastRowDiv - cols + 1;
+                for (let k = nbFirstRowDiv; k <= nbLastRowDiv; k++) {
+                    $('#dpr' + k + 'c').show();
                 }
             } else {
-                for (var k = 1; k <= rows; k++) {
-                    if (k == currentPage) {
-                        $('#dpr' + k + 'c').show();
-                    } else {
-                        $('#dpr' + k + 'c').hide();
-                    }
-                }
+                $('#dpr' + currentPage + 'c').show();
             }
         }
     }
 
+
+    /**
+     * rowToTabModeInit
+     * 
+     * @param { Object } jsonContent - project xprjson
+     */
     function rowToTabModeInit(jsonContent) {
-        var $body = angular.element(document.body);
-        var $rootScope = $body.scope().$root;
+        const $rootScope = angular.element(document.body).scope().$root;
+        let { rows, cols } = _getGrid();
 
-        // pagination mode
-        var rows = 1;
-        if (jsonContent.device.cols.valueRow != "none") {
-            rows = Number(jsonContent.device.cols.valueRow);
-        }
+        rows = Number(jsonContent.device.cols.valueRow) || 1;
+        cols = Number(jsonContent.device.cols.valueCol) || 1;
 
-        var cols = 1;
-        if (jsonContent.device.cols.valueCol > 1) {
-            cols = Number(jsonContent.device.cols.valueCol);
-        }
-        
+        _setGrid({ rows, cols });
+
+        $rootScope.pageNumber = 1;
         $rootScope.pageNames = jsonContent.pages.pageNames;
         $rootScope.showPagination = true;
         $rootScope.exportOptions = jsonContent.exportOptions;
         $rootScope.$apply();
 
-        var nbDiv = rows * cols;
-
         if (rows > 1) {
+            $('[id^=dpr][id$=c]').hide();
             if (cols > 1) {
-                for (let k = 1; k <= nbDiv; k++) {
-                    if (k > cols) {
-                        $('#dpr' + k + 'c').hide();
-                    }
+                for (let k = 1; k <= cols; k++) {
+                    $('#dpr' + k + 'c').show();
                 }
             } else {
-                for (let k = 2; k <= nbDiv; k++) {
-                    $('#dpr' + k + 'c').hide();
-                }
+                $('#dpr' + $rootScope.pageNumber + 'c').show();
             }
         }
-        $('#page-1').removeClass('cancel').addClass('primary');
 
-        $rootScope.displayPage = function (numPage) {
-            $('[id^=dpr]').hide();
-            $('[id^=page-').removeClass('primary').addClass('cancel');
+        $rootScope.rowToTabChange = function (pageNumber) {
+            $rootScope.pageNumber = pageNumber;
+            $('[id^=dpr][id$=c]').hide();
 
             if (cols > 1) {
-                let firstRowDivId = ((numPage -1) * cols) + 1; 
-                let lastRowDivId = firstRowDivId + cols;
-                for (let i=firstRowDivId; i < lastRowDivId; i++) {
-                    $('#dpr' + i + 'c').show();
+                const nbLastRowDiv = pageNumber * cols;
+                const nbFirstRowDiv = nbLastRowDiv - cols + 1;
+                for (let k = nbFirstRowDiv; k <= nbLastRowDiv; k++) {
+                    $('#dpr' + k + 'c').show();
                 }
-                $('#page-' + numPage).removeClass('cancel').addClass('primary');
             } else {
-                $('#dpr' + numPage + 'c').show();
-                $('#page-' + numPage).removeClass('cancel').addClass('primary');
+                $('#dpr' + pageNumber + 'c').show();
             }
         };
     }
 
-    return { rowToTabPrepareRescale, rowToTabFinishRescale, rowToTabModeInit };
+    return { 
+        rowToTabPrepareRescale, 
+        rowToTabFinishRescale, 
+        rowToTabModeInit 
+    };
 }());

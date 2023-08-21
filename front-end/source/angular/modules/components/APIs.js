@@ -46,7 +46,12 @@ angular.module('xCLOUD')
                         try {
                             dataToReturn = JSON.parse(data);
                         } catch (exc) {
-                            swal("Unexpected error", "unable to load settings.usr\n\n" + data, "error");
+                            if ($rootScope.xDashFullVersion) {
+                                swal("Unexpected error", "unable to load settings.usr\n\n" + data, "error");
+                            } else {
+                                swal("Please check and restart the command line", "the Flask server is not responding", "error");
+                            }
+                            
                             return $rootScope.DefaultSettings;
                         }
                         return dataToReturn;

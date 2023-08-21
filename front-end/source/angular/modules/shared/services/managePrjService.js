@@ -44,7 +44,9 @@ angular
                                     fileManager.getFileListExtended("project", $rootScope.currentProject.name, undefined, endAction, true);
                                 } else {
                                     const $scopeDashContentTopCtrl = angular.element(document.getElementById("dash-content-top-ctrl")).scope();
-                                    $scopeDashContentTopCtrl.saveProjectToLocal(endAction);
+                                    setTimeout(()=> {
+                                        $scopeDashContentTopCtrl.saveProjectToLocal(endAction);
+                                    }, 500);
                                 }
                             } else {
                                 //nothing

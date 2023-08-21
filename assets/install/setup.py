@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 import os
 
 NAME = "py-chalk-it"
-VERSION = "0.1.3"
+VERSION = "0.3.4"
 
-with open("README.MD", "r") as fh:
+with open("README.md", "r") as fh:
     readme = fh.read()
 
 setup(
@@ -22,7 +22,7 @@ setup(
     author_email="xdash@ifpen.fr",
     license="Apache License 2.0",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Environment :: Console",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
@@ -33,6 +33,8 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",		
         "Topic :: Database :: Front-Ends",
         "Topic :: Scientific/Engineering :: Information Analysis",
         "Topic :: Scientific/Engineering :: Visualization",
