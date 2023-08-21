@@ -2,3 +2,6 @@
  mkdocs-material==8.2.15
  flask
  python-dotenv
+ pathvalidate
+ watchdog
+ flask-sock
