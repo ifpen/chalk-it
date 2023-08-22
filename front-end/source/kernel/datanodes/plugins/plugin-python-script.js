@@ -52,6 +52,11 @@
 
       input.val(current?.id ?? DEFAULT_BACKEND.id);
 
+      // Disable Docker images in the open source version
+      if (xDashConfig.xDashBasicVersion === "true") {
+        return;
+      }
+      
       // Recover image list
       // "await" implies that at this point the user may interract with the UI
       const images = await PythonPluginRemoteExec.getImages();
