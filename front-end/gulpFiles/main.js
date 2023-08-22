@@ -985,7 +985,7 @@ task(
   series('clear:cache', 'clear:build', 'sass', 'init', 'template', 'copy-starter', 'inject:files:view', 'images')
 );
 
-task('start', series('clear:cache', 'sass', 'init', 'template', 'inject:files', 'inject:files:view:dev', 'mkdocs'));
+task('start', series('clear:cache', 'sass', 'init', 'template', 'inject:files', 'inject:files:pyodide_worker', 'inject:files:view:dev', 'mkdocs'));
 
 // Synchronization during development only
 /*--------------------------------------------*/

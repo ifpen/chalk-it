@@ -16,6 +16,9 @@ source/assets/style/**/*.css.map
 configs/config.prod.js
 configs/config.dev.js
 
+pyodide-worker-dev.js
+pyodide-worker-dev.js.map
+
 index.html
 index-view.html
 test/jshint/*

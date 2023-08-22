@@ -176,6 +176,7 @@ function flatUiComplexWidgetsPluginClass() {
       const keys = modelsHiddenParams[idInstance].keys;
       const values = modelsHiddenParams[idInstance].values;
       const nbOptions = Math.min(values.length, keys.length);
+      const styleDef = ''; // MBG ? 22/08/2023
 
       divContent +=
         '<select data-toggle="select" id="select' +
