@@ -179,9 +179,10 @@ angular
 
             /*---------- Export button -------------------*/
             $scope.exportHTMLPage = function (projectName) {
-                let txt = htmlExport.createDashboardDocument(projectName);
-                let blob = new Blob([txt], { type: "text/html;charset=utf-8" });
-                saveAs(blob, projectName + ".html");
+                const _projectName = $rootScope.xDashFullVersion ? projectName : ($('#projectName').val() || 'Untitled');
+                const txt = htmlExport.createDashboardDocument(_projectName);
+                const blob = new Blob([txt], { type: "text/html;charset=utf-8" });
+                saveAs(blob, _projectName + ".html");
             }
 
             /*---------- Preview button   ----------------*/
