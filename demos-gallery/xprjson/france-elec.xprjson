@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "version": "2.870.8604",
+    "date": "Wed Sep 06 2023 10:35:43 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "name": "france-elec",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "date",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "date",
+          "json_var": "\"2023-08-03\""
+        }
+      },
+      {
+        "name": "dateUrl",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "dateUrl",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "date = dataNodes[\"date\"]\n\ndateUrl = date.replace('-','%2F')\n\nreturn dateUrl"
+        }
+      },
+      {
+        "name": "df",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "df",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import pandas as pd\nimport re\nimport json\n\ndata_json = dataNodes[\"elec\"]\n\ndf = pd.json_normalize(data_json['records']).dropna().reset_index(drop=True)\ndf.rename(columns=lambda x: re.sub('^fields\\.', '', x), inplace=True)\n# Convert the column to datetime\ndf['date_heure'] = pd.to_datetime(df['date_heure'])\n\n# Set the column as the index\ndf.set_index('date_heure', inplace=True)\nfili\u00e8res = ['nucleaire', 'hydraulique', 'eolien', 'gaz', 'bioenergies', 'solaire', 'fioul' ]\ndf = df[fili\u00e8res]\ndf = df.rename(columns={'nucleaire': 'Nuclear', 'hydraulique': 'Hydraulic', 'eolien': 'Wind', 'gaz': 'Gas', 'bioenergies': 'Bioenergies', 'solaire': 'Solar', 'fioul': 'Fuel oil'})\nreturn df\n"
+        }
+      },
+      {
+        "name": "elec",
+        "type": "REST_web-service_from_datasource",
+        "settings": {
+          "name": "elec",
+          "url": "https://odre.opendatasoft.com/api/records/1.0/search/?dataset=eco2mix-national-tr&q=&rows=96&sort=-date_heure&facet=nature&facet=date_heure&refine.date_heure=",
+          "use_xproxy": true,
+          "sampleTime": 0,
+          "autoStart": true,
+          "explicitTrig": false,
+          "req_data_type": "JSON",
+          "resp_data_type": "JSON",
+          "method": "GET",
+          "body": "return {\"urlAppend\": dataNodes[\"dateUrl\"]};",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9vZHJlLm9wZW5kYXRhc29mdC5jb20vYXBpL3JlY29yZHMvMS4wL3NlYXJjaC8/ZGF0YXNldD1lY28ybWl4LW5hdGlvbmFsLXRyJnE9JnJvd3M9OTYmc29ydD0tZGF0ZV9oZXVyZSZmYWNldD1uYXR1cmUmZmFjZXQ9ZGF0ZV9oZXVyZSZyZWZpbmUuZGF0ZV9oZXVyZT0iLCJIb3N0IjoieGRhc2gifQ==",
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxm7n7xMRSmS0vaKVTvnnHUpQXDuiAK8UT50OI6IYxNjTL/6mZXHelVFeAL//uXTr+mWk3utjhZIoEyPYl0lY8hZ3JJNeiElWllG/8hiiKJhfIlN+OJjLMIB0Ke7ngTDLFbOcXFcrkjEM5FOSIO9kcEVglb4QhshdkjTOlNjtZSryv6nvbP6KNT5YeunoRF5hTuoh53qV657Dn8qpZvvk6xum+U+zkcUIpsMzvczpeo2z"
+        }
+      },
+      {
+        "name": "plot",
+        "type": "Python_pyodide_plugin",
+        "settings": {
+          "name": "plot",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import plotly.express as px\n\nfig = px.bar(dataNodes[\"df\"], barmode='stack')\nfig.update_layout(\n    barmode='stack', \n    xaxis={'categoryorder':'category ascending'},\n    xaxis_title=\"Time\",\n    yaxis_title=\"Power [MW]\",\n    title=\"Daily Power\"\n)\n\nreturn fig"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [
+      "pandas"
+    ],
+    "pyodideMicropip": [
+      "plotly"
+    ]
+  },
+  "scaling": {
+    "widthPx": 1302,
+    "heightPx": 591,
+    "scrollWidthPx": 1302,
+    "scrollHeightPx": 591,
+    "widthVw": 84.765625,
+    "heightVh": 78.38196286472149,
+    "scrollWidthVw": 84.765625,
+    "scrollHeightVh": 78.38196286472149,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {
+    "datepickerSimpleA": {
+      "layout": {
+        "top": "4.63476vh",
+        "left": "1.5625vw",
+        "height": "4.90739vh",
+        "width": "19.0104vw",
+        "minHeight": "32px",
+        "minWidth": "150px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "datepickerSimpleA",
+        "instanceId": "datepickerSimpleA",
+        "modelJsonId": "datepickerSimple",
+        "widgetTypeName": "Simple calender(datepickerSimpleA)"
+      },
+      "modelParameters": {
+        "label": "date",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelWidthProportion": "30%",
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)",
+        "labelFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "value": "",
+        "visibility": false
+      }
+    },
+    "plotlyPyGenericA": {
+      "layout": {
+        "top": "17.1088vh",
+        "left": "1.5625vw",
+        "height": "47.878vh",
+        "width": "78.4505vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "2"
+      },
+      "container": {
+        "id": "plotlyPyGenericA",
+        "instanceId": "plotlyPyGenericA",
+        "modelJsonId": "plotlyPyGeneric",
+        "widgetTypeName": "Plotly Python generic(plotlyPyGenericA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "fig": ""
+      }
+    }
+  },
+  "connections": {
+    "datepickerSimpleA": {
+      "dateValue": {
+        "name": "dateValue",
+        "dataNode": "date",
+        "dataFields": []
+      }
+    },
+    "plotlyPyGenericA": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "plot",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}
