@@ -82,7 +82,7 @@ modelsParameters.flatUiTable = {
 };
 
 // Layout (default dimensions)
-modelsLayout.flatUiSelect = { height: '5vh', width: '19vw', minWidth: '80px', minHeight: '32px' };
+modelsLayout.flatUiSelect = { height: '5vh', width: '19vw', minWidth: '40px', minHeight: '10px' };
 modelsLayout.flatUiMultiSelect = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
 modelsLayout.flatUiList = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
 modelsLayout.flatUiTable = { height: '10vh', width: '11vw', minWidth: '88px', minHeight: '79px' };
