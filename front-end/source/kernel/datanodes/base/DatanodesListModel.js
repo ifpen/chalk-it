@@ -177,6 +177,22 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
             datanodes.settings().sampleTime = datanodes.settings().refreshRate;
             delete datanodes.settings().refreshRate;
           }
+
+          //AEF: compatibility with previous versions: 2.88 and lower
+          // TO DO: to be moved for github integration branch
+          versionStr = object.version;
+          const RegEx = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
+          const match = RegEx.exec(versionStr);
+          if (match) {
+            const major = parseInt(match[1], 10);
+            const minor = parseInt(match[2], 10);
+            greater = major > 2 || (major === 2 && minor > 880);
+          }
+          if (!greater) {
+            if (datanodes.settings().explicitTrig && datanodes.settings().autoStart) {
+              datanodes.settings().autoStart = false;
+            }
+          }
         }
         //compute graphs after loading datanodes
         datanodesDependency.computeAllDisconnectedGraphs();
