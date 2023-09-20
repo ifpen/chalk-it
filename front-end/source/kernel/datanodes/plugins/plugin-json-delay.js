@@ -9,7 +9,7 @@
   // **datanodesManager.loadDatanodePlugin(definition)** tells datanodesManager that we are giving it a datanode plugin. It expects an object with the following:
   datanodesManager.loadDatanodePlugin({
     // **type_name** (required) : A unique name for this plugin. This name should be as unique as possible to avoid collisions with other plugins, and should follow naming conventions for javascript variable and function declarations.
-    type_name: 'JSON_memory_plugin',
+    type_name: 'JSON_delay_plugin',
     // **display_name** : The pretty name that will be used for display purposes for this plugin. If the name is not defined, type_name will be used instead.
     display_name: 'Delay',
     // **icon_type** : icon of the datanode type displayed in data list
@@ -31,7 +31,7 @@
         display_name: 'Input signal',
         type: 'calculated',
         description1: 'Write JavaScript formula to define JSON, array or primitive data type input to be delayed.',
-        description2: 'Browse and select a dataNode from workspace to use it in the formula.' /*ABK*/,
+        description2: 'Browse and select a dataNode from workspace to use it in the formula.',
       },
     ],
     // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
@@ -39,8 +39,7 @@
     // * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
     // * **updateCallback** : A callback function that you'll call if and when your datanode has an update for datanodesManager to recalculate. This function expects a single parameter which is a javascript object with the new, updated data. You should hold on to this reference and call it when needed.
     newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback) {
-      // jsonMemoryPlugin is defined below.
-      newInstanceCallback(new jsonMemoryPlugin(settings, updateCallback, statusCallback));
+      newInstanceCallback(new jsonDelayPlugin(settings, updateCallback, statusCallback));
       if (error) return false;
       else return true;
     },
@@ -50,7 +49,7 @@
   //
   // -------------------
   // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
-  var jsonMemoryPlugin = function (settings, updateCallback, statusCallback) {
+  var jsonDelayPlugin = function (settings, updateCallback, statusCallback) {
     //initialize error at new instance
     error = false;
     // Always a good idea...
@@ -76,7 +75,7 @@
       } catch (err) {
         swal('JSON Parse error', err.message, 'error');
         statusCallback('Error');
-        return false; //ABK
+        return false;
       }
       return true;
     };

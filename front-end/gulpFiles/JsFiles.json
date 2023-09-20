@@ -89,7 +89,7 @@
       "source/kernel/datanodes/plugins/thirdparty/papaparse.js",
       "source/kernel/datanodes/plugins/thirdparty/utils.js",
       "source/kernel/datanodes/plugins/plugin-json-var.js",
-      "source/kernel/datanodes/plugins/plugin-json-memory.js",
+      "source/kernel/datanodes/plugins/plugin-json-delay.js",
       "source/kernel/datanodes/plugins/plugin-json-formula.js",
       "source/kernel/datanodes/plugins/plugin-generic-text-file.js",
       "source/kernel/datanodes/plugins/plugin-generic-binary-file.js",
@@ -380,10 +380,10 @@
       "source/kernel/dashboard/toolbox-mgr.js",
       "source/kernel/runtime/xdash-runtime-main.js",
       "source/angular/modules/libs/notification/notification.js",
-      "source/kernel/general/interfaces/query-url-entry.js",      
+      "source/kernel/general/interfaces/query-url-entry.js",
       "source/kernel/datanodes/base/DatanodesManager.js",
       "source/kernel/datanodes/plugins/plugin-json-var.js",
-      "source/kernel/datanodes/plugins/plugin-json-memory.js",
+      "source/kernel/datanodes/plugins/plugin-json-delay.js",
       "source/kernel/datanodes/plugins/plugin-json-formula.js",
       "source/kernel/datanodes/plugins/plugin-rest-webservice.js",
       "source/kernel/datanodes/plugins/plugin-generic-text-file.js",
@@ -396,7 +396,7 @@
       "source/kernel/datanodes/plugins/plugin-websocket.receive.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-websocket.send.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-geolocation.datanodes.js",
-      "source/kernel/datanodes/plugins/plugin-pyodide.js"        
+      "source/kernel/datanodes/plugins/plugin-pyodide.js"
     ]
   }
 }
