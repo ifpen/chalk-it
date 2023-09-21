@@ -178,7 +178,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
             delete datanodes.settings().refreshRate;
           }
 
-          //AEF: compatibility with previous versions: 2.88 and lower
+          //AEF: compatibility with versions before 2.890 ( Chalk'it v0.3.7)
           // TO DO: to be moved for github integration branch
           versionStr = object.version;
           const RegEx = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
@@ -186,9 +186,9 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
           if (match) {
             const major = parseInt(match[1], 10);
             const minor = parseInt(match[2], 10);
-            greater = major > 2 || (major === 2 && minor > 880);
+            lower = major < 2 || (major === 2 && minor < 890);
           }
-          if (!greater) {
+          if (lower) {
             if (datanodes.settings().explicitTrig && datanodes.settings().autoStart) {
               datanodes.settings().autoStart = false;
             }
