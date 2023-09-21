@@ -135,6 +135,8 @@ var xdash = (function () {
 
       await pyodideLib.deserialize(jsonObject); // GHI  : load pyodide packages
 
+      //AEF: save prj version for compatibility
+      jsonObject.data.version = jsonObject.meta.version;
       if (datanodesManager.load(jsonObject.data, true)) {
         angular
           .element(document.body)
@@ -452,30 +454,30 @@ var xdash = (function () {
     let $state = $body.scope().$state;
     $rootScope.origin = 'openProject';
 
-        $rootScope.showNotifications = false;
-        $rootScope.toggleMenuOptionDisplay('none');
-        $state.go('modules', {});
-        $rootScope.moduleOpened = false;
-        FileMngrInst.ReadFile(fileTypeServer, projectName + '.xprjson', function (msg1, msg2, type) {
-            if (type === 'success') {
-                xdash.openProjectManager(msg1);
-                let notice = new PNotify({
-                    title: projectName,
-                    text: 'Your ' + fileTypeServer + ' ' + projectName + ' is ready!',
-                    type: 'success',
-                    delay: 1800,
-                    styling: 'bootstrap3',
-                });
-                $('.ui-pnotify-container').on('click', function () {
-                    notice.remove();
-                });
-                $rootScope.loadingBarStop();
-                $rootScope.currentProject.name = projectName;
-            } else {
-                swal(msg1, msg2, type);
-            }
+    $rootScope.showNotifications = false;
+    $rootScope.toggleMenuOptionDisplay('none');
+    $state.go('modules', {});
+    $rootScope.moduleOpened = false;
+    FileMngrInst.ReadFile(fileTypeServer, projectName + '.xprjson', function (msg1, msg2, type) {
+      if (type === 'success') {
+        xdash.openProjectManager(msg1);
+        let notice = new PNotify({
+          title: projectName,
+          text: 'Your ' + fileTypeServer + ' ' + projectName + ' is ready!',
+          type: 'success',
+          delay: 1800,
+          styling: 'bootstrap3',
         });
-    }
+        $('.ui-pnotify-container').on('click', function () {
+          notice.remove();
+        });
+        $rootScope.loadingBarStop();
+        $rootScope.currentProject.name = projectName;
+      } else {
+        swal(msg1, msg2, type);
+      }
+    });
+  }
 
   /*--------readFileFromUrl--------*/
   function readFileFromUrl(type, url) {

@@ -9,24 +9,29 @@
   // **datanodesManager.loadDatanodePlugin(definition)** tells datanodesManager that we are giving it a datanode plugin. It expects an object with the following:
   datanodesManager.loadDatanodePlugin({
     // **type_name** (required) : A unique name for this plugin. This name should be as unique as possible to avoid collisions with other plugins, and should follow naming conventions for javascript variable and function declarations.
-    type_name: 'Unzip_file_plugin',
+    type_name: 'JSON_delay_plugin',
     // **display_name** : The pretty name that will be used for display purposes for this plugin. If the name is not defined, type_name will be used instead.
-    display_name: 'Unzip file',
+    display_name: 'Delay',
     // **icon_type** : icon of the datanode type displayed in data list
-    icon_type: 'file-reader.svg',
+    icon_type: 'delay.svg',
     // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
-    description: 'unzip files',
+    description: 'JavaScript one-step delay operator',
     // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.
     external_scripts: [''],
     // **settings** : An array of settings that will be displayed for this plugin when the user adds it.
     settings: [
       {
-        name: 'data_path',
-        display_name: 'Data file',
-        description: 'Browse to select zipped file.',
-        // **type "boolean"** : Will display a checkbox indicating a true/false setting.
-        type: 'unzip',
-        required: true, //ABK
+        name: 'json_init',
+        display_name: 'init value',
+        type: 'json',
+        description: 'Initial value (JSON, array or primitive data type)',
+      },
+      {
+        name: 'json_input',
+        display_name: 'Input signal',
+        type: 'calculated',
+        description1: 'Write JavaScript formula to define JSON, array or primitive data type input to be delayed.',
+        description2: 'Browse and select a dataNode from workspace to use it in the formula.',
       },
     ],
     // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
@@ -34,11 +39,8 @@
     // * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
     // * **updateCallback** : A callback function that you'll call if and when your datanode has an update for datanodesManager to recalculate. This function expects a single parameter which is a javascript object with the new, updated data. You should hold on to this reference and call it when needed.
     newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback) {
-      // unzipFilePlugin is defined below.
-      newInstanceCallback(new unzipFilePlugin(settings, updateCallback, statusCallback));
-      if (error)
-        //ABK
-        return false;
+      newInstanceCallback(new jsonDelayPlugin(settings, updateCallback, statusCallback));
+      if (error) return false;
       else return true;
     },
   });
@@ -47,45 +49,35 @@
   //
   // -------------------
   // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
-  var unzipFilePlugin = function (settings, updateCallback, statusCallback) {
-    // initialize bad result value in case of error
-    var badResult = null;
+  var jsonDelayPlugin = function (settings, updateCallback, statusCallback) {
     //initialize error at new instance
     error = false;
     // Always a good idea...
     var self = this;
+    var json_var_value = {};
+    var save_json_var_value = {};
+    var calculatedValue = {};
+    var bFirstExec = true;
 
     // Good idea to create a variable to hold on to our settings, because they might change in the future. See below.
     var currentSettings = settings;
+
     // save past setting in case of cancelling modification in datanodeS
     var pastSettings = settings;
     var pastStatus = 'None';
-
-    // Parser results to memorize
-    var fileStruct;
-
     // **onSettingsChanged(newSettings)** (required) : A public function we must implement that will be called when a user makes a change to the settings.
-    self.onSettingsChanged = function (newSettings, status) {
-      if (status === 'OK') {
-        pastStatus = status;
-        pastSettings = currentSettings;
-      }
+    self.onSettingsChanged = function (newSettings) {
       // Here we update our current settings with the variable that is passed in.
       currentSettings = newSettings;
-      return self.isFileReadingSuccess();
-    };
-
-    self.isFileReadingSuccess = function () {
-      statusCallback('Pending');
-      fileStruct = self.readFileContent();
-      if (fileStruct == badResult) {
-        // case of bad parse at edition
-        statusCallback('Error', 'Error in file struct');
-        return false;
-      } else {
+      try {
+        json_var_value = JSON.parse(currentSettings.json_init);
         pastSettings = currentSettings;
-        return true;
+      } catch (err) {
+        swal('JSON Parse error', err.message, 'error');
+        statusCallback('Error');
+        return false;
       }
+      return true;
     };
 
     self.isSettingNameChanged = function (newName) {
@@ -93,53 +85,57 @@
       else return false;
     };
 
-    self.getSavedSettings = function () {
-      return [pastStatus, pastSettings];
-    };
+    // AEF comment here to inhibite memory of past values
+    // self.getSavedSettings = function() {
+    //     return [pastStatus, pastSettings];
+    // };
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
     self.updateNow = function () {
-      pastStatus = 'OK';
+      statusCallback('Pending');
+      if (bFirstExec) {
+        try {
+          bFirstExec = false;
+          json_var_value = JSON.parse(currentSettings.json_init);
+        } catch (err) {
+          swal('JSON Parse error', err.message, 'error');
+          statusCallback('Error');
+          updateCallback(undefined, 'Error');
+          return false;
+        }
+      }
+
+      save_json_var_value = json_var_value;
+      if (typeof calculatedValue === 'object') {
+        json_var_value = jQuery.extend(true, {}, calculatedValue);
+      } else {
+        json_var_value = calculatedValue;
+      }
       statusCallback('OK');
-      updateCallback(fileStruct); //AEF: always put statusCallback before updateCallback. Mandatory for scheduler.
+      updateCallback(save_json_var_value);
+
+      pastStatus = 'OK';
+      pastSettings = currentSettings;
+
       return true;
     };
-
     // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
     self.onDispose = function () {};
 
-    self.isSetValueValid = function () {
+    this.isSetValueValid = function () {
       return false;
     };
 
     self.isSetFileValid = function () {
-      return true;
+      return false;
     };
 
     self.isInternetNeeded = function () {
       return false;
     };
 
-    self.readFileContent = function () {
-      if (!_.isUndefined(currentSettings.content)) {
-        var newData = currentSettings.content;
-        return newData;
-      } else return badResult;
+    self.onCalculatedValueChanged = function (propertyName, val) {
+      calculatedValue = val;
     };
-
-    self.setFile = function (newContent) {
-      currentSettings.content = newContent.content; // MBG 13/01/2022
-      currentSettings.data_path = newContent.name; //AEF: fix big update the path in the data settings
-      return self.isFileReadingSuccess();
-    };
-
-    // Parse file
-    fileStruct = self.readFileContent();
-    if (fileStruct == badResult) {
-      // case of bad parse at creation
-      error = true; //ABK
-    } else {
-      error = false; // MBG : reset error flag
-    }
   };
 })();

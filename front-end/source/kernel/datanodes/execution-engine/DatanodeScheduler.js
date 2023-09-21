@@ -69,13 +69,16 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
         case 'unidentified':
         case 'edit':
         case 'refresh':
+        case 'globalFirstUpdate': //at load datanodes are not updated
           return false;
-        case 'globalFirstUpdate':
-          return true;
         default:
           return false;
       }
     } else {
+      if (callOrigin === 'globalFirstUpdate') {
+        //at load datanodes are not updated (case of data dependency)
+        return false;
+      }
       return true;
     }
   }
