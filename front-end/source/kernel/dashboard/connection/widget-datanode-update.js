@@ -4,7 +4,8 @@
 // │ Copyright © 2016-2023 IFPEN                                           │ \\
 // | Licensed under the Apache License, Version 2.0                        │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY│ \\
+// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY| \\
+// |                      Ghiles HDIEUR                                    │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
 
@@ -51,18 +52,18 @@ function displaySpinnerOnInputFileButton(idWidget) {
 // ├────────────────────────────────────────────────────────────────────┤ \\
 function updateDataSourceFromWidget(idInstance, e) {
   if (_.isUndefined(widgetConnector.widgetsConnection[idInstance])) return;
-  var sliders = widgetConnector.widgetsConnection[idInstance].sliders;
-  var dsNames = [];
+  const sliders = widgetConnector.widgetsConnection[idInstance].sliders;
+  const dnNames = [];
   if (!_.isUndefined(sliders)) {
-    for (var trigger in sliders) {
-      var dataNodeName = sliders[trigger].dataNode;
-      if (dataNodeName != 'None') {
-        dsNames.push(datanodesManager.getDataNodeByName(dataNodeName).name());
+    for (const trigger in sliders) {
+      const dataNodeName = sliders[trigger].dataNode;
+      if (dataNodeName !== 'None') {
+        dnNames.push(datanodesManager.getDataNodeByName(dataNodeName).name());
       }
     }
 
-    if (dsNames.length > 0) {
-      datanodesManager.getDataNodeByName(dsNames[0]).schedulerStart(dsNames, dsNames[0], 'triggerButton');
+    if (dnNames.length > 0) {
+      datanodesManager.getDataNodeByName(dnNames[0]).schedulerStart(dnNames, dnNames[0], 'triggerButton');
     }
   }
 }
@@ -71,37 +72,40 @@ function updateDataSourceFromWidget(idInstance, e) {
 // |               updateDataNodeFromWidgetwithspinButton               | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
-  var widgetElement = document.getElementById('button' + idWidget);
-  var iElement = document.createElement('i');
-  iElement.setAttribute('id', 'icon' + idWidget);
-  widgetElement.append(iElement);
   if (_.isUndefined(widgetConnector.widgetsConnection[idInstance])) return;
-  var sliders = widgetConnector.widgetsConnection[idInstance].sliders;
-  var dsNames = [];
+  const sliders = widgetConnector.widgetsConnection[idInstance].sliders;
+  const dnNames = [];
   if (!_.isUndefined(sliders)) {
-    for (var trigger in sliders) {
-      var dataNodeName = sliders[trigger].dataNode;
+    for (let trigger in sliders) {
+      const dataNodeName = sliders[trigger].dataNode;
       if (dataNodeName != 'None') {
-        dsNames.push(datanodesManager.getDataNodeByName(dataNodeName).name());
+        dnNames.push(datanodesManager.getDataNodeByName(dataNodeName).name());
       }
     }
 
-    if (dsNames.length > 0) {
-      datanodesManager.getDataNodeByName(dsNames[0]).schedulerStart(dsNames, dsNames[0], 'triggerButton');
-
-      var intervalId = setInterval(function () {
-        var pendings = [];
-        dsNames.forEach((element) => {
+    if (dnNames.length > 0) {
+      const widgetElement = document.getElementById('button' + idWidget);
+      const iElement = document.createElement('i');
+      iElement.setAttribute('id', 'icon' + idWidget);
+      datanodesManager.getDataNodeByName(dnNames[0]).schedulerStart(dnNames, dnNames[0], 'triggerButton');
+      const intervalId = setInterval(function () {
+        const pendings = [];
+        dnNames.forEach((element) => {
           if (datanodesManager.getDataNodeByName(element).status() == 'Pending') {
             // check if datanode is in Pending state
-            $('#button' + idWidget).attr('class', 'btn btn-block btn-lg disabled'); // disable until request finished
+            $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg disabled'); // disable until request finished
             pendings.push(true);
             // Just do it if one datanode has "Pending" status. And do it only once
-            if (!$(iElement).hasClass('fa fa-spinner fa-spin')) iElement.setAttribute('class', 'fa fa-spinner fa-spin');
+            if (!$(iElement).hasClass('fa fa-spinner fa-spin')) {
+              iElement.setAttribute('class', 'fa fa-spinner fa-spin');
+            }
+            if (!widgetElement.contains(iElement)) {
+              widgetElement.append(iElement);
+            }
           }
         });
         if (pendings.length == 0) {
-          $('#button' + idWidget).attr('class', 'btn btn-block btn-lg ' + idInstance + 'widgetCustomColor ');
+          $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
           document.getElementById('icon' + idWidget).remove();
           iElement.remove();
           clearInterval(intervalId);

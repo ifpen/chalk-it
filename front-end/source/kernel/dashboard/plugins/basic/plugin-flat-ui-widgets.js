@@ -311,34 +311,33 @@ function flatUiWidgetsPluginClass() {
             if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
                 fontSize = modelsParameters[idInstance].buttonFontSize;
             }
-            const styleDef = 'style="font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw + 0.4vh); height: ' +
-                valueHeightPx + 'px; ' + this.buttonFontFamily() +
-                '" class="btn btn-table-cell btn-lg button-widget-html__a ' + idInstance + 'widgetCustomColor';
+            const styleDef = 'style="height: inherit; font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw + 0.4vh); ' +  
+                this.buttonFontFamily() + '" class="btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor';
 
             this.setButtonColorStyle();
             let divContent = '';
 
-            const iconClass = this.fontAwesomeIcon();
-            const hasIcon = this.displayIcon();
-            let icon = "";
-            if (hasIcon) {
-               icon = '<i class="' + iconClass + '"></i>';
-            }
-
             // conversion to enable HTML tags
             const text = this.getTransformedText("text");
+            let content = text;
+            const hasIcon = this.displayIcon();
+            if (hasIcon) {
+                const iconClass = this.fontAwesomeIcon();
+                const icon = '<i class="' + iconClass + '"></i>';
+                content = icon + " " + text;
+            }
 
             if (this.bIsInteractive) {
                 if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
                     const fileInput = '<input onclick="displaySpinnerOnInputFileButton(\'' + idWidget + '\')" type="file" style="display : none;" id="button' + idWidget + '_select_file"></input>';
-                    divContent = '<a ' + styleDef + '" id="button' + idWidget + '">' + icon  + " " +  text + " " + fileInput + '</a>';
+                    divContent += '<a ' + styleDef + '" id="button' + idWidget + '">' + content + fileInput + '</a>';
                 } else {
-                    divContent = '<a onclick="updateDataNodeFromWidgetwithspinButton( \'' + idInstance + '\', \'' + idWidget + '\')" ' + styleDef +
-                        '" id="button' + idWidget + '">' + icon + " " + text + "  " + '</a>';
+                    divContent += '<a onclick="updateDataNodeFromWidgetwithspinButton( \'' + idInstance + '\', \'' + idWidget + '\')" ' + styleDef +
+                        '" id="button' + idWidget + '">' + content + '</a>';
                 }
                 self.enable();
             } else {
-                divContent = '<a ' + styleDef + ' /*disabled*/" id="button' + idWidget + '">' + icon  + " " + text + '</a>';
+                divContent += '<a ' + styleDef + ' /*disabled*/" id="button' + idWidget + '">' + content + '</a>';
                 self.disable();
             }
             widgetHtml.innerHTML = divContent;
