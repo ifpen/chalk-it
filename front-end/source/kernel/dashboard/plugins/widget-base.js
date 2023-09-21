@@ -160,18 +160,15 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
      */
     this.getTransformedText = function (prop) {
         let text = modelsParameters[idInstance][prop] || '';
-    
         if (text) {
             // Check if the text has HTML tags
             const hasHtmlTags = $('<div>').html(text).children().length > 0;
-        
             if (!hasHtmlTags) {
                 // If the text does not have HTML tags, parse it as HTML
                 const parser = new DOMParser();
                 text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
             }
         }
-    
         return text;
     }
 
