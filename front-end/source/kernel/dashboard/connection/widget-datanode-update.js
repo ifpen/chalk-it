@@ -8,7 +8,6 @@
 // |                      Ghiles HDIEUR                                    │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
-
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                     displaySpinnerOnInputFileButton                | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
@@ -106,7 +105,7 @@ function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
         });
         if (pendings.length == 0) {
           $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
-          document.getElementById('icon' + idWidget).remove();
+          $('#icon' + idWidget)[0].remove();
           iElement.remove();
           clearInterval(intervalId);
         }
