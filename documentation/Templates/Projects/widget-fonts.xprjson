@@ -2,7 +2,7 @@
   "meta": {
     "version": "2.870.8680",
     "fileFormatVersion": "0.3",
-    "date": "Fri Oct 06 2023 10:54:54 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "date": "Fri Oct 06 2023 11:05:06 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
     "name": "widget-fonts",
     "description": "",
     "groupName": "",
@@ -481,48 +481,6 @@
         "value": ""
       }
     },
-    "flatUiTextInputA": {
-      "layout": {
-        "top": "40px",
-        "left": "1080px",
-        "height": "80px",
-        "width": "460px",
-        "minHeight": "24px",
-        "minWidth": "150px",
-        "z-index": "11"
-      },
-      "container": {
-        "instanceId": "flatUiTextInputA",
-        "modelJsonId": "flatUiTextInput"
-      },
-      "modelParameters": {
-        "label": "message",
-        "inheritLabelFromData": true,
-        "displayLabel": true,
-        "labelFontSize": 2,
-        "labelColor": "#2154ab",
-        "labelFontFamily": "Montserrat",
-        "valueWidthProportion": "70%",
-        "validationButton": false,
-        "validationOnFocusOut": true,
-        "isPassword": false,
-        "valueFontSize": 2,
-        "valueColor": "#34495e",
-        "valueFontFamily": "Montserrat",
-        "valueTextAlign": "left",
-        "displayBorder": false,
-        "unit": "unitText",
-        "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
-      },
-      "modelHiddenParams": {
-        "value": ""
-      }
-    },
     "flatUiTextInputB": {
       "layout": {
         "top": "15.0376vh",
@@ -732,6 +690,48 @@
       "modelHiddenParams": {
         "value": ""
       }
+    },
+    "flatUiTextInputA": {
+      "layout": {
+        "top": "4.29646vh",
+        "left": "56.25vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "17"
+      },
+      "container": {
+        "instanceId": "flatUiTextInputA",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Montserrat",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Montserrat",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
     }
   },
   "connections": {
@@ -815,14 +815,6 @@
         "dataNodeIndex": 0
       }
     },
-    "flatUiTextInputA": {
-      "value": {
-        "name": "value",
-        "dataNode": "message",
-        "dataFields": [],
-        "dataNodeIndex": 0
-      }
-    },
     "flatUiTextInputB": {
       "value": {
         "name": "value",
@@ -856,6 +848,14 @@
       }
     },
     "flatUiTextInputF": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInputA": {
       "value": {
         "name": "value",
         "dataNode": "message",
