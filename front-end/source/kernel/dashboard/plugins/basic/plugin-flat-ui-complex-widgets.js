@@ -28,6 +28,7 @@ modelsParameters.flatUiSelect = {
   labelFontFamily: 'var(--widget-font-family)',
   selectWidthProportion: '70%',
   isNumber: false,
+  selectValueFontFamily: 'var(--widget-font-family)',
   selectValueFontSize: 0.5,
   selectedValueColor: 'var(--widget-select-option-highlighted-text)',
   selectedItemDefaultColor: 'var(--widget-select-option-highlighted-color)',
@@ -82,7 +83,7 @@ modelsParameters.flatUiTable = {
 };
 
 // Layout (default dimensions)
-modelsLayout.flatUiSelect = { height: '5vh', width: '19vw', minWidth: '80px', minHeight: '32px' };
+modelsLayout.flatUiSelect = { height: '5vh', width: '19vw', minWidth: '80px', minHeight: '27px' };
 modelsLayout.flatUiMultiSelect = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
 modelsLayout.flatUiList = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
 modelsLayout.flatUiTable = { height: '10vh', width: '11vw', minWidth: '88px', minHeight: '79px' };
@@ -110,17 +111,11 @@ function flatUiComplexWidgetsPluginClass() {
       $('#select' + idWidget).prop('disabled', false);
 
       document.styleSheets[0].addRule(
-        '#s2id_select' + idWidget + ' > .select2-choice > .select2-chosen',
-        this.selectedValueColor()
-      );
+        '#s2id_select' + idWidget + ' > .select2-choice > .select2-chosen', this.selectedValueColor());
       document.styleSheets[0].addRule(
-        '#s2id_select' + idWidget + ' > .select2-choice',
-        this.selectedItemDefaultColor()
-      );
+        '#s2id_select' + idWidget + ' > .select2-choice', this.selectedItemDefaultColor());
       document.styleSheets[0].addRule(
-        '#s2id_select' + idWidget + ' > .select2-choice:hover',
-        this.selectedItemHoverColor()
-      );
+        '#s2id_select' + idWidget + ' > .select2-choice:hover', this.selectedItemHoverColor());
     };
 
     this.disable = function () {
@@ -169,23 +164,13 @@ function flatUiComplexWidgetsPluginClass() {
             '</span>';
       }
 
-      if (_.isUndefined(modelsParameters[idInstance].selectValueFontSize)) {
-        modelsParameters[idInstance].selectValueFontSize = modelsParameters[idInstance].labelFontSize;
-      }
-
       const keys = modelsHiddenParams[idInstance].keys;
       const values = modelsHiddenParams[idInstance].values;
       const nbOptions = Math.min(values.length, keys.length);
-      const styleDef = ''; // MBG ? 22/08/2023
+      const styleDef = 'style="display: table; height: ' + valueHeightPx + 'px; "';
 
-      divContent +=
-        '<select data-toggle="select" id="select' +
-        idWidget +
-        '" class="select-div form-control select select-primary select-block mbl" style="display:table;' +
-        styleDef +
-        ' height: ' +
-        valueHeightPx +
-        'px;">';
+      divContent += '<select data-toggle="select" id="select' + idWidget
+        + '" class="select-div form-control select select-primary select-block mbl" ' + styleDef + '>';
 
       for (let i = 0; i < nbOptions; i++) {
         divContent += `<option value="${values[i]}">${keys[i]}</option>`;
@@ -194,7 +179,8 @@ function flatUiComplexWidgetsPluginClass() {
 
       widgetHtml.innerHTML = divContent;
       widgetHtml.setAttribute('id', 'select-div-container' + idWidget);
-      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; ' + this.selectFontSize());
+      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; ' + this.selectFontSize() + 
+        this.selectValueFontFamily());
       $('#' + idDivContainer).html(widgetHtml);
 
       if (this.bIsInteractive) {
@@ -202,6 +188,28 @@ function flatUiComplexWidgetsPluginClass() {
       } else {
         self.disable();
       }
+
+      // Apply CSS to select list
+      // Create a MutationObserver instance
+      const observer = new MutationObserver(function (mutationsList, observer) {
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'childList' && mutation.addedNodes.length) {
+            // Check if the element you are waiting for is added
+            const element = document.querySelector('#s2id_select' + idWidget + ' > a > span:first-child');
+            if (element) {
+              const parts = element.getAttribute('id').split('-');
+              // Get the list ID number
+              const idNumber = parts[parts.length - 1];
+              document.styleSheets[0].addRule('#select2-results-' + idNumber, self.selectValueFontFamily());
+              // Stop observing once the element is found
+              observer.disconnect(); 
+            }
+          }
+        }
+      });
+
+      // Start observing changes in the DOM
+      observer.observe(document.body, { childList: true, subtree: true });
 
       $('#select' + idWidget)[0].value = String(modelsHiddenParams[idInstance].selectedValue);
 
@@ -495,11 +503,10 @@ function flatUiComplexWidgetsPluginClass() {
       }
 
       if (Array.isArray(val)) {
-        for (let i = 0; i < val.length; i++) {
-          divContent = divContent + '<label >';
-          divContent = divContent + '<input type="checkbox" value="' + val[i] + '" />';
-          divContent =
-            divContent +
+        for (const value of val) {
+          divContent += '<label >';
+          divContent += '<input type="checkbox" value="' + value + '" />';
+          divContent +=
             '<span id="multi-select-label' +
             idWidget +
             '" style="' +
@@ -509,12 +516,12 @@ function flatUiComplexWidgetsPluginClass() {
             this.checkboxWidth() +
             this.checkboxHeight() +
             '" tabindex="-1">' +
-            val[i] +
+            value +
             '</span>';
-          divContent = divContent + '</label>';
+          divContent += '</label>';
         }
       }
-      divContent = divContent + '</div>';
+      divContent += + '</div>';
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
 
@@ -534,8 +541,8 @@ function flatUiComplexWidgetsPluginClass() {
       if (!modelsParameters[idInstance].resetPastSelection) {
         if (!_.isEmpty(modelsHiddenParams[idInstance].selectedValue)) {
           $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
-            for (let i = 0; i < modelsHiddenParams[idInstance].selectedValue.length; i++) {
-              if ($(this).val() == modelsHiddenParams[idInstance].selectedValue[i]) {
+            for (const selectedValue of modelsHiddenParams[idInstance].selectedValue) {
+              if ($(this).val() == selectedValue) {
                 $(this).attr('checked', true);
               }
             }
@@ -613,8 +620,8 @@ function flatUiComplexWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (val) {
         $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
-          for (let i = 0; i < val.length; i++) {
-            if ($(this).val() === val[i]) {
+          for (const selectedValue of val) {
+            if ($(this).val() === selectedValue) {
               $(this).attr('checked', true);
             }
           }
@@ -716,7 +723,7 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.render = function () {
       const widgetHtml = document.createElement('div');
-      valueHeightPx = $('#' + idDivContainer).height();
+      const valueHeightPx = $('#' + idDivContainer).height();
       widgetHtml.setAttribute('style', 'width: inherit; height: ' + valueHeightPx + 'px; cursor: inherit;');
 
       const border = this.border();
@@ -745,11 +752,11 @@ function flatUiComplexWidgetsPluginClass() {
         cursorElem = 'cursor: inherit; ';
       }
       if (Array.isArray(val)) {
-        for (let i = 0; i < val.length; i++) {
-          divContent = divContent + '<option style="' + cursorElem + '">' + val[i] + '</option>';
+        for (const option of val) {
+          divContent += '<option style="' + cursorElem + '">' + option + '</option>';
         }
       }
-      divContent = divContent + '</select>';
+      divContent += '</select>';
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
       //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
@@ -837,8 +844,8 @@ function flatUiComplexWidgetsPluginClass() {
           listLength = modelsHiddenParams[idInstance].value.length;
         }
         if (selectedOptions.length === 0) return '';
-        for (let i = 0; i < selectedOptions.length; i++) {
-          if (selectedOptions[i].index < 0 || selectedOptions[i].index >= listLength) return '';
+        for (const option of selectedOptions) {
+          if (option.index < 0 || option.index >= listLength) return '';
         }
 
         return selectedVal;
@@ -868,21 +875,21 @@ function flatUiComplexWidgetsPluginClass() {
   // +--------------------------------------------------------------------¦ \\
   this.tableFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-    var self = this;
+    const self = this;
 
     this.enable = function () {
       $('#table' + idWidget).editableTableWidget();
       $('#table' + idWidget + ' td').on('change', function (evt, newValue) {
-        var cell = $(this);
-        var parent = cell.parent();
-        var column = cell.index();
-        var row = parent.index();
-        var fontSize = 0.5;
+        const cell = $(this);
+        const parent = cell.parent();
+        const column = cell.index();
+        let row = parent.index();
+        let fontSize = 0.5;
         if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
           fontSize = modelsParameters[idInstance].tableValueFontSize;
         }
         if (modelsParameters[idInstance].headerLine) {
-          row = row + 1;
+          row += 1;
         }
 
         if (!_.isNaN(Number(newValue))) newValue = Number(newValue); // MBG : very basic type handling. To extend
@@ -907,24 +914,23 @@ function flatUiComplexWidgetsPluginClass() {
     };
 
     this.buildTable = function (val) {
-      var tableContent = '';
-      var startIndex = 0;
-      var isEditable;
-      var fontSize = 0.5;
+      let tableContent = '';
+      let startIndex = 0;
+      let isEditable;
+      let fontSize = 0.5;
       if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
         fontSize = modelsParameters[idInstance].tableValueFontSize;
       }
-      var bIsArray = Array.isArray(val);
+      let bIsArray = Array.isArray(val);
       if (bIsArray) {
-        var token = val[0];
+        let token = val[0];
         bIsArray = Array.isArray(token);
         if (bIsArray) {
           if (modelsParameters[idInstance].headerLine) {
             startIndex = 1;
             tableContent += '<thead><tr>';
-            for (var j = 0; j < val[0].length; j++) {
-              tableContent =
-                tableContent +
+            for (const element of val[0]) {
+              tableContent +=
                 '<th style="' +
                 this.valueAlign() +
                 '"><span style="' +
@@ -933,13 +939,13 @@ function flatUiComplexWidgetsPluginClass() {
                 ' font-size: calc(7px + ' +
                 fontSize * getFontFactor() +
                 'vw);"><b>' +
-                val[0][j] +
+                element +
                 '</b></span></th>';
             }
             tableContent += '</tr></thead>';
           }
-          tableContent = tableContent + '<tbody>';
-          for (var i = startIndex; i < val.length; i++) {
+          tableContent += '<tbody>';
+          for (let i = startIndex; i < val.length; i++) {
             if (modelsParameters[idInstance].striped) {
               if (i%2 !== 0) {
                 tableContent += '<tr style="' + this.tableBackgroundColor("secondary") + '">';
@@ -948,13 +954,13 @@ function flatUiComplexWidgetsPluginClass() {
               tableContent += '<tr>';
             }
             
-            for (var j = 0; j < val[i].length; j++) {
-              var ParsedEditableCols = [];
+            for (let j = 0; j < val[i].length; j++) {
+              let ParsedEditableCols = [];
               try {
                 ParsedEditableCols = JSON.parse(modelsParameters[idInstance].editableCols);
               } catch (e) {}
 
-              var cursorEditable = '';
+              let cursorEditable = '';
               if (_.indexOf(ParsedEditableCols, j) == -1) {
                 isEditable = 'false';
               } else {
@@ -963,8 +969,7 @@ function flatUiComplexWidgetsPluginClass() {
                   cursorEditable = 'cursor: cell;';
                 }
               }
-              tableContent =
-                tableContent +
+              tableContent +=
                 '<td style="' +
                 cursorEditable +
                 this.valueAlign() +
@@ -979,9 +984,9 @@ function flatUiComplexWidgetsPluginClass() {
                 val[i][j] +
                 '</span></td>';
             }
-            tableContent = tableContent + '</tr>';
+            tableContent += '</tr>';
           }
-          tableContent = tableContent + '</tbody>';
+          tableContent += '</tbody>';
         } else {
           /* 1D table*/
           /*if (modelsParameters[idInstance].headerLine) {
@@ -990,11 +995,10 @@ function flatUiComplexWidgetsPluginClass() {
                         tableContent = tableContent + '<th><span style="color: #2154ab; font-size: calc(7px + .5vw)"><b>' + val[0] + '</b></span></th>';
                         tableContent = tableContent + '</tr></thead>';
                     }*/ // MBG : does-it make sense to have header in 1D ?
-          tableContent = tableContent + '<tbody><tr>';
-          for (var i = startIndex; i < val.length; i++) {
+          tableContent += '<tbody><tr>';
+          for (let i = startIndex; i < val.length; i++) {
             token = val[i];
-            tableContent =
-              tableContent +
+            tableContent +=
               '<td style="' +
               this.valueAlign() +
               '"><span style="' +
@@ -1006,7 +1010,7 @@ function flatUiComplexWidgetsPluginClass() {
               token +
               '</span></td>';
           }
-          tableContent = tableContent + '</tr></tbody>';
+          tableContent += '</tr></tbody>';
         }
       }
       return tableContent;
@@ -1077,7 +1081,7 @@ function flatUiComplexWidgetsPluginClass() {
       _SCHEMA
     );
     this.getActuatorDescriptions = function (model = null) {
-      params = model || modelsParameters[idInstance];
+      const params = model || modelsParameters[idInstance];
       let parsedEditableCols = [];
       try {
         parsedEditableCols = JSON.parse(params.editableCols);
