@@ -5,6 +5,7 @@
  * 
  */
 
+// OpenSans
 @font-face {
   font-weight: 300;
   font-style: normal;
@@ -37,10 +38,68 @@
   font-display: swap;
 }
 
+// Montserrat
+@font-face {
+  font-weight: 300;
+  font-style: normal;
+  font-family: 'Montserrat';
+  src: url('../fonts/montserrat/Montserrat-Light.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: 'Montserrat';
+  src: url('../fonts/montserrat/Montserrat-Regular.ttf');
+  font-display: swap;
+}
+
 @font-face {
   font-weight: 600;
   font-style: normal;
   font-family: 'Montserrat';
   src: url('../fonts/montserrat/Montserrat-SemiBold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 700;
+  font-style: normal;
+  font-family: 'Montserrat';
+  src: url('../fonts/montserrat/Montserrat-Bold.ttf');
+  font-display: swap;
+}
+
+// TitilliumWeb
+@font-face {
+  font-weight: 300;
+  font-style: normal;
+  font-family: 'TitilliumWeb';
+  src: url('../fonts/montserrat/TitilliumWeb-Light.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 400;
+  font-style: normal;
+  font-family: 'TitilliumWeb';
+  src: url('../fonts/montserrat/TitilliumWeb-Regular.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 600;
+  font-style: normal;
+  font-family: 'TitilliumWeb';
+  src: url('../fonts/montserrat/TitilliumWeb-SemiBold.ttf');
+  font-display: swap;
+}
+
+@font-face {
+  font-weight: 700;
+  font-style: normal;
+  font-family: 'TitilliumWeb';
+  src: url('../fonts/montserrat/TitilliumWeb-Bold.ttf');
   font-display: swap;
 }
