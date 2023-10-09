@@ -99,7 +99,7 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         if (_.isUndefined(modelsParameters[idInstance].labelFontFamily)) {
             modelsParameters[idInstance].labelFontFamily = 'Helvetica Neue';
         }
-        const ff = 'font-family: ' + modelsParameters[idInstance].labelFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        const ff = 'font-family: ' + modelsParameters[idInstance].labelFontFamily + ', Helvetica, Arial, sans-serif; ';
         return ff;
     }
 
@@ -107,7 +107,7 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         if (_.isUndefined(modelsParameters[idInstance].valueFontFamily)) {
             modelsParameters[idInstance].valueFontFamily = 'Helvetica Neue';
         }
-        const ff = 'font-family: ' + modelsParameters[idInstance].valueFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        const ff = 'font-family: ' + modelsParameters[idInstance].valueFontFamily + ', Helvetica, Arial, sans-serif; ';
         return ff;
     }
 
