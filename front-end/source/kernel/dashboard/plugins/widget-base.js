@@ -83,13 +83,6 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         return fs;
     };
 
-    this.selectFontSize = function () {
-        const fs = 'font-size: calc(7px + ' +
-            modelsParameters[idInstance].selectValueFontSize * getFontFactor() +
-            'vw + 0.4vh); ';
-        return fs;
-    };
-
     this.labelColor = function () {
         const color = this.setColorValueFromModelParameters("labelColor", "var(--widget-label-color)");
         const fc = 'color:' + color + "; ";
@@ -587,6 +580,22 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // +--------------------------------------------------------------------¦ \\
     // |                          Select widget                             | \\
     // +--------------------------------------------------------------------¦ \\
+    this.selectFontSize = function () {
+        if (_.isUndefined(modelsParameters[idInstance].selectValueFontSize)) {
+            modelsParameters[idInstance].selectValueFontSize = modelsParameters[idInstance].labelFontSize;
+        }
+        const fs = 'font-size: calc(7px + ' + modelsParameters[idInstance].selectValueFontSize * getFontFactor() + 'vw + 0.4vh); ';
+        return fs;
+    };
+
+    this.selectValueFontFamily = function () {
+        if (_.isUndefined(modelsParameters[idInstance].selectValueFontFamily)) {
+            modelsParameters[idInstance].selectValueFontFamily = 'Helvetica Neue';
+        }
+        const ff = 'font-family: ' + modelsParameters[idInstance].selectValueFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        return ff;
+    }
+    
     this.selectedValueColor = function () {
         const color = this.setColorValueFromModelParameters("selectedValueColor", "var(--widget-select-option-highlighted-text)");
         const vc = ' color: ' + color + '; ';
