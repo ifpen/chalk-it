@@ -13,7 +13,7 @@
 /*******************************************************************/
 
 // Models
-modelsHiddenParams.flatUiSelect = { values: [], keys: [], selectedValue: '' };
+modelsHiddenParams.flatUiSelect = { keys: [], values: [], selectedValue: '' };
 modelsHiddenParams.flatUiMultiSelect = { value: [], selectedValue: '' };
 modelsHiddenParams.flatUiList = { value: [], selectedValue: '' };
 modelsHiddenParams.flatUiTable = { value: null };
@@ -313,6 +313,7 @@ function flatUiComplexWidgetsPluginClass() {
 
       return result;
     };
+    
     this.selectedValue = {
       updateCallback: function () {},
       setValue: function (val) {
@@ -349,8 +350,6 @@ function flatUiComplexWidgetsPluginClass() {
         self.render();
       },
     };
-
-    self.render();
 
     if (!modelsParameters[idInstance].isKeyValuePairs) {
       //AEF: new created widget and newer loaded project
@@ -444,6 +443,8 @@ function flatUiComplexWidgetsPluginClass() {
         },
       };
     }
+    
+    self.render();
   };
 
   // Inherit from baseWidget class
