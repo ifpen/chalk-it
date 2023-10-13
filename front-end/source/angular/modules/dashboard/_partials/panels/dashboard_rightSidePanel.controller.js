@@ -318,7 +318,7 @@ angular
             let slider = existingSliders[actuatorName];
 
             // isFunction is used to test if the slider value is not a reserved name in javascript 
-            // For example : keys, values is a function in javascript
+            // For example : "keys", "values" are function names in javascript
             // slider value must be a string or undefined
             if (slider && !_.isFunction(slider)) {
               const ds = this.dataNodes.find((ds) => ds.name === slider.dataNode);
@@ -354,7 +354,7 @@ angular
               }
             }
             // isFunction is used to test if the slider value is a reserved name in javascript 
-            // For example : keys, values is a function in javascript
+            // For example : "keys", "values" are function names in javascript
             // slider value must be a string or undefined
             if (!slider || _.isFunction(slider)) { 
               slider = {
