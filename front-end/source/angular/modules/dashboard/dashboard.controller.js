@@ -197,8 +197,11 @@ angular
 
             /*---------- resetPanelState ----------------*/
             $scope.resetPanelState = function() {
+                const checkbox = document.getElementById("edit-play-switch");
+                checkbox.disabled = true; // Disable the button during the operation
                 $scope.resetPanelStateR();
                 $scope.resetPanelStateL();
+                checkbox.disabled = false; // Re-enable the button
             };
 
             /*---------- closeRightSidePanel ----------------*/
