@@ -522,6 +522,46 @@ var fileManager = (function () {
         });
     }
 
+    /*--------saveOnLocal--------*/
+    function saveOnLocal(xdashFileSerialized) {
+        // Save Dialog
+        swal({
+                title: "Export JSON",
+                text: "Save as ...",
+                type: "input",
+                showConfirmButton: false,
+                showConfirmButton1: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                closeOnConfirm: false,
+                closeOnConfirm1: false,
+                inputPlaceholder: "please write JSON file name here ...",
+            },
+            function(inputValue) {
+                if (inputValue === false) {
+                    return false; //cancel button
+                }
+                if (inputValue === "") { //empty input then ok button 
+                    swal.showInputError("JSON file name is required!");
+                    return false;
+                }
+                //here when input is not empty then ok button
+                if (inputValue != null) {
+                    let fname = inputValue;
+                    // Check json extension in file name
+                    if (fname.indexOf(".") == -1) {
+                        fname = fname + ".xdsjson";
+                    } else if (fname.split('.').pop().toLowerCase() == "xdsjson") {
+                        // Nothing to do
+                    } else {
+                        fname = fname.split('.')[0] + ".xdsjson";
+                    }
+                    saveAs(new Blob([JSON.stringify(xdashFileSerialized, null, '\t')], { 'type': 'application/octet-stream' }), fname);
+                    swal.close();
+                }
+            }
+        );
+    }
 
     //-------------------------------------------------------------------------------------------------------------------
     /*--------downloadFileCallback--------*/
@@ -786,6 +826,7 @@ var fileManager = (function () {
         setManagerCallback: setManagerCallback,
         getFileList: getFileList,
         saveOnServer: saveOnServer,
+        saveOnLocal: saveOnLocal,
         getFileListExtended: getFileListExtended,
         dialogBoxFileUpload: dialogBoxFileUpload,
         renameFile: renameFile

@@ -98,8 +98,12 @@ var xdsjson = (function () {
         tags: [],
       };
       const json = { meta, data: saveDatanodes };
-
-      fileManager.saveOnServer('datanode', null, json);
+      const $rootScope = angular.element(document.body).scope().$root;
+      if ($rootScope.xDashFullVersion) {
+        fileManager.saveOnServer('datanode', null, json);
+      } else {
+        fileManager.saveOnLocal(json);
+      }
     });
   }
 
