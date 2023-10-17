@@ -8,9 +8,9 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 
-JSONEdit = function() {
-    var jsonEd;
-    var currentMode = 'code';
+var JSONEdit = function() {
+    let jsonEd;
+    let currentMode = 'code';
 
     function setAssetRoot(_assetRoot) {
         assetRoot = _assetRoot;
@@ -20,20 +20,20 @@ JSONEdit = function() {
         jsonEd = datanodesManager.getJsonEditor();
         // Check for the various File API support.
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-            var input = document.createElement('input');
+            const input = document.createElement('input');
             input.type = "file";
             input.setAttribute('accept', ".json");
 
             $(input).on("change", function(event) {
-                var files = event.target.files;
+                const files = event.target.files;
                 if (files && files.length > 0) {
-                    var file = files[0];
-                    var reader = new FileReader();
+                    const file = files[0];
+                    const reader = new FileReader();
                     reader.addEventListener("load", function(fileReaderEvent) {
                         try {
                             jsonEd.setText(fileReaderEvent.target.result);
-                            var newValue = jsonEd.get();
-                            var strValue = JSON.stringify(newValue);
+                            const newValue = jsonEd.get();
+                            const strValue = JSON.stringify(newValue);
                             $("#var-body").val(strValue);
                             $("#var-body").change();
                         } catch (exc) {
@@ -77,18 +77,16 @@ JSONEdit = function() {
                 }
                 //here when input is not empty then ok button
                 if (inputValue != null) {
-                    var fname = inputValue;
+                    let fname = inputValue;
                     // Check json extension in file name
                     if (fname.indexOf(".") == -1) {
                         fname = fname + ".json";
+                    } else if (fname.split('.').pop().toLowerCase() == "json") {
+                        // Nothing to do
                     } else {
-                        if (fname.split('.').pop().toLowerCase() == "json") {
-                            // Nothing to do
-                        } else {
-                            fname = fname.split('.')[0] + ".json";
-                        }
+                        fname = fname.split('.')[0] + ".json";
                     }
-                    var blob = new Blob([jsonEd.getText()], { type: 'application/json;charset=utf-8' });
+                    const blob = new Blob([jsonEd.getText()], { type: 'application/json;charset=utf-8' });
                     saveAs(blob, fname);
                     swal.close();
                 }
@@ -98,10 +96,10 @@ JSONEdit = function() {
 
     function buildEditor(value, callback) {
         function updateEditor() {
-            var newValue = {};
+            let newValue = {};
             try {
                 newValue = jsonEd.get();
-                var strValue = JSON.stringify(newValue);
+                const strValue = JSON.stringify(newValue);
                 callback(strValue);
             } catch (exc) {
                 swal("Error", exc.message, "error");
@@ -109,9 +107,9 @@ JSONEdit = function() {
             }
         }
 
-        var container = $('#jsonedit');
+        const container = $('#jsonedit');
         $('#jsonedit')[0].innerHTML = '';
-        var options = {
+        const options = {
             mode: 'code',
             modes: ['code', 'tree'], // allowed modes
             onError: function(err) {
@@ -168,8 +166,8 @@ JSONEdit = function() {
 
     function updateVal() {
         if (currentMode == 'tree') {
-            var newValue = jsonEd.get();
-            var strValue = JSON.stringify(newValue);
+            const newValue = jsonEd.get();
+            const strValue = JSON.stringify(newValue);
             $("#var-body").val(strValue);
             $("#var-body").change();
         }
