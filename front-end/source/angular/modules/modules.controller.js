@@ -156,7 +156,7 @@ angular
                     function () {
 						// Begin fix by Ghiles
                         const startTime = new Date().getTime();
-                        const timeLimit = 10000; // in milliseconds
+                        const timeLimit = 20000; // in milliseconds
                         let count = 0;
                         // Wait for the datanodeManager to finish loading
                         while (count < timeLimit) {

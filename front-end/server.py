@@ -23,7 +23,7 @@ else:
 
 app = Flask(__name__)
 run_port = 7854
-server_url = f"http://localhost:{run_port}"
+server_url = f"http://127.0.0.1:{run_port}"
 
 dir_home = os.path.expanduser("~")
 
