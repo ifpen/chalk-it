@@ -105,7 +105,7 @@ function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
         });
         if (pendings.length == 0) {
           $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
-          $('#icon' + idWidget)[0].remove();
+          if (!_.isUndefined($('#icon' + idWidget)[0])) $('#icon' + idWidget)[0].remove();
           iElement.remove();
           clearInterval(intervalId);
         }
