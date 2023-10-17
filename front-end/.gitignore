@@ -24,3 +24,6 @@ doc/
 .vs
 source/.vs/ 
 __pycache__/
+
+pyodide-worker-dev.js
+pyodide-worker-dev.js.map
