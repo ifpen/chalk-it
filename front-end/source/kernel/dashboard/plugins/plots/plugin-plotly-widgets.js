@@ -21,6 +21,12 @@ const colorway = [
   "var(--widget-color-5)",
   "var(--widget-color-6)",
   "var(--widget-color-7)",
+  'var(--widget-color-8)',
+  'var(--widget-color-9)',
+  'var(--widget-color-10)',
+  'var(--widget-color-11)',
+  'var(--widget-color-12)',
+  'var(--widget-color-13)'
 ];
 const textColor = "var(--widget-color)";
 
