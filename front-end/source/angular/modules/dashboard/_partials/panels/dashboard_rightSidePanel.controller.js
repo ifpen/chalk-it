@@ -316,7 +316,11 @@ angular
             }
 
             let slider = existingSliders[actuatorName];
-            if (slider) {
+
+            // isFunction is used to test if the slider value is not a reserved name in javascript 
+            // For example : "keys", "values" are function names in javascript
+            // slider value must be a string or undefined
+            if (slider && !_.isFunction(slider)) {
               const ds = this.dataNodes.find((ds) => ds.name === slider.dataNode);
 
               // Should not be possible anymore; Warning for old dashboard with invalid connections.
@@ -349,7 +353,10 @@ angular
                 slider = undefined;
               }
             }
-            if (!slider) {
+            // isFunction is used to test if the slider value is a reserved name in javascript 
+            // For example : "keys", "values" are function names in javascript
+            // slider value must be a string or undefined
+            if (!slider || _.isFunction(slider)) { 
               slider = {
                 name: actuatorName,
                 dataNode: 'None',

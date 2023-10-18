@@ -83,13 +83,6 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         return fs;
     };
 
-    this.selectFontSize = function () {
-        const fs = 'font-size: calc(7px + ' +
-            modelsParameters[idInstance].selectValueFontSize * getFontFactor() +
-            'vw + 0.4vh); ';
-        return fs;
-    };
-
     this.labelColor = function () {
         const color = this.setColorValueFromModelParameters("labelColor", "var(--widget-label-color)");
         const fc = 'color:' + color + "; ";
@@ -106,7 +99,7 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         if (_.isUndefined(modelsParameters[idInstance].labelFontFamily)) {
             modelsParameters[idInstance].labelFontFamily = 'Helvetica Neue';
         }
-        const ff = 'font-family: ' + modelsParameters[idInstance].labelFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        const ff = 'font-family: ' + modelsParameters[idInstance].labelFontFamily + ', Helvetica, Arial, sans-serif; ';
         return ff;
     }
 
@@ -114,7 +107,7 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
         if (_.isUndefined(modelsParameters[idInstance].valueFontFamily)) {
             modelsParameters[idInstance].valueFontFamily = 'Helvetica Neue';
         }
-        const ff = 'font-family: ' + modelsParameters[idInstance].valueFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        const ff = 'font-family: ' + modelsParameters[idInstance].valueFontFamily + ', Helvetica, Arial, sans-serif; ';
         return ff;
     }
 
@@ -160,18 +153,15 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
      */
     this.getTransformedText = function (prop) {
         let text = modelsParameters[idInstance][prop] || '';
-    
         if (text) {
             // Check if the text has HTML tags
             const hasHtmlTags = $('<div>').html(text).children().length > 0;
-        
             if (!hasHtmlTags) {
                 // If the text does not have HTML tags, parse it as HTML
                 const parser = new DOMParser();
                 text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
             }
         }
-    
         return text;
     }
 
@@ -590,6 +580,22 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     // +--------------------------------------------------------------------¦ \\
     // |                          Select widget                             | \\
     // +--------------------------------------------------------------------¦ \\
+    this.selectFontSize = function () {
+        if (_.isUndefined(modelsParameters[idInstance].selectValueFontSize)) {
+            modelsParameters[idInstance].selectValueFontSize = modelsParameters[idInstance].labelFontSize;
+        }
+        const fs = 'font-size: calc(7px + ' + modelsParameters[idInstance].selectValueFontSize * getFontFactor() + 'vw + 0.4vh); ';
+        return fs;
+    };
+
+    this.selectValueFontFamily = function () {
+        if (_.isUndefined(modelsParameters[idInstance].selectValueFontFamily)) {
+            modelsParameters[idInstance].selectValueFontFamily = 'Helvetica Neue';
+        }
+        const ff = 'font-family: ' + modelsParameters[idInstance].selectValueFontFamily + ', Helvetica, Arial, sans-serif' + "; ";
+        return ff;
+    }
+    
     this.selectedValueColor = function () {
         const color = this.setColorValueFromModelParameters("selectedValueColor", "var(--widget-select-option-highlighted-text)");
         const vc = ' color: ' + color + '; ';

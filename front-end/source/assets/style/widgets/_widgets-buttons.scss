@@ -153,6 +153,18 @@ $widget-btn-colors: 'default', 'primary', 'info', 'success', 'warning', 'danger'
   }
 }
 
+%widget-btn-table-cell {
+  display: table-cell;
+  text-align: center; 
+  vertical-align: middle;
+  width: 100%;
+  white-space: normal;
+
+  & + & {
+    margin-top: 5px;
+  }
+}
+
 .daterangepicker,
 %widget-preview-wrapper {
   .btn {
@@ -213,7 +225,6 @@ $widget-btn-colors: 'default', 'primary', 'info', 'success', 'warning', 'danger'
   }
 
   .btn-table-cell {
-    display: table-cell;;
-    @extend %widget-btn-block;
+    @extend %widget-btn-table-cell;
   }
 }
