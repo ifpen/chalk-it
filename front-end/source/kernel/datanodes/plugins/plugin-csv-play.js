@@ -210,6 +210,17 @@
         }
     });
 
+  // ### Datanode Implementation
+  //
+  // -------------------
+  // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
+  var csvFilePlugin = function (settings, updateCallback, statusCallback) {
+    // initialize bad result value in case of error
+    var badResult = null;
+    //initialize error at new instance
+    error = false;
+    // Always a good idea...
+    var self = this;
 
     // ### Datanode Implementation
     //
@@ -405,4 +416,196 @@
             }
         };
     };
-}());
+
+    self.isFileParsingSuccess = function () {
+      pointerPos = 0; //AEF: reset values when update
+      statusCallback('Pending');
+      parserResults = self.parseFileContent();
+      if (parserResults == badResult) {
+        // case of bad parse at edition
+        statusCallback('Error', 'Error in file parse');
+        return false;
+      } else {
+        pastSettings = currentSettings;
+        return true;
+      }
+    };
+
+    self.isSettingNameChanged = function (newName) {
+      if (currentSettings.name != newName) return true;
+      else return false;
+    };
+
+    //AEF
+    this.isSettingSampleTimeChanged = function (newSampleTime) {
+      if (currentSettings.sampleTime != newSampleTime) return true;
+      else return false;
+    };
+
+    self.getSavedSettings = function () {
+      return [pastStatus, pastSettings];
+    };
+
+    /* This is some function where I'll get my data from somewhere */
+    function getData() {
+      for (var i = 0; i < numCols; i++) {
+        if (currentSettings.nb_meta_lines > 0 || currentSettings.nb_subheader_lines > 0) {
+          newData[colNames[i]] = parserResults.content[colNames[i]][pointerPos];
+        } else {
+          newData[colNames[i]] = parserResults[colNames[i]][pointerPos];
+        }
+      }
+      if (pointerPos < numRows - 1) {
+        pointerPos++;
+      } else {
+        if (currentSettings.playback) {
+          pointerPos = 0;
+        }
+      }
+      pastStatus = 'OK';
+      statusCallback('OK');
+      var dataObj = {};
+      if (currentSettings.nb_meta_lines > 0) {
+        dataObj.content = newData;
+        dataObj.meta = parserResults.meta;
+      }
+      if (currentSettings.nb_subheader_lines > 0) {
+        dataObj.content = newData;
+        dataObj.subheader = parserResults.subheader;
+      }
+
+      if (currentSettings.nb_meta_lines > 0 || currentSettings.nb_subheader_lines > 0) {
+        updateCallback(dataObj);
+      } else {
+        updateCallback(newData); //AEF: always put statusCallback before updateCallback. Mandatory for scheduler.
+      }
+    }
+
+    // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
+    self.updateNow = function () {
+      //AEF TODO: maybe think in the future the need to reset pointerPos when click on refresh
+      //     pointerPos = 0;
+
+      getData();
+      return true;
+    };
+
+    // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
+    self.onDispose = function () {};
+
+    self.isSetValueValid = function () {
+      return false;
+    };
+
+    self.isSetFileValid = function () {
+      return true;
+    };
+
+    self.isInternetNeeded = function () {
+      return false;
+    };
+
+    self.parseFileContent = function () {
+      papaSettings = {
+        delimiter: currentSettings.delimiter,
+        newline: currentSettings.eol,
+        quoteChar: currentSettings.quote_char,
+        header: currentSettings.head,
+        dynamicTyping: currentSettings.dynamic_typing,
+        skipEmptyLines: currentSettings.skip_empty_lines,
+      };
+
+      var metaObj = {};
+      var subheaderObj = {};
+      var content = currentSettings.content;
+
+      if (!_.isUndefined(content)) {
+        if (_.isUndefined(currentSettings.nb_meta_lines)) {
+          currentSettings.nb_meta_lines = 0;
+        }
+        if (_.isUndefined(currentSettings.nb_subheader_lines)) {
+          currentSettings.nb_subheader_lines = 0;
+        }
+
+        if (currentSettings.nb_meta_lines > 0) {
+          let lines = content.split('\n');
+          var meta = lines.splice(0, currentSettings.nb_meta_lines);
+          for (let i = 0; i < meta.length; i++) metaObj['metaLine' + i] = meta[i];
+          content = lines.join('\n');
+        }
+        if (currentSettings.nb_subheader_lines > 0) {
+          let lines = content.split('\n');
+          var subheader = lines.splice(1, currentSettings.nb_subheader_lines);
+          for (let i = 0; i < subheader.length; i++) {
+            subheaderObj['subheaderLine' + i] = subheader[i];
+            if (currentSettings.delimiter !== '')
+              subheaderObj['subheaderLine' + i] = subheaderObj['subheaderLine' + i].split(currentSettings.delimiter);
+          }
+          content = lines.join('\n');
+        }
+
+        self.parserResults = Papa.parse(content, papaSettings);
+        if (self.parserResults.errors.length == 0) {
+          var newDataRaw = self.parserResults.data;
+          numCols = self.parserResults.meta.fields.length;
+          parserResults = {};
+          newData = {};
+          if (numCols > 0) {
+            numRows = newDataRaw.length;
+          }
+
+          for (let i = 0; i < numCols; i++) {
+            var colName = self.parserResults.meta.fields[i];
+
+            parserResults[colName] = _.pluck(newDataRaw, colName);
+            colNames[i] = colName;
+          }
+          if (currentSettings.nb_meta_lines > 0) {
+            parserResults.content = parserResults;
+            parserResults.meta = metaObj;
+          }
+          if (currentSettings.nb_subheader_lines > 0) {
+            parserResults.content = parserResults;
+            parserResults.subheader = subheaderObj;
+          }
+
+          return parserResults;
+        } else {
+          if (!_.isUndefined(self.parserResults.errors[0].row))
+            swal(
+              'Parser error : ' + self.parserResults.errors[0].type,
+              self.parserResults.errors[0].message +
+                " in line '" +
+                self.parserResults.errors[0].row +
+                "' of " +
+                currentSettings.data_path +
+                "'.",
+              'error'
+            );
+          else
+            swal(
+              'Parser error : ' + self.parserResults.errors[0].type,
+              self.parserResults.errors[0].message + " in '" + currentSettings.data_path + "'.",
+              'error'
+            );
+          return badResult;
+        }
+      } else return badResult;
+    };
+
+    self.setFile = function (newContent) {
+      currentSettings.content = newContent;
+      currentSettings.data_path = newContent.name; //AEF: fix big update the path in the data settings
+      return self.isFileParsingSuccess();
+    };
+
+    // Parse file
+    parserResults = self.parseFileContent();
+    if (parserResults == badResult) {
+      // case of bad parse at creation
+      error = true;
+    } else {
+      error = false; // reset error flag
+    }
+  };
+})();

@@ -152,6 +152,8 @@ var xdash = (function () {
 
       await pyodideLib.deserialize(jsonObject); // GHI  : load pyodide packages
 
+      //AEF: save prj version for compatibility
+      jsonObject.data.version = jsonObject.meta.version;
       if (datanodesManager.load(jsonObject.data, true)) {
         angular
           .element(document.body)

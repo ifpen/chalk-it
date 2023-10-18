@@ -4,7 +4,7 @@
 // │ Copyright © 2016-2023 IFPEN                                           │ \\
 // | Licensed under the Apache License, Version 2.0                        │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY|
+// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY| \\
 // |                      Ghiles HDIEUR                                    │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
@@ -105,7 +105,7 @@ function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
         });
         if (pendings.length == 0) {
           $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
-          document.getElementById('icon' + idWidget).remove();
+          if (!_.isUndefined($('#icon' + idWidget)[0])) $('#icon' + idWidget)[0].remove();
           iElement.remove();
           clearInterval(intervalId);
         }

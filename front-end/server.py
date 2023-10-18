@@ -28,7 +28,7 @@ else:
 
 app = Flask(__name__)
 run_port = 7854
-server_url = f"http://localhost:{run_port}"
+server_url = f"http://127.0.0.1:{run_port}"
 
 if args.sync:
     from server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
