@@ -93,23 +93,39 @@ function flatUiBooleanWidgetsPluginClass() {
             let divContent = '';
             const widgetHtml = document.createElement('div');
             widgetHtml.setAttribute('id', 'checkbox-widget-html' + idWidget);
-
+            //
+            const labelHeight = checkboxHeight * modelsParameters[idInstance].checkboxSize;
             const divContainerHeightPx = $('#' + idDivContainer).height(); // in px
+            //const divMarginTop = (divContainerHeightPx - labelHeight) / 2;
+            widgetHtml.setAttribute("style",
+                //'padding-top: ' + divMarginTop + 'px; ' +
+                'width: inherit; cursor: inherit; display: flex; justify-content: center;');
+            //
+
+            const labelPosition = (!_.isUndefined(modelsParameters[idInstance].labelPosition) && modelsParameters[idInstance].labelPosition === 'right') ? 'right' : 'left';
+            const widgetDirection = (labelPosition === 'left') ? 'rtl' : 'ltr';
+
+            // Dynamically set the direction property to 'ltr' or 'rtl'
+            document.styleSheets[0].addRule('#checkbox-widget-html' + idWidget, 'direction: ' + widgetDirection);
+
             if (modelsParameters[idInstance].label != "" && modelsParameters[idInstance].displayLabel) { //ABK
                 // conversion to enable HTML tags
                 const labelText = this.getTransformedText("label");
+                const styleLabel = 'style = "cursor: inherit; line-height:' + lineHeight + 'px;"';
 
-                divContent += '<label class="checkbox" id="label' + idWidget +
-                    '" style="cursor: inherit; display: flex; align-items: center; margin:auto; padding-left: ' + padding + 
-                    'px; line-height:' + lineHeight + 'px; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '; " for="checkbox' + idWidget + '">';
+                divContent += '<label class="checkbox" id="label' + idWidget + '" ' + styleLabel + ' for="checkbox' + idWidget + '">';
                 divContent += '<input type="checkbox" class="nohover" data-toggle="radio" style="zoom:' + modelsParameters[idInstance].checkboxSize + 
                             '" value="" id="checkbox' + idWidget + '" disabled>';
                 divContent += '</input>';
-                divContent += labelText;
                 divContent += '</label>';
+
+                const styleSpan = 'style="display: flex; justify-content: center; align-items: center; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + ' text-align: ' + labelPosition + ';"';
+                divContent += '<span id="checkbox-span' + idWidget +
+                '" class="checkbox-span" ' + styleSpan + '>' +
+                labelText + '</span>';
             } else {
-                divContent += '<label class="checkbox" id="label' + idWidget +
-                    '" style="cursor: inherit; display: flex; align-items: center; margin: auto;" for="checkbox' + idWidget + '">';
+                const styleLabel = 'style = "cursor: inherit; padding-right: 0px;"';
+                divContent += '<label class="checkbox" id="label' + idWidget + '" ' + styleLabel + ' for="checkbox' + idWidget + '">';
                 divContent += '<input type="checkbox" class="nohover" data-toggle="radio" style="zoom:' + modelsParameters[idInstance].checkboxSize +
                     ' value="" id="checkbox' + idWidget + '" disabled>';
                 divContent += '</input>';
@@ -118,14 +134,6 @@ function flatUiBooleanWidgetsPluginClass() {
 
             widgetHtml.innerHTML = divContent;
             $("#" + idDivContainer).html(widgetHtml);
-
-            //
-            const labelHeight = checkboxHeight * modelsParameters[idInstance].checkboxSize;
-            //divMarginTop = (divContainerHeightPx - labelHeight) / 2;
-            widgetHtml.setAttribute("style",
-                //'padding-top: ' + divMarginTop + 'px; ' +
-                'width: inherit; cursor: inherit; display: flex; justify-content: center; align-items: center;');
-            //
 
             $('[data-toggle="checkbox"]').radiocheck();
             $('[data-toggle="radio"]').radiocheck();
@@ -260,6 +268,7 @@ function flatUiBooleanWidgetsPluginClass() {
             const widgetHtml = document.createElement('div');
             widgetHtml.setAttribute('id', 'switch-widget-html' + idWidget);
             widgetHtml.setAttribute('class', 'switch-widget-html');
+            widgetHtml.setAttribute('style', 'height: ' + divContainerHeightPx + 'px;');
 
             const labelPosition = (!_.isUndefined(modelsParameters[idInstance].labelPosition) && modelsParameters[idInstance].labelPosition === 'right') ? 'right' : 'left';
             const widgetDirection = (labelPosition === 'left') ? 'rtl' : 'ltr';
@@ -290,14 +299,12 @@ function flatUiBooleanWidgetsPluginClass() {
                 // conversion to enable HTML tags
                 const labelText = this.getTransformedText("label");
 
-                divContent = divContent + '<span id="switch-span' + idWidget +
+                divContent += '<span id="switch-span' + idWidget +
                     '" class="switch-span" style="' + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + ' text-align: ' + labelPosition + ';">' +
                     labelText + '</span>';
             }
             widgetHtml.innerHTML = divContent;
             $("#" + idDivContainer).html(widgetHtml);
-
-            widgetHtml.setAttribute('style', 'height: ' + divContainerHeightPx + 'px;');
 
             document.styleSheets[0].addRule('input + #slide' + idWidget , this.switchOffColor());
             document.styleSheets[0].addRule('input:checked + #slide' + idWidget , this.switchOnColor());
