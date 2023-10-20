@@ -1,6 +1,6 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ DatanodesListModel : fork from freeboard                           │ \\
-// ├────────────────────────────────────────────────────────────────────┤ \\
+// └────────────────────────────────────────────────────────────────────┘ \\
 
 function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager) {
   var self = this;

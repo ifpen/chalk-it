@@ -4,17 +4,15 @@
 // │ Copyright © 2019-2023 IFPEN                                                   │ \\
 // | Licensed under the Apache License, Version 2.0                                │ \\
 // ├───────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s):  Mongi BEN GAID, Tristan BARTEMENT, Guillaume CORBELIN   │ \\                                     │ \\
+// │ Original authors(s):  Mongi BEN GAID, Tristan BARTEMENT, Guillaume CORBELIN   │ \\
 // └───────────────────────────────────────────────────────────────────────────────┘ \\
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
 /*******************************************************************/
 
-
 // Models
 modelsHiddenParams.kpiCard = { "value": "--" };
-
 
 // Parameters
 modelsParameters.kpiCard = {
@@ -36,7 +34,6 @@ modelsParameters.kpiCard = {
     "borderShadow": false/*,
     "backgroundColor": "#FFFFFF"*/
 };
-
 
 // Layout (default dimensions)
 modelsLayout.kpiCard = {

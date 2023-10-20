@@ -12,10 +12,8 @@
 /*************************** plugin data ***************************/
 /*******************************************************************/
 
-
 // Models
 modelsHiddenParams.flatUiDoubleSlider = { "minValue": 25, "maxValue": 75 };
-
 
 // Parameters
 modelsParameters.flatUiDoubleSlider = {
