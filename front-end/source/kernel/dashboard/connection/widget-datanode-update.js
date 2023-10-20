@@ -75,7 +75,7 @@ function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
   const sliders = widgetConnector.widgetsConnection[idInstance].sliders;
   const dnNames = [];
   if (!_.isUndefined(sliders)) {
-    for (let trigger in sliders) {
+    for (const trigger in sliders) {
       const dataNodeName = sliders[trigger].dataNode;
       if (dataNodeName != 'None') {
         dnNames.push(datanodesManager.getDataNodeByName(dataNodeName).name());
@@ -95,18 +95,17 @@ function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
             $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg disabled'); // disable until request finished
             pendings.push(true);
             // Just do it if one datanode has "Pending" status. And do it only once
-            if (!$(iElement).hasClass('fa fa-spinner fa-spin')) {
-              iElement.setAttribute('class', 'fa fa-spinner fa-spin');
-            }
             if (!widgetElement.contains(iElement)) {
+              if (!iElement.classList.contains('fa', 'fa-spinner', 'fa-spin')) {
+                iElement.classList.add('fa', 'fa-spinner', 'fa-spin');
+              }
               widgetElement.append(iElement);
             }
           }
         });
         if (pendings.length == 0) {
-          $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
-          if (!_.isUndefined($('#icon' + idWidget)[0])) $('#icon' + idWidget)[0].remove();
           iElement.remove();
+          $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
           clearInterval(intervalId);
         }
       }, 100);
