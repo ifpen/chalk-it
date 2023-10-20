@@ -251,7 +251,6 @@
     left: 0;
     position: absolute;
     width: 20px;
-    height: 20px;
     text-align: center;
     line-height: 20px;
     font-size: 20px;
@@ -1045,6 +1044,7 @@
 
   // Custom Group labels
   .switch-span,
+  .checkbox-span,
   .select-span,
   .ac-value-span,
   .value-span {
