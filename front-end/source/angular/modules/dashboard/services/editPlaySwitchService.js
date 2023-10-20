@@ -15,9 +15,7 @@ angular
 
         /*---------- Switch button    ----------------*/
         self.onEditPlaySwitch = function () {
-            let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-            const checkbox = document.getElementById("edit-play-switch");
-            checkbox.disabled = true; // Disable the button during the operation
+            const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
 
             $rootScope.bIsPlayMode = !scopeDash.editorView.checkboxModelView;
             if (tabActive !== "widgets") return;
@@ -27,7 +25,6 @@ angular
                 showPlayMode(bRescaleNeededForModeSwitch);
             }
             layoutMgr.updateDashBgColor();  // GHI issue #228
-            checkbox.disabled = false; // Re-enable the button
         };
 
     }]);

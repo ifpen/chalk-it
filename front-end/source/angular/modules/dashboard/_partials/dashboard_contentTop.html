@@ -159,8 +159,8 @@
 <!-- switch mode -->
 <div class="switch__wrapper">
     <p>Edit</p>
-    <label class="switch">
-        <input type="checkbox" id="edit-play-switch" ng-model="editorView.checkboxModelView" ng-click="resetPanelState();onEditPlaySwitch()">
+    <label class="switch" id="switch-label">
+        <input type="checkbox" id="edit-play-switch" ng-model="editorView.checkboxModelView" ng-click="switchEditView()">
         <span class="slider round"></span>
     </label>
     <p>View</p>
