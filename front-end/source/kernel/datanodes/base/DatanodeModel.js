@@ -1,13 +1,14 @@
 // ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ DatanodeModel : fork from freeboard                                │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// | Licensed under the Apache License, Version 2.0                     │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
+// └────────────────────────────────────────────────────────────────────┘ \\
 
-DatanodeModel = function (
-  datanodesListModel,
-  datanodePlugins,
-  datanodesDependency,
-  timeManager
-) {
+DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependency, timeManager) {
   var self = this;
   var doubleSetValueEventTrigger = true;
   this.datanodeRefreshNotifications = {};
@@ -28,30 +29,26 @@ DatanodeModel = function (
 
   this.name = ko.observable();
   this.latestData = ko.observable();
-  this.beautifulString = ko.observable(); // MBG
+  this.beautifulString = ko.observable();
   this.status = ko.observable('None');
   this.last_updated = ko.observable('never');
   this.last_error = ko.observable();
-  this.last_error_msg = ko.observable('none'); // MBG : more detailed error message from datanode. like runtime error for JSON formulas
-  this.error = ko.observable(); // MBG 09/07/2018. error better as ko observable
+  this.last_error_msg = ko.observable('none'); // more detailed error message from datanode. like runtime error for JSON formulas
+  this.error = ko.observable();
   this.isSchedulerStartSafe = ko.observable(false);
-  this.sampleTime = ko.observable(0); // TODO : transmettre la période par chaque datanode
-  this.statusForScheduler = ko.observable('Ready'); //Ready;Wait;NotReady;Stop
-  this.schedulerStatus = ko.observable('Running'); //Running; Stop
-  this.iconType = ko.observable(); //
+  this.sampleTime = ko.observable(0);
+  this.statusForScheduler = ko.observable('Ready'); // Ready;Wait;NotReady;Stop
+  this.schedulerStatus = ko.observable('Running'); // Running; Stop
+  this.iconType = ko.observable();
   this.settings = ko.observable({});
   this.settings.subscribe(function (newValue) {
     if (!_.isUndefined(self.datanodeInstance) && _.isFunction(self.datanodeInstance.onSettingsChanged)) {
       if (!self.formulaInterpreter.updateCalculatedSettings(true, false)) {
-        //AEF:important de la garder aussi ici pour les erreur bloquante
-        //AEF: handle error here
         self.error(true);
         return;
       }
 
-      if (self.datanodeInstance.onSettingsChanged(newValue, self.status()))
-        //AEF
-        self.error(false);
+      if (self.datanodeInstance.onSettingsChanged(newValue, self.status())) self.error(false);
       else self.error(true);
     }
   });
@@ -107,9 +104,8 @@ DatanodeModel = function (
     var dsName = self.name();
     self.status(newStatus);
     if (newStatus == 'OK') {
-      // MBG 05/11/2018
-      self.last_error_msg('No error message'); //ABK
-      $('[data-toggle="tooltip"]').tooltip('fixTitle'); //ABK
+      self.last_error_msg('No error message');
+      $('[data-toggle="tooltip"]').tooltip('fixTitle');
     } else if (newStatus !== 'Pending' && newStatus !== 'None' && newStatus !== 'Running') {
       self.completeExecution();
     }
@@ -138,7 +134,6 @@ DatanodeModel = function (
     }
   };
 
-  //AEF
   this.notificationCallback = function (notifType, dsSettingsName, msg, title, lastNotif) {
     if (xdashNotifications) {
       xdashNotifications.manageNotification(notifType, dsSettingsName, msg, lastNotif);
@@ -194,33 +189,28 @@ DatanodeModel = function (
             function (datanodeInstance) {
               self.datanodeInstance = datanodeInstance;
               if (!self.formulaInterpreter.updateCalculatedSettings(true, false)) {
-                //AEF: add a bool==true
                 bOK = false;
                 return false;
               }
             },
             self.updateCallback,
-            self.statusCallback, // MBG
-            self.notificationCallback, //AEF
+            self.statusCallback,
+            self.notificationCallback,
             self.statusForSchedulerCallback
           )
         ) {
           bOK = false;
         }
-        if (!bOK)
-          //ABK
-          return false;
-
-        return true; //ABK
+        if (!bOK) return false;
+        return true;
       }
 
       // Do we need to load any external scripts?
-      var bExternal = false; //abk
+      var bExternal = false;
       if (!_.isUndefined(datanodeType.external_scripts)) {
         if (!_.isUndefined(datanodeType.external_scripts[0])) {
-          //fix bug when it is not defined
           if (datanodeType.external_scripts[0] !== '') {
-            // AEF: fix temporary pb of head.js when no external scripts
+            //AEF: fix temporary pb of head.js when no external scripts
             bExternal = true;
           }
         }
@@ -232,16 +222,12 @@ DatanodeModel = function (
       } else {
         finishLoad();
       }
-      if (!bOK)
-        //ABK
-        self.error(true);
+      if (!bOK) self.error(true);
     } else {
       swal(
-        "DataNode Plugin Error",
-        "The required '" +
-          newValue +
-          "' plugin does not exist in this Chalk'it version !",
-        "error"
+        'DataNode Plugin Error',
+        "The required '" + newValue + "' plugin does not exist in this Chalk'it version !",
+        'error'
       );
       self.error(true);
     }
@@ -266,10 +252,7 @@ DatanodeModel = function (
       iconName += datanodePlugins[object.type].icon_type.replace(/\.[^/.]+$/, '');
     }
     self.iconType(iconName);
-    if (self.error())
-      //ABK
-      //return false; // MBG
-      return true; // avoid blocking end user if e.g a web-service does not respond
+    if (self.error()) return true; // avoid blocking end user if e.g a web-service does not respond
     else return true;
   };
 
@@ -297,7 +280,7 @@ DatanodeModel = function (
     }
 
     if (_.isUndefined(callOriginArg)) {
-      callOriginArg = 'unidentified'; // from update buttons handled via Knockout.js
+      callOriginArg = 'unidentified'; // from update buttons handled via Knockout.js (dataNode creation)
     }
     // create a working list needed to launch multiple schedulers in parallel
     var RunningList = {
@@ -312,7 +295,7 @@ DatanodeModel = function (
     //     C
     //  I->J->K
 
-    // at loading project sourceNodes=[A, C, I], the RunningList will be:
+    //at loading project sourceNodes=[A, C, I], the RunningList will be:
     //RunningList.disconSourceNodes= [[A, C], I]
     //RunningList.disconGraphs= [{A, B, C, D, E,F}, {I, J, K}]
     //RunningList.indicesDisconGraphs=[0, 1]
@@ -338,7 +321,7 @@ DatanodeModel = function (
             callOriginArg
           );
           // propagate execution instance pointer only to datanodes that belong to same connected graph of sourcesNodes
-          currentGraph = RunningList.disconGraphs[index]; //datanodesDependency.getBelongingDisconnectedGraph(source, allDisconnectedGraphs);
+          currentGraph = RunningList.disconGraphs[index];
           // propagate execution instance pointer to all other datanodes that belong
           if (currentGraph != null) {
             currentGraph.forEach(function (name) {
@@ -401,7 +384,6 @@ DatanodeModel = function (
             }
           } else if (callOriginArg !== 'timer' && callOriginArg !== 'globalFirstUpdate') {
             //add in the stack to be executed later
-
             if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
               console.log(
                 'operation ' + source[0] + ', called from ' + callOriginArg + ', is added to extraStartNodes list'
@@ -410,9 +392,11 @@ DatanodeModel = function (
           }
         }
       } else {
-        text = "Datanode '" + source[0] + "' does not exist but referenced in another datanode";
-        //self.notificationCallback("error", self.name(), text, "Bad datanode reference");
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log(text);
+        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+          text = "Datanode '" + source[0] + "' does not exist but referenced in another datanode";
+          //self.notificationCallback("error", self.name(), text, "Bad datanode reference");
+          console.log(text);
+        }
         return;
       }
     });
@@ -443,9 +427,11 @@ DatanodeModel = function (
               datanodesManager.getDataNodeByName(name).isSchedulerStartSafe(true);
             }
           } else {
-            text = "Datanode '" + name + "' does not exist but referenced in another datanode";
-            //self.notificationCallback("error", self.name(), text, "Bad datanode reference");
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log(text);
+            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+              text = "Datanode '" + name + "' does not exist but referenced in another datanode";
+              //self.notificationCallback("error", self.name(), text, "Bad datanode reference");
+              console.log(text);
+            }
             return;
           }
         });
@@ -474,9 +460,9 @@ DatanodeModel = function (
   };
 
   this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted) {
-    // Ajouter un autre cas � completeExecution, un peu comme NOP, pour g�rer l'ex�cution sous timer
-    // Les successeurs ne sont pas forc�ment tous � invalider
-    // Ici ex�cuter en fonction d'une condition tick % sampleTime == 0
+    // Ajouter un autre cas à completeExecution, un peu comme NOP, pour gérer l'exécution sous timer
+    // Les successeurs ne sont pas forcément tous à invalider
+    // Ici exécuter en fonction d'une condition tick % sampleTime == 0
     var bMultiple = false;
 
     if (self.sampleTime() < 1 && self.sampleTime() >= 0.1) {
@@ -501,7 +487,6 @@ DatanodeModel = function (
       }
       if (!_.isUndefined(self.datanodeInstance) && _.isFunction(self.datanodeInstance.updateNow)) {
         if (!self.formulaInterpreter.updateCalculatedSettings(false, bAllPredExecuted)) {
-          //AEF: handle error here
           self.error(true);
           return;
         }
@@ -516,7 +501,6 @@ DatanodeModel = function (
             }
           } else {
             //avant d'arriver ici forcement il y a eu statusCallback("Error") et donc  self.completeExecution();
-            //self.completeExecution("NOP");
             self.notificationCallback(
               'info',
               self.settings().name,
@@ -554,7 +538,6 @@ DatanodeModel = function (
   this.dispose = function () {
     var dsName = self.name();
     datanodesDependency.removeNode(dsName);
-    //AEF
     if (self.sampleTime()) {
       timeManager.unregisterDatanode(dsName);
     }
@@ -597,7 +580,7 @@ DatanodeModel = function (
     self.datanodeInstance.setValue(propertyName, val);
 
     if (!explicitTrig && (doubleSetValueEventTrigger || !doubleTrig)) {
-      //AEF as long as double event trigger is not handled we must use this restriction
+      //AEF: as long as double event trigger is not handled we must use this restriction
       self.schedulerStart([self.name()], self.name(), 'setValue');
     }
     if (doubleTrig) doubleSetValueEventTrigger = !doubleSetValueEventTrigger;
@@ -620,14 +603,6 @@ DatanodeModel = function (
     setDirtyFlagSafe(true);
   };
 
-  // Parameter:
-  // interface FileContent {
-  //     type : string; // Mime Type
-  //     size : number; // File size
-  //     name : string; // File name
-  //     content : string; // File content
-  //     isBinary : boolean; // if true, content is base64-encoded binary
-  // }
   this.setFile = function (fileContent) {
     // MBG refactoring : to do the same thing as setValue
     if (self.datanodeInstance.setFile(fileContent)) {
@@ -642,21 +617,19 @@ DatanodeModel = function (
     }
   };
 
-  //AEF
   this.getSavedSettings = function () {
     if (!_.isUndefined(self.datanodeInstance)) {
       if (_.isFunction(self.datanodeInstance.getSavedSettings)) return self.datanodeInstance.getSavedSettings();
     }
   };
 
-  //AEF
   this.isSettingSampleTimeChanged = function (sampleTime) {
     if (!_.isUndefined(self.datanodeInstance)) {
       if (_.isFunction(self.datanodeInstance.isSettingSampleTimeChanged))
         return self.datanodeInstance.isSettingSampleTimeChanged(sampleTime);
     }
   };
-  //AEF
+
   this.getXHR = function () {
     if (!_.isUndefined(self.datanodeInstance)) {
       if (_.isFunction(self.datanodeInstance.getXHR)) return self.datanodeInstance.getXHR();

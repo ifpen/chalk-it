@@ -4,7 +4,7 @@
 // │ Copyright © 2016-2023 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Mongi BEN GAID                                │ \\
+// │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 var xDashApi = (function () {

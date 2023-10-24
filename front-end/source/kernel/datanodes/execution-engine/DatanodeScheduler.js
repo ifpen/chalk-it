@@ -83,7 +83,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     }
   }
 
-  // AEF temp function, to factorize for autostart and explicit use
+  // AEF: temp function, to refactor for autostart and explicit use
   function isForceAutoStart(nodeName) {
     if (_.contains(triggeredNodes, nodeName)) {
       switch (callOrigin) {
@@ -253,6 +253,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     });
     return result + ' ]';
   }
+
   /*-----------------operationCompleted-----------------*/
   // called when datanode execution completes
   // also called when datanode reports a status callback
@@ -376,7 +377,6 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     return { initiatorNode: initiatorNode, schedulingInstanceTerminated: false };
   }
 
-  //AEF
   /*-----------------stopAllOperations-----------------*/
   function stopAllOperations() {
     // clear all operations to be executed
@@ -436,7 +436,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     return callOrigin;
   }
 
-  /*-----------------getSchedulerCallOrigin-----------------*/
+  /*-----------------clear-----------------*/
   function clear() {}
 
   // public methods

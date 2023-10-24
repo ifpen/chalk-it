@@ -1,10 +1,16 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ DatanodesListModel : fork from freeboard                           │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// | Licensed under the Apache License, Version 2.0                     │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
+// └────────────────────────────────────────────────────────────────────┘ \\
 
 function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager) {
   var self = this;
-  var storeData = []; //ABK
+  var storeData = [];
 
   this.datanodes = ko.observableArray();
   this.datasourceData = {};
@@ -60,20 +66,15 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
     };
   };
 
-  this.deserialize = function (
-    object,
-    bClear,
-    finishedCallback //ABK
-  ) {
+  this.deserialize = function (object, bClear, finishedCallback) {
     var appendPosition = 0;
     if (bClear) {
-      //ABK
       self.clear();
     }
 
     function finishLoad() {
-      self.error = ko.observable(false); // MBG 09/07/2018. error better as ko observable
-      storeData = []; //ABK
+      self.error = ko.observable(false);
+      storeData = [];
       var datanodes = [];
 
       if (_.isUndefined(object.datanodes)) {
@@ -81,26 +82,8 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
         delete object.datasources;
       }
 
-      for (let i = 0; i < object.datanodes.length; i++) {
-        //compatibility
-        if (object.datanodes[i].type === 'REST_web-service_from_datasource') {
-          //object.datanodes[i].type = "REST_API";
-        } else if (object.datanodes[i].type === 'FMI_web-service_from_datasource') {
-          //object.datanodes[i].type = "FMI_API";
-        } else if (object.datanodes[i].type === 'Map_matching_from_datasource') {
-          //object.datanodes[i].type = "Map_matching";
-        } else if (object.datanodes[i].type === 'Clock_web-service') {
-          //object.datanodes[i].type = "Clock";
-        } else if (object.datanodes[i].type === 'Generic_file_reader_plugin') {
-          //object.datanodes[i].type = "Generic_text_file_reader";
-        } else if (object.datanodes[i].type === 'Geolocation-plugin') {
-          //object.datanodes[i].type = "Geolocation";
-        }
-      }
-
       datanodes = object.datanodes;
 
-      //_.each(object.datanodes, function(datanodeConfig) // MBG for issue #41
       _.each(datanodes, function (datanodeConfig) {
         if (!_checkDatanodeExistance(datanodeConfig.name)) {
           if (!_createDatanodeInstance(datanodeConfig)) {
@@ -112,7 +95,6 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
       });
 
       if (storeData.length != 0) {
-        //ABK
         displayDuplicateDataList();
       }
 
@@ -133,7 +115,6 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
               }
             }
             if (!bFound) {
-              //datanodesDependency.removeNode(prop); // not removed but alert user of his mistake, scheduler can run now without problem
               var successors = Array.from(datanodesDependency.getSuccessors(prop));
               swal(
                 'Missed dataNodes!',
@@ -151,7 +132,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
             }
           }
         }
-        //AEF
+
         var datanodes;
         var bFoundPeriodic = false;
         var bFoundNoPeriodic = false;
@@ -194,6 +175,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
             }
           }
         }
+
         //compute graphs after loading datanodes
         datanodesDependency.computeAllDisconnectedGraphs();
         //launch scheduler
@@ -223,7 +205,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
         finishedCallback();
       }
 
-      return true; //ABK
+      return true;
     }
 
     finishLoad();
@@ -231,7 +213,6 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
     else return true;
   };
 
-  // MBG refactoring
   function _createDatanodeInstance(datanodeConfig) {
     var datanodes = new DatanodeModel(self, datanodePlugins, datanodesDependency, timeManager);
     if (!datanodes.deserialize(datanodeConfig)) {
@@ -316,9 +297,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
         callback();
       }
 
-      if (self.error())
-        //ABK
-        return false;
+      if (self.error()) return false;
       else return true;
     });
   };
@@ -340,7 +319,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
   }
 
   this.addDatanode = function (datanodes) {
-    //ABK: add verification of data existance
+    //AEF: add verification of data existance
     var bFound = false;
     for (var i = 0; i < self.datanodes().length; i++) {
       bFound = false;
