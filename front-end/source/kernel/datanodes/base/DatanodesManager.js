@@ -485,10 +485,8 @@ var datanodesManager = (function () {
     },
     stopSchedule: function () {
       var datanodes = datanodesListModel.datanodes();
-      //clear all extraStartNodes to avoid adding them to scheduler
-      if (Object.keys(datanodesDependency.getExtraStartNodes()).length) {
-        datanodesDependency.clearExtraStartNodes();
-      }
+
+      datanodesDependency.clearExtraStartNodesList();
       //stop all current operations
       for (var index in datanodes) {
         if (datanodes[index].execInstance() != null) {

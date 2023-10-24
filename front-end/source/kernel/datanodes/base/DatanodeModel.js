@@ -364,7 +364,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
                     callOriginArg +
                     ', is added to extraStartNodes list'
                 );
-              datanodesDependency.setExtraStartNodes(sourceNodesArg[val], callOriginArg);
+              datanodesDependency.addExtraStartNodesList(sourceNodesArg[val], callOriginArg);
             }
           } else if (callOriginArg === 'timer' && timeManager.getCurrentTick() != 0) {
             //ignored and no added in the stack, next instance will be executed later
@@ -384,7 +384,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
               console.log(
                 'operation ' + source[0] + ', called from ' + callOriginArg + ', is added to extraStartNodes list'
               );
-            datanodesDependency.setExtraStartNodes(source[0], callOriginArg);
+            datanodesDependency.addExtraStartNodesList(source[0], callOriginArg);
           }
         }
       } else {
@@ -434,18 +434,16 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       }
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
         console.log('scheduling instance terminated by ' + self.name());
-      //
-      var extraStartNodes = datanodesDependency.getExtraStartNodes();
-      if (Object.keys(extraStartNodes).length) {
+      // extraStartNodes
+      const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
+      if (extraStartNodesList.size) {
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
-          console.log('Start schedule from extraStartNodes:' + extraStartNodes);
+          console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
         }
-        //update operationsToExecute with extraStartNodes
-        var param = Object.keys(extraStartNodes);
-        var origin = extraStartNodes[param[0]];
-        // clear extraStartNodes
-        datanodesDependency.clearExtraStartNodes();
-        //self.schedulerStart(undefined, undefined, extraStartNodes[param]);
+        //update operationsToExecute with extraStartNodesList
+        const param = Array.from(extraStartNodesList.keys());
+        const origin = extraStartNodesList.get(param[0]);
+        datanodesDependency.clearExtraStartNodesList();
         self.schedulerStart(param, param[0], origin);
       }
       //

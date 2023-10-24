@@ -29,7 +29,7 @@ function DatanodeDependency() {
 
   var dependencyStructure = {};
 
-  var extraStartNodes = [];
+  var extraStartNodesList = new Map();
   var allDisconnectedGraphs = [];
   var SingletonNodeList = []; //isolated node
 
@@ -271,30 +271,31 @@ function DatanodeDependency() {
     return sourceNodes;
   }
 
-  /*-----------------getExtraStartNodes-----------------*/
+  /*-----------------getExtraStartNodesList-----------------*/
   // returs the extra start nodes came from user refresh, setvalue, setfile, edit and add
-  function getExtraStartNodes() {
-    return extraStartNodes;
+  function getExtraStartNodesList() {
+    return extraStartNodesList;
   }
 
-  /*-----------------setExtraStartNodes-----------------*/
+  /*-----------------addExtraStartNodesList-----------------*/
   // add the extra start node came from user refresh, setvalue, setfile, edit and add
-  function setExtraStartNodes(dsName, callOrigin) {
-    if (!_.isUndefined(extraStartNodes[dsName])) {
+  function addExtraStartNodesList(dsName, callOrigin) {
+    if (extraStartNodesList.has(dsName)) {
       xdashNotifications.manageNotification(
         'info',
         dsName,
         dsName + ' is called many consecutif times while scheduler is in progress'
       );
     }
-    extraStartNodes[dsName] = callOrigin;
+    extraStartNodesList.set(dsName, callOrigin);
   }
 
-  /*-----------------clearExtraStartNodes-----------------*/
+  /*-----------------clearExtraStartNodesList-----------------*/
   // clear the extra start nodes came from user refresh, setvalue, setfile, edit and add
-  function clearExtraStartNodes() {
-    for (var prop in extraStartNodes) {
-      delete extraStartNodes[prop];
+  function clearExtraStartNodesList() {
+    extraStartNodesList.clear();
+  }
+
     }
   }
 
@@ -434,9 +435,9 @@ function DatanodeDependency() {
     renameNode,
     topologicalSort,
     detectCycles,
-    getExtraStartNodes,
-    setExtraStartNodes,
-    clearExtraStartNodes,
+    getExtraStartNodesList,
+    addExtraStartNodesList,
+    clearExtraStartNodesList,
     getAllsingletonNodes,
     isSingletonNode,
     updateDisconnectedGraphsList,

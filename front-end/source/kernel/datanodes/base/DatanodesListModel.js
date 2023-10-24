@@ -268,9 +268,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
   };
 
   this.clear = function () {
-    if (Object.keys(datanodesDependency.getExtraStartNodes()).length) {
-      datanodesDependency.clearExtraStartNodes();
-    }
+    datanodesDependency.clearExtraStartNodesList();
 
     _.each(self.datanodes(), function (datanode) {
       self.deleteDatanode(datanode);
