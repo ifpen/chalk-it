@@ -19,19 +19,18 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
 
   /*--------processCalculatedSetting--------*/
   this.processCalculatedSetting = function (settingName, script) {
-    var text = '';
     //AEF: parse error line by line to have more info for notification
     var bError = false;
-    var lines = script.split('\n');
-    for (var i = 0; i < lines.length; i++) {
+    let lines = script.split('\n');
+    for (let i = 0; i < lines.length; i++) {
       var datanodeRegex = new RegExp(
         'dataNodes.([\\w\\-]{1,}\\.{0,}[\\w\\-]{0,})|dataNodes\\[[\'"]([\\w\\\\\\-]{1,})[\'"]\\]((\\[[\'"]([\\w\\W]){1,}[\'"](?=\\])\\])){0,1}',
         'g'
       );
       while ((matches = datanodeRegex.exec(lines[i]))) {
         // find all datanodes in line i
-        var dsName;
-        var dsEval;
+        let dsName;
+        let dsEval;
         if (!_.isUndefined(matches[1])) {
           //case of datanodes.name.param1...
           dsName = matches[1].split('.')[0];
@@ -40,11 +39,11 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           //case of datanodes["name"]["param1"]...
           dsName = matches[2].split('"]')[0];
           dsEval = matches[0];
-          var count = 1;
-          var nbTimes = matches[0].split('"]').length - 1;
+          let count = 1;
+          let nbTimes = matches[0].split('"]').length - 1;
 
           if (nbTimes > 2) {
-            for (var k = 0; k < nbTimes - 2; k++) {
+            for (let k = 0; k < nbTimes - 2; k++) {
               dsEval = matches[0].substring(0, matches[0].length - count);
               count++;
               while (!dsEval.endsWith('"]', dsEval.length)) {
@@ -57,11 +56,11 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
         }
 
         try {
-          var valueFct = new Function('dataNodes', dsEval);
+          let valueFct = new Function('dataNodes', dsEval);
           self.callValueFunction(valueFct);
         } catch (e) {
           datanodeModel.statusCallback('Error', e.message);
-          text = 'var ' + dsName + ' in line ' + i + ' : ' + e.message;
+          const text = 'var ' + dsName + ' in line ' + i + ' : ' + e.message;
           datanodeModel.notificationCallback(
             'error',
             datanodeModel.settings().name,
@@ -75,13 +74,12 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
     }
 
     if (!bError && _.isFunction(datanodeModel.calculatedSettingScripts[settingName])) {
-      var returnValue;
+      let returnValue;
       try {
         returnValue = self.callValueFunction(datanodeModel.calculatedSettingScripts[settingName]);
       } catch (e) {
         datanodeModel.statusCallback('Error', e.message);
         datanodeModel.notificationCallback('error', datanodeModel.settings().name, e.message, 'Parse error');
-        var rawValue = datanodeModel.settings()[settingName];
         returnValue = null;
         self.bCalculatedSettings = false;
       }
@@ -91,7 +89,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
       ) {
         if (!_.isEmpty(script)) {
           if (_.isUndefined(returnValue)) {
-            text = "Parse error while parsing formula in : '" + datanodeModel.name() + "'";
+            const text = "Parse error while parsing formula in : '" + datanodeModel.name() + "'";
             datanodeModel.notificationCallback('warning', datanodeModel.settings().name, text, 'Parse error');
             datanodeModel.statusCallback('Error', 'Parse error');
             try {
@@ -100,8 +98,8 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               console.log(e.toString());
             }
           } else if (!_.isNull(returnValue)) {
-            var lastNotif = true;
-            text = "Success while parsing formula in : '" + datanodeModel.name() + "'";
+            const lastNotif = true;
+            const text = "Success while parsing formula in : '" + datanodeModel.name() + "'";
             datanodeModel.notificationCallback(
               'success',
               datanodeModel.settings().name,
@@ -130,8 +128,6 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
     self.bCalculatedSettings = true;
     datanodeModel.datanodeRefreshNotifications = {};
     datanodeModel.calculatedSettingScripts = {};
-    var text = '';
-
     if (_.isUndefined(datanodeModel.type())) {
       return false;
     }
@@ -169,7 +165,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             else {
               if (!_.isUndefined(datanodeModel.settings().method)) {
                 if (datanodeModel.settings().method == 'POST') {
-                  text = 'Cannot have an empty body with a POST method';
+                  const text = 'Cannot have an empty body with a POST method';
                   datanodeModel.notificationCallback(
                     'warning',
                     currentSettings.name,
@@ -178,17 +174,16 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
                   );
                 }
               }
-              //
             }
           }
 
-          var valueFunction;
+          let valueFunction;
 
           if (settingDef.type != 'custom2') {
             try {
               valueFunction = new Function('dataNodes', script);
             } catch (e) {
-              text = e + '.\n Formula interpreted as literal text';
+              const text = e + '.\n Formula interpreted as literal text';
               datanodeModel.notificationCallback(
                 'warning',
                 currentSettings.name,
@@ -204,16 +199,15 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             }
           }
 
-          // Are there any datanodes we need to be subscribed to?
-          var matches;
-          var allDsNames = new Set(); //AEF
+          let matches;
+          let allDsNames = new Set();
 
           while ((matches = datanodeRegex.exec(script))) {
-            var dsName = matches[1] || matches[2];
+            const dsName = matches[1] || matches[2];
 
             if (datanodeModel.name() === dsName) {
               //AEF: loop detected before adding the datanode (at creation)
-              text =
+              const text =
                 'DataNode "' +
                 dsName +
                 '": Please remove from formula the expression dataNodes["' +
@@ -235,8 +229,8 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             if (!bProjectLoad) {
               //AEF: this part of code will be executed by scheduler not at instance creation
               if (!datanodesManager.foundDatanode(dsName)) {
-                text = "DataNode '" + dsName + "' does not exist in dataNodes list";
                 //AEF: here data doesn't exist, different from data is undefined (e.g. in webservice)
+                const text = "DataNode '" + dsName + "' does not exist in dataNodes list";
                 datanodeModel.statusCallback('Error', text);
                 datanodeModel.notificationCallback('error', datanodeModel.name(), text, 'Error in formula');
                 self.bCalculatedSettings = false;
@@ -244,8 +238,8 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               }
             }
             //AEF: this part is executed before scheduler, at instance creation to unauthorize cycles from the begining
-            var cyclesDetection = datanodesDependency.detectCycles();
-            var text = '';
+            const cyclesDetection = datanodesDependency.detectCycles();
+            const text = '';
             if (cyclesDetection.hasCycle) {
               datanodesDependency.removeEdge(dsName, datanodeModel.name());
               text =
@@ -262,7 +256,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             }
 
             //AEF: Should we keep this code here?
-            var refreshSettingNames = datanodeModel.datanodeRefreshNotifications[dsName];
+            let refreshSettingNames = datanodeModel.datanodeRefreshNotifications[dsName];
             if (_.isUndefined(refreshSettingNames)) {
               refreshSettingNames = [];
               datanodeModel.datanodeRefreshNotifications[dsName] = refreshSettingNames;

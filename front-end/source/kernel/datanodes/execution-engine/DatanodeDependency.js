@@ -46,7 +46,7 @@ function DatanodeDependency() {
     delete dependencyStructure[dsName];
 
     // removes edges from other nodes to the one to be deleted
-    for (var ds in dependencyStructure) {
+    for (let ds in dependencyStructure) {
       if (dependencyStructure[ds].has(dsName)) {
         dependencyStructure[ds].delete(dsName);
       }
@@ -75,8 +75,8 @@ function DatanodeDependency() {
   // returns an iterator over the set of the direct predecessors of node
   // NP : construire la structure des données des prédécesseurs en parallèle à celle des successeurs
   function getPredecessorsSet(node) {
-    var predSet = new Set();
-    for (var k in dependencyStructure) {
+    let predSet = new Set();
+    for (let k in dependencyStructure) {
       if (dependencyStructure[k].has(node)) {
         predSet.add(k);
       }
@@ -100,7 +100,7 @@ function DatanodeDependency() {
 
   /*-----------------getDescendants-----------------*/
   function getDescendants(startNodes) {
-    var graph, loop, desc;
+    let graph, loop;
     [graph, loop] = buildGraph();
     //startNodesDesc = new Set(startNodes); //AEF descendants should not include the start node
     startNodesDesc = new Set();
@@ -174,7 +174,7 @@ function DatanodeDependency() {
 
   /*-----------------getBelongingDisconnectedGraph-----------------*/
   function getBelongingDisconnectedGraph(node, disconnectedGraphs) {
-    var graph;
+    let graph;
     disconnectedGraphs.some(function (disconGraph) {
       if (disconGraph.has(node)) {
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
@@ -188,8 +188,8 @@ function DatanodeDependency() {
   /*-----------------computeAllDisconnectedGraphs-----------------*/
   function computeAllDisconnectedGraphs() {
     //compute once a time all disconnected graphs
-    var allSourceNodes = getSourceNodes();
-    var disconnectedGraphs = [];
+    const allSourceNodes = getSourceNodes();
+    let disconnectedGraphs = [];
     allDisconnectedGraphs = getDisconnectedGraphs(allSourceNodes, disconnectedGraphs);
     if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs: ', allDisconnectedGraphs);
@@ -260,10 +260,10 @@ function DatanodeDependency() {
   /*-----------------getSourceNodes-----------------*/
   // returs the source nodes of the graph (whose indegree is 0)
   function getSourceNodes() {
-    var graph = buildGraphDS();
-    var nodes = graph.nodes();
-    var sourceNodes = [];
-    for (var node in nodes) {
+    const graph = buildGraphDS();
+    const nodes = graph.nodes();
+    let sourceNodes = [];
+    for (let node in nodes) {
       if (graph.indegree(nodes[node]) == 0) {
         sourceNodes.push(nodes[node]);
       }
@@ -301,8 +301,8 @@ function DatanodeDependency() {
   /*-----------------hasPredecessors-----------------*/
   // returns whether a node has predecessors
   function hasPredecessors(node) {
-    var bDependent = false;
-    for (var k in dependencyStructure) {
+    let bDependent = false;
+    for (let k in dependencyStructure) {
       if (dependencyStructure[k].has(node)) {
         bDependent = true;
         break;
@@ -325,13 +325,13 @@ function DatanodeDependency() {
   /*-----------------renameNode-----------------*/
   // renames the node in the dependency structure
   function renameNode(oldDsName, newDsName) {
-    for (var ds in dependencyStructure) {
+    for (let ds in dependencyStructure) {
       if (dependencyStructure[ds].has(oldDsName)) {
         dependencyStructure[ds].delete(oldDsName);
         dependencyStructure[ds].add(newDsName);
       }
     }
-    var dsSave = dependencyStructure[oldDsName];
+    const dsSave = dependencyStructure[oldDsName];
     delete dependencyStructure[oldDsName];
     dependencyStructure[newDsName] = dsSave;
   }
@@ -339,7 +339,7 @@ function DatanodeDependency() {
   /*-----------------removeMissedDependantDatanodes-----------------*/
   // used for formula update
   function removeMissedDependantDatanodes(allDsNames, dsName) {
-    for (var ds in dependencyStructure) {
+    for (let ds in dependencyStructure) {
       if (!allDsNames.has(ds)) {
         if (dependencyStructure[ds].has(dsName)) {
           dependencyStructure[ds].delete(dsName);
@@ -352,18 +352,16 @@ function DatanodeDependency() {
   // private function
   // builds a Graph object from tarjan-graph.js
   function buildGraph() {
-    var graph = new Graph();
-    var loop = false;
-    var ds;
-    for (ds in dependencyStructure) {
-      var node = ds;
-      //var edges = Array.from(dependencyMatrix[ds]); // MBG remove EC6
-      var edges = [];
+    let graph = new Graph();
+    let loop = false;
+    for (let ds in dependencyStructure) {
+      let node = ds;
+      let edges = [];
       dependencyStructure[ds].forEach(function (value) {
         edges.push(value);
       });
       graph.add(node, edges);
-      for (var i in edges) {
+      for (let i in edges) {
         if (edges[i] === node) {
           loop = true;
         }
@@ -375,9 +373,9 @@ function DatanodeDependency() {
   /*-----------------buildGraphDS-----------------*/
   // constructs a GraphDS object from graph-data-structure.js
   function buildGraphDS() {
-    var graph = new GraphDS();
-    for (var ds in dependencyStructure) {
-      var node = ds;
+    let graph = new GraphDS();
+    for (let ds in dependencyStructure) {
+      let node = ds;
       graph.addNode(node);
       dependencyStructure[ds].forEach(function (value) {
         graph.addEdge(node, value);
@@ -390,7 +388,7 @@ function DatanodeDependency() {
   // constructs a GraphDS object from graph-data-structure.js
   // then use it to get topological order
   function topologicalSort() {
-    var graph = buildGraphDS();
+    let graph = buildGraphDS();
     //remove nodes from graph that doesn't exist as datanodes
     graph.nodes().forEach(function (nodeName) {
       if (!datanodesManager.foundDatanode(nodeName)) {
@@ -398,7 +396,7 @@ function DatanodeDependency() {
       }
     });
     //
-    var topologicalOrder = graph.topologicalSort();
+    const topologicalOrder = graph.topologicalSort();
     return topologicalOrder;
   }
 
@@ -407,7 +405,7 @@ function DatanodeDependency() {
   // then detects cycles
   // that way we ensure, by construction, that we have a DAG
   function detectCycles() {
-    var graph, loop;
+    let graph, loop;
     [graph, loop] = buildGraph();
     return { hasCycle: graph.hasCycle(), getCycles: graph.getCycles(), hasLoop: loop };
   }

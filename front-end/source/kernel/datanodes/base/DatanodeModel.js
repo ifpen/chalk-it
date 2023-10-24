@@ -54,7 +54,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   });
 
   this.completeExecution = function (particularStatus) {
-    var dsName = self.name();
+    const dsName = self.name();
     var schedulerResult = {};
     var statusForSched;
 
@@ -101,7 +101,6 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
 
   // Status: None, Pending, Running, OK, Error
   this.statusCallback = function (newStatus, msg) {
-    var dsName = self.name();
     self.status(newStatus);
     if (newStatus == 'OK') {
       self.last_error_msg('No error message');
@@ -147,9 +146,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
 
   this.updateCallback = function (newData, status) {
     let dnName = self.name();
-
-    var now = new Date();
-
+    const now = new Date();
     var formatRet = self.dataPreviewFormat.format(newData);
     newData = formatRet.newData;
 
@@ -160,8 +157,8 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     if (status !== 'Error' && status !== 'None' && status !== 'Running') self.completeExecution();
 
     // question to Ameur : why this code?
-    var $body = angular.element(document.body);
-    var $rootScope = $body.scope().$root;
+    let $body = angular.element(document.body);
+    let $rootScope = $body.scope().$root;
     $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
     $rootScope.safeApply();
 
@@ -178,7 +175,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
 
       function finishLoad() {
         // MBG : Add dependency information
-        var dsName = self.name();
+        const dsName = self.name();
         if (!datanodesDependency.isNode(dsName)) {
           datanodesDependency.addNode(dsName);
         }
@@ -206,7 +203,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       }
 
       // Do we need to load any external scripts?
-      var bExternal = false;
+      let bExternal = false;
       if (!_.isUndefined(datanodeType.external_scripts)) {
         if (!_.isUndefined(datanodeType.external_scripts[0])) {
           if (datanodeType.external_scripts[0] !== '') {
@@ -266,7 +263,6 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   this.schedulerStart = function (sourceNodesArg, initiatorNodeArg, callOriginArg) {
     var sourceNodes;
     var initiatorNode;
-
     var dsName = self.name();
 
     if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
@@ -412,7 +408,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
         );
     }
     if (self.execInstance() != null) {
-      var allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
+      const allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
         console.log('get belonging disconnected graph (from schedulerEnd)');
       graph = datanodesDependency.getBelongingDisconnectedGraph(self.name(), allDisconnectedGraphs);
@@ -536,7 +532,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   };
 
   this.dispose = function () {
-    var dsName = self.name();
+    const dsName = self.name();
     datanodesDependency.removeNode(dsName);
     if (self.sampleTime()) {
       timeManager.unregisterDatanode(dsName);
@@ -589,7 +585,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   // MBG 06/02/2021 : for Flairmap : set value and propagate to be visible in consuming formulas
   // when scheduler is in progress
   this.setValueSpec = function (propertyName, val, doubleTrig) {
-    let dnName = self.name();
+    const dnName = self.name();
     self.setValue(propertyName, val, doubleTrig);
 
     newData = JSON.parse(self.settings()['json_var']);
@@ -637,7 +633,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   };
 
   fillRunningList = function (sourceNodes, list) {
-    var allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
+    const allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
     sourceNodes.forEach(function (source) {
       //get the disconnected graph to which this sourceNode belongs
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
