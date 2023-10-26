@@ -434,19 +434,35 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       }
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
         console.log('scheduling instance terminated by ' + self.name());
-      // extraStartNodes
-      const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
-      if (extraStartNodesList.size) {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
-          console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
+
+      // SetVariables
+      const setvarList = datanodesDependency.getSetvarList();
+      const processedSetvarList = datanodesDependency.getProcessedSetvarList();
+      const filteredSetvarList = new Map(Array.from(setvarList).filter(([key]) => !processedSetvarList.has(key)));
+      if (filteredSetvarList.size) {
+        console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
+        console.log('triggred by : ' + Array.from(filteredSetvarList.values()));
+        console.log('triggred by : ' + Array.from([...new Set(filteredSetvarList.values())]));
+        const param = Array.from(filteredSetvarList.keys());
+        datanodesDependency.addProcessedSetvarList(filteredSetvarList);
+        datanodesDependency.clearSetvarList();
+        self.schedulerStart(param, param[0], 'setVariable');
+      } else {
+        datanodesDependency.clearProcessedSetvarList();
+
+        // extraStartNodes
+        const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
+        if (extraStartNodesList.size) {
+          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+            console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
+          }
+          //update operationsToExecute with extraStartNodesList
+          const param = Array.from(extraStartNodesList.keys());
+          const origin = extraStartNodesList.get(param[0]);
+          datanodesDependency.clearExtraStartNodesList();
+          self.schedulerStart(param, param[0], origin);
         }
-        //update operationsToExecute with extraStartNodesList
-        const param = Array.from(extraStartNodesList.keys());
-        const origin = extraStartNodesList.get(param[0]);
-        datanodesDependency.clearExtraStartNodesList();
-        self.schedulerStart(param, param[0], origin);
       }
-      //
     } else {
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
         console.log('Problem : request for ending a scheduling instance whereas no instance exists');

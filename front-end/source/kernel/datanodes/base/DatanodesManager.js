@@ -487,6 +487,9 @@ var datanodesManager = (function () {
       var datanodes = datanodesListModel.datanodes();
 
       datanodesDependency.clearExtraStartNodesList();
+      datanodesDependency.clearSetvarList();
+      datanodesDependency.clearProcessedSetvarList();
+
       //stop all current operations
       for (var index in datanodes) {
         if (datanodes[index].execInstance() != null) {

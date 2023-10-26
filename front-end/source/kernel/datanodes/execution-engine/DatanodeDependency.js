@@ -30,6 +30,9 @@ function DatanodeDependency() {
   var dependencyStructure = {};
 
   var extraStartNodesList = new Map();
+  var setvarList = new Map();
+  var processedSetvarList = new Map();
+
   var allDisconnectedGraphs = [];
   var SingletonNodeList = []; //isolated node
 
@@ -296,7 +299,50 @@ function DatanodeDependency() {
     extraStartNodesList.clear();
   }
 
+  /*-----------------getSetvarList-----------------*/
+  function getSetvarList() {
+    return setvarList;
+  }
+
+  /*-----------------addSetvarList-----------------*/
+  function addSetvarList(dsName, callOrigin) {
+    if (setvarList.has(dsName)) {
+      if (setvarList.get(dsName) !== callOrigin)
+        xdashNotifications.manageNotification(
+          'warning',
+          dsName,
+          'Possible undeterminism: setVariable of "' +
+            dsName +
+            '" is used more than once in other dataNodes as: "' +
+            setvarList.get(dsName) +
+            '" and "' +
+            callOrigin +
+            '"'
+        );
     }
+    setvarList.set(dsName, callOrigin);
+  }
+
+  /*-----------------clearSetvarList-----------------*/
+  function clearSetvarList() {
+    setvarList.clear();
+  }
+
+  /*-----------------getProcessedSetvarList-----------------*/
+  function getProcessedSetvarList() {
+    return processedSetvarList;
+  }
+
+  /*-----------------addProcessedSetvarList-----------------*/
+  function addProcessedSetvarList(sourceMap) {
+    for (const [key, value] of sourceMap.entries()) {
+      processedSetvarList.set(key, value);
+    }
+  }
+
+  /*-----------------clearProcessedSetvarList-----------------*/
+  function clearProcessedSetvarList() {
+    processedSetvarList.clear();
   }
 
   /*-----------------hasPredecessors-----------------*/
@@ -438,6 +484,12 @@ function DatanodeDependency() {
     getExtraStartNodesList,
     addExtraStartNodesList,
     clearExtraStartNodesList,
+    getSetvarList,
+    addSetvarList,
+    clearSetvarList,
+    getProcessedSetvarList,
+    addProcessedSetvarList,
+    clearProcessedSetvarList,
     getAllsingletonNodes,
     isSingletonNode,
     updateDisconnectedGraphsList,

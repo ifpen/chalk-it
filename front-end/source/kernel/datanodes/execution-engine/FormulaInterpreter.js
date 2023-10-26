@@ -135,6 +135,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
     // Check for any calculated settings
     var settingsDefs = datanodePlugins[datanodeModel.type()].settings;
     var datanodeRegex = new RegExp('dataNodes.([\\w_-]+)|dataNodes\\[[\'"]([^\'"]+)', 'g');
+    const setVarRegex = new RegExp('setVariable\\("(\\w+)",\\s*([^)]+)\\)', 'g');
     const regexPython = /(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')|(#.*$)/gm;
     var currentSettings = datanodeModel.settings();
     var bOK = true;
@@ -239,7 +240,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             }
             //AEF: this part is executed before scheduler, at instance creation to unauthorize cycles from the begining
             const cyclesDetection = datanodesDependency.detectCycles();
-            const text = '';
+            let text = '';
             if (cyclesDetection.hasCycle) {
               datanodesDependency.removeEdge(dsName, datanodeModel.name());
               text =
@@ -267,6 +268,10 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             }
           }
 
+          while ((matches = setVarRegex.exec(script))) {
+            const dsName = matches[1];
+            datanodesDependency.addSetvarList(dsName, datanodeModel.name());
+          }
           //AEF: fix bug (clean up data that doesn't exist anymore in formula for example)
           datanodesDependency.removeMissedDependantDatanodes(allDsNames, datanodeModel.name());
 
