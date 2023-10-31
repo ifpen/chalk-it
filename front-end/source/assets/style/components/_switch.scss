@@ -96,6 +96,13 @@ label.onoffswitch-label {
   }
 }
 
+// Add a disabled state style for the switch label
+// Used for edit/view (Rounded)
+.switch.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .slider {
   position: absolute;
   top: 0;
