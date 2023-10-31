@@ -7,9 +7,9 @@
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                 │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
 
-var tabActive = 'widgets';
-var modeActive = "edit-dashboard";
-var editorStatus = "full";
+let tabActive = 'widgets';
+let modeActive = "edit-dashboard";
+let editorStatus = "full";
 
 angular
     .module('modules.dashboard')
@@ -231,11 +231,25 @@ angular
                 $scope.editorView.checkboxModelView = false;
             };
 
+            // /**************************************************************/
+            // /****************** Edit/View switch button *******************/
+            // /**************************************************************/
+
+            /*---------- switchEditView ----------------*/
+            $scope.switchEditView = function() {
+                const switchLabel = document.getElementById("switch-label");
+                if (switchLabel.classList.contains("disabled")) return;
+                switchLabel.classList.add("disabled");
+                EditPlaySwitchService.onEditPlaySwitch();
+                $scope.resetPanelState();
+                setTimeout(() => {
+                    switchLabel.classList.remove("disabled");
+                }, 1000); // Adjust the delay to match the transition duration
+            }
 
             // /**************************************************************/
             // /****************** New DataNode side panel *******************/
             // /**************************************************************/
-
 
             /*---------- dataNode type button ----------------*/
             $scope.openDataNodeTypePlugin = function(val) {

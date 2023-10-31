@@ -1,5 +1,5 @@
-﻿var bRescaleNeededForModeSwitch = false;
-var currentDashboardScrollTop = 0;
+﻿let bRescaleNeededForModeSwitch = false;
+let currentDashboardScrollTop = 0;
 
 function showEditMode(bDoRescale, successCallback) {
   if (tabActive == "widgets") {
@@ -28,7 +28,7 @@ function showPlayMode(bDoRescale) {
 
 function switchToEditMode(bDoRescale, successCallback) {
   if (bFirstExec) {
-    var val = getMedia();
+    const val = getMedia();
     widgetEditor.setLastMedia(val);
   }
   if (bDoRescale) {
@@ -48,9 +48,10 @@ function switchToEditMode(bDoRescale, successCallback) {
 }
 
 function switchToPlayMode() {
+  let xprjson = {};
   if (modeActive == "edit-dashboard") {
     widgetEditor.updateSnapshotDashZoneDims();
-    var xprjson = xdash.serialize();
+    xprjson = xdash.serialize();
     currentDashboardScrollTop = $("#DropperDroite").scrollTop();
     widgetPreview.setScalingInformation(
       null,
@@ -83,8 +84,7 @@ function switchToPlayMode() {
 }
 
 function setIsPlayModeStatus(bStatus) {
-  var $body = angular.element(document.body);
-  var $rootScope = $body.scope().$root;
+  const $rootScope  = angular.element(document.body).scope().$root;
   if ($rootScope.bIsPlayMode != bStatus) {
     $rootScope.bIsPlayMode = bStatus;
     $rootScope.$apply();
@@ -92,8 +92,7 @@ function setIsPlayModeStatus(bStatus) {
 }
 
 function setEditPlaySwitchDisableStatus(bStatus) {
-  var $body = angular.element(document.body);
-  var $rootScope = $body.scope().$root;
+  const $rootScope  = angular.element(document.body).scope().$root;
   if ($rootScope.bDisableEditPlaySwitch != bStatus) {
     $rootScope.bDisableEditPlaySwitch = bStatus;
     $rootScope.$apply();
