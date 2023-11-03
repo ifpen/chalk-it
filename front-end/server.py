@@ -124,6 +124,15 @@ def get_files():
         return throw_error(err)
 
 
+@app.route('/GetPythonDataList', methods=['POST'])
+def get_python_data_list():
+    return send_success({
+        "Success": True,
+        "Msg": None,
+        "FileList": [],
+    })
+
+
 @app.route('/GetImages', methods=['GET'])
 def get_image():
     image_path = os.path.join(

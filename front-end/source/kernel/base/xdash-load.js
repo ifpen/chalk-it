@@ -32,7 +32,6 @@ var angularModule = angular.module('xCLOUD', [
         };
 
         // 20/11/2019 : AH & MBG for modularization. MBG moved here on 09/03/2020
-        $rootScope.enablePython = !_.isUndefined(urlPython);
         $rootScope.enableServer = !_.isUndefined(xServConfig.urlApi) && !_.isNull(xServConfig.urlApi);
         $rootScope.xDashFullVersion = !(xDashConfig.xDashBasicVersion == "true");
         $rootScope.enableRegistration = !(xDashConfig.disableRegistration == "true");
@@ -43,6 +42,8 @@ var angularModule = angular.module('xCLOUD', [
             $rootScope.urlCredits = xDashConfig.urlWebSite + '/blob/main/credits.html';
             
         $rootScope.enableLocalServer = !(xDashConfig.disableLocalServer == "true");
+        $rootScope.enablePython = !_.isUndefined(urlPython);
+        $rootScope.enablePythonManagement = !_.isUndefined(urlPython) && $rootScope.xDashFullVersion;
 
         if ($rootScope.xDashFullVersion) {
             document.title = "Chalk'it - SaaS version";

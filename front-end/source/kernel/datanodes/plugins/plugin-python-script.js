@@ -53,7 +53,7 @@
       input.val(current?.id ?? DEFAULT_BACKEND.id);
 
       // Disable Docker images in the open source version
-      if (xDashConfig.xDashBasicVersion === "true") {
+      if (!urlPython) {
         return;
       }
       
