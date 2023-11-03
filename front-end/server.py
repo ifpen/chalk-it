@@ -1,3 +1,6 @@
+from concurrent.futures import Executor, ProcessPoolExecutor
+from typing import Optional
+
 from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory
 import os
 from pathlib import Path
@@ -8,6 +11,8 @@ import webbrowser
 import threading
 import argparse
 
+from server_exec import create_python_exec_blueprint
+
 # create the top-level parser
 parser = argparse.ArgumentParser()
 parser.add_argument('--dev', action='store_true', help='run in development mode')
@@ -16,6 +21,8 @@ parser.add_argument('--syncDir', dest='sync', help='''if given a directory, the 
  Requires "pathvalidate", "watchdog" and "flask-sock".''')
 parser.add_argument('--clearSyncDir', dest='sync_clear', action='store_true',
                     help='if set, the "syncDir" directory will be cleared on startup. Please use responsively.')
+parser.add_argument('--pythonWorkers', dest='python_workers', type=int,
+                    help='''Size of pool used to evaluate user's python scripts.''')
 
 args = parser.parse_args()
 
@@ -30,6 +37,11 @@ app = Flask(__name__)
 run_port = 7854
 server_url = f"http://127.0.0.1:{run_port}"
 
+python_pool: Optional[Executor] = None
+if args.python_workers:
+    python_pool = ProcessPoolExecutor(args.python_workers)
+app.register_blueprint(create_python_exec_blueprint(python_pool))
+
 if args.sync:
     from server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
 
@@ -37,7 +49,6 @@ if args.sync:
     blueprint = create_file_sync_blueprint(args.sync, args.sync_clear, server_ws_url)
     app.register_blueprint(blueprint)
     app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 25}
-
 
 dir_home = os.path.expanduser("~")
 
@@ -53,13 +64,12 @@ if (DEBUG):
     dir_project_path = dir_name
 else:
     dir_temp_name = os.path.dirname(__file__)
-    
+
     dir_temp_path = os.path.join(dir_temp_name, './Templates/Projects')
     dir_images_path = os.path.join(dir_temp_name, './Templates/Images')
 
     dir_name = os.getcwd()
     dir_project_path = dir_name
-
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
@@ -377,5 +387,4 @@ def main():
 
 if __name__ == '__main__':
     logging.basicConfig()
-
     main()
