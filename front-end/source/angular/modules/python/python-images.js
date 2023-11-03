@@ -75,7 +75,7 @@ angular.module('modules.python-images', [])
         this.deleteImage = async image => {
 
             const url = urlPython + `images/${image.Id}`;
-            $http.delete(url, { headers: { "Authorization": LoginMngr.GetSavedJwt() } });
+            $http.delete(url, { headers: getAuthorizationHeaders() });
             _purgeFileData(image.Id);
         };
 
@@ -90,7 +90,7 @@ angular.module('modules.python-images', [])
                 fileData: await _loadFileData(image.Id),
                 fileName: image.FileName
             }
-            const result = await $http.post(url, body, { headers: { "Authorization": LoginMngr.GetSavedJwt() } });
+            const result = await $http.post(url, body, { headers: getAuthorizationHeaders() });
             return result.data;
         };
 
@@ -104,14 +104,14 @@ angular.module('modules.python-images', [])
         // }
         this.getImageFullStatus = async id => {
             const url = urlPython + `images/${id}`;
-            const result = await $http.get(url, { headers: { "Authorization": LoginMngr.GetSavedJwt() } });
+            const result = await $http.get(url, { headers: getAuthorizationHeaders() });
             return result.data;
         };
 
         // Sames as getImageFullStatus, but in an array with no output
         this.getImagesStatus = async ids => {
             const url = urlPython + 'images/list';
-            const result = await $http.post(url, ids, { headers: { "Authorization": LoginMngr.GetSavedJwt() } });
+            const result = await $http.post(url, ids, { headers: getAuthorizationHeaders() });
             return result.data;
         };
 

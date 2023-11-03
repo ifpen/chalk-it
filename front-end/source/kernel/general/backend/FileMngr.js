@@ -211,15 +211,7 @@ var FileMngrFct = function () {
       dataType: "json",
       crossDomain: true,
       url: GetSendFct(),
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != "true") {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader("Authorization", token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -456,13 +448,7 @@ var FileMngrFct = function () {
       dataType: "json",
       crossDomain: true,
       url: fct,
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader("Authorization", token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -536,15 +522,7 @@ var FileMngrFct = function () {
       dataType: "json",
       data: jsonData,
       url: fct,
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != "true") {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader("Authorization", token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -593,13 +571,7 @@ var FileMngrFct = function () {
       dataType: "json",
       data: cmd,
       url: GetFilesFct(),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader("Authorization", token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -685,15 +657,7 @@ var FileMngrFct = function () {
       dataType: "json",
       crossDomain: true,
       url: fct,
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != "true") {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader("Authorization", token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var $body = angular.element(document.body); // 1
         var $rootScope = $body.scope().$root;
@@ -915,15 +879,7 @@ var FileMngrFct = function () {
       dataType: "json",
       crossDomain: true,
       url: fct,
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != "true") {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader("Authorization", token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -988,13 +944,7 @@ var FileMngrFct = function () {
       dataType: "json",
       crossDomain: true,
       url: GetDeleteFct(),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader("Authorization", token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -1072,15 +1022,7 @@ var FileMngrFct = function () {
       dataType: "json",
       crossDomain: true,
       url: GetRenameFct(),
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != "true") {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader("Authorization", token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -1166,13 +1108,7 @@ var FileMngrFct = function () {
       dataType: "json",
       crossDomain: true,
       url: url,
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader("Authorization", token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -1256,13 +1192,7 @@ var FileMngrFct = function () {
       dataType: "json",
       url: url,
       data: cmd,
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader("Authorization", token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (callback != null) callback(obj, Name);
@@ -1367,13 +1297,7 @@ var FileMngrFct = function () {
       dataType: "json",
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({ FileName: name }),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader("Authorization", token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, name);
@@ -1458,13 +1382,7 @@ var FileMngrFct = function () {
       dataType: "json",
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({ FileName: name, Email: email, Shared: isShared }),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader("Authorization", token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, name, isShared);
@@ -1509,13 +1427,7 @@ var FileMngrFct = function () {
       dataType: "json",
       url: AdminMngr.GetFileServer() + "SetPageAccess",
       data: JSON.stringify({ FileName: name, Secured: securedLink }),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader("Authorization", token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, name);
@@ -1576,15 +1488,7 @@ var FileMngrFct = function () {
         NewFileName: newName,
         Email: email,
       }),
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != "true") {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader("Authorization", token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, newName);
@@ -1645,15 +1549,7 @@ var FileMngrFct = function () {
       dataType: "json",
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({ FileName: name }),
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != "true") {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader("Authorization", token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, name);
@@ -1702,13 +1598,7 @@ var FileMngrFct = function () {
       dataType: "json",
       url: AdminMngr.GetFileServer() + "GetInfoMessage",
       data: "",
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader("Authorization", token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj);

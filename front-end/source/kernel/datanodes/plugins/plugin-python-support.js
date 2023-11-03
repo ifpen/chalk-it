@@ -206,7 +206,7 @@ class PythonPluginRemoteExec extends PythonPluginExecBase {
           const result = await $http.post(url, JSON.stringify({ image: this.imageId, code }), {
             contentType: 'application/json; charset=utf-8',
             headers: {
-              Authorization: LoginMngr.GetSavedJwt(),
+              ...getAuthorizationHeaders(),
               'X-Request-ID': PythonPluginRemoteExec.createId(),
             },
             timeout: canceler.promise,
