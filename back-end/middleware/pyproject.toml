@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "xdash_python_api"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
     { name = "Tristan BARTEMENT", email = "tristan.bartement@tech-advantage.com" },
 ]
@@ -23,7 +23,6 @@ dependencies = [
 Numpy = [
     "numpy",
 ]
-# TODO pandas
 
 [tool.hatch.build.targets.sdist]
 exclude = [
@@ -37,10 +36,19 @@ exclude = [
 version-file = "src/xdash_python_api/_version.py"
 
 [tool.hatch.envs.default]
+dependencies = []
+
+[tool.hatch.envs.test]
 dependencies = [
     "coverage[toml]>=6.2",
     "pytest>=7.1.0",
     "pytest-cov>=3.0.0",
+
+    "numpy",
+    "pillow",
+    "matplotlib",
+    "plotly",
+    "pandas",
 ]
 
 [tool.hatch.envs.lint]
