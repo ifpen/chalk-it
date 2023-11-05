@@ -1,4 +1,4 @@
-from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory
+from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory, render_template_string
 import os
 from pathlib import Path
 import json
@@ -11,6 +11,9 @@ import argparse
 # create the top-level parser
 parser = argparse.ArgumentParser()
 parser.add_argument('--dev', action='store_true', help='run in development mode')
+parser.add_argument('--render', dest='xprjson_file', type=str, help='render project in HTML page mode')
+parser.add_argument('--port', dest='app_port', type=int, help='Change Flask TCP port')
+
 
 args = parser.parse_args()
 
@@ -20,9 +23,17 @@ if args.dev:
 else:
     print("Running in production mode")
     DEBUG = False
+	
+print(args.xprjson_file);	
+
+xprjson = args.xprjson_file
 
 app = Flask(__name__)
-run_port = 7854
+
+if args.app_port is None:
+    run_port = 7854
+else:
+    run_port = args.app_port
 server_url = f"http://127.0.0.1:{run_port}"
 
 dir_home = os.path.expanduser("~")
@@ -329,12 +340,29 @@ def get_project_status():
 def heartbeat():
     return jsonify({"status": "healthy"})
 
+def dashboard(xprjson):
+    # Load configuration from json file
+    with open(xprjson, 'r') as config_file:
+        config_data = json.load(config_file)
 
+    # Read the HTML template
+    with open('index-view-2.930.8710.html', 'r') as template_file:
+        template_data = template_file.read()
+
+    # Inject the JSON data into the template
+    template_data_with_config = template_data.replace('jsonContent = {};', f'var jsonContent = {json.dumps(config_data)};')
+
+    # Render the HTML with the configuration inlined
+    return render_template_string(template_data_with_config)
+	
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>', methods=['GET'])
 def static_files(path: str):
     if path == '' or path.endswith('/'):
-        return redirect('index.html')
+        if xprjson is None:
+            return redirect('index.html')
+        else:
+            return dashboard(xprjson)
     else:
         return send_from_directory('.', path)
 
@@ -347,7 +375,7 @@ def main():
     print('User home directory : ' + dir_home)
     print('Current working directory : ' + dir_name)
     print(f'Chalk\'it launched on {server_url}')
-    if (not DEBUG):
+    if (not DEBUG) and (xprjson is None):
         threading.Timer(2, open_browser).start()
     app.run(debug=DEBUG, port=run_port)
 
