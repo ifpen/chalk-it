@@ -1,3 +1,27 @@
+var getAuthToken = () => undefined;
+if (xDashConfig.xDashBasicVersion != "true") {
+    getAuthToken = () => LoginMngr.GetSavedJwt();
+}
+
+function setXHRAuthorizationHeader(xhr) {
+    // Add authorization header
+    const token = getAuthToken();
+    if (token) {
+      xhr.setRequestHeader("Authorization", token);
+    }
+}
+
+function getAuthorizationHeaders() {
+    // Add authorization header
+    const token = getAuthToken();
+    if (token) {
+      return  { "Authorization": token };
+    } else {
+        return {};
+    }
+}
+
+
 angular.module('xCLOUD')
     .service('ApisFactory', ['$http', '$rootScope', function($http, $rootScope) {
 

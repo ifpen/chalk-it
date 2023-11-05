@@ -1,50 +1,48 @@
-from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory
-import os
-from pathlib import Path
-import json
-from base64 import b64decode, b64encode
-import logging
-import webbrowser
-import threading
 import argparse
+import json
+import logging
+import os
+import threading
+import webbrowser
+from base64 import b64decode, b64encode
+from concurrent.futures import Executor, ProcessPoolExecutor
+from pathlib import Path
+from typing import Optional
 
-# create the top-level parser
-parser = argparse.ArgumentParser()
-parser.add_argument('--dev', action='store_true', help='run in development mode')
-parser.add_argument('--syncDir', dest='sync', help='''if given a directory, the edited dashboard
- will project the definition of some datanodes (like scripts) as files.
- Requires "pathvalidate", "watchdog" and "flask-sock".''')
-parser.add_argument('--clearSyncDir', dest='sync_clear', action='store_true',
-                    help='if set, the "syncDir" directory will be cleared on startup. Please use responsively.')
+from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory
 
-args = parser.parse_args()
+
+def create_parser():
+    # create the top-level parser
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dev', action='store_true', help='run in development mode')
+    parser.add_argument('--syncDir', dest='sync', help='''if given a directory, the edited dashboard
+     will project the definition of some datanodes (like scripts) as files.
+     Requires "pathvalidate", "watchdog" and "flask-sock".''')
+    parser.add_argument('--clearSyncDir', dest='sync_clear', action='store_true',
+                        help='if set, the "syncDir" directory will be cleared on startup. Please use responsively.')
+    parser.add_argument('--pythonWorkers', dest='python_workers', type=int,
+                        help='''Size of pool used to evaluate user's python scripts.''')
+    return parser
+
+
+args = create_parser().parse_args()
 
 if args.dev:
-    print("Running in development mode")
     DEBUG = True
 else:
-    print("Running in production mode")
     DEBUG = False
 
 app = Flask(__name__)
 run_port = 7854
 server_url = f"http://127.0.0.1:{run_port}"
 
-if args.sync:
-    from server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
-
-    server_ws_url = f"{server_url.replace('http', 'ws')}{FILE_SYNC_WS_ENDPOINT}"
-    blueprint = create_file_sync_blueprint(args.sync, args.sync_clear, server_ws_url)
-    app.register_blueprint(blueprint)
-    app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 25}
-
-
 dir_home = os.path.expanduser("~")
 
 dir_settings_path = os.path.join(dir_home, '.chalk-it')
 settings_file_path = os.path.join(dir_settings_path, 'settings.json')
 
-if (DEBUG):
+if DEBUG:
     dir_name = os.path.dirname(__file__)
 
     dir_temp_path = os.path.join(dir_name, '../documentation/Templates/Projects')
@@ -53,16 +51,12 @@ if (DEBUG):
     dir_project_path = dir_name
 else:
     dir_temp_name = os.path.dirname(__file__)
-    
+
     dir_temp_path = os.path.join(dir_temp_name, './Templates/Projects')
     dir_images_path = os.path.join(dir_temp_name, './Templates/Images')
 
     dir_name = os.getcwd()
     dir_project_path = dir_name
-
-
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
 
 
 def throw_error(error):
@@ -122,6 +116,15 @@ def get_files():
         })
     except Exception as err:
         return throw_error(err)
+
+
+@app.route('/GetPythonDataList', methods=['POST'])
+def get_python_data_list():
+    return send_success({
+        "Success": True,
+        "Msg": None,
+        "FileList": [],
+    })
 
 
 @app.route('/GetImages', methods=['GET'])
@@ -358,15 +361,35 @@ def open_browser():
 
 
 def main():
+    if DEBUG:
+        print("Running in development mode")
+    else:
+        print("Running in production mode")
+
+    python_pool: Optional[Executor] = None
+    if args.python_workers:
+        python_pool = ProcessPoolExecutor(args.python_workers)
+    from server_exec import create_python_exec_blueprint
+    app.register_blueprint(create_python_exec_blueprint(python_pool))
+
+    if args.sync:
+        from server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
+
+        server_ws_url = f"{server_url.replace('http', 'ws')}{FILE_SYNC_WS_ENDPOINT}"
+        blueprint = create_file_sync_blueprint(args.sync, args.sync_clear, server_ws_url)
+        app.register_blueprint(blueprint)
+        app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 25}
+
     print('User home directory : ' + dir_home)
     print('Current working directory : ' + dir_name)
     print(f'Chalk\'it launched on {server_url}')
-    if (not DEBUG):
+    if not DEBUG:
         threading.Timer(2, open_browser).start()
     app.run(debug=DEBUG, port=run_port)
 
 
 if __name__ == '__main__':
     logging.basicConfig()
+    logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
     main()
