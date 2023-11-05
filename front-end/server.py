@@ -346,7 +346,8 @@ def dashboard(xprjson):
         config_data = json.load(config_file)
 
     # Read the HTML template
-    with open('index-view-2.930.8710.html', 'r') as template_file:
+    index_view_path = os.path.join(dir_temp_name, 'index-view-2.930.8710.html')
+    with open(index_view_path, 'r') as template_file:
         template_data = template_file.read()
 
     # Inject the JSON data into the template
