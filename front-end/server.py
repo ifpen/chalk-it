@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--dev', action='store_true', help='run in development mode')
 parser.add_argument('--render', dest='xprjson_file', type=str, help='render project in HTML page mode')
 parser.add_argument('--port', dest='app_port', type=int, help='Change Flask TCP port')
+parser.add_argument('--ip', dest='app_ip', type=str, help='Change Flask TCP address')
 
 
 args = parser.parse_args()
@@ -34,7 +35,12 @@ if args.app_port is None:
     run_port = 7854
 else:
     run_port = args.app_port
-server_url = f"http://127.0.0.1:{run_port}"
+
+if args.app_ip is None:
+    app_ip = '127.0.0.1'
+else:
+    app_ip = args.app_ip
+server_url = f"http://{app_ip}:{run_port}"
 
 dir_home = os.path.expanduser("~")
 
