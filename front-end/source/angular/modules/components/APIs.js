@@ -1,4 +1,4 @@
-var getAuthToken = () => undefined;
+let getAuthToken = () => undefined;
 if (xDashConfig.xDashBasicVersion != "true") {
     getAuthToken = () => LoginMngr.GetSavedJwt();
 }
@@ -56,39 +56,38 @@ angular.module('xCLOUD')
                 );
         };
 
-        this.getSettings = function() {
-            return new Promise(function(resolve, reject) {
-                var FileMngrInst = new FileMngrFct();
-                FileMngrInst.ReadFile("settings", '', resolve);
-                }).then(
-                    function(data) {
-                        if (data == "File does not exist") {
-                            console.log("settings.usr file does not exist on server. Creating new one with default settings");
-                            return $rootScope.DefaultSettings;
-                        };
-                        var dataToReturn = {};
-                        try {
-                            dataToReturn = JSON.parse(data);
-                        } catch (exc) {
-                            if ($rootScope.xDashFullVersion) {
-                                swal("Unexpected error", "unable to load settings.usr\n\n" + data, "error");
-                            } else {
-                                swal("Please check and restart the command line", "the Flask server is not responding", "error");
-                            }
-                            
-                            return $rootScope.DefaultSettings;
-                        }
-                        return dataToReturn;
-                    },
-                    function(result) {
-                        console.log("getSettings error" + result);
-                        return {
-                            error: true,
-                            status: 401,
-                            message: result
-                        };
+        this.getSettings = async function() {
+            try {
+                const FileMngrInst = new FileMngrFct();
+                const data = await new Promise((resolve, reject) => FileMngrInst.ReadFile("settings", '', resolve));
+        
+                if (data === "File does not exist") {
+                    console.log("settings.usr file does not exist on server. Creating new one with default settings");
+                    return $rootScope.DefaultSettings;
+                }
+        
+                let dataToReturn = {};
+                try {
+                    dataToReturn = JSON.parse(data);
+                } catch (exc) {
+                    if ($rootScope.xDashFullVersion) {
+                        swal("Unexpected error", "unable to load settings.usr\n\n" + data, "error");
+                    } else {
+                        swal("Please check and restart the command line", "unable to load settings.usr", "error");
                     }
-                );
+
+                    return $rootScope.DefaultSettings;
+                }
+
+                return dataToReturn;
+            } catch (error) {
+                console.log("getSettings error" + error);
+                return {
+                    error: true,
+                    status: 401,
+                    message: error
+                };
+            }
         };
 
         this.postRequest = function(apiMethod, data) {
