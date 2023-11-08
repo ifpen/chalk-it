@@ -546,7 +546,7 @@ var FileMngrFct = function () {
             l_callback
           );
         } else {
-          const err = "the Flask server is not responding";
+          const err = txtErr || "the Flask server is not responding";
           datanodesManager.showLoadingIndicator(false)
           EndOfOperation(
             "Please check and restart the command line",

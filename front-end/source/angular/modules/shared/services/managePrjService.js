@@ -16,10 +16,10 @@ angular
 
         /*---------- openProject ----------*/
         self.openProject = function (projectName, fileType, projectVue, callback) {
+            const currentPrjDirty = $rootScope.currentPrjDirty || '';
             $rootScope.origin = "projectEdition";
             if ($rootScope.currentProject.name !== projectName) {
-                const exp = !_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== "";
-                const condition = $rootScope.xDashFullVersion ? exp : (exp && !$rootScope.isLiveDemo);
+                const condition = $rootScope.xDashFullVersion ? !!currentPrjDirty : (!!currentPrjDirty && !$rootScope.isLiveDemo);
                 if (condition) {
                     swal({
                             title: "Are you sure?",
@@ -36,16 +36,15 @@ angular
                         },
                         function(isConfirm) {
                             if (isConfirm) {
-                                var endAction = function() {
-                                    _openProject(projectName, fileType, projectVue, callback);
+                                const endAction = function() {
+                                    openProjectCallback(projectName, fileType, projectVue, callback);
                                 };
                                 //save current project  
                                 if ($rootScope.xDashFullVersion) {
                                     fileManager.getFileListExtended("project", $rootScope.currentProject.name, undefined, endAction, true);
                                 } else {
-                                    const $scopeDashContentTopCtrl = angular.element(document.getElementById("dash-content-top-ctrl")).scope();
                                     setTimeout(()=> {
-                                        $scopeDashContentTopCtrl.saveProjectToLocal(endAction);
+                                        self.saveProjectToLocal(endAction);
                                     }, 500);
                                 }
                             } else {
@@ -53,7 +52,7 @@ angular
                             }
                         });
                 } else {
-                    _openProject(projectName, fileType, projectVue, callback);
+                    openProjectCallback(projectName, fileType, projectVue, callback);
                 }
             } else {
                 $rootScope.moduleOpenedFunction(true);
@@ -61,7 +60,7 @@ angular
 
         };
 
-        function _openProject(projectName, fileType, projectVue, callback) {
+        function openProjectCallback(projectName, fileType, projectVue, callback) {
             $rootScope.origin = "openProject";
             $rootScope.loadingBarStart();
             $rootScope.toggleMenuOptionDisplay('none');
@@ -69,7 +68,7 @@ angular
             if (fileType === "xprjson") {
                 $rootScope.moduleOpened = false;
                 const FileMngrInst = new FileMngrFct();
-                const fileTypeServer = self.translateExtension(fileType);
+                let fileTypeServer = self.translateExtension(fileType);
                 if (projectVue === "gallery") {
                     fileTypeServer = "template";
                 }
@@ -353,10 +352,11 @@ angular
 
         /*---------- renameProject ----------------*/
         self.renameProject = function(fileName, flag, msg, fType) {
+            const fileType = self.translateExtension(fType);
             let text = msg;
-            let fileType = self.translateExtension(fType);
-            if (_.isUndefined(text))
+            if (_.isUndefined(text)) {
                 text = "Your current " + fileType + " will be renamed!";
+            }
             // READONLY
             self.checkProjectStatus(fileName, "renamed", function() {
                 swal({
@@ -388,18 +388,10 @@ angular
 
                         //here when input is not empty then ok button
                         if (inputValue != null) {
-                            var endAction = function(msg1, msg2, type) {
+                            const endAction = function(msg1, msg2, type) {
                                 renameFileCallback(type, fileName, inputValue, flag, fileType);
-                            };
-                            if ($rootScope.xDashFullVersion) {
-                                fileManager.renameFile(fileType, fileName, inputValue, endAction, flag);
-                            } else {
-                                if (fileName === "Untitled" || fileName === "") {
-                                    fileManager.saveOnServer('project', inputValue, null, true, null);
-                                } else {
-                                    fileManager.renameFile(fileType, fileName, inputValue, endAction, flag);
-                                }
                             }
+                            fileManager.renameFile(fileType, fileName, inputValue, endAction, flag);
                         }
                     }
                 );
@@ -408,10 +400,10 @@ angular
         };
 
         function renameFileCallback(type, name, newName, flag, fType, callback) {
-            let fileType = self.translateExtension(fType);
+            const fileType = self.translateExtension(fType);
             if (type === "success") {
                 swal.close(); //
-                let notice = new PNotify({
+                const notice = new PNotify({
                     title: newName,
                     text: "'" + name + "' has been successfully renamed to " + newName + "'!",
                     type: type,
@@ -429,18 +421,15 @@ angular
                     }
                 } else { //editor view
                     $("#projectName")[0].value = newName;
-                    if ($rootScope.xDashFullVersion) {
-                        $(".tab__name")[0].value = newName;
-                    } else {
-                        $rootScope.currentPrjDirty = "";
-                    }
+                    $(".tab__name")[0].value = newName;
                     $rootScope.currentProject.name = newName;
                 }
-                if (callback)
+                if (callback) {
                     callback(newName, fileType, $rootScope.shareProjectWithEmail);
+                }
                 $rootScope.loadingBarStop(); //
             } else if (type === "error") {
-                let notice = new PNotify({
+                const notice = new PNotify({
                     title: newName,
                     text: "Fail to rename your " + fileType + " '" + name + "' to '" + newName + "'!",
                     type: type,
@@ -453,9 +442,8 @@ angular
         }
 
         /*---------- duplicateProject ----------------*/
-        getDataProject = function(projectName, fType, callback) {
-            let fileTypeServer = "project";
-            fileTypeServer = self.translateExtension(fType);
+        const getDataProject = function(projectName, fType, callback) {
+            const fileTypeServer = self.translateExtension(fType) || "project";
             $rootScope.loadingBarStart();
             //extract project data (xprjson)
             let FileMngrInst = new FileMngrFct();
@@ -555,4 +543,132 @@ angular
             );
         };
 
-    }]);
+        /**
+         * @name saveProjectToLacal
+         * @function
+         * @description 
+         *  For opensource version
+         *  Saves the current project to local storage and optionally triggers the callback function.
+         *  This function also handles renaming projects and provides appropriate user notifications.
+         * 
+         * @param {function} callback - Optional callback function to be triggered after the project is saved.
+         * @returns {void}
+         */
+        self.saveProjectToLocal = function (callback) {
+            const is_defaultOverwrite = true;
+            const flag = false;
+            const fileType = "project";
+            const inputProjectName = $("#projectName").val();
+            const currentProjectName = $rootScope.currentProject.name;
+            $rootScope.oldFileName = currentProjectName;
+            
+            if (inputProjectName === "") {
+                self.renameLocalProject(currentProjectName, is_defaultOverwrite, flag, callback);
+            } else if (currentProjectName === "" || inputProjectName === currentProjectName) {
+                // if the project has never been saved
+                fileManager.saveOnServer('project', inputProjectName, undefined, is_defaultOverwrite, callback);
+            } else {
+                const endAction = function (msg1, msg2, type) {
+                    renameLocalPrjCallBack(currentProjectName, inputProjectName, is_defaultOverwrite, type, callback);
+                };
+                fileManager.renameFile(fileType, currentProjectName, inputProjectName, endAction, flag);
+            }
+        }
+
+        /**
+         * @name renameLocalProject
+         * @function
+         * @description 
+         *  For opensource version
+         *  Renames a local project after confirming with the user.
+         * 
+         * @param {string} currentProjectName - The current name of the project.
+         * @param {boolean} is_defaultOverwrite - Flag indicating if the project should be overwritten by default.
+         * @param {boolean} flag - Additional flag parameter for further customization.
+         * @param {function} callback - Optional callback function to be triggered after the project is saved.
+         * @returns {void}
+         */
+        self.renameLocalProject = function (currentProjectName, is_defaultOverwrite, flag, callback) {
+            self.checkProjectStatus(currentProjectName, "renamed", function() {
+                swal({
+                        title: "Project name",
+                        text: 'A project name is required!',
+                        type: "input",
+                        showConfirmButton: false,
+                        showConfirmButton1: true,
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        closeOnConfirm1: false,
+                        confirmButtonText: "Rename",
+                        inputPlaceholder: "please write project name here ...",
+                        inputValue: currentProjectName
+                    },
+                    function(inputValue) {
+                        if (inputValue === false) {
+                            swal.close();
+                            return false; //cancel button
+                        }
+                        if (inputValue === "") { //empty input then ok button 
+                            swal.showInputError("A project name is required!");
+                            return false;
+                        }
+
+                        //here when input is not empty then ok button
+                        if (inputValue != null) {
+                            const endAction = function(msg1, msg2, type) {
+                                renameLocalPrjCallBack(currentProjectName, inputValue, is_defaultOverwrite, type);
+                            }
+
+                            if (currentProjectName === "") {
+                                // If the project is not yet saved, the renameFile function cannot be called
+                                fileManager.saveOnServer('project', inputValue, undefined, is_defaultOverwrite, callback);
+                            } else {
+                                fileManager.renameFile("project", currentProjectName, inputValue, endAction, flag);
+                            }
+                        }
+                    }
+                );
+            });
+        }
+
+        /**
+         * @name renameLocalProject
+         * @function
+         * @description 
+         *  For opensource version
+         *  Renames a project and shows a notification based on the rename status.
+         * 
+         * @param {string} currentProjectName - The current name of the project.
+         * @param {string} inputProjectName - The new name to be assigned to the project.
+         * @param {boolean} is_defaultOverwrite -  Flag indicating if the project should be overwritten by default.
+         * @param {string} type - The type of notification ("success" or "error").
+         * @param {function} callback - Optional callback function to be triggered after the project is saved. 
+         * @returns {void}
+         */
+        function renameLocalPrjCallBack (currentProjectName, inputProjectName, is_defaultOverwrite, type, callback) {
+            const noticeConfig = {
+                title: inputProjectName,
+                type: type,
+                styling: "bootstrap3"
+            };
+
+            if (type === "success") {
+                noticeConfig.text = `'${currentProjectName}' has been successfully renamed to '${inputProjectName}'!`;
+                $("#projectName")[0].value = inputProjectName;
+                $rootScope.currentProject.name = inputProjectName;
+                $rootScope.loadingBarStop();
+
+                fileManager.saveOnServer('project', inputProjectName, undefined, is_defaultOverwrite, callback);
+            } else if (type === "error") {
+                noticeConfig.text = `Fail to rename your project '${currentProjectName}' to '${inputProjectName}'!`;
+            }
+
+            if (noticeConfig.hasOwnProperty("text")) {
+                const notice = new PNotify(noticeConfig);
+                $('.ui-pnotify-container').on('click', function () {
+                    notice.remove();
+                });
+            }
+        }
+    }
+]);

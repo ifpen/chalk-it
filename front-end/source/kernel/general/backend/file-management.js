@@ -16,12 +16,11 @@
 
 var fileManager = (function () {
 
-    var is_xDash = true;
-    var managerCallback = null;
-    var endAction;
-    var is_defaultOverwrite = false;
-    var FileName = "";
-    var openProjectCallback = null;
+    const is_xDash = true;
+    let managerCallback = null;
+    let endAction;
+    let is_defaultOverwrite = false;
+    let FileName = "";
 
     /*--------getFileList--------*/
     function getFileList(data, text) {
@@ -101,11 +100,11 @@ var fileManager = (function () {
         if (type == "error") {
             swal(msg1, msg2, type);
         } else if (type == "success") {
-            var data = msg1;
-            var fileType = msg2;
-            var FileMngrInst = new FileMngrFct();
-            var fileExtension = FileMngrInst.GetFileExt(fileType);
-            var titleText = "file";
+            const data = msg1;
+            const fileType = msg2;
+            const FileMngrInst = new FileMngrFct();
+            const fileExtension = FileMngrInst.GetFileExt(fileType);
+            let titleText = "file";
 
             if (fileType == "project") {
                 titleText = "project";
@@ -115,14 +114,14 @@ var fileManager = (function () {
                 titleText = "User settings";
             }
 
-            var bFound = isFileNameExist(data, inputValue);
-            if (bFound && !is_defaultOverwrite) {
-                let FileMngrInst = new FileMngrFct();
+            const $rootScope = angular.element(document.body).scope().$root;
+            const bFound = isFileNameExist(data, inputValue);
+            const is_overwrite = $rootScope.xDashFullVersion ? !is_defaultOverwrite : true;
+
+            if (bFound && is_overwrite) {
                 FileMngrInst.GetStatus(inputValue, fileType, function (msg1, msg2, type) {
-                    let $body = angular.element(document.body);
-                    let $rootScope = $body.scope().$root;
                     if (type == "success") {
-                        let msg = JSON.parse(msg1.Msg);
+                        const msg = JSON.parse(msg1.Msg);
                         $rootScope.Shared = msg.Shared; //"True"
                     } else {
                         $rootScope.Shared = "False";
@@ -240,18 +239,18 @@ var fileManager = (function () {
 
     /*--------writexMAASFile--------*/
     function writexMAASFile(fileType, file, callback) {
-        var FileMngrInst = new FileMngrFct();
+        const FileMngrInst = new FileMngrFct();
         FileMngrInst.SendFile(fileType, file, callback);
         swal.close();
     }
 
     /*--------isFileNameExist--------*/
     function isFileNameExist(data, inputValue) {
-        var bFound = false;
+        let bFound = false;
         if (!_.isUndefined(data.FileList)) {
-            for (var i = 0; i < data.FileList.length; i++) {
-                if (!_.isUndefined(data.FileList[i].Name)) {
-                    if (data.FileList[i].Name.localeCompare(inputValue) == 0) { //file name exist
+            for (const file of data.FileList) {
+                if (!_.isUndefined(file.Name)) {
+                    if (file.Name.localeCompare(inputValue) == 0) { //file name exist
                         bFound = true;
                         break;
                     }
@@ -263,13 +262,13 @@ var fileManager = (function () {
 
     /*--------saveFileManager--------*/
     function saveFileManager(fileType, inputValue, xdashFileSerialized) {
-        var xdashFile = "";
-        var FileMngrInst = new FileMngrFct();
-        var fileExtension = FileMngrInst.GetFileExt(fileType);
+        let xdashFile = "";
+        const FileMngrInst = new FileMngrFct();
+        const fileExtension = FileMngrInst.GetFileExt(fileType);
         if (!_.isUndefined(xdashFileSerialized))
             xdashFile = xdashFileSerialized;
         else {
-            var temp = xdash.serialize();
+            const temp = xdash.serialize();
             xdashFile = JSON.stringify(temp, null, '\t');
         }
         const $rootScope = angular.element(document.body).scope().$root;
@@ -279,13 +278,13 @@ var fileManager = (function () {
         if (!$rootScope.xDashFullVersion) {
             inputValue = $rootScope.oldFileName;
         }
-        var FileMngrInst = new FileMngrFct();
         FileMngrInst.SendText(fileType, inputValue + fileExtension, xdashFile, sendTextCallback);
         swal.close();
     }
 
     /*--------sendTextCallback--------*/
     function sendTextCallback(msg1, msg2, type) {
+        const $rootScope = angular.element(document.body).scope().$root;
         let text = msg1;
         if (type === "success" || type === "warning") {
             if (type === "warning")
@@ -296,8 +295,6 @@ var fileManager = (function () {
                     styling: "bootstrap3",
                 });
 
-            var $body = angular.element(document.body);
-            var $rootScope = $body.scope().$root;
             switch ($rootScope.origin) {
                 case 'importProject':
                     text = "Your project has been successfully imported!";
@@ -314,7 +311,7 @@ var fileManager = (function () {
                 default:
                     text = msg1;
             }
-            let notice = new PNotify({
+            const notice = new PNotify({
                 title: "Info project",
                 text: text,
                 type: "success",
@@ -323,17 +320,13 @@ var fileManager = (function () {
             $('.ui-pnotify-container').on('click', function () {
                 notice.remove();
             });
-            if (!_.isUndefined(endAction)) {
+            if (!_.isUndefined(endAction) && _.isFunction(endAction)) {
                 endAction();
                 endAction = undefined;
             }
-            if (!$rootScope.xDashFullVersion && !_.isUndefined(openProjectCallback) && _.isFunction(openProjectCallback)) {
-                openProjectCallback();
-                openProjectCallback = null;
-            }
             ///////
-            var fileType = msg2;
-            var FileMngrInst = new FileMngrFct();
+            const fileType = msg2;
+            const FileMngrInst = new FileMngrFct();
             FileMngrInst.GetFileList(fileType, updateFileListCallback, false, null, null);
         } else if (type == "error") {
             swal(msg1, msg2, type);
@@ -344,13 +337,15 @@ var fileManager = (function () {
     }
 
     /*--------saveOnServer--------*/
-    function saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwriteArg, openProjectCallbackArg) {
-        openProjectCallback = openProjectCallbackArg;
+    function saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwriteArg, endActionArg) {
+        const $rootScope = angular.element(document.body).scope().$root;
+
+        // For the opensource version is_defaultOverwrite == true
         is_defaultOverwrite = is_defaultOverwriteArg;
-        var inputValueParam = $('#projectName')[0].value;
-        var titleText1 = "File";
-        var titleText2 = "file";
-        var xdashFileParam = null;
+        let inputValueParam = $('#projectName')[0].value;
+        let titleText1 = "File";
+        let titleText2 = "file";
+        let xdashFileParam = null;
 
         if (fileType == "project") {
             titleText1 = "Project";
@@ -375,9 +370,9 @@ var fileManager = (function () {
             }
         }
 
-        var text = "Save as";
-        var confirmButtonText = "Save";
-        var title = titleText1 + " name";
+        let text = "Save as";
+        let confirmButtonText = "Save";
+        let title = titleText1 + " name";
 
         if (!_.isUndefined(inputValue) && !_.isNull(inputValue)) {
             inputValueParam = inputValue;
@@ -387,7 +382,10 @@ var fileManager = (function () {
             confirmButtonText = "Rename";
         }
         //AEF
-        if (is_defaultOverwrite && inputValue != "Untitled") {
+        // "Untitled" is allowed in the open souce version
+        const checkInputValue = $rootScope.xDashFullVersion ? (inputValue != "Untitled") : true;
+
+        if (is_defaultOverwrite && checkInputValue) {
             text = "Your current " + titleText2 + " will be updated!";
             title = "Save " + titleText1;
             swal({
@@ -402,16 +400,15 @@ var fileManager = (function () {
                 confirmButtonText: "Save"
             },
                 function (isConfirm) {
-                    //AEF
-                    var $body = angular.element(document.body);
-                    var $rootScope = $body.scope().$root;
-                    var $state = $body.scope().$state;
                     //
                     if (isConfirm) {
                         //AEF
                         $("#projectName")[0].value = inputValue;
                         $rootScope.currentProject.name = inputValue;
                         //
+                        if (!$rootScope.xDashFullVersion && _.isUndefined(endAction)) {
+                            endAction = endActionArg;
+                        }
                         getFileListExtended(fileType, inputValue, xdashFileParam, endAction, is_defaultOverwrite);
                     } else {
                         if (is_xDash)
@@ -435,11 +432,6 @@ var fileManager = (function () {
                 inputValue: inputValueParam
             },
                 function (inputValue) {
-                    //AEF
-                    var $body = angular.element(document.body);
-                    var $rootScope = $body.scope().$root;
-                    var $state = $body.scope().$state;
-                    //
                     if (inputValue === false) {
                         if (is_xDash)
                             datanodesManager.showLoadingIndicator(false);

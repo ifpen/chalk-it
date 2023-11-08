@@ -21,10 +21,10 @@ angular
         },
     ])
 
-.controller("DiscoverController", ["$scope", "$rootScope", "$stateParams", "$state", "ApisFactory",
-    function($scope, $rootScope, $stateParams, $state, ApisFactory) {
+.controller("DiscoverController", ["$scope", "$rootScope", "$stateParams", "$state", "ApisFactory", "ManagePrjService",
+    function($scope, $rootScope, $stateParams, $state, ApisFactory, ManagePrjService) {
 
-        var matches = document.querySelectorAll(".docsLink");
+        const matches = document.querySelectorAll(".docsLink");
         matches.forEach(function(item) {
             item.href = xDashConfig.urlDoc + "index.html";
         });
@@ -64,15 +64,19 @@ angular
                     },
                     function(isConfirm) {
                         if (isConfirm) {
-                            var endAction = function() {
+                            const endAction = function() {
                                 navHelper.openDemoProject(projectName, startIntroProject);
                                 if ($("#inputSearchWidget").val()) {
                                     $("#inputSearchWidget").val('');
-                                    var clearWidgetSearch = new widgetToolboxClass();
+                                    const clearWidgetSearch = new widgetToolboxClass();
                                 }
                             };
-                            //save current project then duplicate
-                            fileManager.getFileListExtended("project", $rootScope.currentProject.name, undefined, endAction, true);
+                            if ($rootScope.xDashFullVersion) {
+                                //save current project then duplicate
+                                fileManager.getFileListExtended("project", $rootScope.currentProject.name, undefined, endAction, true);
+                            } else {
+                                ManagePrjService.saveProjectToLocal(endAction);
+                            }
                         } else {
                             //nothing
                         }
@@ -81,7 +85,7 @@ angular
                 navHelper.openDemoProject(projectName, startIntroProject);
                 if ($("#inputSearchWidget").val()) {
                     $("#inputSearchWidget").val('');
-                    var clearWidgetSearch = new widgetToolboxClass();
+                    const clearWidgetSearch = new widgetToolboxClass();
                 }
             }
         };
@@ -111,7 +115,7 @@ angular
 
         /*---------- New project in discover view ----------------*/
         $scope.newProject = function() {
-            let vm = angular.element(document.getElementById('sidebar-ctrl')).scope();
+            const vm = angular.element(document.getElementById('sidebar-ctrl')).scope();
             vm.newProject();
         };
 
