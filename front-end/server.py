@@ -12,8 +12,8 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--dev', action='store_true', help='run in development mode')
 parser.add_argument('--render', dest='xprjson_file', type=str, help='render project in HTML page mode')
-parser.add_argument('--port', dest='app_port', type=int, help='Change Flask TCP port')
-parser.add_argument('--ip', dest='app_ip', type=str, help='Change Flask TCP address')
+parser.add_argument('--port', dest='app_port', type=int, help='change Flask TCP port')
+parser.add_argument('--ip', dest='app_ip', type=str, help='change Flask TCP address')
 
 
 args = parser.parse_args()
