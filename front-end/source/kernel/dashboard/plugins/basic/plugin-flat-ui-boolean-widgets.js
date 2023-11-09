@@ -86,6 +86,12 @@ function flatUiBooleanWidgetsPluginClass() {
             if (!_.isNull($(".icons").width())) {
                 checkboxWidth = $(".icons").width();
             }
+
+            // backward compatibility
+            if (_.isUndefined(modelsParameters[idInstance].checkboxSize)) {
+                modelsParameters[idInstance].checkboxSize = 1;
+            }
+
             const padding = modelsParameters[idInstance].checkboxSize * checkboxWidth + 12;
             const lineHeight = modelsParameters[idInstance].checkboxSize * checkboxHeight;
             //
