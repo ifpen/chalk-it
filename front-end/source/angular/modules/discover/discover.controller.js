@@ -75,7 +75,10 @@ angular
                                 //save current project then duplicate
                                 fileManager.getFileListExtended("project", $rootScope.currentProject.name, undefined, endAction, true);
                             } else {
-                                ManagePrjService.saveProjectToLocal(endAction);
+                                // Use setTimeout to wait for the swal to close
+                                setTimeout(()=>{
+                                    ManagePrjService.saveProjectToLocal(endAction);
+                                }, 500);
                             }
                         } else {
                             //nothing

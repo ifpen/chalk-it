@@ -263,12 +263,10 @@ def read_project():
         file_name = request.json['FileName']
         offset = request.json['Offset']
         path_project_file = os.path.join(dir_project_path, file_name)
-        if offset != -1:
-            if os.access(path_project_file, os.F_OK):
-                with open(path_project_file, 'r', encoding='utf8') as file:
-                    file_data = file.read()
-                encoded_data = b64encode(json.dumps(
-                    json.loads(file_data)).encode()).decode()
+        if offset != -1 and os.access(path_project_file, os.F_OK):
+            with open(path_project_file, 'r', encoding='utf8') as file:
+                file_data = json.load(file)
+            encoded_data = b64encode(json.dumps(file_data).encode()).decode()
 
         file_stats = os.stat(path_project_file)
         nb_bytes = file_stats.st_size

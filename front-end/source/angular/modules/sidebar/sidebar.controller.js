@@ -122,7 +122,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- Open project from local ----------------*/
     $scope.openFromLocal = function () {
-      var FileMngrInst = new FileMngrFct();
+      const FileMngrInst = new FileMngrFct();
       FileMngrInst.GetFileList("project", _responseCallback);
     };
 
