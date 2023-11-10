@@ -16,7 +16,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
   function ($scope, $rootScope, $state, FilterPrjService, ManagePrjService) {
     /*---------- New project ----------------*/
     $scope.ProjectsFilter = function (tmpStr) {
-      let CardsController = angular.element(document.getElementById('cards-ctrl')).scope();
+      const CardsController = angular.element(document.getElementById('cards-ctrl')).scope();
       FilterPrjService.ProjectsFilter(tmpStr, CardsController);
     };
 
@@ -51,7 +51,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
             },
             function (isConfirm) {
               if (isConfirm) {
-                var endAction = function () {
+                const endAction = function () {
                   _newPrj(scopeDash);
                 };
                 //save current project
