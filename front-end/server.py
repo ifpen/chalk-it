@@ -17,12 +17,7 @@ from concurrent.futures import Executor, ProcessPoolExecutor
 from pathlib import Path
 from typing import Optional
 
-# create the top-level parser
-parser = argparse.ArgumentParser()
-parser.add_argument('--dev', action='store_true', help='run in development mode')
-parser.add_argument('--render', dest='xprjson_file', type=str, help='render project in HTML page mode')
-parser.add_argument('--port', dest='app_port', type=int, help='change Flask TCP port')
-parser.add_argument('--ip', dest='app_ip', type=str, help='change Flask TCP address')
+
 
 
 
@@ -37,6 +32,10 @@ def create_parser():
                         help='if set, the "syncDir" directory will be cleared on startup. Please use responsively.')
     parser.add_argument('--pythonWorkers', dest='python_workers', type=int,
                         help='''Size of pool used to evaluate user's python scripts.''')
+    parser.add_argument('--render', dest='xprjson_file', type=str, help='render project in HTML page mode')
+    parser.add_argument('--port', dest='app_port', type=int, help='change Flask TCP port')
+    parser.add_argument('--ip', dest='app_ip', type=str, help='change Flask TCP address')						
+    
     return parser
 
 
@@ -47,8 +46,6 @@ if args.dev:
 else:
     DEBUG = False
 	
-print(args.xprjson_file);	
-
 xprjson = args.xprjson_file
 
 app = Flask(__name__)
