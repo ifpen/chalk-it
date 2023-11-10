@@ -116,7 +116,7 @@ var fileManager = (function () {
 
             const $rootScope = angular.element(document.body).scope().$root;
             const bFound = isFileNameExist(data, inputValue);
-            const is_overwrite = $rootScope.xDashFullVersion ? !is_defaultOverwrite : true;
+            const is_overwrite = $rootScope.xDashFullVersion ? !is_defaultOverwrite : false;
 
             if (bFound && is_overwrite) {
                 FileMngrInst.GetStatus(inputValue, fileType, function (msg1, msg2, type) {
@@ -174,10 +174,11 @@ var fileManager = (function () {
                     }
                 });
             } else {
-                if (!_.isUndefined(xdashFileSerialized))
+                if (!_.isUndefined(xdashFileSerialized)) {
                     saveFileManager(fileType, inputValue, xdashFileSerialized);
-                else
+                } else {
                     saveFileManager(fileType, inputValue);
+                }                    
             }
         }
     }
@@ -483,7 +484,7 @@ var fileManager = (function () {
         if (is_xDash)
             datanodesManager.showLoadingIndicator(true);
         endAction = endActionArg;
-        let FileMngrInst = new FileMngrFct();
+        const FileMngrInst = new FileMngrFct();
         FileMngrInst.CheckNewProjectName(name, newName, fileType, "", function (msg1, msg2, type) {
             //swal.close();
             if (is_xDash)
@@ -491,7 +492,7 @@ var fileManager = (function () {
             if (type == "error") {
                 swal("error", msg2, type);
             } else if (type == "warning") {
-                let text = "Choose another name for your " + fileType + "!";
+                const text = "Choose another name for your " + fileType + "!";
                 const notice = new PNotify({
                     title: name,
                     text: msg1,
@@ -508,7 +509,7 @@ var fileManager = (function () {
                 //     $scopeController.renameProject(name, flag, text);
                 // }, 500);
             } else if (type == "success") {
-                let FileMngrInst = new FileMngrFct();
+                const FileMngrInst = new FileMngrFct();
                 FileMngrInst.RenameFile(fileType, name, newName, endAction);
             }
         });
