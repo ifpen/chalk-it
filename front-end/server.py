@@ -18,9 +18,6 @@ from pathlib import Path
 from typing import Optional
 
 
-
-
-
 def create_parser():
     # create the top-level parser
     parser = argparse.ArgumentParser()
@@ -37,7 +34,6 @@ def create_parser():
     parser.add_argument('--ip', dest='app_ip', type=str, help='change Flask TCP address')						
     
     return parser
-
 
 args = create_parser().parse_args()
 
