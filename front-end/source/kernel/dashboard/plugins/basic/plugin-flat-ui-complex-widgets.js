@@ -1131,9 +1131,9 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.render = function () {
       const widgetHtml = document.createElement('div');
-      const displayStyle = 'display: flex; align-items: center; cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto';
+      const displayStyle = 'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto';
       widgetHtml.setAttribute('style', displayStyle);
-      let divContent = '<table style="margin: 0; height: 90%; ' + this.tableBackgroundColor("primary") + '" class="table';
+      let divContent = '<table style="margin: 0; height: 100%; ' + this.tableBackgroundColor("primary") + '" class="table';
       
       // Instead, the primary and secondary background colour is used.
       // if (modelsParameters[idInstance].striped) {
