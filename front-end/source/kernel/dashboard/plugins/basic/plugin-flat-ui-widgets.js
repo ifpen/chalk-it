@@ -1221,7 +1221,7 @@ function flatUiWidgetsPluginClass() {
             }
 
             $("#" + idDivContainer).html(widgetHtml);
-            $("#" + nameWidget + idWidget)[0].value = self.valueFormat(modelsHiddenParams[idInstance].value);
+            $("#" + nameWidget + idWidget)[0].value = modelsHiddenParams[idInstance].value;
 
             if (this.bIsInteractive) {
                 self.enable();
@@ -1234,7 +1234,7 @@ function flatUiWidgetsPluginClass() {
             updateCallback: function () { },
             setValue: function (val) {
                 modelsHiddenParams[idInstance].value = val;
-                $("#" + nameWidget + idWidget)[0].value = self.valueFormat(val);
+                $("#" + nameWidget + idWidget)[0].value = val;
             },
             getValue: function () {
                 switch (nameWidget) {

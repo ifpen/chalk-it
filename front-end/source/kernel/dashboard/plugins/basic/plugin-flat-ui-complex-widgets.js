@@ -1025,10 +1025,10 @@ function flatUiComplexWidgetsPluginClass() {
       const widgetHtml = document.createElement('div');
       widgetHtml.setAttribute(
         'style',
-        `display: flex; align-items: center; cursor: ${this.bIsInteractive ? 'auto' : 'inherit'}; width: inherit; height: inherit; overflow: auto`
+        `cursor: ${this.bIsInteractive ? 'auto' : 'inherit'}; width: inherit; height: inherit; overflow: auto`
       );
 
-      let divContent = `<table style="margin: 0; height: 90%; ${this.tableBackgroundColor("primary")}" class="table`;
+      let divContent = `<table style="margin: 0; height: 100%; ${this.tableBackgroundColor("primary")}" class="table`;
       if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
       if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
       divContent += ' table-responsive" id="table' + idWidget + '" >';
