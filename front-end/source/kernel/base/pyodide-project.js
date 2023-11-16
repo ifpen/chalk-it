@@ -21,7 +21,7 @@ var pyodideLib = (function () {
     }
 
     /*--------deserialize--------*/
-    async function deserialize(jsonContent) {
+    function deserialize(jsonContent) {
         pyodideManager.reset();
         if (!_.isUndefined(jsonContent.libraries)) {
             const { pyodideStandard, pyodideMicropip } = jsonContent.libraries;
