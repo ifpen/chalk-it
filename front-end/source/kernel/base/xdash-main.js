@@ -122,7 +122,7 @@ var xdash = (function () {
   }
 
   /*--------deserialize--------*/
-  async function deserialize(jsonObject) {
+  function deserialize(jsonObject) {
     if (!xdashUpdateEngine.hasCurrentVersion(jsonObject)) {
       try {
         $rootScope.updateFlagDirty(true);
@@ -150,7 +150,7 @@ var xdash = (function () {
       if (!_.isUndefined(jsonObject.meta.schedulerLogOff)) offSchedLogUser = jsonObject.meta.schedulerLogOff;
       else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
-      await pyodideLib.deserialize(jsonObject); // GHI  : load pyodide packages
+      pyodideLib.deserialize(jsonObject); // GHI  : load pyodide packages
 
       //AEF: save prj version for compatibility
       jsonObject.data.version = jsonObject.meta.version;
