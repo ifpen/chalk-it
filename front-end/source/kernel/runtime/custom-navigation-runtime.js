@@ -109,8 +109,11 @@ var customNavigationRuntime = (function () {
      */
     function customNavigationGoToPage(numPage) {
         const $rootScope = angular.element(document.body).scope().$root;
-        $rootScope.pageNumber = numPage;
 
+        // Do not run in edit mode
+        if (typeof layoutMgr !== "undefined" && !$rootScope.bIsPlayMode) return;
+
+        $rootScope.pageNumber = numPage;
         const jsonContent = _getJsonContent();
         let exportOptions = "";
         let { rows, cols } = _getGrid();
@@ -132,7 +135,7 @@ var customNavigationRuntime = (function () {
         if (rows > 1) {
             if (exportOptions == "projectToTargetWindow") {
                 const numDiv = numPage * cols;
-                $('#dpr' + numDiv + 'c')[0].scrollIntoView();
+                $('#dpr' + numDiv + 'c')[0].scrollIntoView(false);
             } else {
                 $('[id^=dpr][id$=c]').hide();
                 if (cols > 1) {
