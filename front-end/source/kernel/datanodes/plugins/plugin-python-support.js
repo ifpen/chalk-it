@@ -4,15 +4,18 @@
   static SIGNATURE_ERROR = 'SIGNATURE INVALID';
 
   static isEmbedded() {
-    return angular
-      .element(document.body)
-      .injector()
-      .invoke([
-        '$rootScope',
-        function ($rootScope) {
-          return !$rootScope.UserProfile;
-        },
-      ]);
+    const injector = angular.element(document.body).injector();
+    if (injector?.has('$rootScope')) {
+      return injector.invoke([
+          '$rootScope',
+          function ($rootScope) {
+            return !$rootScope.UserProfile;
+          },
+        ]
+      );
+    } else {
+      return true;
+    }
   }
 
   constructor() {}

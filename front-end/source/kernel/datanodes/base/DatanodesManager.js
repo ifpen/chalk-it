@@ -35,15 +35,16 @@ var datanodesManager = (function () {
   var pluginEditor = new PluginEditor(jsEditor);
 
   let eventCenter = null;
-  angular
-    .element(document.body)
-    .injector()
-    .invoke([
-      'EventCenterService',
-      (eventCenterService) => {
-        eventCenter = eventCenterService;
-      },
-    ]);
+  const injector = angular.element(document.body).injector();
+  if (injector?.has('EventCenterService')) {
+    injector.invoke([
+        'EventCenterService',
+        (eventCenterService) => {
+          eventCenter = eventCenterService;
+        },
+      ]
+    );
+  }
 
   // deleteDn: delete a datanode
   function deleteDn(viewModel) {
