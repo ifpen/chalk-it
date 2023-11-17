@@ -7,15 +7,10 @@
     const injector = angular.element(document.body).injector();
     if (injector?.has('$rootScope')) {
       return injector.invoke([
-          '$rootScope',
-          function ($rootScope) {
-            return !$rootScope.UserProfile;
-          },
-        ]
-      );
-    } else {
-      return true;
+        '$rootScope', ($rootScope) => !$rootScope.UserProfile
+      ]);
     }
+    return true;
   }
 
   constructor() {}
