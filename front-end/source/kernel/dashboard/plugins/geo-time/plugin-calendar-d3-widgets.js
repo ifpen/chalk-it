@@ -363,8 +363,8 @@ function calendarD3WidgetPluginClass() {
             $id: WidgetPrototypesManager.ID_URI_SCHEME + "xdash:calendarD3Widget_input",
             type: "object",
             properties: {
-                start: "string",
-                end: "string",
+                start: { type: "string" },
+                end: { type: "string" },
                 values: {
                     type: "array",
                     items: {
