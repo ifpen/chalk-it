@@ -51,7 +51,7 @@ class AppConfig:
         self.dir_images_path = os.path.join(self.dir_temp_name, './Templates/Images')
         self.dir_name = os.getcwd()
         self.dir_project_path = self.dir_name
-        self.static_folder_path = "."
+        self.static_folder_path = "../"
 
 class RootManager:
     def __init__(self, config):
