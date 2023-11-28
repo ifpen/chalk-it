@@ -86,11 +86,17 @@ shutil.copytree(build_dir, './build/chlkt')
 # Copy main.py and associated .py files to ./build/chlkt directory
 cwd = os.getcwd()
 build_path = './build/chlkt/'
-shutil.copy('./main.py', build_path)
-shutil.copy('./back_end/app/server.py', build_path)
-shutil.copy('./back_end/app/server_exec.py', build_path)
-shutil.copy('./back_end/app/server_file_sync.py', build_path)
-shutil.copy('./assets/misc/__init__.py', build_path)
+file_paths = [
+     './main.py', 
+     './assets/misc/__init__.py'
+    ]
+
+for file_path in file_paths:
+    shutil.copy(file_path, build_path)
+
+# Copy app server
+shutil.copytree('./back_end/app/', './build/chlkt/app/')
+
 # for gunicorn rendering of pages
 shutil.copytree('./back_end/render/', './build/chlkt/render/')
 

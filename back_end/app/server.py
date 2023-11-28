@@ -1,4 +1,4 @@
-from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory, render_template_string
+from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory, render_template_string, url_for
 import os
 from pathlib import Path
 import json
@@ -42,6 +42,7 @@ class AppConfig:
         self.dir_temp_path = os.path.join(self.dir_name, '../../documentation/Templates/Projects')
         self.dir_images_path = os.path.join(self.dir_name, '../../documentation/Templates/Images')
         self.dir_project_path = self.dir_name
+        self.static_folder_path = "../../front-end"
 
     def _setup_production_paths(self):
         # Production mode paths
@@ -50,11 +51,12 @@ class AppConfig:
         self.dir_images_path = os.path.join(self.dir_temp_name, './Templates/Images')
         self.dir_name = os.getcwd()
         self.dir_project_path = self.dir_name
+        self.static_folder_path = "."
 
 class RootManager:
     def __init__(self, config):
-        self.app = Flask(__name__)
         self.config = config
+        self.app = Flask(__name__, static_folder=config.static_folder_path, static_url_path='')
         self.setting_manager = SettingManager(config)
         self.template_manager = TemplateManager(config)
         self.project_manager = ProjectManager(config)
@@ -398,7 +400,7 @@ class FileManager:
         if self.config.xprjson is not None:
             return self._dashboard(self.config.xprjson)
 
-        return redirect('index.html')
+        return redirect(url_for('static', filename='index.html'))
     
 class Main:
     @classmethod
@@ -422,13 +424,13 @@ class Main:
     def _run_python_pool(cls, app, args):
         python_pool: Optional[Executor] = ProcessPoolExecutor(args.python_workers) if args.python_workers else None
         if python_pool:
-            from server_exec import create_python_exec_blueprint
+            from .server_exec import create_python_exec_blueprint
             app.register_blueprint(create_python_exec_blueprint(python_pool))
 
     @classmethod
     def _run_file_sync(cls, app, args, config):
         if args.sync:
-            from server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
+            from .server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
             server_ws_url = f"{config.server_url.replace('http', 'ws')}{FILE_SYNC_WS_ENDPOINT}"
             blueprint = create_file_sync_blueprint(args.sync, args.sync_clear, server_ws_url)
             app.register_blueprint(blueprint)
@@ -480,6 +482,3 @@ class Main:
         cls._run_file_sync(app, args, config)
         cls._print_startup_info(config)
         cls._start_application(app, config)
-
-if __name__ == "__main__":
-    Main.main()
