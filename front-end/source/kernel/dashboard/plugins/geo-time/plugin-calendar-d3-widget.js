@@ -7,11 +7,9 @@
 // │ Original authors(s): Benoit LEHMAN, Tristan BARTEMENT, Guillaume CORBELIN   │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
 
-
 /*******************************************************************/
 /*************************** plugin data ***************************/
 /*******************************************************************/
-
 
 // models
 modelsHiddenParams.calendarD3 = { 
@@ -36,133 +34,108 @@ modelsLayout.calendarD3 = { 'height': '5vh', 'width': '19vw', 'minWidth': '100px
 function calendarD3WidgetPluginClass() {
 
     // ├────────────────────────────────────────────────────────────────────┤ \\
-    // |                         Time picker widget                         | \\
+    // |                         Calendar D3 widget                         | \\
     // ├────────────────────────────────────────────────────────────────────┤ \\
+
     this.calendarD3Widget = function (idDivContainer, idWidget, idInstance, bInteractive) {
         this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
-
-        var self = this;
+        const self = this;
 
         this.enable = function () { };
-
         this.disable = function () { };
-
         this.updateValue = function (e) {
             self.SelectedDate.updateCallback(self.SelectedDate, self.SelectedDate.getValue());
         }
-
-
         this.rescale = function () {
             this.render();
         };
 
-
         this.render = function () {
-
-            var widgetHtml = document.createElement('div');
+            const widgetHtml = document.createElement('div');
             widgetHtml.setAttribute("style", 'display: table;text-align: left; height: inherit; width: inherit; cursor: inherit');
             widgetHtml.setAttribute("id", "div-for-calendarD3" + idWidget);
             $("#" + idDivContainer).html(widgetHtml);
 
             const bbox = widgetHtml.getBoundingClientRect();
+            const width = bbox.width;
+            const heightDiv = bbox.height;
+            const formatOut = d3.timeFormat("%Y-%m-%d");
+            const parserLocal = d3.timeParse("%Y-%m-%d")
+            const calendarValues = modelsHiddenParams[idInstance].CalendarValues;
+            const dateValues = calendarValues?.values || "";
+            let tableForCalendar;
 
-            var width = bbox.width;
-            var heightDiv = bbox.height;
-
-            var tableForCalendar;
-
-            var formatOut = d3.timeFormat("%Y-%m-%d");
             // Create Data 
-
-            if (!_.isUndefined(modelsHiddenParams[idInstance].CalendarValues) && modelsHiddenParams[idInstance].CalendarValues.length) {
-                tableForCalendar = modelsHiddenParams[idInstance].CalendarValues;
+            if (!_.isUndefined(dateValues) && dateValues.length) {
+                tableForCalendar = dateValues;
             } else {
-
-                var dateForVal = d3.timeDay.range(new Date(2020, 5, 2), Date.now());
-
-                var tableForCalendar = dateForVal.map(d => { return { "date": formatOut(d), "value": undefined } });
+                const dateForVal = d3.timeDay.range(new Date(2020, 5, 2), Date.now());
+                tableForCalendar = dateForVal.map(d => { return { "date": formatOut(d), "value": undefined } });
             }
 
-            var parseIn = d3.timeParse("%Y-%m-%d");
-            tableForCalendar = tableForCalendar.map(d => { return { "date": parseIn(d.date), "value": d.value } });
-
-
-            tableForCalendar = tableForCalendar.sort(function (a, b) { return (a.date.getTime() - b.date.getTime()); });
+            tableForCalendar = tableForCalendar
+                .map(d => ({ date: parserLocal(d.date), value: d.value }))
+                .sort((a, b) => a.date.getTime() - b.date.getTime());
+            
+            const startDate = _.isUndefined(calendarValues.start) ? tableForCalendar[0].date : parserLocal(calendarValues.start);
+            const endDate   = _.isUndefined(calendarValues.end) ? tableForCalendar[tableForCalendar.length - 1].date : parserLocal(calendarValues.end);
+                        
             // all Date to draw
-            var allDate = d3.timeDay.range(tableForCalendar[0].date, tableForCalendar[tableForCalendar.length - 1].date);
-            var dateWithNoVal = _.difference(allDate.map(function (d) { return d.getTime(); }), tableForCalendar.map(function (d) { return d.date.getTime(); }));
+            const allDate = d3.timeDay.range(startDate, endDate);
+            const dateWithNoVal = _.difference(allDate.map(function (d) { return d.getTime(); }), tableForCalendar.map(function (d) { return d.date.getTime(); }));
 
             if (dateWithNoVal.length > 0) {
-
                 dateWithNoVal.forEach(function (d) {
                     tableForCalendar.push({ "date": new Date(d), "value": undefined });
                 });
-
                 tableForCalendar = tableForCalendar.sort(function (a, b) { return (a.date.getTime() - b.date.getTime()); });
-
             }
 
-            console.log(dateWithNoVal.map(function (d) { return new Date(d); }));
-
             // Option for visualization
-            var option = modelsParameters[idInstance].AllYearsVisible ? "full" : "single"; // can be full or single 
-
-
-            var weekday = "monday"; // either: weekday, sunday, or monday
-            var formatDay = i => "SMTWTFS"[i]; // given a day number in [0, 6], the day-of-week label
-
-            var formatMonth = "%b"; // format specifier string for months (above the chart)
-            var yFormat = "+%"
-            var colors = d3.interpolateRdYlGn;
-
-            var timeTrans = 1500;
-            var opacityOther = 1;
+            let option = modelsParameters[idInstance].AllYearsVisible ? "full" : "single"; // can be full or single 
+            let weekday = "monday"; // either: weekday, sunday, or monday
+            let formatDay = i => "SMTWTFS"[i]; // given a day number in [0, 6], the day-of-week label
+            let formatMonth = "%b"; // format specifier string for months (above the chart)
+            let yFormat = "+%"
+            let colors = d3.interpolateRdYlGn;
+            let timeTrans = 1500;
+            let opacityOther = 1;
 
             // Internal variable for display
+            let X1 // all possible Date
 
-            var X1 // all possible Date
-
-            var X // Date where there is value;
-            var Y // Values associated with date;
-
-            var I // Array of all years [2021,2022,2023,...];
+            let X // Date where there is value;
+            let Y // Values associated with date;
+            let I // Array of all years [2021,2022,2023,...];
 
             // Use for single mode 
-            var firstYear;
-            var lastYear;
-            var currentYear;
+            let firstYear = tableForCalendar[0].date.getFullYear();
+            let lastYear = tableForCalendar[tableForCalendar.length - 1].date.getFullYear();
+            let currentYear = lastYear;
 
-            var countDay;
-            var timeWeek;
-            var weekDays;
+            let countDay;
+            let timeWeek;
+            let weekDays;
 
-
-            var height;
-            var max;
-            var color;
+            let height;
+            let max;
+            let color;
 
             // Construct formats.
-            var formatMonth;
-            var formatDate;
-            var formatValue;
+            let formatDate;
+            let formatValue;
 
-            var years;
+            let years;
+            let marginLeftForYandD = 40;
 
-            var marginLeftForYandD = 40;
-
-            lastYear = tableForCalendar[tableForCalendar.length - 1].date.getFullYear();
-            firstYear = tableForCalendar[0].date.getFullYear();
-            currentYear = lastYear;
-
-            var cellSize;
+            let cellSize;
             let centerHoriz = 0;
             let centerVert = 0;
 
             computeCalendar();
 
             function computeCalendar() {
-
                 if (option === "single") {
                     X = tableForCalendar.filter(d => { return currentYear == d.date.getFullYear() }).map(d => { return d.date });
                     Y = tableForCalendar.filter(d => { return currentYear == d.date.getFullYear() }).map(d => { return d.value });
@@ -170,7 +143,6 @@ function calendarD3WidgetPluginClass() {
                     X = tableForCalendar.map(d => { return d.date });
                     Y = tableForCalendar.map(d => { return d.value });
                 }
-
 
                 I = d3.range(X.length);
                 // Group the index by year, in reverse input order. (Assuming that the input is
@@ -181,16 +153,11 @@ function calendarD3WidgetPluginClass() {
                 timeWeek = weekday === "sunday" ? d3.timeSunday : d3.timeMonday;
                 weekDays = weekday === "weekday" ? 5 : 7;
 
-
                 let maxY = (heightDiv) / ((weekDays + 2) * years.length);
-
                 let maxX = (width - marginLeftForYandD) / (53);
 
                 cellSize = Math.min(maxY, maxX);
-
                 height = cellSize * (weekDays + 2);
-
-
                 centerHoriz = (width - (marginLeftForYandD + cellSize * 53)) / 2.0;
 
                 if (centerHoriz < 0 || option === "single") {
@@ -222,74 +189,58 @@ function calendarD3WidgetPluginClass() {
                         : `M${(w + 1) * cellSize},0V${d * cellSize}H${w * cellSize}`}V${weekDays * cellSize}`;
             }
 
-
-
-
             d3.selection.prototype.conditionalDraw =
                 function () {
-                    var midX = (22 * cellSize + marginLeftForYandD);
-                    var midY = (height * years.length) / 2.0;
+                    const midX = (22 * cellSize + marginLeftForYandD);
+                    const midY = (height * years.length) / 2.0;
                     return (option === "single") ? this.attr("x", midX).attr("y", midY).style("opacity", 0).transition().duration(500) : this;
-
                 };
 
             const svg = d3.select(widgetHtml).append("svg")
-                .attr("width", width)
-                .attr("height", height * years.length + 40)
-                .attr("viewBox", [0, 0, width, height * years.length + 40])
-                .attr("style", "max-width: 100%; height: auto; height: intrinsic;")
+                .attr("style", "width: inherit; height: inherit;")
                 .attr("font-family", "sans-serif")
                 .attr("font-size", cellSize);
 
-
-            var tip = d3.select("body").append("div")
+            d3.select("body").append("div")
                 .attr("class", "tooltip")
-                .style("position", "absolute")
+                .attr("id", "tooltipCalendar")
+                .style("display", "none")
                 .style("pointer-events", "none")
                 .style("background", "#fff")
                 .style("color", "#000")
                 .style("border", "2px solid #000")
                 .style("opacity", 0)
 
-
             if (option === "single") {
-
-                var pathPlusSVG = 'M 1 1 L 12 10 L 1 19 L 1 1';
-                var pathMinusSVG = 'M 12 1 L 1 10 L 12 19 L 12 1';
-
-
-                var pathPlus = svg.append("path").attr("d", pathPlusSVG).style("fill-rule", "evenodd")
+                const pathPlusSVG = 'M 1 1 L 12 10 L 1 19 L 1 1';
+                const pathMinusSVG = 'M 12 1 L 1 10 L 12 19 L 12 1';
+                
+                const pathPlus = svg.append("path").attr("d", pathPlusSVG).style("fill-rule", "evenodd")
                     .attr("transform", "translate(" + (28 * cellSize + marginLeftForYandD) + ", " + (height * years.length) + ") ").attr("stroke-width", "0.0").attr("stroke", "black").attr("fill", "#888888");
 
-                pathPlus.on('click', function () { redrawCalendar(1); });
-
-
-                var pathMinus = svg.append("path").attr("d", pathMinusSVG).style("fill-rule", "evenodd")
+                const pathMinus = svg.append("path").attr("d", pathMinusSVG).style("fill-rule", "evenodd")
                     .attr("transform", "translate(" + (22 * cellSize + marginLeftForYandD) + ", " + (height * years.length) + ") ").attr("stroke-width", "0.0").attr("stroke", "black").attr("fill", "#888888");
 
-                pathMinus.on('click', function () { redrawCalendar(-1); });
+                pathPlus.on('click', function () { redrawCalendar(1,pathPlus,pathMinus); });
+
+                pathMinus.on('click', function () { redrawCalendar(-1,pathPlus,pathMinus); });
                 pathPlus.attr("opacity", 0.2);
 
             }
 
-
             drawCalendar();
 
-            async function redrawCalendar(i) {
-
-                var midX = (22 * cellSize + marginLeftForYandD);
-                var midY = (height * years.length) / 2.0;
-
-                var newYear = currentYear + i;
+            async function redrawCalendar(i,pathPlus, pathMinus) {
+                const midX = (22 * cellSize + marginLeftForYandD);
+                const midY = (height * years.length) / 2.0;
+                const newYear = currentYear + i;
 
                 if (newYear > lastYear || newYear < firstYear) {
                     return;
                 }
 
                 currentYear = newYear;
-
                 await svg.selectAll(".year").selectAll("*").transition().duration(500).attr("x", midX).attr("y", midY).style("opacity", 0).end();
-
                 svg.selectAll(".year").remove();
 
                 if (newYear == firstYear) {
@@ -302,22 +253,16 @@ function calendarD3WidgetPluginClass() {
                     pathMinus.attr("opacity", 1);
                     pathPlus.attr("opacity", 1);
                 }
-
-
                 computeCalendar();
                 drawCalendar();
             }
 
-            var formatOut = d3.timeFormat("%Y-%m-%d");
-
             function drawCalendar() {
-
-                let year = svg.selectAll("g")
+                const year = svg.selectAll("g")
                     .data(years)
                     .join("g")
 
-                year
-                    .attr("class", "year")
+                year.attr("class", "year")
                     .attr("transform", (d, i) => `translate(` + (marginLeftForYandD + centerHoriz) + `,${(height * i + cellSize * 1.5) + centerVert})`);
 
                 year.append("text")
@@ -341,8 +286,7 @@ function calendarD3WidgetPluginClass() {
                     .text(formatDay)
                     .style("opacity", 1);
 
-
-                const cell = year.append("g")
+                year.append("g")
                     .selectAll("rect")
                     .data(weekday === "weekday"
                         ? ([, I]) => I.filter(i => ![0, 6].includes(X[i].getDay()))
@@ -358,28 +302,28 @@ function calendarD3WidgetPluginClass() {
                             d3.select(this)
                                 .attr("height", cellSize - 2).attr("width", cellSize - 2).attr("transform", `translate(1,1)`).style("stroke", "black").style("stroke-width", 1).style("stroke-opacity", 1);
 
-                            tip.style("opacity", 1)
+                            d3.select("#tooltipCalendar")
+                                .style("display", "block")
+                                .style("opacity", 1)
                                 .html("<center>" + formatOut(X[i]) + "</center>" + "Value : " + Y[i])
                                 .style("left", (e.pageX + 10) + "px")
-                                .style("top", (e.pageY + 10) + "px")
-
+                                .style("top", (e.pageY + 10) + "px");
                         }
                     })
                     .on('mouseout', function (e, i) {
                         if (!_.isUndefined(Y[i])) {
                             d3.select(this).style("stroke", "black").style("stroke-width", 0).style("stroke-opacity", 0).attr("transform", `translate(0,0)`).attr("width", cellSize - 1)
                                 .attr("height", cellSize - 1);
-                            tip.style("opacity", 0);
+                            d3.select("#tooltipCalendar")
+                                .style("display", "none")
+                                .style("opacity", 0);
                         }
                     })
 
                     // For the actuator 
                     .on('click', function (e, d) {
-
                         modelsHiddenParams[idInstance].SelectedDate = formatOut(X[d]);
                         self.updateValue();
-
-                        console.log(formatOut(X[d]))
                     })
                     .conditionalDraw()
                     .style("opacity", 1)
@@ -404,8 +348,6 @@ function calendarD3WidgetPluginClass() {
                     .attr("x", d => timeWeek.count(d3.timeYear(d), timeWeek.ceil(d)) * cellSize + 3)
                     .attr("y", -5)
                     .style("opacity", 1);
-
-
             };
             function pathMonth(t) {
                 const d = Math.max(0, Math.min(weekDays, countDay(t.getDay())));
@@ -416,25 +358,30 @@ function calendarD3WidgetPluginClass() {
             }
         };
 
-
         // Schema Actuator
         const _SCHEMA_CALENDAR_INPUT = {
-
             $schema: WidgetPrototypesManager.SCHEMA_VERSION,
             $id: WidgetPrototypesManager.ID_URI_SCHEME + "xdash:calendarD3Widget_input",
-            type: "array",
-            items: {
-                type: "object",
-                properties: {
-                    date: { type: "string" },
-                    value: { type: "number" },
-                },
+            type: "object",
+            properties: {
+                start: { type: "string" },
+                end: { type: "string" },
+                values: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            date: { type: "string" },
+                            value: { type: "number" },
+                        },
+                    },
+                }
             },
         };
 
         const _CALENDAR_VALUES_DESCRIPTOR = new WidgetActuatorDescription(
             "CalendarValues",
-            "Calendar Values Array[{date : YYYY-MM-DD, value : number}]",
+            "Calendar Values Object{start : YYYY-MM-DD, end : YYYY-MM-DD, values : Array[{date : YYYY-MM-DD, value : number}]}",
             WidgetActuatorDescription.READ,
             _SCHEMA_CALENDAR_INPUT,
         );
@@ -447,8 +394,6 @@ function calendarD3WidgetPluginClass() {
 
         const _DATE_START_DESCRIPTOR = new WidgetActuatorDescription("SelectedDate",
             "Selected date as YYYY-MM-DD", WidgetActuatorDescription.WRITE, _DATE_SCHEMA);
-
-
 
 
         this.getActuatorDescriptions = function () {
@@ -471,7 +416,6 @@ function calendarD3WidgetPluginClass() {
             removeValueChangedHandler: function (updateDataFromWidget) {
                 self.disable();
             }
-
         };
 
         this.SelectedDate = {
@@ -487,7 +431,6 @@ function calendarD3WidgetPluginClass() {
             },
             removeValueChangedHandler: function (updateDataFromWidget) { }
         };
-
 
         self.render();
     };
