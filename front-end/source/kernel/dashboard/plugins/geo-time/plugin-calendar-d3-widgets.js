@@ -87,7 +87,7 @@ function calendarD3WidgetPluginClass() {
 
             if (dateWithNoVal.length > 0) {
                 dateWithNoVal.forEach(function (d) {
-                    tableForCalendar.push({ "date": parserLocal(d), "value": undefined });
+                    tableForCalendar.push({ "date": new Date(d), "value": undefined });
                 });
                 tableForCalendar = tableForCalendar.sort(function (a, b) { return (a.date.getTime() - b.date.getTime()); });
             }
@@ -218,19 +218,19 @@ function calendarD3WidgetPluginClass() {
                 const pathPlus = svg.append("path").attr("d", pathPlusSVG).style("fill-rule", "evenodd")
                     .attr("transform", "translate(" + (28 * cellSize + marginLeftForYandD) + ", " + (height * years.length) + ") ").attr("stroke-width", "0.0").attr("stroke", "black").attr("fill", "#888888");
 
-                pathPlus.on('click', function () { redrawCalendar(1); });
-
                 const pathMinus = svg.append("path").attr("d", pathMinusSVG).style("fill-rule", "evenodd")
                     .attr("transform", "translate(" + (22 * cellSize + marginLeftForYandD) + ", " + (height * years.length) + ") ").attr("stroke-width", "0.0").attr("stroke", "black").attr("fill", "#888888");
 
-                pathMinus.on('click', function () { redrawCalendar(-1); });
+                pathPlus.on('click', function () { redrawCalendar(1,pathPlus,pathMinus); });
+
+                pathMinus.on('click', function () { redrawCalendar(-1,pathPlus,pathMinus); });
                 pathPlus.attr("opacity", 0.2);
 
             }
 
             drawCalendar();
 
-            async function redrawCalendar(i) {
+            async function redrawCalendar(i,pathPlus, pathMinus) {
                 const midX = (22 * cellSize + marginLeftForYandD);
                 const midY = (height * years.length) / 2.0;
                 const newYear = currentYear + i;
