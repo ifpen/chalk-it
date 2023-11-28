@@ -61,6 +61,7 @@ function calendarD3WidgetPluginClass() {
             const width = bbox.width;
             const heightDiv = bbox.height;
             const formatOut = d3.timeFormat("%Y-%m-%d");
+            const parserLocal = d3.timeParse("%Y-%m-%d")
             const calendarValues = modelsHiddenParams[idInstance].CalendarValues;
             const dateValues = calendarValues?.values || "";
             let tableForCalendar;
@@ -74,11 +75,11 @@ function calendarD3WidgetPluginClass() {
             }
 
             tableForCalendar = tableForCalendar
-                .map(d => ({ date: new Date(d.date), value: d.value }))
+                .map(d => ({ date: parserLocal(d.date), value: d.value }))
                 .sort((a, b) => a.date.getTime() - b.date.getTime());
             
-            const startDate = _.isUndefined(calendarValues.start) ? tableForCalendar[0].date : parseInt(calendarValues.start);
-            const endDate   = _.isUndefined(calendarValues.end) ? tableForCalendar[tableForCalendar.length - 1].date : parseInt(calendarValues.end);
+            const startDate = _.isUndefined(calendarValues.start) ? tableForCalendar[0].date : parserLocal(calendarValues.start);
+            const endDate   = _.isUndefined(calendarValues.end) ? tableForCalendar[tableForCalendar.length - 1].date : parserLocal(calendarValues.end);
                         
             // all Date to draw
             const allDate = d3.timeDay.range(startDate, endDate);
@@ -86,7 +87,7 @@ function calendarD3WidgetPluginClass() {
 
             if (dateWithNoVal.length > 0) {
                 dateWithNoVal.forEach(function (d) {
-                    tableForCalendar.push({ "date": new Date(d), "value": undefined });
+                    tableForCalendar.push({ "date": parserLocal(d), "value": undefined });
                 });
                 tableForCalendar = tableForCalendar.sort(function (a, b) { return (a.date.getTime() - b.date.getTime()); });
             }
