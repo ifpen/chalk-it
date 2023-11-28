@@ -77,8 +77,8 @@ function calendarD3WidgetPluginClass() {
                 .map(d => ({ date: new Date(d.date), value: d.value }))
                 .sort((a, b) => a.date.getTime() - b.date.getTime());
             
-            const startDate = _.isUndefined(calendarValues.start) ? tableForCalendar[0].date : parseIn(calendarValues.start);
-            const endDate   = _.isUndefined(calendarValues.end) ? tableForCalendar[tableForCalendar.length - 1].date : parseIn(calendarValues.end);
+            const startDate = _.isUndefined(calendarValues.start) ? tableForCalendar[0].date : parseInt(calendarValues.start);
+            const endDate   = _.isUndefined(calendarValues.end) ? tableForCalendar[tableForCalendar.length - 1].date : parseInt(calendarValues.end);
                         
             // all Date to draw
             const allDate = d3.timeDay.range(startDate, endDate);
