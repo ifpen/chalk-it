@@ -32,18 +32,18 @@ class AppConfig:
         self.settings_file_path = os.path.join(self.dir_settings_path, 'settings.json')
 
         if self.DEBUG:
-            self.setup_development_paths()
+            self._setup_development_paths()
         else:
-            self.setup_production_paths()
+            self._setup_production_paths()
 
-    def setup_development_paths(self):
+    def _setup_development_paths(self):
         # Development mode paths
         self.dir_name = os.path.dirname(__file__)
         self.dir_temp_path = os.path.join(self.dir_name, '../../documentation/Templates/Projects')
         self.dir_images_path = os.path.join(self.dir_name, '../../documentation/Templates/Images')
         self.dir_project_path = self.dir_name
 
-    def setup_production_paths(self):
+    def _setup_production_paths(self):
         # Production mode paths
         self.dir_temp_name = os.path.dirname(__file__)
         self.dir_temp_path = os.path.join(self.dir_temp_name, './Templates/Projects')
@@ -372,7 +372,7 @@ class FileManager:
             "Python": None
         })
 
-    def dashboard(self, xprjson):
+    def _dashboard(self, xprjson):
         # Load configuration from json file
         with open(xprjson, 'r') as config_file:
             config_data = json.load(config_file)
@@ -396,58 +396,58 @@ class FileManager:
             return send_from_directory('.', path)
 
         if self.config.xprjson is not None:
-            return self.dashboard(self.config.xprjson)
+            return self._dashboard(self.config.xprjson)
 
         return redirect('index.html')
     
 class Main:
     @classmethod
-    def configure_logging(cls):
+    def _configure_logging(cls):
         logging.basicConfig()
         logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
     @classmethod
-    def open_browser(cls, server_url):
+    def _open_browser(cls, server_url):
         """
         Opens a new web browser window with the server URL.
         """
         webbrowser.open_new(server_url)
 
     @classmethod
-    def create_app(cls, config):
+    def _create_app(cls, config):
         root_manager = RootManager(config)
         return root_manager.app
 
     @classmethod
-    def run_python_pool(cls, app, args):
+    def _run_python_pool(cls, app, args):
         python_pool: Optional[Executor] = ProcessPoolExecutor(args.python_workers) if args.python_workers else None
         if python_pool:
-            from .server_exec import create_python_exec_blueprint
+            from server_exec import create_python_exec_blueprint
             app.register_blueprint(create_python_exec_blueprint(python_pool))
 
     @classmethod
-    def run_file_sync(cls, app, args, config):
+    def _run_file_sync(cls, app, args, config):
         if args.sync:
-            from .server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
+            from server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
             server_ws_url = f"{config.server_url.replace('http', 'ws')}{FILE_SYNC_WS_ENDPOINT}"
             blueprint = create_file_sync_blueprint(args.sync, args.sync_clear, server_ws_url)
             app.register_blueprint(blueprint)
             app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 25}
 
     @classmethod
-    def print_startup_info(cls, config):
+    def _print_startup_info(cls, config):
         print('User home directory:', config.dir_home)
         print('Current working directory:', config.dir_name)
         print(f'Chalk\'it launched on {config.server_url}')
 
     @classmethod
-    def start_application(cls, app, config):
+    def _start_application(cls, app, config):
         if (not config.DEBUG) and (config.xprjson is None):
-            threading.Timer(2, lambda: cls.open_browser(config.server_url)).start()
+            threading.Timer(2, lambda: cls._open_browser(config.server_url)).start()
         app.run(debug=config.DEBUG, port=config.run_port)
 
     @classmethod
-    def parse_command_line_arguments(cls):
+    def _parse_command_line_arguments(cls):
         # create the top-level parser
         parser = argparse.ArgumentParser()
         parser.add_argument('--dev', action='store_true', help='run in development mode')
@@ -468,15 +468,18 @@ class Main:
     @classmethod
     def main(cls):
         # Parse command-line arguments
-        args = cls.parse_command_line_arguments()
+        args = cls._parse_command_line_arguments()
         config = AppConfig(args)
-        app = cls.create_app(config)
+        app = cls._create_app(config)
 
-        cls.configure_logging()
+        cls._configure_logging()
         mode_message = "development" if config.DEBUG else "production"
         print(f"Running in {mode_message} mode")
 
-        cls.run_python_pool(app, args)
-        cls.run_file_sync(app, args, config)
-        cls.print_startup_info(config)
-        cls.start_application(app, config)
+        cls._run_python_pool(app, args)
+        cls._run_file_sync(app, args, config)
+        cls._print_startup_info(config)
+        cls._start_application(app, config)
+
+if __name__ == "__main__":
+    Main.main()
