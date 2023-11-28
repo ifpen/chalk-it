@@ -16,8 +16,8 @@ dst_dir = 'build'
 if not os.path.exists(dst_dir):
     os.makedirs(dst_dir)
 
-if not Path('front-end/.env.prod').exists():
-    hutil.copy('front-end/.env.sample', 'front-end/.env.prod')
+if not Path('./front-end/.env.prod').exists():
+    shutil.copy('front-end/.env.sample', 'front-end/.env.prod')
 	
 # Path to the .env.prod file
 env_file_path = 'front-end/.env.prod'
@@ -31,8 +31,7 @@ b = env_vars.get('VERSION_XDASH_B')
 c = env_vars.get('VERSION_XDASH_C')	
 
 
-def getVersion():
-
+def get_version():
     if c == '0':
         date_today = datetime.now()
         date_start = datetime.strptime("01/01/2000", "%m/%d/%Y")
@@ -41,7 +40,7 @@ def getVersion():
     else:
         return c
 
-front_end_build_dir_name = 'xdash_' + a + '.' + b + '.' + str(getVersion())
+front_end_build_dir_name = 'xdash_' + a + '.' + b + '.' + str(get_version())
 
 
 # Get the list of all files and directories in the "build" directory
@@ -84,13 +83,16 @@ if (BUILD_FRONT_END):
 build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
 shutil.copytree(build_dir, './build/chlkt')
 
-# Copy server.py and associated .py files to ./build/chlkt directory
+# Copy main.py and associated .py files to ./build/chlkt directory
 cwd = os.getcwd()
-shutil.copy('./front-end/server.py', './build/chlkt/')
-shutil.copy('./assets/misc/__init__.py', './build/chlkt/')
+build_path = './build/chlkt/'
+shutil.copy('./main.py', build_path)
+shutil.copy('./back_end/app/server.py', build_path)
+shutil.copy('./back_end/app/server_exec.py', build_path)
+shutil.copy('./back_end/app/server_file_sync.py', build_path)
+shutil.copy('./assets/misc/__init__.py', build_path)
 # for gunicorn rendering of pages
-shutil.copytree('./back-end/render/', './build/chlkt/render/')
-
+shutil.copytree('./back_end/render/', './build/chlkt/render/')
 
 # Copy templates
 shutil.copytree('./documentation/Templates/', './build/chlkt/Templates/')
