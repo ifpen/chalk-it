@@ -6,9 +6,9 @@ let browsersync = require('browser-sync').create(),
   sourcemaps = require('gulp-sourcemaps'),
   configuration = require('./config'),
   usemin = require('gulp-usemin'),
-  pngquant = require('imagemin-pngquant'),
+  //pngquant = require('imagemin-pngquant'),
   htmlmin = require('gulp-htmlmin'),
-  imagemin = require('gulp-imagemin'),
+ // imagemin = require('gulp-imagemin'),
   debug = require('gulp-debug'),
   del = require('del'),
   rename = require('gulp-rename'),
@@ -803,13 +803,13 @@ task(
       '../source/assets/**/*.ico',
       '../source/assets/**/*.eot',
     ])
-      .pipe(
+     /*  .pipe(
         imagemin({
           progressive: false,
           svgoPlugins: [{ removeViewBox: true }],
           use: [pngquant()],
         })
-      )
+      ) */
       .pipe(
         dest(
           '../' +
@@ -842,13 +842,13 @@ task('copy', () => {
     '../../documentation/docs/node_modules/prismjs/components/**/*.*',
     '!../../documentation/docs/node_modules/**',
   ])
-    .pipe(
+    /* .pipe(
       imagemin({
         progressive: false,
         svgoPlugins: [{ removeViewBox: true }],
         use: [pngquant()],
       })
-    )
+    ) */
     .pipe(dest(DocDirectory));
 });
 
@@ -876,13 +876,13 @@ task('copymk', () => {
   console.log('DocDirectory', DocDirectory);
   console.log('EV ENV :', Env);
   return src(['../../documentation/site/**/*.*'])
-    .pipe(
+    /* .pipe(
       imagemin({
         progressive: false,
         svgoPlugins: [{ removeViewBox: true }],
         use: [pngquant()],
       })
-    )
+    ) */
     .pipe(dest(DocDirectory));
 });
 
