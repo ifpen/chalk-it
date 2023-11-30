@@ -80,7 +80,7 @@ angular.module('modules.dashboard')
         <span ng-if="!$ctrl.image">
             <div json-display="$ctrl.data" options="$ctrl.jsonOptions"></div>
         </span>
-        <img ng-if="$ctrl.image" src="{{$ctrl.image}}" style="object-fit: contain;" />
+        <img ng-if="$ctrl.image" ng-src="{{$ctrl.image}}" style="object-fit: contain;" />
         `,
     })
     .controller('DashboardDatanodesController', ['$scope', '$rootScope', '$state', 'DepGraphService', 'ManageDatanodeService',
