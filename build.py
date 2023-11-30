@@ -1,3 +1,4 @@
+import glob
 from pathlib import Path
 import subprocess
 import shutil
@@ -82,6 +83,23 @@ if (BUILD_FRONT_END):
 # Copy build result to ./build/chlkt directory
 build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
 shutil.copytree(build_dir, './build/chlkt')
+
+# Copy .whl file to ./build/chlkt directory
+# Specify the source directory and pattern
+source_directory = './front-end/'
+pattern = 'xdash_python_api-*.whl'
+
+# Use glob to find the matching file
+matching_files = glob.glob(source_directory + pattern)
+
+if matching_files:
+    # Assign the path of the first matching file
+    source_path = matching_files[0]
+    destination_directory = './build/chlkt/'
+
+    shutil.copy(source_path, destination_directory)
+else:
+    print("xdash_python_api-*.whl file not found.")
 
 # Copy main.py and associated .py files to ./build/chlkt directory
 cwd = os.getcwd()

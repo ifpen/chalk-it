@@ -2,6 +2,7 @@ from flask import Flask, send_file, jsonify, make_response, json, request, redir
 import os
 from pathlib import Path
 import json
+import logging
 
 app = Flask(__name__)
 

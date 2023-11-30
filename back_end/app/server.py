@@ -41,14 +41,14 @@ class AppConfig:
         self.dir_name = os.path.dirname(__file__)
         self.dir_temp_path = os.path.join(self.dir_name, '../../documentation/Templates/Projects')
         self.dir_images_path = os.path.join(self.dir_name, '../../documentation/Templates/Images')
-        self.dir_project_path = self.dir_name
+        self.dir_project_path = os.path.join(self.dir_name, '../../')
         self.static_folder_path = "../../front-end"
 
     def _setup_production_paths(self):
         # Production mode paths
         self.dir_temp_name = os.path.dirname(__file__)
-        self.dir_temp_path = os.path.join(self.dir_temp_name, './Templates/Projects')
-        self.dir_images_path = os.path.join(self.dir_temp_name, './Templates/Images')
+        self.dir_temp_path = os.path.join(self.dir_temp_name, '../Templates/Projects')
+        self.dir_images_path = os.path.join(self.dir_temp_name, '../Templates/Images')
         self.dir_name = os.getcwd()
         self.dir_project_path = self.dir_name
         self.static_folder_path = "../"
@@ -61,14 +61,9 @@ class RootManager:
         self.template_manager = TemplateManager(config)
         self.project_manager = ProjectManager(config)
         self.file_manager = FileManager(config)
+        self._setup_routes()
 
-        # Register global error handler
-        #self.app.errorhandler(Exception)(self.handle_all_errors)
-
-        self.setup_routes()
-
-    @staticmethod
-    def configure_cors(response):
+    def _configure_cors(self, response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
         response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
@@ -79,9 +74,8 @@ class RootManager:
         response = make_response(json.dumps({"d": json.dumps(json_obj)}), 200)
         return response
     
-    # Global error handler for common errors and return a formatted response
-    @staticmethod
-    def handle_all_errors(error):
+    # Handle errors and return a formatted response
+    def _send_error(self, error):
         logging.error(error, exc_info=True)
 
         # Extract exception type from the error message
@@ -89,91 +83,112 @@ class RootManager:
         response = make_response(json.dumps({"d": json.dumps({"Success": False, "Msg": f"Error Type: {exception_type}, Details: {error}"})}), 500)
         return response
 
-    def setup_routes(self):
-        # Set up CORS headers after each request
-        @self.app.after_request
-        def after_request(response):
-            return RootManager.configure_cors(response)
+    def _setup_routes(self):
+            # Set up CORS headers after each request
+            @self.app.after_request
+            def after_request(response):
+                return self._configure_cors(response)
 
-        # Route to get files based on file type
-        @self.app.route('/GetFiles', methods=['POST'])
-        def get_files():
-            """
-            Get a list of files based on the specified file type.
+            self._add_route('/GetFiles', self._get_files, methods=['POST'])
+            self._add_route('/GetPythonDataList', self._get_python_data_list, methods=['POST'])
+            self._add_route('/GetImages', self._get_template_image, methods=['GET'])
+            self._add_route('/SaveSettings', self._save_settings, methods=['POST'])
+            self._add_route('/ReadSettings', self._read_settings, methods=['POST'])
+            self._add_route('/ReadTemplate', self._read_template, methods=['POST'])
+            self._add_route('/SaveProject', self._save_project, methods=['POST'])
+            self._add_route('/ReadProject', self._read_project, methods=['POST'])
+            self._add_route('/RenameProject', self._rename_project, methods=['POST'])
+            self._add_route('/CheckNewProjectName', self._check_new_project_name, methods=['POST'])
+            self._add_route('/GetProjectStatus', self._get_project_status, methods=['POST'])
+            self._add_route('/heartbeat', self._heartbeat)
+            self._add_route('/', self._static_files, defaults={'path': ''})
+            self._add_route('/<path:path>', self._static_files, methods=['GET'])
 
-            Returns:
-                Flask Response: JSON response containing file information.
-            """
+    def _add_route(self, route, method, **options):
+        self.app.route(route, **options)(method)
+
+    def _get_files(self):
+        try:
             return self.file_manager.get_files()
+        except Exception as err:
+            return self._send_error(err)
 
-        @self.app.route('/GetPythonDataList', methods=['POST'])
-        def get_python_data_list():
-            return RootManager.send_success({
-                "Success": True,
-                "Msg": None,
-                "FileList": [],
-            })
+    def _get_python_data_list(self):
+        return RootManager.send_success({
+            "Success": True,
+            "Msg": None,
+            "FileList": [],
+        })
 
-        @self.app.route('/GetImages', methods=['GET'])
-        def get_template_image():
-            image_name = request.args.get('image')
-            return self.template_manager.get_template_image(image_name)
+    def _get_template_image(self):
+        image_name = request.args.get('image')
+        return self.template_manager.get_template_image(image_name)
 
-        @self.app.route('/SaveSettings', methods=['POST'])
-        def save_settings():
+    def _save_settings(self):
+        try:
             decoded_data_json = json.loads(b64decode(request.json['FileData'].encode()).decode())
             return self.setting_manager.save_settings(decoded_data_json)
+        except OSError as err:
+            return self._send_error(err)
 
-        @self.app.route('/ReadSettings', methods=['POST'])
-        def read_settings():
+    def _read_settings(self):
+        try:
             return self.setting_manager.read_settings()
+        except OSError as err:
+            return self._send_error(err)
 
-        @self.app.route('/ReadTemplate', methods=['POST'])
-        def read_template():
+    def _read_template(self):
+        try:
             template_name = request.json.get('FileName')
             return self.template_manager.read_template(template_name)
+        except Exception as err:
+            return self._send_error(err)
 
-        @self.app.route('/SaveProject', methods=['POST'])
-        def save_project():
+    def _save_project(self):
+        try:
             file_name = request.json['FileName']
             file_data = request.json['FileData']
             offset = request.json['Offset']
             return self.project_manager.save_project(file_name, file_data, offset)
+        except Exception as err:
+            return self._send_error(err)
 
-        @self.app.route('/ReadProject', methods=['POST'])
-        def read_project():
+    def _read_project(self):
+        try:
             file_name = request.json['FileName']
             offset = request.json['Offset']
             return self.project_manager.read_project(file_name, offset)
+        except OSError as err:
+            return self._send_error(err)
 
-        @self.app.route('/RenameProject', methods=['POST'])
-        def rename_project():
-            file_name = request.json.get('FileName')
-            new_file_name = request.json.get('NewFileName')
-            return self.project_manager.rename_project(file_name, new_file_name)
+    def _rename_project(self):
+        file_name = request.json.get('FileName')
+        new_file_name = request.json.get('NewFileName')
+        return self.project_manager.rename_project(file_name, new_file_name)
 
-        @self.app.route('/CheckNewProjectName', methods=['POST'])
-        def check_new_project_name():
+    def _check_new_project_name(self):
+        try:
             file_name = request.json.get('FileName')
             new_file_name = request.json.get('NewFileName')
             return self.project_manager.check_new_project_name(file_name, new_file_name)
+        except Exception as err:
+            return self._send_error(err)
 
-        @self.app.route('/GetProjectStatus', methods=['POST'])
-        def get_project_status():
+    def _get_project_status(self):
+        try:
             return self.project_manager.get_project_status()
+        except Exception as err:
+            return self._send_error(err)
 
-        @self.app.route("/heartbeat")
-        def heartbeat():
-            return jsonify({"status": "healthy"})
+    def _heartbeat(self):
+        return jsonify({"status": "healthy"})
 
-        @self.app.route('/', defaults={'path': ''})
-        @self.app.route('/<path:path>', methods=['GET'])
-        def static_files(path: str):
-            """
+    def _static_files(self, path: str):
+        """
             Handles requests for static files.
-            """
-            return self.file_manager.static_files(path)
-
+        """
+        return self.file_manager.static_files(path)
+    
 class SettingManager:
     def __init__(self, config):
         self.config = config
@@ -424,7 +439,7 @@ class Main:
     def _run_python_pool(cls, app, args):
         python_pool: Optional[Executor] = ProcessPoolExecutor(args.python_workers) if args.python_workers else None
         if python_pool:
-            from .server_exec import create_python_exec_blueprint
+            from server_exec import create_python_exec_blueprint
             app.register_blueprint(create_python_exec_blueprint(python_pool))
 
     @classmethod
