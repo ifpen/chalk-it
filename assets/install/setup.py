@@ -45,7 +45,7 @@ setup(
 	include_package_data=True,
     entry_points={
         'console_scripts': [
-            'chalk-it=chlkt.server:main',
+            'chalk-it=chlkt.main:Main.main',
         ]
     }
 )

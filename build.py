@@ -1,3 +1,4 @@
+import glob
 from pathlib import Path
 import subprocess
 import shutil
@@ -16,8 +17,8 @@ dst_dir = 'build'
 if not os.path.exists(dst_dir):
     os.makedirs(dst_dir)
 
-if not Path('front-end/.env.prod').exists():
-    hutil.copy('front-end/.env.sample', 'front-end/.env.prod')
+if not Path('./front-end/.env.prod').exists():
+    shutil.copy('front-end/.env.sample', 'front-end/.env.prod')
 	
 # Path to the .env.prod file
 env_file_path = 'front-end/.env.prod'
@@ -31,8 +32,7 @@ b = env_vars.get('VERSION_XDASH_B')
 c = env_vars.get('VERSION_XDASH_C')	
 
 
-def getVersion():
-
+def get_version():
     if c == '0':
         date_today = datetime.now()
         date_start = datetime.strptime("01/01/2000", "%m/%d/%Y")
@@ -41,7 +41,7 @@ def getVersion():
     else:
         return c
 
-front_end_build_dir_name = 'xdash_' + a + '.' + b + '.' + str(getVersion())
+front_end_build_dir_name = 'xdash_' + a + '.' + b + '.' + str(get_version())
 
 
 # Get the list of all files and directories in the "build" directory
@@ -84,13 +84,39 @@ if (BUILD_FRONT_END):
 build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
 shutil.copytree(build_dir, './build/chlkt')
 
-# Copy server.py and associated .py files to ./build/chlkt directory
-cwd = os.getcwd()
-shutil.copy('./front-end/server.py', './build/chlkt/')
-shutil.copy('./assets/misc/__init__.py', './build/chlkt/')
-# for gunicorn rendering of pages
-shutil.copytree('./back-end/render/', './build/chlkt/render/')
+# Copy .whl file to ./build/chlkt directory
+# Specify the source directory and pattern
+source_directory = './front-end/'
+pattern = 'xdash_python_api-*.whl'
 
+# Use glob to find the matching file
+matching_files = glob.glob(source_directory + pattern)
+
+if matching_files:
+    # Assign the path of the first matching file
+    source_path = matching_files[0]
+    destination_directory = './build/chlkt/'
+
+    shutil.copy(source_path, destination_directory)
+else:
+    print("xdash_python_api-*.whl file not found.")
+
+# Copy main.py and associated .py files to ./build/chlkt directory
+cwd = os.getcwd()
+build_path = './build/chlkt/'
+file_paths = [
+     './main.py', 
+     './assets/misc/__init__.py'
+    ]
+
+for file_path in file_paths:
+    shutil.copy(file_path, build_path)
+
+# Copy app server
+shutil.copytree('./back_end/app/', './build/chlkt/app/')
+
+# for gunicorn rendering of pages
+shutil.copytree('./back_end/render/', './build/chlkt/render/')
 
 # Copy templates
 shutil.copytree('./documentation/Templates/', './build/chlkt/Templates/')
