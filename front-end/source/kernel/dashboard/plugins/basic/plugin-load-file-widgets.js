@@ -147,6 +147,10 @@ function loadFileWidgetsPluginClass() {
     };
 
     this.addFileDiv = function (name, size) {
+
+      // Check if the div file already exists
+      if ($('#loaded-file' + idWidget).length) return;
+
       let divFile = '<div id="loaded-file' + idWidget + '" class="loaded-file">';
 
       divFile += '<div class="loaded-file__icon-wrapper">';
@@ -223,33 +227,6 @@ function loadFileWidgetsPluginClass() {
     this.removeSpinner = function () {
       const divElement = document.getElementById('icon-wrapper' + idWidget);
       divElement.remove();
-    };
-
-    /**
-     * Updates the content and layout of the widget based on the current widget width.
-     *
-     * @returns {void}
-     */
-    this.updateWidgetContent = function () {
-      const widgetDiv = document.getElementById(idDivContainer);
-      const widgetWidth = widgetDiv.clientWidth;
-      const isWidgetWidthLessThan290 = widgetWidth < 290;
-      const isWidgetWidthLessThan240 = widgetWidth < 240;
-
-      const dragArea = document.getElementById('drag-area' + idWidget);
-      const dragAreaText = document.getElementById('drag-area-text' + idWidget);
-      const dragAreaIcon = document.getElementById('drag-area-icon' + idWidget);
-
-      if (isWidgetWidthLessThan290) {
-        document.styleSheets[0].addRule(`#loaded-file${idWidget} .loaded-file__icon-wrapper`, 'display: none');
-      } else {
-        document.styleSheets[0].addRule(`#loaded-file${idWidget} .loaded-file__icon-wrapper`, 'display: block');
-      }
-      dragAreaIcon.classList.toggle('drag-area__icon-wrapper--hidden', isWidgetWidthLessThan290);
-
-      dragArea.classList.toggle('drag-area--column', isWidgetWidthLessThan240);
-      dragAreaText.children[0].textContent = isWidgetWidthLessThan240 ? 'Drag & Drop' : 'Drag & drop file here';
-      dragAreaText.children[1].classList.toggle('drag-area__text-wrapper__span--hidden', isWidgetWidthLessThan240);
     };
 
     this.render = function () {
@@ -388,6 +365,33 @@ function loadFileWidgetsPluginClass() {
         this.updateFileDisplay();
       }
 
+      /**
+       * Updates the content and layout of the widget based on the current widget width.
+       *
+       * @returns {void}
+       */
+      const widgetDiv = document.getElementById(idDivContainer);
+      const widgetWidth = widgetDiv.clientWidth;
+      const isWidgetWidthLessThan290 = widgetWidth < 290;
+      const isWidgetWidthLessThan240 = widgetWidth < 240;
+
+      const dragArea = document.getElementById("drag-area" + idWidget);
+      const dragAreaText = document.getElementById("drag-area-text" + idWidget);
+      const dragAreaIcon = document.getElementById("drag-area-icon" + idWidget);
+
+      this.updateWidgetContent = function () {	
+        if (isWidgetWidthLessThan290) {
+          document.styleSheets[0].addRule(`#loaded-file${idWidget} .loaded-file__icon-wrapper`, "display: none");
+        } else {
+          document.styleSheets[0].addRule(`#loaded-file${idWidget} .loaded-file__icon-wrapper`, "display: block");
+        }
+        dragAreaIcon.classList.toggle("drag-area__icon-wrapper--hidden", isWidgetWidthLessThan290);
+
+        dragArea.classList.toggle("drag-area--column", isWidgetWidthLessThan240);
+        dragAreaText.children[0].textContent = isWidgetWidthLessThan240 ? "Drag & Drop" : "Drag & drop file here";
+        dragAreaText.children[1].classList.toggle("drag-area__text-wrapper__span--hidden", isWidgetWidthLessThan240);
+      };
+
       if (bInteractive) {
         // Call the function once to ensure the content is hidden initially
         this.updateWidgetContent();
@@ -395,7 +399,6 @@ function loadFileWidgetsPluginClass() {
         const observer = new ResizeObserver(() => {
           this.updateWidgetContent();
         });
-		const widgetDiv = document.getElementById(idDivContainer);
         observer.observe(widgetDiv);
       }
     };
