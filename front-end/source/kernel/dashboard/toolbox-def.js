@@ -28,7 +28,7 @@ var widgetsEditorToolboxDefinition = {
     },
     "collapse-geotime": {
         "name": "Geo & Time",
-        "widgets": ["openStreetMaps", "foliumMaps", "flatUiHereAutocompleteValue", "datepickerSimple", "dateRangePicker", "calendarD3", "timepickerSimple"]
+        "widgets": ["openStreetMaps", "mapGeoJson", "foliumMaps", "flatUiHereAutocompleteValue", "datepickerSimple", "dateRangePicker", "calendarD3", "timepickerSimple"]
     },
     "collapse-annotations": {
         "name": "Annotation & Video",
