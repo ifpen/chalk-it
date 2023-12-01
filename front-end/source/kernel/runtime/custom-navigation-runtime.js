@@ -113,7 +113,6 @@ var customNavigationRuntime = (function () {
         // Do not run in edit mode
         if (typeof layoutMgr !== "undefined" && !$rootScope.bIsPlayMode) return;
 
-        $rootScope.pageNumber = numPage;
         const jsonContent = _getJsonContent();
         let exportOptions = "";
         let { rows, cols } = _getGrid();

@@ -1023,11 +1023,8 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.render = function () {
       const widgetHtml = document.createElement('div');
-      widgetHtml.setAttribute(
-        'style',
-        `cursor: ${this.bIsInteractive ? 'auto' : 'inherit'}; width: inherit; height: inherit; overflow: auto`
-      );
-
+      const displayStyle = 'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto';
+      widgetHtml.setAttribute('style', displayStyle);
       let divContent = `<table style="margin: 0; height: 100%; ${this.tableBackgroundColor("primary")}" class="table`;
       if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
       if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
