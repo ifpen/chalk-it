@@ -27,6 +27,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     }
   }
 
+  this.is_specific_exec = false;
   this.name = ko.observable();
   this.latestData = ko.observable();
   this.beautifulString = ko.observable();
@@ -242,6 +243,9 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     self.settings(object.settings);
     self.name(object.name);
     self.type(object.type);
+    if (object.type === 'Memory_plugin') {
+      self.is_specific_exec = true;
+    }
     let iconName = 'icn-';
     if (_.isUndefined(datanodePlugins[object.type])) {
       iconName += 'json-variable';

@@ -124,6 +124,16 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
         operationsBlacklist.add(op);
         return;
       }
+      if (datanodesManager.getDataNodeByName(op).is_specific_exec) {
+        if (callOrigin !== 'memory') {
+          console.log(op + ' is a memory and will be treated at the end of schedule.');
+          operationsToExecute.delete(op);
+          datanodesDependency.addMemorydataNodeList(op);
+          operationsNotReady.add(op);
+          datanodesManager.getDataNodeByName(op).completeExecution('NOP');
+          return;
+        }
+      }
       switch (datanodesManager.getDataNodeByName(op).statusForScheduler()) {
         case 'Ready':
           if (datanodesManager.foundDatanode(op)) {
