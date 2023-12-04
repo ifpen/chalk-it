@@ -678,8 +678,9 @@ PluginEditor = function (jsEditor) {
 
             if (settingDef.from_datanode) {
               let datanodes = datanodesManager.getAllDataNodes();
+              datanodes = datanodes.filter((node) => node.type() !== 'Memory_plugin');
               datanodes.sort((a, b) => a.name().localeCompare(b.name()));
-              if (datanodes.some((node) => node.name() !== defaultValue)) defaultValue = undefined;
+              if (!datanodes.some((node) => node.name() === defaultValue)) defaultValue = undefined;
               _.each(datanodes, function (datanode) {
                 let optionName = datanode.name();
                 let optionValue = datanode.name();
