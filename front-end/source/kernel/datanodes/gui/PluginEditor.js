@@ -137,6 +137,13 @@ PluginEditor = function (jsEditor) {
           //MBG avoid bug when settingDef == function
           _displayValidationError(settingDef.name, "Backslash '\\' is forbidden.");
           return true;
+        } else if (
+          newSettings.settings[settingDef.name].indexOf('pastValue_') !== -1 ||
+          newSettings.settings[settingDef.name].indexOf('past.') !== -1
+        ) {
+          //MBG avoid bug when settingDef == function
+          _displayValidationError(settingDef.name, "'pastValue_' is forbidden. It is dedicated to memory dataNode.");
+          return true;
         }
       }
     }
