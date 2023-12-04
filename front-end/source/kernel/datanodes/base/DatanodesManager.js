@@ -159,6 +159,9 @@ var datanodesManager = (function () {
 
         newViewModel.settings(newSettings.settings);
         newViewModel.type(newSettings.type);
+        if (newSettings.type === 'Memory_plugin') {
+          newViewModel.is_specific_exec = true;
+        }
         const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
         newViewModel.iconType(iconName);
         if (newViewModel.error()) {

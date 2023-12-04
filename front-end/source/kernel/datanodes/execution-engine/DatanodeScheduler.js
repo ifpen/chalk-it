@@ -64,6 +64,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       switch (callOrigin) {
         case 'triggerButton':
         case 'vignette':
+        case 'memory':
         case 'setValue':
         case 'setVariable':
         case 'setFile':
@@ -90,6 +91,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       switch (callOrigin) {
         case 'triggerButton':
         case 'vignette':
+        case 'memory':
         case 'setValue':
         case 'setVariable':
         case 'setFile':
