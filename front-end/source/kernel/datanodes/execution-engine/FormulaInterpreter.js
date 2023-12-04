@@ -224,7 +224,14 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             if (!datanodesDependency.isNode(dsName)) {
               datanodesDependency.addNode(dsName);
             }
-            datanodesDependency.addEdge(dsName, datanodeModel.name());
+            //AEF: remove edges of pastValue of the same datanode
+            let add_edge = true;
+            let match = dsName.match(/pastValue_(.+)/);
+            if (match) {
+              let origin_name = match[1];
+              if (datanodeModel.name() == origin_name) add_edge = false;
+            }
+            if (add_edge) datanodesDependency.addEdge(dsName, datanodeModel.name());
             allDsNames.add(dsName);
 
             if (!bProjectLoad) {
