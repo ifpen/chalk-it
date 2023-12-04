@@ -421,7 +421,7 @@ class Main:
     @classmethod
     def _configure_logging(cls):
         logging.basicConfig()
-        logging.getLogger('werkzeug').setLevel(logging.ERROR)
+        logging.getLogger('werkzeug').setLevel(logging.INFO)
 
     @classmethod
     def _open_browser(cls, server_url):
@@ -439,7 +439,7 @@ class Main:
     def _run_python_pool(cls, app, args):
         python_pool: Optional[Executor] = ProcessPoolExecutor(args.python_workers) if args.python_workers else None
         if python_pool:
-            from server_exec import create_python_exec_blueprint
+            from .server_exec import create_python_exec_blueprint
             app.register_blueprint(create_python_exec_blueprint(python_pool))
 
     @classmethod
@@ -488,6 +488,10 @@ class Main:
         args = cls._parse_command_line_arguments()
         config = AppConfig(args)
         app = cls._create_app(config)
+        def print_routes():
+            for rule in app.url_map.iter_rules():
+                print(f'Endpoint: {rule.endpoint}, Route: {rule}')
+
 
         cls._configure_logging()
         mode_message = "development" if config.DEBUG else "production"
@@ -496,4 +500,5 @@ class Main:
         cls._run_python_pool(app, args)
         cls._run_file_sync(app, args, config)
         cls._print_startup_info(config)
+        print_routes()
         cls._start_application(app, config)

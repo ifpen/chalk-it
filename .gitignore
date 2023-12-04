@@ -78,4 +78,6 @@ ipch/
 *.Copie
 
 # Back-end
+__pycache__/
 back_end/app/__pycache__/
+.vscode/
