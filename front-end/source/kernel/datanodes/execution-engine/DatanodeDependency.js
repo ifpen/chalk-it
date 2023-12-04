@@ -32,6 +32,7 @@ function DatanodeDependency() {
   var extraStartNodesList = new Map();
   var setvarList = new Map();
   var processedSetvarList = new Map();
+  var memorydataNodeList = new Map();
 
   var allDisconnectedGraphs = [];
   var SingletonNodeList = []; //isolated node
@@ -345,6 +346,20 @@ function DatanodeDependency() {
     processedSetvarList.clear();
   }
 
+  /*-----------------getMemorydataNodeList-----------------*/
+  function getMemorydataNodeList() {
+    return memorydataNodeList;
+  }
+  /*-----------------addMemorydataNodeList-----------------*/
+  function addMemorydataNodeList(dsName) {
+    memorydataNodeList.set(dsName, 'memory');
+  }
+
+  /*-----------------clearMemorydataNodeList-----------------*/
+  function clearMemorydataNodeList() {
+    memorydataNodeList.clear();
+  }
+
   /*-----------------hasPredecessors-----------------*/
   // returns whether a node has predecessors
   function hasPredecessors(node) {
@@ -490,6 +505,9 @@ function DatanodeDependency() {
     getProcessedSetvarList,
     addProcessedSetvarList,
     clearProcessedSetvarList,
+    getMemorydataNodeList,
+    addMemorydataNodeList,
+    clearMemorydataNodeList,
     getAllsingletonNodes,
     isSingletonNode,
     updateDisconnectedGraphsList,

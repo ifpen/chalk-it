@@ -13,6 +13,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   var doubleSetValueEventTrigger = true;
   this.datanodeRefreshNotifications = {};
   this.calculatedSettingScripts = {};
+
   this.formulaInterpreter = new FormulaInterpreter(datanodesListModel, self, datanodePlugins, datanodesDependency);
   this.execInstance = ko.observable(null);
   this.dataPreviewFormat = new DataPreviewFormat();
@@ -438,33 +439,45 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       }
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
         console.log('scheduling instance terminated by ' + self.name());
+      // Now that the scheduling is terminated, we handle in the corresponding order:
+      // memory update, then setVariables, then extraStartNodes
 
-      // SetVariables
-      const setvarList = datanodesDependency.getSetvarList();
-      const processedSetvarList = datanodesDependency.getProcessedSetvarList();
-      const filteredSetvarList = new Map(Array.from(setvarList).filter(([key]) => !processedSetvarList.has(key)));
-      if (filteredSetvarList.size) {
-        console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
-        console.log('triggred by : ' + Array.from(filteredSetvarList.values()));
-        console.log('triggred by : ' + Array.from([...new Set(filteredSetvarList.values())]));
-        const param = Array.from(filteredSetvarList.keys());
-        datanodesDependency.addProcessedSetvarList(filteredSetvarList);
-        datanodesDependency.clearSetvarList();
-        self.schedulerStart(param, param[0], 'setVariable');
+      // Memory update
+      const memorydataNodeList = datanodesDependency.getMemorydataNodeList();
+      if (memorydataNodeList.size) {
+        console.log('Start schedule from memory datanodes list: ' + Array.from(memorydataNodeList.keys()));
+        const param = Array.from(memorydataNodeList.keys());
+        const origin = memorydataNodeList.get(param[0]);
+        datanodesDependency.clearMemorydataNodeList();
+        self.schedulerStart(param, param[0], origin);
       } else {
-        datanodesDependency.clearProcessedSetvarList();
+        // SetVariables
+        const setvarList = datanodesDependency.getSetvarList();
+        const processedSetvarList = datanodesDependency.getProcessedSetvarList();
+        const filteredSetvarList = new Map(Array.from(setvarList).filter(([key]) => !processedSetvarList.has(key)));
+        if (filteredSetvarList.size) {
+          console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
+          console.log('triggred by : ' + Array.from(filteredSetvarList.values()));
+          console.log('triggred by : ' + Array.from([...new Set(filteredSetvarList.values())]));
+          const param = Array.from(filteredSetvarList.keys());
+          datanodesDependency.addProcessedSetvarList(filteredSetvarList);
+          datanodesDependency.clearSetvarList();
+          self.schedulerStart(param, param[0], 'setVariable');
+        } else {
+          datanodesDependency.clearProcessedSetvarList();
 
-        // extraStartNodes
-        const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
-        if (extraStartNodesList.size) {
-          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
-            console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
+          // extraStartNodes
+          const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
+          if (extraStartNodesList.size) {
+            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+              console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
+            }
+            //update operationsToExecute with extraStartNodesList
+            const param = Array.from(extraStartNodesList.keys());
+            const origin = extraStartNodesList.get(param[0]);
+            datanodesDependency.clearExtraStartNodesList();
+            self.schedulerStart(param, param[0], origin);
           }
-          //update operationsToExecute with extraStartNodesList
-          const param = Array.from(extraStartNodesList.keys());
-          const origin = extraStartNodesList.get(param[0]);
-          datanodesDependency.clearExtraStartNodesList();
-          self.schedulerStart(param, param[0], origin);
         }
       }
     } else {
