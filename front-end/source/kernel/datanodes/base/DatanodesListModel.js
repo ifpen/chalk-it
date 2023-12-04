@@ -84,6 +84,14 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
 
       datanodes = object.datanodes;
 
+      //AEF: put "Memmory plugin at the end"
+      datanodes.sort(function (a, b) {
+        if (a.type === 'Memory_plugin' && b.type !== 'Memory_plugin') {
+          return 1;
+        } else if (a.type !== 'Memory_plugin' && b.type === 'Memory_plugin') {
+          return -1;
+        }
+      });
       _.each(datanodes, function (datanodeConfig) {
         if (!_checkDatanodeExistance(datanodeConfig.name)) {
           if (!_createDatanodeInstance(datanodeConfig)) {
