@@ -373,14 +373,22 @@ var datanodesManager = (function () {
       if (_.isUndefined(plugin.display_name)) {
         plugin.display_name = plugin.type_name;
       }
-
       // Add a required setting called name to the beginning
-      plugin.settings.unshift({
-        name: 'name',
-        display_name: 'Name',
-        type: 'text',
-        required: true,
-      });
+      if (plugin.type_name !== 'Memory_plugin') {
+        plugin.settings.unshift({
+          name: 'name',
+          display_name: 'Name',
+          type: 'text',
+          required: true,
+        });
+      } else {
+        plugin.settings.unshift({
+          name: 'name',
+          display_name: 'Generated memory name',
+          type: 'text',
+          disabled: true,
+        });
+      }
 
       datanodePlugins[plugin.type_name] = plugin;
       datanodesListModel._datanodeTypes.valueHasMutated();
