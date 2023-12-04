@@ -15,7 +15,7 @@ angular
 
         /*---------- Switch button    ----------------*/
         self.onEditPlaySwitch = function () {
-            let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+            const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
 
             $rootScope.bIsPlayMode = !scopeDash.editorView.checkboxModelView;
             if (tabActive !== "widgets") return;

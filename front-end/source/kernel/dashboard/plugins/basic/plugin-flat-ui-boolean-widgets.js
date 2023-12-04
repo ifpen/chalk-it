@@ -8,7 +8,6 @@
 // │                      Guillaume CORBELIN                               │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
-
 /*******************************************************************/
 /*************************** plugin data ***************************/
 /*******************************************************************/
@@ -93,7 +92,7 @@ function flatUiBooleanWidgetsPluginClass() {
                 modelsParameters[idInstance].checkboxSize = 1;
             }
 
-            const padding = modelsParameters[idInstance].checkboxSize * checkboxWidth + 12;
+            const padding = modelsParameters[idInstance].checkboxSize * checkboxWidth;
             const lineHeight = modelsParameters[idInstance].checkboxSize * checkboxHeight;
             //
             let divContent = '';
@@ -117,7 +116,12 @@ function flatUiBooleanWidgetsPluginClass() {
             if (modelsParameters[idInstance].label != "" && modelsParameters[idInstance].displayLabel) { //ABK
                 // conversion to enable HTML tags
                 const labelText = this.getTransformedText("label");
-                const styleLabel = 'style = "cursor: inherit; line-height:' + lineHeight + 'px;"';
+                let styleLabel = 'style = "cursor: inherit; padding-top:' + lineHeight + 'px;';
+                if (labelPosition === 'right') {
+                    styleLabel += ' padding-right: ' + padding + 'px; padding-left: 0px; margin-right: 6px;"';
+                } else {
+                    styleLabel += ' padding-left: ' + padding + 'px; padding-right: 0px; margin-left: 6px;"';
+                }
 
                 divContent += '<label class="checkbox" id="label' + idWidget + '" ' + styleLabel + ' for="checkbox' + idWidget + '">';
                 divContent += '<input type="checkbox" class="nohover" data-toggle="radio" style="zoom:' + modelsParameters[idInstance].checkboxSize + 
@@ -125,12 +129,13 @@ function flatUiBooleanWidgetsPluginClass() {
                 divContent += '</input>';
                 divContent += '</label>';
 
-                const styleSpan = 'style="display: flex; justify-content: center; align-items: center; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + ' text-align: ' + labelPosition + ';"';
+                const styleSpan = 'style="display: flex; align-items: center; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily() + '"';
                 divContent += '<span id="checkbox-span' + idWidget +
                 '" class="checkbox-span" ' + styleSpan + '>' +
                 labelText + '</span>';
             } else {
-                const styleLabel = 'style = "cursor: inherit; padding-right: 0px;"';
+                const styleLabel = 'style = "cursor: inherit; padding-top:' + lineHeight + 'px; padding-left: ' + padding + 'px; padding-right: 0px;"';
+                    
                 divContent += '<label class="checkbox" id="label' + idWidget + '" ' + styleLabel + ' for="checkbox' + idWidget + '">';
                 divContent += '<input type="checkbox" class="nohover" data-toggle="radio" style="zoom:' + modelsParameters[idInstance].checkboxSize +
                     ' value="" id="checkbox' + idWidget + '" disabled>';

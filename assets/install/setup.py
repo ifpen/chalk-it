@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 NAME = "py-chalk-it"
-VERSION = "0.3.10"
+VERSION = "0.3.14"
 
 with open("README.md", "r") as fh:
     readme = fh.read()
@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 setup(
     name=NAME,
     version=VERSION,
-	packages=['chlkt'], # or find_packages(),
+	packages=find_packages(),
     description='Rapid webapplications with Python',
 	long_description=readme,
     long_description_content_type="text/markdown",

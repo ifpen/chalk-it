@@ -88,6 +88,9 @@ shutil.copytree(build_dir, './build/chlkt')
 cwd = os.getcwd()
 shutil.copy('./front-end/server.py', './build/chlkt/')
 shutil.copy('./assets/misc/__init__.py', './build/chlkt/')
+# for gunicorn rendering of pages
+shutil.copytree('./back-end/render/', './build/chlkt/render/')
+
 
 # Copy templates
 shutil.copytree('./documentation/Templates/', './build/chlkt/Templates/')
