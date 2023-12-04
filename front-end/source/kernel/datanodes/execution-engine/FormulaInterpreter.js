@@ -297,6 +297,33 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           //console.log("script is undefined");
         }
       }
+      if (settingDef.type == 'option' && settingDef.from_datanode) {
+        let origin_name = currentSettings[settingDef.name];
+        if (!datanodesManager.foundDatanode(origin_name)) {
+          //AEF: here data doesn't exist, different from data is undefined (e.g. in webservice)
+          const text = "DataNode '" + origin_name + "' does not exist in dataNodes list";
+          datanodeModel.statusCallback('Error', text);
+          datanodeModel.notificationCallback('error', datanodeModel.name(), text);
+          self.bCalculatedSettings = false;
+          return;
+        }
+        if (datanodeModel.name() === origin_name) {
+          //AEF: loop detected before adding the datanode (at creation)
+          const text = 'DataNode "' + origin_name + '": Please select another datanode target.';
+          datanodeModel.statusCallback('Error');
+          swal('Loop detection', text, 'error');
+          self.bCalculatedSettings = false;
+          bOK = false;
+          return;
+        }
+
+        if (!datanodesDependency.isNode(datanodeModel.name())) {
+          datanodesDependency.addNode(datanodeModel.name());
+        }
+        datanodesDependency.addEdge(origin_name, datanodeModel.name());
+
+        datanodesDependency.removeMissedDependantDatanodes(new Set([origin_name]), datanodeModel.name());
+      }
     });
     return bOK;
   };
