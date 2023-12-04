@@ -227,10 +227,11 @@ var datanodesManager = (function () {
             // scheduling is in progress
             viewModel.execInstance().stopOperation(viewModel.name());
           }
-
-          datanodesListModel.renameDatanodeData(viewModel.name(), newSettings.settings.name);
+          if (viewModel.name() !== newSettings.settings.name)
+            datanodesListModel.renameDatanodeData(viewModel.name(), newSettings.settings.name);
         }
-        datanodesDependency.renameNode(viewModel.name(), newSettings.settings.name);
+        if (viewModel.name() !== newSettings.settings.name)
+          datanodesDependency.renameNode(viewModel.name(), newSettings.settings.name);
         viewModel.name(newSettings.settings.name);
         if (!_.isUndefined(newSettings.settings.sampleTime)) {
           if (viewModel.isSettingSampleTimeChanged(newSettings.settings.sampleTime)) {
@@ -278,8 +279,9 @@ var datanodesManager = (function () {
         // get back last name
         if (viewModel.name() !== oldSettings[1].name) {
           datanodesListModel.renameDatanodeData(viewModel.name(), oldSettings[1].name);
+          datanodesDependency.renameNode(viewModel.name(), oldSettings[1].name);
         }
-        datanodesDependency.renameNode(viewModel.name(), oldSettings[1].name);
+
         viewModel.name(oldSettings[1].name);
 
         return oldSettings[1];
