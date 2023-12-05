@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "version": "2.940.8740",
+    "date": "Tue Dec 05 2023 12:07:37 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": "osm-geojson-polygon-map",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "Polygon",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Polygon",
+          "json_var": "{\"name\":\"Polygon\",\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"style\":{\"color\":\"#01DF01\",\"weight\":4,\"opacity\":0.9,\"fillColor\":\"#01DF01\",\"fillOpacity\":0.4}},\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[2.300815,48.871943],[2.30158,48.864638],[2.310094,48.868996]]]}}],\"properties\":{\"description\":\"<span style=\\\"color: #01DF01\\\">Triangle d'or</span>\"}}"
+        }
+      },
+      {
+        "name": "Map_style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Map_style",
+          "json_var": "[{\"layer\":1,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"#01DF01\",\"dashArray\":[],\"weight\":4,\"opacity\":1,\"fillColor\":\"#01DF01\",\"property\":\"color\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.5,\"possibleProperties\":{}}]"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1295,
+    "heightPx": 572,
+    "scrollWidthPx": 1295,
+    "scrollHeightPx": 572,
+    "widthVw": 84.75130890052355,
+    "heightVh": 79.88826815642459,
+    "scrollWidthVw": 84.75130890052355,
+    "scrollHeightVh": 79.88826815642459,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {
+    "mapGeoJsonA": {
+      "layout": {
+        "top": "1.39665vh",
+        "left": "1.37541vw",
+        "height": "69.2737vh",
+        "width": "80.2976vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "mapGeoJsonA",
+        "instanceId": "mapGeoJsonA",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "mapGeoJsonA": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "Polygon",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Map_style",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}
