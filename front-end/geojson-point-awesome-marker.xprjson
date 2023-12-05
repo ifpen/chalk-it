@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "version": "2.940.8736",
+    "date": "Fri Dec 01 2023 13:57:53 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": "geojson-point-awesome-marker",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "Point",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Point",
+          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"html\":\"See <a href=\\\"https://en.wikipedia.org/wiki/Place_Charles_de_Gaulle\\\" target=\\\"_blank\\\">Place Charles de Gaulle</a>\",\"awesomeMarker\":{\"icon\":\" fa-asterisk\",\"prefix\":\"fa\",\"markerColor\":\"red\"}},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.295,48.8738]}}],\"properties\":{\"description\":\"Arc de triomphe\"}}"
+        }
+      },
+      {
+        "name": "Map_style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Map_style",
+          "json_var": "[{\"layer\":1,\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"html\",\"awesomeMarker\"]}]"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 572,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 572,
+    "widthVw": 84.68586387434554,
+    "heightVh": 79.88826815642459,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 79.88826815642459,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {
+    "mapGeoJsonA": {
+      "layout": {
+        "top": "5.1676vh",
+        "left": "2.6178vw",
+        "height": "62.5698vh",
+        "width": "51.7016vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "3"
+      },
+      "container": {
+        "id": "mapGeoJsonA",
+        "instanceId": "mapGeoJsonA",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "mapGeoJsonA": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "Point",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Map_style",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

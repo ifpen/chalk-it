@@ -72,16 +72,12 @@ function mapGeoJsonWidgetsPluginClass() {
 
             // Drawing the map
             // TODO : Report all map possibilites from map
-            self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true }).setView([48.866667, 2.333333], 7);
+            self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true }).setView([48.866667, 2.333333], 16);
             
-            L.tileLayer('https://wxs.ign.fr/{apikey}/geoportail/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE={style}&TILEMATRIXSET=PM&FORMAT={format}&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}', {
-                "attribution": '<a target="_blank" href="https://www.geoportail.gouv.fr/">Geoportail France</a>',
-                "minZoom": 2,
-                "maxZoom": 19,
-                "apikey": 'choisirgeoportail',
-                "format": 'image/jpeg',
-                "style": 'normal'
-            }).addTo(self.map);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+              }).addTo( self.map);
+            
 
            self.ctrl = L.control.layers({}, {}, {
                 position: 'topright',
@@ -244,7 +240,7 @@ function mapGeoJsonWidgetsPluginClass() {
                 }
                 break;
               case this.equivalenceTypes.MultiPoint:
-                if(allProp.includes("html") || allProp.includes("awesomeMarker") || typeLayer == L.marker) {
+            //    if(allProp.includes("html") || allProp.includes("awesomeMarker") || typeLayer == L.marker) {
 
                     return {
                         layer: index +1,
@@ -255,7 +251,7 @@ function mapGeoJsonWidgetsPluginClass() {
                         PropertiesList : allProp
                     }
 
-                }else {
+             /*   }else {
 
                     return {
                         layer: index +1,
@@ -274,7 +270,7 @@ function mapGeoJsonWidgetsPluginClass() {
                         possibleProperties : prop
                     }
 
-                }
+                }*/
                 break;
               default:
                 return {

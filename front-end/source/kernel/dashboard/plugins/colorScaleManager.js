@@ -44,7 +44,6 @@ var colorScaleManager = (function() {
     }
 
     function getHomogeneousColorScale(name) {
-        c
         if(d3.color(name) !== null) {
             return d3.interpolate(name, name);
         }
