@@ -461,7 +461,7 @@ class Main:
     def _start_application(cls, app, config):
         if (not config.DEBUG) and (config.xprjson is None):
             threading.Timer(2, lambda: cls._open_browser(config.server_url)).start()
-        app.run(debug=config.DEBUG, port=config.run_port)
+        app.run(debug=False, port=config.run_port)
 
     @classmethod
     def _parse_command_line_arguments(cls):

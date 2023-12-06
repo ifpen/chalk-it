@@ -1,3 +1,4 @@
+import sys
 import hashlib
 import logging
 import re
@@ -7,6 +8,8 @@ from typing import Optional, Union, Dict
 
 from flask import Blueprint, Response
 from flask import make_response, json, request
+
+sys.path.append('./back_end/middleware/src/')
 
 logger = logging.getLogger(__name__)
 
