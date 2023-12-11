@@ -351,7 +351,7 @@ def capture(is_debug: bool = False, script_name: typing.Optional[str] = None, st
                 sys.stdout, sys.stderr = original_io
 
             json_output = build_result(user_result, xdash_state, error)
-            return json.dumps(json_output, allow_nan=False, cls=DebugCustomEncoder if is_debug else CustomEncoder)
+            return json.dumps(json_output, allow_nan=True, cls=DebugCustomEncoder if is_debug else CustomEncoder)
 
         return exec_user_fct
 
