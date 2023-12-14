@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.940.8749",
-    "date": "Thu Dec 14 2023 13:21:17 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "date": "Thu Dec 14 2023 19:07:25 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-heat-map-view",
     "description": "",
     "groupName": "",
@@ -11,13 +11,11 @@
   "data": {
     "datanodes": [
       {
-        "name": "data_to_geoJson",
-        "type": "JSON_formula_plugin",
+        "name": "Style",
+        "type": "JSON_var_plugin",
         "settings": {
-          "name": "data_to_geoJson",
-          "autoStart": true,
-          "explicitTrig": false,
-          "json_var_formula": "let geoJson = {};\ngeoJson.type = \"FeatureCollection\";\nlet features = [];\nif(!_.isUndefined(datasources[\"Map_input\"])) {\n    datasources[\"Map_input\"].forEach(d=>{\n        let feature = {};\n        feature.type = \"Feature\";\n        let geometry = {};\n        let properties = {};\n        let key ;\n        Object.keys(d).forEach(k=>{\n            if(k != \"lat\" && k!=\"lng\") key = k;\n        }) ;\n        geometry.type = \"Point\";\n        geometry.coordinates = [d.lng,d.lat ];\n        if(!_.isUndefined(key)) {\n           properties[key] = d[key];\n           }\n        \n        feature.geometry = geometry;\n        feature.properties = properties;\n        features.push(feature);\n    });\n}\ngeoJson.features= features;\nreturn geoJson;"
+          "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.175765,\"longitude\":48.876684999999995,\"zoom\":16},\"tileServer\":\"HereHybridDay\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"type\":\"Multi Point\",\"showLegend\":false,\"pointAreMarker\":false,\"stroke\":false,\"weight\":0,\"opacity\":0.39,\"color\":\"black\",\"radius\":8,\"fillColor\":\"interpolateSpectral\",\"property\":\"CH4\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.5,\"possibleProperties\":{\"CH4\":[0,4]}}]}"
         }
       },
       {
@@ -29,11 +27,13 @@
         }
       },
       {
-        "name": "Style",
-        "type": "JSON_var_plugin",
+        "name": "data_to_geoJson",
+        "type": "JSON_formula_plugin",
         "settings": {
-          "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.175765,\"longitude\":48.876684999999995,\"zoom\":16},\"tileServer\":\"HereHybridDay\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"type\":\"Multi Point\",\"showLegend\":true,\"pointAreMarker\":false,\"stroke\":false,\"weight\":0,\"opacity\":0.39,\"color\":\"black\",\"radius\":8,\"fillColor\":\"interpolateSpectral\",\"property\":\"CH4\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.5,\"possibleProperties\":{\"CH4\":[0,4]}}]}"
+          "name": "data_to_geoJson",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "let geoJson = {};\ngeoJson.type = \"FeatureCollection\";\nlet features = [];\nif(!_.isUndefined(datasources[\"Map_input\"])) {\n    datasources[\"Map_input\"].forEach(d=>{\n        let feature = {};\n        feature.type = \"Feature\";\n        let geometry = {};\n        let properties = {};\n        let key ;\n        Object.keys(d).forEach(k=>{\n            if(k != \"lat\" && k!=\"lng\") key = k;\n        }) ;\n        geometry.type = \"Point\";\n        geometry.coordinates = [d.lng,d.lat ];\n        if(!_.isUndefined(key)) {\n           properties[key] = d[key];\n           }\n        \n        feature.geometry = geometry;\n        feature.properties = properties;\n        features.push(feature);\n    });\n}\ngeoJson.features= features;\nreturn geoJson;"
         }
       }
     ]
@@ -43,13 +43,13 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1295,
+    "widthPx": 1294,
     "heightPx": 572,
-    "scrollWidthPx": 1295,
+    "scrollWidthPx": 1294,
     "scrollHeightPx": 572,
-    "widthVw": 84.75130890052355,
+    "widthVw": 84.68586387434554,
     "heightVh": 79.88826815642459,
-    "scrollWidthVw": 84.75130890052355,
+    "scrollWidthVw": 84.68586387434554,
     "scrollHeightVh": 79.88826815642459,
     "scalingMethod": "scaleTwh",
     "media": "large",
@@ -178,6 +178,38 @@
       "modelHiddenParams": {
         "value": 0
       }
+    },
+    "flatUiCheckboxA": {
+      "layout": {
+        "top": "69.2737vh",
+        "left": "56.2173vw",
+        "height": "5.02793vh",
+        "width": "9.03141vw",
+        "minHeight": "24px",
+        "minWidth": "32px",
+        "z-index": "4"
+      },
+      "container": {
+        "id": "flatUiCheckboxA",
+        "instanceId": "flatUiCheckboxA",
+        "modelJsonId": "flatUiCheckbox",
+        "widgetTypeName": "Checkbox(flatUiCheckboxA)"
+      },
+      "modelParameters": {
+        "label": "showLegend",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelPosition": "right",
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "checkboxSize": 1,
+        "checkedColor": "var(--widget-input-checked-color)",
+        "uncheckedColor": "var(--widget-input-unchecked-color)"
+      },
+      "modelHiddenParams": {
+        "value": false
+      }
     }
   },
   "connections": {
@@ -212,6 +244,17 @@
           "style",
           0,
           "fillOpacity"
+        ]
+      }
+    },
+    "flatUiCheckboxA": {
+      "value": {
+        "name": "value",
+        "dataNode": "Style",
+        "dataFields": [
+          "style",
+          0,
+          "showLegend"
         ]
       }
     }

@@ -34,7 +34,8 @@ function mapGeoJsonWidgetsPluginClass() {
         }
 
         var self = this;
-
+        this.legendHeatMap = undefined
+        this.legendChoroplet = undefined
         this.enable = function () {};
 
         this.disable = function () {};
@@ -525,21 +526,21 @@ function mapGeoJsonWidgetsPluginClass() {
                   });
                   //legend
                    
-                 legend  = undefined
                   if(!_.isUndefined(styleForObject.showLegend)) {
                        if(!!styleForObject.showLegend) {
-                        if (!_.isUndefined($("div[id='legendChoroplet']"))) {
-                            const legend = $("div[id='legendChoroplet']");
-                            legend.remove();
+                        if (!_.isUndefined(self.legendChoroplet)) {
+                            if (!_.isUndefined(self.legendChoroplet)) {
+                                self.legendChoroplet.remove();
+                            }
+                            
                         }
-                        self.createChoroplethLegend(min, max,"Test",colorScale)
+                       self.legendChoroplet =  self.createChoroplethLegend(min, max,styleForObject.property,colorScale)
                        } else{
-                        if(!_.isUndefined(styleForObject.showLegend)) {
-                            self.map.removeControl(legend);
+                        if (!_.isUndefined(self.legendChoroplet)) {
+                            self.map.removeControl(self.legendChoroplet);
+                        } 
                         }
-                       
-                       }
-                  }
+                    }
             }
 
             if(self.findFeatureType(geoJSONinLayer) == self.equivalenceTypes.MultiLineString) {
@@ -684,22 +685,23 @@ function mapGeoJsonWidgetsPluginClass() {
 
                       //legend
                     var length =100
-                      var colorStops = [0, 25, 50, 75, 100];
-                     legend  = undefined
-                      if(!_.isUndefined(styleForObject.showLegend)) {
-                           if(!!styleForObject.showLegend) {
-                            if (!_.isUndefined($("div[id='legendHeatMap']"))) {
-                                const legend = $("div[id='legendHeatMap']");
-                                legend.remove();
-                            }
-                            self.createLegend(colorScale, length, colorStops, minMaxAuto[0], minMaxAuto[1],styleForObject.property );
-                           } else{
-                            if(!_.isUndefined(styleForObject.showLegend)) {
-                                self.map.removeControl(legend);
-                            }
-                           
-                           }
-                      }
+                    var colorStops = [0, 25, 50, 75, 100];
+
+                    if(!_.isUndefined(styleForObject.showLegend)) {
+                        if(!!styleForObject.showLegend) {
+                         if (!_.isUndefined(self.legendHeatMap)) {
+                             if (!_.isUndefined(self.legendHeatMap)) {
+                                 self.legendHeatMap.remove();
+                             }
+                             
+                         }
+                         self.legendHeatMap = self.createLegend(colorScale, length, colorStops, minMaxAuto[0], minMaxAuto[1],styleForObject.property );
+                        } else{
+                         if (!_.isUndefined(self.legendHeatMap)) {
+                             self.map.removeControl(self.legendHeatMap);
+                         } 
+                         }
+                     } 
  
                 }
 
