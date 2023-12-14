@@ -3,7 +3,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Copyright © 2019-2023 IFPEN                                        │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Author(s) : Benoit LEHMAN & Mongi BEN GAID                        │ \\
+// │ Author(s) : Benoit LEHMAN & Mongi BEN GAID & Mohamed ERRAHALI      │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 // Important Style Behavior : Style will be available as out from the map first only in View mode 
@@ -13,7 +13,7 @@
 /*************************** plugin data ***************************/
 /*******************************************************************/
 
-// Layout (default dimensions)
+// Layout (default dimensions) 
 modelsLayout.mapGeoJson = { 'height': '5vh', 'width': '19vw', 'minWidth': '100px', 'minHeight': '100px' };
 
 modelsHiddenParams.mapGeoJson = { "GeoJSON" : undefined, "GeoJSONStyle" : undefined }
@@ -23,6 +23,15 @@ function mapGeoJsonWidgetsPluginClass() {
     this.mapGeoJsonWidgets = function (idDivContainer, idWidget, idInstance, bInteractive) {
         this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
+        this.defaultConfig = {
+            defaultCenter : {
+                latitude : 2.295,
+                longitude : 48.8738,
+                zoom : 16
+            },
+            tileServer  : "MapboxStreets",
+            possibleTileServers : ["MapboxStreets", "MapboxDark", "HereSatelliteDay", "HereTerrainDay", "HereHybridDay"]
+        }
 
         var self = this;
 
@@ -33,23 +42,25 @@ function mapGeoJsonWidgetsPluginClass() {
         this.updateValue = function (e) {
 
             // Create new TempleStyle if old has not the same size
-            // TODO : Check all style compatible with all element of model
+            // TODO : Check all style compatible with all element of model 
+            if((!Array.isArray( modelsHiddenParams[idInstance].GeoJSONStyle.style) && !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) 
+            || (modelsHiddenParams[idInstance].GeoJSON.length !== modelsHiddenParams[idInstance].GeoJSONStyle.style.length) ) {
 
-            if((!Array.isArray( modelsHiddenParams[idInstance].GeoJSONStyle) && !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) 
-            || (modelsHiddenParams[idInstance].GeoJSON.length !== modelsHiddenParams[idInstance].GeoJSONStyle.length) ) {
-
-                modelsHiddenParams[idInstance].GeoJSONStyle = []
+                modelsHiddenParams[idInstance].GeoJSONStyle.style = []
 
                 if(!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) {
                     
                         modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
-                            modelsHiddenParams[idInstance].GeoJSONStyle.push(
-                                this.createTemplateStyle(item, index));
+                            modelsHiddenParams[idInstance].GeoJSONStyle.style.push(
+                                this.createTemplateStyle(item, index)
+                            )
                         });
+
+
                 }
             }
-
-            self.GeoJSONStyle.updateCallback(self.GeoJSONStyle, self.GeoJSONStyle.getValue());
+            
+            self.GeoJSONStyle.updateCallback( self.GeoJSONStyle, self.GeoJSONStyle.getValue());
         }
 
 
@@ -58,12 +69,25 @@ function mapGeoJsonWidgetsPluginClass() {
 
 
         this.getColorScale = function (colorScaleName, min, max) {
-
-            return colorScaleManager.getColorScale(colorScaleName, min, max);
+            reverseColorScale = false
+           // Default interpolator
+           var interpolator = d3["interpolateYlOrRd"];
+           // Availlable interpolator : https://github.com/d3/d3-scale-chromatic
+           
+           if(  !(_.isUndefined(colorScaleName)) && !(_.isUndefined(d3[colorScaleName])) && (colorScaleName.includes("interpolate")) ) {
+               interpolator = d3[colorScaleName];
+           }
+           
+           if(!(_.isUndefined(reverseColorScale)) && reverseColorScale) {
+               return d3.scaleSequential().interpolator(interpolator).domain([max,min]);
+           }else{
+               return d3.scaleSequential().interpolator(interpolator).domain([min,max]);
+           }   
+           // return colorScaleManager.getColorScale(colorScaleName, min, max);
         }
 
         this.render = function () {
-            
+           
             var widgetHtml = document.createElement('div');
             widgetHtml.setAttribute('id', 'mapGeoJson' + idWidget);
             widgetHtml.setAttribute('style', 'width: inherit; height: inherit');
@@ -71,9 +95,16 @@ function mapGeoJsonWidgetsPluginClass() {
             $("#" + idDivContainer).html(widgetHtml);
 
             // Drawing the map
-            // TODO : Report all map possibilites from map
-            self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true }).setView([48.866667, 2.333333], 16);
-            
+            // TODO : Report all map possibilites from map  
+             
+            config =  self.defaultConfig
+            if(!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) && !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config) && !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter) ) {
+                config = modelsHiddenParams[idInstance].GeoJSONStyle.config
+            }
+            self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true }).setView(  [config.defaultCenter.longitude,config.defaultCenter.latitude], config.defaultCenter.zoom);
+            self.map.zoomControl.setPosition('topright');
+
+            console.log("rendering ....",config);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
               }).addTo( self.map);
@@ -87,8 +118,7 @@ function mapGeoJsonWidgetsPluginClass() {
              
             // internal layer group L.layerGroup
             self.layers = [];
-
-            if(!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) {            
+              if(!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) {            
                     modelsHiddenParams[idInstance].GeoJSON.forEach(item => {
                         self.addGeoJSONlayer(item);
                     });
@@ -136,6 +166,24 @@ function mapGeoJsonWidgetsPluginClass() {
             return propertiesWithRange;
         }
 
+        this.getMinMaxByProperty = function(GeoJSON,property) {
+            const minMax = [GeoJSON.features[0].properties[property],GeoJSON.features[0].properties[property]]
+            GeoJSON.features.forEach(feature => {
+              
+                if (typeof feature.properties[property] === 'number' && !isNaN(feature.properties[property]) && isFinite(feature.properties[property])) {
+                  const value = feature.properties[property];
+                  
+                    minMax[0]= Math.min(minMax[0], value);
+                    minMax[1] = Math.max(minMax[1], value);
+                  
+                }
+              
+            });
+          
+            return minMax;
+
+        }
+
 
         // Find All Properties
         // TODO : Try to concatenate code with findPropertiesWithNumber in order to have 1 method
@@ -154,6 +202,8 @@ function mapGeoJsonWidgetsPluginClass() {
 
             return propertiesReturn;
         }
+
+      
 
 
         // Type possible  - Type GeoJSON to type Chalk It
@@ -199,15 +249,12 @@ function mapGeoJsonWidgetsPluginClass() {
         // typeLayer is used for marker or circle 
         this.createTemplateStyle =  function(geoJSON, index, typeLayer = undefined) {
         
-            prop = this.findPropertiesWithNumber(geoJSON);
-            allProp = this.findAllProperties(geoJSON);
-            JSONtype = this.findFeatureType(geoJSON);
-            console.log("prop",prop);
-            console.log("allProp",allProp);
-            console.log("JSONtype",JSONtype);
+            prop = self.findPropertiesWithNumber(geoJSON);
+            allProp = self.findAllProperties(geoJSON);
+            JSONtype = self.findFeatureType(geoJSON); 
 
             switch (JSONtype) {
-            case this.equivalenceTypes.MultiLineString:
+            case self.equivalenceTypes.MultiLineString:
                 return {
                     layer: index +1,
                     type : "Multi Line",
@@ -222,9 +269,10 @@ function mapGeoJsonWidgetsPluginClass() {
                     possibleProperties : prop
                 }
                 break;
-              case this.equivalenceTypes.MultiPolygon:
+              case self.equivalenceTypes.MultiPolygon:
                 return {
                     layer: index +1,
+                    showLegend : true,
                     type : "Multi Polygon",
                     stroke: true,
                     color: "black",
@@ -239,8 +287,8 @@ function mapGeoJsonWidgetsPluginClass() {
                     possibleProperties : prop
                 }
                 break;
-              case this.equivalenceTypes.MultiPoint:
-            //    if(allProp.includes("html") || allProp.includes("awesomeMarker") || typeLayer == L.marker) {
+              case self.equivalenceTypes.MultiPoint:
+               if(allProp.includes("html") || allProp.includes("awesomeMarker") || typeLayer == L.marker) {
 
                     return {
                         layer: index +1,
@@ -251,11 +299,12 @@ function mapGeoJsonWidgetsPluginClass() {
                         PropertiesList : allProp
                     }
 
-             /*   }else {
+                }else {
 
                     return {
                         layer: index +1,
                         type : "Multi Point",
+                        showLegend : true,
                         pointAreMarker : false,
                         stroke: false,
                         weight: 0,
@@ -270,7 +319,7 @@ function mapGeoJsonWidgetsPluginClass() {
                         possibleProperties : prop
                     }
 
-                }*/
+                }
                 break;
               default:
                 return {
@@ -280,15 +329,144 @@ function mapGeoJsonWidgetsPluginClass() {
             }
 
         }
+        this.getColor = function (min, max, d, colorScale) {
+            var step = (max - min) / 8.0;
 
+            var stepDraw = Math.floor((d-min)/step);
+            return colorScale(stepDraw * (1.0/8.0)*100)
+        }
+
+        this.createChoroplethLegend = function (min, max, featureTitle,colorScale) {
+            var legend = L.control({ position: 'topleft' });
+            var min = Number(min);
+            var max = Number(max);
+             
+            legend.onAdd = function (map) {
+
+                var step = (max - min) / 8;
+                var div = L.DomUtil.create('div', 'info legend')
+                div.setAttribute("id","legendChoroplet")
+                var grades = [min, min + step, min + (step * 2), min + (step * 3), min + (step * 4), min + (step * 5), min + (step * 6), max],
+                labels = [],
+                from, to;
+
+                 //   div.innerHTML += '<h6>              </h6>';
+                for (var i = 0; i < grades.length; i++) {
+                    from = grades[i];
+                    to = grades[i + 1];
+                    labels.push(
+                        '<i style="background:' + self.getColor(min, max, from + 1, colorScale) + '"></i> ' +
+                        '<span>' + d3.format("~s")(from) + (to ? '&ndash;' +  d3.format("~s")(to) : '+') + '</span>') + '<br>' ;
+                }
+
+                div.innerHTML = labels.join('<br>');
+                return div;
+            };
+            legend.addTo(self.map);
+            return legend
+        }
+        this.createLegend = function (color, length, colorStops, min, max, featureTitle) {
+            var legend = L.control({ position: 'topleft' });
+            var min = Number(min);
+            var max = Number(max);
+             
+            legend.onAdd = function (map) {
+                var div = L.DomUtil.create('div', 'scaleLegend');
+                div.setAttribute("id","legendHeatMap")
+                var rects = '';
+                for (var i = 0; i < length; i++) { 
+                    rects = rects + '<rect height="10" x="' + i * 4 + '" width="4" style="fill: ' + color(i) + ';"></rect>';
+                }
+                var svg = '<svg id="legend" width="450" height="50"><g class="key" transform="translate(25,16)">' + rects;
+                var bTicksFormat = true;
+                var valTick = min;
+                var strTick;
+                if (!bTicksFormat)
+                    strTick = min.toString();
+                else
+                    strTick = nFormatter(min, 2);
+                var valTranslate = 0;
+                for (var i = 0; i < colorStops.length; i++) {
+                    valTranslate = colorStops[i] * 4;
+                    svg = svg + '<g class="tick" transform="translate(' + valTranslate + ',0)" style="opacity: 1;"><line y2="-1" x2="0"></line><text dy="0em" y="-4" x="0" style="text-anchor: middle;">' + strTick + '</text></g>';
+                    valTick = valTick + ((max - min) / 4);
+                    if (!bTicksFormat) {
+                        strTick = Number.parseFloat(valTick).toPrecision(2);
+                    } else {
+                        strTick = nFormatter(valTick, 2);
+                    }
+                }
+                svg = svg + '<path class="domain" d="M0,-1V0H400V-1"></path>';
+                svg = svg + '<text class="" y="21">' + featureTitle + '</text>';
+                svg = svg + '</g></svg>';
+                div.innerHTML = svg;
+
+                return div;
+            };
+            legend.addTo(self.map);
+            return legend
+        };
         // Important tag to know if style has changed during the setStyle
         // Typical when circle are changed to marker
         this.styleChanged = false;
-
         // Set style on layers called when input style 
         this.style = function() {
+            config =  modelsHiddenParams[idInstance].GeoJSONStyle.config
+            ts= "MapboxStreets"
+            defaultCenter = self.defaultConfig.defaultCenter
+            if(!_.isUndefined(config)) {
+                defaultCenter = config.defaultCenter
+                ts = config.tileServer
+            }
+            if(!_.isUndefined(tileServers)) {
+            //update tile server
+            tileServersObj = tileServers
+            var tileConf = {
+                url: tileServersObj[ts].url,
+                maxZoom: tileServersObj[ts].maxZoom,
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                    tileServersObj[ts].attribution,
+            };
 
-            modelsHiddenParams[idInstance].GeoJSONStyle.forEach(function(d, index) {
+            if (!_.isUndefined(tileServersObj[ts].subdomains)) {
+                tileConf.subdomains = tileServersObj[ts].subdomains;
+            }
+
+            if (!_.isUndefined(tileServersObj[ts].id)) {
+                tileConf.id = tileServersObj[ts].id;
+            }
+
+            if (!_.isUndefined(tileServersObj[ts].apikey)) {
+                tileConf.apikey = tileServersObj[ts].apikey;
+            }
+
+            if (!_.isUndefined(tileServersObj[ts].format)) {
+                tileConf.format = tileServersObj[ts].format;
+            }
+
+            if (!_.isUndefined(tileServersObj[ts].style)) {
+                tileConf.style = tileServersObj[ts].style;
+            }
+
+            if (!_.isUndefined(tileServersObj[ts].tileSize)) {
+                tileConf.tileSize = tileServersObj[ts].tileSize;
+            }
+
+            if (!_.isUndefined(tileServersObj[ts].zoomOffset)) {
+                tileConf.zoomOffset = tileServersObj[ts].zoomOffset;
+            }
+            self.baseLayer = L.tileLayer(tileServersObj[ts].url, tileConf);
+            self.baseLayer.addTo(self.map);
+            }
+            
+
+            //update view 
+
+            self.map.setView(  [defaultCenter.longitude,defaultCenter.latitude], defaultCenter.zoom);
+
+            //update style
+            modelsHiddenParams[idInstance].GeoJSONStyle.style.forEach(function(d, index) {
                 self.setStyle(index, d);
             })
 
@@ -309,7 +487,9 @@ function mapGeoJsonWidgetsPluginClass() {
           
             let colorScale = undefined;
 
-
+            //calcul color scale
+            //using specified property
+            //
             if(!_.isUndefined(style.property) && !_.isUndefined(style.possibleProperties) && (style.property in style.possibleProperties)) {
 
                 var minMaxAuto = style.possibleProperties[style.property];
@@ -319,24 +499,47 @@ function mapGeoJsonWidgetsPluginClass() {
 
                 var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
                 if(!_.isUndefined(color)) {
-                    colorScale = self.getColorScale(color, minMaxAuto[0], minMaxAuto[1]);
+                    colorScale = self.getColorScale(color, 0, 100);
                 }
             }
 
             // Important
-            let styleForObject = {...style};
+            let styleForObject = {...style  };
 
             if(self.findFeatureType(geoJSONinLayer) == self.equivalenceTypes.MultiPolygon) {
                 
-
+                let minMax = self.getMinMaxByProperty(geoJSONinLayer,styleForObject.property)
+                let min = minMaxAuto[0]
+                let max = minMaxAuto[1]
+                if(min < minMax[0]) min = minMax[0]
+                if(max > minMax[1]) max = minMax[1]
                 leafLetLayer.eachLayer(function(layer) {
 
                     if(!_.isUndefined(colorScale)) {
-                        styleForObject.fillColor = colorScale((layer.feature.properties)[styleForObject.property]);
+                        let value = (layer.feature.properties)[styleForObject.property]
+                            
+                        styleForObject.fillColor = self.getColor(min,max,value,colorScale);
                     }
 
                     layer.setStyle(styleForObject);
                   });
+                  //legend
+                   
+                 legend  = undefined
+                  if(!_.isUndefined(styleForObject.showLegend)) {
+                       if(!!styleForObject.showLegend) {
+                        if (!_.isUndefined($("div[id='legendChoroplet']"))) {
+                            const legend = $("div[id='legendChoroplet']");
+                            legend.remove();
+                        }
+                        self.createChoroplethLegend(min, max,"Test",colorScale)
+                       } else{
+                        if(!_.isUndefined(styleForObject.showLegend)) {
+                            self.map.removeControl(legend);
+                        }
+                       
+                       }
+                  }
             }
 
             if(self.findFeatureType(geoJSONinLayer) == self.equivalenceTypes.MultiLineString) {
@@ -354,8 +557,7 @@ function mapGeoJsonWidgetsPluginClass() {
 
             if(self.findFeatureType(geoJSONinLayer) == self.equivalenceTypes.MultiPoint) {
                 
-
-                if(styleForObject.pointAreMarker) {
+                 if(styleForObject.pointAreMarker) {
 
                     // Change All Circle in Marker if L.Circle was transformed in L.Marker
                     if(leafLetLayer.getLayers()[0] instanceof L.Circle) {
@@ -433,20 +635,17 @@ function mapGeoJsonWidgetsPluginClass() {
                       });
 
                 } else {
-
                     // Transform each L.Marker in L.Circle
                     if(leafLetLayer.getLayers()[0] instanceof L.Marker) {
-
                         
                         if(_.isUndefined(style.property)) {
-                            newStyle = self.createTemplateStyle(geoJSONinLayer, layerIndex, L.circle);
 
-                            Object.keys(style).forEach((key) => { delete style[key];});
-                            Object.assign(style, { ...newStyle });
+                            newStyle = self.createTemplateStyle(geoJSONinLayer, layerIndex, L.circle);
+                            Object.keys(style.style).forEach((key) => { delete style.style[key];});
+                            Object.assign(style.style, { ...newStyle });
 
                             self.styleChanged = true;
                         }
-                        
                         LCircles = leafLetLayer.getLayers().map(function(layer) {
                             const { lat, lng } = layer.getLatLng();
                             const circle = L.circle([lat, lng]);
@@ -458,19 +657,50 @@ function mapGeoJsonWidgetsPluginClass() {
                         LCircles.forEach(function(layerCircle) {leafLetLayer.addLayer(layerCircle)});
                         styleForObject = {...style};
                     }
-
+                    var minMaxAuto = style.possibleProperties[styleForObject.property];
+                   
+                    if(!_.isUndefined(styleForObject.propertyMin) && typeof styleForObject.propertyMin === 'number') minMaxAuto[0] = styleForObject.propertyMin;
+                    if(!_.isUndefined(styleForObject.propertyMax) && typeof styleForObject.propertyMax === 'number') minMaxAuto[1] = styleForObject.propertyMax; 
+                    
+                    let minMax = self.getMinMaxByProperty(geoJSONinLayer,styleForObject.property)
+                    let min = minMaxAuto[0]
+                    let max = minMaxAuto[1]
+                    if(min < minMax[0]) min = minMax[0]
+                    if(max > minMax[1]) max = minMax[1]
                     leafLetLayer.eachLayer(function(layer) {
 
                         if(!_.isUndefined(colorScale)) {
-                            styleForObject.fillColor = colorScale((layer.feature.properties)[styleForObject.property]);
+                            let value = (layer.feature.properties)[styleForObject.property]
+                            
+                            let pct = ((value - min)/(max-min))*100
+                            styleForObject.fillColor = colorScale(pct);
                         }
     
                         layer.setStyle(styleForObject);
                         if(!_.isUndefined(styleForObject.radius)) {
                             layer.setRadius(styleForObject.radius); // LafLet bug  setRadius must be called (Radius in Style is not check by Leaflet)
                         }
-
                       });
+
+                      //legend
+                    var length =100
+                      var colorStops = [0, 25, 50, 75, 100];
+                     legend  = undefined
+                      if(!_.isUndefined(styleForObject.showLegend)) {
+                           if(!!styleForObject.showLegend) {
+                            if (!_.isUndefined($("div[id='legendHeatMap']"))) {
+                                const legend = $("div[id='legendHeatMap']");
+                                legend.remove();
+                            }
+                            self.createLegend(colorScale, length, colorStops, minMaxAuto[0], minMaxAuto[1],styleForObject.property );
+                           } else{
+                            if(!_.isUndefined(styleForObject.showLegend)) {
+                                self.map.removeControl(legend);
+                            }
+                           
+                           }
+                      }
+ 
                 }
 
 
@@ -547,14 +777,14 @@ function mapGeoJsonWidgetsPluginClass() {
 
         this.GeoJSON = {
             updateCallback: function () { },
-            setValue: function (val) {
-
+            setValue: function (val) { 
                 if(!Array.isArray(val)) {
                     modelsHiddenParams[idInstance].GeoJSON = [];
                     modelsHiddenParams[idInstance].GeoJSON.push(val);
                 } else {
                     modelsHiddenParams[idInstance].GeoJSON = val;
                 }
+                
                 self.render();
                 self.updateValue();
             },
@@ -582,7 +812,10 @@ function mapGeoJsonWidgetsPluginClass() {
         this.GeoJSONStyle = {
             updateCallback: function () { },
             setValue: function (val) {
-               modelsHiddenParams[idInstance].GeoJSONStyle = val;
+                modelsHiddenParams[idInstance].GeoJSONStyle = val;
+                if(_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)){
+                    modelsHiddenParams[idInstance].GeoJSONStyle.config = self.defaultConfig
+                }
                self.style();
             },
             getValue: function () {
