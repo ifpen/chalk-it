@@ -53,7 +53,7 @@ function mapGeoJsonWidgetsPluginClass() {
                     
                         modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
                             modelsHiddenParams[idInstance].GeoJSONStyle.style.push(
-                                this.createTemplateStyle(item, index)
+                                self.createTemplateStyle(item, index)
                             )
                         });
 
@@ -120,25 +120,28 @@ function mapGeoJsonWidgetsPluginClass() {
             // internal layer group L.layerGroup
             self.layers = [];
               if(!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) {            
-                    modelsHiddenParams[idInstance].GeoJSON.forEach(item => {
-                        self.addGeoJSONlayer(item);
+                    modelsHiddenParams[idInstance].GeoJSON.forEach((item,index) => {
+                        let name = "layer "+index
+                        if(!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) && !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style) && !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style.length >0 ) ) {
+                             if(!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style[index].name)) {
+                                name = modelsHiddenParams[idInstance].GeoJSONStyle.style[index].name
+                            }
+                        }
+                        self.addGeoJSONlayer(item,name);
                     });
             }
+
         }
 
 
 
         // Create a Layer from a GeoJSON
         // Simple function dont take into account the style
-        this.addGeoJSONlayer = function(geoJSON) {
+        this.addGeoJSONlayer = function(geoJSON,name) {
 
             var layer = L.geoJSON(geoJSON).addTo(self.map);
             self.layers.push(layer)
-
-            let name = "layer" + " " + self.layers.length;
-            if(!_.isUndefined(geoJSON.name)) {
-                name = geoJSON.name
-            }
+ 
             self.ctrl.addOverlay(layer, name);     
         }
 
@@ -258,6 +261,7 @@ function mapGeoJsonWidgetsPluginClass() {
             case self.equivalenceTypes.MultiLineString:
                 return {
                     layer: index +1,
+                    name : "layer "+( index +1),
                     type : "Multi Line",
                     stroke: true,
                     dashArray : [],
@@ -273,6 +277,7 @@ function mapGeoJsonWidgetsPluginClass() {
               case self.equivalenceTypes.MultiPolygon:
                 return {
                     layer: index +1,
+                    name : "layer "+( index +1),
                     showLegend : true,
                     type : "Multi Polygon",
                     stroke: true,
@@ -293,6 +298,7 @@ function mapGeoJsonWidgetsPluginClass() {
 
                     return {
                         layer: index +1,
+                        name : "layer "+( index +1),
                         type : "Multi Point",
                         pointAreMarker : true,
                         clickPopup : true,
@@ -304,6 +310,7 @@ function mapGeoJsonWidgetsPluginClass() {
 
                     return {
                         layer: index +1,
+                        name : "layer "+( index +1),
                         type : "Multi Point",
                         showLegend : true,
                         pointAreMarker : false,
@@ -484,7 +491,17 @@ function mapGeoJsonWidgetsPluginClass() {
             // Get GeoJSON
             var geoJSONinLayer = (modelsHiddenParams[idInstance].GeoJSON)[layerIndex];
             var leafLetLayer = (self.layers)[layerIndex];
-
+            let name = undefined
+            if(!_.isUndefined(style) ) {
+                if(!_.isUndefined(style.name)) {
+                   name = style.name
+               }
+           }
+           if(!_.isUndefined(name)) {
+            self.ctrl.removeLayer(leafLetLayer)
+            self.ctrl.addOverlay(leafLetLayer,name);  
+           }
+           
           
             let colorScale = undefined;
 
