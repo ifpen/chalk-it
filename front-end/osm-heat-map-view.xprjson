@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8749",
-    "date": "Thu Dec 14 2023 19:07:25 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8750",
+    "date": "Fri Dec 15 2023 14:30:00 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-heat-map-view",
     "description": "",
     "groupName": "",
@@ -11,11 +11,13 @@
   "data": {
     "datanodes": [
       {
-        "name": "Style",
-        "type": "JSON_var_plugin",
+        "name": "data_to_geoJson",
+        "type": "JSON_formula_plugin",
         "settings": {
-          "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.175765,\"longitude\":48.876684999999995,\"zoom\":16},\"tileServer\":\"HereHybridDay\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"type\":\"Multi Point\",\"showLegend\":false,\"pointAreMarker\":false,\"stroke\":false,\"weight\":0,\"opacity\":0.39,\"color\":\"black\",\"radius\":8,\"fillColor\":\"interpolateSpectral\",\"property\":\"CH4\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.5,\"possibleProperties\":{\"CH4\":[0,4]}}]}"
+          "name": "data_to_geoJson",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "let geoJson = {};\ngeoJson.type = \"FeatureCollection\";\nlet features = [];\nif(!_.isUndefined(datasources[\"Map_input\"])) {\n    datasources[\"Map_input\"].forEach(d=>{\n        let feature = {};\n        feature.type = \"Feature\";\n        let geometry = {};\n        let properties = {};\n        let key ;\n        Object.keys(d).forEach(k=>{\n            if(k != \"lat\" && k!=\"lng\") key = k;\n        }) ;\n        geometry.type = \"Point\";\n        geometry.coordinates = [d.lng,d.lat ];\n        if(!_.isUndefined(key)) {\n           properties[key] = d[key];\n           }\n        \n        feature.geometry = geometry;\n        feature.properties = properties;\n        features.push(feature);\n    });\n}\ngeoJson.features= features;\nreturn geoJson;"
         }
       },
       {
@@ -27,13 +29,11 @@
         }
       },
       {
-        "name": "data_to_geoJson",
-        "type": "JSON_formula_plugin",
+        "name": "Style",
+        "type": "JSON_var_plugin",
         "settings": {
-          "name": "data_to_geoJson",
-          "autoStart": true,
-          "explicitTrig": false,
-          "json_var_formula": "let geoJson = {};\ngeoJson.type = \"FeatureCollection\";\nlet features = [];\nif(!_.isUndefined(datasources[\"Map_input\"])) {\n    datasources[\"Map_input\"].forEach(d=>{\n        let feature = {};\n        feature.type = \"Feature\";\n        let geometry = {};\n        let properties = {};\n        let key ;\n        Object.keys(d).forEach(k=>{\n            if(k != \"lat\" && k!=\"lng\") key = k;\n        }) ;\n        geometry.type = \"Point\";\n        geometry.coordinates = [d.lng,d.lat ];\n        if(!_.isUndefined(key)) {\n           properties[key] = d[key];\n           }\n        \n        feature.geometry = geometry;\n        feature.properties = properties;\n        features.push(feature);\n    });\n}\ngeoJson.features= features;\nreturn geoJson;"
+          "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.175765,\"longitude\":48.876684999999995,\"zoom\":18},\"tileServer\":\"HereHybridDay\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"CH4\",\"type\":\"Multi Point\",\"showLegend\":true,\"pointAreMarker\":false,\"stroke\":false,\"weight\":8.6,\"opacity\":0.39,\"color\":\"black\",\"radius\":5.1,\"fillColor\":\"interpolateSpectral_r\",\"property\":\"CH4\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"CH4\":[0,4]}}]}"
         }
       }
     ]
@@ -43,14 +43,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1294,
-    "heightPx": 572,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 572,
-    "widthVw": 84.68586387434554,
-    "heightVh": 79.88826815642459,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 79.88826815642459,
+    "widthPx": 1806,
+    "heightPx": 719,
+    "scrollWidthPx": 1806,
+    "scrollHeightPx": 719,
+    "widthVw": 88.52941176470588,
+    "heightVh": 71.61354581673307,
+    "scrollWidthVw": 88.52941176470588,
+    "scrollHeightVh": 71.61354581673307,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -70,10 +70,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "1.39665vh",
-        "left": "0.65445vw",
-        "height": "66.2011vh",
-        "width": "83.377vw",
+        "top": "0.996016vh",
+        "left": "0.490196vw",
+        "height": "59.3625vh",
+        "width": "87.2549vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -89,10 +89,10 @@
     },
     "flatUiHorizontalSliderA": {
       "layout": {
-        "top": "69.1341vh",
-        "left": "3.20681vw",
-        "height": "5.02793vh",
-        "width": "24.0183vw",
+        "top": "60.9562vh",
+        "left": "3.33333vw",
+        "height": "4.48207vh",
+        "width": "25.1471vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "2"
@@ -104,16 +104,16 @@
         "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderA)"
       },
       "modelParameters": {
-        "label": "radius",
-        "inheritLabelFromData": true,
+        "label": "Radius",
+        "inheritLabelFromData": false,
         "displayLabel": true,
         "labelFontSize": 0.5,
         "labelColor": "var(--widget-label-color)",
         "labelFontFamily": "var(--widget-font-family)",
         "rangeActuator": false,
         "min": 0,
-        "max": 100,
-        "step": 1,
+        "max": 10,
+        "step": 0.1,
         "displayValue": true,
         "validationOnFocusOut": true,
         "valueFontSize": 0.5,
@@ -135,10 +135,10 @@
     },
     "flatUiHorizontalSliderB": {
       "layout": {
-        "top": "69.1341vh",
-        "left": "30.1047vw",
-        "height": "5.02793vh",
-        "width": "24.0183vw",
+        "top": "60.9562vh",
+        "left": "31.5196vw",
+        "height": "4.48207vh",
+        "width": "25.1471vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "3"
@@ -150,16 +150,16 @@
         "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderB)"
       },
       "modelParameters": {
-        "label": "fillOpacity",
-        "inheritLabelFromData": true,
+        "label": "Opacity",
+        "inheritLabelFromData": false,
         "displayLabel": true,
         "labelFontSize": 0.5,
         "labelColor": "var(--widget-label-color)",
         "labelFontFamily": "var(--widget-font-family)",
         "rangeActuator": false,
         "min": 0,
-        "max": 100,
-        "step": 1,
+        "max": 1,
+        "step": 0.1,
         "displayValue": true,
         "validationOnFocusOut": true,
         "valueFontSize": 0.5,
@@ -181,10 +181,10 @@
     },
     "flatUiCheckboxA": {
       "layout": {
-        "top": "69.2737vh",
-        "left": "56.2173vw",
-        "height": "5.02793vh",
-        "width": "9.03141vw",
+        "top": "61.0558vh",
+        "left": "58.8235vw",
+        "height": "4.48207vh",
+        "width": "9.46078vw",
         "minHeight": "24px",
         "minWidth": "32px",
         "z-index": "4"
@@ -196,8 +196,8 @@
         "widgetTypeName": "Checkbox(flatUiCheckboxA)"
       },
       "modelParameters": {
-        "label": "showLegend",
-        "inheritLabelFromData": true,
+        "label": "Show legend",
+        "inheritLabelFromData": false,
         "displayLabel": true,
         "labelPosition": "right",
         "labelFontSize": 0.5,
