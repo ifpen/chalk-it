@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "version": "2.940.8750",
+    "date": "Fri Dec 15 2023 14:40:00 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": "line-heat-map-view",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "LineHeatMapData",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "LineHeatMapData",
+          "json_var": "{\"data\":[{\"coordinates\":[[4.84112,45.74968],[4.84091,45.74981]],\"CO2\":6},{\"coordinates\":[[4.84138,45.74953],[4.84112,45.74968]],\"CO2\":10},{\"coordinates\":[[4.84158,45.74941],[4.84138,45.74953]],\"CO2\":0}],\"config\":{\"opacity\":0.7,\"weight\":4,\"disableAutoscale\":false,\"min\":4,\"max\":10,\"colorScale\":\"interpolateSpectral\",\"reverseColorScale\":true}}"
+        }
+      },
+      {
+        "name": "Map_input",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "Map_input",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "data = dataNodes[\"LineHeatMapData\"][\"data\"];\n \nlet geoJson = {};\ngeoJson.type = \"FeatureCollection\";\nlet features = [];\nif(!_.isUndefined(data)) {\n    data.forEach(d=>{\n        let feature = {};\n        feature.type = \"Feature\";\n        let geometry = {};\n        let properties = {};\n        let key ;\n        Object.keys(d).forEach(k=>{\n            if(k != \"coordinates\" ) key = k;\n        }) ;\n        geometry.type = \"LineString\";\n        geometry.coordinates = d.coordinates;\n        if(!_.isUndefined(key)) {\n           properties[key] = d[key];\n           }\n        \n        feature.geometry = geometry;\n        feature.properties = properties;\n        features.push(feature);\n    });\n}\ngeoJson.features= features;\nreturn geoJson;"
+        }
+      },
+      {
+        "name": "Style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":4.84112,\"longitude\":45.74968,\"zoom\":20},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"CO2\",\"showLegend\":true,\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"black\",\"weight\":4,\"opacity\":1,\"property\":\"CO2\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"CO2\":[0,10]}}]}"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1807,
+    "heightPx": 719,
+    "scrollWidthPx": 1807,
+    "scrollHeightPx": 719,
+    "widthVw": 88.57843137254902,
+    "heightVh": 71.61354581673307,
+    "scrollWidthVw": 88.57843137254902,
+    "scrollHeightVh": 71.61354581673307,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {
+    "mapGeoJsonA": {
+      "layout": {
+        "top": "0.996016vh",
+        "left": "0.843135vw",
+        "height": "59.9602vh",
+        "width": "69.1667vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "mapGeoJsonA",
+        "instanceId": "mapGeoJsonA",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "mapGeoJsonA": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "Map_input",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Style",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

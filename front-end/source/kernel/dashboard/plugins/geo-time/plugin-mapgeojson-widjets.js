@@ -56,8 +56,6 @@ function mapGeoJsonWidgetsPluginClass() {
                                 self.createTemplateStyle(item, index)
                             )
                         });
-
-
                 }
             }
             
@@ -261,6 +259,7 @@ function mapGeoJsonWidgetsPluginClass() {
             case self.equivalenceTypes.MultiLineString:
                 return {
                     layer: index +1,
+                    showLegend : true,
                     name : "layer "+( index +1),
                     type : "Multi Line",
                     stroke: true,
@@ -563,14 +562,45 @@ function mapGeoJsonWidgetsPluginClass() {
             if(self.findFeatureType(geoJSONinLayer) == self.equivalenceTypes.MultiLineString) {
                 
 
-                leafLetLayer.eachLayer(function(layer) {
+                var minMaxAuto = style.possibleProperties[styleForObject.property];
+                   
+                if(!_.isUndefined(styleForObject.propertyMin) && typeof styleForObject.propertyMin === 'number') minMaxAuto[0] = styleForObject.propertyMin;
+                if(!_.isUndefined(styleForObject.propertyMax) && typeof styleForObject.propertyMax === 'number') minMaxAuto[1] = styleForObject.propertyMax; 
+                
+                let minMax = self.getMinMaxByProperty(geoJSONinLayer,styleForObject.property)
+                    let min = minMaxAuto[0]
+                    let max = minMaxAuto[1]
+                    if(min < minMax[0]) min = minMax[0]
+                    if(max > minMax[1]) max = minMax[1]
+                    leafLetLayer.eachLayer(function(layer) {
 
-                    if(!_.isUndefined(colorScale)) {
-                        styleForObject.color = colorScale((layer.feature.properties)[styleForObject.property]);
-                    }
-
+                        if(!_.isUndefined(colorScale)) {
+                            let value = (layer.feature.properties)[styleForObject.property]
+                            
+                            let pct = ((value - min)/(max-min))*100
+                            styleForObject.color = colorScale(pct);
+                        } 
                     layer.setStyle(styleForObject);
                   });
+                   //legend
+                   var length =100
+                   var colorStops = [0, 25, 50, 75, 100];
+
+                   if(!_.isUndefined(styleForObject.showLegend)) {
+                       if(!!styleForObject.showLegend) {
+                        if (!_.isUndefined(self.legendHeatMap)) {
+                            if (!_.isUndefined(self.legendHeatMap)) {
+                                self.legendHeatMap.remove();
+                            }
+                            
+                        }
+                        self.legendHeatMap = self.createLegend(colorScale, length, colorStops, minMaxAuto[0], minMaxAuto[1],styleForObject.property );
+                       } else{
+                        if (!_.isUndefined(self.legendHeatMap)) {
+                            self.map.removeControl(self.legendHeatMap);
+                        } 
+                        }
+                    } 
             }
 
             if(self.findFeatureType(geoJSONinLayer) == self.equivalenceTypes.MultiPoint) {
