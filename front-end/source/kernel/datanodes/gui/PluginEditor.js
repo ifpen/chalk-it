@@ -141,9 +141,11 @@ PluginEditor = function (jsEditor) {
           newSettings.settings[settingDef.name].indexOf('pastValue_') !== -1 ||
           newSettings.settings[settingDef.name].indexOf('past.') !== -1
         ) {
-          //MBG avoid bug when settingDef == function
-          _displayValidationError(settingDef.name, "'pastValue_' is forbidden. It is dedicated to memory dataNode.");
-          return true;
+          if (newSettings.type !== 'Memory_plugin') {
+            //MBG avoid bug when settingDef == function
+            _displayValidationError(settingDef.name, "'pastValue_' is forbidden. It is dedicated to memory dataNode.");
+            return true;
+          }
         }
       }
     }
