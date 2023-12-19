@@ -45,7 +45,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   this.settings = ko.observable({});
   this.settings.subscribe(function (newValue) {
     if (!_.isUndefined(self.datanodeInstance) && _.isFunction(self.datanodeInstance.onSettingsChanged)) {
-      if (!self.formulaInterpreter.updateCalculatedSettings(true, false)) {
+      if (!self.formulaInterpreter.updateCalculatedSettings(true, false, false)) {
         self.error(true);
         return;
       }
@@ -187,7 +187,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
             self.settings(),
             function (datanodeInstance) {
               self.datanodeInstance = datanodeInstance;
-              if (!self.formulaInterpreter.updateCalculatedSettings(true, false)) {
+              if (!self.formulaInterpreter.updateCalculatedSettings(true, false, false)) {
                 bOK = false;
                 return false;
               }
@@ -513,7 +513,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
         return;
       }
       if (!_.isUndefined(self.datanodeInstance) && _.isFunction(self.datanodeInstance.updateNow)) {
-        if (!self.formulaInterpreter.updateCalculatedSettings(false, bAllPredExecuted)) {
+        if (!self.formulaInterpreter.updateCalculatedSettings(false, bAllPredExecuted, bForceAutoStart)) {
           self.error(true);
           return;
         }

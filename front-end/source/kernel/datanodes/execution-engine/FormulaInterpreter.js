@@ -124,7 +124,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
   };
 
   /*--------updateCalculatedSettings--------*/
-  this.updateCalculatedSettings = function (bProjectLoad, bAllPredExecuted) {
+  this.updateCalculatedSettings = function (bProjectLoad, bAllPredExecuted, bForceAutoStart) {
     self.bCalculatedSettings = true;
     datanodeModel.datanodeRefreshNotifications = {};
     datanodeModel.calculatedSettingScripts = {};
@@ -277,11 +277,17 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
 
           while ((matches = setVarRegex.exec(script))) {
             const dsName = matches[1];
-            datanodesDependency.addSetvarList(dsName, datanodeModel.name());
+            if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig)
+              console.log("init: don't add parsed set var");
+            else datanodesDependency.addSetvarList(dsName, datanodeModel.name());
           }
           //AEF: fix bug (clean up data that doesn't exist anymore in formula for example)
           datanodesDependency.removeMissedDependantDatanodes(allDsNames, datanodeModel.name());
 
+          if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
+            console.log("init: don't process calculate");
+            return;
+          }
           // MBG moved
           if (settingDef.type != 'custom2') {
             datanodeModel.calculatedSettingScripts[settingDef.name] = valueFunction;
