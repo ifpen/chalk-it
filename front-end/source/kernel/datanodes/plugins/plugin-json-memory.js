@@ -95,6 +95,13 @@
         try {
           bFirstExec = false;
           var_value = JSON.parse(currentSettings.value_init);
+          statusCallback('OK');
+          updateCallback(var_value);
+
+          pastStatus = 'OK';
+          pastSettings = currentSettings;
+
+          return true;
         } catch (err) {
           swal('JSON Parse error', err.message, 'error');
           statusCallback('Error');
