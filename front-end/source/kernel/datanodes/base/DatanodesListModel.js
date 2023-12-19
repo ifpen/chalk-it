@@ -268,7 +268,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
   }
 
   this.launchGlobalFirstUpdate = function (datanode) {
-    var sourceNodes = datanodesDependency.getSourceNodes();
+    var sourceNodes = datanodesDependency.getSourceNodesWithMemory();
     if (sourceNodes.length != 0) {
       //AEF: only if no-periodic datanodes exist as a startnodes
       datanode.schedulerStart(sourceNodes, sourceNodes[0], 'globalFirstUpdate');

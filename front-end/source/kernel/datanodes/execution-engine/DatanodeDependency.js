@@ -103,9 +103,10 @@ function DatanodeDependency() {
   }
 
   /*-----------------getDescendants-----------------*/
-  function getDescendants(startNodes) {
+  function getDescendants(startNodes, withoutMem) {
     let graph, loop;
-    [graph, loop] = buildGraph();
+    if (withoutMem) [graph, loop] = buildGraphWithoutMemory();
+    else [graph, loop] = buildGraph();
     //startNodesDesc = new Set(startNodes); //AEF descendants should not include the start node
     startNodesDesc = new Set();
     startNodes.forEach(function (elem) {
@@ -192,7 +193,7 @@ function DatanodeDependency() {
   /*-----------------computeAllDisconnectedGraphs-----------------*/
   function computeAllDisconnectedGraphs() {
     //compute once a time all disconnected graphs
-    const allSourceNodes = getSourceNodes();
+    const allSourceNodes = getSourceNodesWithMemory();
     let disconnectedGraphs = [];
     allDisconnectedGraphs = getDisconnectedGraphs(allSourceNodes, disconnectedGraphs);
     if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
@@ -269,6 +270,21 @@ function DatanodeDependency() {
     let sourceNodes = [];
     for (let node in nodes) {
       if (graph.indegree(nodes[node]) == 0) {
+        sourceNodes.push(nodes[node]);
+      }
+    }
+    return sourceNodes;
+  }
+
+  /*-----------------getSourceNodesWithMemory-----------------*/
+  function getSourceNodesWithMemory() {
+    const graph = buildGraphDS();
+    const nodes = graph.nodes();
+    let sourceNodes = [];
+    for (let node in nodes) {
+      if (graph.indegree(nodes[node]) == 0) {
+        sourceNodes.push(nodes[node]);
+      } else if (nodes[node].indexOf('pastValue_') !== -1) {
         sourceNodes.push(nodes[node]);
       }
     }
@@ -432,6 +448,34 @@ function DatanodeDependency() {
     return [graph, loop];
   }
 
+  /*-----------------buildGraph-----------------*/
+  // private function
+  // builds a Graph object from tarjan-graph.js
+  function buildGraphWithoutMemory() {
+    let graph = new Graph();
+    let loop = false;
+    for (let ds in dependencyStructure) {
+      let node = ds;
+      let edges = [];
+      dependencyStructure[ds].forEach(function (value) {
+        let add_edge = true;
+        let match = value.match(/pastValue_(.+)/);
+        if (match) {
+          let origin_name = match[1];
+          if (ds == origin_name) add_edge = false;
+        }
+        if (add_edge) edges.push(value);
+      });
+      graph.add(node, edges);
+      for (let i in edges) {
+        if (edges[i] === node) {
+          loop = true;
+        }
+      }
+    }
+    return [graph, loop];
+  }
+
   /*-----------------buildGraphDS-----------------*/
   // constructs a GraphDS object from graph-data-structure.js
   function buildGraphDS() {
@@ -468,7 +512,7 @@ function DatanodeDependency() {
   // that way we ensure, by construction, that we have a DAG
   function detectCycles() {
     let graph, loop;
-    [graph, loop] = buildGraph();
+    [graph, loop] = buildGraphWithoutMemory();
     return { hasCycle: graph.hasCycle(), getCycles: graph.getCycles(), hasLoop: loop };
   }
 
@@ -485,6 +529,7 @@ function DatanodeDependency() {
     hasSuccessors,
     hasPredecessors,
     getSourceNodes,
+    getSourceNodesWithMemory: getSourceNodesWithMemory,
     getDescendantsinBFS,
     getDescendants,
     getDisconnectedGraphs,

@@ -688,12 +688,29 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   updateSourceNodes = function (sourceNodes) {
     let startNodes = new Set(sourceNodes);
     descendants = datanodesDependency.getDescendants(sourceNodes);
+    // AEF: remove memory datanodes from desendant (to keep them in startNodes)
+    descendants.forEach((desc) => {
+      if (desc.indexOf('pastValue_') !== -1) {
+        descendants.delete(desc);
+      }
+    });
+
     let commonNodes = new Set(Array.from(descendants).filter((element) => startNodes.has(element)));
     //remove startnodes if they belong to other starnodes descendants
     commonNodes.forEach(function (node) {
       sourceNodes.splice(sourceNodes.indexOf(node), 1);
     });
 
-    return sourceNodes;
+    let sortedSourceNodes = sourceNodes.sort((a, b) => {
+      meetsCondition_a = a.indexOf('pastValue_') !== -1;
+      meetsCondition_b = b.indexOf('pastValue_') !== -1;
+      if (meetsCondition_a && !meetsCondition_b) {
+        return -1;
+      } else if (!meetsCondition_a && meetsCondition_b) {
+        return 1;
+      }
+      return 0;
+    });
+    return sortedSourceNodes;
   };
 };
