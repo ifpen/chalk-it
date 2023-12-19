@@ -224,14 +224,14 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             if (!datanodesDependency.isNode(dsName)) {
               datanodesDependency.addNode(dsName);
             }
-            //AEF: remove edges of pastValue of the same datanode
+            //AEF: remove edges of pastValue to the same datanode
             let add_edge = true;
             let match = dsName.match(/pastValue_(.+)/);
             if (match) {
               let origin_name = match[1];
               if (datanodeModel.name() == origin_name) add_edge = false;
             }
-            if (add_edge) datanodesDependency.addEdge(dsName, datanodeModel.name());
+            datanodesDependency.addEdge(dsName, datanodeModel.name());
             allDsNames.add(dsName);
 
             if (!bProjectLoad) {
@@ -319,6 +319,13 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
 
         if (!datanodesDependency.isNode(datanodeModel.name())) {
           datanodesDependency.addNode(datanodeModel.name());
+        }
+        //AEF: remove edges from datanode to its pastValue
+        let add_edge = true;
+        let match = datanodeModel.name().match(/pastValue_(.+)/);
+        if (match) {
+          let orig_name = match[1];
+          if (origin_name == orig_name) add_edge = false;
         }
         datanodesDependency.addEdge(origin_name, datanodeModel.name());
 
