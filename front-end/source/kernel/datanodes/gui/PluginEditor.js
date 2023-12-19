@@ -687,19 +687,21 @@ PluginEditor = function (jsEditor) {
 
             if (settingDef.from_datanode) {
               let datanodes = datanodesManager.getAllDataNodes();
-              datanodes = datanodes.filter((node) => node.type() !== 'Memory_plugin');
-              datanodes.sort((a, b) => a.name().localeCompare(b.name()));
-              if (!datanodes.some((node) => node.name() === defaultValue)) defaultValue = undefined;
-              _.each(datanodes, function (datanode) {
-                let optionName = datanode.name();
-                let optionValue = datanode.name();
-                if (_.isUndefined(defaultValue)) {
-                  defaultValue = optionValue;
-                }
-                $('<option></option>').text(optionName).attr('value', optionValue).appendTo(input);
-              });
-              newSettings.settings['name'] = 'pastValue_' + defaultValue;
-              $('#value-dn_name')[0].value = 'pastValue_' + defaultValue;
+              if (datanodes.length) {
+                datanodes = datanodes.filter((node) => node.type() !== 'Memory_plugin');
+                datanodes.sort((a, b) => a.name().localeCompare(b.name()));
+                if (!datanodes.some((node) => node.name() === defaultValue)) defaultValue = undefined;
+                _.each(datanodes, function (datanode) {
+                  let optionName = datanode.name();
+                  let optionValue = datanode.name();
+                  if (_.isUndefined(defaultValue)) {
+                    defaultValue = optionValue;
+                  }
+                  $('<option></option>').text(optionName).attr('value', optionValue).appendTo(input);
+                });
+                newSettings.settings['name'] = 'pastValue_' + defaultValue;
+                $('#value-dn_name')[0].value = 'pastValue_' + defaultValue;
+              }
             } else {
               _.each(settingDef.options, function (option) {
                 let optionName;
