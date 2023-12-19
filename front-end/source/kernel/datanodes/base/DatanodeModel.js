@@ -327,6 +327,20 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
           if (currentGraph != null) {
             currentGraph.forEach(function (name) {
               if (datanodesManager.foundDatanode(name)) {
+                //AEF: process memory list here
+                const memorydataNodeList = datanodesDependency.getMemorydataNodeList();
+                if (memorydataNodeList.size) {
+                  const param = Array.from(memorydataNodeList.keys()).filter((memName) => currentGraph.has(memName));
+
+                  if (param.length > 0) {
+                    console.log('Start schedule from memory datanodes list: ' + param);
+                    const origin = memorydataNodeList.get(param[0]);
+                    datanodesDependency.clearMemorydataNodeList(param);
+                    datanodesManager.getDataNodeByName(param[0]).updateNow(true, true, true);
+                  }
+                }
+                //AEF END
+
                 if (datanodesManager.getDataNodeByName(name).execInstance() != null) {
                   if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
                     console.log('Instance of ', name, ' is already running'); //AEF: NEEDED ONLY FOR DEBUG
@@ -444,42 +458,40 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
 
       // Memory update
       const memorydataNodeList = datanodesDependency.getMemorydataNodeList();
-      if (memorydataNodeList.size) {
-        console.log('Start schedule from memory datanodes list: ' + Array.from(memorydataNodeList.keys()));
-        const param = Array.from(memorydataNodeList.keys());
-        const origin = memorydataNodeList.get(param[0]);
-        datanodesDependency.clearMemorydataNodeList();
-        self.schedulerStart(param, param[0], origin);
+      const setvarList = datanodesDependency.getSetvarList();
+      const processedSetvarList = datanodesDependency.getProcessedSetvarList();
+      const filteredSetvarList = new Map(Array.from(setvarList).filter(([key]) => !processedSetvarList.has(key)));
+      if (filteredSetvarList.size) {
+        console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
+        console.log('triggred by : ' + Array.from(filteredSetvarList.values()));
+        console.log('triggred by : ' + Array.from([...new Set(filteredSetvarList.values())]));
+        const param = Array.from(filteredSetvarList.keys());
+        datanodesDependency.addProcessedSetvarList(filteredSetvarList);
+        datanodesDependency.clearSetvarList();
+        //clear same dn in memList
+        if (memorydataNodeList.size) {
+          const memList = Array.from(memorydataNodeList.keys()).filter((memName) => filteredSetvarList.has(memName));
+          datanodesDependency.clearMemorydataNodeList(memList);
+        }
+        //
+        self.schedulerStart(param, param[0], 'setVariable');
       } else {
-        // SetVariables
-        const setvarList = datanodesDependency.getSetvarList();
-        const processedSetvarList = datanodesDependency.getProcessedSetvarList();
-        const filteredSetvarList = new Map(Array.from(setvarList).filter(([key]) => !processedSetvarList.has(key)));
-        if (filteredSetvarList.size) {
-          console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
-          console.log('triggred by : ' + Array.from(filteredSetvarList.values()));
-          console.log('triggred by : ' + Array.from([...new Set(filteredSetvarList.values())]));
-          const param = Array.from(filteredSetvarList.keys());
-          datanodesDependency.addProcessedSetvarList(filteredSetvarList);
-          datanodesDependency.clearSetvarList();
-          self.schedulerStart(param, param[0], 'setVariable');
-        } else {
-          datanodesDependency.clearProcessedSetvarList();
+        datanodesDependency.clearProcessedSetvarList();
 
-          // extraStartNodes
-          const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
-          if (extraStartNodesList.size) {
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
-              console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
-            }
-            //update operationsToExecute with extraStartNodesList
-            const param = Array.from(extraStartNodesList.keys());
-            const origin = extraStartNodesList.get(param[0]);
-            datanodesDependency.clearExtraStartNodesList();
-            self.schedulerStart(param, param[0], origin);
+        // extraStartNodes
+        const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
+        if (extraStartNodesList.size) {
+          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+            console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
           }
+          //update operationsToExecute with extraStartNodesList
+          const param = Array.from(extraStartNodesList.keys());
+          const origin = extraStartNodesList.get(param[0]);
+          datanodesDependency.clearExtraStartNodesList();
+          self.schedulerStart(param, param[0], origin);
         }
       }
+      //}
     } else {
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
         console.log('Problem : request for ending a scheduling instance whereas no instance exists');

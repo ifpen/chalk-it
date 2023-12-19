@@ -372,8 +372,16 @@ function DatanodeDependency() {
   }
 
   /*-----------------clearMemorydataNodeList-----------------*/
-  function clearMemorydataNodeList() {
-    memorydataNodeList.clear();
+  function clearMemorydataNodeList(memList) {
+    if (_.isUndefined(memList)) {
+      memorydataNodeList.clear();
+    } else {
+      memList.forEach((item) => {
+        if (memorydataNodeList.has(item)) {
+          memorydataNodeList.delete(item);
+        }
+      });
+    }
   }
 
   /*-----------------hasPredecessors-----------------*/
