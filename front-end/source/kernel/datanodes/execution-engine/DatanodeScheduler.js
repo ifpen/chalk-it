@@ -127,7 +127,8 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
         return;
       }
       if (datanodesManager.getDataNodeByName(op).is_specific_exec) {
-        if (callOrigin !== 'memory') {
+        //AEF: launch memory at start for init_value
+        if (callOrigin !== 'setVariable' && callOrigin !== 'globalFirstUpdate') {
           console.log(op + ' is a memory and will be treated at the end of schedule.');
           operationsToExecute.delete(op);
           datanodesDependency.addMemorydataNodeList(op);
