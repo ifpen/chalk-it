@@ -44,7 +44,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     }
   });
 
-  var OperationsIn = datanodesDependency.getDescendants(startNodes); // in of exec instance
+  var OperationsIn = datanodesDependency.getDescendants(startNodes, true); // in of exec instance
   var OperationsOut = difference(operationsAll, OperationsIn); // out of exec instance
   var OperationsOutOK = new Set(); // out of exec instance with status OK
   var dsStatus;
@@ -139,7 +139,10 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       switch (datanodesManager.getDataNodeByName(op).statusForScheduler()) {
         case 'Ready':
           if (datanodesManager.foundDatanode(op)) {
-            const bAllPredExecuted = allPredecessorsExecuted(op);
+            let bAllPredExecuted = allPredecessorsExecuted(op);
+            if (datanodesManager.getDataNodeByName(op).is_specific_exec) {
+              bAllPredExecuted = true;
+            }
             if (bAllPredExecuted) {
               operationsToExecute.delete(op);
               operationsToWaitFor.add(op);
@@ -279,17 +282,24 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       case 'OK': {
         operationsTerminated.add(dsName);
         operationsToWaitFor.delete(dsName);
-        datanodesDependency.dependencyStructure[dsName].forEach(function (successor) {
-          if (allPredecessorsExecuted(successor)) {
-            if (!alreadyExecuted(successor)) {
-              operationsToExecute.add(successor);
-            } else {
-              if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
-                console.log('operation ' + successor + ' not added because already executed');
+        if (!datanodesManager.getDataNodeByName(dsName).is_specific_exec) {
+          datanodesDependency.dependencyStructure[dsName].forEach(function (successor) {
+            if (allPredecessorsExecuted(successor)) {
+              if (!alreadyExecuted(successor)) {
+                operationsToExecute.add(successor);
+              } else {
+                if (datanodesManager.getDataNodeByName(successor).is_specific_exec) {
+                  callOrigin = 'memory';
+                  operationsToExecute.add(successor);
+                } else {
+                  if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+                    console.log('operation ' + successor + ' not added because already executed');
+                  }
+                }
               }
             }
-          }
-        });
+          });
+        }
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
           console.log('operation ' + dsName + ' completed with status ' + status);
         }
