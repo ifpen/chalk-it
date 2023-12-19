@@ -132,7 +132,7 @@
     self.onDispose = function () {};
 
     this.isSetValueValid = function () {
-      return false;
+      return true;
     };
 
     self.isSetFileValid = function () {
@@ -145,6 +145,25 @@
 
     this.isSpecificExecution = function () {
       return true;
+    };
+    // **setValue()** (optional)
+    this.setValue = function (propertyName, val) {
+      bFirstExec = true;
+      if (propertyName.length == 0) {
+        var_value = val;
+        currentSettings.value_init = JSON.stringify(var_value);
+        return;
+      } else if (propertyName.length == 1) {
+        var_value[propertyName[0]] = val;
+      } else {
+        var varInter;
+        for (var deep = 0; deep < propertyName.length - 1; deep++) {
+          if (deep == 0) varInter = var_value[propertyName[deep]];
+          else varInter = varInter[propertyName[deep]];
+        }
+        varInter[propertyName[propertyName.length - 1]] = val;
+      }
+      currentSettings.value_init = JSON.stringify(var_value);
     };
   };
 })();
