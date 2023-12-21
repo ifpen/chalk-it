@@ -136,7 +136,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
     var settingsDefs = datanodePlugins[datanodeModel.type()].settings;
     var datanodeRegex = new RegExp('dataNodes.([\\w_-]+)|dataNodes\\[[\'"]([^\'"]+)', 'g');
     const setVarRegex =
-      /(setVariables?\((\[.*?\]),\s*(\[.*?\])\))|(setVariable\(("([^"]*)"),\s*(\d+)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNodes\((\[.*?\])\))/g;
+      /(setVariables?\((\[.*?\]),\s*(\[.*?\])\))|(setVariable\(("([^"]*)"),\s*(\d+)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNodes\((\[.*?\])\))|(setVariableProperty\(("([^"]*)"),\s*(\[.*?\])\s*,\s*(\d+)\))/g;
 
     const regexPython = /(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')|(#.*$)/gm;
     var currentSettings = datanodeModel.settings();
@@ -295,6 +295,9 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
                   // For executeDataNodes
                   const variableArray = JSON.parse(matches[12]);
                   dsName = variableArray;
+                } else if (!_.isUndefined(matches[15])) {
+                  // For setVariableProperty
+                  dsName[0] = matches[15];
                 }
               }
 
