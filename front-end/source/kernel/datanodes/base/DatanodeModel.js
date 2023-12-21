@@ -308,7 +308,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       if (datanodesManager.foundDatanode(source[0])) {
         if (datanodesManager.getDataNodeByName(source[0]).execInstance() == null) {
           let triggeredNodes = Object.assign({}, source); //needed for sourceNodes with explicitTrig flag
-          sourceNodes = updateSourceNodes(source);
+          sourceNodes = updateSourceNodes(source, callOriginArg);
           initiatorNode = sourceNodes[0];
           if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
             console.log('new scheduler instance with sourceNodes:', sourceNodes, ' and initiator:', initiatorNode);
@@ -697,8 +697,9 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     });
   };
 
-  updateSourceNodes = function (sourceNodes) {
+  updateSourceNodes = function (sourceNodes, callOriginArg) {
     let startNodes = new Set(sourceNodes);
+
     descendants = datanodesDependency.getDescendants(sourceNodes);
     // AEF: remove memory datanodes from desendant (to keep them in startNodes)
     descendants.forEach((desc) => {
@@ -706,6 +707,30 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
         descendants.delete(desc);
       }
     });
+
+    if (callOriginArg === 'setVariable') {
+      let names = new Set();
+      let nodesToKeep = new Set();
+
+      startNodes.forEach((node) => {
+        if (!node.startsWith('pastValue_')) {
+          names.add(node);
+        }
+      });
+      startNodes.forEach((node) => {
+        if (node.startsWith('pastValue_')) {
+          let name = node.substring(10);
+          if (names.has(name)) {
+            nodesToKeep.add(node); // 'pastValue_name'
+            nodesToKeep.add(name); // the corresponding 'name'
+          }
+        }
+      });
+      // remove ('pastValue_name' and the corresponding 'name') datanodes from desendant (to keep them in startNodes)
+      nodesToKeep.forEach((node) => {
+        descendants.delete(node);
+      });
+    }
 
     let commonNodes = new Set(Array.from(descendants).filter((element) => startNodes.has(element)));
     //remove startnodes if they belong to other starnodes descendants
