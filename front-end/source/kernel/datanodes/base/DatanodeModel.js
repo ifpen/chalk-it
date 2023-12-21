@@ -464,7 +464,6 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       if (filteredSetvarList.size) {
         console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
         console.log('triggred by : ' + Array.from(filteredSetvarList.values()));
-        console.log('triggred by : ' + Array.from([...new Set(filteredSetvarList.values())]));
         const param = Array.from(filteredSetvarList.keys());
         datanodesDependency.addProcessedSetvarList(filteredSetvarList);
         datanodesDependency.clearSetvarList();

@@ -275,11 +275,23 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             }
           }
 
-          while ((matches = setVarRegex.exec(script))) {
-            const dsName = matches[1];
-            if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig)
-              console.log("init: don't add parsed set var");
-            else datanodesDependency.addSetvarList(dsName, datanodeModel.name());
+          let lines = script.split('\n');
+          for (let i = 0; i < lines.length; i++) {
+            while ((matches = setVarRegex.exec(lines[i]))) {
+              let dsName = [];
+              if (!_.isUndefined(matches)) {
+                if (!_.isUndefined(matches[6])) {
+                  dsName[0] = matches[6];
+              }
+
+              if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig)
+                console.log("init: don't add parsed set var");
+              else {
+                for (const name of dsName) {
+                  datanodesDependency.addSetvarList(name, datanodeModel.name());
+                }
+              }
+            }
           }
           //AEF: fix bug (clean up data that doesn't exist anymore in formula for example)
           datanodesDependency.removeMissedDependantDatanodes(allDsNames, datanodeModel.name());
