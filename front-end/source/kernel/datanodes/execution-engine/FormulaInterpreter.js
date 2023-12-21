@@ -135,7 +135,9 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
     // Check for any calculated settings
     var settingsDefs = datanodePlugins[datanodeModel.type()].settings;
     var datanodeRegex = new RegExp('dataNodes.([\\w_-]+)|dataNodes\\[[\'"]([^\'"]+)', 'g');
-    const setVarRegex = new RegExp('setVariable\\("(\\w+)",\\s*([^)]+)\\)', 'g');
+    const setVarRegex =
+      /(setVariables?\((\[.*?\]),\s*(\[.*?\])\))|(setVariable\(("([^"]*)"),\s*(\d+)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNodes\((\[.*?\])\))/g;
+
     const regexPython = /(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')|(#.*$)/gm;
     var currentSettings = datanodeModel.settings();
     var bOK = true;
@@ -225,7 +227,6 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               datanodesDependency.addNode(dsName);
             }
             //AEF: remove edges of pastValue to the same datanode
-            let add_edge = true;
             let match = dsName.match(/pastValue_(.+)/);
             if (match) {
               let origin_name = match[1];
@@ -281,7 +282,20 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               let dsName = [];
               if (!_.isUndefined(matches)) {
                 if (!_.isUndefined(matches[6])) {
+                  // For setVariable
                   dsName[0] = matches[6];
+                } else if (!_.isUndefined(matches[2])) {
+                  // For setVariables array elements
+                  const variableArray = JSON.parse(matches[2]);
+                  dsName = variableArray;
+                } else if (!_.isUndefined(matches[10])) {
+                  // For executeDataNode
+                  dsName[0] = matches[10];
+                } else if (!_.isUndefined(matches[12])) {
+                  // For executeDataNodes
+                  const variableArray = JSON.parse(matches[12]);
+                  dsName = variableArray;
+                }
               }
 
               if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig)

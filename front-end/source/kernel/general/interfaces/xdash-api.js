@@ -37,21 +37,9 @@ var xDashApi = (function () {
   }
 
   function executeDataNode(dataNodeName) {
-    let dN = datanodesManager.getDataNodeByName(dataNodeName);
-    dN.notificationCallback(
-      'error',
-      dataNodeName,
-      "Deprecated feature: 'executeDataNode' feature is no longer supported"
-    );
   }
 
   function executeDataNodes(dataNodeNames) {
-    let dN = datanodesManager.getDataNodeByName(dataNodeNames[0]);
-    dN.notificationCallback(
-      'error',
-      dataNodeNames[0],
-      "Deprecated feature: 'executeDataNodes' feature is no longer supported"
-    );
   }
 
   function viewPage(pageUrl, inputVals, bNewTab) {
