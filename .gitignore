@@ -77,8 +77,7 @@ ipch/
 *.bak
 *.Copie
 
-# Back-end
-__pycache__/
-back_end/app/__pycache__/
+# Generated files
 .vscode/
 *.xprjson
+**/__pycache__
