@@ -62,10 +62,10 @@ var customNavigationRuntime = (function () {
      * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
      */
     function customNavigationPrepareRescale(valueRow, valueCol) {
-        let { rows, cols } = _getGrid();
+        const { defaultRows, defaultCols } = _getGrid();
 
-        rows = Number(valueRow) || 1;
-        cols = Number(valueCol) || 1;
+        const rows = Number(valueRow) || defaultRows;
+        const cols = Number(valueCol) || defaultCols;
 
         _setGrid({ rows, cols });
 
@@ -81,10 +81,10 @@ var customNavigationRuntime = (function () {
      */
     function customNavigationModeInit(jsonContent) {
         const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
-        let { rows, cols } = _getGrid();
+        const { defaultRows, defaultCols } = _getGrid();
 
-        rows = Number(jsonContent.device.cols.valueRow) || 1;
-        cols = Number(jsonContent.device.cols.valueCol) || 1;
+        const rows = Number(valueRow) || defaultRows;
+        const cols = Number(valueCol) || defaultCols;
 
         _setGrid({ rows, cols });
 
@@ -118,17 +118,18 @@ var customNavigationRuntime = (function () {
 
         const jsonContent = _getJsonContent();
         let exportOptions = "";
-        let { rows, cols } = _getGrid();
+        const { defaultRows, defaultCols } = _getGrid();
+        let rows, cols;
 
         if (_.isEmpty(jsonContent)) {
             // View mode
-            rows = layoutMgr.getRows() || 1;
-            cols = layoutMgr.getCols() || 1;
+            rows = layoutMgr.getRows() || defaultRows;
+            cols = layoutMgr.getCols() || defaultCols;
             exportOptions = htmlExport.exportOptions;
         } else { 
             // Preview mode
-            rows = Number(jsonContent.device.cols.valueRow) || 1;
-            cols = Number(jsonContent.device.cols.valueCol) || 1;
+            rows = Number(jsonContent.device.cols.valueRow) || defaultRows;
+            cols = Number(jsonContent.device.cols.valueCol) || defaultCols;
             exportOptions = jsonContent.exportOptions;
         }
 

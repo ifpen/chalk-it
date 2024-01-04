@@ -43,10 +43,10 @@ var rowToTabRuntime = (function () {
      * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
      */
     function rowToTabPrepareRescale(valueRow, valueCol) {
-        let { rows, cols } = _getGrid();
+        const { defaultRows, defaultCols } = _getGrid();
 
-        rows = Number(valueRow) || 1;
-        cols = Number(valueCol) || 1;
+        const rows = Number(valueRow) || defaultRows;
+        const cols = Number(valueCol) || defaultCols;
 
         _setGrid({ rows, cols });
 
@@ -64,10 +64,10 @@ var rowToTabRuntime = (function () {
     function rowToTabFinishRescale(valueRow, valueCol) {
         const $rootScope = angular.element(document.body).scope().$root;
         const currentPage = $rootScope.pageNumber;
-        let { rows, cols } = _getGrid();
+        const { defaultRows, defaultCols } = _getGrid();
 
-        rows = Number(valueRow) || 1;
-        cols = Number(valueCol) || 1;
+        const rows = Number(valueRow) || defaultRows;
+        const cols = Number(valueCol) || defaultCols;
 
         _setGrid({ rows, cols });
 
@@ -95,10 +95,10 @@ var rowToTabRuntime = (function () {
      */
     function rowToTabModeInit(jsonContent) {
         const $rootScope = angular.element(document.body).scope().$root;
-        let { rows, cols } = _getGrid();
+        const { defaultRows, defaultCols } = _getGrid();
 
-        rows = Number(jsonContent.device.cols.valueRow) || 1;
-        cols = Number(jsonContent.device.cols.valueCol) || 1;
+        const rows = Number(valueRow) || defaultRows;
+        const cols = Number(valueCol) || defaultCols;
 
         _setGrid({ rows, cols });
 

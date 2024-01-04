@@ -43,10 +43,10 @@ var rowToPageRuntime = (function () {
      * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
      */
     function rowToPagePrepareRescale(valueRow, valueCol) {
-        let { rows, cols } = _getGrid();
+        const { defaultRows, defaultCols } = _getGrid();
 
-        rows = Number(valueRow) || 1;
-        cols = Number(valueCol) || 1;
+        const rows = Number(valueRow) || defaultRows;
+        const cols = Number(valueCol) || defaultCols;
 
         _setGrid({ rows, cols });
 
@@ -64,10 +64,10 @@ var rowToPageRuntime = (function () {
     function rowToPageFinishRescale(valueRow, valueCol) {
         const $rootScope = angular.element(document.body).scope().$root;
         const currentPage = $rootScope.pageNumber;
-        let { rows, cols } = _getGrid();
+        const { defaultRows, defaultCols } = _getGrid();
 
-        rows = Number(valueRow) || 1;
-        cols = Number(valueCol) || 1;
+        const rows = Number(valueRow) || defaultRows;
+        const cols = Number(valueCol) || defaultCols;
 
         _setGrid({ rows, cols });
 
@@ -93,10 +93,10 @@ var rowToPageRuntime = (function () {
     function rowToPageModeInit(jsonContent) {
         const $rootScope = angular.element(document.body).scope().$root;
 
-        let { rows, cols } = _getGrid();
+        const { defaultRows, defaultCols } = _getGrid();
 
-        rows = Number(jsonContent.device.cols.valueRow) || 1;
-        cols = Number(jsonContent.device.cols.valueCol) || 1;
+        const rows = Number(valueRow) || defaultRows;
+        const cols = Number(valueCol) || defaultCols;
 
         _setGrid({ rows, cols });
 
@@ -121,28 +121,24 @@ var rowToPageRuntime = (function () {
             let condition = true;
             let operation = "";
             switch (action) {
-                case "previous": {
+                case "previous":
                     condition = $rootScope.pageNumber > 1;
                     operation = "-";
                     break;
-                };
-                case "next": {
+                case "next":
                     condition = $rootScope.pageNumber < $rootScope.totalPages;
                     operation = "+";
                     break;
-                };
             }
             if (condition) {
                 $('[id^=dpr][id$=c]').hide();
                 switch (operation) {
-                    case "-": {
+                    case "-":
                         $rootScope.pageNumber -= 1;
                         break;
-                    };
-                    case "+": {
+                    case "+":
                         $rootScope.pageNumber += 1;
                         break;
-                    };
                 }
                 if (cols > 1) {
                     const nbLastRowDiv = $rootScope.pageNumber * cols;
