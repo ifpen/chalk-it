@@ -113,6 +113,9 @@ var customNavigationRuntime = (function () {
         // Do not run in edit mode
         if (typeof layoutMgr !== "undefined" && !$rootScope.bIsPlayMode) return;
 
+        // When using the "row to tab" method, the page number must be updated.
+        $rootScope.pageNumber = numPage;
+
         const jsonContent = _getJsonContent();
         let exportOptions = "";
         let { rows, cols } = _getGrid();
