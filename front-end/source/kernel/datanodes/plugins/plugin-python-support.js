@@ -140,7 +140,7 @@ class PythonPluginRemoteExec extends PythonPluginExecBase {
     let networkFail = false;
     this.jqXHR = $.ajax({
       url,
-      dataType: 'json',
+      dataType: 'text',
       type: 'POST',
       beforeSend: function (xhr) {
         xhr.setRequestHeader('X-Request-ID', PythonPluginRemoteExec.createId());
@@ -150,7 +150,8 @@ class PythonPluginRemoteExec extends PythonPluginExecBase {
       contentType: 'application/json',
 
       success: (data, status, xhr) => {
-        resolve(data);
+        const json = JSON.parseMore(data)
+        resolve(json);
       },
       error: (xhr, status, err) => {
         if (networkFail) {
