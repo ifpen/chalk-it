@@ -22,16 +22,17 @@ class DataNodesProxy:
 
             if self._transform:
                 if (
-                        isinstance(value, dict) and
-                        'type' in value and
-                        'isBinary' in value and
-                        'content' in value and
-                        value['type'] == PICKLE_MIME and
-                        value['isBinary'] and
-                        isinstance(value['content'], str)
+                    isinstance(value, dict)
+                    and 'type' in value
+                    and 'isBinary' in value
+                    and 'content' in value
+                    and value['type'] == PICKLE_MIME
+                    and value['isBinary']
+                    and isinstance(value['content'], str)
                 ):
-                    from pickle import loads
                     from base64 import standard_b64decode
+                    from pickle import loads
+
                     data = standard_b64decode(value['content'])
                     value = loads(data)
 

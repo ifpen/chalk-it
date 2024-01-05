@@ -13,6 +13,7 @@ PANDAS_MAX_COLS = None
 
 def bytes_to_b64(data: bytes) -> str:
     from base64 import standard_b64encode
+
     return standard_b64encode(data).decode('ascii')
 
 
@@ -131,6 +132,7 @@ class DataAdapter(OutputAdapter):
             data = self._value
         elif name == 'numpy.ndarray':
             import numpy
+
             data = with_io(lambda buffer: numpy.save(buffer, self._value))
         elif name == 'PIL.Image.Image':
             data = with_io(lambda buffer: self._value.save(buffer, format='PNG'))
@@ -204,6 +206,7 @@ class XDashApi:
     @staticmethod
     def base64_to_bytes(b64: str) -> bytes:
         from base64 import standard_b64decode
+
         return standard_b64decode(b64)
 
     @staticmethod

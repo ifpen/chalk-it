@@ -1,10 +1,10 @@
 import json
 import pickle
 from io import BytesIO
-from typing import Optional, Callable
+from typing import Callable, Optional
 
 from xdash_python_api import PICKLE_MIME
-from xdash_python_api.outputs import capture, XDashApi, bytes_to_b64
+from xdash_python_api.outputs import XDashApi, bytes_to_b64, capture
 
 
 def test_base64_to_bytes_should_mirror_bytes_to_b64():
@@ -47,6 +47,7 @@ def test_capture_should_ignore_stdout_when_not_debugging():
 def test_capture_should_contain_stderr_when_debugging():
     def script(*_):
         import sys
+
         print("nope", file=sys.stderr)
         print("nope", file=sys.stderr)
 
@@ -57,6 +58,7 @@ def test_capture_should_contain_stderr_when_debugging():
 def test_capture_should_not_contain_stderr_when_not_debugging():
     def script(*_):
         import sys
+
         print("err", file=sys.stderr)
 
     result = do_capture(script, debug=False)
@@ -91,6 +93,7 @@ def test_capture_should_return_errors():
 
 def test_capture_should_correct_traces():
     from inspect import currentframe, getframeinfo
+
     # We expect an error on line 3. We shift by 4 to get a "-11" that may not appear in the test framework's stack
 
     lineno = getframeinfo(currentframe()).lineno
@@ -130,9 +133,11 @@ def test_capture_should_use_proxy_to_unpickle_selectively():
 
 ### Test default conversions
 
+
 def test_returned_images_default_to_png():
     def script(*_):
         from PIL import Image
+
         return Image.new('RGB', (60, 30), color='red')
 
     result = do_capture(script)["result"]
@@ -171,9 +176,9 @@ def test_returned_bytes_should_default_to_binary_data():
         return b'Hello world'
 
     result = do_capture(script)["result"]
-    assert result["isBinary"] \
-           and result["type"] == "application/octet-stream" \
-           and result["content"] == "SGVsbG8gd29ybGQ="
+    assert (
+        result["isBinary"] and result["type"] == "application/octet-stream" and result["content"] == "SGVsbG8gd29ybGQ="
+    )
 
 
 def test_returned_bytesio_should_default_to_binary_data():
@@ -181,14 +186,15 @@ def test_returned_bytesio_should_default_to_binary_data():
         return BytesIO(b'Hello world')
 
     result = do_capture(script)["result"]
-    assert result["isBinary"] \
-           and result["type"] == "application/octet-stream" \
-           and result["content"] == "SGVsbG8gd29ybGQ="
+    assert (
+        result["isBinary"] and result["type"] == "application/octet-stream" and result["content"] == "SGVsbG8gd29ybGQ="
+    )
 
 
 def test_returned_matplotlib_figure_should_default_to_svg():
     def script(*_):
         import matplotlib.pyplot as plt
+
         fig, ax = plt.subplots()
         fruits = ['apple', 'blueberry', 'cherry', 'orange']
         counts = [40, 100, 30, 55]
@@ -202,6 +208,7 @@ def test_returned_matplotlib_figure_should_default_to_svg():
 def test_returned_plotly_figure_should_default_to_json():
     def script(*_):
         import plotly.express as px
+
         fig = px.line(x=["a", "b", "c"], y=[1, 3, 2])
         return fig
 
@@ -212,6 +219,7 @@ def test_returned_plotly_figure_should_default_to_json():
 def test_returned_numpy_array_should_default_to_json():
     def script(*_):
         import numpy as np
+
         return np.array([1, 2, 3])
 
     result = do_capture(script)["result"]
@@ -222,6 +230,7 @@ def test_returned_pandas_serie_should_default_to_json():
     def script(*_):
         import numpy as np
         import pandas as pd
+
         return pd.Series([1, 2, np.nan])
 
     result = do_capture(script)["result"]
@@ -231,17 +240,17 @@ def test_returned_pandas_serie_should_default_to_json():
 def test_as_data_should_save_numpy_arrays():
     def script(_, xdash):
         import numpy as np
+
         return xdash.as_data(np.array([1, 2, 3]))
 
     result = do_capture(script)["result"]
-    assert result["isBinary"] \
-           and result["type"] == "application/octet-stream" \
-           and "content" in result
+    assert result["isBinary"] and result["type"] == "application/octet-stream" and "content" in result
 
 
 def test_returned_pandas_dataframe_should_default_to_json():
     def script(*_):
         import pandas as pd
+
         return pd.DataFrame({"A": [1, 2, 3]})
 
     result = do_capture(script)["result"]
@@ -251,6 +260,7 @@ def test_returned_pandas_dataframe_should_default_to_json():
 def test_pandas_dataframes_should_debug_as_html():
     def script(_, xdash):
         import pandas as pd
+
         xdash.debug(pd.DataFrame({"A": [1, 2, 3]}))
 
     result = do_capture(script, debug=True)["debug"][0]
@@ -262,10 +272,12 @@ def test_as_data_should_pass_mime_and_name_along():
         return xdash.as_data(b'aaa', mime_type="application/magic", name="file.file")
 
     result = do_capture(script)["result"]
-    assert result["isBinary"] \
-           and result["type"] == "application/magic" \
-           and result["name"] == "file.file" \
-           and result["content"] == "YWFh"
+    assert (
+        result["isBinary"]
+        and result["type"] == "application/magic"
+        and result["name"] == "file.file"
+        and result["content"] == "YWFh"
+    )
 
 
 def test_single_output_return_the_value():
