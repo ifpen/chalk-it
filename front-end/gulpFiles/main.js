@@ -396,7 +396,7 @@ task(
     }
 
     const configFile = '../configs/config.' + Env + '.js';
-    const dependenciesFiles = ['../thirdparty/pyodide.js'];
+    const dependenciesFiles = ['../thirdparty/pyodide.js', '../thirdparty/json_parseMore.js'];
     const workerFile = '../source/kernel/base/pyodide-worker.js';
 
 

@@ -86,7 +86,7 @@ self.onmessage = async (event) => {
             await _loadPackages(msg);
             self.postMessage({ result: "ok", id });
         } else if (type === "run") {
-            const result = JSON.parse(await _runPythonAsync(msg));
+            const result = JSON.parseMore(await _runPythonAsync(msg));
             self.postMessage({ ...result, id });
         } else {
             const error = `Invalid message type: ${type}`;
