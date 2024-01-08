@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8750",
-    "date": "Fri Dec 15 2023 14:40:00 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8774",
+    "date": "Mon Jan 08 2024 14:10:31 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "line-heat-map-view",
     "description": "",
     "groupName": "",
@@ -33,7 +33,7 @@
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":4.84112,\"longitude\":45.74968,\"zoom\":20},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"CO2\",\"showLegend\":true,\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"black\",\"weight\":4,\"opacity\":1,\"property\":\"CO2\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"CO2\":[0,10]}}]}"
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":4.84112,\"longitude\":45.74968,\"zoom\":20},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"CO2\",\"showLegend\":true,\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"black\",\"weight\":10,\"opacity\":0.5,\"property\":\"CO2\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"CO2\":[0,10]}}]}"
         }
       }
     ]
@@ -43,13 +43,13 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1807,
+    "widthPx": 1806,
     "heightPx": 719,
-    "scrollWidthPx": 1807,
+    "scrollWidthPx": 1806,
     "scrollHeightPx": 719,
-    "widthVw": 88.57843137254902,
+    "widthVw": 88.52941176470588,
     "heightVh": 71.61354581673307,
-    "scrollWidthVw": 88.57843137254902,
+    "scrollWidthVw": 88.52941176470588,
     "scrollHeightVh": 71.61354581673307,
     "scalingMethod": "scaleTwh",
     "media": "large",
@@ -70,10 +70,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "0.996016vh",
-        "left": "0.843135vw",
-        "height": "59.9602vh",
-        "width": "69.1667vw",
+        "top": "7.66932vh",
+        "left": "0.833794vw",
+        "height": "62.8486vh",
+        "width": "72.6382vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -86,6 +86,169 @@
       },
       "modelParameters": {},
       "modelHiddenParams": {}
+    },
+    "flatUiSelectA": {
+      "layout": {
+        "top": "1.09562vh",
+        "left": "1.02998vw",
+        "height": "4.98008vh",
+        "width": "19.0301vw",
+        "minHeight": "27px",
+        "minWidth": "40px",
+        "z-index": "2"
+      },
+      "container": {
+        "id": "flatUiSelectA",
+        "instanceId": "flatUiSelectA",
+        "modelJsonId": "flatUiSelect",
+        "widgetTypeName": "Select(flatUiSelectA)"
+      },
+      "modelParameters": {
+        "label": "Tile server",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "selectWidthProportion": "70%",
+        "isNumber": false,
+        "selectValueFontFamily": "var(--widget-font-family)",
+        "selectValueFontSize": 0.5,
+        "selectedValueColor": "var(--widget-select-option-highlighted-text)",
+        "selectedItemDefaultColor": "var(--widget-select-option-highlighted-color)",
+        "selectedItemHoverColor": "var(--widget-select-option-highlighted-color)",
+        "isKeyValuePairs": false
+      },
+      "modelHiddenParams": {
+        "keys": [],
+        "values": [],
+        "value": [],
+        "selectedValue": ""
+      }
+    },
+    "flatUiHorizontalSliderA": {
+      "layout": {
+        "top": "1.09562vh",
+        "left": "21.0901vw",
+        "height": "4.88048vh",
+        "width": "24.0329vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "3"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderA",
+        "instanceId": "flatUiHorizontalSliderA",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderA)"
+      },
+      "modelParameters": {
+        "label": "opacity",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "layout": {
+        "top": "0.996016vh",
+        "left": "46.3491vw",
+        "height": "4.98008vh",
+        "width": "24.0329vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "4"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderB",
+        "instanceId": "flatUiHorizontalSliderB",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderB)"
+      },
+      "modelParameters": {
+        "label": "weight",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "flatUiSwitchA": {
+      "layout": {
+        "top": "8.16733vh",
+        "left": "74.3058vw",
+        "height": "4.98008vh",
+        "width": "10.0055vw",
+        "minHeight": "24px",
+        "minWidth": "50px",
+        "z-index": "5"
+      },
+      "container": {
+        "id": "flatUiSwitchA",
+        "instanceId": "flatUiSwitchA",
+        "modelJsonId": "flatUiSwitch",
+        "widgetTypeName": "Switch(flatUiSwitchA)"
+      },
+      "modelParameters": {
+        "label": "showLegend",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelPosition": "right",
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "switchWidthProportion": "30%",
+        "switchOnColor": "var(--widget-input-checked-color)",
+        "switchOffColor": "var(--widget-input-unchecked-color)"
+      },
+      "modelHiddenParams": {
+        "value": false
+      }
     }
   },
   "connections": {
@@ -99,6 +262,65 @@
         "name": "GeoJSONStyle",
         "dataNode": "Style",
         "dataFields": []
+      }
+    },
+    "flatUiSelectA": {
+      "keys": {
+        "name": "keys",
+        "dataNode": "Style",
+        "dataFields": [
+          "config",
+          "possibleTileServers"
+        ]
+      },
+      "values": {
+        "name": "values",
+        "dataNode": "Style",
+        "dataFields": [
+          "config",
+          "possibleTileServers"
+        ]
+      },
+      "selectedValue": {
+        "name": "selectedValue",
+        "dataNode": "Style",
+        "dataFields": [
+          "config",
+          "tileServer"
+        ]
+      }
+    },
+    "flatUiHorizontalSliderA": {
+      "value": {
+        "name": "value",
+        "dataNode": "Style",
+        "dataFields": [
+          "style",
+          0,
+          "opacity"
+        ]
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "value": {
+        "name": "value",
+        "dataNode": "Style",
+        "dataFields": [
+          "style",
+          0,
+          "weight"
+        ]
+      }
+    },
+    "flatUiSwitchA": {
+      "value": {
+        "name": "value",
+        "dataNode": "Style",
+        "dataFields": [
+          "style",
+          0,
+          "showLegend"
+        ]
       }
     }
   },

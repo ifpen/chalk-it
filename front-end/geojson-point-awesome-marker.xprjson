@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8736",
-    "date": "Fri Dec 01 2023 13:57:53 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8746",
+    "date": "Mon Dec 11 2023 11:01:59 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "geojson-point-awesome-marker",
     "description": "",
     "groupName": "",
@@ -19,11 +19,11 @@
         }
       },
       {
-        "name": "Map_style",
+        "name": "Style",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "Map_style",
-          "json_var": "[{\"layer\":1,\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"html\",\"awesomeMarker\"]}]"
+          "name": "Style",
+          "json_var": "[{\"layer\":1,\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"awesomeMarker\"]}]"
         }
       }
     ]
@@ -33,14 +33,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1294,
-    "heightPx": 572,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 572,
-    "widthVw": 84.68586387434554,
-    "heightVh": 79.88826815642459,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 79.88826815642459,
+    "widthPx": 1807,
+    "heightPx": 719,
+    "scrollWidthPx": 1807,
+    "scrollHeightPx": 719,
+    "widthVw": 88.57843137254902,
+    "heightVh": 71.61354581673307,
+    "scrollWidthVw": 88.57843137254902,
+    "scrollHeightVh": 71.61354581673307,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -60,10 +60,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "5.1676vh",
-        "left": "2.6178vw",
-        "height": "62.5698vh",
-        "width": "51.7016vw",
+        "top": "2.98805vh",
+        "left": "3.92591vw",
+        "height": "57.3705vh",
+        "width": "83.1312vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "3"
@@ -87,7 +87,7 @@
       },
       "GeoJSONStyle": {
         "name": "GeoJSONStyle",
-        "dataNode": "Map_style",
+        "dataNode": "Style",
         "dataFields": []
       }
     }

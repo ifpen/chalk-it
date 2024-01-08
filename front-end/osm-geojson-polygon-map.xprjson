@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8740",
-    "date": "Tue Dec 05 2023 12:07:37 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8743",
+    "date": "Fri Dec 08 2023 16:36:45 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-geojson-polygon-map",
     "description": "",
     "groupName": "",
@@ -23,7 +23,7 @@
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Map_style",
-          "json_var": "[{\"layer\":1,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"#01DF01\",\"dashArray\":[],\"weight\":4,\"opacity\":1,\"fillColor\":\"#01DF01\",\"property\":\"color\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.5,\"possibleProperties\":{}}]"
+          "json_var": "[{\"layer\":1,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"red\",\"dashArray\":[],\"weight\":4,\"opacity\":1,\"fillColor\":\"green\",\"property\":\"color\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.5,\"possibleProperties\":{}}]"
         }
       }
     ]
@@ -33,14 +33,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1295,
-    "heightPx": 572,
-    "scrollWidthPx": 1295,
-    "scrollHeightPx": 572,
-    "widthVw": 84.75130890052355,
-    "heightVh": 79.88826815642459,
-    "scrollWidthVw": 84.75130890052355,
-    "scrollHeightVh": 79.88826815642459,
+    "widthPx": 1806,
+    "heightPx": 719,
+    "scrollWidthPx": 1806,
+    "scrollHeightPx": 719,
+    "widthVw": 88.52941176470588,
+    "heightVh": 71.61354581673307,
+    "scrollWidthVw": 88.52941176470588,
+    "scrollHeightVh": 71.61354581673307,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -60,10 +60,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "1.39665vh",
-        "left": "1.37541vw",
-        "height": "69.2737vh",
-        "width": "80.2976vw",
+        "top": "0.996016vh",
+        "left": "0.490196vw",
+        "height": "62.0518vh",
+        "width": "83.9706vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"

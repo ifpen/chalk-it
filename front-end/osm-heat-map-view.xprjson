@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8750",
-    "date": "Fri Dec 15 2023 14:30:00 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8774",
+    "date": "Mon Jan 08 2024 14:14:31 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-heat-map-view",
     "description": "",
     "groupName": "",
@@ -33,7 +33,7 @@
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.175765,\"longitude\":48.876684999999995,\"zoom\":18},\"tileServer\":\"HereHybridDay\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"CH4\",\"type\":\"Multi Point\",\"showLegend\":true,\"pointAreMarker\":false,\"stroke\":false,\"weight\":8.6,\"opacity\":0.39,\"color\":\"black\",\"radius\":5.1,\"fillColor\":\"interpolateSpectral_r\",\"property\":\"CH4\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"CH4\":[0,4]}}]}"
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.175765,\"longitude\":48.876684999999995,\"zoom\":18},\"tileServer\":\"HereHybridDay\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"CH4\",\"type\":\"Multi Point\",\"showLegend\":false,\"pointAreMarker\":false,\"stroke\":false,\"weight\":8.6,\"opacity\":0.39,\"color\":\"black\",\"radius\":4,\"fillColor\":\"interpolateSpectral_r\",\"property\":\"CH4\",\"propertyMin\":1,\"propertyMax\":6,\"fillOpacity\":0.3,\"possibleProperties\":{\"CH4\":[1,6]}}]}"
         }
       }
     ]
@@ -71,9 +71,9 @@
     "mapGeoJsonA": {
       "layout": {
         "top": "0.996016vh",
-        "left": "0.490196vw",
+        "left": "0.490739vw",
         "height": "59.3625vh",
-        "width": "87.2549vw",
+        "width": "87.3515vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -90,9 +90,9 @@
     "flatUiHorizontalSliderA": {
       "layout": {
         "top": "60.9562vh",
-        "left": "3.33333vw",
+        "left": "3.33703vw",
         "height": "4.48207vh",
-        "width": "25.1471vw",
+        "width": "25.1749vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "2"
@@ -136,9 +136,9 @@
     "flatUiHorizontalSliderB": {
       "layout": {
         "top": "60.9562vh",
-        "left": "31.5196vw",
+        "left": "31.5546vw",
         "height": "4.48207vh",
-        "width": "25.1471vw",
+        "width": "25.1749vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "3"
@@ -182,9 +182,9 @@
     "flatUiCheckboxA": {
       "layout": {
         "top": "61.0558vh",
-        "left": "58.8235vw",
+        "left": "58.8887vw",
         "height": "4.48207vh",
-        "width": "9.46078vw",
+        "width": "9.47126vw",
         "minHeight": "24px",
         "minWidth": "32px",
         "z-index": "4"

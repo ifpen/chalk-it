@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8739",
-    "date": "Mon Dec 04 2023 14:21:59 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8748",
+    "date": "Wed Dec 13 2023 15:23:50 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-basic-geojson-map",
     "description": "",
     "groupName": "",
@@ -10,6 +10,14 @@
   },
   "data": {
     "datanodes": [
+      {
+        "name": "GeoJSON_LineString",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "GeoJSON_LineString",
+          "json_var": "{\"type\":\"FeatureCollection\",\"name\":\"Line String\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"color\":\"red\",\"weight\":2},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[2.29,48.87],[2.3,48.88],[2.31,48.89],[2.32,48.9]]}},{\"type\":\"Feature\",\"properties\":{\"color\":\"red\",\"weight\":2},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[2.3,48.87],[2.31,48.88],[2.34,48.89],[2.35,48.9]]}}],\"properties\":{\"description\":\"GeoJSON example\"}}"
+        }
+      },
       {
         "name": "GeoJSON_MAP",
         "type": "JSON_formula_plugin",
@@ -21,27 +29,19 @@
         }
       },
       {
-        "name": "GeoJSON_LineString",
-        "type": "JSON_var_plugin",
-        "settings": {
-          "name": "GeoJSON_LineString",
-          "json_var": "{\"type\":\"FeatureCollection\",\"name\":\"Line String\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"color\":\"red\",\"weight\":2},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[1.2,48.2],[1.3,49.3],[1.4,49.4],[1.5,49.5]]}},{\"type\":\"Feature\",\"properties\":{\"color\":\"red\",\"weight\":2},\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[0.2,48.2],[0.3,49.3],[0.4,49.4],[0.5,49.5]]}}],\"properties\":{\"description\":\"GeoJSON example\"}}"
-        }
-      },
-      {
         "name": "GeoJSON_Polygon",
         "type": "JSON_var_plugin",
         "settings": {
           "name": "GeoJSON_Polygon",
-          "json_var": "{\"name\":\"Polygon\",\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[2.2,48.2],[3,48.2],[3,49.4],[2.2,49.4],[2.2,48.2]]]},\"properties\":{\"color\":\"red\",\"weight\":2}}],\"properties\":{\"description\":\"GeoJSON example\"}}"
+          "json_var": "{\"name\":\"Polygon\",\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[2.295,48.8738],[2.295,48.877],[2.3,48.877],[2.3,48.8738],[2.295,48.8738]]]},\"properties\":{\"color\":\"red\",\"weight\":2}}],\"properties\":{\"description\":\"GeoJSON example\"}}"
         }
       },
       {
-        "name": "Map_style",
+        "name": "Style",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "Map_style",
-          "json_var": "[{\"layer\":1,\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"#8f09e8\",\"weight\":2,\"opacity\":1,\"property\":\"color\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"weight\":[2,2]}},{\"layer\":2,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"red\",\"dashArray\":[],\"weight\":2,\"opacity\":1,\"fillColor\":\"#8f09e8\",\"property\":\"color\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.4,\"possibleProperties\":{\"weight\":[2,2]}}]"
+          "name": "Style",
+          "json_var": "{\"style\":[{\"layer\":1,\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"#8f09e8\",\"weight\":4,\"opacity\":1,\"property\":\"color\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"weight\":[2,2]}},{\"layer\":2,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"red\",\"dashArray\":[],\"weight\":4,\"opacity\":1,\"fillColor\":\"#8f09e8\",\"property\":\"color\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.4,\"possibleProperties\":{\"weight\":[2,2]}}],\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":16},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]}}"
         }
       }
     ]
@@ -51,13 +51,13 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1806,
+    "widthPx": 1807,
     "heightPx": 719,
-    "scrollWidthPx": 1806,
+    "scrollWidthPx": 1807,
     "scrollHeightPx": 719,
-    "widthVw": 88.52941176470588,
+    "widthVw": 88.57843137254902,
     "heightVh": 71.61354581673307,
-    "scrollWidthVw": 88.52941176470588,
+    "scrollWidthVw": 88.57843137254902,
     "scrollHeightVh": 71.61354581673307,
     "scalingMethod": "scaleTwh",
     "media": "large",
@@ -78,10 +78,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "0.996016vh",
-        "left": "0.980392vw",
-        "height": "56.7729vh",
-        "width": "48.3824vw",
+        "top": "1.25199vh",
+        "left": "1.43943vw",
+        "height": "65.4788vh",
+        "width": "74.2333vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -105,7 +105,7 @@
       },
       "GeoJSONStyle": {
         "name": "GeoJSONStyle",
-        "dataNode": "Map_style",
+        "dataNode": "Style",
         "dataFields": []
       }
     }
