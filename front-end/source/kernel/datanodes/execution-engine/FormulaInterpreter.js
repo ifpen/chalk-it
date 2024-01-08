@@ -136,7 +136,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
     var settingsDefs = datanodePlugins[datanodeModel.type()].settings;
     var datanodeRegex = new RegExp('dataNodes.([\\w_-]+)|dataNodes\\[[\'"]([^\'"]+)', 'g');
     const setVarRegex =
-      /(setVariables?\((\[.*?\]),\s*(\[.*?\])\))|(setVariable\(("([^"]*)"),\s*(\d+)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNodes\((\[.*?\])\))|(setVariableProperty\(("([^"]*)"),\s*(\[.*?\])\s*,\s*(\d+)\))/g;
+      /(setVariables?\((\[.*?\]),\s*(\[.*?\])\))|(setVariable\(("([^"]*)"),\s*([^)]*)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNodes\((\[.*?\])\))|(setVariableProperty\(("([^"]*)"),\s*(\[.*?\])\s*,\s*([^)]*)\))/g;
 
     const regexPython = /(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')|(#.*$)/gm;
     var currentSettings = datanodeModel.settings();
