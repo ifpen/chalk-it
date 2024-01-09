@@ -1,10 +1,15 @@
 // ┌────────────────────────────────────────────────────────────────────┐ \\
-// │ F R E E B O A R D                                                  │ \\
+// │ DatanodesManager : fork from FREEBOARD                             │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Copyright © 2013 Jim Heising (https://github.com/jheising)         │ \\
 // │ Copyright © 2013 Bug Labs, Inc. (http://buglabs.net)               │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Licensed under the MIT license.                                    │ \\
+// └────────────────────────────────────────────────────────────────────┘ \\
+// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// | Licensed under the Apache License, Version 2.0                     │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 var datanodesManager = (function () {
@@ -20,15 +25,14 @@ var datanodesManager = (function () {
     this.execOutsideEditor = false;
   }
   if (!this.execOutsideEditor) {
-    // MBG ne marche pas car chargé trop en avance. A régler avec refactoring!
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }
-  var timeManager = new TimeManager(); // MBG & ABK 14/
+  var timeManager = new TimeManager();
 
   var freeboardUI = new FreeboardUI();
   var datanodesListModel = new DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager);
 
-  var jsonEdit = new JSONEdit(); //jseditor in datanode pluging
+  var jsonEdit = new JSONEdit();
   var jsonEdContainer = {};
 
   var jsEditor = new JSEditor();
@@ -36,11 +40,10 @@ var datanodesManager = (function () {
 
   // deleteDn: delete a datanode
   function deleteDn(viewModel) {
-    //AEF
     if (viewModel.sampleTime()) {
       timeManager.unregisterDatanode(viewModel.name());
     }
-    //
+
     if (datanodesDependency.hasSuccessors(viewModel.name())) {
       let successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
       let str = successors.toString();
@@ -52,7 +55,7 @@ var datanodesManager = (function () {
         'warning'
       );
     }
-    //
+
     var $body = angular.element(document.body);
     var $rootScope = $body.scope().$root;
     datanodesListModel.deleteDatanode(viewModel);
@@ -66,10 +69,8 @@ var datanodesManager = (function () {
 
     //AEF: recompute graphs after deleting a datanode
     datanodesDependency.updateDisconnectedGraphsList(viewModel.name(), 'delete');
-
     if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs after delete: ', datanodesDependency.getAllDisconnectedGraphs());
-    //
   }
 
   // isConnected: returns info if datanode is connected, and if true it returns also the corresponding widgetName
@@ -92,10 +93,8 @@ var datanodesManager = (function () {
   }
 
   function deleteDataNode(viewModel, type, title) {
-    //ABK
     [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
     if (type == 'datanode' && bFoundConnection) {
-      // MBG fix delete of connected widget
       let wdList = [];
       for (let i = 0; i < prop.length; i++) {
         wdList.push(widgetConnector.widgetsConnection[prop[i]].instanceId);
@@ -153,20 +152,19 @@ var datanodesManager = (function () {
             'Please specify a different name',
             'error'
           );
-          //DialogBox('A datanode with name "' + newSettings.settings.name + '" adready exists. Please specify a different name', 'Already exists', "Ok", "Cancel", null);
-          return true; //ABK
+          return true;
         }
         newViewModel = new DatanodeModel(datanodesListModel, datanodePlugins, datanodesDependency, timeManager);
         newViewModel.name(newSettings.settings.name);
 
-        //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
-
         newViewModel.settings(newSettings.settings);
         newViewModel.type(newSettings.type);
+        if (newSettings.type === 'Memory_plugin') {
+          newViewModel.is_specific_exec = true;
+        }
         const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
         newViewModel.iconType(iconName);
         if (newViewModel.error()) {
-          //ABK
           //swal("DataNode creation failure", "Error on some dataNode fields.", "error");
           return true;
         }
@@ -177,16 +175,13 @@ var datanodesManager = (function () {
         datanodesDependency.updateDisconnectedGraphsList(newViewModel.name(), 'add');
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
           console.log('All disconnected Graphs after add: ', datanodesDependency.getAllDisconnectedGraphs());
-        //
 
-        //AEF
         if (_.isUndefined(newSettings.settings.sampleTime) || newSettings.settings.sampleTime == 0) {
           newViewModel.schedulerStart(undefined, undefined, 'unidentified');
         } else {
           newViewModel.sampleTime(newSettings.settings.sampleTime);
           timeManager.registerDatanode(newViewModel.sampleTime(), newViewModel.name(), 'unidentified');
         }
-        //datanodesListModel.launchFirstUpdate(newViewModel); //AEF // AEF & MBG réunion du 11/04/2019
 
         angular
           .element(document.body)
@@ -235,12 +230,12 @@ var datanodesManager = (function () {
             // scheduling is in progress
             viewModel.execInstance().stopOperation(viewModel.name());
           }
-          //
-          datanodesListModel.renameDatanodeData(viewModel.name(), newSettings.settings.name);
+          if (viewModel.name() !== newSettings.settings.name)
+            datanodesListModel.renameDatanodeData(viewModel.name(), newSettings.settings.name);
         }
-        datanodesDependency.renameNode(viewModel.name(), newSettings.settings.name);
+        if (viewModel.name() !== newSettings.settings.name)
+          datanodesDependency.renameNode(viewModel.name(), newSettings.settings.name);
         viewModel.name(newSettings.settings.name);
-        //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
         if (!_.isUndefined(newSettings.settings.sampleTime)) {
           if (viewModel.isSettingSampleTimeChanged(newSettings.settings.sampleTime)) {
             viewModel.sampleTime(newSettings.settings.sampleTime);
@@ -253,18 +248,15 @@ var datanodesManager = (function () {
       const iconName = 'icn-' + newSettings.iconType.replace(/\.[^/.]+$/, '');
       viewModel.iconType(iconName);
       if (viewModel.error()) {
-        //ABK
         //swal("DataNode edition failure", "Error on some dataNode fields.", "error");
         return true;
       }
 
-      //AEF
       if (options.type == 'datanode') {
         //AEF: recompute graphs after renaming and/or editing datanode
         datanodesDependency.computeAllDisconnectedGraphs();
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
           console.log('All disconnected Graphs after rename: ', datanodesDependency.getAllDisconnectedGraphs()); //To optimize after
-        //
         if (!_.isUndefined(newSettings.settings.sampleTime)) {
           if (viewModel.sampleTime() != 0) {
             //new periodic or still periodic
@@ -274,11 +266,11 @@ var datanodesManager = (function () {
             timeManager.unregisterDatanode(viewModel.name());
             viewModel.schedulerStart(undefined, undefined, 'edit');
           }
-        } // No period
+        } //No period
         else viewModel.schedulerStart(undefined, undefined, 'edit');
       }
     }
-    return false; //ABK
+    return false;
   }
 
   function getOldSettingsCallback(viewModel) {
@@ -289,10 +281,10 @@ var datanodesManager = (function () {
         viewModel.statusCallback(oldSettings[0]); //get back last status
         // get back last name
         if (viewModel.name() !== oldSettings[1].name) {
-          // if (viewModel.isSettingNameChanged(oldSettings[1].name)) {
           datanodesListModel.renameDatanodeData(viewModel.name(), oldSettings[1].name);
+          datanodesDependency.renameNode(viewModel.name(), oldSettings[1].name);
         }
-        datanodesDependency.renameNode(viewModel.name(), oldSettings[1].name);
+
         viewModel.name(oldSettings[1].name);
 
         return oldSettings[1];
@@ -321,24 +313,18 @@ var datanodesManager = (function () {
         if (options.operation == 'delete') {
           deleteDataNode(viewModel, options.type, title);
         } else if (options.operation == 'refresh') {
-          //AEF
-          //if (viewModel.isSchedulerStartSafe())//Now it is handled on the fly (added to a list that is injected to the current scheduling)
           viewModel.schedulerStart(undefined, undefined, 'refresh');
         } else if (options.operation == 'stop') {
-          //AEF
           if (viewModel.execInstance() != null) {
             // scheduling is in progress
             viewModel.execInstance().stopOperation(viewModel.name());
           }
         } else if (options.operation == 'showTooltip') {
-          //MBG
           if (options.type == 'datanode') {
             $(element).tooltip('fixTitle');
             $(element).tooltip('show');
           }
         } else if (options.operation == 'hide') {
-          // MBG
-
           if (options.type == 'data-preview') {
             $(element).parent().parent().parent().remove();
           }
@@ -390,14 +376,22 @@ var datanodesManager = (function () {
       if (_.isUndefined(plugin.display_name)) {
         plugin.display_name = plugin.type_name;
       }
-
       // Add a required setting called name to the beginning
-      plugin.settings.unshift({
-        name: 'name',
-        display_name: 'Name',
-        type: 'text',
-        required: true,
-      });
+      if (plugin.type_name !== 'Memory_plugin') {
+        plugin.settings.unshift({
+          name: 'name',
+          display_name: 'Name',
+          type: 'text',
+          required: true,
+        });
+      } else {
+        plugin.settings.unshift({
+          name: 'name',
+          display_name: 'Generated memory name',
+          type: 'text',
+          disabled: true,
+        });
+      }
 
       datanodePlugins[plugin.type_name] = plugin;
       datanodesListModel._datanodeTypes.valueHasMutated();
@@ -504,10 +498,11 @@ var datanodesManager = (function () {
     },
     stopSchedule: function () {
       var datanodes = datanodesListModel.datanodes();
-      //clear all extraStartNodes to avoid adding them to scheduler
-      if (Object.keys(datanodesDependency.getExtraStartNodes()).length) {
-        datanodesDependency.clearExtraStartNodes();
-      }
+
+      datanodesDependency.clearExtraStartNodesList();
+      datanodesDependency.clearSetvarList();
+      datanodesDependency.clearProcessedSetvarList();
+
       //stop all current operations
       for (var index in datanodes) {
         if (datanodes[index].execInstance() != null) {

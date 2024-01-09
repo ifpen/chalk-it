@@ -1,6 +1,5 @@
-﻿(function () {
+(function () {
   var error = false;
-
   // ## A Datanode Plugin
   //
   // -------------------
@@ -10,49 +9,42 @@
   // **datanodesManager.loadDatanodePlugin(definition)** tells datanodesManager that we are giving it a datanode plugin. It expects an object with the following:
   datanodesManager.loadDatanodePlugin({
     // **type_name** (required) : A unique name for this plugin. This name should be as unique as possible to avoid collisions with other plugins, and should follow naming conventions for javascript variable and function declarations.
-    type_name: 'JSON_formula_plugin',
+    type_name: 'Memory_plugin',
     // **display_name** : The pretty name that will be used for display purposes for this plugin. If the name is not defined, type_name will be used instead.
-    display_name: 'Script (client-side)',
+    display_name: 'Memory',
     // **icon_type** : icon of the datanode type displayed in data list
-    icon_type: 'json-formula.svg',
+    icon_type: 'memory.png',
     // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
-    description: 'JavaScript Script (client-side) plugin',
+    description: 'Memory operator (past value)',
     // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.
     external_scripts: [''],
     // **settings** : An array of settings that will be displayed for this plugin when the user adds it.
     settings: [
       {
-        name: 'autoStart',
-        display_name: 'AUTO START',
-        description: 'DataNode is executed automatically at start (project load, its creation/modification).',
-        type: 'boolean',
-        default_value: true,
+        name: 'value_init',
+        display_name: 'initial value',
+        type: 'json',
+        short_display: true,
+        default_value: 0,
+        description: 'Initial value (number, boolean, JSON or array)',
       },
       {
-        name: 'explicitTrig',
-        display_name: 'Explicit trigger',
-        description:
-          'DataNode is executed only if triggered explicitly (no execution when its predecessors are updated). It is executed automatically once when AutoStart is “YES”.',
-        type: 'boolean',
-        default_value: false,
-      },
-      {
-        name: 'json_var_formula',
-        display_name: 'Javascript formula',
-        type: 'calculated',
-        description1: 'Write Javascript formula that returns a JSON, array or primitive data type ouptput',
-        description2: 'Browse and select a dataNode from workspace to use it in the formula.' /*ABK*/,
+        name: 'datanode_origin',
+        display_name: 'DataNode origin',
+        type: 'option',
+        from_datanode: true,
+        options: [],
+        description: 'Select the datanode origin for your past value',
       },
     ],
     // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
     // * **settings** : A javascript object with the initial settings set by the user. The names of the properties in the object will correspond to the setting names defined above.
     // * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
     // * **updateCallback** : A callback function that you'll call if and when your datanode has an update for datanodesManager to recalculate. This function expects a single parameter which is a javascript object with the new, updated data. You should hold on to this reference and call it when needed.
-    newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback, notificationCallback) {
-      // csvFilePlugin is defined below.
-      if (!newInstanceCallback(new jsonFormulaPlugin(settings, updateCallback, statusCallback, notificationCallback)))
-        if (error) return false;
-        else return true;
+    newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback) {
+      newInstanceCallback(new jsonMemoryPlugin(settings, updateCallback, statusCallback));
+      if (error) return false;
+      else return true;
     },
   });
 
@@ -60,12 +52,14 @@
   //
   // -------------------
   // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
-  var jsonFormulaPlugin = function (settings, updateCallback, statusCallback, notificationCallback) {
+  var jsonMemoryPlugin = function (settings, updateCallback, statusCallback) {
     //initialize error at new instance
     error = false;
     // Always a good idea...
     var self = this;
-    var calculatedValue = {};
+    var var_value = {};
+    var save_var_value = {};
+    var bFirstExec = true;
 
     // Good idea to create a variable to hold on to our settings, because they might change in the future. See below.
     var currentSettings = settings;
@@ -77,6 +71,15 @@
     self.onSettingsChanged = function (newSettings) {
       // Here we update our current settings with the variable that is passed in.
       currentSettings = newSettings;
+
+      try {
+        var_value = JSON.parse(currentSettings.value_init);
+        pastSettings = currentSettings;
+      } catch (err) {
+        swal('JSON Parse error', err.message, 'error');
+        statusCallback('Error');
+        return false;
+      }
       return true;
     };
 
@@ -85,58 +88,58 @@
       else return false;
     };
 
-    // AEF comment here to inhibite memory of past values
-    self.getSavedSettings = function () {
-      return [pastStatus, pastSettings];
-    };
-
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-    self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      // explicit trig!
-      //if explicittrig is true, no execution when triggered by predecessor, except triggered by force
-      if (currentSettings.explicitTrig && bCalledFromOrchestrator) {
-        return { notTobeExecuted: true };
-      }
-
-      //Autostart
-      //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
-      if (!currentSettings.autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
-        return { notTobeExecuted: true };
-      }
-
+    self.updateNow = function () {
       statusCallback('Pending');
+      if (bFirstExec) {
+        try {
+          bFirstExec = false;
+          var_value = JSON.parse(currentSettings.value_init);
+          statusCallback('OK');
+          updateCallback(var_value);
 
-      if (!_.isNull(calculatedValue) && !_.isUndefined(calculatedValue)) {
-        if (_.isObject(calculatedValue) && _.isEmpty(calculatedValue) && _.isEmpty(currentSettings.json_var_formula)) {
-          error = true;
-          text = 'Formula is empty';
-          notificationCallback('warning', currentSettings.name, text, 'Formula error');
-          statusCallback('Error', text);
-          updateCallback(calculatedValue, 'Error');
-          return false;
-        } else {
-          error = false;
           pastStatus = 'OK';
           pastSettings = currentSettings;
-          statusCallback('OK');
-          updateCallback(calculatedValue);
-          return true;
-        }
-      } else {
-        error = true;
-        text = 'Formula is null or undefined';
-        statusCallback('Error', text);
-        updateCallback(calculatedValue, 'Error');
 
+          return true;
+        } catch (err) {
+          swal('JSON Parse error', err.message, 'error');
+          statusCallback('Error');
+          updateCallback(undefined, 'Error');
+          return false;
+        }
+      }
+      save_var_value = var_value;
+
+      let origin_name = currentSettings['datanode_origin'];
+      if (!datanodesManager.foundDatanode(origin_name)) {
+        const text = "DataNode '" + origin_name + "' does not exist in dataNodes list";
+        datanodeModel.statusCallback('Error', text);
+        datanodeModel.notificationCallback('error', datanodeModel.name(), text);
         return false;
       }
-    };
 
+      let origin_value = datanodesManager.getDataNodeByName(origin_name).latestData();
+
+      if (typeof origin_value === 'object') {
+        var_value = jQuery.extend(true, {}, origin_value);
+      } else {
+        var_value = origin_value;
+      }
+
+      statusCallback('OK');
+      updateCallback(var_value);
+
+      pastStatus = 'OK';
+      pastSettings = currentSettings;
+
+      return true;
+    };
     // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
     self.onDispose = function () {};
 
     this.isSetValueValid = function () {
-      return false;
+      return true;
     };
 
     self.isSetFileValid = function () {
@@ -147,8 +150,27 @@
       return false;
     };
 
-    self.onCalculatedValueChanged = function (propertyName, val) {
-      calculatedValue = val;
+    this.isSpecificExecution = function () {
+      return true;
+    };
+    // **setValue()** (optional)
+    this.setValue = function (propertyName, val) {
+      bFirstExec = true;
+      if (propertyName.length == 0) {
+        var_value = val;
+        currentSettings.value_init = JSON.stringify(var_value);
+        return;
+      } else if (propertyName.length == 1) {
+        var_value[propertyName[0]] = val;
+      } else {
+        var varInter;
+        for (var deep = 0; deep < propertyName.length - 1; deep++) {
+          if (deep == 0) varInter = var_value[propertyName[deep]];
+          else varInter = varInter[propertyName[deep]];
+        }
+        varInter[propertyName[propertyName.length - 1]] = val;
+      }
+      currentSettings.value_init = JSON.stringify(var_value);
     };
   };
 })();
