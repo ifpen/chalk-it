@@ -522,7 +522,7 @@ function flatUiComplexWidgetsPluginClass() {
           divContent += '</label>';
         }
       }
-      divContent += + '</div>';
+      divContent += '</div>';
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
 
