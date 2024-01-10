@@ -17,7 +17,7 @@ var xDashApi = (function () {
     for (let i = 0; i < dataNodeNames.length; i++) {
       let dN = datanodesManager.getDataNodeByName(dataNodeNames[i]);
       let varJsonValue = varJsonValues[i];
-      dN.setValue([], varJsonValue, true); //don't start schedule here
+      dN.setValue([], varJsonValue, false, true); //don't start schedule here
     }
   }
 

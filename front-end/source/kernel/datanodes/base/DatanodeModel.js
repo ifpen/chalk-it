@@ -10,6 +10,7 @@
 
 DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependency, timeManager) {
   var self = this;
+  var doubleSetValueEventTrigger = true;
   this.datanodeRefreshNotifications = {};
   this.calculatedSettingScripts = {};
 
@@ -604,7 +605,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     return self.datanodeInstance.canSetValue();
   };
 
-  this.setValue = function (propertyName, val, explicitTrig = false) {
+  this.setValue = function (propertyName, val, doubleTrig, explicitTrig) {
     // dirty flag handling
     if (_.isFunction(self.datanodeInstance.getValue)) {
       if (val != self.datanodeInstance.getValue(propertyName)) {
