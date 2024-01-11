@@ -1,3 +1,17 @@
+
+this.compareSharedKeys= function(obj1, obj2) {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+  const sharedKeys = keys1.filter(key => keys2.includes(key));
+
+  for (let key of sharedKeys) {
+    if (obj1[key] !== obj2[key]) {
+      return false;
+    }
+  }
+
+  return true;
+}
 this.equivalenceTypes = {
     Point: 'MultiPoint',
     MultiPoint: 'MultiPoint',
@@ -100,7 +114,8 @@ var geoJsonTools = (function() {
         getMinMaxByProperty  ,
         findAllProperties  ,
         findFeatureType,
-        equivalenceTypes 
+        equivalenceTypes ,
+        compareSharedKeys
     }
 
 })()

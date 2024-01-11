@@ -26,7 +26,7 @@ function mapGeoJsonWidgetsPluginClass() {
       defaultCenter: {
         latitude: 2.295,
         longitude: 48.8738,
-        zoom: 16,
+        zoom: 8,
       },
       tileServer: 'MapboxStreets',
       possibleTileServers: ['MapboxStreets', 'MapboxDark', 'HereSatelliteDay', 'HereTerrainDay', 'HereHybridDay'],
@@ -144,19 +144,58 @@ function mapGeoJsonWidgetsPluginClass() {
 
     // Create a Layer from a GeoJSON
     // Simple function dont take into account the style
+    this.getLefletIndex = (leafletLayer)=>{
+      for (let index = 0; index < self.layers.length; index++) {
+        const layer = self.layers[index];
+        if(layer == leafletLayer) {
+          return index
+        }
+        return undefined;
+      }
+    }
     this.addGeoJSONlayer = function (geoJSON, name) {
       var leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
-      self.layers.push(leafletLayer);
+      //add events : 
+     // mouseover
+     self.layers.push(leafletLayer);
+     let leafletIndex = self.getLefletIndex(leafletLayer)
+     if(!_.isUndefined(leafletIndex)) {
+      self.mouseoverHandler = (e)=> {
+        //  mouseoverHandler(e)
+          let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex]; 
+          let eventStyle = style.events.mouseover.style
+          e.target.setStyle(eventStyle)
+          let popup = new L.Popup();
+          var bounds = e.target.getBounds(); 
+          let popupContent = "<div>"
+          let properties = style.tooltip.properties
+          _.each(properties,(property=>{
+            popupContent = popupContent +"<p> <strong>"+property +"</strong> : "+e.target.feature.properties[property]+"</p>" ;
+          }))
+          popupContent = popupContent+"</div>" 
+          popup.setLatLng(bounds.getCenter());
+          popup.setContent(popupContent);
+          self.map.openPopup(popup);
+        };
+        leafletLayer.eachLayer(function (layer) {
+          layer.on('mouseover', self.mouseoverHandler);
+        });
+     }
+     //mouseout
+     if(!_.isUndefined(leafletIndex)) {
+      self.mouseoutHandler = (e)=> {
+          let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex]; 
+          let eventStyle = style.events.mouseout.style
+          e.target.setStyle(eventStyle)   
+          self.map.closePopup();
+        };
+        leafletLayer.eachLayer(function (layer) {
+          layer.on('mouseout', self.mouseoutHandler);
+        });
+     }   
+     
       self.ctrl.addOverlay(leafletLayer, name);
-
-      //add event
-      if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon) {
-
-        // add events 
-        
-      }
     };
- 
 
     // Create the style object that will be in out JSON for a geoJSON
     // typeLayer is used for marker or circle
@@ -200,6 +239,30 @@ function mapGeoJsonWidgetsPluginClass() {
             propertyMax: 'Auto',
             fillOpacity: 1,
             possibleProperties: prop,
+            allProperties : allProp,
+            tooltip : {
+              properties : [...allProp]
+            },
+            events: {
+              mouseover: {
+                style: {
+                  color: 'black',
+                  weight: 3,
+                },
+              },
+              mouseout: {
+                style: {
+                  color: 'black',
+                  weight: 1,
+                },
+              },
+              click: {
+                style: {
+                  color: 'black',
+                  weight: 1,
+                },
+              },
+            },
           };
           break;
         case geoJsonTools.equivalenceTypes.MultiPoint:
@@ -247,12 +310,12 @@ function mapGeoJsonWidgetsPluginClass() {
     };
 
     this.createChoroplethLegend = function (min, max, featureTitle, colorScale) {
-      legend = legends.createChoroplethLegend(self.getColor,min, max, featureTitle, colorScale)
+      legend = legends.createChoroplethLegend(self.getColor, min, max, featureTitle, colorScale);
       legend.addTo(self.map);
       return legend;
     };
     this.createLegend = function (color, length, colorStops, min, max, featureTitle) {
-       legend =  legends.createLegend(color, length, colorStops, min, max, featureTitle)
+      legend = legends.createLegend(color, length, colorStops, min, max, featureTitle);
       legend.addTo(self.map);
       return legend;
     };
@@ -270,15 +333,14 @@ function mapGeoJsonWidgetsPluginClass() {
       }
       if (!_.isUndefined(tileServers)) {
         //update tile server
-        console.log("tileServers",tileServers);
-        var tileConf = tileServers.getTileServerConf(ts); 
+        var tileConf = tileServers.getTileServerConf(ts);
         self.baseLayer = L.tileLayer(tileConf.url, tileConf);
         self.baseLayer.addTo(self.map);
       }
 
       //update view
 
-      self.map.setView([defaultCenter.longitude, defaultCenter.latitude], defaultCenter.zoom);
+      //self.map.setView([defaultCenter.longitude, defaultCenter.latitude], defaultCenter.zoom);
 
       //update style
       modelsHiddenParams[idInstance].GeoJSONStyle.style.forEach(function (d, index) {
@@ -290,7 +352,6 @@ function mapGeoJsonWidgetsPluginClass() {
         self.updateValue();
       }
     };
-
     // Set Style on GeoJSON layer
     this.setStyle = function (layerIndex, style) {
       // Get GeoJSON
@@ -348,6 +409,8 @@ function mapGeoJsonWidgetsPluginClass() {
 
           layer.setStyle(styleForObject);
         });
+
+        //legend
         self.map.on('layeradd layerremove', (e) => {
           if (self.map.hasLayer(self.layers[layerIndex])) {
             if (!_.isUndefined(styleForObject.showLegend)) {
@@ -368,7 +431,6 @@ function mapGeoJsonWidgetsPluginClass() {
             }
           }
         });
-        //legend
         if (self.map.hasLayer(self.layers[layerIndex])) {
           if (!_.isUndefined(styleForObject.showLegend)) {
             if (!!styleForObject.showLegend) {
