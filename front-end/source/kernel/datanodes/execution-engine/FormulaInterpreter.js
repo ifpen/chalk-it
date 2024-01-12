@@ -302,13 +302,13 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
                 }
               }
 
-              if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig)
+              if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
                 if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log("init: don't add parsed set var");
-                else {
-                  for (const name of dsName) {
-                    datanodesDependency.addSetvarList(name, datanodeModel.name());
-                  }
+              } else {
+                for (const name of dsName) {
+                  datanodesDependency.addSetvarList(name, datanodeModel.name());
                 }
+              }
             }
           }
           //AEF: fix bug (clean up data that doesn't exist anymore in formula for example)
