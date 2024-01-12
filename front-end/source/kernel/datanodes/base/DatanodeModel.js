@@ -328,8 +328,9 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
                   const param = Array.from(memorydataNodeList.keys()).filter((memName) => currentGraph.has(memName));
 
                   if (param.length > 0) {
-                    console.log('Start schedule from memory datanodes list: ' + param);
-                    const origin = memorydataNodeList.get(param[0]);
+                    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+                      console.log('Start schedule from memory datanodes list: ' + param);
+                    //const origin = memorydataNodeList.get(param[0]);
                     datanodesDependency.clearMemorydataNodeList(param);
                     datanodesManager.getDataNodeByName(param[0]).updateNow(true, true, true);
                   }
@@ -458,9 +459,11 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       const processedSetvarList = datanodesDependency.getProcessedSetvarList();
       const filteredSetvarList = new Map(Array.from(setvarList).filter(([key]) => !processedSetvarList.has(key)));
       if (filteredSetvarList.size) {
-        console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
-        console.log('triggred by : ' + Array.from(filteredSetvarList.values()));
-        //console.log('triggred by : ' + Array.from([...new Set(filteredSetvarList.values())]));
+        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+          console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
+          console.log('triggered by : ' + Array.from(filteredSetvarList.values()));
+          //console.log('triggered by : ' + Array.from([...new Set(filteredSetvarList.values())]));
+        }
         const param = Array.from(filteredSetvarList.keys());
         datanodesDependency.addProcessedSetvarList(filteredSetvarList);
         datanodesDependency.clearSetvarList();
