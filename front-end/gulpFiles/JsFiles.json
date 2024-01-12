@@ -146,7 +146,8 @@
       "source/kernel/general/interfaces/xdash-api.js",
       "source/kernel/runtime/xdash-runtime-main.js",
       "source/kernel/dashboard/rendering/reconstruct-foundations.js",
-      "source/angular/modules/libs/notification/notification-xdash.js"
+      "source/angular/modules/libs/notification/notification-xdash.js",
+      "source/kernel/base/taipy-manager.js"
     ]
   },
   "xDashStudio": {
@@ -396,7 +397,8 @@
       "source/kernel/datanodes/plugins/plugin-websocket.send.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-geolocation.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-python-support.js",
-      "source/kernel/datanodes/plugins/plugin-python-script.js"     
+      "source/kernel/datanodes/plugins/plugin-python-script.js",
+      "source/kernel/base/taipy-manager.js"    
     ]
   }
 }

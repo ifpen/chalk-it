@@ -75,6 +75,7 @@ module.exports.config = {
     port: process.env.PORT ? process.env.PORT : 7854,
     xDashConfig: {
         'xDashBasicVersion': process.env.DISABLE_AUTH,
+        'xDashLiteVersion': process.env.LITE_BUILD,
         'disableRegistration': process.env.DISABLE_REGISTRATION,
         'disableLocalServer': process.env.DISABLE_LOCAL_SERVER,
         'urlDoc': process.env.URL_DOC ? process.env.URL_DOC : "/doc/",

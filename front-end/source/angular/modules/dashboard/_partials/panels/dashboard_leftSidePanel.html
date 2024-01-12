@@ -62,19 +62,19 @@
                 </a>
                 <span class="tooltip">Widgets</span>
             </li>
-            <li id="li_editor-datanodes-list" ng-class="{'active':(editorView.leftSidePanel.target==='DataNode' && editorView.leftSidePanel.view)}">
+            <li id="li_editor-datanodes-list" ng-if="!xDashLiteVersion" ng-class="{'active':(editorView.leftSidePanel.target==='DataNode' && editorView.leftSidePanel.view)}">
                 <a id="editor-datanodes-list" ng-click="setLeftContent('DataNode');isFilterOpen=false;">
                     <i class="specific icn-datanode left-panel-toggle"></i>
                 </a>
                 <span class="tooltip">DataNodes</span>
             </li>
-            <li id="editor-datanodes-graph" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.showGraphPanel && editorView.leftSidePanel.view)}" js-edit-mode>
+            <li id="editor-datanodes-graph" ng-if="!xDashLiteVersion" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.showGraphPanel && editorView.leftSidePanel.view)}" js-edit-mode>
                 <a ng-click="showDepGraph()">
                     <i class="specific icn-graph"></i>
                 </a>
                 <span class="tooltip">Graph</span>
             </li>
-            <li id="li_editor-project-libraries" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Libraries' && editorView.leftSidePanel.view)}" js-edit-mode>
+            <li id="li_editor-project-libraries" ng-if="!xDashLiteVersion" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Libraries' && editorView.leftSidePanel.view)}" js-edit-mode>
                 <a ng-click="setLeftContent('Libraries')">
                     <i class="specific icn-libraries-pyodide left-panel-toggle"></i>
                 </a>
