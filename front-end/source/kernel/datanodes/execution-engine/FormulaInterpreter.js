@@ -301,9 +301,9 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
                 }
               }
 
-              if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig)
-                console.log("init: don't add parsed set var");
-              else {
+              if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
+                if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log("init: don't add parsed set var");
+              } else {
                 for (const name of dsName) {
                   datanodesDependency.addSetvarList(name, datanodeModel.name());
                 }
@@ -314,7 +314,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           datanodesDependency.removeMissedDependantDatanodes(allDsNames, datanodeModel.name());
 
           if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
-            console.log("init: don't process calculate");
+            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log("init: don't process calculate");
             return;
           }
           // MBG moved
