@@ -4,49 +4,42 @@
 // │ Copyright © 2016-2023 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Mongi BEN GAID                                │ \\
+// │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 var xDashApi = (function () {
   function setVariable(varDateNodeName, varJsonValue, explicitTrig) {
-    //AEF: add explicit trig
-    var dN = datanodesManager.getDataNodeByName(varDateNodeName);
-    dN.setValue([], varJsonValue, explicitTrig);
+    let dN = datanodesManager.getDataNodeByName(varDateNodeName);
+    dN.setValue([], varJsonValue, false, true); //don't start schedule here
   }
 
   function setVariables(dataNodeNames, varJsonValues) {
-    let dN0 = datanodesManager.getDataNodeByName(dataNodeNames[0]);
     for (let i = 0; i < dataNodeNames.length; i++) {
       let dN = datanodesManager.getDataNodeByName(dataNodeNames[i]);
       let varJsonValue = varJsonValues[i];
-      dN.setValue([], varJsonValue, true); //don't start schedule here
+      dN.setValue([], varJsonValue, false, true); //don't start schedule here
     }
-    dN0.schedulerStart(dataNodeNames, dataNodeNames[0], 'setValue');
   }
 
   function setVariableProperty(varDateNodeName, propertyPath, varJsonValue) {
-    var dN = datanodesManager.getDataNodeByName(varDateNodeName);
-    dN.setValue(propertyPath, varJsonValue);
+    let dN = datanodesManager.getDataNodeByName(varDateNodeName);
+    dN.setValue(propertyPath, varJsonValue, false, true); //don't start schedule here
   }
 
   function getVariable(varDateNodeName) {
-    var dN = datanodesManager.getDataNodeByName(varDateNodeName);
-    if (!_.isUndefined(dN)) {
-      return dN.latestData();
-    } else return undefined;
+    //swal('Deprecated feature ', "'getVariable' feature is no longer supported", 'error');
+    let dN = datanodesManager.getDataNodeByName(varDateNodeName);
+    dN.notificationCallback(
+      'error',
+      varDateNodeName,
+      "Deprecated feature: 'getVariable' feature is no longer supported"
+    );
+    return undefined;
   }
 
-  function executeDataNode(dataNodeName) {
-    datanodesManager.getDataNodeByName(dataNodeName).schedulerStart(undefined, undefined, 'vignette');
-  }
+  function executeDataNode(dataNodeName) {}
 
-  function executeDataNodes(dataNodeNames) {
-    let dN = [];
-    for (let i = 0; i < dataNodeNames.length; i++) {
-      dN.push(datanodesManager.getDataNodeByName(dataNodeNames[i]));
-    }
-    datanodesManager.getDataNodeByName(dataNodeNames[0]).schedulerStart(dataNodeNames, dataNodeNames[0], 'vignette');
-  }
+  function executeDataNodes(dataNodeNames) {}
 
   function viewPage(pageUrl, inputVals, bNewTab) {
     var queryParams = 'inputParams=' + inputHandler.encodeInputPars(inputVals);

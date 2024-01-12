@@ -30,6 +30,9 @@
   &.icn-delay {
     @include icon-background('delay.svg', 'datanode');
   }
+  &.icn-memory {
+    @include icon-background('memory.png', 'datanode');
+  }
 
   &.icn-file-reader {
     @include icon-background('file-reader.svg', 'datanode');
@@ -58,7 +61,7 @@
   &.icn-python {
     @include icon-background('python.svg', 'datanode');
   }
-  
+
   &.icn-python::before {
     content: none; // Same name as xdash-icons' "python" icon
   }

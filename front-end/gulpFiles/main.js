@@ -47,9 +47,12 @@ let browsersync = require('browser-sync').create(),
   xdashRuntimeCss = filesName.xdash_runtime.css,
   xdashRuntimeHeader = filesName.xdash_runtime.header,
   xdashRuntimeBody = filesName.xdash_runtime.body,
-  getXdashWorkerPyodideFile = () => `${filesName.workers.pyodide}${(addVersion && Env === 'prod') ? GlobalConfig.config.xDashConfig.version.fullVersion : Env}.js` ;
+  getXdashWorkerPyodideFile = () =>
+    `${filesName.workers.pyodide}${
+      addVersion && Env === 'prod' ? GlobalConfig.config.xDashConfig.version.fullVersion : Env
+    }.js`;
 
-  ListTasksBeforeInject = 'createConfigurationFile';
+ListTasksBeforeInject = 'createConfigurationFile';
 
 const nodeVersion = pkg.engines.node;
 // Compare installed NodeJs version with required NodeJs version.
@@ -399,7 +402,6 @@ task(
     const dependenciesFiles = ['../thirdparty/pyodide.js', '../thirdparty/json_parseMore.js'];
     const workerFile = '../source/kernel/base/pyodide-worker.js';
 
-
     let pipe = src([configFile, ...dependenciesFiles, workerFile])
       .pipe(debug())
       .pipe(sourcemaps.init())
@@ -413,13 +415,11 @@ task(
         })
       );
     }
-    pipe = pipe
-      .pipe(sourcemaps.write('.'))
-      .pipe(dest(destination));
+    pipe = pipe.pipe(sourcemaps.write('.')).pipe(dest(destination));
 
     if (!isProd) {
       pipe = pipe.pipe(connect.reload());
-    } 
+    }
 
     return pipe;
   })
@@ -892,7 +892,9 @@ task('inject:after', () => {
       injectString.after(
         'above declarations **',
         '\n  xdashAddr ="' +
-          (GlobalConfig.config.xDashConfig.urlBase ? GlobalConfig.config.xDashConfig.urlBase : GlobalConfig.config.xDashConfig.urlBaseForExport) +
+          (GlobalConfig.config.xDashConfig.urlBase
+            ? GlobalConfig.config.xDashConfig.urlBase
+            : GlobalConfig.config.xDashConfig.urlBaseForExport) +
           '";\n' +
           '  xdashDocAddr ="' +
           (GlobalConfig.config.xDashConfig.urlDoc ? GlobalConfig.config.xDashConfig.urlDoc : '/doc/') +
@@ -914,7 +916,9 @@ task('injectmk:after', () => {
       injectString.after(
         'above declarations **',
         '\n  xdashAddr ="' +
-          (GlobalConfig.config.xDashConfig.urlBase ? GlobalConfig.config.xDashConfig.urlBase : GlobalConfig.config.xDashConfig.urlBaseForExport) +
+          (GlobalConfig.config.xDashConfig.urlBase
+            ? GlobalConfig.config.xDashConfig.urlBase
+            : GlobalConfig.config.xDashConfig.urlBaseForExport) +
           '";\n' +
           '  xdashDocAddr ="' +
           (GlobalConfig.config.xDashConfig.urlDoc ? GlobalConfig.config.xDashConfig.urlDoc : '/doc/') +

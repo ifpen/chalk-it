@@ -1,5 +1,11 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ DatanodesListModel : fork from freeboard                           │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// | Licensed under the Apache License, Version 2.0                     │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager) {
@@ -78,6 +84,15 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
 
     const newDatanodes = object.datanodes;
 
+    //AEF: put "Memory plugin at the end"
+    newDatanodes.sort(function (a, b) {
+      if (a.type === 'Memory_plugin' && b.type !== 'Memory_plugin') {
+        return 1;
+      } else if (a.type !== 'Memory_plugin' && b.type === 'Memory_plugin') {
+        return -1;
+      }
+    });
+
     const duplicates = [];
 
     newDatanodes.forEach((datanodeConfig) => {
@@ -143,7 +158,6 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
     return !self.error();
   };
 
-  // MBG refactoring
   function _createDatanodeInstance(datanodeConfig) {
     var datanodes = new DatanodeModel(self, datanodePlugins, datanodesDependency, timeManager);
     if (!datanodes.deserialize(datanodeConfig)) {
@@ -183,7 +197,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
   }
 
   this.launchGlobalFirstUpdate = function (datanode) {
-    var sourceNodes = datanodesDependency.getSourceNodes();
+    var sourceNodes = datanodesDependency.getSourceNodesWithMemory();
     if (sourceNodes.length != 0) {
       //AEF: only if no-periodic datanodes exist as a startnodes
       datanode.schedulerStart(sourceNodes, sourceNodes[0], 'globalFirstUpdate');
@@ -191,9 +205,9 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
   };
 
   this.clear = function () {
-    if (Object.keys(datanodesDependency.getExtraStartNodes()).length) {
-      datanodesDependency.clearExtraStartNodes();
-    }
+    datanodesDependency.clearExtraStartNodesList();
+    datanodesDependency.clearSetvarList();
+    datanodesDependency.clearProcessedSetvarList();
 
     _.each(self.datanodes(), function (datanode) {
       self.deleteDatanode(datanode);
@@ -237,7 +251,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
   }
 
   this.addDatanode = function (datanodes) {
-    //ABK: add verification of data existance
+    //AEF: add verification of data existance
     var bFound = false;
     for (var i = 0; i < self.datanodes().length; i++) {
       bFound = false;
