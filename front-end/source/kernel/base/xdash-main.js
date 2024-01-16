@@ -31,9 +31,6 @@ var xdash = (function () {
     widgetEditor.clear();
     xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 
-    widgetConnector.clear(); //AEF: already done in widgetEditor.clear()
-    widgetPreview.clear(); //AEF: already done in widgetEditor.clear()
-
     $('#projectName')[0].value = prjName;
     $('.tab--active').removeClass('changed');
 
@@ -524,7 +521,8 @@ var xdash = (function () {
     initRootScopeCurrentProjectObject(jsonObject);
     let bOk = false;
     let loadFn = async function (e) {
-      clear(); // MBG 01/08/2018 : important to do
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+      scopeDash.reset();
       bOk = await deserialize(jsonObject);
       datanodesManager.showLoadingIndicator(false);
       document.removeEventListener('widgets-tab-loaded', loadFn);
@@ -537,11 +535,7 @@ var xdash = (function () {
     };
     document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
     if (tabActive == 'widgets') {
-      if (modeActive == 'edit-dashboard') {
-        await loadFn();
-      } else {
-        showEditMode(true, loadFn);
-      }
+      await loadFn();
     }
   }
 
