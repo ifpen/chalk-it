@@ -31,9 +31,6 @@ var xdash = (function () {
     widgetEditor.clear();
     xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 
-    widgetConnector.clear(); //AEF: already done in widgetEditor.clear()
-    widgetPreview.clear(); //AEF: already done in widgetEditor.clear()
-
     $('#projectName')[0].value = prjName;
     $('.tab--active').removeClass('changed');
 
@@ -448,8 +445,7 @@ var xdash = (function () {
     initRootScopeCurrentProjectObject(jsonObject);
     let bOk = false;
     let loadFn = async function (e) {
-      clear(); // MBG 01/08/2018 : important to do
-      bOk = await deserialize(jsonObject);
+      bOk = await deserialize(jsonObject); // AEF: clear is called here
       datanodesManager.showLoadingIndicator(false);
       document.removeEventListener('widgets-tab-loaded', loadFn);
       jsonObject = undefined; //ABK in case of  missed synchronization a second loadFn cannot be made
