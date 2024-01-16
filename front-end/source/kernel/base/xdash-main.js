@@ -445,6 +445,8 @@ var xdash = (function () {
     initRootScopeCurrentProjectObject(jsonObject);
     let bOk = false;
     let loadFn = async function (e) {
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+      scopeDash.reset();
       bOk = await deserialize(jsonObject); // AEF: clear is called here
       datanodesManager.showLoadingIndicator(false);
       document.removeEventListener('widgets-tab-loaded', loadFn);
@@ -457,11 +459,11 @@ var xdash = (function () {
     };
     document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
     if (tabActive == 'widgets') {
-      if (modeActive == 'edit-dashboard') {
-        await loadFn();
-      } else {
-        showEditMode(true, loadFn);
-      }
+      //if (modeActive == 'edit-dashboard') {
+      await loadFn();
+      //} else {
+      //  showEditMode(true, loadFn);
+      //}
     }
   }
 
