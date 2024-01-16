@@ -459,11 +459,7 @@ var xdash = (function () {
     };
     document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
     if (tabActive == 'widgets') {
-      //if (modeActive == 'edit-dashboard') {
       await loadFn();
-      //} else {
-      //  showEditMode(true, loadFn);
-      //}
     }
   }
 
