@@ -54,7 +54,7 @@
             <i class="basic {{ (editorView.leftSidePanel.view && (editorView.leftSidePanel.target==='Menu')) ? 'icn-menu-close' : 'icn-menu-open' }}"></i>
         </a>
     </div>
-    <div class="aside__panel--nav">
+    <div class="aside__panel--nav" ng-if="!xDashLiteVersion || !editorView.checkboxModelView">
         <ul class="aside__panel--nav--wrapper ltr">
             <li id="li_editor-widget-toolbox" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Widgets' && editorView.leftSidePanel.view)}"  js-edit-mode>
                 <a id="editor-widget-toolbox" ng-click="setLeftContent('Widgets')">

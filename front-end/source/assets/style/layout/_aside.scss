@@ -1001,6 +1001,7 @@ aside {
 
 // Button open/close menu sidebar  (for opensource version)
 .aside__panel--nav--btn-menu {
+  width: $aside-panel-nav-width;
   margin-bottom: spacer('16');
 
   a {
