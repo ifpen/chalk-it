@@ -155,8 +155,6 @@ angular
                 if (opendedPanel) {
                     vm.editSelectedWidget();
                 }
-
-                taipyManager.createNewDatanode();
             };
 
             /*---------- enlargeScreenRight ----------------*/

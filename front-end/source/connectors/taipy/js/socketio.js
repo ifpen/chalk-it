@@ -1,7 +1,4 @@
-import { io } from "socket.io-client";
-import { manageWsMessage, onWsConnect } from "./socketio_handler.js";
-
-export const socket = io("/");
+const socket = io("/");
 
 socket.on("connect", () => {
   console.log("Connected to Socket.io backend");
