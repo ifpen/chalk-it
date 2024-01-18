@@ -1,0 +1,21 @@
+﻿<div>
+    <h1 style="text-align: center">Welcome to Chalk'it basic version</h1>
+    <div class="login_wrapper" style="position: relative; margin-top: 2vh">
+        <div class="container" style="position: relative">
+            <img src="source/assets/img/chalk-it-logo.svg" alt="Avatar" class="avatar" style="width:auto; height:auto" />
+        </div>
+    </div>
+    <p style="text-align: center; padding-top: 2vh">
+        Before starting using Chalk'it, please carefully read the terms of conditions of use
+    </p>
+    <div style="width:80%; height:40vh; overflow:scroll; margin:auto; padding-top: 2vh; padding-left:10px; padding-right:10px;
+background-color: #f2f2f2" ng-include="'source/angular/modules/terms-of-use/xDashTermsofUse10062020.html'">
+    </div>
+    <section class="login_content">
+        <a class="btn btn-primary submit" style="padding: 20px; margin-right: 20px" ng-click="access()">I accept the
+            license agreement</a>
+        <a class="btn btn-primary submit" style="padding: 20px; margin-left: 20px" ng-click="deny()">I refuse the
+            license agreement</a>
+    </section>
+
+</div>
