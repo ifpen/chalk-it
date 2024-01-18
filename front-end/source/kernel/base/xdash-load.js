@@ -13,6 +13,8 @@ var angularModule = angular.module('xCLOUD', [
     'ui.router',
     'angularjs-gauge',
     'ui.bootstrap',
+    'loginuser',
+    'termsofuse',
     'angular-loading-bar',
     'modules',
     'ngTagsInput',

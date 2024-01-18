@@ -196,7 +196,6 @@
               }
             }
             body = JSON.stringify(tpbody);
-            //body = JSON.stringify(JSON.parse(body)); // MBG added stringify. To keep?
           } catch (e) {
             swal('Data Parse error', e.message, 'error');
             return false;

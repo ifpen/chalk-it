@@ -14,12 +14,14 @@ var widgetsEditorToolboxDefinition = {
         "name": "Basic inputs & controls",
         "widgets": ["flatUiNumericInput", "flatUiTextInput", "flatUiCheckbox", "flatUiSwitch", "flatUiHorizontalSlider", "flatUiVerticalSlider",
             "flatUiDoubleSlider", "flatUiButton", "loadFile", "saveToFileButton", "flatUiSelect", "flatUiMultiSelect", "flatUiList",
-            "flatUiTable"]
+            "perfectWidgetsMultiSwitch", "flatUiTable"]
     },
     "collapse-gauges": {
         "name": "Basic displays",
         "widgets": ["flatUiValueDisplay", "kpiCard", "advancedKpiCard", "ledStatus", "flatUiProgressBar",
-            "scoringFullCircularGauge", "scoringSemiCircularGauge", "scoringArchCircularGauge"
+            "scoringFullCircularGauge", "scoringSemiCircularGauge", "scoringArchCircularGauge",
+            "perfectWidgetsSimpleMeter", "perfectWidgetsTachometer",
+            "perfectWidgetsSimpleCompass", "perfectWidgetsSimpleCircleWind"
         ]
     },
     "collapse-plotly": {

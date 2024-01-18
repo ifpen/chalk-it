@@ -96,6 +96,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
         case 'setVariable':
         case 'setFile':
         case 'refresh':
+          //case 'globalFirstUpdate': //AEF
           return true;
         default:
           return false;
