@@ -156,7 +156,7 @@ if (!(xDashConfig.xDashBasicVersion == 'true')) {
       // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
       description: 'A geolocation plugin',
       // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.
-      external_scripts: [''],
+      external_scripts: [],
       // **settings** : An array of settings that will be displayed for this plugin when the user adds it
       settings: [
         //{
