@@ -15,7 +15,12 @@
   </head>
 
   <body ng-app="xCLOUD" ng-class="{'nav-sm':true}" id="app">
-    <div id="loading-overlay" ng-if="isLoading"></div>
+    <div id="loading-overlay" ng-class="{'hidden':!isLoading}">
+      <div class="wrapperloading">
+        <div class="loading up"></div>
+        <div class="loading down"></div>
+      </div>
+    </div>
     <div ui-view></div>
     <div id="_otherUse"></div>
   </body>
