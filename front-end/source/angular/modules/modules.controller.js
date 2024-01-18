@@ -148,36 +148,18 @@ angular.module('modules').controller('ModulesController', [
 
     const freeboardUIInst = new FreeboardUI();
     $rootScope.loadedTemplate = function () {
-      if (!$rootScope.xDashFullVersion) {
-        freeboardUIInst.showLoadingIndicator(true);
+      startXdash();
+
+      // End fix by Ghiles
+      $rootScope.availableTags = $rootScope.listAvailablesTags;
+      datanodesManager.initialize(false);
+      $rootScope.currentProject = xdash.initMeta();
+      $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
+      if (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) {
+        const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
+        sidebarController.newProject();
       }
-      head.js(
-        xdashEditorBodyJsList,
-        // *** Load more plugins here ***
-        function () {
-          // Begin fix by Ghiles
-          const startTime = new Date().getTime();
-          const timeLimit = 20000; // in milliseconds
-          let count = 0;
-          // Wait for the datanodeManager to finish loading
-          while (count < timeLimit) {
-            count = new Date().getTime() - startTime;
-            if (typeof datanodesManager !== 'undefined') {
-              break;
-            }
-          }
-          // End fix by Ghiles
-          $rootScope.availableTags = $rootScope.listAvailablesTags;
-          datanodesManager.initialize(false);
-          $rootScope.currentProject = xdash.initMeta();
-          $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-          if (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) {
-            const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
-            sidebarController.newProject();
-          }
-          freeboardUIInst.showLoadingIndicator(false);
-        }
-      );
+      freeboardUIInst.showLoadingIndicator(false);
     };
 
     $scope.$watch(

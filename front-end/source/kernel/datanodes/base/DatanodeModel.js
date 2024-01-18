@@ -200,19 +200,9 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       }
 
       // Do we need to load any external scripts?
-      let bExternal = false;
-      if (!_.isUndefined(datanodeType.external_scripts)) {
-        if (!_.isUndefined(datanodeType.external_scripts[0])) {
-          if (datanodeType.external_scripts[0] !== '') {
-            //AEF: fix temporary pb of head.js when no external scripts
-            bExternal = true;
-          }
-        }
-      }
-
-      if (bExternal) {
+      if (datanodeType.external_scripts && datanodeType.external_scripts.length) {
         //AEF: here pb when external scripts: takes to long to load and it is not defined into callback --> pb of execution order
-        head.js(datanodeType.external_scripts.slice(0), finishLoad); // Need to clone the array because head.js adds some weird functions to it
+        loadJsScripts(datanodeType.external_scripts, finishLoad);
       } else {
         finishLoad();
       }

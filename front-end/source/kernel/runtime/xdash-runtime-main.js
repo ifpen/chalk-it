@@ -149,33 +149,29 @@ var RuntimeDashboard = (function () {
       widgetPreview.assignValueChangeHandlers();
     }, 2000);
   }
-
 })();
 
+var layoutMgr = null;
+var widgetEditor = null;
 
+var xdash = null;
 
-var layoutMgr = null
-var widgetEditor = null
-
-var xdash = null
-
-var WTBC = null
-var xdashNotifications = null
+var WTBC = null;
+var xdashNotifications = null;
 
 function startXdash() {
   layoutMgr = new LayoutMgrClass();
   widgetEditor = initEditWidget(); // edit
 
   /*--------event on device rows--------*/
-  $('select[name=select-rows]').on('change', function(e) {
-      layoutMgr.updateButtonState();
+  $('select[name=select-rows]').on('change', function (e) {
+    layoutMgr.updateButtonState();
   });
 
   /*--------event on device columns--------*/
-  $('select[name=select-cols]').on('change', function(e) {
-      layoutMgr.updateButtonState();
+  $('select[name=select-cols]').on('change', function (e) {
+    layoutMgr.updateButtonState();
   });
-
 
   xdash = new Xdash();
   WTBC = new widgetToolboxClass(); // edit ?

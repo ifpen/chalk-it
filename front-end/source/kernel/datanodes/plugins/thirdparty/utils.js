@@ -1021,3 +1021,21 @@ function decodeMimeType(mime) {
 function stripUndefined(object) {
     return Object.fromEntries(Object.entries(object).filter(([, v]) => v !== undefined));
 }
+
+function loadJsScripts(scripts, cb) {
+    const nb =  scripts.length;
+    let done = 0 
+    for(const url of scripts) {
+        const script = document.createElement('script');
+        if(cb) {
+            script.onload = () => {
+                done += 1;
+                if(done === nb) {
+                    cb();
+                }
+            };
+        }
+        script.src = url;
+        document.head.appendChild(script);
+    }
+}

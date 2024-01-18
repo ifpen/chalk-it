@@ -32,21 +32,16 @@ let browsersync = require('browser-sync').create(),
   addVersion = true,
   GlobalConfig = [],
   filesName = configuration.filesName,
-  generatedPageHeaderJsList = [],
-  generatedPageBodyJsList = [],
+  generatedPageJsList = [],
   generatedPageCssList = [],
-  xdashEditorBodyJsList = [],
-  xdashEditorHeaderJsList,
-  xdashEditorCssJsList,
-  xdashRuntimeHeaderJsList,
-  xdashRuntimeBodyJsList,
-  xdashRuntimeCssJsList,
+  xdashEditorJsList = [],
+  xdashEditorCssList,
+  xdashRuntimeJsList,
+  xdashRuntimeCssList,
   xdashEditorCss = filesName.xdash_editor.css,
-  xdashEditorHeader = filesName.xdash_editor.header,
-  xdashEditorBody = filesName.xdash_editor.body,
+  xdashEditorJs = filesName.xdash_editor.js,
   xdashRuntimeCss = filesName.xdash_runtime.css,
-  xdashRuntimeHeader = filesName.xdash_runtime.header,
-  xdashRuntimeBody = filesName.xdash_runtime.body,
+  xdashRuntimeJs = filesName.xdash_runtime.js,
   ListTasksBeforeInject = 'createConfigurationFile';
 
 const nodeVersion = pkg.engines.node;
@@ -111,21 +106,19 @@ task('init', (cb) => {
 
   if (addVersion) {
     filesName.xdash_editor.css = xdashEditorCss + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_editor.header = xdashEditorHeader + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_editor.body = xdashEditorBody + GlobalConfig.config.xDashConfig.version.fullVersion;
+    filesName.xdash_editor.js = xdashEditorJs + GlobalConfig.config.xDashConfig.version.fullVersion;
     filesName.xdash_runtime.css = xdashRuntimeCss + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_runtime.header = xdashRuntimeHeader + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_runtime.body = xdashRuntimeBody + GlobalConfig.config.xDashConfig.version.fullVersion;
+    filesName.xdash_runtime.js = xdashRuntimeJs + GlobalConfig.config.xDashConfig.version.fullVersion;
   }
 
   // On insère la configuration en haut
-  GlobalConfig.allFiles.xDashStudio.header.unshift('configs/config.' + Env + '.js');
-  GlobalConfig.allFiles.xDashRuntime.header.unshift('configs/config.' + Env + '.js');
+  GlobalConfig.allFiles.xDashStudio.js.unshift('configs/config.' + Env + '.js');
+  GlobalConfig.allFiles.xDashRuntime.js.unshift('configs/config.' + Env + '.js');
 
   // En production, les html sont inlinées dans le fichier templates.js
   // Pas en développement sinon problème de reload après modif
   if (Env === 'prod') {
-    GlobalConfig.allFiles.xDashStudio.header.push('.tmp/templates.js');
+    GlobalConfig.allFiles.xDashStudio.js.push('.tmp/templates.js');
   }
 
   return cb();
@@ -185,29 +178,23 @@ task(
     }
     var dirConfig = '../configs';
     if (Env === 'prod') {
-      generatedPageHeaderJsList = [filesName.xdash_runtime.header + '.min.js'];
-      generatedPageBodyJsList = [filesName.xdash_runtime.body + '.min.js'];
+      generatedPageJsList = [filesName.xdash_runtime.js + '.min.js'];
       generatedPageCssList = [filesName.xdash_runtime.css + '.min.css'];
 
-      xdashEditorBodyJsList = [filesName.xdash_editor.body + '.min.js'];
-      xdashEditorHeaderJsList = [filesName.xdash_editor.header + '.min.js'];
-      xdashEditorCssJsList = [filesName.xdash_editor.css + '.min.css'];
+      xdashEditorJsList = [filesName.xdash_editor.js + '.min.js'];
+      xdashEditorCssList = [filesName.xdash_editor.css + '.min.css'];
 
-      xdashRuntimeHeaderJsList = [filesName.xdash_runtime.header + '.min.js'];
-      xdashRuntimeBodyJsList = [filesName.xdash_runtime.body + '.min.js'];
-      xdashRuntimeCssJsList = [filesName.xdash_runtime.css + '.min.css'];
+      xdashRuntimeJsList = [filesName.xdash_runtime.js + '.min.js'];
+      xdashRuntimeCssList = [filesName.xdash_runtime.css + '.min.css'];
     } else {
-      generatedPageHeaderJsList = GlobalConfig.allFiles.xDashRuntime.header;
-      generatedPageBodyJsList = GlobalConfig.allFiles.xDashRuntime.body;
+      generatedPageJsList = GlobalConfig.allFiles.xDashRuntime.js;
       generatedPageCssList = GlobalConfig.allFiles.xDashRuntime.css;
 
-      xdashEditorBodyJsList = GlobalConfig.allFiles.xDashStudio.body;
-      xdashEditorHeaderJsList = GlobalConfig.allFiles.xDashStudio.header;
-      xdashEditorCssJsList = GlobalConfig.allFiles.xDashStudio.css;
+      xdashEditorJsList = GlobalConfig.allFiles.xDashStudio.js;
+      xdashEditorCssList = GlobalConfig.allFiles.xDashStudio.css;
 
-      xdashRuntimeHeaderJsList = GlobalConfig.allFiles.xDashRuntime.header;
-      xdashRuntimeBodyJsList = GlobalConfig.allFiles.xDashRuntime.body;
-      xdashRuntimeCssJsList = GlobalConfig.allFiles.xDashRuntime.css;
+      xdashRuntimeJsList = GlobalConfig.allFiles.xDashRuntime.js;
+      xdashRuntimeCssList = GlobalConfig.allFiles.xDashRuntime.css;
     }
 
     jsFile +=
@@ -215,14 +202,11 @@ task(
       'var exportHeaderCss = ' +
       JSON.stringify(generatedPageCssList) +
       ';\n' +
-      'var exportHeaderJs = ' +
-      JSON.stringify(generatedPageHeaderJsList) +
+      'var exportJs = ' +
+      JSON.stringify(generatedPageJsList) +
       ';\n' +
-      'var exportBodyJs = ' +
-      JSON.stringify(generatedPageBodyJsList) +
-      ';\n' +
-      'var xdashEditorBodyJsList = ' +
-      JSON.stringify(xdashEditorBodyJsList) +
+      'var xdashEditorJsList = ' +
+      JSON.stringify(xdashEditorJsList) +
       ';\n';
 
     return newfile(nameFile, jsFile, { src: true }).pipe(dest(dirConfig));
@@ -329,11 +313,11 @@ task(
       baseFileJs = destination;
       baseFileCss = baseFileJs + 'assets/';
     }
-    let header = src(fixPath(xdashEditorHeaderJsList, baseFileJs), {
+    let js = src(fixPath(xdashEditorJsList, baseFileJs), {
       read: false,
     });
 
-    let css = src(fixPath(xdashEditorCssJsList, baseFileCss), {
+    let css = src(fixPath(xdashEditorCssList, baseFileCss), {
       read: false,
       addRootSlash: true,
     });
@@ -342,9 +326,9 @@ task(
       return (
         src('../index_tmp.html')
           .pipe(
-            inject(header, {
+            inject(js, {
               ignorePath: destination,
-              name: 'third',
+              name: 'inject',
               empty: true,
               addRootSlash: false,
             })
@@ -371,9 +355,9 @@ task(
       return (
         src('../index_tmp.html')
           .pipe(
-            inject(header, {
+            inject(js, {
               ignorePath: destination,
-              name: 'third',
+              name: 'inject',
               empty: true,
               addRootSlash: false,
             })
@@ -403,7 +387,7 @@ task(
   'nomin:xdash_runtime:header',
   series('createConfigurationFile', () => {
     return (
-      src(fixPath(GlobalConfig.allFiles.xDashRuntime.header))
+      src(fixPath(GlobalConfig.allFiles.xDashRuntime.js))
         .on('error', () => {
           /* Ignore compiler errors */
         })
@@ -413,7 +397,7 @@ task(
         //         return this.end();
         //     })
         // )
-        .pipe(concat(filesName.xdash_runtime.header + '.min.js'))
+        .pipe(concat(filesName.xdash_runtime.js + '.min.js'))
         .pipe(replace('source/assets/', 'assets/'))
         .pipe(
           dest(
@@ -494,11 +478,11 @@ task(
       baseFileJs = destination;
       baseFileCss = baseFileJs + 'assets/';
     }
-    let header = src(fixPath(xdashEditorHeaderJsList, baseFileJs), {
+    let js = src(fixPath(xdashEditorJsList, baseFileJs), {
       read: false,
     });
 
-    let css = src(fixPath(xdashEditorCssJsList, baseFileCss), {
+    let css = src(fixPath(xdashEditorCssList, baseFileCss), {
       read: false,
       addRootSlash: true,
     });
@@ -507,9 +491,9 @@ task(
       return (
         src('../index_tmp.html')
           .pipe(
-            inject(header, {
+            inject(js, {
               ignorePath: destination,
-              name: 'third',
+              name: 'body-js',
               empty: true,
               addRootSlash: false,
             })
@@ -535,9 +519,9 @@ task(
     } else {
       return src('../index_tmp.html')
         .pipe(
-          inject(header, {
+          inject(js, {
             ignorePath: destination,
-            name: 'third',
+            name: 'body-js',
             empty: true,
             addRootSlash: false,
           })
@@ -576,14 +560,11 @@ task(
       baseFileJs = destination;
       baseFileCss = baseFileJs + 'assets/';
     }
-    let header = src(fixPath(xdashRuntimeHeaderJsList, baseFileJs), {
-      read: false,
-    });
-    let body = src(fixPath(xdashRuntimeBodyJsList, baseFileJs), {
+    let js = src(fixPath(xdashRuntimeJsList, baseFileJs), {
       read: false,
     });
 
-    let css = src(fixPath(xdashRuntimeCssJsList, baseFileCss), {
+    let css = src(fixPath(xdashRuntimeCssList, baseFileCss), {
       read: false,
       addRootSlash: true,
     });
@@ -591,17 +572,9 @@ task(
     if (Env === 'prod') {
       return src('../xprjson-view_tmp.html')
         .pipe(
-          inject(header, {
+          inject(js, {
             ignorePath: destination,
-            name: 'header',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(body, {
-            ignorePath: destination,
-            name: 'body',
+            name: 'body-js',
             empty: true,
             addRootSlash: false,
           })
@@ -620,17 +593,9 @@ task(
     } else {
       return src('../xprjson-view_tmp.html')
         .pipe(
-          inject(header, {
+          inject(js, {
             ignorePath: destination,
-            name: 'header',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(body, {
-            ignorePath: destination,
-            name: 'body',
+            name: 'body-js',
             empty: true,
             addRootSlash: false,
           })
@@ -669,14 +634,11 @@ task(
       baseFileJs = destination;
       baseFileCss = baseFileJs + 'assets/';
     }
-    let header = src(fixPath(xdashRuntimeHeaderJsList, baseFileJs), {
-      read: false,
-    });
-    let body = src(fixPath(xdashRuntimeBodyJsList, baseFileJs), {
+    let js = src(fixPath(xdashRuntimeJsList, baseFileJs), {
       read: false,
     });
 
-    let css = src(fixPath(xdashRuntimeCssJsList, baseFileCss), {
+    let css = src(fixPath(xdashRuntimeCssList, baseFileCss), {
       read: false,
       addRootSlash: true,
     });
@@ -684,17 +646,9 @@ task(
     if (Env === 'prod') {
       return src('../xprjson-view_tmp.html')
         .pipe(
-          inject(header, {
+          inject(js, {
             ignorePath: destination,
-            name: 'header',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(body, {
-            ignorePath: destination,
-            name: 'body',
+            name: 'body-js',
             empty: true,
             addRootSlash: false,
           })
@@ -714,17 +668,9 @@ task(
     } else {
       return src('../xprjson-view_tmp.html')
         .pipe(
-          inject(header, {
+          inject(js, {
             ignorePath: destination,
-            name: 'header',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(body, {
-            ignorePath: destination,
-            name: 'body',
+            name: 'body-js',
             empty: true,
             addRootSlash: false,
           })

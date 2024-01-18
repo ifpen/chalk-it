@@ -1,10 +1,9 @@
 {
   "xDashRuntime": {
     "css": ["source/assets/style/runtime.css"],
-    "header": [
+    "js": [
       "thirdparty/pyodide.js",
       "source/kernel/base/pyodide-loader.js",
-      "thirdparty/head.js",
       "thirdparty/ajv7.min.js",
       "thirdparty/angular.js",
       "thirdparty/rzslider.min.js",
@@ -53,10 +52,7 @@
       "thirdparty/marked.min.js",
       "thirdparty/jquery.bt.js",
       "thirdparty/moment.min.js",
-      "thirdparty/daterangepicker.js"
-    ],
-    "body": [
-      "thirdparty/head.js",
+      "thirdparty/daterangepicker.js",
       "thirdparty/bootstrap-clockpicker.js",
       "thirdparty/knockout.js",
       "thirdparty/underscore.js",
@@ -158,7 +154,7 @@
       "bower_components/codemirror/addon/hint/show-hint.css",
       "source/assets/style/studio.css"
     ],
-    "header": [
+    "js": [
       "thirdparty/pyodide.js",
       "source/kernel/base/pyodide-def.js",
       "source/kernel/base/pyodide-loader.js",
@@ -184,7 +180,6 @@
       "thirdparty/daterangepicker.js",
       "thirdparty/angularjs-gauge.js",
       "source/kernel/base/xdash-load.js",
-      "thirdparty/head.js",
       "thirdparty/knockout.js",
       "thirdparty/underscore.js",
       "thirdparty/jquery.caret.js",
@@ -301,9 +296,7 @@
       "source/kernel/general/backend/file-management.js",
       "source/kernel/general/backend/FileMngr.js",
       "thirdparty/json_parseMore.js",
-      "thirdparty/marked.min.js"
-    ],
-    "body": [
+      "thirdparty/marked.min.js",
       "thirdparty/bootstrap-clockpicker.js",
       "source/kernel/datanodes/execution-engine/DatanodeDependency.js",
       "source/kernel/datanodes/gui/GraphVisu.js",

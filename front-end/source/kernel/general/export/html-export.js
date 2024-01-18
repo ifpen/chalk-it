@@ -97,8 +97,8 @@ var htmlExport = (function () {
       navBarNotification = xdashPrj.navBarNotification;
     }
 
-    for (var t = 0; t < exportBodyJs.length; t++) {
-      bodyText0.push('<script src="' + xDashConfig.urlBaseForExport + exportBodyJs[t] + '"></script>');
+    for (var t = 0; t < exportJs.length; t++) {
+      bodyText0.push('<script src="' + xDashConfig.urlBaseForExport + exportJs[t] + '"></script>');
     }
 
     var jsonContent = 'jsonContent = ' + JSON.stringify(xdashPrj, null, '  ');

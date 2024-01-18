@@ -15,14 +15,20 @@ module.exports = {
       body: 'body-all-js-editor-',
       path: 'xdash_editor',
     },
-    xdash_runtime: {
-      css: 'all-css-runtime-',
-      header: 'header-all-js-runtime-',
-      body: 'body-all-js-runtime-',
-      path: 'xdash_runtime:',
-    },
-    workers: {
-      pyodide: 'pyodide-worker-',
+    filesName: {
+      xdash_editor: {
+        css: 'all-css-editor-',
+        js: 'all-js-editor-',
+        path: 'xdash_editor',
+      },
+      xdash_runtime: {
+        css: 'all-css-runtime-',
+        js: 'all-js-runtime-',
+        path: 'xdash_runtime:',
+      },
+      workers: {
+        pyodide: 'pyodide-worker-',
+      },
     },
   },
 };

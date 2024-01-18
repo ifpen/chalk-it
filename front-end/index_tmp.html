@@ -10,11 +10,9 @@
     <script src="source/starter-browser-compatibility.js"></script>
     <!-- inject:css -->
     <!-- endinject -->
-    <!-- third:js -->
-    <!-- endinject -->
   </head>
 
-  <body ng-app="xCLOUD" ng-class="{'nav-sm':true}" id="app">
+  <body ng-app="xCLOUD" class="nav-sm" id="app">
     <div id="loading-overlay" ng-class="{'hidden':!isLoading}">
       <div class="wrapperloading">
         <div class="loading up"></div>
@@ -23,5 +21,7 @@
     </div>
     <div ui-view></div>
     <div id="_otherUse"></div>
+    <!-- body-js:js -->
+    <!-- endinject -->
   </body>
 </html>
