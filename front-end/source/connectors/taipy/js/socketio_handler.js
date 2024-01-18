@@ -18,6 +18,7 @@ const manageWsMessage = (socket, message) => {
   }
   if (message.type === "MU") {
     for (const updateData of message.payload) {
+      taipyManager.handleSingleUpdate(updateData);
     }
   }
 };

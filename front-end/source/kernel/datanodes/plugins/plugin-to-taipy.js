@@ -92,7 +92,7 @@
       self.updateNow = function() {
           statusCallback('OK'); // MBG for scheduler : put statusCallback before updateCallback      
           updateCallback(json_var_value);
-		  // TODO add websocket send to taipy
+          taipyManager.sendToTaipy(currentSettings.name, json_var_value);
           return true; //ABK
       };
 
