@@ -7,7 +7,7 @@
 // ¦ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  ¦ \\
 // +--------------------------------------------------------------------+ \\
 
-var xdash = (function () {
+var Xdash = function () {
   const version = xDashConfig.version.fullVersion;
 
   var prjName = ''; //AEF
@@ -519,4 +519,4 @@ var xdash = (function () {
     readFileFromServer: readFileFromServer,
     readFileFromUrl: readFileFromUrl,
   };
-})();
+};

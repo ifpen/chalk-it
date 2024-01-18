@@ -1420,5 +1420,3 @@ function initEditWidget() {
     showHideWidgMenu,
   };
 }
-
-var widgetEditor = initEditWidget();

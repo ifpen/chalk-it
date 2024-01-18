@@ -900,38 +900,3 @@ class LayoutMgrClass {
     return widgetsDroppersMap;
   }
 }
-
-var layoutMgr = new LayoutMgrClass();
-
-/*--------event on device rows--------*/
-$('select[name=select-rows]').on('change', function (e) {
-  layoutMgr.updateButtonState();
-});
-
-/*--------event on device columns--------*/
-$('select[name=select-cols]').on('change', function (e) {
-  layoutMgr.updateButtonState();
-});
-
-/*--------event on device columns--------*/
-/*$("#rescale-opts,#stretchWidth,#keepProportion").on('change', function(e) {
-    const stretchWidth = $('#stretchWidth').prop('checked');
-    const keepProportion = $('#keepProportion').prop('checked');
-
-    let scalingMethod;
-    if (stretchWidth) {
-        if (keepProportion) {
-            scalingMethod = 'scaleTwSp';
-        } else {
-            scalingMethod = 'scaleTwh';
-        }
-    } else {
-        if (keepProportion) {
-            scalingMethod = 'scaleIdent'; // MBG : to be improved
-        } else {
-            scalingMethod = 'scaleIdent';
-        }
-    }
-
-    widgetEditor.setScalingMethod(scalingMethod);
-});*/ // MBG 12/02/2022 dead code

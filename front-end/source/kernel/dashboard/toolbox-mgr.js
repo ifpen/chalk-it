@@ -148,4 +148,3 @@ function widgetToolboxClass() {
   });
 }
 
-var WTBC = new widgetToolboxClass();

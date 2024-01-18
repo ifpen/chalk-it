@@ -1,4 +1,4 @@
-var xdashNotifications = (function () {
+var XdashNotifications = function () {
   var $body = angular.element(document.body);
   var $rootScope = $body.scope().$root;
   $rootScope.PnotifyStatus = false;
@@ -136,4 +136,4 @@ var xdashNotifications = (function () {
       $rootScope.safeApply();
     },
   };
-})();
+};
