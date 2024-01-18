@@ -14,11 +14,10 @@ const manageWsMessage = (socket, message) => {
   if (message.type === "GVS") {
     variableData = message.payload.data;
     console.log(variableData);
-    taipyManager.processVariable(variableData);
+    taipyManager.setVariableData(variableData);
   }
   if (message.type === "MU") {
     for (const updateData of message.payload) {
-      handleSingleUpdate(variableData, updateData)
     }
   }
 };

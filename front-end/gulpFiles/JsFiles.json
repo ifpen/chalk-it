@@ -93,6 +93,7 @@
       "source/kernel/datanodes/plugins/plugin-generic-binary-file.js",
       "source/kernel/datanodes/plugins/plugin-csv-file.js",
       "source/kernel/datanodes/plugins/plugin-csv-play.js",
+      "source/kernel/datanodes/plugins/plugin-to-taipy.js",
       "source/kernel/datanodes/plugins/plugin-unzip-file.js",
       "source/kernel/datanodes/plugins/plugin-websocket.receive.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-websocket.send.datanodes.js",
@@ -148,11 +149,11 @@
       "source/kernel/runtime/xdash-runtime-main.js",
       "source/kernel/dashboard/rendering/reconstruct-foundations.js",
       "source/angular/modules/libs/notification/notification-xdash.js",
-      "source/connectors/taipy/js/taipy-manager.js", 
-      "source/connectors/taipy/js/socketio.js",
+      "source/connectors/taipy/js/taipy-manager.js",
+      "source/connectors/taipy/js/utils.js",
       "source/connectors/taipy/js/socketio_handler.js",
-      "source/connectors/taipy/js/index.js",
-      "source/connectors/taipy/js/utils.js"
+      "source/connectors/taipy/js/socketio.js",
+      "source/connectors/taipy/js/index.js"
     ]
   },
   "xDashStudio": {
@@ -397,6 +398,7 @@
       "source/kernel/datanodes/plugins/plugin-generic-binary-file.js",
       "source/kernel/datanodes/plugins/plugin-csv-file.js",
       "source/kernel/datanodes/plugins/plugin-csv-play.js",
+      "source/kernel/datanodes/plugins/plugin-to-taipy.js",
       "source/kernel/datanodes/plugins/plugin-unzip-file.js",
       "source/kernel/datanodes/plugins/plugin-clock.js",
       "source/kernel/datanodes/plugins/clearobject.mqtt.plugin.js",
@@ -404,12 +406,12 @@
       "source/kernel/datanodes/plugins/plugin-websocket.send.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-geolocation.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-python-support.js",
-      "source/kernel/datanodes/plugins/plugin-python-script.js",
-      "source/connectors/taipy/js/taipy-manager.js", 
-      "source/connectors/taipy/js/socketio.js",
+      "source/kernel/datanodes/plugins/plugin-python-script.js", 
+      "source/connectors/taipy/js/taipy-manager.js",
+      "source/connectors/taipy/js/utils.js",
       "source/connectors/taipy/js/socketio_handler.js",
-      "source/connectors/taipy/js/index.js",
-      "source/connectors/taipy/js/utils.js"   
+      "source/connectors/taipy/js/socketio.js",
+      "source/connectors/taipy/js/index.js"
     ]
   }
 }
