@@ -1038,31 +1038,9 @@ function flatUiComplexWidgetsPluginClass() {
       const displayStyle =
         'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto';
       widgetHtml.setAttribute('style', displayStyle);
-<<<<<<< HEAD
       let divContent = `<table style="margin: 0; height: 100%; ${this.tableBackgroundColor('primary')}" class="table`;
       if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
       if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
-=======
-      let divContent =
-        '<table style="margin: 0; height: 100%; ' + this.tableBackgroundColor('primary') + '" class="table';
-
-      // Instead, the primary and secondary background colour is used.
-      // if (modelsParameters[idInstance].striped) {
-      //   divContent = divContent + ' table-striped ';
-      // }
-
-      if (modelsParameters[idInstance].bordered) {
-        divContent += ' table-bordered ';
-      }
-      if (!_.isUndefined(modelsParameters[idInstance].noBorder)) {
-        // backward compatibiliy
-        if (modelsParameters[idInstance].noBorder) {
-          divContent += ' no-border ';
-        }
-      } else {
-        modelsParameters[idInstance].noBorder = false; // update
-      }
->>>>>>> main
       divContent += ' table-responsive" id="table' + idWidget + '" >';
       const val = modelsHiddenParams[idInstance].value;
       let insideTable = self.buildTable(val);
