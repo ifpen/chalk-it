@@ -23,7 +23,7 @@ class TaipyManager {
   }
 
   onChange(app, varName, value) {
-    const variableData = this._getVariableData();
+    const variableData = app.getDataTree();
     const updateDataName = varName;
     const updateDataValue = value;
     const [variable, context] = app.getName(varName);

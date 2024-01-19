@@ -8,7 +8,7 @@ const onInit = (app) => {
 const init = () => {
     // Init taipy app
     window.taipyApp = TaipyGuiBase.createApp(onInit);
-    window.taipyApp.onChange = taipyManager.onChange;
+    window.taipyApp.onUpdate = taipyManager.onChange;
 };
 
 init();
