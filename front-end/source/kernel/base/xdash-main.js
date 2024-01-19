@@ -447,7 +447,7 @@ var xdash = (function () {
     let loadFn = async function (e) {
       const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       scopeDash.reset();
-      bOk = await deserialize(jsonObject); // AEF: clear is called here
+      bOk = await deserialize(jsonObject);
       datanodesManager.showLoadingIndicator(false);
       document.removeEventListener('widgets-tab-loaded', loadFn);
       jsonObject = undefined; //ABK in case of  missed synchronization a second loadFn cannot be made
