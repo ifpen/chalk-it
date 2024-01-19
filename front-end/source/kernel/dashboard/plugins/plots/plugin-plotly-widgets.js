@@ -15,52 +15,52 @@
 const USE_PLOTLY_VALIDATION = true;
 
 const colorway = [
-  "var(--widget-color-2)",
-  "var(--widget-color-5)",
-  "var(--widget-color-6)",
-  "var(--widget-color-7)",
+  'var(--widget-color-2)',
+  'var(--widget-color-5)',
+  'var(--widget-color-6)',
+  'var(--widget-color-7)',
   'var(--widget-color-8)',
   'var(--widget-color-9)',
   'var(--widget-color-10)',
   'var(--widget-color-11)',
   'var(--widget-color-12)',
-  'var(--widget-color-13)'
+  'var(--widget-color-13)',
 ];
-const textColor = "var(--widget-color)";
+const textColor = 'var(--widget-color)';
 
 const axisParams = {
-  title: "",
+  title: '',
   tickfont: {
     color: textColor,
-  }
-}
+  },
+};
 const plotlyColorParams = {
-  paper_bgcolor: "rgba(0,0,0,0)",
-  plot_bgcolor: "rgba(0,0,0,0)",
+  paper_bgcolor: 'rgba(0,0,0,0)',
+  plot_bgcolor: 'rgba(0,0,0,0)',
   colorway: colorway,
   legend: {
     font: {
       color: textColor,
-    }
-  }
+    },
+  },
 };
 
 // Very minimalistic plotly validation
 const _SCHEMA_PLOTLY_DATA = {
   $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + "xdash:plotly_data",
-  type: "array",
+  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:plotly_data',
+  type: 'array',
   items: {
-    type: "object",
-    properties: { type: { type: "string" } },
-    required: ["type"],
+    type: 'object',
+    properties: { type: { type: 'string' } },
+    required: ['type'],
   },
 };
 
 const _SCHEMA_PLOTLY_LAYOUT = {
   $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + "xdash:plotly_layout",
-  type: "object",
+  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:plotly_layout',
+  type: 'object',
 };
 
 // Parameters
@@ -68,27 +68,27 @@ modelsParameters.plotlyLine = {
   numberOfAxis: 1,
   layout: {
     // all "layout" attributes: #layout
-    title: "", // more about "layout.title": #layout-title
+    title: '', // more about "layout.title": #layout-title
     xaxis: {
       // all "layout.xaxis" attributes: #layout-xaxis
-      title: "x", // more about "layout.xaxis.title": #layout-xaxis-title
+      title: 'x', // more about "layout.xaxis.title": #layout-xaxis-title
       tickfont: {
         color: textColor,
       },
     },
-    yaxis: {    
-      title: "y",
+    yaxis: {
+      title: 'y',
       tickfont: {
         color: textColor,
       },
     },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
     colorway: colorway,
     legend: {
       font: {
         color: textColor,
-      }
+      },
     },
     showlegend: true,
     margin: {
@@ -106,28 +106,28 @@ modelsParameters.plotlyBar = {
   numberOfAxis: 1,
   layout: {
     // all "layout" attributes: #layout
-    title: "", // more about "layout.title": #layout-title
-    barmode: "group",
+    title: '', // more about "layout.title": #layout-title
+    barmode: 'group',
     xaxis: {
       // all "layout.xaxis" attributes: #layout-xaxis
-      title: "x", // more about "layout.xaxis.title": #layout-xaxis-title
+      title: 'x', // more about "layout.xaxis.title": #layout-xaxis-title
       tickfont: {
         color: textColor,
       },
     },
     yaxis: {
-      title: "y",
+      title: 'y',
       tickfont: {
         color: textColor,
       },
     },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
     colorway: colorway,
     legend: {
       font: {
         color: textColor,
-      }
+      },
     },
     showlegend: true,
     margin: {
@@ -144,14 +144,14 @@ modelsParameters.plotlyBar = {
 modelsParameters.plotlyPie = {
   layout: {
     // all "layout" attributes: #layout
-    title: "",
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
+    title: '',
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
     colorway: colorway,
     legend: {
       font: {
         color: textColor,
-      }
+      },
     },
     showlegend: true,
     margin: {
@@ -168,21 +168,21 @@ modelsParameters.plotlyPie = {
 modelsParameters.plotly3dSurface = {
   layout: {
     // all "layout" attributes: #layout
-    title: "", // more about "layout.title": #layout-title
+    title: '', // more about "layout.title": #layout-title
     scene: {
       xaxis: {
         // all "layout.xaxis" attributes: #layout-xaxis
-        title: "x", // more about "layout.xaxis.title": #layout-xaxis-title
+        title: 'x', // more about "layout.xaxis.title": #layout-xaxis-title
       },
       yaxis: {
-        title: "y",
+        title: 'y',
       },
       zaxis: {
-        title: "z",
+        title: 'z',
       },
     },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
     showlegend: true,
     margin: {
       l: 50,
@@ -209,10 +209,10 @@ modelsHiddenParams.plotlyLine = {
   ...modelsParameters.plotlyLine,
   data: [
     {
-      type: "scatter", // all "scatter" attributes: https://plot.ly/javascript/reference/#scatter
+      type: 'scatter', // all "scatter" attributes: https://plot.ly/javascript/reference/#scatter
       x: [0, 1, 2], // more about "x": #scatter-x
       y: [0, 4, 0], // #scatter-y
-      name: "trace 0",
+      name: 'trace 0',
     },
   ],
   selection: [{}],
@@ -222,8 +222,8 @@ modelsHiddenParams.plotlyBar = {
   ...modelsParameters.plotlyBar,
   data: [
     {
-      type: "bar", // all "scatter" attributes: https://plot.ly/javascript/reference/#scatter
-      x: ["first", "second"], // more about "x": #scatter-x
+      type: 'bar', // all "scatter" attributes: https://plot.ly/javascript/reference/#scatter
+      x: ['first', 'second'], // more about "x": #scatter-x
       y: [1, 2], // #scatter-y
     },
   ],
@@ -234,8 +234,8 @@ modelsHiddenParams.plotlyPie = {
   ...modelsParameters.plotlyPie,
   data: [
     {
-      type: "pie",
-      labels: ["half1", "half2"],
+      type: 'pie',
+      labels: ['half1', 'half2'],
       values: [0.5, 0.5],
       // marker: { colors: [] },
       sort: false,
@@ -248,7 +248,7 @@ modelsHiddenParams.plotly3dSurface = {
   ...modelsParameters.plotly3dSurface,
   data: [
     {
-      type: "surface",
+      type: 'surface',
       x: [1, 2, 3],
       y: [1, 2, 3],
       z: [
@@ -267,7 +267,7 @@ modelsHiddenParams.plotlyRealTime = {
     {
       //'x': [],
       y: [],
-      mode: "lines",
+      mode: 'lines',
     },
   ],
   selection: [{}],
@@ -279,59 +279,69 @@ modelsHiddenParams.plotlyGeneric = {
   selection: [{}],
 };
 
-modelsTempParams.plotlyLine = { lastEditTimeStamp: 0, pngCache: "" };
-modelsTempParams.plotlyBar = { lastEditTimeStamp: 0, pngCache: "" };
-modelsTempParams.plotlyPie = { lastEditTimeStamp: 0, pngCache: "" };
-modelsTempParams.plotly3dSurface = { lastEditTimeStamp: 0, pngCache: "" };
-modelsTempParams.plotlyGeneric = { lastEditTimeStamp: 0, pngCache: "" };
-modelsTempParams.plotlyRealTime = { lastEditTimeStamp: 0, pngCache: "" };
+modelsTempParams.plotlyLine = { lastEditTimeStamp: 0, pngCache: '' };
+modelsTempParams.plotlyBar = { lastEditTimeStamp: 0, pngCache: '' };
+modelsTempParams.plotlyPie = { lastEditTimeStamp: 0, pngCache: '' };
+modelsTempParams.plotly3dSurface = { lastEditTimeStamp: 0, pngCache: '' };
+modelsTempParams.plotlyGeneric = { lastEditTimeStamp: 0, pngCache: '' };
+modelsTempParams.plotlyRealTime = { lastEditTimeStamp: 0, pngCache: '' };
 
 // Layout (default dimensions)
-modelsLayout.plotlyLine = { height: "30vh", width: "30vw", minWidth: "100px", minHeight: "100px" };
-modelsLayout.plotlyBar = { height: "30vh", width: "30vw", minWidth: "100px", minHeight: "100px" };
-modelsLayout.plotlyPie = { height: "30vh", width: "30vw", minWidth: "100px", minHeight: "100px" };
-modelsLayout.plotly3dSurface = { height: "30vh", width: "30vw", minWidth: "378px", minHeight: "305px" };
-modelsLayout.plotlyGeneric = { height: "30vh", width: "30vw", minWidth: "50px", minHeight: "32px" };
-modelsLayout.plotlyRealTime = { height: "30vh", width: "30vw", minWidth: "100px", minHeight: "100px" };
+modelsLayout.plotlyLine = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
+modelsLayout.plotlyBar = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
+modelsLayout.plotlyPie = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
+modelsLayout.plotly3dSurface = { height: '30vh', width: '30vw', minWidth: '378px', minHeight: '305px' };
+modelsLayout.plotlyGeneric = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
+modelsLayout.plotlyRealTime = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
 
 const _SCHEMA_PLOTLY_NUMERIC_DATA = {
   $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + "xdash:plotly_numeric_data",
+  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:plotly_numeric_data',
   anyOf: [
-    { type: "number" },
+    { type: 'number' },
     {
-      type: "array",
-      items: { type: "number" },
+      type: 'array',
+      items: { type: 'number' },
     },
   ],
 };
 
 const _SCHEMA_PLOTLY_ANY_DATA = {
   $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + "xdash:plotly_any_data",
+  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:plotly_any_data',
   anyOf: [
-    { type: "string" },
-    { type: "number" },
-    { type: "boolean" },
+    { type: 'string' },
+    { type: 'number' },
+    { type: 'boolean' },
     {
-      type: "array",
+      type: 'array',
       items: {
-        anyOf: [{ type: "string" }, { type: "number" }, { type: "boolean" }],
+        anyOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }],
       },
     },
   ],
 };
 
 function _createPlotlyAnyDataDescriptor(name) {
-  return new WidgetActuatorDescription(name, "Array of values to plot", WidgetActuatorDescription.READ, _SCHEMA_PLOTLY_ANY_DATA);
+  return new WidgetActuatorDescription(
+    name,
+    'Array of values to plot',
+    WidgetActuatorDescription.READ,
+    _SCHEMA_PLOTLY_ANY_DATA
+  );
 }
 
 function _createPlotlyNumericDataDescriptor(name) {
-  return new WidgetActuatorDescription(name, "Array of numeric values to plot", WidgetActuatorDescription.READ, _SCHEMA_PLOTLY_NUMERIC_DATA);
+  return new WidgetActuatorDescription(
+    name,
+    'Array of numeric values to plot',
+    WidgetActuatorDescription.READ,
+    _SCHEMA_PLOTLY_NUMERIC_DATA
+  );
 }
 
 function _isAxisLinear(layout, axis) {
-  return layout && layout[axis] && layout[axis]["type"] === "linear";
+  return layout && layout[axis] && layout[axis]['type'] === 'linear';
 }
 
 /*******************************************************************/
@@ -346,15 +356,18 @@ function plotlyWidgetsPluginClass() {
   // |                         createPlotlyDiv                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function createPlotlyDiv(idDivContainer, pId, bInteractive) {
-    var widgetHtml = document.createElement("div");
-    var idDivPlotly = "plotly" + pId;
+    var widgetHtml = document.createElement('div');
+    var idDivPlotly = 'plotly' + pId;
     if (bInteractive) {
-      idDivPlotly = idDivPlotly + "c";
+      idDivPlotly = idDivPlotly + 'c';
     }
-    widgetHtml.setAttribute("id", idDivPlotly);
-    widgetHtml.setAttribute("class", "js-plotly-plot");
-    widgetHtml.setAttribute("style", "text-align:center; height: inherit; width: inherit; background-color: transparent");
-    $("#" + idDivContainer).html(widgetHtml);
+    widgetHtml.setAttribute('id', idDivPlotly);
+    widgetHtml.setAttribute('class', 'js-plotly-plot');
+    widgetHtml.setAttribute(
+      'style',
+      'text-align:center; height: inherit; width: inherit; background-color: transparent'
+    );
+    $('#' + idDivContainer).html(widgetHtml);
   }
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
@@ -364,17 +377,17 @@ function plotlyWidgetsPluginClass() {
     pId = pId + 1;
     createPlotlyDiv(idDivContainer, pId, bInteractive);
     switch (typeWidget) {
-      case "plotlyLine":
+      case 'plotlyLine':
         return new this.linePlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
-      case "plotlyBar":
+      case 'plotlyBar':
         return new this.barPlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
-      case "plotlyPie":
+      case 'plotlyPie':
         return new this.piePlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
-      case "plotly3dSurface":
+      case 'plotly3dSurface':
         return new this.d3surfacePlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
-      case "plotlyGeneric":
+      case 'plotlyGeneric':
         return new this.genericPlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
-      case "plotlyRealTime":
+      case 'plotlyRealTime':
         return new this.realTimePlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
     }
   };
@@ -399,48 +412,48 @@ function plotlyWidgetsPluginClass() {
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function basePlotlyWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     this.bIsInteractive = bInteractive;
-    var idDivPlotly = "plotly" + idWidget;
+    var idDivPlotly = 'plotly' + idWidget;
     if (bInteractive) {
-      idDivPlotly = idDivPlotly + "c";
+      idDivPlotly = idDivPlotly + 'c';
     }
     var self = this;
 
     // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
-    this.getColorValueFromCSSProperty = function(value) {
+    this.getColorValueFromCSSProperty = function (value) {
       var color = value;
-      if(color.includes('var(--')) {
-          var realValue = value.substring(4, value.length - 1);
-          color = window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
+      if (color.includes('var(--')) {
+        var realValue = value.substring(4, value.length - 1);
+        color = window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
       }
       return color;
-    }
+    };
 
     // Check if a key exists in a deeply nested object
     this.checkNested = function (obj, level, ...rest) {
-      if (obj === undefined) return false
-      if (rest.length == 0 && obj.hasOwnProperty(level)) return true
-      return this.checkNested(obj[level], ...rest)
-    }    
+      if (obj === undefined) return false;
+      if (rest.length == 0 && obj.hasOwnProperty(level)) return true;
+      return this.checkNested(obj[level], ...rest);
+    };
 
     /**
-    * Retrieves the transformed text by handling HTML tags.
-    * If the text does not contain HTML tags, it is returned as is.
-    * 
-    * @param {string} text - The input text to transform.
-    * @returns {string} The transformed text without HTML tags.
-    */
+     * Retrieves the transformed text by handling HTML tags.
+     * If the text does not contain HTML tags, it is returned as is.
+     *
+     * @param {string} text - The input text to transform.
+     * @returns {string} The transformed text without HTML tags.
+     */
     this.getTransformedText = function (text) {
       if (text) {
-          // Check if the text has HTML tags
-          const hasHtmlTags = $('<div>').html(text).children().length > 0;
-          if (!hasHtmlTags) {
-              // If the text does not have HTML tags, parse it as HTML
-              const parser = new DOMParser();
-              text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
-          }
+        // Check if the text has HTML tags
+        const hasHtmlTags = $('<div>').html(text).children().length > 0;
+        if (!hasHtmlTags) {
+          // If the text does not have HTML tags, parse it as HTML
+          const parser = new DOMParser();
+          text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
+        }
       }
       return text;
-    }
+    };
 
     this.render = function () {
       /* Conversion to enable HTML tags */
@@ -455,38 +468,48 @@ function plotlyWidgetsPluginClass() {
 
       /* Apply colors from modelsParameters */
       if (modelsHiddenParams[idInstance].layout) {
-        let modelLayout = JSON.parse(JSON.stringify(modelsHiddenParams[idInstance].layout))
-        modelsHiddenParams[idInstance].layout = modelLayout
+        let modelLayout = JSON.parse(JSON.stringify(modelsHiddenParams[idInstance].layout));
+        modelsHiddenParams[idInstance].layout = modelLayout;
         if (modelsParameters[idInstance].layout) {
-          modelLayout = JSON.parse(JSON.stringify(modelsParameters[idInstance].layout))
+          modelLayout = JSON.parse(JSON.stringify(modelsParameters[idInstance].layout));
         }
         // Set colorway
         if (this.checkNested(modelLayout, 'colorway')) {
-          modelsHiddenParams[idInstance].layout.colorway = modelLayout.colorway.map((color) => this.getColorValueFromCSSProperty(color))
+          modelsHiddenParams[idInstance].layout.colorway = modelLayout.colorway.map((color) =>
+            this.getColorValueFromCSSProperty(color)
+          );
         }
         // Set x, y, z Axis ticks color
-        ['xaxis', 'yaxis', 'zaxis'].forEach(axis => {
+        ['xaxis', 'yaxis', 'zaxis'].forEach((axis) => {
           if (this.checkNested(modelLayout, axis, 'tickfont', 'color')) {
-            modelsHiddenParams[idInstance].layout[axis].tickfont.color = this.getColorValueFromCSSProperty(modelLayout[axis].tickfont.color);
+            modelsHiddenParams[idInstance].layout[axis].tickfont.color = this.getColorValueFromCSSProperty(
+              modelLayout[axis].tickfont.color
+            );
           }
         });
         // Set legend color
         if (this.checkNested(modelLayout, 'legend', 'font', 'color')) {
-          modelsHiddenParams[idInstance].layout.legend.font.color = this.getColorValueFromCSSProperty(modelLayout.legend.font.color)
+          modelsHiddenParams[idInstance].layout.legend.font.color = this.getColorValueFromCSSProperty(
+            modelLayout.legend.font.color
+          );
         }
         // Set paper_bgcolor
         if (this.checkNested(modelLayout, 'paper_bgcolor')) {
-          modelsHiddenParams[idInstance].layout.paper_bgcolor = this.getColorValueFromCSSProperty(modelLayout.paper_bgcolor)
+          modelsHiddenParams[idInstance].layout.paper_bgcolor = this.getColorValueFromCSSProperty(
+            modelLayout.paper_bgcolor
+          );
         }
         // Set plot_bgcolor
         if (this.checkNested(modelLayout, 'plot_bgcolor')) {
-          modelsHiddenParams[idInstance].layout.plot_bgcolor = this.getColorValueFromCSSProperty(modelLayout.plot_bgcolor)
+          modelsHiddenParams[idInstance].layout.plot_bgcolor = this.getColorValueFromCSSProperty(
+            modelLayout.plot_bgcolor
+          );
         }
       }
 
       /* MBG issue bad width at runtime for Ploty widgets*/
       if (this.bIsInteractive) {
-        $("#" + idDivPlotly).html("");
+        $('#' + idDivPlotly).html('');
         if (!_.isUndefined(modelsHiddenParams[idInstance].layout) && !_.isNull(modelsHiddenParams[idInstance].layout)) {
           if (modelsHiddenParams[idInstance].layout.autosize) {
             delete modelsHiddenParams[idInstance].layout.width;
@@ -502,52 +525,57 @@ function plotlyWidgetsPluginClass() {
 
         this.setSelectionActuator();
       } else {
-        $("#" + idDivPlotly).html("");
-        $("#" + idDivPlotly).html('<img id="png-export-' + idDivPlotly + '"></img>');
-        var img_png = $("#png-export-" + idDivPlotly);
+        $('#' + idDivPlotly).html('');
+        $('#' + idDivPlotly).html('<img id="png-export-' + idDivPlotly + '"></img>');
+        var img_png = $('#png-export-' + idDivPlotly);
         var img_url;
         const UNSENSIBLE_TIME_INTERVAL = 6000;
         if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
           // MBG tmp optim
-          img_png.attr("src", modelsTempParams[idInstance].pngCache);
+          img_png.attr('src', modelsTempParams[idInstance].pngCache);
           var divContainer = document.getElementById(idDivContainer);
-          img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + "px";
-          img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + "px";
-          img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + "vw";
-          img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + "vh";
-          img_png[0].style.margin = "3px";
+          img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
+          img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
+          img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
+          img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + 'vh';
+          img_png[0].style.margin = '3px';
           return;
         }
-        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, modelsHiddenParams[idInstance].layout).then(function (gd) {
-          Plotly.toImage(gd, { height: $("#" + idDivContainer).height(), width: $("#" + idDivContainer).width() }).then(function (url) {
-            img_url = url;
-            Plotly.purge(gd);
-            img_png.attr("src", img_url);
-            gd.style.minHeight = gd.parentNode.style.minHeight;
-            gd.style.minWidth = gd.parentNode.style.minWidth;
-            gd.style.width = gd.parentNode.style.width;
-            gd.style.height = gd.parentNode.style.height;
+        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, modelsHiddenParams[idInstance].layout).then(
+          function (gd) {
+            Plotly.toImage(gd, {
+              height: $('#' + idDivContainer).height(),
+              width: $('#' + idDivContainer).width(),
+            }).then(function (url) {
+              img_url = url;
+              Plotly.purge(gd);
+              img_png.attr('src', img_url);
+              gd.style.minHeight = gd.parentNode.style.minHeight;
+              gd.style.minWidth = gd.parentNode.style.minWidth;
+              gd.style.width = gd.parentNode.style.width;
+              gd.style.height = gd.parentNode.style.height;
 
-            img_png[0].style.minHeight = parseInt(gd.parentNode.style.minHeight) - 3 + "px";
-            img_png[0].style.minWidth = parseInt(gd.parentNode.style.minWidth) - 3 + "px";
-            img_png[0].style.width = parseFloat(gd.parentNode.style.width) - 1 + "vw";
-            img_png[0].style.height = parseFloat(gd.parentNode.style.height) - 1 + "vh";
-            img_png[0].style.margin = "3px";
-            modelsTempParams[idInstance].lastEditTimeStamp = Date.now(); // MBG tmp optim
-            modelsTempParams[idInstance].pngCache = img_url;
-          });
-        });
+              img_png[0].style.minHeight = parseInt(gd.parentNode.style.minHeight) - 3 + 'px';
+              img_png[0].style.minWidth = parseInt(gd.parentNode.style.minWidth) - 3 + 'px';
+              img_png[0].style.width = parseFloat(gd.parentNode.style.width) - 1 + 'vw';
+              img_png[0].style.height = parseFloat(gd.parentNode.style.height) - 1 + 'vh';
+              img_png[0].style.margin = '3px';
+              modelsTempParams[idInstance].lastEditTimeStamp = Date.now(); // MBG tmp optim
+              modelsTempParams[idInstance].pngCache = img_url;
+            });
+          }
+        );
       }
     };
 
     this.setSelectionActuator = function () {
       // MBG 17/02/2021
       this.bIsInteractive = bInteractive;
-      var idDivPlotly = "plotly" + idWidget;
+      var idDivPlotly = 'plotly' + idWidget;
       if (bInteractive) {
-        idDivPlotly = idDivPlotly + "c";
+        idDivPlotly = idDivPlotly + 'c';
         var graphDiv = document.getElementById(idDivPlotly);
-        graphDiv.on("plotly_selected", function (eventData) {
+        graphDiv.on('plotly_selected', function (eventData) {
           if (!_.isUndefined(eventData)) {
             // Create array of array [numberOfTrace][dataSelected] and [numberOfTrace][customData]
             var dataSelected = Array(graphDiv.data.length)
@@ -597,7 +625,7 @@ function plotlyWidgetsPluginClass() {
             //self.selection.updateCallback(self.selection, self.selection.getValue());
           }
         });
-        graphDiv.on("plotly_deselect", function () {
+        graphDiv.on('plotly_deselect', function () {
           //     Plotly.restyle(graphDiv, { selectedpoints: [null] });
           self.selection.setValue({ range: {} });
           self.selection.updateCallback(self.selection, self.selection.getValue());
@@ -626,7 +654,7 @@ function plotlyWidgetsPluginClass() {
 
     this.rescale = function () {
       if (this.bIsInteractive) {
-        Plotly.Plots.resize($("#" + idDivPlotly)[0]);
+        Plotly.Plots.resize($('#' + idDivPlotly)[0]);
       } else {
         this.render(); // to optimize here
       }
@@ -645,9 +673,9 @@ function plotlyWidgetsPluginClass() {
 
     /* Theme backward compatibility */
     if (!_.isUndefined(modelsParameters[idInstance].layout)) {
-      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };  
+      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };
       // Set axis ticks color
-      ['xaxis', 'yaxis'].forEach(axis => {
+      ['xaxis', 'yaxis'].forEach((axis) => {
         if (!_.isUndefined(modelsParameters[idInstance].layout[axis])) {
           modelsParameters[idInstance].layout[axis] = { ...axisParams, ...modelsParameters[idInstance].layout[axis] };
         }
@@ -661,12 +689,16 @@ function plotlyWidgetsPluginClass() {
 
     this.getActuatorDescriptions = function (model = null) {
       const data = model || modelsParameters[idInstance];
-      const result = [data && _isAxisLinear(data["layout"], "xaxis") ? _createPlotlyNumericDataDescriptor("x") : _createPlotlyAnyDataDescriptor("x")];
+      const result = [
+        data && _isAxisLinear(data['layout'], 'xaxis')
+          ? _createPlotlyNumericDataDescriptor('x')
+          : _createPlotlyAnyDataDescriptor('x'),
+      ];
 
       if (data && data.numberOfAxis) {
-        const yLinear = _isAxisLinear(data["layout"], "yaxis");
+        const yLinear = _isAxisLinear(data['layout'], 'yaxis');
         for (let i = 1; i <= data.numberOfAxis; i++) {
-          const name = "y" + i;
+          const name = 'y' + i;
           result.push(yLinear ? _createPlotlyNumericDataDescriptor(name) : _createPlotlyAnyDataDescriptor(name));
         }
       }
@@ -678,16 +710,16 @@ function plotlyWidgetsPluginClass() {
       setValue: function (val) {
         //AEF
         if (_.isUndefined(val)) {
-          swal("Invalid data value", "value in x axis is undefined !", "error");
+          swal('Invalid data value', 'value in x axis is undefined !', 'error');
           return;
         }
         if (!Array.isArray(val)) {
-          if (typeof val == "number" || typeof val == "string" || typeof val == "bigint") {
+          if (typeof val == 'number' || typeof val == 'string' || typeof val == 'bigint') {
             val = [val];
-            console.log("value in x axis is converted to an array.");
+            console.log('value in x axis is converted to an array.');
             //swal("Invalid data type", "value in x axis is converted to an array.", "warning");
           } else {
-            swal("Invalid data type", "x axis must be an array !", "error");
+            swal('Invalid data type', 'x axis must be an array !', 'error');
             return;
           }
         }
@@ -708,10 +740,10 @@ function plotlyWidgetsPluginClass() {
     };
 
     for (let i = 1; i <= this.numberOfAxis; i++) {
-      const axisName = "y" + i;
+      const axisName = 'y' + i;
       if (i > 1) {
         if (_.isUndefined(modelsHiddenParams[idInstance].data[i - 1])) {
-          modelsHiddenParams[idInstance].data[i - 1] = { x: [], y: [], name: "caption " + (i - 1) };
+          modelsHiddenParams[idInstance].data[i - 1] = { x: [], y: [], name: 'caption ' + (i - 1) };
         }
       }
 
@@ -722,16 +754,16 @@ function plotlyWidgetsPluginClass() {
           //AEF
           const i = this.index + 1;
           if (_.isUndefined(val)) {
-            swal("Invalid data value", "value in " + "y" + i + " axis is undefined !", "error");
+            swal('Invalid data value', 'value in ' + 'y' + i + ' axis is undefined !', 'error');
             return;
           }
           if (!Array.isArray(val)) {
-            if (typeof val == "number" || typeof val == "string" || typeof val == "bigint") {
+            if (typeof val == 'number' || typeof val == 'string' || typeof val == 'bigint') {
               val = [val];
-              console.log("value in " + "y" + i + " axis is converted to an array.");
+              console.log('value in ' + 'y' + i + ' axis is converted to an array.');
               //swal("Invalid data type", "value in " + "y" + i + " axis is converted to an array.", "warning");
             } else {
-              swal("Invalid data type", "y" + i + " axis must be an array !", "error");
+              swal('Invalid data type', 'y' + i + ' axis must be an array !', 'error');
               return;
             }
           }
@@ -752,7 +784,7 @@ function plotlyWidgetsPluginClass() {
             modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
           } else {
             modelsHiddenParams[idInstance].data[this.index].name = caption;
-            modelsParameters[idInstance].layout.yaxis.title = "";
+            modelsParameters[idInstance].layout.yaxis.title = '';
             modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
           }
         },
@@ -774,9 +806,9 @@ function plotlyWidgetsPluginClass() {
 
     /* Theme backward compatibility */
     if (!_.isUndefined(modelsParameters[idInstance].layout)) {
-      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };       
+      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };
       // Set axis ticks color
-      ['xaxis', 'yaxis'].forEach(axis => {
+      ['xaxis', 'yaxis'].forEach((axis) => {
         if (!_.isUndefined(modelsParameters[idInstance].layout[axis])) {
           modelsParameters[idInstance].layout[axis] = { ...axisParams, ...modelsParameters[idInstance].layout[axis] };
         }
@@ -788,11 +820,11 @@ function plotlyWidgetsPluginClass() {
       const result = [];
 
       if (data && data.numberOfAxis) {
-        const xLinear = _isAxisLinear(data["layout"], "xaxis");
-        const yLinear = _isAxisLinear(data["layout"], "yaxis");
+        const xLinear = _isAxisLinear(data['layout'], 'xaxis');
+        const yLinear = _isAxisLinear(data['layout'], 'yaxis');
         for (let i = 1; i <= data.numberOfAxis; i++) {
-          result.push(xLinear ? _createPlotlyNumericDataDescriptor("x" + i) : _createPlotlyAnyDataDescriptor("x" + i));
-          result.push(yLinear ? _createPlotlyNumericDataDescriptor("y" + i) : _createPlotlyAnyDataDescriptor("y" + i));
+          result.push(xLinear ? _createPlotlyNumericDataDescriptor('x' + i) : _createPlotlyAnyDataDescriptor('x' + i));
+          result.push(yLinear ? _createPlotlyNumericDataDescriptor('y' + i) : _createPlotlyAnyDataDescriptor('y' + i));
         }
       }
 
@@ -807,15 +839,15 @@ function plotlyWidgetsPluginClass() {
     delete this.x;
 
     for (let k = 1; k <= 2; k++) {
-      const strAxis = k === 1 ? "x" : "y";
+      const strAxis = k === 1 ? 'x' : 'y';
 
       for (let i = 1; i <= this.numberOfAxis; i++) {
         const axisName = strAxis + i;
 
         if (i > 1) {
-          if (strAxis === "x") {
+          if (strAxis === 'x') {
             if (_.isUndefined(modelsHiddenParams[idInstance].data[i - 1])) {
-              modelsHiddenParams[idInstance].data[i - 1] = { x: [], y: [], type: "bar" };
+              modelsHiddenParams[idInstance].data[i - 1] = { x: [], y: [], type: 'bar' };
             }
           }
         }
@@ -835,7 +867,7 @@ function plotlyWidgetsPluginClass() {
           removeValueChangedHandler: function (n) {},
           setCaption: function (caption, bCaptionManuallyChanged) {
             if (modelsParameters[idInstance].numberOfAxis == 1) {
-              modelsParameters[idInstance].layout[this.strAxis + "axis"].title = caption;
+              modelsParameters[idInstance].layout[this.strAxis + 'axis'].title = caption;
               modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
             } else {
               modelsHiddenParams[idInstance].data[this.index].name = caption;
@@ -863,14 +895,14 @@ function plotlyWidgetsPluginClass() {
     }
 
     const _LABELS_DESCRIPTOR = new WidgetActuatorDescription(
-      "labels",
-      "Array of labels",
+      'labels',
+      'Array of labels',
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_STRING_ARRAY
     );
     const _VALUES_DESCRIPTOR = new WidgetActuatorDescription(
-      "values",
-      "Array of numeric values",
+      'values',
+      'Array of numeric values',
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_NUMBER_ARRAY
     );
@@ -881,7 +913,7 @@ function plotlyWidgetsPluginClass() {
     //   WidgetPrototypesManager.SCHEMA_STRING_ARRAY
     // );
     this.getActuatorDescriptions = function () {
-      return [_LABELS_DESCRIPTOR, _VALUES_DESCRIPTOR, /* _COLORS_DESCRIPTOR */];
+      return [_LABELS_DESCRIPTOR, _VALUES_DESCRIPTOR /* _COLORS_DESCRIPTOR */];
     };
 
     this.labels = {
@@ -944,19 +976,19 @@ function plotlyWidgetsPluginClass() {
     }
 
     const _X_DESCRIPTOR = new WidgetActuatorDescription(
-      "x",
+      'x',
       "1d array for the grid's Xs",
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_NUMBER_ARRAY
     );
     const _Y_DESCRIPTOR = new WidgetActuatorDescription(
-      "y",
+      'y',
       "1d array for the grid's Ys",
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_NUMBER_ARRAY
     );
     const _Z_DESCRIPTOR = new WidgetActuatorDescription(
-      "z",
+      'z',
       "2d array of arrays for the grid's Zs",
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_NUMBER_ARRAY_2D
@@ -1027,20 +1059,28 @@ function plotlyWidgetsPluginClass() {
     const self = this;
 
     const _DATA_DESCRIPTOR = new WidgetActuatorDescription(
-      "data",
-      "Plotly data array",
+      'data',
+      'Plotly data array',
       WidgetActuatorDescription.READ,
       USE_PLOTLY_VALIDATION ? undefined : _SCHEMA_PLOTLY_DATA,
-      USE_PLOTLY_VALIDATION ? (data) => (Plotly.validate(data, {}) || []).map((_) => new WidgetActuatorValidationError(_.msg)) : undefined
+      USE_PLOTLY_VALIDATION
+        ? (data) => (Plotly.validate(data, {}) || []).map((_) => new WidgetActuatorValidationError(_.msg))
+        : undefined
     );
     const _LAYOUT_DESCRIPTOR = new WidgetActuatorDescription(
-      "layout",
-      "Plotly layout object",
+      'layout',
+      'Plotly layout object',
       WidgetActuatorDescription.READ,
       USE_PLOTLY_VALIDATION ? undefined : _SCHEMA_PLOTLY_LAYOUT,
-      USE_PLOTLY_VALIDATION ? (layout) => (Plotly.validate([], layout) || []).map((_) => new WidgetActuatorValidationError(_.msg)) : undefined
+      USE_PLOTLY_VALIDATION
+        ? (layout) => (Plotly.validate([], layout) || []).map((_) => new WidgetActuatorValidationError(_.msg))
+        : undefined
     );
-    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription("selection", "Plotly selection", WidgetActuatorDescription.WRITE);
+    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription(
+      'selection',
+      'Plotly selection',
+      WidgetActuatorDescription.WRITE
+    );
     this.getActuatorDescriptions = function () {
       return [_DATA_DESCRIPTOR, _LAYOUT_DESCRIPTOR, _SELECTION_DESCRIPTOR];
     };
@@ -1094,15 +1134,17 @@ function plotlyWidgetsPluginClass() {
     this.numberOfAxis = 1; //modelsParameters[idInstance].numberOfAxis;
 
     const _LAYOUT_DESCRIPTOR = new WidgetActuatorDescription(
-      "layout",
-      "Plotly layout object",
+      'layout',
+      'Plotly layout object',
       WidgetActuatorDescription.READ,
       USE_PLOTLY_VALIDATION ? undefined : _SCHEMA_PLOTLY_LAYOUT,
-      USE_PLOTLY_VALIDATION ? (layout) => (Plotly.validate([], layout) || []).map((_) => new WidgetActuatorValidationError(_.msg)) : undefined
+      USE_PLOTLY_VALIDATION
+        ? (layout) => (Plotly.validate([], layout) || []).map((_) => new WidgetActuatorValidationError(_.msg))
+        : undefined
     );
     const _VALUE_DESCRIPTOR = new WidgetActuatorDescription(
-      "y1",
-      "Numeric value to add to the plot",
+      'y1',
+      'Numeric value to add to the plot',
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_NUMBER
     );
@@ -1127,10 +1169,10 @@ function plotlyWidgetsPluginClass() {
     }
 
     for (let i = 1; i <= this.numberOfAxis; i++) {
-      const axisName = "y" + i;
+      const axisName = 'y' + i;
       if (i > 1) {
         if (_.isUndefined(modelsHiddenParams[idInstance].data[i - 1])) {
-          modelsHiddenParams[idInstance].data[i - 1] = { x: [], y: [], name: "caption " + (i - 1) };
+          modelsHiddenParams[idInstance].data[i - 1] = { x: [], y: [], name: 'caption ' + (i - 1) };
         }
       }
 
@@ -1142,9 +1184,9 @@ function plotlyWidgetsPluginClass() {
           //console.log('this.index=' + this.index);
           //modelsHiddenParams[idInstance].data[this.index].x = [time];
           //modelsHiddenParams[idInstance].data[this.index].y = [val];
-          var idDivPlotly = "plotly" + idWidget;
+          var idDivPlotly = 'plotly' + idWidget;
           if (bInteractive) {
-            idDivPlotly = idDivPlotly + "c";
+            idDivPlotly = idDivPlotly + 'c';
           }
           Plotly.extendTraces(
             idDivPlotly,
@@ -1191,19 +1233,39 @@ function plotlyWidgetsPluginClass() {
 
   // Plugin definition
   this.pluginDefinition = {
-    name: "plotly",
+    name: 'plotly',
     widgetsDefinitionList: {
-      plotlyLine: { factory: "linePlotlyWidget", title: "Plotly line", icn: "plotly-line", help: "wdg/wdg-plots/#plotly-line" },
-      plotlyBar: { factory: "barPlotlyWidget", title: "Plotly bar", icn: "plotly-bar", help: "wdg/wdg-plots/#plotly-bar" },
-      plotlyPie: { factory: "piePlotlyWidget", title: "Plotly pie", icn: "plotly-pie", help: "wdg/wdg-plots/#plotly-pie" },
-      plotly3dSurface: { factory: "d3surfacePlotlyWidget", title: "Plotly 3D surface", icn: "plotly-3D", help: "wdg/wdg-plots/#plotly-3d-surface" },
-      plotlyGeneric: {
-        factory: "genericPlotlyWidget",
-        title: "Plotly generic",
-        icn: "plotly-javascript-generic",
-        help: "wdg/wdg-plots/#plotly-generic",
+      plotlyLine: {
+        factory: 'linePlotlyWidget',
+        title: 'Plotly line',
+        icn: 'plotly-line',
+        help: 'wdg/wdg-plots/#plotly-line',
       },
-      plotlyRealTime: { factory: "realTimePlotlyWidget", title: "Plotly real-time", icn: "plotly-real-time" },
+      plotlyBar: {
+        factory: 'barPlotlyWidget',
+        title: 'Plotly bar',
+        icn: 'plotly-bar',
+        help: 'wdg/wdg-plots/#plotly-bar',
+      },
+      plotlyPie: {
+        factory: 'piePlotlyWidget',
+        title: 'Plotly pie',
+        icn: 'plotly-pie',
+        help: 'wdg/wdg-plots/#plotly-pie',
+      },
+      plotly3dSurface: {
+        factory: 'd3surfacePlotlyWidget',
+        title: 'Plotly 3D surface',
+        icn: 'plotly-3D',
+        help: 'wdg/wdg-plots/#plotly-3d-surface',
+      },
+      plotlyGeneric: {
+        factory: 'genericPlotlyWidget',
+        title: 'Plotly generic',
+        icn: 'plotly-javascript-generic',
+        help: 'wdg/wdg-plots/#plotly-generic',
+      },
+      plotlyRealTime: { factory: 'realTimePlotlyWidget', title: 'Plotly real-time', icn: 'plotly-real-time' },
     },
   };
 }

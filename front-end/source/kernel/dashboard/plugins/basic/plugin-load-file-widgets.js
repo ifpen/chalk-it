@@ -90,7 +90,7 @@ function loadFileWidgetsPluginClass() {
         type: file.type,
         size: file.size,
         name: file.name,
-        content: "",
+        content: '',
       };
 
       const reader = new FileReader();
@@ -147,7 +147,6 @@ function loadFileWidgetsPluginClass() {
     };
 
     this.addFileDiv = function (name, size) {
-
       // Check if the div file already exists
       if ($('#loaded-file' + idWidget).length) return;
 
@@ -375,21 +374,21 @@ function loadFileWidgetsPluginClass() {
       const isWidgetWidthLessThan290 = widgetWidth < 290;
       const isWidgetWidthLessThan240 = widgetWidth < 240;
 
-      const dragArea = document.getElementById("drag-area" + idWidget);
-      const dragAreaText = document.getElementById("drag-area-text" + idWidget);
-      const dragAreaIcon = document.getElementById("drag-area-icon" + idWidget);
+      const dragArea = document.getElementById('drag-area' + idWidget);
+      const dragAreaText = document.getElementById('drag-area-text' + idWidget);
+      const dragAreaIcon = document.getElementById('drag-area-icon' + idWidget);
 
-      this.updateWidgetContent = function () {	
+      this.updateWidgetContent = function () {
         if (isWidgetWidthLessThan290) {
-          document.styleSheets[0].addRule(`#loaded-file${idWidget} .loaded-file__icon-wrapper`, "display: none");
+          document.styleSheets[0].addRule(`#loaded-file${idWidget} .loaded-file__icon-wrapper`, 'display: none');
         } else {
-          document.styleSheets[0].addRule(`#loaded-file${idWidget} .loaded-file__icon-wrapper`, "display: block");
+          document.styleSheets[0].addRule(`#loaded-file${idWidget} .loaded-file__icon-wrapper`, 'display: block');
         }
-        dragAreaIcon.classList.toggle("drag-area__icon-wrapper--hidden", isWidgetWidthLessThan290);
+        dragAreaIcon.classList.toggle('drag-area__icon-wrapper--hidden', isWidgetWidthLessThan290);
 
-        dragArea.classList.toggle("drag-area--column", isWidgetWidthLessThan240);
-        dragAreaText.children[0].textContent = isWidgetWidthLessThan240 ? "Drag & Drop" : "Drag & drop file here";
-        dragAreaText.children[1].classList.toggle("drag-area__text-wrapper__span--hidden", isWidgetWidthLessThan240);
+        dragArea.classList.toggle('drag-area--column', isWidgetWidthLessThan240);
+        dragAreaText.children[0].textContent = isWidgetWidthLessThan240 ? 'Drag & Drop' : 'Drag & drop file here';
+        dragAreaText.children[1].classList.toggle('drag-area__text-wrapper__span--hidden', isWidgetWidthLessThan240);
       };
 
       if (bInteractive) {

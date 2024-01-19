@@ -9,7 +9,7 @@
   background: var(--surface-a);
   margin-top: 0.5rem;
   padding: 1rem 1.5rem 1rem;
-  border-radius: br("4");
+  border-radius: br('4');
 }
 
 .notification__btn-close {
@@ -30,18 +30,18 @@
 }
 
 .notification__top__title {
-  font-weight: fw("bold");
+  font-weight: fw('bold');
 }
 
 .notification__top__time {
-  font-size: fs("sm");
+  font-size: fs('sm');
 }
 
 .notification__top__toggle {
   &:before {
-    content: "\002B";
+    content: '\002B';
     display: block;
-    font-size: fs("3xl");
+    font-size: fs('3xl');
   }
 }
 
@@ -60,7 +60,7 @@
 .notification__open {
   .notification__top__toggle {
     &:before {
-      content: "\2212";
+      content: '\2212';
     }
   }
 }

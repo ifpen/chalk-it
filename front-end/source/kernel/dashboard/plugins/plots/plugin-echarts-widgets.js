@@ -24,7 +24,7 @@ const echartsDefaultColors = [
   'var(--widget-color-10)',
   'var(--widget-color-11)',
   'var(--widget-color-12)',
-  'var(--widget-color-13)'
+  'var(--widget-color-13)',
 ];
 modelsHiddenParams.echartsGeneric = {
   option: {

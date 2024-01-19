@@ -398,7 +398,7 @@
       "source/kernel/datanodes/plugins/plugin-websocket.send.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-geolocation.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-python-support.js",
-      "source/kernel/datanodes/plugins/plugin-python-script.js"     
+      "source/kernel/datanodes/plugins/plugin-python-script.js"
     ]
   }
 }
