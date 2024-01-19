@@ -42,6 +42,7 @@
     "gulp-usemin": "^0.3.30",
     "imagemin-pngquant": "^9.0.2",
     "jshint": "^2.13.6",
+    "mocha": "^8.2.1",
     "prettier": "2.8.2",
     "purify-css": "^1.2.5",
     "sass": "^1.56.1"
@@ -56,7 +57,34 @@
     "mime-types": "^2.1.30",
     "path": "^0.12.7",
     "ws": "^7.5.3",
-    "yargs": "^15.4.1"
+    "yargs": "^15.4.1",
+
+
+    "plotly.js": "2.6.3",
+    "jquery": "^3.3.1",
+    "angular": "^1.6.2",
+    "angular-ui-router": "~0.4.2",
+    "angular-route": "^1.6.10",
+    "papaparse": "^4.4.0",
+    "underscore": "^1.9.0",
+    "angular-drag-and-drop-lists": "^2.1.0",
+    
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.6.1",
+    "angular-loading-bar": "^0.9.0",
+    "pnotify": "^3.2.1",
+    "bootstrap-colorpicker": "^3.0.3",
+    "ng-tags-input": "^3.2.0",
+    "ng-sanitize": "^0.0.2",
+    "angular-sanitize": "^1.7.3",
+    "ui-select": "^0.19.8",
+    "angular-ui-bootstrap": "^2.5.0",
+    "leaflet": "1.5.1",
+    "angularjs-slider": "^7.0.0",
+    "angularjs-datepicker": "^2.1.23",
+
+    "interactjs": "1.10.11",
+    "codemirror": "~5.59.1"
   },
   "scripts": {
     "mkdocs": "gulp mkdocs --gulpfile gulpFiles/main.js --env=prod",

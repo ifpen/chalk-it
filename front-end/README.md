@@ -8,15 +8,6 @@ Required version is v12.19.0.
 You might need to configure npm proxy before start.
 
 Now you should be able to install any package!
-
-### Bower
-
-```sh
-npm install -g bower
-```
-
-You might need to have administrator privileges before the command.
-
 ### Saas
 
 ```sh
@@ -25,11 +16,6 @@ npm install -g sass
 
 ## Installation
 
-```sh
-bower install
-```
-
-This will download necessary assets files.
 
 ```sh
 npm install -g gulp-cli
