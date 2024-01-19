@@ -1,11 +1,16 @@
-<a ng-if="xDashFullVersion" ng-click="moduleOpenedFunction(false);reset()" title="Back to Chalk'it browser" class="brand">
-    <span class="brand__placeholder" aria-hidden="true"></span>
-    <span class="sr-only">Chalk'it logo</span>
-    <i class="basic icn-menu" aria-hidden="true"></i>
+<a
+  ng-if="xDashFullVersion"
+  ng-click="moduleOpenedFunction(false);reset()"
+  title="Back to Chalk'it browser"
+  class="brand"
+>
+  <span class="brand__placeholder" aria-hidden="true"></span>
+  <span class="sr-only">Chalk'it logo</span>
+  <i class="basic icn-menu" aria-hidden="true"></i>
 </a>
 <a ng-if="!xDashFullVersion" class="brand">
-    <span class="brand__placeholder" aria-hidden="true"></span>
-    <span class="sr-only">Chalk'it logo</span>
+  <span class="brand__placeholder" aria-hidden="true"></span>
+  <span class="sr-only">Chalk'it logo</span>
 </a>
 
 <!-- for future version  with multiple projects -->
@@ -17,13 +22,13 @@
 
 </div> -->
 <div ng-if="xDashFullVersion" class="tabs-container">
-    <div class="tab tab--active">
-        <span class="tab__name ng-binding">{{currentProject.name}}{{currentPrjDirty}}</span>
-        <a ng-click="closeProject(currentProject.name);reset()" title="Home : close project and back to Chalk'it browser">
-            <i class="tab__close basic icn-close"></i>
-        </a>
-    </div>
-    <!-- <div class="tab tab--inactive">
+  <div class="tab tab--active">
+    <span class="tab__name ng-binding">{{currentProject.name}}{{currentPrjDirty}}</span>
+    <a ng-click="closeProject(currentProject.name);reset()" title="Home : close project and back to Chalk'it browser">
+      <i class="tab__close basic icn-close"></i>
+    </a>
+  </div>
+  <!-- <div class="tab tab--inactive">
         <span class="tab__name">Tab name</span>
         <a ng-click="" title="Home : close project and back to Chalk'it browser">
             <i class="tab__close basic icn-close"></i>
@@ -33,79 +38,88 @@
 
 <!-- user account and notifications -->
 <div class="user__actions">
-    <div ng-if="xDashFullVersion" class="user__actions--avatar available">
-        <a ng-click="openAvatarManager()" title="open user avatar manager">
-            <img ng-src="{{UserProfile.userAvatar}}" onerror="this.src='source/assets/img/flat-icon/user-m.png'"
-                 alt="User avatar" class="img-circle profile_img" />
-        </a>
-    </div>
-    <div ng-if="xDashFullVersion" class="user__actions--name--wrapper">
-        <p id="isLogoutOpen_Project" class="user__actions--name" ng-click="isNavOpen = !isNavOpen">
-            Welcome, {{UserProfile.userName}}
-            <i class="basic icn-miniarrowbottom"></i>
-        </p>
+  <div ng-if="xDashFullVersion" class="user__actions--avatar available">
+    <a ng-click="openAvatarManager()" title="open user avatar manager">
+      <img
+        ng-src="{{UserProfile.userAvatar}}"
+        onerror="this.src='source/assets/img/flat-icon/user-m.png'"
+        alt="User avatar"
+        class="img-circle profile_img"
+      />
+    </a>
+  </div>
+  <div ng-if="xDashFullVersion" class="user__actions--name--wrapper">
+    <p id="isLogoutOpen_Project" class="user__actions--name" ng-click="isNavOpen = !isNavOpen">
+      Welcome, {{UserProfile.userName}}
+      <i class="basic icn-miniarrowbottom"></i>
+    </p>
 
-        <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
-            <li ng-click="logout(); isNavOpen = !isNavOpen">
-                <a title=""> <i class="basic icn-logout"></i>Sign out </a>
-            </li>
-        </ul>
+    <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
+      <li ng-click="logout(); isNavOpen = !isNavOpen">
+        <a title=""> <i class="basic icn-logout"></i>Sign out </a>
+      </li>
+    </ul>
+  </div>
+  <div class="user__actions--notifications">
+    <div ng-click="isFilterOpen = !isFilterOpen" class="user__actions--notifications__link">
+      <span class="user__actions--notifications__counter">{{nbNotifications}}</span>
+      <i class="basic icn-notifications"></i>
     </div>
-    <div class="user__actions--notifications">
-        <div ng-click="isFilterOpen = !isFilterOpen" class="user__actions--notifications__link">
-            <span class="user__actions--notifications__counter">{{nbNotifications}}</span>
-            <i class="basic icn-notifications"></i>
-        </div>
-        <div ng-if="nbNotifications" class="dashboard-dropdown visible user__actions--notifications__list"
-             ng-init="!isFilterOpen" ng-show="isFilterOpen">
-            <!-- for future version  with multiple projects -->
-            <!-- <div class="user__actions--notifications__list__filters">
+    <div
+      ng-if="nbNotifications"
+      class="dashboard-dropdown visible user__actions--notifications__list"
+      ng-init="!isFilterOpen"
+      ng-show="isFilterOpen"
+    >
+      <!-- for future version  with multiple projects -->
+      <!-- <div class="user__actions--notifications__list__filters">
                 <a href="#" class="user__actions--notifications__list__btn user__actions--notifications__list__btn--active">Running Project</a>
                 <a href="#" class="user__actions--notifications__list__btn user__actions--notifications__list__btn--inactive">Global</a>
             </div> -->
-            <ul style="max-height: 435px;overflow: auto">
-                <li ng-if="nbNotifications>shownNotificationsMax"
-                    class="notification notification--open notification--info">
-                    <div class="notification__content">
-                        <strong>..too many notifications! Please acquit a few to display more.</strong>
-                    </div>
-                </li>
-                <li class="notification "
-                    ng-class="[{notification__success:(notification.title == 'Success')}, {notification__danger:(notification.title=='Error')},{notification__info:(notification.title == 'Info')},{notification__warning:(notification.title == 'Warning')},{notification__open:toggle},{notification__closed:!toggle}]"
-                    ng-repeat="notification in listNotifications | limitTo:- shownNotificationsLength |orderBy:-$index "
-                    ng-show="!notification.hide">
-                    <button class="btn btn-icon-only notification__btn-close">
-                        <i ng-click="hideNotificationFromNavBar(notification)" title="Click to acquit this notification"
-                           class="basic icn-close tab__close close-aside"></i>
-                    </button>
-                    <div class="notification__top" style="width:100%">
-                        <div class="notification__top__left">
-                            <div class="notification__top__title" ng-click="displayDataNodeError(notification)">
-                                {{
-'Data:
-                                '
-                                }} {{notification.dataNode}}
-                            </div>
-                            <small class="notification__top__time">{{notification.time}}</small>
-                        </div>
-                        <div class="notification__top__right">
-                            <a class="notification__top__toggle" ng-click="toggle=!toggle"></a>
-                        </div>
-                    </div>
-                    <div class="notification__content" ng-show="toggle">{{notification.text + '. '}}</div>
-                </li>
-            </ul>
-            <br>
-            <ul>
-                <li ng-if="nbNotifications" class="notification notification--open notification_info">
-                    <div class="notification__content" style="text-align:center">
-                        <a ng-click="clearAllNotifications()">
-                            <strong>Clear All Notifications</strong>
-                            <!-- <i class="fa fa-angle-right"></i> -->
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+      <ul style="max-height: 435px; overflow: auto">
+        <li ng-if="nbNotifications>shownNotificationsMax" class="notification notification--open notification--info">
+          <div class="notification__content">
+            <strong>..too many notifications! Please acquit a few to display more.</strong>
+          </div>
+        </li>
+        <li
+          class="notification"
+          ng-class="[{notification__success:(notification.title == 'Success')}, {notification__danger:(notification.title=='Error')},{notification__info:(notification.title == 'Info')},{notification__warning:(notification.title == 'Warning')},{notification__open:toggle},{notification__closed:!toggle}]"
+          ng-repeat="notification in listNotifications | limitTo:- shownNotificationsLength |orderBy:-$index "
+          ng-show="!notification.hide"
+        >
+          <button class="btn btn-icon-only notification__btn-close">
+            <i
+              ng-click="hideNotificationFromNavBar(notification)"
+              title="Click to acquit this notification"
+              class="basic icn-close tab__close close-aside"
+            ></i>
+          </button>
+          <div class="notification__top" style="width: 100%">
+            <div class="notification__top__left">
+              <div class="notification__top__title" ng-click="displayDataNodeError(notification)">
+                {{ 'Data: ' }} {{notification.dataNode}}
+              </div>
+              <small class="notification__top__time">{{notification.time}}</small>
+            </div>
+            <div class="notification__top__right">
+              <a class="notification__top__toggle" ng-click="toggle=!toggle"></a>
+            </div>
+          </div>
+          <div class="notification__content" ng-show="toggle">{{notification.text + '. '}}</div>
+        </li>
+      </ul>
+      <br />
+      <ul>
+        <li ng-if="nbNotifications" class="notification notification--open notification_info">
+          <div class="notification__content" style="text-align: center">
+            <a ng-click="clearAllNotifications()">
+              <strong>Clear All Notifications</strong>
+              <!-- <i class="fa fa-angle-right"></i> -->
+            </a>
+          </div>
+        </li>
+      </ul>
     </div>
+  </div>
 </div>

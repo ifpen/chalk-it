@@ -205,7 +205,7 @@
   padding: 1px;
   border: 1px solid #adb2b5;
   border-radius: 0px !important;
-  background: url("../img/light-theme-dropdown-arrow.png") no-repeat right;
+  background: url('../img/light-theme-dropdown-arrow.png') no-repeat right;
   font-size: 12px;
   line-height: 26px;
   text-indent: 0.5em;
@@ -322,7 +322,7 @@
 }
 
 /*  Larger Screen Styling */
-@include media-breakpoint-up("sm") {
+@include media-breakpoint-up('sm') {
   .daterangepicker {
     width: auto;
   }
@@ -380,7 +380,7 @@
   }
 }
 
-@include media-breakpoint-up("md") {
+@include media-breakpoint-up('md') {
   .daterangepicker .ranges {
     width: auto;
   }

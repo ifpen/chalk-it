@@ -7,30 +7,29 @@
 // │ Original authors(s): Abir EL FEKI                                               │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular
-    .module('modules')
-    .controller('ShareProjectController', ['$scope', '$rootScope', 'ManagePrjSharingService',
-        function($scope, $rootScope, ManagePrjSharingService) {
+angular.module('modules').controller('ShareProjectController', [
+  '$scope',
+  '$rootScope',
+  'ManagePrjSharingService',
+  function ($scope, $rootScope, ManagePrjSharingService) {
+    /*---------- closeShareProject ----------------*/
+    $scope.closeShareProject = function (flag) {
+      ManagePrjSharingService.closeShareProject(flag);
+    };
 
-            /*---------- closeShareProject ----------------*/
-            $scope.closeShareProject = function(flag) {
-                ManagePrjSharingService.closeShareProject(flag);
-            };
+    /*---------- updateTypedEmail ----------------*/
+    $scope.updateTypedEmail = function () {
+      ManagePrjSharingService.updateTypedEmail();
+    };
 
-            /*---------- updateTypedEmail ----------------*/
-            $scope.updateTypedEmail = function() {
-                ManagePrjSharingService.updateTypedEmail();
-            };
+    /*---------- shareProjectWithEmail ----------------*/
+    $scope.shareProjectWithEmail = function () {
+      ManagePrjSharingService.shareProjectWithEmail();
+    };
 
-            /*---------- shareProjectWithEmail ----------------*/
-            $scope.shareProjectWithEmail = function() {
-                ManagePrjSharingService.shareProjectWithEmail();
-            };
-
-            /*---------- unshareProjectWithEmail ----------------*/
-            $scope.unshareProjectWithEmail = function() {
-                ManagePrjSharingService.unshareProjectWithEmail();
-            };
-
-        }
-    ]);
+    /*---------- unshareProjectWithEmail ----------------*/
+    $scope.unshareProjectWithEmail = function () {
+      ManagePrjSharingService.unshareProjectWithEmail();
+    };
+  },
+]);

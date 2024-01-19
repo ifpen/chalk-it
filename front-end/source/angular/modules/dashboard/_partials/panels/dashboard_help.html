@@ -1,17 +1,22 @@
 <div class="help-container">
-	<div class="help-container__actions-wrapper">
-		<a ng-click="enlargeScreenLeft()">{{editorView.leftSidePanel.screen}}
-            <i class="basic {{editorView.rightSidePanel.icn}}"></i>
-        </a>
-	</div>
-	<div class="help-container__iframe-wrapper">
-		<!-- The 'src' property is defined in the 'initFrame()' function -->
-		<iframe id="helpFrame" frameborder="0" scrolling="yes" seamless="seamless"></iframe>
-	</div>
-	<div class="help-container__btn-wrapper">
-		<button ng-click="initFrame()" class="btn btn-rounded-fill primary" title="Load libraries" ng-disabled="isSelectedLibsEmpty(selectedLibs)">
-			Reset
-		</button>
-	</div>
+  <div class="help-container__actions-wrapper">
+    <a ng-click="enlargeScreenLeft()"
+      >{{editorView.leftSidePanel.screen}}
+      <i class="basic {{editorView.rightSidePanel.icn}}"></i>
+    </a>
+  </div>
+  <div class="help-container__iframe-wrapper">
+    <!-- The 'src' property is defined in the 'initFrame()' function -->
+    <iframe id="helpFrame" frameborder="0" scrolling="yes" seamless="seamless"></iframe>
+  </div>
+  <div class="help-container__btn-wrapper">
+    <button
+      ng-click="initFrame()"
+      class="btn btn-rounded-fill primary"
+      title="Load libraries"
+      ng-disabled="isSelectedLibsEmpty(selectedLibs)"
+    >
+      Reset
+    </button>
+  </div>
 </div>
-	
