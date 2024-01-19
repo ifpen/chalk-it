@@ -7,49 +7,54 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ameur HAMDOUNI, Ghiles HIDEUR    │ \\
 // └─────────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular
-    .module('modules.headerbar')
-    .controller('DashboardHeaderController', ['$scope', '$rootScope', 'AvatarService', 'LogoutService', 'NotificationService', 'ManagePrjService',
-        function($scope, $rootScope, AvatarService, LogoutService, NotificationService, ManagePrjService) {
+angular.module('modules.headerbar').controller('DashboardHeaderController', [
+  '$scope',
+  '$rootScope',
+  'AvatarService',
+  'LogoutService',
+  'NotificationService',
+  'ManagePrjService',
+  function ($scope, $rootScope, AvatarService, LogoutService, NotificationService, ManagePrjService) {
+    $rootScope.listNotifications = [];
+    $rootScope.nbNotifications = 0;
+    $rootScope.shownNotificationsMax = 100;
+    $rootScope.shownNotificationsLength = $rootScope.shownNotificationsMax;
 
+    /*---------- logout ----------------*/
+    $scope.logout = function () {
+      LogoutService.logout();
+    };
 
-            $rootScope.listNotifications = [];
-            $rootScope.nbNotifications = 0;
-            $rootScope.shownNotificationsMax = 100;
-            $rootScope.shownNotificationsLength = $rootScope.shownNotificationsMax;
+    /*---------- openAvatarManager ----------------*/
+    $scope.openAvatarManager = function () {
+      let avatarCtrl = angular.element(document.getElementById('avatar-ctrl')).scope();
+      AvatarService.openAvatarManager(avatarCtrl);
+    };
 
-            /*---------- logout ----------------*/
-            $scope.logout = function() {
-                LogoutService.logout();
-            };
+    /*---------- closeProject ----------------*/
+    $scope.closeProject = function (name) {
+      ManagePrjService.closeProject(name);
+    };
 
-            /*---------- openAvatarManager ----------------*/
-            $scope.openAvatarManager = function() {
-                let avatarCtrl = angular.element(document.getElementById('avatar-ctrl')).scope();
-                AvatarService.openAvatarManager(avatarCtrl);
-            };
+    /*---------- clearAllNotifications ----------------*/
+    $scope.clearAllNotifications = function (filter) {
+      NotificationService.clearAllNotifications(filter);
+    };
 
-            /*---------- closeProject ----------------*/
-            $scope.closeProject = function(name) {
-                ManagePrjService.closeProject(name);
-            };
+    /*---------- hideNotificationFromNavBar ----------------*/
+    $scope.hideNotificationFromNavBar = function (notification) {
+      NotificationService.hideNotificationFromNavBar(notification);
+    };
 
-            /*---------- clearAllNotifications ----------------*/
-            $scope.clearAllNotifications = function(filter) {
-                NotificationService.clearAllNotifications(filter);
-            };
-
-            /*---------- hideNotificationFromNavBar ----------------*/
-            $scope.hideNotificationFromNavBar = function(notification) {
-                NotificationService.hideNotificationFromNavBar(notification);
-            };
-
-            /*---------- displayDataNodeError ----------*/
-            $scope.displayDataNodeError = function (notification) {
-                let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-                let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
-                NotificationService.displayDataNodeError(datanodesManager.getDataNodeByName(notification.dataNode), scopeDash, scopeDashDn);
-            }
-
-        }
-    ]);
+    /*---------- displayDataNodeError ----------*/
+    $scope.displayDataNodeError = function (notification) {
+      let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+      let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
+      NotificationService.displayDataNodeError(
+        datanodesManager.getDataNodeByName(notification.dataNode),
+        scopeDash,
+        scopeDashDn
+      );
+    };
+  },
+]);

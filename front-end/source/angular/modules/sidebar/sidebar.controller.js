@@ -24,11 +24,11 @@ angular.module('modules.sidebar').controller('SidebarController', [
     $scope.newProject = function () {
       const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       const isCurrentPrjDirty = !_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== '';
-      const hasCurrentPrjName = $rootScope.currentProject.name !== "";
+      const hasCurrentPrjName = $rootScope.currentProject.name !== '';
 
       if (!$rootScope.xDashFullVersion) {
         if (((isCurrentPrjDirty && !hasCurrentPrjName) || hasCurrentPrjName) && !$rootScope.isLiveDemo) {
-          $state.go("modules", {});
+          $state.go('modules', {});
           $rootScope.toggleMenuOptionDisplay('none');
         } else {
           _newPrj(scopeDash);
@@ -73,15 +73,15 @@ angular.module('modules.sidebar').controller('SidebarController', [
       $rootScope.currentInfoProject = angular.copy($rootScope.currentProject);
       scopeDash.info.tmp = angular.copy($rootScope.currentProject);
 
-      $rootScope.origin = "newProject";
+      $rootScope.origin = 'newProject';
       $rootScope.toggleMenuOptionDisplay('none');
-      scopeDash.info.origin = "create";
+      scopeDash.info.origin = 'create';
       scopeDash.projectFormSubmitted = false; // reset form
       scopeDash.info.showCheckbox = true;
       $rootScope.readOnly = false;
       if ($rootScope.xDashFullVersion) {
         scopeDash.info.checkboxModelLater = false;
-        scopeDash.info.openProjectInfo = true; // open display info 
+        scopeDash.info.openProjectInfo = true; // open display info
       } else {
         scopeDash.info.checkboxModelLater = true;
         scopeDash.info.openProjectInfo = false; // close display info
@@ -94,14 +94,14 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- Import project ----------------*/
     $scope.uploadFileToServer = function () {
-      $rootScope.origin = "importProject";
+      $rootScope.origin = 'importProject';
       var endAction = function () {
         datanodesManager.showLoadingIndicator(false);
         $rootScope.updateView();
         $rootScope.toggleMenuOptionDisplay('recent');
-        $state.go("modules.cards.layout", { action: 'recent' });
+        $state.go('modules.cards.layout', { action: 'recent' });
       };
-      fileManager.dialogBoxFileUpload("project", endAction);
+      fileManager.dialogBoxFileUpload('project', endAction);
     };
 
     /*---------- Contact Us ----------------*/
@@ -114,16 +114,15 @@ angular.module('modules.sidebar').controller('SidebarController', [
       tab.focus();
     };
 
-
     /**
      * Basic version
-     * 
+     *
      */
 
     /*---------- Open project from local ----------------*/
     $scope.openFromLocal = function () {
       var FileMngrInst = new FileMngrFct();
-      FileMngrInst.GetFileList("project", _responseCallback);
+      FileMngrInst.GetFileList('project', _responseCallback);
     };
 
     function _responseCallback(result, msg2, type) {
@@ -132,9 +131,9 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
       const contentElement = document.createElement('div');
       const divContent = document.createElement('div');
-      
+
       if (projectList.length) {
-        divContent.classList.add("list-project");
+        divContent.classList.add('list-project');
         for (const project of projectList) {
           const divItemContent = document.createRange().createContextualFragment(`
             <div class="list-project__container ">
@@ -143,26 +142,32 @@ angular.module('modules.sidebar').controller('SidebarController', [
             </div>
           `);
           divContent.appendChild(divItemContent);
-        }       
+        }
         contentElement.innerHTML = divContent.outerHTML;
       }
 
-      new DialogBoxForToolboxEdit(contentElement, "Select a project from <br>" + absolutePath, "OK", "Cancel", function () {
-        const selectedProject = document.querySelector('input[name="localProject"]:checked');
-        if (selectedProject) {
-          const projectName = selectedProject.value;
-          ManagePrjService.openProject(projectName, "xprjson", "");
-        } else {
-          // TODO: Display an error message if no project is selected
+      new DialogBoxForToolboxEdit(
+        contentElement,
+        'Select a project from <br>' + absolutePath,
+        'OK',
+        'Cancel',
+        function () {
+          const selectedProject = document.querySelector('input[name="localProject"]:checked');
+          if (selectedProject) {
+            const projectName = selectedProject.value;
+            ManagePrjService.openProject(projectName, 'xprjson', '');
+          } else {
+            // TODO: Display an error message if no project is selected
+          }
         }
-      });
+      );
     }
 
     /*---------- Import project from local ----------------*/
     $scope.importFromLocal = function () {
-      $rootScope.origin = "openProject";
+      $rootScope.origin = 'openProject';
       $rootScope.toggleMenuOptionDisplay('none');
-      $state.go("modules", {});
+      $state.go('modules', {});
       xdash.openFile('project', 'local');
     };
   },

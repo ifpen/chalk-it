@@ -36,11 +36,9 @@ var xDashApi = (function () {
     return undefined;
   }
 
-  function executeDataNode(dataNodeName) {
-  }
+  function executeDataNode(dataNodeName) {}
 
-  function executeDataNodes(dataNodeNames) {
-  }
+  function executeDataNodes(dataNodeNames) {}
 
   function viewPage(pageUrl, inputVals, bNewTab) {
     var queryParams = 'inputParams=' + inputHandler.encodeInputPars(inputVals);

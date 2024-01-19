@@ -3,14 +3,8 @@
   <a class="hidden" id="signin"></a>
 
   <div class="login__wrapper">
-    <img
-      src="source/assets/img/chalk-it-icon.svg"
-      alt="Logo Chalk'it"
-      class="login__avatar"
-    />
-    <div class="alert alert-error" role="alert" ng-show="errorAuthentication">
-      {{errorAuthentication}}
-    </div>
+    <img src="source/assets/img/chalk-it-icon.svg" alt="Logo Chalk'it" class="login__avatar" />
+    <div class="alert alert-error" role="alert" ng-show="errorAuthentication">{{errorAuthentication}}</div>
 
     <section ng-if="contentType=='login'" class="login__section">
       <form class="dashboard-form">
@@ -28,10 +22,7 @@
             />
             <i class="fa fa-envelope"></i>
           </div>
-          <div
-            ng-show="!verifyEmail(userModel.email).success"
-            class="text-danger"
-          >
+          <div ng-show="!verifyEmail(userModel.email).success" class="text-danger">
             <div>{{errorMessagesMapping.email.msg}}</div>
           </div>
         </div>
@@ -45,25 +36,15 @@
               name="password"
               required=""
             />
-            <i
-              class="fa fa-lock"
-              aria-hidden="true"
-              ng-click="togglePasswordClickedAction('password')"
-            >
-            </i>
+            <i class="fa fa-lock" aria-hidden="true" ng-click="togglePasswordClickedAction('password')"> </i>
           </div>
         </div>
         <ul ng-if="enableRegistration" class="text-right">
           <li>
-            <a ng-click="changeContentType('resetPassword')"
-              >Forgot your password?</a
-            >
+            <a ng-click="changeContentType('resetPassword')">Forgot your password?</a>
           </li>
         </ul>
-        <button
-          class="btn btn-rounded-fill btn--icon primary"
-          ng-click="loginWithEmailPasswordAction()"
-        >
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="loginWithEmailPasswordAction()">
           Sign in
         </button>
         <div class="clearfix"></div>
@@ -72,29 +53,15 @@
           <ul class="login__secondary-action">
             <li>Don't have an account yet?</li>
             <li>
-              <a ng-click="changeContentType('registration')" role="button"
-                >Register now</a
-              >
+              <a ng-click="changeContentType('registration')" role="button">Register now</a>
             </li>
           </ul>
         </div>
       </form>
     </section>
     <section ng-if="contentType=='registration'" class="login__section">
-      <div
-        class="alert alert-success"
-        role="alert"
-        ng-show="successRegisterMessage"
-      >
-        {{successRegisterMessage}}
-      </div>
-      <div
-        class="alert alert-error"
-        role="alert"
-        ng-show="errorRegisterMessage"
-      >
-        {{errorRegisterMessage}}
-      </div>
+      <div class="alert alert-success" role="alert" ng-show="successRegisterMessage">{{successRegisterMessage}}</div>
+      <div class="alert alert-error" role="alert" ng-show="errorRegisterMessage">{{errorRegisterMessage}}</div>
       <form class="dashboard-form">
         <h1>Registration</h1>
         <div class="dashboard-form__group has-warning has-feedback">
@@ -110,10 +77,7 @@
               <div>{{errorMessagesMapping.username.msg}}</div>
             </div>
           </div>
-          <div
-            ng-show="!UserRegisterModel.username && formRegisterSubmitted"
-            class="text-danger"
-          >
+          <div ng-show="!UserRegisterModel.username && formRegisterSubmitted" class="text-danger">
             <div>User name cannot be empty</div>
           </div>
         </div>
@@ -130,10 +94,7 @@
           <div ng-show="errorMessagesMapping.fname" class="text-danger">
             <div>{{errorMessagesMapping.fname.msg}}.</div>
           </div>
-          <div
-            ng-show="!UserRegisterModel.fname && formRegisterSubmitted"
-            class="text-danger"
-          >
+          <div ng-show="!UserRegisterModel.fname && formRegisterSubmitted" class="text-danger">
             <div>First name cannot be empty</div>
           </div>
         </div>
@@ -151,10 +112,7 @@
             <div ng-show="errorMessagesMapping.lname" class="text-danger">
               <div>{{errorMessagesMapping.lname.msg}}</div>
             </div>
-            <div
-              ng-show="!UserRegisterModel.lname && formRegisterSubmitted"
-              class="text-danger"
-            >
+            <div ng-show="!UserRegisterModel.lname && formRegisterSubmitted" class="text-danger">
               <div>Last name cannot be empty</div>
             </div>
           </div>
@@ -173,10 +131,7 @@
             />
             <i class="fa fa-envelope"></i>
           </div>
-          <div
-            ng-show="!verifyEmail(UserRegisterModel.email).success"
-            class="text-danger"
-          >
+          <div ng-show="!verifyEmail(UserRegisterModel.email).success" class="text-danger">
             <div>{{errorMessagesMapping.email.msg}}</div>
           </div>
         </div>
@@ -192,17 +147,9 @@
               ng-change="verifyPassword(UserRegisterModel.password)"
               autocomplete="off"
             />
-            <i
-              class="fa fa-lock"
-              aria-hidden="true"
-              ng-click="togglePasswordClickedAction('password')"
-            >
-            </i>
+            <i class="fa fa-lock" aria-hidden="true" ng-click="togglePasswordClickedAction('password')"> </i>
           </div>
-          <div
-            ng-show="!verifyPassword(UserRegisterModel.password).success"
-            class="text-danger"
-          >
+          <div ng-show="!verifyPassword(UserRegisterModel.password).success" class="text-danger">
             <div>{{errorMessagesMapping.password.msg}}</div>
           </div>
           <div
@@ -230,12 +177,7 @@
               ng-change="verifyRepeatPassword(UserRegisterModel.repeatpassword)"
               autocomplete="off"
             />
-            <i
-              class="fa fa-lock"
-              aria-hidden="true"
-              ng-click="togglePasswordClickedAction('repeatpassword')"
-            >
-            </i>
+            <i class="fa fa-lock" aria-hidden="true" ng-click="togglePasswordClickedAction('repeatpassword')"> </i>
           </div>
           <div
             ng-show="!verifyRepeatPassword(UserRegisterModel.repeatpassword, UserRegisterModel.password).success"
@@ -250,12 +192,7 @@
             <div>{{errorMessagesMapping.repeatpassword.msg}}</div>
           </div>
         </div>
-        <button
-          class="btn btn-rounded-fill btn--icon primary"
-          ng-click="registerAction()"
-        >
-          Register
-        </button>
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="registerAction()">Register</button>
         <div class="clearfix"></div>
         <div class="divider"></div>
         <ul class="login__secondary-action">
@@ -267,18 +204,10 @@
       </form>
     </section>
     <section ng-if="contentType=='resetPassword'" class="login__section">
-      <div
-        class="alert alert-success"
-        role="alert"
-        ng-show="resetPasswordRequestSuccess"
-      >
+      <div class="alert alert-success" role="alert" ng-show="resetPasswordRequestSuccess">
         {{resetPasswordRequestSuccess}}
       </div>
-      <div
-        class="alert alert-error"
-        role="alert"
-        ng-show="resetPasswordRequestError"
-      >
+      <div class="alert alert-error" role="alert" ng-show="resetPasswordRequestError">
         {{resetPasswordRequestError}}
       </div>
       <form class="dashboard-form">
@@ -296,19 +225,11 @@
             />
             <i class="fa fa-envelope"></i>
           </div>
-          <div
-            ng-show="!verifyEmail(UserRequestResetPassword.email).success"
-            class="text-danger"
-          >
+          <div ng-show="!verifyEmail(UserRequestResetPassword.email).success" class="text-danger">
             <div>{{errorMessagesMapping.email.msg}}</div>
           </div>
         </div>
-        <button
-          class="btn btn-rounded-fill btn--icon primary"
-          ng-click="resetPasswordRequest()"
-        >
-          Reset password
-        </button>
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="resetPasswordRequest()">Reset password</button>
         <div class="clearfix"></div>
         <div class="divider"></div>
         <ul class="login__secondary-action">
@@ -321,20 +242,10 @@
       </form>
     </section>
     <section ng-if="contentType=='resetPasswordForm'" class="login__section">
-      <div
-        class="alert alert-success"
-        role="alert"
-        ng-show="resetPasswordFormSuccess"
-      >
+      <div class="alert alert-success" role="alert" ng-show="resetPasswordFormSuccess">
         {{resetPasswordFormSuccess}}
       </div>
-      <div
-        class="alert alert-error"
-        role="alert"
-        ng-show="resetPasswordFormError"
-      >
-        {{resetPasswordFormError}}
-      </div>
+      <div class="alert alert-error" role="alert" ng-show="resetPasswordFormError">{{resetPasswordFormError}}</div>
       <form class="dashboard-form">
         <h1>New Password</h1>
         <div class="dashboard-form__group has-warning has-feedback">
@@ -423,20 +334,10 @@
             <div>{{errorMessagesMapping.repeatpassword.msg}}</div>
           </div>
         </div>
-        <button
-          class="btn btn-rounded-fill btn--icon primary"
-          ng-click="resetPasswordForm()"
-        >
-          Renew
-        </button>
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="resetPasswordForm()">Renew</button>
         <div class="clearfix"></div>
         <div class="divider"></div>
-        <button
-          class="btn btn-rounded-fill btn--icon primary"
-          ng-click="changeContentType('login')"
-        >
-          Login
-        </button>
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="changeContentType('login')">Login</button>
       </form>
     </section>
   </div>

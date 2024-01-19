@@ -10,7 +10,7 @@
   top: 2.5em;
   right: 0.5em;
   padding: 1em 0;
-  border-radius: br("8");
+  border-radius: br('8');
   background: var(--surface-c);
   box-shadow: var(--default-box-shadow);
   color: var(--text-color);
@@ -22,7 +22,7 @@
   }
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     top: -4px;
     right: 20px;
