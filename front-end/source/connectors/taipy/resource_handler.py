@@ -16,6 +16,6 @@ class PureHTMLResourceHandler(ResourceHandler):
 		# Serve the requested file if it exists
         file_path = root_dir / path
         if file_path.is_file():
-            return send_from_directory(root_dir, path)
+            return send_from_directory(root_dir, path)        
         
         return ("File not found", 404)

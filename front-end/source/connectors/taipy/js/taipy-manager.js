@@ -22,19 +22,20 @@ class TaipyManager {
     });
   }
 
-  handleSingleUpdate(newData) {
+  onChange(app, varName, value) {
     const variableData = this._getVariableData();
-    const newDataName = newData.name;
-    const newDataValue = newData.payload.value;
+    const updateDataName = varName;
+    const updateDataValue = value;
+    const [variable, context] = app.getName(varName);
 
     Object.entries(variableData).forEach(([context, variables]) => {
       if (context === '__main__') return;
   
       Object.entries(variables).forEach(([variable, data]) => {
-        if (data.encoded_name === newDataName && data.value !== newDataValue) {
+        if (data.encoded_name === updateDataName && data.value !== updateDataValue) {
           const dnName = `${context}.${variable}`;
           if (datanodesManager.foundDatanode(dnName)) {
-            this._updateDataNode(dnName, newDataValue);
+            this._updateDataNode(dnName, updateDataValue);
           }
           return; // Exit function once the matching variable is found and updated
         }
@@ -53,11 +54,11 @@ class TaipyManager {
         }
         return acc;
     }, []);
-    const encoded_name = variableData[context][varName].encoded_name;
+    const encodedName = variableData[context][varName].encoded_name;
     const oldValue = variableData[context][varName].value;
     variableData[context][varName].value = value;
     if (oldValue !== value) {
-      sendWsMessage(socket, "U", encoded_name, { value: value }, context);
+      window.taipyApp.update(encodedName, value);
     }
   }
 

@@ -53,8 +53,7 @@
       "thirdparty/marked.min.js",
       "thirdparty/jquery.bt.js",
       "thirdparty/moment.min.js",
-      "thirdparty/daterangepicker.js",
-      "thirdparty/socket.io.min.js"
+      "thirdparty/daterangepicker.js"
     ],
     "body": [
       "thirdparty/head.js",
@@ -150,9 +149,7 @@
       "source/kernel/dashboard/rendering/reconstruct-foundations.js",
       "source/angular/modules/libs/notification/notification-xdash.js",
       "source/connectors/taipy/js/taipy-manager.js",
-      "source/connectors/taipy/js/utils.js",
-      "source/connectors/taipy/js/socketio_handler.js",
-      "source/connectors/taipy/js/socketio.js",
+      "source/connectors/taipy/js/taipy-gui-base.js",
       "source/connectors/taipy/js/index.js"
     ]
   },
@@ -308,8 +305,7 @@
       "source/kernel/general/backend/FileMngr.js",
       "thirdparty/json_parseMore.js",
       "thirdparty/marked.min.js",
-      "thirdparty/daterangepicker.js",
-      "thirdparty/socket.io.min.js"
+      "thirdparty/daterangepicker.js"
     ],
     "body": [
       "thirdparty/bootstrap-clockpicker.js",
@@ -408,9 +404,7 @@
       "source/kernel/datanodes/plugins/plugin-python-support.js",
       "source/kernel/datanodes/plugins/plugin-python-script.js", 
       "source/connectors/taipy/js/taipy-manager.js",
-      "source/connectors/taipy/js/utils.js",
-      "source/connectors/taipy/js/socketio_handler.js",
-      "source/connectors/taipy/js/socketio.js",
+      "source/connectors/taipy/js/taipy-gui-base.js",
       "source/connectors/taipy/js/index.js"
     ]
   }
