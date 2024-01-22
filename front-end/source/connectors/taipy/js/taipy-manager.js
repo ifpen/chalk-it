@@ -16,31 +16,18 @@ class TaipyManager {
       if (context === '__main__') return;
   
       Object.entries(variables).forEach(([variable, data]) => {
-        const varName = `${context}.${variable}`;
-        this._createNewDataNode(varName, data.value);
+        const dnName = `${context}.${variable}`;
+        this._createNewDataNode(dnName, data.value);
       });
     });
   }
 
   onChange(app, varName, value) {
-    const variableData = app.getDataTree();
-    const updateDataName = varName;
-    const updateDataValue = value;
     const [variable, context] = app.getName(varName);
-
-    Object.entries(variableData).forEach(([context, variables]) => {
-      if (context === '__main__') return;
-  
-      Object.entries(variables).forEach(([variable, data]) => {
-        if (data.encoded_name === updateDataName && data.value !== updateDataValue) {
-          const dnName = `${context}.${variable}`;
-          if (datanodesManager.foundDatanode(dnName)) {
-            this._updateDataNode(dnName, updateDataValue);
-          }
-          return; // Exit function once the matching variable is found and updated
-        }
-      });
-    });
+    const dnName = `${context}.${variable}`;
+    if (datanodesManager.foundDatanode(dnName)) {
+      this._updateDataNode(dnName, value);
+    }
   }
 
   sendToTaipy(dataNodeName, value) {
@@ -54,7 +41,7 @@ class TaipyManager {
         }
         return acc;
     }, []);
-    const encodedName = variableData[context][varName].encoded_name;
+    const encodedName = window.taipyApp.getEncodedName(varName, context)
     const oldValue = variableData[context][varName].value;
     variableData[context][varName].value = value;
     if (oldValue !== value) {

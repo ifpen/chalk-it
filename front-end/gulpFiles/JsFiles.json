@@ -53,7 +53,8 @@
       "thirdparty/marked.min.js",
       "thirdparty/jquery.bt.js",
       "thirdparty/moment.min.js",
-      "thirdparty/daterangepicker.js"
+      "thirdparty/daterangepicker.js",
+      "source/connectors/taipy/js/taipy-gui-base.js"
     ],
     "body": [
       "thirdparty/head.js",
@@ -305,7 +306,7 @@
       "thirdparty/json_parseMore.js",
       "thirdparty/marked.min.js",
       "thirdparty/daterangepicker.js",
-	  "source/connectors/taipy/js/taipy-gui-base.js"
+	    "source/connectors/taipy/js/taipy-gui-base.js"
     ],
     "body": [
       "thirdparty/bootstrap-clockpicker.js",

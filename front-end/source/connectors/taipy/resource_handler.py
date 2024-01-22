@@ -17,6 +17,8 @@ class PureHTMLResourceHandler(ResourceHandler):
         file_path = root_dir / path
         if file_path.is_file():
             return send_from_directory(root_dir, path)        
-        if "taipy-gui-base.js" in path:
-            return send_file(base_bundle_path)
+        
+        # if "taipy-gui-base.js" in path:
+        #     return send_file(base_bundle_path)
+
         return ("File not found", 404)

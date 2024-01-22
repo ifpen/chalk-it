@@ -1,7 +1,3 @@
-import sys
-sys.path.append('D:/Repos/taipy/')
-
-
 from taipy.gui import Gui
 from taipy_page import page
 

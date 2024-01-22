@@ -4,11 +4,10 @@ const onInit = (app) => {
     taipyManager.setVariableData(variableData);
 };
 
-
 const init = () => {
     // Init taipy app
     window.taipyApp = TaipyGuiBase.createApp(onInit);
-    window.taipyApp.onUpdate = taipyManager.onChange;
+    window.taipyApp.onChange = taipyManager.onChange.bind(taipyManager);
 };
 
 init();
