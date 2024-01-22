@@ -135,8 +135,10 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
     // Check for any calculated settings
     var settingsDefs = datanodePlugins[datanodeModel.type()].settings;
     var datanodeRegex = new RegExp('dataNodes.([\\w_-]+)|dataNodes\\[[\'"]([^\'"]+)', 'g');
+    // const setVarRegex =
+    //   /(setVariables?\((\[.*?\]),\s*(\[.*?\])\))|(setVariable\(("([^"]*)"),\s*([^)]*)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNodes\((\[.*?\])\))|(setVariableProperty\(("([^"]*)"),\s*(\[.*?\])\s*,\s*([^)]*)\))/g;
     const setVarRegex =
-      /(setVariables?\((\[.*?\]),\s*(\[.*?\])\))|(setVariable\(("([^"]*)"),\s*([^)]*)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNodes\((\[.*?\])\))|(setVariableProperty\(("([^"]*)"),\s*(\[.*?\])\s*,\s*([^)]*)\))/g;
+      /(setVariables\((\["[^"].*?"\]),\s*(\[.*?\])\))|(setVariables\((\['[^"].*?'\]),\s*(\[.*?\])\))|(setVariable\(('([^"]*?)'),\s*([^)]*)\))|(setVariable\(("([^"]*?)"),\s*([^)]*)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNode\(('([^"]*)')\))|(executeDataNodes\((\["[^"].*?"\])\))|(executeDataNodes\((\['[^"].*?'\])\))|(setVariableProperty\(("([^"]*)"),\s*(\[.*?\])\s*,[^"].*?\))|(setVariableProperty\(('([^"].*?)'),\s*(\[.*?\])\s*,[^"].*?\))/g;
 
     const regexPython = /(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')|(#.*$)/gm;
     var currentSettings = datanodeModel.settings();
@@ -281,23 +283,42 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             while ((matches = setVarRegex.exec(lines[i]))) {
               let dsName = [];
               if (!_.isUndefined(matches)) {
-                if (!_.isUndefined(matches[6])) {
+                if (!_.isUndefined(matches[13])) {
                   // For setVariable
-                  dsName[0] = matches[6];
+                  dsName[0] = matches[13];
+                } else if (!_.isUndefined(matches[9])) {
+                  // For setVariable
+                  dsName[0] = matches[9];
                 } else if (!_.isUndefined(matches[2])) {
                   // For setVariables array elements
                   const variableArray = JSON.parse(matches[2]);
                   dsName = variableArray;
-                } else if (!_.isUndefined(matches[10])) {
-                  // For executeDataNode
-                  dsName[0] = matches[10];
-                } else if (!_.isUndefined(matches[12])) {
-                  // For executeDataNodes
-                  const variableArray = JSON.parse(matches[12]);
+                } else if (!_.isUndefined(matches[5])) {
+                  // For setVariables array elements
+                  const validJsonString = matches[5].replace(/'/g, '"');
+                  const variableArray = JSON.parse(validJsonString);
                   dsName = variableArray;
-                } else if (!_.isUndefined(matches[15])) {
+                } else if (!_.isUndefined(matches[17])) {
+                  // For executeDataNode
+                  dsName[0] = matches[17];
+                } else if (!_.isUndefined(matches[20])) {
+                  // For executeDataNode
+                  dsName[0] = matches[20];
+                } else if (!_.isUndefined(matches[22])) {
+                  // For executeDataNodes
+                  const variableArray = JSON.parse(matches[22]);
+                  dsName = variableArray;
+                } else if (!_.isUndefined(matches[24])) {
+                  // For executeDataNodes
+                  const validJsonString = matches[24].replace(/'/g, '"');
+                  const variableArray = JSON.parse(validJsonString);
+                  dsName = variableArray;
+                } else if (!_.isUndefined(matches[27])) {
                   // For setVariableProperty
-                  dsName[0] = matches[15];
+                  dsName[0] = matches[27];
+                } else if (!_.isUndefined(matches[31])) {
+                  // For setVariableProperty
+                  dsName[0] = matches[31];
                 }
               }
 
