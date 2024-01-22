@@ -89,6 +89,7 @@
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
     self.updateNow = function () {
+      currentSettings.json_var = JSON.stringify(json_var_value);
       statusCallback('OK'); // MBG for scheduler : put statusCallback before updateCallback
       updateCallback(json_var_value);
       return true; //ABK
@@ -124,8 +125,6 @@
       // Ensure angular will detect a change for the preview, etc...
       if (Array.isArray(json_var_value)) json_var_value = [...json_var_value];
       else if (json_var_value && json_var_value.contructor === Object) json_var_value = { ...json_var_value };
-
-      currentSettings.json_var = JSON.stringify(json_var_value);
     };
 
     // **getValue()** (optional)
