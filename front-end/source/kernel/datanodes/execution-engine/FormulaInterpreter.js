@@ -277,10 +277,12 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           }
 
           let lines = script.split('\n');
+          let isAPI = false;
           for (let i = 0; i < lines.length; i++) {
             while ((matches = setVarRegex.exec(lines[i]))) {
               let dsName = [];
               if (!_.isUndefined(matches)) {
+                isAPI = true;
                 if (!_.isUndefined(matches[13])) {
                   // For setVariable
                   dsName[0] = matches[13];
@@ -325,6 +327,19 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               } else {
                 for (const name of dsName) {
                   datanodesDependency.addSetvarList(name, datanodeModel.name());
+                }
+              }
+            }
+          }
+          if (!isAPI) {
+            for (let i = 0; i < lines.length; i++) {
+              while ((matches = lines[i].match(/chalkit(.+)|xDashApi(.+)/))) {
+                if (!_.isUndefined(matches)) {
+                  const text = 'Syntax error in chalkit API.';
+                  datanodeModel.statusCallback('Error', text);
+                  datanodeModel.notificationCallback('error', datanodeModel.name(), text);
+                  self.bCalculatedSettings = false;
+                  return;
                 }
               }
             }
