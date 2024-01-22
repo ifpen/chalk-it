@@ -145,6 +145,7 @@
       "source/kernel/runtime/row-to-tab-runtime.js",
       "source/kernel/runtime/custom-navigation-runtime.js",
       "source/kernel/general/interfaces/xdash-api.js",
+      "source/kernel/general/interfaces/chalkit-api.js",
       "source/kernel/runtime/xdash-runtime-main.js",
       "source/kernel/dashboard/rendering/reconstruct-foundations.js",
       "source/angular/modules/libs/notification/notification-xdash.js"
@@ -373,6 +374,7 @@
       "source/kernel/general/export/runtime-toolbar.js",
       "source/kernel/runtime/custom-navigation-runtime.js",
       "source/kernel/general/interfaces/xdash-api.js",
+      "source/kernel/general/interfaces/chalkit-api.js",
       "source/kernel/base/xdash-data-updates.js",
       "source/kernel/base/xdash-main.js",
       "source/kernel/general/export/html-export.js",
