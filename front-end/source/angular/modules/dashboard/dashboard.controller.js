@@ -156,7 +156,8 @@ angular
                     vm.editSelectedWidget();
                 }
 
-                taipyManager.processVariableData();
+                // Create taipy datanodes
+                taipyManager.processVariableData();                
             };
 
             /*---------- enlargeScreenRight ----------------*/

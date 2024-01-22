@@ -224,69 +224,65 @@ var angularModule = angular.module('xCLOUD', [
                         $rootScope.UserProfile = SessionUser.getUserProfile();
                         $rootScope.origin = "reload"; //AEF
                         $state.go('modules');
-                    } else {
+                    } else if (!$rootScope.xDashFullVersion) { // no authentication needed
                         // This section is executed when reloading the dashboard
-                        if (!$rootScope.xDashFullVersion) { // no authentication needed
-                            $rootScope.UserProfile = {};
-                            $rootScope.UserProfile.userId = -1;
-                            $rootScope.UserProfile.userName = "Guest";
-                            $state.go("modules.discover.layout").then(() => {
-                                $rootScope.toggleMenuOptionDisplay('discover');
-                            });
-                        } else {
-                            $state.go('login.user');
-                        }
-                    }
-                } else {
-                    if (!$rootScope.UserProfile.userId) {
-                        $state.go('login.user');
+                        $rootScope.UserProfile = {};
+                        $rootScope.UserProfile.userId = -1;
+                        $rootScope.UserProfile.userName = "Guest";
+                        $state.go("modules.discover.layout").then(() => {
+                            $rootScope.toggleMenuOptionDisplay('discover');
+                        });
                     } else {
-                        //AEF
-                        // start view with recent projects
-                        if ($rootScope.origin == "newProject" || $rootScope.origin == "openProject" ||
-                            $rootScope.origin == "closeProject" || $rootScope.origin == "backToEditor") {
-                            $rootScope.toggleMenuOptionDisplay('none');
-                            $state.go("modules", {});
-                        } else {
-                            if ($rootScope.xDashFullVersion) {
-                                $rootScope.toggleMenuOptionDisplay('recent');
-                                $state.go("modules.cards.layout", { action: 'recent' });
-                                // $rootScope.isMaintenanceInfo = false;
-                                // let FileMngrInst = new FileMngrFct();
-                                // FileMngrInst.GetMaintenanceInfo(function(msg1, msg2, type) {
-                                //     let notice;
-                                //     if (type == "error") {
-                                //         notice = new PNotify({
-                                //             title: "Maintenance info",
-                                //             text: msg1,
-                                //             type: "error",
-                                //             styling: "bootstrap3",
-                                //         });
-                                //     } else if (type === "success") {
-                                //         if (msg1.Msg !== "") {
-                                //             $rootScope.isMaintenanceInfo = true;
-                                //             $rootScope.msgMaintenanceInfo = msg1.Msg;
-                                //             notice = new PNotify({
-                                //                 title: "Maintenance info",
-                                //                 text: msg1.Msg,
-                                //                 type: "info",
-                                //                 styling: "bootstrap3",
-                                //             });
-                                //         }
-                                //     }
-                                //     $('.ui-pnotify-container').on('click', function() {
-                                //         notice.remove();
-                                //     });
-                                // });
-                            } else {
-                                // This section will not be executed when opening the guided tour project
-                                if ( $rootScope.origin !== "projectEdition") {
-                                    $rootScope.toggleMenuOptionDisplay('discover');
-                                    $state.go("modules.discover.layout");
-                                }
-                            }
-                        }
+                        $state.go('login.user');
                     }
+                } else if (!$rootScope.UserProfile.userId) {
+                    $state.go('login.user');
+                } else if ($rootScope.origin == "newProject" || $rootScope.origin == "openProject" ||
+                    $rootScope.origin == "closeProject" || $rootScope.origin == "backToEditor") {
+                    //AEF
+                    // start view with recent projects
+                    $rootScope.toggleMenuOptionDisplay('none');
+                    $state.go("modules", {});
+                } else if ($rootScope.xDashFullVersion) {
+                    $rootScope.toggleMenuOptionDisplay('recent');
+                    $state.go("modules.cards.layout", { action: 'recent' });
+                    // $rootScope.isMaintenanceInfo = false;
+                    // let FileMngrInst = new FileMngrFct();
+                    // FileMngrInst.GetMaintenanceInfo(function(msg1, msg2, type) {
+                    //     let notice;
+                    //     if (type == "error") {
+                    //         notice = new PNotify({
+                    //             title: "Maintenance info",
+                    //             text: msg1,
+                    //             type: "error",
+                    //             styling: "bootstrap3",
+                    //         });
+                    //     } else if (type === "success") {
+                    //         if (msg1.Msg !== "") {
+                    //             $rootScope.isMaintenanceInfo = true;
+                    //             $rootScope.msgMaintenanceInfo = msg1.Msg;
+                    //             notice = new PNotify({
+                    //                 title: "Maintenance info",
+                    //                 text: msg1.Msg,
+                    //                 type: "info",
+                    //                 styling: "bootstrap3",
+                    //             });
+                    //         }
+                    //     }
+                    //     $('.ui-pnotify-container').on('click', function() {
+                    //         notice.remove();
+                    //     });
+                    // });
+                } else if ($rootScope.xDashLiteVersion) {
+                    $rootScope.toggleMenuOptionDisplay('discover');
+                    $state.go("modules.discover.layout").then(()=>{
+                        $rootScope.toggleMenuOptionDisplay('none');
+                        $state.go("modules", {});
+                    });
+                } else if ($rootScope.origin !== "projectEdition") {
+                    // This section will not be executed when opening the guided tour project
+                    $rootScope.toggleMenuOptionDisplay('discover');
+                    $state.go("modules.discover.layout");
                 }
             }]);
         });
