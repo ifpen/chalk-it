@@ -26,7 +26,7 @@ nav:
       - Local prototyping with Flask: py/py-proto-flask.md
   - Recipes & interfaces:
       - Recipes: recipes.md
-      - Chalk'it APIs: xdashapi.md
+      - Chalk'it APIs: chalkitapi.md
 theme:
   name: material
   logo: media/chalk-it-icon.ico
