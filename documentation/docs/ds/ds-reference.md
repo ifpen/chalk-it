@@ -223,7 +223,7 @@ On the first execution, its output is set to the JSON value defined in the **INI
 
 This dataNode is useful to create counters for example, without adding real cycles in the graph.
 
-See example: [memory.xprjson](/apps/xprjson/memory.xprjson).
+See example: [memory.xprjson](/ds/xprjson/memory.xprjson).
 
 In this example, the cycle between "_counter_" and "_pastValue_counter_" is a non-algebraic cycle, because of the special memory type.
 
