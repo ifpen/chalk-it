@@ -1,11 +1,10 @@
 const onInit = (app) => {
     console.log("onAppInit", app.getDataTree());
-    const variableData = app.getDataTree();
-    taipyManager.setVariableData(variableData);
+    taipyManager.app = app;
 };
 
 const init = () => {
-    // Init taipy app
+    // Init Taipy app
     window.taipyApp = TaipyGuiBase.createApp(onInit);
     window.taipyApp.onChange = taipyManager.onChange.bind(taipyManager);
 };
