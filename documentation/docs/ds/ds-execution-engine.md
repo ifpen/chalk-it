@@ -72,6 +72,7 @@ A checkbox in the table indicates that the property can be customized by the use
 | [Geolocation](../../ds/ds-reference/#geolocation)                          |                    |                    |                    |
 | [Clock](../../ds/ds-reference/#clock)                                      | :heavy_check_mark: | :heavy_check_mark: |                    |
 | [Delay](../../ds/ds-reference/#delay)                                      |                    |                    |                    |
+| [Memory](../../ds/ds-reference/#memory)                                    |                    |                    |                    |
 | MQTT                                                                       |                    |                    |                    |
 | [WebSocket receive](../../ds/ds-reference/#websocket-receive)              | :heavy_check_mark: |                    |                    |
 | [WebSocket send](../../ds/ds-reference/#websocket-send)                    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
