@@ -1,4 +1,4 @@
-# xDashApi
+# Chalk'it APIs
 
 xDashApi provides features for building multi-dashboard applications.
 
@@ -11,7 +11,7 @@ xDashApi currently runs with JavaScript-type dataNodes.
 In [constrained dashboard mode](../export/export#scaling-methods-for-the-constrained-dashboard), the method:
 
 ```JavaScript
-xDashApi.goToPage(pageNumber)
+chalkit.goToPage(pageNumber)
 ```
 
 allows to show only the targed page. It is the main method for building multi-page app with custom navigation control.
@@ -19,7 +19,7 @@ allows to show only the targed page. It is the main method for building multi-pa
 ## viewPage
 
 ```JavaScript
-xDashApi.viewPage(pageUrl, inputVals, bNewTab)
+chalkit.viewPage(pageUrl, inputVals, bNewTab)
 ```
 
 Navigates to *pageUrl*, setting the values of the specified dataNodes in inputVals.
@@ -37,7 +37,7 @@ Navigates to *pageUrl*, setting the values of the specified dataNodes in inputVa
 Similar to view page, but applies for projects.
 
 ```JavaScript
-xDashApi.viewProject(projectUrl, inputVals, bNewTab)
+chalkit.viewProject(projectUrl, inputVals, bNewTab)
 ```
 
 
