@@ -1,3 +1,11 @@
+// ┌────────────────────────────────────────────────────────────────────┐ \\
+// │                                                                    │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright © 2019-2024 IFPEN                                        │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ Author(s) : Mohamed ERRAHALI                     │ \\
+// └────────────────────────────────────────────────────────────────────┘ \\
+
 this.tileServersList = function () {
   var azureMapboxUrl = 'https://xdashgateway.azure-api.net/mapbox/tiles?z={z}&x={x}&y={y}';
   var azureMapboxUrlGeneral = 'https://xdashgateway.azure-api.net/mapbox/tilesgeneral?z={z}&x={x}&y={y}&id={id}';

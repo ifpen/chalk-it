@@ -144,56 +144,91 @@ function mapGeoJsonWidgetsPluginClass() {
 
     // Create a Layer from a GeoJSON
     // Simple function dont take into account the style
-    this.getLefletIndex = (leafletLayer)=>{
+    this.getLefletIndex = (leafletLayer) => {
       for (let index = 0; index < self.layers.length; index++) {
         const layer = self.layers[index];
-        if(layer == leafletLayer) {
-          return index
+        if (layer == leafletLayer) {
+          return index;
         }
         return undefined;
       }
-    }
+    };
     this.addGeoJSONlayer = function (geoJSON, name) {
       var leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
-      //add events : 
-     // mouseover
-     self.layers.push(leafletLayer);
-     let leafletIndex = self.getLefletIndex(leafletLayer)
-     if(!_.isUndefined(leafletIndex)) {
-      self.mouseoverHandler = (e)=> {
-        //  mouseoverHandler(e)
-          let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex]; 
-          let eventStyle = style.events.mouseover.style
-          e.target.setStyle(eventStyle)
+      //add events :
+      // mouseover
+      self.layers.push(leafletLayer);
+      let leafletIndex = self.getLefletIndex(leafletLayer);
+      if (!_.isUndefined(leafletIndex)) {
+        self.mouseoverHandler = (e) => {
+          //  mouseoverHandler(e)
+          let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+          let eventStyle = style.events.mouseover.style;
+          e.target.setStyle(eventStyle);
           let popup = new L.Popup();
-          var bounds = e.target.getBounds(); 
-          let popupContent = "<div>"
-          let properties = style.tooltip.properties
-          _.each(properties,(property=>{
-            popupContent = popupContent +"<p> <strong>"+property +"</strong> : "+e.target.feature.properties[property]+"</p>" ;
-          }))
-          popupContent = popupContent+"</div>" 
+          var bounds = e.target.getBounds();
+          let popupContent = '<div>';
+          let properties = style.tooltip.properties;
+          _.each(properties, (property) => {
+            popupContent =
+              popupContent +
+              '<p> <strong>' +
+              property +
+              '</strong> : ' +
+              e.target.feature.properties[property] +
+              '</p>';
+          });
+          popupContent = popupContent + '</div>';
           popup.setLatLng(bounds.getCenter());
           popup.setContent(popupContent);
-          self.map.openPopup(popup);
+          if(!_.isUndefined(properties) && properties.length>0  ) {
+            self.map.openPopup(popup);
+          }
         };
         leafletLayer.eachLayer(function (layer) {
           layer.on('mouseover', self.mouseoverHandler);
         });
-     }
-     //mouseout
-     if(!_.isUndefined(leafletIndex)) {
-      self.mouseoutHandler = (e)=> {
-          let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex]; 
-          let eventStyle = style.events.mouseout.style
-          e.target.setStyle(eventStyle)   
+      }
+      //mouseout
+      if (!_.isUndefined(leafletIndex)) {
+        self.mouseoutHandler = (e) => {
+          let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+          let eventStyle = style.events.mouseout.style;
+            if (
+              !_.isUndefined(style.property) &&
+              !_.isUndefined(style.possibleProperties) &&
+              style.property in style.possibleProperties
+            ) {
+              var minMaxAuto = style.possibleProperties[style.property];
+
+              if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
+                minMaxAuto[0] = style.propertyMin;
+              if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
+                minMaxAuto[1] = style.propertyMax;
+
+              var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
+              if (!_.isUndefined(color)) {
+                colorScale = self.getColorScale(color, 0, 100);
+              }
+            }
+            let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, style.property);
+            let min = minMaxAuto[0];
+            let max = minMaxAuto[1];
+            if (min < minMax[0]) min = minMax[0];
+            if (max > minMax[1]) max = minMax[1];
+            if (!_.isUndefined(colorScale)) {
+              let value = e.target.feature.properties[style.property];
+
+              eventStyle.fillColor = self.getColor(min, max, value, colorScale);
+            }
+          e.target.setStyle(eventStyle);
           self.map.closePopup();
         };
         leafletLayer.eachLayer(function (layer) {
           layer.on('mouseout', self.mouseoutHandler);
         });
-     }   
-     
+      }
+
       self.ctrl.addOverlay(leafletLayer, name);
     };
 
@@ -239,9 +274,9 @@ function mapGeoJsonWidgetsPluginClass() {
             propertyMax: 'Auto',
             fillOpacity: 1,
             possibleProperties: prop,
-            allProperties : allProp,
-            tooltip : {
-              properties : [...allProp]
+            allProperties: allProp,
+            tooltip: {
+              properties: [...allProp],
             },
             events: {
               mouseover: {
