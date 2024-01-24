@@ -27,7 +27,7 @@
 					"name": "ResetSelection",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "chalkit.setVariableProperty(\"Selection\", [\"crossPlot1\"], {});\n\nchalkit.setVariableProperty(\"Selection\", [\"crossPlot2\"], {});\n\nreturn {};"
+					"json_var_formula": "let initVar = {\"crossPlot1\": {},\"crossPlot2\": {}};\nchalkit.setVariable(\"Selection\", initVar);\n\nreturn {};"
 				}
 			},
 			{

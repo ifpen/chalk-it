@@ -133,7 +133,7 @@ In order to reset the selection, we need to clean all the DataFlow and all the g
 
 3 significant addition in the dataNode have to be done in order to have a clean result.
 
-- Reset the DataNode [Selection] via the chalkit function (_chalkit.setVariable_ or _chalkit.setVariableProperty_). This will reset the selection and the plotly data (done in [ResetSelection] dataNode)
+- Reset the DataNode [Selection] via the chalkit function _chalkit.setVariable_. This will reset the selection and the plotly data (done in [ResetSelection] dataNode)
 
 - Add the field "selections : []" in all layout impacted in order to remove all the visible rectangle or lasso drawn
 - Create a relation between the resetSelection action script and the different layout to trigger the layout dataNodes.
