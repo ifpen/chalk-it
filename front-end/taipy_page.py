@@ -6,7 +6,6 @@ a = 8
 b = 10
 c = a + b * 2
 d = 86
-e = 65
 
 df = px.data.gapminder().query("country=='Canada'")
 fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')

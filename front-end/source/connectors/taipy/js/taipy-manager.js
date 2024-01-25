@@ -89,7 +89,7 @@ class TaipyManager {
     const viewModel = null;
     const settings = this.dataNodeSettings;
     settings.settings.name = dnName;
-    settings.settings.json_var = value;
+    settings.settings.json_var = JSON.stringify(value);
     const selectedType = types[settings.type];
 
     // Check if a datanode is already exists
@@ -109,7 +109,7 @@ class TaipyManager {
     const dnModel = datanodesManager.getDataNodeByName(dnName);
     const settings = this.dataNodeSettings;
     settings.settings.name = dnName;
-    settings.settings.json_var = value;
+    settings.settings.json_var = JSON.stringify(value);
     datanodesManager.updateDatanode(dnModel, settings);
   }
 
