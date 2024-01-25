@@ -18,7 +18,6 @@ class TaipyManager {
         json_var: '',
       }
     };
-    this.app = {};
   }
 
   /**
@@ -31,7 +30,7 @@ class TaipyManager {
 
     Object.entries(this.variableData).forEach(([context, variables]) => {
       if (context === '__main__') return;
- 
+  
       Object.entries(variables).forEach(([variable, data]) => {
         const dnName = `${context}.${variable}`;
         this._createNewDataNode(dnName, data.value);
@@ -92,6 +91,7 @@ class TaipyManager {
     settings.settings.name = dnName;
     settings.settings.json_var = value;
     const selectedType = types[settings.type];
+
     // Check if a datanode is already exists
     if (!datanodesManager.foundDatanode(dnName)) {
       datanodesManager.settingsSavedCallback(viewModel, settings, selectedType);
@@ -157,14 +157,6 @@ class TaipyManager {
   get dataNodeSettings() {
     return this._dataNodeSettings;
   }
- 
-  setApp(app) {
-    this.app = app;
-  }
- 
-  _getApp() {
-    return this.app;
-  }
 }
- 
+
 const taipyManager = new TaipyManager();

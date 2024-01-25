@@ -244,7 +244,7 @@ class FileSyncManager {
   }
 }
 
-angular
+/* angular
   .module('modules.editor')
   .service('FileSyncService', ['EventCenterService', FileSyncManager])
   .run([
@@ -270,3 +270,4 @@ angular
       }
     },
   ]);
+ */
