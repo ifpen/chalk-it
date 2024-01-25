@@ -87,30 +87,41 @@ Python or JavaScript code can be written to define input to dataNode computation
 
 ### setValue from widget
 
-Currently only [Variable](../../ds/ds-basics/#variable) dataNodes have this property. It indicates that their workspace value can be modified by widgets that have write capabilities (such as sliders ([horizontal slider](../../wdg/wdg-basic-inputs/#horizontal-slider) ...), [value](../../wdg/wdg-basic-inputs/#value), editable [table](../../wdg/wdg-basic-inputs/#table) ...).
+Currently only [Variable](../../ds/ds-basics/#variable) and [Memory](../../ds/ds-basics/#memory) dataNodes have this property. It indicates that their workspace value can be modified by widgets that have write capabilities (such as sliders ([horizontal slider](../../wdg/wdg-basic-inputs/#horizontal-slider) ...), [value](../../wdg/wdg-basic-inputs/#value), editable [table](../../wdg/wdg-basic-inputs/#table) ...).
 
 ### setValue from file
 
 The value of the dataNode can be assigned from a file. See example in [Push button](../../wdg/wdg-basic-inputs/#push-button).
 
+### setValue from script
+
+Python or JavaScript code can be written to define input to [Variable](../../ds/ds-basics/#variable) and [Memory](../../ds/ds-basics/#memory) dataNodes, using chalkit functions:
+
+- [setVariable](../../chalkitapi/#setVariable)
+- [setVariableProperty](../../chalkitapi/#setVariableProperty)
+- [setVariables](../../chalkitapi/#setVariables)
+
+This is useful to init and reset variables. See example [reset-counter.xprjson](/ds/xprjson/reset-counter.xprjson).
+
 ### DataNodes capabilities : summary
 
 The table below summarizes currently available dataNodes in Chalk'it, as well as their major properties in terms of _execution flow_ and _data flow_.
 
-| Type                                                                    | setInput with formula | setValue from widget | setValue from file |
-| ----------------------------------------------------------------------- | :-------------------: | :------------------: | :----------------: |
-| [Variable](../../ds/ds-basics/#variable)                                |                       |  :heavy_check_mark:  | :heavy_check_mark: |
-| [Python Script (Pyodide)](../../ds/ds-reference/#python-script-pyodide) |  :heavy_check_mark:   |                      |                    |
-| [JavaScript Script (client-side)](../../ds/ds-basics#javascript-script) |  :heavy_check_mark:   |                      |                    |
-| [REST web-service](../../ds/ds-basics)                                  |  :heavy_check_mark:   |                      |                    |
-| Generic text file reader                                                |                       |                      | :heavy_check_mark: |
-| Generic binary file reader                                              |                       |                      | :heavy_check_mark: |
-| [CSV file reader](../../ds/ds-reference/#csv-file-reader)               |                       |                      | :heavy_check_mark: |
-| [CSV file player](../../ds/ds-reference/#csv-file-player)               |                       |                      | :heavy_check_mark: |
-| Unzip file                                                              |                       |                      | :heavy_check_mark: |
-| [Geolocation](../../ds/ds-reference/#geolocation)                       |                       |                      |                    |
-| [Clock](../../ds/ds-reference/#clock)                                   |                       |                      |                    |
-| [Delay](../../ds/ds-reference/#delay)                                   |                       |                      |                    |
-| MQTT                                                                    |                       |                      |                    |
-| [WebSocket receive](../../ds/ds-reference/#websocket-receive)           |                       |                      |                    |
-| [WebSocket send](../../ds/ds-reference/#websocket-send)                 |  :heavy_check_mark:   |                      |                    |
+| Type                                                                    | setInput with formula | setValue from widget | setValue from file | setValue from script |
+| ----------------------------------------------------------------------- | :-------------------: | :------------------: | :----------------: | :------------------: |
+| [Variable](../../ds/ds-basics/#variable)                                |                       |  :heavy_check_mark:  | :heavy_check_mark: |                      |
+| [Python Script (Pyodide)](../../ds/ds-reference/#python-script-pyodide) |  :heavy_check_mark:   |                      |                    |  :heavy_check_mark:  |
+| [JavaScript Script (client-side)](../../ds/ds-basics#javascript-script) |  :heavy_check_mark:   |                      |                    |  :heavy_check_mark:  |
+| [REST web-service](../../ds/ds-basics)                                  |  :heavy_check_mark:   |                      |                    |  :heavy_check_mark:  |
+| Generic text file reader                                                |                       |                      | :heavy_check_mark: |                      |
+| Generic binary file reader                                              |                       |                      | :heavy_check_mark: |                      |
+| [CSV file reader](../../ds/ds-reference/#csv-file-reader)               |                       |                      | :heavy_check_mark: |                      |
+| [CSV file player](../../ds/ds-reference/#csv-file-player)               |                       |                      | :heavy_check_mark: |                      |
+| Unzip file                                                              |                       |                      | :heavy_check_mark: |                      |
+| [Geolocation](../../ds/ds-reference/#geolocation)                       |                       |                      |                    |                      |
+| [Clock](../../ds/ds-reference/#clock)                                   |                       |                      |                    |                      |
+| [Delay](../../ds/ds-reference/#memory)                                  |                       |                      |                    |                      |
+| [Memory](../../ds/ds-reference/#delay)                                  |                       |                      |                    |
+| MQTT                                                                    |                       |                      |                    |                      |
+| [WebSocket receive](../../ds/ds-reference/#websocket-receive)           |                       |                      |                    |                      |
+| [WebSocket send](../../ds/ds-reference/#websocket-send)                 |  :heavy_check_mark:   |                      |                    |                      |
