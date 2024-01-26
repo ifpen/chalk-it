@@ -1,0 +1,287 @@
+{
+	"meta": {
+		"version": "2.960.8790",
+		"date": "Wed Jan 24 2024 16:44:13 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "reset-counter",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": false
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "counter",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "counter",
+					"autoStart": true,
+					"explicitTrig": true,
+					"json_var_formula": "return dataNodes[\"pastValue_counter\"]+1;\n"
+				}
+			},
+			{
+				"name": "pastValue_counter",
+				"type": "Memory_plugin",
+				"settings": {
+					"name": "pastValue_counter",
+					"value_init": "0",
+					"datanode_origin": "counter"
+				}
+			},
+			{
+				"name": "reset",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "reset",
+					"autoStart": false,
+					"explicitTrig": true,
+					"json_var_formula": "chalkit.setVariable(\"pastValue_counter\",0);\nchalkit.executeDataNode(\"counter\");\nreturn true;"
+				}
+			}
+		]
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1678,
+		"heightPx": 749,
+		"scrollWidthPx": 1678,
+		"scrollHeightPx": 749,
+		"widthVw": 87.76150627615063,
+		"heightVh": 70.52730696798493,
+		"scrollWidthVw": 87.76150627615063,
+		"scrollHeightVh": 70.52730696798493,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiValueDisplayA": {
+			"layout": {
+				"top": "12.731vh",
+				"left": "7.52242vw",
+				"height": "4.6192vh",
+				"width": "19.6532vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "flatUiValueDisplayA",
+				"instanceId": "flatUiValueDisplayA",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayA)"
+			},
+			"modelParameters": {
+				"label": "counter",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valueWidthProportion": "70%",
+				"decimalDigits": 3,
+				"valueFontSize": 0.5,
+				"valueColor": "var(--widget-input-text)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"backgroundColor": "var(--widget-input-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"flatUiButtonA": {
+			"layout": {
+				"top": "12.6183vh",
+				"left": "32.4616vw",
+				"height": "5.52051vh",
+				"width": "8.26787vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiButtonA",
+				"instanceId": "flatUiButtonA",
+				"modelJsonId": "flatUiButton",
+				"widgetTypeName": "Push button(flatUiButtonA)"
+			},
+			"modelParameters": {
+				"text": "Add",
+				"numberOfTriggers": 1,
+				"fileInput": false,
+				"binaryFileInput": false,
+				"buttonFontSize": 0.3,
+				"displayIcon": false,
+				"fontAwesomeIcon": "",
+				"buttonFontFamily": "var(--widget-font-family)",
+				"buttonTextColor": "var(--widget-button-primary-text)",
+				"buttonDefaultColor": "var(--widget-button-primary-color)",
+				"buttonActiveColor": "var(--widget-button-active-color)",
+				"buttonHoverColor": "var(--widget-button-hover-color)"
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiValueDisplayB": {
+			"layout": {
+				"top": "2.92925vh",
+				"left": "7.3191vw",
+				"height": "4.6192vh",
+				"width": "19.6532vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "4"
+			},
+			"container": {
+				"id": "flatUiValueDisplayB",
+				"instanceId": "flatUiValueDisplayB",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayB)"
+			},
+			"modelParameters": {
+				"label": "pastValue_counter",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valueWidthProportion": "70%",
+				"decimalDigits": 3,
+				"valueFontSize": 0.5,
+				"valueColor": "var(--widget-input-text)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"backgroundColor": "var(--widget-input-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"flatUiButtonB": {
+			"layout": {
+				"top": "2.92925vh",
+				"left": "32.6901vw",
+				"height": "5.52051vh",
+				"width": "8.27427vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "5"
+			},
+			"container": {
+				"id": "flatUiButtonB",
+				"instanceId": "flatUiButtonB",
+				"modelJsonId": "flatUiButton",
+				"widgetTypeName": "Push button(flatUiButtonB)"
+			},
+			"modelParameters": {
+				"text": "Reset",
+				"numberOfTriggers": 1,
+				"fileInput": false,
+				"binaryFileInput": false,
+				"buttonFontSize": 0.3,
+				"displayIcon": false,
+				"fontAwesomeIcon": "",
+				"buttonFontFamily": "var(--widget-font-family)",
+				"buttonTextColor": "var(--widget-button-primary-text)",
+				"buttonDefaultColor": "var(--widget-button-primary-color)",
+				"buttonActiveColor": "var(--widget-button-active-color)",
+				"buttonHoverColor": "var(--widget-button-hover-color)"
+			},
+			"modelHiddenParams": {}
+		},
+		"annotationLabelA": {
+			"layout": {
+				"top": "7.36819vh",
+				"left": "14.5953vw",
+				"height": "4.6192vh",
+				"width": "12.4114vw",
+				"minHeight": "5px",
+				"minWidth": "5px",
+				"z-index": "6"
+			},
+			"container": {
+				"id": "annotationLabelA",
+				"instanceId": "annotationLabelA",
+				"modelJsonId": "annotationLabel",
+				"widgetTypeName": "Label(annotationLabelA)"
+			},
+			"modelParameters": {
+				"text": "init_value == 0",
+				"enableActuator": false,
+				"fontsize": 0.5,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#07fcea",
+				"valueFontFamily": "var(--widget-font-family)",
+				"textAlign": "left",
+				"displayBorder": false,
+				"borderColor": "var(--widget-border-color)",
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		}
+	},
+	"connections": {
+		"flatUiValueDisplayA": {
+			"value": {
+				"name": "value",
+				"dataNode": "counter",
+				"dataFields": []
+			}
+		},
+		"flatUiButtonA": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataNode": "counter",
+				"dataFields": []
+			}
+		},
+		"flatUiValueDisplayB": {
+			"value": {
+				"name": "value",
+				"dataNode": "pastValue_counter",
+				"dataFields": []
+			}
+		},
+		"flatUiButtonB": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataNode": "reset",
+				"dataFields": []
+			}
+		},
+		"annotationLabelA": {}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
