@@ -1,7 +1,7 @@
 from taipy.gui import Gui
-from iris.main import page as page
+from iris_demo_page import page
 
 gui = Gui()
-gui.add_page("iris-main", page)
+gui.add_page("iris", page)
 
 gui.run(run_browser=True, use_reloader=True)

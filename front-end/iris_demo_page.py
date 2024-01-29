@@ -6,7 +6,7 @@ import plotly.express as px
 from taipy.gui.custom import Page
 from source.connectors.taipy.resource_handler import PureHTMLResourceHandler
 
-predication = '--'
+prediction = '--'
 
 def load_dataset():
     iris = datasets.load_iris()
@@ -43,8 +43,10 @@ fig = plot_data(df)
 # Example input for prediction
 input_data = {"sepal_width": 5.4, "sepal_length": 2.7, "petal_length": 3, "petal_width": 0.5}
 
-def run_predictor(clf, input_data):
-    state.prediction = make_prediction(clf, input_data)
+def on_change(state, var, val):
+
+    if var == 'input_data':
+        state.prediction = make_prediction(clf, val)
 
 
 page = Page(PureHTMLResourceHandler())
