@@ -38,8 +38,8 @@
       // * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
       // * **updateCallback** : A callback function that you'll call if and when your datanode has an update for datanodesManager to recalculate. This function expects a single parameter which is a javascript object with the new, updated data. You should hold on to this reference and call it when needed.
       newInstance: function(settings, newInstanceCallback, updateCallback, statusCallback) {
-          // jsonVarPlugin is defined below.
-          newInstanceCallback(new jsonVarPlugin(settings, updateCallback, statusCallback));
+          // toTaipyPlugin is defined below.
+          newInstanceCallback(new toTaipyPlugin(settings, updateCallback, statusCallback));
           if (error) //ABK
               return false;
           else
@@ -52,7 +52,7 @@
   //
   // -------------------
   // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
-  var jsonVarPlugin = function(settings, updateCallback, statusCallback) {
+  var toTaipyPlugin = function(settings, updateCallback, statusCallback) {
       // Always a good idea...
       const self = this;
 
