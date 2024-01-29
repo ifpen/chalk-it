@@ -17,6 +17,8 @@ bar_labels = ['red', 'blue', '_red', 'orange']
 bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
 
 
+
+
 def on_change(state):
     state.c = state.a + state.b * 2
 

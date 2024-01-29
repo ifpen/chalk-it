@@ -107,7 +107,25 @@ var datanodesManager = (function () {
     return [bFoundConnection, _.uniq(props)];
   }
 
+  function deleteTaipyDataNode(viewModel, dnName) {
+    const $rootScope = angular.element(document.body).scope().$root;
+    [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
+    if (bFoundConnection) {
+      const wdList = prop.map(p => widgetConnector.widgetsConnection[p].instanceId);
+      deleteDn(viewModel);
+      if ($rootScope.bIsPlayMode) {
+        for (key in widgetConnector.widgetsConnection) {
+          widgetPreview.plotConstantData(key, false);
+        }
+      }
+      taipyManager.deletedDnConnections.add({dnName, wdList});
+    } else {
+      deleteDn(viewModel);
+    } 
+  }
+  
   function deleteDataNode(viewModel, type, title) {
+    const $rootScope = angular.element(document.body).scope().$root;
     //ABK
     [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
     if (type == 'datanode' && bFoundConnection) {
@@ -135,8 +153,6 @@ var datanodesManager = (function () {
         function (isConfirm) {
           if (isConfirm) {
             deleteDn(viewModel);
-            let $body = angular.element(document.body);
-            let $rootScope = $body.scope().$root;
             if ($rootScope.bIsPlayMode) {
               for (key in widgetConnector.widgetsConnection) {
                 widgetPreview.plotConstantData(key, false);
@@ -146,8 +162,6 @@ var datanodesManager = (function () {
         }
       );
     } else {
-      var $body = angular.element(document.body); // 1
-      var $rootScope = $body.scope().$root;
       $rootScope.isPopupWindow = true;
       $rootScope.popupTitle = 'Confirm Delete';
       $rootScope.popupText = 'Are you sure you want to delete this ' + title;
@@ -558,6 +572,7 @@ var datanodesManager = (function () {
       });
       $('#widget-preview-zone-' + instanceId).show();
     },
+    deleteTaipyDataNode,
     deleteDataNode: function (viewModel, type, title) {
       deleteDataNode(viewModel, type, title);
     },
