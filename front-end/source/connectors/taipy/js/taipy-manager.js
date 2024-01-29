@@ -56,7 +56,7 @@ class TaipyManager {
     const encodedName = window.taipyApp.getEncodedName(varName, context)
     const oldValue = this.variableData[context][varName].value;
     this.variableData[context][varName].value = value;
-    if (_.isEqual(oldValue, value)) { // MBG, in contradiction with Chalk'it dataflow principles. To be discussed.
+    if (!_.isEqual(oldValue, value)) { // MBG, in contradiction with Chalk'it dataflow principles. To be discussed.
       window.taipyApp.update(encodedName, value);
     }
   }
