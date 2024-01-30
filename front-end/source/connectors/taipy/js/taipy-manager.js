@@ -12,7 +12,7 @@ class TaipyManager {
     this._variableData = {};
     this._deletedDnConnections = new Set();
     this._dataNodeSettings = {
-      type: 'to_taipy_plugin',
+      type: 'taipy_link_plugin',
       iconType: '',
       settings: {
         name: '',
@@ -89,7 +89,7 @@ class TaipyManager {
     const contexts = new Set([...Object.keys(oldVariableData), ...Object.keys(this.variableData)]);
 
     contexts.forEach(context => {
-        if (context === '__main__') return;
+        //if (context === '__main__') return; // MBG, no need to ignore all context
 
         const oldVariables = oldVariableData[context] || {};
         const newVariables = this.variableData[context] || {};
@@ -120,7 +120,7 @@ class TaipyManager {
     const types = datanodesManager.getDataNodePluginTypes();
     const viewModel = null;
     const settings = {
-      type: 'to_taipy_plugin',
+      type: 'taipy_link_plugin',
       iconType: '',
       settings: {
         name: '',

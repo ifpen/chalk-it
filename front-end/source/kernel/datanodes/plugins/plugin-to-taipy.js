@@ -9,7 +9,7 @@
   // **datanodesManager.loadDatanodePlugin(definition)** tells datanodesManager that we are giving it a datanode plugin. It expects an object with the following:
   datanodesManager.loadDatanodePlugin({
       // **type_name** (required) : A unique name for this plugin. This name should be as unique as possible to avoid collisions with other plugins, and should follow naming conventions for javascript variable and function declarations.
-      "type_name": "to_taipy_plugin",
+      "type_name": "taipy_link_plugin",
       // **display_name** : The pretty name that will be used for display purposes for this plugin. If the name is not defined, type_name will be used instead.
       "display_name": "To Taipy",
       // **icon_type** : icon of the datanode type displayed in data list
@@ -22,7 +22,7 @@
       ],
       // **settings** : An array of settings that will be displayed for this plugin when the user adds it.
       "settings": [{
-          name: "to_taipy",
+          name: "taipy_link",
           display_name: "To Taipy",
           type: "json",
           description: "JSON, array or primitive data type variable (with read/write permissions) to send to Taipy",
