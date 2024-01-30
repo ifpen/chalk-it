@@ -186,7 +186,7 @@ class TaipyManager {
   _updateDataNode(dnName, value) {
     const dnModel = datanodesManager.getDataNodeByName(dnName);
     const dataNodeSettings = {
-      type: 'to_taipy_plugin',
+      type: 'taipy_link_plugin',
       iconType: '',
       settings: {
         name: dnName,
