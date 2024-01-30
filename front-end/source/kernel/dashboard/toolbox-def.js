@@ -26,7 +26,7 @@ var widgetsEditorToolboxDefinition = {
       'flatUiSelect',
       'flatUiMultiSelect',
       'flatUiList',
-      'flatUiTable',
+      'flatUiEditableTable',
     ],
   },
   'collapse-gauges': {
@@ -41,6 +41,7 @@ var widgetsEditorToolboxDefinition = {
       'scoringSemiCircularGauge',
       'scoringArchCircularGauge',
       'anyDisplay',
+      'flatUiTable',
     ],
   },
   'collapse-plotly': {
