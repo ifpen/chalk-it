@@ -119,12 +119,19 @@ class TaipyManager {
   _createDataNode(dnName, value) {
     const types = datanodesManager.getDataNodePluginTypes();
     const viewModel = null;
-    const settings = this.dataNodeSettings;
+    const settings = {
+      type: 'to_taipy_plugin',
+      iconType: '',
+      settings: {
+        name: '',
+        json_var: '',
+      }
+    };
     settings.settings.name = dnName;
     settings.settings.json_var = JSON.stringify(value);
     const selectedType = types[settings.type];
 
-    // Check if a datanode is already exists
+    // Check if a datanode already exists
     if (!datanodesManager.foundDatanode(dnName)) {
       datanodesManager.settingsSavedCallback(viewModel, settings, selectedType);
     }
