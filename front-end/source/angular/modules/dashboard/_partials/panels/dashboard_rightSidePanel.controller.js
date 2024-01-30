@@ -278,7 +278,8 @@ angular
         _updateContent(newConnections) {
           this.dataNodes = [];
           if (this.$window.datanodesManager) {
-            // Probably not initialized before angular. TODO should be a service            
+            // Probably not initialized before angular. TODO should be a service
+            taipyManager.processVariableData(); // Good time to check for updates, if missed            
             this.dataNodes = this.$window.datanodesManager.getAllDataNodes().map((ds, index) => ({
               name: ds.name(),
               index,

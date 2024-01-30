@@ -11,7 +11,7 @@ class TaipyManager {
     this._app = {};
     this._variableData = {};
     this._deletedDnConnections = new Set();
-    setInterval(() => this._checkForChanges(), 1000); // Check every second
+    //setInterval(() => this._checkForChanges(), 1000); // Check every second
   }
 
   /**
@@ -75,9 +75,8 @@ class TaipyManager {
    * creates corresponding dataNodes
    * 
    * @method
-   * @private
    */
-  _processVariableData() {
+  processVariableData() {
     this.deletedDnConnections = new Set();
     const oldVariableData = this._deepCloneIfObject(this.variableData);
     // Update variableData when use_reloader is true
