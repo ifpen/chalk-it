@@ -74,7 +74,7 @@ function pyodideWidgetsPluginClass() {
       createDiv(idDivContainer, idDivPlotlyPy);
 
       const output = modelsHiddenParams[idInstance].fig;
-      const plotDef = JSON.parse(output);
+      const plotDef = output;
       if (bInteractive) {
         Plotly.newPlot(idDivPlotlyPy, plotDef.data, plotDef.layout, plotDef.config);
       } else {
@@ -103,36 +103,36 @@ function pyodideWidgetsPluginClass() {
         });
 
       };
-
-      const _FIG_DESCRIPTOR = new WidgetActuatorDescription(
-        'fig',
-        'Plotly figure object',
-        WidgetActuatorDescription.READ
-      );
-      this.getActuatorDescriptions = function () {
-        return [_FIG_DESCRIPTOR];
-      };
-
-      this.fig = {
-        setValue: function (val) {
-          modelsHiddenParams[idInstance].fig = val;
-          self.render();
-        },
-        getValue: function () {
-          return modelsHiddenParams[idInstance].fig;
-        },
-        addValueChangedHandler: function (n) { },
-        removeValueChangedHandler: function (n) { },
-      };
-
-      // GHI #235
-/*       pyodideManager.loadPyodideLibs({
-        standardLibs: [],
-        micropipLibs: ['plotly'],
-      }); */
-
-      self.render();
     };
+    const _FIG_DESCRIPTOR = new WidgetActuatorDescription(
+      'fig',
+      'Plotly figure object',
+      WidgetActuatorDescription.READ
+    );
+    this.getActuatorDescriptions = function () {
+      return [_FIG_DESCRIPTOR];
+    };
+
+    this.fig = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].fig = val;
+        self.render();
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].fig;
+      },
+      addValueChangedHandler: function (n) { },
+      removeValueChangedHandler: function (n) { },
+    };
+
+    // GHI #235
+    /*       pyodideManager.loadPyodideLibs({
+            standardLibs: [],
+            micropipLibs: ['plotly'],
+          }); */
+
+    self.render();
+
   };
   // Inherit from baseWidget class
   this.genericPlotlyPythonWidget.prototype = baseWidget.prototype;
@@ -159,13 +159,13 @@ function pyodideWidgetsPluginClass() {
       const output = modelsHiddenParams[idInstance].fig;
 
       $('#' + idDivMatplotlib).html('<img id="png-export-' + idDivMatplotlib + '"></img>');
-      var img_png = $('#png-export-' + idDivMatplotlib);
-      var img_url = output;
-      img_png.attr('src', img_url);
+      var img_bin = $('#png-export-' + idDivMatplotlib);
+      var img_url = 'data:' + output.type + ';base64,' + output.content;
+      img_bin.attr('src', img_url);
 
       //let gd = document.getElementById(idDivMatplotlib);
-      img_png[0].style.width = 'inherit'; //parseFloat(gd.parentNode.style.width) + 'vw';
-      img_png[0].style.height = 'inherit'; //parseFloat(gd.parentNode.style.height) + 'vh';
+      img_bin[0].style.width = 'inherit'; //parseFloat(gd.parentNode.style.width) + 'vw';
+      img_bin[0].style.height = 'inherit'; //parseFloat(gd.parentNode.style.height) + 'vh';
 
     };
 
@@ -191,10 +191,10 @@ function pyodideWidgetsPluginClass() {
     };
 
     // GHI #235
-/*     pyodideManager.loadPyodideLibs({
-      standardLibs: ['matplotlib'],
-      micropipLibs: [],
-    }); */
+    /*     pyodideManager.loadPyodideLibs({
+          standardLibs: ['matplotlib'],
+          micropipLibs: [],
+        }); */
 
     self.render();
   };
