@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8777",
-    "date": "Thu Jan 11 2024 17:34:52 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8796",
+    "date": "Tue Jan 30 2024 18:20:39 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-choropleth-js",
     "description": "",
     "groupName": "",
@@ -23,7 +23,15 @@
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"showLegend\":true,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"black\",\"dashArray\":[],\"weight\":1,\"opacity\":1,\"fillColor\":\"red\",\"property\":\"population\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"population\":[349273,12326429]},\"allProperties\":[\"code\",\"nom\",\"population\"],\"tooltip\":{\"properties\":[\"code\",\"nom\",\"population\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":1}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"showLegend\":true,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"black\",\"dashArray\":[],\"weight\":1,\"opacity\":1,\"fillColor\":\"red\",\"property\":\"population\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"population\":[349273,12326429]},\"allProperties\":[\"code\",\"nom\",\"population\"],\"tooltip\":{\"properties\":[\"code\",\"nom\",\"population\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"rgb(254, 178, 80)\"}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
+        }
+      },
+      {
+        "name": "Selected",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Selected",
+          "json_var": "{\"code\":\"28\",\"nom\":\"Normandie\",\"population\":3306092}"
         }
       }
     ]
@@ -63,7 +71,7 @@
         "top": "8.26693vh",
         "left": "1.81373vw",
         "height": "68.3267vh",
-        "width": "69.8529vw",
+        "width": "61.3725vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -80,9 +88,9 @@
     "flatUiSelectA": {
       "layout": {
         "top": "1.59363vh",
-        "left": "1.52617vw",
+        "left": "1.52787vw",
         "height": "4.98008vh",
-        "width": "19.1018vw",
+        "width": "19.123vw",
         "minHeight": "27px",
         "minWidth": "40px",
         "z-index": "2"
@@ -119,9 +127,9 @@
     "flatUiHorizontalSliderA": {
       "layout": {
         "top": "1.50238vh",
-        "left": "21.0383vw",
+        "left": "21.0616vw",
         "height": "5.00794vh",
-        "width": "24.1908vw",
+        "width": "24.2176vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "3"
@@ -165,9 +173,9 @@
     "flatUiCheckboxA": {
       "layout": {
         "top": "1.62758vh",
-        "left": "45.846vw",
+        "left": "45.8968vw",
         "height": "5.00794vh",
-        "width": "9.11436vw",
+        "width": "9.12446vw",
         "minHeight": "24px",
         "minWidth": "32px",
         "z-index": "4"
@@ -197,9 +205,9 @@
     "flatUiMultiSelectA": {
       "layout": {
         "top": "8.06773vh",
-        "left": "72.7941vw",
+        "left": "72.8747vw",
         "height": "16.0359vh",
-        "width": "10.9804vw",
+        "width": "10.9926vw",
         "minHeight": "75px",
         "minWidth": "80px",
         "z-index": "5"
@@ -234,6 +242,48 @@
         "value": [],
         "selectedValue": ""
       }
+    },
+    "flatUiTextInputA": {
+      "layout": {
+        "top": "29.2829vh",
+        "left": "64.0686vw",
+        "height": "4.98008vh",
+        "width": "19.0196vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "6"
+      },
+      "container": {
+        "id": "flatUiTextInputA",
+        "instanceId": "flatUiTextInputA",
+        "modelJsonId": "flatUiTextInput",
+        "widgetTypeName": "Text Input(flatUiTextInputA)"
+      },
+      "modelParameters": {
+        "label": "population",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-input-text)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
     }
   },
   "connections": {
@@ -246,6 +296,11 @@
       "GeoJSONStyle": {
         "name": "GeoJSONStyle",
         "dataNode": "Style",
+        "dataFields": []
+      },
+      "Selected": {
+        "name": "Selected",
+        "dataNode": "Selected",
         "dataFields": []
       }
     },
@@ -316,6 +371,15 @@
           0,
           "tooltip",
           "properties"
+        ]
+      }
+    },
+    "flatUiTextInputA": {
+      "value": {
+        "name": "value",
+        "dataNode": "Selected",
+        "dataFields": [
+          "population"
         ]
       }
     }
