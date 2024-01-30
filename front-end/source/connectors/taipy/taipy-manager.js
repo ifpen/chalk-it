@@ -52,7 +52,7 @@ class TaipyManager {
     const currentValue = variableDataObj[context][varName].value;
 
     // Update variableData
-    this.variableData[context][varName].value = newValue;
+    this.variableData[context][varName].value =this._deepCloneIfObject(newValue);
 
     if (!_.isEqual(currentValue, newValue)) { // Current simple solution. To be enhanced in the future
       window.taipyApp.update(encodedName, newValue);
