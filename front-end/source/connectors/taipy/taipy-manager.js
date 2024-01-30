@@ -11,14 +11,6 @@ class TaipyManager {
     this._app = {};
     this._variableData = {};
     this._deletedDnConnections = new Set();
-    this._dataNodeSettings = {
-      type: 'taipy_link_plugin',
-      iconType: '',
-      settings: {
-        name: '',
-        json_var: '',
-      }
-    };
     setInterval(() => this._checkForChanges(), 1000); // Check every second
   }
 
@@ -27,13 +19,13 @@ class TaipyManager {
    * 
    * @param {Object} app - The application instance.
    * @param {string} varName - The name of the variable.
-   * @param {*} value - The new value of the variable.
+   * @param {*} newValue - The new value of the variable.
    */
-  onChange(app, varName, value) {
+  onChange(app, varName, newValue) {
     const [variable, context] = app.getName(varName);
     const dnName = `${context}.${variable}`;
     if (datanodesManager.foundDatanode(dnName)) {
-      this._updateDataNode(dnName, value);
+      this._updateDataNode(dnName, newValue);
     }
   }
 
@@ -41,9 +33,9 @@ class TaipyManager {
    * Sends updated value to Taipy.
    * 
    * @param {string} dataNodeName - The name of the dataNode.
-   * @param {*} value - The value to be sent.
+   * @param {*} newValue - The value to be sent.
    */
-  sendToTaipy(dataNodeName, value) {
+  sendToTaipy(dataNodeName, newValue) {
     const idSplit = Array.from(dataNodeName.split("."));
     const [context, varName] = idSplit.reduce((acc, curr, idx) => {
         if (idx === 0 || idx === idSplit.length - 1) {
@@ -53,11 +45,15 @@ class TaipyManager {
         }
         return acc;
     }, []);
-    const encodedName = window.taipyApp.getEncodedName(varName, context)
-    const oldValue = this.variableData[context][varName].value;
-    this.variableData[context][varName].value = value;
-    if (!_.isEqual(oldValue, value)) { 
-      window.taipyApp.update(encodedName, value);
+    const encodedName = window.taipyApp.getEncodedName(varName, context);
+    const variableDataObj = this._deepCloneIfObject(this.app.getDataTree());
+    const currentValue = variableDataObj[context][varName].value;
+
+    // Update variableData
+    this.variableData[context][varName].value = newValue;
+
+    if (!_.isEqual(currentValue, newValue)) { // Current simple solution. To be enhanced in the future
+      window.taipyApp.update(encodedName, newValue);
     }
   }
 
@@ -69,7 +65,7 @@ class TaipyManager {
    */
   _checkForChanges() {
     const newData = this.app.getDataTree();
-    if (JSON.stringify(newData) !== JSON.stringify(this.variableData)) {
+    if (!_.isEqual(newData, this.variableData)) {
         this._processVariableData();
     }
   }
@@ -83,9 +79,9 @@ class TaipyManager {
    */
   _processVariableData() {
     this.deletedDnConnections = new Set();
-    const oldVariableData = this.variableData;
+    const oldVariableData = this._deepCloneIfObject(this.variableData);
     // Update variableData when use_reloader is true
-    this.variableData = this.app.getDataTree();
+    this.variableData = this._deepCloneIfObject(this.app.getDataTree());
     const contexts = new Set([...Object.keys(oldVariableData), ...Object.keys(this.variableData)]);
 
     contexts.forEach(context => {
@@ -101,7 +97,9 @@ class TaipyManager {
             if (!newVariables[variable] && oldVariables[variable]) {
                 this._deleteDataNode(dataNodeName);
             } else if (newVariables[variable] && !oldVariables[variable]) {
-                this._createDataNode(dataNodeName, newVariables[variable].value);
+                const newVariablesObject = this._deepCloneIfObject(newVariables);
+                const value = newVariablesObject[variable].value;
+                this._createDataNode(dataNodeName, value);
             }
         });
     });
@@ -119,21 +117,19 @@ class TaipyManager {
   _createDataNode(dnName, value) {
     const types = datanodesManager.getDataNodePluginTypes();
     const viewModel = null;
-    const settings = {
+    const dataNodeSettings = {
       type: 'taipy_link_plugin',
       iconType: '',
       settings: {
-        name: '',
-        json_var: '',
+        name: dnName,
+        json_var: JSON.stringify(value),
       }
     };
-    settings.settings.name = dnName;
-    settings.settings.json_var = JSON.stringify(value);
-    const selectedType = types[settings.type];
+    const selectedType = types[dataNodeSettings.type];
 
     // Check if a datanode already exists
     if (!datanodesManager.foundDatanode(dnName)) {
-      datanodesManager.settingsSavedCallback(viewModel, settings, selectedType);
+      datanodesManager.settingsSavedCallback(viewModel, dataNodeSettings, selectedType);
     }
   }
 
@@ -164,7 +160,7 @@ class TaipyManager {
   _showDeletedDataNodeAlert(deletedDnConnections) {
     if(deletedDnConnections.size !== 0) {
       let text = "The following dataNode(s) and connection(s) with widget(s) is/are deleted !";
-      for(let dnConnection of deletedDnConnections) {
+      for(const dnConnection of deletedDnConnections) {
         text += `<br><br>- "${dnConnection.dnName}":<br>${dnConnection.wdList.join('<br>')}`;
       }
       const content = `<div style="max-height: 150px; overflow-y: auto;">${text}</div>`;
@@ -189,10 +185,30 @@ class TaipyManager {
    */
   _updateDataNode(dnName, value) {
     const dnModel = datanodesManager.getDataNodeByName(dnName);
-    const settings = this.dataNodeSettings;
-    settings.settings.name = dnName;
-    settings.settings.json_var = JSON.stringify(value);
-    datanodesManager.updateDatanode(dnModel, settings);
+    const dataNodeSettings = {
+      type: 'to_taipy_plugin',
+      iconType: '',
+      settings: {
+        name: dnName,
+        json_var: JSON.stringify(value),
+      }
+    };
+    datanodesManager.updateDatanode(dnModel, dataNodeSettings);
+  }
+
+  /**
+   * Creates a deep clone of the object if the input is a non-null object. If the object contains functions, 
+   * their references are copied. Returns the input value for non-object types.
+   *
+   * This function uses Lodash's _.cloneDeep, which handles complex objects including nested structures, 
+   * circular references, and maintains function references.
+   * 
+   * @private
+   * @param {*} value - The value to check and deeply clone.
+   * @returns {*} Deep clone of the input object, or the original value.
+   */
+  _deepCloneIfObject(value) {
+    return (value !== null && typeof value === 'object') ? _.cloneDeep(value) : value;
   }
 
   /**
@@ -229,15 +245,6 @@ class TaipyManager {
    */
   get app() {
     return this._app;
-  }
-
-  /**
-   * Retrieves the current settings for dataNodes managed by the TaipyManager.
-   * 
-   * @returns {Object} The current settings for dataNodes.
-   */
-  get dataNodeSettings() {
-    return this._dataNodeSettings;
   }
   
   /**
