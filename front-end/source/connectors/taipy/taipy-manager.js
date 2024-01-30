@@ -22,9 +22,11 @@ class TaipyManager {
    * @param {*} newValue - The new value of the variable.
    */
   onChange(app, varName, newValue) {
+    const newVariableData = this._deepCloneIfObject(this.app.getDataTree());
+    const oldVariableData = this.variableData;
     const [variable, context] = app.getName(varName);
     const dnName = `${context}.${variable}`;
-    if (datanodesManager.foundDatanode(dnName)) {
+    if (datanodesManager.foundDatanode(dnName) && !_.isEqual(oldVariableData, newVariableData)) {
       this._updateDataNode(dnName, newValue);
     }
   }
@@ -46,7 +48,7 @@ class TaipyManager {
         return acc;
     }, []);
     const encodedName = window.taipyApp.getEncodedName(varName, context);
-    const variableDataObj = this._deepCloneIfObject(this.app.getDataTree());
+    const variableDataObj = this._deepCloneIfObject(this.variableData);
     const currentValue = variableDataObj[context][varName].value;
 
     // Update variableData
@@ -84,7 +86,7 @@ class TaipyManager {
     const contexts = new Set([...Object.keys(oldVariableData), ...Object.keys(this.variableData)]);
 
     contexts.forEach(context => {
-        //if (context === '__main__') return; // MBG, no need to ignore all context
+        if (context === '__main__') return; // MBG, no need to ignore all context
 
         const oldVariables = oldVariableData[context] || {};
         const newVariables = this.variableData[context] || {};
