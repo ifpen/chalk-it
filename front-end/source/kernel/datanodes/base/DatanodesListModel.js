@@ -45,6 +45,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
   this.serialize = function () {
     const datanodes = self
       .datanodes()
+      .filter(datanode => datanode.type() !== "taipy_link_plugin") // Adding filter here
       .map((datanode) => datanode.serialize())
       .sort((a, b) => a.name.localeCompare(b.name));
 

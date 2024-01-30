@@ -1,6 +1,7 @@
 const onInit = (app) => {
     console.log("onAppInit", app.getDataTree());
     taipyManager.app = app;
+    taipyManager.processVariableData();
 };
 
 const init = () => {
