@@ -51,6 +51,8 @@ var widgetsEditorToolboxDefinition = {
       'plotlyPie',
       'plotly3dSurface',
       'plotlyGeneric',
+      'plotlyPyGeneric',
+      'matplotlib',      
       'plotlyRealTime',
       'vegaGeneric',
       'echartsGeneric',

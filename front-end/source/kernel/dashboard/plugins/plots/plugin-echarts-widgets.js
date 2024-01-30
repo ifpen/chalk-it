@@ -183,7 +183,7 @@ function echartsWidgetsPluginClass() {
     widgetsDefinitionList: {
       echartsGeneric: {
         factory: 'genericEchartsWidget',
-        title: 'Echarts generic',
+        title: 'Echarts JavaScript generic',
         icn: 'echarts-generic-javascript',
         help: 'wdg/wdg-plots/#echarts',
       },

@@ -1261,7 +1261,7 @@ function plotlyWidgetsPluginClass() {
       },
       plotlyGeneric: {
         factory: 'genericPlotlyWidget',
-        title: 'Plotly generic',
+        title: 'Plotly JavaScript generic',
         icn: 'plotly-javascript-generic',
         help: 'wdg/wdg-plots/#plotly-generic',
       },

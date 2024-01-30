@@ -115,7 +115,7 @@ function foliumWidgetPluginClass() {
   this.pluginDefinition = {
     name: 'Maps',
     widgetsDefinitionList: {
-      foliumMaps: { factory: 'foliumMapWidget', title: 'Folium Map', icn: 'folium', help: '' },
+      foliumMaps: { factory: 'foliumMapWidget', title: 'Folium maps', icn: 'folium', help: '' },
     },
   };
 

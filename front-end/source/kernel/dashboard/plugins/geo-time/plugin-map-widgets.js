@@ -3267,7 +3267,7 @@ function mapWidgetsPluginClass() {
     widgetsDefinitionList: {
       openStreetMaps: {
         factory: 'openStreetMapsWidget',
-        title: 'Leaflet maps',
+        title: 'Leaflet JSON maps',
         icn: 'map',
         help: 'wdg/wdg-geo-time/#leaflet-maps',
       },
