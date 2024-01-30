@@ -54,7 +54,7 @@
       "thirdparty/jquery.bt.js",
       "thirdparty/moment.min.js",
       "thirdparty/daterangepicker.js",
-      "source/connectors/taipy/js/taipy-gui-base.js"
+      "source/connectors/taipy/taipy-gui-base.js"
     ],
     "body": [
       "thirdparty/head.js",
@@ -149,8 +149,8 @@
       "source/kernel/runtime/xdash-runtime-main.js",
       "source/kernel/dashboard/rendering/reconstruct-foundations.js",
       "source/angular/modules/libs/notification/notification-xdash.js",
-      "source/connectors/taipy/js/taipy-manager.js",
-      "source/connectors/taipy/js/index.js"
+      "source/connectors/taipy/taipy-manager.js",
+      "source/connectors/taipy/taipy-index.js"
     ]
   },
   "xDashStudio": {
@@ -306,7 +306,7 @@
       "thirdparty/json_parseMore.js",
       "thirdparty/marked.min.js",
       "thirdparty/daterangepicker.js",
-	    "source/connectors/taipy/js/taipy-gui-base.js"
+	    "source/connectors/taipy/taipy-gui-base.js"
     ],
     "body": [
       "thirdparty/bootstrap-clockpicker.js",
@@ -404,8 +404,8 @@
       "source/kernel/datanodes/plugins/plugin-geolocation.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-python-support.js",
       "source/kernel/datanodes/plugins/plugin-python-script.js", 
-      "source/connectors/taipy/js/taipy-manager.js",
-      "source/connectors/taipy/js/index.js"
+      "source/connectors/taipy/taipy-manager.js",
+      "source/connectors/taipy/taipy-index.js"
     ]
   }
 }
