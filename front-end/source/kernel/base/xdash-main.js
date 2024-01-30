@@ -169,6 +169,8 @@ var xdash = (function () {
         return false;
       }
 
+      taipyManager.processVariableData(); // MBG : todo secure in other configs
+
       widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
       widgetConnector.deserialize(jsonObject.connections);
       widgetPreview.clear();

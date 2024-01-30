@@ -11,6 +11,7 @@ class TaipyManager {
     this._app = {};
     this._variableData = {};
     this._deletedDnConnections = new Set();
+    this._currentContext = '';
     //setInterval(() => this._checkForChanges(), 1000); // Check every second
   }
 
