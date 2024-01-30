@@ -11,11 +11,11 @@
       // **type_name** (required) : A unique name for this plugin. This name should be as unique as possible to avoid collisions with other plugins, and should follow naming conventions for javascript variable and function declarations.
       "type_name": "taipy_link_plugin",
       // **display_name** : The pretty name that will be used for display purposes for this plugin. If the name is not defined, type_name will be used instead.
-      "display_name": "To Taipy",
+      "display_name": "Taipy Link",
       // **icon_type** : icon of the datanode type displayed in data list
       "icon_type": "json-variable.svg",
       // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
-      "description": "Chalk'it variable to Taipy",
+      "description": "Chalk'it link to Taipy",
       // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.
       "external_scripts": [
           ""
@@ -23,7 +23,7 @@
       // **settings** : An array of settings that will be displayed for this plugin when the user adds it.
       "settings": [{
           name: "taipy_link",
-          display_name: "To Taipy",
+          display_name: "Taipy Link",
           type: "json",
           description: "JSON, array or primitive data type variable (with read/write permissions) to send to Taipy",
       }],
@@ -38,8 +38,8 @@
       // * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
       // * **updateCallback** : A callback function that you'll call if and when your datanode has an update for datanodesManager to recalculate. This function expects a single parameter which is a javascript object with the new, updated data. You should hold on to this reference and call it when needed.
       newInstance: function(settings, newInstanceCallback, updateCallback, statusCallback) {
-          // toTaipyPlugin is defined below.
-          newInstanceCallback(new toTaipyPlugin(settings, updateCallback, statusCallback));
+          // taipyLinkPlugin is defined below.
+          newInstanceCallback(new taipyLinkPlugin(settings, updateCallback, statusCallback));
           if (error) //ABK
               return false;
           else
@@ -52,7 +52,7 @@
   //
   // -------------------
   // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
-  const toTaipyPlugin = function(settings, updateCallback, statusCallback) {
+  const taipyLinkPlugin = function(settings, updateCallback, statusCallback) {
       // Always a good idea...
       const self = this;
 
