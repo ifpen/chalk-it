@@ -38,7 +38,7 @@ var angularModule = angular
       // 20/11/2019 : AH & MBG for modularization. MBG moved here on 09/03/2020
       $rootScope.enableServer = !_.isUndefined(xServConfig.urlApi) && !_.isNull(xServConfig.urlApi);
       $rootScope.xDashFullVersion = !(xDashConfig.xDashBasicVersion == 'true');
-      $rootScope.xDashLiteVersion = (xDashConfig.xDashLiteVersion == 'true');
+      $rootScope.xDashLiteVersion = xDashConfig.xDashLiteVersion == 'true';
       $rootScope.enableRegistration = !(xDashConfig.disableRegistration == 'true');
       $rootScope.urlTerms = xDashConfig.urlWebSite + 'terms-credits/xDashTermsofUse10062020.html';
       if ($rootScope.xDashFullVersion) $rootScope.urlCredits = xDashConfig.urlWebSite + 'terms-credits/Credits.html';
@@ -239,72 +239,79 @@ var angularModule = angular
               $rootScope.getConfigDiscover();
             }
 
-                if (!$rootScope.UserProfile) {
-                    if (SessionUser.getUserId() && SessionUser.getUserName() && $rootScope.xDashFullVersion) {
-                        userCode = SessionUser.getUserId();
-                        $rootScope.UserProfile = SessionUser.getUserProfile();
-                        $rootScope.origin = "reload"; //AEF
-                        $state.go('modules');
-                    } else if (!$rootScope.xDashFullVersion) { // no authentication needed
-                        // This section is executed when reloading the dashboard
-                        $rootScope.UserProfile = {};
-                        $rootScope.UserProfile.userId = -1;
-                        $rootScope.UserProfile.userName = "Guest";
-                        $state.go("modules.discover.layout").then(() => {
-                            $rootScope.toggleMenuOptionDisplay('discover');
-                        });
-                    } else {
-                        $state.go('login.user');
-                    }
-                } else if (!$rootScope.UserProfile.userId) {
-                    $state.go('login.user');
-                } else if ($rootScope.origin == "newProject" || $rootScope.origin == "openProject" ||
-                    $rootScope.origin == "closeProject" || $rootScope.origin == "backToEditor") {
-                    //AEF
-                    // start view with recent projects
-                    $rootScope.toggleMenuOptionDisplay('none');
-                    $state.go("modules", {});
-                } else if ($rootScope.xDashFullVersion) {
-                    $rootScope.toggleMenuOptionDisplay('recent');
-                    $state.go("modules.cards.layout", { action: 'recent' });
-                    // $rootScope.isMaintenanceInfo = false;
-                    // let FileMngrInst = new FileMngrFct();
-                    // FileMngrInst.GetMaintenanceInfo(function(msg1, msg2, type) {
-                    //     let notice;
-                    //     if (type == "error") {
-                    //         notice = new PNotify({
-                    //             title: "Maintenance info",
-                    //             text: msg1,
-                    //             type: "error",
-                    //             styling: "bootstrap3",
-                    //         });
-                    //     } else if (type === "success") {
-                    //         if (msg1.Msg !== "") {
-                    //             $rootScope.isMaintenanceInfo = true;
-                    //             $rootScope.msgMaintenanceInfo = msg1.Msg;
-                    //             notice = new PNotify({
-                    //                 title: "Maintenance info",
-                    //                 text: msg1.Msg,
-                    //                 type: "info",
-                    //                 styling: "bootstrap3",
-                    //             });
-                    //         }
-                    //     }
-                    //     $('.ui-pnotify-container').on('click', function() {
-                    //         notice.remove();
-                    //     });
-                    // });
-                } else if ($rootScope.xDashLiteVersion) {
-                    $rootScope.toggleMenuOptionDisplay('discover');
-                    $state.go("modules.discover.layout").then(()=>{
-                        $rootScope.toggleMenuOptionDisplay('none');
-                        $state.go("modules", {});
-                    });
-                } else if ($rootScope.origin !== "projectEdition") {
-                    // This section will not be executed when opening the guided tour project
-                    $rootScope.toggleMenuOptionDisplay('discover');
-                    $state.go("modules.discover.layout");
-                }
-            }]);
-        });
-    }]);
+            if (!$rootScope.UserProfile) {
+              if (SessionUser.getUserId() && SessionUser.getUserName() && $rootScope.xDashFullVersion) {
+                userCode = SessionUser.getUserId();
+                $rootScope.UserProfile = SessionUser.getUserProfile();
+                $rootScope.origin = 'reload'; //AEF
+                $state.go('modules');
+              } else if (!$rootScope.xDashFullVersion) {
+                // no authentication needed
+                // This section is executed when reloading the dashboard
+                $rootScope.UserProfile = {};
+                $rootScope.UserProfile.userId = -1;
+                $rootScope.UserProfile.userName = 'Guest';
+                $state.go('modules.discover.layout').then(() => {
+                  $rootScope.toggleMenuOptionDisplay('discover');
+                });
+              } else {
+                $state.go('login.user');
+              }
+            } else if (!$rootScope.UserProfile.userId) {
+              $state.go('login.user');
+            } else if (
+              $rootScope.origin == 'newProject' ||
+              $rootScope.origin == 'openProject' ||
+              $rootScope.origin == 'closeProject' ||
+              $rootScope.origin == 'backToEditor'
+            ) {
+              //AEF
+              // start view with recent projects
+              $rootScope.toggleMenuOptionDisplay('none');
+              $state.go('modules', {});
+            } else if ($rootScope.xDashFullVersion) {
+              $rootScope.toggleMenuOptionDisplay('recent');
+              $state.go('modules.cards.layout', { action: 'recent' });
+              // $rootScope.isMaintenanceInfo = false;
+              // let FileMngrInst = new FileMngrFct();
+              // FileMngrInst.GetMaintenanceInfo(function(msg1, msg2, type) {
+              //     let notice;
+              //     if (type == "error") {
+              //         notice = new PNotify({
+              //             title: "Maintenance info",
+              //             text: msg1,
+              //             type: "error",
+              //             styling: "bootstrap3",
+              //         });
+              //     } else if (type === "success") {
+              //         if (msg1.Msg !== "") {
+              //             $rootScope.isMaintenanceInfo = true;
+              //             $rootScope.msgMaintenanceInfo = msg1.Msg;
+              //             notice = new PNotify({
+              //                 title: "Maintenance info",
+              //                 text: msg1.Msg,
+              //                 type: "info",
+              //                 styling: "bootstrap3",
+              //             });
+              //         }
+              //     }
+              //     $('.ui-pnotify-container').on('click', function() {
+              //         notice.remove();
+              //     });
+              // });
+            } else if ($rootScope.xDashLiteVersion) {
+              $rootScope.toggleMenuOptionDisplay('discover');
+              $state.go('modules.discover.layout').then(() => {
+                $rootScope.toggleMenuOptionDisplay('none');
+                $state.go('modules', {});
+              });
+            } else if ($rootScope.origin !== 'projectEdition') {
+              // This section will not be executed when opening the guided tour project
+              $rootScope.toggleMenuOptionDisplay('discover');
+              $state.go('modules.discover.layout');
+            }
+          },
+        ]);
+      });
+    },
+  ]);
