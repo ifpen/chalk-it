@@ -114,19 +114,19 @@ var datanodesManager = (function () {
     const $rootScope = angular.element(document.body).scope().$root;
     [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
     if (bFoundConnection) {
-      const wdList = prop.map(p => widgetConnector.widgetsConnection[p].instanceId);
+      const wdList = prop.map((p) => widgetConnector.widgetsConnection[p].instanceId);
       deleteDn(viewModel);
       if ($rootScope.bIsPlayMode) {
         for (key in widgetConnector.widgetsConnection) {
           widgetPreview.plotConstantData(key, false);
         }
       }
-      taipyManager.deletedDnConnections.add({dnName, wdList});
+      taipyManager.deletedDnConnections.add({ dnName, wdList });
     } else {
       deleteDn(viewModel);
-    } 
+    }
   }
-  
+
   function deleteDataNode(viewModel, type, title) {
     const $rootScope = angular.element(document.body).scope().$root;
     //ABK

@@ -171,7 +171,10 @@ angular.module('modules').controller('ModulesController', [
           datanodesManager.initialize(false);
           $rootScope.currentProject = xdash.initMeta();
           $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-          if (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen  || $rootScope.xDashLiteVersion) {
+          if (
+            (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) ||
+            $rootScope.xDashLiteVersion
+          ) {
             const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
             sidebarController.newProject();
           }
