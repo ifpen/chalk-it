@@ -1,41 +1,85 @@
 <div class="lib-container">
-    <div class="dashboard-form">
-        <div class="dashboard-form__input-wrapper">
-            <input id="inputSearchLibrary" type="search" placeholder="Search Pyodide Libraries" class="dashboard-form__input--search ng-pristine ng-valid ng-empty ng-touched" ng-model="ctrl.search" />
-            <i class="basic icn-search"></i>
-        </div>
+  <div class="dashboard-form">
+    <div class="dashboard-form__input-wrapper">
+      <input
+        id="inputSearchLibrary"
+        type="search"
+        placeholder="Search Pyodide Libraries"
+        class="dashboard-form__input--search ng-pristine ng-valid ng-empty ng-touched"
+        ng-model="ctrl.search"
+      />
+      <i class="basic icn-search"></i>
     </div>
+  </div>
 
-    <div class="lib-container__label-wrapper" ng-class="{'active': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_STANDARD)}" ng-click="ctrl.togglePythonLibDisplay(ctrl.LIBS_STANDARD)">
-        <h2>Standard Libraries</h2>
-    </div>
+  <div
+    class="lib-container__label-wrapper"
+    ng-class="{'active': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_STANDARD)}"
+    ng-click="ctrl.togglePythonLibDisplay(ctrl.LIBS_STANDARD)"
+  >
+    <h2>Standard Libraries</h2>
+  </div>
 
-    <div class="lib-container__list-wrapper" ng-class="{'open': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_STANDARD)}">
-        <div class="lib-container__list-wrapper__item" ng-repeat="package in ctrl.standardPyodideLibrariesStates | filter: {name: ctrl.search} | orderBy: ctrl.itemSortValue">
-            <label ng-style="{'font-weight': package.loaded ? 'bold' : 'normal'}">
-                <input type="checkbox" id="{{package.name}}_lib" name="base_package" ng-model="package.selected" ng-click="ctrl.toggleStandardLib(package.name)"/>
-                <span>{{package.name}}</span>
-            </label>
-        </div>
+  <div class="lib-container__list-wrapper" ng-class="{'open': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_STANDARD)}">
+    <div
+      class="lib-container__list-wrapper__item"
+      ng-repeat="package in ctrl.standardPyodideLibrariesStates | filter: {name: ctrl.search} | orderBy: ctrl.itemSortValue"
+    >
+      <label ng-style="{'font-weight': package.loaded ? 'bold' : 'normal'}">
+        <input
+          type="checkbox"
+          id="{{package.name}}_lib"
+          name="base_package"
+          ng-model="package.selected"
+          ng-click="ctrl.toggleStandardLib(package.name)"
+        />
+        <span>{{package.name}}</span>
+      </label>
     </div>
+  </div>
 
-    <div class="lib-container__label-wrapper" ng-class="{'active': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_MICROPIP)}" ng-click="ctrl.togglePythonLibDisplay(ctrl.LIBS_MICROPIP)">
-        <h2>Micropip Libraries</h2>
-    </div>
+  <div
+    class="lib-container__label-wrapper"
+    ng-class="{'active': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_MICROPIP)}"
+    ng-click="ctrl.togglePythonLibDisplay(ctrl.LIBS_MICROPIP)"
+  >
+    <h2>Micropip Libraries</h2>
+  </div>
 
-    <div class="lib-container__list-wrapper" ng-class="{'open': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_MICROPIP)}">
-        <div class="lib-container__list-wrapper__item" ng-repeat="package in ctrl.micropipPyodideLibrariesStates | filter: {name: ctrl.search} | orderBy: ctrl.itemSortValue">
-            <label ng-style="{'font-weight': package.loaded ? 'bold' : 'normal'}">
-                <input type="checkbox" id="{{package.name}}_lib" name="micropip_package" ng-model="package.selected" ng-click="ctrl.toggleMicropipLib(package.name)"/>
-                <span>{{package.name}}</span>
-            </label>
-        </div>
+  <div class="lib-container__list-wrapper" ng-class="{'open': ctrl.isPythonLibDisplayOpen(ctrl.LIBS_MICROPIP)}">
+    <div
+      class="lib-container__list-wrapper__item"
+      ng-repeat="package in ctrl.micropipPyodideLibrariesStates | filter: {name: ctrl.search} | orderBy: ctrl.itemSortValue"
+    >
+      <label ng-style="{'font-weight': package.loaded ? 'bold' : 'normal'}">
+        <input
+          type="checkbox"
+          id="{{package.name}}_lib"
+          name="micropip_package"
+          ng-model="package.selected"
+          ng-click="ctrl.toggleMicropipLib(package.name)"
+        />
+        <span>{{package.name}}</span>
+      </label>
     </div>
+  </div>
 
-    <div class="lib-container__btn-wrapper">   
-        <button ng-click="ctrl.resetPyodide()" class="btn btn-rounded-fill cancel" title="Reset libraries" ng-disabled="!ctrl.canReset()">Reset</button>
-        <button ng-click="ctrl.loadPyodideLibraries()" class="btn btn-rounded-fill primary" title="Load libraries" ng-disabled="!ctrl.canLoad()">
-            <i ng-if="ctrl.isLoading()"class="fa fa-cog fa-spin fa-fw"></i>Load
-        </button>
-    </div>
+  <div class="lib-container__btn-wrapper">
+    <button
+      ng-click="ctrl.resetPyodide()"
+      class="btn btn-rounded-fill cancel"
+      title="Reset libraries"
+      ng-disabled="!ctrl.canReset()"
+    >
+      Reset
+    </button>
+    <button
+      ng-click="ctrl.loadPyodideLibraries()"
+      class="btn btn-rounded-fill primary"
+      title="Load libraries"
+      ng-disabled="!ctrl.canLoad()"
+    >
+      <i ng-if="ctrl.isLoading()" class="fa fa-cog fa-spin fa-fw"></i>Load
+    </button>
+  </div>
 </div>

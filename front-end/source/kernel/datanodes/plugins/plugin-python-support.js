@@ -6,9 +6,7 @@
   static isEmbedded() {
     const injector = angular.element(document.body).injector();
     if (injector?.has('$rootScope')) {
-      return injector.invoke([
-        '$rootScope', ($rootScope) => !$rootScope.UserProfile
-      ]);
+      return injector.invoke(['$rootScope', ($rootScope) => !$rootScope.UserProfile]);
     }
     return true;
   }
@@ -150,7 +148,7 @@ class PythonPluginRemoteExec extends PythonPluginExecBase {
       contentType: 'application/json',
 
       success: (data, status, xhr) => {
-        const json = JSON.parseMore(data)
+        const json = JSON.parseMore(data);
         resolve(json);
       },
       error: (xhr, status, err) => {
@@ -194,7 +192,8 @@ class PythonPluginRemoteExec extends PythonPluginExecBase {
       .element(document.body)
       .injector()
       .invoke([
-        '$http', '$q',
+        '$http',
+        '$q',
         async ($http, $q) => {
           this.abort();
 

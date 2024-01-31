@@ -22,7 +22,7 @@
 .sidebar__menu {
   padding: 1em 0.8125em;
 
-  input[class*="--search"]:focus {
+  input[class*='--search']:focus {
     + i {
       color: var(--active-color-text);
     }
@@ -52,7 +52,7 @@
   align-items: center;
   gap: 1em;
   padding: 0.5em 0.5em 0.5em 1em;
-  border-radius: br("8");
+  border-radius: br('8');
   line-height: 2.5em;
   color: inherit;
   text-decoration: none;

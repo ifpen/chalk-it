@@ -33,7 +33,7 @@ $nav-height: 50px;
   background-clip: padding-box;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: br("2");
+  border-radius: br('2');
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 }
@@ -133,7 +133,7 @@ $nav-height: 50px;
 
 .dropup .caret,
 .navbar-fixed-bottom .dropdown .caret {
-  content: "";
+  content: '';
   border-top: 0;
   border-bottom: 4px dashed;
   border-bottom: 4px solid \9;
@@ -201,7 +201,7 @@ $nav-height: 50px;
   align-items: center;
   gap: 0.5em;
   padding: 0.25em 0.1em;
-  font-size: fs("2xs");
+  font-size: fs('2xs');
 
   img {
     width: 30px;
@@ -216,7 +216,7 @@ $nav-height: 50px;
   width: 1.5em;
   height: 1.5em;
   padding: 0.5em;
-  border-radius: br("full");
+  border-radius: br('full');
   border: none;
   background-color: transparent;
   color: var(--text-color);
@@ -229,7 +229,7 @@ $nav-height: 50px;
 }
 
 .top-nav__title {
-  font-size: fs("xs");
+  font-size: fs('xs');
 }
 
 .top-nav__btn-wrapper {
@@ -251,7 +251,7 @@ $nav-height: 50px;
 .user-profile img {
   width: 29px;
   height: 29px;
-  border-radius: br("full");
+  border-radius: br('full');
   margin-right: 10px;
 }
 
@@ -263,12 +263,12 @@ $nav-height: 50px;
   right: 2px;
   top: 8px;
   padding: 2px 6px;
-  border-radius: br("full");
+  border-radius: br('full');
   border: 1px solid var(--danger-color);
   background: var(--danger-color);
   color: var(--danger-color-text);
-  font-size: fs("2xs");
-  font-weight: fw("normal");
+  font-size: fs('2xs');
+  font-weight: fw('normal');
   line-height: 13px;
   text-align: center;
   white-space: nowrap;
@@ -326,11 +326,11 @@ $nav-height: 50px;
 }
 
 .top-nav__msg-link .time {
-  font-size: fs("2xs");
+  font-size: fs('2xs');
   font-style: italic;
-  font-weight: fw("bold");
+  font-weight: fw('bold');
 }
 
 .top-nav__msg-link .message {
-  font-size: fs("xs");
+  font-size: fs('xs');
 }

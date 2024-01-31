@@ -4,48 +4,52 @@
 // │ Copyright © 2016-2023 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Mongi BEN GAID                                │ \\
+// │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 var xDashApi = (function () {
-  function setVariable(varDateNodeName, varJsonValue, explicitTrig) {
-    //AEF: add explicit trig
-    var dN = datanodesManager.getDataNodeByName(varDateNodeName);
-    dN.setValue([], varJsonValue, explicitTrig);
+  function setVariable(dataNodeName, varJsonValue) {
+    let dN = datanodesManager.getDataNodeByName(dataNodeName);
+    dN.notificationCallback('warning', dataNodeName, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
+
+    dN.setValue([], varJsonValue, false, true); //don't start schedule here
   }
 
   function setVariables(dataNodeNames, varJsonValues) {
-    let dN0 = datanodesManager.getDataNodeByName(dataNodeNames[0]);
     for (let i = 0; i < dataNodeNames.length; i++) {
       let dN = datanodesManager.getDataNodeByName(dataNodeNames[i]);
+      if (i == 0)
+        dN.notificationCallback(
+          'warning',
+          dataNodeNames[0],
+          "Deprecated feature: please rename 'xDashApi' by 'chalkit'"
+        );
       let varJsonValue = varJsonValues[i];
-      dN.setValue([], varJsonValue, true); //don't start schedule here
+      dN.setValue([], varJsonValue, false, true); //don't start schedule here
     }
-    dN0.schedulerStart(dataNodeNames, dataNodeNames[0], 'setValue');
   }
 
-  function setVariableProperty(varDateNodeName, propertyPath, varJsonValue) {
-    var dN = datanodesManager.getDataNodeByName(varDateNodeName);
-    dN.setValue(propertyPath, varJsonValue);
+  function setVariableProperty(dataNodeName, propertyPath, varJsonValue) {
+    let dN = datanodesManager.getDataNodeByName(dataNodeName);
+    dN.notificationCallback('warning', dataNodeName, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
+    dN.setValue(propertyPath, varJsonValue, false, true); //don't start schedule here
   }
 
-  function getVariable(varDateNodeName) {
-    var dN = datanodesManager.getDataNodeByName(varDateNodeName);
-    if (!_.isUndefined(dN)) {
-      return dN.latestData();
-    } else return undefined;
+  function getVariable(dataNodeName) {
+    //swal('Deprecated feature ', "'getVariable' feature is no longer supported", 'error');
+    let dN = datanodesManager.getDataNodeByName(dataNodeName);
+    dN.notificationCallback('error', dataNodeName, "Deprecated feature: 'getVariable' feature is no longer supported");
+    return undefined;
   }
 
   function executeDataNode(dataNodeName) {
-    datanodesManager.getDataNodeByName(dataNodeName).schedulerStart(undefined, undefined, 'vignette');
+    let dN = datanodesManager.getDataNodeByName(dataNodeName);
+    dN.notificationCallback('warning', dataNodeName, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
   }
 
   function executeDataNodes(dataNodeNames) {
-    let dN = [];
-    for (let i = 0; i < dataNodeNames.length; i++) {
-      dN.push(datanodesManager.getDataNodeByName(dataNodeNames[i]));
-    }
-    datanodesManager.getDataNodeByName(dataNodeNames[0]).schedulerStart(dataNodeNames, dataNodeNames[0], 'vignette');
+    let dN = datanodesManager.getDataNodeByName(dataNodeNames[0]);
+    dN.notificationCallback('warning', dataNodeNames[0], "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
   }
 
   function viewPage(pageUrl, inputVals, bNewTab) {

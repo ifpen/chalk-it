@@ -7,14 +7,13 @@
 // ¦ Original authors(s): Bruno LETY                                    ¦ \\
 // +--------------------------------------------------------------------+ \\
 
-
-if (xDashConfig.xDashBasicVersion == "true") {
-  var AdminMngrFct = function() {
+if (xDashConfig.xDashBasicVersion == 'true') {
+  var AdminMngrFct = function () {
     function GetFileServer() {
       return xServConfig.url;
     }
-  return {GetFileServer};  
-  }
+    return { GetFileServer };
+  };
 
   var AdminMngr = AdminMngrFct();
 }
@@ -27,11 +26,11 @@ var FileMngrFct = function () {
   var fileType;
   var file2Send;
   var data2Send;
-  var returnMsg = "";
+  var returnMsg = '';
   var endCallback = null;
   var endCallbackParam1 = null;
   var endCallbackParam2 = null;
-  var readProjectData = "";
+  var readProjectData = '';
   var write2File = false;
   var readArray = null;
   var mostRecents = false; //BL
@@ -61,14 +60,13 @@ var FileMngrFct = function () {
         file2Send = file;
         var fileName = file.name;
         var remaining = file.size;
-        if (remaining === 0)
-          returnMsg = "Length of file is null";
+        if (remaining === 0) returnMsg = 'Length of file is null';
         else {
-          PushCallBack(callback, "Send", type, fileName);
+          PushCallBack(callback, 'Send', type, fileName);
           Send(fileName, 0, -1, remaining, true, progress);
         }
-      } else EndOfOperation("Invalid file to send", "", "error", callback);
-    } else EndOfOperation("Unknown file type", "", "error", callback);
+      } else EndOfOperation('Invalid file to send', '', 'error', callback);
+    } else EndOfOperation('Unknown file type', '', 'error', callback);
 
     return returnMsg;
   } // Fin de sendFile
@@ -87,13 +85,13 @@ var FileMngrFct = function () {
         var fileName = CheckExtension(name);
         data2Send = JSON.parse(JSON.stringify(data));
         var remaining = data2Send.length;
-        if (remaining === 0) returnMsg = "Length of data is null";
+        if (remaining === 0) returnMsg = 'Length of data is null';
         else {
-          PushCallBack(callback, "Send", type, fileName);
+          PushCallBack(callback, 'Send', type, fileName);
           Send(fileName, 0, -1, remaining, false, progress);
         }
-      } else EndOfOperation("Invalid file name", "", "error", callback);
-    } else EndOfOperation("Unknown data type", "", "error", callback);
+      } else EndOfOperation('Invalid file name', '', 'error', callback);
+    } else EndOfOperation('Unknown data type', '', 'error', callback);
   } // Fin de sendText
 
   //=============================================================================================
@@ -107,7 +105,7 @@ var FileMngrFct = function () {
       blob = file2Send.slice(start, length + start);
       var fr = new FileReader();
       fr.onload = function (event) {
-        var data = event.target.result.split(",")[1];
+        var data = event.target.result.split(',')[1];
         UseReadChunk(name, start, length, remaining, data, fromFile, callback);
       };
       fr.readAsDataURL(blob); // Pour lecture en base 64 bits
@@ -124,16 +122,8 @@ var FileMngrFct = function () {
   //  UseReadChunk
   //=============================================================================================
 
-  function UseReadChunk(
-    name,
-    start,
-    length,
-    remaining,
-    data,
-    fromFile,
-    callback
-  ) {
-    if (data !== "" && callback !== null) {
+  function UseReadChunk(name, start, length, remaining, data, fromFile, callback) {
+    if (data !== '' && callback !== null) {
       callback(name, start, length, remaining, data, ChunkSent, fromFile);
     }
   } // Fin de UseReadChunk
@@ -149,36 +139,17 @@ var FileMngrFct = function () {
     if (long > chunk) long = chunk;
     var reste = remaining - long;
 
-    const doSendProgress = (
-      name,
-      start,
-      length,
-      remaining,
-      data,
-      callback,
-      fromFile
-    ) =>
-      DoSend(
-        name,
-        start,
-        length,
-        remaining,
-        data,
-        callback,
-        fromFile,
-        progress
-      );
+    const doSendProgress = (name, start, length, remaining, data, callback, fromFile) =>
+      DoSend(name, start, length, remaining, data, callback, fromFile, progress);
     if (length == -1) ReadChunk(name, 0, long, reste, doSendProgress, fromFile);
     // Début du fichier
     else if (long > 0) {
       var debut = start + length;
       ReadChunk(name, debut, long, reste, doSendProgress, fromFile); // Suite du fichier
     } else {
-      if (fileType === "fmi" && fromFile)
-        DoSend(name, -1, 0, 0, "", ChunkSent, fromFile, progress);
+      if (fileType === 'fmi' && fromFile) DoSend(name, -1, 0, 0, '', ChunkSent, fromFile, progress);
       // Décompression du fichier, seulement pour le FMI
-      else if (fileType === "page" || fileType === "project")
-        DoSend(name, -1, 0, 0, "", ChunkSent, fromFile, progress);
+      else if (fileType === 'page' || fileType === 'project') DoSend(name, -1, 0, 0, '', ChunkSent, fromFile, progress);
       // Capture de l'imagette
       else SendFinished(name);
     }
@@ -188,16 +159,7 @@ var FileMngrFct = function () {
   //  DoSend
   //=============================================================================================
 
-  function DoSend(
-    name,
-    start,
-    length,
-    remaining,
-    data,
-    callback,
-    fromFile,
-    progress
-  ) {
+  function DoSend(name, start, length, remaining, data, callback, fromFile, progress) {
     if (progress) {
       progress(start / (start + length + remaining));
     }
@@ -205,10 +167,10 @@ var FileMngrFct = function () {
     var cmd = PrepareSendData(name, start, data);
 
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
       data: cmd,
-      dataType: "json",
+      dataType: 'json',
       crossDomain: true,
       url: GetSendFct(),
       beforeSend: setXHRAuthorizationHeader,
@@ -216,33 +178,21 @@ var FileMngrFct = function () {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
           if (obj.Success) {
-            if (callback !== null)
-              callback(name, start, length, remaining, fromFile, progress);
+            if (callback !== null) callback(name, start, length, remaining, fromFile, progress);
           } else {
-            let l_callback = PopCallBack("Send", fileType, name);
-            EndOfOperation(obj.Msg, "", "error", l_callback);
+            let l_callback = PopCallBack('Send', fileType, name);
+            EndOfOperation(obj.Msg, '', 'error', l_callback);
           }
         } else {
-          let l_callback = PopCallBack("Send", fileType, name);
-          EndOfOperation(
-            "Error while uploading the file",
-            "",
-            "error",
-            l_callback
-          );
+          let l_callback = PopCallBack('Send', fileType, name);
+          EndOfOperation('Error while uploading the file', '', 'error', l_callback);
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        let l_callback = PopCallBack("Send", fileType, name);
-        EndOfOperation(
-          "Sorry, could not upload the selected file",
-          textStatus + " :\n" + txtErr,
-          "error",
-          l_callback
-        );
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        let l_callback = PopCallBack('Send', fileType, name);
+        EndOfOperation('Sorry, could not upload the selected file', textStatus + ' :\n' + txtErr, 'error', l_callback);
       },
     });
   } // Fin de DoSend
@@ -263,16 +213,16 @@ var FileMngrFct = function () {
 
   function SendFinished(name) {
     var str = GetEndMsg();
-    if (fileType === "page") {
+    if (fileType === 'page') {
       GetPage(name, getPageCallback);
     } else {
-      var l_callback = PopCallBack("Send", fileType, name);
-      EndOfOperation(str, fileType, "success", l_callback);
+      var l_callback = PopCallBack('Send', fileType, name);
+      EndOfOperation(str, fileType, 'success', l_callback);
 
-      if (fileType === "project") {
+      if (fileType === 'project') {
         var $body = angular.element(document.body); // 1
         var $rootScope = $body.scope().$root;
-        if ((name === $rootScope.currentProject.name + ".xprjson") || !$rootScope.xDashFullVersion)
+        if (name === $rootScope.currentProject.name + '.xprjson' || !$rootScope.xDashFullVersion)
           $rootScope.updateFlagDirty(false);
       }
     }
@@ -285,33 +235,31 @@ var FileMngrFct = function () {
   function getPageCallback(obj, name) {
     let $body = angular.element(document.body);
     let $rootScope = $body.scope().$root;
-    let urlContent = "";
+    let urlContent = '';
     let manageShareBtn = false;
     datanodesManager.showLoadingIndicator(false);
     if (obj) {
       if (obj.Success) {
         urlContent = obj.Msg;
       } else {
-        url = "ERROR: URL page could not be copied";
+        url = 'ERROR: URL page could not be copied';
         showCopyBtn = false;
       }
       $rootScope.isPageExist = true;
-      $rootScope.securedLink = $rootScope.infoPage.isPrivatePage
-        ? "True"
-        : "False";
+      $rootScope.securedLink = $rootScope.infoPage.isPrivatePage ? 'True' : 'False';
       if ($rootScope.infoPage.isPrivatePage) {
         manageShareBtn = true;
       }
       //  console.log("avant " + $rootScope.securedLink);
-      setPageAccess(name, "page", $rootScope.securedLink, function () {
+      setPageAccess(name, 'page', $rootScope.securedLink, function () {
         swal(
           {
-            title: "HTML page uploaded",
-            type: "success",
-            animation: "popSlow",
-            confirmButtonText: "Get link",
+            title: 'HTML page uploaded',
+            type: 'success',
+            animation: 'popSlow',
+            confirmButtonText: 'Get link',
             showCancelButton: manageShareBtn,
-            cancelButtonText: "Manage sharing",
+            cancelButtonText: 'Manage sharing',
             showCloseButton: true,
             closeOnCancel: true,
             closeOnConfirm: false,
@@ -322,10 +270,8 @@ var FileMngrFct = function () {
                 let $body = angular.element(document.body);
                 let $rootScope = $body.scope().$root;
                 if (
-                  (urlContent.includes("OpenPage") &&
-                    $rootScope.infoPage.isPrivatePage) ||
-                  (urlContent.includes("AccessPage") &&
-                    !$rootScope.infoPage.isPrivatePage)
+                  (urlContent.includes('OpenPage') && $rootScope.infoPage.isPrivatePage) ||
+                  (urlContent.includes('AccessPage') && !$rootScope.infoPage.isPrivatePage)
                 ) {
                   //detect change page access
                   GetPage(name, function (obj, name) {
@@ -337,22 +283,17 @@ var FileMngrFct = function () {
                     }
                   });
                 }
-                getPageLinkCallback(
-                  { Success: true, Msg: urlContent },
-                  function () {
-                    if (!_.isUndefined(endAction)) {
-                      endAction();
-                      endAction = undefined;
-                    }
+                getPageLinkCallback({ Success: true, Msg: urlContent }, function () {
+                  if (!_.isUndefined(endAction)) {
+                    endAction();
+                    endAction = undefined;
                   }
-                );
+                });
               }, 500);
             } else {
               let fileName = RemoveExtension(name);
-              let scopeDashContent = angular
-                .element(document.getElementById("dash-content-top-ctrl"))
-                .scope();
-              scopeDashContent.shareProject(fileName, "html");
+              let scopeDashContent = angular.element(document.getElementById('dash-content-top-ctrl')).scope();
+              scopeDashContent.shareProject(fileName, 'html');
             }
           }
         );
@@ -363,12 +304,12 @@ var FileMngrFct = function () {
   function setPageAccessCallback(name, manageShareBtn, urlContent) {
     swal(
       {
-        title: "HTML page uploaded",
-        type: "success",
-        animation: "popSlow",
-        confirmButtonText: "Get link",
+        title: 'HTML page uploaded',
+        type: 'success',
+        animation: 'popSlow',
+        confirmButtonText: 'Get link',
         showCancelButton: manageShareBtn,
-        cancelButtonText: "Manage sharing",
+        cancelButtonText: 'Manage sharing',
         showCloseButton: true,
         closeOnCancel: true,
         closeOnConfirm: false,
@@ -378,10 +319,7 @@ var FileMngrFct = function () {
           setTimeout(function () {
             let $body = angular.element(document.body);
             let $rootScope = $body.scope().$root;
-            if (
-              urlContent.includes("OpenPage") &&
-              $rootScope.infoPage.isPrivatePage
-            ) {
+            if (urlContent.includes('OpenPage') && $rootScope.infoPage.isPrivatePage) {
               GetPage(name, function (obj, name) {
                 if (obj) {
                   if (obj.Success) {
@@ -392,22 +330,17 @@ var FileMngrFct = function () {
               });
               urlContent = GetPageLink(Name);
             }
-            getPageLinkCallback(
-              { Success: true, Msg: urlContent },
-              function () {
-                if (!_.isUndefined(endAction)) {
-                  endAction();
-                  endAction = undefined;
-                }
+            getPageLinkCallback({ Success: true, Msg: urlContent }, function () {
+              if (!_.isUndefined(endAction)) {
+                endAction();
+                endAction = undefined;
               }
-            );
+            });
           }, 500);
         } else {
           let fileName = RemoveExtension(name);
-          let scopeDashContent = angular
-            .element(document.getElementById("dash-content-top-ctrl"))
-            .scope();
-          scopeDashContent.shareProject(fileName, "html");
+          let scopeDashContent = angular.element(document.getElementById('dash-content-top-ctrl')).scope();
+          scopeDashContent.shareProject(fileName, 'html');
         }
       }
     );
@@ -417,19 +350,10 @@ var FileMngrFct = function () {
   // addPythonInfo
   //=============================================================================================
 
-  function addPythonInfo(
-    Id,
-    callback,
-    BaseImage,
-    Hash,
-    Name,
-    Description,
-    NameOfFile,
-    SizeOfFile
-  ) {
+  function addPythonInfo(Id, callback, BaseImage, Hash, Name, Description, NameOfFile, SizeOfFile) {
     endCallback = callback;
-    if (_.isUndefined(Description)) Description = "";
-    if (_.isUndefined(Hash)) Hash = "";
+    if (_.isUndefined(Description)) Description = '';
+    if (_.isUndefined(Hash)) Hash = '';
 
     var cmd = JSON.stringify({
       BaseImage: BaseImage,
@@ -440,12 +364,12 @@ var FileMngrFct = function () {
       NameOfFile: NameOfFile,
       SizeOfFile: SizeOfFile,
     });
-    var fct = AdminMngr.GetFileServer() + "AddPythonInfo";
+    var fct = AdminMngr.GetFileServer() + 'AddPythonInfo';
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
       data: cmd,
-      dataType: "json",
+      dataType: 'json',
       crossDomain: true,
       url: fct,
       beforeSend: setXHRAuthorizationHeader,
@@ -453,20 +377,14 @@ var FileMngrFct = function () {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
           if (obj.Success) {
-            EndOfOperation("Python information successfully added", "success");
-          } else EndOfOperation(obj.Msg, "", "error");
-        } else
-          EndOfOperation("Error while adding python information", "", "error");
+            EndOfOperation('Python information successfully added', 'success');
+          } else EndOfOperation(obj.Msg, '', 'error');
+        } else EndOfOperation('Error while adding python information', '', 'error');
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        EndOfOperation(
-          "Sorry, could not add python information",
-          textStatus + " :\n" + txtErr,
-          "error"
-        );
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        EndOfOperation('Sorry, could not add python information', textStatus + ' :\n' + txtErr, 'error');
       },
     });
   } // Fin de addPythonInfo
@@ -481,18 +399,10 @@ var FileMngrFct = function () {
   //  getFileList
   //=============================================================================================
 
-  function getFileList(
-    type,
-    callback,
-    recents,
-    param1Callback,
-    param2Callback
-  ) {
+  function getFileList(type, callback, recents, param1Callback, param2Callback) {
     endCallback = callback;
-    endCallbackParam1 =
-      typeof param1Callback !== "undefined" ? param1Callback : null;
-    endCallbackParam2 =
-      typeof param2Callback !== "undefined" ? param2Callback : null;
+    endCallbackParam1 = typeof param1Callback !== 'undefined' ? param1Callback : null;
+    endCallbackParam2 = typeof param2Callback !== 'undefined' ? param2Callback : null;
     mostRecents = recents;
 
     if (_.isUndefined(mostRecents)) {
@@ -500,10 +410,10 @@ var FileMngrFct = function () {
     }
 
     if (SetFileType(type)) {
-      PushCallBack(callback, "GetList", fileType, "");
-      if (type === "pydata") GetPythonList(GotTheList);
+      PushCallBack(callback, 'GetList', fileType, '');
+      if (type === 'pydata') GetPythonList(GotTheList);
       else GetList(GotTheList);
-    } else EndOfOperation("Unknown file type", "", "error", callback);
+    } else EndOfOperation('Unknown file type', '', 'error', callback);
   } // Fin de getFileList
 
   //=============================================================================================
@@ -513,13 +423,12 @@ var FileMngrFct = function () {
   function GetList(callback) {
     var jsonData;
     var fct = GetFilesFct();
-    if (mostRecents)
-      jsonData = JSON.stringify({ FileType: fileType, MaxNbFiles: MaxNbFiles });
+    if (mostRecents) jsonData = JSON.stringify({ FileType: fileType, MaxNbFiles: MaxNbFiles });
     else jsonData = JSON.stringify({ FileType: fileType });
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
       data: jsonData,
       url: fct,
       beforeSend: setXHRAuthorizationHeader,
@@ -528,32 +437,26 @@ var FileMngrFct = function () {
         if (obj) {
           if (callback !== null) callback(obj);
         } else {
-          var l_callback = PopCallBack("GetList", fileType, "");
-          EndOfOperation("No file found", "", "error", l_callback);
+          var l_callback = PopCallBack('GetList', fileType, '');
+          EndOfOperation('No file found', '', 'error', l_callback);
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        var l_callback = PopCallBack("GetList", fileType, "");
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        var l_callback = PopCallBack('GetList', fileType, '');
         const $rootScope = angular.element(document.body).scope().$root;
         if ($rootScope.xDashFullVersion) {
           EndOfOperation(
-            "Sorry, could not get the list of available files",
-            textStatus + " :\n" + txtErr,
-            "error",
+            'Sorry, could not get the list of available files',
+            textStatus + ' :\n' + txtErr,
+            'error',
             l_callback
           );
         } else {
-          const err = txtErr || "the Flask server is not responding";
-          datanodesManager.showLoadingIndicator(false)
-          EndOfOperation(
-            "Please check and restart the command line",
-            textStatus + " :\n" + err,
-            "error",
-            l_callback
-          );
+          const err = txtErr || 'the Flask server is not responding';
+          datanodesManager.showLoadingIndicator(false);
+          EndOfOperation('Please check and restart the command line', textStatus + ' :\n' + err, 'error', l_callback);
         }
       },
     });
@@ -564,11 +467,11 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function GetPythonList(callback) {
-    let cmd = "";
+    let cmd = '';
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
       data: cmd,
       url: GetFilesFct(),
       beforeSend: setXHRAuthorizationHeader,
@@ -577,19 +480,18 @@ var FileMngrFct = function () {
         if (obj) {
           if (callback !== null) callback(obj);
         } else {
-          var l_callback = PopCallBack("GetList", fileType, "");
-          EndOfOperation("No file found", "", "error", l_callback);
+          var l_callback = PopCallBack('GetList', fileType, '');
+          EndOfOperation('No file found', '', 'error', l_callback);
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        var l_callback = PopCallBack("GetList", fileType, "");
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        var l_callback = PopCallBack('GetList', fileType, '');
         EndOfOperation(
-          "Sorry, could not get the list of available python files",
-          textStatus + " :\n" + txtErr,
-          "error",
+          'Sorry, could not get the list of available python files',
+          textStatus + ' :\n' + txtErr,
+          'error',
           l_callback
         );
       },
@@ -601,8 +503,8 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function GotTheList(obj) {
-    var l_callback = PopCallBack("GetList", fileType, "");
-    EndOfOperation(obj, fileType, "success", l_callback);
+    var l_callback = PopCallBack('GetList', fileType, '');
+    EndOfOperation(obj, fileType, 'success', l_callback);
   } // Fin de GotTheList
 
   // ----------------
@@ -619,15 +521,15 @@ var FileMngrFct = function () {
     endCallback = callback;
     endCallbackParam1 = null;
     endCallbackParam2 = null;
-    write2File = typeof write !== "undefined" ? write : false;
+    write2File = typeof write !== 'undefined' ? write : false;
 
     if (SetFileType(type)) {
       var fileName = CheckExtension(name);
-      readProjectData = "";
+      readProjectData = '';
       readArray = null;
-      PushCallBack(callback, "Read", type, fileName);
+      PushCallBack(callback, 'Read', type, fileName);
       Read(fileName, 0);
-    } else EndOfOperation("Unknown data type", "", "error", callback);
+    } else EndOfOperation('Unknown data type', '', 'error', callback);
   } // Fin de readFile
 
   //=============================================================================================
@@ -635,10 +537,9 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function Read(name, offset) {
-    if (fileType === "fmi") ReadData(name, offset, FmiChunkReceived);
-    else if (fileType === "image" || fileType === "avatar")
-      ReadData(name, offset, ImageChunkReceived);
-    else if (fileType === "pydata") ReadData(name, offset, PythonChunkReceived);
+    if (fileType === 'fmi') ReadData(name, offset, FmiChunkReceived);
+    else if (fileType === 'image' || fileType === 'avatar') ReadData(name, offset, ImageChunkReceived);
+    else if (fileType === 'pydata') ReadData(name, offset, PythonChunkReceived);
     else ReadData(name, offset, ChunkReceived);
   } // Fin de Read
 
@@ -651,10 +552,10 @@ var FileMngrFct = function () {
     var fct = GetReadFct();
 
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
       data: cmd,
-      dataType: "json",
+      dataType: 'json',
       crossDomain: true,
       url: fct,
       beforeSend: setXHRAuthorizationHeader,
@@ -686,31 +587,25 @@ var FileMngrFct = function () {
             // }
             if (callback != null) callback(name, start, obj);
           } else {
-            let l_callback = PopCallBack("Read", fileType, name);
-            EndOfOperation(obj.Msg, "", "error", l_callback);
+            let l_callback = PopCallBack('Read', fileType, name);
+            EndOfOperation(obj.Msg, '', 'error', l_callback);
           }
         } else {
-          let l_callback = PopCallBack("Read", fileType, name);
-          EndOfOperation(
-            "Error while downloading the file",
-            "",
-            "error",
-            l_callback
-          );
+          let l_callback = PopCallBack('Read', fileType, name);
+          EndOfOperation('Error while downloading the file', '', 'error', l_callback);
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        let l_callback = PopCallBack("Read", fileType, name);
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        let l_callback = PopCallBack('Read', fileType, name);
         EndOfOperation(
-          "Sorry, could not download the selected file",
-          textStatus + " :\n" + txtErr,
-          "error",
+          'Sorry, could not download the selected file',
+          textStatus + ' :\n' + txtErr,
+          'error',
           l_callback
         );
-      }
+      },
     });
   } // Fin de ReadData
 
@@ -722,13 +617,13 @@ var FileMngrFct = function () {
     // La partie du fichier binaire a été correctement transférée
     if (jsonData.NbBytes > 0) {
       var str = decodeURIComponent(escape(window.atob(jsonData.FileData)));
-      if (str !== "") readProjectData = readProjectData + str;
+      if (str !== '') readProjectData = readProjectData + str;
 
       if (jsonData.LastChunk) {
-        var l_callback = PopCallBack("Read", fileType, name);
+        var l_callback = PopCallBack('Read', fileType, name);
         if (write2File) {
           var b = new Blob([readProjectData], {
-            type: "application/octet-stream",
+            type: 'application/octet-stream',
           });
           if (b) {
             var ext = GetFileExt();
@@ -736,8 +631,8 @@ var FileMngrFct = function () {
             if (!name.endsWith(ext)) fileName = fileName + ext;
             saveAs(b, fileName);
           }
-          EndOfOperation(null, fileType, "success", l_callback);
-        } else EndOfOperation(readProjectData, fileType, "success", l_callback);
+          EndOfOperation(null, fileType, 'success', l_callback);
+        } else EndOfOperation(readProjectData, fileType, 'success', l_callback);
       } else {
         let chunk = 1000 * 1000 * 10;
         Read(name, jsonData.Offset + chunk);
@@ -752,12 +647,11 @@ var FileMngrFct = function () {
   function ImageChunkReceived(name, start, jsonData) {
     // La partie du fichier binaire a été correctement transférée
     if (jsonData.NbBytes > 0) {
-      if (jsonData.FileData !== "")
-        readProjectData = readProjectData + jsonData.FileData;
+      if (jsonData.FileData !== '') readProjectData = readProjectData + jsonData.FileData;
 
       if (jsonData.LastChunk) {
-        var l_callback = PopCallBack("Read", fileType, name);
-        EndOfOperation(readProjectData, fileType, "success", l_callback);
+        var l_callback = PopCallBack('Read', fileType, name);
+        EndOfOperation(readProjectData, fileType, 'success', l_callback);
       } else Read(name, jsonData.Offset + jsonData.NbBytes);
     }
   } // Fin de ImageChunkReceived
@@ -770,14 +664,14 @@ var FileMngrFct = function () {
     var str;
     if (jsonData.NbBytes > 0) {
       var str = jsonData.FileData;
-      if (str !== "") readProjectData = readProjectData + str;
+      if (str !== '') readProjectData = readProjectData + str;
 
       if (jsonData.LastChunk) {
-        var l_callback = PopCallBack("Read", fileType, name);
+        var l_callback = PopCallBack('Read', fileType, name);
         if (write2File) {
-          if (name.endsWith("zip")) {
+          if (name.endsWith('zip')) {
             // La cible est un fichier ZIP
-            var typData = "data:application/zip";
+            var typData = 'data:application/zip';
             var byteString = atob(readProjectData);
             var ab = new ArrayBuffer(byteString.length);
             var ia = new Uint8Array(ab);
@@ -792,22 +686,17 @@ var FileMngrFct = function () {
             }
           } else {
             // La cible est un fichier standard (texte par exemple)
-            var typData = "data:text/plain;base64,";
-            var element = document.createElement("a");
-            element.setAttribute("href", typData + readProjectData);
-            element.setAttribute("download", name);
-            element.style.display = "none";
+            var typData = 'data:text/plain;base64,';
+            var element = document.createElement('a');
+            element.setAttribute('href', typData + readProjectData);
+            element.setAttribute('download', name);
+            element.style.display = 'none';
             document.body.appendChild(element);
             element.click();
             document.body.removeChild(element);
           }
-          EndOfOperation(
-            "Python data file downloaded",
-            fileType,
-            "success",
-            l_callback
-          );
-        } else EndOfOperation(readProjectData, fileType, "success", l_callback);
+          EndOfOperation('Python data file downloaded', fileType, 'success', l_callback);
+        } else EndOfOperation(readProjectData, fileType, 'success', l_callback);
       } else Read(name, jsonData.Offset + jsonData.NbBytes);
     }
   } // Fin de PythonChunkReceived
@@ -823,19 +712,19 @@ var FileMngrFct = function () {
       else readArray = jsonData.Array;
 
       if (jsonData.LastChunk) {
-        var l_callback = PopCallBack("Read", fileType, name);
+        var l_callback = PopCallBack('Read', fileType, name);
         if (write2File) {
           var b = new Blob([new Uint8Array(readArray)], {
-            type: "application/octet-stream",
+            type: 'application/octet-stream',
           });
           if (b) {
             var ext = GetFileExt();
             var fileName = name;
             if (!name.endsWith(ext)) fileName = fileName + ext;
             saveAs(b, fileName);
-            EndOfOperation(null, fileType, "success", l_callback);
+            EndOfOperation(null, fileType, 'success', l_callback);
           }
-        } else EndOfOperation(readArray, fileType, "success", l_callback);
+        } else EndOfOperation(readArray, fileType, 'success', l_callback);
       } else Read(name, jsonData.Offset + jsonData.NbBytes);
     }
   } // Fin de FmiChunkReceived
@@ -855,9 +744,9 @@ var FileMngrFct = function () {
     endCallbackParam1 = null;
     endCallbackParam2 = null;
 
-    if (xDashConfig.xDashBasicVersion != "true") {
+    if (xDashConfig.xDashBasicVersion != 'true') {
       if (SetFileType(type)) {
-        if (type === "project") {
+        if (type === 'project') {
           var fileName = CheckExtension(name);
           CloseData(fileName, Closed);
         }
@@ -871,12 +760,12 @@ var FileMngrFct = function () {
 
   function CloseData(name, callback) {
     var cmd = JSON.stringify({ FileName: name });
-    var fct = AdminMngr.GetFileServer() + "CloseProject";
+    var fct = AdminMngr.GetFileServer() + 'CloseProject';
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
       data: cmd,
-      dataType: "json",
+      dataType: 'json',
       crossDomain: true,
       url: fct,
       beforeSend: setXHRAuthorizationHeader,
@@ -884,19 +773,14 @@ var FileMngrFct = function () {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
           if (obj.Success) callback(obj);
-          else EndOfOperation(obj.Msg, "", "error");
-        } else EndOfOperation("Error while closing the project", "", "error");
+          else EndOfOperation(obj.Msg, '', 'error');
+        } else EndOfOperation('Error while closing the project', '', 'error');
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        EndOfOperation(
-          "Sorry, could not close the selected project",
-          textStatus + " :\n" + txtErr,
-          "error"
-        );
-      }
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        EndOfOperation('Sorry, could not close the selected project', textStatus + ' :\n' + txtErr, 'error');
+      },
     });
   } // Fin de CloseData
 
@@ -905,7 +789,7 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function Closed(obj) {
-    EndOfOperation("", fileType, "success");
+    EndOfOperation('', fileType, 'success');
   } // Fin de Closed
 
   // -----------------------
@@ -925,9 +809,9 @@ var FileMngrFct = function () {
 
     if (SetFileType(type)) {
       var fileName = CheckExtension(name);
-      PushCallBack(callback, "Delete", type, fileName);
+      PushCallBack(callback, 'Delete', type, fileName);
       Delete(fileName, Deleted);
-    } else EndOfOperation("Unknown data type", "", "error");
+    } else EndOfOperation('Unknown data type', '', 'error');
   } // Fin de deleteFile
 
   //=============================================================================================
@@ -938,10 +822,10 @@ var FileMngrFct = function () {
     var cmd = PrepareDeleteData(name);
 
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
       data: cmd,
-      dataType: "json",
+      dataType: 'json',
       crossDomain: true,
       url: GetDeleteFct(),
       beforeSend: setXHRAuthorizationHeader,
@@ -951,30 +835,19 @@ var FileMngrFct = function () {
           if (obj.Success) {
             if (callback != null) callback(obj, name);
           } else {
-            let l_callback = PopCallBack("Delete", fileType, name);
-            EndOfOperation(obj.Msg, "", "error", l_callback);
+            let l_callback = PopCallBack('Delete', fileType, name);
+            EndOfOperation(obj.Msg, '', 'error', l_callback);
           }
         } else {
-          let l_callback = PopCallBack("Delete", fileType, name);
-          EndOfOperation(
-            "Error while deleting the file",
-            "",
-            "error",
-            l_callback
-          );
+          let l_callback = PopCallBack('Delete', fileType, name);
+          EndOfOperation('Error while deleting the file', '', 'error', l_callback);
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        let l_callback = PopCallBack("Delete", fileType, name);
-        EndOfOperation(
-          "Sorry, could not delete the selected file",
-          textStatus + " :\n" + txtErr,
-          "error",
-          l_callback
-        );
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        let l_callback = PopCallBack('Delete', fileType, name);
+        EndOfOperation('Sorry, could not delete the selected file', textStatus + ' :\n' + txtErr, 'error', l_callback);
       },
     });
   } // Fin de Delete
@@ -984,8 +857,8 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function Deleted(obj, name) {
-    var l_callback = PopCallBack("Delete", fileType, name);
-    EndOfOperation(obj, fileType, "success", l_callback);
+    var l_callback = PopCallBack('Delete', fileType, name);
+    EndOfOperation(obj, fileType, 'success', l_callback);
   } // Fin de Deleted
 
   // --------------------------
@@ -1003,7 +876,7 @@ var FileMngrFct = function () {
       var fileName = CheckExtension(name);
       var newFileName = CheckExtension(newName);
       endCallback = callback;
-      PushCallBack(callback, "Rename", type, fileName);
+      PushCallBack(callback, 'Rename', type, fileName);
       Rename(fileName, newFileName, Renamed);
     }
   } // Fin de renameFile
@@ -1016,10 +889,10 @@ var FileMngrFct = function () {
     var cmd = JSON.stringify({ FileName: name, NewFileName: newName });
 
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
       data: cmd,
-      dataType: "json",
+      dataType: 'json',
       crossDomain: true,
       url: GetRenameFct(),
       beforeSend: setXHRAuthorizationHeader,
@@ -1029,31 +902,20 @@ var FileMngrFct = function () {
           if (obj.Success) {
             if (callback != null) callback(obj, name);
           } else {
-            let l_callback = PopCallBack("Rename", fileType, name);
-            EndOfOperation(obj.Msg, "", "error", l_callback);
+            let l_callback = PopCallBack('Rename', fileType, name);
+            EndOfOperation(obj.Msg, '', 'error', l_callback);
           }
         } else {
-          let l_callback = PopCallBack("Rename", fileType, name);
-          EndOfOperation(
-            "Error while deleting the file",
-            "",
-            "error",
-            l_callback
-          );
+          let l_callback = PopCallBack('Rename', fileType, name);
+          EndOfOperation('Error while deleting the file', '', 'error', l_callback);
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        let l_callback = PopCallBack("Rename", fileType, name);
-        EndOfOperation(
-          "Sorry, could not delete the selected file",
-          textStatus + " :\n" + txtErr,
-          "error",
-          l_callback
-        );
-      }
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        let l_callback = PopCallBack('Rename', fileType, name);
+        EndOfOperation('Sorry, could not delete the selected file', textStatus + ' :\n' + txtErr, 'error', l_callback);
+      },
     });
   } // Fin de Rename
 
@@ -1062,8 +924,8 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function Renamed(obj, name) {
-    var l_callback = PopCallBack("Rename", fileType, name);
-    EndOfOperation(obj, fileType, "success", l_callback);
+    var l_callback = PopCallBack('Rename', fileType, name);
+    EndOfOperation(obj, fileType, 'success', l_callback);
   } // Fin de Renamed
 
   // --------------------------
@@ -1080,7 +942,7 @@ var FileMngrFct = function () {
     if (SetFileType(type)) {
       var fileName = CheckExtension(name);
       endCallback = callback;
-      PushCallBack(callback, "GetURL", type, name);
+      PushCallBack(callback, 'GetURL', type, name);
       GetURL(fileName, GotURL, renewlink);
     }
   } // Fin de getThumbnailURL
@@ -1092,8 +954,8 @@ var FileMngrFct = function () {
   function GetURL(name, callback, renewlink) {
     var cmd;
     var url = GetPageFct();
-    var strRenew = renewlink ? "true" : "false";
-    if (fileType === "page")
+    var strRenew = renewlink ? 'true' : 'false';
+    if (fileType === 'page')
       cmd = JSON.stringify({
         FileType: fileType,
         FileName: name,
@@ -1102,10 +964,10 @@ var FileMngrFct = function () {
     else cmd = JSON.stringify({ FileType: fileType, FileName: name });
 
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
       data: cmd,
-      dataType: "json",
+      dataType: 'json',
       crossDomain: true,
       url: url,
       beforeSend: setXHRAuthorizationHeader,
@@ -1115,20 +977,12 @@ var FileMngrFct = function () {
           if (obj.Success) {
             callback(true, obj.Msg, name);
           } else callback(false, obj.Msg, name);
-        } else callback(false, "Error while getting the thumbnail URL");
+        } else callback(false, 'Error while getting the thumbnail URL');
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        callback(
-          false,
-          "Sorry, could not get the thumbnail URL\n" +
-            textStatus +
-            " :\n" +
-            txtErr,
-          name
-        );
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        callback(false, 'Sorry, could not get the thumbnail URL\n' + textStatus + ' :\n' + txtErr, name);
       },
     });
   } // Fin de GetURL
@@ -1138,7 +992,7 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function GotURL(msg1, msg2, name) {
-    var l_callback = PopCallBack("GetURL", fileType, name);
+    var l_callback = PopCallBack('GetURL', fileType, name);
     if (l_callback != null) l_callback(msg1, msg2);
   } // Fin de GotURL
 
@@ -1157,9 +1011,9 @@ var FileMngrFct = function () {
 
     if (SetFileType(type)) {
       var fileName = CheckExtension(name);
-      PushCallBack(callback, "GetPage", fileType, fileName);
+      PushCallBack(callback, 'GetPage', fileType, fileName);
       GetPage(fileName, GotPage);
-    } else EndOfOperation("Unknown data type", "", "error");
+    } else EndOfOperation('Unknown data type', '', 'error');
   } // Fin de viewPage
 
   //=============================================================================================
@@ -1167,7 +1021,7 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function getPage(Name, callback) {
-    SetFileType("page");
+    SetFileType('page');
     if (_.isUndefined(callback)) callback = getPageLinkCallback;
     GetPage(Name, callback);
   }
@@ -1179,17 +1033,17 @@ var FileMngrFct = function () {
   function GetPage(Name, callback) {
     var cmd;
     var url = GetPageFct();
-    var strRenew = "false";
+    var strRenew = 'false';
     cmd = JSON.stringify({
-      FileType: "page",
+      FileType: 'page',
       FileName: Name,
       RenewLink: strRenew,
     });
 
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
       url: url,
       data: cmd,
       beforeSend: setXHRAuthorizationHeader,
@@ -1199,15 +1053,9 @@ var FileMngrFct = function () {
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        var l_callback = PopCallBack("GetPage", fileType, Name);
-        EndOfOperation(
-          "Sorry, could not get the selected page",
-          textStatus + " :\n" + txtErr,
-          "error",
-          l_callback
-        );
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        var l_callback = PopCallBack('GetPage', fileType, Name);
+        EndOfOperation('Sorry, could not get the selected page', textStatus + ' :\n' + txtErr, 'error', l_callback);
       },
     });
   } // Fin de GetPage
@@ -1221,8 +1069,8 @@ var FileMngrFct = function () {
       var encodedUri = encodeURI(msg.Msg);
       swal(
         {
-          title: "HTML page link",
-          type: "input",
+          title: 'HTML page link',
+          type: 'input',
           closeOnConfirm: true,
           showCopyButton: true,
           inputValue: encodedUri,
@@ -1258,9 +1106,9 @@ var FileMngrFct = function () {
 
   function GotPage(obj, name) {
     if (obj) {
-      var l_callback = PopCallBack("GetPage", fileType, name);
-      if (obj.Success) EndOfOperation(obj, name, "success", l_callback);
-      else EndOfOperation(obj.Msg, "", "error", l_callback);
+      var l_callback = PopCallBack('GetPage', fileType, name);
+      if (obj.Success) EndOfOperation(obj, name, 'success', l_callback);
+      else EndOfOperation(obj.Msg, '', 'error', l_callback);
     }
   } // Fin de GotPage
 
@@ -1278,8 +1126,8 @@ var FileMngrFct = function () {
     if (SetFileType(type)) {
       var fileName = CheckExtension(name);
       endCallback = callback;
-      if (type == "project" || type == "page") {
-        PushCallBack(callback, "ProjectSharing", type, fileName);
+      if (type == 'project' || type == 'page') {
+        PushCallBack(callback, 'ProjectSharing', type, fileName);
         DoGetProjectSharing(fileName, EndOfProjectSharing);
       }
     }
@@ -1290,11 +1138,11 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function DoGetProjectSharing(name, callback) {
-    var fct = fileType === "page" ? "GetPageSharing" : "GetProjectSharing";
+    var fct = fileType === 'page' ? 'GetPageSharing' : 'GetProjectSharing';
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({ FileName: name }),
       beforeSend: setXHRAuthorizationHeader,
@@ -1304,13 +1152,12 @@ var FileMngrFct = function () {
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        var l_callback = PopCallBack("ProjectSharing", fileType, name);
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        var l_callback = PopCallBack('ProjectSharing', fileType, name);
         EndOfOperation(
-          "Sorry, could not get the selected " + fileType,
-          textStatus + " :\n" + txtErr,
-          "error",
+          'Sorry, could not get the selected ' + fileType,
+          textStatus + ' :\n' + txtErr,
+          'error',
           l_callback
         );
       },
@@ -1323,9 +1170,9 @@ var FileMngrFct = function () {
 
   function EndOfProjectSharing(obj, name) {
     if (obj) {
-      var l_callback = PopCallBack("ProjectSharing", fileType, name);
-      if (obj.Success) EndOfOperation(obj, name, "success", l_callback);
-      else EndOfOperation(obj.Msg, "", "error", l_callback);
+      var l_callback = PopCallBack('ProjectSharing', fileType, name);
+      if (obj.Success) EndOfOperation(obj, name, 'success', l_callback);
+      else EndOfOperation(obj.Msg, '', 'error', l_callback);
     }
   } // Fin de EndOfProjectSharing
 
@@ -1336,8 +1183,8 @@ var FileMngrFct = function () {
     if (SetFileType(type)) {
       var fileName = CheckExtension(name);
       endCallback = callback;
-      if (type == "project" || type == "page") {
-        PushCallBack(callback, "ShareProject", type, fileName);
+      if (type == 'project' || type == 'page') {
+        PushCallBack(callback, 'ShareProject', type, fileName);
         DoShareProject(fileName, email, isShared, ProjectShared);
       }
     }
@@ -1349,24 +1196,16 @@ var FileMngrFct = function () {
 
   function ProjectShared(obj, name, isShared) {
     if (obj) {
-      var l_callback = PopCallBack("ShareProject", fileType, name);
+      var l_callback = PopCallBack('ShareProject', fileType, name);
       if (obj.Success) {
         var str = RemoveFileExtension(name);
-        if (obj.Msg == "KO")
-          EndOfOperation(
-            '"' + str + '" is already in use',
-            str,
-            "warning",
-            l_callback
-          );
+        if (obj.Msg == 'KO') EndOfOperation('"' + str + '" is already in use', str, 'warning', l_callback);
         else {
-          var obj = fileType === "page" ? "Page" : "Project";
-          var txt =
-            obj +
-            (isShared ? " successfully shared" : " successfully unshared");
-          EndOfOperation(txt, str, "success", l_callback);
+          var obj = fileType === 'page' ? 'Page' : 'Project';
+          var txt = obj + (isShared ? ' successfully shared' : ' successfully unshared');
+          EndOfOperation(txt, str, 'success', l_callback);
         }
-      } else EndOfOperation(obj.Msg, name, "error", l_callback);
+      } else EndOfOperation(obj.Msg, name, 'error', l_callback);
     }
   } // Fin de ProjectShared
 
@@ -1375,11 +1214,11 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function DoShareProject(name, email, isShared, callback) {
-    var fct = fileType === "page" ? "SharePage" : "ShareProject";
+    var fct = fileType === 'page' ? 'SharePage' : 'ShareProject';
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({ FileName: name, Email: email, Shared: isShared }),
       beforeSend: setXHRAuthorizationHeader,
@@ -1389,13 +1228,12 @@ var FileMngrFct = function () {
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        var l_callback = PopCallBack("ShareProject", fileType, name);
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        var l_callback = PopCallBack('ShareProject', fileType, name);
         EndOfOperation(
-          "Sorry, could not get the selected " + fileType,
-          textStatus + " :\n" + txtErr,
-          "error",
+          'Sorry, could not get the selected ' + fileType,
+          textStatus + ' :\n' + txtErr,
+          'error',
           l_callback
         );
       },
@@ -1410,7 +1248,7 @@ var FileMngrFct = function () {
     if (SetFileType(type)) {
       var fileName = CheckExtension(name);
       endCallback = callback;
-      if (type == "page") {
+      if (type == 'page') {
         DoSetPageAccess(fileName, securedLink, PageAccessSet);
       }
     }
@@ -1422,10 +1260,10 @@ var FileMngrFct = function () {
 
   function DoSetPageAccess(name, securedLink, callback) {
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: AdminMngr.GetFileServer() + "SetPageAccess",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      url: AdminMngr.GetFileServer() + 'SetPageAccess',
       data: JSON.stringify({ FileName: name, Secured: securedLink }),
       beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
@@ -1434,13 +1272,8 @@ var FileMngrFct = function () {
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        EndOfOperation(
-          "Sorry, could not access the selected " + fileType,
-          textStatus + " :\n" + txtErr,
-          "error"
-        );
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        EndOfOperation('Sorry, could not access the selected ' + fileType, textStatus + ' :\n' + txtErr, 'error');
       },
     });
   } // Fin de DoSetPageAccess
@@ -1451,9 +1284,8 @@ var FileMngrFct = function () {
 
   function PageAccessSet(obj, name) {
     if (obj) {
-      if (obj.Success)
-        EndOfOperation("Page access successfully set", name, "success");
-      else EndOfOperation(obj.Msg, "", "error");
+      if (obj.Success) EndOfOperation('Page access successfully set', name, 'success');
+      else EndOfOperation(obj.Msg, '', 'error');
     }
   } // Fin de PageAccessSet
 
@@ -1466,7 +1298,7 @@ var FileMngrFct = function () {
       var fileName = CheckExtension(name);
       var newFileName = CheckExtension(newName);
       endCallback = callback;
-      if (type == "project" || type == "page") {
+      if (type == 'project' || type == 'page') {
         DoCheckNewProjectName(fileName, newFileName, email, ProjectChecked);
       }
     }
@@ -1477,11 +1309,11 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function DoCheckNewProjectName(name, newName, email, callback) {
-    var fct = fileType === "page" ? "CheckNewPageName" : "CheckNewProjectName";
+    var fct = fileType === 'page' ? 'CheckNewPageName' : 'CheckNewProjectName';
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({
         FileName: name,
@@ -1495,14 +1327,9 @@ var FileMngrFct = function () {
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        EndOfOperation(
-          "Sorry, could not check the selected " + fileType,
-          textStatus + " :\n" + txtErr,
-          "error"
-        );
-      }
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        EndOfOperation('Sorry, could not check the selected ' + fileType, textStatus + ' :\n' + txtErr, 'error');
+      },
     });
   } // Fin de DoCheckNewProjectName
 
@@ -1514,12 +1341,11 @@ var FileMngrFct = function () {
     if (obj) {
       if (obj.Success) {
         var str = RemoveFileExtension(name);
-        if (obj.Msg == "KO")
-          EndOfOperation('"' + str + '" is already in use', str, "warning");
+        if (obj.Msg == 'KO') EndOfOperation('"' + str + '" is already in use', str, 'warning');
         else {
-          EndOfOperation(obj, str, "success");
+          EndOfOperation(obj, str, 'success');
         }
-      } else EndOfOperation(obj.Msg, "", "error");
+      } else EndOfOperation(obj.Msg, '', 'error');
     }
   } // Fin de ProjectChecked
 
@@ -1531,7 +1357,7 @@ var FileMngrFct = function () {
     if (SetFileType(type)) {
       var fileName = CheckExtension(name);
       endCallback = callback;
-      if (type == "project" || type == "page") {
+      if (type == 'project' || type == 'page') {
         DoGetStatus(fileName, EndOfGetStatus);
       }
     }
@@ -1542,11 +1368,11 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function DoGetStatus(name, callback) {
-    var fct = fileType === "page" ? "GetPageStatus" : "GetProjectStatus";
+    var fct = fileType === 'page' ? 'GetPageStatus' : 'GetProjectStatus';
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({ FileName: name }),
       beforeSend: setXHRAuthorizationHeader,
@@ -1556,14 +1382,9 @@ var FileMngrFct = function () {
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        EndOfOperation(
-          "Sorry, could not get the read-only status",
-          textStatus + " :\n" + txtErr,
-          "error"
-        );
-      }
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        EndOfOperation('Sorry, could not get the read-only status', textStatus + ' :\n' + txtErr, 'error');
+      },
     });
   } // Fin de DoGetStatus
 
@@ -1573,8 +1394,8 @@ var FileMngrFct = function () {
 
   function EndOfGetStatus(obj, name) {
     if (obj) {
-      if (obj.Success) EndOfOperation(obj, name, "success");
-      else EndOfOperation(obj.Msg, "", "error");
+      if (obj.Success) EndOfOperation(obj, name, 'success');
+      else EndOfOperation(obj.Msg, '', 'error');
     }
   } // Fin de EndOfGetStatus
 
@@ -1593,11 +1414,11 @@ var FileMngrFct = function () {
 
   function DoGetInfo(callback) {
     $.ajax({
-      type: "POST",
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      url: AdminMngr.GetFileServer() + "GetInfoMessage",
-      data: "",
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      url: AdminMngr.GetFileServer() + 'GetInfoMessage',
+      data: '',
       beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
@@ -1605,13 +1426,8 @@ var FileMngrFct = function () {
       },
       error: function (jqXHR, textStatus, errorThrown) {
         var txtErr = errorThrown;
-        if (jqXHR.responseJSON && jqXHR.responseJSON.Message)
-          txtErr = jqXHR.responseJSON.Message;
-        EndOfOperation(
-          "Sorry, could not get the maintenance message",
-          textStatus + " :\n" + txtErr,
-          "error"
-        );
+        if (jqXHR.responseJSON && jqXHR.responseJSON.Message) txtErr = jqXHR.responseJSON.Message;
+        EndOfOperation('Sorry, could not get the maintenance message', textStatus + ' :\n' + txtErr, 'error');
       },
     });
   } // Fin de DoGetInfo
@@ -1622,8 +1438,8 @@ var FileMngrFct = function () {
 
   function GotInfo(obj) {
     if (obj) {
-      if (obj.Success) EndOfOperation(obj, "", "success");
-      else EndOfOperation(obj.Msg, "", "error");
+      if (obj.Success) EndOfOperation(obj, '', 'success');
+      else EndOfOperation(obj.Msg, '', 'error');
     }
   } // Fin de GotInfo
 
@@ -1639,7 +1455,7 @@ var FileMngrFct = function () {
 
   function CheckExtension(name) {
     var fileName = name;
-    if (!_.isNull(fileName) && fileName !== "") {
+    if (!_.isNull(fileName) && fileName !== '') {
       var ext = GetFileExt();
       if (!name.endsWith(ext)) fileName = fileName + ext;
     }
@@ -1652,9 +1468,9 @@ var FileMngrFct = function () {
 
   function RemoveExtension(name) {
     var fileName = name;
-    if (!_.isNull(fileName) && fileName !== "") {
+    if (!_.isNull(fileName) && fileName !== '') {
       var ext = GetFileExt();
-      if (name.endsWith(ext)) fileName = fileName.replace(ext, "");
+      if (name.endsWith(ext)) fileName = fileName.replace(ext, '');
     }
     return fileName;
   } // Fin de RemoveExtension
@@ -1665,21 +1481,21 @@ var FileMngrFct = function () {
 
   function SetFileType(type) {
     if (
-      type === "fmi" ||
-      type === "project" ||
-      type === "datanode" ||
-      type === "page" ||
-      type === "settings" ||
-      type === "avatar" ||
-      type === "image" ||
-      type === "pydata" ||
-      type === "datanode" ||
-      type === "template" ||
-      type === "templateAdmin"
+      type === 'fmi' ||
+      type === 'project' ||
+      type === 'datanode' ||
+      type === 'page' ||
+      type === 'settings' ||
+      type === 'avatar' ||
+      type === 'image' ||
+      type === 'pydata' ||
+      type === 'datanode' ||
+      type === 'template' ||
+      type === 'templateAdmin'
     ) {
       fileType = type;
 
-      if (fileType === "templateAdmin") fileType = "template";
+      if (fileType === 'templateAdmin') fileType = 'template';
       return true;
     }
 
@@ -1692,12 +1508,10 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function PrepareSendData(name, start, data) {
-    var json = "";
+    var json = '';
 
-    if (fileType === "settings")
-      json = JSON.stringify({ Offset: start, FileData: data });
-    else
-      json = JSON.stringify({ FileName: name, Offset: start, FileData: data });
+    if (fileType === 'settings') json = JSON.stringify({ Offset: start, FileData: data });
+    else json = JSON.stringify({ FileName: name, Offset: start, FileData: data });
 
     return json;
   } // Fin de PrepareSendData
@@ -1707,10 +1521,9 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function PrepareReadData(name, start) {
-    var json = "";
+    var json = '';
 
-    if (fileType === "settings" || fileType === "avatar")
-      json = JSON.stringify({ Offset: start });
+    if (fileType === 'settings' || fileType === 'avatar') json = JSON.stringify({ Offset: start });
     else json = JSON.stringify({ FileName: name, Offset: start });
 
     return json;
@@ -1721,9 +1534,9 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function PrepareDeleteData(name) {
-    var json = "";
+    var json = '';
 
-    if (fileType === "settings" || fileType === "avatar") json = "";
+    if (fileType === 'settings' || fileType === 'avatar') json = '';
     else json = JSON.stringify({ FileName: name });
 
     return json;
@@ -1734,16 +1547,16 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function GetEndMsg() {
-    var res = "";
+    var res = '';
 
-    if (fileType === "fmi") res = "FMI uploaded and unzipped";
-    else if (fileType === "project") res = "Chalk'it project uploaded";
-    else if (fileType === "settings") res = "User settings uploaded";
-    else if (fileType === "avatar") res = "User avatar uploaded";
-    else if (fileType === "datanode") res = "Datanode file uploaded";
-    else if (fileType === "template") res = "Template file uploaded";
-    else if (fileType === "page") res = "HTML page uploaded";
-    else if (fileType === "pydata") res = "Python data file uploaded";
+    if (fileType === 'fmi') res = 'FMI uploaded and unzipped';
+    else if (fileType === 'project') res = "Chalk'it project uploaded";
+    else if (fileType === 'settings') res = 'User settings uploaded';
+    else if (fileType === 'avatar') res = 'User avatar uploaded';
+    else if (fileType === 'datanode') res = 'Datanode file uploaded';
+    else if (fileType === 'template') res = 'Template file uploaded';
+    else if (fileType === 'page') res = 'HTML page uploaded';
+    else if (fileType === 'pydata') res = 'Python data file uploaded';
 
     return res;
   } // Fin de GetEndMsg
@@ -1753,9 +1566,9 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function GetServer() {
-    var addrPage = "../";
+    var addrPage = '../';
     var currentPage = window.location.href;
-    if (currentPage && currentPage !== "") {
+    if (currentPage && currentPage !== '') {
       addrPage = xServConfig.url;
     }
     return addrPage;
@@ -1768,15 +1581,14 @@ var FileMngrFct = function () {
   function GetServerAddr() {
     // Déterminer l'adresse du serveur
     var addrServer = GetServer();
-    if (!addrServer) addrServer = "../";
+    if (!addrServer) addrServer = '../';
 
     // Ajouter un slash à la fin, si nécessaire
-    if (addrServer.slice(addrServer.length - 1) !== "/")
-      addrServer = addrServer + "/";
+    if (addrServer.slice(addrServer.length - 1) !== '/') addrServer = addrServer + '/';
 
     // Ajouter le nom du webservice
     // addrServer = addrServer + "xMAAS_Service.asmx/";
-    addrServer = addrServer + "file_Service.asmx/";
+    addrServer = addrServer + 'file_Service.asmx/';
     return addrServer;
   } // Fin de GetServerAddr
 
@@ -1786,18 +1598,18 @@ var FileMngrFct = function () {
 
   function GetSendFct() {
     var res = AdminMngr.GetFileServer();
-    var fct = "";
+    var fct = '';
 
-    if (fileType === "fmi") fct = "FmiUpload";
-    else if (fileType === "project") fct = "SaveProject";
-    else if (fileType === "datanode") fct = "SaveData";
-    else if (fileType === "template") fct = "SaveTemplate";
-    else if (fileType === "page") fct = "SavePage";
-    else if (fileType === "settings") fct = "SaveSettings";
-    else if (fileType === "avatar") fct = "SaveAvatar";
-    else if (fileType === "pydata") fct = "SavePythonData";
+    if (fileType === 'fmi') fct = 'FmiUpload';
+    else if (fileType === 'project') fct = 'SaveProject';
+    else if (fileType === 'datanode') fct = 'SaveData';
+    else if (fileType === 'template') fct = 'SaveTemplate';
+    else if (fileType === 'page') fct = 'SavePage';
+    else if (fileType === 'settings') fct = 'SaveSettings';
+    else if (fileType === 'avatar') fct = 'SaveAvatar';
+    else if (fileType === 'pydata') fct = 'SavePythonData';
 
-    if (fct !== "") res = res + fct;
+    if (fct !== '') res = res + fct;
 
     return res;
   } // Fin de GetSendFct
@@ -1808,19 +1620,19 @@ var FileMngrFct = function () {
 
   function GetReadFct() {
     var res = AdminMngr.GetFileServer();
-    var fct = "";
+    var fct = '';
 
-    if (fileType === "fmi") fct = "FmiDownload";
-    else if (fileType === "project") fct = "ReadProject";
-    else if (fileType === "datanode") fct = "ReadData";
-    else if (fileType === "template") fct = "ReadTemplate";
-    else if (fileType === "page") fct = "ReadPage";
-    else if (fileType === "settings") fct = "ReadSettings";
-    else if (fileType === "avatar") fct = "ReadAvatar";
-    else if (fileType === "image") fct = "ReadThumbnail";
-    else if (fileType === "pydata") fct = "ReadPythonData";
+    if (fileType === 'fmi') fct = 'FmiDownload';
+    else if (fileType === 'project') fct = 'ReadProject';
+    else if (fileType === 'datanode') fct = 'ReadData';
+    else if (fileType === 'template') fct = 'ReadTemplate';
+    else if (fileType === 'page') fct = 'ReadPage';
+    else if (fileType === 'settings') fct = 'ReadSettings';
+    else if (fileType === 'avatar') fct = 'ReadAvatar';
+    else if (fileType === 'image') fct = 'ReadThumbnail';
+    else if (fileType === 'pydata') fct = 'ReadPythonData';
 
-    if (fct !== "") res = res + fct;
+    if (fct !== '') res = res + fct;
 
     return res;
   } // Fin de GetReadFct
@@ -1831,18 +1643,18 @@ var FileMngrFct = function () {
 
   function GetDeleteFct() {
     var res = AdminMngr.GetFileServer();
-    var fct = "";
+    var fct = '';
 
-    if (fileType === "fmi") fct = "FmiDelete";
-    else if (fileType === "project") fct = "DeleteProject";
-    else if (fileType === "datanode") fct = "DeleteData";
-    else if (fileType === "template") fct = "DeleteTemplate";
-    else if (fileType === "page") fct = "DeletePage";
-    else if (fileType === "settings") fct = "DeleteSettings";
-    else if (fileType === "avatar") fct = "DeleteAvatar";
-    else if (fileType === "pydata") fct = "DeletePythonData";
+    if (fileType === 'fmi') fct = 'FmiDelete';
+    else if (fileType === 'project') fct = 'DeleteProject';
+    else if (fileType === 'datanode') fct = 'DeleteData';
+    else if (fileType === 'template') fct = 'DeleteTemplate';
+    else if (fileType === 'page') fct = 'DeletePage';
+    else if (fileType === 'settings') fct = 'DeleteSettings';
+    else if (fileType === 'avatar') fct = 'DeleteAvatar';
+    else if (fileType === 'pydata') fct = 'DeletePythonData';
 
-    if (fct !== "") res = res + fct;
+    if (fct !== '') res = res + fct;
 
     return res;
   } // Fin de GetDeleteFct
@@ -1853,11 +1665,11 @@ var FileMngrFct = function () {
 
   function GetRenameFct() {
     var res = AdminMngr.GetFileServer();
-    var fct = "";
+    var fct = '';
 
-    if (fileType === "project") fct = "RenameProject";
-    else if (fileType === "page") fct = "RenamePage";
-    if (fct !== "") res = res + fct;
+    if (fileType === 'project') fct = 'RenameProject';
+    else if (fileType === 'page') fct = 'RenamePage';
+    if (fct !== '') res = res + fct;
 
     return res;
   } // Fin de GetRenameFct
@@ -1867,16 +1679,16 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function GetFileExt(type) {
-    var res = "";
-    var typ = typeof type !== "undefined" ? type : fileType; // Utilisation du paramètre d'appel ou de la valeur stockée
+    var res = '';
+    var typ = typeof type !== 'undefined' ? type : fileType; // Utilisation du paramètre d'appel ou de la valeur stockée
 
-    if (typ === "fmi") res = ".fmu";
-    else if (typ === "project") res = ".xprjson";
-    else if (typ === "datanode") res = ".xdsjson";
-    else if (typ === "template") res = ".xprjson";
-    else if (typ === "page") res = ".html";
-    else if (typ === "settings") res = ".usr";
-    else if (typ === "image") res = ".png";
+    if (typ === 'fmi') res = '.fmu';
+    else if (typ === 'project') res = '.xprjson';
+    else if (typ === 'datanode') res = '.xdsjson';
+    else if (typ === 'template') res = '.xprjson';
+    else if (typ === 'page') res = '.html';
+    else if (typ === 'settings') res = '.usr';
+    else if (typ === 'image') res = '.png';
 
     return res;
   } // Fin de GetFileExt
@@ -1887,10 +1699,10 @@ var FileMngrFct = function () {
 
   function GetFileMask() {
     var res = GetFileExt();
-    if (res !== "") res = "*" + res;
+    if (res !== '') res = '*' + res;
 
     var folder = GetSubFolder();
-    if (folder !== "") res = folder + res;
+    if (folder !== '') res = folder + res;
 
     return res;
   } // Fin de GetFileMask
@@ -1900,11 +1712,11 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function GetSubFolder() {
-    var res = "";
-    if (fileType === "fmi") res = "FMU\\";
-    else if (fileType === "project" || fileType === "datanode") res = "DASH\\";
-    else if (fileType === "page") res = "HTML\\";
-    else if (fileType === "image") res = "IMAGE\\";
+    var res = '';
+    if (fileType === 'fmi') res = 'FMU\\';
+    else if (fileType === 'project' || fileType === 'datanode') res = 'DASH\\';
+    else if (fileType === 'page') res = 'HTML\\';
+    else if (fileType === 'image') res = 'IMAGE\\';
 
     return res;
   } // Fin de GetSubFolder
@@ -1915,15 +1727,15 @@ var FileMngrFct = function () {
 
   function GetFilesFct() {
     var res = AdminMngr.GetFileServer();
-    var fct = "";
+    var fct = '';
 
-    if (fileType === "pydata") fct = "GetPythonDataList";
+    if (fileType === 'pydata') fct = 'GetPythonDataList';
     else {
-      if (mostRecents) fct = "GetMostRecentFiles";
-      else fct = "GetFiles";
+      if (mostRecents) fct = 'GetMostRecentFiles';
+      else fct = 'GetFiles';
     }
 
-    if (fct !== "") res = res + fct;
+    if (fct !== '') res = res + fct;
 
     return res;
   } // Fin de GetFilesFct
@@ -1934,10 +1746,10 @@ var FileMngrFct = function () {
 
   function GetPageFct() {
     var res = AdminMngr.GetFileServer();
-    if (fileType === "page")
+    if (fileType === 'page')
       // res = res + "GetPageAddress";
-      res = res + "GetProtectedPageAddress";
-    else res = res + "GetThumbnailAddress";
+      res = res + 'GetProtectedPageAddress';
+    else res = res + 'GetThumbnailAddress';
     return res;
   } // Fin de GetPageFct
 
@@ -1947,7 +1759,7 @@ var FileMngrFct = function () {
 
   function GetThumbnailFct() {
     var res = AdminMngr.GetFileServer();
-    res = res + "GetThumbnailAddress";
+    res = res + 'GetThumbnailAddress';
     return res;
   } // Fin de GetThumbnailFct
 
@@ -1956,9 +1768,9 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function PushCallBack(callback, fctName, type, param) {
-    var key = fctName + "_" + type;
-    if (param !== "") {
-      key += "_" + param;
+    var key = fctName + '_' + type;
+    if (param !== '') {
+      key += '_' + param;
     }
 
     callBackMap.set(key, callback);
@@ -1969,14 +1781,14 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function PopCallBack(fctName, type, param) {
-    var key = fctName + "_" + type;
-    if (param !== "") {
-      key += "_" + param;
+    var key = fctName + '_' + type;
+    if (param !== '') {
+      key += '_' + param;
     }
 
     var l_callback = callBackMap.get(key);
     if (!_.isUndefined(l_callback)) callBackMap.delete(key);
-    else console.log("lcallback undefined");
+    else console.log('lcallback undefined');
 
     return l_callback;
   } // Fin de PopCallBack
@@ -1993,18 +1805,10 @@ var FileMngrFct = function () {
     if (l_callback) {
       // Change capture error into warning
       var localType = type;
-      if (localType === "error" && msg1.toLowerCase().includes("warning : "))
-        localType = "warning";
+      if (localType === 'error' && msg1.toLowerCase().includes('warning : ')) localType = 'warning';
 
       if (endCallbackParam1 != null) {
-        if (endCallbackParam2 != null)
-          l_callback(
-            msg1,
-            msg2,
-            localType,
-            endCallbackParam1,
-            endCallbackParam2
-          );
+        if (endCallbackParam2 != null) l_callback(msg1, msg2, localType, endCallbackParam1, endCallbackParam2);
         else l_callback(msg1, msg2, localType, endCallbackParam1);
       } else l_callback(msg1, msg2, localType);
     }
@@ -2015,7 +1819,7 @@ var FileMngrFct = function () {
   //=============================================================================================
 
   function RemoveFileExtension(x) {
-    return x.substring(0, x.lastIndexOf("."));
+    return x.substring(0, x.lastIndexOf('.'));
   } // Fin de RemoveFileExtension
 
   //=============================================================================================

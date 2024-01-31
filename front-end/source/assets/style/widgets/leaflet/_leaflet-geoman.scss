@@ -61,12 +61,8 @@
   z-index: 3;
 }
 
-.leaflet-pm-toolbar
-  .leaflet-pm-actions-container
-  a.leaflet-pm-action:first-child:not(.pos-right),
-.leaflet-pm-toolbar
-  .leaflet-pm-actions-container
-  a.leaflet-pm-action:last-child.pos-right {
+.leaflet-pm-toolbar .leaflet-pm-actions-container a.leaflet-pm-action:first-child:not(.pos-right),
+.leaflet-pm-toolbar .leaflet-pm-actions-container a.leaflet-pm-action:last-child.pos-right {
   border-radius: 0;
 }
 
@@ -74,21 +70,15 @@
   border-radius: 0;
 }
 
-.leaflet-pm-toolbar
-  .button-container:last-child
-  a.leaflet-buttons-control-button {
+.leaflet-pm-toolbar .button-container:last-child a.leaflet-buttons-control-button {
   border-radius: 0 0 2px 2px;
 }
 
-.leaflet-pm-toolbar
-  .button-container:first-child
-  a.leaflet-buttons-control-button {
+.leaflet-pm-toolbar .button-container:first-child a.leaflet-buttons-control-button {
   border-radius: 2px 2px 0 0;
 }
 
-.leaflet-pm-toolbar
-  .button-container:last-child
-  a.leaflet-buttons-control-button {
+.leaflet-pm-toolbar .button-container:last-child a.leaflet-buttons-control-button {
   border-bottom: none;
 }
 
@@ -170,10 +160,7 @@
   direction: ltr;
 }
 
-.leaflet-right
-  .leaflet-pm-toolbar
-  .button-container
-  .leaflet-pm-actions-container {
+.leaflet-right .leaflet-pm-toolbar .button-container .leaflet-pm-actions-container {
   right: 100%;
   left: auto;
 }
@@ -182,20 +169,14 @@
   display: block;
 }
 
-.button-container
-  .leaflet-pm-actions-container:not(.pos-right)
-  a.leaflet-pm-action:last-child {
+.button-container .leaflet-pm-actions-container:not(.pos-right) a.leaflet-pm-action:last-child {
   border-radius: 0 3px 3px 0;
   border-right: 0;
 }
-.button-container
-  .leaflet-pm-actions-container.pos-right
-  a.leaflet-pm-action:first-child {
+.button-container .leaflet-pm-actions-container.pos-right a.leaflet-pm-action:first-child {
   border-radius: 3px 0 0 3px;
 }
-.button-container
-  .leaflet-pm-actions-container.pos-right
-  a.leaflet-pm-action:last-child {
+.button-container .leaflet-pm-actions-container.pos-right a.leaflet-pm-action:last-child {
   border-right: 0;
 }
 .button-container .leaflet-pm-actions-container .leaflet-pm-action {
@@ -210,14 +191,10 @@
   height: 29px;
   line-height: 29px;
 }
-.leaflet-pm-toolbar
-  .button-container:first-child.pos-right.active
-  a.leaflet-buttons-control-button {
+.leaflet-pm-toolbar .button-container:first-child.pos-right.active a.leaflet-buttons-control-button {
   border-top-left-radius: 0;
 }
-.leaflet-pm-toolbar
-  .button-container:first-child.active:not(.pos-right)
-  a.leaflet-buttons-control-button {
+.leaflet-pm-toolbar .button-container:first-child.active:not(.pos-right) a.leaflet-buttons-control-button {
   border-top-right-radius: 0;
 }
 
@@ -239,4 +216,3 @@
 .control-icon.pm-disabled {
   filter: opacity(0.6);
 }
-

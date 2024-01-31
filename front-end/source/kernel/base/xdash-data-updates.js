@@ -310,6 +310,21 @@ var xdashUpdateEngine = new XdashDataUpdateEngine();
           // geolocalisation
           settings.sampleTime = settings.refreshRate;
           delete settings.refreshRate;
+
+          //AEF: compatibility with versions before Chalk'it v0.3.7 (xDash 2.890)
+          const versionStr = object.version;
+          const RegEx = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
+          const match = RegEx.exec(versionStr);
+          if (match) {
+            const major = parseInt(match[1], 10);
+            const minor = parseInt(match[2], 10);
+            const lower = major < 0 || (major === 0 && minor < 7);
+            if (lower) {
+              if (settings.explicitTrig && settings.autoStart) {
+                settings.autoStart = false;
+              }
+            }
+          }
         }
 
         function doReplace(key) {

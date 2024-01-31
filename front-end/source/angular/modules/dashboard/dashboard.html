@@ -1,69 +1,135 @@
-<header ng-controller="DashboardHeaderController" ng-include="'source/angular/modules/dashboard/_partials/headerbar/dashboard_header.html'" class="with__brand"></header>
-<div ng-include="'source/angular/modules/modals/info_project.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : info.openProjectInfo}" ng-show="info.openProjectInfo"></div>
-<div ng-include="'source/angular/modules/modals/share_project.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : isSharePrjOpen}" ng-show="isSharePrjOpen"></div>
-<div ng-include="'source/angular/modules/modals/manage_page_share.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : infoPage.isManagePageOpen}" ng-show="infoPage.isManagePageOpen"></div>
+<header
+  ng-controller="DashboardHeaderController"
+  ng-include="'source/angular/modules/dashboard/_partials/headerbar/dashboard_header.html'"
+  class="with__brand"
+></header>
+<div
+  ng-include="'source/angular/modules/modals/info_project.html'"
+  class="cancel__container"
+  js-reset-layer=""
+  ng-class="{'open' : info.openProjectInfo}"
+  ng-show="info.openProjectInfo"
+></div>
+<div
+  ng-include="'source/angular/modules/modals/share_project.html'"
+  class="cancel__container"
+  js-reset-layer=""
+  ng-class="{'open' : isSharePrjOpen}"
+  ng-show="isSharePrjOpen"
+></div>
+<div
+  ng-include="'source/angular/modules/modals/manage_page_share.html'"
+  class="cancel__container"
+  js-reset-layer=""
+  ng-class="{'open' : infoPage.isManagePageOpen}"
+  ng-show="infoPage.isManagePageOpen"
+></div>
 <div class="project__layout" ng-controller="EditorController as vm">
-    <aside ng-include="'source/angular/modules/dashboard/_partials/panels/dashboard_leftSidePanel.html'" id="panel--left" class="aside__panel" ng-class="{'open':editorView.leftSidePanel.view,'xlarge__panel':(editorView.leftSidePanel.size==1),'large__panel':(editorView.leftSidePanel.size==2),'normal__panel':(editorView.leftSidePanel.size==3)}">
-    </aside>
+  <aside
+    ng-include="'source/angular/modules/dashboard/_partials/panels/dashboard_leftSidePanel.html'"
+    id="panel--left"
+    class="aside__panel"
+    ng-class="{'open':editorView.leftSidePanel.view,'xlarge__panel':(editorView.leftSidePanel.size==1),'large__panel':(editorView.leftSidePanel.size==2),'normal__panel':(editorView.leftSidePanel.size==3)}"
+  ></aside>
 
-    <div class="main__layout--content">
-        <div id="dash-content-top-ctrl" ng-controller="DashboardContentTopController" class="main__layout--content--top" ng-include="'source/angular/modules/dashboard/_partials/dashboard_contentTop.html'"></div>
-        <div class="widget__layout">
-            <div class="widget__layout--wrapper " ng-include="'source/angular/modules/dashboard/_partials/dashboard_content.html'" style="border-radius: 15px;"></div>
-        </div>
-        <footer ng-include="'source/angular/modules/dashboard/_partials/dashboard_footer.html'"></footer>
+  <div class="main__layout--content">
+    <div
+      id="dash-content-top-ctrl"
+      ng-controller="DashboardContentTopController"
+      class="main__layout--content--top"
+      ng-include="'source/angular/modules/dashboard/_partials/dashboard_contentTop.html'"
+    ></div>
+    <div class="widget__layout">
+      <div
+        class="widget__layout--wrapper"
+        ng-include="'source/angular/modules/dashboard/_partials/dashboard_content.html'"
+        style="border-radius: 15px"
+      ></div>
     </div>
+    <footer ng-include="'source/angular/modules/dashboard/_partials/dashboard_footer.html'"></footer>
+  </div>
 
-    <aside ng-controller="DashboardRightSidePanelController as vmd" ng-include="'source/angular/modules/dashboard/_partials/panels/dashboard_rightSidePanel.html'" id="panel--right" class="aside__panel " ng-class="{'hidden':editorView.checkboxModelView,'open':editorView.rightSidePanel.view,'xlarge__panel':(editorView.rightSidePanel.size==1),'large__panel':(editorView.rightSidePanel.size==2),'normal__panel':(editorView.rightSidePanel.size==3)}">
-    </aside>
+  <aside
+    ng-controller="DashboardRightSidePanelController as vmd"
+    ng-include="'source/angular/modules/dashboard/_partials/panels/dashboard_rightSidePanel.html'"
+    id="panel--right"
+    class="aside__panel"
+    ng-class="{'hidden':editorView.checkboxModelView,'open':editorView.rightSidePanel.view,'xlarge__panel':(editorView.rightSidePanel.size==1),'large__panel':(editorView.rightSidePanel.size==2),'normal__panel':(editorView.rightSidePanel.size==3)}"
+  ></aside>
 
-    <div id="new--datanode--panel" class="add__new__datanode dashboard-form dashboard-form--light" ng-class="{'open':editorView.newDatanodePanel.view}">
-        <div id="datanode-list" compile="myDataNodeHTML" class="add__new__datanode--list" ng-class="{hide:!editorView.newDatanodePanel.list}">
+  <div
+    id="new--datanode--panel"
+    class="add__new__datanode dashboard-form dashboard-form--light"
+    ng-class="{'open':editorView.newDatanodePanel.view}"
+  >
+    <div
+      id="datanode-list"
+      compile="myDataNodeHTML"
+      class="add__new__datanode--list"
+      ng-class="{hide:!editorView.newDatanodePanel.list}"
+    ></div>
+
+    <div
+      id="datanode-type"
+      class="add__new__datanode--list--selected"
+      style="width: 55vw"
+      ng-class="{show:editorView.newDatanodePanel.type}"
+    >
+      <div class="panel--selected--content">
+        <div class="panel--back" ng-show="editorView.operationDataNode==='add'">
+          <a
+            title="Back"
+            class="btn btn-back"
+            style="text-align: left"
+            ng-click="editorView.newDatanodePanel.type=false;editorView.newDatanodePanel.list=true"
+          >
+            <i class="basic icn-miniarrowleft"></i>Back
+          </a>
         </div>
-
-        <div id="datanode-type" class="add__new__datanode--list--selected" style="width: 55vw;" ng-class="{show:editorView.newDatanodePanel.type}">
-            <div class="panel--selected--content">
-                <div class="panel--back" ng-show="editorView.operationDataNode==='add'">
-                    <a title="Back" class="btn btn-back" style="text-align:left" ng-click="editorView.newDatanodePanel.type=false;editorView.newDatanodePanel.list=true">
-                        <i class="basic icn-miniarrowleft"></i>Back
-                    </a>
-                </div>
-                <h2>{{dataNodeDescription}}</h2>
-                <div id="data-form-content"></div>
-            </div>
-            <div class="panel--footer">
-                <div class="btn-wrapper">
-                    <button class="btn btn-rounded-fill cancel" ng-click="getOldDataNodeSettings()">
-                        Cancel
-                    </button>
-                    <button class="btn btn-rounded-fill primary" ng-click="saveDataNodeSettings()">
-                        Save
-                    </button>
-                </div>
-            </div>
+        <h2>{{dataNodeDescription}}</h2>
+        <div id="data-form-content"></div>
+      </div>
+      <div class="panel--footer">
+        <div class="btn-wrapper">
+          <button class="btn btn-rounded-fill cancel" ng-click="getOldDataNodeSettings()">Cancel</button>
+          <button class="btn btn-rounded-fill primary" ng-click="saveDataNodeSettings()">Save</button>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div id="dependency__graph--container" class="dependency__graph--container" ng-controller="DashboardGraphDepController" ng-include="'source/angular/modules/dashboard/_partials/panels/dashboard_depGraph.html'" ng-class="{show:editorView.showGraphPanel}">
-    </div>
-
+  <div
+    id="dependency__graph--container"
+    class="dependency__graph--container"
+    ng-controller="DashboardGraphDepController"
+    ng-include="'source/angular/modules/dashboard/_partials/panels/dashboard_depGraph.html'"
+    ng-class="{show:editorView.showGraphPanel}"
+  ></div>
 </div>
 
+<div
+  ng-if="popup.datanodeNotif"
+  ng-controller="DatanodeNotifController"
+  ng-include="'source/angular/modules/dashboard/_partials/modals/datanode_notif.html'"
+  class="cancel__container open"
+></div>
 
-<div ng-if="popup.datanodeNotif" ng-controller="DatanodeNotifController" ng-include="'source/angular/modules/dashboard/_partials/modals/datanode_notif.html'" class="cancel__container open"></div>
-
-<div class="cancel__container" ng-class="{'open':$root.isPopupWindow}" style="z-index:1000;">
-    <div class="cancel__box">
-        <div class="cancel__title">{{popupTitle}}</div>
-        <div class="cancel__text">{{popupText}}</div>
-        <div class="cancel__box__bottom">
-            <button class="btn btn-rounded-fill cancel" js-reset-toggle="" ng-click="$root.isPopupWindow=false;">
-                Abandon
-            </button>
-            <button class="btn btn-rounded-fill primary" js-reset-toggle="" ng-click="popupAction();$root.isPopupWindow=false;">
-                Yes
-            </button>
-        </div>
+<div class="cancel__container" ng-class="{'open':$root.isPopupWindow}" style="z-index: 1000">
+  <div class="cancel__box">
+    <div class="cancel__title">{{popupTitle}}</div>
+    <div class="cancel__text">{{popupText}}</div>
+    <div class="cancel__box__bottom">
+      <button class="btn btn-rounded-fill cancel" js-reset-toggle="" ng-click="$root.isPopupWindow=false;">
+        Abandon
+      </button>
+      <button
+        class="btn btn-rounded-fill primary"
+        js-reset-toggle=""
+        ng-click="popupAction();$root.isPopupWindow=false;"
+      >
+        Yes
+      </button>
     </div>
-    <div class="cancel__overlay"></div>
+  </div>
+  <div class="cancel__overlay"></div>
 </div>

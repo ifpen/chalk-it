@@ -1,142 +1,204 @@
 <div id="cards-ctrl">
-    <div ng-include="'source/angular/modules/modals/info_project.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : info.openProjectInfo}" ng-show="info.openProjectInfo"></div>
-    <div ng-include="'source/angular/modules/modals/share.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : showShareLink}" ng-show="showShareLink"></div>
-    <div ng-include="'source/angular/modules/modals/share_project.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : isSharePrjOpen}" ng-show="isSharePrjOpen"></div>
-    <div ng-include="'source/angular/modules/modals/manage_page_share.html'" class="cancel__container" js-reset-layer="" ng-class="{'open' : infoPage.isManagePageOpen}" ng-show="infoPage.isManagePageOpen"></div>
-    <div id="my-personnal-projects-list" class="main__layout--content--top">
+  <div
+    ng-include="'source/angular/modules/modals/info_project.html'"
+    class="cancel__container"
+    js-reset-layer=""
+    ng-class="{'open' : info.openProjectInfo}"
+    ng-show="info.openProjectInfo"
+  ></div>
+  <div
+    ng-include="'source/angular/modules/modals/share.html'"
+    class="cancel__container"
+    js-reset-layer=""
+    ng-class="{'open' : showShareLink}"
+    ng-show="showShareLink"
+  ></div>
+  <div
+    ng-include="'source/angular/modules/modals/share_project.html'"
+    class="cancel__container"
+    js-reset-layer=""
+    ng-class="{'open' : isSharePrjOpen}"
+    ng-show="isSharePrjOpen"
+  ></div>
+  <div
+    ng-include="'source/angular/modules/modals/manage_page_share.html'"
+    class="cancel__container"
+    js-reset-layer=""
+    ng-class="{'open' : infoPage.isManagePageOpen}"
+    ng-show="infoPage.isManagePageOpen"
+  ></div>
+  <div id="my-personnal-projects-list" class="main__layout--content--top">
+    <!-- title -->
+    <h1 ng-if="projectVue=='recent'">Recently viewed</h1>
+    <h1 ng-if="projectVue=='all'">My personal dashboards</h1>
+    <h1 ng-if="projectVue=='gallery'">Template Gallery</h1>
 
-        <!-- title -->
-        <h1 ng-if="projectVue=='recent'">Recently viewed</h1>
-        <h1 ng-if="projectVue=='all'">My personal dashboards</h1>
-        <h1 ng-if="projectVue=='gallery'">Template Gallery</h1>
-
-        <!-- filters and sort -->
-        <div class="main__layout--content--top__actions">
-
-            <!-- filters -->
-            <button class="btn btn-rounded filters__btn" ng-click="isFilterOpen = !isFilterOpen">
-                <i class="basic icn-filters"></i>Filters
-                <span class="filters__count"></span>
-            </button>
-            <div id="tag-filters" class="filters open" ng-init="!isFilterOpen" ng-show="isFilterOpen">
-                <div class="filters__section dashboard-form">
-                    <div class="filters__section__title">Keywords</div>
-                    <div class="filters__section__search dashboard-form__input-wrapper">
-                        <input type="search" placeholder="Search" id="search-input" class="dashboard-form__input--search" ng-model="projectsFilterField.value" ng-change="ProjectsFilter(projectsFilterField.value)">
-                        <i class="basic icn-search"></i>
-                    </div>
-                </div>
-                <div class="filters__section" ng-if="(fileType==='xprjson')&&((projectVue==='all')||(projectVue==='recent'))">
-                    <div class="filters__section__title">Tags</div>
-                    <ul class="tags__list">
-                        <li ng-repeat="tag in userList | orderBy" toggle-class="active" ng-click="ProjectsFilterByTags(tag,$event.currentTarget)"><i class="basic icn-tag"></i>{{tag}}</li>
-                    </ul>
-                </div>
-                <div class="filters__section" ng-if="(fileType==='xprjson')&&(projectVue==='gallery')">
-                    <div class="filters__section__title">Tags</div>
-                    <ul class="tags__list">
-                        <li ng-repeat="tag in templatesList | orderBy" toggle-class="active" ng-click="ProjectsFilterByTags(tag,$event.currentTarget)"><i class="basic icn-tag"></i>{{tag}}</li>
-                    </ul>
-                </div>
-                <div class="filters__footer">
-                    <button clear-toggle-class="active" class="btn btn-rounded-fill cancel" ng-click="resetFilters();">Reset</button>
-                    <button class="btn btn-rounded-fill primary" ng-click="isFilterOpen = !isFilterOpen">Validate</button>
-                </div>
-            </div>
-
-            <!-- sort -->
-            <button class="btn btn-rounded" ng-click="sortFiles();">
-            <i class="basic icn-sorting"></i> Sort
-        </button>
+    <!-- filters and sort -->
+    <div class="main__layout--content--top__actions">
+      <!-- filters -->
+      <button class="btn btn-rounded filters__btn" ng-click="isFilterOpen = !isFilterOpen">
+        <i class="basic icn-filters"></i>Filters
+        <span class="filters__count"></span>
+      </button>
+      <div id="tag-filters" class="filters open" ng-init="!isFilterOpen" ng-show="isFilterOpen">
+        <div class="filters__section dashboard-form">
+          <div class="filters__section__title">Keywords</div>
+          <div class="filters__section__search dashboard-form__input-wrapper">
+            <input
+              type="search"
+              placeholder="Search"
+              id="search-input"
+              class="dashboard-form__input--search"
+              ng-model="projectsFilterField.value"
+              ng-change="ProjectsFilter(projectsFilterField.value)"
+            />
+            <i class="basic icn-search"></i>
+          </div>
         </div>
-    </div>
-
-    <div ng-if="projectVue=='all'" class="project-pagination">
-        <!-- subtitle 1 -->
-        <h2 class="layout__title">
-            <div class="dashboard-form">
-                <select ng-model="selected" 
-                        ng-change="switchFile(selected)" 
-                        ng-options="opt as opt for opt in fileTypes" 
-                        ng-init="selected='My projects'" 
-                        class="dropdown__current">
-                </select>
-            </div>
-        </h2>
-
-        <!-- indexation -->
-        <div ng-controller="ListProjectPaginationController">
-            <ng-include class="project-pagination__wrapper" src="'source/angular/modules/cards/_partials/list_project_pagination.html'"></ng-include>
+        <div class="filters__section" ng-if="(fileType==='xprjson')&&((projectVue==='all')||(projectVue==='recent'))">
+          <div class="filters__section__title">Tags</div>
+          <ul class="tags__list">
+            <li
+              ng-repeat="tag in userList | orderBy"
+              toggle-class="active"
+              ng-click="ProjectsFilterByTags(tag,$event.currentTarget)"
+            >
+              <i class="basic icn-tag"></i>{{tag}}
+            </li>
+          </ul>
         </div>
+        <div class="filters__section" ng-if="(fileType==='xprjson')&&(projectVue==='gallery')">
+          <div class="filters__section__title">Tags</div>
+          <ul class="tags__list">
+            <li
+              ng-repeat="tag in templatesList | orderBy"
+              toggle-class="active"
+              ng-click="ProjectsFilterByTags(tag,$event.currentTarget)"
+            >
+              <i class="basic icn-tag"></i>{{tag}}
+            </li>
+          </ul>
+        </div>
+        <div class="filters__footer">
+          <button clear-toggle-class="active" class="btn btn-rounded-fill cancel" ng-click="resetFilters();">
+            Reset
+          </button>
+          <button class="btn btn-rounded-fill primary" ng-click="isFilterOpen = !isFilterOpen">Validate</button>
+        </div>
+      </div>
+
+      <!-- sort -->
+      <button class="btn btn-rounded" ng-click="sortFiles();"><i class="basic icn-sorting"></i> Sort</button>
     </div>
-    
-    <!--<h2 ng-if="projectVue=='gallery'" class="layout__title">Templates with Javascript</h2>-->
+  </div>
 
-    <!-- grid of cards projects-->
-    <div ng-if="projectVue!=='gallery'" class="main__layout--content__grid">
-        <div class="main__layout--content__grid--card" ng-repeat="file in allFilesFiltred[0].FileList" ng-style="{{mystyle}}" ng-init="mystyle={'z-index':allFilesFiltred[0].FileList.length-$index}" ng-if="$index>=pagination.startData && $index<pagination.endData && projectVue=='all' || $index<6 && projectVue=='recent'">
-            <div class="card__banner">
-                <!-- <a href=""> -->
-                <img data-ng-src="{{file.URL}}" alt="Image project capture" ng-class="{'img-datanode': (fileType==='xdsjson')}" />
-                <!-- </a> -->
-                <div class="card__banner--top">
-                    <ul class="actions__list">
-                        <li ng-if="fileType!=='xdsjson'">
-                            <a ng-click="viewFileFromServer(file.Name)" title="Preview the project">
-                                <i class="basic icn-eye"></i>
-                            </a>
-                        </li>
-                        <li ng-if="fileType=='xprjson'">
-                            <a ng-click="openProjectFromServer(file.Name)" title="Open the project file">
-                                <i class="basic icn-edit"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="isNavOpen_Recent_All_Gallery{{$index}}" ng-click="isNavOpen = !isNavOpen;verifyAccessPage(file.Name)" title="More options">
-                                <i class="basic icn-more"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+  <div ng-if="projectVue=='all'" class="project-pagination">
+    <!-- subtitle 1 -->
+    <h2 class="layout__title">
+      <div class="dashboard-form">
+        <select
+          ng-model="selected"
+          ng-change="switchFile(selected)"
+          ng-options="opt as opt for opt in fileTypes"
+          ng-init="selected='My projects'"
+          class="dropdown__current"
+        ></select>
+      </div>
+    </h2>
 
-            <!-- footer card -->
-            <div class="card_footer">
-                <h3 title="{{file.Name}}">{{file.Name | limitTo: 35}}</h3>
-                <ul class="tags__list">
-                    <li ng-repeat="tag in file.Tags" ng-if="$index<2" title="{{tag}}">
-                        <i class="basic icn-tag"></i> {{tag |limitTo:100}}
-                    </li>
-                    <!-- <li ng-repeat="tag in file.customDataInfo.tags" ng-if="$index==2">
+    <!-- indexation -->
+    <div ng-controller="ListProjectPaginationController">
+      <ng-include
+        class="project-pagination__wrapper"
+        src="'source/angular/modules/cards/_partials/list_project_pagination.html'"
+      ></ng-include>
+    </div>
+  </div>
+
+  <!--<h2 ng-if="projectVue=='gallery'" class="layout__title">Templates with Javascript</h2>-->
+
+  <!-- grid of cards projects-->
+  <div ng-if="projectVue!=='gallery'" class="main__layout--content__grid">
+    <div
+      class="main__layout--content__grid--card"
+      ng-repeat="file in allFilesFiltred[0].FileList"
+      ng-style="{{mystyle}}"
+      ng-init="mystyle={'z-index':allFilesFiltred[0].FileList.length-$index}"
+      ng-if="$index>=pagination.startData && $index<pagination.endData && projectVue=='all' || $index<6 && projectVue=='recent'"
+    >
+      <div class="card__banner">
+        <!-- <a href=""> -->
+        <img
+          data-ng-src="{{file.URL}}"
+          alt="Image project capture"
+          ng-class="{'img-datanode': (fileType==='xdsjson')}"
+        />
+        <!-- </a> -->
+        <div class="card__banner--top">
+          <ul class="actions__list">
+            <li ng-if="fileType!=='xdsjson'">
+              <a ng-click="viewFileFromServer(file.Name)" title="Preview the project">
+                <i class="basic icn-eye"></i>
+              </a>
+            </li>
+            <li ng-if="fileType=='xprjson'">
+              <a ng-click="openProjectFromServer(file.Name)" title="Open the project file">
+                <i class="basic icn-edit"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                id="isNavOpen_Recent_All_Gallery{{$index}}"
+                ng-click="isNavOpen = !isNavOpen;verifyAccessPage(file.Name)"
+                title="More options"
+              >
+                <i class="basic icn-more"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- footer card -->
+      <div class="card_footer">
+        <h3 title="{{file.Name}}">{{file.Name | limitTo: 35}}</h3>
+        <ul class="tags__list">
+          <li ng-repeat="tag in file.Tags" ng-if="$index<2" title="{{tag}}">
+            <i class="basic icn-tag"></i> {{tag |limitTo:100}}
+          </li>
+          <!-- <li ng-repeat="tag in file.customDataInfo.tags" ng-if="$index==2">
                     <i class="basic icn-add"></i>
                 </li> -->
-                    <li ng-if="file.Tags.length > 2">
-                        <a id="tagDisplay" ng-click="toggleTagDisplay($index)" title="More tags">
-                            <i class="basic icn-tag"></i>+{{file.Tags.length-2}}
-                        </a>
-                    </li>
-                    <ul class="filters open" style="top: 4em;right: 0;border-bottom:5px solid transparent" ng-show="$index === displayedIndex">
-                        <li ng-repeat="tag in file.Tags" ng-if="$index>=2" title="{{tag}}">
-                            <i class="basic icn-tag"></i> {{tag |limitTo:100}}
-                        </li>
-                    </ul>
+          <li ng-if="file.Tags.length > 2">
+            <a id="tagDisplay" ng-click="toggleTagDisplay($index)" title="More tags">
+              <i class="basic icn-tag"></i>+{{file.Tags.length-2}}
+            </a>
+          </li>
+          <ul
+            class="filters open"
+            style="top: 4em; right: 0; border-bottom: 5px solid transparent"
+            ng-show="$index === displayedIndex"
+          >
+            <li ng-repeat="tag in file.Tags" ng-if="$index>=2" title="{{tag}}">
+              <i class="basic icn-tag"></i> {{tag |limitTo:100}}
+            </li>
+          </ul>
+        </ul>
+      </div>
 
-                </ul>
-            </div>
-
-            <!-- menu of actions -->
-            <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
-                <li ng-if="fileType=='xprjson'">
-                    <a ng-click="renameProject(file.Name,true);isNavOpen=false" title="Rename the project file">
-                        <i class="basic icn-rename"></i>Rename
-                    </a>
-                </li>
-                <li ng-if="fileType=='xprjson'">
-                    <a ng-click="shareProject(file.Name);isNavOpen=false" title="Share the project file">
-                        <i class="basic icn-share-private" aria-hidden="true"></i>Share
-                    </a>
-                </li>
-                <!-- 
+      <!-- menu of actions -->
+      <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
+        <li ng-if="fileType=='xprjson'">
+          <a ng-click="renameProject(file.Name,true);isNavOpen=false" title="Rename the project file">
+            <i class="basic icn-rename"></i>Rename
+          </a>
+        </li>
+        <li ng-if="fileType=='xprjson'">
+          <a ng-click="shareProject(file.Name);isNavOpen=false" title="Share the project file">
+            <i class="basic icn-share-private" aria-hidden="true"></i>Share
+          </a>
+        </li>
+        <!-- 
                 <li ng-if="fileType=='html'">
                     <a ng-click="shareProject(file.Name);isNavOpen=false" title="Share the file">
                         <i class="basic icn-share-private" aria-hidden="true"></i>Private share
@@ -148,80 +210,84 @@
                     </a>
                 </li>
                 -->
-                <li ng-if="fileType=='html'">
-                    <a title="Get HTML page link" ng-click="showPageLink(file.Name);isNavOpen=false">
-                        <i class="basic icn-share"></i>Get page link
-                    </a>
-                </li>
-                <li ng-if="fileType=='html'">
-                    <a title="Set HTML page access" ng-click="openPageAccess(file.Name);isNavOpen=false">
-                        <i class="basic icn-lock" aria-hidden="true"></i>Set page access
-                    </a>
-                </li>
-                <li ng-if="fileType=='html'" ng-class="{disable:securedLink=='False'}">
-                    <a title="Manage private sharing" ng-click="shareProject(file.Name,'html');isNavOpen=false">
-                        <i class="basic icn-share-private" aria-hidden="true"></i>Manage sharing
-                    </a>
-                </li>
+        <li ng-if="fileType=='html'">
+          <a title="Get HTML page link" ng-click="showPageLink(file.Name);isNavOpen=false">
+            <i class="basic icn-share"></i>Get page link
+          </a>
+        </li>
+        <li ng-if="fileType=='html'">
+          <a title="Set HTML page access" ng-click="openPageAccess(file.Name);isNavOpen=false">
+            <i class="basic icn-lock" aria-hidden="true"></i>Set page access
+          </a>
+        </li>
+        <li ng-if="fileType=='html'" ng-class="{disable:securedLink=='False'}">
+          <a title="Manage private sharing" ng-click="shareProject(file.Name,'html');isNavOpen=false">
+            <i class="basic icn-share-private" aria-hidden="true"></i>Manage sharing
+          </a>
+        </li>
 
-                <li ng-if="fileType=='xprjson'">
-                    <a ng-click="duplicateProject(file.Name);isNavOpen=false" title="Duplicate the project file">
-                        <i class="basic icn-duplicate"></i>Duplicate
-                    </a>
-                </li>
-                <li>
-                    <a ng-click="downloadFile(file.Name);isNavOpen=false" title="Export the file">
-                        <i class="basic icn-download-cloud" aria-hidden="true"></i>Export
-                    </a>
-                </li>
-                <li>
-                    <a ng-click="deleteFileInServer(file.Name);isNavOpen=false" title="Delete the file">
-                        <i class="basic icn-delete"></i>Delete
-                    </a>
-                </li>
-                <li ng-if="fileType=='xprjson'">
-                    <a ng-click="infoProject(file.Name,'cards');isNavOpen = !isNavOpen" title="Project infos">
-                        <i class="basic icn-info"></i>Infos
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- create card -->
-        <div ng-if="projectVue=='all' && fileType==='xprjson'" class="main__layout--content__grid--card create__card">
-            <a ng-click="newProject()" title="Create a new project" class="card--create__new">
-                <div class="card--create__new--icon">
-                    <i class="basic icn-add"></i>
-                </div>
-                <p>Create new </p>
-            </a>
-        </div>
+        <li ng-if="fileType=='xprjson'">
+          <a ng-click="duplicateProject(file.Name);isNavOpen=false" title="Duplicate the project file">
+            <i class="basic icn-duplicate"></i>Duplicate
+          </a>
+        </li>
+        <li>
+          <a ng-click="downloadFile(file.Name);isNavOpen=false" title="Export the file">
+            <i class="basic icn-download-cloud" aria-hidden="true"></i>Export
+          </a>
+        </li>
+        <li>
+          <a ng-click="deleteFileInServer(file.Name);isNavOpen=false" title="Delete the file">
+            <i class="basic icn-delete"></i>Delete
+          </a>
+        </li>
+        <li ng-if="fileType=='xprjson'">
+          <a ng-click="infoProject(file.Name,'cards');isNavOpen = !isNavOpen" title="Project infos">
+            <i class="basic icn-info"></i>Infos
+          </a>
+        </li>
+      </ul>
     </div>
 
-    <!-- bubble help for recent projects vue  -->
-    <div ng-if="projectVue=='recent'" class="help__bubble" ng-show="helpDisplay.isOpen">
-        <div class="help__bubble--title">
-            <h4>Need help?</h4>
-            <a ng-click="helpDisplay.isOpen = !helpDisplay.isOpen; saveConfigHelp();" title="Close help" class="btn btn-icon-only">
-                <i class="basic icn-close close-aside"></i>
-            </a>
+    <!-- create card -->
+    <div ng-if="projectVue=='all' && fileType==='xprjson'" class="main__layout--content__grid--card create__card">
+      <a ng-click="newProject()" title="Create a new project" class="card--create__new">
+        <div class="card--create__new--icon">
+          <i class="basic icn-add"></i>
         </div>
-        <p>Find out how to use Chalk'it step by step through our learning path.</p>
-        <div class="help__bubble--actions">
-            <div class="input--wrapper">
-                <input id="help__check" type="checkbox" ng-model="helpDisplay.checkboxModel" />
-                <label for="help__check">Do not display anymore</label>
-            </div>
-            <button class="btn btn__see-more">
-            <a ui-sref="modules.discover.layout" ng-click="toggleMenuOptionDisplay('discover')">
-            Lean more <i class="gg-chevron-right"></i>
-            </a>
-        </button>
-        </div>
+        <p>Create new</p>
+      </a>
     </div>
+  </div>
 
-    <!-- button new group for My projects vue -->
-    <!-- <div ng-if="projectVue=='all' && fileType==='xprjson'" class="btn__new">
+  <!-- bubble help for recent projects vue  -->
+  <div ng-if="projectVue=='recent'" class="help__bubble" ng-show="helpDisplay.isOpen">
+    <div class="help__bubble--title">
+      <h4>Need help?</h4>
+      <a
+        ng-click="helpDisplay.isOpen = !helpDisplay.isOpen; saveConfigHelp();"
+        title="Close help"
+        class="btn btn-icon-only"
+      >
+        <i class="basic icn-close close-aside"></i>
+      </a>
+    </div>
+    <p>Find out how to use Chalk'it step by step through our learning path.</p>
+    <div class="help__bubble--actions">
+      <div class="input--wrapper">
+        <input id="help__check" type="checkbox" ng-model="helpDisplay.checkboxModel" />
+        <label for="help__check">Do not display anymore</label>
+      </div>
+      <button class="btn btn__see-more">
+        <a ui-sref="modules.discover.layout" ng-click="toggleMenuOptionDisplay('discover')">
+          Lean more <i class="gg-chevron-right"></i>
+        </a>
+      </button>
+    </div>
+  </div>
+
+  <!-- button new group for My projects vue -->
+  <!-- <div ng-if="projectVue=='all' && fileType==='xprjson'" class="btn__new">
     <button class="btn btn-circle">
         <span class="icon__container">
             <i class="basic icn-add"></i>
@@ -230,167 +296,174 @@
     </button>
 </div> -->
 
-    <!-- grid of cards : groups of projects-->
-    <div ng-if="projectVue=='all' && fileType==='xprjson'">
-        <div ng-repeat="(key, value) in allFilesFiltredGrp ">
-            <!--grpFiles-->
-            <p class="layout__title">{{value}}</p>
-            <div class="main__layout--content__grid ">
-                <div class="main__layout--content__grid--card" ng-repeat="file in allFilesFiltredGrp[value]">
-                    <!--grpFiles[value]-->
-                    <div class="card__banner">
-                        <img data-ng-src="{{file.URL}}" alt="Image project capture" />
-                        <div class="card__banner--top">
-                            <ul class="actions__list">
-                                <li ng-if="fileType!=='xdsjson'">
-                                    <a ng-click="viewFileFromServer(file.Name)" title="Preview the project">
-                                        <i class="basic icn-eye"></i>
-                                    </a>
-                                </li>
-                                <li ng-if="fileType=='xprjson'">
-                                    <a ng-click="openProjectFromServer(file.Name)" title="Open the project file">
-                                        <i class="basic icn-edit"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a id="isNavOpen_Group_{{value}}{{$index}}" ng-click="isNavOpen = !isNavOpen" title="More options">
-                                        <i class="basic icn-more"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- footer card -->
-                    <div class="card_footer">
-                        <h3 title="{{file.Name}}">{{file.Name | limitTo: 35}}</h3>
-                        <ul class="tags__list">
-                            <li ng-repeat="tag in file.Tags" ng-if="$index<2" title="{{tag}}">
-                                <i class="basic icn-tag"></i> {{tag |limitTo:100}}
-                            </li>
-                            <!-- <li ng-repeat="tag in file.customDataInfo.tags" ng-if="$index==2">
-                        <i class="basic icn-add"></i>
-                    </li> -->
-                            <li ng-if="file.Tags.length > 2">
-                                <a id="tagDisplay" ng-click="toggleTagDisplay($index,'group',$parent.$parent.$index)" title="More tags">
-                                    <i class="basic icn-tag"></i>+{{file.Tags.length-2}}
-                                </a>
-                            </li>
-                            <ul class="filters open" style="top: 4em;right: 0;border-bottom:5px solid transparent" ng-show="$index === displayedIndexG[$parent.$index]">
-                                <li ng-repeat="tag in file.Tags" ng-if="$index>=2" title="{{tag}}">
-                                    <i class="basic icn-tag"></i> {{tag |limitTo:100}}
-                                </li>
-                            </ul>
-
-                        </ul>
-                    </div>
-
-                    <!-- menu of actions -->
-                    <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
-                        <li ng-if="fileType=='xprjson'">
-                            <a ng-click="renameProject(file.Name,true);isNavOpen=false" title="Rename the project file">
-                                <i class="basic icn-rename"></i>Rename
-                            </a>
-                        </li>
-                        <li ng-if="fileType=='html'">
-                            <a ng-click="showPageLink(file.Name);isNavOpen=false" title="Share the HTML page link">
-                                <i class="basic icn-share"></i>Share
-                            </a>
-                        </li>
-                        <li ng-if="fileType=='xprjson'">
-                            <a ng-click="duplicateProject(file.Name);isNavOpen=false" title="Duplicate the file">
-                                <i class="basic icn-duplicate"></i>Duplicate
-                            </a>
-                        </li>
-                        <li>
-                            <a ng-click="downloadFile(file.Name);isNavOpen=false" title="Export the file">
-                                <i class="basic icn-download-cloud" aria-hidden="true"></i>Export
-                            </a>
-                        </li>
-                        <li>
-                            <a ng-click="deleteFileInServer(file.Name);isNavOpen=false" title="Delete the file">
-                                <i class="basic icn-delete"></i>Delete
-                            </a>
-                        </li>
-                        <li ng-if="fileType=='xprjson'">
-                            <a ng-click="infoProject(file.Name,'cards');isNavOpen = !isNavOpen" title="Project infos">
-                                <i class="basic icn-info"></i>Infos
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- grid of cards gallery 1/2-->
-    <div ng-if="projectVue=='gallery'" class="main__layout--content__grid">
-        <div class="main__layout--content__grid--card" ng-repeat="file in allFilesFiltred[0].FileList">
-            <div class="card__banner">
-                <img data-ng-src="{{file.URL}}" alt="Image template capture" />
-                <div class="card__banner--top">
-                    <ul class="actions__list">
-                        <li>
-                            <a ng-click="viewFileFromServer(file.Name)" title="Preview the template">
-                                <i class="basic icn-eye"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a ng-click="openTemplateToNewTab(file.Name)" title="Open the template file">
-                                <i class="basic icn-edit"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a id="isNavOpen_Recent_All_Gallery{{$index}}" ng-click="isNavOpen = !isNavOpen" title="More options">
-                                <i class="basic icn-more"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- footer card -->
-            <div class="card_footer">
-                <h3 title="{{file.Name}}">{{file.Name | limitTo: 35}}</h3>
-                <!--<p>{{file.Description}}</p>-->
-                <ul class="tags__list">
-                    <li ng-repeat="tag in file.Tags" ng-if="$index<2" title="{{tag}}">
-                        <i class="basic icn-tag"></i> {{tag |limitTo:100}}
-                    </li>
-                    <li ng-if="file.Tags.length > 2">
-                        <a id="tagDisplay" ng-click="toggleTagDisplay($index)" title="More tags">
-                            <i class="basic icn-tag"></i>+{{file.Tags.length-2}}
-                        </a>
-                    </li>
-                    <ul class="filters open" style="top: 4em;right: 0;border-bottom:5px solid transparent" ng-show="$index === displayedIndex">
-                        <li ng-repeat="tag in file.Tags" ng-if="$index>=2" title="{{tag}}">
-                            <i class="basic icn-tag"></i> {{tag |limitTo:100}}
-                        </li>
-                    </ul>
-                </ul>
-            </div>
-
-            <!-- menu of actions -->
-            <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
-                <li>
-                    <a ng-click="downloadFile(file.Name);isNavOpen=false" title="Export the template">
-                        <i class="basic icn-download-cloud" aria-hidden="true"></i>Export
-                    </a>
+  <!-- grid of cards : groups of projects-->
+  <div ng-if="projectVue=='all' && fileType==='xprjson'">
+    <div ng-repeat="(key, value) in allFilesFiltredGrp ">
+      <!--grpFiles-->
+      <p class="layout__title">{{value}}</p>
+      <div class="main__layout--content__grid">
+        <div class="main__layout--content__grid--card" ng-repeat="file in allFilesFiltredGrp[value]">
+          <!--grpFiles[value]-->
+          <div class="card__banner">
+            <img data-ng-src="{{file.URL}}" alt="Image project capture" />
+            <div class="card__banner--top">
+              <ul class="actions__list">
+                <li ng-if="fileType!=='xdsjson'">
+                  <a ng-click="viewFileFromServer(file.Name)" title="Preview the project">
+                    <i class="basic icn-eye"></i>
+                  </a>
                 </li>
                 <li ng-if="fileType=='xprjson'">
-                    <a ng-click="infoProject(file.Name,'template');isNavOpen = !isNavOpen" title="Template infos">
-                        <i class="basic icn-info"></i>Infos
-                    </a>
+                  <a ng-click="openProjectFromServer(file.Name)" title="Open the project file">
+                    <i class="basic icn-edit"></i>
+                  </a>
                 </li>
+                <li>
+                  <a id="isNavOpen_Group_{{value}}{{$index}}" ng-click="isNavOpen = !isNavOpen" title="More options">
+                    <i class="basic icn-more"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- footer card -->
+          <div class="card_footer">
+            <h3 title="{{file.Name}}">{{file.Name | limitTo: 35}}</h3>
+            <ul class="tags__list">
+              <li ng-repeat="tag in file.Tags" ng-if="$index<2" title="{{tag}}">
+                <i class="basic icn-tag"></i> {{tag |limitTo:100}}
+              </li>
+              <!-- <li ng-repeat="tag in file.customDataInfo.tags" ng-if="$index==2">
+                        <i class="basic icn-add"></i>
+                    </li> -->
+              <li ng-if="file.Tags.length > 2">
+                <a id="tagDisplay" ng-click="toggleTagDisplay($index,'group',$parent.$parent.$index)" title="More tags">
+                  <i class="basic icn-tag"></i>+{{file.Tags.length-2}}
+                </a>
+              </li>
+              <ul
+                class="filters open"
+                style="top: 4em; right: 0; border-bottom: 5px solid transparent"
+                ng-show="$index === displayedIndexG[$parent.$index]"
+              >
+                <li ng-repeat="tag in file.Tags" ng-if="$index>=2" title="{{tag}}">
+                  <i class="basic icn-tag"></i> {{tag |limitTo:100}}
+                </li>
+              </ul>
             </ul>
+          </div>
+
+          <!-- menu of actions -->
+          <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
+            <li ng-if="fileType=='xprjson'">
+              <a ng-click="renameProject(file.Name,true);isNavOpen=false" title="Rename the project file">
+                <i class="basic icn-rename"></i>Rename
+              </a>
+            </li>
+            <li ng-if="fileType=='html'">
+              <a ng-click="showPageLink(file.Name);isNavOpen=false" title="Share the HTML page link">
+                <i class="basic icn-share"></i>Share
+              </a>
+            </li>
+            <li ng-if="fileType=='xprjson'">
+              <a ng-click="duplicateProject(file.Name);isNavOpen=false" title="Duplicate the file">
+                <i class="basic icn-duplicate"></i>Duplicate
+              </a>
+            </li>
+            <li>
+              <a ng-click="downloadFile(file.Name);isNavOpen=false" title="Export the file">
+                <i class="basic icn-download-cloud" aria-hidden="true"></i>Export
+              </a>
+            </li>
+            <li>
+              <a ng-click="deleteFileInServer(file.Name);isNavOpen=false" title="Delete the file">
+                <i class="basic icn-delete"></i>Delete
+              </a>
+            </li>
+            <li ng-if="fileType=='xprjson'">
+              <a ng-click="infoProject(file.Name,'cards');isNavOpen = !isNavOpen" title="Project infos">
+                <i class="basic icn-info"></i>Infos
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- subtitle 2: Template Gallery vue: Templates with APIs -->
-    <!--<h2 ng-if="projectVue=='gallery'" class="layout__title">Templates with APIs</h2>-->
+  <!-- grid of cards gallery 1/2-->
+  <div ng-if="projectVue=='gallery'" class="main__layout--content__grid">
+    <div class="main__layout--content__grid--card" ng-repeat="file in allFilesFiltred[0].FileList">
+      <div class="card__banner">
+        <img data-ng-src="{{file.URL}}" alt="Image template capture" />
+        <div class="card__banner--top">
+          <ul class="actions__list">
+            <li>
+              <a ng-click="viewFileFromServer(file.Name)" title="Preview the template">
+                <i class="basic icn-eye"></i>
+              </a>
+            </li>
+            <li>
+              <a ng-click="openTemplateToNewTab(file.Name)" title="Open the template file">
+                <i class="basic icn-edit"></i>
+              </a>
+            </li>
+            <li>
+              <a id="isNavOpen_Recent_All_Gallery{{$index}}" ng-click="isNavOpen = !isNavOpen" title="More options">
+                <i class="basic icn-more"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-    <!-- grid of cards gallery 2/2-->
-    <!--<div ng-if="projectVue=='gallery'" class="main__layout--content__grid">
+      <!-- footer card -->
+      <div class="card_footer">
+        <h3 title="{{file.Name}}">{{file.Name | limitTo: 35}}</h3>
+        <!--<p>{{file.Description}}</p>-->
+        <ul class="tags__list">
+          <li ng-repeat="tag in file.Tags" ng-if="$index<2" title="{{tag}}">
+            <i class="basic icn-tag"></i> {{tag |limitTo:100}}
+          </li>
+          <li ng-if="file.Tags.length > 2">
+            <a id="tagDisplay" ng-click="toggleTagDisplay($index)" title="More tags">
+              <i class="basic icn-tag"></i>+{{file.Tags.length-2}}
+            </a>
+          </li>
+          <ul
+            class="filters open"
+            style="top: 4em; right: 0; border-bottom: 5px solid transparent"
+            ng-show="$index === displayedIndex"
+          >
+            <li ng-repeat="tag in file.Tags" ng-if="$index>=2" title="{{tag}}">
+              <i class="basic icn-tag"></i> {{tag |limitTo:100}}
+            </li>
+          </ul>
+        </ul>
+      </div>
+
+      <!-- menu of actions -->
+      <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
+        <li>
+          <a ng-click="downloadFile(file.Name);isNavOpen=false" title="Export the template">
+            <i class="basic icn-download-cloud" aria-hidden="true"></i>Export
+          </a>
+        </li>
+        <li ng-if="fileType=='xprjson'">
+          <a ng-click="infoProject(file.Name,'template');isNavOpen = !isNavOpen" title="Template infos">
+            <i class="basic icn-info"></i>Infos
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- subtitle 2: Template Gallery vue: Templates with APIs -->
+  <!--<h2 ng-if="projectVue=='gallery'" class="layout__title">Templates with APIs</h2>-->
+
+  <!-- grid of cards gallery 2/2-->
+  <!--<div ng-if="projectVue=='gallery'" class="main__layout--content__grid">
     <div class="main__layout--content__grid--card" ng-repeat="file in allFilesFiltred[1].FileList ">
         <div class="card__banner">
             <img data-ng-src="{{file.URL}}" alt="Image template capture" />
@@ -415,8 +488,8 @@
             </div>
         </div>-->
 
-    <!-- footer card -->
-    <!--<div class="card_footer">
+  <!-- footer card -->
+  <!--<div class="card_footer">
             <h3 title="{{file.Name}}">{{file.Name | limitTo: 35}}</h3>
             <ul class="tags__list">
                 <li ng-repeat="tag in file.customDataInfo.tags" ng-if="$index<2">
@@ -437,8 +510,8 @@
             </ul>
         </div>-->
 
-    <!-- menu of actions -->
-    <!--<ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
+  <!-- menu of actions -->
+  <!--<ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
             <li>
                 <a ng-click="downloadFile(file.Name);isNavOpen=false" title="Export the template">
                     <i class="basic icn-download"></i>Export

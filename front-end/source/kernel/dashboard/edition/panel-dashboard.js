@@ -7,14 +7,11 @@
 // │ Original authors(s): Abir EL FEKI                                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
+var panelDash = (function () {
+  var fullScreenWidth = window.outerWidth;
 
-var panelDash = (function() {
-
-    var fullScreenWidth = window.outerWidth;
-
-    // Public functions
-    return {
-        fullScreenWidth: fullScreenWidth
-    };
-
-}());
+  // Public functions
+  return {
+    fullScreenWidth: fullScreenWidth,
+  };
+})();

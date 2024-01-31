@@ -7,24 +7,23 @@
 // │ Original authors(s): Abir EL FEKI, Mondher AJIMI                                   │ \\
 // └────────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular
-    .module('modules.dashboard')
-    .service('EditPlaySwitchService', ['$rootScope', function ($rootScope) {
+angular.module('modules.dashboard').service('EditPlaySwitchService', [
+  '$rootScope',
+  function ($rootScope) {
+    const self = this;
 
-        const self = this;
+    /*---------- Switch button    ----------------*/
+    self.onEditPlaySwitch = function () {
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
 
-        /*---------- Switch button    ----------------*/
-        self.onEditPlaySwitch = function () {
-            const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-
-            $rootScope.bIsPlayMode = !scopeDash.editorView.checkboxModelView;
-            if (tabActive !== "widgets") return;
-            if (!$rootScope.bIsPlayMode) {
-                showEditMode(bRescaleNeededForModeSwitch);
-            } else {
-                showPlayMode(bRescaleNeededForModeSwitch);
-            }
-            layoutMgr.updateDashBgColor();  // GHI issue #228
-        };
-
-    }]);
+      $rootScope.bIsPlayMode = !scopeDash.editorView.checkboxModelView;
+      if (tabActive !== 'widgets') return;
+      if (!$rootScope.bIsPlayMode) {
+        showEditMode(bRescaleNeededForModeSwitch);
+      } else {
+        showPlayMode(bRescaleNeededForModeSwitch);
+      }
+      layoutMgr.updateDashBgColor(); // GHI issue #228
+    };
+  },
+]);

@@ -1,15 +1,22 @@
-<div class="aspect__row" style="margin: 0px 10px;">
-    <button class="btn" style="width:30px;height:30px;color:#333;" ng-click="vm.undo();" ng-disabled="!vm.canUndo()">
-        <i class="fa fa-undo" style="padding:6px"></i>
-    </button>
-    <button class="btn" style="width:30px;height:30px;color:#333;" ng-click="vm.redo();" ng-disabled="!vm.canRedo()">
-        <i class="fa fa-repeat" style="padding:6px"></i>
-    </button>
+<div class="aspect__row" style="margin: 0px 10px">
+  <button class="btn" style="width: 30px; height: 30px; color: #333" ng-click="vm.undo();" ng-disabled="!vm.canUndo()">
+    <i class="fa fa-undo" style="padding: 6px"></i>
+  </button>
+  <button class="btn" style="width: 30px; height: 30px; color: #333" ng-click="vm.redo();" ng-disabled="!vm.canRedo()">
+    <i class="fa fa-repeat" style="padding: 6px"></i>
+  </button>
 </div>
-<div class="aspect__row dashboard-form ">
-    <select multiple id="editorHistory" style="height: 280px" ng-model="vm.lastAction" ng-dblclick="vm.historySelect()" ng-keydown="$event.keyCode === 13 && vm.historySelect()">
-        <option ng-repeat="action in vm.history" ng-value="action.value">
-            {{action.value==="-1" ? ("> " + action.label + " <") : action.label}}
-        </option>
-    </select>
+<div class="aspect__row dashboard-form">
+  <select
+    multiple
+    id="editorHistory"
+    style="height: 280px"
+    ng-model="vm.lastAction"
+    ng-dblclick="vm.historySelect()"
+    ng-keydown="$event.keyCode === 13 && vm.historySelect()"
+  >
+    <option ng-repeat="action in vm.history" ng-value="action.value">
+      {{action.value==="-1" ? ("> " + action.label + " <") : action.label}}
+    </option>
+  </select>
 </div>
