@@ -1,7 +1,8 @@
 const onInit = (app) => {
     console.log("onAppInit", app.getDataTree());
     taipyManager.app = app;
-    taipyManager.processVariableData();
+    // Check if there are any changes in dataTree
+    taipyManager.checkForChanges();
 };
 
 const init = () => {
