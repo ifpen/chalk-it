@@ -29,7 +29,11 @@ function DatanodeDependency() {
 
   var dependencyStructure = {};
 
-  var extraStartNodes = [];
+  var extraStartNodesList = new Map();
+  var setvarList = new Map();
+  var processedSetvarList = new Map();
+  var memorydataNodeList = new Map();
+
   var allDisconnectedGraphs = [];
   var SingletonNodeList = []; //isolated node
 
@@ -46,7 +50,7 @@ function DatanodeDependency() {
     delete dependencyStructure[dsName];
 
     // removes edges from other nodes to the one to be deleted
-    for (var ds in dependencyStructure) {
+    for (let ds in dependencyStructure) {
       if (dependencyStructure[ds].has(dsName)) {
         dependencyStructure[ds].delete(dsName);
       }
@@ -75,8 +79,8 @@ function DatanodeDependency() {
   // returns an iterator over the set of the direct predecessors of node
   // NP : construire la structure des données des prédécesseurs en parallèle à celle des successeurs
   function getPredecessorsSet(node) {
-    var predSet = new Set();
-    for (var k in dependencyStructure) {
+    let predSet = new Set();
+    for (let k in dependencyStructure) {
       if (dependencyStructure[k].has(node)) {
         predSet.add(k);
       }
@@ -99,9 +103,10 @@ function DatanodeDependency() {
   }
 
   /*-----------------getDescendants-----------------*/
-  function getDescendants(startNodes) {
-    var graph, loop, desc;
-    [graph, loop] = buildGraph();
+  function getDescendants(startNodes, withoutMem) {
+    let graph, loop;
+    if (withoutMem) [graph, loop] = buildGraphWithoutMemory();
+    else [graph, loop] = buildGraph();
     //startNodesDesc = new Set(startNodes); //AEF descendants should not include the start node
     startNodesDesc = new Set();
     startNodes.forEach(function (elem) {
@@ -174,7 +179,7 @@ function DatanodeDependency() {
 
   /*-----------------getBelongingDisconnectedGraph-----------------*/
   function getBelongingDisconnectedGraph(node, disconnectedGraphs) {
-    var graph;
+    let graph;
     disconnectedGraphs.some(function (disconGraph) {
       if (disconGraph.has(node)) {
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
@@ -188,8 +193,8 @@ function DatanodeDependency() {
   /*-----------------computeAllDisconnectedGraphs-----------------*/
   function computeAllDisconnectedGraphs() {
     //compute once a time all disconnected graphs
-    var allSourceNodes = getSourceNodes();
-    var disconnectedGraphs = [];
+    const allSourceNodes = getSourceNodesWithMemory();
+    let disconnectedGraphs = [];
     allDisconnectedGraphs = getDisconnectedGraphs(allSourceNodes, disconnectedGraphs);
     if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs: ', allDisconnectedGraphs);
@@ -260,10 +265,10 @@ function DatanodeDependency() {
   /*-----------------getSourceNodes-----------------*/
   // returs the source nodes of the graph (whose indegree is 0)
   function getSourceNodes() {
-    var graph = buildGraphDS();
-    var nodes = graph.nodes();
-    var sourceNodes = [];
-    for (var node in nodes) {
+    const graph = buildGraphDS();
+    const nodes = graph.nodes();
+    let sourceNodes = [];
+    for (let node in nodes) {
       if (graph.indegree(nodes[node]) == 0) {
         sourceNodes.push(nodes[node]);
       }
@@ -271,38 +276,119 @@ function DatanodeDependency() {
     return sourceNodes;
   }
 
-  /*-----------------getExtraStartNodes-----------------*/
-  // returs the extra start nodes came from user refresh, setvalue, edit and add
-  function getExtraStartNodes() {
-    return extraStartNodes;
+  /*-----------------getSourceNodesWithMemory-----------------*/
+  function getSourceNodesWithMemory() {
+    const graph = buildGraphDS();
+    const nodes = graph.nodes();
+    let sourceNodes = [];
+    for (let node in nodes) {
+      if (graph.indegree(nodes[node]) == 0) {
+        sourceNodes.push(nodes[node]);
+      } else if (nodes[node].indexOf('pastValue_') !== -1) {
+        sourceNodes.push(nodes[node]);
+      }
+    }
+    return sourceNodes;
   }
 
-  /*-----------------setExtraStartNodes-----------------*/
-  // add the extra start node came from user refresh, setvalue, edit and add
-  function setExtraStartNodes(dsName, callOrigin) {
-    if (!_.isUndefined(extraStartNodes[dsName])) {
+  /*-----------------getExtraStartNodesList-----------------*/
+  // returs the extra start nodes came from user refresh, setvalue, setfile, edit and add
+  function getExtraStartNodesList() {
+    return extraStartNodesList;
+  }
+
+  /*-----------------addExtraStartNodesList-----------------*/
+  // add the extra start node came from user refresh, setvalue, setfile, edit and add
+  function addExtraStartNodesList(dsName, callOrigin) {
+    if (extraStartNodesList.has(dsName)) {
       xdashNotifications.manageNotification(
         'info',
         dsName,
         dsName + ' is called many consecutif times while scheduler is in progress'
       );
     }
-    extraStartNodes[dsName] = callOrigin;
+    extraStartNodesList.set(dsName, callOrigin);
   }
 
-  /*-----------------clearExtraStartNodes-----------------*/
-  // clear the extra start nodes came from user refresh, setvalue, edit and add
-  function clearExtraStartNodes() {
-    for (var prop in extraStartNodes) {
-      delete extraStartNodes[prop];
+  /*-----------------clearExtraStartNodesList-----------------*/
+  // clear the extra start nodes came from user refresh, setvalue, setfile, edit and add
+  function clearExtraStartNodesList() {
+    extraStartNodesList.clear();
+  }
+
+  /*-----------------getSetvarList-----------------*/
+  function getSetvarList() {
+    return setvarList;
+  }
+
+  /*-----------------addSetvarList-----------------*/
+  function addSetvarList(dsName, callOrigin) {
+    if (setvarList.has(dsName)) {
+      if (setvarList.get(dsName) !== callOrigin)
+        xdashNotifications.manageNotification(
+          'warning',
+          dsName,
+          'Possible undeterminism: setVariable of "' +
+            dsName +
+            '" is used more than once in other dataNodes as: "' +
+            setvarList.get(dsName) +
+            '" and "' +
+            callOrigin +
+            '"'
+        );
+    }
+    setvarList.set(dsName, callOrigin);
+  }
+
+  /*-----------------clearSetvarList-----------------*/
+  function clearSetvarList() {
+    setvarList.clear();
+  }
+
+  /*-----------------getProcessedSetvarList-----------------*/
+  function getProcessedSetvarList() {
+    return processedSetvarList;
+  }
+
+  /*-----------------addProcessedSetvarList-----------------*/
+  function addProcessedSetvarList(sourceMap) {
+    for (const [key, value] of sourceMap.entries()) {
+      processedSetvarList.set(key, value);
+    }
+  }
+
+  /*-----------------clearProcessedSetvarList-----------------*/
+  function clearProcessedSetvarList() {
+    processedSetvarList.clear();
+  }
+
+  /*-----------------getMemorydataNodeList-----------------*/
+  function getMemorydataNodeList() {
+    return memorydataNodeList;
+  }
+  /*-----------------addMemorydataNodeList-----------------*/
+  function addMemorydataNodeList(dsName) {
+    memorydataNodeList.set(dsName, 'memory');
+  }
+
+  /*-----------------clearMemorydataNodeList-----------------*/
+  function clearMemorydataNodeList(memList) {
+    if (_.isUndefined(memList)) {
+      memorydataNodeList.clear();
+    } else {
+      memList.forEach((item) => {
+        if (memorydataNodeList.has(item)) {
+          memorydataNodeList.delete(item);
+        }
+      });
     }
   }
 
   /*-----------------hasPredecessors-----------------*/
   // returns whether a node has predecessors
   function hasPredecessors(node) {
-    var bDependent = false;
-    for (var k in dependencyStructure) {
+    let bDependent = false;
+    for (let k in dependencyStructure) {
       if (dependencyStructure[k].has(node)) {
         bDependent = true;
         break;
@@ -325,13 +411,13 @@ function DatanodeDependency() {
   /*-----------------renameNode-----------------*/
   // renames the node in the dependency structure
   function renameNode(oldDsName, newDsName) {
-    for (var ds in dependencyStructure) {
+    for (let ds in dependencyStructure) {
       if (dependencyStructure[ds].has(oldDsName)) {
         dependencyStructure[ds].delete(oldDsName);
         dependencyStructure[ds].add(newDsName);
       }
     }
-    var dsSave = dependencyStructure[oldDsName];
+    const dsSave = dependencyStructure[oldDsName];
     delete dependencyStructure[oldDsName];
     dependencyStructure[newDsName] = dsSave;
   }
@@ -339,7 +425,7 @@ function DatanodeDependency() {
   /*-----------------removeMissedDependantDatanodes-----------------*/
   // used for formula update
   function removeMissedDependantDatanodes(allDsNames, dsName) {
-    for (var ds in dependencyStructure) {
+    for (let ds in dependencyStructure) {
       if (!allDsNames.has(ds)) {
         if (dependencyStructure[ds].has(dsName)) {
           dependencyStructure[ds].delete(dsName);
@@ -352,18 +438,44 @@ function DatanodeDependency() {
   // private function
   // builds a Graph object from tarjan-graph.js
   function buildGraph() {
-    var graph = new Graph();
-    var loop = false;
-    var ds;
-    for (ds in dependencyStructure) {
-      var node = ds;
-      //var edges = Array.from(dependencyMatrix[ds]); // MBG remove EC6
-      var edges = [];
+    let graph = new Graph();
+    let loop = false;
+    for (let ds in dependencyStructure) {
+      let node = ds;
+      let edges = [];
       dependencyStructure[ds].forEach(function (value) {
         edges.push(value);
       });
       graph.add(node, edges);
-      for (var i in edges) {
+      for (let i in edges) {
+        if (edges[i] === node) {
+          loop = true;
+        }
+      }
+    }
+    return [graph, loop];
+  }
+
+  /*-----------------buildGraph-----------------*/
+  // private function
+  // builds a Graph object from tarjan-graph.js
+  function buildGraphWithoutMemory() {
+    let graph = new Graph();
+    let loop = false;
+    for (let ds in dependencyStructure) {
+      let node = ds;
+      let edges = [];
+      dependencyStructure[ds].forEach(function (value) {
+        let add_edge = true;
+        let match = value.match(/pastValue_(.+)/);
+        if (match) {
+          let origin_name = match[1];
+          if (ds == origin_name) add_edge = false;
+        }
+        if (add_edge) edges.push(value);
+      });
+      graph.add(node, edges);
+      for (let i in edges) {
         if (edges[i] === node) {
           loop = true;
         }
@@ -375,9 +487,9 @@ function DatanodeDependency() {
   /*-----------------buildGraphDS-----------------*/
   // constructs a GraphDS object from graph-data-structure.js
   function buildGraphDS() {
-    var graph = new GraphDS();
-    for (var ds in dependencyStructure) {
-      var node = ds;
+    let graph = new GraphDS();
+    for (let ds in dependencyStructure) {
+      let node = ds;
       graph.addNode(node);
       dependencyStructure[ds].forEach(function (value) {
         graph.addEdge(node, value);
@@ -390,7 +502,7 @@ function DatanodeDependency() {
   // constructs a GraphDS object from graph-data-structure.js
   // then use it to get topological order
   function topologicalSort() {
-    var graph = buildGraphDS();
+    let graph = buildGraphDS();
     //remove nodes from graph that doesn't exist as datanodes
     graph.nodes().forEach(function (nodeName) {
       if (!datanodesManager.foundDatanode(nodeName)) {
@@ -398,7 +510,7 @@ function DatanodeDependency() {
       }
     });
     //
-    var topologicalOrder = graph.topologicalSort();
+    const topologicalOrder = graph.topologicalSort();
     return topologicalOrder;
   }
 
@@ -407,8 +519,8 @@ function DatanodeDependency() {
   // then detects cycles
   // that way we ensure, by construction, that we have a DAG
   function detectCycles() {
-    var graph, loop;
-    [graph, loop] = buildGraph();
+    let graph, loop;
+    [graph, loop] = buildGraphWithoutMemory();
     return { hasCycle: graph.hasCycle(), getCycles: graph.getCycles(), hasLoop: loop };
   }
 
@@ -425,6 +537,7 @@ function DatanodeDependency() {
     hasSuccessors,
     hasPredecessors,
     getSourceNodes,
+    getSourceNodesWithMemory: getSourceNodesWithMemory,
     getDescendantsinBFS,
     getDescendants,
     getDisconnectedGraphs,
@@ -436,9 +549,18 @@ function DatanodeDependency() {
     renameNode,
     topologicalSort,
     detectCycles,
-    getExtraStartNodes,
-    setExtraStartNodes,
-    clearExtraStartNodes,
+    getExtraStartNodesList,
+    addExtraStartNodesList,
+    clearExtraStartNodesList,
+    getSetvarList,
+    addSetvarList,
+    clearSetvarList,
+    getProcessedSetvarList,
+    addProcessedSetvarList,
+    clearProcessedSetvarList,
+    getMemorydataNodeList,
+    addMemorydataNodeList,
+    clearMemorydataNodeList,
     getAllsingletonNodes,
     isSingletonNode,
     updateDisconnectedGraphsList,

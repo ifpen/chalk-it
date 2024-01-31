@@ -1,69 +1,72 @@
-<div ng-include="'source/angular/modules/python/modals/edit_image.html'" class="cancel__container" js-reset-layer=""
-    ng-class="{'open' : openedImgEditor}" ng-show="openedImgEditor"></div>
+<div
+  ng-include="'source/angular/modules/python/modals/edit_image.html'"
+  class="cancel__container"
+  js-reset-layer=""
+  ng-class="{'open' : openedImgEditor}"
+  ng-show="openedImgEditor"
+></div>
 <div class="main__layout--content--top">
-    <!-- title -->
-    <h1>{{UserProfile.userName}}'s python images</h1>
-    <!-- buttons -->
-    <div class="main__layout--content--top__actions">
-        <!-- refresh -->
-        <button class="btn btn-rounded filters__btn" ng-click="refreshStates()">
-            <i class="basic icn-refresh"></i> Refresh
-        </button>
-        <!-- add -->
-        <button class="btn btn-rounded" ng-click="newImage()">
-            <i class="basic icn-add"></i> New
-        </button>
-    </div>
+  <!-- title -->
+  <h1>{{UserProfile.userName}}'s python images</h1>
+  <!-- buttons -->
+  <div class="main__layout--content--top__actions">
+    <!-- refresh -->
+    <button class="btn btn-rounded filters__btn" ng-click="refreshStates()">
+      <i class="basic icn-refresh"></i> Refresh
+    </button>
+    <!-- add -->
+    <button class="btn btn-rounded" ng-click="newImage()"><i class="basic icn-add"></i> New</button>
+  </div>
 </div>
 <!-- grid of cards images-->
 <div ng-if="images" class="main__layout--content__grid">
-    <div class="main__layout--content__grid--card" ng-repeat="image in images | orderBy: 'name' track by image.Id">
-        <div class="card__banner">
-            <!-- <a href=""> -->
-            <img src="source/assets/img/docker.png" alt="Python image" style="object-fit: fill;" class="img-datanode" />
-            <!-- </a> -->
-            <div class="card__banner--top">
-                <ul class="actions__list" ng-if="!uploads[image.Id] && uploads[image.Id]!==0">
-                    <li>
-                        <a ng-click="editImage(image)" title="Edit">
-                            <i class="basic icn-edit"></i>
-                        </a>
-                    </li>
-                    <li ng-if="showBuildButton(image)">
-                        <a ng-click="buildImage(image)" title="Build">
-                            <i class="fa fa-gear" style="font-size:23px"></i>
-                        </a>
-                    </li>
-                    <li ng-if="showOutputButton(image)">
-                        <a ng-click="showBuildOutput(image)" title="Output">
-                            <i class="basic icn-eye"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="removeImage(image)" title="Delete">
-                            <i class="basic icn-delete"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- footer card -->
-        <div class="card_footer">
-            <h3>{{image.Name}}&nbsp; </h3>
-            <ul class="tags__list">
-
-                <li
-                    ng-class="{'tag tag--error': errorValues.includes(getStatus(image)), 'tag tag--pending':pendingValues.includes(getStatus(image)), 'tag tag--ok': getStatus(image) === 'Ready'}">
-                    {{getStatus(image)}}</li>
-                <li class="tag tag--none">{{getSize(image)}}</li>
-                <li ng-if="uploads[image.Id] || uploads[image.Id]===0"
-                    style="border: 1px solid black; width: 80%; height: 1em">
-                    <div ng-style="{width: ''+uploads[image.Id]+'%'}"
-                        style="height: -webkit-fill-available;display: block; background-color:var(--second-text-color);">
-                    </div>
-                </li>
-            </ul>
-        </div>
-
+  <div class="main__layout--content__grid--card" ng-repeat="image in images | orderBy: 'name' track by image.Id">
+    <div class="card__banner">
+      <!-- <a href=""> -->
+      <img src="source/assets/img/docker.png" alt="Python image" style="object-fit: fill" class="img-datanode" />
+      <!-- </a> -->
+      <div class="card__banner--top">
+        <ul class="actions__list" ng-if="!uploads[image.Id] && uploads[image.Id]!==0">
+          <li>
+            <a ng-click="editImage(image)" title="Edit">
+              <i class="basic icn-edit"></i>
+            </a>
+          </li>
+          <li ng-if="showBuildButton(image)">
+            <a ng-click="buildImage(image)" title="Build">
+              <i class="fa fa-gear" style="font-size: 23px"></i>
+            </a>
+          </li>
+          <li ng-if="showOutputButton(image)">
+            <a ng-click="showBuildOutput(image)" title="Output">
+              <i class="basic icn-eye"></i>
+            </a>
+          </li>
+          <li>
+            <a ng-click="removeImage(image)" title="Delete">
+              <i class="basic icn-delete"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
+    <!-- footer card -->
+    <div class="card_footer">
+      <h3>{{image.Name}}&nbsp;</h3>
+      <ul class="tags__list">
+        <li
+          ng-class="{'tag tag--error': errorValues.includes(getStatus(image)), 'tag tag--pending':pendingValues.includes(getStatus(image)), 'tag tag--ok': getStatus(image) === 'Ready'}"
+        >
+          {{getStatus(image)}}
+        </li>
+        <li class="tag tag--none">{{getSize(image)}}</li>
+        <li ng-if="uploads[image.Id] || uploads[image.Id]===0" style="border: 1px solid black; width: 80%; height: 1em">
+          <div
+            ng-style="{width: ''+uploads[image.Id]+'%'}"
+            style="height: -webkit-fill-available; display: block; background-color: var(--second-text-color)"
+          ></div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

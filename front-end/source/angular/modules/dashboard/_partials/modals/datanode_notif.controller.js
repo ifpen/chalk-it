@@ -7,19 +7,17 @@
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                               │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular
-    .module('modules.dashboard')
-    .controller('DatanodeNotifController', ['$scope',
-        function($scope) {
+angular.module('modules.dashboard').controller('DatanodeNotifController', [
+  '$scope',
+  function ($scope) {
+    $scope.notificationFilerValue = 'all';
+    $scope.showOneDatanodeData = {};
 
-            $scope.notificationFilerValue = "all";
-            $scope.showOneDatanodeData = {};
+    $scope.$watch('popup.data', (data) => ($scope.showOneDatanodeData = data));
 
-            $scope.$watch('popup.data', data => $scope.showOneDatanodeData = data);
-
-            /*---------- Notification filter button ----------------*/
-            $scope.notificationFilters = function(filter) {
-                $scope.notificationFilerValue = filter;
-            };
-        }
-    ]);
+    /*---------- Notification filter button ----------------*/
+    $scope.notificationFilters = function (filter) {
+      $scope.notificationFilerValue = filter;
+    };
+  },
+]);

@@ -24,7 +24,11 @@ fs.readFile('./gulpFiles/jsFiles.json', 'utf8', (err, data) => {
   } else {
     // Parse the JSON data into an object
     const jsFiles = JSON.parse(data);
-    jsAll = jsFiles.xDashRuntime.header.concat(jsFiles.xDashRuntime.body, jsFiles.xDashStudio.header, jsFiles.xDashStudio.body);
+    jsAll = jsFiles.xDashRuntime.header.concat(
+      jsFiles.xDashRuntime.body,
+      jsFiles.xDashStudio.header,
+      jsFiles.xDashStudio.body
+    );
   }
 
   // Convert the concatenated array to a Set object to remove duplicates
@@ -45,5 +49,4 @@ fs.readFile('./gulpFiles/jsFiles.json', 'utf8', (err, data) => {
   });
 
   console.log('Filtered list: ', filteredList);
-
-});	
+});

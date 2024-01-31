@@ -49,24 +49,21 @@ body > .ui-pnotify-modal-overlay {
   opacity: 0;
 }
 .ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move {
-  transition: opacity 0.4s linear, left 0.5s ease, top 0.5s ease,
-    right 0.5s ease, bottom 0.5s ease;
+  transition: opacity 0.4s linear, left 0.5s ease, top 0.5s ease, right 0.5s ease, bottom 0.5s ease;
 }
 .ui-pnotify.ui-pnotify-fade-normal {
   transition: opacity 0.25s linear;
   opacity: 0;
 }
 .ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move {
-  transition: opacity 0.25s linear, left 0.5s ease, top 0.5s ease,
-    right 0.5s ease, bottom 0.5s ease;
+  transition: opacity 0.25s linear, left 0.5s ease, top 0.5s ease, right 0.5s ease, bottom 0.5s ease;
 }
 .ui-pnotify.ui-pnotify-fade-fast {
   transition: opacity 0.1s linear;
   opacity: 0;
 }
 .ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move {
-  transition: opacity 0.1s linear, left 0.5s ease, top 0.5s ease,
-    right 0.5s ease, bottom 0.5s ease;
+  transition: opacity 0.1s linear, left 0.5s ease, top 0.5s ease, right 0.5s ease, bottom 0.5s ease;
 }
 .ui-pnotify.ui-pnotify-fade-in {
   opacity: 1;
@@ -83,14 +80,14 @@ body > .ui-pnotify-modal-overlay {
   margin: 0;
 }
 .ui-pnotify-container:after {
-  content: " ";
+  content: ' ';
   visibility: hidden;
   display: block;
   height: 0;
   clear: both;
 }
 .ui-pnotify-container.ui-pnotify-sharp {
-  border-radius: br("0");
+  border-radius: br('0');
 }
 .ui-pnotify-title {
   display: block;
@@ -142,7 +139,7 @@ body > .ui-pnotify-modal-overlay {
   padding: 15px;
   margin-bottom: 20px;
   border: 1px solid transparent;
-  border-radius: br("2");
+  border-radius: br('2');
 }
 
 .alert h4 {

@@ -13,7 +13,7 @@
   border: 0px solid #e7e7e7;
   background-color: var(--light-color);
   color: var(--light-color-text);
-  font-size: fs("xs");
+  font-size: fs('xs');
   font-family: var(--font-family-mono);
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -58,7 +58,7 @@
 }
 
 .vignette {
-  font-size: fs("sm");
+  font-size: fs('sm');
   line-height: 20px;
 }
 
@@ -121,7 +121,7 @@ div > .draggable ::-webkit-scrollbar {
 
 div > .draggable::-webkit-scrollbar-thumb {
   background: #dedede;
-  border-radius: br("8");
+  border-radius: br('8');
 }
 
 // Apply the element you want to drag/resize
@@ -136,7 +136,7 @@ div > .draggable::-webkit-scrollbar-thumb {
   padding: 5px;
   display: none;
   color: #fff;
-  font-size: fs("xs");
+  font-size: fs('xs');
 }
 
 // Dropper columns
@@ -185,15 +185,11 @@ div > .draggable::-webkit-scrollbar-thumb {
   outline: 2px solid var(--success-color);
 }
 
-#dashboard-editor
-  .drag-drop-move.widget-selected.widget-selected-last
-  .widget-overlay {
+#dashboard-editor .drag-drop-move.widget-selected.widget-selected-last .widget-overlay {
   background-color: rgb(var(--primary-color-rgb) / 0.17);
 }
 
-#dashboard-editor
-  .drag-drop-move.widget-selected.widget-selected-last:hover
-  .widget-overlay {
+#dashboard-editor .drag-drop-move.widget-selected.widget-selected-last:hover .widget-overlay {
   background-color: rgb(var(--primary-color-rgb) / 0.4);
 }
 

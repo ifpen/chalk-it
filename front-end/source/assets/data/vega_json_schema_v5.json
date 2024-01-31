@@ -5,41 +5,24 @@
     "autosize": {
       "oneOf": [
         {
-          "enum": [
-            "pad",
-            "fit",
-            "fit-x",
-            "fit-y",
-            "none"
-          ],
+          "enum": ["pad", "fit", "fit-x", "fit-y", "none"],
           "default": "pad"
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "pad",
-                "fit",
-                "fit-x",
-                "fit-y",
-                "none"
-              ],
+              "enum": ["pad", "fit", "fit-x", "fit-y", "none"],
               "default": "pad"
             },
             "resize": {
               "type": "boolean"
             },
             "contains": {
-              "enum": [
-                "content",
-                "padding"
-              ]
+              "enum": ["content", "padding"]
             }
           },
-          "required": [
-            "type"
-          ],
+          "required": ["type"],
           "additionalProperties": false
         },
         {
@@ -53,12 +36,7 @@
         "orient": {
           "oneOf": [
             {
-              "enum": [
-                "top",
-                "bottom",
-                "left",
-                "right"
-              ]
+              "enum": ["top", "bottom", "left", "right"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -117,11 +95,7 @@
         "formatType": {
           "oneOf": [
             {
-              "enum": [
-                "number",
-                "time",
-                "utc"
-              ]
+              "enum": ["number", "time", "utc"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -216,11 +190,7 @@
         "titleAlign": {
           "oneOf": [
             {
-              "enum": [
-                "left",
-                "right",
-                "center"
-              ]
+              "enum": ["left", "right", "center"]
             },
             {
               "$ref": "#/definitions/alignValue"
@@ -230,12 +200,7 @@
         "titleAnchor": {
           "oneOf": [
             {
-              "enum": [
-                null,
-                "start",
-                "middle",
-                "end"
-              ]
+              "enum": [null, "start", "middle", "end"]
             },
             {
               "$ref": "#/definitions/anchorValue"
@@ -275,14 +240,7 @@
         "titleBaseline": {
           "oneOf": [
             {
-              "enum": [
-                "top",
-                "middle",
-                "bottom",
-                "alphabetic",
-                "line-top",
-                "line-bottom"
-              ]
+              "enum": ["top", "middle", "bottom", "alphabetic", "line-top", "line-bottom"]
             },
             {
               "$ref": "#/definitions/baselineValue"
@@ -654,11 +612,7 @@
         "labelAlign": {
           "oneOf": [
             {
-              "enum": [
-                "left",
-                "right",
-                "center"
-              ]
+              "enum": ["left", "right", "center"]
             },
             {
               "$ref": "#/definitions/alignValue"
@@ -668,14 +622,7 @@
         "labelBaseline": {
           "oneOf": [
             {
-              "enum": [
-                "top",
-                "middle",
-                "bottom",
-                "alphabetic",
-                "line-top",
-                "line-bottom"
-              ]
+              "enum": ["top", "middle", "bottom", "alphabetic", "line-top", "line-bottom"]
             },
             {
               "$ref": "#/definitions/baselineValue"
@@ -879,10 +826,7 @@
           "additionalProperties": false
         }
       },
-      "required": [
-        "orient",
-        "scale"
-      ],
+      "required": ["orient", "scale"],
       "additionalProperties": false
     },
     "labelOverlap": {
@@ -891,10 +835,7 @@
           "type": "boolean"
         },
         {
-          "enum": [
-            "parity",
-            "greedy"
-          ]
+          "enum": ["parity", "greedy"]
         },
         {
           "$ref": "#/definitions/signalRef"
@@ -904,10 +845,7 @@
     "tickBand": {
       "oneOf": [
         {
-          "enum": [
-            "center",
-            "extent"
-          ]
+          "enum": ["center", "extent"]
         },
         {
           "$ref": "#/definitions/signalRef"
@@ -920,16 +858,7 @@
           "type": "number"
         },
         {
-          "enum": [
-            "millisecond",
-            "second",
-            "minute",
-            "hour",
-            "day",
-            "week",
-            "month",
-            "year"
-          ]
+          "enum": ["millisecond", "second", "minute", "hour", "day", "week", "month", "year"]
         },
         {
           "type": "object",
@@ -937,16 +866,7 @@
             "interval": {
               "oneOf": [
                 {
-                  "enum": [
-                    "millisecond",
-                    "second",
-                    "minute",
-                    "hour",
-                    "day",
-                    "week",
-                    "month",
-                    "year"
-                  ]
+                  "enum": ["millisecond", "second", "minute", "hour", "day", "week", "month", "year"]
                 },
                 {
                   "$ref": "#/definitions/signalRef"
@@ -957,9 +877,7 @@
               "$ref": "#/definitions/numberOrSignal"
             }
           },
-          "required": [
-            "interval"
-          ],
+          "required": ["interval"],
           "additionalProperties": false
         },
         {
@@ -976,9 +894,7 @@
           "type": "object",
           "properties": {
             "input": {
-              "enum": [
-                "checkbox"
-              ]
+              "enum": ["checkbox"]
             },
             "element": {
               "$ref": "#/definitions/element"
@@ -990,19 +906,14 @@
               "type": "string"
             }
           },
-          "required": [
-            "input"
-          ],
+          "required": ["input"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "input": {
-              "enum": [
-                "radio",
-                "select"
-              ]
+              "enum": ["radio", "select"]
             },
             "element": {
               "$ref": "#/definitions/element"
@@ -1023,19 +934,14 @@
               "type": "string"
             }
           },
-          "required": [
-            "input",
-            "options"
-          ],
+          "required": ["input", "options"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "input": {
-              "enum": [
-                "range"
-              ]
+              "enum": ["range"]
             },
             "element": {
               "$ref": "#/definitions/element"
@@ -1056,9 +962,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "input"
-          ],
+          "required": ["input"],
           "additionalProperties": false
         },
         {
@@ -1066,12 +970,7 @@
           "properties": {
             "input": {
               "not": {
-                "enum": [
-                  "checkbox",
-                  "radio",
-                  "range",
-                  "select"
-                ]
+                "enum": ["checkbox", "radio", "range", "select"]
               }
             },
             "element": {
@@ -1084,9 +983,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "input"
-          ],
+          "required": ["input"],
           "additionalProperties": true
         },
         {
@@ -1102,9 +999,7 @@
               "type": "number"
             }
           },
-          "required": [
-            "element"
-          ],
+          "required": ["element"],
           "additionalProperties": false
         }
       ]
@@ -1130,9 +1025,7 @@
               "$ref": "#/definitions/onTrigger"
             }
           },
-          "required": [
-            "name"
-          ],
+          "required": ["name"],
           "additionalProperties": false
         },
         {
@@ -1165,10 +1058,7 @@
               "$ref": "#/definitions/onTrigger"
             }
           },
-          "required": [
-            "source",
-            "name"
-          ],
+          "required": ["source", "name"],
           "additionalProperties": false
         },
         {
@@ -1190,9 +1080,7 @@
                         "parse": {
                           "oneOf": [
                             {
-                              "enum": [
-                                "auto"
-                              ]
+                              "enum": ["auto"]
                             },
                             {
                               "type": "object",
@@ -1200,12 +1088,7 @@
                               "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "enum": [
-                                      "boolean",
-                                      "number",
-                                      "date",
-                                      "string"
-                                    ]
+                                    "enum": ["boolean", "number", "date", "string"]
                                   },
                                   {
                                     "type": "string",
@@ -1225,16 +1108,12 @@
                       "type": "object",
                       "properties": {
                         "type": {
-                          "enum": [
-                            "json"
-                          ]
+                          "enum": ["json"]
                         },
                         "parse": {
                           "oneOf": [
                             {
-                              "enum": [
-                                "auto"
-                              ]
+                              "enum": ["auto"]
                             },
                             {
                               "type": "object",
@@ -1242,12 +1121,7 @@
                               "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "enum": [
-                                      "boolean",
-                                      "number",
-                                      "date",
-                                      "string"
-                                    ]
+                                    "enum": ["boolean", "number", "date", "string"]
                                   },
                                   {
                                     "type": "string",
@@ -1274,10 +1148,7 @@
                       "type": "object",
                       "properties": {
                         "type": {
-                          "enum": [
-                            "csv",
-                            "tsv"
-                          ]
+                          "enum": ["csv", "tsv"]
                         },
                         "header": {
                           "type": "array",
@@ -1288,9 +1159,7 @@
                         "parse": {
                           "oneOf": [
                             {
-                              "enum": [
-                                "auto"
-                              ]
+                              "enum": ["auto"]
                             },
                             {
                               "type": "object",
@@ -1298,12 +1167,7 @@
                               "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "enum": [
-                                      "boolean",
-                                      "number",
-                                      "date",
-                                      "string"
-                                    ]
+                                    "enum": ["boolean", "number", "date", "string"]
                                   },
                                   {
                                     "type": "string",
@@ -1318,18 +1182,14 @@
                           ]
                         }
                       },
-                      "required": [
-                        "type"
-                      ],
+                      "required": ["type"],
                       "additionalProperties": false
                     },
                     {
                       "type": "object",
                       "properties": {
                         "type": {
-                          "enum": [
-                            "dsv"
-                          ]
+                          "enum": ["dsv"]
                         },
                         "delimiter": {
                           "type": "string"
@@ -1343,9 +1203,7 @@
                         "parse": {
                           "oneOf": [
                             {
-                              "enum": [
-                                "auto"
-                              ]
+                              "enum": ["auto"]
                             },
                             {
                               "type": "object",
@@ -1353,12 +1211,7 @@
                               "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "enum": [
-                                      "boolean",
-                                      "number",
-                                      "date",
-                                      "string"
-                                    ]
+                                    "enum": ["boolean", "number", "date", "string"]
                                   },
                                   {
                                     "type": "string",
@@ -1373,10 +1226,7 @@
                           ]
                         }
                       },
-                      "required": [
-                        "type",
-                        "delimiter"
-                      ],
+                      "required": ["type", "delimiter"],
                       "additionalProperties": false
                     },
                     {
@@ -1385,9 +1235,7 @@
                           "type": "object",
                           "properties": {
                             "type": {
-                              "enum": [
-                                "topojson"
-                              ]
+                              "enum": ["topojson"]
                             },
                             "feature": {
                               "$ref": "#/definitions/stringOrSignal"
@@ -1396,19 +1244,14 @@
                               "$ref": "#/definitions/stringOrSignal"
                             }
                           },
-                          "required": [
-                            "type",
-                            "feature"
-                          ],
+                          "required": ["type", "feature"],
                           "additionalProperties": false
                         },
                         {
                           "type": "object",
                           "properties": {
                             "type": {
-                              "enum": [
-                                "topojson"
-                              ]
+                              "enum": ["topojson"]
                             },
                             "mesh": {
                               "$ref": "#/definitions/stringOrSignal"
@@ -1417,17 +1260,10 @@
                               "$ref": "#/definitions/stringOrSignal"
                             },
                             "filter": {
-                              "enum": [
-                                "interior",
-                                "exterior",
-                                null
-                              ]
+                              "enum": ["interior", "exterior", null]
                             }
                           },
-                          "required": [
-                            "type",
-                            "mesh"
-                          ],
+                          "required": ["type", "mesh"],
                           "additionalProperties": false
                         }
                       ]
@@ -1455,10 +1291,7 @@
               "$ref": "#/definitions/onTrigger"
             }
           },
-          "required": [
-            "url",
-            "name"
-          ],
+          "required": ["url", "name"],
           "additionalProperties": false
         },
         {
@@ -1485,9 +1318,7 @@
                         "parse": {
                           "oneOf": [
                             {
-                              "enum": [
-                                "auto"
-                              ]
+                              "enum": ["auto"]
                             },
                             {
                               "type": "object",
@@ -1495,12 +1326,7 @@
                               "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "enum": [
-                                      "boolean",
-                                      "number",
-                                      "date",
-                                      "string"
-                                    ]
+                                    "enum": ["boolean", "number", "date", "string"]
                                   },
                                   {
                                     "type": "string",
@@ -1520,16 +1346,12 @@
                       "type": "object",
                       "properties": {
                         "type": {
-                          "enum": [
-                            "json"
-                          ]
+                          "enum": ["json"]
                         },
                         "parse": {
                           "oneOf": [
                             {
-                              "enum": [
-                                "auto"
-                              ]
+                              "enum": ["auto"]
                             },
                             {
                               "type": "object",
@@ -1537,12 +1359,7 @@
                               "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "enum": [
-                                      "boolean",
-                                      "number",
-                                      "date",
-                                      "string"
-                                    ]
+                                    "enum": ["boolean", "number", "date", "string"]
                                   },
                                   {
                                     "type": "string",
@@ -1569,10 +1386,7 @@
                       "type": "object",
                       "properties": {
                         "type": {
-                          "enum": [
-                            "csv",
-                            "tsv"
-                          ]
+                          "enum": ["csv", "tsv"]
                         },
                         "header": {
                           "type": "array",
@@ -1583,9 +1397,7 @@
                         "parse": {
                           "oneOf": [
                             {
-                              "enum": [
-                                "auto"
-                              ]
+                              "enum": ["auto"]
                             },
                             {
                               "type": "object",
@@ -1593,12 +1405,7 @@
                               "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "enum": [
-                                      "boolean",
-                                      "number",
-                                      "date",
-                                      "string"
-                                    ]
+                                    "enum": ["boolean", "number", "date", "string"]
                                   },
                                   {
                                     "type": "string",
@@ -1613,18 +1420,14 @@
                           ]
                         }
                       },
-                      "required": [
-                        "type"
-                      ],
+                      "required": ["type"],
                       "additionalProperties": false
                     },
                     {
                       "type": "object",
                       "properties": {
                         "type": {
-                          "enum": [
-                            "dsv"
-                          ]
+                          "enum": ["dsv"]
                         },
                         "delimiter": {
                           "type": "string"
@@ -1638,9 +1441,7 @@
                         "parse": {
                           "oneOf": [
                             {
-                              "enum": [
-                                "auto"
-                              ]
+                              "enum": ["auto"]
                             },
                             {
                               "type": "object",
@@ -1648,12 +1449,7 @@
                               "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "enum": [
-                                      "boolean",
-                                      "number",
-                                      "date",
-                                      "string"
-                                    ]
+                                    "enum": ["boolean", "number", "date", "string"]
                                   },
                                   {
                                     "type": "string",
@@ -1668,10 +1464,7 @@
                           ]
                         }
                       },
-                      "required": [
-                        "type",
-                        "delimiter"
-                      ],
+                      "required": ["type", "delimiter"],
                       "additionalProperties": false
                     },
                     {
@@ -1680,9 +1473,7 @@
                           "type": "object",
                           "properties": {
                             "type": {
-                              "enum": [
-                                "topojson"
-                              ]
+                              "enum": ["topojson"]
                             },
                             "feature": {
                               "$ref": "#/definitions/stringOrSignal"
@@ -1691,19 +1482,14 @@
                               "$ref": "#/definitions/stringOrSignal"
                             }
                           },
-                          "required": [
-                            "type",
-                            "feature"
-                          ],
+                          "required": ["type", "feature"],
                           "additionalProperties": false
                         },
                         {
                           "type": "object",
                           "properties": {
                             "type": {
-                              "enum": [
-                                "topojson"
-                              ]
+                              "enum": ["topojson"]
                             },
                             "mesh": {
                               "$ref": "#/definitions/stringOrSignal"
@@ -1712,17 +1498,10 @@
                               "$ref": "#/definitions/stringOrSignal"
                             },
                             "filter": {
-                              "enum": [
-                                "interior",
-                                "exterior",
-                                null
-                              ]
+                              "enum": ["interior", "exterior", null]
                             }
                           },
-                          "required": [
-                            "type",
-                            "mesh"
-                          ],
+                          "required": ["type", "mesh"],
                           "additionalProperties": false
                         }
                       ]
@@ -1750,10 +1529,7 @@
               "$ref": "#/definitions/onTrigger"
             }
           },
-          "required": [
-            "values",
-            "name"
-          ],
+          "required": ["values", "name"],
           "additionalProperties": false
         }
       ]
@@ -1768,9 +1544,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "field"
-      ],
+      "required": ["field"],
       "additionalProperties": false
     },
     "rule": {
@@ -2018,9 +1792,7 @@
               "$ref": "#/definitions/field"
             }
           },
-          "required": [
-            "datum"
-          ],
+          "required": ["datum"],
           "additionalProperties": false
         },
         {
@@ -2033,9 +1805,7 @@
               "type": "number"
             }
           },
-          "required": [
-            "group"
-          ],
+          "required": ["group"],
           "additionalProperties": false
         },
         {
@@ -2048,9 +1818,7 @@
               "type": "number"
             }
           },
-          "required": [
-            "parent"
-          ],
+          "required": ["parent"],
           "additionalProperties": false
         }
       ]
@@ -2144,9 +1912,7 @@
                             "properties": {
                               "value": {}
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -2155,9 +1921,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -2173,31 +1937,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -2223,9 +1977,7 @@
                       "properties": {
                         "value": {}
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -2234,9 +1986,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -2252,31 +2002,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -2329,9 +2069,7 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -2340,9 +2078,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -2358,31 +2094,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -2427,9 +2153,7 @@
                           ]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -2438,9 +2162,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -2456,31 +2178,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -2516,9 +2228,7 @@
                                 "type": "number"
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -2527,9 +2237,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -2545,31 +2253,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -2597,9 +2295,7 @@
                           "type": "number"
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -2608,9 +2304,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -2626,31 +2320,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -2686,9 +2370,7 @@
                                 "type": "string"
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -2697,9 +2379,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -2715,31 +2395,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -2767,9 +2437,7 @@
                           "type": "string"
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -2778,9 +2446,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -2796,31 +2462,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -2866,9 +2522,7 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -2877,9 +2531,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -2895,31 +2547,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -2957,9 +2599,7 @@
                           ]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -2968,9 +2608,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -2986,31 +2624,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -3046,9 +2674,7 @@
                                 "type": "boolean"
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -3057,9 +2683,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -3075,31 +2699,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -3127,9 +2741,7 @@
                           "type": "boolean"
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -3138,9 +2750,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -3156,31 +2766,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -3216,9 +2816,7 @@
                                 "type": "array"
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -3227,9 +2825,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -3245,31 +2841,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -3297,9 +2883,7 @@
                           "type": "array"
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -3308,9 +2892,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -3326,31 +2908,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -3410,9 +2982,7 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -3421,9 +2991,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -3439,31 +3007,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -3515,9 +3073,7 @@
                           ]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -3526,9 +3082,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -3544,31 +3098,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -3601,16 +3145,10 @@
                             "type": "object",
                             "properties": {
                               "value": {
-                                "enum": [
-                                  "start",
-                                  "middle",
-                                  "end"
-                                ]
+                                "enum": ["start", "middle", "end"]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -3619,9 +3157,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -3637,31 +3173,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -3686,16 +3212,10 @@
                       "type": "object",
                       "properties": {
                         "value": {
-                          "enum": [
-                            "start",
-                            "middle",
-                            "end"
-                          ]
+                          "enum": ["start", "middle", "end"]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -3704,9 +3224,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -3722,31 +3240,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -3779,16 +3287,10 @@
                             "type": "object",
                             "properties": {
                               "value": {
-                                "enum": [
-                                  "left",
-                                  "right",
-                                  "center"
-                                ]
+                                "enum": ["left", "right", "center"]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -3797,9 +3299,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -3815,31 +3315,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -3864,16 +3354,10 @@
                       "type": "object",
                       "properties": {
                         "value": {
-                          "enum": [
-                            "left",
-                            "right",
-                            "center"
-                          ]
+                          "enum": ["left", "right", "center"]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -3882,9 +3366,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -3900,31 +3382,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -3957,17 +3429,10 @@
                             "type": "object",
                             "properties": {
                               "value": {
-                                "enum": [
-                                  "top",
-                                  "middle",
-                                  "bottom",
-                                  "alphabetic"
-                                ]
+                                "enum": ["top", "middle", "bottom", "alphabetic"]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -3976,9 +3441,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -3994,31 +3457,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -4043,17 +3496,10 @@
                       "type": "object",
                       "properties": {
                         "value": {
-                          "enum": [
-                            "top",
-                            "middle",
-                            "bottom",
-                            "alphabetic"
-                          ]
+                          "enum": ["top", "middle", "bottom", "alphabetic"]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -4062,9 +3508,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -4080,31 +3524,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -4137,15 +3571,10 @@
                             "type": "object",
                             "properties": {
                               "value": {
-                                "enum": [
-                                  "horizontal",
-                                  "vertical"
-                                ]
+                                "enum": ["horizontal", "vertical"]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -4154,9 +3583,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -4172,31 +3599,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -4221,15 +3638,10 @@
                       "type": "object",
                       "properties": {
                         "value": {
-                          "enum": [
-                            "horizontal",
-                            "vertical"
-                          ]
+                          "enum": ["horizontal", "vertical"]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -4238,9 +3650,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -4256,31 +3666,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -4313,17 +3713,10 @@
                             "type": "object",
                             "properties": {
                               "value": {
-                                "enum": [
-                                  "left",
-                                  "right",
-                                  "top",
-                                  "bottom"
-                                ]
+                                "enum": ["left", "right", "top", "bottom"]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -4332,9 +3725,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -4350,31 +3741,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -4399,17 +3780,10 @@
                       "type": "object",
                       "properties": {
                         "value": {
-                          "enum": [
-                            "left",
-                            "right",
-                            "top",
-                            "bottom"
-                          ]
+                          "enum": ["left", "right", "top", "bottom"]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -4418,9 +3792,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -4436,31 +3808,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -4493,16 +3855,10 @@
                             "type": "object",
                             "properties": {
                               "value": {
-                                "enum": [
-                                  "butt",
-                                  "round",
-                                  "square"
-                                ]
+                                "enum": ["butt", "round", "square"]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -4511,9 +3867,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -4529,31 +3883,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -4578,16 +3922,10 @@
                       "type": "object",
                       "properties": {
                         "value": {
-                          "enum": [
-                            "butt",
-                            "round",
-                            "square"
-                          ]
+                          "enum": ["butt", "round", "square"]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -4596,9 +3934,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -4614,31 +3950,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -4671,16 +3997,10 @@
                             "type": "object",
                             "properties": {
                               "value": {
-                                "enum": [
-                                  "miter",
-                                  "round",
-                                  "bevel"
-                                ]
+                                "enum": ["miter", "round", "bevel"]
                               }
                             },
-                            "required": [
-                              "value"
-                            ]
+                            "required": ["value"]
                           },
                           {
                             "type": "object",
@@ -4689,9 +4009,7 @@
                                 "$ref": "#/definitions/field"
                               }
                             },
-                            "required": [
-                              "field"
-                            ]
+                            "required": ["field"]
                           },
                           {
                             "type": "object",
@@ -4707,31 +4025,21 @@
                                 ]
                               }
                             },
-                            "required": [
-                              "range"
-                            ]
+                            "required": ["range"]
                           }
                         ]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "value"
-                        ]
+                        "required": ["scale", "value"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "scale",
-                          "band"
-                        ]
+                        "required": ["scale", "band"]
                       },
                       {
                         "type": "object",
-                        "required": [
-                          "offset"
-                        ]
+                        "required": ["offset"]
                       }
                     ]
                   }
@@ -4756,16 +4064,10 @@
                       "type": "object",
                       "properties": {
                         "value": {
-                          "enum": [
-                            "miter",
-                            "round",
-                            "bevel"
-                          ]
+                          "enum": ["miter", "round", "bevel"]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -4774,9 +4076,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -4792,31 +4092,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -4852,9 +4142,7 @@
                           ]
                         }
                       },
-                      "required": [
-                        "value"
-                      ]
+                      "required": ["value"]
                     },
                     {
                       "type": "object",
@@ -4863,9 +4151,7 @@
                           "$ref": "#/definitions/field"
                         }
                       },
-                      "required": [
-                        "field"
-                      ]
+                      "required": ["field"]
                     },
                     {
                       "type": "object",
@@ -4881,31 +4167,21 @@
                           ]
                         }
                       },
-                      "required": [
-                        "range"
-                      ]
+                      "required": ["range"]
                     }
                   ]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "value"
-                  ]
+                  "required": ["scale", "value"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "scale",
-                    "band"
-                  ]
+                  "required": ["scale", "band"]
                 },
                 {
                   "type": "object",
-                  "required": [
-                    "offset"
-                  ]
+                  "required": ["offset"]
                 }
               ]
             }
@@ -4918,9 +4194,7 @@
               "$ref": "#/definitions/linearGradient"
             }
           },
-          "required": [
-            "value"
-          ],
+          "required": ["value"],
           "additionalProperties": false
         },
         {
@@ -4930,9 +4204,7 @@
               "$ref": "#/definitions/radialGradient"
             }
           },
-          "required": [
-            "value"
-          ],
+          "required": ["value"],
           "additionalProperties": false
         },
         {
@@ -4961,9 +4233,7 @@
               "type": "number"
             }
           },
-          "required": [
-            "gradient"
-          ],
+          "required": ["gradient"],
           "additionalProperties": false
         },
         {
@@ -4986,9 +4256,7 @@
               ]
             }
           },
-          "required": [
-            "color"
-          ],
+          "required": ["color"],
           "additionalProperties": false
         }
       ]
@@ -5006,11 +4274,7 @@
           "$ref": "#/definitions/numberValue"
         }
       },
-      "required": [
-        "r",
-        "g",
-        "b"
-      ]
+      "required": ["r", "g", "b"]
     },
     "colorHSL": {
       "type": "object",
@@ -5025,11 +4289,7 @@
           "$ref": "#/definitions/numberValue"
         }
       },
-      "required": [
-        "h",
-        "s",
-        "l"
-      ]
+      "required": ["h", "s", "l"]
     },
     "colorLAB": {
       "type": "object",
@@ -5044,11 +4304,7 @@
           "$ref": "#/definitions/numberValue"
         }
       },
-      "required": [
-        "l",
-        "a",
-        "b"
-      ]
+      "required": ["l", "a", "b"]
     },
     "colorHCL": {
       "type": "object",
@@ -5063,11 +4319,7 @@
           "$ref": "#/definitions/numberValue"
         }
       },
-      "required": [
-        "h",
-        "c",
-        "l"
-      ]
+      "required": ["h", "c", "l"]
     },
     "colorValue": {
       "oneOf": [
@@ -5101,10 +4353,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "offset",
-          "color"
-        ],
+        "required": ["offset", "color"],
         "additionalProperties": false
       }
     },
@@ -5112,9 +4361,7 @@
       "type": "object",
       "properties": {
         "gradient": {
-          "enum": [
-            "linear"
-          ]
+          "enum": ["linear"]
         },
         "id": {
           "type": "string"
@@ -5135,19 +4382,14 @@
           "$ref": "#/definitions/gradientStops"
         }
       },
-      "required": [
-        "gradient",
-        "stops"
-      ],
+      "required": ["gradient", "stops"],
       "additionalProperties": false
     },
     "radialGradient": {
       "type": "object",
       "properties": {
         "gradient": {
-          "enum": [
-            "radial"
-          ]
+          "enum": ["radial"]
         },
         "id": {
           "type": "string"
@@ -5174,10 +4416,7 @@
           "$ref": "#/definitions/gradientStops"
         }
       },
-      "required": [
-        "gradient",
-        "stops"
-      ],
+      "required": ["gradient", "stops"],
       "additionalProperties": false
     },
     "expr": {
@@ -5190,9 +4429,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "expr"
-      ]
+      "required": ["expr"]
     },
     "exprString": {
       "type": "string"
@@ -5207,11 +4444,7 @@
                 {
                   "oneOf": [
                     {
-                      "enum": [
-                        "all",
-                        "each",
-                        "none"
-                      ]
+                      "enum": ["all", "each", "none"]
                     },
                     {
                       "$ref": "#/definitions/signalRef"
@@ -5224,11 +4457,7 @@
                     "row": {
                       "oneOf": [
                         {
-                          "enum": [
-                            "all",
-                            "each",
-                            "none"
-                          ]
+                          "enum": ["all", "each", "none"]
                         },
                         {
                           "$ref": "#/definitions/signalRef"
@@ -5238,11 +4467,7 @@
                     "column": {
                       "oneOf": [
                         {
-                          "enum": [
-                            "all",
-                            "each",
-                            "none"
-                          ]
+                          "enum": ["all", "each", "none"]
                         },
                         {
                           "$ref": "#/definitions/signalRef"
@@ -5257,10 +4482,7 @@
             "bounds": {
               "oneOf": [
                 {
-                  "enum": [
-                    "full",
-                    "flush"
-                  ]
+                  "enum": ["full", "flush"]
                 },
                 {
                   "$ref": "#/definitions/signalRef"
@@ -5419,10 +4641,7 @@
                 {
                   "oneOf": [
                     {
-                      "enum": [
-                        "start",
-                        "end"
-                      ]
+                      "enum": ["start", "end"]
                     },
                     {
                       "$ref": "#/definitions/signalRef"
@@ -5435,10 +4654,7 @@
                     "row": {
                       "oneOf": [
                         {
-                          "enum": [
-                            "start",
-                            "end"
-                          ]
+                          "enum": ["start", "end"]
                         },
                         {
                           "$ref": "#/definitions/signalRef"
@@ -5448,10 +4664,7 @@
                     "column": {
                       "oneOf": [
                         {
-                          "enum": [
-                            "start",
-                            "end"
-                          ]
+                          "enum": ["start", "end"]
                         },
                         {
                           "$ref": "#/definitions/signalRef"
@@ -5519,16 +4732,10 @@
               "type": "string"
             },
             "type": {
-              "enum": [
-                "gradient",
-                "symbol"
-              ]
+              "enum": ["gradient", "symbol"]
             },
             "direction": {
-              "enum": [
-                "vertical",
-                "horizontal"
-              ]
+              "enum": ["vertical", "horizontal"]
             },
             "orient": {
               "oneOf": [
@@ -5654,11 +4861,7 @@
             "titleAlign": {
               "oneOf": [
                 {
-                  "enum": [
-                    "left",
-                    "right",
-                    "center"
-                  ]
+                  "enum": ["left", "right", "center"]
                 },
                 {
                   "$ref": "#/definitions/alignValue"
@@ -5668,12 +4871,7 @@
             "titleAnchor": {
               "oneOf": [
                 {
-                  "enum": [
-                    null,
-                    "start",
-                    "middle",
-                    "end"
-                  ]
+                  "enum": [null, "start", "middle", "end"]
                 },
                 {
                   "$ref": "#/definitions/anchorValue"
@@ -5683,14 +4881,7 @@
             "titleBaseline": {
               "oneOf": [
                 {
-                  "enum": [
-                    "top",
-                    "middle",
-                    "bottom",
-                    "alphabetic",
-                    "line-top",
-                    "line-bottom"
-                  ]
+                  "enum": ["top", "middle", "bottom", "alphabetic", "line-top", "line-bottom"]
                 },
                 {
                   "$ref": "#/definitions/baselineValue"
@@ -5807,12 +4998,7 @@
             "titleOrient": {
               "oneOf": [
                 {
-                  "enum": [
-                    "left",
-                    "right",
-                    "top",
-                    "bottom"
-                  ]
+                  "enum": ["left", "right", "top", "bottom"]
                 },
                 {
                   "$ref": "#/definitions/orientValue"
@@ -5883,11 +5069,7 @@
             "gridAlign": {
               "oneOf": [
                 {
-                  "enum": [
-                    "all",
-                    "each",
-                    "none"
-                  ]
+                  "enum": ["all", "each", "none"]
                 },
                 {
                   "$ref": "#/definitions/signalRef"
@@ -6042,11 +5224,7 @@
             "formatType": {
               "oneOf": [
                 {
-                  "enum": [
-                    "number",
-                    "time",
-                    "utc"
-                  ]
+                  "enum": ["number", "time", "utc"]
                 },
                 {
                   "$ref": "#/definitions/signalRef"
@@ -6056,11 +5234,7 @@
             "labelAlign": {
               "oneOf": [
                 {
-                  "enum": [
-                    "left",
-                    "right",
-                    "center"
-                  ]
+                  "enum": ["left", "right", "center"]
                 },
                 {
                   "$ref": "#/definitions/alignValue"
@@ -6070,14 +5244,7 @@
             "labelBaseline": {
               "oneOf": [
                 {
-                  "enum": [
-                    "top",
-                    "middle",
-                    "bottom",
-                    "alphabetic",
-                    "line-top",
-                    "line-bottom"
-                  ]
+                  "enum": ["top", "middle", "bottom", "alphabetic", "line-top", "line-bottom"]
                 },
                 {
                   "$ref": "#/definitions/baselineValue"
@@ -6228,45 +5395,31 @@
           "anyOf": [
             {
               "type": "object",
-              "required": [
-                "size"
-              ]
+              "required": ["size"]
             },
             {
               "type": "object",
-              "required": [
-                "shape"
-              ]
+              "required": ["shape"]
             },
             {
               "type": "object",
-              "required": [
-                "fill"
-              ]
+              "required": ["fill"]
             },
             {
               "type": "object",
-              "required": [
-                "stroke"
-              ]
+              "required": ["stroke"]
             },
             {
               "type": "object",
-              "required": [
-                "opacity"
-              ]
+              "required": ["opacity"]
             },
             {
               "type": "object",
-              "required": [
-                "strokeDash"
-              ]
+              "required": ["strokeDash"]
             },
             {
               "type": "object",
-              "required": [
-                "strokeWidth"
-              ]
+              "required": ["strokeWidth"]
             }
           ]
         }
@@ -6350,11 +5503,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "name",
-                "data",
-                "field"
-              ],
+              "required": ["name", "data", "field"],
               "additionalProperties": false
             },
             {
@@ -6407,19 +5556,13 @@
                   "additionalProperties": false
                 }
               },
-              "required": [
-                "name",
-                "data",
-                "groupby"
-              ],
+              "required": ["name", "data", "groupby"],
               "additionalProperties": false
             }
           ]
         }
       },
-      "required": [
-        "facet"
-      ],
+      "required": ["facet"],
       "additionalProperties": false
     },
     "mark": {
@@ -6468,9 +5611,7 @@
           "$ref": "#/definitions/onMarkTrigger"
         }
       },
-      "required": [
-        "type"
-      ]
+      "required": ["type"]
     },
     "markclip": {
       "oneOf": [
@@ -6484,9 +5625,7 @@
               "$ref": "#/definitions/stringOrSignal"
             }
           },
-          "required": [
-            "path"
-          ],
+          "required": ["path"],
           "additionalProperties": false
         },
         {
@@ -6496,9 +5635,7 @@
               "$ref": "#/definitions/stringOrSignal"
             }
           },
-          "required": [
-            "sphere"
-          ],
+          "required": ["sphere"],
           "additionalProperties": false
         }
       ]
@@ -6509,9 +5646,7 @@
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "group"
-              ]
+              "enum": ["group"]
             },
             "from": {
               "oneOf": [
@@ -6524,9 +5659,7 @@
               ]
             }
           },
-          "required": [
-            "type"
-          ]
+          "required": ["type"]
         },
         {
           "$ref": "#/definitions/mark"
@@ -6543,9 +5676,7 @@
           "properties": {
             "type": {
               "not": {
-                "enum": [
-                  "group"
-                ]
+                "enum": ["group"]
               }
             },
             "from": {
@@ -6586,9 +5717,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "scale"
-          ]
+          "required": ["scale"]
         },
         {
           "$ref": "#/definitions/stream"
@@ -6623,9 +5752,7 @@
                 "type": "boolean"
               }
             },
-            "required": [
-              "events"
-            ]
+            "required": ["events"]
           },
           {
             "oneOf": [
@@ -6636,9 +5763,7 @@
                     "type": "string"
                   }
                 },
-                "required": [
-                  "encode"
-                ]
+                "required": ["encode"]
               },
               {
                 "type": "object",
@@ -6659,16 +5784,12 @@
                         "properties": {
                           "value": {}
                         },
-                        "required": [
-                          "value"
-                        ]
+                        "required": ["value"]
                       }
                     ]
                   }
                 },
-                "required": [
-                  "update"
-                ]
+                "required": ["update"]
               }
             ]
           }
@@ -6706,9 +5827,7 @@
             "$ref": "#/definitions/exprString"
           }
         },
-        "required": [
-          "trigger"
-        ],
+        "required": ["trigger"],
         "additionalProperties": false
       }
     },
@@ -6727,9 +5846,7 @@
             "$ref": "#/definitions/exprString"
           }
         },
-        "required": [
-          "trigger"
-        ],
+        "required": ["trigger"],
         "additionalProperties": false
       }
     },
@@ -6922,9 +6039,7 @@
           ]
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "additionalProperties": true
     },
     "scale": {
@@ -6933,9 +6048,7 @@
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "identity"
-              ]
+              "enum": ["identity"]
             },
             "nice": {
               "$ref": "#/definitions/booleanOrSignal"
@@ -7010,33 +6123,19 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "ordinal"
-              ]
+              "enum": ["ordinal"]
             },
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -7111,9 +6210,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "scheme"
-                  ],
+                  "required": ["scheme"],
                   "additionalProperties": false
                 },
                 {
@@ -7150,10 +6247,7 @@
                           ]
                         }
                       },
-                      "required": [
-                        "data",
-                        "field"
-                      ],
+                      "required": ["data", "field"],
                       "additionalProperties": false
                     },
                     {
@@ -7178,9 +6272,7 @@
                               "type": "object",
                               "properties": {
                                 "op": {
-                                  "enum": [
-                                    "count"
-                                  ]
+                                  "enum": ["count"]
                                 },
                                 "order": {
                                   "$ref": "#/definitions/sortOrder"
@@ -7195,29 +6287,19 @@
                                   "$ref": "#/definitions/stringOrSignal"
                                 },
                                 "op": {
-                                  "enum": [
-                                    "count",
-                                    "min",
-                                    "max"
-                                  ]
+                                  "enum": ["count", "min", "max"]
                                 },
                                 "order": {
                                   "$ref": "#/definitions/sortOrder"
                                 }
                               },
-                              "required": [
-                                "field",
-                                "op"
-                              ],
+                              "required": ["field", "op"],
                               "additionalProperties": false
                             }
                           ]
                         }
                       },
-                      "required": [
-                        "data",
-                        "fields"
-                      ],
+                      "required": ["data", "fields"],
                       "additionalProperties": false
                     },
                     {
@@ -7237,10 +6319,7 @@
                                     "$ref": "#/definitions/stringOrSignal"
                                   }
                                 },
-                                "required": [
-                                  "data",
-                                  "field"
-                                ],
+                                "required": ["data", "field"],
                                 "additionalProperties": false
                               },
                               {
@@ -7275,9 +6354,7 @@
                               "type": "object",
                               "properties": {
                                 "op": {
-                                  "enum": [
-                                    "count"
-                                  ]
+                                  "enum": ["count"]
                                 },
                                 "order": {
                                   "$ref": "#/definitions/sortOrder"
@@ -7292,28 +6369,19 @@
                                   "$ref": "#/definitions/stringOrSignal"
                                 },
                                 "op": {
-                                  "enum": [
-                                    "count",
-                                    "min",
-                                    "max"
-                                  ]
+                                  "enum": ["count", "min", "max"]
                                 },
                                 "order": {
                                   "$ref": "#/definitions/sortOrder"
                                 }
                               },
-                              "required": [
-                                "field",
-                                "op"
-                              ],
+                              "required": ["field", "op"],
                               "additionalProperties": false
                             }
                           ]
                         }
                       },
-                      "required": [
-                        "fields"
-                      ],
+                      "required": ["fields"],
                       "additionalProperties": false
                     }
                   ]
@@ -7399,19 +6467,14 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "band"
-              ]
+              "enum": ["band"]
             },
             "paddingInner": {
               "$ref": "#/definitions/numberOrSignal"
@@ -7419,16 +6482,7 @@
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -7465,9 +6519,7 @@
                       "$ref": "#/definitions/numberOrSignal"
                     }
                   },
-                  "required": [
-                    "step"
-                  ],
+                  "required": ["step"],
                   "additionalProperties": false
                 },
                 {
@@ -7554,33 +6606,19 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "point"
-              ]
+              "enum": ["point"]
             },
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -7617,9 +6655,7 @@
                       "$ref": "#/definitions/numberOrSignal"
                     }
                   },
-                  "required": [
-                    "step"
-                  ],
+                  "required": ["step"],
                   "additionalProperties": false
                 },
                 {
@@ -7706,34 +6742,19 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "quantize",
-                "threshold"
-              ]
+              "enum": ["quantize", "threshold"]
             },
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -7808,9 +6829,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "scheme"
-                  ],
+                  "required": ["scheme"],
                   "additionalProperties": false
                 },
                 {
@@ -7907,33 +6926,19 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "quantile"
-              ]
+              "enum": ["quantile"]
             },
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -8008,9 +7013,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "scheme"
-                  ],
+                  "required": ["scheme"],
                   "additionalProperties": false
                 },
                 {
@@ -8091,19 +7094,14 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "bin-ordinal"
-              ]
+              "enum": ["bin-ordinal"]
             },
             "bins": {
               "$ref": "#/definitions/scaleBins"
@@ -8111,16 +7109,7 @@
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -8195,9 +7184,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "scheme"
-                  ],
+                  "required": ["scheme"],
                   "additionalProperties": false
                 },
                 {
@@ -8278,20 +7265,14 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "time",
-                "utc"
-              ]
+              "enum": ["time", "utc"]
             },
             "nice": {
               "oneOf": [
@@ -8299,16 +7280,7 @@
                   "type": "boolean"
                 },
                 {
-                  "enum": [
-                    "millisecond",
-                    "second",
-                    "minute",
-                    "hour",
-                    "day",
-                    "week",
-                    "month",
-                    "year"
-                  ]
+                  "enum": ["millisecond", "second", "minute", "hour", "day", "week", "month", "year"]
                 },
                 {
                   "type": "object",
@@ -8316,16 +7288,7 @@
                     "interval": {
                       "oneOf": [
                         {
-                          "enum": [
-                            "millisecond",
-                            "second",
-                            "minute",
-                            "hour",
-                            "day",
-                            "week",
-                            "month",
-                            "year"
-                          ]
+                          "enum": ["millisecond", "second", "minute", "hour", "day", "week", "month", "year"]
                         },
                         {
                           "$ref": "#/definitions/signalRef"
@@ -8336,9 +7299,7 @@
                       "$ref": "#/definitions/numberOrSignal"
                     }
                   },
-                  "required": [
-                    "interval"
-                  ],
+                  "required": ["interval"],
                   "additionalProperties": false
                 }
               ]
@@ -8346,16 +7307,7 @@
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -8430,9 +7382,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "scheme"
-                  ],
+                  "required": ["scheme"],
                   "additionalProperties": false
                 },
                 {
@@ -8522,21 +7472,14 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "linear",
-                "sqrt",
-                "sequential"
-              ]
+              "enum": ["linear", "sqrt", "sequential"]
             },
             "nice": {
               "oneOf": [
@@ -8557,16 +7500,7 @@
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -8641,9 +7575,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "scheme"
-                  ],
+                  "required": ["scheme"],
                   "additionalProperties": false
                 },
                 {
@@ -8733,18 +7665,14 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "name"
-          ],
+          "required": ["name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "log"
-              ]
+              "enum": ["log"]
             },
             "base": {
               "$ref": "#/definitions/numberOrSignal"
@@ -8768,16 +7696,7 @@
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -8852,9 +7771,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "scheme"
-                  ],
+                  "required": ["scheme"],
                   "additionalProperties": false
                 },
                 {
@@ -8944,19 +7861,14 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "pow"
-              ]
+              "enum": ["pow"]
             },
             "exponent": {
               "$ref": "#/definitions/numberOrSignal"
@@ -8980,16 +7892,7 @@
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -9064,9 +7967,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "scheme"
-                  ],
+                  "required": ["scheme"],
                   "additionalProperties": false
                 },
                 {
@@ -9156,19 +8057,14 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         },
         {
           "type": "object",
           "properties": {
             "type": {
-              "enum": [
-                "symlog"
-              ]
+              "enum": ["symlog"]
             },
             "constant": {
               "$ref": "#/definitions/numberOrSignal"
@@ -9192,16 +8088,7 @@
             "range": {
               "oneOf": [
                 {
-                  "enum": [
-                    "width",
-                    "height",
-                    "symbol",
-                    "category",
-                    "ordinal",
-                    "ramp",
-                    "diverging",
-                    "heatmap"
-                  ]
+                  "enum": ["width", "height", "symbol", "category", "ordinal", "ramp", "diverging", "heatmap"]
                 },
                 {
                   "type": "array",
@@ -9276,9 +8163,7 @@
                       ]
                     }
                   },
-                  "required": [
-                    "scheme"
-                  ],
+                  "required": ["scheme"],
                   "additionalProperties": false
                 },
                 {
@@ -9368,10 +8253,7 @@
               "$ref": "#/definitions/booleanOrSignal"
             }
           },
-          "required": [
-            "type",
-            "name"
-          ],
+          "required": ["type", "name"],
           "additionalProperties": false
         }
       ]
@@ -9382,10 +8264,7 @@
     "sortOrder": {
       "oneOf": [
         {
-          "enum": [
-            "ascending",
-            "descending"
-          ]
+          "enum": ["ascending", "descending"]
         },
         {
           "$ref": "#/definitions/signalRef"
@@ -9413,9 +8292,7 @@
               "$ref": "#/definitions/numberOrSignal"
             }
           },
-          "required": [
-            "step"
-          ],
+          "required": ["step"],
           "additionalProperties": false
         },
         {
@@ -9441,9 +8318,7 @@
               "$ref": "#/definitions/numberOrSignal"
             }
           },
-          "required": [
-            "type"
-          ],
+          "required": ["type"],
           "additionalProperties": false
         }
       ]
@@ -9482,10 +8357,7 @@
               ]
             }
           },
-          "required": [
-            "data",
-            "field"
-          ],
+          "required": ["data", "field"],
           "additionalProperties": false
         },
         {
@@ -9510,9 +8382,7 @@
                   "type": "object",
                   "properties": {
                     "op": {
-                      "enum": [
-                        "count"
-                      ]
+                      "enum": ["count"]
                     },
                     "order": {
                       "$ref": "#/definitions/sortOrder"
@@ -9527,29 +8397,19 @@
                       "$ref": "#/definitions/stringOrSignal"
                     },
                     "op": {
-                      "enum": [
-                        "count",
-                        "min",
-                        "max"
-                      ]
+                      "enum": ["count", "min", "max"]
                     },
                     "order": {
                       "$ref": "#/definitions/sortOrder"
                     }
                   },
-                  "required": [
-                    "field",
-                    "op"
-                  ],
+                  "required": ["field", "op"],
                   "additionalProperties": false
                 }
               ]
             }
           },
-          "required": [
-            "data",
-            "fields"
-          ],
+          "required": ["data", "fields"],
           "additionalProperties": false
         },
         {
@@ -9569,10 +8429,7 @@
                         "$ref": "#/definitions/stringOrSignal"
                       }
                     },
-                    "required": [
-                      "data",
-                      "field"
-                    ],
+                    "required": ["data", "field"],
                     "additionalProperties": false
                   },
                   {
@@ -9607,9 +8464,7 @@
                   "type": "object",
                   "properties": {
                     "op": {
-                      "enum": [
-                        "count"
-                      ]
+                      "enum": ["count"]
                     },
                     "order": {
                       "$ref": "#/definitions/sortOrder"
@@ -9624,28 +8479,19 @@
                       "$ref": "#/definitions/stringOrSignal"
                     },
                     "op": {
-                      "enum": [
-                        "count",
-                        "min",
-                        "max"
-                      ]
+                      "enum": ["count", "min", "max"]
                     },
                     "order": {
                       "$ref": "#/definitions/sortOrder"
                     }
                   },
-                  "required": [
-                    "field",
-                    "op"
-                  ],
+                  "required": ["field", "op"],
                   "additionalProperties": false
                 }
               ]
             }
           },
-          "required": [
-            "fields"
-          ],
+          "required": ["fields"],
           "additionalProperties": false
         }
       ]
@@ -9731,18 +8577,13 @@
               "type": "string"
             },
             "push": {
-              "enum": [
-                "outer"
-              ]
+              "enum": ["outer"]
             },
             "on": {
               "$ref": "#/definitions/onEvents"
             }
           },
-          "required": [
-            "name",
-            "push"
-          ],
+          "required": ["name", "push"],
           "additionalProperties": false
         },
         {
@@ -9769,9 +8610,7 @@
               "$ref": "#/definitions/bind"
             }
           },
-          "required": [
-            "name"
-          ],
+          "required": ["name"],
           "additionalProperties": false
         },
         {
@@ -9794,10 +8633,7 @@
               "$ref": "#/definitions/bind"
             }
           },
-          "required": [
-            "name",
-            "init"
-          ],
+          "required": ["name", "init"],
           "additionalProperties": false
         }
       ]
@@ -9805,12 +8641,7 @@
     "signalName": {
       "type": "string",
       "not": {
-        "enum": [
-          "parent",
-          "datum",
-          "event",
-          "item"
-        ]
+        "enum": ["parent", "datum", "event", "item"]
       }
     },
     "signalRef": {
@@ -9820,9 +8651,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "signal"
-      ]
+      "required": ["signal"]
     },
     "arrayOrSignal": {
       "oneOf": [
@@ -9940,9 +8769,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "type"
-              ]
+              "required": ["type"]
             },
             {
               "type": "object",
@@ -9951,9 +8778,7 @@
                   "$ref": "#/definitions/stream"
                 }
               },
-              "required": [
-                "stream"
-              ]
+              "required": ["stream"]
             },
             {
               "type": "object",
@@ -9966,9 +8791,7 @@
                   "minItems": 1
                 }
               },
-              "required": [
-                "merge"
-              ]
+              "required": ["merge"]
             }
           ]
         }
@@ -9985,13 +8808,7 @@
             "orient": {
               "oneOf": [
                 {
-                  "enum": [
-                    "none",
-                    "left",
-                    "right",
-                    "top",
-                    "bottom"
-                  ],
+                  "enum": ["none", "left", "right", "top", "bottom"],
                   "default": "top"
                 },
                 {
@@ -10002,12 +8819,7 @@
             "anchor": {
               "oneOf": [
                 {
-                  "enum": [
-                    null,
-                    "start",
-                    "middle",
-                    "end"
-                  ]
+                  "enum": [null, "start", "middle", "end"]
                 },
                 {
                   "$ref": "#/definitions/anchorValue"
@@ -10017,10 +8829,7 @@
             "frame": {
               "oneOf": [
                 {
-                  "enum": [
-                    "group",
-                    "bounds"
-                  ]
+                  "enum": ["group", "bounds"]
                 },
                 {
                   "$ref": "#/definitions/stringValue"
@@ -10056,11 +8865,7 @@
             "align": {
               "oneOf": [
                 {
-                  "enum": [
-                    "left",
-                    "right",
-                    "center"
-                  ]
+                  "enum": ["left", "right", "center"]
                 },
                 {
                   "$ref": "#/definitions/alignValue"
@@ -10080,14 +8885,7 @@
             "baseline": {
               "oneOf": [
                 {
-                  "enum": [
-                    "top",
-                    "middle",
-                    "bottom",
-                    "alphabetic",
-                    "line-top",
-                    "line-bottom"
-                  ]
+                  "enum": ["top", "middle", "bottom", "alphabetic", "line-top", "line-bottom"]
                 },
                 {
                   "$ref": "#/definitions/baselineValue"
@@ -10594,9 +9392,7 @@
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "crossfilter"
-          ]
+          "enum": ["crossfilter"]
         },
         "signal": {
           "type": "string"
@@ -10636,20 +9432,14 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "fields",
-        "query"
-      ],
+      "required": ["type", "fields", "query"],
       "additionalProperties": false
     },
     "resolvefilterTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "resolvefilter"
-          ]
+          "enum": ["resolvefilter"]
         },
         "signal": {
           "type": "string"
@@ -10666,20 +9456,14 @@
         },
         "filter": {}
       },
-      "required": [
-        "type",
-        "ignore",
-        "filter"
-      ],
+      "required": ["type", "ignore", "filter"],
       "additionalProperties": false
     },
     "linkpathTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "linkpath"
-          ]
+          "enum": ["linkpath"]
         },
         "signal": {
           "type": "string"
@@ -10743,11 +9527,7 @@
         "orient": {
           "anyOf": [
             {
-              "enum": [
-                "horizontal",
-                "vertical",
-                "radial"
-              ]
+              "enum": ["horizontal", "vertical", "radial"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -10758,13 +9538,7 @@
         "shape": {
           "anyOf": [
             {
-              "enum": [
-                "line",
-                "arc",
-                "curve",
-                "diagonal",
-                "orthogonal"
-              ]
+              "enum": ["line", "arc", "curve", "diagonal", "orthogonal"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -10787,18 +9561,14 @@
           "default": "path"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "pieTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "pie"
-          ]
+          "enum": ["pie"]
         },
         "signal": {
           "type": "string"
@@ -10868,24 +9638,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "startAngle",
-            "endAngle"
-          ]
+          "default": ["startAngle", "endAngle"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "stackTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "stack"
-          ]
+          "enum": ["stack"]
         },
         "signal": {
           "type": "string"
@@ -10932,11 +9695,7 @@
         "offset": {
           "anyOf": [
             {
-              "enum": [
-                "zero",
-                "center",
-                "normalize"
-              ]
+              "enum": ["zero", "center", "normalize"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -10965,24 +9724,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "y0",
-            "y1"
-          ]
+          "default": ["y0", "y1"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "forceTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "force"
-          ]
+          "enum": ["force"]
         },
         "signal": {
           "type": "string"
@@ -11069,9 +9821,7 @@
                 "type": "object",
                 "properties": {
                   "force": {
-                    "enum": [
-                      "center"
-                    ]
+                    "enum": ["center"]
                   },
                   "x": {
                     "anyOf": [
@@ -11094,18 +9844,14 @@
                     ]
                   }
                 },
-                "required": [
-                  "force"
-                ],
+                "required": ["force"],
                 "additionalProperties": false
               },
               {
                 "type": "object",
                 "properties": {
                   "force": {
-                    "enum": [
-                      "collide"
-                    ]
+                    "enum": ["collide"]
                   },
                   "radius": {
                     "anyOf": [
@@ -11146,18 +9892,14 @@
                     "default": 1
                   }
                 },
-                "required": [
-                  "force"
-                ],
+                "required": ["force"],
                 "additionalProperties": false
               },
               {
                 "type": "object",
                 "properties": {
                   "force": {
-                    "enum": [
-                      "nbody"
-                    ]
+                    "enum": ["nbody"]
                   },
                   "strength": {
                     "anyOf": [
@@ -11203,18 +9945,14 @@
                     ]
                   }
                 },
-                "required": [
-                  "force"
-                ],
+                "required": ["force"],
                 "additionalProperties": false
               },
               {
                 "type": "object",
                 "properties": {
                   "force": {
-                    "enum": [
-                      "link"
-                    ]
+                    "enum": ["link"]
                   },
                   "links": {
                     "type": "string"
@@ -11277,18 +10015,14 @@
                     "default": 1
                   }
                 },
-                "required": [
-                  "force"
-                ],
+                "required": ["force"],
                 "additionalProperties": false
               },
               {
                 "type": "object",
                 "properties": {
                   "force": {
-                    "enum": [
-                      "x"
-                    ]
+                    "enum": ["x"]
                   },
                   "strength": {
                     "anyOf": [
@@ -11315,18 +10049,14 @@
                     ]
                   }
                 },
-                "required": [
-                  "force"
-                ],
+                "required": ["force"],
                 "additionalProperties": false
               },
               {
                 "type": "object",
                 "properties": {
                   "force": {
-                    "enum": [
-                      "y"
-                    ]
+                    "enum": ["y"]
                   },
                   "strength": {
                     "anyOf": [
@@ -11353,9 +10083,7 @@
                     ]
                   }
                 },
-                "required": [
-                  "force"
-                ],
+                "required": ["force"],
                 "additionalProperties": false
               }
             ]
@@ -11380,26 +10108,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "x",
-            "y",
-            "vx",
-            "vy"
-          ]
+          "default": ["x", "y", "vx", "vy"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "contourTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "contour"
-          ]
+          "enum": ["contour"]
         },
         "signal": {
           "type": "string"
@@ -11557,19 +10276,14 @@
           "default": true
         }
       },
-      "required": [
-        "type",
-        "size"
-      ],
+      "required": ["type", "size"],
       "additionalProperties": false
     },
     "geojsonTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "geojson"
-          ]
+          "enum": ["geojson"]
         },
         "signal": {
           "type": "string"
@@ -11613,18 +10327,14 @@
           ]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "geopathTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "geopath"
-          ]
+          "enum": ["geopath"]
         },
         "signal": {
           "type": "string"
@@ -11673,18 +10383,14 @@
           "default": "path"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "geopointTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "geopoint"
-          ]
+          "enum": ["geopoint"]
         },
         "signal": {
           "type": "string"
@@ -11738,26 +10444,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "x",
-            "y"
-          ]
+          "default": ["x", "y"]
         }
       },
-      "required": [
-        "type",
-        "projection",
-        "fields"
-      ],
+      "required": ["type", "projection", "fields"],
       "additionalProperties": false
     },
     "geoshapeTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "geoshape"
-          ]
+          "enum": ["geoshape"]
         },
         "signal": {
           "type": "string"
@@ -11807,18 +10504,14 @@
           "default": "shape"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "graticuleTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "graticule"
-          ]
+          "enum": ["graticule"]
         },
         "signal": {
           "type": "string"
@@ -11905,10 +10598,7 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            90,
-            360
-          ]
+          "default": [90, 360]
         },
         "stepMinor": {
           "oneOf": [
@@ -11931,10 +10621,7 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            10,
-            10
-          ]
+          "default": [10, 10]
         },
         "precision": {
           "anyOf": [
@@ -11948,18 +10635,14 @@
           "default": 2.5
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "heatmapTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "heatmap"
-          ]
+          "enum": ["heatmap"]
         },
         "signal": {
           "type": "string"
@@ -12012,10 +10695,7 @@
         "resolve": {
           "anyOf": [
             {
-              "enum": [
-                "shared",
-                "independent"
-              ]
+              "enum": ["shared", "independent"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -12035,18 +10715,14 @@
           "default": "image"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "isocontourTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "isocontour"
-          ]
+          "enum": ["isocontour"]
         },
         "signal": {
           "type": "string"
@@ -12107,10 +10783,7 @@
         "resolve": {
           "anyOf": [
             {
-              "enum": [
-                "shared",
-                "independent"
-              ]
+              "enum": ["shared", "independent"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -12197,18 +10870,14 @@
           "default": "contour"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "kde2dTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "kde2d"
-          ]
+          "enum": ["kde2d"]
         },
         "signal": {
           "type": "string"
@@ -12351,21 +11020,14 @@
           "default": "grid"
         }
       },
-      "required": [
-        "type",
-        "size",
-        "x",
-        "y"
-      ],
+      "required": ["type", "size", "x", "y"],
       "additionalProperties": false
     },
     "nestTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "nest"
-          ]
+          "enum": ["nest"]
         },
         "signal": {
           "type": "string"
@@ -12404,18 +11066,14 @@
           ]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "packTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "pack"
-          ]
+          "enum": ["pack"]
         },
         "signal": {
           "type": "string"
@@ -12502,27 +11160,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "x",
-            "y",
-            "r",
-            "depth",
-            "children"
-          ]
+          "default": ["x", "y", "r", "depth", "children"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "partitionTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "partition"
-          ]
+          "enum": ["partition"]
         },
         "signal": {
           "type": "string"
@@ -12606,28 +11254,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "x0",
-            "y0",
-            "x1",
-            "y1",
-            "depth",
-            "children"
-          ]
+          "default": ["x0", "y0", "x1", "y1", "depth", "children"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "stratifyTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "stratify"
-          ]
+          "enum": ["stratify"]
         },
         "signal": {
           "type": "string"
@@ -12659,20 +11296,14 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "key",
-        "parentKey"
-      ],
+      "required": ["type", "key", "parentKey"],
       "additionalProperties": false
     },
     "treeTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "tree"
-          ]
+          "enum": ["tree"]
         },
         "signal": {
           "type": "string"
@@ -12696,10 +11327,7 @@
         "method": {
           "anyOf": [
             {
-              "enum": [
-                "tidy",
-                "cluster"
-              ]
+              "enum": ["tidy", "cluster"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -12783,43 +11411,30 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "x",
-            "y",
-            "depth",
-            "children"
-          ]
+          "default": ["x", "y", "depth", "children"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "treelinksTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "treelinks"
-          ]
+          "enum": ["treelinks"]
         },
         "signal": {
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "treemapTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "treemap"
-          ]
+          "enum": ["treemap"]
         },
         "signal": {
           "type": "string"
@@ -12843,14 +11458,7 @@
         "method": {
           "anyOf": [
             {
-              "enum": [
-                "squarify",
-                "resquarify",
-                "binary",
-                "dice",
-                "slice",
-                "slicedice"
-              ]
+              "enum": ["squarify", "resquarify", "binary", "dice", "slice", "slicedice"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -12992,28 +11600,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "x0",
-            "y0",
-            "x1",
-            "y1",
-            "depth",
-            "children"
-          ]
+          "default": ["x0", "y0", "x1", "y1", "depth", "children"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "labelTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "label"
-          ]
+          "enum": ["label"]
         },
         "signal": {
           "type": "string"
@@ -13062,16 +11659,7 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "top-left",
-            "left",
-            "bottom-left",
-            "top",
-            "bottom",
-            "top-right",
-            "right",
-            "bottom-right"
-          ]
+          "default": ["top-left", "left", "bottom-left", "top", "bottom", "top-right", "right", "bottom-right"]
         },
         "offset": {
           "oneOf": [
@@ -13092,9 +11680,7 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            1
-          ]
+          "default": [1]
         },
         "padding": {
           "anyOf": [
@@ -13186,28 +11772,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "x",
-            "y",
-            "opacity",
-            "align",
-            "baseline"
-          ]
+          "default": ["x", "y", "opacity", "align", "baseline"]
         }
       },
-      "required": [
-        "type",
-        "size"
-      ],
+      "required": ["type", "size"],
       "additionalProperties": false
     },
     "loessTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "loess"
-          ]
+          "enum": ["loess"]
         },
         "signal": {
           "type": "string"
@@ -13293,20 +11868,14 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "x",
-        "y"
-      ],
+      "required": ["type", "x", "y"],
       "additionalProperties": false
     },
     "regressionTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "regression"
-          ]
+          "enum": ["regression"]
         },
         "signal": {
           "type": "string"
@@ -13435,20 +12004,14 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "x",
-        "y"
-      ],
+      "required": ["type", "x", "y"],
       "additionalProperties": false
     },
     "aggregateTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "aggregate"
-          ]
+          "enum": ["aggregate"]
         },
         "signal": {
           "type": "string"
@@ -13605,18 +12168,14 @@
           ]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "binTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "bin"
-          ]
+          "enum": ["bin"]
         },
         "signal": {
           "type": "string"
@@ -13696,10 +12255,7 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            5,
-            2
-          ]
+          "default": [5, 2]
         },
         "extent": {
           "oneOf": [
@@ -13815,26 +12371,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "bin0",
-            "bin1"
-          ]
+          "default": ["bin0", "bin1"]
         }
       },
-      "required": [
-        "type",
-        "field",
-        "extent"
-      ],
+      "required": ["type", "field", "extent"],
       "additionalProperties": false
     },
     "collectTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "collect"
-          ]
+          "enum": ["collect"]
         },
         "signal": {
           "type": "string"
@@ -13843,18 +12390,14 @@
           "$ref": "#/definitions/compare"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "countpatternTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "countpattern"
-          ]
+          "enum": ["countpattern"]
         },
         "signal": {
           "type": "string"
@@ -13875,11 +12418,7 @@
         "case": {
           "anyOf": [
             {
-              "enum": [
-                "upper",
-                "lower",
-                "mixed"
-              ]
+              "enum": ["upper", "lower", "mixed"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -13929,25 +12468,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "text",
-            "count"
-          ]
+          "default": ["text", "count"]
         }
       },
-      "required": [
-        "type",
-        "field"
-      ],
+      "required": ["type", "field"],
       "additionalProperties": false
     },
     "crossTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "cross"
-          ]
+          "enum": ["cross"]
         },
         "signal": {
           "type": "string"
@@ -13976,24 +12507,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "a",
-            "b"
-          ]
+          "default": ["a", "b"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "densityTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "density"
-          ]
+          "enum": ["density"]
         },
         "signal": {
           "type": "string"
@@ -14069,9 +12593,7 @@
               "type": "object",
               "properties": {
                 "function": {
-                  "enum": [
-                    "normal"
-                  ]
+                  "enum": ["normal"]
                 },
                 "mean": {
                   "anyOf": [
@@ -14095,18 +12617,14 @@
                   "default": 1
                 }
               },
-              "required": [
-                "function"
-              ],
+              "required": ["function"],
               "additionalProperties": false
             },
             {
               "type": "object",
               "properties": {
                 "function": {
-                  "enum": [
-                    "lognormal"
-                  ]
+                  "enum": ["lognormal"]
                 },
                 "mean": {
                   "anyOf": [
@@ -14130,18 +12648,14 @@
                   "default": 1
                 }
               },
-              "required": [
-                "function"
-              ],
+              "required": ["function"],
               "additionalProperties": false
             },
             {
               "type": "object",
               "properties": {
                 "function": {
-                  "enum": [
-                    "uniform"
-                  ]
+                  "enum": ["uniform"]
                 },
                 "min": {
                   "anyOf": [
@@ -14165,18 +12679,14 @@
                   "default": 1
                 }
               },
-              "required": [
-                "function"
-              ],
+              "required": ["function"],
               "additionalProperties": false
             },
             {
               "type": "object",
               "properties": {
                 "function": {
-                  "enum": [
-                    "kde"
-                  ]
+                  "enum": ["kde"]
                 },
                 "field": {
                   "oneOf": [
@@ -14205,19 +12715,14 @@
                   ]
                 }
               },
-              "required": [
-                "function",
-                "field"
-              ],
+              "required": ["function", "field"],
               "additionalProperties": false
             },
             {
               "type": "object",
               "properties": {
                 "function": {
-                  "enum": [
-                    "mixture"
-                  ]
+                  "enum": ["mixture"]
                 },
                 "distributions": {
                   "oneOf": [
@@ -14251,9 +12756,7 @@
                   ]
                 }
               },
-              "required": [
-                "function"
-              ],
+              "required": ["function"],
               "additionalProperties": false
             }
           ]
@@ -14277,24 +12780,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "value",
-            "density"
-          ]
+          "default": ["value", "density"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "dotbinTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "dotbin"
-          ]
+          "enum": ["dotbin"]
         },
         "signal": {
           "type": "string"
@@ -14367,19 +12863,14 @@
           "default": "bin"
         }
       },
-      "required": [
-        "type",
-        "field"
-      ],
+      "required": ["type", "field"],
       "additionalProperties": false
     },
     "extentTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "extent"
-          ]
+          "enum": ["extent"]
         },
         "signal": {
           "type": "string"
@@ -14398,19 +12889,14 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "field"
-      ],
+      "required": ["type", "field"],
       "additionalProperties": false
     },
     "filterTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "filter"
-          ]
+          "enum": ["filter"]
         },
         "signal": {
           "type": "string"
@@ -14419,19 +12905,14 @@
           "$ref": "#/definitions/exprString"
         }
       },
-      "required": [
-        "type",
-        "expr"
-      ],
+      "required": ["type", "expr"],
       "additionalProperties": false
     },
     "flattenTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "flatten"
-          ]
+          "enum": ["flatten"]
         },
         "signal": {
           "type": "string"
@@ -14490,19 +12971,14 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "fields"
-      ],
+      "required": ["type", "fields"],
       "additionalProperties": false
     },
     "foldTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "fold"
-          ]
+          "enum": ["fold"]
         },
         "signal": {
           "type": "string"
@@ -14551,25 +13027,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "key",
-            "value"
-          ]
+          "default": ["key", "value"]
         }
       },
-      "required": [
-        "type",
-        "fields"
-      ],
+      "required": ["type", "fields"],
       "additionalProperties": false
     },
     "formulaTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "formula"
-          ]
+          "enum": ["formula"]
         },
         "signal": {
           "type": "string"
@@ -14598,20 +13066,14 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "expr",
-        "as"
-      ],
+      "required": ["type", "expr", "as"],
       "additionalProperties": false
     },
     "imputeTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "impute"
-          ]
+          "enum": ["impute"]
         },
         "signal": {
           "type": "string"
@@ -14679,13 +13141,7 @@
         "method": {
           "anyOf": [
             {
-              "enum": [
-                "value",
-                "mean",
-                "median",
-                "max",
-                "min"
-              ]
+              "enum": ["value", "mean", "median", "max", "min"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -14695,20 +13151,14 @@
         },
         "value": {}
       },
-      "required": [
-        "type",
-        "field",
-        "key"
-      ],
+      "required": ["type", "field", "key"],
       "additionalProperties": false
     },
     "joinaggregateTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "joinaggregate"
-          ]
+          "enum": ["joinaggregate"]
         },
         "signal": {
           "type": "string"
@@ -14844,18 +13294,14 @@
           ]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "kdeTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "kde"
-          ]
+          "enum": ["kde"]
         },
         "signal": {
           "type": "string"
@@ -14951,10 +13397,7 @@
         "resolve": {
           "anyOf": [
             {
-              "enum": [
-                "shared",
-                "independent"
-              ]
+              "enum": ["shared", "independent"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -15013,25 +13456,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "value",
-            "density"
-          ]
+          "default": ["value", "density"]
         }
       },
-      "required": [
-        "type",
-        "field"
-      ],
+      "required": ["type", "field"],
       "additionalProperties": false
     },
     "lookupTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "lookup"
-          ]
+          "enum": ["lookup"]
         },
         "signal": {
           "type": "string"
@@ -15120,21 +13555,14 @@
         },
         "default": {}
       },
-      "required": [
-        "type",
-        "from",
-        "key",
-        "fields"
-      ],
+      "required": ["type", "from", "key", "fields"],
       "additionalProperties": false
     },
     "pivotTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "pivot"
-          ]
+          "enum": ["pivot"]
         },
         "signal": {
           "type": "string"
@@ -15248,20 +13676,14 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "field",
-        "value"
-      ],
+      "required": ["type", "field", "value"],
       "additionalProperties": false
     },
     "projectTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "project"
-          ]
+          "enum": ["project"]
         },
         "signal": {
           "type": "string"
@@ -15313,18 +13735,14 @@
           ]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "quantileTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "quantile"
-          ]
+          "enum": ["quantile"]
         },
         "signal": {
           "type": "string"
@@ -15415,25 +13833,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "prob",
-            "value"
-          ]
+          "default": ["prob", "value"]
         }
       },
-      "required": [
-        "type",
-        "field"
-      ],
+      "required": ["type", "field"],
       "additionalProperties": false
     },
     "sampleTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "sample"
-          ]
+          "enum": ["sample"]
         },
         "signal": {
           "type": "string"
@@ -15450,18 +13860,14 @@
           "default": 1000
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "sequenceTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "sequence"
-          ]
+          "enum": ["sequence"]
         },
         "signal": {
           "type": "string"
@@ -15509,20 +13915,14 @@
           "default": "data"
         }
       },
-      "required": [
-        "type",
-        "start",
-        "stop"
-      ],
+      "required": ["type", "start", "stop"],
       "additionalProperties": false
     },
     "timeunitTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "timeunit"
-          ]
+          "enum": ["timeunit"]
         },
         "signal": {
           "type": "string"
@@ -15628,10 +14028,7 @@
         "timezone": {
           "anyOf": [
             {
-              "enum": [
-                "local",
-                "utc"
-              ]
+              "enum": ["local", "utc"]
             },
             {
               "$ref": "#/definitions/signalRef"
@@ -15660,25 +14057,17 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "unit0",
-            "unit1"
-          ]
+          "default": ["unit0", "unit1"]
         }
       },
-      "required": [
-        "type",
-        "field"
-      ],
+      "required": ["type", "field"],
       "additionalProperties": false
     },
     "windowTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "window"
-          ]
+          "enum": ["window"]
         },
         "signal": {
           "type": "string"
@@ -15863,10 +14252,7 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            null,
-            0
-          ]
+          "default": [null, 0]
         },
         "ignorePeers": {
           "anyOf": [
@@ -15879,18 +14265,14 @@
           ]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     },
     "identifierTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "identifier"
-          ]
+          "enum": ["identifier"]
         },
         "signal": {
           "type": "string"
@@ -15906,19 +14288,14 @@
           ]
         }
       },
-      "required": [
-        "type",
-        "as"
-      ],
+      "required": ["type", "as"],
       "additionalProperties": false
     },
     "voronoiTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "voronoi"
-          ]
+          "enum": ["voronoi"]
         },
         "signal": {
           "type": "string"
@@ -15984,14 +14361,8 @@
             }
           ],
           "default": [
-            [
-              -100000,
-              -100000
-            ],
-            [
-              100000,
-              100000
-            ]
+            [-100000, -100000],
+            [100000, 100000]
           ]
         },
         "as": {
@@ -16006,20 +14377,14 @@
           "default": "path"
         }
       },
-      "required": [
-        "type",
-        "x",
-        "y"
-      ],
+      "required": ["type", "x", "y"],
       "additionalProperties": false
     },
     "wordcloudTransform": {
       "type": "object",
       "properties": {
         "type": {
-          "enum": [
-            "wordcloud"
-          ]
+          "enum": ["wordcloud"]
         },
         "signal": {
           "type": "string"
@@ -16136,10 +14501,7 @@
               "type": "null"
             }
           ],
-          "default": [
-            10,
-            50
-          ]
+          "default": [10, 50]
         },
         "rotate": {
           "anyOf": [
@@ -16217,20 +14579,10 @@
               "$ref": "#/definitions/signalRef"
             }
           ],
-          "default": [
-            "x",
-            "y",
-            "font",
-            "fontSize",
-            "fontStyle",
-            "fontWeight",
-            "angle"
-          ]
+          "default": ["x", "y", "font", "fontSize", "fontStyle", "fontWeight", "angle"]
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "additionalProperties": false
     }
   },

@@ -18,13 +18,13 @@
  * value must be an array of objects defining the exposed files :
  * {
  *    key: mandatory. string. Identify the file internally. May be a key in the datanode settings.
- *    nameSuffix: mandatory. string or function accepting the datanode settings and returning a string. Suffix 
+ *    nameSuffix: mandatory. string or function accepting the datanode settings and returning a string. Suffix
  *                used to build the file name. Expected to end with the file extension (and may be only the extension)
- *    getter: optional. string or function accepting the datanode settings and returning the file's content 
- *            as a base64 endoded string. Strings are interpreted as the name of a property in the datanode's settings, which 
+ *    getter: optional. string or function accepting the datanode settings and returning the file's content
+ *            as a base64 endoded string. Strings are interpreted as the name of a property in the datanode's settings, which
  *            should be a string. If omitted, 'key' is used.
  *    setter: optional. string or function accepting the datanode settings and the new value (as a base64 encoded string
- *            which is expected to update the settings accordingly. Strings are interpreted as the name of a property in the 
+ *            which is expected to update the settings accordingly. Strings are interpreted as the name of a property in the
  *            datanode's settings, which should be a string. If omitted, 'key' is used.
  * }
  */

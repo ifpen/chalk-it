@@ -1,10 +1,15 @@
 // ┌────────────────────────────────────────────────────────────────────┐ \\
-// │ F R E E B O A R D                                                  │ \\
+// │ DatanodesManager : fork from FREEBOARD                             │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Copyright © 2013 Jim Heising (https://github.com/jheising)         │ \\
 // │ Copyright © 2013 Bug Labs, Inc. (http://buglabs.net)               │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Licensed under the MIT license.                                    │ \\
+// └────────────────────────────────────────────────────────────────────┘ \\
+// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// | Licensed under the Apache License, Version 2.0                     │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 var datanodesManager = (function () {
@@ -20,15 +25,14 @@ var datanodesManager = (function () {
     this.execOutsideEditor = false;
   }
   if (!this.execOutsideEditor) {
-    // MBG ne marche pas car chargé trop en avance. A régler avec refactoring!
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }
-  var timeManager = new TimeManager(); // MBG & ABK 14/
+  var timeManager = new TimeManager();
 
   var freeboardUI = new FreeboardUI();
   var datanodesListModel = new DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager);
 
-  var jsonEdit = new JSONEdit(); //jseditor in datanode pluging
+  var jsonEdit = new JSONEdit();
   var jsonEdContainer = {};
 
   var jsEditor = new JSEditor();
@@ -38,12 +42,11 @@ var datanodesManager = (function () {
   const injector = angular.element(document.body).injector();
   if (injector?.has('EventCenterService')) {
     injector.invoke([
-        'EventCenterService',
-        (eventCenterService) => {
-          eventCenter = eventCenterService;
-        },
-      ]
-    );
+      'EventCenterService',
+      (eventCenterService) => {
+        eventCenter = eventCenterService;
+      },
+    ]);
   }
 
   // deleteDn: delete a datanode
@@ -65,7 +68,7 @@ var datanodesManager = (function () {
         'warning'
       );
     }
-    //
+
     var $body = angular.element(document.body);
     var $rootScope = $body.scope().$root;
     datanodesListModel.deleteDatanode(viewModel);
@@ -129,7 +132,6 @@ var datanodesManager = (function () {
     //ABK
     [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
     if (type == 'datanode' && bFoundConnection) {
-      // MBG fix delete of connected widget
       let wdList = [];
       for (let i = 0; i < prop.length; i++) {
         wdList.push(widgetConnector.widgetsConnection[prop[i]].instanceId);
@@ -268,7 +270,6 @@ var datanodesManager = (function () {
       datanodesListModel.renameDatanodeData(oldName, newName);
     }
 
-
     datanodesDependency.renameNode(oldName, newName);
     viewModel.name(newName);
     //delete newSettings.settings.name;//ABK fix bug of error on name is required and not empty
@@ -284,7 +285,7 @@ var datanodesManager = (function () {
     viewModel.iconType(iconName);
 
     if (eventCenter) {
-      eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_UPDATED, {oldName, newName});
+      eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_UPDATED, { oldName, newName });
     }
 
     if (viewModel.error()) {
@@ -319,10 +320,10 @@ var datanodesManager = (function () {
         viewModel.statusCallback(oldSettings[0]); //get back last status
         // get back last name
         if (viewModel.name() !== oldSettings[1].name) {
-          // if (viewModel.isSettingNameChanged(oldSettings[1].name)) {
           datanodesListModel.renameDatanodeData(viewModel.name(), oldSettings[1].name);
+          datanodesDependency.renameNode(viewModel.name(), oldSettings[1].name);
         }
-        datanodesDependency.renameNode(viewModel.name(), oldSettings[1].name);
+
         viewModel.name(oldSettings[1].name);
 
         return oldSettings[1];
@@ -351,24 +352,18 @@ var datanodesManager = (function () {
         if (options.operation == 'delete') {
           deleteDataNode(viewModel, options.type, title);
         } else if (options.operation == 'refresh') {
-          //AEF
-          //if (viewModel.isSchedulerStartSafe())//Now it is handled on the fly (added to a list that is injected to the current scheduling)
           viewModel.schedulerStart(undefined, undefined, 'refresh');
         } else if (options.operation == 'stop') {
-          //AEF
           if (viewModel.execInstance() != null) {
             // scheduling is in progress
             viewModel.execInstance().stopOperation(viewModel.name());
           }
         } else if (options.operation == 'showTooltip') {
-          //MBG
           if (options.type == 'datanode') {
             $(element).tooltip('fixTitle');
             $(element).tooltip('show');
           }
         } else if (options.operation == 'hide') {
-          // MBG
-
           if (options.type == 'data-preview') {
             $(element).parent().parent().parent().remove();
           }
@@ -409,7 +404,7 @@ var datanodesManager = (function () {
     },
 
     load: function (configuration, bool, callback) {
-      const oldDnNames = datanodesListModel.datanodes().map(_ => _.name())
+      const oldDnNames = datanodesListModel.datanodes().map((_) => _.name());
 
       datanodesListModel.load(configuration, bool, callback);
 
@@ -417,17 +412,17 @@ var datanodesManager = (function () {
         return false;
       } else {
         if (eventCenter) {
-          const newDnNames = datanodesListModel.datanodes().map(_ => _.name())
-          if(bool) {
+          const newDnNames = datanodesListModel.datanodes().map((_) => _.name());
+          if (bool) {
             if (oldDnNames.length) {
-              eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_DELETED, oldDnNames)
+              eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_DELETED, oldDnNames);
             }
             if (newDnNames.length) {
               eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_CREATED, newDnNames);
             }
           } else {
             // TODO name conflicts
-            const newDnNames = configuration.datanodes.map(_ => _.name);
+            const newDnNames = configuration.datanodes.map((_) => _.name);
             if (newDnNames.length) {
               eventCenter.sendEvent(EVENTS_EDITOR_DATANODE_CREATED, newDnNames);
             }
@@ -444,14 +439,22 @@ var datanodesManager = (function () {
       if (_.isUndefined(plugin.display_name)) {
         plugin.display_name = plugin.type_name;
       }
-
       // Add a required setting called name to the beginning
-      plugin.settings.unshift({
-        name: 'name',
-        display_name: 'Name',
-        type: 'text',
-        required: true,
-      });
+      if (plugin.type_name !== 'Memory_plugin') {
+        plugin.settings.unshift({
+          name: 'name',
+          display_name: 'Name',
+          type: 'text',
+          required: true,
+        });
+      } else {
+        plugin.settings.unshift({
+          name: 'name',
+          display_name: 'Generated memory name',
+          type: 'text',
+          disabled: true,
+        });
+      }
 
       datanodePlugins[plugin.type_name] = plugin;
       datanodesListModel._datanodeTypes.valueHasMutated();
@@ -492,7 +495,7 @@ var datanodesManager = (function () {
     clear: function () {
       schedulerProfiling = {}; // GHI for issue #188
 
-      const allDnNames = datanodesListModel.datanodes().map(_ => _.name())
+      const allDnNames = datanodesListModel.datanodes().map((_) => _.name());
       datanodesListModel.clear();
 
       if (self.eventCenter && allDnNames.length) {
@@ -550,10 +553,11 @@ var datanodesManager = (function () {
     },
     stopSchedule: function () {
       var datanodes = datanodesListModel.datanodes();
-      //clear all extraStartNodes to avoid adding them to scheduler
-      if (Object.keys(datanodesDependency.getExtraStartNodes()).length) {
-        datanodesDependency.clearExtraStartNodes();
-      }
+
+      datanodesDependency.clearExtraStartNodesList();
+      datanodesDependency.clearSetvarList();
+      datanodesDependency.clearProcessedSetvarList();
+
       //stop all current operations
       for (var index in datanodes) {
         if (datanodes[index].execInstance() != null) {

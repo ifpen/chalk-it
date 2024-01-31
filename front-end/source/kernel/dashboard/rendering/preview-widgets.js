@@ -384,7 +384,7 @@ var widgetPreview = (function () {
           }
           if (!_.isUndefined(actuator.setValue)) {
             try {
-              actuator.setValue(varInter);
+              actuator.setValue(varInter, true);
             } catch (e) {
               console.log("setValue got exception with data '" + slider.dataNode + "'. " + e);
             }

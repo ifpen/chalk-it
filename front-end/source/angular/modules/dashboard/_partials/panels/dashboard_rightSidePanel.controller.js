@@ -278,8 +278,9 @@ angular
         _updateContent(newConnections) {
           this.dataNodes = [];
           if (this.$window.datanodesManager) {
-            // Probably not initialized before angular. TODO should be a service
-            taipyManager.processVariableData(); // Good time to check for updates, if missed            
+            // Check if there are any changes in dataTree
+            taipyManager.checkForChanges();
+            // Probably not initialized before angular. TODO should be a service           
             this.dataNodes = this.$window.datanodesManager.getAllDataNodes().map((ds, index) => ({
               name: ds.name(),
               index,
@@ -318,7 +319,7 @@ angular
 
             let slider = existingSliders[actuatorName];
 
-            // isFunction is used to test if the slider value is not a reserved name in javascript 
+            // isFunction is used to test if the slider value is not a reserved name in javascript
             // For example : "keys", "values" are function names in javascript
             // slider value must be a string or undefined
             if (slider && !_.isFunction(slider)) {
@@ -354,10 +355,10 @@ angular
                 slider = undefined;
               }
             }
-            // isFunction is used to test if the slider value is a reserved name in javascript 
+            // isFunction is used to test if the slider value is a reserved name in javascript
             // For example : "keys", "values" are function names in javascript
             // slider value must be a string or undefined
-            if (!slider || _.isFunction(slider)) { 
+            if (!slider || _.isFunction(slider)) {
               slider = {
                 name: actuatorName,
                 dataNode: 'None',

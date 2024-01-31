@@ -8,28 +8,27 @@ class TaipyManager {
    * Constructs a new TaipyManager instance.
    */
   constructor() {
-    this._app = {};
+    this._app = {}; 
     this._variableData = {};
-    this._deletedDnConnections = new Set();
-    this._currentContext = '';
-    //setInterval(() => this._checkForChanges(), 1000); // Check every second
+    this._deletedDnConnections = new Set();    
   }
 
   /**
    * Handles changes to variables within the application.
    * 
    * @param {Object} app - The application instance.
-   * @param {string} varName - The name of the variable.
+   * @param {string} valueName - The name of the variable.
    * @param {*} newValue - The new value of the variable.
    */
-  onChange(app, varName, newValue) {
-    const newVariableData = this._deepCloneIfObject(this.app.getDataTree());
-    const oldVariableData = this.variableData;
-    const [variable, context] = app.getName(varName);
-    const dnName = `${context}.${variable}`;
-    if (datanodesManager.foundDatanode(dnName) && !_.isEqual(oldVariableData, newVariableData)) {
-      this._updateDataNode(dnName, newValue);
-    }
+  onChange(app, valueName, newValue) {
+    const [varName, context] = app.getName(valueName);
+    if (!this.variableData.hasOwnProperty(context) || 
+    !app.getDataTree().hasOwnProperty(context)) return;
+    
+    // Update variableData
+    this.variableData[context][varName].value = this._deepCloneIfObject(newValue);
+    if (!datanodesManager.foundDatanode(varName)) return;
+    this._updateDataNode(varName, newValue);
   }
 
   /**
@@ -39,74 +38,71 @@ class TaipyManager {
    * @param {*} newValue - The value to be sent.
    */
   sendToTaipy(dataNodeName, newValue) {
-    const idSplit = Array.from(dataNodeName.split("."));
-    const [context, varName] = idSplit.reduce((acc, curr, idx) => {
-        if (idx === 0 || idx === idSplit.length - 1) {
-            acc.push(curr);
-        } else {
-            acc[0] = `${acc[0]}.${curr}`;
-        }
-        return acc;
-    }, []);
-    const encodedName = window.taipyApp.getEncodedName(varName, context);
-    const variableDataObj = this._deepCloneIfObject(this.variableData);
-    const currentValue = variableDataObj[context][varName].value;
-
-    // Update variableData
-    this.variableData[context][varName].value =this._deepCloneIfObject(newValue);
-
-    if (!_.isEqual(currentValue, newValue)) { // Current simple solution. To be enhanced in the future
-      window.taipyApp.update(encodedName, newValue);
-    }
+    if (!this.app.getDataTree().hasOwnProperty(this.currentContext)) return;
+    const varName = dataNodeName;
+    const encodedName = this.app.getEncodedName(varName, this.currentContext);
+    const currentValue = this.variableData[this.currentContext][varName].value;
+    // Performs a deep comparison
+    if (_.isEqual(currentValue, newValue)) return; // Current simple solution. To be enhanced in the future
+    this.app.update(encodedName, newValue);
   }
 
   /**
    * Checks for changes in the application's data tree.
    * 
    * @method
-   * @private
    */
-  _checkForChanges() {
-    const newData = this.app.getDataTree();
-    if (!_.isEqual(newData, this.variableData)) {
-        this._processVariableData();
-    }
+  checkForChanges() {
+    const newDataVariable = this.app.getDataTree()[this.currentContext];
+    const currentDataVariable = this.variableData[this.currentContext];
+    // Performs a deep comparison
+    if (_.isEqual(newDataVariable, currentDataVariable)) return;
+    this._processVariableData();
   }
 
   /**
-   * Updates internal variable data by processing each application variable and
-   * creates corresponding dataNodes
+   * Processes variable data, creating or deleting data nodes based on changes.
+   * It updates the variable data if there are changes in the current context.
    * 
    * @method
+   * @private
    */
-  processVariableData() {
+  _processVariableData() {
+    if (!window.taipyApp.getDataTree().hasOwnProperty(window.taipyApp.getContext())) return;
+    
+    const currentVariables = this._deepCloneIfObject(this.variableData)[this.currentContext] || {};
+    const newVariables = this._deepCloneIfObject(this.app.getDataTree())[this.currentContext] || {};
+
+    // Performs a deep comparison
+    if (_.isEqual(newVariables, currentVariables)) return;
+
+    // Update variableData
+    this.variableData[this.currentContext] = this._deepCloneIfObject(newVariables);
     this.deletedDnConnections = new Set();
-    const oldVariableData = this._deepCloneIfObject(this.variableData);
-    // Update variableData when use_reloader is true
-    this.variableData = this._deepCloneIfObject(this.app.getDataTree());
-    const contexts = new Set([...Object.keys(oldVariableData), ...Object.keys(this.variableData)]);
 
-    contexts.forEach(context => {
-        if (context === '__main__') return; // MBG, no need to ignore all context
-
-        const oldVariables = oldVariableData[context] || {};
-        const newVariables = this.variableData[context] || {};
-        const variableNames = new Set([...Object.keys(oldVariables), ...Object.keys(newVariables)]);
-
-        variableNames.forEach(variable => {
-            const dataNodeName = `${context}.${variable}`;
-
-            if (!newVariables[variable] && oldVariables[variable]) {
-                this._deleteDataNode(dataNodeName);
-            } else if (newVariables[variable] && !oldVariables[variable]) {
-                const newVariablesObject = this._deepCloneIfObject(newVariables);
-                const value = newVariablesObject[variable].value;
-                this._createDataNode(dataNodeName, value);
-            }
-        });
-    });
-
+    // Combine current and new variable names to iterate over
+    const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
+    for (const variableName of variableNames) {
+      this._processDataNode(variableName, currentVariables[variableName], newVariables[variableName]);
+    }
     this._showDeletedDataNodeAlert(this.deletedDnConnections);
+  }
+
+  /**
+   * Processes a single dataNode, creating or deleting it based on the presence of new and current variables.
+   * 
+   * @private
+   * @param {string} dataNodeName - The name of the dataNode to be processed.
+   * @param {Object} currentVariable - The current variable data.
+   * @param {Object} newVariable - The new variable data.
+   */
+  _processDataNode(dataNodeName, currentVariable, newVariable) {
+    if (newVariable && !currentVariable) {
+      const value = newVariable.value;
+      this._createDataNode(dataNodeName, value);
+    } else if (!newVariable && currentVariable) {
+      this._deleteDataNode(dataNodeName);
+    }
   }
 
   /**
@@ -269,6 +265,15 @@ class TaipyManager {
    */
   get deletedDnConnections() {
     return this._deletedDnConnections;
+  }
+
+  /**
+   * Gets the current context from the application instance.
+   * 
+   * @returns {string} The current context.
+   */
+  get currentContext() {
+    return window.taipyApp.getContext();
   }
 }
 

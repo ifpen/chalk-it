@@ -7,8 +7,8 @@
 // │ Original authors(s): Abir EL FEKI                                                 │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module("modules").service("AvatarService", [
-  "$rootScope",
+angular.module('modules').service('AvatarService', [
+  '$rootScope',
   function ($rootScope) {
     const self = this;
 
@@ -20,12 +20,12 @@ angular.module("modules").service("AvatarService", [
     /*---------- closeAvatarManager ----------------*/
     self.closeAvatarManager = function (vm) {
       vm.openUserAvatar = false;
-      vm.userAvatar.text = "";
+      vm.userAvatar.text = '';
     };
 
     /*---------- selectAvatar ----------------*/
     self.selectAvatar = function () {
-      $("#txtSelectAvatar").trigger("click");
+      $('#txtSelectAvatar').trigger('click');
     };
 
     /*---------- updateSelectedAvatar ----------------*/
@@ -36,40 +36,40 @@ angular.module("modules").service("AvatarService", [
 
     /*---------- sendAvatar ----------------*/
     self.sendAvatar = function (vm) {
-      let txtSelectAvatar = $("#txtSelectAvatar")[0];
-      if (vm.userAvatar.text != "") {
+      let txtSelectAvatar = $('#txtSelectAvatar')[0];
+      if (vm.userAvatar.text != '') {
         var endAction = function (msg1, msg2, type) {
-          if (type === "success") {
+          if (type === 'success') {
             new PNotify({
-              title: "Avatar",
-              text: "User avatar has been successfully uploaded!",
+              title: 'Avatar',
+              text: 'User avatar has been successfully uploaded!',
               type: type,
-              styling: "bootstrap3",
+              styling: 'bootstrap3',
             });
             var FileMngrInst = new FileMngrFct();
-            FileMngrInst.ReadFile("avatar", null, _avatarCallback, "img");
+            FileMngrInst.ReadFile('avatar', null, _avatarCallback, 'img');
 
             $rootScope.loadingBarStop();
-          } else if (type === "error") {
+          } else if (type === 'error') {
             new PNotify({
-              title: "Avatar",
-              text: "Fail to update your avatar!",
+              title: 'Avatar',
+              text: 'Fail to update your avatar!',
               type: type,
-              styling: "bootstrap3",
+              styling: 'bootstrap3',
             });
           }
         };
         var FileMngrInst = new FileMngrFct();
-        FileMngrInst.SendFile("avatar", txtSelectAvatar.files[0], endAction);
+        FileMngrInst.SendFile('avatar', txtSelectAvatar.files[0], endAction);
       }
     };
 
     function _avatarCallback(msg1, msg2, type) {
-      if (type === "success") {
-        if (msg2 === "avatar") {
+      if (type === 'success') {
+        if (msg2 === 'avatar') {
           let userAvatar;
-          userAvatar = "data:image/png;base64," + msg1;
-          sessionStorage.setItem("userAvatar", userAvatar);
+          userAvatar = 'data:image/png;base64,' + msg1;
+          sessionStorage.setItem('userAvatar', userAvatar);
           $rootScope.UserProfile.userAvatar = userAvatar;
         }
       }
@@ -79,14 +79,14 @@ angular.module("modules").service("AvatarService", [
     self.deleteAvatar = function () {
       swal(
         {
-          title: "Are you sure?",
-          text: "Avatar will be deleted!",
-          type: "warning",
+          title: 'Are you sure?',
+          text: 'Avatar will be deleted!',
+          type: 'warning',
           showCancelButton: true,
           showConfirmButton: false,
           showConfirmButton1: true,
-          confirmButtonText: "Yes",
-          cancelButtonText: "Abandon",
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'Abandon',
           closeOnConfirm: true,
           closeOnConfirm1: true,
           closeOnCancel: false,
@@ -94,29 +94,29 @@ angular.module("modules").service("AvatarService", [
         function (isConfirm) {
           if (isConfirm) {
             var endAction = function (msg1, msg2, type) {
-              if (type === "success") {
+              if (type === 'success') {
                 new PNotify({
-                  title: "Avatar",
-                  text: "User avatar has been successfully deleted!",
+                  title: 'Avatar',
+                  text: 'User avatar has been successfully deleted!',
                   type: type,
-                  styling: "bootstrap3",
+                  styling: 'bootstrap3',
                 });
-                let userAvatar = "source/assets/img/flat-icon/user-m.png";
+                let userAvatar = 'source/assets/img/flat-icon/user-m.png';
                 $rootScope.UserProfile.userAvatar = userAvatar; //default
-                sessionStorage.setItem("userAvatar", userAvatar);
+                sessionStorage.setItem('userAvatar', userAvatar);
                 $rootScope.loadingBarStop();
-              } else if (type === "error") {
+              } else if (type === 'error') {
                 new PNotify({
-                  title: "Avatar",
+                  title: 'Avatar',
                   text: msg1,
                   type: type,
-                  styling: "bootstrap3",
+                  styling: 'bootstrap3',
                 });
               }
             };
-            readSettingsData = "";
+            readSettingsData = '';
             var FileMngrInst = new FileMngrFct();
-            FileMngrInst.DeleteFile("avatar", null, endAction, "img");
+            FileMngrInst.DeleteFile('avatar', null, endAction, 'img');
           } else swal.close();
         }
       );

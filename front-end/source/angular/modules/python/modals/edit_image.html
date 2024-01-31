@@ -1,14 +1,17 @@
 <div class="cancel__box cancel__box--lg">
-    <div class="cancel__box__top">
-        <div class="cancel__title">{{imgEditorTitle}}</div>
-        <br><br>
-        <div id="editForm" class="dashboard-form"></div>
-        <br><br>
-    </div>
-    <div class="cancel__box__bottom">
-        <button type="button" class="btn btn-rounded-fill cancel" ng-click="closeImgEditor();" id="dialog-cancel">Cancel</button>
-        <button type="button" class="btn btn-rounded-fill primary" ng-click="applyImgEditor();" id="dialog-ok">{{imgEditorBtn}}</button>
-    </div>
-
+  <div class="cancel__box__top">
+    <div class="cancel__title">{{imgEditorTitle}}</div>
+    <br /><br />
+    <div id="editForm" class="dashboard-form"></div>
+    <br /><br />
+  </div>
+  <div class="cancel__box__bottom">
+    <button type="button" class="btn btn-rounded-fill cancel" ng-click="closeImgEditor();" id="dialog-cancel">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-rounded-fill primary" ng-click="applyImgEditor();" id="dialog-ok">
+      {{imgEditorBtn}}
+    </button>
+  </div>
 </div>
 <div class="cancel__overlay"></div>
