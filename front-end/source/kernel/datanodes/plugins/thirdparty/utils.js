@@ -918,7 +918,9 @@ function jsonDataToBasicHtmlElement(data, options = undefined) {
     // application/octet-stream -> hex ?
 
     const span = document.createElement('span');
-    span.appendChild(formatJson(data, options?.jsonFormat ?? DEFAULT_JSON_FORMAT));
+    //span.appendChild(formatJson(data, options?.jsonFormat ?? DEFAULT_JSON_FORMAT)); // MBG 01/02/2024 for gulp uglify
+    span.appendChild(formatJson(data, options && options.jsonFormat !== undefined ? options.jsonFormat : DEFAULT_JSON_FORMAT));
+
     span.className = 'css-treeview';
     return span;
 };
