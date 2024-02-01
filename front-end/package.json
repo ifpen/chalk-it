@@ -38,7 +38,7 @@
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
-    "gulp-uglify-es": "^2.0.0",
+    "gulp-uglify-es": "^3.0.0",
     "gulp-usemin": "^0.3.30",
     "imagemin-pngquant": "^9.0.2",
     "jshint": "^2.13.6",
