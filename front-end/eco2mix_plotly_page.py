@@ -69,7 +69,7 @@ def plot_pie(total_energy_GWh):
     return fig
 
 # Main execution flow
-def main(date, bSampling):
+def main_exec(date, bSampling):
     query_url = create_query_url(date)
     records = fetch_data(query_url)
     df = process_data(records)
@@ -78,14 +78,14 @@ def main(date, bSampling):
     fig_pie = plot_pie(energy_sum / 1000)  # Convert to GWh
     return fig_data, fig_pie
 
-fig_data, fig_pie = main(date, bSampling)
+fig_data, fig_pie = main_exec(date, bSampling)
 
 def on_change(state, var, val):
 
     if var == 'date':
-        state.fig_data, state.fig_pie = main(val, state.bSampling)
+        state.fig_data, state.fig_pie = main_exec(val, state.bSampling)
     elif var == 'bSampling':
-        state.fig_data, state.fig_pie = main(state.date, val)
+        state.fig_data, state.fig_pie = main_exec(state.date, val)
 
 
 
