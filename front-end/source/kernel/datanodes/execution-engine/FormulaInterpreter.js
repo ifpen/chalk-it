@@ -279,12 +279,13 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           }
 
           let lines = script.split('\n');
-          let isAPI = false;
+          let isSchedulingApi = false;
+          let isPageApi = false;
           for (let i = 0; i < lines.length; i++) {
             while ((matches = setVarRegex.exec(lines[i]))) {
               let dsName = [];
               if (!_.isUndefined(matches)) {
-                isAPI = true;
+                isSchedulingApi = true;
                 if (!_.isUndefined(matches[13])) {
                   // For setVariable
                   dsName[0] = matches[13];
@@ -333,15 +334,27 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               }
             }
           }
-          if (!isAPI) {
+          for (let i = 0; i < lines.length; i++) {
+            if ((matches2 = lines[i].match(/.goToPage|.viewPage|.viewProject/))) {
+              if (!_.isUndefined(matches2)) {
+                isPageApi = true;
+              }
+            }
+          }
+          if (!isSchedulingApi) {
+            // don't found scheduling api
             for (let i = 0; i < lines.length; i++) {
-              while ((matches = lines[i].match(/chalkit(.+)|xDashApi(.+)/))) {
+              if ((matches = lines[i].match(/chalkit(.+)|xDashApi(.+)/))) {
                 if (!_.isUndefined(matches)) {
-                  const text = 'Syntax error in chalkit API.';
-                  datanodeModel.statusCallback('Error', text);
-                  datanodeModel.notificationCallback('error', datanodeModel.name(), text);
-                  self.bCalculatedSettings = false;
-                  return;
+                  // but found the begining of the api
+                  if (!isPageApi) {
+                    //don't take into account pages api
+                    const text = 'Syntax error in chalkit API.';
+                    datanodeModel.statusCallback('Error', text);
+                    datanodeModel.notificationCallback('error', datanodeModel.name(), text);
+                    self.bCalculatedSettings = false;
+                    return;
+                  }
                 }
               }
             }
