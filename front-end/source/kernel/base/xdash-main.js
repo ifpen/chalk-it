@@ -151,7 +151,10 @@ var xdash = (function () {
 
       //AEF: save prj version for compatibility
       jsonObject.data.version = jsonObject.meta.version;
-      if (datanodesManager.load(jsonObject.data, true)) {
+
+      if ($rootScope.xDashLiteVersion) {
+        taipyManager.checkForChanges(); // MBG : todo secure in other configs
+      } else if (datanodesManager.load(jsonObject.data, true)) {
         angular
           .element(document.body)
           .injector()
@@ -165,8 +168,6 @@ var xdash = (function () {
         clear();
         return false;
       }
-
-      //taipyManager.processVariableData(); // MBG : todo secure in other configs
 
       widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
       widgetConnector.deserialize(jsonObject.connections);
