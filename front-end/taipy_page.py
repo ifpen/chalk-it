@@ -13,14 +13,15 @@ fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
 
 fruits = ['apple', 'blueberry', 'cherry', 'orange']
 counts = [40, 100, 30, 55]
-bar_labels = ['red', 'blue', '_red', 'orange']
-bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
 
+selectd_fruit = 'apple'
+selectd_count = 40
 
-
-
-def on_change(state):
-    state.c = state.a + state.b * 2
+def on_change(state, var, val):
+    if ((var == 'a') or (var == 'b')):
+        state.c = state.a + state.b * 2
+    if var == 'selectd_fruit':
+        state.selectd_count = state.counts[state.fruits.index(val)]
 
 # Create a Page instance with the resource handler
 page = Page(PureHTMLResourceHandler())
