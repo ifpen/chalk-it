@@ -12,19 +12,34 @@
 // │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var datanodesManager = (function () {
+import { xDashConfig } from 'config.js';
+import _ from 'underscore';
+import swal from 'sweetalert';
+import ko from 'knockout';
+import angular from 'angular';
+import FreeboardUI from 'kernel/base/gui/FreeboardUI';
+import { DatanodesListModel } from './DatanodesListModel';
+import { DatanodeDependency } from '../execution-engine/DatanodeDependency';
+import { JSONEdit } from 'kernel/datanodes/gui/json-edit';
+import { JSEditor } from 'kernel/datanodes/gui/JSEditor';
+import { PluginEditor } from 'kernel/datanodes/gui/PluginEditor';
+import { TimeManager } from '../execution-engine/TimeManager';
+import { urlQueryEntry } from 'kernel/general/interfaces/query-url-entry';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { DialogBoxForData } from 'kernel/datanodes/gui/DialogBox';
+import { GraphVisu } from 'kernel/datanodes/gui/GraphVisu';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { xdsjson } from 'kernel/datanodes/export/xdsjson';
+import { offSchedLogUser } from 'kernel/base/main-common';
+import { schedulerProfiling } from 'kernel/datanodes/execution-engine/DatanodeScheduler';
+import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
+
+export const datanodesManager = (function () {
   var datanodePlugins = {};
   var datanodesDependency = new DatanodeDependency(); // new instance from DatanodeDependency
 
   var graphVisu;
-  if (typeof execOutsideEditor === 'undefined') {
-    this.execOutsideEditor = false;
-  } else if (execOutsideEditor) {
-    this.execOutsideEditor = true;
-  } else {
-    this.execOutsideEditor = false;
-  }
-  if (!this.execOutsideEditor) {
+  if (!(typeof execOutsideEditor !== 'undefined' && execOutsideEditor)) { // FIXEME
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }
   var timeManager = new TimeManager();
@@ -478,7 +493,7 @@ var datanodesManager = (function () {
       return datanodesListModel.datanodes();
     },
     clear: function () {
-      schedulerProfiling = {}; // GHI for issue #188
+      for (const key in schedulerProfiling) delete schedulerProfiling[key];
 
       const allDnNames = datanodesListModel.datanodes().map((_) => _.name());
       datanodesListModel.clear();
@@ -489,7 +504,8 @@ var datanodesManager = (function () {
     },
     showDepGraph: function (name) {
       graphVisu.showDepGraph(name);
-      let scopeDepGraph = angular.element(document.getElementById('dependency__graph--container')).scope();
+      const element = document.getElementById('dependency__graph--container');
+      let scopeDepGraph = angular.element(element).scope();
       scopeDepGraph.getUniqTypes();
     },
     editNodeFromGraph: function (dataNode) {

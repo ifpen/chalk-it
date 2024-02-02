@@ -6,8 +6,12 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import PNotify from 'pnotify';
 
-var xdashNotifications = (function () {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
+export const xdashNotifications = (function () {
   var PnotifyStatus = false;
 
   var $body = null;

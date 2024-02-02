@@ -1,4 +1,6 @@
-class XdashDataUpdateInformation {
+import swal from 'sweetalert';
+
+export class XdashDataUpdateInformation {
   constructor(fromVersion, toVersion, messages) {
     this.fromVersion = fromVersion;
     this.toVersion = toVersion;
@@ -18,7 +20,7 @@ class XdashDataUpdateInformation {
  * Stores a set of update steps and applies them to update data to the current version.
  * Update steps are selected based on their starting version. No two steps can share the same starting version.
  */
-class XdashDataUpdateEngine {
+export class XdashDataUpdateEngine {
   static VERSION_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
   static DEFAULT_VERSION = '0.0';
   static CURRENT_VERSION = '0.3';

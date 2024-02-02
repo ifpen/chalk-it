@@ -1,4 +1,9 @@
-var XdashNotifications = function () {
+import _ from 'underscore';
+import PNotify from 'pnotify';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
+export function XdashNotifications() {
   var $body = angular.element(document.body);
   var $rootScope = $body.scope().$root;
   $rootScope.PnotifyStatus = false;
@@ -16,7 +21,7 @@ var XdashNotifications = function () {
     });
   }
 
-  return {
+  const self = {
     addNotification: function (notificationObject, pnotify) {
       if (notificationObject.title && notificationObject.text && notificationObject.type) {
         $rootScope.listNotifications.unshift(notificationObject);
@@ -113,7 +118,7 @@ var XdashNotifications = function () {
             //AEF: popup is displayed starting from period=1min
             pnotify = true;
           }
-          xdashNotifications.addNotification(
+          self.addNotification(
             {
               type: type,
               title: title,
@@ -136,4 +141,5 @@ var XdashNotifications = function () {
       $rootScope.safeApply();
     },
   };
-};
+  return self;
+}

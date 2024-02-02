@@ -7,6 +7,16 @@
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
+import { xDashConfig } from 'config.js';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'underscore';
+import swal from 'sweetalert';
+import template from 'angular/modules/cards/cards.html';
+import PNotify from 'pnotify';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { htmlExport } from 'kernel/general/export/html-export';
+
 angular
   .module('modules.cards')
   .config([
@@ -16,7 +26,7 @@ angular
         userNotAuthenticated: true,
         userAuthenticated: false,
         url: '/',
-        templateUrl: 'source/angular/modules/cards/cards.html',
+        template,
         controller: 'CardsController',
         params: {
           action: null,

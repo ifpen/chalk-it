@@ -6,6 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                      │ \\
 // └────────────────────────────────────────────────────────────────────────┘ \\
+import swal from 'sweetalert';
 
 angular.module('modules.headerbar').service('LogoutService', [
   '$rootScope',

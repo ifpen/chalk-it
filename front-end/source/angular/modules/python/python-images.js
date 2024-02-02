@@ -7,7 +7,13 @@
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular
+import { xDashConfig, urlPython } from 'config.js';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'underscore';
+import { DialogBox } from 'kernel/datanodes/gui/DialogBox';
+import { b64DecodeUnicode, formatDataSize } from 'kernel/datanodes/plugins/thirdparty/utils';
+
+export const pythonImagesModule = angular
   .module('modules.python-images', [])
   .config([
     '$stateProvider',

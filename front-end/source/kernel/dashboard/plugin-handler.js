@@ -5,6 +5,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
 
 function widgetsPluginsHandlerClass() {
   var pluginNames = [];
@@ -57,4 +58,4 @@ function widgetsPluginsHandlerClass() {
   };
 }
 
-var widgetsPluginsHandler = new widgetsPluginsHandlerClass();
+export const widgetsPluginsHandler = new widgetsPluginsHandlerClass();

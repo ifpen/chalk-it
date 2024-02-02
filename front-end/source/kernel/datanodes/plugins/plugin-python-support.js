@@ -1,4 +1,8 @@
-﻿class PythonPluginExecBase {
+﻿import { xDashConfig, urlPython } from 'config.js';
+import { pyodideManager } from 'kernel/base/pyodide-loader';
+import _ from 'underscore';
+
+export class PythonPluginExecBase {
   static ABORT_ERROR = 'ABORT';
   static DISCONNECTED_ERROR = 'DISCONNECTED';
   static SIGNATURE_ERROR = 'SIGNATURE INVALID';
@@ -26,7 +30,7 @@
   dispose() {}
 }
 
-class PythonPluginLocalExec extends PythonPluginExecBase {
+export class PythonPluginLocalExec extends PythonPluginExecBase {
   static PSEUDO_IMAGE_NAME = 'Pyodide';
   static PSEUDO_IMAGE_ID = '__PYODIDE__';
 
@@ -61,7 +65,7 @@ script(dataNodes)
   }
 }
 
-class PythonPluginRemoteExec extends PythonPluginExecBase {
+export class PythonPluginRemoteExec extends PythonPluginExecBase {
   static DEFAULT_IMAGE_NAME = 'Default';
   static DEFAULT_IMAGE_ID = '';
 

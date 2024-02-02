@@ -1,3 +1,5 @@
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
 (function () {
   // ### Datanode Definition
   // -------------------

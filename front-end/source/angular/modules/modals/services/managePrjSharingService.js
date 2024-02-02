@@ -6,8 +6,13 @@
 // ├────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI                                                  │ \\
 // └────────────────────────────────────────────────────────────────────────────────────┘ \\
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'underscore';
+import PNotify from 'pnotify';
+import swal from 'sweetalert';
+import { modalsModule } from '../modals';
 
-angular.module('modules').service('ManagePrjSharingService', [
+modalsModule.service('ManagePrjSharingService', [
   '$rootScope',
   function ($rootScope) {
     const self = this;

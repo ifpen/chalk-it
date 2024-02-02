@@ -6,8 +6,12 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'underscore';
+import swal from 'sweetalert';
+import { modalsModule } from './modals';
 
-angular.module('modules').controller('InfoProjectController', [
+modalsModule.controller('InfoProjectController', [
   '$scope',
   '$rootScope',
   '$state',

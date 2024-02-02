@@ -7,7 +7,7 @@
 // │ Original authors(s): Abir EL FEKI                                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules.sidebar', []).config([
+export const sidebarModule = angular.module('modules.sidebar', []).config([
   '$stateProvider',
   function ($stateProvider) {
     $stateProvider.state('modules.sidebar', {

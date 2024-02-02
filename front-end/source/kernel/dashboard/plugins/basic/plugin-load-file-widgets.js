@@ -6,6 +6,14 @@
 // ├──────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Ghiles HIDEUR, Tristan BARTEMENT, Guillaume CORBELIN   │ \\
 // └──────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import PNotify from 'pnotify';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { b64StrSize, formatFileSize } from 'kernel/datanodes/plugins/thirdparty/utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/

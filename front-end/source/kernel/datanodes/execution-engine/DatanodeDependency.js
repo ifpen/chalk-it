@@ -7,7 +7,17 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-function DatanodeDependency() {
+import { xDashConfig } from 'config.js';
+import _ from 'underscore';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { union } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { offSchedLogUser } from 'kernel/base/main-common';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import GraphDS from 'graph-data-structure'; // FIXME 2 type of graphs ?
+import Graph from 'tarjan-graph';
+
+export function DatanodeDependency() {
   /*
 
        Main idea : make current dependencyStructure data structure here. 
@@ -301,7 +311,7 @@ function DatanodeDependency() {
   // add the extra start node came from user refresh, setvalue, setfile, edit and add
   function addExtraStartNodesList(dsName, callOrigin) {
     if (extraStartNodesList.has(dsName)) {
-      xdashNotifications.manageNotification(
+      singletons.xdashNotifications.manageNotification(
         'info',
         dsName,
         dsName + ' is called many consecutif times while scheduler is in progress'
@@ -325,7 +335,7 @@ function DatanodeDependency() {
   function addSetvarList(dsName, callOrigin) {
     if (setvarList.has(dsName)) {
       if (setvarList.get(dsName) !== callOrigin)
-        xdashNotifications.manageNotification(
+        singletons.xdashNotifications.manageNotification(
           'warning',
           dsName,
           'Possible undeterminism: setVariable of "' +

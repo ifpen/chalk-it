@@ -24,10 +24,18 @@ generalizing the "called from orchestrator" boolean introduced
 
 */
 
-var schedulerProfiling = {};
-var schedulerProfilingItem = {};
+import { xDashConfig } from 'config.js';
+import _ from 'underscore';
+import swal from 'sweetalert';
 
-function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, initiatorNode, callOrigin) {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { isSuperset, union, difference } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { offSchedLogUser } from 'kernel/base/main-common';
+
+export const schedulerProfiling = {};
+export const schedulerProfilingItem = {};
+
+export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, initiatorNode, callOrigin) {
   // safety
   if (_.isUndefined(datanodesManager)) return;
 
@@ -151,9 +159,8 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
                 console.log('operation ' + op + ' released');
               }
               if (!xDashConfig.disableSchedulerProfiling) {
-                schedulerProfilingItem = {
-                  release: Date.now(),
-                };
+                for (const key in schedulerProfilingItem) delete schedulerProfilingItem[key];
+                schedulerProfilingItem.release = Date.now();
               }
               bCalledFromOrchestrator = isCalledFromOrchestrator(op);
               bForceAutoStart = isForceAutoStart(op); // temp use
@@ -183,9 +190,8 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
                     console.log('operation ' + op + ' released');
                   }
                   if (!xDashConfig.disableSchedulerProfiling) {
-                    schedulerProfilingItem = {
-                      release: Date.now(),
-                    };
+                    for (const key in schedulerProfilingItem) delete schedulerProfilingItem[key];
+                    schedulerProfilingItem.release = Date.now();
                   }
                   bCalledFromOrchestrator = isCalledFromOrchestrator(op);
                   bForceAutoStart = isForceAutoStart(op); // temp use

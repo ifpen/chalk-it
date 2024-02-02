@@ -7,6 +7,15 @@
 // ¦ Original authors(s): Bruno LETY                                    ¦ \\
 // +--------------------------------------------------------------------+ \\
 
+import { setXHRAuthorizationHeader } from 'angular/modules/components/auth-utils';
+
+import { xServConfig, xDashConfig } from 'config.js';
+import _ from 'underscore';
+import swal from 'sweetalert';
+import { saveAs } from 'file-saver';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { b64EncodeUnicode } from 'kernel/datanodes/plugins/thirdparty/utils';
+
 if (xDashConfig.xDashBasicVersion == 'true') {
   var AdminMngrFct = function () {
     function GetFileServer() {
@@ -18,7 +27,7 @@ if (xDashConfig.xDashBasicVersion == 'true') {
   var AdminMngr = AdminMngrFct();
 }
 
-var FileMngrFct = function () {
+export function FileMngrFct() {
   //===============================
   // Values for type : fmi, project
   //===============================
@@ -1835,19 +1844,6 @@ var FileMngrFct = function () {
     return b64EncodeUnicode(data);
   } // Fin de Hash
 
-  //=============================================================================================
-  //  String2Uint8Array
-  //=============================================================================================
-
-  function String2Uint8Array(s) {
-    var bytes = new Uint8Array(s.length);
-    for (var index = 0; index < s.length; index++) {
-      bytes.set([s.charCodeAt(index)], index);
-    }
-
-    return bytes;
-  } // Fin de String2Uint8Array
-
   //------------------
   //
   //  Public functions
@@ -1881,6 +1877,6 @@ var FileMngrFct = function () {
       endAction = endAct;
     },
   };
-};
+}
 
-var FileMngr = FileMngrFct();
+export const FileMngr = FileMngrFct();

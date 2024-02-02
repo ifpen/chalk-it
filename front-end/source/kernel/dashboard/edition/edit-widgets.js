@@ -7,8 +7,35 @@
 // │ Original authors(s): Tristan BARTEMENT, Abir EL FEKI, Mounir MECHERGHUI, Mongi BEN GAID,   │ \\
 // │                      Ameur HAMDOUNI                                                        │ \\
 // └────────────────────────────────────────────────────────────────────────────────────────────┘ \\
+import interact from 'interactjs';
+import _ from 'underscore';
 
-function initEditWidget() {
+import { panelDash } from './panel-dashboard';
+import { rescaleHelper } from 'kernel/dashboard/scaling/rescale-helper';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import {
+  EVENTS_EDITOR_SELECTION_CHANGED,
+  EVENTS_EDITOR_ADD_REMOVE_WIDGET,
+  EVENTS_EDITOR_WIDGET_MOVED,
+} from 'angular/modules/editor/editor.events';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { widgetFactory } from 'kernel/dashboard/widget/widget-factory';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { enforceConstraints } from 'kernel/dashboard/widget/widget-placement';
+import { getMedia, isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
+import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
+import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
+import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
+import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { scalingManager } from 'kernel/dashboard/scaling/scaling-manager';
+import { flatUiWidgetsPlugin } from 'kernel/dashboard/plugins/basic/plugin-flat-ui-widgets';
+import { plotlyWidgetsPlugin } from 'kernel/dashboard/plugins/plots/plugin-plotly-widgets';
+import { mapWidgetsPlugin } from 'kernel/dashboard/plugins/geo-time/plugin-map-widgets';
+import { bFirstExec, rescaleWidget } from 'kernel/base/main-common';
+
+export function initEditWidget() {
   var drprD = $('#DropperDroite')[0]; // short alias
   // TODO redundent with widgetContainers ?
   var modelsId = []; // save unique "Instance Id"
@@ -30,7 +57,7 @@ function initEditWidget() {
   var editorDimensionsSnapshot;
   var scalingHelper = new rescaleHelper(editorDimensionsSnapshot, editorScalingMethod, 'edit');
 
-  layoutMgr.setScalingHelper(scalingHelper);
+  singletons.layoutMgr.setScalingHelper(scalingHelper);
 
   var widgetSelectionContext = new Set(); // selection context (Instance Ids of selected widgets)
 
@@ -363,7 +390,7 @@ function initEditWidget() {
                 [x, y] = _alignOnGrid([x, y], [0, 0], grid);
               }
 
-              layout = {
+              const layout = {
                 top: unitH(y),
                 left: unitW(x),
               };
@@ -719,7 +746,7 @@ function initEditWidget() {
 
           const grid = gridMgr.getGrid();
 
-          if (layoutMgr.isRowColMode() && container === MAIN_CONTAINER_ID) {
+          if (singletons.layoutMgr.isRowColMode() && container === MAIN_CONTAINER_ID) {
             widgetSelectionContext.forEach((id) => {
               const widget = document.getElementById(id);
               const startPosition = _readStartPosition(widget);
@@ -927,9 +954,9 @@ function initEditWidget() {
     scalingHelper.setScalingMethod(editorScalingMethod);
 
     // columns rescale
-    layoutMgr.deserialize(deviceObj, scalingObj);
+    singletons.layoutMgr.deserialize(deviceObj, scalingObj);
     scalingHelper.deserialize(scalingObj);
-    layoutMgr.updateColHeight(scalingObj);
+    singletons.layoutMgr.updateColHeight(scalingObj);
     scalingHelper.resizeDashboardCols();
 
     var projectedScalingObj = scalingObj;
@@ -945,7 +972,7 @@ function initEditWidget() {
       var mediaChangeProj = scalingHelper.mediaChangeProjection(
         scalingObj,
         editorDimensionsSnapshot,
-        layoutMgr.getRows()
+        singletons.layoutMgr.getRows()
       );
       /*------------------------------------------------------------------------*/
 
@@ -993,7 +1020,7 @@ function initEditWidget() {
 
       var targetDiv = document.getElementById(wdgDrprMap[key]);
 
-      widgetEditor.addWidget(
+      singletons.widgetEditor.addWidget(
         dashObj[key].container.modelJsonId,
         targetDiv,
         dashObj[key].container.instanceId,
@@ -1059,7 +1086,7 @@ function initEditWidget() {
 
   /*--------rescale--------*/
   function rescale() {
-    layoutMgr.updateMaxTopAndLeft();
+    singletons.layoutMgr.updateMaxTopAndLeft();
 
     var divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
 
@@ -1101,9 +1128,9 @@ function initEditWidget() {
 
   /*--------reset--------*/
   function reset() {
-    flatUiWidgetsPlugin.clear();
-    plotlyWidgetsPlugin.clear();
-    mapWidgetsPlugin.clear();
+    flatUiWidgetsPlugin.clear(); // FIXME
+    plotlyWidgetsPlugin.clear(); // FIXME
+    mapWidgetsPlugin.clear(); // FIXME
 
     for (const [key, val] of widgetContainers) {
       if (!_.isUndefined(models[key])) {
@@ -1125,12 +1152,10 @@ function initEditWidget() {
     }
     modelsId.length = 0;
 
-    bFirstExec = true; //in main-common
+    bFirstExec.value = true; //in main-common
 
     unselectAllWidgets();
     _onAddRmWidget();
-
-    storage = {};
 
     //$('#DropperDroite').html('');
     if ($('#DropperDroite')[0].hasChildNodes()) {
@@ -1144,7 +1169,7 @@ function initEditWidget() {
 
   /*--------clear--------*/
   function clear() {
-    layoutMgr.clear();
+    singletons.layoutMgr.clear();
     var property;
     for (property in widthRatioModels) {
       delete widthRatioModels[property];
@@ -1336,7 +1361,7 @@ function initEditWidget() {
     const menuWidgetMarginTop = 30;
     const menuWidgetMarginBottom = elementHeight - 10;
 
-    const nbRows = layoutMgr.getRows();
+    const nbRows = singletons.layoutMgr.getRows();
 
     let elementOffsetBottom;
     let mainContainerHeight;

@@ -6,8 +6,14 @@
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Mongi BEN GAID; Abir EL FEKI                  ¦ \\
 // +--------------------------------------------------------------------+ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
 
-var xdsjson = (function () {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { XdashDataUpdateEngine } from 'kernel/base/xdash-data-updates';
+import { DialogBoxForData} from 'kernel/datanodes/gui/DialogBox';
+
+export const xdsjson = (function () {
   //--------------------------------------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------------------------------
   // Load (open) existing xdsjsonsources (specific functions)

@@ -7,10 +7,15 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { dashState } from 'angular/modules/dashboard/dashboard';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+
 var workOnViewport = true;
 
 /*--------convert px to vw--------*/
-function unitW(value) {
+export function unitW(value) {
   var vwFl = value * (100.0 / document.documentElement.clientWidth);
   var vwStr = vwFl.toPrecision(23);
   vwStr = vwStr + 'vw';
@@ -18,7 +23,7 @@ function unitW(value) {
 }
 
 /*--------convert px to vh--------*/
-function unitH(value) {
+export function unitH(value) {
   var vhFl = value * (100 / document.documentElement.clientHeight);
   var vhStr = vhFl.toPrecision(23);
   vhStr = vhStr + 'vh';
@@ -38,7 +43,7 @@ function convertVhtoPx(value) {
 }
 
 /*--------convert viewport obj to px obj--------*/
-function convertViewportToPx(vpObj) {
+export function convertViewportToPx(vpObj) {
   var pxObj = {
     left: convertVwtoPx(vpObj.left),
     top: convertVhtoPx(vpObj.top),
@@ -61,25 +66,25 @@ function inheritWcHeightFromPx(value) {
 }
 
 /*-----WidgetContainer width from top level container-----*/
-function inheritWcWidthFromIdInst(idInstance) {
+export function inheritWcWidthFromIdInst(idInstance) {
   var elt = idInstance;
-  if (tabActive == 'play') {
+  if (dashState.tabActive == 'play') {
     elt = elt + 'c';
   }
   return inheritWcWidthFromPx($('#' + elt).width);
 }
 
 /*-----WidgetContainer height from top level container-----*/
-function inheritWcHeightFromIdInst(idInstance) {
+export function inheritWcHeightFromIdInst(idInstance) {
   var elt = idInstance;
-  if (tabActive == 'play') {
+  if (dashState.tabActive == 'play') {
     elt = elt + 'c';
   }
   return inheritWcHeightFromPx($('#' + elt).height);
 }
 
 /*--------match Media--------*/
-function getMedia() {
+export function getMedia() {
   var lastMedia = '';
   if (window.matchMedia('(min-width: 768px)').matches) {
     lastMedia = 'large';
@@ -90,7 +95,7 @@ function getMedia() {
 }
 
 /*--------isMediaChanged --------*/
-function isMediaChanged(lastMedia) {
+export function isMediaChanged(lastMedia) {
   var bChanged = false;
 
   if (lastMedia == 'small' && window.matchMedia('(min-width: 768px)').matches) {
@@ -106,16 +111,16 @@ function isMediaChanged(lastMedia) {
 }
 
 /*--------getFontFactor --------*/
-function getFontFactor() {
-  if (tabActive == 'play') {
+export function getFontFactor() {
+  if (dashState.tabActive == 'play') {
     if (!window.matchMedia('(min-width: 768px)').matches) {
       return widgetPreview.getCols() || 1;
     } else {
       return 1;
     }
-  } else if (tabActive == 'widgets') {
+  } else if (dashState.tabActive == 'widgets') {
     if (!window.matchMedia('(min-width: 768px)').matches) {
-      return layoutMgr.getCols() || 1;
+      return singletons.layoutMgr.getCols() || 1;
     } else {
       return 1;
     }

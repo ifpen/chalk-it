@@ -7,13 +7,15 @@
 // │ Original authors(s): Tristan BARTEMENT                                             │ \\
 // └────────────────────────────────────────────────────────────────────────────────────┘ \\
 
+import PNotify from 'pnotify';
+
 const DEFAULT_DELAY = 8000;
 const DEFAULT_TYPE = 'info';
 
 /**
  * Displays ephemeral notification messages on the page
  */
-class UiNotifications {
+export class UiNotifications {
   static TYPE_NOTICE = 'notice';
   static TYPE_INFO = 'info';
   static TYPE_SUCCESS = 'success';

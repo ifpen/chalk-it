@@ -7,7 +7,14 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, datanodesDependency) {
+import { xDashConfig } from 'config.js';
+import _ from 'underscore';
+import swal from 'sweetalert';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { offSchedLogUser } from 'kernel/base/main-common';
+
+export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, datanodesDependency) {
   var self = this;
   self.bCalculatedSettings = true;
 

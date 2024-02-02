@@ -6,6 +6,12 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import angular from 'angular';
+import swal from 'sweetalert';
+import FreeboardUI from 'kernel/base/gui/FreeboardUI';
+import { startXdash } from 'kernel/runtime/xdash-runtime-main';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
 
 angular.module('modules').controller('ModulesController', [
   '$scope',
@@ -148,19 +154,23 @@ angular.module('modules').controller('ModulesController', [
 
     const freeboardUIInst = new FreeboardUI();
     $rootScope.loadedTemplate = function () {
-      startXdash();
+      setTimeout(()=>{
+        startXdash();
 
-      // End fix by Ghiles
-      $rootScope.availableTags = $rootScope.listAvailablesTags;
-      datanodesManager.initialize(false);
-      $rootScope.currentProject = xdash.initMeta();
-      $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-      if (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) {
-        const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
-        sidebarController.newProject();
-      }
-      freeboardUIInst.showLoadingIndicator(false);
+        // End fix by Ghiles
+        $rootScope.availableTags = $rootScope.listAvailablesTags;
+        datanodesManager.initialize(false);
+        $rootScope.currentProject = singletons.xdash.initMeta();
+        $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
+        if (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) {
+          const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
+          sidebarController.newProject();
+        }
+        freeboardUIInst.showLoadingIndicator(false);
+      }, 0);
+
     };
+    window.loadedTemplate = $rootScope.loadedTemplate;
 
     $scope.$watch(
       function () {

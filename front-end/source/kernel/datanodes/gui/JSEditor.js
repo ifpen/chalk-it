@@ -1,4 +1,19 @@
-JSEditor = function () {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { checkES6, checkES7, checkES8, checkES9, checkES10 } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { JSEditorCompletion } from './JSEditorCompletion';
+
+// TODO
+import 'codemirror/addon/comment/comment';
+import 'codemirror/addon/comment/continuecomment';
+import 'codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/hint/show-hint';
+import 'codemirror/mode/javascript/javascript';
+import CodeMirror from 'codemirror';
+import { JSHINT } from 'jshint';
+
+export function JSEditor() {
   var assetRoot = '';
 
   function setAssetRoot(_assetRoot) {
@@ -435,4 +450,4 @@ JSEditor = function () {
       setAssetRoot(assetRoot);
     },
   };
-};
+}

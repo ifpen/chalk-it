@@ -6,6 +6,11 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR                                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+
+import { htmlExport } from 'kernel/general/export/html-export';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+const layoutMgr = singletons.layoutMgr;
 
 var customNavigationRuntime = (function () {
   const self = this;

@@ -7,6 +7,11 @@
 // │ Original authors(s): Mongi BEN GAID, Ameur HAMDOUNI, Tristan BARTEMENT,    │ \\
 // │                      Guillaume CORBELIN                                    │ \\
 // └────────────────────────────────────────────────────────────────────────────┘ \\
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/

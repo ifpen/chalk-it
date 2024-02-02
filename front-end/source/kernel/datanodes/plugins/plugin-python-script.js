@@ -1,4 +1,22 @@
-﻿if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported()) {
+﻿import _ from 'underscore';
+import swal from 'sweetalert';
+import { urlPython } from 'config.js';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { PythonPluginRemoteExec, PythonPluginExecBase, PythonPluginLocalExec } from './plugin-python-support';
+import { JSEditorCompletion } from 'kernel/datanodes/gui/JSEditorCompletion';
+
+// TODO
+import 'codemirror/addon/comment/comment';
+import 'codemirror/addon/comment/continuecomment';
+import 'codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/hint/show-hint';
+import 'codemirror/mode/python/python';
+import CodeMirror from 'codemirror';
+
+if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported()) {
   (function () {
     var error = false;
 

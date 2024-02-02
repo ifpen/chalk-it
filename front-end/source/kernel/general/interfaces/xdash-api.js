@@ -7,7 +7,10 @@
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var xDashApi = (function () {
+import { xDashConfig } from 'config.js';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
+export const xDashApi = (function () {
   function setVariable(varDateNodeName, varJsonValue, explicitTrig) {
     let dN = datanodesManager.getDataNodeByName(varDateNodeName);
     dN.setValue([], varJsonValue, false, true); //don't start schedule here

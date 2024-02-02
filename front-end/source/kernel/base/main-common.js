@@ -6,30 +6,24 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { dashState } from 'angular/modules/dashboard/dashboard';
+import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { showEditMode, bRescaleNeededForModeSwitch } from 'angular/modules/dashboard/services/edit-play-switch';
 
 // AEF: issue#304
 // disableSchedulerLog is defined in env to disable scheduler log in public xdash. true by default
 // offSchedLogUser is defined in xprjson to disable/enable scheduler log. To be used by developer and intern user expert.
 // Only active when disableSchedulerLog is false
-var offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
+
+// FIXME
+export var offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
 var ratioScroll = 0;
-// Models
-var models = {};
-// Hidden parameters
-modelsHiddenParams = {};
-// Temporary parameters not to be serialized
-modelsTempParams = {};
-// Default parameters
-modelsParameters = {};
-// Default dimensions
-modelsLayout = {};
 
-try {
-  // MBG for IE11
-  var tabWidgetsLoadedEvt = new Event('widgets-tab-loaded');
-  var tabPlayLoadedEvt = new Event('play-tab-loaded');
-} catch (exc) {}
+export const tabWidgetsLoadedEvt = new Event('widgets-tab-loaded');
+export const tabPlayLoadedEvt = new Event('play-tab-loaded');
 
 /* MBG refactored from xdash-main.js because needed by runtime */
 // For todays date;
@@ -61,26 +55,26 @@ Date.prototype.timeNow = function () {
   );
 };
 
-var bFirstExec = true;
+export const bFirstExec = { value: true };
 
 // MBG detecting Android for handling issue #93
 var ua = navigator.userAgent.toLowerCase();
 var isAndroid = ua.indexOf('android') > -1; //&& ua.indexOf("mobile");
 
-function isTouchDevice() {
+function _isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 }
 
-var isTouchDevice = isTouchDevice();
+const isTouchDevice = _isTouchDevice();
 
 function activeTab() {
-  tabActive = 'widgets';
+  dashState.tabActive = 'widgets';
   setEditPlaySwitchDisableStatus(false);
-  if (modeActive == 'no-dashboard') {
-    bRescaleNeededForModeSwitch = true;
+  if (dashState.modeActive == 'no-dashboard') {
+    bRescaleNeededForModeSwitch.value = true;
     showEditMode(true, function () {});
   } else {
-    console.log('tabActive=' + tabActive + '. modeActive=' + modeActive);
+    console.log('tabActive=' + dashState.tabActive + '. modeActive=' + dashState.modeActive);
   }
 }
 
@@ -89,16 +83,16 @@ $(function () {
   $(window).on('resize', function () {
     var $body = angular.element(document.body);
     var $rootScope = $body.scope().$root;
-    if (tabActive == 'play') {
+    if (dashState.tabActive == 'play') {
       if (!(isAndroid || isTouchDevice)) {
         widgetPreview.resizeDashboard();
       }
     } else if (!$rootScope.moduleOpened) {
-      if (tabActive == 'widgets') {
-        if (modeActive == 'edit-dashboard') {
-          widgetEditor.resizeDashboard();
+      if (dashState.tabActive == 'widgets') {
+        if (dashState.modeActive == 'edit-dashboard') {
+          singletons.widgetEditor.resizeDashboard();
           gridMgr.updateGrid();
-        } else if (modeActive == 'play-dashboard') {
+        } else if (dashState.modeActive == 'play-dashboard') {
           widgetPreview.resizeDashboard();
         }
       }
@@ -106,7 +100,7 @@ $(function () {
   });
   if (!(isAndroid || isTouchDevice)) {
     $(window).on('orientationchange', function () {
-      if (tabActive == 'play') {
+      if (dashState.tabActive == 'play') {
         widgetPreview.resizeDashboard();
       }
     });
@@ -114,7 +108,7 @@ $(function () {
 });
 
 /*--------Rescale Widget--------*/
-function rescaleWidget(widget, instanceId) {
+export function rescaleWidget(widget, instanceId) {
   widget[instanceId].rescale();
 }
 

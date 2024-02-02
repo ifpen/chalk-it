@@ -7,6 +7,14 @@
 // │ Original authors(s): Mongi BEN GAID, Abir El FEKI, Ghiles HIDEUR   │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import 'jquery-ui';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
 
 // Needed for Flat-Ui
 String.prototype.repeat = function (num) {
@@ -1570,7 +1578,7 @@ function flatUiWidgetsPluginClass() {
 flatUiWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var flatUiWidgetsPlugin = new flatUiWidgetsPluginClass();
+export const flatUiWidgetsPlugin = new flatUiWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

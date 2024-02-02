@@ -6,6 +6,9 @@
 // ├──────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI                                            │ \\
 // └──────────────────────────────────────────────────────────────────────────────┘ \\
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'underscore';
+import PNotify from 'pnotify';
 
 angular.module('modules.headerbar').controller('HeaderbarController', [
   '$scope',

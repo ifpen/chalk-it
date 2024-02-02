@@ -6,18 +6,27 @@
 // ├──────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Tristan BARTEMENT │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
+import { panelDash } from '../edition/panel-dashboard';
+import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
+import { getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
+import { htmlExport } from 'kernel/general/export/html-export';
 
 /*constants*/
-const keyShift = 5; // cst; size in px of keyboard shift using arrows, can be modified
-const minLeftCst = 10; // cst; min left of the dashboard
-const minTopCst = 10; // cst; min top of the dashboard
-const minHeightCst = 10; // cst; min height of a widget, can be modified
-const minWidthCst = 10; // cst; min width of a widget, can be modified
+export const keyShift = 5; // cst; size in px of keyboard shift using arrows, can be modified
+export const minLeftCst = 10; // cst; min left of the dashboard
+export const minTopCst = 10; // cst; min top of the dashboard
+export const minHeightCst = 10; // cst; min height of a widget, can be modified
+export const minWidthCst = 10; // cst; min width of a widget, can be modified
 
 // Toggles entering one height per row; not quite functionnal yet
 const MULTIPLE_HEIGHT = false;
 
-class LayoutMgrClass {
+export class LayoutMgrClass {
   constructor() {
     // Alias
     this.drprD = $('#DropperDroite')[0];
@@ -295,7 +304,7 @@ class LayoutMgrClass {
       this._createColumn(classType);
 
       if (this.rows !== 0) {
-        _.each(widgetEditor.modelsId, (instanceId) => {
+        _.each(singletons.widgetEditor.modelsId, (instanceId) => {
           const element = document.getElementById(instanceId);
           this.putWidgetInTheRightCol(element, 10, 10); // minLeftCst=10, minTopCst=10 // to coordinate
         });
@@ -323,7 +332,7 @@ class LayoutMgrClass {
     }
 
     this.updateMaxTopAndLeft();
-    widgetEditor.updateSnapshotDashZoneDims();
+    singletons.widgetEditor.updateSnapshotDashZoneDims();
 
     $('select[name=select-rows]')[0].value = this.rows;
     $('select[name=select-cols]')[0].value = this.cols || 1;
@@ -586,14 +595,14 @@ class LayoutMgrClass {
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
     // TODO Open Sweet alert to ask the user if he wants to reset styles for all components
-    widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
+    singletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
     this.$rootScope.updateFlagDirty(true);
   }
 
   updateDashboardTheme() {
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
-    widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
+    singletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
   }
 
   resetDashboardTheme() {

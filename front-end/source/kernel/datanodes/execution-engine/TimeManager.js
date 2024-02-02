@@ -7,7 +7,14 @@
 // │ Original authors(s): Abir EL FEKI                                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-function TimeManager() {
+import { xDashConfig } from 'config.js';
+import _ from 'underscore';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { offSchedLogUser } from 'kernel/base/main-common';
+
+
+export function TimeManager() {
   var periodsMap = [];
   var refreshTimer;
   var currentTick = 0;

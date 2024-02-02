@@ -11,8 +11,16 @@
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
+import PNotify from 'pnotify';
 
-PluginEditor = function (jsEditor) {
+import FreeboardUI from 'kernel/base/gui/FreeboardUI';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { Path2FileName } from 'kernel/datanodes/plugins/thirdparty/utils';
+
+export function PluginEditor(jsEditor) {
   function _displayValidationError(settingName, errorMessage) {
     var errorElement = $('<div class="validation--error"></div>').html(errorMessage);
     var node;
@@ -977,4 +985,4 @@ PluginEditor = function (jsEditor) {
       return saveSettings(selectedType, settings, settingsSavedCallback);
     },
   };
-};
+}

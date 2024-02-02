@@ -6,8 +6,15 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
 
-var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg) {
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { scalingManager } from 'kernel/dashboard/scaling/scaling-manager';
+
+export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg) {
   var self = this;
 
   self.dashboardDimensions = dashboardDimensionsArg; // memory
@@ -182,7 +189,7 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
 
       switch (self.mode) {
         case 'edit':
-          layoutMgr.updateMaxTopAndLeft();
+          singletons.layoutMgr.updateMaxTopAndLeft();
         case 'preview':
           break;
       }
@@ -325,9 +332,9 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
           widthVw: (100 * (cell.width() + 2)) / document.documentElement.clientWidth,
           heightVh: (100 * (cell.height() + 2)) / document.documentElement.clientHeight,
         };
-        if (typeof layoutMgr !== 'undefined') {
+        if (typeof singletons.layoutMgr !== 'undefined') {
           // TODO
-          const heights = layoutMgr.getHeightCols();
+          const heights = singletons.layoutMgr.getHeightCols();
           curDrpZone['rowHeightPercent'] = heights.length ? heights[0] : 100;
         }
         break;
@@ -338,9 +345,9 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
           widthVw: (100 * (cell.width() + 16)) / document.documentElement.clientWidth,
           heightVh: (100 * (cell.height() + 2)) / document.documentElement.clientHeight,
         };
-        if (typeof layoutMgr !== 'undefined') {
+        if (typeof singletons.layoutMgr !== 'undefined') {
           // TODO
-          const heights = layoutMgr.getHeightCols();
+          const heights = singletons.layoutMgr.getHeightCols();
           curDrpZone['rowHeightPercent'] = heights.length ? heights[0] : 100;
         }
     }
@@ -440,4 +447,4 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
     computeRelativeColHeigth: computeRelativeColHeigth,
     deserialize: deserialize,
   };
-};
+}

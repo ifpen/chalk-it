@@ -6,8 +6,12 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI                                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import PNotify from 'pnotify';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { modalsModule } from '../modals';
+import { htmlExport } from 'kernel/general/export/html-export';
 
-angular.module('modules').service('ManagePageSharingService', [
+modalsModule.service('ManagePageSharingService', [
   '$rootScope',
   function ($rootScope) {
     const self = this;

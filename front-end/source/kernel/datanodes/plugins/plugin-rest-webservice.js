@@ -2,6 +2,12 @@
 // ¦ Updates by Mongi BEN GAID & Abir EL FEKI (IFPEN)                   ¦ \\
 // +--------------------------------------------------------------------+ \\
 
+import { xDashConfig } from 'config.js';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'underscore';
+import swal from 'sweetalert';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
 (function () {
   var jsonDatanode = function (settings, updateCallback, statusCallback, bodyType, notificationCallback) {
     //initialize error at new instance

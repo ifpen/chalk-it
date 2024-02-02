@@ -3,6 +3,10 @@
  * @description
  * This Datanode is used to receive data through Web socket. It's allow Chalk'it to retrieve data
  */
+
+import _ from 'underscore';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
 // ### Datanode Definition
 //
 // -------------------

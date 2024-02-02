@@ -7,8 +7,14 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
+import ko from 'knockout';
+import { DialogBoxForDuplicateData } from 'kernel/datanodes/gui/DialogBox';
+import { xdsjson } from 'kernel/datanodes/export/xdsjson';
+import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
 
-function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager) {
+export function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager) {
   var self = this;
 
   this.datanodes = ko.observableArray();

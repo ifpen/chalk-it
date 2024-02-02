@@ -7,6 +7,21 @@
 // │ Original authors(s):  Tristan BARTEMENT, Mongi BEN GAID, Abir EL FEKI,      │ \\
 // │                       Guillaume CORBELIN                                    │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import 'jquery-ui';
+import swal from 'sweetalert';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { getRealMimeType } from 'kernel/datanodes/plugins/thirdparty/utils';
+import {
+  inheritWcWidthFromIdInst,
+  inheritWcHeightFromIdInst,
+  unitW,
+  unitH,
+} from 'kernel/dashboard/scaling/scaling-utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/

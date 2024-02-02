@@ -1,4 +1,7 @@
-﻿(function () {
+﻿import _ from 'underscore';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
+(function () {
   var error = false;
 
   // ## A Datanode Plugin

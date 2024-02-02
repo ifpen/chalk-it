@@ -7,7 +7,28 @@
 // ¦ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  ¦ \\
 // +--------------------------------------------------------------------+ \\
 
-var Xdash = function () {
+import { xDashConfig } from 'config.js';
+
+import _ from 'underscore';
+import swal from 'sweetalert';
+import PNotify from 'pnotify';
+
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { pyodideManager } from 'kernel/base/pyodide-loader';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { XdashDataUpdateEngine } from './xdash-data-updates';
+import { offSchedLogUser } from 'kernel/base/main-common';
+import { DialogBox } from 'kernel/datanodes/gui/DialogBox';
+import { dashState } from 'angular/modules/dashboard/dashboard';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { xdsjson } from 'kernel/datanodes/export/xdsjson';
+import { htmlExport } from 'kernel/general/export/html-export';
+import { pyodideLib } from 'kernel/base/pyodide-project';
+
+
+export const Xdash = function () {
   const version = xDashConfig.version.fullVersion;
 
   var prjName = ''; //AEF
@@ -28,8 +49,8 @@ var Xdash = function () {
       ]);
 
     datanodesManager.clear();
-    widgetEditor.clear();
-    xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
+    singletons.widgetEditor.clear();
+    singletons.xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 
     $('#projectName')[0].value = prjName;
     $('.tab--active').removeClass('changed');
@@ -82,16 +103,17 @@ var Xdash = function () {
     let scale;
     if (
       !$rootScope.moduleOpened &&
-      tabActive == 'widgets' &&
-      modeActive == 'edit-dashboard' &&
-      editorStatus == 'full'
+      dashState.tabActive == 'widgets' &&
+      dashState.modeActive == 'edit-dashboard' &&
+      dashState.editorStatus == 'full'
     ) {
-      scale = widgetEditor.getCurrentDashZoneDims();
+      scale = singletons.widgetEditor.getCurrentDashZoneDims();
     } else {
-      scale = widgetEditor.getSnapshotDashZoneDims();
+      scale = singletons.widgetEditor.getSnapshotDashZoneDims();
     }
 
-    const dash = widgetEditor.serialize();
+    const layoutMgr = singletons.layoutMgr;
+    const dash = singletons.widgetEditor.serialize();
     const deviceCols = layoutMgr.serializeCols();
     const backgroundColor = layoutMgr.serializeDashBgColor();
     const theme = layoutMgr.serializeDashboardTheme();
@@ -100,7 +122,7 @@ var Xdash = function () {
     const defaultRow = layoutMgr.serializeDefaultRow();
 
     const exportOptions = layoutMgr.serializeExportOptions();
-    navBarNotification = htmlExport.navBarNotification;
+    const navBarNotification = htmlExport.navBarNotification;
 
     const xdashPrj = {
       meta: meta,
@@ -166,12 +188,13 @@ var Xdash = function () {
         return false;
       }
 
-      widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
+      singletons.widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
       widgetConnector.deserialize(jsonObject.connections);
       widgetPreview.clear();
 
-      widgetEditor.unselectAllWidgets(); //AEF: deselect all widget at project load
+      singletons.widgetEditor.unselectAllWidgets(); //AEF: deselect all widget at project load
 
+      const layoutMgr = singletons.layoutMgr;
       layoutMgr.deserializeDashBgColor(jsonObject.device);
       layoutMgr.deserializeDashboardTheme(jsonObject.device);
 
@@ -381,7 +404,7 @@ var Xdash = function () {
         }
         //AEF: fix bug add params and test on it
         if (type === 'success') {
-          xdash.openProjectManager(msg1);
+          singletons.xdash.openProjectManager(msg1);
           let notice = new PNotify({
             title: projectName,
             text: 'Your ' + fileTypeServer + ' ' + projectName + ' is ready!',
@@ -458,7 +481,7 @@ var Xdash = function () {
       }
     };
     document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
-    if (tabActive == 'widgets') {
+    if (dashState.tabActive == 'widgets') {
       await loadFn();
     }
   }

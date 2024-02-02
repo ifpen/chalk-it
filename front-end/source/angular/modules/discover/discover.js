@@ -1,4 +1,4 @@
-angular.module('modules.discover', []).config([
+export const discoverModule = angular.module('modules.discover', []).config([
   '$stateProvider',
   function ($stateProvider) {
     $stateProvider.state('modules.discover', {

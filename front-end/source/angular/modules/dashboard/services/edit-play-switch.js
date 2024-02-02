@@ -1,10 +1,20 @@
-﻿let bRescaleNeededForModeSwitch = false;
+﻿import _ from 'underscore';
+
+import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
+import { dashState } from 'angular/modules/dashboard/dashboard';
+import { bFirstExec, tabWidgetsLoadedEvt, tabPlayLoadedEvt } from 'kernel/base/main-common';
+import { getMedia } from 'kernel/dashboard/scaling/scaling-utils';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+
+// FIXME
+export const bRescaleNeededForModeSwitch = { value: false };
 let currentDashboardScrollTop = 0;
 
-function showEditMode(bDoRescale, successCallback) {
-  if (tabActive == 'widgets') {
-    if (modeActive != 'edit-dashboard') {
-      if (modeActive == 'play-dashboard') {
+export function showEditMode(bDoRescale, successCallback) {
+  if (dashState.tabActive == 'widgets') {
+    if (dashState.modeActive != 'edit-dashboard') {
+      if (dashState.modeActive == 'play-dashboard') {
         currentDashboardScrollTop = $('#DropperDroitec').scrollTop();
       }
       $('#dashboard-preview-div').hide(0, function () {
@@ -18,16 +28,17 @@ function showEditMode(bDoRescale, successCallback) {
       switchToEditMode(bDoRescale, successCallback);
     }
   } else {
-    console.log('showEditMode called while tabActive=' + tabActive);
+    console.log('showEditMode called while tabActive=' + dashState.tabActive);
   }
 }
 
-function showPlayMode(bDoRescale) {
+export function showPlayMode(bDoRescale) {
   switchToPlayMode(bDoRescale);
 }
 
 function switchToEditMode(bDoRescale, successCallback) {
-  if (bFirstExec) {
+  const widgetEditor = singletons.widgetEditor;
+  if (bFirstExec.value) {
     const val = getMedia();
     widgetEditor.setLastMedia(val);
   }
@@ -37,21 +48,23 @@ function switchToEditMode(bDoRescale, successCallback) {
   gridMgr.updateGrid();
   // reset icons state because no widget is selected
   document.dispatchEvent(tabWidgetsLoadedEvt);
-  if (bFirstExec) {
-    bFirstExec = false;
+  if (bFirstExec.value) {
+    bFirstExec.value = false;
     widgetEditor.computeDropperMaxWidth();
   }
-  modeActive = 'edit-dashboard';
+  dashState.modeActive = 'edit-dashboard';
   if (!_.isUndefined(successCallback)) successCallback();
 
   $('#DropperDroite').scrollTop(currentDashboardScrollTop);
 }
 
 function switchToPlayMode() {
+  const layoutMgr = singletons.layoutMgr;
+  const widgetEditor = singletons.widgetEditor;
   let xprjson = {};
-  if (modeActive == 'edit-dashboard') {
+  if (dashState.modeActive == 'edit-dashboard') {
     widgetEditor.updateSnapshotDashZoneDims();
-    xprjson = xdash.serialize();
+    xprjson = singletons.xdash.serialize();
     currentDashboardScrollTop = $('#DropperDroite').scrollTop();
     widgetPreview.setScalingInformation(
       null,
@@ -61,7 +74,7 @@ function switchToPlayMode() {
     );
     widgetEditor.unselectAllWidgets(); // disable selection of last used widgets
   } else {
-    console.log('bad modeActive : ' + modeActive + '. Unable to switch to Play mode');
+    console.log('bad modeActive : ' + dashState.modeActive + '. Unable to switch to Play mode');
     return;
   }
   $('#dashboard-editor-div').hide(0, function () {
@@ -72,8 +85,8 @@ function switchToPlayMode() {
       } catch (e) {
         console.log(e);
       }
-      layoutMgr.makeColsTrasparent();
-      modeActive = 'play-dashboard';
+      singletons.layoutMgr.makeColsTrasparent();
+      dashState.modeActive = 'play-dashboard';
       setIsPlayModeStatus(true);
       $('#DropperDroitec').scrollTop(currentDashboardScrollTop);
       document.dispatchEvent(tabPlayLoadedEvt); // for some widgets (like Leaflet)

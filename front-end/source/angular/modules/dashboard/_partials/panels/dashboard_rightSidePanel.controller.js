@@ -6,6 +6,14 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Tristan BARTEMENT                             │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
+import JSONEditor from 'jsoneditor';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { modelsParameters } from 'kernel/base/widgets-states';
+import { UiNotifications } from 'angular/modules/dashboard/services/uiNotificationService';
+import { WidgetActuatorDescription } from 'kernel/dashboard/plugins/widget-base';
 
 angular
   .module('modules.editor')

@@ -1,4 +1,4 @@
-JSEditorCompletion = (function () {
+export const JSEditorCompletion = (function () {
   const VALUE_LENGTH = 75;
 
   // Returns the length of the last group of a datanode's path

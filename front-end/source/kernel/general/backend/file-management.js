@@ -6,6 +6,13 @@
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'underscore';
+import swal from 'sweetalert';
+import PNotify from 'pnotify';
+import { saveAs } from 'file-saver';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
 
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
@@ -268,7 +275,7 @@ var fileManager = (function () {
     const fileExtension = FileMngrInst.GetFileExt(fileType);
     if (!_.isUndefined(xdashFileSerialized)) xdashFile = xdashFileSerialized;
     else {
-      const temp = xdash.serialize();
+      const temp = singletons.xdash.serialize();
       xdashFile = JSON.stringify(temp, null, '\t');
     }
     const $rootScope = angular.element(document.body).scope().$root;

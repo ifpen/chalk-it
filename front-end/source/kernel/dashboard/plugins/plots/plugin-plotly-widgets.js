@@ -7,6 +7,13 @@
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI, Benoît LEHMAN,  │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
+import { WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import Plotly from 'plotly.js/dist/plotly';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -1270,7 +1277,7 @@ function plotlyWidgetsPluginClass() {
   };
 }
 
-var plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
+export const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

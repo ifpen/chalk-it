@@ -7,6 +7,9 @@
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI, Mongi BEN GAID  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
+
+import urlBase from 'config.js';
+
 var angularModule = angular.module('xCLOUD', [
   'angularjs-gauge',
   'rzSlider',

@@ -6,6 +6,10 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
+import template from 'angular/modules/python/python-images.html';
+import { formatDataSize } from 'kernel/datanodes/plugins/thirdparty/utils';
 
 angular
   .module('modules.python-images')
@@ -16,7 +20,7 @@ angular
         userNotAuthenticated: true,
         userAuthenticated: false,
         url: '/',
-        templateUrl: 'source/angular/modules/python/python-images.html',
+        template,
         controller: 'PythonImagesListControler',
         resolve: {
           _images: [

@@ -8,7 +8,20 @@
 // │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependency, timeManager) {
+import { xDashConfig } from 'config.js';
+import _ from 'underscore';
+import swal from 'sweetalert';
+import ko from 'knockout';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { offSchedLogUser } from 'kernel/base/main-common';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { FormulaInterpreter } from '../execution-engine/FormulaInterpreter';
+import { DatanodeScheduler } from '../execution-engine/DatanodeScheduler';
+import { loadJsScripts } from 'kernel/datanodes/plugins/thirdparty/utils';
+
+export const DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependency, timeManager) {
   var self = this;
   var doubleSetValueEventTrigger = true;
   this.datanodeRefreshNotifications = {};
@@ -134,8 +147,8 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   };
 
   this.notificationCallback = function (notifType, dsSettingsName, msg, title, lastNotif) {
-    if (xdashNotifications) {
-      xdashNotifications.manageNotification(notifType, dsSettingsName, msg, lastNotif);
+    if (singletons.xdashNotifications) {
+      singletons.xdashNotifications.manageNotification(notifType, dsSettingsName, msg, lastNotif);
     } else {
       console.log('no notification lib was found. ');
       if (!_.isUndefined(title) && !_.isNull(title)) {
@@ -667,7 +680,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     }
   };
 
-  fillRunningList = function (sourceNodes, list) {
+  function fillRunningList(sourceNodes, list) {
     const allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
     sourceNodes.forEach(function (source) {
       //get the disconnected graph to which this sourceNode belongs
@@ -687,12 +700,12 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log('error in building disconnected graphs');
       }
     });
-  };
+  }
 
-  updateSourceNodes = function (sourceNodes, callOriginArg) {
+  function updateSourceNodes(sourceNodes, callOriginArg) {
     let startNodes = new Set(sourceNodes);
 
-    descendants = datanodesDependency.getDescendants(sourceNodes);
+    const descendants = datanodesDependency.getDescendants(sourceNodes);
     // AEF: remove memory datanodes from desendant (to keep them in startNodes)
     descendants.forEach((desc) => {
       if (desc.indexOf('pastValue_') !== -1) {
@@ -741,5 +754,5 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       return 0;
     });
     return sortedSourceNodes;
-  };
+  }
 };

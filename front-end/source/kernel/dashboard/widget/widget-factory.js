@@ -7,6 +7,22 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import PNotify from 'pnotify';
+
+import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import {
+  computeMainDivLayout,
+  pxToViewPort,
+  computeContainerRelativeLayout,
+  enforceConstraints,
+  enforceMinConsistency,
+  applyLayout,
+} from 'kernel/dashboard/widget/widget-placement';
+import { convertViewportToPx } from 'kernel/dashboard/scaling/scaling-utils';
+import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
 
 function widgetFactoryClass() {
   const POSSIBLE_ANSI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // (62 characters)
@@ -108,7 +124,7 @@ function widgetFactoryClass() {
 
     // Conversions to work in px
     var widgetLayoutPx = convertViewportToPx(layoutViewport);
-    var containerLayoutPx = layoutMgr.getTargetDivLayoutPx(targetDiv);
+    var containerLayoutPx = singletons.layoutMgr.getTargetDivLayoutPx(targetDiv);
     // Enforce size is into container and place correctly newly drag and dropped widget
     var relativeContainerLayoutPx = computeContainerRelativeLayout(containerLayoutPx);
     var relativeWidgetLayoutPx = enforceConstraints(widgetLayoutPx, relativeContainerLayoutPx);
@@ -137,8 +153,8 @@ function widgetFactoryClass() {
    * @param {any} modelJsonId
    */
   this.createUniqueInstanceId = function (modelJsonId) {
-    const modelsIdLength = widgetEditor.modelsId.length;
-    const usedIds = new Set(widgetEditor.modelsId);
+    const modelsIdLength = singletons.widgetEditor.modelsId.length;
+    const usedIds = new Set(singletons.widgetEditor.modelsId);
     const makeid = (charset) => charset.charAt(Math.floor(Math.random() * charset.length));
     const ids = [
       ...POSSIBLE_ANSI,
@@ -168,10 +184,10 @@ function widgetFactoryClass() {
       // TODO throw an error
     } else {
       usedIds.add(instanceId);
-      widgetEditor.modelsId[modelsIdLength] = instanceId;
+      singletons.widgetEditor.modelsId[modelsIdLength] = instanceId;
     }
     return instanceId;
   };
 }
 
-var widgetFactory = new widgetFactoryClass();
+export const widgetFactory = new widgetFactoryClass();

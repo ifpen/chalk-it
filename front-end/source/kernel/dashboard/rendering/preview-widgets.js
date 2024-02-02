@@ -6,8 +6,19 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
 
-var widgetPreview = (function () {
+import { rescaleHelper } from 'kernel/dashboard/scaling/rescale-helper';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { getMedia, isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { htmlExport } from 'kernel/general/export/html-export';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { reconstructFoundations } from 'kernel/dashboard/rendering/reconstruct-foundations';
+import { rescaleWidget } from 'kernel/base/main-common';
+
+export const widgetPreview = (function () {
   var widget = [];
   var previewDimensionsSnapshot;
   var targetScalingMethod = 'scaleTwh';
@@ -79,8 +90,8 @@ var widgetPreview = (function () {
    * Prepares preview mode containers 'dashboard-zone' & 'DropperDroitec'
    * */
   function preparePreviewModeContainer() {
-    var xprjson = xdash.serialize();
-    xprjson.scaling = widgetEditor.getSnapshotDashZoneDims(); // patch
+    var xprjson = singletons.xdash.serialize();
+    xprjson.scaling = singletons.widgetEditor.getSnapshotDashZoneDims(); // patch
     var divDest = document.getElementById('dashboard-zone');
     var dprDc = document.createElement('div');
     dprDc.id = 'DropperDroitec';
@@ -100,7 +111,7 @@ var widgetPreview = (function () {
     // cleanup : here make a reset not a clear
     reset();
     // get preview dimensions for scaling
-    previewDimensionsSnapshot = widgetEditor.getSnapshotDashZoneDims();
+    previewDimensionsSnapshot = singletons.widgetEditor.getSnapshotDashZoneDims();
 
     // set scaling information
     scalingHelper.setDimensions(previewDimensionsSnapshot);

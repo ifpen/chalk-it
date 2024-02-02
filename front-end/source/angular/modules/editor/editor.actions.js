@@ -6,6 +6,16 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { UndoableAction } from './editor.undo-manager';
+import { EVENTS_EDITOR_WIDGET_MOVED } from './editor.events';
+import { minLeftCst, minTopCst } from 'kernel/dashboard/scaling/layout-mgr';
+import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
+import { getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
+import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { EVENTS_EDITOR_CONNECTIONS_CHANGED } from 'angular/modules/editor/editor.events';
 
 const UNDO_MOVE_MERGE_WINDO_MS = 1_000;
 

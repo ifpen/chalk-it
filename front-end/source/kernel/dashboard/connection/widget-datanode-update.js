@@ -7,6 +7,9 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY| \\
 // |                      Ghiles HDIEUR                                    │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                     displaySpinnerOnInputFileButton                | \\

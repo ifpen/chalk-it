@@ -6,6 +6,7 @@
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Tristan BARTEMENT                  │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                         Grid functions                             | \\
@@ -38,8 +39,8 @@ function gridMgrClass() {
   /*--------updateGridSizes--------*/
   function _updateGridSizes() {
     // TODO : handle media type
-    widgetEditor.updateSnapshotDashZoneDims(); //GHI #239
-    const snapshotDashZoneDims = widgetEditor.getSnapshotDashZoneDims();
+    singletons.widgetEditor.updateSnapshotDashZoneDims(); //GHI #239
+    const snapshotDashZoneDims = singletons.widgetEditor.getSnapshotDashZoneDims();
 
     sizeX = (snapshotDashZoneDims.widthPx - 22) / 48;
     sizeY = (snapshotDashZoneDims.heightPx - 4) / 24;
@@ -49,4 +50,4 @@ function gridMgrClass() {
   }
 }
 
-var gridMgr = new gridMgrClass();
+export const gridMgr = new gridMgrClass();

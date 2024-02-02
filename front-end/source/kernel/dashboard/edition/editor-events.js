@@ -6,6 +6,8 @@
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
 
 window.addEventListener('click', (event) => {
   var $body = angular.element(document.body);
@@ -22,7 +24,7 @@ window.addEventListener('click', (event) => {
   if (scopeDash.editorView.newDatanodePanel.view) {
     //AEF: unselect widget only when editing datanodes
     if (event.target.className !== 'widget-overlay') {
-      widgetEditor.unselectAllWidgets();
+      singletons.widgetEditor.unselectAllWidgets();
     }
   }
 

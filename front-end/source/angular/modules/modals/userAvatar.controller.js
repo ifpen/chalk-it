@@ -7,7 +7,10 @@
 // │ Original authors(s): Abir EL FEKI                                          │ \\
 // └────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules').controller('UserAvatarController', [
+import userAvatarTemplate from './userAvatar.html';
+import { modalsModule } from './modals';
+
+modalsModule.controller('UserAvatarController', [
   '$scope',
   'AvatarService',
   function ($scope, AvatarService) {

@@ -7,6 +7,19 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
+import _ from 'underscore';
+import swal from 'sweetalert';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { LayoutMgrClass } from '../dashboard/scaling/layout-mgr';
+import { initEditWidget } from '../dashboard/edition/edit-widgets';
+import { Xdash } from '../base/xdash-main';
+import { widgetToolboxClass } from '../dashboard/toolbox-mgr';
+import { XdashNotifications } from 'angular/modules/libs/notification/notification';
+import { modelsHiddenParams, modelsParameters, modelsTempParams } from 'kernel/base/widgets-states';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { pyodideLib } from 'kernel/base/pyodide-project';
+
 (function ($) {
   $.fn.hasVScrollBar = function () {
     return this.get(0).scrollHeight > this.height();
@@ -19,7 +32,7 @@
   };
 })(jQuery);
 
-var RuntimeDashboard = (function () {
+export const RuntimeDashboard = (function () {
   var scalingSrc;
 
   function initContainers(jsonContent, exportOptions) {
@@ -151,29 +164,32 @@ var RuntimeDashboard = (function () {
   }
 })();
 
-var layoutMgr = null;
-var widgetEditor = null;
+export const singletons = {
+  widgetEditor: null,
+  xdash: null,
+  WTBC: null,
+  xdashNotifications: null,
+  layoutMgr: null,
+};
 
-var xdash = null;
+export function startXdash() {
+  singletons.layoutMgr = new LayoutMgrClass();
+  window.layoutMgr = singletons.layoutMgr;
 
-var WTBC = null;
-var xdashNotifications = null;
-
-function startXdash() {
-  layoutMgr = new LayoutMgrClass();
-  widgetEditor = initEditWidget(); // edit
+  singletons.widgetEditor = initEditWidget(); // edit
+  window.widgetEditor = singletons.widgetEditor;
 
   /*--------event on device rows--------*/
   $('select[name=select-rows]').on('change', function (e) {
-    layoutMgr.updateButtonState();
+    singletons.layoutMgr.updateButtonState();
   });
 
   /*--------event on device columns--------*/
   $('select[name=select-cols]').on('change', function (e) {
-    layoutMgr.updateButtonState();
+    singletons.layoutMgr.updateButtonState();
   });
 
-  xdash = new Xdash();
-  WTBC = new widgetToolboxClass(); // edit ?
-  xdashNotifications = new XdashNotifications(); // edit ?
+  singletons.xdash = new Xdash();
+  singletons.WTBC = new widgetToolboxClass(); // edit ?
+  singletons.xdashNotifications = new XdashNotifications(); // edit ?
 }

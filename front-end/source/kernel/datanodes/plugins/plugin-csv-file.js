@@ -1,3 +1,10 @@
+import _ from 'underscore';
+import swal from 'sweetalert';
+import Papa from 'papaparse';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { b64EncodeUnicode, b64DecodeUnicode } from 'kernel/datanodes/plugins/thirdparty/utils';
+
 (function () {
   var error = false;
   // ## A Datanode Plugin

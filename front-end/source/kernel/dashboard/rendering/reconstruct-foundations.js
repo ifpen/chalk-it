@@ -7,8 +7,14 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
 
-var reconstructFoundations = (function () {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { findGetParameter } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+
+export const reconstructFoundations = (function () {
   // base functions
   var idWC = 401;
 

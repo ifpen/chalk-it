@@ -16,8 +16,10 @@
 // - it computes the new widget dimensions into the new dashboard according to the scaling method
 // needs to be instantiated with input elements
 // operates in viewport dimensions right now (needs generalization)
+import _ from 'underscore';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 
-var scalingManager = function (srcDashArg, tgDashArg, methodArg) {
+export const scalingManager = function (srcDashArg, tgDashArg, methodArg) {
   var self = this;
   self.srcDash = srcDashArg;
   self.tgDash = tgDashArg;

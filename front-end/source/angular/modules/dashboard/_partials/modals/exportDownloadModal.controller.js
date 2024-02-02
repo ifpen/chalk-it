@@ -1,3 +1,7 @@
+import { htmlExport } from 'kernel/general/export/html-export';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+const layoutMgr = singletons.layoutMgr;
+
 angular.module('modules').controller('exportSettingDownload', [
   '$uibModalInstance',
   '$rootScope',

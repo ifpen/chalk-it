@@ -6,6 +6,13 @@
 // ├──────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI, Ghiles HIDEUR                     │ \\
 // └──────────────────────────────────────────────────────────────────────────────────────┘ \\
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'underscore';
+import swal from 'sweetalert';
+import template from 'angular/modules/dashboard/_partials/modals/exportDownloadPage.html';
+import { htmlExport } from 'kernel/general/export/html-export';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { saveAs } from 'file-saver';
 
 angular.module('modules.dashboard').controller('DashboardContentTopController', [
   '$scope',
@@ -31,7 +38,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
     /*---------- Settings button ----------------*/
     $scope.exportSettings = function () {
       const modalInstance = $uibModal.open({
-        templateUrl: 'source/angular/modules/dashboard/_partials/modals/exportDownloadPage.html',
+        template,
         controller: 'exportSettingDownload',
         scope: $scope,
         resolve: {
@@ -68,7 +75,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
 
     /*---------- Export button   ----------------*/
     $scope.exportProjectToLocal = function () {
-      const xdashFileSerialized = xdash.serialize();
+      const xdashFileSerialized = singletons.xdash.serialize();
       const fileName = $('#projectName').val() || 'Untitled';
       saveAs(
         new Blob([JSON.stringify(xdashFileSerialized, null, '\t')], { type: 'application/octet-stream' }),

@@ -6,8 +6,12 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mondher AJIMI, Abir EL FEKI                   │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { DataSet, Network } from 'vis-network/standalone';
 
-function GraphVisu(datanodesDependency) {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { PREVIEW_JSON_FORMAT, jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/utils';
+
+export function GraphVisu(datanodesDependency) {
   var offsetx, offsety, scale, duration, easingFunction;
   var network = null;
   var nodesGlobal = [];
@@ -104,8 +108,8 @@ function GraphVisu(datanodesDependency) {
       }
     }
 
-    nodesGlobal = new vis.DataSet(nodes);
-    edgesGlobal = new vis.DataSet(edges);
+    nodesGlobal = new DataSet(nodes);
+    edgesGlobal = new DataSet(edges);
 
     startNetwork({ nodes: nodesGlobal, edges: edgesGlobal }, selectedNodeName);
   }
@@ -158,7 +162,7 @@ function GraphVisu(datanodesDependency) {
         timestep: 0.1,
       },
     };
-    network = new vis.Network(container, data, options);
+    network = new Network(container, data, options);
     //todo adds an id to the canvas, which is used when downloading pictures, and should be placed after new vis.Network(container, data, options); otherwise the value will not be obtained
     $('#dependencyGraphBody canvas').attr('id', 'canvas');
 
@@ -183,7 +187,7 @@ function GraphVisu(datanodesDependency) {
       selectNodebyName(selectedNodeName);
     });
 
-    vis.Network.prototype.setScale = function (scale) {
+    Network.prototype.setScale = function (scale) {
       var animationOptions = {
         position: { x: 0, y: 0 },
         scale: scale,
@@ -343,8 +347,8 @@ function GraphVisu(datanodesDependency) {
     offsety = 0;
     duration = 1000;
     scale = 3.0;
-    positionx = 300;
-    positiony = 300;
+    // positionx = 300;
+    // positiony = 300;
     easingFunction = 'easeInOutQuint';
   }
 

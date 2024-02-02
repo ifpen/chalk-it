@@ -6,8 +6,10 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR                                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import { pyodideManager } from 'kernel/base/pyodide-loader';
 
-var pyodideLib = (function () {
+export const pyodideLib = (function () {
   /*--------serialize--------*/
   function serialize() {
     const packages = pyodideManager.packages;

@@ -6,6 +6,7 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
 
 angular.module('modules.sidebar').service('FilterPrjService', [
   '$rootScope',

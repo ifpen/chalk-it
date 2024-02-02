@@ -6,6 +6,12 @@
 // ├─────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                               │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
+import PNotify from 'pnotify';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
 
 angular.module('modules.dashboard').service('ManageDatanodeService', [
   '$rootScope',
@@ -137,7 +143,7 @@ angular.module('modules.dashboard').service('ManageDatanodeService', [
 
     /*---------- open button /Load datanodes from xdjson----------------*/
     self.openFileData = function (target) {
-      xdash.openFile('datanode', target);
+      singletons.xdash.openFile('datanode', target);
     };
 
     /*---------- filter By Connection btn----------------*/

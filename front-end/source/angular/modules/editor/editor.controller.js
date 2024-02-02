@@ -5,6 +5,18 @@
 // ├───────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                            │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { UndoableAction, UndoManager } from './editor.undo-manager';
+import {
+  EVENTS_EDITOR_SELECTION_CHANGED,
+  EVENTS_EDITOR_ADD_REMOVE_WIDGET,
+  EVENTS_EDITOR_CONNECTIONS_CHANGED,
+} from './editor.events';
+import { keyShift, minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
+import { getWidgetLayoutPx, getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
 
 angular.module('modules.editor').controller('EditorController', [
   '$scope',
@@ -1011,5 +1023,7 @@ angular.module('modules.editor').controller('EditorController', [
         document.removeEventListener('keydown', _onkeydown);
       }
     });
+
+    $rootScope.loadedTemplate();
   },
 ]);

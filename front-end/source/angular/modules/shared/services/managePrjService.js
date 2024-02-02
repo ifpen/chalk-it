@@ -6,6 +6,13 @@
 // ├─────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI, Ghiles HIDEUR                │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'underscore';
+import swal from 'sweetalert';
+import PNotify from 'pnotify';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
 
 angular.module('modules').service('ManagePrjService', [
   '$rootScope',
@@ -83,7 +90,7 @@ angular.module('modules').service('ManagePrjService', [
             if ($rootScope.xDashFullVersion && !_.isUndefined(callback)) {
               callback(projectName);
             }
-            await xdash.openProjectManager(msg1);
+            await singletons.xdash.openProjectManager(msg1);
             const notice = new PNotify({
               title: projectName,
               text: "Your project '" + projectName + "' is ready!",
@@ -202,7 +209,7 @@ angular.module('modules').service('ManagePrjService', [
       };
       $rootScope.alldatanodes = [];
       $rootScope.safeApply();
-      xdash.clear();
+      singletons.xdash.clear();
     };
 
     /*---------- downloadFile ----------------*/

@@ -6,7 +6,14 @@
 // ¦ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  ¦ \\
 // +--------------------------------------------------------------------+ \\
 
-var htmlExport = (function () {
+import { xDashConfig } from 'config.js';
+import _ from 'underscore';
+import swal from 'sweetalert';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+
+export const htmlExport = (function () {
   var exportOptions = 'ajustToTargetWindow';
   var checkExportOptions = true;
   var navBarNotification = false;
@@ -150,7 +157,7 @@ var htmlExport = (function () {
     var headText = copyHeadContent();
     var xdashPrj;
     if (_.isUndefined(xprjson)) {
-      xdashPrj = xdash.serialize();
+      xdashPrj = singletons.xdash.serialize();
     } else {
       xdashPrj = xprjson;
     }

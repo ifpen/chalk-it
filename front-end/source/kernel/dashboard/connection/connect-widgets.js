@@ -6,8 +6,14 @@
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Tristan BARTEMENT  │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
 
-var widgetConnector = (function () {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { EVENTS_EDITOR_CONNECTIONS_CHANGED } from 'angular/modules/editor/editor.events';
+
+export const widgetConnector = (function () {
   var widgetsConnection = [];
 
   function _onConnectionsChanged() {
@@ -26,6 +32,8 @@ var widgetConnector = (function () {
 
   /*--------update Widget Connection--------*/
   function updateWidgetsConnections() {
+    const widgetEditor = singletons.widgetEditor;
+
     // Purge missing widgets
     for (const idx in widgetsConnection) {
       if (!widgetEditor.widgetContainers.get(widgetsConnection[idx].id)) {

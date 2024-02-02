@@ -6,6 +6,17 @@
 // │ Original authors(s): Mongi BEN GAID, Ameur HAMDOUNI                │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'underscore';
+import swal from 'sweetalert';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { nFormatter } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { dashState } from 'angular/modules/dashboard/dashboard';
+import * as d3 from 'd3';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -922,7 +933,7 @@ function mapWidgetsPluginClass() {
     };
 
     this.goToFirstRadioButton = function () {
-      if (tabActive == 'play') {
+      if (dashState.tabActive == 'play') {
         if (self.numberOfHeatMapLayers > 0) {
           var nbRadioShadow = 0;
           if (!_.isUndefined($("input[name='leaflet-base-layers']"))) {
@@ -3281,7 +3292,7 @@ function mapWidgetsPluginClass() {
 mapWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var mapWidgetsPlugin = new mapWidgetsPluginClass();
+export const mapWidgetsPlugin = new mapWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/
