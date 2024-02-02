@@ -78,9 +78,9 @@ export const htmlExport = (function () {
         '<link rel="stylesheet" href="' + _urlBaseForExport + '' + exportHeaderCss[t] + '"></link>'
       );
     }
-    for (t = 0; t < exportHeaderJs.length; t++) {
+    for (t = 0; t < exportJs.length; t++) {
       scriptHeaderList.push(
-        '<script charset="UTF-8" src="' + xDashConfig.urlBaseForExport + exportHeaderJs[t] + '"></script>'
+        '<script charset="UTF-8" src="' + xDashConfig.urlBaseForExport + exportJs[t] + '"></script>'
       );
     }
 
