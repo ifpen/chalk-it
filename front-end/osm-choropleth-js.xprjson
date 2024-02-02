@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8796",
-    "date": "Tue Jan 30 2024 18:20:39 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8799",
+    "date": "Fri Feb 02 2024 18:44:25 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-choropleth-js",
     "description": "",
     "groupName": "",
@@ -19,11 +19,13 @@
         }
       },
       {
-        "name": "Style",
-        "type": "JSON_var_plugin",
+        "name": "Properties",
+        "type": "JSON_formula_plugin",
         "settings": {
-          "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"showLegend\":true,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"black\",\"dashArray\":[],\"weight\":1,\"opacity\":1,\"fillColor\":\"red\",\"property\":\"population\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"population\":[349273,12326429]},\"allProperties\":[\"code\",\"nom\",\"population\"],\"tooltip\":{\"properties\":[\"code\",\"nom\",\"population\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"rgb(254, 178, 80)\"}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
+          "name": "Properties",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "return Object.keys(dataNodes[\"Map_input\"][\"features\"][0][\"properties\"]);"
         }
       },
       {
@@ -31,7 +33,15 @@
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Selected",
-          "json_var": "{\"code\":\"28\",\"nom\":\"Normandie\",\"population\":3306092}"
+          "json_var": "{\"code\":\"32\",\"nom\":\"Hauts-de-France\",\"population\":5977462}"
+        }
+      },
+      {
+        "name": "Style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style",
+          "json_var": "{\"config\":{\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"Population\",\"showLegend\":true,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"black\",\"dashArray\":[],\"weight\":1,\"opacity\":1,\"fillColor\":\"rgb(255, 255, 204)\",\"property\":\"population\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.3,\"possibleProperties\":{\"population\":[349273,12326429]},\"allProperties\":[\"code\",\"nom\",\"population\"],\"tooltip\":{\"properties\":[\"code\",\"nom\",\"population\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3,\"fillOpacity\":1}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":1,\"fillOpacity\":0.3,\"fillColor\":\"rgb(254, 178, 80)\"}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1,\"fillOpacity\":1,\"fillColor\":\"green\"}}}}]}"
         }
       }
     ]
@@ -41,14 +51,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1806,
-    "heightPx": 719,
-    "scrollWidthPx": 1806,
-    "scrollHeightPx": 719,
-    "widthVw": 88.52941176470588,
-    "heightVh": 71.61354581673307,
-    "scrollWidthVw": 88.52941176470588,
-    "scrollHeightVh": 71.61354581673307,
+    "widthPx": 1676,
+    "heightPx": 663,
+    "scrollWidthPx": 1676,
+    "scrollHeightPx": 663,
+    "widthVw": 87.74869109947645,
+    "heightVh": 74.07821229050279,
+    "scrollWidthVw": 87.74869109947645,
+    "scrollHeightVh": 74.07821229050279,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -68,10 +78,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "8.26693vh",
-        "left": "1.81373vw",
-        "height": "68.3267vh",
-        "width": "61.3725vw",
+        "top": "8.60335vh",
+        "left": "0.733859vw",
+        "height": "70.7263vh",
+        "width": "61.0676vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -87,10 +97,10 @@
     },
     "flatUiSelectA": {
       "layout": {
-        "top": "1.59363vh",
-        "left": "1.52787vw",
-        "height": "4.98008vh",
-        "width": "19.123vw",
+        "top": "1.64848vh",
+        "left": "1.52049vw",
+        "height": "5.15148vh",
+        "width": "19.0303vw",
         "minHeight": "27px",
         "minWidth": "40px",
         "z-index": "2"
@@ -126,10 +136,10 @@
     },
     "flatUiHorizontalSliderA": {
       "layout": {
-        "top": "1.50238vh",
-        "left": "21.0616vw",
-        "height": "5.00794vh",
-        "width": "24.2176vw",
+        "top": "1.55409vh",
+        "left": "20.9597vw",
+        "height": "5.18029vh",
+        "width": "24.1003vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "3"
@@ -172,10 +182,10 @@
     },
     "flatUiCheckboxA": {
       "layout": {
-        "top": "1.62758vh",
-        "left": "45.8968vw",
-        "height": "5.00794vh",
-        "width": "9.12446vw",
+        "top": "1.6836vh",
+        "left": "45.6745vw",
+        "height": "5.18029vh",
+        "width": "9.08027vw",
         "minHeight": "24px",
         "minWidth": "32px",
         "z-index": "4"
@@ -204,10 +214,10 @@
     },
     "flatUiMultiSelectA": {
       "layout": {
-        "top": "8.06773vh",
-        "left": "72.8747vw",
-        "height": "16.0359vh",
-        "width": "10.9926vw",
+        "top": "9.16201vh",
+        "left": "64.4747vw",
+        "height": "16.5363vh",
+        "width": "10.9031vw",
         "minHeight": "75px",
         "minWidth": "80px",
         "z-index": "5"
@@ -245,10 +255,10 @@
     },
     "flatUiTextInputA": {
       "layout": {
-        "top": "29.2829vh",
-        "left": "64.0686vw",
-        "height": "4.98008vh",
-        "width": "19.0196vw",
+        "top": "1.56425vh",
+        "left": "57.0837vw",
+        "height": "5.13966vh",
+        "width": "18.9231vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "6"
@@ -355,13 +365,8 @@
     "flatUiMultiSelectA": {
       "value": {
         "name": "value",
-        "dataNode": "Style",
-        "dataFields": [
-          "style",
-          0,
-          "tooltip",
-          "properties"
-        ]
+        "dataNode": "Properties",
+        "dataFields": []
       },
       "selectedValue": {
         "name": "selectedValue",

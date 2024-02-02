@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8774",
-    "date": "Mon Jan 08 2024 14:14:31 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8799",
+    "date": "Fri Feb 02 2024 15:40:52 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-heat-map-view",
     "description": "",
     "groupName": "",
@@ -33,6 +33,14 @@
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":48.876684999999995,\"longitude\":2.175765,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"type\":\"Multi Point\",\"showLegend\":true,\"pointAreMarker\":false,\"stroke\":false,\"weight\":0,\"opacity\":1,\"color\":\"black\",\"radius\":5,\"fillColor\":\"red\",\"property\":\"CH4\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"CH4\":[1.69,4.11]},\"tooltip\":{\"properties\":[\"CH4\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":1}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
+        }
+      },
+      {
+        "name": "Style2",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style2",
           "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.175765,\"longitude\":48.876684999999995,\"zoom\":18},\"tileServer\":\"HereHybridDay\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"CH4\",\"type\":\"Multi Point\",\"showLegend\":false,\"pointAreMarker\":false,\"stroke\":false,\"weight\":8.6,\"opacity\":0.39,\"color\":\"black\",\"radius\":4,\"fillColor\":\"interpolateSpectral_r\",\"property\":\"CH4\",\"propertyMin\":1,\"propertyMax\":6,\"fillOpacity\":0.3,\"possibleProperties\":{\"CH4\":[1,6]}}]}"
         }
       }
@@ -43,14 +51,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1806,
-    "heightPx": 719,
-    "scrollWidthPx": 1806,
-    "scrollHeightPx": 719,
-    "widthVw": 88.52941176470588,
-    "heightVh": 71.61354581673307,
-    "scrollWidthVw": 88.52941176470588,
-    "scrollHeightVh": 71.61354581673307,
+    "widthPx": 1677,
+    "heightPx": 663,
+    "scrollWidthPx": 1677,
+    "scrollHeightPx": 663,
+    "widthVw": 87.80104712041884,
+    "heightVh": 74.07821229050279,
+    "scrollWidthVw": 87.80104712041884,
+    "scrollHeightVh": 74.07821229050279,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -70,10 +78,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "0.996016vh",
-        "left": "0.490739vw",
-        "height": "59.3625vh",
-        "width": "87.3515vw",
+        "top": "1.11732vh",
+        "left": "0.52356vw",
+        "height": "61.4055vh",
+        "width": "78.8482vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -89,10 +97,10 @@
     },
     "flatUiHorizontalSliderA": {
       "layout": {
-        "top": "60.9562vh",
-        "left": "3.33703vw",
-        "height": "4.48207vh",
-        "width": "25.1749vw",
+        "top": "63.0541vh",
+        "left": "3.30958vw",
+        "height": "4.63633vh",
+        "width": "24.9678vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "2"
@@ -135,10 +143,10 @@
     },
     "flatUiHorizontalSliderB": {
       "layout": {
-        "top": "60.9562vh",
-        "left": "31.5546vw",
-        "height": "4.48207vh",
-        "width": "25.1749vw",
+        "top": "63.0541vh",
+        "left": "31.295vw",
+        "height": "4.63633vh",
+        "width": "24.9678vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "3"
@@ -181,10 +189,10 @@
     },
     "flatUiCheckboxA": {
       "layout": {
-        "top": "61.0558vh",
-        "left": "58.8887vw",
-        "height": "4.48207vh",
-        "width": "9.47126vw",
+        "top": "63.1571vh",
+        "left": "58.4042vw",
+        "height": "4.63633vh",
+        "width": "9.39334vw",
         "minHeight": "24px",
         "minWidth": "32px",
         "z-index": "4"
