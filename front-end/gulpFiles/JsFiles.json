@@ -153,8 +153,7 @@
       "source/kernel/runtime/xdash-runtime-main.js",
       "source/kernel/dashboard/rendering/reconstruct-foundations.js",
       "source/angular/modules/libs/notification/notification-xdash.js",
-      "source/connectors/taipy/taipy-manager.js",
-      "source/connectors/taipy/taipy-index.js"
+      "source/connectors/taipy/taipy-manager.js"
     ]
   },
   "xDashStudio": {
@@ -412,8 +411,7 @@
       "source/kernel/datanodes/plugins/plugin-geolocation.datanodes.js",
       "source/kernel/datanodes/plugins/plugin-python-support.js",
       "source/kernel/datanodes/plugins/plugin-python-script.js", 
-      "source/connectors/taipy/taipy-manager.js",
-      "source/connectors/taipy/taipy-index.js"
+      "source/connectors/taipy/taipy-manager.js"
     ]
   }
 }
