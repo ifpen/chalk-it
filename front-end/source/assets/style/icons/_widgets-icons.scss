@@ -178,9 +178,10 @@
     @include icon-background('progress-bar.svg', 'widget');
   }
 
-  &.icn-range {
-    @include icon-background('range.svg', 'widget');
-  }
+  // FIXME
+  //&.icn-range {
+  //  @include icon-background('range.svg', 'widget');
+  //}
 
   &.icn-select {
     @include icon-background('select.svg', 'widget');
