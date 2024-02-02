@@ -376,7 +376,7 @@ var widgetPreview = (function () {
       if (varInter === null) {
         // data parsing has changed
         // MBG TODO : invalidate widget
-        widgetPreview.clearDataFromWidget(instanceId, i, actuator, true);
+        //widgetPreview.clearDataFromWidget(instanceId, i, actuator, true); // MBG 02/02/2024 for JK
       } else {
         if (slider.name.substring(0, 1) === 'D') {
           //for Digits
