@@ -940,7 +940,8 @@ export function PluginEditor(jsEditor) {
     });
 
     //AEF: new display
-    if ($('#datanode-list')[0].childNodes.length == 1) {
+    if ($('#datanode-list')[0].childNodes.length == 0) {
+      // FIXME
       //add plugin once
       $('#datanode-list')[0].innerHTML = '';
       $(
@@ -948,12 +949,12 @@ export function PluginEditor(jsEditor) {
       ).appendTo($('#datanode-list'));
       for (let i = 0; i < labels.length; i++) {
         if (typeOptGp[labels[i].name].length > 0) {
-          var datanodeWrap = $('<div class="add__new__datanode--list--wrap"></div>').appendTo($('#datanode-list'));
+          const datanodeWrap = $('<div class="add__new__datanode--list--wrap"></div>').appendTo($('#datanode-list'));
           $('<span>' + labels[i].name + '</span>').appendTo(datanodeWrap);
-          let ul = $('<ul></ul>').appendTo(datanodeWrap);
+          const ul = $('<ul></ul>').appendTo(datanodeWrap);
 
           for (let j = 0; j < typeOptGp[labels[i].name].length; j++) {
-            a = $(
+            const a = $(
               '<a title="Open ' +
                 labels[i].name +
                 ' : ' +
@@ -967,9 +968,15 @@ export function PluginEditor(jsEditor) {
           }
         }
       }
-      let $body = angular.element(document.body);
-      let $rootScope = $body.scope().$root;
-      $rootScope.myDataNodeHTML = $('#datanode-list').html();
+
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+      const element = document.getElementById('datanode-list');
+      const content = element.innerHTML;
+      const injector = angular.element(document.body).injector();
+      injector.invoke([
+        '$compile',
+        ($compile) => angular.element(element).empty().append($compile(content)(scopeDash)),
+      ]);
     }
   }
 
