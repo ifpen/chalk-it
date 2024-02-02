@@ -1,27 +1,27 @@
 <div id="cards-ctrl">
   <div
-    ng-include="'source/angular/modules/modals/info_project.html'"
+    info-project-template
     class="cancel__container"
     js-reset-layer=""
     ng-class="{'open' : info.openProjectInfo}"
     ng-show="info.openProjectInfo"
   ></div>
   <div
-    ng-include="'source/angular/modules/modals/share.html'"
+    share-template
     class="cancel__container"
     js-reset-layer=""
     ng-class="{'open' : showShareLink}"
     ng-show="showShareLink"
   ></div>
   <div
-    ng-include="'source/angular/modules/modals/share_project.html'"
+    share-project-template
     class="cancel__container"
     js-reset-layer=""
     ng-class="{'open' : isSharePrjOpen}"
     ng-show="isSharePrjOpen"
   ></div>
   <div
-    ng-include="'source/angular/modules/modals/manage_page_share.html'"
+    manage-page-share-template
     class="cancel__container"
     js-reset-layer=""
     ng-class="{'open' : infoPage.isManagePageOpen}"

@@ -3,12 +3,10 @@ import './headerbar.controller';
 import './services/logoutService';
 import './services/notificationService';
 
-import headerbarTemplate from './headerbar.html';
+import headerbarTemplate from 'angular/modules/headerbar/headerbar.html';
 
 export const headerbarModule = _headerbarModule;
 
-headerbarModule.directive('headerbarTemplate', function () {
-    return {
-      template: headerbarTemplate,
-    };
-  });
+headerbarModule.run(function ($templateCache) {
+  $templateCache.put('angular/modules/headerbar/headerbar.html', headerbarTemplate);
+});

@@ -7,7 +7,6 @@
 // │ Original authors(s): Abir EL FEKI                                          │ \\
 // └────────────────────────────────────────────────────────────────────────────┘ \\
 
-import userAvatarTemplate from './userAvatar.html';
 import { modalsModule } from './modals';
 
 modalsModule.controller('UserAvatarController', [
