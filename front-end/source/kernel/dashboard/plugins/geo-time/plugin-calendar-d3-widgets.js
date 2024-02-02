@@ -64,14 +64,7 @@ function calendarD3WidgetPluginClass() {
       const formatOut = d3.timeFormat('%Y-%m-%d');
       const parserLocal = d3.timeParse('%Y-%m-%d');
       const calendarValues = modelsHiddenParams[idInstance].CalendarValues;
-      //const dateValues = calendarValues?.values || ""; // MBG for gulp-uglify-es
-      var dateValues;
-      if (calendarValues && 'values' in calendarValues) {
-        dateValues = calendarValues.values;
-      } else {
-        dateValues = '';
-      }
-      // End MBG for gulp-uglify-es
+      const dateValues = calendarValues?.values || '';
       let tableForCalendar;
 
       // Create Data
