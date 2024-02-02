@@ -13,7 +13,7 @@ let browsersync = require('browser-sync').create(),
   del = require('del'),
   rename = require('gulp-rename'),
   templateCache = require('gulp-angular-templatecache'),
-  uglify = require('gulp-uglify-es').default,
+  terser = require('gulp-terser'),
   concat = require('gulp-concat'),
   replace = require('gulp-replace'),
   argv = require('yargs').argv,
@@ -246,7 +246,7 @@ task(
           /* Ignore compiler errors */
         })
         // .pipe(
-        //     uglify().on('error', function(e) {
+        //     terser().on('error', function(e) {
         //         console.log(e);
         //         return this.end();
         //     })
@@ -271,7 +271,7 @@ task(
           /* Ignore compiler errors */
         })
         // .pipe(
-        //     uglify().on('error', function(e) {
+        //     terser().on('error', function(e) {
         //         console.log(e);
         //         return this.end();
         //     })
@@ -408,7 +408,7 @@ task(
           /* Ignore compiler errors */
         })
         // .pipe(
-        //     uglify().on('error', function(e) {
+        //     terser().on('error', function(e) {
         //         console.log(e);
         //         return this.end();
         //     })
@@ -433,7 +433,7 @@ task(
           /* Ignore compiler errors */
         })
         // .pipe(
-        //     uglify().on('error', function(e) {
+        //     terser().on('error', function(e) {
         //         console.log(e);
         //         return this.end();
         //     })

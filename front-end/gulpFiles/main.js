@@ -13,7 +13,7 @@ let browsersync = require('browser-sync').create(),
   del = require('del'),
   rename = require('gulp-rename'),
   templateCache = require('gulp-angular-templatecache'),
-  uglify = require('gulp-uglify-es').default,
+  terser = require('gulp-terser'),
   concat = require('gulp-concat'),
   replace = require('gulp-replace'),
   argv = require('yargs').argv,
@@ -252,7 +252,7 @@ task(
         /* Ignore compiler errors */
       })
       .pipe(
-        uglify().on('error', function (e) {
+        terser().on('error', function (e) {
           console.log(e);
           return this.end();
         })
@@ -275,7 +275,7 @@ task(
         /* Ignore compiler errors */
       })
       .pipe(
-        uglify().on('error', function (e) {
+        terser().on('error', function (e) {
           console.log(e);
           return this.end();
         })
@@ -298,7 +298,7 @@ task(
         /* Ignore compiler errors */
       })
       .pipe(
-        uglify().on('error', function (e) {
+        terser().on('error', function (e) {
           console.log(e);
           return this.end();
         })
@@ -322,7 +322,7 @@ task(
         /* Ignore compiler errors */
       })
       .pipe(
-        uglify().on('error', function (e) {
+        terser().on('error', function (e) {
           console.log(e);
           return this.end();
         })
@@ -409,7 +409,7 @@ task(
 
     if (isProd) {
       pipe = pipe.pipe(
-        uglify().on('error', function (e) {
+        terser().on('error', function (e) {
           console.log(e);
           return this.end();
         })
@@ -973,8 +973,8 @@ task(
     //'usemin:xdash_editor:header',
     //'usemin:xdash_editor:body',
     //'usemin:xdash_editor:css',
-    'inject:files:pyodide_worker',
     'inject:files:prod',
+    'inject:files:pyodide_worker',
     //'usemin:_runtime:header',
     //'usemin:_runtime:body',
     //'usemin:_runtime:css',
