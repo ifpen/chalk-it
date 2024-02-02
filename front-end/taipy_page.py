@@ -7,8 +7,15 @@ b = 10
 c = a + b * 2
 d = 86
 
+
+f = 4
+
 df = px.data.gapminder().query("country=='Canada'")
 fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
+
+df2 = px.data.gapminder().query("year == 2007").query("continent == 'Europe'")
+df2.loc[df2['pop'] < 2.e6, 'country'] = 'Other countries' # Represent only large countries
+fig2 = px.pie(df2, values='pop', names='country', title='Population of European continent')
 
 
 fruits = ['apple', 'blueberry', 'cherry', 'orange']
