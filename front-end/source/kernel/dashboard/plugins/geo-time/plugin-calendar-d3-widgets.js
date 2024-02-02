@@ -224,7 +224,7 @@ function calendarD3WidgetPluginClass() {
         // Compute titles.
         formatDate = d3.timeFormat('%B %-d, %Y');
         formatValue = color.tickFormat(100, yFormat);
-        title = (i) => `${formatDate(X[i])}\n${formatValue(Y[i])}`;
+        const title = (i) => `${formatDate(X[i])}\n${formatValue(Y[i])}`;
       }
 
       function pathMonth(t) {

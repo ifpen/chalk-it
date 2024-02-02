@@ -442,8 +442,8 @@ export function PluginEditor(jsEditor) {
 
                 var reader = new FileReader();
                 reader.addEventListener('load', function (event) {
-                  var textFile = event.target;
-                  text = textFile.result;
+                  const textFile = event.target;
+                  const text = textFile.result;
                   newSettings.settings['content'] = text;
                 });
                 reader.readAsText(e.target.files[0]);

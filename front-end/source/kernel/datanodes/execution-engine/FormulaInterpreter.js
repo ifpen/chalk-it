@@ -34,6 +34,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
         'dataNodes.([\\w\\-]{1,}\\.{0,}[\\w\\-]{0,})|dataNodes\\[[\'"]([\\w\\\\\\-]{1,})[\'"]\\]((\\[[\'"]([\\w\\W]){1,}[\'"](?=\\])\\])){0,1}',
         'g'
       );
+      let matches;
       while ((matches = datanodeRegex.exec(lines[i]))) {
         // find all datanodes in line i
         let dsName;

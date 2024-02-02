@@ -346,7 +346,7 @@ import { b64EncodeUnicode, b64DecodeUnicode } from 'kernel/datanodes/plugins/thi
         let newData = {};
         if (currentSettings.pluck) {
           for (let i = 0; i < parsedData.meta.fields.length; i++) {
-            colName = parsedData.meta.fields[i];
+            const colName = parsedData.meta.fields[i];
             newData[colName] = _.pluck(newDataRaw, colName);
           }
         } else {

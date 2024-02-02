@@ -755,7 +755,7 @@ function annotationWidgetsPluginClass() {
         videoStyle = videoStyle + 'background-color: lightgrey; opacity: 0.2 ';
       }
 
-      videoHeightPx = $('#' + idDivContainer).height() - 45;
+      const videoHeightPx = $('#' + idDivContainer).height() - 45;
       let divContent =
         '<div id="videoContainer' +
         idWidget +

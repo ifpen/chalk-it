@@ -337,8 +337,8 @@ export function initEditWidget() {
           document.body.appendChild(_draggedClone);
 
           const rect = target.getBoundingClientRect();
-          y = rect.top + window.pageYOffset;
-          x = rect.left + window.pageXOffset;
+          const y = rect.top + window.pageYOffset;
+          const x = rect.left + window.pageXOffset;
           _draggedClone.style.left = x + 'px';
           _draggedClone.style.top = y + 'px';
 

@@ -32,10 +32,10 @@ export function enforceConstraints(widgetLayoutPx, containerLayoutPx) {
     c_w = containerLayoutPx.width - 2 * minLeftCst;
 
   // Deduced variables
-  w_b = w_t + w_h;
-  w_r = w_l + w_w;
-  c_b = c_t + c_h;
-  c_r = c_l + c_w;
+  let w_b = w_t + w_h;
+  let w_r = w_l + w_w;
+  let c_b = c_t + c_h;
+  let c_r = c_l + c_w;
 
   // Dimension rules
   if (w_h > c_h) {

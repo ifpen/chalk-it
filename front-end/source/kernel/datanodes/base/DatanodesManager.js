@@ -126,7 +126,7 @@ export const datanodesManager = (function () {
   }
 
   function deleteDataNode(viewModel, type, title) {
-    [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
+    const [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
     if (type == 'datanode' && bFoundConnection) {
       let wdList = [];
       for (let i = 0; i < prop.length; i++) {
@@ -473,7 +473,7 @@ export const datanodesManager = (function () {
       var datanodes = datanodesListModel.datanodes();
 
       // Find the datanode with the name specified
-      datanode = _.find(datanodes, function (datanodeModel) {
+      const datanode = _.find(datanodes, function (datanodeModel) {
         return datanodeModel.name() === datanodeName;
       });
 
@@ -529,7 +529,7 @@ export const datanodesManager = (function () {
       var zombieDatanodeList = [];
       var SingletonNodeList = datanodesDependency.getAllsingletonNodes();
       for (let i in SingletonNodeList) {
-        [bFoundConnection, prop] = isConnectedWithWidgt(SingletonNodeList[i]);
+        const [bFoundConnection, prop] = isConnectedWithWidgt(SingletonNodeList[i]);
         if (!bFoundConnection) {
           zombieDatanodeList.push(SingletonNodeList[i]);
         }

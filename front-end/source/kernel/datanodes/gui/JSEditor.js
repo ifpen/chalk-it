@@ -171,7 +171,7 @@ export function JSEditor() {
     //
     // MBG 24/03/2021
 
-    [bFoundConnection, prop] = datanodesManager.isConnectedWithWidgt(dsName);
+    const [bFoundConnection, prop] = datanodesManager.isConnectedWithWidgt(dsName);
     if (bFoundConnection) {
       var widgetSelect =
         '<div style="display: table-cell; padding: 10px">' + '<span>Connected widget(s): </span>' + '</div>';

@@ -118,9 +118,9 @@ export function DatanodeDependency() {
     if (withoutMem) [graph, loop] = buildGraphWithoutMemory();
     else [graph, loop] = buildGraph();
     //startNodesDesc = new Set(startNodes); //AEF descendants should not include the start node
-    startNodesDesc = new Set();
+    let startNodesDesc = new Set();
     startNodes.forEach(function (elem) {
-      elemDesc = new Set(graph.getDescendants(elem));
+      const elemDesc = new Set(graph.getDescendants(elem));
       startNodesDesc = union(startNodesDesc, elemDesc);
     });
     return startNodesDesc;

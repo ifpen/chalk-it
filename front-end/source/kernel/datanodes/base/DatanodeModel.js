@@ -320,7 +320,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
             callOriginArg
           );
           // propagate execution instance pointer only to datanodes that belong to same connected graph of sourcesNodes
-          currentGraph = RunningList.disconGraphs[index];
+          const currentGraph = RunningList.disconGraphs[index];
           // propagate execution instance pointer to all other datanodes that belong
           if (currentGraph != null) {
             currentGraph.forEach(function (name) {
@@ -429,7 +429,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
       const allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
         console.log('get belonging disconnected graph (from schedulerEnd)');
-      graph = datanodesDependency.getBelongingDisconnectedGraph(self.name(), allDisconnectedGraphs);
+      const graph = datanodesDependency.getBelongingDisconnectedGraph(self.name(), allDisconnectedGraphs);
       if (graph != null) {
         graph.forEach(function (name) {
           if (datanodesManager.foundDatanode(name)) {
@@ -686,7 +686,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
       //get the disconnected graph to which this sourceNode belongs
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
         console.log('get belonging disconnected graph (from schedulerStart)');
-      graph = datanodesDependency.getBelongingDisconnectedGraph(source, allDisconnectedGraphs);
+      const graph = datanodesDependency.getBelongingDisconnectedGraph(source, allDisconnectedGraphs);
       if (graph != null) {
         if (!list.indicesDisconGraphs.includes(graph.index)) {
           // verify if this graph is already added into the RunningList

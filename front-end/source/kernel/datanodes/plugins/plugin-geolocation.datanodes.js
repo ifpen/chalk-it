@@ -28,7 +28,7 @@ if (!(xDashConfig.xDashBasicVersion == 'true')) {
       statusForSchedulerCallback
     ) {
       //initialize error at new instance
-      error = false;
+      errorState = false;
       var self = this;
       self.errorState = false;
       // Good idea to create a variable to hold on to our settings, because they might change in the future. See below.

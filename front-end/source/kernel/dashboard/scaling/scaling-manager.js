@@ -235,8 +235,8 @@ export const scalingManager = function (srcDashArg, tgDashArg, methodArg) {
       wc.style.top = tgWg.topVh + 'vh';
 
       // apply rescaling to WidgetContainer
-      wcChildren = wc.getElementsByTagName('div');
-      for (k = 0; k < wcChildren.length; k++) {
+      const wcChildren = wc.getElementsByTagName('div');
+      for (let k = 0; k < wcChildren.length; k++) {
         if (wcChildren[k].id.search('WidgetContainer') != -1) {
           wcChildren[k].style.width = tgWg.widthVw - 2 * (100 / document.documentElement.clientWidth) + 'vw';
           wcChildren[k].style.height = tgWg.heightVh - 2 * (100 / document.documentElement.clientHeight) + 'vh';

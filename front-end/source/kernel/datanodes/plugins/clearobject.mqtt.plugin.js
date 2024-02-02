@@ -95,7 +95,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
   // -------------------
   var mqttDatanodePlugin = function (settings, updateCallback, statusCallback, notificationCallback) {
     //initialize error at new instance
-    error = false;
+    var error = false;
 
     var self = this;
     var data = {};
