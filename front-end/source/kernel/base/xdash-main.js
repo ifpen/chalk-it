@@ -433,7 +433,7 @@ var xdash = (function () {
   //-------------------------------------------------------------------------------------------------------------------
 
   /*--------openProjectManager--------*/
-  async function openProjectManager(data) {
+  function openProjectManager(data) {
     let jsonObject;
     try {
       jsonObject = JSON.parse(data);
@@ -444,10 +444,11 @@ var xdash = (function () {
 
     initRootScopeCurrentProjectObject(jsonObject);
     let bOk = false;
-    let loadFn = async function (e) {
+    let loadFn = function (e) {
       const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       scopeDash.reset();
-      bOk = await deserialize(jsonObject);
+      clear(); // MBG 01/08/2018 : important to do
+      bOk = deserialize(jsonObject);
       datanodesManager.showLoadingIndicator(false);
       document.removeEventListener('widgets-tab-loaded', loadFn);
       jsonObject = undefined; //ABK in case of  missed synchronization a second loadFn cannot be made
@@ -459,7 +460,7 @@ var xdash = (function () {
     };
     document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
     if (tabActive == 'widgets') {
-      await loadFn();
+      loadFn();
     }
   }
 
