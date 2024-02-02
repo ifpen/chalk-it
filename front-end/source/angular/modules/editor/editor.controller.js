@@ -412,7 +412,7 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     function _hasConnection() {
-      for (connections of Object.values(widgetConnector.widgetsConnection)) {
+      for (const connections of Object.values(widgetConnector.widgetsConnection)) {
         if (connections.sliders) {
           for (slider of Object.values(connections.sliders)) {
             if (slider.dataNode !== 'None' || slider.dataFields.length) {
