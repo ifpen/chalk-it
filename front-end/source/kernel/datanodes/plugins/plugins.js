@@ -1,0 +1,12 @@
+import './clearobject.mqtt.plugin';
+import './plugin-clock';
+import './plugin-csv-file';
+import './plugin-csv-play';
+import './plugin-generic-binary-file';
+import './plugin-generic-text-file';
+import './plugin-geolocation.datanodes';
+import './plugin-json-delay';
+import './plugin-json-formula';
+import './plugin-json-memory';
+import './plugin-json-var';
+import './plugin-python-script';
