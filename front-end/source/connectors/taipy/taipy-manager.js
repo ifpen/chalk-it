@@ -27,9 +27,8 @@ class TaipyManager {
    * @public
    */
   initTaipyApp() {
-    window.taipyApp = TaipyGuiBase.createApp(this.onInit.bind(this));
-    window.taipyApp.onChange = this.onChange.bind(this);
-    this.app = window.taipyApp;
+    this.app = TaipyGuiBase.createApp(this.onInit.bind(this));
+    this.app.onChange = this.onChange.bind(this);
   }
 
   /**
