@@ -364,7 +364,6 @@ class FileManager:
     def get_files(self):
         relative_path_dir = ""
         file_type = request.json['FileType']
-        # Create a Path object from the relative path
         if file_type == "project":
             relative_path_dir = self.config.dir_project_path
         elif file_type == "template":
