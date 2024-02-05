@@ -50,7 +50,7 @@ class TaipyManager {
   }
 
   /**
-   * Processes variable data, creating or deleting data nodes based on changes.
+   * Processes variable data, creating or deleting dataNodes based on changes.
    * It updates the variable data if there are changes in the current context.
    *
    * @method processVariableData
