@@ -2,29 +2,34 @@
  * Manages the interaction between Chalk-it and Taipy.
  * It primarily handles the creation, updating, and deletion of dataNodes and
  * sending updated values to Taipy.
+ *
+ * @class
  */
 class TaipyManager {
   #app;
+  #currentContext;
   #variableData;
   #deletedDnConnections;
-  #currentContext;
 
   /**
    * Constructs a new TaipyManager instance.
+   *
+   * @constructor
    */
   constructor() {
     this.#app = {};
+    this.#currentContext = '';
     this.#variableData = {};
     this.#deletedDnConnections = new Set();
-    this.#currentContext = '';
     this.initTaipyApp();
   }
 
   /**
    * Initializes the Taipy application by creating an app instance and setting up change detection.
    *
-   * @returns {void} This method does not return a value.
+   * @method initTaipyApp
    * @public
+   * @returns {void} This method does not return a value.
    */
   initTaipyApp() {
     this.app = TaipyGuiBase.createApp(this.onInit.bind(this));
@@ -34,84 +39,27 @@ class TaipyManager {
   /**
    * Callback function executed upon initialization of the Taipy app.
    *
+   * @method onInit
+   * @public
    * @param {TaipyGuiBase} app - The initialized Taipy application instance.
    * @returns {void} This method does not return a value.
-   * @public
    */
   onInit(app) {
     this.currentContext = app.getContext();
-    this.checkForChanges();
+    this.processVariableData();
   }
 
   /**
-   * Checks for changes in the application's data tree.
-   *
-   * @returns {void} This method does not return a value.
-   * @method
-   * @public
-   */
-  checkForChanges() {
-    const currentContext = this.currentContext;
-    if (currentContext !== this.app.getContext()) return;
-
-    const newDataVariable = this.app.getDataTree()[currentContext];
-    const currentDataVariable = this.variableData[currentContext];
-    // Performs a deep comparison
-    if (_.isEqual(newDataVariable, currentDataVariable)) return;
-    this.#processVariableData();
-  }
-
-  /**
-   * Sends updated value to Taipy.
-   *
-   * @param {string} valueName - The name of the value (name of the dataNode).
-   * @param {*} newValue - The value to be sent (value of the dataNode).
-   * @returns {void} This method does not return a value.
-   * @method
-   * @public
-   */
-  sendToTaipy(valueName, newValue) {
-    const currentContext = this.currentContext;
-    if (currentContext !== this.app.getContext() || !this.app.getDataTree().hasOwnProperty(currentContext)) return;
-
-    const encodedName = this.app.getEncodedName(valueName, currentContext);
-    const currentValue = this.variableData[currentContext][valueName].value;
-    // Performs a deep comparison
-    if (_.isEqual(currentValue, newValue)) return; // Current simple solution. To be enhanced in the future
-    // Send newValue
-    this.app.update(encodedName, newValue);
-  }
-
-  /**
-   * Callback function handles changes to variables within the application.
-   *
-   * @param {Object} app - The application instance.
-   * @param {string} valueName - The name of the variable.
-   * @param {*} newValue - The new value of the variable.
-   * @returns {void} This method does not return a value.
-   * @method
-   * @public
-   */
-  onChange(app, valueName, newValue) {
-    const [varName, context] = app.getName(valueName);
-    if (this.currentContext !== context || !app.getDataTree().hasOwnProperty(context)) return;
-
-    // Update variableData
-    this.variableData[context][varName].value = this.#deepCloneIfObject(newValue);
-    if (!datanodesManager.foundDatanode(varName)) return;
-    this.#updateDataNode(varName, newValue);
-  }
-
-  /**
-   * Processes variable data, creating or deleting data nodes based on changes.
+   * Processes variable data, creating or deleting dataNodes based on changes.
    * It updates the variable data if there are changes in the current context.
    *
+   * @method processVariableData
+   * @public
    * @returns {void} This method does not return a value.
-   * @method
-   * @private
    */
-  #processVariableData() {
+  processVariableData() {
     const currentContext = this.currentContext;
+    // TODO add check this.currentContext == this.app.getContext()
     if (!this.app.getDataTree().hasOwnProperty(currentContext)) return;
 
     const currentVariables = this.#deepCloneIfObject(this.variableData)[currentContext] || {};
@@ -133,14 +81,67 @@ class TaipyManager {
   }
 
   /**
+   * Sends updated value to Taipy.
+   *
+   * @method sendToTaipy
+   * @public
+   * @param {string} valueName - The name of the value (name of the dataNode).
+   * @param {*} newValue - The value to be sent (value of the dataNode).
+   * @returns {void} This method does not return a value.
+   */
+  sendToTaipy(valueName, newValue) {
+    const currentContext = this.currentContext;
+    if (currentContext !== this.app.getContext() || !this.app.getDataTree().hasOwnProperty(currentContext)) return;
+
+    const encodedName = this.app.getEncodedName(valueName, currentContext);
+    const currentValue = this.variableData[currentContext][valueName].value;
+    // Performs a deep comparison
+    if (_.isEqual(currentValue, newValue)) return; // Current simple solution. To be enhanced in the future
+    // Send newValue
+    this.app.update(encodedName, newValue);
+  }
+
+  /**
+   * Callback function handles changes to variables within the application.
+   *
+   * @method onChange
+   * @public
+   * @param {Object} app - The application instance.
+   * @param {string} valueName - The name of the variable.
+   * @param {*} newValue - The new value of the variable.
+   * @returns {void} This method does not return a value.
+   */
+  onChange(app, valueName, newValue) {
+    const [varName, context] = app.getName(valueName);
+    if (this.currentContext !== context || !app.getDataTree().hasOwnProperty(context)) return;
+
+    // Update variableData
+    this.variableData[context][varName].value = this.#deepCloneIfObject(newValue);
+    if (!datanodesManager.foundDatanode(varName)) return;
+    this.#updateDataNode(varName, newValue);
+  }
+
+  /**
+   * Clears all data for the current context.
+   * This method sets the data associated with the current context to an empty object,
+   *
+   * @method clearData
+   * @public
+   * @returns {void} This method does not return a value.
+   */
+  clearData() {
+    this.variableData[this.currentContext] = {};
+  }
+
+  /**
    * Processes a single dataNode, creating or deleting it based on the presence of new and current variables.
    *
+   * @method processDataNode
+   * @private
    * @param {string} dataNodeName - The name of the dataNode to be processed.
    * @param {Object} currentVariable - The current variable data.
    * @param {Object} newVariable - The new variable data.
    * @returns {void} This method does not return a value.
-   * @method
-   * @private
    */
   #processDataNode(dataNodeName, currentVariable, newVariable) {
     if (newVariable && !currentVariable) {
@@ -154,11 +155,11 @@ class TaipyManager {
   /**
    * Creates a new dataNode.
    *
+   * @method createDataNode
+   * @private
    * @param {string} dnName - The dataNode name.
    * @param {*} value - The value for the dataNode.
    * @returns {void} This method does not return a value.
-   * @method
-   * @private
    */
   #createDataNode(dnName, value) {
     const types = datanodesManager.getDataNodePluginTypes();
@@ -182,10 +183,10 @@ class TaipyManager {
   /**
    * Deletes an existing dataNode.
    *
+   * @method deleteDataNode
+   * @private
    * @param {string} dnName - The dataNode name.
    * @returns {void} This method does not return a value.
-   * @method
-   * @private
    */
   #deleteDataNode(dnName) {
     if (datanodesManager.foundDatanode(dnName)) {
@@ -197,6 +198,8 @@ class TaipyManager {
   /**
    * Displays a SweetAlert modal with details of deleted dataNode connections.
    *
+   * @method showDeletedDataNodeAlert
+   * @private
    * @param {Set<Object>} deletedDnConnections - Set of deleted dataNode connection objects.
    * Each object in the set has a structure like:
    *    {
@@ -204,8 +207,6 @@ class TaipyManager {
    *      wdList: ["Widget1", "Widget2", "Widget3"] // List of associated widgets
    *    }
    * @returns {void} This method does not return a value.
-   * @method
-   * @private
    */
   #showDeletedDataNodeAlert(deletedDnConnections) {
     if (deletedDnConnections.size !== 0) {
@@ -229,11 +230,11 @@ class TaipyManager {
   /**
    * Updates an existing dataNode.
    *
+   * @method updateDataNode
+   * @private
    * @param {string} dnName - The dataNode name.
    * @param {*} value - The new value for the dataNode.
    * @returns {void} This method does not return a value.
-   * @method
-   * @private
    */
   #updateDataNode(dnName, value) {
     const dnModel = datanodesManager.getDataNodeByName(dnName);
@@ -255,45 +256,22 @@ class TaipyManager {
    * This function uses Lodash's _.cloneDeep, which handles complex objects including nested structures,
    * circular references, and maintains function references.
    *
+   * @method deepCloneIfObject
+   * @private
    * @param {*} value - The value to check and deeply clone.
    * @returns {*} Deep clone of the input object, or the original value.
-   * @method
-   * @private
    */
   #deepCloneIfObject(value) {
     return value !== null && typeof value === 'object' ? _.cloneDeep(value) : value;
   }
 
   /**
-   * Sets new variable data, updating the internal state.
-   *
-   * @param {Object} newVariableData - The new variable data.
-   * @returns {void} This method does not return a value.
-   * @method
-   * @public
-   */
-  set variableData(newVariableData) {
-    this.#variableData = newVariableData;
-  }
-
-  /**
-   * Gets the current variable data.
-   *
-   * @returns {Object} The current variable data.
-   * @method
-   * @public
-   */
-  get variableData() {
-    return this.#variableData;
-  }
-
-  /**
    * Sets the application instance. This updates the internal reference to the application.
    *
+   * @method app
+   * @public
    * @param {Object} newApp - The new application instance to be set.
    * @returns {void} This method does not return a value.
-   * @method
-   * @public
    */
   set app(newApp) {
     this.#app = newApp;
@@ -302,48 +280,21 @@ class TaipyManager {
   /**
    * Retrieves the current application instance being managed by the TaipyManager.
    *
-   * @returns {Object} The current application instance.
-   * @method
+   * @method app
    * @public
+   * @returns {Object} The current application instance.
    */
   get app() {
     return this.#app;
   }
 
   /**
-   * Sets the current set of deleted dataNode connections.
-   *
-   * @param {Set<Object>} newSet - A set of objects representing the
-   *        deleted dataNode connections. Each object in the set should have
-   *        a specific structure, typically including properties like
-   *        `dnName` (the name of the dataNode) and `wdList` (an array of
-   *        associated widget names).
-   * @returns {void} This method does not return a value.
-   * @method
-   * @public
-   */
-  set deletedDnConnections(newSet) {
-    this.#deletedDnConnections = newSet;
-  }
-
-  /**
-   * Retrieves the current set of deleted dataNode connections.
-   *
-   * @returns {Set<Object>} The current set of deleted dataNode connection objects.
-   * @method
-   * @public
-   */
-  get deletedDnConnections() {
-    return this.#deletedDnConnections;
-  }
-
-  /**
    * Sets the new context for the application instance.
    *
+   * @method currentContext
+   * @public
    * @param {string} newContext - The new context to set.
    * @returns {void} This method does not return a value.
-   * @method
-   * @public
    */
   set currentContext(newContext) {
     this.#currentContext = newContext;
@@ -352,12 +303,61 @@ class TaipyManager {
   /**
    * Gets the current context from the application instance.
    *
-   * @returns {string} The current context.
-   * @method
+   * @method currentContext
    * @public
+   * @returns {string} The current context.
    */
   get currentContext() {
     return this.#currentContext;
+  }
+
+  /**
+   * Sets new variable data, updating the internal state.
+   *
+   * @method variableData
+   * @public
+   * @param {Object} newVariableData - The new variable data.
+   * @returns {void} This method does not return a value.
+   */
+  set variableData(newVariableData) {
+    this.#variableData = newVariableData;
+  }
+
+  /**
+   * Gets the current variable data.
+   *
+   * @method variableData
+   * @public
+   * @returns {Object} The current variable data.
+   */
+  get variableData() {
+    return this.#variableData;
+  }
+
+  /**
+   * Sets the current set of deleted dataNode connections.
+   *
+   * @method deletedDnConnections
+   * @public
+   * @param {Set<Object>} newSet - A Set of objects representing deleted dataNode connections.
+   * Each object should have properties:
+   * - `dnName` (string): The name of the dataNode.
+   * - `wdList` (Array<string>): An array of associated widget names.
+   * @returns {void} This method does not return a value.
+   */
+  set deletedDnConnections(newSet) {
+    this.#deletedDnConnections = newSet;
+  }
+
+  /**
+   * Retrieves the current set of deleted dataNode connections.
+   *
+   * @method deletedDnConnections
+   * @public
+   * @returns {Set<Object>} The current set of deleted dataNode connection objects.
+   */
+  get deletedDnConnections() {
+    return this.#deletedDnConnections;
   }
 }
 
