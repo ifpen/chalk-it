@@ -30,6 +30,7 @@ var xdash = (function () {
     datanodesManager.clear();
     widgetEditor.clear();
     xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
+    taipyManager.clearData();
 
     $('#projectName')[0].value = prjName;
     $('.tab--active').removeClass('changed');
@@ -153,7 +154,7 @@ var xdash = (function () {
       jsonObject.data.version = jsonObject.meta.version;
 
       if ($rootScope.xDashLiteVersion) {
-        taipyManager.checkForChanges(); // MBG : todo secure in other configs
+        taipyManager.processVariableData();
       } else if (datanodesManager.load(jsonObject.data, true)) {
         angular
           .element(document.body)

@@ -5,18 +5,18 @@
  */
 class TaipyManager {
   #app;
+  #currentContext;
   #variableData;
   #deletedDnConnections;
-  #currentContext;
 
   /**
    * Constructs a new TaipyManager instance.
    */
   constructor() {
     this.#app = {};
+    this.#currentContext = '';
     this.#variableData = {};
     this.#deletedDnConnections = new Set();
-    this.#currentContext = '';
     this.initTaipyApp();
   }
 
@@ -40,25 +40,37 @@ class TaipyManager {
    */
   onInit(app) {
     this.currentContext = app.getContext();
-    this.checkForChanges();
+    this.processVariableData();
   }
 
   /**
-   * Checks for changes in the application's data tree.
+   * Processes variable data, creating or deleting data nodes based on changes.
+   * It updates the variable data if there are changes in the current context.
    *
    * @returns {void} This method does not return a value.
    * @method
-   * @public
    */
-  checkForChanges() {
+  processVariableData() {
     const currentContext = this.currentContext;
-    if (currentContext !== this.app.getContext()) return;
+    // TODO add check this.currentContext == this.app.getContext()
+    if (!this.app.getDataTree().hasOwnProperty(currentContext)) return;
 
-    const newDataVariable = this.app.getDataTree()[currentContext];
-    const currentDataVariable = this.variableData[currentContext];
+    const currentVariables = this.#deepCloneIfObject(this.variableData)[currentContext] || {};
+    const newVariables = this.#deepCloneIfObject(this.app.getDataTree())[currentContext] || {};
+
     // Performs a deep comparison
-    if (_.isEqual(newDataVariable, currentDataVariable)) return;
-    this.#processVariableData();
+    if (_.isEqual(newVariables, currentVariables)) return;
+
+    // Update variableData
+    this.variableData[currentContext] = this.#deepCloneIfObject(newVariables);
+    this.deletedDnConnections = new Set();
+
+    // Combine current and new variable names to iterate over
+    const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
+    for (const variableName of variableNames) {
+      this.#processDataNode(variableName, currentVariables[variableName], newVariables[variableName]);
+    }
+    this.#showDeletedDataNodeAlert(this.deletedDnConnections);
   }
 
   /**
@@ -103,33 +115,15 @@ class TaipyManager {
   }
 
   /**
-   * Processes variable data, creating or deleting data nodes based on changes.
-   * It updates the variable data if there are changes in the current context.
+   * Clears all data for the current context.
+   * This method sets the data associated with the current context to an empty object,
    *
    * @returns {void} This method does not return a value.
    * @method
-   * @private
+   * @public
    */
-  #processVariableData() {
-    const currentContext = this.currentContext;
-    if (!this.app.getDataTree().hasOwnProperty(currentContext)) return;
-
-    const currentVariables = this.#deepCloneIfObject(this.variableData)[currentContext] || {};
-    const newVariables = this.#deepCloneIfObject(this.app.getDataTree())[currentContext] || {};
-
-    // Performs a deep comparison
-    if (_.isEqual(newVariables, currentVariables)) return;
-
-    // Update variableData
-    this.variableData[currentContext] = this.#deepCloneIfObject(newVariables);
-    this.deletedDnConnections = new Set();
-
-    // Combine current and new variable names to iterate over
-    const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
-    for (const variableName of variableNames) {
-      this.#processDataNode(variableName, currentVariables[variableName], newVariables[variableName]);
-    }
-    this.#showDeletedDataNodeAlert(this.deletedDnConnections);
+  clearData() {
+    this.variableData[this.currentContext] = {};
   }
 
   /**
@@ -265,29 +259,6 @@ class TaipyManager {
   }
 
   /**
-   * Sets new variable data, updating the internal state.
-   *
-   * @param {Object} newVariableData - The new variable data.
-   * @returns {void} This method does not return a value.
-   * @method
-   * @public
-   */
-  set variableData(newVariableData) {
-    this.#variableData = newVariableData;
-  }
-
-  /**
-   * Gets the current variable data.
-   *
-   * @returns {Object} The current variable data.
-   * @method
-   * @public
-   */
-  get variableData() {
-    return this.#variableData;
-  }
-
-  /**
    * Sets the application instance. This updates the internal reference to the application.
    *
    * @param {Object} newApp - The new application instance to be set.
@@ -308,6 +279,52 @@ class TaipyManager {
    */
   get app() {
     return this.#app;
+  }
+
+  /**
+   * Sets the new context for the application instance.
+   *
+   * @param {string} newContext - The new context to set.
+   * @returns {void} This method does not return a value.
+   * @method
+   * @public
+   */
+  set currentContext(newContext) {
+    this.#currentContext = newContext;
+  }
+
+  /**
+   * Gets the current context from the application instance.
+   *
+   * @returns {string} The current context.
+   * @method
+   * @public
+   */
+  get currentContext() {
+    return this.#currentContext;
+  }
+
+  /**
+   * Sets new variable data, updating the internal state.
+   *
+   * @param {Object} newVariableData - The new variable data.
+   * @returns {void} This method does not return a value.
+   * @method
+   * @public
+   */
+  set variableData(newVariableData) {
+    this.#variableData = newVariableData;
+  }
+
+  /**
+   * Gets the current variable data.
+   *
+   * @returns {Object} The current variable data.
+   * @method
+   * @public
+   */
+  get variableData() {
+    return this.#variableData;
   }
 
   /**
@@ -335,29 +352,6 @@ class TaipyManager {
    */
   get deletedDnConnections() {
     return this.#deletedDnConnections;
-  }
-
-  /**
-   * Sets the new context for the application instance.
-   *
-   * @param {string} newContext - The new context to set.
-   * @returns {void} This method does not return a value.
-   * @method
-   * @public
-   */
-  set currentContext(newContext) {
-    this.#currentContext = newContext;
-  }
-
-  /**
-   * Gets the current context from the application instance.
-   *
-   * @returns {string} The current context.
-   * @method
-   * @public
-   */
-  get currentContext() {
-    return this.#currentContext;
   }
 }
 

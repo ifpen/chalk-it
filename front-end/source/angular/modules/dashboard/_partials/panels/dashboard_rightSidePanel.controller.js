@@ -279,7 +279,7 @@ angular
           this.dataNodes = [];
           if (this.$window.datanodesManager) {
             // Check if there are any changes in dataTree
-            taipyManager.checkForChanges();
+            taipyManager.processVariableData();
             // Probably not initialized before angular. TODO should be a service
             this.dataNodes = this.$window.datanodesManager.getAllDataNodes().map((ds, index) => ({
               name: ds.name(),
