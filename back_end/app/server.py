@@ -362,13 +362,16 @@ class FileManager:
         self.config = config
 
     def get_files(self):
-        path_dir = ""
+        relative_path_dir = ""
         file_type = request.json['FileType']
+        # Create a Path object from the relative path
         if file_type == "project":
-            path_dir = self.config.dir_project_path
+            relative_path_dir = self.config.dir_project_path
         elif file_type == "template":
-            path_dir = self.config.dir_temp_path
-        files = Path(path_dir).glob('*.xprjson')
+            relative_path_dir = self.config.dir_temp_path
+        files = Path(relative_path_dir).glob('*.xprjson')
+        # Resolve the relative path to an absolute path
+        absolute_path_dir = str(Path(relative_path_dir).resolve())
         file_list = [{
             "Name": file.stem,
             "FileName": file.name,
@@ -385,7 +388,7 @@ class FileManager:
             "Success": True,
             "Msg": None,
             "FileList": file_list,
-            "Path": path_dir,
+            "Path": absolute_path_dir,
             "Python": None
         })
 
