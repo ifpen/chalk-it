@@ -141,7 +141,7 @@ var RuntimeDashboard = (function () {
         customNavigationRuntime.customNavigationModeInit(jsonContent);
         break;
       case 'projectToTargetWindow':
-        customNavigationRuntime.setJsonContent(jsonContent);
+        customNavigationRuntime.jsonContent = jsonContent;
         break;
     }
 

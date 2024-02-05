@@ -1304,8 +1304,8 @@ function initEditWidget() {
       });
     }
 
-    var openGraphFromWidget = document.getElementById('openGraphFromWidget');
-    openGraphFromWidget.setAttribute('name', JSON.stringify(connectedDataNodes));
+    const openGraphFromWidget = document.getElementById('openGraphFromWidget');
+    openGraphFromWidget?.setAttribute('name', JSON.stringify(connectedDataNodes));
 
     const idList = 'menuWidget';
 
