@@ -2,6 +2,8 @@
  * Manages the interaction between Chalk-it and Taipy.
  * It primarily handles the creation, updating, and deletion of dataNodes and
  * sending updated values to Taipy.
+ *
+ * @class
  */
 class TaipyManager {
   #app;
@@ -11,6 +13,8 @@ class TaipyManager {
 
   /**
    * Constructs a new TaipyManager instance.
+   *
+   * @constructor
    */
   constructor() {
     this.#app = {};
@@ -335,11 +339,10 @@ class TaipyManager {
    *
    * @method deletedDnConnections
    * @public
-   * @param {Set<Object>} newSet - A set of objects representing the
-   *        deleted dataNode connections. Each object in the set should have
-   *        a specific structure, typically including properties like
-   *        `dnName` (the name of the dataNode) and `wdList` (an array of
-   *        associated widget names).
+   * @param {Set<Object>} newSet - A Set of objects representing deleted dataNode connections.
+   * Each object should have properties:
+   * - `dnName` (string): The name of the dataNode.
+   * - `wdList` (Array<string>): An array of associated widget names.
    * @returns {void} This method does not return a value.
    */
   set deletedDnConnections(newSet) {
