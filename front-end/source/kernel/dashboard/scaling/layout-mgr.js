@@ -535,12 +535,12 @@ class LayoutMgrClass {
     this.scalingHelper.setRows(this.rows);
     this.scalingHelper.setCols(this.cols);
 
-    $('select[name=select-rows]')[0].value = this.rows;
-    $('select[name=select-cols]')[0].value = 1;
+    $('select[name="select-rows"]').val(this.rows);
+    $('select[name="select-cols"]').val(1);
     this.heightCols = [];
     this.newHeightCols = [];
-    this.rowNames = []; // GHI #245
-    this.defaultRow = {}; // GHI #245
+    this.rowNames = [];
+    this.defaultRow = {};
     this.updateMaxTopAndLeft();
   }
 
