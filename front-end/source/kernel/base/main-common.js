@@ -17,8 +17,7 @@ import { showEditMode, bRescaleNeededForModeSwitch } from 'angular/modules/dashb
 // offSchedLogUser is defined in xprjson to disable/enable scheduler log. To be used by developer and intern user expert.
 // Only active when disableSchedulerLog is false
 
-// FIXME
-export var offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
+export const offSchedLogUser = { value: true }; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
 var ratioScroll = 0;
 
@@ -79,33 +78,31 @@ function activeTab() {
 }
 
 /*--------On resize event--------*/
-$(function () {
-  $(window).on('resize', function () {
-    var $body = angular.element(document.body);
-    var $rootScope = $body.scope().$root;
-    if (dashState.tabActive == 'play') {
-      if (!(isAndroid || isTouchDevice)) {
+$(window).on('resize', function () {
+  var $body = angular.element(document.body);
+  var $rootScope = $body.scope().$root;
+  if (dashState.tabActive == 'play') {
+    if (!(isAndroid || isTouchDevice)) {
+      widgetPreview.resizeDashboard();
+    }
+  } else if (!$rootScope.moduleOpened) {
+    if (dashState.tabActive == 'widgets') {
+      if (dashState.modeActive == 'edit-dashboard') {
+        singletons.widgetEditor.resizeDashboard();
+        gridMgr.updateGrid();
+      } else if (dashState.modeActive == 'play-dashboard') {
         widgetPreview.resizeDashboard();
-      }
-    } else if (!$rootScope.moduleOpened) {
-      if (dashState.tabActive == 'widgets') {
-        if (dashState.modeActive == 'edit-dashboard') {
-          singletons.widgetEditor.resizeDashboard();
-          gridMgr.updateGrid();
-        } else if (dashState.modeActive == 'play-dashboard') {
-          widgetPreview.resizeDashboard();
-        }
       }
     }
-  });
-  if (!(isAndroid || isTouchDevice)) {
-    $(window).on('orientationchange', function () {
-      if (dashState.tabActive == 'play') {
-        widgetPreview.resizeDashboard();
-      }
-    });
   }
 });
+if (!(isAndroid || isTouchDevice)) {
+  $(window).on('orientationchange', function () {
+    if (dashState.tabActive == 'play') {
+      widgetPreview.resizeDashboard();
+    }
+  });
+}
 
 /*--------Rescale Widget--------*/
 export function rescaleWidget(widget, instanceId) {
@@ -116,7 +113,7 @@ export function rescaleWidget(widget, instanceId) {
  * Sets the dirty flag in context when call can be from editor or runtime
  * Dirty flag only applies in runtime context
  * */
-function setDirtyFlagSafe(bDirty) {
+export function setDirtyFlagSafe(bDirty) {
   try {
     if (typeof execOutsideEditor != 'undefined') {
       if (!execOutsideEditor) {
@@ -131,6 +128,7 @@ function setDirtyFlagSafe(bDirty) {
     }
   } catch (ex) {
     // handling very old pages
+    // FIXME
   }
 }
 

@@ -76,7 +76,7 @@ export const Xdash = function () {
       description: '',
       groupName: '',
       tags: [],
-      schedulerLogOff: offSchedLogUser,
+      schedulerLogOff: offSchedLogUser.value,
     };
 
     return meta;
@@ -166,8 +166,8 @@ export const Xdash = function () {
       if (!_.isUndefined(jsonObject.meta.tags)) $rootScope.currentProject.tags = jsonObject.meta.tags;
       if (!_.isUndefined(jsonObject.meta.groupName)) $rootScope.currentProject.groupName = jsonObject.meta.groupName;
 
-      if (!_.isUndefined(jsonObject.meta.schedulerLogOff)) offSchedLogUser = jsonObject.meta.schedulerLogOff;
-      else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
+      if (!_.isUndefined(jsonObject.meta.schedulerLogOff)) offSchedLogUser.value = jsonObject.meta.schedulerLogOff;
+      else offSchedLogUser.value = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
       pyodideLib.deserialize(jsonObject); // GHI  : load pyodide packages
 

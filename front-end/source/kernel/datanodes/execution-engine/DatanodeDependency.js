@@ -192,7 +192,7 @@ export function DatanodeDependency() {
     let graph;
     disconnectedGraphs.some(function (disconGraph) {
       if (disconGraph.has(node)) {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
           console.log('node ', node, ' is found in disconnected graph: ', disconGraph);
         graph = disconGraph;
       }
@@ -206,7 +206,7 @@ export function DatanodeDependency() {
     const allSourceNodes = getSourceNodesWithMemory();
     let disconnectedGraphs = [];
     allDisconnectedGraphs = getDisconnectedGraphs(allSourceNodes, disconnectedGraphs);
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs: ', allDisconnectedGraphs);
     computeAllsingletonNodes();
   }
@@ -264,7 +264,8 @@ export function DatanodeDependency() {
 
   /*-----------------getAllsingletonNodes-----------------*/
   function getAllsingletonNodes() {
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log('SingletonNodeList: ', SingletonNodeList);
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
+      console.log('SingletonNodeList: ', SingletonNodeList);
     return SingletonNodeList;
   }
   /*-----------------isSingletonNode-----------------*/

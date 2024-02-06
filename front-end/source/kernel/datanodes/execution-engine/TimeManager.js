@@ -13,7 +13,6 @@ import _ from 'underscore';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { offSchedLogUser } from 'kernel/base/main-common';
 
-
 export function TimeManager() {
   var periodsMap = [];
   var refreshTimer;
@@ -44,7 +43,7 @@ export function TimeManager() {
     var baseP = sampleTime;
     for (var prop in periodsMap) {
       baseP = pgcd(periodsMap[prop], baseP);
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log(basePeriod);
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log(basePeriod);
     }
     return baseP;
   }
@@ -95,7 +94,7 @@ export function TimeManager() {
       //dsName exist in startNodes
       startNodes.splice(index, 1);
     } else {
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log('error in datanode ' + dsName);
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log('error in datanode ' + dsName);
       return;
     }
     // optional: reset tick
@@ -151,7 +150,8 @@ export function TimeManager() {
       //advance time after first exec
       currentTick = currentTick + 1;
     } else {
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log(initiatorDatanode, ' timer initialization');
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
+        console.log(initiatorDatanode, ' timer initialization');
     }
   }
 

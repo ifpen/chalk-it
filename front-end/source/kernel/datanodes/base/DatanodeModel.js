@@ -90,10 +90,10 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
       schedulerResult = self.execInstance().operationCompleted(dsName, statusForSched);
     } else {
       if (statusForSched === 'Error') {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
           console.log('scheduling is already terminated. ' + dsName + ' is ended with status = ' + self.status());
       } else {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
           console.log(
             'statusCallback of ' + dsName + ' is called before scheduling instance created. Status = ' + self.status()
           );
@@ -104,7 +104,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
     if (schedulerResult.schedulingInstanceTerminated) {
       //AEF: add test on instance
       if (self.execInstance() == null) {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
           console.log('scheduling is already terminated. ' + dsName + ' is ended with status = ' + self.status());
       } else {
         datanodesManager.getDataNodeByName(schedulerResult.initiatorNode).schedulerEnd();
@@ -131,15 +131,15 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
   this.statusForSchedulerCallback = function (newStatus) {
     self.statusForScheduler(newStatus);
     if (newStatus === 'Ready') {
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log(self.name() + ' is ready now.');
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log(self.name() + ' is ready now.');
       self.schedulerStart([self.name()], self.name(), 'ReadyNow');
     } else if (newStatus === 'NotReady') {
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
         console.log('initialization of ' + self.name() + ' is interrupted due to error.');
       self.status('Error');
       self.updateCallback(undefined, 'Error');
     } else if (newStatus === 'Stop') {
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
         console.log('initialization of ' + self.name() + ' need to be redone due to stop.');
       self.status('None');
       self.updateCallback('', 'None');
@@ -268,7 +268,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
     var initiatorNode;
     var dsName = self.name();
 
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
       console.log('schedulerStart with sourceNodesArg:', sourceNodesArg, ' and initiatorNodeArg:', initiatorNodeArg);
     if (_.isUndefined(sourceNodesArg)) {
       sourceNodes = [dsName];
@@ -308,7 +308,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
           let triggeredNodes = Object.assign({}, source); //needed for sourceNodes with explicitTrig flag
           sourceNodes = updateSourceNodes(source, callOriginArg);
           initiatorNode = sourceNodes[0];
-          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+          if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
             console.log('new scheduler instance with sourceNodes:', sourceNodes, ' and initiator:', initiatorNode);
 
           //Create schedulers as much as disconnected graphs are.
@@ -331,7 +331,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
                   const param = Array.from(memorydataNodeList.keys()).filter((memName) => currentGraph.has(memName));
 
                   if (param.length > 0) {
-                    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+                    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
                       console.log('Start schedule from memory datanodes list: ' + param);
                     //const origin = memorydataNodeList.get(param[0]);
                     datanodesDependency.clearMemorydataNodeList(param);
@@ -341,7 +341,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
                 //AEF END
 
                 if (datanodesManager.getDataNodeByName(name).execInstance() != null) {
-                  if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+                  if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
                     console.log('Instance of ', name, ' is already running'); //AEF: NEEDED ONLY FOR DEBUG
                 } else {
                   datanodesManager.getDataNodeByName(name).execInstance(dsSched);
@@ -349,16 +349,16 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
                 }
               } else {
                 text = "Datanode '" + name + "' does not exist but referenced in another datanode";
-                if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log(text);
+                if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log(text);
                 return;
               }
             });
           } else {
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
               console.log('error in building disconnected graphs');
           }
 
-          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+          if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
             console.log(
               'scheduling instance created, clkTick:' +
                 timeManager.getCurrentTick() +
@@ -374,7 +374,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
           if (callOriginArg === 'globalFirstUpdate' && timeManager.getCurrentTick() != 0) {
             // AEF: MAY BE NO NEEDED WITH DISCONNECTED GRAPHS
             for (var val in sourceNodesArg) {
-              if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+              if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
                 console.log(
                   'operation ' +
                     sourceNodesArg[val] +
@@ -386,7 +386,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
             }
           } else if (callOriginArg === 'timer' && timeManager.getCurrentTick() != 0) {
             //ignored and no added in the stack, next instance will be executed later
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
               console.log(
                 'Execution of operation ' +
                   source[0] +
@@ -398,7 +398,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
             }
           } else if (callOriginArg !== 'timer' && callOriginArg !== 'globalFirstUpdate') {
             //add in the stack to be executed later
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
               console.log(
                 'operation ' + source[0] + ', called from ' + callOriginArg + ', is added to extraStartNodes list'
               );
@@ -406,7 +406,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
           }
         }
       } else {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
           text = "Datanode '" + source[0] + "' does not exist but referenced in another datanode";
           //self.notificationCallback("error", self.name(), text, "Bad datanode reference");
           console.log(text);
@@ -420,28 +420,28 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
   // end of graph execution instance
   this.schedulerEnd = function () {
     if (self.name() !== self.execInstance().getInitiatorNode()) {
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
         console.log(
           'scheduling instance will not be terminated by the initiator ' + self.execInstance().getInitiatorNode()
         );
     }
     if (self.execInstance() != null) {
       const allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
         console.log('get belonging disconnected graph (from schedulerEnd)');
       const graph = datanodesDependency.getBelongingDisconnectedGraph(self.name(), allDisconnectedGraphs);
       if (graph != null) {
         graph.forEach(function (name) {
           if (datanodesManager.foundDatanode(name)) {
             if (datanodesManager.getDataNodeByName(name).execInstance() == null) {
-              if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+              if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
                 console.log('Instance of ', name, ' is already terminated'); //AEF: NEEDED ONLY FOR DEBUG
             } else {
               datanodesManager.getDataNodeByName(name).execInstance(null);
               datanodesManager.getDataNodeByName(name).isSchedulerStartSafe(true);
             }
           } else {
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
               text = "Datanode '" + name + "' does not exist but referenced in another datanode";
               //self.notificationCallback("error", self.name(), text, "Bad datanode reference");
               console.log(text);
@@ -450,7 +450,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
           }
         });
       }
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
         console.log('scheduling instance terminated by ' + self.name());
       // Now that the scheduling is terminated, we handle in the corresponding order:
       // memory update, then setVariables, then extraStartNodes
@@ -462,7 +462,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
       const processedSetvarList = datanodesDependency.getProcessedSetvarList();
       const filteredSetvarList = new Map(Array.from(setvarList).filter(([key]) => !processedSetvarList.has(key)));
       if (filteredSetvarList.size) {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
           console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
           console.log('triggered by : ' + Array.from(filteredSetvarList.values()));
           //console.log('triggered by : ' + Array.from([...new Set(filteredSetvarList.values())]));
@@ -483,7 +483,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
         // extraStartNodes
         const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
         if (extraStartNodesList.size) {
-          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+          if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
             console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
           }
           //update operationsToExecute with extraStartNodesList
@@ -495,7 +495,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
       }
       //}
     } else {
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
         console.log('Problem : request for ending a scheduling instance whereas no instance exists');
     }
   };
@@ -522,7 +522,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
       if (bCalledFromOrchestrator && self.settings().explicitTrig) {
         //AEF: put test here and may be delete handling of exlicitTrig inside datanodes plugins
         self.completeExecution('NOP');
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
           console.log('ExplicitTrigger of ', self.settings().name + ' is true');
         return;
       }
@@ -570,7 +570,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
       }
     } else {
       //AEF
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
         console.log(
           self.name() +
             ' is not executed because currentTime: ' +
@@ -684,7 +684,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
     const allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
     sourceNodes.forEach(function (source) {
       //get the disconnected graph to which this sourceNode belongs
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
         console.log('get belonging disconnected graph (from schedulerStart)');
       const graph = datanodesDependency.getBelongingDisconnectedGraph(source, allDisconnectedGraphs);
       if (graph != null) {
@@ -697,7 +697,8 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
           list.disconSourceNodes[list.indicesDisconGraphs.indexOf(graph.index)].push(source); // add the sourceNode to the right place
         }
       } else {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log('error in building disconnected graphs');
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
+          console.log('error in building disconnected graphs');
       }
     });
   }

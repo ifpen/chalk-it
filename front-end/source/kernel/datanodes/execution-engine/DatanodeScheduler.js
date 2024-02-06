@@ -124,11 +124,11 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
     var bForceAutoStart = false;
     operationsToExecute.forEach(function (op) {
       if (operationsToExecute.size == 0) {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log(op + ' is already treated');
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log(op + ' is already treated');
         return;
       }
       if (_.isUndefined(datanodesManager.getDataNodeByName(op))) {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
           console.log(op + ' is not treated because it does not exist');
         operationsToExecute.delete(op);
         operationsBlacklist.add(op);
@@ -155,7 +155,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
             if (bAllPredExecuted) {
               operationsToExecute.delete(op);
               operationsToWaitFor.add(op);
-              if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+              if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
                 console.log('operation ' + op + ' released');
               }
               if (!xDashConfig.disableSchedulerProfiling) {
@@ -186,7 +186,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
                   //a la creation ou a l'edition, quand le user declare une datanode qui n'extste pas, il faut passer cette etape pour le voir
                   operationsNotReady.delete(op);
                   operationsToWaitFor.add(op);
-                  if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+                  if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
                     console.log('operation ' + op + ' released');
                   }
                   if (!xDashConfig.disableSchedulerProfiling) {
@@ -200,7 +200,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
                     .getDataNodeByName(op)
                     .updateNow(bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted);
                 } else {
-                  if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+                  if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
                     console.log('operation ' + op + ' is ready but cannot be executed because of its predecessors.');
                   datanodesManager.getDataNodeByName(op).completeExecution('NOP');
                 }
@@ -208,7 +208,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
             }
           } else {
             const successors = Array.from(datanodesDependency.getSuccessors(op));
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
               console.log(op + " is referenced in '" + successors + "' but not defined as a datanode.");
             datanodesManager.getDataNodeByName(op).completeExecution('NOP');
           }
@@ -218,10 +218,10 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
           operationsToExecute.delete(op);
           operationsNotReady.add(op);
           if (allPredecessorsExecuted(op)) {
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
               console.log('operation ' + op + ' is waiting for initialization to be done.');
           } else {
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
               console.log('operation ' + op + ' cannot be executed because of its predecessors.');
           }
           datanodesManager.getDataNodeByName(op).completeExecution('NOP');
@@ -230,7 +230,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
         case 'Stop': // init is stopped, e.g. close a websocket without error
           operationsToExecute.delete(op);
           operationsBlacklist.add(op);
-          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+          if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
             console.log('operation ' + op + ' cannot not be scheduled because it needs initialization.');
           const dsNameDescendants = datanodesDependency.getDescendants([op]); //AEF: fix bug param of getDescendants must be an array
           dsNameDescendants.forEach(function (elem) {
@@ -299,7 +299,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
                   callOrigin = 'memory';
                   operationsToExecute.add(successor);
                 } else {
-                  if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+                  if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
                     console.log('operation ' + successor + ' not added because already executed');
                   }
                 }
@@ -307,7 +307,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
             }
           });
         }
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
           console.log('operation ' + dsName + ' completed with status ' + status);
         }
         if (!xDashConfig.disableSchedulerProfiling) {
@@ -331,7 +331,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
           datanodesManager.getDataNodeByName(elem).updateCallback('', 'None'); // may be replace the value:'' by undefined or {} or null
         });
         operationsToExecute = difference(operationsToExecute, operationsBlacklist);
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
           console.log('operation ' + dsName + ' completed with status ' + status);
         }
         if (!xDashConfig.disableSchedulerProfiling) {
@@ -352,13 +352,13 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
               if (!alreadyExecuted(successor)) {
                 operationsToExecute.add(successor);
               } else {
-                if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+                if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
                   console.log('operation ' + successor + ' not added because already executed');
                 }
               }
             }
           });
-          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+          if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
             console.log('operation ' + dsName + ' completed with status ' + status);
           }
           if (!xDashConfig.disableSchedulerProfiling) {
@@ -382,7 +382,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
             operationsBlacklist.add(elem);
           });
           operationsToExecute = difference(operationsToExecute, operationsBlacklist);
-          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+          if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
             console.log('operation ' + dsName + ' completed with status ' + status);
           }
           if (!xDashConfig.disableSchedulerProfiling) {

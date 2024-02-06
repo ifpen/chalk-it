@@ -39,7 +39,8 @@ export const datanodesManager = (function () {
   var datanodesDependency = new DatanodeDependency(); // new instance from DatanodeDependency
 
   var graphVisu;
-  if (!(typeof execOutsideEditor !== 'undefined' && execOutsideEditor)) { // FIXEME
+  if (!(typeof execOutsideEditor !== 'undefined' && execOutsideEditor)) {
+    // FIXME
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }
   var timeManager = new TimeManager();
@@ -97,7 +98,7 @@ export const datanodesManager = (function () {
     //AEF: recompute graphs after deleting a datanode
     datanodesDependency.updateDisconnectedGraphsList(dnName, 'delete');
 
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs after delete: ', datanodesDependency.getAllDisconnectedGraphs());
     //
 
@@ -204,7 +205,7 @@ export const datanodesManager = (function () {
 
     //AEF: recompute graphs after adding a new datanode
     datanodesDependency.updateDisconnectedGraphsList(newViewModel.name(), 'add');
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs after add: ', datanodesDependency.getAllDisconnectedGraphs());
     //
 
@@ -296,7 +297,7 @@ export const datanodesManager = (function () {
 
     //AEF: recompute graphs after renaming and/or editing datanode
     datanodesDependency.computeAllDisconnectedGraphs();
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs after rename: ', datanodesDependency.getAllDisconnectedGraphs()); //To optimize after
     //
     if (!_.isUndefined(newSettings.settings.sampleTime)) {
@@ -534,7 +535,7 @@ export const datanodesManager = (function () {
           zombieDatanodeList.push(SingletonNodeList[i]);
         }
       }
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log('zombie: ', zombieDatanodeList);
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log('zombie: ', zombieDatanodeList);
 
       var dataToDelete = [];
       var bFound = false;
