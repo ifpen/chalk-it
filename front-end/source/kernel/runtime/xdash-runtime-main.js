@@ -129,12 +129,6 @@ export const RuntimeDashboard = (function () {
       }
     }
 
-    //AEF: issue#304
-    var offSchedLogUser;
-    if (!_.isUndefined(jsonContent.meta.schedulerLogOff)) offSchedLogUser = jsonContent.meta.schedulerLogOff;
-    else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
-    //
-
     // Add theme attribute before loading widgets
     $('html').attr('data-theme', jsonContent.device.theme);
 
