@@ -1,0 +1,207 @@
+{
+	"meta": {
+		"version": "2.920.8698",
+		"date": "Thu Dec 07 2023 15:13:14 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "memory",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": false
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "counter",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "counter",
+					"autoStart": true,
+					"explicitTrig": true,
+					"json_var_formula": "return dataNodes[\"pastValue_counter\"]+1;\n"
+				}
+			},
+			{
+				"name": "pastValue_counter",
+				"type": "Memory_plugin",
+				"settings": {
+					"name": "pastValue_counter",
+					"value_init": 0,
+					"datanode_origin": "counter"
+				}
+			}
+		]
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1295,
+		"heightPx": 626,
+		"scrollWidthPx": 1295,
+		"scrollHeightPx": 626,
+		"widthVw": 84.75130890052355,
+		"heightVh": 76.15571776155718,
+		"scrollWidthVw": 84.75130890052355,
+		"scrollHeightVh": 76.15571776155718,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiValueDisplayA": {
+			"layout": {
+				"top": "13.747vh",
+				"left": "7.2644vw",
+				"height": "4.98783vh",
+				"width": "18.9791vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "flatUiValueDisplayA",
+				"instanceId": "flatUiValueDisplayA",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayA)"
+			},
+			"modelParameters": {
+				"label": "counter",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valueWidthProportion": "70%",
+				"decimalDigits": 3,
+				"valueFontSize": 0.5,
+				"valueColor": "var(--widget-input-text)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"backgroundColor": "var(--widget-input-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"flatUiButtonA": {
+			"layout": {
+				"top": "13.6253vh",
+				"left": "31.3482vw",
+				"height": "5.96107vh",
+				"width": "7.98429vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiButtonA",
+				"instanceId": "flatUiButtonA",
+				"modelJsonId": "flatUiButton",
+				"widgetTypeName": "Push button(flatUiButtonA)"
+			},
+			"modelParameters": {
+				"text": "Add",
+				"numberOfTriggers": 1,
+				"fileInput": false,
+				"binaryFileInput": false,
+				"buttonFontSize": 0.3,
+				"displayIcon": false,
+				"fontAwesomeIcon": "",
+				"buttonFontFamily": "var(--widget-font-family)",
+				"buttonTextColor": "var(--widget-button-primary-text)",
+				"buttonDefaultColor": "var(--widget-button-primary-color)",
+				"buttonActiveColor": "var(--widget-button-active-color)",
+				"buttonHoverColor": "var(--widget-button-hover-color)"
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiValueDisplayB": {
+			"layout": {
+				"top": "3.16302vh",
+				"left": "7.06806vw",
+				"height": "4.98783vh",
+				"width": "18.9791vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "4"
+			},
+			"container": {
+				"id": "flatUiValueDisplayB",
+				"instanceId": "flatUiValueDisplayB",
+				"modelJsonId": "flatUiValueDisplay",
+				"widgetTypeName": "Value Display(flatUiValueDisplayB)"
+			},
+			"modelParameters": {
+				"label": "pastValue_counter",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valueWidthProportion": "70%",
+				"decimalDigits": 3,
+				"valueFontSize": 0.5,
+				"valueColor": "var(--widget-input-text)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"backgroundColor": "var(--widget-input-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiValueDisplayA": {
+			"value": {
+				"name": "value",
+				"dataNode": "counter",
+				"dataFields": []
+			}
+		},
+		"flatUiButtonA": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataNode": "counter",
+				"dataFields": []
+			}
+		},
+		"flatUiValueDisplayB": {
+			"value": {
+				"name": "value",
+				"dataNode": "pastValue_counter",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
