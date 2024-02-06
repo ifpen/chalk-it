@@ -60,7 +60,7 @@ class LayoutMgrClass {
       // $('#height-row-button')[0].style.display = "none";
       $('#select-cols').attr('disabled', true);
       $('#height-row-button').attr('disabled', true);
-      $('#select-cols')[0].value = '1';
+      $('#select-cols').val('1');
       //$("#select-cols")[0].value = "None";
     } else {
       $('#select-cols').attr('disabled', false);
@@ -71,7 +71,7 @@ class LayoutMgrClass {
 
     const canApply =
       this.rows !== newRows || this.cols !== newCols || !angular.equals(this.heightCols, this.newHeightCols);
-    $('#buttonDevice')[0].disabled = !canApply;
+    $('#buttonDevice').prop('disabled', !canApply);
   }
 
   isRowColMode() {
@@ -785,12 +785,12 @@ class LayoutMgrClass {
   deserialize(deviceObj, scalingObj) {
     this.cols = deviceObj.cols.maxCols;
     const maxCells = deviceObj.cols.maxCells;
-    this.rows = maxCells / (this.cols ? this.cols : 1);
+    this.rows = maxCells / (this.cols || 1);
 
     this.scalingHelper.setRows(this.rows);
     this.scalingHelper.setCols(this.cols);
-    $('select[name=select-rows]')[0].value = this.rows;
-    $('select[name=select-cols]')[0].value = this.cols ? this.cols : 1;
+    $('select[name="select-rows"]').val(this.rows);
+    $('select[name="select-cols"]').val(this.cols || 1);
 
     this.cleanColumns();
     const classType = this._getClassType(this.cols);
