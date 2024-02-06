@@ -153,7 +153,7 @@ angular.module('modules').controller('ModulesController', [
 
     const freeboardUIInst = new FreeboardUI();
     $rootScope.loadedTemplate = function () {
-      setTimeout(()=>{
+      setTimeout(() => {
         startXdash();
 
         // End fix by Ghiles
@@ -167,7 +167,6 @@ angular.module('modules').controller('ModulesController', [
         }
         freeboardUIInst.showLoadingIndicator(false);
       }, 0);
-
     };
     window.loadedTemplate = $rootScope.loadedTemplate;
 
