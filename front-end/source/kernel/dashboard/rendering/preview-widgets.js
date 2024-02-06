@@ -142,7 +142,7 @@ export const widgetPreview = (function () {
         if (widget[propName] != null) {
           if (widget[propName].getByName(sliderName) != null) {
             //getting slider object
-            slider = widget[propName].getByName(sliderName);
+            const slider = widget[propName].getByName(sliderName);
             slider.addValueChangedHandler(updateDataFromWidget);
           }
         }

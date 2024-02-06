@@ -922,7 +922,7 @@ export function initEditWidget() {
           modelHiddenParams: modelsHiddenParams[key],
         };
       } else {
-        emptyModelsHiddenParams = jQuery.extend(true, {}, modelsHiddenParams[val.modelJsonId]);
+        const emptyModelsHiddenParams = jQuery.extend(true, {}, modelsHiddenParams[val.modelJsonId]);
         dashJson[key] = {
           layout: wcLayout,
           container: container,
