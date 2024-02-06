@@ -60,7 +60,7 @@ class TaipyManager {
   processVariableData() {
     const currentContext = this.currentContext;
     // TODO add check this.currentContext == this.app.getContext()
-    if (!this.app.getDataTree().hasOwnProperty(currentContext)) return;
+    if (!this.app.getDataTree()?.hasOwnProperty(currentContext)) return;
 
     const currentVariables = this.#deepCloneIfObject(this.variableData)[currentContext] || {};
     const newVariables = this.#deepCloneIfObject(this.app.getDataTree())[currentContext] || {};
