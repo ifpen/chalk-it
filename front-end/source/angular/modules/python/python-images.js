@@ -23,7 +23,7 @@ export const pythonImagesModule = angular
         userAuthenticated: false,
         abstract: true,
         url: '/python-images',
-        templateUrl: '',
+        template: '',
       });
     },
   ])

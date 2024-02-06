@@ -15,7 +15,7 @@ export const sidebarModule = angular.module('modules.sidebar', []).config([
       userAuthenticated: false,
       abstract: true,
       url: '/sidebar',
-      templateUrl: '',
+      template: '',
     });
   },
 ]);

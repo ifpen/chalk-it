@@ -6,7 +6,7 @@ export const trainingModule = angular.module('modules.training', []).config([
       userAuthenticated: false,
       abstract: true,
       url: '/training',
-      templateUrl: '',
+      template: '',
     });
   },
 ]);

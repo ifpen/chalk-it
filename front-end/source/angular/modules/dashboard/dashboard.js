@@ -21,7 +21,7 @@ export const dashboardModule = angular.module('modules.dashboard', []).config([
       userAuthenticated: false,
       abstract: true,
       url: '/dashboard',
-      templateUrl: '',
+      template: '',
     });
   },
 ]);
