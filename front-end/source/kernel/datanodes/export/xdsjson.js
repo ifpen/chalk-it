@@ -11,7 +11,8 @@ import swal from 'sweetalert';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { XdashDataUpdateEngine } from 'kernel/base/xdash-data-updates';
-import { DialogBoxForData} from 'kernel/datanodes/gui/DialogBox';
+import { DialogBoxForData } from 'kernel/datanodes/gui/DialogBox';
+import { xdashUpdateEngine } from 'kernel/base/xdash-data-updates';
 
 export const xdsjson = (function () {
   //--------------------------------------------------------------------------------------------------------------------

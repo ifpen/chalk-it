@@ -15,7 +15,7 @@ import ko from 'knockout';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { offSchedLogUser } from 'kernel/base/main-common';
+import { offSchedLogUser, setDirtyFlagSafe } from 'kernel/base/main-common';
 import { singletons } from 'kernel/runtime/xdash-runtime-main';
 import { FormulaInterpreter } from '../execution-engine/FormulaInterpreter';
 import { DatanodeScheduler } from '../execution-engine/DatanodeScheduler';

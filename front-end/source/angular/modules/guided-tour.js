@@ -6,7 +6,9 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Mondher AJIMI, Ghiles HIDEUR  │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import { navHelper } from 'angular/modules/navigation-helper';
 
+// TODO unused ?
 function startIntroGallery() {
   var intro = introJs();
 
@@ -46,7 +48,7 @@ function startIntroGallery() {
 }
 
 /*--------startIntro --------*/
-function startIntroProject() {
+export function startIntroProject() {
   var intro = introJs();
   var options = {
     exitOnOverlayClick: false,

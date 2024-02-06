@@ -7,6 +7,7 @@
 // │ Original authors(s):  Ghiles HIDEUR, Tristan BARTEMENT, Guillaume CORBELIN  │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
+import * as echarts from 'echarts';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';

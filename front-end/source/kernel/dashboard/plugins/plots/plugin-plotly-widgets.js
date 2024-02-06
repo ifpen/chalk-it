@@ -11,7 +11,7 @@ import _ from 'underscore';
 import swal from 'sweetalert';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
-import { WidgetActuatorDescription } from '../widget-base';
+import { WidgetActuatorDescription, WidgetActuatorValidationError } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 import Plotly from 'plotly.js/dist/plotly';
 

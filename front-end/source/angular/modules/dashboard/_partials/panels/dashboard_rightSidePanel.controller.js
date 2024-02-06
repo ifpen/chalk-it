@@ -14,6 +14,8 @@ import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { modelsParameters } from 'kernel/base/widgets-states';
 import { UiNotifications } from 'angular/modules/dashboard/services/uiNotificationService';
 import { WidgetActuatorDescription } from 'kernel/dashboard/plugins/widget-base';
+import { widgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 angular
   .module('modules.editor')
@@ -78,7 +80,6 @@ angular
       changes: '&',
     },
     controller: [
-      '$window',
       '$timeout',
       'UiNotifications',
       class WidgetConnectionsEditor {
@@ -136,8 +137,7 @@ angular
 
         currentConnections = {};
 
-        constructor($window, $timeout, UiNotifications) {
-          this.$window = $window;
+        constructor($timeout, UiNotifications) {
           this.$timeout = $timeout;
           this.uiNotifications = UiNotifications;
         }
@@ -206,21 +206,21 @@ angular
          * @returns the validation function if available
          */
         _createValidationFct(desc) {
-          if (!this.$window.widgetPrototypesManager) {
+          if (!widgetPrototypesManager) {
             return undefined;
           }
 
           if (desc.validator) {
             return (data) => desc.validator(data) || [];
           } else if (desc.jsonSchema) {
-            const validator = this.$window.widgetPrototypesManager.getOrCompile(desc.jsonSchema);
+            const validator = widgetPrototypesManager.getOrCompile(desc.jsonSchema);
             return (data) => {
               const isValid = validator(data);
               if (isValid) {
                 return [];
               } else {
                 const errors = validator.errors || [];
-                return this.$window.widgetPrototypesManager.formatErrors(errors);
+                return widgetPrototypesManager.formatErrors(errors);
               }
             };
           } else {
@@ -285,9 +285,9 @@ angular
 
         _updateContent(newConnections) {
           this.dataNodes = [];
-          if (this.$window.datanodesManager) {
+          if (datanodesManager) {
             // Probably not initialized before angular. TODO should be a service
-            this.dataNodes = this.$window.datanodesManager.getAllDataNodes().map((ds, index) => ({
+            this.dataNodes = datanodesManager.getAllDataNodes().map((ds, index) => ({
               name: ds.name(),
               index,
               latestData: ds.latestData(),

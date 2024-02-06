@@ -8,8 +8,8 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 import _ from 'underscore';
-import FileMngrFct from "kernel/general/backend/FileMngr"
 import swal from 'sweetalert';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { singletons } from 'kernel/runtime/xdash-runtime-main';
 
 function navigationHelperClass() {
@@ -58,4 +58,4 @@ function navigationHelperClass() {
   };
 }
 
-export default navHelper = new navigationHelperClass();
+export const navHelper = new navigationHelperClass();

@@ -170,7 +170,7 @@ export class XdashDataUpdateEngine {
   }
 }
 
-var xdashUpdateEngine = new XdashDataUpdateEngine();
+export const xdashUpdateEngine = new XdashDataUpdateEngine();
 
 (function () {
   function collectWidgetIds(model) {

@@ -9,6 +9,7 @@
 
 import _ from 'underscore';
 import Ajv from 'ajv';
+import { WidgetActuatorValidationError } from 'kernel/dashboard/plugins/widget-base';
 
 export class WidgetPrototypesManager {
   static SCHEMA_VERSION = 'http://json-schema.org/draft-07/schema#';
