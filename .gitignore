@@ -79,5 +79,5 @@ ipch/
 
 # Generated files
 .vscode/
-*.xprjson
+/*.xprjson
 **/__pycache__
