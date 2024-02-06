@@ -5,7 +5,6 @@ import plotly.express as px
 
 from taipy.gui.custom import Page
 from source.connectors.taipy.resource_handler import PureHTMLResourceHandler
-from compute.predictor import AA
 
 prediction = '--'
 
