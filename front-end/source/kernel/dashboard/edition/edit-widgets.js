@@ -1287,6 +1287,7 @@ function initEditWidget() {
   /*----------showHideWidgMenu------------*/
 
   function showHideWidgMenu(event) {
+    const $rootScope = angular.element(document.body).scope().$root;
     let sameTarget = true;
     const elm = event.parentElement.parentElement;
     const idElm = elm.id;
@@ -1331,8 +1332,8 @@ function initEditWidget() {
     const elementOffsetTop = $('#' + idElm)[0].offsetTop;
     const elementOffsetLeft = $('#' + idElm)[0].offsetLeft;
 
-    const menuWidgetWidth = 247.047; // px
-    const menuWidgetHeight = 443; // px
+    const menuWidgetWidth = 240; // px
+    const menuWidgetHeight = $rootScope.xDashLiteVersion ? 361 : 450; // px
     const menuWidgetMarginTop = 30;
     const menuWidgetMarginBottom = elementHeight - 10;
 
