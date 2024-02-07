@@ -66,6 +66,7 @@
     "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-router": "~0.4.3",
     "angularjs-datepicker": "^2.1.23",
+    "angularjs-gauge": "^1.4.0",
     "angularjs-slider": "^7.0.0",
     "bootstrap": "^3.3.7",
     "bootstrap-colorpicker": "^3.0.3",

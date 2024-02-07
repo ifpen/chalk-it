@@ -16,6 +16,7 @@ import 'angular-route';
 import 'angular-loading-bar';
 import 'angular-ui-bootstrap'; // TODO check use
 
+import 'angularjs-gauge';
 import 'angularjs-slider';
 import 'angularjs-datepicker';
 
@@ -32,8 +33,8 @@ var userCode = null; // FIXME
 angular
   .module('xCLOUD', [
     'ui.router',
-    //    'angularjs-gauge', // TODO rm ?
     'ui.bootstrap',
+    'angularjs-gauge',
     'angular-loading-bar',
     'modules',
     'ngTagsInput',
