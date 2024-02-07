@@ -7,6 +7,7 @@ import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import _ from 'underscore';
 import swal from 'sweetalert';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { base64ArrayBuffer } from 'kernel/datanodes/plugins/thirdparty/utils';
 
 (function () {
   var jsonDatanode = function (settings, updateCallback, statusCallback, bodyType, notificationCallback) {
