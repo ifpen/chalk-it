@@ -932,7 +932,7 @@ PluginEditor = function (jsEditor) {
     });
 
     //AEF: new display
-    if ($('#datanode-list')[0].childNodes.length == 1) {
+    if ($('#datanode-list').children().length == 0) {
       //add plugin once
       $('#datanode-list')[0].innerHTML = '';
       $(
