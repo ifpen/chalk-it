@@ -501,10 +501,38 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     }
   };
 
-  this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted) {
-    // Ajouter un autre cas à completeExecution, un peu comme NOP, pour gérer l'exécution sous timer
-    // Les successeurs ne sont pas forcément tous à invalider
-    // Ici exécuter en fonction d'une condition tick % sampleTime == 0
+  function _passTriggers(bCalledFromOrchestrator, bForceAutoStart, callOrigin) {
+    if (bCalledFromOrchestrator && self.settings().explicitTrig) {
+      //if explicittrig is true, no execution when triggered by predecessor, except triggered by force
+      self.completeExecution('NOP');
+      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        console.log('Called from predecessor, but ExplicitTrigger of ', self.settings().name + ' is true');
+      return false;
+    }
+    if (callOrigin === 'timer' && self.settings().explicitTrig) {
+      //AEF: dataNode is not triggered
+      self.completeExecution('NOP');
+      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        console.log('Called from timer, but ExplicitTrigger of ', self.settings().name + ' is true');
+      return false;
+    }
+    //test on autoStart because som plugin doesnt have it (but act if it is true)
+    if (!_.isUndefined(self.settings().autoStart)) {
+      //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
+      if (!self.settings().autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
+        //add test to let execute for timer when the past status is ok
+        if (!(callOrigin === 'timer' && self.status() === 'OK')) {
+          self.completeExecution('NOP');
+          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+            console.log('AutoStart of ', self.settings().name + ' is false');
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted, callOrigin) {
     var bMultiple = false;
 
     if (self.sampleTime() < 1 && self.sampleTime() >= 0.1) {
@@ -520,13 +548,9 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     }
 
     if (self.sampleTime() == 0 || bMultiple) {
-      if (bCalledFromOrchestrator && self.settings().explicitTrig) {
-        //AEF: put test here and may be delete handling of exlicitTrig inside datanodes plugins
-        self.completeExecution('NOP');
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
-          console.log('ExplicitTrigger of ', self.settings().name + ' is true');
-        return;
-      }
+      //AEF: put tests here and delete handling them inside datanodes plugins
+      if (!_passTriggers(bCalledFromOrchestrator, bForceAutoStart, callOrigin)) return;
+
       if (!_.isUndefined(self.datanodeInstance) && _.isFunction(self.datanodeInstance.updateNow)) {
         if (!self.formulaInterpreter.updateCalculatedSettings(false, bAllPredExecuted, bForceAutoStart)) {
           self.error(true);
@@ -535,7 +559,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
         if (bAllPredExecuted) {
           if (self.formulaInterpreter.bCalculatedSettings) {
             let predsList = Array.from(datanodesDependency.getPredecessorsSet(self.name())); // MBG optim for Python 26/10/2021
-            var bRet = self.datanodeInstance.updateNow(bCalledFromOrchestrator, bForceAutoStart, predsList);
+            var bRet = self.datanodeInstance.updateNow(bForceAutoStart, predsList);
             if (!_.isUndefined(bRet)) {
               if (bRet.notTobeExecuted) {
                 self.completeExecution('NOP');
