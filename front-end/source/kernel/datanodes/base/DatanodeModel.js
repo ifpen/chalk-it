@@ -316,7 +316,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
                       console.log('Start schedule from memory datanodes list: ' + param);
                     //const origin = memorydataNodeList.get(param[0]);
                     datanodesDependency.clearMemorydataNodeList(param);
-                    datanodesManager.getDataNodeByName(param[0]).updateNow(true, true, true);
+                    datanodesManager.getDataNodeByName(param[0]).updateNow(true, true, true, 'memory');
                   }
                 }
                 //AEF END
