@@ -21,7 +21,7 @@
 
     <!-- menu of actions -->
     <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
-      <li ng-class="{hidden:!editorView.checkboxModelView}" js-view-mode>
+      <li ng-if="!xDashLiteVersion" ng-class="{hidden:!editorView.checkboxModelView}" js-view-mode>
         <a ng-click="exportSettings();isNavOpen=false" title="Setting project export options">
           <i class="basic icn-settings"></i>Settings
         </a>
