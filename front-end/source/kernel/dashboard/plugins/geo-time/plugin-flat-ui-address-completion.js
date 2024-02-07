@@ -7,6 +7,7 @@
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
+import 'typeahead.bundle.min';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
