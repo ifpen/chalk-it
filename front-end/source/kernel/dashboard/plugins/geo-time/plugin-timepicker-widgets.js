@@ -188,9 +188,6 @@ function timePickerWidgetsPluginClass() {
           // donetext: 'Done',
           autoclose: true,
           default: '12:00',
-          init: function () {
-            this.value = modelsHiddenParams[idInstance].timeValue;
-          },
           beforeShow: function () {},
           afterShow: function () {},
           beforeHide: function () {},
