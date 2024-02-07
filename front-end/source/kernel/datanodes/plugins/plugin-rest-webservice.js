@@ -24,23 +24,20 @@
     this.getRestResponseData = function () {
       return RestResponseData;
     };
-    this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      // explicit trig!
-      //if explicittrig is true, no execution when triggered by predecessor, except triggered by force
-      if (currentSettings.explicitTrig && bCalledFromOrchestrator) {
-        return { notTobeExecuted: true };
-      }
-
-      //Autostart
-      //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
-      if (!currentSettings.autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
-        return { notTobeExecuted: true };
-      }
-
+    this.updateNow = function (bForceAutoStart) {
       if (bForceAutoStart && currentSettings.sampleTime > 0) {
-        // when refresh change autostart in setting (needed for periodic datanodes)
-        currentSettings.autoStart = true;
+        if (currentSettings.explicitTrig) {
+          notificationCallback(
+            'warning',
+            currentSettings.name,
+            'Explicit Trigger option is turned off (False) because "' +
+              currentSettings.name +
+              '" is periodic and was triggered explicitly'
+          );
+          currentSettings.explicitTrig = false;
+        }
       }
+
       statusCallback('Pending');
       webserviceRequest(requestURL, reqDataType, body);
       return true;

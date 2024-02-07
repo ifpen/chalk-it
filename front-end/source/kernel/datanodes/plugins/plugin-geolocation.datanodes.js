@@ -61,13 +61,7 @@ if (!(xDashConfig.xDashBasicVersion == 'true')) {
       };
 
       // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-      self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-        //Autostart
-        //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
-        if (!currentSettings.autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
-          return { notTobeExecuted: true };
-        }
-
+      self.updateNow = function () {
         statusCallback('Pending');
         if (geolocationMethod == 'watchPosition') {
           statusCallback('OK');

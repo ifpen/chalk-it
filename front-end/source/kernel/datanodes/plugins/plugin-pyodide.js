@@ -415,19 +415,7 @@
     };
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-    self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart, predsList) {
-      // explicit trig!
-      //if explicittrig is true, no execution when triggered by predecessor, except triggered by force
-      if (currentSettings.explicitTrig && bCalledFromOrchestrator) {
-        return { notTobeExecuted: true };
-      }
-
-      //Autostart
-      //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
-      if (!currentSettings.autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
-        return { notTobeExecuted: true };
-      }
-
+    self.updateNow = function (bForceAutoStart, predsList) {
       statusCallback('Pending');
       let args = {};
 
