@@ -6,8 +6,18 @@
 // │ Original authors(s): Mongi BEN GAID, Ameur HAMDOUNI                │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import 'leaflet';
+import 'simpleheat';
+import 'leaflet-modal';
+import 'leaflet.awesome-markers';
+import 'idb';
+import 'leaflet.offline';
+import '@geoman-io/leaflet-geoman-free';
+import 'leaflet.markercluster';
+
 import _ from 'underscore';
 import swal from 'sweetalert';
+import { xDashConfig } from 'config.js';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
