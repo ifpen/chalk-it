@@ -201,11 +201,6 @@ class TaipyManager {
    * @method showDeletedDataNodeAlert
    * @private
    * @param {Set<Object>} deletedDnConnections - Set of deleted dataNode connection objects.
-   * Each object in the set has a structure like:
-   *    {
-   *      dnName: "DataNode1",     // Name of the dataNode
-   *      wdList: ["Widget1", "Widget2", "Widget3"] // List of associated widgets
-   *    }
    * @returns {void} This method does not return a value.
    */
   #showDeletedDataNodeAlert(deletedDnConnections) {
