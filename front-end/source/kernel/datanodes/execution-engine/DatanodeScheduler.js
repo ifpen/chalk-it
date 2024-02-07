@@ -104,7 +104,17 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       return false;
     }
   }
-
+  function _launchMemoryNow() {
+    switch (callOrigin) {
+      case 'unidentified':
+      case 'edit':
+      case 'setVariable':
+      case 'globalFirstUpdate':
+        return true;
+      default:
+        return false;
+    }
+  }
   function launchSchedule() {
     runSchedule();
   }
@@ -128,7 +138,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       }
       if (datanodesManager.getDataNodeByName(op).is_specific_exec) {
         //AEF: launch memory at start for init_value
-        if (callOrigin !== 'setVariable' && callOrigin !== 'globalFirstUpdate') {
+        if (!_launchMemoryNow()) {
           console.log(op + ' is a memory and will be treated at the end of schedule.');
           operationsToExecute.delete(op);
           datanodesDependency.addMemorydataNodeList(op);
@@ -290,7 +300,6 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
                 operationsToExecute.add(successor);
               } else {
                 if (datanodesManager.getDataNodeByName(successor).is_specific_exec) {
-                  callOrigin = 'memory';
                   operationsToExecute.add(successor);
                 } else {
                   if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
