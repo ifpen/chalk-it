@@ -479,6 +479,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
         //
         self.schedulerStart(param, param[0], 'setVariable');
       } else {
+        datanodesDependency.clearSetvarList();
         datanodesDependency.clearProcessedSetvarList();
 
         // extraStartNodes
