@@ -146,11 +146,7 @@
     // };
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-    self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      //Autostart
-      if (!bForceAutoStart && currentSettings.autoStart === false) {
-        return { notTobeExecuted: true };
-      }
+    self.updateNow = function (bForceAutoStart) {
       if (bForceAutoStart) {
         // when refresh change autostart in setting (needed because behaviour it similar to periodic datanodeS)
         currentSettings.autoStart = true;
