@@ -146,13 +146,7 @@
     // };
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-    self.updateNow = function (bForceAutoStart) {
-      if (bForceAutoStart) {
-        // when refresh change autostart in setting (needed because behaviour it similar to periodic datanodeS)
-        currentSettings.autoStart = true;
-      }
-      //
-
+    self.updateNow = function () {
       var init_value;
       if (bFirstTime) {
         if (wsConn.readyState === 1) {
