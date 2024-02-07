@@ -173,7 +173,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
               bForceAutoStart = isForceAutoStart(op); // temp use
               datanodesManager
                 .getDataNodeByName(op)
-                .updateNow(bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted);
+                .updateNow(bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted, callOrigin);
             } else {
               operationsToExecute.delete(op);
               operationsNotReady.add(op);
@@ -206,7 +206,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
 
                   datanodesManager
                     .getDataNodeByName(op)
-                    .updateNow(bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted);
+                    .updateNow(bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted, callOrigin);
                 } else {
                   if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
                     console.log('operation ' + op + ' is ready but cannot be executed because of its predecessors.');
