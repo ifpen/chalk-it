@@ -76,7 +76,9 @@ var widgetsEditorToolboxDefinition = {
     widgets: [
       'annotationIconInfo',
       'annotationLabel',
+      'annotationRectangle',
       'annotationImage',
+      'annotationImageConnected',
       'annotationMarkdown',
       'annotationHtml',
       'annotationVideo',

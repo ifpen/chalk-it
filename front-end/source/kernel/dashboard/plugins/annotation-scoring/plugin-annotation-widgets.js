@@ -15,7 +15,12 @@
 // Models
 modelsHiddenParams.annotationIconInfo = {};
 modelsHiddenParams.annotationLabel = {};
+modelsHiddenParams.annotationRectangle = {};
 modelsHiddenParams.annotationImage = {
+  fileContentBase64: '',
+  mimeType: '',
+};
+modelsHiddenParams.annotationImageConnected = {
   fileContentBase64: '',
   mimeType: '',
 };
@@ -60,10 +65,27 @@ modelsParameters.annotationLabel = {
   borderColor: 'var(--widget-border-color)',
   centerVertically: true,
 };
+modelsParameters.annotationRectangle = {
+  text: '',
+  enableActuator: false,
+  fontsize: 0.5,
+  backgroundColor: 'rgba(228, 228, 228, 1)',
+  textColor: 'var(--widget-label-color)',
+  valueFontFamily: 'var(--widget-font-family)',
+  textAlign: 'left',
+  displayBorder: false,
+  borderColor: 'var(--widget-border-color)',
+  centerVertically: true,
+};
 modelsParameters.annotationImage = {
   keepRatio: true,
   hideImageURL: false,
   enableActuator: false,
+};
+modelsParameters.annotationImageConnected = {
+  keepRatio: true,
+  hideImageURL: true,
+  enableActuator: true,
 };
 modelsParameters.annotationVideo = {
   enforceCaptureRatio: false,
@@ -78,7 +100,9 @@ modelsParameters.annotationVideo = {
 // Layout (default dimensions)
 modelsLayout.annotationIconInfo = { height: '4vh', width: '2vw' };
 modelsLayout.annotationLabel = { height: '5vh', width: '12vw', minWidth: '5px', minHeight: '5px' };
+modelsLayout.annotationRectangle = { height: '5vh', width: '12vw', minWidth: '5px', minHeight: '5px' };
 modelsLayout.annotationImage = { height: '20vh', width: '17vw' };
+modelsLayout.annotationImageConnected = { height: '20vh', width: '17vw' };
 modelsLayout.annotationVideo = { height: '30vh', width: '20vw' };
 
 /*******************************************************************/
@@ -982,9 +1006,21 @@ function annotationWidgetsPluginClass() {
         icn: 'label',
         help: 'wdg/wdg-annotation-video/#label',
       },
+      annotationRectangle: {
+        factory: 'labelAnnotationWidget',
+        title: 'Rectangle',
+        icn: 'label',
+        help: 'wdg/wdg-annotation-video/#label',
+      },
       annotationImage: {
         factory: 'imageAnnotationWidget',
-        title: 'Image',
+        title: 'Import Image',
+        icn: 'image',
+        help: 'wdg/wdg-annotation-video/#image',
+      },
+      annotationImageConnected: {
+        factory: 'imageAnnotationWidget',
+        title: 'Connect Image',
         icn: 'image',
         help: 'wdg/wdg-annotation-video/#image',
       },
