@@ -112,9 +112,8 @@ PluginEditor = function (jsEditor) {
 
   function saveSettings(selectedType, settings, settingsSavedCallback) {
     $('.validation--error').remove();
-    if (newSettings.type === '') {
-      newSettings = settings;
-    }
+
+    newSettings = settings;
 
     // Loop through each setting and validate it
     for (var index = 0; index < selectedType.settings.length; index++) {
