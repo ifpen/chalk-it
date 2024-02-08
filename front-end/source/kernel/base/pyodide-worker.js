@@ -1,4 +1,5 @@
-'use strict';
+import { loadPyodide } from 'pyodide';
+import { xDashConfig } from 'config.js';
 
 console.log('Pyodide worker started');
 

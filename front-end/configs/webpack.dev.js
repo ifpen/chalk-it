@@ -48,6 +48,12 @@ module.exports = {
         use: [{ loader: 'babel-loader' }],
       },
       {
+        // TODO change file names
+        //test: /\.worker\.js$/,
+        test: /-worker\.js$/,
+        use: { loader: 'worker-loader' },
+      },
+      {
         test: /\.css$/,
         use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
       },

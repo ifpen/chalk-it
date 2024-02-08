@@ -100,6 +100,7 @@
     "path": "^0.12.7",
     "plotly.js": "2.6.3",
     "pnotify": "^3.2.1",
+    "pyodide": "^0.23.4",
     "simpleheat": "^0.4.0",
     "sweetalert": "^1.1.1",
     "tarjan-graph": "^3.0.0",
@@ -107,6 +108,7 @@
     "underscore": "^1.9.1",
     "vis-network": "^7.0.0",
     "webpack-jquery-ui": "^2.0.1",
+    "worker-loader": "^3.0.8",
     "ws": "^7.5.3",
     "yargs": "^15.4.1"
   },
