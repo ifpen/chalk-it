@@ -612,6 +612,9 @@ class LayoutMgrClass {
     if (!_.isUndefined(deviceObj.theme)) {
       this.dashboardTheme = deviceObj.theme;
       this.updateDashboardTheme();
+    } else {
+      this.dashboardTheme = 'default';
+      this.updateDashboardTheme();
     }
   }
 

@@ -17,7 +17,7 @@ if not os.path.exists(dst_dir):
     os.makedirs(dst_dir)
 
 if not Path('front-end/.env.prod').exists():
-    hutil.copy('front-end/.env.sample', 'front-end/.env.prod')
+    shutil.copy('front-end/.env.sample', 'front-end/.env.prod')
 	
 # Path to the .env.prod file
 env_file_path = 'front-end/.env.prod'
