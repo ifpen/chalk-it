@@ -79,7 +79,7 @@ modelsParameters.plotlyLine = {
         color: textColor,
       },
     },
-    showlegend: true,
+    showlegend: false,
     margin: {
       l: 50,
       r: 50,
@@ -118,7 +118,7 @@ modelsParameters.plotlyBar = {
         color: textColor,
       },
     },
-    showlegend: true,
+    showlegend: false,
     margin: {
       l: 50,
       r: 50,
@@ -142,7 +142,7 @@ modelsParameters.plotlyPie = {
         color: textColor,
       },
     },
-    showlegend: true,
+    showlegend: false,
     margin: {
       l: 50,
       r: 50,
@@ -172,7 +172,7 @@ modelsParameters.plotly3dSurface = {
     },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    showlegend: true,
+    showlegend: false,
     margin: {
       l: 50,
       r: 50,
