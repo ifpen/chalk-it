@@ -78,12 +78,12 @@ angular.module('modules').service('ManagePrjService', [
         if (projectVue === 'gallery') {
           fileTypeServer = 'template';
         }
-        FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + fileType, async function (msg1, msg2, type) {
+        FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + fileType, function (msg1, msg2, type) {
           if (type === 'success') {
             if ($rootScope.xDashFullVersion && !_.isUndefined(callback)) {
               callback(projectName);
             }
-            await xdash.openProjectManager(msg1);
+            xdash.openProjectManager(msg1);
             const notice = new PNotify({
               title: projectName,
               text: "Your project '" + projectName + "' is ready!",
