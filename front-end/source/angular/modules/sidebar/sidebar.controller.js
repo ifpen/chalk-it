@@ -156,8 +156,6 @@ angular.module('modules.sidebar').controller('SidebarController', [
           if (selectedProject) {
             const projectName = selectedProject.value;
             ManagePrjService.openProject(projectName, 'xprjson', '');
-          } else {
-            // TODO: Display an error message if no project is selected
           }
         }
       );

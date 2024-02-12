@@ -134,8 +134,8 @@ angular
         $scope.projectVue = 'gallery';
       }
 
-      /*---------- _getConfigHelp ----------------*/
-      _getConfigHelp = async function () {
+      /*---------- getConfigHelp ----------------*/
+      (async () => {
         const settings = await ApisFactory.getSettings();
         if (!settings.help) {
           $scope.helpDisplay.checkboxModel = false;
@@ -143,9 +143,7 @@ angular
           $scope.helpDisplay.checkboxModel = settings.help.displayHelp;
           $scope.helpDisplay.isOpen = !$scope.helpDisplay.checkboxModel;
         }
-      };
-
-      _getConfigHelp();
+      })();
 
       /*---------- saveConfigHelp ----------------*/
       $scope.saveConfigHelp = async function () {
