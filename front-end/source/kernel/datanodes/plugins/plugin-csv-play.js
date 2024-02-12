@@ -403,7 +403,7 @@
 
           for (let i = 0; i < numCols; i++) {
             const colName = parsedData.meta.fields[i];
-            result.content[colName] = _.pluck(newDataRaw, colName);
+            result.content[colName] = _.map(newDataRaw, colName);
           }
           if (currentSettings.nb_meta_lines > 0) {
             result.meta = metaObj;
@@ -572,7 +572,7 @@
           for (let i = 0; i < numCols; i++) {
             var colName = self.parserResults.meta.fields[i];
 
-            parserResults[colName] = _.pluck(newDataRaw, colName);
+            parserResults[colName] = _.map(newDataRaw, colName);
             colNames[i] = colName;
           }
           if (currentSettings.nb_meta_lines > 0) {

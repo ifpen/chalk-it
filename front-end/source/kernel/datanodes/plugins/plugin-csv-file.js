@@ -340,7 +340,7 @@
         if (currentSettings.pluck) {
           for (let i = 0; i < parsedData.meta.fields.length; i++) {
             colName = parsedData.meta.fields[i];
-            newData[colName] = _.pluck(newDataRaw, colName);
+            newData[colName] = _.map(newDataRaw, colName);
           }
         } else {
           newData = newDataRaw;
