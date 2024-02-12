@@ -285,16 +285,20 @@ var fileManager = (function () {
   /*--------sendTextCallback--------*/
   function sendTextCallback(msg1, msg2, type) {
     const $rootScope = angular.element(document.body).scope().$root;
-    let text = msg1;
     if (type === 'success' || type === 'warning') {
-      if (type === 'warning')
-        new PNotify({
+      if (type === 'warning') {
+        const notice = new PNotify({
           title: 'Capture failed',
           text: msg1 + '\n' + msg2,
           type: type,
           styling: 'bootstrap3',
         });
+        $('.ui-pnotify-container').on('click', function () {
+          notice.remove();
+        });
+      }
 
+      let text = '';
       switch ($rootScope.origin) {
         case 'importProject':
           text = 'Your project has been successfully imported!';
@@ -324,10 +328,15 @@ var fileManager = (function () {
         endAction();
         endAction = undefined;
       }
-      ///////
-      const fileType = msg2;
-      const FileMngrInst = new FileMngrFct();
-      FileMngrInst.GetFileList(fileType, updateFileListCallback, false, null, null);
+
+      if ($rootScope.xDashLiteVersion) {
+        updateFileListCallback();
+        $rootScope.updateFlagDirty(false);
+      } else {
+        const fileType = msg2;
+        const FileMngrInst = new FileMngrFct();
+        FileMngrInst.GetFileList(fileType, updateFileListCallback, false, null, null);
+      }
     } else if (type == 'error') {
       swal(msg1, msg2, type);
       if (is_xDash) datanodesManager.showLoadingIndicator(false);
@@ -408,7 +417,13 @@ var fileManager = (function () {
             if (!$rootScope.xDashFullVersion && _.isUndefined(endAction)) {
               endAction = endActionArg;
             }
-            getFileListExtended(fileType, inputValue, xdashFileParam, endAction, is_defaultOverwrite);
+            if (!$rootScope.xDashFullVersion && !$rootScope.enableLocalServer && $rootScope.xDashLiteVersion) {
+              datanodesManager.showLoadingIndicator(true);
+              taipyManager.endAction = sendTextCallback;
+              taipyManager.saveFile(xdashFileSerialized);
+            } else {
+              getFileListExtended(fileType, inputValue, xdashFileParam, endAction, is_defaultOverwrite);
+            }
           } else {
             if (is_xDash) datanodesManager.showLoadingIndicator(false);
 

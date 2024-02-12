@@ -1,8 +1,11 @@
+from pathlib import Path
 from taipy.gui import Gui
 from taipy_page import page as page1
 from taipy_matplotlib import page as page2
 from folium_map import page as page3
 
+# Define the path for the upload folder relative to the current script's directory
+upload_folder = Path(__file__).parent.resolve() / "projects"
 
 gui = Gui()
 gui.add_page("page1", page1)

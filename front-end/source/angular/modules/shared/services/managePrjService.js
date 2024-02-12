@@ -566,12 +566,22 @@ angular.module('modules').service('ManagePrjService', [
     self.saveProjectToLocal = function (callback) {
       const is_defaultOverwrite = true;
       const fileType = 'project';
-      const inputProjectName = $('#projectName').val();
+      let inputProjectName = $('#projectName').val();
       const currentProjectName = $rootScope.currentProject.name;
       $rootScope.oldFileName = currentProjectName;
 
+      if ($rootScope.xDashLiteVersion) {
+        const fileSerialized = xdash.serialize();
+        if (inputProjectName === '') {
+          $('#projectName').val('Untitled');
+          inputProjectName = 'Untitled';
+        }
+        fileManager.saveOnServer('project', inputProjectName, fileSerialized, is_defaultOverwrite, callback);
+        return;
+      }
+
       const saveProjectOnServer = function (projectName) {
-        fileManager.saveOnServer('project', inputProjectName, undefined, is_defaultOverwrite, callback);
+        fileManager.saveOnServer('project', projectName, undefined, is_defaultOverwrite, callback);
       };
 
       const renameAndSaveProject = function () {
