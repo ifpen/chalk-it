@@ -32,14 +32,11 @@ var xdash = (function () {
     xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
     if ($rootScope.xDashLiteVersion) taipyManager.clearData();
 
+    $rootScope.updateFlagDirty(false);
     $('#projectName')[0].value = prjName;
-    $('.tab--active').removeClass('changed');
-
-    $rootScope.currentPrjDirty = '';
-
     pyodideManager.reset(true, false);
 
-    layoutMgr.resetDashBgColor(); // GHI for issue #228
+    layoutMgr.resetDashBgColor();
     layoutMgr.resetDashboardTheme();
 
     const $scopeDash = angular.element(document.getElementById('help__wrap')).scope();

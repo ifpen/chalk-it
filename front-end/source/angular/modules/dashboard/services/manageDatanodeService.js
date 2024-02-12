@@ -235,8 +235,6 @@ angular.module('modules.dashboard').service('ManageDatanodeService', [
 
     /*---------- applyDatanodeFilter----------------*/
     self.applyDatanodeFilter = function () {
-      if ($rootScope.xDashLiteVersion) return;
-      
       let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
       let tmpStr = scopeDashDn.searchDatanodeByName;
 

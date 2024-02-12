@@ -189,11 +189,10 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.isLiveDemo = false;
 
       let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
-      if (!_.isUndefined(scopeDashDn)) {
+      if (!_.isUndefined(scopeDashDn) && !$rootScope.xDashLiteVersion) {
         scopeDashDn.searchDatanodeByName = '';
         scopeDashDn.applyDatanodeFilter();
       }
-      $rootScope.currentPrjDirty = '';
       $rootScope.currentProject = {
         name: '',
         description: '',
