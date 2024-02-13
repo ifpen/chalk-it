@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 xprjson = 'dashboard.xprjson'
 DEBUG = False
+VERSION = '2.990.8809'
 
 dir_home = os.path.expanduser("~")
 
@@ -60,7 +61,7 @@ def dashboard(xprjson):
         config_data = json.load(config_file)
 
     # Read the HTML template
-    index_view_path = os.path.join(os.path.dirname(dir_temp_name), 'index-view-2.930.8710.html')
+    index_view_path = os.path.join(os.path.dirname(dir_temp_name), 'index-view-' + VERSION + '.html')
     with open(index_view_path, 'r') as template_file:
         template_data = template_file.read()
 
