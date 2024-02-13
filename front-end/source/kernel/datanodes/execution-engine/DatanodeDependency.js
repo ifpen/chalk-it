@@ -33,6 +33,7 @@ function DatanodeDependency() {
   var setvarList = new Map();
   var processedSetvarList = new Map();
   var memorydataNodeList = new Map();
+  var currentGraphList = new Map();
 
   var allDisconnectedGraphs = [];
   var SingletonNodeList = []; //isolated node
@@ -384,6 +385,23 @@ function DatanodeDependency() {
     }
   }
 
+  /*-----------------getCurrentGraphList-----------------*/
+  function getCurrentGraphList() {
+    return currentGraphList;
+  }
+
+  /*-----------------addCurrentGraphList-----------------*/
+  function addCurrentGraphList(dsName, index) {
+    if (currentGraphList.has(dsName)) {
+    }
+    currentGraphList.set(dsName, index);
+  }
+
+  /*-----------------clearCurrentGraphList-----------------*/
+  function clearCurrentGraphList() {
+    currentGraphList.clear();
+  }
+
   /*-----------------hasPredecessors-----------------*/
   // returns whether a node has predecessors
   function hasPredecessors(node) {
@@ -560,6 +578,9 @@ function DatanodeDependency() {
     clearProcessedSetvarList,
     getMemorydataNodeList,
     addMemorydataNodeList,
+    getCurrentGraphList,
+    addCurrentGraphList,
+    clearCurrentGraphList,
     clearMemorydataNodeList,
     getAllsingletonNodes,
     isSingletonNode,
