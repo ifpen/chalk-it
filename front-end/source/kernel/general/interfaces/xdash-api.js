@@ -9,10 +9,11 @@
 
 var xDashApi = (function () {
   function setVariable(dataNodeName, varJsonValue) {
+    const val = JSON.parse(JSON.stringify(varJsonValue));
     let dN = datanodesManager.getDataNodeByName(dataNodeName);
     dN.notificationCallback('warning', dataNodeName, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
 
-    dN.setValue([], varJsonValue, false, true); //don't start schedule here
+    dN.setValue([], val, false, true); //don't start schedule here
   }
 
   function setVariables(dataNodeNames, varJsonValues) {
@@ -24,15 +25,16 @@ var xDashApi = (function () {
           dataNodeNames[0],
           "Deprecated feature: please rename 'xDashApi' by 'chalkit'"
         );
-      let varJsonValue = varJsonValues[i];
+      const varJsonValue = JSON.parse(JSON.stringify(varJsonValues[i]));
       dN.setValue([], varJsonValue, false, true); //don't start schedule here
     }
   }
 
   function setVariableProperty(dataNodeName, propertyPath, varJsonValue) {
+    const val = JSON.parse(JSON.stringify(varJsonValue));
     let dN = datanodesManager.getDataNodeByName(dataNodeName);
     dN.notificationCallback('warning', dataNodeName, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
-    dN.setValue(propertyPath, varJsonValue, false, true); //don't start schedule here
+    dN.setValue(propertyPath, val, false, true); //don't start schedule here
   }
 
   function getVariable(dataNodeName) {

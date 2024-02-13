@@ -9,21 +9,24 @@
 
 var chalkit = (function () {
   function setVariable(dataNodeName, varJsonValue) {
+    const val = JSON.parse(JSON.stringify(varJsonValue));
     let dN = datanodesManager.getDataNodeByName(dataNodeName);
-    dN.setValue([], varJsonValue, false, true); //don't start schedule here
+    dN.setValue([], val, false, true); //don't start schedule here
   }
 
   function setVariables(dataNodeNames, varJsonValues) {
     for (let i = 0; i < dataNodeNames.length; i++) {
       let dN = datanodesManager.getDataNodeByName(dataNodeNames[i]);
-      let varJsonValue = varJsonValues[i];
+      //let varJsonValue = varJsonValues[i];
+      const varJsonValue = JSON.parse(JSON.stringify(varJsonValues[i]));
       dN.setValue([], varJsonValue, false, true); //don't start schedule here
     }
   }
 
   function setVariableProperty(dataNodeName, propertyPath, varJsonValue) {
+    const val = JSON.parse(JSON.stringify(varJsonValue));
     let dN = datanodesManager.getDataNodeByName(dataNodeName);
-    dN.setValue(propertyPath, varJsonValue, false, true); //don't start schedule here
+    dN.setValue(propertyPath, val, false, true); //don't start schedule here
   }
 
   function executeDataNode(dataNodeName) {}
