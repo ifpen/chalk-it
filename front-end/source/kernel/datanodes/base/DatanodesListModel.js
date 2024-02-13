@@ -279,6 +279,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
     datanodesDependency.clearExtraStartNodesList();
     datanodesDependency.clearSetvarList();
     datanodesDependency.clearProcessedSetvarList();
+    datanodesDependency.clearCurrentGraphList();
 
     _.each(self.datanodes(), function (datanode) {
       self.deleteDatanode(datanode);
