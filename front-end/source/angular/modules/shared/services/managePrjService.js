@@ -188,7 +188,7 @@ angular.module('modules').service('ManagePrjService', [
     self.clearForNewProject = function () {
       $rootScope.isLiveDemo = false;
 
-      let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
+      const scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
       if (!_.isUndefined(scopeDashDn) && !$rootScope.xDashLiteVersion) {
         scopeDashDn.searchDatanodeByName = '';
         scopeDashDn.applyDatanodeFilter();
@@ -202,6 +202,7 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.alldatanodes = [];
       $rootScope.safeApply();
       xdash.clear();
+      if ($rootScope.xDashLiteVersion) layoutMgr.applyCells();
     };
 
     /*---------- downloadFile ----------------*/

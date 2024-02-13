@@ -237,12 +237,12 @@ class LayoutMgrClass {
   }
 
   _readRows() {
-    const strRows = $('#select-rows').val();
+    const strRows = $('#select-rows').val() || this.$rootScope.xDashLiteVersion ? 1 : 0;
     return parseInt(strRows, 10);
   }
 
   _readCols() {
-    const strCols = $('#select-cols').val();
+    const strCols = $('#select-cols').val() || 1;
     return parseInt(strCols, 10);
   }
 
@@ -251,7 +251,6 @@ class LayoutMgrClass {
     const newRows = this._readRows();
     const newCols = newRows ? this._readCols() : 0;
 
-    // GHI #260
     $('#DropperDroite')[0].scrollTo({
       top: 0,
       left: 0,
@@ -269,6 +268,7 @@ class LayoutMgrClass {
         (undoManagerService, editorActionFactory) => {
           const action = editorActionFactory.createUpdateLayoutAction(newRows, newCols, this.newHeightCols);
           undoManagerService.execute(action);
+          if (this.$rootScope.xDashLiteVersion) undoManagerService.clear();
         },
       ]);
 
@@ -325,8 +325,8 @@ class LayoutMgrClass {
     this.updateMaxTopAndLeft();
     widgetEditor.updateSnapshotDashZoneDims();
 
-    $('select[name=select-rows]')[0].value = this.rows;
-    $('select[name=select-cols]')[0].value = this.cols || 1;
+    $('select[name=select-rows]').val(this.rows);
+    $('select[name=select-cols]').val(this.cols || 1);
     this.updateButtonState();
   }
 
