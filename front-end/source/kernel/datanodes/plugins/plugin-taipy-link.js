@@ -91,7 +91,7 @@
     self.updateNow = function () {
       statusCallback('OK'); // MBG for scheduler : put statusCallback before updateCallback
       updateCallback(json_var_value);
-      if ($rootScope.xDashLiteVersion) taipyManager.sendToTaipy(self.currentSettings.name, json_var_value);
+      taipyManager.sendToTaipy(self.currentSettings.name, json_var_value);
       return true; //ABK
     };
 

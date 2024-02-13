@@ -469,5 +469,4 @@ class TaipyManager {
 
 const taipyManager = new TaipyManager();
 
-const $rootScope = angular.element(document.body).scope().$root;
-if ($rootScope.xDashLiteVersion) taipyManager.initTaipyApp();
+if (xDashConfig.xDashLiteVersion === 'true') taipyManager.initTaipyApp();

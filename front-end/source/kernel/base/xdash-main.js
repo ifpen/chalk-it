@@ -145,26 +145,26 @@ var xdash = (function () {
       if (!_.isUndefined(jsonObject.meta.schedulerLogOff)) offSchedLogUser = jsonObject.meta.schedulerLogOff;
       else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
-      pyodideLib.deserialize(jsonObject); // GHI  : load pyodide packages
+      pyodideLib.deserialize(jsonObject);
 
       //AEF: save prj version for compatibility
       jsonObject.data.version = jsonObject.meta.version;
 
-      if ($rootScope.xDashLiteVersion) {
-        taipyManager.processVariableData();
-      } else if (datanodesManager.load(jsonObject.data, true)) {
-        angular
-          .element(document.body)
-          .injector()
-          .invoke([
-            'UndoManagerService',
-            (undoManagerService) => {
-              undoManagerService.clear();
-            },
-          ]);
-      } else {
-        clear();
-        return false;
+      if (!$rootScope.xDashLiteVersion) {
+        if (datanodesManager.load(jsonObject.data, true)) {
+          angular
+            .element(document.body)
+            .injector()
+            .invoke([
+              'UndoManagerService',
+              (undoManagerService) => {
+                undoManagerService.clear();
+              },
+            ]);
+        } else {
+          clear();
+          return false;
+        }
       }
 
       widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
