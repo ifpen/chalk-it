@@ -104,15 +104,19 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       return false;
     }
   }
-  function _launchMemoryNow() {
-    switch (callOrigin) {
-      case 'unidentified':
-      case 'edit':
-      case 'setVariable':
-      case 'globalFirstUpdate':
-        return true;
-      default:
-        return false;
+  function _launchMemoryNow(nodeName) {
+    if (_.contains(triggeredNodes, nodeName)) {
+      switch (callOrigin) {
+        case 'unidentified':
+        case 'edit':
+        case 'setVariable':
+        case 'globalFirstUpdate':
+          return true;
+        default:
+          return false;
+      }
+    } else {
+      return false;
     }
   }
   function launchSchedule() {
@@ -138,7 +142,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       }
       if (datanodesManager.getDataNodeByName(op).is_specific_exec) {
         //AEF: launch memory at start for init_value
-        if (!_launchMemoryNow()) {
+        if (!_launchMemoryNow(op)) {
           console.log(op + ' is a memory and will be treated at the end of schedule.');
           operationsToExecute.delete(op);
           datanodesDependency.addMemorydataNodeList(op);
@@ -269,6 +273,14 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       return false;
     }
   }
+  /*-----------------alreadyExecuted-----------------*/
+  function alreadyTerminated(node) {
+    if (operationsTerminated.has(node)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   /*-----------------notExecutedPredecessors-----------------*/
   function notExecutedPredecessors(node) {
@@ -300,7 +312,9 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
                 operationsToExecute.add(successor);
               } else {
                 if (datanodesManager.getDataNodeByName(successor).is_specific_exec) {
-                  operationsToExecute.add(successor);
+                  if (!alreadyTerminated(successor)) {
+                    operationsToExecute.add(successor);
+                  }
                 } else {
                   if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
                     console.log('operation ' + successor + ' not added because already executed');
