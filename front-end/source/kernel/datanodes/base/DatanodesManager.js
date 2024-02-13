@@ -502,6 +502,7 @@ var datanodesManager = (function () {
       datanodesDependency.clearExtraStartNodesList();
       datanodesDependency.clearSetvarList();
       datanodesDependency.clearProcessedSetvarList();
+      datanodesDependency.clearCurrentGraphList();
 
       //stop all current operations
       for (var index in datanodes) {
