@@ -149,7 +149,15 @@ class TaipyManager {
   }
 
   /**
-   * Triggers the 'load_file' event with 'action1' on the app object.
+   * Triggers an event to load a file from a specified path.
+   *
+   * This method emits an event to signal the application to read a file.
+   * The path of the file to load must be specified in the Taipy page and can be modified using the fileSelect function.
+   *
+   * @remarks
+   * - The file to be loaded can be modified by passing the name of the new file to the fileSelect function.
+   * - The new file must be in the same directory as the current file.
+   * - The directory path must be specified in the Taipy page.
    *
    * @method loadFile
    * @public
@@ -160,8 +168,11 @@ class TaipyManager {
   }
 
   /**
-   * Triggers the 'save_file' event with 'action1' and the provided data on the app object.
-   * The data is passed as a JSON string formatted with a 2-space indentation.
+   * This function allows to save the file in the base directory which defined in the Taipy page.
+   * The data is passed as a JSON string, formatted with tab indentation, to enhance readability.
+   *
+   * @remarks
+   * - If the file doesn't already exist, it will create a new one and store the xprjson data in it.
    *
    * @method saveFile
    * @public
@@ -169,11 +180,16 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   saveFile(xprjson) {
-    this.app.trigger('save_file', 'action1', { data: JSON.stringify(xprjson, null, 2) });
+    this.app.trigger('save_file', 'action1', { data: JSON.stringify(xprjson, null, '\t') });
   }
 
   /**
    * Triggers an event when a user selects a file, specifying the file name.
+   * This function allows to update the file path in the Taipy page.
+   *
+   * @remarks
+   * - The file must be in the same directory as the base directory specified in the Taipy page.
+   * - Once the file is selected, it can be opened using the loadFile() function.
    *
    * @method fileSelect
    * @public
