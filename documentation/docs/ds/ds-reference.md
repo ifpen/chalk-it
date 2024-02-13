@@ -221,7 +221,9 @@ Gets the previous value of a dataNode defined in the selected value of the **DAT
 
 On the first execution, its output is set to the JSON value defined in the **INIT VALUE** field.
 
-This dataNode is useful to create counters for example, without adding real cycles in the graph.
+This special dataNode exhibits a distinct behavior than other dataNodes, as it doesn't follow the typical data flow execution. Specifically, when its **DATANODE ORIGIN** is executed, the memory is initiated at the subsequent scheduler start.
+
+With Memory dataNode, user can create counters for example, without adding real cycles in the graph.
 
 See example: [memory.xprjson](/ds/xprjson/memory.xprjson).
 
