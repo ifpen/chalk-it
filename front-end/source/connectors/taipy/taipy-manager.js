@@ -74,7 +74,7 @@ class TaipyManager {
     this.deletedDnConnections.clear();
 
     //Variables that will be ignored (do not create a dataNode)
-    const fileVariables = new Set(['base_path', 'file_name', 'has_file_saved', 'json_data']);
+    const fileVariables = new Set(['base_path', 'file_name', 'has_file_saved', 'json_data', 'file_list']);
 
     // Combine current and new variable names to iterate over
     const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
@@ -131,6 +131,7 @@ class TaipyManager {
     // Update variableData
     this.variableData[context][valueName].value = this.#deepClone(newValue);
 
+    // saveFile
     if (encodedName.includes('has_file_saved') && newValue === true) {
       if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
         this.endAction('', '', 'success');
@@ -139,32 +140,28 @@ class TaipyManager {
       this.app.update(encodedName, false);
     }
 
+    // fileSelect
+    if (encodedName.includes('file_name')) {
+      this.loadFile();
+    }
+
+    // loadFile
     if (encodedName.includes('json_data')) {
       const jsonData = this.variableData[context][valueName].value;
       xdash.openProjectManager(jsonData);
     }
 
+    // getFileList
+    if (encodedName.includes('file_list')) {
+      if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+        const fileList = JSON.parse(this.variableData[context][valueName].value);
+        this.endAction(fileList);
+        this.endAction = undefined;
+      }
+    }
+
     if (!datanodesManager.foundDatanode(valueName)) return;
     this.#updateDataNode(valueName, newValue);
-  }
-
-  /**
-   * Triggers an event to load a file from a specified path.
-   *
-   * This method emits an event to signal the application to read a file.
-   * The path of the file to load must be specified in the Taipy page and can be modified using the fileSelect function.
-   *
-   * @remarks
-   * - The file to be loaded can be modified by passing the name of the new file to the fileSelect function.
-   * - The new file must be in the same directory as the current file.
-   * - The directory path must be specified in the Taipy page.
-   *
-   * @method loadFile
-   * @public
-   * @returns {void} This method does not return a value.
-   */
-  loadFile() {
-    this.app.trigger('load_file', 'action1');
   }
 
   /**
@@ -189,7 +186,7 @@ class TaipyManager {
    *
    * @remarks
    * - The file must be in the same directory as the base directory specified in the Taipy page.
-   * - Once the file is selected, it can be opened using the loadFile() function.
+   * - Once the file is selected, it can be opened using the loadFile function.
    *
    * @method fileSelect
    * @public
@@ -198,6 +195,45 @@ class TaipyManager {
    */
   fileSelect(fileName) {
     this.app.trigger('select_file', 'action1', { file_name: fileName });
+  }
+
+  /**
+   * Triggers a request to obtain a file_list object from the specified base path in Taipy page.
+   * The file_list object includes the base path and a list of file names with the .xprjson extension.
+   *
+   * @remarks
+   * - This method does not return the file list directly; it merely initiates the process of retrieving it.
+   * - The event triggered by this method should be handled to process the file_list object, which will have the following structure:
+   *   {
+   *     "base_path": "string - the path to the directory searched",
+   *     "file_list": ["string - file name with the .xprjson extension", ...]
+   *   }
+   *
+   * @method getFileList
+   * @public
+   * @returns {void} This method does not return a value.
+   */
+  getFileList() {
+    this.app.trigger('get_file_list', 'action1');
+  }
+
+  /**
+   * Triggers an event to load a file from a specified path.
+   *
+   * This method emits an event to signal the application to read a file.
+   * The path of the file to load must be specified in the Taipy page and can be modified using the fileSelect function.
+   *
+   * @remarks
+   * - The file to be loaded can be modified by passing the name of the new file to the fileSelect function.
+   * - The new file must be in the same directory as the current file.
+   * - The directory path must be specified in the Taipy page.
+   *
+   * @method loadFile
+   * @public
+   * @returns {void} This method does not return a value.
+   */
+  loadFile() {
+    this.app.trigger('load_file', 'action1');
   }
 
   // TODO

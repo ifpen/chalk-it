@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 from taipy.gui.custom import Page
@@ -8,6 +9,7 @@ base_path = (Path(__file__).parent / "projects").resolve()
 file_name = base_path / "config.xprjson"
 json_data = ""
 has_file_saved = False
+file_list = {}
 
 def load_file(state):
     state.json_data = Path(state.file_name).read_text()
@@ -29,6 +31,14 @@ def select_file(state, name, payload):
     if os.path.exists(potential_file_path):
         state.file_name = potential_file_path
         
+def get_file_list(state):
+    # Use glob to find .xprjson files directly within the base directory.
+    file_names = [file.name for file in base_path.glob('*.xprjson')]
+    file_list_obj = {
+        'file_names': file_names,
+        'base_path': str(base_path)
+    }
+    state.file_list = json.dumps(file_list_obj)
 
 a = 8
 b = 10
