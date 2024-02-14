@@ -2,7 +2,7 @@
 
 Chalk'it offers a set of APIs through **_chalkit_** that serve two primary purposes:
 
-- Scheduler APIs: Facilitate the scheduling process by enabling the modification of dataNode variables and launching the schedule.
+- Scheduler APIs: Facilitate the scheduling process by enabling the modification of dataNode variables and launching the scheduler.
 - Dashboard APIs: Support the developpement of multi-dashboard applications.
 
 **_chalkit_** currently operates with JavaScript-type dataNodes.
@@ -10,6 +10,8 @@ Chalk'it offers a set of APIs through **_chalkit_** that serve two primary purpo
 ## Scheduler features
 
 The main feature allows the setting of dataNode variables in a script, replicating the behavior of a user interacting with a basic input/control widget.
+
+The assessment of these functions is handled at the end of the current scheduling instance.
 
 ### setVariable
 
@@ -102,7 +104,7 @@ chalkit.executeDataNode(dataNodeName);
 
 This API allows to launch the schedule with the source node identified as _dataNodeName_ (the name of the dataNode that must be a string).
 
-This functionality can be useful for a dataNode with [explicit trigger](../ds/ds-execution-engine/#explicit-trigger) flag set to true. Its execution can be explicitly triggered by this API, in addition to being triggered by an associated [push button](../wdg/wdg-basic-inputs/#push-button) widget or by clicking on the dataNode update icon ![Update](ds/img/refresh-icon.png "Update") present in the dataNodes list.
+This functionality can be useful for a dataNode with [explicit trigger](../ds/ds-execution-engine/#Explicit-Trigger) flag set to true. Its execution can be explicitly triggered by this API, in addition to being triggered by an associated [push button](../wdg/wdg-basic-inputs/#push-button) widget or by clicking on the dataNode update icon ![Update](ds/img/refresh-icon.png "Update") present in the dataNodes list.
 
 ### executeDataNodes
 
