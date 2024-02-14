@@ -419,7 +419,9 @@ var fileManager = (function () {
             }
             if (!$rootScope.xDashFullVersion && !$rootScope.enableLocalServer && $rootScope.xDashLiteVersion) {
               datanodesManager.showLoadingIndicator(true);
-              taipyManager.endAction = sendTextCallback;
+              taipyManager.endAction = () => {
+                sendTextCallback('', '', 'success');
+              };
               taipyManager.saveFile(xdashFileSerialized);
             } else {
               getFileListExtended(fileType, inputValue, xdashFileParam, endAction, is_defaultOverwrite);

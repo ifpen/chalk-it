@@ -53,8 +53,6 @@ angular.module('modules').service('ManagePrjService', [
                     self.saveProjectToLocal(endAction);
                   }, 500);
                 }
-              } else {
-                //nothing
               }
             }
           );
@@ -757,6 +755,83 @@ angular.module('modules').service('ManagePrjService', [
           notice.remove();
         });
       }
+    }
+
+    /**
+     * This function opens the Taipy page and saves the current project, if it hasn't already been saved.
+     *
+     * @method openTaipyPage
+     * @public
+     * @param {string} projectName - The name of the project to be opened.
+     * @returns {void} This method does not return a value.
+     */
+    self.openTaipyPage = function (projectName) {
+      const currentPrjDirty = $rootScope.currentPrjDirty || '';
+      $rootScope.origin = 'projectEdition';
+      if (currentPrjDirty !== '') {
+        swal(
+          {
+            title: 'Are you sure?',
+            text: 'Your current project will be saved and closed before starting another project.',
+            type: 'warning',
+            showCancelButton: true,
+            showConfirmButton: false,
+            showConfirmButton1: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Abandon',
+            closeOnConfirm: true,
+            closeOnConfirm1: true,
+            closeOnCancel: true,
+          },
+          function (isConfirm) {
+            if (isConfirm) {
+              //save the current project
+              const xprjson = xdash.serialize();
+              $('#projectName').val((index, value) => (value === '' ? 'Untitled' : value));
+              taipyManager.endAction = function () {
+                taipyManager.fileSelect(projectName);
+                taipyManager.endAction = (xprjson) => {
+                  _openTaipyPageEndAction(projectName, xprjson);
+                };
+              };
+              taipyManager.saveFile(xprjson);
+            }
+          }
+        );
+      } else {
+        taipyManager.fileSelect(projectName);
+        taipyManager.endAction = (xprjson) => {
+          _openTaipyPageEndAction(projectName, xprjson);
+        };
+      }
+    };
+
+    /**
+     * This function opens the selected project.
+     *
+     * @method _openTaipyPageEndAction
+     * @private
+     * @param {*} projectName - The name of the project to be opened.
+     * @returns {void} This method does not return a value.
+     */
+    function _openTaipyPageEndAction(projectName, xprjson) {
+      datanodesManager.showLoadingIndicator(false);
+      $rootScope.updateFlagDirty(false);
+      $rootScope.origin = 'openProject';
+      $rootScope.loadingBarStart();
+      xdash.openProjectManager(xprjson);
+      const displayName = _.split(projectName, '.')[0];
+      const notice = new PNotify({
+        title: displayName,
+        text: "Your project '" + displayName + "' is ready!",
+        type: 'success',
+        delay: 1000,
+        styling: 'bootstrap3',
+      });
+      $('.ui-pnotify-container').on('click', () => {
+        notice.remove();
+      });
+      $rootScope.loadingBarStop();
     }
   },
 ]);

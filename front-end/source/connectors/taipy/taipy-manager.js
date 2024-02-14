@@ -132,12 +132,13 @@ class TaipyManager {
     this.variableData[context][valueName].value = this.#deepClone(newValue);
 
     // saveFile
-    if (encodedName.includes('has_file_saved') && newValue === true) {
-      if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-        this.endAction('', '', 'success');
-        this.endAction = undefined;
+    if (encodedName.includes('has_file_saved')) {
+      const toSave = newValue;
+      if (toSave) {
+        this.app.update(encodedName, false);
+      } else if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+        this.endAction(); // Do not assign an undefined value
       }
-      this.app.update(encodedName, false);
     }
 
     // fileSelect
@@ -147,8 +148,11 @@ class TaipyManager {
 
     // loadFile
     if (encodedName.includes('json_data')) {
-      const jsonData = this.variableData[context][valueName].value;
-      xdash.openProjectManager(jsonData);
+      if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+        const jsonData = this.variableData[context][valueName].value;
+        this.endAction(jsonData);
+        this.endAction = undefined;
+      }
     }
 
     // getFileList

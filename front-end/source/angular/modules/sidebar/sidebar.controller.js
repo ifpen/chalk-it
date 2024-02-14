@@ -56,8 +56,6 @@ angular.module('modules.sidebar').controller('SidebarController', [
                 };
                 //save current project
                 fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
-              } else {
-                //nothing
               }
             }
           );
@@ -167,7 +165,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
             const projectName = selectedProject.value;
             const $rootScope = angular.element(document.body).scope().$root;
             if ($rootScope.xDashLiteVersion) {
-              taipyManager.fileSelect(projectName);
+              ManagePrjService.openTaipyPage(projectName);
             } else {
               ManagePrjService.openProject(projectName, 'xprjson', '');
             }
