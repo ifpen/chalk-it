@@ -5,6 +5,7 @@
  */
 
 import _ from 'underscore';
+import ReconnectingWebSocket from './thirdparty/reconnecting-websocket';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 // ### Datanode Definition

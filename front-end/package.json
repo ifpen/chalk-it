@@ -85,6 +85,7 @@
     "jquery": "^2.0.3",
     "jshint": "^2.13.6",
     "jsoneditor": "^9.5.7",
+    "jszip": "^3.10.1",
     "knockout": "3.4.2",
     "leaflet": "1.5.1",
     "leaflet-modal": "^0.2.0",

@@ -1,4 +1,5 @@
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { zipToObject } from 'kernel/datanodes/plugins/thirdparty/utils';
 
 (function () {
   var error = false;
@@ -84,6 +85,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
         try {
           await self.parseFile();
         } catch (error) {
+          console.error(error);
           notificationCallback('error', currentSettings.name, error.message);
           fileStruct = null; // setting null will prevent unzipping bad data until we have a new value
         }

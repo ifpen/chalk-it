@@ -1,13 +1,13 @@
 ﻿// +--------------------------------------------------------------------+ \\
 // ¦ Updates by Mongi BEN GAID & Abir EL FEKI (IFPEN)                   ¦ \\
 // +--------------------------------------------------------------------+ \\
-
-import { xDashConfig } from 'config.js';
+import { xDashConfig, xServConfig } from 'config.js';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import _ from 'underscore';
 import swal from 'sweetalert';
+import 'json_parseMore';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import { base64ArrayBuffer } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datanodes/plugins/thirdparty/utils';
 
 (function () {
   var jsonDatanode = function (settings, updateCallback, statusCallback, bodyType, notificationCallback) {
@@ -196,7 +196,7 @@ import { base64ArrayBuffer } from 'kernel/datanodes/plugins/thirdparty/utils';
 
         let FileMngrInst = new FileMngrFct();
         // let bodyObj = JSON.parse(body);
-        proxyHashTemp = FileMngrInst.Hash4Proxy(targetURL, 'xdash');
+        const proxyHashTemp = FileMngrInst.Hash4Proxy(targetURL, 'xdash');
 
         if (currentSettings.proxyHash === '' || !currentSettings.proxyHash.localeCompare(proxyHashTemp)) {
           currentSettings.proxyHash = proxyHashTemp;
@@ -319,7 +319,6 @@ import { base64ArrayBuffer } from 'kernel/datanodes/plugins/thirdparty/utils';
                   statusCallback('Error', 'Data parse error');
                   pastStatus = 'Error';
                   notificationCallback('error', currentSettings.name, 'Data parse error : ' + err.message);
-                  bFinishTick = true;
                   return;
                 }
 
@@ -345,7 +344,6 @@ import { base64ArrayBuffer } from 'kernel/datanodes/plugins/thirdparty/utils';
                           statusCallback('Error', 'Data parse error');
                           pastStatus = 'Error';
                           notificationCallback('error', currentSettings.name, 'Data parse error : ' + err.message);
-                          bFinishTick = true;
                           return;
                         }
                       } else if (wsrespType.startsWith('text')) {

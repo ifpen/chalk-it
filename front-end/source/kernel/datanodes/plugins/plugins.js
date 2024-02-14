@@ -10,3 +10,7 @@ import './plugin-json-formula';
 import './plugin-json-memory';
 import './plugin-json-var';
 import './plugin-python-script';
+import './plugin-rest-webservice';
+import './plugin-unzip-file';
+import './plugin-websocket.receive.datanodes';
+import './plugin-websocket.send.datanodes';
