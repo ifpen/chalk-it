@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 xprjson = 'dashboard.xprjson'
 DEBUG = False
-VERSION = '2.990.8809'
+VERSION = '2.990.8810'
 
 dir_home = os.path.expanduser("~")
 

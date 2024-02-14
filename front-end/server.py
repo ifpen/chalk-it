@@ -15,7 +15,7 @@ parser.add_argument('--render', dest='xprjson_file', type=str, help='render proj
 parser.add_argument('--port', dest='app_port', type=int, help='change Flask TCP port')
 parser.add_argument('--ip', dest='app_ip', type=str, help='change Flask TCP address')
 
-
+VERSION = '2.990.8810'
 args = parser.parse_args()
 
 if args.dev:
@@ -352,7 +352,7 @@ def dashboard(xprjson):
         config_data = json.load(config_file)
 
     # Read the HTML template
-    index_view_path = os.path.join(dir_temp_name, 'index-view-2.930.8710.html')
+    index_view_path = os.path.join(dir_temp_name, 'index-view-' + VERSION + '.html')
     with open(index_view_path, 'r') as template_file:
         template_data = template_file.read()
 
