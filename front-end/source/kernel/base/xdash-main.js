@@ -13,6 +13,7 @@ import _ from 'underscore';
 import swal from 'sweetalert';
 import PNotify from 'pnotify';
 
+import { fileManager } from 'kernel/general/backend/file-management';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { pyodideManager } from 'kernel/base/pyodide-loader';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';

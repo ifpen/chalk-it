@@ -6,10 +6,11 @@
 // ├──────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ghiles HIDEUR     │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
-import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import _ from 'underscore';
 import swal from 'sweetalert';
 
+import { fileManager } from 'kernel/general/backend/file-management';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { singletons } from 'kernel/runtime/xdash-runtime-main';

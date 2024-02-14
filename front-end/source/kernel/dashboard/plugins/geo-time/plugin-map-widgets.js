@@ -7,13 +7,15 @@
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 import 'leaflet';
+
+// !! Order matters, a lot !!
 import 'simpleheat';
 import 'leaflet-modal';
-import 'leaflet.awesome-markers';
 import 'idb';
 import 'leaflet.offline';
 import '@geoman-io/leaflet-geoman-free';
 import 'leaflet.markercluster';
+import 'leaflet.awesome-markers';
 
 import _ from 'underscore';
 import swal from 'sweetalert';
@@ -24,8 +26,9 @@ import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { nFormatter } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { nFormatter, syntaxHighlight } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { dashState } from 'angular/modules/dashboard/dashboard';
+import bbox from '@mapbox/geojson-extent';
 import * as d3 from 'd3';
 
 /*******************************************************************/
@@ -1832,7 +1835,7 @@ function mapWidgetsPluginClass() {
 
       try {
         // Calculate a bounding box in west, south, east, north order.
-        var rawBounds = geojsonExtent(geoJsonStruct);
+        var rawBounds = bbox(geoJsonStruct);
         var corner1 = L.latLng(rawBounds[1], rawBounds[0]);
         var corner2 = L.latLng(rawBounds[3], rawBounds[2]);
         var bounds = L.latLngBounds(corner1, corner2);
@@ -1928,7 +1931,7 @@ function mapWidgetsPluginClass() {
       try {
         if (!disableAutoscale) {
           // Calculate a bounding box in west, south, east, north order.
-          var rawBounds = geojsonExtent(choroplethStruct);
+          var rawBounds = bbox(choroplethStruct);
           var corner1 = L.latLng(rawBounds[1], rawBounds[0]);
           var corner2 = L.latLng(rawBounds[3], rawBounds[2]);
           var bounds = L.latLngBounds(corner1, corner2);
@@ -2149,7 +2152,7 @@ function mapWidgetsPluginClass() {
       if (!disableAutoscale) {
         try {
           // Calculate a bounding box in west, south, east, north order.
-          var rawBounds = geojsonExtent(lineHeatMapStruct);
+          var rawBounds = bbox(lineHeatMapStruct);
           var corner1 = L.latLng(rawBounds[1], rawBounds[0]);
           var corner2 = L.latLng(rawBounds[3], rawBounds[2]);
           var bounds = L.latLngBounds(corner1, corner2);

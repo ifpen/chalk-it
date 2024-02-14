@@ -6,10 +6,11 @@
 // ├────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI                                                  │ \\
 // └────────────────────────────────────────────────────────────────────────────────────┘ \\
-import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import _ from 'underscore';
 import PNotify from 'pnotify';
 import swal from 'sweetalert';
+import { fileManager } from 'kernel/general/backend/file-management';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { modalsModule } from '../modals';
 
 modalsModule.service('ManagePrjSharingService', [

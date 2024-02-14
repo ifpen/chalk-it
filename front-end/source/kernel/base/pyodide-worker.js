@@ -1,3 +1,4 @@
+import 'json_parseMore';
 import { loadPyodide } from 'pyodide';
 import { xDashConfig } from 'config.js';
 

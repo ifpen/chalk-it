@@ -1,6 +1,7 @@
-﻿import { xDashConfig, urlPython } from 'config.js';
+﻿import _ from 'underscore';
+import 'json_parseMore';
+import { xDashConfig, urlPython } from 'config.js';
 import { pyodideManager } from 'kernel/base/pyodide-loader';
-import _ from 'underscore';
 
 export class PythonPluginExecBase {
   static ABORT_ERROR = 'ABORT';

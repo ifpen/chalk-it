@@ -25,7 +25,7 @@ import { enforceConstraints } from 'kernel/dashboard/widget/widget-placement';
 import { getMedia, isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
 import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
-import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
+import { modelsHiddenParams, modelsParameters, models, modelsTempParams } from 'kernel/base/widgets-states';
 import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';

@@ -1,4 +1,6 @@
 ﻿import _ from 'underscore';
+import JSZip from 'jszip';
+
 
 $.ajaxTransport("+binary", function(options, originalOptions, jqXHR) {
     // check for conditions and support for blob / arraybuffer response type

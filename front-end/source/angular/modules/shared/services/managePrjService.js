@@ -6,13 +6,14 @@
 // ├─────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI, Ghiles HIDEUR                │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
-import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import _ from 'underscore';
 import swal from 'sweetalert';
 import PNotify from 'pnotify';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { fileManager } from 'kernel/general/backend/file-management';
 
 angular.module('modules').service('ManagePrjService', [
   '$rootScope',

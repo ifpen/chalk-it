@@ -11,6 +11,7 @@ import swal from 'sweetalert';
 import FreeboardUI from 'kernel/base/gui/FreeboardUI';
 import { startXdash, singletons } from 'kernel/runtime/xdash-runtime-main';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { fileManager } from 'kernel/general/backend/file-management';
 
 angular.module('modules').controller('ModulesController', [
   '$scope',

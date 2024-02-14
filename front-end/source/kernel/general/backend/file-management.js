@@ -6,11 +6,11 @@
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
-import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import _ from 'underscore';
 import swal from 'sweetalert';
 import PNotify from 'pnotify';
 import { saveAs } from 'file-saver';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { singletons } from 'kernel/runtime/xdash-runtime-main';
 
@@ -20,7 +20,7 @@ import { singletons } from 'kernel/runtime/xdash-runtime-main';
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
 
-var fileManager = (function () {
+export const fileManager = (function () {
   const is_xDash = true;
   let managerCallback = null;
   let endAction;

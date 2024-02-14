@@ -57,6 +57,7 @@
   "dependencies": {
     "@babel/runtime": "*",
     "@geoman-io/leaflet-geoman-free": "^2.14.2",
+    "@mapbox/geojson-extent": "^1.0.1",
     "ajv": "8.11.0",
     "angular": "^1.7.8",
     "angular-drag-and-drop-lists": "^2.1.0",

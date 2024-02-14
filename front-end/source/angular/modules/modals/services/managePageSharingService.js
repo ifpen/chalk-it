@@ -7,8 +7,9 @@
 // │ Original authors(s): Abir EL FEKI                                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 import PNotify from 'pnotify';
-import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { modalsModule } from '../modals';
+import { fileManager } from 'kernel/general/backend/file-management';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { htmlExport } from 'kernel/general/export/html-export';
 
 modalsModule.service('ManagePageSharingService', [

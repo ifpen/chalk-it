@@ -10,6 +10,7 @@ import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import _ from 'underscore';
 import swal from 'sweetalert';
 import template from 'angular/modules/dashboard/_partials/modals/exportDownloadPage.html';
+import { fileManager } from 'kernel/general/backend/file-management';
 import { htmlExport } from 'kernel/general/export/html-export';
 import { singletons } from 'kernel/runtime/xdash-runtime-main';
 import { saveAs } from 'file-saver';
