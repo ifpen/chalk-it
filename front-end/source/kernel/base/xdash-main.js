@@ -30,7 +30,6 @@ var xdash = (function () {
     datanodesManager.clear();
     widgetEditor.clear();
     xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
-    if ($rootScope.xDashLiteVersion) taipyManager.clearData();
 
     $rootScope.updateFlagDirty(false);
     $('#projectName')[0].value = prjName;

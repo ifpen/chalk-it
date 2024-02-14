@@ -121,13 +121,21 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- Open project from local ----------------*/
     $scope.openFromLocal = function () {
-      const FileMngrInst = new FileMngrFct();
-      FileMngrInst.GetFileList('project', _responseCallback);
+      const $rootScope = angular.element(document.body).scope().$root;
+      if ($rootScope.xDashLiteVersion) {
+        taipyManager.getFileList();
+        taipyManager.endAction = _responseCallback;
+      } else {
+        const FileMngrInst = new FileMngrFct();
+        FileMngrInst.GetFileList('project', _responseCallback);
+      }
     };
 
     function _responseCallback(result, msg2, type) {
-      const projectList = result.FileList;
-      const absolutePath = result.Path;
+      const $rootScope = angular.element(document.body).scope().$root;
+      const isLiteVersion = $rootScope.xDashLiteVersion;
+      const projectList = isLiteVersion ? result.file_names : result.FileList;
+      const absolutePath = isLiteVersion ? result.base_path : result.Path;
 
       const contentElement = document.createElement('div');
       const divContent = document.createElement('div');
@@ -135,10 +143,12 @@ angular.module('modules.sidebar').controller('SidebarController', [
       if (projectList.length) {
         divContent.classList.add('list-project');
         for (const project of projectList) {
+          const projectName = isLiteVersion ? project : project.Name;
+          const displayName = isLiteVersion ? _.split(project, '.')[0] : project.Name;
           const divItemContent = document.createRange().createContextualFragment(`
             <div class="list-project__container ">
-              <input type="radio" id="${project.Name}" name="localProject" value="${project.Name}"/>
-              <label for="${project.Name}" class="list-project__container__label">${project.Name}</label>
+              <input type="radio" id="${projectName}" name="localProject" value="${projectName}"/>
+              <label for="${projectName}" class="list-project__container__label">${displayName}</label>
             </div>
           `);
           divContent.appendChild(divItemContent);
@@ -155,7 +165,12 @@ angular.module('modules.sidebar').controller('SidebarController', [
           const selectedProject = document.querySelector('input[name="localProject"]:checked');
           if (selectedProject) {
             const projectName = selectedProject.value;
-            ManagePrjService.openProject(projectName, 'xprjson', '');
+            const $rootScope = angular.element(document.body).scope().$root;
+            if ($rootScope.xDashLiteVersion) {
+              taipyManager.fileSelect(projectName);
+            } else {
+              ManagePrjService.openProject(projectName, 'xprjson', '');
+            }
           }
         }
       );

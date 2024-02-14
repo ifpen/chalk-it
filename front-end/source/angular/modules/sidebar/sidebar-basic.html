@@ -11,13 +11,23 @@
       </span>
       My project
     </button>
-    <button ng-if="enableLocalServer" title="Open a project" class="btn btn-circle" ng-click="openFromLocal()">
+    <button
+      ng-if="enableLocalServer || xDashLiteVersion"
+      title="Open a project"
+      class="btn btn-circle"
+      ng-click="openFromLocal()"
+    >
       <span class="icon__container">
         <i class="basic icn-file-import"></i>
       </span>
       Open
     </button>
-    <button ng-if="!enableLocalServer" title="Import a project" class="btn btn-circle" ng-click="importFromLocal()">
+    <button
+      ng-if="!enableLocalServer && !xDashLiteVersion"
+      title="Import a project"
+      class="btn btn-circle"
+      ng-click="importFromLocal()"
+    >
       <span class="icon__container">
         <i class="basic icn-file-local-import"></i>
       </span>
