@@ -1214,12 +1214,11 @@ function flatUiWidgetsPluginClass() {
   // +--------------------------------------------------------------------¦ \\
   this.valueFlatUiWidgetModel = function (idDivContainer, idWidget, idInstance, bInteractive, scope, nameWidget) {
     const self = scope;
-    const doubleTrig = true; //AEF to define for all widgets with double trigger issue of setvalue
     self.updateValue = function (e) {
       const val = $('#' + nameWidget + idWidget)[0].value;
       // TODO : type check at assignement. Highlight error and type mismatch
       modelsHiddenParams[idInstance].value = val;
-      self.value.updateCallback(self.value, self.value.getValue(), doubleTrig);
+      self.value.updateCallback(self.value, self.value.getValue());
       e.preventDefault();
     };
 
