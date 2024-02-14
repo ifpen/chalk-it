@@ -27,7 +27,7 @@ var xdash = (function () {
         },
       ]);
 
-    datanodesManager.clear();
+    if (!$rootScope.xDashLiteVersion) datanodesManager.clear();
     widgetEditor.clear();
     xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 

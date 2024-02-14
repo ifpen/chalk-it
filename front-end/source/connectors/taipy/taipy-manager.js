@@ -42,7 +42,7 @@ class TaipyManager {
    *
    * @method onInit
    * @public
-   * @param {TaipyGuiBase} app - The initialized Taipy application instance.
+   * @param {Object} app - The initialized Taipy application instance.
    * @returns {void} This method does not return a value.
    */
   onInit(app) {
@@ -87,7 +87,7 @@ class TaipyManager {
     });
 
     variableNames.forEach((variableName) => {
-      this.#processDataNode(variableName, currentVariables[variableName], newVariables[variableName]);
+      this.#processDataNode(variableName, newVariables[variableName]);
     });
 
     this.#showDeletedDataNodeAlert(this.deletedDnConnections);
@@ -258,33 +258,23 @@ class TaipyManager {
   }
 
   /**
-   * Clears all data for the current context.
-   * This method sets the data associated with the current context to an empty object,
-   *
-   * @method clearData
-   * @public
-   * @returns {void} This method does not return a value.
-   */
-  clearData() {
-    this.variableData[this.currentContext] = {};
-  }
-
-  /**
-   * Processes a single dataNode, creating or deleting it based on the presence of new and current variables.
+   * Processes a Taipy variable by managing its corresponding data node. It either creates a new data node if one does not exist
+   * for the given Taipy variable or deletes the data node if the Taipy variable is undefined.
    *
    * @method processDataNode
    * @private
-   * @param {string} dataNodeName - The name of the dataNode to be processed.
-   * @param {Object} currentVariable - The current variable data.
-   * @param {Object} newVariable - The new variable data.
+   * @param {string} varName - The name of the Taipy variable to process.
+   * @param {*} variable - The value of the Taipy variable. If undefined, indicates that the variable is deleted.
    * @returns {void} This method does not return a value.
    */
-  #processDataNode(dataNodeName, currentVariable, newVariable) {
-    if (newVariable && !currentVariable) {
-      const value = newVariable.value;
-      this.#createDataNode(dataNodeName, value);
-    } else if (!newVariable && currentVariable) {
-      this.#deleteDataNode(dataNodeName);
+  #processDataNode(varName, variable) {
+    if (!datanodesManager.foundDatanode(varName)) {
+      // Create the dataNode corresponding to the Taipy variable, if it doesn't already exist.
+      const value = variable.value;
+      this.#createDataNode(varName, value);
+    } else if (variable === undefined) {
+      // If the Taipy variable is deleted, the corresponding dataNode will be deleted.
+      this.#deleteDataNode(varName);
     }
   }
 
@@ -309,11 +299,7 @@ class TaipyManager {
       },
     };
     const selectedType = types[dataNodeSettings.type];
-
-    // Check if a datanode already exists
-    if (!datanodesManager.foundDatanode(dnName)) {
-      datanodesManager.settingsSavedCallback(viewModel, dataNodeSettings, selectedType);
-    }
+    datanodesManager.settingsSavedCallback(viewModel, dataNodeSettings, selectedType);
   }
 
   /**
@@ -325,10 +311,8 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   #deleteDataNode(dnName) {
-    if (datanodesManager.foundDatanode(dnName)) {
-      const viewModel = datanodesManager.getDataNodeByName(dnName);
-      datanodesManager.deleteTaipyDataNode(viewModel, dnName);
-    }
+    const viewModel = datanodesManager.getDataNodeByName(dnName);
+    datanodesManager.deleteTaipyDataNode(viewModel, dnName);
   }
 
   /**
