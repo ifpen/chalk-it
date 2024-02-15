@@ -251,7 +251,6 @@ class LayoutMgrClass {
     const newRows = this._readRows();
     const newCols = newRows ? this._readCols() : 0;
 
-    // GHI #260
     $('#DropperDroite')[0].scrollTo({
       top: 0,
       left: 0,
@@ -325,8 +324,8 @@ class LayoutMgrClass {
     this.updateMaxTopAndLeft();
     widgetEditor.updateSnapshotDashZoneDims();
 
-    $('select[name=select-rows]')[0].value = this.rows;
-    $('select[name=select-cols]')[0].value = this.cols || 1;
+    $('select[name=select-rows]').val(this.rows);
+    $('select[name=select-cols]').val(this.cols || 1);
     this.updateButtonState();
   }
 
@@ -548,7 +547,7 @@ class LayoutMgrClass {
   // |                      DashboardBackgroundColor                      | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   onInputDashBgColor() {
-    this.dashBgColor = $('#inputDashBgColor')[0].value;
+    this.dashBgColor = $('#inputDashBgColor').val();
     $('.dropperR').css('background-color', this.dashBgColor);
     this.$rootScope.updateFlagDirty(true);
   }

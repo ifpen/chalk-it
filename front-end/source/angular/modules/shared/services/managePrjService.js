@@ -53,8 +53,6 @@ angular.module('modules').service('ManagePrjService', [
                     self.saveProjectToLocal(endAction);
                   }, 500);
                 }
-              } else {
-                //nothing
               }
             }
           );
@@ -78,12 +76,12 @@ angular.module('modules').service('ManagePrjService', [
         if (projectVue === 'gallery') {
           fileTypeServer = 'template';
         }
-        FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + fileType, async function (msg1, msg2, type) {
+        FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + fileType, function (msg1, msg2, type) {
           if (type === 'success') {
             if ($rootScope.xDashFullVersion && !_.isUndefined(callback)) {
               callback(projectName);
             }
-            await xdash.openProjectManager(msg1);
+            xdash.openProjectManager(msg1);
             const notice = new PNotify({
               title: projectName,
               text: "Your project '" + projectName + "' is ready!",
@@ -188,12 +186,11 @@ angular.module('modules').service('ManagePrjService', [
     self.clearForNewProject = function () {
       $rootScope.isLiveDemo = false;
 
-      let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
+      const scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
       if (!_.isUndefined(scopeDashDn)) {
         scopeDashDn.searchDatanodeByName = '';
         scopeDashDn.applyDatanodeFilter();
       }
-      $rootScope.currentPrjDirty = '';
       $rootScope.currentProject = {
         name: '',
         description: '',
@@ -201,8 +198,8 @@ angular.module('modules').service('ManagePrjService', [
         groupName: '',
       };
       $rootScope.alldatanodes = [];
-      $rootScope.safeApply();
       xdash.clear();
+      $rootScope.safeApply();
     };
 
     /*---------- downloadFile ----------------*/
@@ -572,7 +569,7 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.oldFileName = currentProjectName;
 
       const saveProjectOnServer = function (projectName) {
-        fileManager.saveOnServer('project', inputProjectName, undefined, is_defaultOverwrite, callback);
+        fileManager.saveOnServer('project', projectName, undefined, is_defaultOverwrite, callback);
       };
 
       const renameAndSaveProject = function () {
