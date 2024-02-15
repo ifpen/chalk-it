@@ -9,8 +9,6 @@ app = Flask(__name__)
 xprjson = 'dashboard.xprjson'
 DEBUG = False
 
-start_path="../."
-
 def get_version(start_path):
     """
     Search for a file with a pattern 'index-view-<version>.html' in the specified directory
@@ -26,8 +24,6 @@ def get_version(start_path):
             return "-"+ match.group(1)
     return "" #debug mode
 
-VERSION = get_version(start_path)
-
 
 dir_home = os.path.expanduser("~")
 
@@ -36,20 +32,14 @@ settings_file_path = os.path.join(dir_settings_path, 'settings.json')
 
 if (DEBUG):
     dir_name = os.path.dirname(__file__)
-
-    dir_temp_path = os.path.join(dir_name, '../documentation/Templates/Projects')
-    dir_images_path = os.path.join(dir_name, '../documentation/Templates/Images')
-
-    dir_project_path = dir_name
+    dir_html_tmp = dir_name
 else:
     dir_temp_name = os.path.dirname(__file__)
-    
-    dir_temp_path = os.path.join(dir_temp_name, './Templates/Projects')
-    dir_images_path = os.path.join(dir_temp_name, './Templates/Images')
+    dir_html_tmp = os.path.join(os.path.dirname(__file__), './../')
 
-    dir_name = os.getcwd()
-    dir_project_path = dir_name
+print(dir_html_tmp)
 	
+VERSION = get_version(dir_html_tmp)
 
 def throw_error(error):
     logging.error(error, exc_info=True)
