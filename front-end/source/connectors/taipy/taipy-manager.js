@@ -240,12 +240,21 @@ class TaipyManager {
     this.app.trigger('load_file', 'action1');
   }
 
-  // TODO
-  // Upload a file (create a temporary file)
-  uploadFile(event) {
-    const files = event.target.files;
-    const encodedVarName = this.app.getEncodedName('file_name', 'demo_decouple_meet_1.mainpage');
-    console.log(files, encodedVarName);
+  /**
+   * Uploads one or more files to the server by creating a temporary file in the directory and tracks the upload progress.
+   * The directory path is defined in the "upload_folder" variable on the Taipy page.
+   *
+   * This function is designed to handle multiple files and execute a callback upon successful completion,
+   * making it suitable for operations that require post-upload processing.
+   *
+   * @method uploadFile
+   * @public
+   * @param {FileList|Array} files - The files to be uploaded. This can be a FileList object or an array of File objects.
+   * @param {Function} callback - A callback function to be executed upon successful upload of the files.
+   * @returns {void} This method does not return a value.
+   */
+  uploadFile(files, callback) {
+    const encodedVarName = this.app.getEncodedName('file_name', this.currentContext);
     const printProgressUpload = (progress) => {
       console.log(progress);
     };
@@ -253,6 +262,7 @@ class TaipyManager {
       this.app.upload(encodedVarName, files, printProgressUpload).then(
         (value) => {
           console.log('upload successful', value);
+          callback();
         },
         (reason) => {
           console.log('upload failed', reason);
