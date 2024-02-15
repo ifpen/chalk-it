@@ -139,23 +139,18 @@
     };
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-    self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      // explicit trig!
-      if (!_.isUndefined(bCalledFromOrchestrator)) {
-        if (!_.isUndefined(currentSettings.explicitTrig)) {
-          if (currentSettings.explicitTrig) {
-            if (bCalledFromOrchestrator == true) return { notTobeExecuted: true };
-          }
-        }
-      }
-
-      //Autostart
-      if (!bForceAutoStart && currentSettings.autoStart === false) {
-        return { notTobeExecuted: true };
-      }
+    self.updateNow = function (bForceAutoStart) {
       if (bForceAutoStart && currentSettings.sampleTime > 0) {
-        // when refresh change autostart in setting (needed for periodic datanodeS)
-        currentSettings.autoStart = true;
+        if (currentSettings.explicitTrig) {
+          notificationCallback(
+            'warning',
+            currentSettings.name,
+            'Explicit Trigger option is turned off (False) because "' +
+              currentSettings.name +
+              '" is periodic and was triggered explicitly'
+          );
+          currentSettings.explicitTrig = false;
+        }
       }
 
       var init_value;

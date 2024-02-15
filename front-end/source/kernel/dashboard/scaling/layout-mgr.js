@@ -548,7 +548,7 @@ class LayoutMgrClass {
   // |                      DashboardBackgroundColor                      | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   onInputDashBgColor() {
-    this.dashBgColor = $('#inputDashBgColor')[0].value;
+    this.dashBgColor = $('#inputDashBgColor').val();
     $('.dropperR').css('background-color', this.dashBgColor);
     this.$rootScope.updateFlagDirty(true);
   }

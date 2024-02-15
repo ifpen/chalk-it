@@ -278,32 +278,16 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     if (_.isUndefined(callOriginArg)) {
       callOriginArg = 'unidentified'; // from update buttons handled via Knockout.js (dataNode creation)
     }
-    // create a working list needed to launch multiple schedulers in parallel
-    var RunningList = {
-      disconSourceNodes: [], // create a separeted list of sourcesNodes according to their belonging disconneted graph
-      disconGraphs: [], // involved disconnected graphs according to sourcesNodes
-      indicesDisconGraphs: [], // indices of involved disconnected graphs according to sourcesNodes
-    };
-
-    // example of graphs (2 disconnected graphs)
-    //  A->B->D
-    //     |->E->F
-    //     C
-    //  I->J->K
-
-    //at loading project sourceNodes=[A, C, I], the RunningList will be:
-    //RunningList.disconSourceNodes= [[A, C], I]
-    //RunningList.disconGraphs= [{A, B, C, D, E,F}, {I, J, K}]
-    //RunningList.indicesDisconGraphs=[0, 1]
 
     //get All disconnected graphs (no computation needed)
-    fillRunningList(sourceNodes, RunningList);
+    let RunningList = _fillRunningList(sourceNodes);
 
     RunningList.disconSourceNodes.forEach(function (source, index) {
+      datanodesDependency.addCurrentGraphList(RunningList.disconSourceNodes, index);
       if (datanodesManager.foundDatanode(source[0])) {
         if (datanodesManager.getDataNodeByName(source[0]).execInstance() == null) {
           let triggeredNodes = Object.assign({}, source); //needed for sourceNodes with explicitTrig flag
-          sourceNodes = updateSourceNodes(source, callOriginArg);
+          sourceNodes = _updateSourceNodes(source, callOriginArg);
           initiatorNode = sourceNodes[0];
           if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
             console.log('new scheduler instance with sourceNodes:', sourceNodes, ' and initiator:', initiatorNode);
@@ -332,7 +316,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
                       console.log('Start schedule from memory datanodes list: ' + param);
                     //const origin = memorydataNodeList.get(param[0]);
                     datanodesDependency.clearMemorydataNodeList(param);
-                    datanodesManager.getDataNodeByName(param[0]).updateNow(true, true, true);
+                    datanodesManager.getDataNodeByName(param[0]).updateNow(true, true, true, 'memory');
                   }
                 }
                 //AEF END
@@ -422,6 +406,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
           'scheduling instance will not be terminated by the initiator ' + self.execInstance().getInitiatorNode()
         );
     }
+    const callOrigin = self.execInstance().getSchedulerCallOrigin();
     if (self.execInstance() != null) {
       const allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
       if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
@@ -458,49 +443,94 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
       const setvarList = datanodesDependency.getSetvarList();
       const processedSetvarList = datanodesDependency.getProcessedSetvarList();
       const filteredSetvarList = new Map(Array.from(setvarList).filter(([key]) => !processedSetvarList.has(key)));
-      if (filteredSetvarList.size) {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
-          console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
-          console.log('triggered by : ' + Array.from(filteredSetvarList.values()));
-          //console.log('triggered by : ' + Array.from([...new Set(filteredSetvarList.values())]));
-        }
-        const param = Array.from(filteredSetvarList.keys());
-        datanodesDependency.addProcessedSetvarList(filteredSetvarList);
-        datanodesDependency.clearSetvarList();
-        //clear same dn in memList
-        if (memorydataNodeList.size) {
-          const memList = Array.from(memorydataNodeList.keys()).filter((memName) => filteredSetvarList.has(memName));
-          datanodesDependency.clearMemorydataNodeList(memList);
-        }
-        //
-        self.schedulerStart(param, param[0], 'setVariable');
-      } else {
-        datanodesDependency.clearProcessedSetvarList();
-
-        // extraStartNodes
-        const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
-        if (extraStartNodesList.size) {
-          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
-            console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
-          }
-          //update operationsToExecute with extraStartNodesList
-          const param = Array.from(extraStartNodesList.keys());
-          const origin = extraStartNodesList.get(param[0]);
-          datanodesDependency.clearExtraStartNodesList();
-          self.schedulerStart(param, param[0], origin);
+      let proceed = true;
+      const graphList = datanodesDependency.getCurrentGraphList();
+      const RunningList = Array.from(graphList.keys());
+      const currentIndex = graphList.get(RunningList[0]);
+      if (graphList.size) {
+        proceed = false;
+        if (currentIndex === RunningList[0].length - 1) {
+          proceed = true;
         }
       }
-      //}
-    } else {
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
-        console.log('Problem : request for ending a scheduling instance whereas no instance exists');
+
+      if (proceed) {
+        if (callOrigin !== 'timer') {
+          datanodesDependency.clearCurrentGraphList();
+        }
+        if (filteredSetvarList.size) {
+          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+            console.log('Start schedule from setVariable list: ' + Array.from(filteredSetvarList.keys()));
+            console.log('triggered by : ' + Array.from(filteredSetvarList.values()));
+            //console.log('triggered by : ' + Array.from([...new Set(filteredSetvarList.values())]));
+          }
+          const param = Array.from(filteredSetvarList.keys());
+          datanodesDependency.addProcessedSetvarList(filteredSetvarList);
+          datanodesDependency.clearSetvarList();
+          //clear same dn in memList
+          if (memorydataNodeList.size) {
+            const memList = Array.from(memorydataNodeList.keys()).filter((memName) => filteredSetvarList.has(memName));
+            datanodesDependency.clearMemorydataNodeList(memList);
+          }
+          //
+          self.schedulerStart(param, param[0], 'setVariable');
+        } else {
+          datanodesDependency.clearSetvarList();
+          datanodesDependency.clearProcessedSetvarList();
+
+          // extraStartNodes
+          const extraStartNodesList = datanodesDependency.getExtraStartNodesList();
+          if (extraStartNodesList.size) {
+            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+              console.log('Start schedule from extraStartNodesList:' + Array.from(extraStartNodesList.keys()));
+            }
+            //update operationsToExecute with extraStartNodesList
+            const param = Array.from(extraStartNodesList.keys());
+            const origin = extraStartNodesList.get(param[0]);
+            datanodesDependency.clearExtraStartNodesList();
+            self.schedulerStart(param, param[0], origin);
+          }
+        }
+        //}
+      } else {
+        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+          console.log('Problem : request for ending a scheduling instance whereas no instance exists');
+      }
     }
   };
 
-  this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted) {
-    // Ajouter un autre cas à completeExecution, un peu comme NOP, pour gérer l'exécution sous timer
-    // Les successeurs ne sont pas forcément tous à invalider
-    // Ici exécuter en fonction d'une condition tick % sampleTime == 0
+  function _passTriggers(bCalledFromOrchestrator, bForceAutoStart, callOrigin) {
+    if (bCalledFromOrchestrator && self.settings().explicitTrig) {
+      //if explicittrig is true, no execution when triggered by predecessor, except triggered by force
+      self.completeExecution('NOP');
+      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        console.log('Called from predecessor, but ExplicitTrigger of ', self.settings().name + ' is true');
+      return false;
+    }
+    if (callOrigin === 'timer' && self.settings().explicitTrig) {
+      //AEF: dataNode is not triggered
+      self.completeExecution('NOP');
+      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        console.log('Called from timer, but ExplicitTrigger of ', self.settings().name + ' is true');
+      return false;
+    }
+    //test on autoStart because som plugin doesnt have it (but act if it is true)
+    if (!_.isUndefined(self.settings().autoStart)) {
+      //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
+      if (!self.settings().autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
+        //add test to let execute for timer when the past status is ok
+        if (!(callOrigin === 'timer' && self.status() === 'OK')) {
+          self.completeExecution('NOP');
+          if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+            console.log('AutoStart of ', self.settings().name + ' is false');
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted, callOrigin) {
     var bMultiple = false;
 
     if (self.sampleTime() < 1 && self.sampleTime() >= 0.1) {
@@ -516,19 +546,8 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     }
 
     if (self.sampleTime() == 0 || bMultiple) {
-      if (bCalledFromOrchestrator && self.settings().explicitTrig) {
-        //AEF: put test here and may be delete handling of exlicitTrig inside datanodes plugins
-        self.completeExecution('NOP');
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
-          console.log('ExplicitTrigger of ', self.settings().name + ' is true');
-        return;
-      }
-      // if (!self.settings().autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
-      //   //AEF: put test here and may be delete handling of autostart inside datanodes plugins
-      //   self.completeExecution('NOP');
-      //   console.log('new return of error in parse : ', self.name());
-      //   return;
-      // }
+      //AEF: put tests here and delete handling them inside datanodes plugins
+      if (!_passTriggers(bCalledFromOrchestrator, bForceAutoStart, callOrigin)) return;
 
       if (!_.isUndefined(self.datanodeInstance) && _.isFunction(self.datanodeInstance.updateNow)) {
         if (!self.formulaInterpreter.updateCalculatedSettings(false, bAllPredExecuted, bForceAutoStart)) {
@@ -538,7 +557,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
         if (bAllPredExecuted) {
           if (self.formulaInterpreter.bCalculatedSettings) {
             let predsList = Array.from(datanodesDependency.getPredecessorsSet(self.name())); // MBG optim for Python 26/10/2021
-            var bRet = self.datanodeInstance.updateNow(bCalledFromOrchestrator, bForceAutoStart, predsList);
+            var bRet = self.datanodeInstance.updateNow(bForceAutoStart, predsList);
             if (!_.isUndefined(bRet)) {
               if (bRet.notTobeExecuted) {
                 self.completeExecution('NOP');
@@ -677,7 +696,13 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     }
   };
 
-  fillRunningList = function (sourceNodes, list) {
+  _fillRunningList = function (sourceNodes) {
+    let list = {
+      disconSourceNodes: [], // create a separeted list of sourcesNodes according to their belonging disconneted graph
+      disconGraphs: [], // involved disconnected graphs according to sourcesNodes
+      indicesDisconGraphs: [], // indices of involved disconnected graphs according to sourcesNodes
+    };
+
     const allDisconnectedGraphs = datanodesDependency.getAllDisconnectedGraphs();
     sourceNodes.forEach(function (source) {
       //get the disconnected graph to which this sourceNode belongs
@@ -697,9 +722,11 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log('error in building disconnected graphs');
       }
     });
+    datanodesDependency.addCurrentGraphList(list.disconSourceNodes, 0);
+    return list;
   };
 
-  updateSourceNodes = function (sourceNodes, callOriginArg) {
+  _updateSourceNodes = function (sourceNodes, callOriginArg) {
     let startNodes = new Set(sourceNodes);
 
     descendants = datanodesDependency.getDescendants(sourceNodes);

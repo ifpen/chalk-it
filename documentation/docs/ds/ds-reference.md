@@ -221,7 +221,9 @@ Gets the previous value of a dataNode defined in the selected value of the **DAT
 
 On the first execution, its output is set to the JSON value defined in the **INIT VALUE** field.
 
-This dataNode is useful to create counters for example, without adding real cycles in the graph.
+This special dataNode exhibits a distinct behavior compared to other dataNodes, as it doesn't follow the typical data flow execution. Specifically, when its **DATANODE ORIGIN** is executed, the memory is initiated at the subsequent scheduler start (of the same disconnected graph).
+
+With Memory dataNode, user can create counters for example, without adding real cycles in the graph.
 
 See example: [memory.xprjson](/ds/xprjson/memory.xprjson).
 
@@ -307,13 +309,17 @@ Follow instructions below to first build a WebSockets test server.
 - Install Node.js from <https://nodejs.org/>
 - Download Node.js server example [simpleWS.js](/ds/ws/simpleWS.js)
 - Install _ws_ library used in _simpleWS.js_ server
+
   ```sh
   npm install ws
   ```
+
 - Run the WebSockets server
+
   ```sh
   node simpleWS.js
   ```
+
 - The server should be ready and display the following message:
 
 ![server listening](ws/server-listening.png)
