@@ -1,19 +1,62 @@
+const fs = require('fs');
+
+function readxDashVersion() {
+  // Path to the JSON file
+  const filePath = '../version.json';
+
+  try {
+    // Reading the file synchronously
+    const data = fs.readFileSync(filePath, 'utf8');
+    
+    // Parsing the JSON data
+    const xDashJsonVersion = JSON.parse(data);
+    return xDashJsonVersion;
+  } catch (err) {
+    console.error('Error reading the version.json file:', err);
+  }
+}
+
+function readChalkitVersion() {
+  // Path to the JSON file
+  const filePath = '../../version.json';
+
+  try {
+    // Reading the file synchronously
+    const data = fs.readFileSync(filePath, 'utf8');
+    
+    // Parsing the JSON data
+    const jsonData = JSON.parse(data);
+    const chalkitVersion = jsonData.major + '.' + jsonData.minor + '.' + jsonData.patch;
+
+    return chalkitVersion;
+  } catch (err) {
+    console.error('Error reading the version.json file:', err);
+  }
+}
+
+let xDashJsonVersion = readxDashVersion();
+let chalkitVersion = readChalkitVersion();
+
+console.log(xDashJsonVersion); // Output the xDash version
+console.log(chalkitVersion); // Output the Chalkit version
+
+
 function getVersion() {
-  if (process.env.VERSION_XDASH_C == 0) {
+  if (xDashJsonVersion.C == 0) {
     var dateToday = new Date();
     var dateStart = new Date('01/01/2000');
     var result = Math.abs(dateStart.getTime() - dateToday.getTime());
     return Math.ceil(result / (3600000 * 24));
   } else {
-    return process.env.VERSION_XDASH_C;
+    return xDashJsonVersion.C;
   }
 }
 
-var VERSION_XDASH_A = process.env.VERSION_XDASH_A ? process.env.VERSION_XDASH_A : 0;
-var VERSION_XDASH_B = process.env.VERSION_XDASH_B ? process.env.VERSION_XDASH_B : '000';
+var VERSION_XDASH_A = xDashJsonVersion.A ? xDashJsonVersion.A : 0;
+var VERSION_XDASH_B = xDashJsonVersion.B ? xDashJsonVersion.B : '000';
 var VERSION_XDASH_C = getVersion();
 var VERSION = VERSION_XDASH_A + '.' + VERSION_XDASH_B + '.' + VERSION_XDASH_C;
-var VERSION_CHALK_IT = process.env.VERSION_CHALK_IT;
+var VERSION_CHALK_IT = chalkitVersion;
 
 // datanodes with JSON Editor input
 var jsEditorDn;

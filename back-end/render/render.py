@@ -1,13 +1,33 @@
-from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory, render_template_string
+from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory, render_template_string, logging
 import os
 from pathlib import Path
 import json
+import re
 
 app = Flask(__name__)
 
 xprjson = 'dashboard.xprjson'
 DEBUG = False
-VERSION = '2.990.8810'
+
+start_path="../."
+
+def get_version(start_path):
+    """
+    Search for a file with a pattern 'index-view-<version>.html' in the specified directory
+    and extract the version number.
+    
+    :param start_path: Directory path where to start the search
+    :return: The version number as a string if found, else None
+    """
+    pattern = re.compile(r'index-view-(\d+\.\d+\.\d+)\.html')
+    for file in os.listdir(start_path):
+        match = pattern.match(file)
+        if match:
+            return "-"+ match.group(1)
+    return "" #debug mode
+
+VERSION = get_version(start_path)
+
 
 dir_home = os.path.expanduser("~")
 
@@ -61,7 +81,7 @@ def dashboard(xprjson):
         config_data = json.load(config_file)
 
     # Read the HTML template
-    index_view_path = os.path.join(os.path.dirname(dir_temp_name), 'index-view-' + VERSION + '.html')
+    index_view_path = os.path.join(os.path.dirname(dir_temp_name), 'index-view' + VERSION + '.html')
     with open(index_view_path, 'r') as template_file:
         template_data = template_file.read()
 

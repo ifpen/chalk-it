@@ -7,6 +7,7 @@ import logging
 import webbrowser
 import threading
 import argparse
+import re
 
 # create the top-level parser
 parser = argparse.ArgumentParser()
@@ -15,7 +16,25 @@ parser.add_argument('--render', dest='xprjson_file', type=str, help='render proj
 parser.add_argument('--port', dest='app_port', type=int, help='change Flask TCP port')
 parser.add_argument('--ip', dest='app_ip', type=str, help='change Flask TCP address')
 
-VERSION = '2.990.8810'
+start_path="."
+
+def get_version(start_path):
+    """
+    Search for a file with a pattern 'index-view-<version>.html' in the specified directory
+    and extract the version number.
+    
+    :param start_path: Directory path where to start the search
+    :return: The version number as a string if found, else None
+    """
+    pattern = re.compile(r'index-view-(\d+\.\d+\.\d+)\.html')
+    for file in os.listdir(start_path):
+        match = pattern.match(file)
+        if match:
+            return "-"+ match.group(1)
+    return "" #debug mode
+
+VERSION = get_version(start_path)
+
 args = parser.parse_args()
 
 if args.dev:
@@ -352,7 +371,7 @@ def dashboard(xprjson):
         config_data = json.load(config_file)
 
     # Read the HTML template
-    index_view_path = os.path.join(dir_temp_name, 'index-view-' + VERSION + '.html')
+    index_view_path = os.path.join(dir_temp_name, 'index-view' + VERSION + '.html')
     with open(index_view_path, 'r') as template_file:
         template_data = template_file.read()
 
