@@ -465,8 +465,8 @@ function plotlyWidgetsPluginClass() {
     this.render = function () {
       /* Conversion to enable HTML tags */
       const layout = modelsParameters[idInstance].layout;
-      if (!_.isUndefined(layout) && !_.isUndefined(layout.title)) {
-        if (!_.isUndefined(layout.title.text)) {
+      if (layout?.title !== undefined) {
+        if (layout.title.text !== undefined) {
           layout.title.text = this.getTransformedText(layout.title.text);
         } else {
           layout.title = this.getTransformedText(layout.title);
