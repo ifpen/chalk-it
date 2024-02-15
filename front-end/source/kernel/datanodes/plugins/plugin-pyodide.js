@@ -603,6 +603,8 @@ resRet
 
       try {
         wrappedScript = wrappedScript.replace('xDashApi', 'js.xDashApi');
+        wrappedScript = wrappedScript.replace('chalkit', 'js.chalkit');
+
         const result = await pyodideManager.runPythonScript(wrappedScript);
         success(result);
       } catch (err) {
