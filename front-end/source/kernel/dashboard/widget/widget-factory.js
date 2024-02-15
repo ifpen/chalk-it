@@ -73,7 +73,7 @@ function widgetFactoryClass() {
         cln.id +
         '" onclick="widgetEditor.showHideWidgMenu(this)" style="z-index:999999;margin:0"><a id="ed_a_' +
         cln.id +
-        '" tilte="edit widget"><i id="showHideWidgetMenu" class="basic icn-edit"></i></a></li>'
+        '" title="edit widget"><i id="showHideWidgetMenu" class="basic icn-edit"></i></a></li>'
     ).appendTo(menu);
 
     // generate containerDiv id
