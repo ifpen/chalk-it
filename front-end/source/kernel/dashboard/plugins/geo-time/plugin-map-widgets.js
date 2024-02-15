@@ -1471,7 +1471,7 @@ function mapWidgetsPluginClass() {
 
       var ts = 'MapboxStreets';
       if (!_.isUndefined(modelsParameters[idInstance].tileServer)) {
-        if (_.contains(_.keys(tileServers), modelsParameters[idInstance].tileServer)) {
+        if (_.includes(_.keys(tileServers), modelsParameters[idInstance].tileServer)) {
           ts = modelsParameters[idInstance].tileServer;
         } else {
           /* TODO : good error message at edit mode to send */
@@ -1861,8 +1861,8 @@ function mapWidgetsPluginClass() {
         }
       }
 
-      var maxValue = _.max(_.pluck(choroplethData.data, featureTitle));
-      var minValue = _.min(_.pluck(choroplethData.data, featureTitle));
+      var maxValue = _.max(_.map(choroplethData.data, featureTitle));
+      var minValue = _.min(_.map(choroplethData.data, featureTitle));
       var weight = 4;
       var opacity = 0.7;
       let colorScale;
@@ -2077,8 +2077,8 @@ function mapWidgetsPluginClass() {
         opacity: 1,
       };
 
-      var maxValue = _.max(_.pluck(lineHeatMap.data, featureTitle));
-      var minValue = _.min(_.pluck(lineHeatMap.data, featureTitle));
+      var maxValue = _.max(_.map(lineHeatMap.data, featureTitle));
+      var minValue = _.min(_.map(lineHeatMap.data, featureTitle));
 
       try {
         if (!_.isUndefined(lineHeatMap.config.max)) maxValue = lineHeatMap.config.max;

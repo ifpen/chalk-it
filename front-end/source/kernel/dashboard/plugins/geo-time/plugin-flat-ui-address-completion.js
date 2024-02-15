@@ -49,7 +49,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
 
     this.updateValue = function (e) {
       var escapeKeys = [9, 16, 17, 18, 20, 33, 34, 35, 36, 37, 38, 39, 40];
-      if (_.contains(escapeKeys, e.which)) return;
+      if (_.includes(escapeKeys, e.which)) return;
 
       if (e.which == 10 || e.which == 13 || e.which == 27) {
         var val = $('#ac-value' + idWidget)[0].value;
