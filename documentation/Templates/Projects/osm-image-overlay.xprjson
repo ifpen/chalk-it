@@ -1,7 +1,7 @@
 {
 	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 18:24:06 GMT+0100 (heure normale d’Europe centrale)",
+		"version": "2.990.8812",
+		"date": "Thu Feb 15 2024 17:38:16 GMT+0100 (heure normale d’Europe centrale)",
 		"name": "osm-image-overlay",
 		"description": "Image overlay on map",
 		"groupName": "Neutral",
@@ -30,28 +30,24 @@
 					"name": "imageOverlay",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "var imgStruct = {};\n\nimgStruct.imageUrl = \"https://www.ifpenergiesnouvelles.fr/sites/ifpen.fr/files/logo_ifpen_2.jpg\";\nimgStruct.imageBounds =  [[48.874875, 2.171738], [48.877923, 2.179484]];\nimgStruct.title = \"IFPEN location\";\nimgStruct.addAs =\"overlay\";\n\nreturn imgStruct;\n"
+					"json_var_formula": "var imgStruct = {};\n\nimgStruct.imageUrl = \"https://www.ifpenergiesnouvelles.fr/sites/ifpen.fr/files/logo_ifpen_2.jpg\";\nimgStruct.imageBounds =  [[48.874875, 2.171738], [48.877923, 2.179484]];\nimgStruct.title = \"IFPEN location\";\nimgStruct.addAs =\"overlay\";\nimgStruct.options = {\"opacity\": 0.9};\n\nreturn imgStruct;\n"
 				}
 			}
-		],
-		"reIndexMap": [
-			0
-		],
-		"noTopologicalSortAtSerialize": true
+		]
 	},
 	"libraries": {
 		"pyodideStandard": [],
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1639,
-		"heightPx": 685,
-		"scrollWidthPx": 1639,
-		"scrollHeightPx": 685,
-		"widthVw": 87.50667378537106,
-		"heightVh": 73.10565635005337,
-		"scrollWidthVw": 87.50667378537106,
-		"scrollHeightVh": 73.10565635005337,
+		"widthPx": 1295,
+		"heightPx": 590,
+		"scrollWidthPx": 1295,
+		"scrollHeightPx": 590,
+		"widthVw": 84.75130890052355,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.75130890052355,
+		"scrollHeightVh": 78.66666666666667,
 		"scalingMethod": "scaleTwSp",
 		"media": "large",
 		"colDims": null
@@ -65,15 +61,16 @@
 			"classType": ""
 		},
 		"droppers": {},
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#ffffff",
+		"theme": "default"
 	},
 	"dashboard": {
 		"openStreetMapsZ": {
 			"layout": {
-				"top": "1.96834vh",
-				"left": "0.984696vw",
-				"height": "81.6205vh",
-				"width": "80.2199vw",
+				"top": "1.94148vh",
+				"left": "0.952954vw",
+				"height": "80.5069vh",
+				"width": "77.634vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "1"
@@ -169,7 +166,7 @@
 			}
 		}
 	},
-	"exportOptions": "projectToTargetWindow",
+	"exportOptions": "adjustToFullWidth",
 	"pages": {
 		"pageNames": [],
 		"defaultPage": {}
