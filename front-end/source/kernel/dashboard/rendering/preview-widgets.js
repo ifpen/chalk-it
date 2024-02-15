@@ -345,7 +345,7 @@ export const widgetPreview = (function () {
   function setDataOnWidget(instanceId, i, actuator, newData, status, last_updated, bCaptionManuallyChanged) {
     if ((_.isUndefined(newData) && last_updated != 'never') || status == 'Error') {
       // MBG
-      msg = 'Invalid data';
+      const msg = 'Invalid data';
       displayErrorOnWidget(instanceId, i, msg);
       return; // MBG : security. To invalidate widgets instead
     }

@@ -745,8 +745,8 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
     });
 
     let sortedSourceNodes = sourceNodes.sort((a, b) => {
-      meetsCondition_a = a.indexOf('pastValue_') !== -1;
-      meetsCondition_b = b.indexOf('pastValue_') !== -1;
+      const meetsCondition_a = a.indexOf('pastValue_') !== -1;
+      const meetsCondition_b = b.indexOf('pastValue_') !== -1;
       if (meetsCondition_a && !meetsCondition_b) {
         return -1;
       } else if (!meetsCondition_a && meetsCondition_b) {

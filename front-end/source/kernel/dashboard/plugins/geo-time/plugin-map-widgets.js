@@ -2535,7 +2535,7 @@ function mapWidgetsPluginClass() {
       if (_.isEmpty(heatMapObject)) return;
       if (_.isUndefined(heatMapObject.data)) return;
 
-      heatMapData = heatMapObject.data;
+      const heatMapData = heatMapObject.data;
       if (_.isEmpty(heatMapData) || heatMapData.length == 0) {
         var circlesLayerGroup = L.layerGroup([]);
         self.mapLayers.heatMap.heatMapLayers[layerIndex - 1] = circlesLayerGroup.addTo(self.map);
@@ -2553,8 +2553,8 @@ function mapWidgetsPluginClass() {
       let addTextLabel = false;
       let colorScale;
 
-      try {
-        heatMapConfig = heatMapObject.config;
+      const heatMapConfig = heatMapObject.config;
+      if (heatMapConfig) {
         circleFillOpacity = heatMapConfig.opacity || circleFillOpacity;
         circleRadius = heatMapConfig.radius || circleRadius;
         maxValue = heatMapConfig.max;
@@ -2563,7 +2563,7 @@ function mapWidgetsPluginClass() {
         addTextLabel = heatMapConfig.addTextLabel;
 
         colorScale = self.getColorScale(heatMapConfig.colorScale, heatMapConfig.reverseColorScale, 0, 100);
-      } catch (exc) {}
+      }
 
       const formattedHeatMap = [];
       let computedMax = -Number.MAX_VALUE; // MBG & KBS on car le 27/09/2019
@@ -2737,7 +2737,7 @@ function mapWidgetsPluginClass() {
       if (_.isEmpty(heatMapObject)) return;
       if (_.isUndefined(heatMapObject.data)) return;
 
-      heatMapData = heatMapObject.data;
+      const heatMapData = heatMapObject.data;
       if (_.isUndefined(heatMapData.length)) return;
 
       var formattedHeatMap = [];
@@ -2767,10 +2767,8 @@ function mapWidgetsPluginClass() {
       var colorScale;
 
       // no problem if no config
-
-      try {
-        heatMapConfig = heatMapObject.config;
-
+      const heatMapConfig = heatMapObject.config;
+      if (heatMapConfig) {
         layerMinOpacity = heatMapConfig.minOpacity;
         layerMaxZomm = heatMapConfig.maxZoom;
         layerRadius = heatMapConfig.radius;
@@ -2780,8 +2778,6 @@ function mapWidgetsPluginClass() {
         formattedGradient = new Object();
         colorScale = self.getColorScale(heatMapConfig.colorScale, heatMapConfig.reverseColorScale, 0, 1);
         d3.range(11).forEach((d) => (formattedGradient[d * 0.1] = colorScale(d * 0.1)));
-      } catch (e) {
-        formattedGradient = null;
       }
 
       self.mapLayers.heatMap.heatMapLayers[layerIndex - 1] = L.meanLayer(formattedHeatMap, {
