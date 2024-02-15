@@ -379,7 +379,6 @@ function doubleSliderWidgetsPluginClass() {
         if (modelsParameters[idInstance].forceValuesToMinAndMax) {
           self.maxValue.setValue(modelsParameters[idInstance].maxRange);
           self.updateMaxValue();
-          //widgetPreview.updateDataFromWidget(self.maxValue, modelsParameters[idInstance].maxRange); // MBG : dirty but only solution right now
         }
       },
       getValue: function () {
@@ -427,7 +426,6 @@ function doubleSliderWidgetsPluginClass() {
         if (modelsParameters[idInstance].forceValuesToMinAndMax) {
           self.minValue.setValue(modelsParameters[idInstance].minRange);
           self.updateMinValue();
-          //widgetPreview.updateDataFromWidget(self.minValue, modelsParameters[idInstance].minRange); // MBG : dirty but only solution right now
         }
       },
       getValue: function () {

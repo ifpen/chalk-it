@@ -395,7 +395,7 @@ var widgetPreview = (function () {
           }
           if (!_.isUndefined(actuator.setValue)) {
             try {
-              actuator.setValue(varInter, true);
+              actuator.setValue(varInter);
             } catch (e) {
               console.log("setValue got exception with data '" + slider.dataNode + "'. " + e);
             }
@@ -430,9 +430,8 @@ var widgetPreview = (function () {
    * Update data from widget
    * @param {any} sender
    * @param {any} e
-   * @param {any} doubleTrig
    */
-  function updateDataFromWidget(sender, e, doubleTrig) {
+  function updateDataFromWidget(sender, e) {
     var actuator = null;
     if (datanodesManager.getAllDataNodes().length == 0) {
     } else {
@@ -466,7 +465,7 @@ var widgetPreview = (function () {
             if (dn.isSetValueValid() && !_.isUndefined(sender.getValue)) {
               // MBG 12/05/2017
               try {
-                dn.setValue(actuator.dataFields, sender.getValue(), doubleTrig);
+                dn.setValue(actuator.dataFields, sender.getValue());
               } catch (exc) {
                 console.log('setValue got exception with data: ' + dn.name() + '. ' + exc.message);
               }
