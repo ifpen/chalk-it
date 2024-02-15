@@ -105,7 +105,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     }
   }
   function _launchMemoryNow(nodeName) {
-    if (_.contains(triggeredNodes, nodeName)) {
+    if (_.includes(triggeredNodes, nodeName)) {
       switch (callOrigin) {
         case 'unidentified':
         case 'edit':
