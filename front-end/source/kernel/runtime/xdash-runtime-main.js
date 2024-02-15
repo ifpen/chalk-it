@@ -19,6 +19,7 @@ import { XdashNotifications } from 'angular/modules/libs/notification/notificati
 import { modelsHiddenParams, modelsParameters, modelsTempParams } from 'kernel/base/widgets-states';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { pyodideLib } from 'kernel/base/pyodide-project';
+import { onResize, onOrientationChange, isAndroid, isTouchDevice } from 'kernel/base/main-common';
 
 (function ($) {
   $.fn.hasVScrollBar = function () {
@@ -173,6 +174,7 @@ export function startXdash() {
   singletons.widgetEditor = initEditWidget(); // edit
   window.widgetEditor = singletons.widgetEditor;
 
+  // FIXME
   /*--------event on device rows--------*/
   $('select[name=select-rows]').on('change', function (e) {
     singletons.layoutMgr.updateButtonState();
@@ -182,6 +184,12 @@ export function startXdash() {
   $('select[name=select-cols]').on('change', function (e) {
     singletons.layoutMgr.updateButtonState();
   });
+
+  /*--------On resize event--------*/
+  $(window).on('resize', onResize);
+  if (!(isAndroid || isTouchDevice)) {
+    $(window).on('orientationchange', onOrientationChange);
+  }
 
   singletons.xdash = new Xdash();
   singletons.WTBC = new widgetToolboxClass(); // edit ?

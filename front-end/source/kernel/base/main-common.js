@@ -57,14 +57,14 @@ Date.prototype.timeNow = function () {
 export const bFirstExec = { value: true };
 
 // MBG detecting Android for handling issue #93
-var ua = navigator.userAgent.toLowerCase();
-var isAndroid = ua.indexOf('android') > -1; //&& ua.indexOf("mobile");
+const ua = navigator.userAgent.toLowerCase();
+export const isAndroid = ua.indexOf('android') > -1; //&& ua.indexOf("mobile");
 
 function _isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 }
 
-const isTouchDevice = _isTouchDevice();
+export const isTouchDevice = _isTouchDevice();
 
 function activeTab() {
   dashState.tabActive = 'widgets';
@@ -77,8 +77,7 @@ function activeTab() {
   }
 }
 
-/*--------On resize event--------*/
-$(window).on('resize', function () {
+export function onResize() {
   var $body = angular.element(document.body);
   var $rootScope = $body.scope().$root;
   if (dashState.tabActive == 'play') {
@@ -95,13 +94,12 @@ $(window).on('resize', function () {
       }
     }
   }
-});
-if (!(isAndroid || isTouchDevice)) {
-  $(window).on('orientationchange', function () {
-    if (dashState.tabActive == 'play') {
-      widgetPreview.resizeDashboard();
-    }
-  });
+}
+
+export function onOrientationChange() {
+  if (dashState.tabActive == 'play') {
+    widgetPreview.resizeDashboard();
+  }
 }
 
 /*--------Rescale Widget--------*/
