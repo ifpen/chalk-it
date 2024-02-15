@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8743",
-    "date": "Fri Dec 08 2023 11:43:13 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8802",
+    "date": "Mon Feb 05 2024 10:04:37 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-geojson-lines-map",
     "description": "",
     "groupName": "",
@@ -11,6 +11,14 @@
   "data": {
     "datanodes": [
       {
+        "name": "MAP_style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "MAP_style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"showLegend\":true,\"name\":\"layer 1\",\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"black\",\"weight\":4,\"opacity\":1,\"property\":\"objectid\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"arrdt\":[1,1],\"objectid\":[412,9186],\"shape_len\":[0,0]},\"tooltip\":{\"properties\":[\"bois\",\"typologie_simple\",\"arrdt\",\"sens_velo\",\"objectid\",\"statut\",\"voie\",\"geo_point_2d\",\"shape_len\",\"bidirectionnel\",\"typologie\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":1}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
+        }
+      },
+      {
         "name": "lines",
         "type": "JSON_var_plugin",
         "settings": {
@@ -19,10 +27,10 @@
         }
       },
       {
-        "name": "MAP_Style",
+        "name": "MAP_Style2",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "MAP_Style",
+          "name": "MAP_Style2",
           "json_var": "[{\"layer\":1,\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"#8f09e8\",\"weight\":4,\"opacity\":1,\"property\":\"color\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"arrdt\":[1,1],\"objectid\":[412,9186],\"shape_len\":[0,0]}}]"
         }
       }
@@ -33,14 +41,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1807,
-    "heightPx": 719,
-    "scrollWidthPx": 1807,
-    "scrollHeightPx": 719,
-    "widthVw": 88.57843137254902,
-    "heightVh": 71.61354581673307,
-    "scrollWidthVw": 88.57843137254902,
-    "scrollHeightVh": 71.61354581673307,
+    "widthPx": 2316,
+    "heightPx": 847,
+    "scrollWidthPx": 2316,
+    "scrollHeightPx": 847,
+    "widthVw": 90.82352941176471,
+    "heightVh": 67.49003984063745,
+    "scrollWidthVw": 90.82352941176471,
+    "scrollHeightVh": 67.49003984063745,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -60,10 +68,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "0.996016vh",
-        "left": "0.490196vw",
-        "height": "59.5618vh",
-        "width": "83.2843vw",
+        "top": "0.956175vh",
+        "left": "0.509804vw",
+        "height": "56.0956vh",
+        "width": "85.451vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -87,7 +95,12 @@
       },
       "GeoJSONStyle": {
         "name": "GeoJSONStyle",
-        "dataNode": "MAP_Style",
+        "dataNode": "MAP_style",
+        "dataFields": []
+      },
+      "Selected": {
+        "name": "Selected",
+        "dataNode": "None",
         "dataFields": []
       }
     }

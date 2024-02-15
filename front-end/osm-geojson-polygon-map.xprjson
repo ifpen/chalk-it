@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8743",
-    "date": "Fri Dec 08 2023 16:36:45 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8802",
+    "date": "Mon Feb 05 2024 10:00:24 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-geojson-polygon-map",
     "description": "",
     "groupName": "",
@@ -11,19 +11,27 @@
   "data": {
     "datanodes": [
       {
-        "name": "Polygon",
-        "type": "JSON_var_plugin",
-        "settings": {
-          "name": "Polygon",
-          "json_var": "{\"name\":\"Polygon\",\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"style\":{\"color\":\"#01DF01\",\"weight\":4,\"opacity\":0.9,\"fillColor\":\"#01DF01\",\"fillOpacity\":0.4}},\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[2.300815,48.871943],[2.30158,48.864638],[2.310094,48.868996]]]}}],\"properties\":{\"description\":\"<span style=\\\"color: #01DF01\\\">Triangle d'or</span>\"}}"
-        }
-      },
-      {
         "name": "Map_style",
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Map_style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"showLegend\":true,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"#900dd6\",\"dashArray\":[],\"weight\":4,\"opacity\":1,\"fillColor\":\"red\",\"property\":\"description\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.5,\"possibleProperties\":{},\"allProperties\":[\"description\"],\"tooltip\":{\"properties\":[\"description\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"#900dd6\",\"weight\":4,\"fillOpacity\":0.5}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":4,\"fillOpacity\":0.5}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":4,\"fillOpacity\":0.5}}}}]}"
+        }
+      },
+      {
+        "name": "Map_style2",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Map_style2",
           "json_var": "[{\"layer\":1,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"red\",\"dashArray\":[],\"weight\":4,\"opacity\":1,\"fillColor\":\"green\",\"property\":\"color\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.5,\"possibleProperties\":{}}]"
+        }
+      },
+      {
+        "name": "Polygon",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Polygon",
+          "json_var": "{\"name\":\"Polygon\",\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[2.300815,48.871943],[2.30158,48.864638],[2.310094,48.868996]]]},\"properties\":{\"description\":\"<span style=\\\"color: #01DF01\\\">Triangle d'or</span>\"}}]}"
         }
       }
     ]
@@ -33,14 +41,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1806,
-    "heightPx": 719,
-    "scrollWidthPx": 1806,
-    "scrollHeightPx": 719,
-    "widthVw": 88.52941176470588,
-    "heightVh": 71.61354581673307,
-    "scrollWidthVw": 88.52941176470588,
-    "scrollHeightVh": 71.61354581673307,
+    "widthPx": 2317,
+    "heightPx": 847,
+    "scrollWidthPx": 2317,
+    "scrollHeightPx": 847,
+    "widthVw": 90.86274509803921,
+    "heightVh": 67.49003984063745,
+    "scrollWidthVw": 90.86274509803921,
+    "scrollHeightVh": 67.49003984063745,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -60,10 +68,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "0.996016vh",
-        "left": "0.490196vw",
-        "height": "62.0518vh",
-        "width": "83.9706vw",
+        "top": "0.796813vh",
+        "left": "0.509804vw",
+        "height": "58.4861vh",
+        "width": "86.1961vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"

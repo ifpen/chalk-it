@@ -54,6 +54,7 @@ this.createLegend = function (color, length, colorStops, min, max, featureTitle)
 };
 
 this.createChoroplethLegend = function (getColor, min, max, featureTitle, colorScale) {
+  featureTitle = featureTitle ? featureTitle.charAt(0).toUpperCase() + featureTitle.toLowerCase().slice(1) : ""
   var legend = L.control({ position: 'topleft' });
   var min = Number(min);
   var max = Number(max);
@@ -66,23 +67,25 @@ this.createChoroplethLegend = function (getColor, min, max, featureTitle, colorS
       labels = [],
       from,
       to;
-
+      f = d3.format(".1s")
+      labels.push('<div style="display:flex;flex-direction:column;row-gap:2px;">')
+      labels.push('<h2 style="margin-bottom: 4px;">'+featureTitle+'</h2>')
     //   div.innerHTML += '<h6>              </h6>';
     for (var i = 0; i < grades.length; i++) {
       from = grades[i];
       to = grades[i + 1];
       labels.push(
-        '<i style="background:' +
+        '<div style="display:flex;flex-direction:row;justify-content:space-between;"><i style="background:' +
           getColor(min, max, from + 1, colorScale) +
-          '"></i> ' +
+          ';margin-left:0px;"></i> ' +
           '<span>' +
-          d3.format('~s')(Math.floor(from)) +
-          (to ? '&ndash;' + d3.format('~s')(Math.floor(to)) : '+') +
-          '</span>'
-      ) + '<br>';
+          f(from) +
+          (to ? '&ndash;' + f(to) : '+') +
+          '</span> </div>'
+      )  ;
     }
-
-    div.innerHTML = labels.join('<br>');
+    labels.push('</div>')
+    div.innerHTML = labels.join('');
     return div;
   };
   return legend;

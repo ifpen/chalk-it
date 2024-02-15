@@ -166,7 +166,9 @@ function mapGeoJsonWidgetsPluginClass() {
           //  mouseoverHandler(e)
           let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
           let eventStyle = style.events.mouseover.style;
-          e.target.setStyle(eventStyle);
+          if (!_.isUndefined(eventStyle)) {
+             e.target.setStyle(eventStyle);
+          }
           let popup = new L.Popup();
           var bounds = e.target.getBounds();
           let popupContent = '<div>';
@@ -194,10 +196,15 @@ function mapGeoJsonWidgetsPluginClass() {
       //mouseout
       if (!_.isUndefined(leafletIndex)) {
         self.mouseoutHandler = (e) => {
+          let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
           if (e.target == self.state.selectedElement) {
+            //apply click style
+            let eventStyle = style.events.click.style;
+            if (!_.isUndefined(eventStyle)) {
+              e.target.setStyle(eventStyle);
+           }
             return;
           }
-          let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
           let eventStyle = style.events.mouseout.style;
           if (
             !_.isUndefined(style.property) &&
@@ -224,8 +231,18 @@ function mapGeoJsonWidgetsPluginClass() {
           if (max > minMax[1]) max = minMax[1];
           if (!_.isUndefined(colorScale)) {
             let value = e.target.feature.properties[style.property];
-
-            eventStyle.fillColor = self.getColor(min, max, value, colorScale);
+            if (_.isUndefined(eventStyle.fillColor)) {
+              eventStyle.fillColor = self.getColor(min, max, value, colorScale)
+            }
+          }
+          if (_.isUndefined(eventStyle.fillOpacity)) {
+            eventStyle.fillOpacity = style.fillOpacity;
+          }
+          if (_.isUndefined(eventStyle.color)) {
+            eventStyle.color = style.color;
+          }
+          if (_.isUndefined(eventStyle.weight)) {
+            eventStyle.weight = style.weight;
           }
           e.target.setStyle(eventStyle);
           //close popup
