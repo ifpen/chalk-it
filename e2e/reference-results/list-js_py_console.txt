@@ -1,0 +1,8 @@
+Running in production mode
+list-js.xprjson
+User home directory : C:\Users\bengaidm
+Current working directory : D:\Repos\chalk-it\documentation\Templates\Projects
+Chalk'it launched on http://127.0.0.1:7854
+ * Serving Flask app 'chlkt.server'
+ * Debug mode: off
+
