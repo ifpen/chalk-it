@@ -52,7 +52,6 @@ export const widgetsEditorToolboxDefinition = {
       'plotly3dSurface',
       'plotlyGeneric',
       'plotlyRealTime',
-      'vegaGeneric',
       'echartsGeneric',
     ],
   },

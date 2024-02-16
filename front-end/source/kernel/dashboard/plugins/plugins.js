@@ -26,4 +26,6 @@ import './geo-time/plugin-timepicker-widgets';
 import './plots/plugin-echarts-widgets';
 import './plots/plugin-plotly-widgets';
 import './plots/plugin-pyodide-widgets';
-import './plots/plugin-vega-widgets';
+
+// TODO tobe removed
+// import './plots/plugin-vega-widgets';
