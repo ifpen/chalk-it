@@ -22,7 +22,6 @@ export const editorModule = angular.module('modules.editor', [dashboardModule.na
       userAuthenticated: false,
       abstract: true,
       url: '/editor',
-      templateUrl: 'source/angular/templates/layout/default2.html',
     });
   },
 ]);
