@@ -76,3 +76,6 @@ ipch/
 # Backup files
 *.bak
 *.Copie
+
+# root xprjson
+/*.xprjson/
