@@ -35,6 +35,7 @@ function mapGeoJsonWidgetsPluginClass() {
     };
 
     var self = this;
+    this.legend = undefined;
     this.legendHeatMap = undefined;
     this.legendChoroplet = undefined;
     this.enable = function () {};
@@ -151,8 +152,8 @@ function mapGeoJsonWidgetsPluginClass() {
         if (layer == leafletLayer) {
           return index;
         }
-        return undefined;
       }
+      return undefined;
     };
     this.addGeoJSONlayer = function (geoJSON, name) {
       var leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
@@ -165,10 +166,12 @@ function mapGeoJsonWidgetsPluginClass() {
         self.mouseoverHandler = (e) => {
           //  mouseoverHandler(e)
           let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
-          let eventStyle = style.events.mouseover.style;
+          let eventStyle = {...style.events.mouseover.style};
           if (!_.isUndefined(eventStyle)) {
-             e.target.setStyle(eventStyle);
+            e.target.setStyle(eventStyle);
           }
+          e.target.bringToFront();
+          //create popup
           let popup = new L.Popup();
           var bounds = e.target.getBounds();
           let popupContent = '<div>';
@@ -185,10 +188,12 @@ function mapGeoJsonWidgetsPluginClass() {
           popupContent = popupContent + '</div>';
           popup.setLatLng(bounds.getCenter());
           popup.setContent(popupContent);
+          //open popup
           if (!_.isUndefined(properties) && properties.length > 0) {
             self.map.openPopup(popup);
           }
         };
+        //handle mouse event for each layer
         leafletLayer.eachLayer(function (layer) {
           layer.on('mouseover', self.mouseoverHandler);
         });
@@ -197,15 +202,15 @@ function mapGeoJsonWidgetsPluginClass() {
       if (!_.isUndefined(leafletIndex)) {
         self.mouseoutHandler = (e) => {
           let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+          //if the curent layer is the clicked layer, apply click style
           if (e.target == self.state.selectedElement) {
             //apply click style
             let eventStyle = style.events.click.style;
             if (!_.isUndefined(eventStyle)) {
               e.target.setStyle(eventStyle);
-           }
+            }
             return;
           }
-          let eventStyle = style.events.mouseout.style;
           if (
             !_.isUndefined(style.property) &&
             !_.isUndefined(style.possibleProperties) &&
@@ -229,11 +234,10 @@ function mapGeoJsonWidgetsPluginClass() {
           let max = minMaxAuto[1];
           if (min < minMax[0]) min = minMax[0];
           if (max > minMax[1]) max = minMax[1];
+          let eventStyle = {};
           if (!_.isUndefined(colorScale)) {
             let value = e.target.feature.properties[style.property];
-            if (_.isUndefined(eventStyle.fillColor)) {
-              eventStyle.fillColor = self.getColor(min, max, value, colorScale)
-            }
+            eventStyle.fillColor = self.getColor(min, max, value, colorScale);
           }
           if (_.isUndefined(eventStyle.fillOpacity)) {
             eventStyle.fillOpacity = style.fillOpacity;
@@ -261,8 +265,8 @@ function mapGeoJsonWidgetsPluginClass() {
           self.Selected.updateCallback(self.Selected, self.Selected.getValue());
           //change style
 
-          let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
-          let eventStyle = style.events.click.style;
+          let style = {...modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex]};
+          let eventStyle = {...style.events.click.style};
           //initial style for other layers
           leafletLayer.eachLayer(function (layer) {
             if (e.target != layer) {
@@ -325,14 +329,13 @@ function mapGeoJsonWidgetsPluginClass() {
                   style.fillColor = self.getColor(min, max, value, colorScale);
                 }
                 layer.setStyle(style);
-              }else {
-                //select event 
+              } else {
+                //select event
                 e.target.setStyle(eventStyle);
               }
             }
           });
 
-          
           //self.GeoJSONStyle.updateCallback(self.GeoJSONStyle, self.GeoJSONStyle.getValue());
           if (self.state.selectedElement == e.target) {
             //unselect element
@@ -347,9 +350,83 @@ function mapGeoJsonWidgetsPluginClass() {
           layer.on('click', self.clickhandler);
         });
       }
+      //add legend in the first render
+      let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+      var minMaxAuto = style.possibleProperties[style.property];
+      if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
+        minMaxAuto[0] = style.propertyMin;
+      if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
+        minMaxAuto[1] = style.propertyMax;
+
+      let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, style.property);
+      var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
+      if (!_.isUndefined(color)) {
+        colorScale = self.getColorScale(color, 0, 100);
+      }
+      let min = minMaxAuto[0];
+      let max = minMaxAuto[1];
+      if (min < minMax[0]) min = minMax[0];
+      if (max > minMax[1]) max = minMax[1];
+
+      //legend
+      if (!_.isUndefined(style.showLegend)) {
+        if (!!style.showLegend) {
+          if (!_.isUndefined(self.legend)) {
+            self.legend.remove();
+          }
+          self.legend = self.createChoroplethLegend(min, max, style.property + '' + (leafletIndex+1), colorScale);
+        } else {
+          if (!_.isUndefined(self.legend)) {
+            self.map.removeControl(self.legend);
+          }
+        }
+      }
+      //leafletLayer events
+      leafletLayer.on('add', (e) => {
+        let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+        var minMaxAuto = style.possibleProperties[style.property];
+        if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
+          minMaxAuto[0] = style.propertyMin;
+        if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
+          minMaxAuto[1] = style.propertyMax;
+
+        let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, style.property);
+        var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
+        if (!_.isUndefined(color)) {
+          colorScale = self.getColorScale(color, 0, 100);
+        }
+        let min = minMaxAuto[0];
+        let max = minMaxAuto[1];
+        if (min < minMax[0]) min = minMax[0];
+        if (max > minMax[1]) max = minMax[1];
+
+        //legend
+        if (!_.isUndefined(style.showLegend)) {
+          if (!!style.showLegend) {
+            if (!_.isUndefined(self.legend)) {
+              self.legend.remove();
+            }
+            self.legend = self.createChoroplethLegend(min, max, style.property + '' + (leafletIndex+1), colorScale);
+          } else {
+            if (!_.isUndefined(self.legend)) {
+              self.map.removeControl(self.legend);
+            }
+          }
+        }
+      });
+      //leafletLayer events
+      leafletLayer.on('remove', (e) => {
+        //remove legend
+        console.log('remove legend ');
+        if (!_.isUndefined(self.legend)) {
+          self.legend.remove();
+        }
+      });
 
       //add layer
-      self.ctrl.addOverlay(leafletLayer, name);
+      //TO DO check GeoJSON Type :
+      self.ctrl.addBaseLayer(leafletLayer, name);
+      //self.ctrl.addOverlay(leafletLayer, name);
     };
 
     // Create the style object that will be in out JSON for a geoJSON
@@ -385,12 +462,12 @@ function mapGeoJsonWidgetsPluginClass() {
                   weight: 3,
                 },
               },
-              mouseout: {
+              /*   mouseout: {
                 style: {
                   color: 'black',
                   weight: 1,
                 },
-              },
+              },*/
               click: {
                 style: {
                   color: 'black',
@@ -428,12 +505,12 @@ function mapGeoJsonWidgetsPluginClass() {
                   weight: 3,
                 },
               },
-              mouseout: {
+              /*   mouseout: {
                 style: {
                   color: 'black',
                   weight: 1,
                 },
-              },
+              },*/
               click: {
                 style: {
                   color: 'black',
@@ -463,12 +540,12 @@ function mapGeoJsonWidgetsPluginClass() {
                     weight: 3,
                   },
                 },
-                mouseout: {
+                /* mouseout: {
                   style: {
                     color: 'black',
                     weight: 1,
                   },
-                },
+                },*/
                 click: {
                   style: {
                     color: 'black',
@@ -505,12 +582,12 @@ function mapGeoJsonWidgetsPluginClass() {
                     weight: 3,
                   },
                 },
-                mouseout: {
+                /*  mouseout: {
                   style: {
                     color: 'black',
                     weight: 1,
                   },
-                },
+                },*/
                 click: {
                   style: {
                     color: 'black',
@@ -589,7 +666,7 @@ function mapGeoJsonWidgetsPluginClass() {
       }
       if (!_.isUndefined(name)) {
         self.ctrl.removeLayer(leafLetLayer);
-        self.ctrl.addOverlay(leafLetLayer, name);
+        self.ctrl.addBaseLayer(leafLetLayer, name);
       }
 
       let colorScale = undefined;
@@ -630,45 +707,31 @@ function mapGeoJsonWidgetsPluginClass() {
 
             styleForObject.fillColor = self.getColor(min, max, value, colorScale);
           }
-
-          layer.setStyle(styleForObject);
+          if(layer == self.state.selectedElement){
+            layer.setStyle({
+              fillOpacity : styleForObject.fillOpacity,
+              weight : styleForObject.weight
+            });
+          }
+          else {
+            layer.setStyle(styleForObject);
+          }
         });
-
-        //legend
-        self.map.on('layeradd layerremove', (e) => {
-          if (self.map.hasLayer(self.layers[layerIndex])) {
-            if (!_.isUndefined(styleForObject.showLegend)) {
-              if (!!styleForObject.showLegend) {
-                if (!_.isUndefined(self.legendChoroplet)) {
-                  self.legendChoroplet.remove();
-                }
-                self.legendChoroplet = self.createChoroplethLegend(min, max, styleForObject.property, colorScale);
-              } else {
-                if (!_.isUndefined(self.legendChoroplet)) {
-                  self.map.removeControl(self.legendChoroplet);
-                }
-              }
+        //toggle legend
+       /* if (!_.isUndefined(styleForObject.showLegend)) {
+          if (!!styleForObject.showLegend) {
+            if (!_.isUndefined(self.legend)) {
+              self.legend.remove();
+              self.legend=undefined
             }
+            self.legend = self.createChoroplethLegend(min, max, styleForObject.property + '' + ( self.getLefletIndex(leafLetLayer)+1), colorScale);
           } else {
-            if (!_.isUndefined(self.legendChoroplet)) {
-              self.legendChoroplet.remove();
+            if (!_.isUndefined(self.legend)) {
+              self.map.removeControl(self.legend);
+              self.legend=undefined
             }
           }
-        });
-        if (self.map.hasLayer(self.layers[layerIndex])) {
-          if (!_.isUndefined(styleForObject.showLegend)) {
-            if (!!styleForObject.showLegend) {
-              if (!_.isUndefined(self.legendChoroplet)) {
-                self.legendChoroplet.remove();
-              }
-              self.legendChoroplet = self.createChoroplethLegend(min, max, styleForObject.property, colorScale);
-            } else {
-              if (!_.isUndefined(self.legendChoroplet)) {
-                self.map.removeControl(self.legendChoroplet);
-              }
-            }
-          }
-        }
+        }*/
       }
 
       if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
