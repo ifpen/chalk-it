@@ -16,7 +16,7 @@ parser.add_argument('--render', dest='xprjson_file', type=str, help='render proj
 parser.add_argument('--port', dest='app_port', type=int, help='change Flask TCP port')
 parser.add_argument('--ip', dest='app_ip', type=str, help='change Flask TCP address')
 
-start_path="."
+start_path = os.path.dirname(__file__)
 
 def get_version(start_path):
     """
