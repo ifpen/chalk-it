@@ -108,7 +108,6 @@
     "ui-select": "^0.19.8",
     "underscore": "^1.9.1",
     "vis-network": "^7.0.0",
-    "webpack-jquery-ui": "^2.0.1",
     "worker-loader": "^3.0.8",
     "ws": "^7.5.3",
     "yargs": "^15.4.1"

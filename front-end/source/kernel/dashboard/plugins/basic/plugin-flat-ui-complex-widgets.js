@@ -8,6 +8,7 @@
 // │ Tristan BARTEMENT, Guillaume CORBELIN                              │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
+import 'flat-ui.alt';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
