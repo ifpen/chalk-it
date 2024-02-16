@@ -6,7 +6,6 @@
 // │ Original authors(s): Tristan BARTEMENT                                            │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
-import swal from 'sweetalert';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { UndoableAction, UndoManager } from './editor.undo-manager';

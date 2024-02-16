@@ -1,4 +1,3 @@
-import swal from 'sweetalert';
 
 export class XdashDataUpdateInformation {
   constructor(fromVersion, toVersion, messages) {

@@ -18,7 +18,6 @@ import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 
 import _ from 'underscore';
-import swal from 'sweetalert';
 import { xDashConfig } from 'config.js';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';

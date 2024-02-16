@@ -26,7 +26,6 @@ generalizing the "called from orchestrator" boolean introduced
 
 import { xDashConfig } from 'config.js';
 import _ from 'underscore';
-import swal from 'sweetalert';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { isSuperset, union, difference } from 'kernel/datanodes/plugins/thirdparty/utils';

@@ -8,7 +8,6 @@
 
 import { xDashConfig } from 'config.js';
 import _ from 'underscore';
-import swal from 'sweetalert';
 
 import { fileManager } from 'kernel/general/backend/file-management';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';

@@ -4,7 +4,6 @@
 import { xDashConfig, xServConfig } from 'config.js';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import _ from 'underscore';
-import swal from 'sweetalert';
 import 'json_parseMore';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datanodes/plugins/thirdparty/utils';

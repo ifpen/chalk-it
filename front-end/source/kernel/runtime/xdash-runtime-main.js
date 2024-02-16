@@ -8,7 +8,6 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 import _ from 'underscore';
-import swal from 'sweetalert';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { LayoutMgrClass } from '../dashboard/scaling/layout-mgr';

@@ -11,7 +11,6 @@ import { setXHRAuthorizationHeader } from 'angular/modules/components/auth-utils
 
 import { xServConfig, xDashConfig } from 'config.js';
 import _ from 'underscore';
-import swal from 'sweetalert';
 import { saveAs } from 'file-saver';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { b64EncodeUnicode } from 'kernel/datanodes/plugins/thirdparty/utils';

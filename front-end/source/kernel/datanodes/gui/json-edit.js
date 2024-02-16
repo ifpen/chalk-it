@@ -6,7 +6,6 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import swal from 'sweetalert';
 import JSONEditor from 'jsoneditor';
 import { saveAs } from 'file-saver';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';

@@ -7,7 +7,6 @@
 // │ Original authors(s): Abir EL FEKI                                                 │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
-import swal from 'sweetalert';
 import PNotify from 'pnotify';
 import { modalsModule } from '../modals';
 

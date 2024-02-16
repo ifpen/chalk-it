@@ -10,7 +10,6 @@
 
 import { xDashConfig } from 'config.js';
 import _ from 'underscore';
-import swal from 'sweetalert';
 import ko from 'knockout';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';

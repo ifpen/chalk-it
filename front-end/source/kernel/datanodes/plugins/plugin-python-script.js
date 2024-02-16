@@ -1,5 +1,4 @@
 ﻿import _ from 'underscore';
-import swal from 'sweetalert';
 import { urlPython } from 'config.js';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';

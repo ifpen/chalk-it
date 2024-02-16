@@ -7,7 +7,6 @@
 // │ Original authors(s): Abir EL FEKI, Tristan BARTEMENT                             │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
-import swal from 'sweetalert';
 import JSONEditor from 'jsoneditor';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';

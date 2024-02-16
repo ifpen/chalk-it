@@ -1,6 +1,5 @@
 
 import { xDashConfig } from 'config.js';
-import swal from 'sweetalert';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 /**

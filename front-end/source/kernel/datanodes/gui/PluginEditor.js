@@ -12,7 +12,6 @@
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
 import _ from 'underscore';
-import swal from 'sweetalert';
 import PNotify from 'pnotify';
 
 import FreeboardUI from 'kernel/base/gui/FreeboardUI';

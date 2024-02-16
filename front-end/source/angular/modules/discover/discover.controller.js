@@ -5,7 +5,6 @@ import template from './discover.html';
 
 import { xDashConfig } from 'config.js';
 import _ from 'underscore';
-import swal from 'sweetalert';
 import { fileManager } from 'kernel/general/backend/file-management';
 import { navHelper } from 'angular/modules/navigation-helper';
 import { startIntroProject } from 'angular/modules/guided-tour';

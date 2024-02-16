@@ -14,7 +14,6 @@
 
 import { xDashConfig } from 'config.js';
 import _ from 'underscore';
-import swal from 'sweetalert';
 import ko from 'knockout';
 import angular from 'angular';
 import FreeboardUI from 'kernel/base/gui/FreeboardUI';

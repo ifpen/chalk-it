@@ -7,7 +7,6 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Tristan BARTEMENT │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
-import swal from 'sweetalert';
 import { panelDash } from '../edition/panel-dashboard';
 import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { singletons } from 'kernel/runtime/xdash-runtime-main';

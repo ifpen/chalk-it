@@ -7,7 +7,6 @@
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
 import _ from 'underscore';
-import swal from 'sweetalert';
 import PNotify from 'pnotify';
 import { saveAs } from 'file-saver';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';

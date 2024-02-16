@@ -10,7 +10,6 @@
 import { xDashConfig } from 'config.js';
 
 import _ from 'underscore';
-import swal from 'sweetalert';
 import PNotify from 'pnotify';
 
 import { fileManager } from 'kernel/general/backend/file-management';

@@ -7,7 +7,6 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Mondher AJIMI   │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
-import swal from 'sweetalert';
 
 import { widgetsEditorToolboxDefinition } from './toolbox-def';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';

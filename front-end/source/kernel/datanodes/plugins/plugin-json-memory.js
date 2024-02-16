@@ -1,4 +1,3 @@
-import swal from 'sweetalert';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 (function () {

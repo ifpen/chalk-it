@@ -8,7 +8,6 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 import _ from 'underscore';
-import swal from 'sweetalert';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { singletons } from 'kernel/runtime/xdash-runtime-main';
 

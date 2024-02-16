@@ -7,7 +7,6 @@
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 import angular from 'angular';
-import swal from 'sweetalert';
 import FreeboardUI from 'kernel/base/gui/FreeboardUI';
 import { startXdash, singletons } from 'kernel/runtime/xdash-runtime-main';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';

@@ -8,7 +8,6 @@
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
-import swal from 'sweetalert';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
 import { WidgetActuatorDescription, WidgetActuatorValidationError } from '../widget-base';

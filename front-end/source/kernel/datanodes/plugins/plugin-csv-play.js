@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import swal from 'sweetalert';
 import Papa from 'papaparse';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';

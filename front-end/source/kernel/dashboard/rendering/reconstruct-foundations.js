@@ -8,7 +8,6 @@
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
-import swal from 'sweetalert';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { findGetParameter } from 'kernel/datanodes/plugins/thirdparty/utils';

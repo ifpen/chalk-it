@@ -104,7 +104,6 @@
     "pnotify": "^3.2.1",
     "pyodide": "^0.23.4",
     "simpleheat": "^0.4.0",
-    "sweetalert": "^1.1.1",
     "tarjan-graph": "^3.0.0",
     "ui-select": "^0.19.8",
     "underscore": "^1.9.1",

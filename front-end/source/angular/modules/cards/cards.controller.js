@@ -10,7 +10,6 @@
 import { xDashConfig } from 'config.js';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import _ from 'underscore';
-import swal from 'sweetalert';
 import template from 'angular/modules/cards/cards.html';
 import PNotify from 'pnotify';
 

@@ -1,7 +1,6 @@
 import { xServConfig } from 'config.js';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { xcloudModule } from 'kernel/base/xdash-load';
-import swal from 'sweetalert';
 
 xcloudModule.service('ApisFactory', [
   '$http',

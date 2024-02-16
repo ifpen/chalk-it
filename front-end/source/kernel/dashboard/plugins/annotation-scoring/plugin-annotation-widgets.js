@@ -9,7 +9,6 @@
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
 import 'jquery-ui';
-import swal from 'sweetalert';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
