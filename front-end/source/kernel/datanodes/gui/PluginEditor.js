@@ -12,9 +12,7 @@
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
 import _ from 'underscore';
-import PNotify from 'pnotify';
 
-import FreeboardUI from 'kernel/base/gui/FreeboardUI';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { Path2FileName } from 'kernel/datanodes/plugins/thirdparty/utils';
