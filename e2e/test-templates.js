@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const { spawn } = require('child_process');
+const { spawn, exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -77,6 +77,25 @@ async function ensureDirectoryExists(dirPath) {
     }
 }
 
+// Function to terminate the Flask application
+function terminateFlaskApp(flaskApp) {
+    // Check if the process is running on Windows
+    if (process.platform === "win32") {
+      // Use taskkill to force terminate the process by PID on Windows
+      const command = `taskkill /PID ${flaskApp.pid} /F`;
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error terminating Flask app: ${error}`);
+          return;
+        }
+        console.log('Flask app terminated successfully.');
+      });
+    } else {
+      // For non-Windows platforms, attempt the standard SIGTERM
+      process.kill(flaskApp.pid, 'SIGTERM');
+    }
+  }
+
 const args = process.argv.slice(2);
 const outputDir = args.includes('--reference') ? 'reference-results' : args.includes('--test') ? 'test-results' : 'output-results';
 
@@ -94,8 +113,10 @@ const launchDir = '../documentation/Templates/Projects/'; // Default value or fr
         // Pass the launchDir to startFlaskApp
         const flaskServer = await startFlaskApp('chalk-it', ['--render', file], pyConsoleLogPath, launchDir);
         await takeScreenshot('http://localhost:7854', outputDir, testName, 5, 1920, 1080);
-        flaskServer.kill();
+        terminateFlaskApp(flaskServer);
+
     }
     console.log('All screenshots have been captured.');
+    return 0;
 })();
 

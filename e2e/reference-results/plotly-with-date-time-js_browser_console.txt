@@ -1,2 +1,0 @@
-LOG: Loading Pyodide
-LOG: End of loading Pyodide
