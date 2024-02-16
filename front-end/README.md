@@ -3,7 +3,6 @@
 ## Requirements
 
 First, you need to have Node.js installed on your system. Please visit [http://nodejs.org](http://nodejs.org) for more information.
-Required version is v12.19.0.
 
 You might need to configure npm proxy before start.
 
@@ -27,25 +26,11 @@ npm install -g sass
 
 ```sh
 bower install
-```
-
-This will download necessary assets files.
-
-```sh
-npm install -g gulp-cli
-```
-
-```sh
 npm install
+
 ```
 
 This will install necessary Node.js packages needed by the app, and also dependencies for Gulp tasks.
-
-## Configuration
-
-### Environment Variables
-
-There is a `.env.sample` file that you can copy to `.env.dev` (for development) and `.env.prod` (for production &mdash; it will get renamed to `.env` when the app is built).
 
 ## Building
 
