@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Chalk'it viewer</title>
+    <meta http-equiv="Cache-control" content="no-store, no-cache, must-revalidate" />
+	<link rel="icon" href="assets/img/chalk-it-icon.ico">
+    <meta name="robots" content="nosnippet, noindex" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="starter-browser-compatibility.js"></script>
+    <!-- inject:css -->
+    <link rel="stylesheet" href="assets/all-css-runtime-2.990.8813.min.css" />
+    <!-- endinject -->
+    <!-- header:js -->
+    <script src="header-all-js-runtime-2.990.8813.min.js"></script>
+    <!-- endinject -->
+  </head>
+  <body ng-app="xCLOUD">
+    <!-- body:js -->
+    <script src="body-all-js-runtime-2.990.8813.min.js"></script>
+    <!-- endinject -->
+    <script xmlns="http://www.w3.org/1999/xhtml">
+      tabActive = 'play';
+      execOutsideEditor = true;
+      urlBase = xDashConfig.urlBaseForExport;
+      navBarNotification = false;
+      showNavBar = false;
+      $(function () {
+        jsonContent = {}; /* insert your xprjson here */
+        reconstructFoundations.loadXprjson(jsonContent);
+      });
+    </script>
+    <div xmlns="http://www.w3.org/1999/xhtml" class="panel-body" id="dashboard-zone" style="padding: 0px">
+      <div id="DropperDroitec" class="dropperR" ng-app="xCLOUD"></div>
+    </div>
+  </body>
+</html>

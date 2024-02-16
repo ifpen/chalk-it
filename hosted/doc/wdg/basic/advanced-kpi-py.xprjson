@@ -48,7 +48,7 @@
 			},
 			{
 				"name": "lastRandom",
-				"type": "JSON_memory_plugin",
+				"type": "JSON_delay_plugin",
 				"settings": {
 					"name": "lastRandom",
 					"json_init": "0",

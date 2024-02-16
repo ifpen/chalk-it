@@ -569,13 +569,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#appendix-1-plotly-selection-and-xdash-selection" class="md-nav__link">
-    Appendix 1 : Plotly Selection and xDash Selection
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#appendix-2-how-to-handle-all-selection-behaviors-from-plotly-without-creating-trouble" class="md-nav__link">
     Appendix 2 : how to handle all selection behaviors from plotly without creating trouble
   </a>
@@ -757,8 +750,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../xdashapi/" class="md-nav__link">
-        xDashApi
+      <a href="../../../chalkitapi/" class="md-nav__link">
+        Chalk'it APIs
       </a>
     </li>
   
@@ -874,13 +867,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#appendix-1-plotly-selection-and-xdash-selection" class="md-nav__link">
-    Appendix 1 : Plotly Selection and xDash Selection
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#appendix-2-how-to-handle-all-selection-behaviors-from-plotly-without-creating-trouble" class="md-nav__link">
     Appendix 2 : how to handle all selection behaviors from plotly without creating trouble
   </a>
@@ -903,24 +889,24 @@
 
 <h1 id="select-and-filter-data">Select and Filter data<a class="headerlink" href="#select-and-filter-data" title="Permanent link">&para;</a></h1>
 <p><strong>Selection</strong> and <strong>Filter</strong> are important tools in interactive data analysis and visualisation.</p>
-<p>With Plotly JavaScript generic graph, the Chalk'it platform gives you access to selected events which contain all fields necessary in order to use selected element in the dataflow (transfer selection to another graph, filter data according to selection,  ...) </p>
+<p>With Plotly JavaScript generic graph, the Chalk'it platform gives you access to selected events which contain all fields necessary in order to use selected element in the dataflow (transfer selection to another graph, filter data according to selection, ...)</p>
 <blockquote>
-<p>For those familiar with Plotly select events, "appendix I" will explain how xDash selection events are created. </p>
+<p>For those familiar with Plotly select events, "appendix I" will explain how xDash selection events are created.</p>
 </blockquote>
 <h2 id="main-data-and-global-index">main data and global index<a class="headerlink" href="#main-data-and-global-index" title="Permanent link">&para;</a></h2>
 <p>When user wants to create a graph from a selection of another graph, or to transfer the selection from one graph to another (or from one graph to a script), there is a logic of a main shared data.</p>
 <p>This could be the result of a CSV import, a global JSON or GeoJSON.</p>
 <p>This shared data is considered and referenced as the global data in our exemples and will be present in the dataNode [data].</p>
-<p>Each global shared data is indexed (In the CSV exemple, the index is the lane of each datum) and we will use the term "global index" as a generic expression to reference this main indexation. </p>
+<p>Each global shared data is indexed (In the CSV exemple, the index is the lane of each datum) and we will use the term "global index" as a generic expression to reference this main indexation.</p>
 <h2 id="how-to-use-the-selection-from-a-graph-to-draw-another-one">How to use the selection from a graph to draw another one<a class="headerlink" href="#how-to-use-the-selection-from-a-graph-to-draw-another-one" title="Permanent link">&para;</a></h2>
 <p>First example :</p>
 <ul>
 <li><a href="/wdg/selection/selection-example-1.xprjson">selection-example-1.xprjson</a></li>
 </ul>
-<p>In this first exemple we :  </p>
+<p>In this first exemple we :</p>
 <ul>
 <li>Plot all data in one scatter plot graph (Plotly Generic)</li>
-<li>Recover the selection from the scatter </li>
+<li>Recover the selection from the scatter</li>
 <li>Build an histogram using only the selected data</li>
 </ul>
 <p>The main data is an array of datum that each contains 3 values [Alpha, Beta, Delta]. Typically obtained from a CSV import. The cross plot will be done between [alpha vs beta] and [delta] will be used to draw the histogram.</p>
@@ -930,23 +916,23 @@
 <li>One DataNode that contains the global data.</li>
 <li>Two DataNodes are created for each Plotly Graph (data and layout)</li>
 <li>One DataNode which contains the selection</li>
-<li>One widget [plotly generic] is the scatter plot </li>
-<li>One widget  [plotly generic] is the histogram </li>
+<li>One widget [plotly generic] is the scatter plot</li>
+<li>One widget [plotly generic] is the histogram</li>
 </ul>
 <p>The data for the Plotly histogram is dependant of the selection DataNode.</p>
 <blockquote>
-<p>The graphs and DataNodes associated (PloltlyData and PlotlyLayout) dont know each others and dont have direct relationship. </p>
+<p>The graphs and DataNodes associated (PloltlyData and PlotlyLayout) dont know each others and dont have direct relationship.</p>
 </blockquote>
-<p>In order to have a clean change in the histogram,  the X axis limit and bin limits are defined via all the data. </p>
+<p>In order to have a clean change in the histogram, the X axis limit and bin limits are defined via all the data.</p>
 <h2 id="how-to-draw-a-graph-with-different-sources-of-selection">How to draw a graph with different sources of selection<a class="headerlink" href="#how-to-draw-a-graph-with-different-sources-of-selection" title="Permanent link">&para;</a></h2>
 <p>Now, lets imagine that what you want to draw is defined by the addition of different incoming selections.</p>
 <p>Example 2:</p>
 <ul>
 <li><a href="/wdg/selection/selection-example-2.xprjson">selection-example-2.xprjson</a></li>
 </ul>
-<p>In Exemple 2 </p>
+<p>In Exemple 2</p>
 <ul>
-<li>We draw 2 scatter plots </li>
+<li>We draw 2 scatter plots</li>
 <li>Both selection are used to draw the histogram.</li>
 </ul>
 <p>This exemple is similar than the last one except that :</p>
@@ -958,11 +944,11 @@
 <p>The structure of the selection node has changed, there is now one field for each graph which will aggregate their selection.</p>
 <p>Each selection actuator from the cross plot now is now linked with one field of the selection node.</p>
 <blockquote>
-<p>It is relevant that the code of the process DataNode dont know the number and the origin of each incoming selections. You can so add and remove origin of  selection without changing the code of the process datanode</p>
+<p>It is relevant that the code of the process DataNode dont know the number and the origin of each incoming selections. You can so add and remove origin of selection without changing the code of the process datanode</p>
 </blockquote>
 <p>The PlotlyData datanode used for the histogram takes information from the process node.</p>
 <blockquote>
-<p>A datanode is used to collect information and create the "global" selection. This is not done in the datanode used for plotly data. This global selection could be used for other graphs or script without copy/paste. </p>
+<p>A datanode is used to collect information and create the "global" selection. This is not done in the datanode used for plotly data. This global selection could be used for other graphs or script without copy/paste.</p>
 </blockquote>
 <h2 id="how-to-synchronize-selection-to-have-a-single-global-selection">How to synchronize selection to have a single global selection<a class="headerlink" href="#how-to-synchronize-selection-to-have-a-single-global-selection" title="Permanent link">&para;</a></h2>
 <p>The different selection on each graph are independant.</p>
@@ -973,137 +959,91 @@
 </ul>
 <p>In this exemple we do 2 scatter plots from the same global data.
 As exemple 2, we use a process node to concatenate the information but on both graphs we want to see all the selected data.</p>
-<p>Plotly graphs are mainly correlated with their own selection. </p>
+<p>Plotly graphs are mainly correlated with their own selection.</p>
 <blockquote>
-<p>Trying to use the "selectedpoints" field present in plotly data is a bad idea. This fied is ok if the graph dont has his own selection behavior. But this field is erased when using "rectangle" or "lasso" selection. It is better to consider external selection as a complement of the possible present selection. "appendix II" will enter deeper  in exposing the selection </p>
+<p>Trying to use the "selectedpoints" field present in plotly data is a bad idea. This fied is ok if the graph dont has his own selection behavior. But this field is erased when using "rectangle" or "lasso" selection. It is better to consider external selection as a complement of the possible present selection. "appendix II" will enter deeper in exposing the selection</p>
 </blockquote>
 <p>The additional selected items are not drawn last, so we see clearly a difference between the selection from the graph and the selection from other sources. In next exemple we propose a solution to handle this.</p>
 <h2 id="how-to-use-the-selection-event-if-the-index-selected-are-different-from-the-data-index">How to use the selection event if the index selected are different from the data index<a class="headerlink" href="#how-to-use-the-selection-event-if-the-index-selected-are-different-from-the-data-index" title="Permanent link">&para;</a></h2>
-<p>Example 4:
-* <a href="/wdg/selection/selection-example-4.xprjson">selection-example-4.xprjson</a></p>
+<p>Example 4:</p>
+<ul>
+<li><a href="/wdg/selection/selection-example-4.xprjson">selection-example-4.xprjson</a></li>
+</ul>
 <p>For the moment, in the different exemples we have assumed that the [index] given by the selection is the same that the index of the data.</p>
-<p>It means that if the data selected is "4" it is the same index on the global data index. </p>
+<p>It means that if the data selected is "4" it is the same index on the global data index.</p>
 <p>But it is not always the case, for multiple reasons, the index given by the selection could be different, for exemple</p>
 <ul>
-<li>you need to draw only a part of the data   </li>
+<li>you need to draw only a part of the data</li>
 <li>you need to sort the data X vs Y in order to draw a line</li>
 <li>you need to sort the global data before drawing in order to control
-   the Z order of the draw</li>
+  the Z order of the draw</li>
 <li>...</li>
 </ul>
 <p>Each plotly trace contains a [customdata] field that can help us to resolve this problem</p>
-<p>In exemple [nom de l'exemple] we used the same But in the data for plotly DataNode we order the drawn order with all selected data at the end. </p>
+<p>In exemple [nom de l'exemple] we used the same But in the data for plotly DataNode we order the drawn order with all selected data at the end.</p>
 <blockquote>
 <p>it is not possible to give a drawn order to plotly (V2.16.3). The element and the trace are drawn in the order given by the user. Last element of last trace are drawn last.</p>
 </blockquote>
-<p>In the data for plotly Datanode we sort the element but we keep the change in an array called "orderForGraph" which will be transfer to plotly in the "customdata" field. This field is present in the selection of the dataflow and can be used in the selectionProcess node to obtain the equivalent index. </p>
+<p>In the data for plotly Datanode we sort the element but we keep the change in an array called "orderForGraph" which will be transfer to plotly in the "customdata" field. This field is present in the selection of the dataflow and can be used in the selectionProcess node to obtain the equivalent index.</p>
 <h2 id="create-a-reset-selection-action">Create a reset selection action<a class="headerlink" href="#create-a-reset-selection-action" title="Permanent link">&para;</a></h2>
-<p>Example 5:
-* <a href="/wdg/selection/selection-example-5.xprjson">selection-example-5.xprjson</a></p>
-<p>in our exemple, selection is in an independant DataNode, and no more only a graphical features. </p>
-<p>In order to reset the selection, we need to clean all the DataFlow and all the graphics. In exemple 5 we create a reset selection script which is triggered by a push button. </p>
-<p>3 significant addition in the dataNode have to be done in order to have a clean result. </p>
+<p>Example 5:</p>
 <ul>
-<li>Reset the DataNode [Selection] via the xDashApi function. This will reset the selection and the plotly data (done in [ResetSelection] dataNode)</li>
-<li>Add the field "selections : []" in all layout impacted in order to remove all the visible rectangle or lasso drawn</li>
+<li><a href="/wdg/selection/selection-example-5.xprjson">selection-example-5.xprjson</a></li>
+</ul>
+<p>in our exemple, selection is in an independant DataNode, and no more only a graphical features.</p>
+<p>In order to reset the selection, we need to clean all the DataFlow and all the graphics. In exemple 5 we create a reset selection script which is triggered by a push button.</p>
+<p>3 significant addition in the dataNode have to be done in order to have a clean result.</p>
+<ul>
+<li>
+<p>Reset the DataNode [Selection] via the chalkit function <em>chalkit.setVariable</em>. This will reset the selection and the plotly data (done in [ResetSelection] dataNode)</p>
+</li>
+<li>
+<p>Add the field "selections : []" in all layout impacted in order to remove all the visible rectangle or lasso drawn</p>
+</li>
 <li>Create a relation between the resetSelection action script and the different layout to trigger the layout dataNodes.</li>
 </ul>
 <h2 id="good-practices">Good Practices<a class="headerlink" href="#good-practices" title="Permanent link">&para;</a></h2>
 <h3 id="create-one-datanode-for-the-layout-and-one-for-the-data">Create one datanode for the layout and one for the data<a class="headerlink" href="#create-one-datanode-for-the-layout-and-one-for-the-data" title="Permanent link">&para;</a></h3>
-<p>If one dataNode is used to give the Data and the Layout for the widget, some unexpected graphical behavior can happen. </p>
-<p>Usually data often change according to action, but user like to keep element of visualisation (zoom, factor, element selected, ... )  </p>
-<p>When data changed, plotly will also reset the layout if they are in the same datanode, which can change your view according to what is defined in the original layout. </p>
+<p>If one dataNode is used to give the Data and the Layout for the widget, some unexpected graphical behavior can happen.</p>
+<p>Usually data often change according to action, but user like to keep element of visualisation (zoom, factor, element selected, ... )</p>
+<p>When data changed, plotly will also reset the layout if they are in the same datanode, which can change your view according to what is defined in the original layout.</p>
 <h3 id="never-use-the-same-layout-datanode-for-multiple-graphs">Never use the same layout DataNode for multiple graphs.<a class="headerlink" href="#never-use-the-same-layout-datanode-for-multiple-graphs" title="Permanent link">&para;</a></h3>
 <p>Plotly keeps in memory each layout for its own internal use. It never makes copy.</p>
-<p>If the same layout is used for exemple for 2 scatter plots each pan/zoom/selection done on one plot ... will be passed to the other graph but not at the same time. </p>
+<p>If the same layout is used for exemple for 2 scatter plots each pan/zoom/selection done on one plot ... will be passed to the other graph but not at the same time.</p>
 <p>The repercution will be done next time plotly via the dataFlow needs to check the current layout.</p>
-<p>And you dont know when it will happens (often when the widget is selected) </p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:documentation/docs/wdg/selection/plot-selection.md</p>
+<p>And you dont know when it will happens (often when the widget is selected)</p>
 <h2 id="appendix-1-plotly-selection-and-chalkit-selection">Appendix 1 : Plotly Selection and Chalk'it Selection<a class="headerlink" href="#appendix-1-plotly-selection-and-chalkit-selection" title="Permanent link">&para;</a></h2>
-<p>=======</p>
-<h2 id="appendix-1-plotly-selection-and-xdash-selection">Appendix 1 : Plotly Selection and xDash Selection<a class="headerlink" href="#appendix-1-plotly-selection-and-xdash-selection" title="Permanent link">&para;</a></h2>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>master:HowTos/docs/wdg/selection/plot-selection.md</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>Structures of the plotly selection are discribe in </p>
+<p>Structures of the plotly selection are discribe in</p>
 <p><a href="https://plotly.com/javascript/plotlyjs-events/#event-data">https://plotly.com/javascript/plotlyjs-events/#event-data</a></p>
-<p>So plotly selection events are dependant from the kind of the original graph (2D, 3D, map, ...) </p>
+<p>So plotly selection events are dependant from the kind of the original graph (2D, 3D, map, ...)</p>
 <p>Plotly selection cannot directly be transformed in JSON because it is a circular structure.</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:documentation/docs/wdg/selection/plot-selection.md
-Chalk'it selection event is one unified selection containing an array for each trace which contains the index of the element and the metadata if those one were present in the original trace. 
-=======
-xDash selection event is one unified selection containing an array for each trace which contains the index of the element and the metadata if those one were present in the original trace. </p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>master:HowTos/docs/wdg/selection/plot-selection.md</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>[curveNumber (trace number)]
- - indexSelected : []
- - customdata : [] (if customdata field is present in original DataTrace)</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:documentation/docs/wdg/selection/plot-selection.md
-For exemple if you have 2 traces in your Plotly graph, Chalk'it selection would return :
-=======
-For exemple if you have 2 traces in your Plotly graph, xDash selection would return :</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>master:HowTos/docs/wdg/selection/plot-selection.md</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
+<p>Chalk'it selection event is one unified selection containing an array for each trace which contains the index of the element and the metadata if those one were present in the original trace.</p>
+<p>[curveNumber (trace number)]</p>
+<ul>
+<li>indexSelected : []</li>
+<li>customdata : [] (if customdata field is present in original DataTrace)</li>
+</ul>
+<p>For exemple if you have 2 traces in your Plotly graph, Chalk'it selection would return :</p>
 <p>[ 0 : {Data : [1, 10, 120, 123], customData: [1, 10, 120, 123]}]
 [ 1 : {Data : [1, 10, 120, 123], customData: [1, 10, 120, 123]}]</p>
 <h2 id="appendix-2-how-to-handle-all-selection-behaviors-from-plotly-without-creating-trouble">Appendix 2 : how to handle all selection behaviors from plotly without creating trouble<a class="headerlink" href="#appendix-2-how-to-handle-all-selection-behaviors-from-plotly-without-creating-trouble" title="Permanent link">&para;</a></h2>
 <p>In some situation you want to have a total control of filter/selection and the way plotly control the selection can create confusion.</p>
-<p>The behavior you need can visualy enter in "conflict" with plotly internal behavior, or can provoke non wanted behaviors. </p>
-<p>When you draw a selection via plotly, each attributes dont used the standard fields (color, size, ...) but used the fields that are under the 2 fields "selected" and "unselected" .. and this is true only for plotly graph which accept this fields; </p>
-<p>"selected" and "unselected" are used by plotly when
- - a "rectangle" selection is done
- - a "lasso" selection is done
- - if the field "selectionpoints" is given as a plotly data</p>
+<p>The behavior you need can visualy enter in "conflict" with plotly internal behavior, or can provoke non wanted behaviors.</p>
+<p>When you draw a selection via plotly, each attributes dont used the standard fields (color, size, ...) but used the fields that are under the 2 fields "selected" and "unselected" .. and this is true only for plotly graph which accept this fields;</p>
+<p>"selected" and "unselected" are used by plotly when</p>
+<ul>
+<li>a "rectangle" selection is done</li>
+<li>a "lasso" selection is done</li>
+<li>if the field "selectionpoints" is given as a plotly data</li>
+</ul>
 <p>In those cases, data are divided in two groups (selected and unselected) and are drawn according to these fields. If you dont define them, plotly used internal behavior to create them (mainly reducing the tone and the opacity)</p>
 <ul>
-<li>
-<p>the "regular" way (for exemple [data][marker] in scatter plot) to
-   render graph are no more used when graph is in selection
-   mode.</p>
-</li>
-<li>
-<p>A "rectangle" or "lasso" selection reset the field "selectionpoints"</p>
-</li>
+<li>the "regular" way (for exemple [data][marker] in scatter plot) to
+  render graph are no more used when graph is in selection
+  mode.</li>
+<li>A "rectangle" or "lasso" selection reset the field "selectionpoints"</li>
 </ul>
-<p>In exemple 3 and 4 we want to keep the plotly behavior for drawing and moving selection, but we also  want to keep the way we draw things. So we copy the style on the "selected" and "unselected" fields because we want a global selection and not a selection which takes into account only the graph;</p>
+<p>In exemple 3 and 4 we want to keep the plotly behavior for drawing and moving selection, but we also want to keep the way we draw things. So we copy the style on the "selected" and "unselected" fields because we want a global selection and not a selection which takes into account only the graph;</p>
 
               
             </article>

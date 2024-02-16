@@ -456,6 +456,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    Memory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#clock" class="md-nav__link">
     Clock
   </a>
@@ -850,8 +857,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../xdashapi/" class="md-nav__link">
-        xDashApi
+      <a href="../../chalkitapi/" class="md-nav__link">
+        Chalk'it APIs
       </a>
     </li>
   
@@ -1028,6 +1035,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    Memory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#clock" class="md-nav__link">
     Clock
   </a>
@@ -1136,6 +1150,9 @@
 <td><a href="#delay">Delay</a></td>
 </tr>
 <tr>
+<td><a href="#memory">Memory</a></td>
+</tr>
+<tr>
 <td>MQTT</td>
 </tr>
 <tr>
@@ -1174,7 +1191,7 @@
 <li><a href="/ds/xprjson/formula-js.xprjson">formula-js.xprjson</a></li>
 </ul>
 <h2 id="rest-web-services">REST web-services<a class="headerlink" href="#rest-web-services" title="Permanent link">&para;</a></h2>
-<p>The dataNode type <strong>REST Web-service</strong> is used to call functions exposed as <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST web-services</a>. Input arguments  may come from Chalk'it workspaces (referenced using keyword <code>dataNodes</code>). The response is then evaluated in the workspace, if the call was successful.</p>
+<p>The dataNode type <strong>REST Web-service</strong> is used to call functions exposed as <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST web-services</a>. Input arguments may come from Chalk'it workspaces (referenced using keyword <code>dataNodes</code>). The response is then evaluated in the workspace, if the call was successful.</p>
 <p>Typically, the information required to write the dataNode comes from the web-service API documentation. It may use <a href="https://en.wikipedia.org/wiki/Swagger_(software)">Swagger</a>.</p>
 <h3 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h3>
 <h4 id="url">URL<a class="headerlink" href="#url" title="Permanent link">&para;</a></h4>
@@ -1217,15 +1234,13 @@
 <h2 id="csv-file-reader">CSV file reader<a class="headerlink" href="#csv-file-reader" title="Permanent link">&para;</a></h2>
 <p>Reads a CSV file and translates its content to JSON, according to the value of <em>ROW TO ARRAY</em> property :</p>
 <ul>
-<li>
-<p>If set to <em>true</em>, each row of the CSV file will be placed into a JavaScript Array.</p>
-<p>See example: <a href="/ds/xprjson/csv-array.xprjson">csv-array.xprjson</a></p>
-</li>
-<li>
-<p>Otherwise, if set to <em>false</em>,  content is parsed as an array of JSON objects.</p>
-<p>See example: <a href="/ds/xprjson/csv-json.xprjson">csv-json.xprjson</a></p>
-</li>
+<li>If set to <em>true</em>, each row of the CSV file will be placed into a JavaScript Array.</li>
 </ul>
+<p>See example: <a href="/ds/xprjson/csv-array.xprjson">csv-array.xprjson</a></p>
+<ul>
+<li>Otherwise, if set to <em>false</em>, content is parsed as an array of JSON objects.</li>
+</ul>
+<p>See example: <a href="/ds/xprjson/csv-json.xprjson">csv-json.xprjson</a></p>
 <p>The following CSV:</p>
 <div class="highlight"><pre><span></span><code>&quot;lat&quot;,&quot;lng&quot;,&quot;CH4&quot;
 48.876684, 2.175765, 1.94
@@ -1261,32 +1276,32 @@
 </code></pre></div>
 <p>otherwise, it is translated to:</p>
 <div class="highlight"><pre><span></span><code><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876684</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;lng&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175765</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;CH4&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1.94</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876684</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;lng&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175765</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;CH4&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1.95</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876684</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;lng&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175765</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;CH4&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1.92</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876705</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;lng&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175806</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;CH4&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1.93</span>
-<span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876705</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;lng&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175806</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;CH4&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1.99</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">]</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">lat</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876684</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">lng</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175765</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">CH4</span><span class="o">:</span><span class="w"> </span><span class="mf">1.94</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">lat</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876684</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">lng</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175765</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">CH4</span><span class="o">:</span><span class="w"> </span><span class="mf">1.95</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">lat</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876684</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">lng</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175765</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">CH4</span><span class="o">:</span><span class="w"> </span><span class="mf">1.92</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">lat</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876705</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">lng</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175806</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">CH4</span><span class="o">:</span><span class="w"> </span><span class="mf">1.93</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">lat</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876705</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">lng</span><span class="o">:</span><span class="w"> </span><span class="mf">2.175806</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">CH4</span><span class="o">:</span><span class="w"> </span><span class="mf">1.99</span><span class="p">,</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="p">];</span>
 </code></pre></div>
 <p>An example of table display of this CSV file is given here: <a href="/apps/xprjson/csv-array-table-display.xprjson">csv-array-table-display.xprjson</a>.</p>
 <p>It combines a <a href="#csv-file-reader">CSV file reader</a> as well as a <a href="../../ds/ds-basics/#formula">formula</a> using the <a href="https://underscorejs.org/">underscore.js library</a>.</p>
@@ -1305,6 +1320,14 @@
 <p>Applies a one-step delay to its input defined in the <strong>INPUT SIGNAL</strong> field.</p>
 <p>On the first execution, its output is set to the JSON value defined in the <strong>INIT VALUE</strong> field.</p>
 <p>Example with <a href="#clock">Clock</a> and <a href="#delay">Delay</a> : <a href="/apps/xprjson/clock-and-delay.xprjson">clock-and-delay.xprjson</a>.</p>
+<h2 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">&para;</a></h2>
+<p>Gets the previous value of a dataNode defined in the selected value of the <strong>DATANODE ORIGIN</strong> combobox. Its name is automatically generated by adding the prefix _pastValue__.</p>
+<p>On the first execution, its output is set to the JSON value defined in the <strong>INIT VALUE</strong> field.</p>
+<p>This special dataNode exhibits a distinct behavior compared to other dataNodes, as it doesn't follow the typical data flow execution. Specifically, when its <strong>DATANODE ORIGIN</strong> is executed, the memory is initiated at the subsequent scheduler start (of the same disconnected graph).</p>
+<p>With Memory dataNode, user can create counters for example, without adding real cycles in the graph.</p>
+<p>See example: <a href="/ds/xprjson/memory.xprjson">memory.xprjson</a>.</p>
+<p>In this example, the cycle between "<em>counter</em>" and "<em>pastValue_counter</em>" is a non-algebraic cycle, because of the special memory type.</p>
+<p><img alt="non-algebraic cycle" src="../img/ds-graph-cycle.png" title="non-algebraic cycle" /></p>
 <h2 id="clock">Clock<a class="headerlink" href="#clock" title="Permanent link">&para;</a></h2>
 <p>Gets the value of the JavaScript clock from the web-browser which is running the Chalk'it app:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
@@ -1317,7 +1340,7 @@
 </code></pre></div>
 <p>Example with <a href="#clock">Clock</a> and <a href="#delay">Delay</a> : <a href="/apps/xprjson/clock-and-delay.xprjson">clock-and-delay.xprjson</a>.</p>
 <h2 id="geolocation">Geolocation<a class="headerlink" href="#geolocation" title="Permanent link">&para;</a></h2>
-<p>This dataNode  gets the current geographical position of the device, using the GPS sensors if available.</p>
+<p>This dataNode gets the current geographical position of the device, using the GPS sensors if available.</p>
 <p>For privacy reasons, authorization is requested from the user to report its position. It also requires Chalk'it to operate under the https protocole.</p>
 <p><img alt="Geolocation Parameters" src="../img/geolocation-parameters.png" /></p>
 <p>DataNode produces the following output.</p>
@@ -1325,7 +1348,7 @@
 <p>Its output value is updated automatically according to the device position and movement.</p>
 <p>Example with <strong>Geolocation</strong> dataNode and <a href="../../wdg/wdg-geo-time/#leaflet-maps">Leaflet Maps</a> widget which displays your location : <a href="/apps/xprjson/osm-geojson-geolocation.full.xprjson">osm-geojson-geolocation.xprjson</a> .</p>
 <h2 id="websocket">WebSocket<a class="headerlink" href="#websocket" title="Permanent link">&para;</a></h2>
-<p>These dataNodes  offers support for the <a href="https://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>, which is supported by most web browsers to offert real-time data exchange capabilities. It provides full-duplex communication channels over a single TCP connection.
+<p>These dataNodes offers support for the <a href="https://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>, which is supported by most web browsers to offert real-time data exchange capabilities. It provides full-duplex communication channels over a single TCP connection.
 WebSocket in Chalk'it is implemented as client. It needs to communicate with remote WebSocket server.</p>
 <h3 id="websocket-receive">WebSocket receive<a class="headerlink" href="#websocket-receive" title="Permanent link">&para;</a></h3>
 <p>Acts as a WebSocket client receiver for Chalk'it.</p>
@@ -1335,7 +1358,7 @@ WebSocket in Chalk'it is implemented as client. It needs to communicate with rem
 <li><em>Remote IP port</em> : The port to connect to your WebSocket sender.</li>
 <li><em>Initialization token</em> : Keep to <strong>None</strong> for most applications.</li>
 <li>None : nothing is sent to the web server during initialization of exchange.</li>
-<li>xMOD : support to xMOD software. The token "ws_init"  is sent once to the xMOD WebSocket server during initialisation of exchange.</li>
+<li>xMOD : support to xMOD software. The token "ws_init" is sent once to the xMOD WebSocket server during initialisation of exchange.</li>
 <li><em>Decoding options</em> : decoding options applied on response data sent by your WebSocket sender.</li>
 </ul>
 <table>
@@ -1399,23 +1422,35 @@ WebSocket in Chalk'it is implemented as client. It needs to communicate with rem
 <ul>
 <li>Install Node.js from <a href="https://nodejs.org/">https://nodejs.org/</a></li>
 <li>Download Node.js server example <a href="/ds/ws/simpleWS.js">simpleWS.js</a></li>
-<li>Install <em>ws</em> library used in <em>simpleWS.js</em> server
-    <div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>ws
-</code></pre></div></li>
-<li>Run the WebSockets server
-    <div class="highlight"><pre><span></span><code>node<span class="w"> </span>simpleWS.js
-</code></pre></div></li>
+<li>Install <em>ws</em> library used in <em>simpleWS.js</em> server</li>
+</ul>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>ws
+</code></pre></div>
+<ul>
+<li>Run the WebSockets server</li>
+</ul>
+<div class="highlight"><pre><span></span><code>node<span class="w"> </span>simpleWS.js
+</code></pre></div>
+<ul>
 <li>The server should be ready and display the following message:</li>
 </ul>
-<p><img alt="server listening" src="../ws/server-listening.png" />
-* Open the <a href="/ds/ws/websocket-demo.xprjson">websocket-demo.xprjson</a>  example with Chalk'it.</p>
+<p><img alt="server listening" src="../ws/server-listening.png" /></p>
 <ul>
-<li>Switch to <strong>View</strong> mode.</li>
-<li>Test the communication with the server.</li>
+<li>
+<p>Open the <a href="/ds/ws/websocket-demo.xprjson">websocket-demo.xprjson</a> example with Chalk'it.</p>
+</li>
+<li>
+<p>Switch to <strong>View</strong> mode.</p>
+</li>
+<li>
+<p>Test the communication with the server.</p>
+</li>
 <li>
 <p>The server should display:</p>
-<p><img alt="server receiving" src="../ws/server-receiving.png" />
-  * Chalk'it should display:</p>
+<p><img alt="server receiving" src="../ws/server-receiving.png" /></p>
+</li>
+<li>
+<p>Chalk'it should display:</p>
 <p><img alt="Chalk'it receiving" src="../ws/xDash-ws-receive.png" /></p>
 </li>
 </ul>

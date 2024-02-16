@@ -24,3 +24,8 @@ doc/
 .vs
 source/.vs/ 
 __pycache__/
+
+/*.xprjson
+
+pyodide-worker-dev.js
+pyodide-worker-dev.js.map

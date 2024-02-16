@@ -745,8 +745,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../xdashapi/" class="md-nav__link">
-        xDashApi
+      <a href="../../chalkitapi/" class="md-nav__link">
+        Chalk'it APIs
       </a>
     </li>
   
@@ -922,7 +922,7 @@
 <h3 id="projecttotargetwindow">projectToTargetWindow<a class="headerlink" href="#projecttotargetwindow" title="Permanent link">&para;</a></h3>
 <ul>
 <li>This method makes the whole dashboard fits the entire target screen.</li>
-<li>The original dashboard (in edition  mode), seen with its scroll dimensions, is "projected" into the target screen. </li>
+<li>The original dashboard (in edition mode), seen with its scroll dimensions, is "projected" into the target screen.</li>
 <li>Target screen has no overflow (no scroll bars).</li>
 <li>Widgets proportions are not preserved.</li>
 <li>User should use this method when rows are defined in responsive layout, as each row will be projected into the target screen (for large target screens).</li>
@@ -934,13 +934,13 @@
 <p>Each row of the dashboard fits the entire target screen. Only one row displayed at a time. A pagination system is included.</p>
 <p><img alt="rowToPage" src="../png/rowToPage.png" title="rowToPage" /></p>
 <h3 id="rowtotab">rowToTab<a class="headerlink" href="#rowtotab" title="Permanent link">&para;</a></h3>
-<p>Each row of the dashboard fits the entire target screen. Only one row displayed at a time as a page tab. </p>
+<p>Each row of the dashboard fits the entire target screen. Only one row displayed at a time as a page tab.</p>
 <p><img alt="rowToTab" src="../png/rowToTab.png" title="rowToTab" /></p>
 <p>Tab names have to be be defined in the <em>Configuration of each row's name</em> modal in the <em>Dashboard aspect</em> main tabset:</p>
 <p><img alt="tab name config" src="../png/tab-name-config.png" title="tab name config" /></p>
 <h3 id="customnavigation">customNavigation<a class="headerlink" href="#customnavigation" title="Permanent link">&para;</a></h3>
 <p>Custom navigation mode is the most flexible multi-page mode. For navigation between pages, user needs to use button widgets connected to a JavaScript Script datanode including navigation instructions:</p>
-<div class="highlight"><pre><span></span><code><span class="nx">xDashApi</span><span class="p">.</span><span class="nx">goToPage</span><span class="p">(</span><span class="mf">2</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><span class="nx">chalkit</span><span class="p">.</span><span class="nx">goToPage</span><span class="p">(</span><span class="mf">2</span><span class="p">);</span>
 <span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
 </code></pre></div>
 <p><img alt="customNavigation" src="../png/customNavigation.png" title="customNavigation" /></p>
