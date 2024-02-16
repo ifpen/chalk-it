@@ -4,6 +4,7 @@ from pathlib import Path
 from taipy.gui.custom import Page
 from source.connectors.taipy.resource_handler import PureHTMLResourceHandler
 import plotly.express as px
+import inspect
 
 base_path = (Path(__file__).parent / "projects").resolve()
 file_name = base_path / "config.xprjson"
@@ -11,7 +12,7 @@ json_data = ""
 has_file_saved = False
 file_list = {}
 
-def load_file(state):
+def load_file(state, name):
     state.json_data = Path(state.file_name).read_text()
 
 
@@ -31,7 +32,7 @@ def select_file(state, name, payload):
     if os.path.exists(potential_file_path):
         state.file_name = potential_file_path
         
-def get_file_list(state):
+def get_file_list(state, name):
     # Use glob to find .xprjson files directly within the base directory.
     file_names = [file.name for file in base_path.glob('*.xprjson')]
     file_list_obj = {
@@ -39,6 +40,18 @@ def get_file_list(state):
         'base_path': str(base_path)
     }
     state.file_list = json.dumps(file_list_obj)
+
+def upload_file(state, name, payload):
+    print('file data', payload["file_data"])
+
+def get_function_names():
+    # Use inspect to get all current globals, then filter by those that are functions
+    # Exclude the specified function names from the list
+    excluded_function_names = ['get_file_list', 'load_file', 'select_file', 'get_function_names']
+    function_names = [name for name, obj in globals().items() if inspect.isfunction(obj) and name not in excluded_function_names]
+    return function_names
+
+function_names = get_function_names()
 
 a = 8
 b = 10
