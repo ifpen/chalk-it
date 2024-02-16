@@ -144,6 +144,7 @@
     "w_vers": "webpack -version",
     "w_build": "webpack --config=configs/webpack.prod.js",
     "w_build:dev": "webpack --config=configs/webpack.dev.js",
-    "w_serve:dev": "webpack-cli serve --config=configs/webpack.dev.js"
+    "w_serve:dev": "webpack-cli serve --config=configs/webpack.dev.js",
+    "w_analyzer": "webpack --config=configs/webpack.analyzer.js"
   }
 }
