@@ -166,7 +166,7 @@ function mapGeoJsonWidgetsPluginClass() {
         self.mouseoverHandler = (e) => {
           //  mouseoverHandler(e)
           let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
-          let eventStyle = {...style.events.mouseover.style};
+          let eventStyle = { ...style.events.mouseover.style };
           if (!_.isUndefined(eventStyle)) {
             e.target.setStyle(eventStyle);
           }
@@ -265,8 +265,8 @@ function mapGeoJsonWidgetsPluginClass() {
           self.Selected.updateCallback(self.Selected, self.Selected.getValue());
           //change style
 
-          let style = {...modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex]};
-          let eventStyle = {...style.events.click.style};
+          let style = { ...modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex] };
+          let eventStyle = { ...style.events.click.style };
           //initial style for other layers
           leafletLayer.eachLayer(function (layer) {
             if (e.target != layer) {
@@ -340,6 +340,9 @@ function mapGeoJsonWidgetsPluginClass() {
           if (self.state.selectedElement == e.target) {
             //unselect element
             self.state.selectedElement = '';
+            //save layer selected info
+            self.Selected.setValue({});
+            self.Selected.updateCallback(self.Selected, self.Selected.getValue());
           } else {
             //set selected element
             self.state.selectedElement = e.target;
@@ -353,10 +356,8 @@ function mapGeoJsonWidgetsPluginClass() {
       //add legend in the first render
       let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
       var minMaxAuto = style.possibleProperties[style.property];
-      if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
-        minMaxAuto[0] = style.propertyMin;
-      if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
-        minMaxAuto[1] = style.propertyMax;
+      if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number') minMaxAuto[0] = style.propertyMin;
+      if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number') minMaxAuto[1] = style.propertyMax;
 
       let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, style.property);
       var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
@@ -374,7 +375,7 @@ function mapGeoJsonWidgetsPluginClass() {
           if (!_.isUndefined(self.legend)) {
             self.legend.remove();
           }
-          self.legend = self.createChoroplethLegend(min, max, style.property + '' + (leafletIndex+1), colorScale);
+          self.legend = self.createChoroplethLegend(min, max, style.property + '' + (leafletIndex + 1), colorScale);
         } else {
           if (!_.isUndefined(self.legend)) {
             self.map.removeControl(self.legend);
@@ -406,7 +407,7 @@ function mapGeoJsonWidgetsPluginClass() {
             if (!_.isUndefined(self.legend)) {
               self.legend.remove();
             }
-            self.legend = self.createChoroplethLegend(min, max, style.property + '' + (leafletIndex+1), colorScale);
+            self.legend = self.createChoroplethLegend(min, max, style.property + '' + (leafletIndex + 1), colorScale);
           } else {
             if (!_.isUndefined(self.legend)) {
               self.map.removeControl(self.legend);
@@ -707,18 +708,17 @@ function mapGeoJsonWidgetsPluginClass() {
 
             styleForObject.fillColor = self.getColor(min, max, value, colorScale);
           }
-          if(layer == self.state.selectedElement){
+          if (layer == self.state.selectedElement) {
             layer.setStyle({
-              fillOpacity : styleForObject.fillOpacity,
-              weight : styleForObject.weight
+              fillOpacity: styleForObject.fillOpacity,
+              weight: styleForObject.weight,
             });
-          }
-          else {
+          } else {
             layer.setStyle(styleForObject);
           }
         });
         //toggle legend
-       /* if (!_.isUndefined(styleForObject.showLegend)) {
+        /* if (!_.isUndefined(styleForObject.showLegend)) {
           if (!!styleForObject.showLegend) {
             if (!_.isUndefined(self.legend)) {
               self.legend.remove();
