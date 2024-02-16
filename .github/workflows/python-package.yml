@@ -45,8 +45,8 @@ jobs:
         path: build/dist/
     
     # Uncomment and adjust if you have front-end artifacts to upload
-    # - name: Upload Front-end Artifact
-    #   uses: actions/upload-artifact@v2
-    #   with:
-    #     name: front-end-build
-    #     path: front-end/dist/
+    - name: Upload Front-end Artifact
+      uses: actions/upload-artifact@v2
+      with:
+         name: front-end-build
+         path: front-end/build/
