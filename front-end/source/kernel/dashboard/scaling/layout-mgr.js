@@ -617,9 +617,11 @@ export class LayoutMgrClass {
   }
 
   deserializeDashboardTheme(deviceObj) {
-    if (!_.isUndefined(deviceObj.theme)) {
+    if (deviceObj.theme) {
       this.dashboardTheme = deviceObj.theme;
       this.updateDashboardTheme();
+    } else {
+      this.resetDashboardTheme();
     }
   }
 
