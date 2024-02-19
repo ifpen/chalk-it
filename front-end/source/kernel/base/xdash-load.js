@@ -14,7 +14,7 @@ import _ from 'underscore';
 import 'angular-ui-router';
 import 'angular-route';
 import 'angular-loading-bar';
-import 'angular-ui-bootstrap'; // TODO check use
+import 'angular-ui-bootstrap';
 
 import 'angularjs-gauge';
 import 'angularjs-slider';
