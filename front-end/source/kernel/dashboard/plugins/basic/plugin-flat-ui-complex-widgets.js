@@ -346,7 +346,7 @@ function flatUiComplexWidgetsPluginClass() {
     };
 
     this.selectedValue = {
-      updateCallback: function () { },
+      updateCallback: function () {},
       setValue: function (val) {
         //AEF: modif for issue#61
         modelsHiddenParams[idInstance].selectedValue = val;
@@ -401,7 +401,7 @@ function flatUiComplexWidgetsPluginClass() {
           modelsHiddenParams[idInstance].keys = val;
           self.render();
         },
-        getValue: function () { },
+        getValue: function () {},
         addValueChangedHandler: function (updateDataFromWidget) {
           self.enable();
         },
@@ -430,7 +430,7 @@ function flatUiComplexWidgetsPluginClass() {
           modelsHiddenParams[idInstance].values = val;
           self.render();
         },
-        getValue: function () { },
+        getValue: function () {},
         addValueChangedHandler: function (updateDataFromWidget) {
           self.enable();
         },
@@ -465,7 +465,7 @@ function flatUiComplexWidgetsPluginClass() {
           }
           self.render();
         },
-        getValue: function () { },
+        getValue: function () {},
         addValueChangedHandler: function (updateDataFromWidget) {
           self.enable();
         },
@@ -627,7 +627,7 @@ function flatUiComplexWidgetsPluginClass() {
     };
 
     this.value = {
-      updateCallback: function () { },
+      updateCallback: function () {},
       setValue: function (val) {
         modelsHiddenParams[idInstance].value = val;
         self.render();
@@ -643,13 +643,13 @@ function flatUiComplexWidgetsPluginClass() {
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
       },
-      removeValueChangedHandler: function (updateDataFromWidget) { },
-      setCaption: function (caption, bCaptionManuallyChanged) { },
-      clearCaption: function () { },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+      setCaption: function (caption, bCaptionManuallyChanged) {},
+      clearCaption: function () {},
     };
 
     this.selectedValue = {
-      updateCallback: function () { },
+      updateCallback: function () {},
       setValue: function (val) {
         $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
           for (const selectedValue of val) {
@@ -675,9 +675,9 @@ function flatUiComplexWidgetsPluginClass() {
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
       },
-      removeValueChangedHandler: function (updateDataFromWidget) { },
-      setCaption: function (caption, bCaptionManuallyChanged) { },
-      clearCaption: function () { },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+      setCaption: function (caption, bCaptionManuallyChanged) {},
+      clearCaption: function () {},
     };
 
     self.render();
@@ -843,11 +843,18 @@ function flatUiComplexWidgetsPluginClass() {
     };
 
     this.value = {
-      updateCallback: function () { },
-      setValue: function (val, isSameSelectedValue) {
+      updateCallback: function () {},
+      setValue: function (val) {
+        pastSelect = JSON.stringify(modelsHiddenParams[idInstance].selectedValue);
+
         modelsHiddenParams[idInstance].value = val;
         self.render();
-        if (!isSameSelectedValue) self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+
+        selected = JSON.stringify(self.selectedValue.getValue());
+        if (selected !== pastSelect) {
+          //add a test to avoid loop
+          self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+        }
       },
       getValue: function () {
         return modelsHiddenParams[idInstance].value;
@@ -855,13 +862,13 @@ function flatUiComplexWidgetsPluginClass() {
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
       },
-      removeValueChangedHandler: function (updateDataFromWidget) { },
-      setCaption: function (caption, bCaptionManuallyChanged) { },
-      clearCaption: function () { },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+      setCaption: function (caption, bCaptionManuallyChanged) {},
+      clearCaption: function () {},
     };
 
     this.selectedValue = {
-      updateCallback: function () { },
+      updateCallback: function () {},
       setValue: function (val) {
         $('#list' + idWidget).val(val);
         modelsHiddenParams[idInstance].selectedValue = val;
@@ -891,9 +898,9 @@ function flatUiComplexWidgetsPluginClass() {
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
       },
-      removeValueChangedHandler: function (updateDataFromWidget) { },
-      setCaption: function (caption, bCaptionManuallyChanged) { },
-      clearCaption: function () { },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+      setCaption: function (caption, bCaptionManuallyChanged) {},
+      clearCaption: function () {},
     };
 
     self.render();
@@ -929,20 +936,20 @@ function flatUiComplexWidgetsPluginClass() {
         modelsHiddenParams[idInstance].value[row][column] = newValue;
         cell.html(
           '<span style="' +
-          self.valueColor() +
-          self.valueFontFamily() +
-          ' font-size: calc(7px + ' +
-          fontSize * getFontFactor() +
-          'vw)">' +
-          newValue +
-          '<span>'
+            self.valueColor() +
+            self.valueFontFamily() +
+            ' font-size: calc(7px + ' +
+            fontSize * getFontFactor() +
+            'vw)">' +
+            newValue +
+            '<span>'
         );
         self.value.updateCallback(self.value, self.value.getValue());
       });
     };
 
     this.disable = function () {
-      $('#table' + idWidget + ' td').on('change', function (evt, newValue) { });
+      $('#table' + idWidget + ' td').on('change', function (evt, newValue) {});
     };
 
     this.buildTable = function (val) {
@@ -990,14 +997,12 @@ function flatUiComplexWidgetsPluginClass() {
               let ParsedEditableCols = [];
               try {
                 if (modelsParameters[idInstance].editableCols == '*') {
-                  if (!modelsParameters[idInstance].indexColumn)
-                    ParsedEditableCols = _.range(val[i].length);
-                  else
-                    ParsedEditableCols = _.range(1,val[i].length);
+                  if (!modelsParameters[idInstance].indexColumn) ParsedEditableCols = _.range(val[i].length);
+                  else ParsedEditableCols = _.range(1, val[i].length);
                 } else {
                   ParsedEditableCols = JSON.parse(modelsParameters[idInstance].editableCols);
                 }
-              } catch (e) { }
+              } catch (e) {}
 
               let cursorEditable = '';
               if (_.indexOf(ParsedEditableCols, j) == -1) {
@@ -1122,14 +1127,14 @@ function flatUiComplexWidgetsPluginClass() {
       let parsedEditableCols = [];
       try {
         parsedEditableCols = JSON.parse(params.editableCols);
-      } catch (e) { }
+      } catch (e) {}
       return Array.isArray(parsedEditableCols) && parsedEditableCols.length
         ? [_VALUE_DESCRIPTOR_RW]
         : [_VALUE_DESCRIPTOR_R];
     };
 
     this.value = {
-      updateCallback: function () { },
+      updateCallback: function () {},
       setValue: function (val) {
         modelsHiddenParams[idInstance].value = val;
         self.render();
@@ -1140,9 +1145,9 @@ function flatUiComplexWidgetsPluginClass() {
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
       },
-      removeValueChangedHandler: function (updateDataFromWidget) { },
-      setCaption: function (caption, bCaptionManuallyChanged) { },
-      clearCaption: function () { },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+      setCaption: function (caption, bCaptionManuallyChanged) {},
+      clearCaption: function () {},
     };
 
     self.render();
@@ -1163,8 +1168,18 @@ function flatUiComplexWidgetsPluginClass() {
         help: 'wdg/wdg-basics/#multi-select',
       },
       flatUiList: { factory: 'listFlatUiWidget', title: 'List', icn: 'list', help: 'wdg/wdg-basics/#list' },
-      flatUiTable: { factory: 'tableFlatUiWidget', title: 'Table', icn: 'board', help: 'wdg/wdg-basics/#editable-table' },
-      flatUiEditableTable: { factory: 'tableFlatUiWidget', title: 'Editable table', icn: 'board', help: 'wdg/wdg-basics/#table' },  
+      flatUiTable: {
+        factory: 'tableFlatUiWidget',
+        title: 'Table',
+        icn: 'board',
+        help: 'wdg/wdg-basics/#editable-table',
+      },
+      flatUiEditableTable: {
+        factory: 'tableFlatUiWidget',
+        title: 'Editable table',
+        icn: 'board',
+        help: 'wdg/wdg-basics/#table',
+      },
     },
   };
 

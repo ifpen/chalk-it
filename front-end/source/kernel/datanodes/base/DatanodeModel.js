@@ -10,7 +10,6 @@
 
 DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependency, timeManager) {
   var self = this;
-  var doubleSetValueEventTrigger = true;
   this.datanodeRefreshNotifications = {};
   this.calculatedSettingScripts = {};
 
@@ -627,7 +626,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     return self.datanodeInstance.canSetValue();
   };
 
-  this.setValue = function (propertyName, val, doubleTrig, explicitTrig) {
+  this.setValue = function (propertyName, val, fromApi) {
     // dirty flag handling
     if (_.isFunction(self.datanodeInstance.getValue)) {
       if (val != self.datanodeInstance.getValue(propertyName)) {
@@ -639,18 +638,16 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
 
     self.datanodeInstance.setValue(propertyName, val);
 
-    if (!explicitTrig && (doubleSetValueEventTrigger || !doubleTrig)) {
-      //AEF: as long as double event trigger is not handled we must use this restriction
+    if (!fromApi) {
       self.schedulerStart([self.name()], self.name(), 'setValue');
     }
-    if (doubleTrig) doubleSetValueEventTrigger = !doubleSetValueEventTrigger;
   };
 
   // MBG 06/02/2021 : for Flairmap : set value and propagate to be visible in consuming formulas
   // when scheduler is in progress
-  this.setValueSpec = function (propertyName, val, doubleTrig) {
+  this.setValueSpec = function (propertyName, val) {
     const dnName = self.name();
-    self.setValue(propertyName, val, doubleTrig);
+    self.setValue(propertyName, val);
 
     newData = JSON.parse(self.settings()['json_var']);
     var now = new Date();
