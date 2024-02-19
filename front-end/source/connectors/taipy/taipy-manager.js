@@ -241,6 +241,18 @@ class TaipyManager {
   }
 
   /**
+   * Trigger an event to execute a Taipy function and submit the loaded file data from a file loader widget.
+   *
+   * @method uploadFileTrigger
+   * @public
+   * @param {String} functionName - The name of the Taipy function to be executed.
+   * @returns {void} This method does not return a value.
+   */
+  uploadFileTrigger(functionName, fileData) {
+    this.app.trigger(functionName, 'action1', { file_data: fileData });
+  }
+
+  /**
    * Uploads one or more files to the server by creating a temporary file in the directory and tracks the upload progress.
    * The directory path is defined in the "upload_folder" variable on the Taipy page.
    *

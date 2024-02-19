@@ -601,6 +601,7 @@ angular
 
         <small ng-if="$ctrl.sliderDescriptions[sliderName].file" title="Sets a file's content into the bound data node">(<span style="color: var(--main-text-color)">F</span>)</small>
         <small ng-if="$ctrl.sliderDescriptions[sliderName].trigger" title="Triggers the execution/update of the bound data node">(<span style="color: var(--main-text-color)">X</span>)</small>
+        <small ng-if="$ctrl.sliderDescriptions[sliderName].taipy_function" title="Selects the taipy function to execute">(<span style="color: var(--main-text-color)">X</span>)</small>
         <small ng-if="$ctrl.sliderDescriptions[sliderName].read || $ctrl.sliderDescriptions[sliderName].write">
             (<span ng-if="$ctrl.sliderDescriptions[sliderName].read" style="color: var(--success-color)" title="Reads data from the data node">R</span><span ng-if="$ctrl.sliderDescriptions[sliderName].write" style="color: var(--danger-color)" title="Writes data to the data node">W</span>)
         </small>
@@ -613,13 +614,17 @@ angular
             <label for="DS{{sliderName}}_">DataNodes</label>
             <select id="DS{{sliderName}}" ng-model="$ctrl.currentConnections.sliders[sliderName].dataNode" ng-change="$ctrl.onDatasourceChange(sliderName)">
                 <option>None</option>
-                <option ng-repeat="ds in $ctrl.dataNodes | filter: $ctrl.sliderDescriptions[sliderName].dsFilter" ng-class="{'validated' : ds.validated[sliderName]}">{{ds.name}}</option>
+                <option ng-repeat="ds in $ctrl.dataNodes | filter: $ctrl.sliderDescriptions[sliderName].dsFilter" ng-if="(sliderName == 'taipy_function' && ds.name == 'function_names') || (sliderName !== 'taipy_function' && ds.name != 'function_names')" ng-class="{'validated' : ds.validated[sliderName]}">{{ds.name}}</option>
             </select>
         </div>
-        <div class="dataconnection__col" ng-repeat="dataSelect in $ctrl.selectionCombos[sliderName].fieldsCombos">
-            <label for="DS{{sliderName}}_">DataFields ({{$index}})</label>
+        <div ng-repeat="dataSelect in $ctrl.selectionCombos[sliderName].fieldsCombos" class="dataconnection__col">
+            <label for="DF_{{$index}}_{{sliderName}}">
+                {{(sliderName == 'taipy_function') ? 'Function names' : 'DataFields'}} ({{$index}})
+            </label>
             <select id="DF_{{$index}}_{{sliderName}}" ng-model="dataSelect.selectedOpt" ng-change="$ctrl.onDatafieldChange(sliderName, $index)">
-                <option ng-repeat="opt in dataSelect.options" ng-value="opt" ng-class="{'validated' : opt.validated}">{{opt.label}}</option>
+                <option ng-repeat="opt in dataSelect.options" ng-value="opt" ng-class="{'validated' : opt.validated}">
+                    {{(sliderName == 'taipy_function' && opt.label !== 'None') ? opt.value.value : opt.label}}
+                </option>
             </select>
         </div>
     </div>

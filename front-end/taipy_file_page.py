@@ -41,13 +41,14 @@ def get_file_list(state, name):
     }
     state.file_list = json.dumps(file_list_obj)
 
+# Called from a file loader widgets
 def upload_file(state, name, payload):
     print('file data', payload["file_data"])
 
 def get_function_names():
     # Use inspect to get all current globals, then filter by those that are functions
     # Exclude the specified function names from the list
-    excluded_function_names = ['get_file_list', 'load_file', 'select_file', 'get_function_names']
+    excluded_function_names = ['get_file_list', 'load_file', 'select_file', 'get_function_names', 'save_file']
     function_names = [name for name, obj in globals().items() if inspect.isfunction(obj) and name not in excluded_function_names]
     return function_names
 

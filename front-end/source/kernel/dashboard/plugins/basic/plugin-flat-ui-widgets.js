@@ -215,6 +215,7 @@ function flatUiWidgetsPluginClass() {
   this.buttonFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
+    const $rootScope = angular.element(document.body).scope().$root;
 
     this.numberOfTriggers = modelsParameters[idInstance].numberOfTriggers;
 
@@ -261,7 +262,11 @@ function flatUiWidgetsPluginClass() {
             result.isBinary = false;
           }
 
-          self.notifyNewValue(result);
+          if ($rootScope.xDashLiteVersion) {
+            taipyManager.uploadFileTrigger(modelsTempParams[idInstance].functionName, result);
+          } else {
+            self.notifyNewValue(result);
+          }
         });
 
         if (modelsParameters[idInstance].binaryFileInput) {
@@ -358,7 +363,6 @@ function flatUiWidgetsPluginClass() {
 
     this.getActuatorDescriptions = function (model = null) {
       const data = model || modelsParameters[idInstance];
-
       const result = [];
       if (data && data.numberOfTriggers) {
         const isFile = data.fileInput || data.binaryFileInput;
@@ -377,6 +381,8 @@ function flatUiWidgetsPluginClass() {
             );
           }
         }
+        if ($rootScope.xDashLiteVersion && isFile)
+          result.push(new WidgetActuatorDescription('taipy_function', 'Function name', WidgetActuatorDescription.READ));
       }
       return result;
     };
@@ -397,6 +403,18 @@ function flatUiWidgetsPluginClass() {
         removeValueChangedHandler: function (updateDataFromWidget) {
           self.disable();
         },
+      };
+    }
+
+    if ($rootScope.xDashLiteVersion) {
+      this['taipy_function'] = {
+        setValue: function (val) {
+          modelsTempParams[idInstance].functionName = val;
+        },
+        getValue: function () {},
+        updateCallback: function () {},
+        addValueChangedHandler: function (updateDataFromWidget) {},
+        removeValueChangedHandler: function (updateDataFromWidget) {},
       };
     }
 
