@@ -39,7 +39,7 @@ export const datanodesManager = (function () {
 
   var graphVisu;
   if (!(typeof execOutsideEditor !== 'undefined' && execOutsideEditor)) {
-    // FIXME
+    // TODO really should not be here
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }
   var timeManager = new TimeManager();
@@ -521,6 +521,22 @@ export const datanodesManager = (function () {
     closeGraph: function () {
       graphVisu.closeGraph();
     },
+    exportGraph: function () {
+      graphVisu.exportGraph();
+    },
+    zoomOutGraph: function () {
+      graphVisu.zoomOut();
+    },
+    zoomInGraph: function () {
+      graphVisu.zoomIn();
+    },
+    openFullScreenGraph: function () {
+      graphVisu.openFullScreen();
+    },
+    searchGraph: function (text) {
+      graphVisu.searchGraph(text);
+    },
+
     isSingletonNode: function (name) {
       var isSingle = datanodesDependency.isSingletonNode(name);
       return isSingle;

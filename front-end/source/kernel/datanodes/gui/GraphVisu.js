@@ -380,9 +380,7 @@ export function GraphVisu(datanodesDependency) {
     document.getElementById('notconnectedtowidget').classList.remove('active');
   }
 
-  $('#inputSearchGraph').on('input', function (e) {
-    var input = $(this);
-    var val = input.val();
+  function searchGraph(val) {
     var tmpNode;
     countFoundedNode = 0;
     for (let k = 0; k < nodesTmp.length; k++) {
@@ -408,9 +406,9 @@ export function GraphVisu(datanodesDependency) {
     } else {
       fitAnimated();
     }
-  });
+  }
 
-  $('#exportGraph').on('click', function () {
+  function exportGraph() {
     var mynetworkCanvas = document.getElementById('canvas');
     console.log('mynetworkCanvas', mynetworkCanvas);
     mynetworkCanvas.toBlob(function (blob) {
@@ -420,9 +418,14 @@ export function GraphVisu(datanodesDependency) {
       a.href = window.URL.createObjectURL(blob);
       a.click();
     });
-  });
-
-  $('#openFullScreen').on('click', function () {
+  }
+  function zoomOut() {
+    network.setScale(network.getScale() - 0.3);
+  }
+  function zoomIn() {
+    network.setScale(network.getScale() + 0.3);
+  }
+  function openFullScreen() {
     var elem = document.getElementById('dependencyGraphBody');
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
@@ -433,15 +436,7 @@ export function GraphVisu(datanodesDependency) {
       /* IE11 */
       elem.msRequestFullscreen();
     }
-  });
-
-  $('#zoomIn').on('click', function () {
-    network.setScale(network.getScale() + 0.3);
-  });
-
-  $('#zoomOut').on('click', function () {
-    network.setScale(network.getScale() - 0.3);
-  });
+  }
 
   // public methods
   return {
@@ -450,5 +445,10 @@ export function GraphVisu(datanodesDependency) {
     selectNodeFromTagList,
     selectConnectedWithWidget,
     closeGraph,
+    exportGraph,
+    zoomOut,
+    zoomIn,
+    openFullScreen,
+    searchGraph,
   };
 }

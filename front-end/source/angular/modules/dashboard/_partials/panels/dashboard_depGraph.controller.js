@@ -6,6 +6,7 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 angular.module('modules.dashboard').controller('DashboardGraphDepController', [
   '$scope',
@@ -13,6 +14,7 @@ angular.module('modules.dashboard').controller('DashboardGraphDepController', [
   '$state',
   'DepGraphService',
   function ($scope, $rootScope, $state, DepGraphService) {
+    const self = this;
     /**************************************************************/
     /***********************Dependency graph***********************/
     /**************************************************************/
@@ -49,6 +51,31 @@ angular.module('modules.dashboard').controller('DashboardGraphDepController', [
       let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
       DepGraphService.editNodeFromGraph(dataNode, scopeDash, scopeDashDn);
+    };
+
+    $scope.exportGraph = function () {
+      datanodesManager.exportGraph();
+    };
+
+    $scope.zoomOut = function () {
+      datanodesManager.zoomOutGraph();
+    };
+
+    $scope.zoomIn = function () {
+      datanodesManager.zoomInGraph();
+    };
+
+    $scope.openFullScreen = function () {
+      datanodesManager.openFullScreenGraph();
+    };
+
+    $scope.openFullScreen = function () {
+      datanodesManager.openFullScreenGraph();
+    };
+
+    self.inputSearchGraphText = '';
+    $scope.onInputSearchGraph = function () {
+      datanodesManager.searchGraph(self.inputSearchGraphText);
     };
   },
 ]);
