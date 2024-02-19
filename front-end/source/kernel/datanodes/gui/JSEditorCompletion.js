@@ -1,3 +1,5 @@
+import CodeMirror from 'codemirror';
+
 export const JSEditorCompletion = (function () {
   const VALUE_LENGTH = 75;
 
