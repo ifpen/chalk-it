@@ -10,6 +10,7 @@
 import _ from 'underscore';
 import 'flat-ui.alt';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
@@ -296,6 +297,84 @@ function flatUiWidgetsPluginClass() {
       this.render();
     };
 
+    function displaySpinnerOnInputFileButton(idWidget) {
+      const self = this;
+      const aElement = document.getElementById('button' + idWidget);
+      const inputElement = document.getElementById('button' + idWidget + '_select_file');
+      const iElement = document.createElement('i');
+      let timeoutId;
+
+      this.disableButton = function () {
+        // disable until request finished
+        aElement.classList.add('disabled');
+        iElement.setAttribute('id', 'icon' + idWidget);
+        iElement.setAttribute('class', 'fa fa-spinner fa-spin');
+        aElement.append(iElement);
+      };
+      this.enableButton = function () {
+        aElement.classList.remove('disabled');
+        if (!!iElement) {
+          iElement.remove();
+        }
+      };
+
+      this.disableButton();
+      inputElement.onchange = function () {
+        clearTimeout(timeoutId);
+        document.body.focus();
+        self.enableButton();
+      };
+      document.body.onfocus = function () {
+        timeoutId = setTimeout(() => {
+          self.enableButton();
+          document.body.onfocus = null;
+        }, 200);
+      };
+    }
+
+    function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
+      if (_.isUndefined(widgetConnector.widgetsConnection[idInstance])) return;
+      const sliders = widgetConnector.widgetsConnection[idInstance].sliders;
+      const dnNames = [];
+      if (!_.isUndefined(sliders)) {
+        for (const trigger in sliders) {
+          const dataNodeName = sliders[trigger].dataNode;
+          if (dataNodeName != 'None') {
+            dnNames.push(datanodesManager.getDataNodeByName(dataNodeName).name());
+          }
+        }
+
+        if (dnNames.length > 0) {
+          const widgetElement = document.getElementById('button' + idWidget);
+          const iElement = document.createElement('i');
+          iElement.setAttribute('id', 'icon' + idWidget);
+          datanodesManager.getDataNodeByName(dnNames[0]).schedulerStart(dnNames, dnNames[0], 'triggerButton');
+          const intervalId = setInterval(function () {
+            const pendings = [];
+            dnNames.forEach((element) => {
+              if (datanodesManager.getDataNodeByName(element).status() == 'Pending') {
+                // check if datanode is in Pending state
+                $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg disabled'); // disable until request finished
+                pendings.push(true);
+                // Just do it if one datanode has "Pending" status. And do it only once
+                if (!widgetElement.contains(iElement)) {
+                  if (!iElement.classList.contains('fa', 'fa-spinner', 'fa-spin')) {
+                    iElement.classList.add('fa', 'fa-spinner', 'fa-spin');
+                  }
+                  widgetElement.append(iElement);
+                }
+              }
+            });
+            if (pendings.length == 0) {
+              $(iElement).remove();
+              $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
+              clearInterval(intervalId);
+            }
+          }, 100);
+        }
+      }
+    }
+
     this.render = function () {
       const widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('id', 'button-widget-html' + idWidget);
@@ -305,17 +384,12 @@ function flatUiWidgetsPluginClass() {
       if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
         fontSize = modelsParameters[idInstance].buttonFontSize;
       }
-      const styleDef =
-        'style="height: inherit; font-size: calc(7px + ' +
-        fontSize * getFontFactor() +
-        'vw + 0.4vh); ' +
-        this.buttonFontFamily() +
-        '" class="btn btn-table-cell btn-lg ' +
-        idInstance +
-        'widgetCustomColor';
+      const styles = `height: inherit; font-size: calc(7px + ${
+        fontSize * getFontFactor()
+      }vw + 0.4vh); ${this.buttonFontFamily()}`;
+      const classes = `btn btn-table-cell btn-lg ${idInstance}widgetCustomColor`;
 
       this.setButtonColorStyle();
-      let divContent = '';
 
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
@@ -327,35 +401,30 @@ function flatUiWidgetsPluginClass() {
         content = icon + ' ' + text;
       }
 
+      const divContent = document.createElement('a');
+      divContent.innerHTML = content;
+      divContent.id = 'button' + idWidget;
+      divContent.style = styles;
+      divContent.classList = classes;
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
-          const fileInput =
-            '<input onclick="displaySpinnerOnInputFileButton(\'' +
-            idWidget +
-            '\')" type="file" style="display : none;" id="button' +
-            idWidget +
-            '_select_file"></input>';
-          divContent += '<a ' + styleDef + '" id="button' + idWidget + '">' + content + fileInput + '</a>';
+          const fileInput = document.createElement('input');
+          fileInput.id = `button${idWidget}_select_file`;
+          fileInput.type = 'file';
+          fileInput.style = 'display : none;';
+          fileInput.onclick = function () {
+            displaySpinnerOnInputFileButton.bind(this)(idWidget);
+          };
+          divContent.appendChild(fileInput);
         } else {
-          divContent +=
-            '<a onclick="updateDataNodeFromWidgetwithspinButton( \'' +
-            idInstance +
-            "', '" +
-            idWidget +
-            '\')" ' +
-            styleDef +
-            '" id="button' +
-            idWidget +
-            '">' +
-            content +
-            '</a>';
+          divContent.onclick = () => updateDataNodeFromWidgetwithspinButton(idInstance, idWidget);
         }
         self.enable();
       } else {
-        divContent += '<a ' + styleDef + ' /*disabled*/" id="button' + idWidget + '">' + content + '</a>';
         self.disable();
       }
-      widgetHtml.innerHTML = divContent;
+      widgetHtml.replaceChildren(divContent);
+
       widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;');
       $('#' + idDivContainer).html(widgetHtml);
 
