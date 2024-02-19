@@ -153,12 +153,24 @@ export const JSONEdit = function () {
   }
 
   function displayJSONEdit(value, callback) {
-    $(
-      '<button class = "btn btn-rounded" onclick="var json = datanodesManager.getJsonEd();json.loadJSON()"> <i class = "basic icn-upload"></i>Import Json</button>'
-    ).appendTo($('#btn-json'));
-    $(
-      '<button class = "btn btn-rounded" onclick="var json = datanodesManager.getJsonEd();json.saveJSON()"> <i class = "basic icn-download"></i>Export Json</button>'
-    ).appendTo($('#btn-json'));
+    const buttonImport = document.createElement('button');
+    buttonImport.classList = 'btn btn-rounded';
+    buttonImport.innerHTML = '<i class="basic icn-upload"></i>Import Json';
+    buttonImport.onclick = () => {
+      const json = datanodesManager.getJsonEd();
+      json.loadJSON();
+    };
+
+    const buttonExport = document.createElement('button');
+    buttonExport.classList = 'btn btn-rounded';
+    buttonExport.innerHTML = '<i class = "basic icn-download"></i>Export Json';
+    buttonExport.onclick = () => {
+      const json = datanodesManager.getJsonEd();
+      json.saveJSON();
+    };
+
+    $('#btn-json').append([buttonImport, buttonExport]);
+
     $('<div id="jsonedit"style="height:100%"></div>').appendTo($('#tree-preview'));
     buildEditor(value, callback);
   }
