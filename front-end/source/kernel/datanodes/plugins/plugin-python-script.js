@@ -5,7 +5,6 @@ import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { PythonPluginRemoteExec, PythonPluginExecBase, PythonPluginLocalExec } from './plugin-python-support';
-import { JSEditorCompletion } from 'kernel/datanodes/gui/JSEditorCompletion';
 
 // TODO
 import 'codemirror/addon/comment/comment';
@@ -14,13 +13,10 @@ import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/addon/hint/show-hint';
 import 'codemirror/mode/python/python';
 import CodeMirror from 'codemirror';
+import { JSEditorCompletion } from 'kernel/datanodes/gui/JSEditorCompletion';
 
 if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported()) {
   (function () {
-    var error = false;
-
-    const isEmbedded = PythonPluginExecBase.isEmbedded();
-
     function createPythonExec(imageId, cliendId = undefined) {
       if (imageId === PythonPluginLocalExec.PSEUDO_IMAGE_ID) {
         return new PythonPluginLocalExec();
@@ -705,7 +701,7 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
         if (
           !newInstanceCallback(new pythonFormulaPlugin(settings, updateCallback, statusCallback, notificationCallback))
         )
-          return !error;
+          return true;
       },
     });
 
@@ -717,25 +713,19 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
       // Always a good idea...
       const self = this;
 
+      const isEmbedded = PythonPluginExecBase.isEmbedded();
+
       // Good idea to create a variable to hold on to our settings, because they might change in the future. See below.
       let currentSettings = settings;
-
-      // save past setting in case of cancelling modification in datanodeS
-      let pastSettings = settings;
-      let pastStatus = 'None';
 
       const clientId = PythonPluginRemoteExec.createId();
       let executor = null;
       let setupPromise = undefined;
       let setupOk = false;
+      let error = false;
 
       // **onSettingsChanged(newSettings)** (required) : A public function we must implement that will be called when a user makes a change to the settings.
       self.onSettingsChanged = function (newSettings, status) {
-        if (status === 'OK') {
-          pastStatus = status;
-          pastSettings = currentSettings;
-        }
-
         const newImage = newSettings.dockerImage?.id !== currentSettings.dockerImage?.id;
         if (newImage && executor) {
           executor.dispose();
@@ -757,21 +747,12 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
         if (!setupOk) {
           setupPromise = self.runScriptSettings();
         }
-        if (!error) {
-          pastSettings = currentSettings;
-          return true;
-        } else return false;
+        return !error;
       };
 
       self.isSettingNameChanged = function (newName) {
-        if (currentSettings.name != newName) return true;
-        else return false;
+        return currentSettings.name != newName;
       };
-
-      // AEF comment here to inhibite memory of past values
-      // self.getSavedSettings = function() {
-      //     return [pastStatus, pastSettings];
-      // };
 
       // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
       self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart, predsList) {
@@ -877,8 +858,7 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
         notificationCallback(notifType, currentSettings.name, notifText);
         statusCallback(statusType, statusText || notifText);
         updateCallback(undefined, statusType);
-        self.error = true;
-        self.pastStatus = 'Error';
+        error = true;
       };
 
       self.runScript = async function (args, setupPromise) {
@@ -886,9 +866,6 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
           notificationCallback('success', currentSettings.name, '');
           statusCallback('OK');
           updateCallback(data);
-          self.error = false;
-          self.pastStatus = 'OK';
-          self.pastSettings = currentSettings;
         }
 
         function error(statusText, notifText = undefined) {
