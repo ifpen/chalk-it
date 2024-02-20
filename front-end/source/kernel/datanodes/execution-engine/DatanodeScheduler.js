@@ -426,7 +426,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
     for (let i in datanodesManager.getAllDataNodes()) {
       datanodesManager.getAllDataNodes()[i].schedulerStatus('Stop');
       const xhr = datanodesManager.getAllDataNodes()[i].getXHR();
-      if (!_.isUndefined(xhr)) xhrPending.add(xhr);
+      if (xhr) xhrPending.add(xhr);
     }
     //and abort all current ajax requests
     xhrPending.forEach(function (op) {
@@ -452,7 +452,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
       datanodesManager.getDataNodeByName(op).schedulerStatus('Stop');
       //abort if op is an ajax request
       const xhr = datanodesManager.getDataNodeByName(op).getXHR();
-      if (!_.isUndefined(xhr)) xhr.abort();
+      if (xhr) xhr.abort();
     }
   }
 
