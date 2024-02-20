@@ -2,6 +2,7 @@
 import 'json_parseMore';
 import { xDashConfig, urlPython } from 'config.js';
 import { pyodideManager } from 'kernel/base/pyodide-loader';
+import { getAuthorizationHeaders } from 'angular/modules/components/auth-utils';
 
 export class PythonPluginExecBase {
   static ABORT_ERROR = 'ABORT';
