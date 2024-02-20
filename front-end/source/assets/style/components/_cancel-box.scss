@@ -163,5 +163,5 @@
 
 // Overrides the value in show-hint.css. Needed for the hints to show over dialog windows (z=5000)
 .CodeMirror-hints {
-  z-index: $zindex-overlay + 1;
+  z-index: $zindex-overlay + 1 !important;
 }
