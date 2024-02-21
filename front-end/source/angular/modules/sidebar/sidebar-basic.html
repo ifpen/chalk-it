@@ -33,7 +33,7 @@
       </span>
       Import
     </button>
-    <ul class="sidebar__list" ng-class="{'sidebar__list--disabled': !enableLocalServer}">
+    <ul ng-show="!xDashLiteVersion" class="sidebar__list" ng-class="{'sidebar__list--disabled': !enableLocalServer}">
       <li>
         <a
           ui-sref="modules.cards.layout({action: 'templateGallery'})"
@@ -53,7 +53,7 @@
       </span>
       Help
     </button>
-    <ul class="sidebar__list">
+    <ul ng-show="!xDashLiteVersion" class="sidebar__list">
       <li>
         <a
           ng-class="{'active' :  displayedId==='discover'}"
@@ -69,6 +69,11 @@
           ng-click="toggleMenuOptionDisplay('training')"
           >Training document</a
         >
+      </li>
+    </ul>
+    <ul ng-show="xDashLiteVersion" class="sidebar__list">
+      <li>
+        <a ng-click="openDoc()">Discover Chalk'it</a>
       </li>
     </ul>
   </div>
