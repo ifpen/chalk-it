@@ -144,7 +144,7 @@ angular
       }
 
       /*---------- _getConfigHelp ----------------*/
-      _getConfigHelp = async function () {
+      async function _getConfigHelp() {
         const settings = await ApisFactory.getSettings();
         if (!settings.help) {
           $scope.helpDisplay.checkboxModel = false;
@@ -152,7 +152,7 @@ angular
           $scope.helpDisplay.checkboxModel = settings.help.displayHelp;
           $scope.helpDisplay.isOpen = !$scope.helpDisplay.checkboxModel;
         }
-      };
+      }
 
       _getConfigHelp();
 
