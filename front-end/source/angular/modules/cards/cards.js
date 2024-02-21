@@ -19,7 +19,7 @@ export const cardsModule = angular
         userAuthenticated: false,
         abstract: true,
         url: '/cards',
-        template: '',
+        template: '<div ui-view></div>',
       });
     },
   ])

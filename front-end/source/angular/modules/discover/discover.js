@@ -6,7 +6,7 @@ export const discoverModule = angular.module('modules.discover', []).config([
       userAuthenticated: false,
       abstract: true,
       url: '/discover',
-      template: '',
+      template: '<div ui-view></div>',
     });
   },
 ]);
