@@ -86,6 +86,7 @@
     "font-awesome": "^4.6.1",
     "graph-data-structure": "^1.0.0",
     "interactjs": "1.10.11",
+    "intro.js": "^4.1.0",
     "jquery": "^2.0.3",
     "jshint": "^2.13.6",
     "jsoneditor": "^9.5.7",

@@ -7,6 +7,7 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Mondher AJIMI, Ghiles HIDEUR  │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 import { navHelper } from 'angular/modules/navigation-helper';
+import introJs from 'intro.js';
 
 // TODO unused ?
 function startIntroGallery() {
