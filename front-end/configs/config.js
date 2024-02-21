@@ -1,125 +1,60 @@
 const fs = require('fs');
+const env = process.env;
 
-function readxDashVersion() {
-  // Path to the JSON file
-  const filePath = '../version.json';
-
+// Utility function to read and parse JSON from a file
+function readJsonVersion(filePath, formatVersion) {
   try {
-    // Reading the file synchronously
     const data = fs.readFileSync(filePath, 'utf8');
-    
-    // Parsing the JSON data
-    const xDashJsonVersion = JSON.parse(data);
-    return xDashJsonVersion;
-  } catch (err) {
-    console.error('Error reading the version.json file:', err);
-  }
-}
-
-function readChalkitVersion() {
-  // Path to the JSON file
-  const filePath = '../../version.json';
-
-  try {
-    // Reading the file synchronously
-    const data = fs.readFileSync(filePath, 'utf8');
-    
-    // Parsing the JSON data
     const jsonData = JSON.parse(data);
-    const chalkitVersion = jsonData.major + '.' + jsonData.minor + '.' + jsonData.patch;
-
-    return chalkitVersion;
+    if (formatVersion && typeof formatVersion === 'function') return formatVersion(jsonData);
+    return jsonData;
   } catch (err) {
-    console.error('Error reading the version.json file:', err);
+    console.error(`Error reading the version.json file from ${filePath}:`, err);
   }
 }
 
-let xDashJsonVersion = readxDashVersion();
-let chalkitVersion = readChalkitVersion();
+const xDashJsonVersion = readJsonVersion('../version.json');
+const chalkitVersion = readJsonVersion('../../version.json', (data) => `${data.major}.${data.minor}.${data.patch}`);
 
 console.log(xDashJsonVersion); // Output the xDash version
 console.log(chalkitVersion); // Output the Chalkit version
 
-
 function getVersion() {
   if (xDashJsonVersion.C == 0) {
-    var dateToday = new Date();
-    var dateStart = new Date('01/01/2000');
-    var result = Math.abs(dateStart.getTime() - dateToday.getTime());
+    const dateToday = new Date();
+    const dateStart = new Date('01/01/2000');
+    const result = Math.abs(dateStart.getTime() - dateToday.getTime());
     return Math.ceil(result / (3600000 * 24));
-  } else {
-    return xDashJsonVersion.C;
   }
+  return xDashJsonVersion.C;
 }
 
-var VERSION_XDASH_A = xDashJsonVersion.A ? xDashJsonVersion.A : 0;
-var VERSION_XDASH_B = xDashJsonVersion.B ? xDashJsonVersion.B : '000';
-var VERSION_XDASH_C = getVersion();
-var VERSION = VERSION_XDASH_A + '.' + VERSION_XDASH_B + '.' + VERSION_XDASH_C;
-var VERSION_CHALK_IT = chalkitVersion;
+const VERSION_XDASH_A = xDashJsonVersion.A || '0';
+const VERSION_XDASH_B = xDashJsonVersion.B || '000';
+const VERSION_XDASH_C = getVersion();
+const VERSION = VERSION_XDASH_A + '.' + VERSION_XDASH_B + '.' + VERSION_XDASH_C;
+const VERSION_CHALK_IT = chalkitVersion;
 
-// datanodes with JSON Editor input
-var jsEditorDn;
-
-if (process.env.JSON_EDITOR_DATASOURCES != undefined) {
+if (env.JSON_EDITOR_DATASOURCES != undefined) {
   //compatibility
-  process.env.JSON_EDITOR_DATANODES = process.env.JSON_EDITOR_DATASOURCES;
+  env.JSON_EDITOR_DATANODES = env.JSON_EDITOR_DATASOURCES;
 }
-
-if (process.env.JSON_EDITOR_DATANODES != undefined) {
-  if (process.env.JSON_EDITOR_DATANODES == 'true') {
-    jsEditorDn = true;
-  }
-}
-
-var disableAuth = true;
-if (process.env.DISABLE_AUTH != undefined) {
-  if (process.env.DISABLE_AUTH == 'false') {
-    disableAuth = false;
-  }
-} else {
-  process.env.DISABLE_AUTH = 'true';
-}
-
-var disableSchedulerLog = true;
-if (process.env.DISABLE_SCHEDULER_LOG != undefined) {
-  if (process.env.DISABLE_SCHEDULER_LOG == 'false') {
-    disableSchedulerLog = false;
-  }
-}
-
-var disableSchedulerProfiling = false;
-if (process.env.DISABLE_SCHEDULER_PROFILING != undefined) {
-  if (process.env.DISABLE_SCHEDULER_PROFILING == 'true') {
-    disableSchedulerProfiling = true;
-  }
-}
-
-var standard_pyodide_packages = '';
-if (process.env.STANDARD_PYODIDE_PACKAGES != undefined) {
-  standard_pyodide_packages = process.env.STANDARD_PYODIDE_PACKAGES;
-}
-
-var micropip_pyodide_packages = '';
-if (process.env.MICROPIP_PYODIDE_PACKAGES != undefined) {
-  micropip_pyodide_packages = process.env.MICROPIP_PYODIDE_PACKAGES;
-}
-
-var pyodide_index = '';
-if (process.env.PYODIDE_INDEX != undefined) {
-  pyodide_index = process.env.PYODIDE_INDEX;
-}
+// datanodes with JSON Editor input
+const jsEditorDn = env.JSON_EDITOR_DATANODES === 'true';
+const disableAuth = env.DISABLE_AUTH !== 'false';
+const disableSchedulerLog = env.DISABLE_SCHEDULER_LOG !== 'false';
+const disableSchedulerProfiling = env.DISABLE_SCHEDULER_PROFILING === 'true';
 
 module.exports.config = {
-  port: process.env.PORT ? process.env.PORT : 7854,
+  port: env.PORT || 7854,
   xDashConfig: {
-    xDashBasicVersion: process.env.DISABLE_AUTH,
-    disableRegistration: process.env.DISABLE_REGISTRATION,
-    disableLocalServer: process.env.DISABLE_LOCAL_SERVER,
-    urlDoc: process.env.URL_DOC ? process.env.URL_DOC : '/doc/',
-    urlBase: process.env.URL_BASE ? process.env.URL_BASE : '',
-    urlBaseForExport: process.env.URL_BASE_FOR_EXPORT,
-    urlWebSite: process.env.URL_WEBSITE,
+    xDashBasicVersion: disableAuth.toString(),
+    disableRegistration: env.DISABLE_REGISTRATION || 'false',
+    disableLocalServer: env.DISABLE_LOCAL_SERVER || 'false',
+    urlDoc: env.URL_DOC || '/doc/',
+    urlBase: env.URL_BASE || '',
+    urlBaseForExport: env.URL_BASE_FOR_EXPORT || '',
+    urlWebSite: env.URL_WEBSITE || '',
     jsonEditorDatanodes: jsEditorDn,
     version: {
       major: VERSION_XDASH_A,
@@ -128,25 +63,25 @@ module.exports.config = {
       fullVersion: VERSION,
       chalkitVersion: VERSION_CHALK_IT,
     },
-    disableSchedulerLog: disableSchedulerLog,
-    disableSchedulerProfiling: disableSchedulerProfiling,
+    disableSchedulerLog,
+    disableSchedulerProfiling,
     pyodide: {
-      standard_pyodide_packages: standard_pyodide_packages,
-      micropip_pyodide_packages: micropip_pyodide_packages,
-      pyodide_index: pyodide_index,
+      standard_pyodide_packages: env.STANDARD_PYODIDE_PACKAGES || '',
+      micropip_pyodide_packages: env.MICROPIP_PYODIDE_PACKAGES || '',
+      pyodide_index: env.PYODIDE_INDEX || '',
     },
-    disablePythonSlim: process.env.DISABLE_PYTHON_SLIM,
+    disablePythonSlim: env.DISABLE_PYTHON_SLIM,
     copyright: '\u00A9 2016-' + new Date().getFullYear() + ' IFP Energies nouvelles',
   },
   xServConfig: {
-    url: disableAuth ? process.env.URL_LOCAL_SERVER : process.env.URL_SERVER,
-    urlApi: disableAuth ? null : process.env.URL_API,
-    urlApiFMI: disableAuth ? null : process.env.URL_FMI_API,
-    urlxProxy: process.env.URL_XPROXY,
+    url: disableAuth ? env.URL_LOCAL_SERVER : env.URL_SERVER,
+    urlApi: disableAuth ? null : env.URL_API,
+    urlApiFMI: disableAuth ? null : env.URL_FMI_API,
+    urlxProxy: env.URL_XPROXY,
   },
-  urlPython: process.env.URL_PYTHON,
-  urlxDashNodeServer: process.env.URL_XDASH_NODE_SERVER,
-  urlAdminApp: process.env.URL_XDASH_ADMIN,
+  urlPython: env.URL_PYTHON,
+  urlxDashNodeServer: env.URL_XDASH_NODE_SERVER,
+  urlAdminApp: env.URL_XDASH_ADMIN,
   dateLastBuild: new Date(),
-  urlBase: process.env.URL_BASE ? process.env.URL_BASE : '', //backward compatibility
+  urlBase: env.URL_BASE || '', //backward compatibility
 };
