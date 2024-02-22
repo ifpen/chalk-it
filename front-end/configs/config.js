@@ -25,15 +25,17 @@ const jsEditorDn = env.JSON_EDITOR_DATANODES === 'true';
 const disableAuth = env.DISABLE_AUTH !== 'false';
 const disableSchedulerLog = env.DISABLE_SCHEDULER_LOG !== 'false';
 const disableSchedulerProfiling = env.DISABLE_SCHEDULER_PROFILING === 'true';
+const urlDoc = env.LITE_BUILD === 'true' ? 'https://ifpen.github.io/chalk-it/hosted/doc/' : env.URL_DOC;
 
 module.exports.config = {
   port: env.PORT || 7854,
   xDashConfig: {
     xDashBasicVersion: disableAuth.toString(),
     xDashLiteVersion: env.LITE_BUILD || 'false',
+    taipyLink: env.TAIPY_LINK || 'false',
     disableRegistration: env.DISABLE_REGISTRATION || 'false',
     disableLocalServer: env.DISABLE_LOCAL_SERVER || 'false',
-    urlDoc: env.URL_DOC || '/doc/',
+    urlDoc: urlDoc || '/doc/',
     urlBase: env.URL_BASE || '',
     urlBaseForExport: env.URL_BASE_FOR_EXPORT || '',
     urlWebSite: env.URL_WEBSITE || '',

@@ -94,7 +94,7 @@
       ></i>
     </a>
   </div>
-  <div ng-if="!xDashLiteVersion || !editorView.checkboxModelView" class="aside__panel--nav">
+  <div ng-if="!xDashLiteVersion || taipyLink || !editorView.checkboxModelView" class="aside__panel--nav">
     <ul class="aside__panel--nav--wrapper ltr">
       <li
         id="li_editor-widget-toolbox"
@@ -108,7 +108,7 @@
       </li>
       <li
         id="li_editor-datanodes-list"
-        ng-if="!xDashLiteVersion"
+        ng-if="!xDashLiteVersion || taipyLink"
         ng-class="{'active':(editorView.leftSidePanel.target==='DataNode' && editorView.leftSidePanel.view)}"
       >
         <a id="editor-datanodes-list" ng-click="setLeftContent('DataNode');isFilterOpen=false;">
@@ -118,7 +118,7 @@
       </li>
       <li
         id="editor-datanodes-graph"
-        ng-if="!xDashLiteVersion"
+        ng-if="!xDashLiteVersion || taipyLink"
         ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.showGraphPanel && editorView.leftSidePanel.view)}"
         js-edit-mode
       >
