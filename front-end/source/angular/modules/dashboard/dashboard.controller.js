@@ -85,6 +85,9 @@ angular
 
       /*---------- setLeftContent ----------------*/
       $scope.setLeftContent = function (name) {
+        // Check if there are any changes in dataTree
+        if ($rootScope.taipyLink && name == 'DataNode') taipyManager.processVariableData();
+
         $scope.resetPanelStateR();
         if ($scope.editorView.leftSidePanel.target == name || !$scope.editorView.leftSidePanel.view) {
           $scope.editorView.leftSidePanel.view = !$scope.editorView.leftSidePanel.view;
