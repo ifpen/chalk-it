@@ -282,7 +282,7 @@
         <li>
           <a title="Refresh dataNode" ng-click="refreshDataNode(data)"><i class="basic icn-refresh"></i></a>
         </li>
-        <li>
+        <li ng-if="showListItem(data)">
           <a title="Edit dataNode" ng-click="openDataNode(data);toggleDataNodeDisplay($index)"
             ><i class="basic icn-edit"></i
           ></a>
@@ -295,7 +295,7 @@
         <li>
           <a id="dataNavDisplay" ng-click="toggleDataNavDisplay($index)"><i class="basic icn-more"></i></a>
           <ul class="dashboard-dropdown" ng-class="{visible:($index === displayedNavIndex)}">
-            <li>
+            <li ng-if="showListItem(data)">
               <a title="Duplicate dataNode" ng-click="duplicateDataNode(data)">
                 <i class="basic icn-duplicate"></i>Duplicate
               </a>

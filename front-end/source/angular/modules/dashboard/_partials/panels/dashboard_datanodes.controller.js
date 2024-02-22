@@ -214,7 +214,7 @@ angular
       };
 
       /*******************************************************/
-      /*******************DataNode cardTop *******************/
+      /****************** DataNode cardTop *******************/
       /*******************************************************/
 
       //AEF: toggle window of dataNode result
@@ -239,15 +239,18 @@ angular
 
       /*---------- edit button ----------------*/
       $scope.openDataNode = function (data) {
-        let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+        const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
 
-        let instanceType = data.type();
-        let val = instanceType;
-        let settings = data.settings();
+        const instanceType = data.type();
+        // Disable edit for taipy_link_plugin
+        if ($rootScope.taipyLink && instanceType == 'taipy_link_plugin') return;
+
+        const val = instanceType;
+        const settings = data.settings();
         settings.name = data.name();
 
         $rootScope.dataNodeViewModel = data;
-        let types = datanodesManager.getDataNodePluginTypes();
+        const types = datanodesManager.getDataNodePluginTypes();
         scopeDash.editorView.newDatanodePanel.view = true;
         scopeDash.editorView.newDatanodePanel.list = false;
         scopeDash.editorView.newDatanodePanel.type = true;
@@ -256,9 +259,14 @@ angular
         datanodesManager.createPluginEditor(types, instanceType, settings, val);
       };
 
+      /*---------- showListItem ----------------*/
+      $scope.showListItem = function (data) {
+        return !$rootScope.taipyLink || data.type() !== 'taipy_link_plugin';
+      };
+
       /*---------- show graph button ----------------*/
       $scope.showDepGraph = function (name) {
-        let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+        const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
         DepGraphService.showDepGraph(name, scopeDash);
       };
 
@@ -295,7 +303,7 @@ angular
 
       /*---------- Notification button ----------------*/
       $scope.getDataNodeDetailsAndNotifications = function (data) {
-        let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+        const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
 
         scopeDash.popup.datanodeNotif = true;
         scopeDash.popup.title = data.name();

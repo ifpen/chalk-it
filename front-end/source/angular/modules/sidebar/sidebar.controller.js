@@ -112,8 +112,9 @@ angular.module('modules.sidebar').controller('SidebarController', [
       tab.focus();
     };
 
-    /*------------- Open source version -------------------*/
-    /*-----------------------------------------------------*/
+    /*******************************************************/
+    /****************** Opensource version *****************/
+    /*******************************************************/
 
     /*---------- Open project from local ----------------*/
     $scope.openFromLocal = function () {

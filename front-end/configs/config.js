@@ -32,6 +32,7 @@ module.exports.config = {
   xDashConfig: {
     xDashBasicVersion: disableAuth.toString(),
     xDashLiteVersion: env.LITE_BUILD || 'false',
+    taipyLink: env.TAIPY_LINK || 'false',
     disableRegistration: env.DISABLE_REGISTRATION || 'false',
     disableLocalServer: env.DISABLE_LOCAL_SERVER || 'false',
     urlDoc: urlDoc || '/doc/',

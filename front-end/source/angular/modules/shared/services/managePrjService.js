@@ -187,7 +187,7 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.isLiveDemo = false;
 
       const scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
-      if (!_.isUndefined(scopeDashDn) && !$rootScope.xDashLiteVersion) {
+      if (!_.isUndefined(scopeDashDn) && (!$rootScope.xDashLiteVersion || $rootScope.taipyLink)) {
         scopeDashDn.searchDatanodeByName = '';
         scopeDashDn.applyDatanodeFilter();
       }
@@ -550,6 +550,10 @@ angular.module('modules').service('ManagePrjService', [
         }
       );
     };
+
+    /*******************************************************/
+    /****************** Opensource version********* ********/
+    /*******************************************************/
 
     /**
      * @name saveProjectToLacal

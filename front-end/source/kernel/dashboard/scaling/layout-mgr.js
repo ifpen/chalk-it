@@ -237,12 +237,12 @@ class LayoutMgrClass {
   }
 
   _readRows() {
-    const strRows = $('#select-rows').val() || this.$rootScope.xDashLiteVersion ? 1 : 0;
+    const strRows = $('#select-rows').val() ?? this.$rootScope.xDashLiteVersion ? 1 : 0;
     return parseInt(strRows, 10);
   }
 
   _readCols() {
-    const strCols = $('#select-cols').val() || 1;
+    const strCols = $('#select-cols').val() ?? 1;
     return parseInt(strCols, 10);
   }
 

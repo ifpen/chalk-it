@@ -27,7 +27,7 @@ var xdash = (function () {
         },
       ]);
 
-    if (!$rootScope.xDashLiteVersion) datanodesManager.clear();
+    datanodesManager.clear();
     widgetEditor.clear();
     xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 
@@ -149,21 +149,19 @@ var xdash = (function () {
       //AEF: save prj version for compatibility
       jsonObject.data.version = jsonObject.meta.version;
 
-      if (!$rootScope.xDashLiteVersion) {
-        if (datanodesManager.load(jsonObject.data, true)) {
-          angular
-            .element(document.body)
-            .injector()
-            .invoke([
-              'UndoManagerService',
-              (undoManagerService) => {
-                undoManagerService.clear();
-              },
-            ]);
-        } else {
-          clear();
-          return false;
-        }
+      if (datanodesManager.load(jsonObject.data, true)) {
+        angular
+          .element(document.body)
+          .injector()
+          .invoke([
+            'UndoManagerService',
+            (undoManagerService) => {
+              undoManagerService.clear();
+            },
+          ]);
+      } else {
+        clear();
+        return false;
       }
 
       widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
