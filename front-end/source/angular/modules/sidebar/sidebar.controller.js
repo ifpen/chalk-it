@@ -182,7 +182,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- Open Chalk'it documentation ----------------*/
     $scope.openDoc = function () {
-      const docURL = 'https://ifpen.github.io/chalk-it/hosted/doc/';
+      const docURL = xDashConfig.urlDoc;
       const tab = window.open(docURL, '_blank');
       tab.focus();
     };
