@@ -11,7 +11,8 @@ const PLUGINS = ['./source/kernel/dashboard/plugins/plugins.js', './source/kerne
 
 module.exports = {
   entry: {
-    studio: [...PLUGINS, './source/main-studio.js'],
+    editor: ['kernel/utils/editor-asserts.js', ...PLUGINS, './source/main-studio.js'],
+    dashboard: ['kernel/utils/runtime-asserts.js', ...PLUGINS, './source/main-dashboard.js'],
   },
   resolve: {
     modules: ['source', 'thirdparty', 'node_modules'],
@@ -104,6 +105,13 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: './index_tmp.html',
       title: 'Webpack: AngularJS configuration',
+      chunks: ['editor'],
+    }),
+    new HTMLWebpackPlugin({
+      template: './index_view_tmp.html',
+      title: 'Webpack: AngularJS configuration',
+      filename: 'index-view.html',
+      chunks: ['dashboard'],
     }),
     new CopyWebpackPlugin([
       {
