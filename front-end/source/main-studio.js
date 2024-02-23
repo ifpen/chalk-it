@@ -1,3 +1,5 @@
+import 'kernel/utils/editor-asserts';
+
 import './assets/style/studio.scss';
 
 import 'codemirror/lib/codemirror.css';

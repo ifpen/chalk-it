@@ -11,6 +11,10 @@ import { DataSet, Network } from 'vis-network/standalone';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { PREVIEW_JSON_FORMAT, jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/utils';
 
+// FIXME
+// import { assertEditorOnly } from 'kernel/utils/asserts';
+// assertEditorOnly();
+
 export function GraphVisu(datanodesDependency) {
   var offsetx, offsety, scale, duration, easingFunction;
   var network = null;

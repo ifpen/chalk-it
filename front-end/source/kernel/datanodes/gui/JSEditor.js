@@ -3,6 +3,10 @@ import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { checkES6, checkES7, checkES8, checkES9, checkES10 } from 'kernel/datanodes/plugins/thirdparty/utils';
 
+// FIXME
+// import { assertEditorOnly } from 'kernel/utils/asserts';
+// assertEditorOnly();
+
 // TODO
 import 'codemirror/addon/comment/comment';
 import 'codemirror/addon/comment/continuecomment';

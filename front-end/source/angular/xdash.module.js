@@ -8,4 +8,7 @@ import './modules/shared/services/managePrjService';
 import './modules/modules.controller';
 import './modules/dashboard/_partials/modals/exportDownloadModal.controller';
 
+import { assertEditorOnly } from 'kernel/utils/asserts';
+assertEditorOnly();
+
 export const xcloudModule = _xcloudModule;

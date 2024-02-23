@@ -1,3 +1,3 @@
-import "./assets/style/runtime.scss"
+import 'kernel/utils/runtime-asserts';
 
-import "./kernel/base/xdash-load"
+import './assets/style/runtime.scss';
