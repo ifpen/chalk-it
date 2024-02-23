@@ -39,13 +39,10 @@ angular
 
   .controller('PythonImagesListControler', [
     '$scope',
-    '$rootScope',
     '$state',
-    '$http',
-    '$window',
     'PythonImagesManager',
     '_images',
-    function ($scope, $rootScope, $state, $http, $window, PythonImagesManager, _images) {
+    function ($scope, $state, PythonImagesManager, _images) {
       $scope.images = _images;
       $scope.states = {};
       $scope.uploads = {};

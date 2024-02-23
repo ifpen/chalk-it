@@ -30,9 +30,7 @@ export const pythonImagesModule = angular
   ])
   .service('PythonImagesManager', [
     '$http',
-    '$rootScope',
-    'ApisFactory',
-    function ($http, $rootScope, ApisFactory) {
+    function ($http) {
       const self = this;
 
       this.getImages = async () => {
