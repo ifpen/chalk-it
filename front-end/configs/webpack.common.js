@@ -57,7 +57,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(jpeg|jpg|gif|png)$/i,
+        test: /\.(jpeg|jpg|gif|png|ico)$/i,
         use: [
           {
             loader: 'file-loader',
@@ -111,7 +111,7 @@ module.exports = {
       },
       {
         context: 'source/assets/',
-        from: '**/*.{jpeg,jpg,gif,png,eot,svg,ttf,woff,woff2}',
+        from: '**/*.{jpeg,jpg,gif,png,ico,eot,svg,ttf,woff,woff2}',
         to: 'assets/',
         flatten: true,
       },
