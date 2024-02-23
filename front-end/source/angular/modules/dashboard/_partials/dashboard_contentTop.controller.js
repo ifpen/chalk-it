@@ -167,9 +167,9 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
     };
 
     /*---------- Export button -------------------*/
-    $scope.exportHTMLPage = function (projectName) {
+    $scope.exportHTMLPage = async function (projectName) {
       const _projectName = $rootScope.xDashFullVersion ? projectName : $('#projectName').val() || 'Untitled';
-      const txt = htmlExport.createDashboardDocument(_projectName);
+      const txt = await htmlExport.createDashboardDocument(_projectName);
       const blob = new Blob([txt], { type: 'text/html;charset=utf-8' });
       saveAs(blob, _projectName + '.html');
     };

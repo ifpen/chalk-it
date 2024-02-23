@@ -12,10 +12,9 @@ import { htmlExport } from 'kernel/general/export/html-export';
 import { editorSingletons } from 'kernel/editor-singletons';
 const layoutMgr = editorSingletons.layoutMgr;
 
-var customNavigationRuntime = (function () {
-  const self = this;
-  self.jsonContent = {};
-  self.grid = {
+export const customNavigationRuntime = (function () {
+  let jsonContent = {};
+  let grid = {
     rows: 1,
     cols: 1,
   };
@@ -26,7 +25,7 @@ var customNavigationRuntime = (function () {
    * @param { Object } jsonContent - project xprjson
    */
   function setJsonContent(jsonContent) {
-    self.jsonContent = jsonContent;
+    jsonContent = jsonContent;
   }
 
   /**
@@ -35,7 +34,7 @@ var customNavigationRuntime = (function () {
    * @return { Object } - project xprjson
    */
   function _getJsonContent() {
-    return self.jsonContent;
+    return jsonContent;
   }
 
   /**
@@ -46,7 +45,7 @@ var customNavigationRuntime = (function () {
    * @property { Number } cols - The number of columns in the grid.
    */
   function _getGrid() {
-    return self.grid;
+    return grid;
   }
 
   /**
@@ -55,7 +54,7 @@ var customNavigationRuntime = (function () {
    * @param { Object } grid - jsonContent.device.cols
    */
   function _setGrid(grid) {
-    self.grid = grid;
+    grid = grid;
   }
 
   /**
@@ -80,10 +79,10 @@ var customNavigationRuntime = (function () {
   /**
    * customNavigationModeInit
    *
-   * @param { Object } jsonContent - project xprjson
+   * @param { Object } _jsonContent - project xprjson
    */
-  function customNavigationModeInit(jsonContent) {
-    const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
+  function customNavigationModeInit(_jsonContent) {
+    const numDefaultPage = Number(_jsonContent.pages.defaultPage.id);
     const { defaultRows, defaultCols } = _getGrid();
 
     const rows = Number(valueRow) || defaultRows;

@@ -39,7 +39,7 @@ export const datanodesManager = (function () {
 
   var graphVisu;
   if (!(typeof execOutsideEditor !== 'undefined' && execOutsideEditor)) {
-    // TODO really should not be here
+    // FIXME really should not be here
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }
   var timeManager = new TimeManager();

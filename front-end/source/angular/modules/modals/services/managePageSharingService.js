@@ -37,8 +37,8 @@ modalsModule.service('ManagePageSharingService', [
       }
     };
 
-    function _savePage() {
-      var txt = htmlExport.createDashboardDocument($rootScope.infoPage.name);
+    async function _savePage() {
+      const txt = await htmlExport.createDashboardDocument($rootScope.infoPage.name);
       fileManager.getFileListExtended('page', $rootScope.infoPage.name, txt);
       $rootScope.infoPage.isManagePageOpen = false;
     }

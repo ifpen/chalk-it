@@ -12,6 +12,7 @@ import _ from 'underscore';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { findGetParameter } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { loadDashboard } from 'kernel/runtime/xdash-runtime-main';
 
 export const reconstructFoundations = (function () {
   // base functions
@@ -129,7 +130,7 @@ export const reconstructFoundations = (function () {
         document.title = xprjson.meta.name;
       }
     }
-    RuntimeDashboard.loadDashboard(xprjson, exportOptions);
+    loadDashboard(xprjson, exportOptions);
   }
 
   /*--------preprocessXprjson--------*/

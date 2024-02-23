@@ -8,9 +8,9 @@
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 import angular from 'angular';
 import FreeboardUI from 'kernel/base/gui/FreeboardUI';
-import { startXdash, singletons } from 'kernel/runtime/xdash-runtime-main';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { fileManager } from 'kernel/general/backend/file-management';
+import { initXdashEditor } from 'kernel/editor-singletons';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 angular.module('modules').controller('ModulesController', [
@@ -155,7 +155,7 @@ angular.module('modules').controller('ModulesController', [
     const freeboardUIInst = new FreeboardUI();
     $rootScope.loadedTemplate = function () {
       setTimeout(() => {
-        startXdash();
+        initXdashEditor();
 
         // End fix by Ghiles
         $rootScope.availableTags = $rootScope.listAvailablesTags;

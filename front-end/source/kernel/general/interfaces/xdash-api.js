@@ -9,6 +9,7 @@
 
 import { xDashConfig } from 'config.js';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
 
 export const xDashApi = (function () {
   function setVariable(varDateNodeName, varJsonValue, explicitTrig) {
