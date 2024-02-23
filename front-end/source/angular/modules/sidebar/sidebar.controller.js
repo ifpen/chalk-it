@@ -12,7 +12,7 @@ import { fileManager } from 'kernel/general/backend/file-management';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 angular.module('modules.sidebar').controller('SidebarController', [
   '$scope',
@@ -175,7 +175,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
       $rootScope.origin = 'openProject';
       $rootScope.toggleMenuOptionDisplay('none');
       $state.go('modules', {});
-      singletons.xdash.openFile('project', 'local');
+      runtimeSingletons.xdash.openFile('project', 'local');
     };
   },
 ]);

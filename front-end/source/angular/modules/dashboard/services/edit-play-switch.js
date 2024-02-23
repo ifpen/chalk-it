@@ -5,7 +5,8 @@ import { dashState } from 'angular/modules/dashboard/dashboard';
 import { bFirstExec, tabWidgetsLoadedEvt, tabPlayLoadedEvt } from 'kernel/base/main-common';
 import { getMedia } from 'kernel/dashboard/scaling/scaling-utils';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { editorSingletons } from 'kernel/editor-singletons';
 
 // FIXME
 export const bRescaleNeededForModeSwitch = { value: false };
@@ -37,7 +38,7 @@ export function showPlayMode(bDoRescale) {
 }
 
 function switchToEditMode(bDoRescale, successCallback) {
-  const widgetEditor = singletons.widgetEditor;
+  const widgetEditor = editorSingletons.widgetEditor;
   if (bFirstExec.value) {
     const val = getMedia();
     widgetEditor.setLastMedia(val);
@@ -59,12 +60,12 @@ function switchToEditMode(bDoRescale, successCallback) {
 }
 
 function switchToPlayMode() {
-  const layoutMgr = singletons.layoutMgr;
-  const widgetEditor = singletons.widgetEditor;
+  const layoutMgr = editorSingletons.layoutMgr;
+  const widgetEditor = editorSingletons.widgetEditor;
   let xprjson = {};
   if (dashState.modeActive == 'edit-dashboard') {
     widgetEditor.updateSnapshotDashZoneDims();
-    xprjson = singletons.xdash.serialize();
+    xprjson = runtimeSingletons.xdash.serialize();
     currentDashboardScrollTop = $('#DropperDroite').scrollTop();
     widgetPreview.setScalingInformation(
       null,
@@ -85,7 +86,7 @@ function switchToPlayMode() {
       } catch (e) {
         console.log(e);
       }
-      singletons.layoutMgr.makeColsTrasparent();
+      editorSingletons.layoutMgr.makeColsTrasparent();
       dashState.modeActive = 'play-dashboard';
       setIsPlayModeStatus(true);
       $('#DropperDroitec').scrollTop(currentDashboardScrollTop);

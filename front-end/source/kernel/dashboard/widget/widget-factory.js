@@ -12,7 +12,7 @@ import PNotify from 'pnotify';
 
 import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 import {
   computeMainDivLayout,
   pxToViewPort,
@@ -124,7 +124,7 @@ function widgetFactoryClass() {
 
     // Conversions to work in px
     var widgetLayoutPx = convertViewportToPx(layoutViewport);
-    var containerLayoutPx = singletons.layoutMgr.getTargetDivLayoutPx(targetDiv);
+    var containerLayoutPx = editorSingletons.layoutMgr.getTargetDivLayoutPx(targetDiv);
     // Enforce size is into container and place correctly newly drag and dropped widget
     var relativeContainerLayoutPx = computeContainerRelativeLayout(containerLayoutPx);
     var relativeWidgetLayoutPx = enforceConstraints(widgetLayoutPx, relativeContainerLayoutPx);
@@ -153,8 +153,8 @@ function widgetFactoryClass() {
    * @param {any} modelJsonId
    */
   this.createUniqueInstanceId = function (modelJsonId) {
-    const modelsIdLength = singletons.widgetEditor.modelsId.length;
-    const usedIds = new Set(singletons.widgetEditor.modelsId);
+    const modelsIdLength = editorSingletons.widgetEditor.modelsId.length;
+    const usedIds = new Set(editorSingletons.widgetEditor.modelsId);
     const makeid = (charset) => charset.charAt(Math.floor(Math.random() * charset.length));
     const ids = [
       ...POSSIBLE_ANSI,
@@ -184,7 +184,7 @@ function widgetFactoryClass() {
       // TODO throw an error
     } else {
       usedIds.add(instanceId);
-      singletons.widgetEditor.modelsId[modelsIdLength] = instanceId;
+      editorSingletons.widgetEditor.modelsId[modelsIdLength] = instanceId;
     }
     return instanceId;
   };

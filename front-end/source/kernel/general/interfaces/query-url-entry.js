@@ -8,11 +8,11 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 import { findGetParameter } from 'kernel/datanodes/plugins/thirdparty/utils';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 export const urlQueryEntry = (function () {
   function process(isHtmlLoad) {
-    const xdash = singletons.xdash;
+    const xdash = runtimeSingletons.xdash;
 
     if (!isHtmlLoad) {
       if (xdash.pageLoad) {

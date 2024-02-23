@@ -15,7 +15,7 @@ import ko from 'knockout';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { offSchedLogUser, setDirtyFlagSafe } from 'kernel/base/main-common';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 import { FormulaInterpreter } from '../execution-engine/FormulaInterpreter';
 import { DatanodeScheduler } from '../execution-engine/DatanodeScheduler';
 import { loadJsScripts } from 'kernel/datanodes/plugins/thirdparty/utils';
@@ -146,8 +146,8 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
   };
 
   this.notificationCallback = function (notifType, dsSettingsName, msg, title, lastNotif) {
-    if (singletons.xdashNotifications) {
-      singletons.xdashNotifications.manageNotification(notifType, dsSettingsName, msg, lastNotif);
+    if (runtimeSingletons.xdashNotifications) {
+      runtimeSingletons.xdashNotifications.manageNotification(notifType, dsSettingsName, msg, lastNotif);
     } else {
       console.log('no notification lib was found. ');
       if (!_.isUndefined(title) && !_.isNull(title)) {

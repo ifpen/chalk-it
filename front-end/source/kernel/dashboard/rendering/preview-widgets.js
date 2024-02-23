@@ -14,9 +14,12 @@ import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { getMedia, isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { htmlExport } from 'kernel/general/export/html-export';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { editorSingletons } from 'kernel/editor-singletons';
+
 import { reconstructFoundations } from 'kernel/dashboard/rendering/reconstruct-foundations';
 import { rescaleWidget } from 'kernel/base/main-common';
+import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
 
 export const widgetPreview = (function () {
   var widget = [];
@@ -90,8 +93,8 @@ export const widgetPreview = (function () {
    * Prepares preview mode containers 'dashboard-zone' & 'DropperDroitec'
    * */
   function preparePreviewModeContainer() {
-    var xprjson = singletons.xdash.serialize();
-    xprjson.scaling = singletons.widgetEditor.getSnapshotDashZoneDims(); // patch
+    var xprjson = runtimeSingletons.xdash.serialize();
+    xprjson.scaling = editorSingletons.widgetEditor.getSnapshotDashZoneDims(); // patch
     var divDest = document.getElementById('dashboard-zone');
     var dprDc = document.createElement('div');
     dprDc.id = 'DropperDroitec';
@@ -111,7 +114,7 @@ export const widgetPreview = (function () {
     // cleanup : here make a reset not a clear
     reset();
     // get preview dimensions for scaling
-    previewDimensionsSnapshot = singletons.widgetEditor.getSnapshotDashZoneDims();
+    previewDimensionsSnapshot = editorSingletons.widgetEditor.getSnapshotDashZoneDims();
 
     // set scaling information
     scalingHelper.setDimensions(previewDimensionsSnapshot);

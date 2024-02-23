@@ -12,7 +12,7 @@ import _ from 'underscore';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { widgetFactory } from 'kernel/dashboard/widget/widget-factory';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import {
   getElementLayoutPx,
@@ -48,7 +48,7 @@ function widgetContainerClass() {
    */
   this.putAndGetTargetDiv = function (cln, targetDiv) {
     if (!targetDiv) {
-      targetDiv = singletons.layoutMgr.getDefaultContainer();
+      targetDiv = editorSingletons.layoutMgr.getDefaultContainer();
     }
     targetDiv.appendChild(cln); // put cln in dashboard
     return targetDiv;
@@ -122,7 +122,7 @@ function widgetContainerClass() {
     var modelJsonIdStr = element.id.substring(0, element.id.length - 1);
 
     var instanceId = element.id;
-    const widgetEditor = singletons.widgetEditor;
+    const widgetEditor = editorSingletons.widgetEditor;
     var widgetTitle = widgetEditor.widgetContainers.get(instanceId).widgetTitle; //AEF
     widgetEditor.widgetObject[instanceId] = widgetsPluginsHandler.copyWidget(
       wcId,
@@ -174,7 +174,7 @@ function widgetContainerClass() {
    */
   this.getMaxWidth = function (element) {
     const widgetLayoutPx = getElementLayoutPx(element);
-    const container = singletons.widgetEditor.getContainer(element);
+    const container = editorSingletons.widgetEditor.getContainer(element);
     const absoluteContainerLayoutPx = getElementLayoutPx(container);
     const maxWidthPx = computeMaxWidthPx(widgetLayoutPx, absoluteContainerLayoutPx);
     return maxWidthPx;
@@ -186,7 +186,7 @@ function widgetContainerClass() {
    */
   this.getMaxHeight = function (element) {
     const widgetLayoutPx = getElementLayoutPx(element);
-    const container = singletons.widgetEditor.getContainer(element);
+    const container = editorSingletons.widgetEditor.getContainer(element);
     const absoluteContainerLayoutPx = getElementLayoutPx(container);
     const maxHeightPx = computeMaxHeightPx(widgetLayoutPx, absoluteContainerLayoutPx);
     return maxHeightPx;
@@ -198,7 +198,7 @@ function widgetContainerClass() {
    * @returns FLOATING, FIXED
    */
   this.getFloatingState = function (element) {
-    if (singletons.layoutMgr.isRowColMode()) {
+    if (editorSingletons.layoutMgr.isRowColMode()) {
       if (element.parentNode.parentNode.id === 'DropperDroite') {
         return 'FLOATING';
       } else {
@@ -237,10 +237,10 @@ function widgetContainerClass() {
   this.constrainLayout = function _constrainLayout(element, requestedLayoutPx) {
     let containerLayoutPx;
 
-    const layoutMgr = singletons.layoutMgr;
-    if (singletons.layoutMgr.isRowColMode()) {
+    const layoutMgr = editorSingletons.layoutMgr;
+    if (layoutMgr.isRowColMode()) {
       // RowColMode
-      const containerDiv = singletons.widgetEditor.getContainer(element);
+      const containerDiv = editorSingletons.widgetEditor.getContainer(element);
       if (this.getFloatingState(element) === 'FIXED') {
         // work in relative coordinates
         containerLayoutPx = getElementLayoutPx(containerDiv);
@@ -303,7 +303,7 @@ function widgetContainerClass() {
     // relative coordinates update
     const $element = $(element);
     const $container = $(element.parentNode.parentNode);
-    const widgetEditor = singletons.widgetEditor;
+    const widgetEditor = editorSingletons.widgetEditor;
     if (bIsResize) {
       widgetEditor.widthRatioModels[element.id] = $element.width() / $container.width();
       widgetEditor.heightRatioModels[element.id] = $element.height() / $container.height();
@@ -320,7 +320,7 @@ function widgetContainerClass() {
    */
   this.highlightWidgets = function _highlightWidgets(elementIds) {
     elementIds.forEach((id) => {
-      const elem = singletons.widgetEditor.widgetContainers.get(id);
+      const elem = editorSingletons.widgetEditor.widgetContainers.get(id);
       if (elem && elem.divContainer) {
         $(elem.divContainer).fadeOut(30).fadeIn(140);
       }
@@ -371,7 +371,7 @@ function widgetContainerClass() {
     modelsHiddenParams[instanceId] = jQuery.extend(true, {}, modelsHiddenParams[element.id]);
     modelsParameters[instanceId] = jQuery.extend(true, {}, modelsParameters[element.id]);
 
-    const widgetEditor = singletons.widgetEditor;
+    const widgetEditor = editorSingletons.widgetEditor;
     const targetDiv = widgetEditor.getContainer(element);
     widgetEditor.addWidget(modelJsonIdStr, targetDiv, instanceId, wLayout);
     return instanceId;
@@ -398,7 +398,7 @@ function widgetContainerClass() {
   function _splitWidgets(elementIds) {
     const sel = [];
     const rest = [];
-    const widgetEditor = singletons.widgetEditor;
+    const widgetEditor = editorSingletons.widgetEditor;
     for (const [key, val] of widgetEditor.widgetContainers) {
       if (elementIds.includes(key)) {
         sel.push(val);
@@ -427,7 +427,7 @@ function widgetContainerClass() {
    */
   this.getMaxZIndex = function _getMaxZIndex() {
     let max = null;
-    const widgetEditor = singletons.widgetEditor;
+    const widgetEditor = editorSingletons.widgetEditor;
     for (const element of widgetEditor.widgetContainers.values()) {
       const z = element.divModel.style.zIndex;
       if (z !== undefined) {
@@ -445,7 +445,7 @@ function widgetContainerClass() {
    * @param {Map.<string, number>} indices the new zIndexes, stored by widget id
    */
   this.setZIndices = function _setZIndices(indices) {
-    const containers = singletons.widgetEditor.widgetContainers;
+    const containers = editorSingletons.widgetEditor.widgetContainers;
     for (const [key, z] of indices) {
       const widget = containers.get(key);
       if (widget && widget.divModel.style.zIndex !== z) {
@@ -460,7 +460,7 @@ function widgetContainerClass() {
    */
   this.getZIndices = function _getZIndices() {
     const indices = new Map();
-    const widgetEditor = singletons.widgetEditor;
+    const widgetEditor = editorSingletons.widgetEditor;
     for (const [key, widget] of widgetEditor.widgetContainers) {
       indices.set(key, widget.divModel.style.zIndex);
     }

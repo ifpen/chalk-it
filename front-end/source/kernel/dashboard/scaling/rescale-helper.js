@@ -8,7 +8,7 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'underscore';
 
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
@@ -189,7 +189,7 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
 
       switch (self.mode) {
         case 'edit':
-          singletons.layoutMgr.updateMaxTopAndLeft();
+          editorSingletons.layoutMgr.updateMaxTopAndLeft();
         case 'preview':
           break;
       }
@@ -332,9 +332,9 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
           widthVw: (100 * (cell.width() + 2)) / document.documentElement.clientWidth,
           heightVh: (100 * (cell.height() + 2)) / document.documentElement.clientHeight,
         };
-        if (typeof singletons.layoutMgr !== 'undefined') {
+        if (editorSingletons.layoutMgr) {
           // TODO
-          const heights = singletons.layoutMgr.getHeightCols();
+          const heights = editorSingletons.layoutMgr.getHeightCols();
           curDrpZone['rowHeightPercent'] = heights.length ? heights[0] : 100;
         }
         break;
@@ -345,9 +345,9 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
           widthVw: (100 * (cell.width() + 16)) / document.documentElement.clientWidth,
           heightVh: (100 * (cell.height() + 2)) / document.documentElement.clientHeight,
         };
-        if (typeof singletons.layoutMgr !== 'undefined') {
+        if (editorSingletons.layoutMgr) {
           // TODO
-          const heights = singletons.layoutMgr.getHeightCols();
+          const heights = editorSingletons.layoutMgr.getHeightCols();
           curDrpZone['rowHeightPercent'] = heights.length ? heights[0] : 100;
         }
     }

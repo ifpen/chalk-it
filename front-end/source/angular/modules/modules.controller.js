@@ -11,6 +11,7 @@ import FreeboardUI from 'kernel/base/gui/FreeboardUI';
 import { startXdash, singletons } from 'kernel/runtime/xdash-runtime-main';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { fileManager } from 'kernel/general/backend/file-management';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 angular.module('modules').controller('ModulesController', [
   '$scope',
@@ -159,7 +160,7 @@ angular.module('modules').controller('ModulesController', [
         // End fix by Ghiles
         $rootScope.availableTags = $rootScope.listAvailablesTags;
         datanodesManager.initialize(false);
-        $rootScope.currentProject = singletons.xdash.initMeta();
+        $rootScope.currentProject = runtimeSingletons.xdash.initMeta();
         $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
         if (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) {
           const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();

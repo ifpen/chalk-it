@@ -7,12 +7,11 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { dashState } from 'angular/modules/dashboard/dashboard';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 
-var workOnViewport = true;
 
 /*--------convert px to vw--------*/
 export function unitW(value) {
@@ -120,7 +119,7 @@ export function getFontFactor() {
     }
   } else if (dashState.tabActive == 'widgets') {
     if (!window.matchMedia('(min-width: 768px)').matches) {
-      return singletons.layoutMgr.getCols() || 1;
+      return runtimeSingletons.layoutMgr.getCols() || 1;
     } else {
       return 1;
     }

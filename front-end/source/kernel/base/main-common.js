@@ -6,7 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 import { dashState } from 'angular/modules/dashboard/dashboard';
 import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
@@ -87,7 +87,7 @@ export function onResize() {
   } else if (!$rootScope.moduleOpened) {
     if (dashState.tabActive == 'widgets') {
       if (dashState.modeActive == 'edit-dashboard') {
-        singletons.widgetEditor.resizeDashboard();
+        editorSingletons.widgetEditor.resizeDashboard();
         gridMgr.updateGrid();
       } else if (dashState.modeActive == 'play-dashboard') {
         widgetPreview.resizeDashboard();

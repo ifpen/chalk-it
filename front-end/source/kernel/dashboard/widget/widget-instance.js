@@ -10,7 +10,7 @@ import _ from 'underscore';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsTempParams, models } from 'kernel/base/widgets-states';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 
 function widgetInstanceClass() {
   /*--------Create Widget obj--------*/
@@ -45,7 +45,7 @@ function widgetInstanceClass() {
     // set editor json
     const elm = element.parentNode;
     if (elm) {
-      const widgetEditor = singletons.widgetEditor;
+      const widgetEditor = editorSingletons.widgetEditor;
       while (elm.hasChildNodes()) {
         elm.removeChild(elm.lastChild);
       }

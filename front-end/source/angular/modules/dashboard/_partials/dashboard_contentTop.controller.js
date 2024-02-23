@@ -11,7 +11,7 @@ import _ from 'underscore';
 import template from 'angular/modules/dashboard/_partials/modals/exportDownloadPage.html';
 import { fileManager } from 'kernel/general/backend/file-management';
 import { htmlExport } from 'kernel/general/export/html-export';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 import { saveAs } from 'file-saver';
 
 angular.module('modules.dashboard').controller('DashboardContentTopController', [
@@ -75,7 +75,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
 
     /*---------- Export button   ----------------*/
     $scope.exportProjectToLocal = function () {
-      const xdashFileSerialized = singletons.xdash.serialize();
+      const xdashFileSerialized = runtimeSingletons.xdash.serialize();
       const fileName = $('#projectName').val() || 'Untitled';
       saveAs(
         new Blob([JSON.stringify(xdashFileSerialized, null, '\t')], { type: 'application/octet-stream' }),

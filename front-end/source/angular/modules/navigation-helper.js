@@ -9,7 +9,7 @@
 
 import _ from 'underscore';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 function navigationHelperClass() {
   this.gotoMyProjects = function () {
@@ -45,7 +45,7 @@ function navigationHelperClass() {
     FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + 'xprjson', async function (msg1, msg2, type) {
       //AEF: fix bug add params and test on it
       if (type === 'success') {
-        await singletons.xdash.openProjectManager(msg1);
+        await runtimeSingletons.xdash.openProjectManager(msg1);
         $rootScope.loadingBarStop();
         $rootScope.currentProject.name = projectName;
         if (_.isFunction(callback)) callback();

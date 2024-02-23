@@ -6,7 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mondher AJIMI                                   │ \\
 // └────────────────────────────────────────────────────────────────────────────────────┘ \\
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 import { dashState } from 'angular/modules/dashboard/dashboard';
 import { showPlayMode, showEditMode, bRescaleNeededForModeSwitch } from './edit-play-switch';
 
@@ -26,7 +26,7 @@ angular.module('modules.dashboard').service('EditPlaySwitchService', [
       } else {
         showPlayMode(bRescaleNeededForModeSwitch.value);
       }
-      singletons.layoutMgr.updateDashBgColor(); // GHI issue #228
+      editorSingletons.layoutMgr.updateDashBgColor(); // GHI issue #228
     };
   },
 ]);

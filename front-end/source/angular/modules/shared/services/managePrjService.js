@@ -10,7 +10,7 @@ import _ from 'underscore';
 import PNotify from 'pnotify';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { fileManager } from 'kernel/general/backend/file-management';
 
@@ -90,7 +90,7 @@ angular.module('modules').service('ManagePrjService', [
             if ($rootScope.xDashFullVersion && !_.isUndefined(callback)) {
               callback(projectName);
             }
-            await singletons.xdash.openProjectManager(msg1);
+            await runtimeSingletons.xdash.openProjectManager(msg1);
             const notice = new PNotify({
               title: projectName,
               text: "Your project '" + projectName + "' is ready!",
@@ -209,7 +209,7 @@ angular.module('modules').service('ManagePrjService', [
       };
       $rootScope.alldatanodes = [];
       $rootScope.safeApply();
-      singletons.xdash.clear();
+      runtimeSingletons.xdash.clear();
     };
 
     /*---------- downloadFile ----------------*/

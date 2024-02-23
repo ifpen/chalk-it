@@ -10,7 +10,7 @@ import _ from 'underscore';
 import PNotify from 'pnotify';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 angular.module('modules.dashboard').service('ManageDatanodeService', [
   '$rootScope',
@@ -142,7 +142,7 @@ angular.module('modules.dashboard').service('ManageDatanodeService', [
 
     /*---------- open button /Load datanodes from xdjson----------------*/
     self.openFileData = function (target) {
-      singletons.xdash.openFile('datanode', target);
+      runtimeSingletons.xdash.openFile('datanode', target);
     };
 
     /*---------- filter By Connection btn----------------*/

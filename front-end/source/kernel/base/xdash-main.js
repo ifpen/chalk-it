@@ -17,7 +17,8 @@ import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { pyodideManager } from 'kernel/base/pyodide-loader';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { editorSingletons } from 'kernel/editor-singletons';
 import { XdashDataUpdateEngine } from './xdash-data-updates';
 import { offSchedLogUser } from 'kernel/base/main-common';
 import { DialogBox } from 'kernel/datanodes/gui/DialogBox';
@@ -49,8 +50,8 @@ export const Xdash = function () {
       ]);
 
     datanodesManager.clear();
-    singletons.widgetEditor.clear();
-    singletons.xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
+    editorSingletons.widgetEditor.clear();
+    runtimeSingletons.xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 
     $('#projectName')[0].value = prjName;
     $('.tab--active').removeClass('changed');
@@ -59,6 +60,7 @@ export const Xdash = function () {
 
     pyodideManager.reset(true, false);
 
+    const layoutMgr = editorSingletons.layoutMgr;
     layoutMgr.resetDashBgColor(); // GHI for issue #228
     layoutMgr.resetDashboardTheme();
 
@@ -107,13 +109,13 @@ export const Xdash = function () {
       dashState.modeActive == 'edit-dashboard' &&
       dashState.editorStatus == 'full'
     ) {
-      scale = singletons.widgetEditor.getCurrentDashZoneDims();
+      scale = editorSingletons.widgetEditor.getCurrentDashZoneDims();
     } else {
-      scale = singletons.widgetEditor.getSnapshotDashZoneDims();
+      scale = editorSingletons.widgetEditor.getSnapshotDashZoneDims();
     }
 
-    const layoutMgr = singletons.layoutMgr;
-    const dash = singletons.widgetEditor.serialize();
+    const layoutMgr = editorSingletons.layoutMgr;
+    const dash = editorSingletons.widgetEditor.serialize();
     const deviceCols = layoutMgr.serializeCols();
     const backgroundColor = layoutMgr.serializeDashBgColor();
     const theme = layoutMgr.serializeDashboardTheme();
@@ -188,13 +190,13 @@ export const Xdash = function () {
         return false;
       }
 
-      singletons.widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
+      editorSingletons.widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
       widgetConnector.deserialize(jsonObject.connections);
       widgetPreview.clear();
 
-      singletons.widgetEditor.unselectAllWidgets(); //AEF: deselect all widget at project load
+      editorSingletons.widgetEditor.unselectAllWidgets(); //AEF: deselect all widget at project load
 
-      const layoutMgr = singletons.layoutMgr;
+      const layoutMgr = editorSingletons.layoutMgr;
       layoutMgr.deserializeDashBgColor(jsonObject.device);
       layoutMgr.deserializeDashboardTheme(jsonObject.device);
 
@@ -404,7 +406,7 @@ export const Xdash = function () {
         }
         //AEF: fix bug add params and test on it
         if (type === 'success') {
-          singletons.xdash.openProjectManager(msg1);
+          runtimeSingletons.xdash.openProjectManager(msg1);
           let notice = new PNotify({
             title: projectName,
             text: 'Your ' + fileTypeServer + ' ' + projectName + ' is ready!',

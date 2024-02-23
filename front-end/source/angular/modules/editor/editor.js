@@ -9,7 +9,7 @@
 
 import { dashboardModule } from '../dashboard/dashboard.module';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 import { EventCenter } from './editor.events';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
@@ -28,8 +28,8 @@ export const editorModule = angular.module('modules.editor', [dashboardModule.na
 
 editorModule
   .service('EventCenterService', [EventCenter])
-  .value('LayoutMgrGetter', () => singletons.layoutMgr)
+  .value('LayoutMgrGetter', () => editorSingletons.layoutMgr)
   .value('WidgetsPluginsHandlerGetter', () => widgetsPluginsHandler)
   .value('WidgetConnectorGetter', () => widgetConnector)
-  .value('WidgetEditorGetter', () => singletons.widgetEditor)
+  .value('WidgetEditorGetter', () => editorSingletons.widgetEditor)
   .value('WidgetContainerGetter', () => widgetContainer);

@@ -12,7 +12,7 @@ import _ from 'underscore';
 
 import { panelDash } from './panel-dashboard';
 import { rescaleHelper } from 'kernel/dashboard/scaling/rescale-helper';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 import {
   EVENTS_EDITOR_SELECTION_CHANGED,
   EVENTS_EDITOR_ADD_REMOVE_WIDGET,
@@ -57,7 +57,7 @@ export function initEditWidget() {
   var editorDimensionsSnapshot;
   var scalingHelper = new rescaleHelper(editorDimensionsSnapshot, editorScalingMethod, 'edit');
 
-  singletons.layoutMgr.setScalingHelper(scalingHelper);
+  editorSingletons.layoutMgr.setScalingHelper(scalingHelper);
 
   var widgetSelectionContext = new Set(); // selection context (Instance Ids of selected widgets)
 
@@ -746,7 +746,7 @@ export function initEditWidget() {
 
           const grid = gridMgr.getGrid();
 
-          if (singletons.layoutMgr.isRowColMode() && container === MAIN_CONTAINER_ID) {
+          if (editorSingletons.layoutMgr.isRowColMode() && container === MAIN_CONTAINER_ID) {
             widgetSelectionContext.forEach((id) => {
               const widget = document.getElementById(id);
               const startPosition = _readStartPosition(widget);
@@ -954,9 +954,9 @@ export function initEditWidget() {
     scalingHelper.setScalingMethod(editorScalingMethod);
 
     // columns rescale
-    singletons.layoutMgr.deserialize(deviceObj, scalingObj);
+    editorSingletons.layoutMgr.deserialize(deviceObj, scalingObj);
     scalingHelper.deserialize(scalingObj);
-    singletons.layoutMgr.updateColHeight(scalingObj);
+    editorSingletons.layoutMgr.updateColHeight(scalingObj);
     scalingHelper.resizeDashboardCols();
 
     var projectedScalingObj = scalingObj;
@@ -972,7 +972,7 @@ export function initEditWidget() {
       var mediaChangeProj = scalingHelper.mediaChangeProjection(
         scalingObj,
         editorDimensionsSnapshot,
-        singletons.layoutMgr.getRows()
+        editorSingletons.layoutMgr.getRows()
       );
       /*------------------------------------------------------------------------*/
 
@@ -983,7 +983,7 @@ export function initEditWidget() {
 
     var edScalingMgr = new scalingManager(projectedScalingObj, projectedEditorDimensions, editorScalingMethod);
 
-    var wdgDrprMap = layoutMgr.deserializeCols(dashObj, deviceObj);
+    var wdgDrprMap = editorSingletons.layoutMgr.deserializeCols(dashObj, deviceObj);
 
     for (const key in dashObj) {
       modelsParameters[key] = dashObj[key].modelParameters;
@@ -1020,7 +1020,7 @@ export function initEditWidget() {
 
       var targetDiv = document.getElementById(wdgDrprMap[key]);
 
-      singletons.widgetEditor.addWidget(
+      editorSingletons.widgetEditor.addWidget(
         dashObj[key].container.modelJsonId,
         targetDiv,
         dashObj[key].container.instanceId,
@@ -1086,7 +1086,7 @@ export function initEditWidget() {
 
   /*--------rescale--------*/
   function rescale() {
-    singletons.layoutMgr.updateMaxTopAndLeft();
+    editorSingletons.layoutMgr.updateMaxTopAndLeft();
 
     var divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
 
@@ -1169,7 +1169,7 @@ export function initEditWidget() {
 
   /*--------clear--------*/
   function clear() {
-    singletons.layoutMgr.clear();
+    editorSingletons.layoutMgr.clear();
     var property;
     for (property in widthRatioModels) {
       delete widthRatioModels[property];
@@ -1361,7 +1361,7 @@ export function initEditWidget() {
     const menuWidgetMarginTop = 30;
     const menuWidgetMarginBottom = elementHeight - 10;
 
-    const nbRows = singletons.layoutMgr.getRows();
+    const nbRows = editorSingletons.layoutMgr.getRows();
 
     let elementOffsetBottom;
     let mainContainerHeight;

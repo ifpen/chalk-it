@@ -9,7 +9,7 @@
 import _ from 'underscore';
 import { panelDash } from '../edition/panel-dashboard';
 import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
@@ -303,7 +303,7 @@ export class LayoutMgrClass {
       this._createColumn(classType);
 
       if (this.rows !== 0) {
-        _.each(singletons.widgetEditor.modelsId, (instanceId) => {
+        _.each(editorSingletons.widgetEditor.modelsId, (instanceId) => {
           const element = document.getElementById(instanceId);
           this.putWidgetInTheRightCol(element, 10, 10); // minLeftCst=10, minTopCst=10 // to coordinate
         });
@@ -331,7 +331,7 @@ export class LayoutMgrClass {
     }
 
     this.updateMaxTopAndLeft();
-    singletons.widgetEditor.updateSnapshotDashZoneDims();
+    editorSingletons.widgetEditor.updateSnapshotDashZoneDims();
 
     $('select[name=select-rows]')[0].value = this.rows;
     $('select[name=select-cols]')[0].value = this.cols || 1;
@@ -594,14 +594,14 @@ export class LayoutMgrClass {
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
     // TODO Open Sweet alert to ask the user if he wants to reset styles for all components
-    singletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
+    editorSingletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
     this.$rootScope.updateFlagDirty(true);
   }
 
   updateDashboardTheme() {
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
-    singletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
+    editorSingletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
   }
 
   resetDashboardTheme() {

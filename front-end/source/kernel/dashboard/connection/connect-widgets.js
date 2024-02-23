@@ -10,7 +10,7 @@ import _ from 'underscore';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { editorSingletons } from 'kernel/editor-singletons';
 import { EVENTS_EDITOR_CONNECTIONS_CHANGED } from 'angular/modules/editor/editor.events';
 
 export const widgetConnector = (function () {
@@ -32,7 +32,7 @@ export const widgetConnector = (function () {
 
   /*--------update Widget Connection--------*/
   function updateWidgetsConnections() {
-    const widgetEditor = singletons.widgetEditor;
+    const widgetEditor = editorSingletons.widgetEditor;
 
     // Purge missing widgets
     for (const idx in widgetsConnection) {

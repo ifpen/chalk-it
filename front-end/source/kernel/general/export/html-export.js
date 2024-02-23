@@ -11,7 +11,7 @@ import _ from 'underscore';
 
 import { fileManager } from 'kernel/general/backend/file-management';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 export const htmlExport = (function () {
   var exportOptions = 'ajustToTargetWindow';

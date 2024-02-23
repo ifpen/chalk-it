@@ -1,6 +1,5 @@
 import { htmlExport } from 'kernel/general/export/html-export';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
-const layoutMgr = singletons.layoutMgr;
+import { editorSingletons } from 'kernel/editor-singletons';
 
 angular.module('modules').controller('exportSettingDownload', [
   '$uibModalInstance',
@@ -14,6 +13,7 @@ angular.module('modules').controller('exportSettingDownload', [
     $scope.keepChoice = true;
     $scope.status = htmlExport.navBarNotification; // AEF: changed to keep last choice of notification
 
+    const layoutMgr = editorSingletons.layoutMgr;
     $scope.scalingMethod = htmlExport.exportOptions;
     $scope.nbRows = layoutMgr.getRows();
     $scope.pageNamesObj = layoutMgr.getRowNamesObj();

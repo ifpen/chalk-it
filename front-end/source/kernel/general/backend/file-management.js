@@ -11,7 +11,7 @@ import PNotify from 'pnotify';
 import { saveAs } from 'file-saver';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
@@ -274,7 +274,7 @@ export const fileManager = (function () {
     const fileExtension = FileMngrInst.GetFileExt(fileType);
     if (!_.isUndefined(xdashFileSerialized)) xdashFile = xdashFileSerialized;
     else {
-      const temp = singletons.xdash.serialize();
+      const temp = runtimeSingletons.xdash.serialize();
       xdashFile = JSON.stringify(temp, null, '\t');
     }
     const $rootScope = angular.element(document.body).scope().$root;

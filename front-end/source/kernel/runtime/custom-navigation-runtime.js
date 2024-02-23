@@ -9,8 +9,8 @@
 import _ from 'underscore';
 
 import { htmlExport } from 'kernel/general/export/html-export';
-import { singletons } from 'kernel/runtime/xdash-runtime-main';
-const layoutMgr = singletons.layoutMgr;
+import { editorSingletons } from 'kernel/editor-singletons';
+const layoutMgr = editorSingletons.layoutMgr;
 
 var customNavigationRuntime = (function () {
   const self = this;
