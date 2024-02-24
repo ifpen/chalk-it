@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 import plotly.express as px
 
 from taipy.gui.custom import Page
-from source.connectors.taipy.resource_handler import PureHTMLResourceHandler
+from back_end.taipy.resource_handler import PureHTMLResourceHandler
 
 prediction = '--'
 

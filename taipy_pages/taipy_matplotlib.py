@@ -1,5 +1,5 @@
 from taipy.gui.custom import Page
-from source.connectors.taipy.resource_handler import PureHTMLResourceHandler
+from back_end.taipy.resource_handler import PureHTMLResourceHandler
 import matplotlib.pyplot as plt
 import io, base64
 

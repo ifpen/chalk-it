@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 from taipy.gui.custom import Page
-from source.connectors.taipy.resource_handler import PureHTMLResourceHandler
+from back_end.taipy.resource_handler import PureHTMLResourceHandler
 import plotly.express as px
 
 a = 8

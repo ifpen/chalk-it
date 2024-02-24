@@ -2,11 +2,16 @@ import json
 import os
 from pathlib import Path
 from taipy.gui.custom import Page
-from source.connectors.taipy.resource_handler import PureHTMLResourceHandler
+from back_end.taipy.resource_handler import PureHTMLResourceHandler
 import plotly.express as px
 import inspect
 
 base_path = (Path(__file__).parent / "projects").resolve()
+
+# Check if the directory does not exist, and then create it
+if not base_path.exists():
+    base_path.mkdir(parents=True, exist_ok=True)
+
 file_name = base_path / "config.xprjson"
 json_data = ""
 has_file_saved = False
@@ -15,14 +20,12 @@ file_list = {}
 def load_file(state, name):
     state.json_data = Path(state.file_name).read_text()
 
-
 def save_file(state, name, payload):
     if "data" not in payload:
         return
     with open(state.file_name, "w") as f:
         f.write(payload["data"])
     state.has_file_saved = True
-
 
 # file should only be within base path
 def select_file(state, name, payload):
@@ -45,14 +48,14 @@ def get_file_list(state, name):
 def upload_file(state, name, payload):
     print('file data', payload["file_data"])
 
-def get_function_names():
-    # Use inspect to get all current globals, then filter by those that are functions
-    # Exclude the specified function names from the list
-    excluded_function_names = ['get_file_list', 'load_file', 'select_file', 'get_function_names', 'save_file']
-    function_names = [name for name, obj in globals().items() if inspect.isfunction(obj) and name not in excluded_function_names]
-    return function_names
+# def get_function_names():
+#     # Use inspect to get all current globals, then filter by those that are functions
+#     # Exclude the specified function names from the list
+#     excluded_function_names = ['get_file_list', 'load_file', 'select_file', 'get_function_names', 'save_file']
+#     function_names = [name for name, obj in globals().items() if inspect.isfunction(obj) and name not in excluded_function_names]
+#     return function_names
 
-function_names = get_function_names()
+# function_names = get_function_names()
 
 a = 8
 b = 10
