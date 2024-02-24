@@ -98,16 +98,16 @@ class TaipyManager {
    *
    * @method sendToTaipy
    * @public
-   * @param {string} valueName - The name of the value (name of the dataNode).
+   * @param {string} varName - The name of the variable (name of the dataNode).
    * @param {*} newValue - The value to be sent (value of the dataNode).
    * @returns {void} This method does not return a value.
    */
-  sendToTaipy(valueName, newValue) {
+  sendToTaipy(varName, newValue) {
     const currentContext = this.currentContext;
     if (currentContext !== this.app.getContext()) return;
 
-    const encodedName = this.app.getEncodedName(valueName, currentContext);
-    const currentValue = this.variableData[currentContext][valueName].value;
+    const encodedName = this.app.getEncodedName(varName, currentContext);
+    const currentValue = this.variableData[currentContext][varName].value;
     // Performs a deep comparison
     if (_.isEqual(currentValue, newValue)) return; // Current simple solution. To be enhanced in the future
     // Send newValue
@@ -125,11 +125,11 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   onChange(app, encodedName, newValue) {
-    const [valueName, context] = app.getName(encodedName);
+    const [varName, context] = app.getName(encodedName);
     if (this.currentContext !== context) return;
 
     // Update variableData
-    this.variableData[context][valueName].value = this.#deepClone(newValue);
+    this.variableData[context][varName].value = this.#deepClone(newValue);
 
     // saveFile
     if (encodedName.includes('has_file_saved')) {
@@ -149,7 +149,7 @@ class TaipyManager {
     // loadFile
     if (encodedName.includes('json_data')) {
       if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-        const jsonData = this.variableData[context][valueName].value;
+        const jsonData = this.variableData[context][varName].value;
         this.endAction(jsonData);
         this.endAction = undefined;
       }
@@ -158,14 +158,14 @@ class TaipyManager {
     // getFileList
     if (encodedName.includes('file_list')) {
       if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-        const fileList = JSON.parse(this.variableData[context][valueName].value);
+        const fileList = JSON.parse(this.variableData[context][varName].value);
         this.endAction(fileList);
         this.endAction = undefined;
       }
     }
 
-    if (!datanodesManager.foundDatanode(valueName)) return;
-    this.#updateDataNode(valueName, newValue);
+    if (!datanodesManager.foundDatanode(varName)) return;
+    this.#updateDataNode(varName, newValue);
   }
 
   /**
