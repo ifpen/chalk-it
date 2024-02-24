@@ -8,11 +8,6 @@ import os
 from taipy.gui.custom import Page
 
 base_path = (Path(__file__).parent / "projects").resolve()
-
-# Check if the directory does not exist, and then create it
-if not base_path.exists():
-    base_path.mkdir(parents=True, exist_ok=True)
-
 file_name = base_path / "config.xprjson"
 json_data = ""
 has_file_saved = False
