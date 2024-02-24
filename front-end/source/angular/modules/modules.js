@@ -6,18 +6,15 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+const xDashLiteVersion = xDashConfig.xDashLiteVersion == 'true';
+const moduleDependencies = ['modules.headerbar', 'modules.editor', 'modules.sidebar', 'modules.discover'];
+
+if (!xDashLiteVersion) {
+  moduleDependencies.push('modules.cards', 'modules.python-images', 'modules.training');
+}
 
 angular
-  .module('modules', [
-    'modules.cards',
-    'modules.python-images',
-    'modules.headerbar',
-    'modules.editor',
-    'modules.sidebar',
-
-    'modules.discover',
-    'modules.training',
-  ])
+  .module('modules', moduleDependencies)
   .config([
     '$stateProvider',
     function ($stateProvider) {
