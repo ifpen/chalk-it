@@ -106,20 +106,21 @@ cwd = os.getcwd()
 build_path = './build/chlkt/'
 file_paths = [
      './main.py', 
-     './assets/misc/__init__.py'
+     './back_end/taipy/__init__.py',
+     './back_end/taipy/resource_handler.py'
     ]
 
 for file_path in file_paths:
     shutil.copy(file_path, build_path)
 
 # Copy app server
-shutil.copytree('./back_end/app/', './build/chlkt/app/')
+shutil.copytree('./back_end/app/', os.path.join(build_path, 'app'))
 
 # for gunicorn rendering of pages
-shutil.copytree('./back_end/render/', './build/chlkt/render/')
+shutil.copytree('./back_end/render/', os.path.join(build_path, 'render'))
 
 # Copy templates
-shutil.copytree('./documentation/Templates/', './build/chlkt/Templates/')
+shutil.copytree('./documentation/Templates/', os.path.join(build_path, 'Templates'))
 
 # Copy all files from source directory to destination directory
 for filename in os.listdir(src_dir):
