@@ -1,10 +1,11 @@
+import sys
+from pathlib import Path
+# Add the parent directory of `back_end` to sys.path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from back_end.taipy.resource_handler import PureHTMLResourceHandler
 import json
 import os
-from pathlib import Path
 from taipy.gui.custom import Page
-from back_end.taipy.resource_handler import PureHTMLResourceHandler
-import plotly.express as px
-import inspect
 
 base_path = (Path(__file__).parent / "projects").resolve()
 
