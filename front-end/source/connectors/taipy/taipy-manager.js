@@ -47,6 +47,7 @@ class TaipyManager {
    */
   onInit(app) {
     this.currentContext = app.getContext();
+    this.#initFunctionList();
     this.processVariableData();
   }
 
@@ -61,6 +62,7 @@ class TaipyManager {
   processVariableData() {
     const currentContext = this.currentContext;
     const dataTree = this.app.getDataTree();
+    this.#initFunctionList();
     if (this.currentContext !== this.app.getContext()) return;
 
     const currentVariables = this.#deepClone(this.variableData)[currentContext] || {};
@@ -104,7 +106,7 @@ class TaipyManager {
    */
   sendToTaipy(varName, newValue) {
     const currentContext = this.currentContext;
-    if (currentContext !== this.app.getContext()) return;
+    if (varName == 'function_names' || currentContext !== this.app.getContext()) return;
 
     const encodedName = this.app.getEncodedName(varName, currentContext);
     const currentValue = this.variableData[currentContext][varName].value;
@@ -280,6 +282,25 @@ class TaipyManager {
           console.log('upload failed', reason);
         }
       );
+    }
+  }
+
+  /**
+   *
+   * Initializes and update the function_names dataNode.
+   * If the dataNode already exists, it updates the existing dataNode with the new list of function names.
+   * The function names correspond to the function names on the taipy page.
+   *
+   * @method initFunctionList
+   * @private
+   * @returns {void} This method does not return a value.
+   */
+  #initFunctionList() {
+    const functionList = this.app.getFunctionList();
+    if (datanodesManager.foundDatanode('function_names')) {
+      this.#createDataNode('function_names', functionList);
+    } else {
+      this.#updateDataNode('function_names', functionList);
     }
   }
 
