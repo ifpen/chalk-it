@@ -9,9 +9,12 @@ angular
         url: '/',
         resolve: {},
         templateUrl: function () {
-          return xDashConfig.xDashBasicVersion == 'true'
-            ? 'source/angular/modules/discover/discover-basic.html'
-            : 'source/angular/modules/discover/discover.html';
+          const { xDashLiteVersion, xDashBasicVersion } = xDashConfig;
+          const discoverPath = 'source/angular/modules/discover/';
+          if (xDashBasicVersion === 'true') {
+            return xDashLiteVersion === 'true' ? '' : discoverPath + 'discover-basic.html';
+          }
+          return discoverPath + 'discover.html';
         },
         controller: 'DiscoverController',
         params: {
