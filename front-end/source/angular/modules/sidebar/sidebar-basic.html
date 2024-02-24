@@ -5,7 +5,7 @@
 
 <div class="sidebar__menu">
   <div ng-class="{'sidebar__actions': moduleOpened}">
-    <button class="btn btn-circle" ng-click="newProject()" title="My project">
+    <button ng-if="!xDashLiteVersion" class="btn btn-circle" ng-click="newProject()" title="My project">
       <span class="icon__container" ng-class="{'icon__container--active': !moduleOpened}">
         <i class="basic icn-edit"></i>
       </span>
