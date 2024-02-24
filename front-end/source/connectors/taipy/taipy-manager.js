@@ -298,9 +298,9 @@ class TaipyManager {
   #initFunctionList() {
     const functionList = this.app.getFunctionList();
     if (datanodesManager.foundDatanode('function_names')) {
-      this.#createDataNode('function_names', functionList);
-    } else {
       this.#updateDataNode('function_names', functionList);
+    } else {
+      this.#createDataNode('function_names', functionList);
     }
   }
 
