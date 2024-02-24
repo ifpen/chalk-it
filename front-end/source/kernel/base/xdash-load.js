@@ -42,9 +42,9 @@ var angularModule = angular
       $rootScope.taipyLink = xDashConfig.taipyLink == 'true';
       $rootScope.enableRegistration = xDashConfig.disableRegistration != 'true';
       $rootScope.urlTerms = xDashConfig.urlWebSite + 'terms-credits/xDashTermsofUse10062020.html';
-      if ($rootScope.xDashFullVersion) $rootScope.urlCredits = xDashConfig.urlWebSite + 'terms-credits/Credits.html';
-      else $rootScope.urlCredits = xDashConfig.urlWebSite + '/blob/main/credits.html';
-
+      $rootScope.urlCredits =
+        xDashConfig.urlWebSite +
+        ($rootScope.xDashFullVersion ? 'terms-credits/Credits.html' : '/blob/main/credits.html');
       $rootScope.enableLocalServer = xDashConfig.disableLocalServer != 'true';
       $rootScope.enablePython = !_.isUndefined(urlPython);
       $rootScope.enablePythonManagement = !_.isUndefined(urlPython) && $rootScope.xDashFullVersion;
@@ -200,7 +200,7 @@ var angularModule = angular
   .config([
     '$urlRouterProvider',
     function ($urlRouterProvider) {
-      $urlRouterProvider.otherwise(async function (injector) {
+      $urlRouterProvider.otherwise(function (injector) {
         injector.invoke([
           '$state',
           '$rootScope',
