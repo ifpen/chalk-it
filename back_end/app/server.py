@@ -1,24 +1,19 @@
-from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory, render_template_string, url_for
-import os
-from pathlib import Path
-import json
-from base64 import b64decode, b64encode
-import logging
-import webbrowser
-import threading
-import argparse
-import json
-import logging
-import os
-import threading
-import webbrowser
+from flask import Flask, Response, send_file, jsonify, make_response, request, redirect, send_from_directory, render_template_string, url_for
 from base64 import b64decode, b64encode
 from concurrent.futures import Executor, ProcessPoolExecutor
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, Optional, Type, Callable
+from argparse import Namespace
+import argparse
+import os
+import json
+import logging
+import webbrowser
+import threading
+
 
 class AppConfig:
-    def __init__(self, args):
+    def __init__(self, args: Namespace) -> None:
         # Extract arguments and set default values
         self.DEBUG = args.dev
         self.xprjson = args.xprjson_file
@@ -36,7 +31,7 @@ class AppConfig:
         else:
             self._setup_production_paths()
 
-    def _setup_development_paths(self):
+    def _setup_development_paths(self) -> None:
         # Development mode paths
         self.dir_name = os.path.dirname(__file__)
         self.dir_temp_path = os.path.join(self.dir_name, '../../documentation/Templates/Projects')
@@ -44,7 +39,7 @@ class AppConfig:
         self.dir_project_path = os.path.join(self.dir_name, '../../')
         self.static_folder_path = "../../front-end"
 
-    def _setup_production_paths(self):
+    def _setup_production_paths(self) -> None:
         # Production mode paths
         self.dir_temp_name = os.path.dirname(__file__)
         self.dir_temp_path = os.path.join(self.dir_temp_name, '../Templates/Projects')
@@ -54,7 +49,7 @@ class AppConfig:
         self.static_folder_path = "../"
 
 class RootManager:
-    def __init__(self, config):
+    def __init__(self, config: AppConfig) -> None:
         self.config = config
         self.app = Flask(__name__, static_folder=config.static_folder_path, static_url_path='')
         self.setting_manager = SettingManager(config)
@@ -63,19 +58,19 @@ class RootManager:
         self.file_manager = FileManager(config)
         self._setup_routes()
 
-    def _configure_cors(self, response):
+    def _configure_cors(self, response: Response) -> Response:
         response.headers.add('Access-Control-Allow-Origin', '*')
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
         response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
         return response
     
     @staticmethod
-    def send_success(json_obj):
+    def send_success(json_obj: Dict[str, Any]) -> Response:
         response = make_response(json.dumps({"d": json.dumps(json_obj)}), 200)
         return response
     
     # Handle errors and return a formatted response
-    def _send_error(self, error):
+    def _send_error(self, error: str) -> Response:
         logging.error(error, exc_info=True)
 
         # Extract exception type from the error message
@@ -83,7 +78,11 @@ class RootManager:
         response = make_response(json.dumps({"d": json.dumps({"Success": False, "Msg": f"Error Type: {exception_type}, Details: {error}"})}), 500)
         return response
 
-    def _setup_routes(self):
+    def _setup_routes(self) -> None:
+            """
+            Configures the application routes and sets up CORS headers for each response.
+            """
+
             # Set up CORS headers after each request
             @self.app.after_request
             def after_request(response):
@@ -104,47 +103,47 @@ class RootManager:
             self._add_route('/', self._static_files, defaults={'path': ''})
             self._add_route('/<path:path>', self._static_files, methods=['GET'])
 
-    def _add_route(self, route, method, **options):
+    def _add_route(self, route: str, method: Callable, **options) -> None:
         self.app.route(route, **options)(method)
 
-    def _get_files(self):
+    def _get_files(self) -> Response:
         try:
             return self.file_manager.get_files()
         except Exception as err:
             return self._send_error(err)
 
-    def _get_python_data_list(self):
+    def _get_python_data_list(self) -> Response:
         return RootManager.send_success({
             "Success": True,
             "Msg": None,
             "FileList": [],
         })
 
-    def _get_template_image(self):
+    def _get_template_image(self) -> Response:
         image_name = request.args.get('image')
         return self.template_manager.get_template_image(image_name)
 
-    def _save_settings(self):
+    def _save_settings(self) -> Response:
         try:
             decoded_data_json = json.loads(b64decode(request.json['FileData'].encode()).decode())
             return self.setting_manager.save_settings(decoded_data_json)
         except OSError as err:
             return self._send_error(err)
 
-    def _read_settings(self):
+    def _read_settings(self) -> Response:
         try:
             return self.setting_manager.read_settings()
         except OSError as err:
             return self._send_error(err)
 
-    def _read_template(self):
+    def _read_template(self) -> Response:
         try:
             template_name = request.json.get('FileName')
             return self.template_manager.read_template(template_name)
         except Exception as err:
             return self._send_error(err)
 
-    def _save_project(self):
+    def _save_project(self) -> Response:
         try:
             file_name = request.json['FileName']
             file_data = request.json['FileData']
@@ -153,7 +152,7 @@ class RootManager:
         except Exception as err:
             return self._send_error(err)
 
-    def _read_project(self):
+    def _read_project(self) -> Response:
         try:
             file_name = request.json['FileName']
             offset = request.json['Offset']
@@ -161,12 +160,12 @@ class RootManager:
         except OSError as err:
             return self._send_error(err)
 
-    def _rename_project(self):
+    def _rename_project(self) -> Response:
         file_name = request.json.get('FileName')
         new_file_name = request.json.get('NewFileName')
         return self.project_manager.rename_project(file_name, new_file_name)
 
-    def _check_new_project_name(self):
+    def _check_new_project_name(self) -> Response:
         try:
             file_name = request.json.get('FileName')
             new_file_name = request.json.get('NewFileName')
@@ -174,26 +173,32 @@ class RootManager:
         except Exception as err:
             return self._send_error(err)
 
-    def _get_project_status(self):
+    def _get_project_status(self) -> Response:
         try:
             return self.project_manager.get_project_status()
         except Exception as err:
             return self._send_error(err)
+    
+    def _close_project(self) -> Response:
+        try:
+            return self.project_manager.close_project()
+        except Exception as err:
+            return self._send_error(err)
 
-    def _heartbeat(self):
+    def _heartbeat(self) -> Response:
         return jsonify({"status": "healthy"})
 
-    def _static_files(self, path: str):
+    def _static_files(self, path: str) -> Response:
         """
             Handles requests for static files.
         """
         return self.file_manager.static_files(path)
     
 class SettingManager:
-    def __init__(self, config):
+    def __init__(self, config: AppConfig) -> None:
         self.config = config
 
-    def save_settings(self, decoded_data_json):
+    def save_settings(self, decoded_data_json: Dict[str, Any]) -> Response:
         if os.access(self.config.settings_file_path, os.F_OK):
             with open(self.config.settings_file_path, 'r', encoding='utf8') as file:
                 file_data = file.read()
@@ -211,7 +216,7 @@ class SettingManager:
                 "Msg": "KO"
             })
 
-    def read_settings(self):
+    def read_settings(self) -> Response:
         if os.access(self.config.settings_file_path, os.F_OK):
             with open(self.config.settings_file_path, 'r', encoding='utf8') as file:
                 file_data = file.read()
@@ -256,10 +261,10 @@ class SettingManager:
         })
     
 class TemplateManager:
-    def __init__(self, config):
+    def __init__(self, config: AppConfig) -> None:
         self.config = config
 
-    def read_template(self, template_name):
+    def read_template(self, template_name: str) -> Response:
         template_path = os.path.join(self.config.dir_temp_path, template_name)
         with open(template_path, 'r', encoding='utf8') as file:
             file_data = file.read()
@@ -277,15 +282,15 @@ class TemplateManager:
             "Array": None
         })
 
-    def get_template_image(self, image_name):
+    def get_template_image(self, image_name: str) -> Response:
         image_path = os.path.join(self.config.dir_images_path, f'{image_name}.png')
         return send_file(image_path, mimetype='image/png')
 
 class ProjectManager:
-    def __init__(self, config):
+    def __init__(self, config: AppConfig) -> None:
         self.config = config
 
-    def save_project(self, file_name, file_data, offset):
+    def save_project(self, file_name: str, file_data: str, offset: int) -> Response:
         if file_data and offset != -1:
             decoded_data_json = json.loads(b64decode(file_data.encode()).decode())
             project_name = decoded_data_json.get("meta").get("name")
@@ -298,7 +303,7 @@ class ProjectManager:
             "Msg": "OK"
         })
 
-    def read_project(self, file_name, offset):
+    def read_project(self, file_name: str, offset: int) -> Response:
         encoded_data = ""
         path_project_file = os.path.join(self.config.dir_project_path, file_name)
         if offset != -1 and os.access(path_project_file, os.F_OK):
@@ -318,7 +323,7 @@ class ProjectManager:
             "Array": None
         })
 
-    def rename_project(self, file_name, new_file_name):
+    def rename_project(self, file_name: str, new_file_name: str) -> Response:
         try:
             path_project_file = os.path.join(self.config.dir_project_path, file_name)
             new_path_project_file = os.path.join(self.config.dir_project_path, new_file_name)
@@ -333,7 +338,7 @@ class ProjectManager:
                 "Msg": "KO"
             })
 
-    def check_new_project_name(self, file_name, new_file_name):
+    def check_new_project_name(self, file_name: str, new_file_name: str) -> Response:
         path_project_file = os.path.join(self.config.dir_project_path, file_name)
         new_path_project_file = os.path.join(self.config.dir_project_path, new_file_name)
         if os.access(new_path_project_file, os.F_OK):
@@ -347,7 +352,7 @@ class ProjectManager:
                 "Msg": "OK"
             })
 
-    def get_project_status(self):
+    def get_project_status(self) -> Response:
         return RootManager.send_success({
             "Success": True,
             "Msg": """{
@@ -358,10 +363,10 @@ class ProjectManager:
         })
 
 class FileManager:
-    def __init__(self, config):
+    def __init__(self, config: AppConfig) -> None:
         self.config = config
 
-    def get_files(self):
+    def get_files(self) -> Response:
         relative_path_dir = ""
         file_type = request.json['FileType']
         if file_type == "project":
@@ -391,7 +396,7 @@ class FileManager:
             "Python": None
         })
 
-    def _dashboard(self, xprjson):
+    def _dashboard(self, xprjson: str) -> str:
         # Load configuration from json file
         with open(xprjson, 'r') as config_file:
             config_data = json.load(config_file)
@@ -407,7 +412,7 @@ class FileManager:
         # Render the HTML with the configuration inlined
         return render_template_string(template_data_with_config)
 
-    def static_files(self, path: str):
+    def static_files(self, path: str) -> Response:
         """
         Handles requests for static files.
         """
@@ -421,31 +426,31 @@ class FileManager:
     
 class Main:
     @classmethod
-    def _configure_logging(cls):
+    def _configure_logging(cls) -> None:
         logging.basicConfig()
         logging.getLogger('werkzeug').setLevel(logging.INFO)
 
     @classmethod
-    def _open_browser(cls, server_url):
+    def _open_browser(cls, server_url: str) -> None:
         """
         Opens a new web browser window with the server URL.
         """
         webbrowser.open_new(server_url)
 
     @classmethod
-    def _create_app(cls, config):
+    def _create_app(cls, config: AppConfig) -> Flask:
         root_manager = RootManager(config)
         return root_manager.app
 
     @classmethod
-    def _run_python_pool(cls, app, args):
+    def _run_python_pool(cls, app: Flask, args: Namespace) -> None:
         python_pool: Optional[Executor] = ProcessPoolExecutor(args.python_workers) if args.python_workers else None
         if python_pool:
             from .server_exec import create_python_exec_blueprint
             app.register_blueprint(create_python_exec_blueprint(python_pool))
 
     @classmethod
-    def _run_file_sync(cls, app, args, config):
+    def _run_file_sync(cls, app: Flask, args: Namespace, config: AppConfig) -> None:
         if args.sync:
             from .server_file_sync import create_file_sync_blueprint, FILE_SYNC_WS_ENDPOINT
             server_ws_url = f"{config.server_url.replace('http', 'ws')}{FILE_SYNC_WS_ENDPOINT}"
@@ -454,19 +459,19 @@ class Main:
             app.config['SOCK_SERVER_OPTIONS'] = {'ping_interval': 25}
 
     @classmethod
-    def _print_startup_info(cls, config):
+    def _print_startup_info(cls, config: AppConfig) -> None:
         print('User home directory:', config.dir_home)
         print('Current working directory:', config.dir_name)
         print(f'Chalk\'it launched on {config.server_url}')
 
     @classmethod
-    def _start_application(cls, app, config):
+    def _start_application(cls, app: Flask, config: AppConfig) -> None:
         if (not config.DEBUG) and (config.xprjson is None):
             threading.Timer(2, lambda: cls._open_browser(config.server_url)).start()
         app.run(debug=False, port=config.run_port)
 
     @classmethod
-    def _parse_command_line_arguments(cls):
+    def _parse_command_line_arguments(cls) -> Namespace:
         # create the top-level parser
         parser = argparse.ArgumentParser()
         parser.add_argument('--dev', action='store_true', help='run in development mode')
@@ -483,24 +488,24 @@ class Main:
 
         return parser.parse_args()
     
+    @classmethod
+    def print_routes(cls, app: Flask) -> None:
+        for rule in app.url_map.iter_rules():
+            print(f'Endpoint: {rule.endpoint}, Route: {rule}')
+
     # Main function to run the application
     @classmethod
-    def main(cls):
+    def main(cls: Type['Main']) -> None:
         # Parse command-line arguments
         args = cls._parse_command_line_arguments()
         config = AppConfig(args)
         app = cls._create_app(config)
-        def print_routes():
-            for rule in app.url_map.iter_rules():
-                print(f'Endpoint: {rule.endpoint}, Route: {rule}')
-
-
         cls._configure_logging()
         mode_message = "development" if config.DEBUG else "production"
         print(f"Running in {mode_message} mode")
-
         cls._run_python_pool(app, args)
         cls._run_file_sync(app, args, config)
         cls._print_startup_info(config)
-        print_routes()
+        cls.print_routes(app)
         cls._start_application(app, config)
+        
