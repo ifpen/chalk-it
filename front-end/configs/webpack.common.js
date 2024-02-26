@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 
 console.log(`production build: ${!devMode}`);
@@ -113,6 +114,7 @@ module.exports = {
       filename: 'index-view.html',
       chunks: ['dashboard'],
     }),
+    new MomentLocalesPlugin(),
     new CopyWebpackPlugin([
       {
         from: 'xdash_python_api-*.whl',
