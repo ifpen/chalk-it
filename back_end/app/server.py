@@ -1,4 +1,5 @@
-from flask import Flask, Response, send_file, jsonify, make_response, request, redirect, send_from_directory, render_template_string, url_for
+from functools import wraps
+from flask import Blueprint, Flask, Response, send_file, jsonify, make_response, request, redirect, send_from_directory, render_template_string, url_for
 from base64 import b64decode, b64encode
 from concurrent.futures import Executor, ProcessPoolExecutor
 from pathlib import Path
@@ -11,7 +12,6 @@ import logging
 import webbrowser
 import threading
 
-
 class AppConfig:
     def __init__(self, args: Namespace) -> None:
         # Extract arguments and set default values
@@ -22,47 +22,55 @@ class AppConfig:
         self.server_url = f"http://{self.app_ip}:{self.run_port}"
 
         # Set up directories
-        self.dir_home = os.path.expanduser("~")
-        self.dir_settings_path = os.path.join(self.dir_home, '.chalk-it')
-        self.settings_file_path = os.path.join(self.dir_settings_path, 'settings.json')
+        self.home_dir = Path.home()
+        self.settings_dir = self.home_dir / '.chalk-it'
+        self.settings_file = self.settings_dir / 'settings.json'
 
+        self._setup_paths()
+
+    def _setup_paths(self) -> None:
+        self.project_dir = Path.cwd()
         if self.DEBUG:
-            self._setup_development_paths()
+            # Development mode paths
+            self.templates_dir = self.project_dir / 'documentation' / 'Templates' / 'Projects'
+            self.images_dir = self.project_dir / 'documentation' / 'Templates' / 'Images'
+            self.static_folder = self.project_dir / 'front-end'
         else:
-            self._setup_production_paths()
-
-    def _setup_development_paths(self) -> None:
-        # Development mode paths
-        self.dir_name = os.path.dirname(__file__)
-        self.dir_temp_path = os.path.join(self.dir_name, '../../documentation/Templates/Projects')
-        self.dir_images_path = os.path.join(self.dir_name, '../../documentation/Templates/Images')
-        self.dir_project_path = os.path.join(self.dir_name, '../../')
-        self.static_folder_path = "../../front-end"
-
-    def _setup_production_paths(self) -> None:
-        # Production mode paths
-        self.dir_temp_name = os.path.dirname(__file__)
-        self.dir_temp_path = os.path.join(self.dir_temp_name, '../Templates/Projects')
-        self.dir_images_path = os.path.join(self.dir_temp_name, '../Templates/Images')
-        self.dir_name = os.getcwd()
-        self.dir_project_path = self.dir_name
-        self.static_folder_path = "../"
+            # Production mode paths
+            self.base_dir = Path(__file__).parent.resolve()
+            self.templates_dir = self.base_dir / '..' / 'Templates/Projects'
+            self.images_dir = self.base_dir / '..' / 'Templates/Images'
+            self.static_folder = '..'
 
 class RootManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
-        self.app = Flask(__name__, static_folder=config.static_folder_path, static_url_path='')
-        self.setting_manager = SettingManager(config)
-        self.template_manager = TemplateManager(config)
-        self.project_manager = ProjectManager(config)
+        self.app = Flask(__name__, static_folder=config.static_folder, static_url_path='')
+        
+        # Initialize and register blueprints
         self.file_manager = FileManager(config)
-        self._setup_routes()
+        self.app.register_blueprint(self.file_manager.blueprint)
 
-    def _configure_cors(self, response: Response) -> Response:
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-        response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
-        return response
+        self.settings_manager = SettingsManager(config)
+        self.app.register_blueprint(self.settings_manager.blueprint)
+        
+        self.template_manager = TemplateManager(config)
+        self.app.register_blueprint(self.template_manager.blueprint)
+
+        self.project_manager = ProjectManager(config)
+        self.app.register_blueprint(self.project_manager.blueprint)
+        
+        # Setup CORS
+        self._setup_cors()
+
+    def _setup_cors(self) -> None:
+        # Set up CORS headers after each request
+        @self.app.after_request
+        def after_request(response: Response) -> Response:
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+            response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
+            return response
     
     @staticmethod
     def send_success(json_obj: Dict[str, Any]) -> Response:
@@ -70,141 +78,41 @@ class RootManager:
         return response
     
     # Handle errors and return a formatted response
-    def _send_error(self, error: str) -> Response:
+    @staticmethod
+    def _send_error(error: str) -> Response:
         logging.error(error, exc_info=True)
 
         # Extract exception type from the error message
         exception_type = error.split(":")[0].strip()
         response = make_response(json.dumps({"d": json.dumps({"Success": False, "Msg": f"Error Type: {exception_type}, Details: {error}"})}), 500)
         return response
-
-    def _setup_routes(self) -> None:
-            """
-            Configures the application routes and sets up CORS headers for each response.
-            """
-
-            # Set up CORS headers after each request
-            @self.app.after_request
-            def after_request(response):
-                return self._configure_cors(response)
-
-            self._add_route('/GetFiles', self._get_files, methods=['POST'])
-            self._add_route('/GetPythonDataList', self._get_python_data_list, methods=['POST'])
-            self._add_route('/GetImages', self._get_template_image, methods=['GET'])
-            self._add_route('/SaveSettings', self._save_settings, methods=['POST'])
-            self._add_route('/ReadSettings', self._read_settings, methods=['POST'])
-            self._add_route('/ReadTemplate', self._read_template, methods=['POST'])
-            self._add_route('/SaveProject', self._save_project, methods=['POST'])
-            self._add_route('/ReadProject', self._read_project, methods=['POST'])
-            self._add_route('/RenameProject', self._rename_project, methods=['POST'])
-            self._add_route('/CheckNewProjectName', self._check_new_project_name, methods=['POST'])
-            self._add_route('/GetProjectStatus', self._get_project_status, methods=['POST'])
-            self._add_route('/heartbeat', self._heartbeat)
-            self._add_route('/', self._static_files, defaults={'path': ''})
-            self._add_route('/<path:path>', self._static_files, methods=['GET'])
-
-    def _add_route(self, route: str, method: Callable, **options) -> None:
-        self.app.route(route, **options)(method)
-
-    def _get_files(self) -> Response:
-        try:
-            return self.file_manager.get_files()
-        except Exception as err:
-            return self._send_error(err)
-
-    def _get_python_data_list(self) -> Response:
-        return RootManager.send_success({
-            "Success": True,
-            "Msg": None,
-            "FileList": [],
-        })
-
-    def _get_template_image(self) -> Response:
-        image_name = request.args.get('image')
-        return self.template_manager.get_template_image(image_name)
-
-    def _save_settings(self) -> Response:
-        try:
-            decoded_data_json = json.loads(b64decode(request.json['FileData'].encode()).decode())
-            return self.setting_manager.save_settings(decoded_data_json)
-        except OSError as err:
-            return self._send_error(err)
-
-    def _read_settings(self) -> Response:
-        try:
-            return self.setting_manager.read_settings()
-        except OSError as err:
-            return self._send_error(err)
-
-    def _read_template(self) -> Response:
-        try:
-            template_name = request.json.get('FileName')
-            return self.template_manager.read_template(template_name)
-        except Exception as err:
-            return self._send_error(err)
-
-    def _save_project(self) -> Response:
-        try:
-            file_name = request.json['FileName']
-            file_data = request.json['FileData']
-            offset = request.json['Offset']
-            return self.project_manager.save_project(file_name, file_data, offset)
-        except Exception as err:
-            return self._send_error(err)
-
-    def _read_project(self) -> Response:
-        try:
-            file_name = request.json['FileName']
-            offset = request.json['Offset']
-            return self.project_manager.read_project(file_name, offset)
-        except OSError as err:
-            return self._send_error(err)
-
-    def _rename_project(self) -> Response:
-        file_name = request.json.get('FileName')
-        new_file_name = request.json.get('NewFileName')
-        return self.project_manager.rename_project(file_name, new_file_name)
-
-    def _check_new_project_name(self) -> Response:
-        try:
-            file_name = request.json.get('FileName')
-            new_file_name = request.json.get('NewFileName')
-            return self.project_manager.check_new_project_name(file_name, new_file_name)
-        except Exception as err:
-            return self._send_error(err)
-
-    def _get_project_status(self) -> Response:
-        try:
-            return self.project_manager.get_project_status()
-        except Exception as err:
-            return self._send_error(err)
     
-    def _close_project(self) -> Response:
-        try:
-            return self.project_manager.close_project()
-        except Exception as err:
-            return self._send_error(err)
+    @staticmethod
+    def handle_errors(func: Callable) -> Callable:
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            try:
+                # Attempt to call the wrapped function
+                return func(*args, **kwargs)
+            except Exception as err:
+                RootManager._send_error(err)
+        return wrapper
 
-    def _heartbeat(self) -> Response:
-        return jsonify({"status": "healthy"})
-
-    def _static_files(self, path: str) -> Response:
-        """
-            Handles requests for static files.
-        """
-        return self.file_manager.static_files(path)
-    
-class SettingManager:
+class SettingsManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
+        self.blueprint = Blueprint('settings', __name__)
+        self.blueprint.route('/SaveSettings', methods=['POST'])(RootManager.handle_errors(self.save_settings))
+        self.blueprint.route('/ReadSettings', methods=['POST'])(RootManager.handle_errors(self.read_settings))
 
-    def save_settings(self, decoded_data_json: Dict[str, Any]) -> Response:
-        if os.access(self.config.settings_file_path, os.F_OK):
-            with open(self.config.settings_file_path, 'r', encoding='utf8') as file:
+    def save_settings(self) -> Response:
+        decoded_data_json = json.loads(b64decode(request.json['FileData'].encode()).decode())
+        if os.access(self.config.settings_file, os.F_OK):
+            with open(self.config.settings_file, 'r', encoding='utf8') as file:
                 file_data = file.read()
             file_data_json = json.loads(file_data)
             file_data_json.update(decoded_data_json)
-            with open(self.config.settings_file_path, 'w', encoding='utf8') as file:
+            with open(self.config.settings_file, 'w', encoding='utf8') as file:
                 json.dump(file_data_json, file, indent=2)
             return RootManager.send_success({
                 "Success": True,
@@ -217,12 +125,12 @@ class SettingManager:
             })
 
     def read_settings(self) -> Response:
-        if os.access(self.config.settings_file_path, os.F_OK):
-            with open(self.config.settings_file_path, 'r', encoding='utf8') as file:
+        if os.access(self.config.settings_file, os.F_OK):
+            with open(self.config.settings_file, 'r', encoding='utf8') as file:
                 file_data = file.read()
             encoded_data = b64encode(json.dumps(json.loads(file_data)).encode()).decode()
         else:
-            os.makedirs(self.config.dir_settings_path, exist_ok=True)
+            os.makedirs(self.config.settings_dir, exist_ok=True)
             default_settings = json.dumps({
                 "data": {},
                 "projects": [],
@@ -244,10 +152,10 @@ class SettingManager:
                 }
             }, indent=2)
             encoded_data = b64encode(default_settings.encode()).decode()
-            with open(self.config.settings_file_path, 'w', encoding='utf8') as file:
+            with open(self.config.settings_file, 'w', encoding='utf8') as file:
                 file.write(default_settings)
 
-        file_stats = os.stat(self.config.settings_file_path)
+        file_stats = os.stat(self.config.settings_file)
         nb_bytes = file_stats.st_size
         return RootManager.send_success({
             "Success": True,
@@ -259,43 +167,26 @@ class SettingManager:
             "FileData": encoded_data,
             "Array": None
         })
-    
-class TemplateManager:
-    def __init__(self, config: AppConfig) -> None:
-        self.config = config
-
-    def read_template(self, template_name: str) -> Response:
-        template_path = os.path.join(self.config.dir_temp_path, template_name)
-        with open(template_path, 'r', encoding='utf8') as file:
-            file_data = file.read()
-        encoded_data = b64encode(file_data.encode()).decode()
-        file_stats = os.stat(template_path)
-        nb_bytes = file_stats.st_size
-        return RootManager.send_success({
-            "Success": True,
-            "Msg": None,
-            "Offset": 0,
-            "NbBytes": nb_bytes,
-            "LastChunk": True,
-            "ReadOnly": False,
-            "FileData": encoded_data,
-            "Array": None
-        })
-
-    def get_template_image(self, image_name: str) -> Response:
-        image_path = os.path.join(self.config.dir_images_path, f'{image_name}.png')
-        return send_file(image_path, mimetype='image/png')
 
 class ProjectManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
+        self.blueprint = Blueprint('project', __name__)
+        self.blueprint.route('/SaveProject', methods=['POST'])(RootManager.handle_errors(self.save_project))
+        self.blueprint.route('/ReadProject', methods=['POST'])(RootManager.handle_errors(self.read_project))
+        self.blueprint.route('/RenameProject', methods=['POST'])(RootManager.handle_errors(self.rename_project))
+        self.blueprint.route('/CheckNewProjectName', methods=['POST'])(RootManager.handle_errors(self.check_new_project_name))
+        self.blueprint.route('/GetProjectStatus', methods=['POST'])(RootManager.handle_errors(self.get_project_status))
 
-    def save_project(self, file_name: str, file_data: str, offset: int) -> Response:
+    def save_project(self) -> Response:
+        file_name = request.json['FileName']
+        file_data = request.json['FileData']
+        offset = request.json['Offset']
         if file_data and offset != -1:
             decoded_data_json = json.loads(b64decode(file_data.encode()).decode())
             project_name = decoded_data_json.get("meta").get("name")
-            os.makedirs(self.config.dir_project_path, exist_ok=True)
-            path_project_file = os.path.join(self.config.dir_project_path, f"{project_name}.xprjson")
+            os.makedirs(self.config.project_dir, exist_ok=True)
+            path_project_file = os.path.join(self.config.project_dir, f"{project_name}.xprjson")
             with open(path_project_file, 'w', encoding='utf8') as file:
                 file.write(json.dumps(decoded_data_json, indent=2))
         return RootManager.send_success({
@@ -303,9 +194,11 @@ class ProjectManager:
             "Msg": "OK"
         })
 
-    def read_project(self, file_name: str, offset: int) -> Response:
+    def read_project(self) -> Response:
+        file_name = request.json['FileName']
+        offset = request.json['Offset']
         encoded_data = ""
-        path_project_file = os.path.join(self.config.dir_project_path, file_name)
+        path_project_file = os.path.join(self.config.project_dir, file_name)
         if offset != -1 and os.access(path_project_file, os.F_OK):
             with open(path_project_file, 'r', encoding='utf8') as file:
                 file_data = json.load(file)
@@ -323,10 +216,12 @@ class ProjectManager:
             "Array": None
         })
 
-    def rename_project(self, file_name: str, new_file_name: str) -> Response:
+    def rename_project(self) -> Response:
+        file_name = request.json.get('FileName')
+        new_file_name = request.json.get('NewFileName')
         try:
-            path_project_file = os.path.join(self.config.dir_project_path, file_name)
-            new_path_project_file = os.path.join(self.config.dir_project_path, new_file_name)
+            path_project_file = os.path.join(self.config.project_dir, file_name)
+            new_path_project_file = os.path.join(self.config.project_dir, new_file_name)
             os.rename(path_project_file, new_path_project_file)
             return RootManager.send_success({
                 "Success": True,
@@ -338,9 +233,11 @@ class ProjectManager:
                 "Msg": "KO"
             })
 
-    def check_new_project_name(self, file_name: str, new_file_name: str) -> Response:
-        path_project_file = os.path.join(self.config.dir_project_path, file_name)
-        new_path_project_file = os.path.join(self.config.dir_project_path, new_file_name)
+    def check_new_project_name(self) -> Response:
+        file_name = request.json.get('FileName')
+        new_file_name = request.json.get('NewFileName')
+        path_project_file = os.path.join(self.config.project_dir, file_name)
+        new_path_project_file = os.path.join(self.config.project_dir, new_file_name)
         if os.access(new_path_project_file, os.F_OK):
             return RootManager.send_success({
                 "Success": True,
@@ -365,14 +262,27 @@ class ProjectManager:
 class FileManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
+        self.blueprint = Blueprint('file', __name__)
+        self.blueprint.route('/GetFiles', methods=['POST'])(RootManager.handle_errors(self.get_files))
+        self.blueprint.route('/GetPythonDataList', methods=['GET'])(RootManager.handle_errors(self.get_python_data_list))
+        self.blueprint.route('/heartbeat')(RootManager.handle_errors(self.heartbeat))
+        self.blueprint.add_url_rule('/<path:path>', 
+                                    view_func=RootManager.handle_errors(self.static_files), 
+                                    methods=['GET'], 
+                                    endpoint='static_file_with_path')  # Unique endpoint name
+        self.blueprint.add_url_rule('/', 
+                                    view_func=RootManager.handle_errors(self.static_files), 
+                                    methods=['GET'], 
+                                    defaults={'path': ''}, 
+                                    endpoint='static_file_root')  # Another unique endpoint name
 
     def get_files(self) -> Response:
         relative_path_dir = ""
         file_type = request.json['FileType']
         if file_type == "project":
-            relative_path_dir = self.config.dir_project_path
+            relative_path_dir = self.config.project_dir
         elif file_type == "template":
-            relative_path_dir = self.config.dir_temp_path
+            relative_path_dir = self.config.templates_dir
         files = Path(relative_path_dir).glob('*.xprjson')
         # Resolve the relative path to an absolute path
         absolute_path_dir = str(Path(relative_path_dir).resolve())
@@ -395,23 +305,7 @@ class FileManager:
             "Path": absolute_path_dir,
             "Python": None
         })
-
-    def _dashboard(self, xprjson: str) -> str:
-        # Load configuration from json file
-        with open(xprjson, 'r') as config_file:
-            config_data = json.load(config_file)
-
-        # Read the HTML template
-        index_view_path = os.path.join(self.config.dir_temp_name, 'index-view-2.930.8710.html')
-        with open(index_view_path, 'r') as template_file:
-            template_data = template_file.read()
-
-        # Inject the JSON data into the template
-        template_data_with_config = template_data.replace('jsonContent = {};', f'var jsonContent = {json.dumps(config_data)};')
-
-        # Render the HTML with the configuration inlined
-        return render_template_string(template_data_with_config)
-
+    
     def static_files(self, path: str) -> Response:
         """
         Handles requests for static files.
@@ -424,11 +318,76 @@ class FileManager:
 
         return redirect(url_for('static', filename='index.html'))
     
+    def dashboard(self, xprjson: str) -> str:
+        # Load configuration from json file
+        with open(xprjson, 'r') as config_file:
+            config_data = json.load(config_file)
+
+        # Read the HTML template
+        index_view_path = os.path.join(self.config.base_dir, 'index-view-2.930.8710.html')
+        with open(index_view_path, 'r') as template_file:
+            template_data = template_file.read()
+
+        # Inject the JSON data into the template
+        template_data_with_config = template_data.replace('jsonContent = {};', f'var jsonContent = {json.dumps(config_data)};')
+
+        # Render the HTML with the configuration inlined
+        return render_template_string(template_data_with_config)
+
+    def get_python_data_list(self) -> Response:
+        return RootManager.send_success({
+            "Success": True,
+            "Msg": None,
+            "FileList": [],
+        })
+
+    def heartbeat(self) -> Response:
+        return jsonify({"status": "healthy"})
+    
+class TemplateManager:
+    def __init__(self, config: AppConfig) -> None:
+        self.config = config
+        self.blueprint = Blueprint('template', __name__)
+        self.blueprint.route('/GetImages', methods=['GET'])(RootManager.handle_errors(self.get_template_image))
+        self.blueprint.route('/ReadTemplate', methods=['POST'])(RootManager.handle_errors(self.read_template))
+
+    def get_template_image(self) -> Response:
+        image_name = request.args.get('image')
+        image_path = os.path.join(self.config.images_dir, f'{image_name}.png')
+        return send_file(image_path, mimetype='image/png')
+
+    def read_template(self) -> Response:
+        template_name = request.json.get('FileName')
+        template_path = os.path.join(self.config.templates_dir, template_name)
+        with open(template_path, 'r', encoding='utf8') as file:
+            file_data = file.read()
+        encoded_data = b64encode(file_data.encode()).decode()
+        file_stats = os.stat(template_path)
+        nb_bytes = file_stats.st_size
+        return RootManager.send_success({
+            "Success": True,
+            "Msg": None,
+            "Offset": 0,
+            "NbBytes": nb_bytes,
+            "LastChunk": True,
+            "ReadOnly": False,
+            "FileData": encoded_data,
+            "Array": None
+        })
+
 class Main:
     @classmethod
-    def _configure_logging(cls) -> None:
-        logging.basicConfig()
-        logging.getLogger('werkzeug').setLevel(logging.INFO)
+    def _configure_logging(cls, app: Flask, config: AppConfig) -> None:
+        if config.DEBUG:
+            # develop mode
+            logging.basicConfig()
+            logging.getLogger('werkzeug').setLevel(logging.INFO)
+        else:
+            # prod mode
+            loggers = [app.logger, logging.getLogger('werkzeug')]
+            for logger in loggers:
+                logger.handlers = []  # Remove existing handlers
+                logger.setLevel(logging.ERROR)
 
     @classmethod
     def _open_browser(cls, server_url: str) -> None:
@@ -460,9 +419,11 @@ class Main:
 
     @classmethod
     def _print_startup_info(cls, config: AppConfig) -> None:
-        print('User home directory:', config.dir_home)
-        print('Current working directory:', config.dir_name)
+        print('User home directory:', config.home_dir)
+        print('Current working directory:', config.project_dir)
         print(f'Chalk\'it launched on {config.server_url}')
+        mode_message = "development" if config.DEBUG else "production"
+        print(f"Running in {mode_message} mode")
 
     @classmethod
     def _start_application(cls, app: Flask, config: AppConfig) -> None:
@@ -500,12 +461,11 @@ class Main:
         args = cls._parse_command_line_arguments()
         config = AppConfig(args)
         app = cls._create_app(config)
-        cls._configure_logging()
-        mode_message = "development" if config.DEBUG else "production"
-        print(f"Running in {mode_message} mode")
+        cls._print_startup_info(config)        
+        if config.DEBUG:
+            # develop mode
+            cls.print_routes(app)
+        cls._configure_logging(app, config)
         cls._run_python_pool(app, args)
         cls._run_file_sync(app, args, config)
-        cls._print_startup_info(config)
-        cls.print_routes(app)
         cls._start_application(app, config)
-        
