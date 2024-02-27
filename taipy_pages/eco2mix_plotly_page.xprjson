@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "version": "3.000.8803",
+    "fileFormatVersion": "0.3",
+    "date": "Tue Feb 06 2024 15:46:11 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": "eco2mix_plotly_page",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": []
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {
+    "plotlyPyGenericA": {
+      "layout": {
+        "top": "19.6vh",
+        "left": "1.89791vw",
+        "height": "51.4667vh",
+        "width": "41.1649vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "plotlyPyGenericA",
+        "modelJsonId": "plotlyPyGeneric"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "fig": ""
+      }
+    },
+    "plotlyPyGenericB": {
+      "layout": {
+        "top": "19.6vh",
+        "left": "44.7644vw",
+        "height": "51.4667vh",
+        "width": "36.0602vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "2"
+      },
+      "container": {
+        "instanceId": "plotlyPyGenericB",
+        "modelJsonId": "plotlyPyGeneric"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "fig": ""
+      }
+    },
+    "datepickerSimpleA": {
+      "layout": {
+        "top": "11.3067vh",
+        "left": "2.12042vw",
+        "height": "5.06667vh",
+        "width": "18.9791vw",
+        "minHeight": "32px",
+        "minWidth": "150px",
+        "z-index": "3"
+      },
+      "container": {
+        "instanceId": "datepickerSimpleA",
+        "modelJsonId": "datepickerSimple"
+      },
+      "modelParameters": {
+        "label": "date",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelWidthProportion": "30%",
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)",
+        "labelFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "value": "",
+        "visibility": false
+      }
+    }
+  },
+  "connections": {
+    "plotlyPyGenericA": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "fig_data",
+        "dataFields": []
+      }
+    },
+    "plotlyPyGenericB": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "fig_pie",
+        "dataFields": []
+      }
+    },
+    "datepickerSimpleA": {
+      "dateValue": {
+        "name": "dateValue",
+        "dataNode": "date",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}
