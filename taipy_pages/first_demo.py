@@ -1,9 +1,18 @@
 from pathlib import Path
-from taipy.gui import Gui
+from taipy.gui import Gui, JsonAdapter
+from types import FunctionType
 from taipy_page import page as page1
 from taipy_matplotlib import page as page2
 from folium_map import page as page3
 from taipy_file_page import page as page4
+
+
+class FunctionJsonAdapter(JsonAdapter):
+    def parse(self, o):
+        if isinstance(o, FunctionType):
+            return o.__name__
+
+FunctionJsonAdapter().register()
 
 # Define the path for the upload folder relative to the current script's directory
 upload_folder = Path(__file__).parent.resolve() / "projects"

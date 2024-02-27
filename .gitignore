@@ -81,3 +81,6 @@ ipch/
 .vscode/
 /*.xprjson
 **/__pycache__
+
+# Taipy projects
+taipy_pages/*.xprjson
