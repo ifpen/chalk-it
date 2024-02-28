@@ -2,12 +2,18 @@ from pathlib import Path
 import json
 from taipy.gui import JsonAdapter
 from types import FunctionType
+import os
+import sys
 
-base_path = (Path(__file__).parent).resolve()
+# Get the absolute path of the main module
+main_module_path = os.path.abspath(sys.argv[0])
+base_path = Path(os.path.dirname(main_module_path))
+
 file_name = base_path / "config.xprjson"
 json_data = ""
 has_file_saved = False
 file_list = {}
+
 
 def load_file(state):
     state.json_data = Path(state.file_name).read_text()
