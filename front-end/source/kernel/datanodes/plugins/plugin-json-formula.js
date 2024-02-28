@@ -114,7 +114,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
       if (!_.isNull(calculatedValue) && !_.isUndefined(calculatedValue)) {
         if (_.isObject(calculatedValue) && _.isEmpty(calculatedValue) && _.isEmpty(currentSettings.json_var_formula)) {
           error = true;
-          text = 'Formula is empty';
+          const text = 'Formula is empty';
           notificationCallback('warning', currentSettings.name, text, 'Formula error');
           statusCallback('Error', text);
           updateCallback(calculatedValue, 'Error');
@@ -129,7 +129,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
         }
       } else {
         error = true;
-        text = 'Formula is null or undefined';
+        const text = 'Formula is null or undefined';
         statusCallback('Error', text);
         updateCallback(calculatedValue, 'Error');
 
