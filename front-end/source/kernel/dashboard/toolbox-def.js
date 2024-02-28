@@ -40,6 +40,7 @@ var widgetsEditorToolboxDefinition = {
       'scoringFullCircularGauge',
       'scoringSemiCircularGauge',
       'scoringArchCircularGauge',
+      'spinnerStatus',
     ],
   },
   'collapse-plotly': {
