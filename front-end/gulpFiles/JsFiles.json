@@ -57,16 +57,7 @@
       "source/connectors/taipy/taipy-gui-base.js"
     ],
     "body": [
-      "thirdparty/head.js",
-      "thirdparty/bootstrap-clockpicker.js",
-      "thirdparty/knockout.js",
-      "thirdparty/togeojson.js",
-      "thirdparty/tarjan-graph.js",
-      "thirdparty/graph-data-structure.js",
-      "thirdparty/leaflet-meanmap.js",
-      "thirdparty/geojson-extent.js",
       "source/kernel/utils/geoConversion.js",
-      "thirdparty/mindmup-editabletable.js",
       "source/kernel/runtime/xdash-load-runtime.js",
       "thirdparty/angular-ui-router.js",
       "source/angular/modules/components/authentication/userFactory.js",
@@ -102,7 +93,6 @@
       "source/kernel/datanodes/plugins/plugin-python-script.js",
       "source/kernel/datanodes/plugins/plugin-rest-webservice.js",
       "source/kernel/datanodes/plugins/plugin-clock.js",
-      "thirdparty/flat-ui.js",
       "source/kernel/dashboard/plugin-handler.js",
       "source/angular/modules/dashboard/services/edit-play-switch.js",
       "source/kernel/base/main-common.js",
@@ -310,7 +300,6 @@
 	    "source/connectors/taipy/taipy-gui-base.js"
     ],
     "body": [
-      "thirdparty/bootstrap-clockpicker.js",
       "source/kernel/datanodes/execution-engine/DatanodeDependency.js",
       "source/kernel/datanodes/gui/GraphVisu.js",
       "source/kernel/datanodes/base/DatanodesListModel.js",
