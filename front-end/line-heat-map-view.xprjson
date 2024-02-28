@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8799",
-    "date": "Fri Feb 02 2024 16:02:54 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8825",
+    "date": "Wed Feb 28 2024 13:48:16 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "line-heat-map-view",
     "description": "",
     "groupName": "",
@@ -11,21 +11,19 @@
   "data": {
     "datanodes": [
       {
-        "name": "LineHeatMapData",
+        "name": "Style",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "LineHeatMapData",
-          "json_var": "{\"data\":[{\"coordinates\":[[4.84112,45.74968],[4.84091,45.74981]],\"CO2\":6},{\"coordinates\":[[4.84138,45.74953],[4.84112,45.74968]],\"CO2\":10},{\"coordinates\":[[4.84158,45.74941],[4.84138,45.74953]],\"CO2\":0}],\"config\":{\"opacity\":0.7,\"weight\":4,\"disableAutoscale\":false,\"min\":4,\"max\":10,\"colorScale\":\"interpolateSpectral\",\"reverseColorScale\":true}}"
+          "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":4.84112,\"longitude\":45.74968,\"zoom\":20},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"CO2\",\"showLegend\":true,\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"black\",\"weight\":10,\"opacity\":1,\"property\":\"CO2\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"CO2\":[0,10]}}]}"
         }
       },
       {
-        "name": "Map_input",
-        "type": "JSON_formula_plugin",
+        "name": "Selected",
+        "type": "JSON_var_plugin",
         "settings": {
-          "name": "Map_input",
-          "autoStart": true,
-          "explicitTrig": false,
-          "json_var_formula": "data = dataNodes[\"LineHeatMapData\"][\"data\"];\n \nlet geoJson = {};\ngeoJson.type = \"FeatureCollection\";\nlet features = [];\nif(!_.isUndefined(data)) {\n    data.forEach(d=>{\n        let feature = {};\n        feature.type = \"Feature\";\n        let geometry = {};\n        let properties = {};\n        let key ;\n        Object.keys(d).forEach(k=>{\n            if(k != \"coordinates\" ) key = k;\n        }) ;\n        geometry.type = \"LineString\";\n        geometry.coordinates = d.coordinates;\n        if(!_.isUndefined(key)) {\n           properties[key] = d[key];\n           }\n        \n        feature.geometry = geometry;\n        feature.properties = properties;\n        features.push(feature);\n    });\n}\ngeoJson.features= features;\nreturn geoJson;"
+          "name": "Selected",
+          "json_var": "{\"CO2\":0}"
         }
       },
       {
@@ -39,19 +37,21 @@
         }
       },
       {
-        "name": "Selected",
-        "type": "JSON_var_plugin",
+        "name": "Map_input",
+        "type": "JSON_formula_plugin",
         "settings": {
-          "name": "Selected",
-          "json_var": "{\"CO2\":0}"
+          "name": "Map_input",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "data = dataNodes[\"LineHeatMapData\"][\"data\"];\n \nlet geoJson = {};\ngeoJson.type = \"FeatureCollection\";\nlet features = [];\nif(!_.isUndefined(data)) {\n    data.forEach(d=>{\n        let feature = {};\n        feature.type = \"Feature\";\n        let geometry = {};\n        let properties = {};\n        let key ;\n        Object.keys(d).forEach(k=>{\n            if(k != \"coordinates\" ) key = k;\n        }) ;\n        geometry.type = \"LineString\";\n        geometry.coordinates = d.coordinates;\n        if(!_.isUndefined(key)) {\n           properties[key] = d[key];\n           }\n        \n        feature.geometry = geometry;\n        feature.properties = properties;\n        features.push(feature);\n    });\n}\ngeoJson.features= features;\nreturn geoJson;"
         }
       },
       {
-        "name": "Style",
+        "name": "LineHeatMapData",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":4.84112,\"longitude\":45.74968,\"zoom\":20},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"CO2\",\"showLegend\":true,\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"black\",\"weight\":10,\"opacity\":1,\"property\":\"CO2\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"CO2\":[0,10]}}]}"
+          "name": "LineHeatMapData",
+          "json_var": "{\"data\":[{\"coordinates\":[[4.84112,45.74968],[4.84091,45.74981]],\"CO2\":6},{\"coordinates\":[[4.84138,45.74953],[4.84112,45.74968]],\"CO2\":10},{\"coordinates\":[[4.84158,45.74941],[4.84138,45.74953]],\"CO2\":0}],\"config\":{\"opacity\":0.7,\"weight\":4,\"disableAutoscale\":false,\"min\":4,\"max\":10,\"colorScale\":\"interpolateSpectral\",\"reverseColorScale\":true}}"
         }
       }
     ]
@@ -61,14 +61,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1677,
-    "heightPx": 663,
-    "scrollWidthPx": 1677,
-    "scrollHeightPx": 663,
-    "widthVw": 87.80104712041884,
-    "heightVh": 74.07821229050279,
-    "scrollWidthVw": 87.80104712041884,
-    "scrollHeightVh": 74.07821229050279,
+    "widthPx": 1294,
+    "heightPx": 572,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 572,
+    "widthVw": 84.68586387434554,
+    "heightVh": 79.88826815642459,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 79.88826815642459,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -88,10 +88,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "7.93296vh",
-        "left": "0.838696vw",
-        "height": "65.0279vh",
-        "width": "72.1279vw",
+        "top": "8.55515vh",
+        "left": "0.809564vw",
+        "height": "70.1281vh",
+        "width": "69.6226vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -107,10 +107,10 @@
     },
     "flatUiSelectA": {
       "layout": {
-        "top": "1.13333vh",
-        "left": "1.02273vw",
-        "height": "5.15148vh",
-        "width": "18.8961vw",
+        "top": "1.39665vh",
+        "left": "0.987206vw",
+        "height": "5.55552vh",
+        "width": "18.2398vw",
         "minHeight": "27px",
         "minWidth": "40px",
         "z-index": "2"
@@ -146,10 +146,10 @@
     },
     "flatUiHorizontalSliderA": {
       "layout": {
-        "top": "1.13333vh",
-        "left": "20.9416vw",
-        "height": "5.04845vh",
-        "width": "23.8636vw",
+        "top": "1.39665vh",
+        "left": "20.2142vw",
+        "height": "5.44441vh",
+        "width": "23.0347vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "3"
@@ -192,10 +192,10 @@
     },
     "flatUiHorizontalSliderB": {
       "layout": {
-        "top": "1.11732vh",
-        "left": "46.0234vw",
-        "height": "5.13966vh",
-        "width": "16.5117vw",
+        "top": "1.39665vh",
+        "left": "44.4248vw",
+        "height": "5.54277vh",
+        "width": "15.9382vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "4"
@@ -238,10 +238,10 @@
     },
     "flatUiSwitchA": {
       "layout": {
-        "top": "8.44842vh",
-        "left": "73.7825vw",
-        "height": "5.15148vh",
-        "width": "9.93502vw",
+        "top": "9.11104vh",
+        "left": "71.2197vw",
+        "height": "5.55552vh",
+        "width": "9.58993vw",
         "minHeight": "24px",
         "minWidth": "50px",
         "z-index": "5"
@@ -270,10 +270,10 @@
     },
     "flatUiNumericInputA": {
       "layout": {
-        "top": "1.11732vh",
-        "left": "64.4888vw",
-        "height": "5.02793vh",
-        "width": "19.0165vw",
+        "top": "1.39665vh",
+        "left": "62.2488vw",
+        "height": "5.42228vh",
+        "width": "18.356vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "6"

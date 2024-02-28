@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8813",
-    "date": "Fri Feb 16 2024 14:22:31 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8825",
+    "date": "Wed Feb 28 2024 13:41:28 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-choropleth-js",
     "description": "",
     "groupName": "",
@@ -15,7 +15,7 @@
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"Population 1\",\"showLegend\":true,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"black\",\"dashArray\":[],\"weight\":1,\"opacity\":1,\"fillColor\":\"red\",\"property\":\"population\",\"propertyMin\":169273,\"propertyMax\":9326429,\"fillOpacity\":0.7,\"possibleProperties\":{\"population\":[169273,9326429]},\"allProperties\":[\"code\",\"nom\",\"population\"],\"tooltip\":{\"properties\":[\"code\",\"nom\",\"population\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#35373b\"}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#5573a3\"}}}},{\"layer\":2,\"name\":\"Population 2\",\"showLegend\":true,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"black\",\"dashArray\":[],\"weight\":1,\"opacity\":1,\"fillColor\":\"rgb(255, 255, 204)\",\"property\":\"population\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"population\":[349273,12326429]},\"allProperties\":[\"code\",\"nom\",\"population\"],\"tooltip\":{\"properties\":[\"code\",\"nom\",\"population\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#ddf507\"}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#0762f5\"}}}}]}"
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"activeLayer\":0},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"showLegend\":true,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"black\",\"dashArray\":[],\"weight\":1,\"opacity\":1,\"fillColor\":\"interpolateRainbow\",\"property\":\"population\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"population\":[349273,12326429]},\"allProperties\":[\"code\",\"nom\",\"population\"],\"tooltip\":{\"properties\":[\"code\",\"nom\",\"population\"]},\"legend\":{\"title\":\"Population 1\"},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}},{\"layer\":2,\"name\":\"layer 2\",\"showLegend\":true,\"type\":\"Multi Polygon\",\"stroke\":true,\"color\":\"black\",\"dashArray\":[],\"weight\":1,\"opacity\":1,\"fillColor\":\"red\",\"property\":\"population\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"population\":[349273,12326429]},\"allProperties\":[\"code\",\"nom\",\"population\"],\"tooltip\":{\"properties\":[\"code\",\"nom\",\"population\"]},\"legend\":{\"title\":\"Population 2\"},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
         }
       },
       {
@@ -23,7 +23,7 @@
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Selected",
-          "json_var": "{\"population\":2562431,\"code\":\"24\",\"nom\":\"Centre-Val de Loire\"}"
+          "json_var": "{\"code\":\"75\",\"nom\":\"Nouvelle-Aquitaine\",\"population\":6039767}"
         }
       },
       {
@@ -104,10 +104,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "9.27812vh",
-        "left": "0.712084vw",
-        "height": "76.2735vh",
-        "width": "59.2557vw",
+        "top": "9.21788vh",
+        "left": "1.42518vw",
+        "height": "76.257vh",
+        "width": "43.4679vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -123,10 +123,10 @@
     },
     "flatUiSelectA": {
       "layout": {
-        "top": "1.77777vh",
-        "left": "1.47538vw",
-        "height": "5.55552vh",
-        "width": "18.4655vw",
+        "top": "1.81564vh",
+        "left": "1.42518vw",
+        "height": "5.58659vh",
+        "width": "13.658vw",
         "minHeight": "27px",
         "minWidth": "40px",
         "z-index": "2"
@@ -162,10 +162,10 @@
     },
     "flatUiHorizontalSliderA": {
       "layout": {
-        "top": "1.67598vh",
-        "left": "20.3378vw",
+        "top": "29.6089vh",
+        "left": "45.3682vw",
         "height": "5.58659vh",
-        "width": "23.3852vw",
+        "width": "29.2162vw",
         "minHeight": "24px",
         "minWidth": "200px",
         "z-index": "3"
@@ -208,10 +208,10 @@
     },
     "flatUiCheckboxA": {
       "layout": {
-        "top": "1.81565vh",
-        "left": "44.3192vw",
+        "top": "37.2905vh",
+        "left": "45.3682vw",
         "height": "5.58659vh",
-        "width": "8.81084vw",
+        "width": "6.4133vw",
         "minHeight": "24px",
         "minWidth": "32px",
         "z-index": "4"
@@ -240,10 +240,10 @@
     },
     "flatUiMultiSelectA": {
       "layout": {
-        "top": "9.8806vh",
-        "left": "62.5616vw",
-        "height": "17.8333vh",
-        "width": "10.5797vw",
+        "top": "9.77654vh",
+        "left": "45.2494vw",
+        "height": "17.8771vh",
+        "width": "11.7577vw",
         "minHeight": "75px",
         "minWidth": "80px",
         "z-index": "5"
@@ -281,10 +281,10 @@
     },
     "flatUiTextInputA": {
       "layout": {
-        "top": "1.68694vh",
-        "left": "55.3899vw",
-        "height": "5.54277vh",
-        "width": "18.3616vw",
+        "top": "1.39665vh",
+        "left": "15.9145vw",
+        "height": "5.58659vh",
+        "width": "21.9715vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "6"
@@ -319,6 +319,185 @@
       },
       "modelHiddenParams": {
         "value": ""
+      }
+    },
+    "annotationLabelA": {
+      "layout": {
+        "top": "2.3743vh",
+        "left": "45.0119vw",
+        "height": "5.02793vh",
+        "width": "8.7886vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "8"
+      },
+      "container": {
+        "id": "annotationLabelA",
+        "instanceId": "annotationLabelA",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label(annotationLabelA)"
+      },
+      "modelParameters": {
+        "text": "Population 1",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "annotationLabelB": {
+      "layout": {
+        "top": "46.9274vh",
+        "left": "45.3682vw",
+        "height": "5.02793vh",
+        "width": "8.7886vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "9"
+      },
+      "container": {
+        "id": "annotationLabelB",
+        "instanceId": "annotationLabelB",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label(annotationLabelB)"
+      },
+      "modelParameters": {
+        "text": "Population 2",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiMultiSelectB": {
+      "layout": {
+        "top": "55.5866vh",
+        "left": "45.0119vw",
+        "height": "17.8771vh",
+        "width": "11.7577vw",
+        "minHeight": "75px",
+        "minWidth": "80px",
+        "z-index": "10"
+      },
+      "container": {
+        "id": "flatUiMultiSelectB",
+        "instanceId": "flatUiMultiSelectB",
+        "modelJsonId": "flatUiMultiSelect",
+        "widgetTypeName": "Multi-select(flatUiMultiSelectB)"
+      },
+      "modelParameters": {
+        "addControls": false,
+        "resetPastSelection": false,
+        "valueFontSize": 0.4,
+        "valueFontFamily": "var(--widget-font-family)",
+        "checkboxWidth": 7,
+        "checkboxHeight": 1.5,
+        "valueDefaultColor": "var(--widget-label-color)",
+        "checkboxDefaultColor": "var(--widget-multiselect-color)",
+        "checkboxBorderColor": "var(--widget-multiselect-border-color)",
+        "valueHoverColor": "var(--widget-multiselect-hover-text)",
+        "checkboxHoverColor": "var(--widget-multiselect-hover-color)",
+        "checkboxHoverBorderColor": "var(--widget-multiselect-hover-border-color)",
+        "valueFocusColor": "var(--widget-multiselect-checked-text)",
+        "checkboxFocusColor": "var(--widget-multiselect-checked-color)",
+        "checkboxFocusBorderColor": "var(--widget-multiselect-checked-border-color)",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "isNumber": false
+      },
+      "modelHiddenParams": {
+        "value": [],
+        "selectedValue": ""
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "layout": {
+        "top": "75.419vh",
+        "left": "45.2494vw",
+        "height": "5.58659vh",
+        "width": "29.2162vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "11"
+      },
+      "container": {
+        "id": "flatUiHorizontalSliderB",
+        "instanceId": "flatUiHorizontalSliderB",
+        "modelJsonId": "flatUiHorizontalSlider",
+        "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderB)"
+      },
+      "modelParameters": {
+        "label": "Opacity",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "flatUiCheckboxB": {
+      "layout": {
+        "top": "83.1006vh",
+        "left": "45.2494vw",
+        "height": "5.58659vh",
+        "width": "6.4133vw",
+        "minHeight": "24px",
+        "minWidth": "32px",
+        "z-index": "12"
+      },
+      "container": {
+        "id": "flatUiCheckboxB",
+        "instanceId": "flatUiCheckboxB",
+        "modelJsonId": "flatUiCheckbox",
+        "widgetTypeName": "Checkbox(flatUiCheckboxB)"
+      },
+      "modelParameters": {
+        "label": "showLegend",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelPosition": "right",
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "checkboxSize": 1,
+        "checkedColor": "var(--widget-input-checked-color)",
+        "uncheckedColor": "var(--widget-input-unchecked-color)"
+      },
+      "modelHiddenParams": {
+        "value": false
       }
     }
   },
@@ -411,6 +590,47 @@
         "dataNode": "Selected",
         "dataFields": [
           "population"
+        ]
+      }
+    },
+    "annotationLabelA": {},
+    "annotationLabelB": {},
+    "flatUiMultiSelectB": {
+      "value": {
+        "name": "value",
+        "dataNode": "Properties",
+        "dataFields": []
+      },
+      "selectedValue": {
+        "name": "selectedValue",
+        "dataNode": "Style",
+        "dataFields": [
+          "style",
+          1,
+          "tooltip",
+          "properties"
+        ]
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "value": {
+        "name": "value",
+        "dataNode": "Style",
+        "dataFields": [
+          "style",
+          1,
+          "fillOpacity"
+        ]
+      }
+    },
+    "flatUiCheckboxB": {
+      "value": {
+        "name": "value",
+        "dataNode": "Style",
+        "dataFields": [
+          "style",
+          1,
+          "showLegend"
         ]
       }
     }

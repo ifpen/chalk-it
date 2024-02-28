@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8802",
-    "date": "Mon Feb 05 2024 09:44:48 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "version": "2.940.8825",
+    "date": "Wed Feb 28 2024 14:08:19 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "geojson-point-awesome-marker",
     "description": "",
     "groupName": "",
@@ -11,11 +11,11 @@
   "data": {
     "datanodes": [
       {
-        "name": "Style",
+        "name": "Point",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"html\",\"awesomeMarker\"],\"tooltip\":{\"properties\":[\"html\",\"awesomeMarker\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":1}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
+          "name": "Point",
+          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"html\":\"See <a href=\\\"https://en.wikipedia.org/wiki/Place_Charles_de_Gaulle\\\" target=\\\"_blank\\\">Place Charles de Gaulle</a>\",\"awesomeMarker\":{\"icon\":\" fa-asterisk\",\"prefix\":\"fa\",\"markerColor\":\"red\"}},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.295,48.8738]}}],\"properties\":{\"description\":\"Arc de triomphe\"}}"
         }
       },
       {
@@ -27,11 +27,11 @@
         }
       },
       {
-        "name": "Point",
+        "name": "Style",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "Point",
-          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"html\":\"See <a href=\\\"https://en.wikipedia.org/wiki/Place_Charles_de_Gaulle\\\" target=\\\"_blank\\\">Place Charles de Gaulle</a>\",\"awesomeMarker\":{\"icon\":\" fa-asterisk\",\"prefix\":\"fa\",\"markerColor\":\"red\"}},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.295,48.8738]}}],\"properties\":{\"description\":\"Arc de triomphe\"}}"
+          "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"html\",\"awesomeMarker\"],\"tooltip\":{\"properties\":[\"html\",\"awesomeMarker\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":1}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
         }
       }
     ]
@@ -41,14 +41,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 2316,
-    "heightPx": 847,
-    "scrollWidthPx": 2316,
-    "scrollHeightPx": 847,
-    "widthVw": 90.82352941176471,
-    "heightVh": 67.49003984063745,
-    "scrollWidthVw": 90.82352941176471,
-    "scrollHeightVh": 67.49003984063745,
+    "widthPx": 1295,
+    "heightPx": 572,
+    "scrollWidthPx": 1295,
+    "scrollHeightPx": 572,
+    "widthVw": 84.75130890052355,
+    "heightVh": 79.88826815642459,
+    "scrollWidthVw": 84.75130890052355,
+    "scrollHeightVh": 79.88826815642459,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -68,10 +68,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "2.816vh",
-        "left": "0.392157vw",
-        "height": "54.0671vh",
-        "width": "79.1373vw",
+        "top": "3.57542vh",
+        "left": "0.759161vw",
+        "height": "63.9665vh",
+        "width": "73.822vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "3"
