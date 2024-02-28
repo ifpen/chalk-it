@@ -8,6 +8,8 @@ from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier
 import plotly.express as px
 from taipy.gui.custom import Page
+from back_end.taipy.chalkit_manager import *
+
 
 prediction = '--'
 

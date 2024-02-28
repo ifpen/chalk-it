@@ -3,47 +3,9 @@ from pathlib import Path
 # Add the parent directory of `back_end` to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end.taipy.resource_handler import PureHTMLResourceHandler
-import json
-import os
+from back_end.taipy.chalkit_manager import *
+
 from taipy.gui.custom import Page
-
-base_path = (Path(__file__).parent).resolve()
-file_name = base_path / "config.xprjson"
-json_data = ""
-has_file_saved = False
-file_list = {}
-
-def load_file(state):
-    state.json_data = Path(state.file_name).read_text()
-
-def save_file(state, name, payload):
-    if "data" not in payload:
-        return
-    with open(state.file_name, "w") as f:
-        f.write(payload["data"])
-    state.has_file_saved = True
-
-# file should only be within base path
-def select_file(state, name, payload):
-    if "file_name" not in payload:
-        return
-    potential_file_path = base_path / payload['file_name']
-    if potential_file_path.exists():
-        state.file_name = str(potential_file_path)
-        
-def get_file_list(state, name):
-    # Use glob to find .xprjson files directly within the base directory.
-    file_names = [file.name for file in base_path.glob('*.xprjson')]
-    file_list_obj = {
-        'file_names': file_names,
-        'base_path': str(base_path)
-    }
-    state.file_list = json.dumps(file_list_obj)
-
-# Called from a file loader widgets
-def upload_file(state, name, payload):
-    print('file data', payload["file_data"])
-
 
 a = 8
 b = 10
