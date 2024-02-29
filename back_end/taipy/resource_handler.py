@@ -3,7 +3,6 @@ import typing as t
 from flask import send_from_directory, send_file
 from taipy.gui.custom import ResourceHandler
 class PureHTMLResourceHandler(ResourceHandler):
-    id = "chalk-it"
 
     def get_root_directory(self) -> Path:
         """Dynamically set the root directory based on the existence of 'index.html'."""
@@ -29,7 +28,7 @@ class PureHTMLResourceHandler(ResourceHandler):
 		# Serve the requested file if it exists
         file_path = root_dir / path
         if file_path.is_file():
-            return send_from_directory(root_dir, path)        
+            return send_from_directory(root_dir, path)
         
         # if "taipy-gui-base.js" in path:
         #     return send_file(base_bundle_path)
