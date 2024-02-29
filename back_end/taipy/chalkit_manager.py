@@ -1,5 +1,7 @@
 from .function_json_adapter import FunctionJsonAdapter
+from .resource_handler import PureHTMLResourceHandler
 from pathlib import Path
+from taipy.gui.custom import Page
 import json
 import os
 import sys
@@ -19,7 +21,7 @@ def load_file(state):
 def save_file(state, name, payload):
     if "data" not in payload:
         return
-    with open(file_name, "w") as f:
+    with open(state.file_name, "w") as f:
         f.write(payload["data"])
         state.has_file_saved = True
 
@@ -41,3 +43,6 @@ def get_file_list(state, name):
     state.file_list = json.dumps(file_list_obj)
 
 FunctionJsonAdapter().register()
+
+# Create a Page instance with the resource handler
+page = Page(PureHTMLResourceHandler())
