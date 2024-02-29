@@ -9,9 +9,19 @@
 
 import { xDashConfig } from 'config.js';
 import _ from 'underscore';
+import Papa from 'papaparse';
+import * as d3 from 'd3';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { offSchedLogUser } from 'kernel/base/main-common';
+
+// Libraries provided to user scripts as arguments
+const libs = [Papa, _, d3];
+const libNames = ['Papa', '_', 'd3'];
+
+function createScriptFunction(body) {
+  return new Function(['dataNodes', ...libNames], body);
+}
 
 export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, datanodesDependency) {
   var self = this;
@@ -20,7 +30,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
   /*--------callValueFunction--------*/
   this.callValueFunction = function (theFunction) {
     // MBG question : datanodesListModel.datasourceData : why is this in datanodesListModel??
-    return theFunction.call(undefined, datanodesListModel.datasourceData);
+    return theFunction.call(null, datanodesListModel.datasourceData, ...libs);
   };
 
   /*--------processCalculatedSetting--------*/
@@ -63,7 +73,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
         }
 
         try {
-          let valueFct = new Function('dataNodes', dsEval);
+          const valueFct = createScriptFunction(dsEval);
           self.callValueFunction(valueFct);
         } catch (e) {
           datanodeModel.statusCallback('Error', e.message);
@@ -192,7 +202,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
 
           if (settingDef.type != 'custom2') {
             try {
-              valueFunction = new Function('dataNodes', script);
+              valueFunction = createScriptFunction(script);
             } catch (e) {
               const text = e + '.\n Formula interpreted as literal text';
               datanodeModel.notificationCallback(
@@ -206,7 +216,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
               // return; // MBG to uncomment if no parse error tolerance is required
               const literalText = currentSettings[settingDef.name].replace(/"/g, '\\"').replace(/[\r\n]/g, ' \\\n');
               // If the value function cannot be created, then go ahead and treat it as literal text
-              valueFunction = new Function('dataNodes', 'return "' + literalText + '";');
+              valueFunction = createScriptFunction('return "' + literalText + '";');
             }
           }
 
@@ -310,7 +320,9 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
               }
 
               if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
-                if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log("init: don't add parsed set var");
+                if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
+                  console.log("init: don't add parsed set var");
+                }
               } else {
                 for (const name of dsName) {
                   datanodesDependency.addSetvarList(name, datanodeModel.name());
@@ -322,7 +334,9 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
           datanodesDependency.removeMissedDependantDatanodes(allDsNames, datanodeModel.name());
 
           if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
-            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log("init: don't process calculate");
+            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
+              console.log("init: don't process calculate");
+            }
             return;
           }
           // MBG moved
