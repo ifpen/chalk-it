@@ -1,4 +1,4 @@
-from function_json_adapter import FunctionJsonAdapter
+from .function_json_adapter import FunctionJsonAdapter
 from pathlib import Path
 import json
 import os
