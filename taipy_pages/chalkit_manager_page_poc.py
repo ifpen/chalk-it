@@ -1,9 +1,15 @@
+import sys
+from pathlib import Path
+# Add the parent directory of `back_end` to sys.path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from back_end.taipy.resource_handler import PureHTMLResourceHandler
+
 from pathlib import Path
 import json
 from taipy.gui import JsonAdapter
 from types import FunctionType
 import os
-import sys
+from taipy.gui.custom import Page
 
 # Get the absolute path of the main module
 main_module_path = os.path.abspath(sys.argv[0])
@@ -79,3 +85,5 @@ class FunctionJsonAdapter(JsonAdapter):
         #     return image_to_base64(o)            
 
 FunctionJsonAdapter().register()
+
+page = Page(PureHTMLResourceHandler())
