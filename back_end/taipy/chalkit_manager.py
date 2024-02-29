@@ -15,9 +15,9 @@ def load_file(state):
 def save_file(state, name, payload):
     if "data" not in payload:
         return
-    with open(state.file_name, "w") as f:
+    with open(file_name, "w") as f:
         f.write(payload["data"])
-    state.has_file_saved = True
+        state.has_file_saved = True
 
 # file should only be within base path
 def select_file(state, name, payload):
