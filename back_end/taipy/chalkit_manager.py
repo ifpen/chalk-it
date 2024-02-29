@@ -43,6 +43,3 @@ def get_file_list(state, name):
     state.file_list = json.dumps(file_list_obj)
 
 FunctionJsonAdapter().register()
-
-# Create a Page instance with the resource handler
-page = Page(PureHTMLResourceHandler())

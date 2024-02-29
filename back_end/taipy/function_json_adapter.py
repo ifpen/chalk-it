@@ -3,7 +3,6 @@ from types import FunctionType
 from pathlib import Path
 import json
 
-
 class FunctionJsonAdapter(JsonAdapter):
     def parse(self, o):
         if isinstance(o, FunctionType):
