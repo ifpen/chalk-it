@@ -773,6 +773,14 @@ angular.module('modules').service('ManagePrjService', [
     self.openTaipyPage = function (projectName) {
       const currentPrjDirty = $rootScope.currentPrjDirty || '';
       $rootScope.origin = 'projectEdition';
+      const commonActions = () => {
+        $rootScope.loadingBarStart();
+        datanodesManager.showLoadingIndicator(true);
+        taipyManager.fileSelect(projectName);
+        taipyManager.endAction = (xprjson) => {
+          _openTaipyPageEndAction(projectName, xprjson);
+        };
+      };
       if (currentPrjDirty !== '') {
         swal(
           {
@@ -793,21 +801,13 @@ angular.module('modules').service('ManagePrjService', [
               //save the current project
               const xprjson = xdash.serialize();
               $('#projectName').val((index, value) => (value === '' ? 'Untitled' : value));
-              taipyManager.endAction = function () {
-                taipyManager.fileSelect(projectName);
-                taipyManager.endAction = (xprjson) => {
-                  _openTaipyPageEndAction(projectName, xprjson);
-                };
-              };
+              taipyManager.endAction = commonActions;
               taipyManager.saveFile(xprjson);
             }
           }
         );
       } else {
-        taipyManager.fileSelect(projectName);
-        taipyManager.endAction = (xprjson) => {
-          _openTaipyPageEndAction(projectName, xprjson);
-        };
+        commonActions();
       }
     };
 
@@ -820,10 +820,8 @@ angular.module('modules').service('ManagePrjService', [
      * @returns {void} This method does not return a value.
      */
     function _openTaipyPageEndAction(projectName, xprjson) {
-      datanodesManager.showLoadingIndicator(false);
       $rootScope.updateFlagDirty(false);
       $rootScope.origin = 'openProject';
-      $rootScope.loadingBarStart();
       xdash.openProjectManager(xprjson);
       const displayName = _.split(projectName, '.')[0];
       const notice = new PNotify({
@@ -837,6 +835,7 @@ angular.module('modules').service('ManagePrjService', [
         notice.remove();
       });
       $rootScope.loadingBarStop();
+      datanodesManager.showLoadingIndicator(false);
     }
   },
 ]);
