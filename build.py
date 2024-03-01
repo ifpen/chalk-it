@@ -103,24 +103,33 @@ else:
 
 # Copy main.py and associated .py files to ./build/chlkt directory
 cwd = os.getcwd()
-build_path = './build/chlkt/'
+build_path = Path('./build/chlkt/')
+
+# Ensure the directory exists
+build_path.mkdir(parents=True, exist_ok=True)
+
 file_paths = [
-     './main.py', 
-     './back_end/taipy/__init__.py',
-     './back_end/taipy/resource_handler.py'
+     './main.py',
+     './back_end/__init__.py'
     ]
 
 for file_path in file_paths:
     shutil.copy(file_path, build_path)
 
-# Copy app server
-shutil.copytree('./back_end/app/', os.path.join(build_path, 'app'))
+# Copy directories to build_path with their structure
+directories_to_copy = {
+    './back_end/taipy/': 'taipy',
+    './back_end/app/': 'app',
+    './back_end/render/': 'render',
+    './documentation/Templates/': 'Templates',
+}
 
-# for gunicorn rendering of pages
-shutil.copytree('./back_end/render/', os.path.join(build_path, 'render'))
-
-# Copy templates
-shutil.copytree('./documentation/Templates/', os.path.join(build_path, 'Templates'))
+for src_path, dest_name in directories_to_copy.items():
+    dest_path = build_path / dest_name
+    # Check if the destination path already exists to avoid shutil.copytree error
+    if dest_path.exists():
+        shutil.rmtree(dest_path)  # Remove the existing directory to replace it
+    shutil.copytree(src_path, dest_path)
 
 # Copy all files from source directory to destination directory
 for filename in os.listdir(src_dir):

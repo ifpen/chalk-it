@@ -9,7 +9,7 @@ class PureHTMLResourceHandler(ResourceHandler):
     def get_root_directory(self) -> Path:
         """Dynamically set the root directory based on the existence of 'index.html'."""
         # For develop mode
-        prod_root_dir = (Path(__file__).parent).resolve()
+        prod_root_dir = (Path(__file__).parent.parent).resolve()
         
         if not (prod_root_dir / "index.html").exists():
             # For develop mode
