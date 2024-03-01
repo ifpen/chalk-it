@@ -3,7 +3,6 @@ import typing as t
 from flask import send_from_directory, send_file
 from taipy.gui.custom import ResourceHandler
 
-
 class PureHTMLResourceHandler(ResourceHandler):
     id = "htmlresource"
 

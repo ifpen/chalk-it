@@ -2,13 +2,14 @@ import sys
 from pathlib import Path
 # Add the parent directory of `back_end` to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from back_end.taipy.resource_handler import PureHTMLResourceHandler
+from back_end.taipylink.resource_handler import PureHTMLResourceHandler
+from back_end.taipylink.chalkit_manager import *
+
 import pandas as pd
 from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier
 import plotly.express as px
 from taipy.gui.custom import Page
-from back_end.taipy.chalkit_manager import *
 
 
 prediction = '--'

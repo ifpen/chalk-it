@@ -183,7 +183,7 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   saveFile(xprjson) {
-    this.app.trigger('save_file', 'action1', { data: JSON.stringify(xprjson, null, '\t') });
+    this.app.trigger('save_file', 'first_action', { data: JSON.stringify(xprjson, null, '\t') });
   }
 
   /**
@@ -200,7 +200,7 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   fileSelect(fileName) {
-    this.app.trigger('select_file', 'action1', { file_name: fileName });
+    this.app.trigger('select_file', 'first_action', { file_name: fileName });
   }
 
   /**
@@ -211,8 +211,8 @@ class TaipyManager {
    * - This method does not return the file list directly; it merely initiates the process of retrieving it.
    * - The event triggered by this method should be handled to process the file_list object, which will have the following structure:
    *   {
+   *     "file_names": ["string - file name with the .xprjson extension", ...]
    *     "base_path": "string - the path to the directory searched",
-   *     "file_list": ["string - file name with the .xprjson extension", ...]
    *   }
    *
    * @method getFileList
@@ -220,7 +220,7 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   getFileList() {
-    this.app.trigger('get_file_list', 'action1');
+    this.app.trigger('get_file_list', 'first_action');
   }
 
   /**
@@ -239,7 +239,7 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   loadFile() {
-    this.app.trigger('load_file', 'action1');
+    this.app.trigger('load_file', 'first_action');
   }
 
   /**
@@ -251,7 +251,7 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   uploadFileTrigger(functionName, fileData) {
-    this.app.trigger(functionName, 'action1', { file_data: fileData });
+    this.app.trigger(functionName, 'first_action', { file_data: fileData });
   }
 
   /**
