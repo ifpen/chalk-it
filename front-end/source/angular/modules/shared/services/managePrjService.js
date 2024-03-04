@@ -834,6 +834,7 @@ angular.module('modules').service('ManagePrjService', [
       $('.ui-pnotify-container').on('click', () => {
         notice.remove();
       });
+      taipyManager.processVariableData();
       $rootScope.loadingBarStop();
       datanodesManager.showLoadingIndicator(false);
     }
