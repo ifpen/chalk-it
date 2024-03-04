@@ -990,6 +990,22 @@ task(
 );
 
 task(
+  'build:lite',
+  series(
+    'clear:cache',
+    'clear:build',
+    'sass',
+    'init',
+    'template',
+    'copy-starter',
+    'inject:files:prod',
+    'inject:files:pyodide_worker',
+    'inject:files:view',
+    'images'
+  )
+);
+
+task(
   'start',
   series(
     'clear:cache',

@@ -28,7 +28,7 @@ let browsersync = require('browser-sync').create(),
   connect = require('gulp-connect'),
   fs = require('fs'),
   exec = require('child_process').exec,
-  Env = 'dev',
+  Env = argv.env ?? 'dev',
   addVersion = true,
   GlobalConfig = [],
   filesName = configuration.filesName,
@@ -47,7 +47,12 @@ let browsersync = require('browser-sync').create(),
   xdashRuntimeCss = filesName.xdash_runtime.css,
   xdashRuntimeHeader = filesName.xdash_runtime.header,
   xdashRuntimeBody = filesName.xdash_runtime.body,
-  ListTasksBeforeInject = 'createConfigurationFile';
+  getXdashWorkerPyodideFile = () =>
+    `${filesName.workers.pyodide}${
+      addVersion && Env === 'prod' ? GlobalConfig.config.xDashConfig.version.fullVersion : Env
+    }.js`;
+
+ListTasksBeforeInject = 'createConfigurationFile';
 
 const nodeVersion = pkg.engines.node;
 // Compare installed NodeJs version with required NodeJs version.
@@ -99,11 +104,9 @@ task('sass', () => {
 });
 
 task('init', (cb) => {
-  Env = argv.env ? argv.env : 'dev';
-  console.log('EV ENV :', Env);
-
   if (Env === 'prod') {
-    ListTasksBeforeInject = ('createConfigurationFile', 'nomin:xdash_editor');
+    ListTasksBeforeInject =
+      ('createConfigurationFile', 'usemin:xdash_editor:header', 'usemin:xdash_editor:body', 'usemin:xdash_editor:css');
   } else {
     ListTasksBeforeInject = 'createConfigurationFile';
   }
@@ -160,7 +163,7 @@ task(
 
 task(
   'createConfigurationFile',
-  series('init', 'template', () => {
+  series('init', 'template', (cb) => {
     Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
 
@@ -187,7 +190,7 @@ task(
     if (Env === 'prod') {
       generatedPageHeaderJsList = [filesName.xdash_runtime.header + '.min.js'];
       generatedPageBodyJsList = [filesName.xdash_runtime.body + '.min.js'];
-      generatedPageCssList = [filesName.xdash_runtime.css + '.min.css'];
+      generatedPageCssList = ['assets/' + filesName.xdash_runtime.css + '.min.css'];
 
       xdashEditorBodyJsList = [filesName.xdash_editor.body + '.min.js'];
       xdashEditorHeaderJsList = [filesName.xdash_editor.header + '.min.js'];
@@ -225,7 +228,11 @@ task(
       JSON.stringify(xdashEditorBodyJsList) +
       ';\n';
 
-    return newfile(nameFile, jsFile, { src: true }).pipe(dest(dirConfig));
+    newfile(nameFile, jsFile).pipe(dest(dirConfig));
+
+    setTimeout(function () {
+      return cb();
+    }, 3000);
   })
 );
 
@@ -238,32 +245,7 @@ let fixPath = function (List, basePath) {
 };
 
 task(
-  'nomin:xdash_editor:header',
-  series('createConfigurationFile', () => {
-    return (
-      src(fixPath(GlobalConfig.allFiles.xDashStudio.header))
-        .on('error', () => {
-          /* Ignore compiler errors */
-        })
-        // .pipe(
-        //     terser().on('error', function(e) {
-        //         console.log(e);
-        //         return this.end();
-        //     })
-        // )
-        .pipe(concat(filesName.xdash_editor.header + '.min.js'))
-        .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
-    );
-  })
-);
-
-task(
-  'nomin:xdash_editor:body',
+  'usemin:xdash_editor:body',
   series('createConfigurationFile', () => {
     return (
       src(fixPath(GlobalConfig.allFiles.xDashStudio.body))
@@ -271,10 +253,10 @@ task(
           /* Ignore compiler errors */
         })
         // .pipe(
-        //     terser().on('error', function(e) {
-        //         console.log(e);
-        //         return this.end();
-        //     })
+        //   terser().on('error', function (e) {
+        //     console.log(e);
+        //     return this.end();
+        //   })
         // )
         .pipe(concat(filesName.xdash_editor.body + '.min.js'))
         .pipe(replace('source/assets/', 'assets/'))
@@ -288,7 +270,86 @@ task(
 );
 
 task(
-  'nomin:xdash_editor:css',
+  'usemin:xdash_runtime:body',
+  series('createConfigurationFile', () => {
+    return (
+      src(fixPath(GlobalConfig.allFiles.xDashRuntime.body))
+        .on('error', () => {
+          /* Ignore compiler errors */
+        })
+        // .pipe(
+        //   terser().on('error', function (e) {
+        //     console.log(e);
+        //     return this.end();
+        //   })
+        // )
+        .pipe(concat(filesName.xdash_runtime.body + '.min.js'))
+        .pipe(replace('source/assets/', 'assets/'))
+        .pipe(
+          dest(
+            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
+          )
+        )
+    );
+  })
+);
+
+task(
+  'usemin:xdash_runtime:header',
+  series('createConfigurationFile', () => {
+    return (
+      src(fixPath(GlobalConfig.allFiles.xDashRuntime.header))
+        .on('error', () => {
+          /* Ignore compiler errors */
+        })
+        // .pipe(
+        //   terser().on('error', function (e) {
+        //     console.log(e);
+        //     return this.end();
+        //   })
+        // )
+        .pipe(concat(filesName.xdash_runtime.header + '.min.js'))
+        .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
+        .pipe(replace('source/assets/', 'assets/'))
+        .pipe(
+          dest(
+            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
+          )
+        )
+    );
+  })
+);
+
+task(
+  'usemin:xdash_editor:header',
+  series('createConfigurationFile', () => {
+    return (
+      src(fixPath(GlobalConfig.allFiles.xDashStudio.header))
+        .on('error', () => {
+          /* Ignore compiler errors */
+        })
+        // .pipe(
+        //   terser().on('error', function (e) {
+        //     console.log(e);
+        //     return this.end();
+        //   })
+        // )
+        .pipe(concat(filesName.xdash_editor.header + '.min.js'))
+        .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
+        .pipe(replace('source/assets/', 'assets/'))
+        .pipe(
+          dest(
+            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
+          )
+        )
+    );
+  })
+);
+
+task('usemin:xdash_editor', series('usemin:xdash_editor:header', 'usemin:xdash_editor:body'));
+
+task(
+  'usemin:xdash_editor:css',
   series('init', () => {
     return src(fixPath(GlobalConfig.allFiles.xDashStudio.css))
       .pipe(cleanCSS({ compatibility: 'ie8' }))
@@ -308,11 +369,73 @@ task(
   })
 );
 
-task('nomin:xdash_editor', series('nomin:xdash_editor:header', 'nomin:xdash_editor:body', 'nomin:xdash_editor:css'));
+task(
+  'usemin:xdash_runtime:css',
+  series('init', () => {
+    return src(fixPath(GlobalConfig.allFiles.xDashRuntime.css))
+      .pipe(cleanCSS({ compatibility: 'ie8' }))
+      .pipe(concat(filesName.xdash_runtime.css + '.min.css'))
+      .pipe(replace('../fonts/', './fonts/'))
+      .pipe(replace('../img/', './img/'))
+      .pipe(replace('../icon/', './icon/'))
+      .pipe(
+        dest(
+          '../' +
+            configuration.paths.buildDirectory +
+            '/xdash_' +
+            GlobalConfig.config.xDashConfig.version.fullVersion +
+            '/assets'
+        )
+      );
+  })
+);
+
+task(
+  'inject:files:pyodide_worker',
+  series('init', () => {
+    Env = argv.env ?? 'dev';
+    const isProd = Env === 'prod';
+
+    let destination = '../';
+    if (isProd) {
+      destination =
+        '../' +
+        configuration.paths.buildDirectory +
+        '/xdash_' +
+        GlobalConfig.config.xDashConfig.version.fullVersion +
+        '/';
+    }
+
+    const configFile = '../configs/config.' + Env + '.js';
+    const dependenciesFiles = ['../thirdparty/pyodide.js', '../thirdparty/json_parseMore.js'];
+    const workerFile = '../source/kernel/base/pyodide-worker.js';
+
+    let pipe = src([configFile, ...dependenciesFiles, workerFile])
+      .pipe(debug())
+      .pipe(sourcemaps.init())
+      .pipe(concat(getXdashWorkerPyodideFile()));
+
+    if (isProd) {
+      // pipe = pipe.pipe(
+      //   terser().on('error', function (e) {
+      //     console.log(e);
+      //     return this.end();
+      //   })
+      // );
+    }
+    pipe = pipe.pipe(sourcemaps.write('.')).pipe(dest(destination));
+
+    if (!isProd) {
+      pipe = pipe.pipe(connect.reload());
+    }
+
+    return pipe;
+  })
+);
 
 task(
   'inject:files:prod',
-  series('nomin:xdash_editor', () => {
+  series('usemin:xdash_editor:header', 'usemin:xdash_editor:body', 'usemin:xdash_editor:css', () => {
     Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
 
@@ -339,140 +462,68 @@ task(
     });
 
     if (Env === 'prod') {
-      return (
-        src('../index_tmp.html')
-          .pipe(
-            inject(header, {
-              ignorePath: destination,
-              name: 'third',
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(
-            inject(css, {
-              ignorePath: destination,
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(debug())
-          .pipe(rename('index.html'))
-          .pipe(replace('source/assets', 'assets'))
-          .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
-          // .pipe(usemin({
-          //     html: [function() {
-          //         return htmlmin({ collapseWhitespace: true });
-          //     }],
-          // }))
-          .pipe(dest(destination))
-      );
+      return src('../index_tmp.html')
+        .pipe(
+          inject(header, {
+            ignorePath: destination,
+            name: 'third',
+            empty: true,
+            addRootSlash: false,
+          })
+        )
+        .pipe(
+          inject(css, {
+            ignorePath: destination,
+            empty: true,
+            addRootSlash: false,
+          })
+        )
+        .pipe(debug())
+        .pipe(rename('index.html'))
+        .pipe(replace('source/assets', 'assets'))
+        .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
+        .pipe(
+          usemin({
+            html: [
+              function () {
+                return htmlmin({ collapseWhitespace: true });
+              },
+            ],
+          })
+        )
+        .pipe(dest(destination));
     } else {
-      return (
-        src('../index_tmp.html')
-          .pipe(
-            inject(header, {
-              ignorePath: destination,
-              name: 'third',
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(
-            inject(css, {
-              ignorePath: destination,
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(debug())
-          .pipe(rename('index.html'))
-          .pipe(replace('source/assets', 'assets'))
-          // .pipe(usemin({
-          //     html: [function() {
-          //         return htmlmin({ collapseWhitespace: true });
-          //     }],
-          // }))
-          .pipe(dest(destination))
-      );
+      return src('../index_tmp.html')
+        .pipe(
+          inject(header, {
+            ignorePath: destination,
+            name: 'third',
+            empty: true,
+            addRootSlash: false,
+          })
+        )
+        .pipe(
+          inject(css, {
+            ignorePath: destination,
+            empty: true,
+            addRootSlash: false,
+          })
+        )
+        .pipe(debug())
+        .pipe(rename('index.html'))
+        .pipe(replace('source/assets', 'assets'))
+        .pipe(
+          usemin({
+            html: [
+              function () {
+                return htmlmin({ collapseWhitespace: true });
+              },
+            ],
+          })
+        )
+        .pipe(dest(destination));
     }
   })
-);
-
-task(
-  'nomin:xdash_runtime:header',
-  series('createConfigurationFile', () => {
-    return (
-      src(fixPath(GlobalConfig.allFiles.xDashRuntime.header))
-        .on('error', () => {
-          /* Ignore compiler errors */
-        })
-        // .pipe(
-        //     terser().on('error', function(e) {
-        //         console.log(e);
-        //         return this.end();
-        //     })
-        // )
-        .pipe(concat(filesName.xdash_runtime.header + '.min.js'))
-        .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
-    );
-  })
-);
-
-task(
-  'nomin:xdash_runtime:body',
-  series('createConfigurationFile', () => {
-    return (
-      src(fixPath(GlobalConfig.allFiles.xDashRuntime.body))
-        .on('error', () => {
-          /* Ignore compiler errors */
-        })
-        // .pipe(
-        //     terser().on('error', function(e) {
-        //         console.log(e);
-        //         return this.end();
-        //     })
-        // )
-        .pipe(concat(filesName.xdash_runtime.body + '.min.js'))
-        .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
-    );
-  })
-);
-
-task(
-  'nomin:xdash_runtime:css',
-  series('init', () => {
-    return src(fixPath(GlobalConfig.allFiles.xDashRuntime.css))
-      .pipe(cleanCSS({ compatibility: 'ie8' }))
-      .pipe(concat(filesName.xdash_runtime.css + '.min.css'))
-      .pipe(replace('../fonts/', './fonts/'))
-      .pipe(replace('../img/', './img/'))
-      .pipe(replace('../icon/', './icon/'))
-      .pipe(
-        dest(
-          '../' +
-            configuration.paths.buildDirectory +
-            '/xdash_' +
-            GlobalConfig.config.xDashConfig.version.fullVersion +
-            '/assets'
-        )
-      );
-  })
-);
-
-task(
-  'nomin:xdash_runtime',
-  series('nomin:xdash_runtime:header', 'nomin:xdash_runtime:body', 'nomin:xdash_runtime:css')
 );
 
 task(
@@ -504,34 +555,36 @@ task(
     });
 
     if (Env === 'prod') {
-      return (
-        src('../index_tmp.html')
-          .pipe(
-            inject(header, {
-              ignorePath: destination,
-              name: 'third',
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(
-            inject(css, {
-              ignorePath: destination,
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(debug())
-          .pipe(replace('source/assets', 'assets'))
-          .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
-          .pipe(rename('index.html'))
-          // .pipe(usemin({
-          //     html: [function() {
-          //         return htmlmin({ collapseWhitespace: true });
-          //     }],
-          // }))
-          .pipe(dest(destination))
-      );
+      return src('../index_tmp.html')
+        .pipe(
+          inject(header, {
+            ignorePath: destination,
+            name: 'third',
+            empty: true,
+            addRootSlash: false,
+          })
+        )
+        .pipe(
+          inject(css, {
+            ignorePath: destination,
+            empty: true,
+            addRootSlash: false,
+          })
+        )
+        .pipe(debug())
+        .pipe(replace('source/assets', 'assets'))
+        .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
+        .pipe(rename('index.html'))
+        .pipe(
+          usemin({
+            html: [
+              function () {
+                return htmlmin({ collapseWhitespace: true });
+              },
+            ],
+          })
+        )
+        .pipe(dest(destination));
     } else {
       return src('../index_tmp.html')
         .pipe(
@@ -653,7 +706,7 @@ task(
 
 task(
   'inject:files:view',
-  series('nomin:xdash_runtime', () => {
+  series('usemin:xdash_runtime:header', 'usemin:xdash_runtime:body', 'usemin:xdash_runtime:css', () => {
     Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
     let baseFileJs = '';
@@ -744,38 +797,36 @@ task(
   })
 );
 
-/***********************************************************/
-
 task(
   'images',
   series('clear:cache', 'clear:build', () => {
-    return (
-      src([
-        '../source/assets/**/*.png',
-        '../source/assets/**/*.gif',
-        '../source/assets/**/*.jpg',
-        '../source/assets/**/*.svg',
-        '../source/assets/**/*.woff2',
-        '../source/assets/**/*.woff',
-        '../source/assets/**/*.ttf',
-        '../source/assets/**/*.ico',
-        '../source/assets/**/*.eot',
-      ])
-        // .pipe(imagemin({
-        //     progressive: false,
-        //     svgoPlugins: [{ removeViewBox: true }],
-        //     use: [pngquant()]
-        // }))
-        .pipe(
-          dest(
-            '../' +
-              configuration.paths.buildDirectory +
-              '/xdash_' +
-              GlobalConfig.config.xDashConfig.version.fullVersion +
-              '/assets'
-          )
+    return src([
+      '../source/assets/**/*.png',
+      '../source/assets/**/*.gif',
+      '../source/assets/**/*.jpg',
+      '../source/assets/**/*.svg',
+      '../source/assets/**/*.woff2',
+      '../source/assets/**/*.woff',
+      '../source/assets/**/*.ttf',
+      '../source/assets/**/*.ico',
+      '../source/assets/**/*.eot',
+    ])
+      .pipe(
+        imagemin({
+          progressive: false,
+          svgoPlugins: [{ removeViewBox: true }],
+          use: [pngquant()],
+        })
+      )
+      .pipe(
+        dest(
+          '../' +
+            configuration.paths.buildDirectory +
+            '/xdash_' +
+            GlobalConfig.config.xDashConfig.version.fullVersion +
+            '/assets'
         )
-    );
+      );
   })
 );
 
@@ -800,11 +851,13 @@ task('copy', () => {
       '../../documentation/docs/node_modules/prismjs/components/**/*.*',
       '!../../documentation/docs/node_modules/**',
     ])
-      // .pipe(imagemin({
+      // .pipe(
+      //   imagemin({
       //     progressive: false,
       //     svgoPlugins: [{ removeViewBox: true }],
-      //     use: [pngquant()]
-      // }))
+      //     use: [pngquant()],
+      //   })
+      // )
       .pipe(dest(DocDirectory))
   );
 });
@@ -834,11 +887,13 @@ task('copymk', () => {
   console.log('EV ENV :', Env);
   return (
     src(['../../documentation/site/**/*.*'])
-      // .pipe(imagemin({
+      // .pipe(
+      //   imagemin({
       //     progressive: false,
       //     svgoPlugins: [{ removeViewBox: true }],
-      //     use: [pngquant()]
-      // }))
+      //     use: [pngquant()],
+      //   })
+      // )
       .pipe(dest(DocDirectory))
   );
 });
@@ -927,13 +982,14 @@ task(
     'template',
     'copy-starter',
     //'createConfigurationFile',
-    //'nomin:xdash_editor:header',
-    //'nomin:xdash_editor:body',
-    //'nomin:xdash_editor:css',
+    //'usemin:xdash_editor:header',
+    //'usemin:xdash_editor:body',
+    //'usemin:xdash_editor:css',
     'inject:files:prod',
-    //'nomin:_runtime:header',
-    //'nomin:_runtime:body',
-    //'nomin:_runtime:css',
+    'inject:files:pyodide_worker',
+    //'usemin:_runtime:header',
+    //'usemin:_runtime:body',
+    //'usemin:_runtime:css',
     'inject:files:view',
     'images' //,
     //'test:lint'
@@ -945,7 +1001,35 @@ task(
   series('clear:cache', 'clear:build', 'sass', 'init', 'template', 'copy-starter', 'inject:files:view', 'images')
 );
 
-task('start', series('clear:cache', 'sass', 'init', 'template', 'inject:files', 'inject:files:view:dev', 'mkdocs'));
+task(
+  'build:lite',
+  series(
+    'clear:cache',
+    'clear:build',
+    'sass',
+    'init',
+    'template',
+    'copy-starter',
+    'inject:files:prod',
+    'inject:files:pyodide_worker',
+    'inject:files:view',
+    'images'
+  )
+);
+
+task(
+  'start',
+  series(
+    'clear:cache',
+    'sass',
+    'init',
+    'template',
+    'inject:files',
+    'inject:files:pyodide_worker',
+    'inject:files:view:dev',
+    'mkdocs'
+  )
+);
 
 // Synchronization during development only
 /*--------------------------------------------*/
@@ -989,7 +1073,7 @@ task('watch_', parallel(watchSassFiles, watchFiles, browserSync));
 /*--------------------------------------------*/
 task(
   'serve',
-  series('clear:cache', 'sass', 'init', 'inject:files', 'watch_', (cb) => {
+  series('clear:cache', 'sass', 'init', 'inject:files:pyodide_worker', 'inject:files', 'watch_', (cb) => {
     let src = '../';
     if (Env === 'prod') {
       src = '../build/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion + '/';

@@ -29,7 +29,8 @@ env_vars = dotenv_values(env_file_path)
 # Accessing the variables
 a = env_vars.get('VERSION_XDASH_A')
 b = env_vars.get('VERSION_XDASH_B')
-c = env_vars.get('VERSION_XDASH_C')	
+c = env_vars.get('VERSION_XDASH_C')
+isLiteBuild = env_vars.get('LITE_BUILD')
 
 
 def get_version():
@@ -78,7 +79,10 @@ if (BUILD_FRONT_END):
         run_npm('bower','install')
 
     # Run npm build command in front-end directory
-    run_npm('npm', 'run', 'build')
+    if isLiteBuild:
+        run_npm('npm', 'run', 'build')
+    else:
+        run_npm('npm', 'run', 'build:lite')
 
 # Copy build result to ./build/chlkt directory
 build_dir = os.path.join('./front-end/build', front_end_build_dir_name)

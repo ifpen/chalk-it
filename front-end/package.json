@@ -63,6 +63,7 @@
     "build:babel": "gulp build:babel --gulpfile  gulpFiles/main.js --env=prod",
     "build:runtime": "gulp build:runtime --gulpfile  gulpFiles/main.js --env=prod",
     "build:quick": "gulp build --gulpfile  gulpFiles/main_build_quick.js --env=prod",
+    "build:lite": "gulp build:lite --gulpfile  gulpFiles/main.js --env=prod",
     "start": "gulp start --gulpfile  gulpFiles/main.js --env=dev",
     "start:quick": "gulp start --gulpfile  gulpFiles/main_build_quick.js --env=dev",
     "server:start:dev": "gulp serve --gulpfile  gulpFiles/main.js --env=dev",
