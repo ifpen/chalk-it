@@ -135,11 +135,8 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
     // Check for any calculated settings
     var settingsDefs = datanodePlugins[datanodeModel.type()].settings;
     var datanodeRegex = new RegExp('dataNodes.([\\w_-]+)|dataNodes\\[[\'"]([^\'"]+)', 'g');
-    // const setVarRegex =
-    //   /(setVariables?\((\[.*?\]),\s*(\[.*?\])\))|(setVariable\(("([^"]*)"),\s*([^)]*)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNodes\((\[.*?\])\))|(setVariableProperty\(("([^"]*)"),\s*(\[.*?\])\s*,\s*([^)]*)\))/g;
     const setVarRegex =
-      /(setVariables\((\["[^"].*?"\]),\s*(\[.*?\])\))|(setVariables\((\['[^"].*?'\]),\s*(\[.*?\])\))|(setVariable\(('([^"]*?)'),\s*([^)]*)\))|(setVariable\(("([^"]*?)"),\s*([^)]*)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNode\(('([^"]*)')\))|(executeDataNodes\((\["[^"].*?"\])\))|(executeDataNodes\((\['[^"].*?'\])\))|(setVariableProperty\(("([^"]*)"),\s*(\[.*?\])\s*,[^"].*?\))|(setVariableProperty\(('([^"].*?)'),\s*(\[.*?\])\s*,[^"].*?\))/g;
-
+      /(setVariables\((\[.+?\]),(\[.*?\])\))|(setVariable\((.+?)),((.*?)[^,])\)|(executeDataNode\(((.*?)[^,])\))|(.executeDataNodes\((\[.+?\])\))|(.setVariableProperty\((.+?),(\[.*?\]),(.*?)[^,]\))/g;
     const regexPython = /(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')|(#.*$)/gm;
     var currentSettings = datanodeModel.settings();
     var bOK = true;
@@ -260,7 +257,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
                 datanodeModel.name() +
                 '"';
               datanodeModel.statusCallback('Error');
-              swal('Cycle detection', text, 'error'); //AEF considered as error because it is not possible for scheduler
+              swal('Cycle detection', text, 'error'); //considered as error because it is not possible for scheduler
               self.bCalculatedSettings = false;
               bOK = false;
               return;
@@ -286,50 +283,6 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               let dsName = [];
               if (!_.isUndefined(matches)) {
                 isSchedulingApi = true;
-                if (!_.isUndefined(matches[13])) {
-                  // For setVariable
-                  dsName[0] = matches[13];
-                } else if (!_.isUndefined(matches[9])) {
-                  // For setVariable
-                  dsName[0] = matches[9];
-                } else if (!_.isUndefined(matches[2])) {
-                  // For setVariables array elements
-                  const variableArray = JSON.parse(matches[2]);
-                  dsName = variableArray;
-                } else if (!_.isUndefined(matches[5])) {
-                  // For setVariables array elements
-                  const validJsonString = matches[5].replace(/'/g, '"');
-                  const variableArray = JSON.parse(validJsonString);
-                  dsName = variableArray;
-                } else if (!_.isUndefined(matches[17])) {
-                  // For executeDataNode
-                  dsName[0] = matches[17];
-                } else if (!_.isUndefined(matches[20])) {
-                  // For executeDataNode
-                  dsName[0] = matches[20];
-                } else if (!_.isUndefined(matches[22])) {
-                  // For executeDataNodes
-                  const variableArray = JSON.parse(matches[22]);
-                  dsName = variableArray;
-                } else if (!_.isUndefined(matches[24])) {
-                  // For executeDataNodes
-                  const validJsonString = matches[24].replace(/'/g, '"');
-                  const variableArray = JSON.parse(validJsonString);
-                  dsName = variableArray;
-                } else if (!_.isUndefined(matches[27])) {
-                  // For setVariableProperty
-                  dsName[0] = matches[27];
-                } else if (!_.isUndefined(matches[31])) {
-                  // For setVariableProperty
-                  dsName[0] = matches[31];
-                }
-              }
-
-              if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
-                if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log("init: don't add parsed set var");
-              } else {
-                for (const name of dsName) {
-                  datanodesDependency.addSetvarList(name, datanodeModel.name());
                 }
               }
             }
@@ -359,13 +312,14 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               }
             }
           }
-          //AEF: fix bug (clean up data that doesn't exist anymore in formula for example)
+          //AEF: clean up data that doesn't exist anymore in formula for example
           datanodesDependency.removeMissedDependantDatanodes(allDsNames, datanodeModel.name());
 
           if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
             if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log("init: don't process calculate");
             return;
           }
+
           // MBG moved
           if (settingDef.type != 'custom2') {
             datanodeModel.calculatedSettingScripts[settingDef.name] = valueFunction;
@@ -405,7 +359,6 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           datanodesDependency.addNode(datanodeModel.name());
         }
         //AEF: remove edges from datanode to its pastValue
-        let add_edge = true;
         let match = datanodeModel.name().match(/pastValue_(.+)/);
         if (match) {
           let orig_name = match[1];
