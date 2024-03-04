@@ -276,38 +276,17 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           }
 
           let lines = script.split('\n');
-          let isSchedulingApi = false;
-          let isPageApi = false;
           for (let i = 0; i < lines.length; i++) {
-            while ((matches = setVarRegex.exec(lines[i]))) {
-              let dsName = [];
-              if (!_.isUndefined(matches)) {
-                isSchedulingApi = true;
-                }
-              }
-            }
-          }
-          for (let i = 0; i < lines.length; i++) {
-            if ((matches2 = lines[i].match(/.goToPage|.viewPage|.viewProject/))) {
-              if (!_.isUndefined(matches2)) {
-                isPageApi = true;
-              }
-            }
-          }
-          if (!isSchedulingApi) {
-            // don't found scheduling api
-            for (let i = 0; i < lines.length; i++) {
-              if ((matches = lines[i].match(/chalkit(.+)|xDashApi(.+)/))) {
-                if (!_.isUndefined(matches)) {
-                  // but found the begining of the api
-                  if (!isPageApi) {
-                    //don't take into account pages api
-                    const text = 'Syntax error in chalkit API.';
-                    datanodeModel.statusCallback('Error', text);
-                    datanodeModel.notificationCallback('error', datanodeModel.name(), text);
-                    self.bCalculatedSettings = false;
-                    return;
-                  }
+            lines[i] = lines[i].replace(/\s/g, ''); //remove white space
+            if (_.isNull(setVarRegex.exec(lines[i]))) {
+              if (_.isNull(lines[i].match(/.goToPage|.viewPage|.viewProject/))) {
+                line = lines[i].replace(/(['"])(?:\\.|(?!\1)[^\\\n])*\1/g, ''); //remove strings
+                if (!_.isNull(line.match(/(chalkit|xDashApi)\.[^\s()]+\(/))) {
+                  const text = 'Syntax error in chalkit API';
+                  datanodeModel.statusCallback('Error', text);
+                  datanodeModel.notificationCallback('error', datanodeModel.name(), text);
+                  self.bCalculatedSettings = false;
+                  return;
                 }
               }
             }
