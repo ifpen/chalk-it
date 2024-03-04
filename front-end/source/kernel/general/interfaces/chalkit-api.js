@@ -10,7 +10,18 @@
 var chalkit = (function () {
   function setVariable(dataNodeName, varJsonValue) {
     const val = JSON.parse(JSON.stringify(varJsonValue));
+    const currentDN = datanodesManager.getCurrentDataNode();
     let dN = datanodesManager.getDataNodeByName(dataNodeName);
+    if (!_.isUndefined(dN)) {
+      datanodesManager.datanodesDependency().addSetvarList(dataNodeName, currentDN);
+    } else {
+      dN = datanodesManager.getDataNodeByName(currentDN);
+      dN.notificationCallback(
+        'error',
+        currentDN,
+        "The dataNode referenced in setVariable api doesn't exist. Please verify your parameters"
+      );
+    }
     dN.setValue([], val, true); //don't start schedule here
   }
 

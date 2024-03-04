@@ -13,7 +13,9 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
 
   /*--------callValueFunction--------*/
   this.callValueFunction = function (theFunction) {
-    // MBG question : datanodesListModel.datasourceData : why is this in datanodesListModel??
+    //keep info of the current dataNode
+    datanodesManager.setCurrentDataNode(datanodeModel.name());
+
     return theFunction.call(undefined, datanodesListModel.datasourceData);
   };
 
