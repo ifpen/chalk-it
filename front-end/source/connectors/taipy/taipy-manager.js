@@ -76,7 +76,7 @@ class TaipyManager {
     this.deletedDnConnections.clear();
 
     //Variables that will be ignored (do not create a dataNode)
-    const fileVariables = new Set(['base_path', 'file_name', 'has_file_saved', 'json_data', 'file_list']);
+    const fileVariables = new Set(['file_name', 'has_file_saved', 'json_data', 'file_list']);
 
     // Combine current and new variable names to iterate over
     const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
