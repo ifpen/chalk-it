@@ -26,18 +26,39 @@ var chalkit = (function () {
   }
 
   function setVariables(dataNodeNames, varJsonValues) {
+    const currentDN = datanodesManager.getCurrentDataNode();
     for (let i = 0; i < dataNodeNames.length; i++) {
       let dN = datanodesManager.getDataNodeByName(dataNodeNames[i]);
-      //let varJsonValue = varJsonValues[i];
-      const varJsonValue = JSON.parse(JSON.stringify(varJsonValues[i]));
-      dN.setValue([], varJsonValue, true); //don't start schedule here
+      if (!_.isUndefined(dN)) {
+        datanodesManager.datanodesDependency().addSetvarList(dataNodeNames[i], currentDN);
+        const varJsonValue = JSON.parse(JSON.stringify(varJsonValues[i]));
+        dN.setValue([], varJsonValue, true); //don't start schedule here
+      } else {
+        dN = datanodesManager.getDataNodeByName(currentDN);
+        dN.notificationCallback(
+          'error',
+          currentDN,
+          "The dataNode referenced in setVariables api doesn't exist. Please verify your parameters"
+        );
+      }
     }
   }
 
   function setVariableProperty(dataNodeName, propertyPath, varJsonValue) {
+    const currentDN = datanodesManager.getCurrentDataNode();
     const val = JSON.parse(JSON.stringify(varJsonValue));
     let dN = datanodesManager.getDataNodeByName(dataNodeName);
-    dN.setValue(propertyPath, val, true); //don't start schedule here
+    if (!_.isUndefined(dN)) {
+      datanodesManager.datanodesDependency().addSetvarList(dataNodeName, currentDN);
+      dN.setValue(propertyPath, val, true); //don't start schedule here
+    } else {
+      dN = datanodesManager.getDataNodeByName(currentDN);
+      dN.notificationCallback(
+        'error',
+        currentDN,
+        "The dataNode referenced in setVariableProperty api doesn't exist. Please verify your parameters"
+      );
+    }
   }
 
   function executeDataNode(dataNodeName) {}
