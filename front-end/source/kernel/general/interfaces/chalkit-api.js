@@ -61,9 +61,35 @@ var chalkit = (function () {
     }
   }
 
-  function executeDataNode(dataNodeName) {}
+  function executeDataNode(dataNodeName) {
+    const currentDN = datanodesManager.getCurrentDataNode();
+    if (datanodesManager.foundDatanode(dataNodeName)) {
+      datanodesManager.datanodesDependency().addSetvarList(dataNodeName, currentDN);
+    } else {
+      const dN = datanodesManager.getDataNodeByName(currentDN);
+      dN.notificationCallback(
+        'error',
+        currentDN,
+        "The dataNode referenced in executeDataNode api doesn't exist. Please verify your parameters"
+      );
+    }
+  }
 
-  function executeDataNodes(dataNodeNames) {}
+  function executeDataNodes(dataNodeNames) {
+    const currentDN = datanodesManager.getCurrentDataNode();
+    for (let i = 0; i < dataNodeNames.length; i++) {
+      if (datanodesManager.foundDatanode(dataNodeNames[i])) {
+        datanodesManager.datanodesDependency().addSetvarList(dataNodeNames[i], currentDN);
+      } else {
+        const dN = datanodesManager.getDataNodeByName(currentDN);
+        dN.notificationCallback(
+          'error',
+          currentDN,
+          "The dataNode referenced in executeDataNodes api doesn't exist. Please verify your parameters"
+        );
+      }
+    }
+  }
 
   function viewPage(pageUrl, inputVals, bNewTab) {
     const queryParams = 'inputParams=' + inputHandler.encodeInputPars(inputVals);
