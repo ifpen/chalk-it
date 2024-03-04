@@ -1,0 +1,142 @@
+{
+	"meta": {
+		"version": "3.000.8805",
+		"fileFormatVersion": "0.3",
+		"date": "Thu Feb 08 2024 22:55:08 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "covid_page",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiListA": {
+			"layout": {
+				"top": "1.33333vh",
+				"left": "1.30991vw",
+				"height": "74.4vh",
+				"width": "22.5959vw",
+				"minHeight": "75px",
+				"minWidth": "80px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "flatUiListA",
+				"modelJsonId": "flatUiList"
+			},
+			"modelParameters": {
+				"addControls": false,
+				"listValueFontSize": 0.5,
+				"listValueColor": "var(--widget-select-drop-text)",
+				"listBackgroundColor": "var(--widget-select-drop-color)",
+				"selectValueColor": "var(--widget-select-option-highlighted-text)",
+				"selectValueBackgroundColor": "var(--widget-select-option-highlighted-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"borderColor": "var(--widget-border-color)",
+				"displayBorder": true
+			},
+			"modelHiddenParams": {
+				"value": [],
+				"selectedValue": ""
+			}
+		},
+		"echartsGenericA": {
+			"layout": {
+				"top": "1.33333vh",
+				"left": "25.0654vw",
+				"height": "74.4vh",
+				"width": "58.3115vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "echartsGenericA",
+				"modelJsonId": "echartsGeneric"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"option": {
+					"color": [
+						"var(--widget-color-2)",
+						"var(--widget-color-5)",
+						"var(--widget-color-6)",
+						"var(--widget-color-7)",
+						"var(--widget-color-8)",
+						"var(--widget-color-9)",
+						"var(--widget-color-10)",
+						"var(--widget-color-11)",
+						"var(--widget-color-12)",
+						"var(--widget-color-13)"
+					]
+				},
+				"selection": {}
+			}
+		}
+	},
+	"connections": {
+		"flatUiListA": {
+			"value": {
+				"name": "value",
+				"dataNode": "countries_list",
+				"dataFields": []
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataNode": "selected_countries",
+				"dataFields": []
+			}
+		},
+		"echartsGenericA": {
+			"option": {
+				"name": "option",
+				"dataNode": "option_e",
+				"dataFields": []
+			},
+			"selection": {
+				"name": "selection",
+				"dataNode": "None",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

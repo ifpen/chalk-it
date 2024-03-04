@@ -1,0 +1,105 @@
+{
+	"meta": {
+		"version": "3.000.8825",
+		"fileFormatVersion": "0.3",
+		"date": "Thu Feb 29 2024 08:23:29 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "Untitled",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1295,
+		"heightPx": 590,
+		"scrollWidthPx": 1295,
+		"scrollHeightPx": 590,
+		"widthVw": 84.75130890052355,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.75130890052355,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1295.4,
+			"heightPx": 590.4,
+			"widthVw": 84.77748691099477,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "flatUiValueDisplayA"
+			}
+		},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiValueDisplayA": {
+			"layout": {
+				"top": "1.33333vh",
+				"left": "1.33333vw",
+				"height": "5vh",
+				"width": "19vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "flatUiValueDisplayA",
+				"modelJsonId": "flatUiValueDisplay"
+			},
+			"modelParameters": {
+				"label": "labelText",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valueWidthProportion": "70%",
+				"valueFontSize": 0.5,
+				"valueColor": "var(--widget-input-text)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"backgroundColor": "var(--widget-input-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiValueDisplayA": {}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
