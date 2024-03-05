@@ -1,27 +1,39 @@
 # Description
 
+An instance of ChalkitApi is provided to user scripts as `chalkit`. It can be used by scripts to interact with Chalk'it.
 
+Aside from utility functions, it provides a set of methods to build the script's output. The output method can be used as an alternative to a return statement. If called multiple times the results will be combined as a JSON array or object.
 
-# Documentation
+As Chalk'it can only handle JSON data, any returned python object will be converted according to a set of heuristics. Lists, dicts, strings, and numbers will be directly mapped to their JSON equivalent; plots from known libraries will be converted to images (preferably SVG); etc. As a last resort, the object will be pickled and sent as binary data. If this fails, an error is raised.
 
+The `as_*` methods can be used to force the results to use a specific conversion:
 
-# Développement
+```python
+dataframe = compute_my_data()
+return [chalkit.as_json(dataframe), chalkit.as_python(dataframe)]
+```
 
-## Prérequis
+The `output_*` methods are just conveniences to return a converted value. `chalkit.output_json(dataframe)` is the same as `chalkit.output(chalkit.as_json(dataframe))`.
 
-Les scripts utiles passent par hatch.
+Details on the methods such as `as_data`, `as_image`, `as_json`, `as_python`, `base64_to_bytes`, `debug`, `output`, `output_data`, `output_image`, `output_json`, and `output_python` are described with parameters, return types, and examples of usage.
+
+# Development
+
+## Prerequisites
+
+The useful scripts are run through hatch.
 
 ```shell
-pip install hatch # ou autre outil au choix (conda...)
+pip install hatch # or another tool of choice (conda...)
 ```
 
 ## Scripts
 
-À considérer avant tout *commit*, ou du moins avant un *push*.
+To be considered before every *commit*, or at least before a *push*.
 
-### Mise en forme
+### Formatting
 
-Devrait être le strict minimum à toujours utiliser pour éviter les changements de forme superflus dans l'historique.
+Should be the strict minimum always used to avoid unnecessary format changes in the history.
 
 ```commandline
 hatch run lint:fmt
@@ -42,8 +54,9 @@ hatch run lint:all
 # Build
 
 ```shell
-pip install build # ou autre outil au choix (conda...)
+pip install build # or another tool of choice (conda...)
 python -m build
 ```
 
-Le fichier `whl` est placé dans `dist`.
+The `whl` file is placed in `dist`.
+
