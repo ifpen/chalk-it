@@ -468,39 +468,41 @@ var xdash = (function () {
   //-------------------------------------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------------------------------
 
-  function saveAndClosePrj() {
-    let $body = angular.element(document.body);
-    let $rootScope = $body.scope().$root;
-    let forceClose = true;
-    if ($rootScope.currentProject.name !== '') {
-      // project is open
-      let headerbarCtrl = angular.element(document.getElementById('headerbar-ctrl')).scope();
+  async function saveAndClosePrj() {
+    const $rootScope = angular.element(document.body).scope().$root;
+    const forceClose = true;
+    if ($rootScope.xDashFullVersion) {
+      if ($rootScope.currentProject.name !== '') {
+        // project is open
+        const headerbarCtrl = angular.element(document.getElementById('headerbar-ctrl')).scope();
 
-      if ($('.tab--active').hasClass('changed')) {
-        //project is dirty
-        var endAction = function () {
-          headerbarCtrl.closeProject($rootScope.currentProject.name, forceClose);
-          console.log('Your project is saved before closing');
-        };
-        fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
-
-        // swal('Auto closing project', 'Your project is saved before closing.', 'info');
-      } else {
-        headerbarCtrl.closeProject($rootScope.currentProject.name);
-        console.log('Your project was closed');
-        // swal('Thanks for staying!', 'Your project was closed.', 'info');
+        if ($rootScope.currentPrjDirty == ' *') {
+          //project is dirty
+          const endAction = function () {
+            headerbarCtrl.closeProject($rootScope.currentProject.name, forceClose);
+            console.log('Your project is saved before closing');
+          };
+          fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
+        } else {
+          headerbarCtrl.closeProject($rootScope.currentProject.name);
+          console.log('Your project was closed');
+        }
       }
+    } else if ($rootScope.currentPrjDirty == ' *') {
+      const inputName = document.getElementById('projectName').value;
+      const fileName = (inputName || 'untitled') + '-recovery';
+      const temp = xdash.serialize();
+      temp.meta.name = fileName;
+      const xdashFile = JSON.stringify(temp, null, '\t');
 
-      // setTimeout(function() {
-      //     //swal('Thanks for staying!', 'Your project was closed.', 'info');
-      // }, 10000);
+      const FileMngrInst = new FileMngrFct();
+      FileMngrInst.SendText('project', fileName + '.xprjson', xdashFile, undefined);
     }
   }
 
   /*--------manage leave/refresh page--------*/
-  $(window).bind('beforeunload', function () {
-    saveAndClosePrj();
-    return 'Are you sure you want to leave the page ?';
+  $(window).bind('beforeunload', async function () {
+    await saveAndClosePrj();
   });
 
   //-------------------------------------------------------------------------------------------------------------------
