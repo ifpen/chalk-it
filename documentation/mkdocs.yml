@@ -42,5 +42,10 @@ markdown_extensions:
   - pymdownx.superfences
 plugins:
   - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: ["../back_end/middleware/src"]
 extra_javascript:
   - mkdocs-open-xprjson.js

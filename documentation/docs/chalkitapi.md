@@ -1,19 +1,20 @@
 # Chalk'it APIs
 
-Chalk'it offers a set of APIs through **_chalkit_** that serve two primary purposes:
+Chalk'it offers a set of APIs through **_chalkit_** that serve several primary purposes:
 
 - Scheduler APIs: Facilitate the scheduling process by enabling the modification of dataNode variables and launching the scheduler.
 - Dashboard APIs: Support the developpement of multi-dashboard applications.
+- Datanode IOs
 
-**_chalkit_** currently operates with JavaScript-type dataNodes.
+## JavaScript
 
-## Scheduler features
+### Scheduler features
 
 The main feature allows the setting of dataNode variables in a script, replicating the behavior of a user interacting with a basic input/control widget.
 
 The assessment of these functions is handled at the end of the current scheduling instance.
 
-### setVariable
+#### setVariable
 
 ```JavaScript
 chalkit.setVariable(dataNodeName, dataNodeValue);
@@ -39,7 +40,7 @@ To modify it by another JSON value, you can use the following code:
 chalkit.setVariable("info_person", {"name": "Jane Doe","age": "25"});
 ```
 
-### setVariableProperty
+#### setVariableProperty
 
 ```JavaScript
 chalkit.setVariableProperty(dataNodeName, propertyPath, dataNodeValue);
@@ -73,7 +74,7 @@ To update the value of the street property in the nested structure within _info_
 chalkit.setVariableProperty("info_person", ["address","details","street"], "West 23rd Street");
 ```
 
-### setVariables
+#### setVariables
 
 ```JavaScript
 chalkit.setVariables(dataNodeNames, dataNodeValues);
@@ -96,7 +97,7 @@ you can use the following code:
 chalkit.setVariables(["info_person","info_gender"], [{"name": "Jane Doe","age": "25"},{"gender": "female"}]);
 ```
 
-### executeDataNode
+#### executeDataNode
 
 ```JavaScript
 chalkit.executeDataNode(dataNodeName);
@@ -106,7 +107,7 @@ This API allows to launch the schedule with the source node identified as _dataN
 
 This functionality can be useful for a dataNode with [explicit trigger](../ds/ds-execution-engine/#Explicit-Trigger) flag set to true. Its execution can be explicitly triggered by this API, in addition to being triggered by an associated [push button](../wdg/wdg-basic-inputs/#push-button) widget or by clicking on the dataNode update icon ![Update](ds/img/refresh-icon.png "Update") present in the dataNodes list.
 
-### executeDataNodes
+#### executeDataNodes
 
 ```JavaScript
 chalkit.executeDataNodes(dataNodeNames);
@@ -114,11 +115,11 @@ chalkit.executeDataNodes(dataNodeNames);
 
 This API is similar to _executeDataNode_, except it launches the schedule with multiple source nodes defined in the _dataNodeNames_ array, where each name is represented as a string.
 
-## Dashboard features
+### Dashboard features
 
 The main feature allow navigation between Chalk'it pages with parameter transfer. When landing at the target page, specified dataNodes of type _Variable_ can have their initial values modified, as described below.
 
-### goToPage
+#### goToPage
 
 In [constrained dashboard mode](../export/export#scaling-methods-for-the-constrained-dashboard), the method:
 
@@ -128,7 +129,7 @@ chalkit.goToPage(pageNumber)
 
 allows to show only the targed page. It is the main method for building multi-page app with custom navigation control.
 
-### viewPage
+#### viewPage
 
 ```JavaScript
 chalkit.viewPage(pageUrl, inputVals, bNewTab)
@@ -147,10 +148,24 @@ Navigates to _pageUrl_, setting the values of the specified dataNodes in inputVa
 
 - bNewTab: open in new tab when true.
 
-### viewProject
+#### viewProject
 
 Similar to view page, but applies for projects.
 
 ```JavaScript
 chalkit.viewProject(projectUrl, inputVals, bNewTab)
 ```
+
+
+## Python
+
+The Python API mostly deals with input and outputs, but should ultimately offer parity with the JavaScript API for the other areas.
+
+### Methods
+::: chalkit_python_api.outputs.ChalkitApi
+    options:
+      show_source: false
+      heading_level: 4
+      show_signature_annotations: true
+      show_object_full_path: false
+      show_root_toc_entry: false
