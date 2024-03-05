@@ -62,12 +62,12 @@ def _evaluate(script: str, data_nodes: str, is_debug: bool) -> str:
     """
 
     script = f"""
-from xdash_python_api.outputs import capture
+from chalkit_python_api.outputs import capture
 import json
 import base64
 
 @capture(is_debug={is_debug}, script_name='<string>', start_line=7)
-def script(dataNodes, xdash):
+def script(dataNodes, chalkit):
 {_shift(script)}
 
 result = script(data_nodes)
@@ -114,8 +114,8 @@ def create_python_exec_blueprint(executor: Optional[Executor] = None) -> Bluepri
             return Response(result_json, mimetype='application/json')
 
         except ModuleNotFoundError:
-            logger.exception("_evaluate failed; xdash_python_api probably missing")
-            error_msg = f"EvalError: Missing import (check xdash_python_api)\n\n{traceback.format_exc()}"
+            logger.exception("_evaluate failed; chalkit_python_api probably missing")
+            error_msg = f"EvalError: Missing import (check chalkit_python_api)\n\n{traceback.format_exc()}"
         except SyntaxError as ex:
             logger.exception("_evaluate failed; Probably an invalid script")
             if executor and ex.__cause__:
@@ -123,7 +123,7 @@ def create_python_exec_blueprint(executor: Optional[Executor] = None) -> Bluepri
             msg = "".join(traceback.format_exception(ex))
             error_msg = f"EvalError: Syntax error\n\n{msg}"
         except Exception as ex:
-            logger.exception("_evaluate failed; Possibly a xdash_python_api version missmatch ?")
+            logger.exception("_evaluate failed; Possibly a chalkit_python_api version missmatch ?")
             error_msg = f"EvalError: {traceback.format_exc()}"
         return {
             "error": error_msg

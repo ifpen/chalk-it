@@ -4,8 +4,8 @@ import traceback
 import typing
 from io import BytesIO, StringIO
 
-from xdash_python_api import PICKLE_MIME
-from xdash_python_api.datanodes import DataNodesProxy
+from chalkit_python_api import PICKLE_MIME
+from chalkit_python_api.datanodes import DataNodesProxy
 
 PANDAS_MAX_ROWS = 20
 PANDAS_MAX_COLS = None
@@ -155,7 +155,7 @@ class DataAdapter(OutputAdapter):
         return result
 
 
-class XDashState:
+class ChalkitState:
     capture_io: typing.Tuple[StringIO, StringIO]
     debug_data: typing.List[any]
 
@@ -199,8 +199,8 @@ class XDashState:
             self.debug_data.append(value)
 
 
-class XDashApi:
-    def __init__(self, state: XDashState):
+class ChalkitApi:
+    def __init__(self, state: ChalkitState):
         self._state = state
 
     @staticmethod
@@ -301,8 +301,8 @@ def process_debug_value(value):
     return processed if processed else str(value)
 
 
-def build_result(user_result: typing.Optional[any], xdash_state: XDashState, error: typing.Optional[Exception]) -> any:
-    output_results = xdash_state.results()
+def build_result(user_result: typing.Optional[any], chalkit_state: ChalkitState, error: typing.Optional[Exception]) -> any:
+    output_results = chalkit_state.results()
     if user_result is not None and output_results:
         # user_result implies no error
         return {"error": "'output_*' should not be combined with a 'return'"}
@@ -317,11 +317,11 @@ def build_result(user_result: typing.Optional[any], xdash_state: XDashState, err
     else:
         result["result"] = output
 
-    if xdash_state.debug:
-        stdout, stderr = xdash_state.capture_io
+    if chalkit_state.debug:
+        stdout, stderr = chalkit_state.capture_io
         result["stdout"] = stdout.getvalue()
         result["stderr"] = stderr.getvalue()
-        result["debug"] = [process_debug_value(value) for value in xdash_state.debug_data]
+        result["debug"] = [process_debug_value(value) for value in chalkit_state.debug_data]
 
     # TODO notifications ?
     return result
@@ -336,9 +336,9 @@ def capture(is_debug: bool = False, script_name: typing.Optional[str] = None, st
 
             user_result = None
             error = None
-            xdash_state = XDashState(is_debug, capture_io)
+            chalkit_state = ChalkitState(is_debug, capture_io)
             try:
-                user_result = user_fct(DataNodesProxy(data_nodes), XDashApi(xdash_state))
+                user_result = user_fct(DataNodesProxy(data_nodes), ChalkitApi(chalkit_state))
             except BaseException as ex:
                 tb = traceback.TracebackException.from_exception(ex)
 
@@ -353,7 +353,7 @@ def capture(is_debug: bool = False, script_name: typing.Optional[str] = None, st
             finally:
                 sys.stdout, sys.stderr = original_io
 
-            json_output = build_result(user_result, xdash_state, error)
+            json_output = build_result(user_result, chalkit_state, error)
             return json.dumps(json_output, allow_nan=True, cls=DebugCustomEncoder if is_debug else CustomEncoder)
 
         return exec_user_fct
