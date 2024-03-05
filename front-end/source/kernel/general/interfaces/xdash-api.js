@@ -9,83 +9,60 @@
 
 var xDashApi = (function () {
   function setVariable(dataNodeName, varJsonValue) {
-    const val = JSON.parse(JSON.stringify(varJsonValue));
-    let dN = datanodesManager.getDataNodeByName(dataNodeName);
+    const dN = datanodesManager.getDataNodeByName(dataNodeName);
     dN.notificationCallback('warning', dataNodeName, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
-
-    dN.setValue([], val, true); //don't start schedule here
+    chalkit.setVariable(dataNodeName, varJsonValue);
   }
 
   function setVariables(dataNodeNames, varJsonValues) {
-    for (let i = 0; i < dataNodeNames.length; i++) {
-      let dN = datanodesManager.getDataNodeByName(dataNodeNames[i]);
-      if (i == 0)
-        dN.notificationCallback(
-          'warning',
-          dataNodeNames[0],
-          "Deprecated feature: please rename 'xDashApi' by 'chalkit'"
-        );
-      const varJsonValue = JSON.parse(JSON.stringify(varJsonValues[i]));
-      dN.setValue([], varJsonValue, true); //don't start schedule here
-    }
+    const dN = datanodesManager.getDataNodeByName(dataNodeNames[0]);
+    dN.notificationCallback('warning', dataNodeNames[0], "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
+    chalkit.setVariables(dataNodeNames, varJsonValues);
   }
 
   function setVariableProperty(dataNodeName, propertyPath, varJsonValue) {
-    const val = JSON.parse(JSON.stringify(varJsonValue));
-    let dN = datanodesManager.getDataNodeByName(dataNodeName);
+    const dN = datanodesManager.getDataNodeByName(dataNodeName);
     dN.notificationCallback('warning', dataNodeName, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
-    dN.setValue(propertyPath, val, true); //don't start schedule here
+    chalkit.setVariableProperty(dataNodeName, propertyPath, varJsonValue);
   }
 
   function getVariable(dataNodeName) {
-    let dN = datanodesManager.getDataNodeByName(dataNodeName);
+    const dN = datanodesManager.getDataNodeByName(dataNodeName);
     dN.notificationCallback('error', dataNodeName, "Deprecated feature: 'getVariable' feature is no longer supported");
     return undefined;
   }
 
   function executeDataNode(dataNodeName) {
-    let dN = datanodesManager.getDataNodeByName(dataNodeName);
+    const dN = datanodesManager.getDataNodeByName(dataNodeName);
     dN.notificationCallback('warning', dataNodeName, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
+    chalkit.executeDataNode(dataNodeName);
   }
 
   function executeDataNodes(dataNodeNames) {
-    let dN = datanodesManager.getDataNodeByName(dataNodeNames[0]);
+    const dN = datanodesManager.getDataNodeByName(dataNodeNames[0]);
     dN.notificationCallback('warning', dataNodeNames[0], "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
+    chalkit.executeDataNodes(dataNodeNames);
   }
 
   function viewPage(pageUrl, inputVals, bNewTab) {
-    var queryParams = 'inputParams=' + inputHandler.encodeInputPars(inputVals);
-    var query = pageUrl + '?' + queryParams;
-    if (bNewTab) {
-      window.open(query, '_blank');
-    } else {
-      window.location = query;
-    }
+    const currentDN = datanodesManager.getCurrentDataNode();
+    const dN = datanodesManager.getDataNodeByName(currentDN);
+    dN.notificationCallback('warning', currentDN, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
+    chalkit.viewPage(pageUrl, inputVals, bNewTab);
   }
 
   function viewProject(projectUrl, inputVals, bNewTab) {
-    var xDashRuntime = xDashConfig.urlBaseForExport;
-    var bIsDevVersion = false;
-    if (xDashConfig.version.minor == '999') {
-      bIsDevVersion = true;
-    }
-    var versionSuffix = '';
-    if (!bIsDevVersion) {
-      versionSuffix = '-' + xDashConfig.version.fullVersion;
-    }
-    var xDashViewer = xDashRuntime + 'index-view' + versionSuffix + '.html';
-    var queryProject = 'projectUrl=' + projectUrl;
-    var queryParams = 'inputParams=' + inputHandler.encodeInputPars(inputVals);
-    var query = xDashViewer + '?' + queryProject + '&' + queryParams;
-    if (bNewTab) {
-      window.open(query, '_blank');
-    } else {
-      window.location = query;
-    }
+    const currentDN = datanodesManager.getCurrentDataNode();
+    const dN = datanodesManager.getDataNodeByName(currentDN);
+    dN.notificationCallback('warning', currentDN, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
+    chalkit.viewProject(projectUrl, inputVals, bNewTab);
   }
 
   function goToPage(numPage) {
-    customNavigationRuntime.customNavigationGoToPage(numPage);
+    const currentDN = datanodesManager.getCurrentDataNode();
+    const dN = datanodesManager.getDataNodeByName(currentDN);
+    dN.notificationCallback('warning', currentDN, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");
+    chalkit.goToPage(numPage);
   }
 
   return {

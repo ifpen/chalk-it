@@ -37,7 +37,7 @@ var datanodesManager = (function () {
 
   var jsEditor = new JSEditor();
   var pluginEditor = new PluginEditor(jsEditor);
-
+  var currentDataNode;
   // deleteDn: delete a datanode
   function deleteDn(viewModel) {
     if (viewModel.sampleTime()) {
@@ -551,6 +551,17 @@ var datanodesManager = (function () {
     },
     getJsonEditor: function () {
       return jsonEdContainer;
+    },
+    datanodesDependency: function () {
+      //need this for chalkit api
+      return datanodesDependency;
+    },
+    setCurrentDataNode: function (datanodeName) {
+      currentDataNode = datanodeName;
+    },
+    getCurrentDataNode: function () {
+      //need this for chalkit api
+      return currentDataNode;
     },
   };
 })();
