@@ -71,6 +71,7 @@ function updateDataSourceFromWidget(idInstance, e) {
 // |               updateDataNodeFromWidgetwithspinButton               | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
+  const $rootScope = angular.element(document.body).scope().$root;
   if (_.isUndefined(widgetConnector.widgetsConnection[idInstance])) return;
   const sliders = widgetConnector.widgetsConnection[idInstance].sliders;
   const dnNames = [];
@@ -83,32 +84,39 @@ function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
     }
 
     if (dnNames.length > 0) {
-      const widgetElement = document.getElementById('button' + idWidget);
-      const iElement = document.createElement('i');
-      iElement.setAttribute('id', 'icon' + idWidget);
-      datanodesManager.getDataNodeByName(dnNames[0]).schedulerStart(dnNames, dnNames[0], 'triggerButton');
-      const intervalId = setInterval(function () {
-        const pendings = [];
-        dnNames.forEach((element) => {
-          if (datanodesManager.getDataNodeByName(element).status() == 'Pending') {
-            // check if datanode is in Pending state
-            $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg disabled'); // disable until request finished
-            pendings.push(true);
-            // Just do it if one datanode has "Pending" status. And do it only once
-            if (!widgetElement.contains(iElement)) {
-              if (!iElement.classList.contains('fa', 'fa-spinner', 'fa-spin')) {
-                iElement.classList.add('fa', 'fa-spinner', 'fa-spin');
-              }
-              widgetElement.append(iElement);
-            }
-          }
+      if ($rootScope.xDashLiteVersion) {
+        dnNames.forEach((func) => {
+          const funName = datanodesManager.getDataNodeByName(func).settings().json_var;
+          taipyManager.functionTrigger(JSON.parse(funName));
         });
-        if (pendings.length == 0) {
-          $(iElement).remove();
-          $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
-          clearInterval(intervalId);
-        }
-      }, 100);
+      } else {
+        const widgetElement = document.getElementById('button' + idWidget);
+        const iElement = document.createElement('i');
+        iElement.setAttribute('id', 'icon' + idWidget);
+        datanodesManager.getDataNodeByName(dnNames[0]).schedulerStart(dnNames, dnNames[0], 'triggerButton');
+        const intervalId = setInterval(function () {
+          const pendings = [];
+          dnNames.forEach((element) => {
+            if (datanodesManager.getDataNodeByName(element).status() == 'Pending') {
+              // check if datanode is in Pending state
+              $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg disabled'); // disable until request finished
+              pendings.push(true);
+              // Just do it if one datanode has "Pending" status. And do it only once
+              if (!widgetElement.contains(iElement)) {
+                if (!iElement.classList.contains('fa', 'fa-spinner', 'fa-spin')) {
+                  iElement.classList.add('fa', 'fa-spinner', 'fa-spin');
+                }
+                widgetElement.append(iElement);
+              }
+            }
+          });
+          if (pendings.length == 0) {
+            $(iElement).remove();
+            $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
+            clearInterval(intervalId);
+          }
+        }, 100);
+      }
     }
   }
 }

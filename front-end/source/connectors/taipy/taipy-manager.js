@@ -106,7 +106,7 @@ class TaipyManager {
    */
   sendToTaipy(varName, newValue) {
     const currentContext = this.currentContext;
-    if (varName == 'function_names' || currentContext !== this.app.getContext()) return;
+    if (varName.startsWith('function:') || currentContext !== this.app.getContext()) return;
 
     const encodedName = this.app.getEncodedName(varName, currentContext);
     const currentValue = this.variableData[currentContext][varName].value;
@@ -245,12 +245,13 @@ class TaipyManager {
   /**
    * Trigger an event to execute a Taipy function and submit the loaded file data from a file loader widget.
    *
-   * @method uploadFileTrigger
+   * @method functionTrigger
    * @public
-   * @param {String} functionName - The name of the Taipy function to be executed.
+   * @param {string} functionName - The name of the Taipy function to be executed.
+   * @param {*} fileData - The data of the loaded file.
    * @returns {void} This method does not return a value.
    */
-  uploadFileTrigger(functionName, fileData) {
+  functionTrigger(functionName, fileData) {
     this.app.trigger(functionName, 'first_action', { file_data: fileData });
   }
 
@@ -286,9 +287,9 @@ class TaipyManager {
   }
 
   /**
+   * Create the dataNode according to the function name and delete the file management functions.
    *
-   * Initializes and update the function_names dataNode.
-   * If the dataNode already exists, it updates the existing dataNode with the new list of function names.
+   * If the dataNode doesn't yet exist, it will be created by adding the prefix "function:" to the function name.
    * The function names correspond to the function names on the taipy page.
    *
    * @method initFunctionList
@@ -297,11 +298,16 @@ class TaipyManager {
    */
   #initFunctionList() {
     const functionList = this.app.getFunctionList();
-    if (datanodesManager.foundDatanode('function_names')) {
-      this.#updateDataNode('function_names', functionList);
-    } else {
-      this.#createDataNode('function_names', functionList);
-    }
+    const fileFunctionSet = new Set(['load_file', 'save_file', 'select_file', 'get_file_list']);
+
+    functionList.forEach((funcName) => {
+      if (!fileFunctionSet.has(funcName)) {
+        const dataNodeName = 'function:' + funcName;
+        if (!datanodesManager.foundDatanode(dataNodeName)) {
+          this.#createDataNode(dataNodeName, funcName);
+        }
+      }
+    });
   }
 
   /**

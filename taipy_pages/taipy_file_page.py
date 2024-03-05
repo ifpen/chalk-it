@@ -16,5 +16,8 @@ def upload_file(state, name, payload):
 def on_change(state, var, val):
     state.c = state.a + state.b * 2
 
+def on_test():
+    print("on_test")
+
 # Create a Page instance with the resource handler
 page = Page(PureHTMLResourceHandler())

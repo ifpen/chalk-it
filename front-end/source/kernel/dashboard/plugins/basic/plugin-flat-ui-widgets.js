@@ -262,11 +262,7 @@ function flatUiWidgetsPluginClass() {
             result.isBinary = false;
           }
 
-          if ($rootScope.xDashLiteVersion) {
-            taipyManager.uploadFileTrigger(modelsTempParams[idInstance].functionName, result);
-          } else {
-            self.notifyNewValue(result);
-          }
+          self.notifyNewValue(result);
         });
 
         if (modelsParameters[idInstance].binaryFileInput) {
@@ -381,8 +377,6 @@ function flatUiWidgetsPluginClass() {
             );
           }
         }
-        if ($rootScope.xDashLiteVersion && isFile)
-          result.push(new WidgetActuatorDescription('taipy_function', 'Function name', WidgetActuatorDescription.READ));
       }
       return result;
     };
@@ -403,18 +397,6 @@ function flatUiWidgetsPluginClass() {
         removeValueChangedHandler: function (updateDataFromWidget) {
           self.disable();
         },
-      };
-    }
-
-    if ($rootScope.xDashLiteVersion) {
-      this['taipy_function'] = {
-        setValue: function (val) {
-          modelsTempParams[idInstance].functionName = val;
-        },
-        getValue: function () {},
-        updateCallback: function () {},
-        addValueChangedHandler: function (updateDataFromWidget) {},
-        removeValueChangedHandler: function (updateDataFromWidget) {},
       };
     }
 
