@@ -45,6 +45,7 @@ var angularModule = angular
       else $rootScope.urlCredits = xDashConfig.urlWebSite + '/blob/main/credits.html';
 
       $rootScope.enableLocalServer = !(xDashConfig.disableLocalServer == 'true');
+      $rootScope.disableSchedulerProfiling = xDashConfig.disableSchedulerProfiling == 'true';
 
       if ($rootScope.xDashFullVersion) {
         document.title = "Chalk'it - SaaS version";
