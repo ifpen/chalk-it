@@ -140,11 +140,6 @@
       else return false;
     };
 
-    // AEF comment here to inhibite memory of past values
-    // self.getSavedSettings = function() {
-    //     return [pastStatus, pastSettings];
-    // };
-
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
     self.updateNow = function () {
       var init_value;

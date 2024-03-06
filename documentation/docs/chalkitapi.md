@@ -3,7 +3,7 @@
 Chalk'it offers a set of APIs through **_chalkit_** that serve several primary purposes:
 
 - Scheduler APIs: Facilitate the scheduling process by enabling the modification of dataNode variables and launching the scheduler.
-- Dashboard APIs: Support the developpement of multi-dashboard applications.
+- Dashboard APIs: Support the developpement of multi-dashboard applications and the display of widgets.
 - Datanode IOs
 
 ## JavaScript and Pyodide
@@ -156,6 +156,39 @@ Similar to view page, but applies for projects.
 chalkit.viewProject(projectUrl, inputVals, bNewTab)
 ```
 
+### hideWidget
+
+```JavaScript
+chalkit.hideWidget(widgetName)
+```
+
+Hides the display of the widget.
+
+- widgetName: the name of the widget, which can be obtained by hovering over the widget target, in the edit mode. The widget is visible by default.
+
+### showWidget
+
+```JavaScript
+chalkit.showWidget(widgetName)
+```
+
+Makes the display of the widget visible.
+
+### disableWidget
+
+```JavaScript
+chalkit.disableWidget(widgetName)
+```
+
+Disables the access of the widget. The widget is enabled by default.
+
+### enableWidget
+
+```JavaScript
+chalkit.enableWidget(widgetName)
+```
+
+Enables the access of the widget (interactive).
 
 ## Python
 
