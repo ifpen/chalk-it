@@ -180,10 +180,12 @@ class TaipyManager {
    * @method saveFile
    * @public
    * @param {Object} xprjson - The object to be saved, which will be converted to a JSON string.
+   * @param {string} actionName - The name of the action to be triggered in the taipy page.
    * @returns {void} This method does not return a value.
    */
-  saveFile(xprjson) {
-    this.app.trigger('save_file', 'first_action', { data: JSON.stringify(xprjson, null, '\t') });
+  saveFile(xprjson, actionName) {
+    const action_name = actionName ?? 'first_action';
+    this.app.trigger('save_file', action_name, { data: JSON.stringify(xprjson, null, '\t') });
   }
 
   /**

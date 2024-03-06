@@ -1,7 +1,14 @@
-from pathlib import Path
+"""
+This module provides functionalities for loading, saving, and selecting files
+based on user actions, specifically handling .xprjson files.
+"""
+
+
 import json
 import sys
+from pathlib import Path
 from typing import Dict, Union
+
 from .function_json_adapter import FunctionJsonAdapter
 
 # Get the absolute path of the main module
@@ -12,7 +19,8 @@ json_data: str = ""
 has_file_saved: bool = False
 file_list: Dict[str, Union[str, list]] = {}
 
-def load_file(state: object, action_name: str) -> None:
+
+def load_file(state: object, action_name: str) -> None: # pylint: disable=unused-argument
     """
     Loads file content into the state.
 
@@ -20,7 +28,8 @@ def load_file(state: object, action_name: str) -> None:
     - state: The current state object.
     - action_name: The name of the action being performed.
     """
-    state.json_data = Path(state.file_name).read_text()
+    state.json_data = Path(state.file_name).read_text(encoding="utf-8")
+
 
 def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
     """
@@ -36,6 +45,8 @@ def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
     - OSError: If there's an error writing to the file.
     """
     try:
+        state.file_name = BASE_PATH / (
+            "config-recovery.xprjson" if action_name == "reload" else "config.xprjson")
         if "data" not in payload:
             raise ValueError("Payload does not contain 'data'")
         with open(state.file_name, "w", encoding="utf-8") as f:
@@ -44,7 +55,8 @@ def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
     except OSError as error:
         raise OSError(f"Failed to write to {file_name}: {error}") from error
 
-def select_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
+
+def select_file(state: object, action_name: str, payload: Dict[str, str]) -> None: # pylint: disable=unused-argument
     """
     Selects a file based on the provided file name in the payload.
 
@@ -59,7 +71,8 @@ def select_file(state: object, action_name: str, payload: Dict[str, str]) -> Non
     if potential_file_path.exists():
         state.file_name = str(potential_file_path)
 
-def get_file_list(state: object, action_name: str) -> None:
+
+def get_file_list(state: object, action_name: str) -> None: # pylint: disable=unused-argument
     """
     Updates the state with a list of .xprjson files in the base path.
 
@@ -73,5 +86,6 @@ def get_file_list(state: object, action_name: str) -> None:
         'base_path': str(BASE_PATH)
     }
     state.file_list = json.dumps(file_list_obj)
+
 
 FunctionJsonAdapter().register()

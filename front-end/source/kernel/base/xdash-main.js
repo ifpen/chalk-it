@@ -491,12 +491,16 @@ var xdash = (function () {
     } else if ($rootScope.currentPrjDirty == ' *') {
       const inputName = document.getElementById('projectName').value;
       const fileName = (inputName || 'untitled') + '-recovery';
-      const temp = xdash.serialize();
-      temp.meta.name = fileName;
-      const xdashFile = JSON.stringify(temp, null, '\t');
+      const xprjson = xdash.serialize();
+      xprjson.meta.name = fileName;
 
-      const FileMngrInst = new FileMngrFct();
-      FileMngrInst.SendText('project', fileName + '.xprjson', xdashFile, undefined);
+      if ($rootScope.xDashLiteVersion) {
+        taipyManager.saveFile(xprjson, 'reload');
+      } else {
+        const xdashFile = JSON.stringify(xprjson, null, '\t');
+        const FileMngrInst = new FileMngrFct();
+        FileMngrInst.SendText('project', fileName + '.xprjson', xdashFile, undefined);
+      }
     }
   }
 
