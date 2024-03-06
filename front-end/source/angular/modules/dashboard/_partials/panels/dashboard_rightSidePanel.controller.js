@@ -289,6 +289,7 @@ angular
               validated: {},
               supportsWrites: !!ds.canSetValue(),
               supportsPath: !!ds.canSetValue() && ds.canSetValue().acceptPath,
+              isFunction: ds.settings().isFunction ?? false,
             }));
             this.dataNodes = _.sortBy(this.dataNodes, (ds) => ds.name.toLowerCase());
           }
@@ -588,20 +589,6 @@ angular
             .filter((_) => _ !== undefined);
           this._notifyChanges();
         }
-
-        getFilteredDataNodes(sliderName) {
-          const liteVersion = angular.element(document.body).scope().$root.xDashLiteVersion;
-          if (!liteVersion) {
-            return this.dataNodes;
-          }
-          const startsWithTrigger = sliderName.startsWith('trigger');
-          return this.dataNodes.filter((ds) => startsWithTrigger === ds.name.startsWith('function:'));
-        }
-
-        formatDisplayName(dsName) {
-          const liteVersion = angular.element(document.body).scope().$root.xDashLiteVersion;
-          return liteVersion && dsName.startsWith('function:') ? dsName.replace('function:', '') : dsName;
-        }
       },
     ],
     template: `
@@ -627,7 +614,7 @@ angular
             <label for="DS{{sliderName}}_">DataNodes</label>
             <select id="DS{{sliderName}}" ng-model="$ctrl.currentConnections.sliders[sliderName].dataNode" ng-change="$ctrl.onDatasourceChange(sliderName)">
                 <option>None</option>
-                <option ng-repeat="ds in $ctrl.getFilteredDataNodes(sliderName) | filter: $ctrl.sliderDescriptions[sliderName].dsFilter" ng-class="{'validated' : ds.validated[sliderName]}" value="{{ds.name}}">{{$ctrl.formatDisplayName(ds.name)}}</option>
+                <option ng-repeat="ds in $ctrl.dataNodes | filter: $ctrl.sliderDescriptions[sliderName].dsFilter" ng-if="$ctrl.sliderDescriptions[sliderName].trigger === ds.isFunction" ng-class="{'validated' : ds.validated[sliderName]}">{{ds.name}}</option>
             </select>
         </div>
         <div class="dataconnection__col" ng-repeat="dataSelect in $ctrl.selectionCombos[sliderName].fieldsCombos">

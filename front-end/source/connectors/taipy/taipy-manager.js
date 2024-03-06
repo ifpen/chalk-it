@@ -302,9 +302,9 @@ class TaipyManager {
 
     functionList.forEach((funcName) => {
       if (!rejectedFunctionSet.has(funcName)) {
-        const dataNodeName = 'function:' + funcName;
-        if (!datanodesManager.foundDatanode(dataNodeName)) {
-          this.#createDataNode(dataNodeName, funcName);
+        const dnName = funcName;
+        if (!datanodesManager.foundDatanode(dnName)) {
+          this.#createDataNode(dnName, funcName, { isFunction: true });
         }
       }
     });
@@ -337,13 +337,14 @@ class TaipyManager {
    * @method createDataNode
    * @private
    * @param {string} dnName - The dataNode name.
-   * @param {*} value - The value for the dataNode.
+   * @param {*} value - The value of the dataNode.
+   * @param {Object} newProp - The new dataNode settings property.
    * @returns {void} This method does not return a value.
    */
-  #createDataNode(dnName, value) {
+  #createDataNode(dnName, value, newProp) {
     const types = datanodesManager.getDataNodePluginTypes();
     const viewModel = null;
-    const dataNodeSettings = {
+    const dnSettings = {
       type: 'taipy_link_plugin',
       iconType: '',
       settings: {
@@ -351,8 +352,9 @@ class TaipyManager {
         json_var: JSON.stringify(value),
       },
     };
-    const selectedType = types[dataNodeSettings.type];
-    datanodesManager.settingsSavedCallback(viewModel, dataNodeSettings, selectedType);
+    dnSettings.settings = { ...dnSettings.settings, ...(newProp ?? {}) };
+    const selectedType = types[dnSettings.type];
+    datanodesManager.settingsSavedCallback(viewModel, dnSettings, selectedType);
   }
 
   /**
@@ -401,12 +403,12 @@ class TaipyManager {
    * @method updateDataNode
    * @private
    * @param {string} dnName - The dataNode name.
-   * @param {*} value - The new value for the dataNode.
+   * @param {*} value - The new value of the dataNode.
    * @returns {void} This method does not return a value.
    */
   #updateDataNode(dnName, value) {
     const dnModel = datanodesManager.getDataNodeByName(dnName);
-    const dataNodeSettings = {
+    const dnSettings = {
       type: 'taipy_link_plugin',
       iconType: '',
       settings: {
@@ -414,7 +416,7 @@ class TaipyManager {
         json_var: JSON.stringify(value),
       },
     };
-    datanodesManager.updateDatanode(dnModel, dataNodeSettings);
+    datanodesManager.updateDatanode(dnModel, dnSettings);
   }
 
   /**

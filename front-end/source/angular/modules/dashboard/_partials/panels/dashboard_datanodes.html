@@ -254,7 +254,7 @@
   class="datanode__card"
   ng-class="{open:displayedShowIndex==$index}"
   ng-repeat="data in alldatanodes"
-  ng-if="!data.hide"
+  ng-if="!data.settings().isFunction && !data.hide"
 >
   <div class="datanode__card--top">
     <div class="datanode__card--top__flags">
