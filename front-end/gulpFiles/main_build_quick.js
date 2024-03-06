@@ -47,6 +47,8 @@ let browsersync = require('browser-sync').create(),
   xdashRuntimeCss = filesName.xdash_runtime.css,
   xdashRuntimeHeader = filesName.xdash_runtime.header,
   xdashRuntimeBody = filesName.xdash_runtime.body,
+  buildFilePath,
+  buildDirPath,
   getXdashWorkerPyodideFile = () =>
     `${filesName.workers.pyodide}${
       addVersion && Env === 'prod' ? GlobalConfig.config.xDashConfig.version.fullVersion : Env
@@ -111,6 +113,10 @@ task('init', (cb) => {
     ListTasksBeforeInject = 'createConfigurationFile';
   }
   GlobalConfig = require('./index').config(Env);
+
+  prefixName = GlobalConfig.config.xDashConfig.xDashBasicVersion ? '/chalkit_' : '/xdash_';
+  buildFilePath = prefixName + GlobalConfig.config.xDashConfig.version.fullVersion;
+  buildDirPath = '../' + configuration.paths.buildDirectory + buildFilePath;
 
   if (addVersion) {
     filesName.xdash_editor.css = xdashEditorCss + GlobalConfig.config.xDashConfig.version.fullVersion;
@@ -260,11 +266,7 @@ task(
         // )
         .pipe(concat(filesName.xdash_editor.body + '.min.js'))
         .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
+        .pipe(dest(buildDirPath))
     );
   })
 );
@@ -285,11 +287,7 @@ task(
         // )
         .pipe(concat(filesName.xdash_runtime.body + '.min.js'))
         .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
+        .pipe(dest(buildDirPath))
     );
   })
 );
@@ -311,11 +309,7 @@ task(
         .pipe(concat(filesName.xdash_runtime.header + '.min.js'))
         .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
         .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
+        .pipe(dest(buildDirPath))
     );
   })
 );
@@ -337,11 +331,7 @@ task(
         .pipe(concat(filesName.xdash_editor.header + '.min.js'))
         .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
         .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
+        .pipe(dest(buildDirPath))
     );
   })
 );
@@ -357,15 +347,7 @@ task(
       .pipe(replace('../fonts/', './fonts/'))
       .pipe(replace('../img/', './img/'))
       .pipe(replace('../icon/', './icon/'))
-      .pipe(
-        dest(
-          '../' +
-            configuration.paths.buildDirectory +
-            '/xdash_' +
-            GlobalConfig.config.xDashConfig.version.fullVersion +
-            '/assets'
-        )
-      );
+      .pipe(dest(buildDirPath + '/assets'));
   })
 );
 
@@ -378,15 +360,7 @@ task(
       .pipe(replace('../fonts/', './fonts/'))
       .pipe(replace('../img/', './img/'))
       .pipe(replace('../icon/', './icon/'))
-      .pipe(
-        dest(
-          '../' +
-            configuration.paths.buildDirectory +
-            '/xdash_' +
-            GlobalConfig.config.xDashConfig.version.fullVersion +
-            '/assets'
-        )
-      );
+      .pipe(dest(buildDirPath + '/assets'));
   })
 );
 
@@ -398,12 +372,7 @@ task(
 
     let destination = '../';
     if (isProd) {
-      destination =
-        '../' +
-        configuration.paths.buildDirectory +
-        '/xdash_' +
-        GlobalConfig.config.xDashConfig.version.fullVersion +
-        '/';
+      destination = buildDirPath + '/';
     }
 
     const configFile = '../configs/config.' + Env + '.js';
@@ -443,12 +412,7 @@ task(
     let baseFileCss = '';
     let destination = '../';
     if (Env === 'prod') {
-      destination =
-        '../' +
-        configuration.paths.buildDirectory +
-        '/xdash_' +
-        GlobalConfig.config.xDashConfig.version.fullVersion +
-        '/';
+      destination = buildDirPath + '/';
       baseFileJs = destination;
       baseFileCss = baseFileJs + 'assets/';
     }
@@ -536,12 +500,7 @@ task(
     let baseFileCss = '';
     let destination = '../';
     if (Env === 'prod') {
-      destination =
-        '../' +
-        configuration.paths.buildDirectory +
-        '/xdash_' +
-        GlobalConfig.config.xDashConfig.version.fullVersion +
-        '/';
+      destination = buildDirPath + '/';
       baseFileJs = destination;
       baseFileCss = baseFileJs + 'assets/';
     }
@@ -620,12 +579,7 @@ task(
     let baseFileCss = '';
     let destination = '../';
     if (Env === 'prod') {
-      destination =
-        '../' +
-        configuration.paths.buildDirectory +
-        '/xdash_' +
-        GlobalConfig.config.xDashConfig.version.fullVersion +
-        '/';
+      destination = buildDirPath + '/';
       baseFileJs = destination;
       baseFileCss = baseFileJs + 'assets/';
     }
@@ -713,12 +667,7 @@ task(
     let baseFileCss = '';
     let destination = '../';
     if (Env === 'prod') {
-      destination =
-        '../' +
-        configuration.paths.buildDirectory +
-        '/xdash_' +
-        GlobalConfig.config.xDashConfig.version.fullVersion +
-        '/';
+      destination = buildDirPath + '/';
       baseFileJs = destination;
       baseFileCss = baseFileJs + 'assets/';
     }
@@ -818,15 +767,7 @@ task(
           use: [pngquant()],
         })
       )
-      .pipe(
-        dest(
-          '../' +
-            configuration.paths.buildDirectory +
-            '/xdash_' +
-            GlobalConfig.config.xDashConfig.version.fullVersion +
-            '/assets'
-        )
-      );
+      .pipe(dest(buildDirPath + '/assets'));
   })
 );
 
@@ -835,13 +776,7 @@ task('copy', () => {
   GlobalConfig = require('./index').config(Env);
   DocDirectory = '../doc';
   if (Env === 'prod') {
-    DocDirectory =
-      '../' +
-      configuration.paths.buildDirectory +
-      '/xdash_' +
-      GlobalConfig.config.xDashConfig.version.fullVersion +
-      '/' +
-      configuration.paths.docName;
+    DocDirectory = buildDirPath + '/' + configuration.paths.docName;
   }
   console.log('DocDirectory', DocDirectory);
   console.log('EV ENV :', Env);
@@ -875,13 +810,7 @@ task('copymk', () => {
   GlobalConfig = require('./index').config(Env);
   DocDirectory = '../doc';
   if (Env === 'prod') {
-    DocDirectory =
-      '../' +
-      configuration.paths.buildDirectory +
-      '/xdash_' +
-      GlobalConfig.config.xDashConfig.version.fullVersion +
-      '/' +
-      configuration.paths.docName;
+    DocDirectory = buildDirPath + '/' + configuration.paths.docName;
   }
   console.log('DocDirectory', DocDirectory);
   console.log('EV ENV :', Env);
@@ -966,9 +895,7 @@ task('docsify', series('copy', 'inject:after'));
 task('docs', series('init', 'docsify'));
 
 task('copy-starter', function () {
-  return src(['../source/starter-browser-compatibility.js']).pipe(
-    dest('../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion)
-  );
+  return src(['../source/starter-browser-compatibility.js']).pipe(dest(buildDirPath));
 });
 
 task(
@@ -1037,7 +964,7 @@ task(
 function browserSync(done) {
   let dest = '../';
   if (Env === 'prod') {
-    dest = '../build/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion + '/';
+    dest = '../build' + buildFilePath + '/';
   }
   browsersync.init({
     server: {
@@ -1076,7 +1003,7 @@ task(
   series('clear:cache', 'sass', 'init', 'inject:files:pyodide_worker', 'inject:files', 'watch_', (cb) => {
     let src = '../';
     if (Env === 'prod') {
-      src = '../build/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion + '/';
+      src = '../build' + buildFilePath + '/';
     }
     connect.server({
       root: src,
