@@ -278,11 +278,17 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           }
 
           let lines = script.split('\n');
+          const patternPage = /\.(goToPage|viewPage|viewProject)/;
+          const patternPython = /\.(output|as_)/;
+          let patternRegex = /\.(goToPage|viewPage|viewProject)/;
+          if (settingDef.type === 'custom2') {
+            patternRegex = /\.(goToPage|viewPage|viewProject|output|as_)/;
+          }
           for (let i = 0; i < lines.length; i++) {
             lines[i] = lines[i].replace(/\s/g, ''); //remove white space
             setVarRegex.lastIndex = 0;
             if (_.isNull(setVarRegex.exec(lines[i]))) {
-              if (_.isNull(lines[i].match(/.goToPage|.viewPage|.viewProject/))) {
+              if (_.isNull(lines[i].match(patternRegex))) {
                 line = lines[i].replace(/(['"])(?:\\.|(?!\1)[^\\\n])*\1/g, ''); //remove strings
                 if (!_.isNull(line.match(/(chalkit|xDashApi)\.[^\s()]+\(/))) {
                   const text = 'Syntax error in chalkit API';
