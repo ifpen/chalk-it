@@ -1,7 +1,8 @@
 {
 	"meta": {
-		"version": "2.840.8590",
-		"date": "Wed Jul 12 2023 00:11:11 GMT+0200 (heure d’été d’Europe centrale)",
+		"version": "3.000.8832",
+		"fileFormatVersion": "0.3",
+		"date": "Wed Mar 06 2024 23:56:12 GMT+0100 (heure normale d�Europe centrale)",
 		"name": "velib-real-time",
 		"description": "Velib bike sharing system in Paris live information",
 		"groupName": "",
@@ -16,21 +17,21 @@
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1303,
-		"heightPx": 575,
-		"scrollWidthPx": 1303,
-		"scrollHeightPx": 575,
-		"widthVw": 84.83072916666667,
-		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.83072916666667,
-		"scrollHeightVh": 79.6398891966759,
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
 		"scalingMethod": "scaleTwh",
 		"media": "large",
 		"colDims": {
-			"widthPx": 1303.4,
-			"heightPx": 575.4,
-			"widthVw": 84.85677083333334,
-			"heightVh": 79.69529085872576,
+			"widthPx": 1294.4,
+			"heightPx": 590.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.72,
 			"rowHeightPercent": 100
 		}
 	},
@@ -64,19 +65,17 @@
 	"dashboard": {
 		"openStreetMapsA": {
 			"layout": {
-				"top": "18.0055vh",
-				"left": "0.716146vw",
-				"height": "52.4931vh",
-				"width": "48.9583vw",
+				"top": "17.7333vh",
+				"left": "0.720451vw",
+				"height": "51.8667vh",
+				"width": "48.9252vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "1"
 			},
 			"container": {
-				"id": "openStreetMapsA",
 				"instanceId": "openStreetMapsA",
-				"modelJsonId": "openStreetMaps",
-				"widgetTypeName": "Leaflet maps(openStreetMapsA)"
+				"modelJsonId": "openStreetMaps"
 			},
 			"modelParameters": {
 				"geoJson": {
@@ -164,19 +163,17 @@
 		},
 		"flatUiHorizontalSliderA": {
 			"layout": {
-				"top": "72.2992vh",
-				"left": "0.716146vw",
-				"height": "4.98615vh",
-				"width": "24.0234vw",
+				"top": "71.4667vh",
+				"left": "0.719895vw",
+				"height": "4.93333vh",
+				"width": "24.0183vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "3"
 			},
 			"container": {
-				"id": "flatUiHorizontalSliderA",
 				"instanceId": "flatUiHorizontalSliderA",
-				"modelJsonId": "flatUiHorizontalSlider",
-				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderA)"
+				"modelJsonId": "flatUiHorizontalSlider"
 			},
 			"modelParameters": {
 				"label": "radius",
@@ -210,19 +207,17 @@
 		},
 		"flatUiHorizontalSliderB": {
 			"layout": {
-				"top": "72.2992vh",
-				"left": "26.0217vw",
-				"height": "4.98615vh",
-				"width": "24.005vw",
+				"top": "71.4667vh",
+				"left": "26.0471vw",
+				"height": "4.93333vh",
+				"width": "24.0183vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "4"
 			},
 			"container": {
-				"id": "flatUiHorizontalSliderB",
 				"instanceId": "flatUiHorizontalSliderB",
-				"modelJsonId": "flatUiHorizontalSlider",
-				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderB)"
+				"modelJsonId": "flatUiHorizontalSlider"
 			},
 			"modelParameters": {
 				"label": "opacity",
@@ -256,19 +251,17 @@
 		},
 		"annotationLabelA": {
 			"layout": {
-				"top": "1.66205vh",
-				"left": "0.716146vw",
-				"height": "7.34072vh",
-				"width": "83.3984vw",
+				"top": "1.64171vh",
+				"left": "0.711989vw",
+				"height": "7.25089vh",
+				"width": "83.3849vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "5"
 			},
 			"container": {
-				"id": "annotationLabelA",
 				"instanceId": "annotationLabelA",
-				"modelJsonId": "annotationLabel",
-				"widgetTypeName": "Label(annotationLabelA)"
+				"modelJsonId": "annotationLabel"
 			},
 			"modelParameters": {
 				"text": "Velib bike sharing system availability",
@@ -285,19 +278,17 @@
 		},
 		"kpiCardA": {
 			"layout": {
-				"top": "12.6039vh",
-				"left": "50.3519vw",
-				"height": "16.6205vh",
-				"width": "16.6539vw",
+				"top": "12.4497vh",
+				"left": "50.3438vw",
+				"height": "16.4171vh",
+				"width": "16.6512vw",
 				"minHeight": "32px",
 				"minWidth": "64px",
 				"z-index": "6"
 			},
 			"container": {
-				"id": "kpiCardA",
 				"instanceId": "kpiCardA",
-				"modelJsonId": "kpiCard",
-				"widgetTypeName": "KPI value(kpiCardA)"
+				"modelJsonId": "kpiCard"
 			},
 			"modelParameters": {
 				"label": "Number of available bikes",
@@ -323,19 +314,17 @@
 		},
 		"kpiCardB": {
 			"layout": {
-				"top": "12.4931vh",
-				"left": "67.3962vw",
-				"height": "16.6205vh",
-				"width": "16.6539vw",
+				"top": "12.3402vh",
+				"left": "67.3852vw",
+				"height": "16.4171vh",
+				"width": "16.6512vw",
 				"minHeight": "32px",
 				"minWidth": "64px",
 				"z-index": "7"
 			},
 			"container": {
-				"id": "kpiCardB",
 				"instanceId": "kpiCardB",
-				"modelJsonId": "kpiCard",
-				"widgetTypeName": "KPI value(kpiCardB)"
+				"modelJsonId": "kpiCard"
 			},
 			"modelParameters": {
 				"label": "Number of available docks",
@@ -361,19 +350,17 @@
 		},
 		"flatUiSelectA": {
 			"layout": {
-				"top": "10.8033vh",
-				"left": "0.716146vw",
-				"height": "4.84765vh",
-				"width": "23.5677vw",
-				"minHeight": "32px",
-				"minWidth": "80px",
+				"top": "10.6711vh",
+				"left": "0.71603vw",
+				"height": "4.78833vh",
+				"width": "23.5639vw",
+				"minHeight": "27px",
+				"minWidth": "40px",
 				"z-index": "12"
 			},
 			"container": {
-				"id": "flatUiSelectA",
 				"instanceId": "flatUiSelectA",
-				"modelJsonId": "flatUiSelect",
-				"widgetTypeName": "Select(flatUiSelectA)"
+				"modelJsonId": "flatUiSelect"
 			},
 			"modelParameters": {
 				"label": "Indicator",
@@ -388,30 +375,28 @@
 				"selectedValueColor": "var(--widget-select-option-highlighted-text)",
 				"selectedItemDefaultColor": "var(--widget-select-option-highlighted-color)",
 				"selectedItemHoverColor": "var(--widget-select-option-highlighted-color)",
-				"isKeyValuePairs": false
+				"isKeyValuePairs": false,
+				"selectValueFontFamily": "Helvetica Neue"
 			},
 			"modelHiddenParams": {
-				"values": [],
 				"keys": [],
-				"value": [],
+				"values": [],
 				"selectedValue": ""
 			}
 		},
 		"echartsGenericA": {
 			"layout": {
-				"top": "32.133vh",
-				"left": "50.6121vw",
-				"height": "38.0886vh",
-				"width": "33.4378vw",
+				"top": "31.7333vh",
+				"left": "50.6281vw",
+				"height": "37.6vh",
+				"width": "33.4028vw",
 				"minHeight": "32px",
 				"minWidth": "50px",
 				"z-index": "13"
 			},
 			"container": {
-				"id": "echartsGenericA",
 				"instanceId": "echartsGenericA",
-				"modelJsonId": "echartsGeneric",
-				"widgetTypeName": "Echarts generic(echartsGenericA)"
+				"modelJsonId": "echartsGeneric"
 			},
 			"modelParameters": {},
 			"modelHiddenParams": {
@@ -420,7 +405,13 @@
 						"var(--widget-color-2)",
 						"var(--widget-color-5)",
 						"var(--widget-color-6)",
-						"var(--widget-color-7)"
+						"var(--widget-color-7)",
+						"var(--widget-color-8)",
+						"var(--widget-color-9)",
+						"var(--widget-color-10)",
+						"var(--widget-color-11)",
+						"var(--widget-color-12)",
+						"var(--widget-color-13)"
 					]
 				},
 				"selection": {}
@@ -428,19 +419,17 @@
 		},
 		"flatUiSwitchA": {
 			"layout": {
-				"top": "72.8532vh",
-				"left": "56.2719vw",
-				"height": "4.98615vh",
-				"width": "5.20433vw",
+				"top": "71.9616vh",
+				"left": "56.2627vw",
+				"height": "4.92513vh",
+				"width": "5.20349vw",
 				"minHeight": "24px",
 				"minWidth": "50px",
 				"z-index": "14"
 			},
 			"container": {
-				"id": "flatUiSwitchA",
 				"instanceId": "flatUiSwitchA",
-				"modelJsonId": "flatUiSwitch",
-				"widgetTypeName": "Switch(flatUiSwitchA)"
+				"modelJsonId": "flatUiSwitch"
 			},
 			"modelParameters": {
 				"label": "dockBar",
@@ -459,19 +448,17 @@
 		},
 		"annotationLabelB": {
 			"layout": {
-				"top": "72.8532vh",
-				"left": "51.2627vw",
-				"height": "4.98615vh",
-				"width": "4.61885vw",
+				"top": "71.9616vh",
+				"left": "51.2544vw",
+				"height": "4.92513vh",
+				"width": "4.61809vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "16"
 			},
 			"container": {
-				"id": "annotationLabelB",
 				"instanceId": "annotationLabelB",
-				"modelJsonId": "annotationLabel",
-				"widgetTypeName": "Label(annotationLabelB)"
+				"modelJsonId": "annotationLabel"
 			},
 			"modelParameters": {
 				"text": "Bikes",
@@ -488,19 +475,17 @@
 		},
 		"annotationLabelC": {
 			"layout": {
-				"top": "72.8532vh",
-				"left": "61.6063vw",
-				"height": "4.98615vh",
-				"width": "4.61885vw",
+				"top": "71.9616vh",
+				"left": "61.5962vw",
+				"height": "4.92513vh",
+				"width": "4.61809vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "17"
 			},
 			"container": {
-				"id": "annotationLabelC",
 				"instanceId": "annotationLabelC",
-				"modelJsonId": "annotationLabel",
-				"widgetTypeName": "Label(annotationLabelC)"
+				"modelJsonId": "annotationLabel"
 			},
 			"modelParameters": {
 				"text": "Docks",
@@ -517,19 +502,17 @@
 		},
 		"flatUiValueDisplayA": {
 			"layout": {
-				"top": "10.8033vh",
-				"left": "26.237vw",
-				"height": "4.84765vh",
-				"width": "23.6979vw",
+				"top": "10.6711vh",
+				"left": "26.2328vw",
+				"height": "4.78833vh",
+				"width": "23.6941vw",
 				"minHeight": "24px",
 				"minWidth": "150px",
 				"z-index": "18"
 			},
 			"container": {
-				"id": "flatUiValueDisplayA",
 				"instanceId": "flatUiValueDisplayA",
-				"modelJsonId": "flatUiValueDisplay",
-				"widgetTypeName": "Value Display(flatUiValueDisplayA)"
+				"modelJsonId": "flatUiValueDisplay"
 			},
 			"modelParameters": {
 				"label": "Last update",
@@ -560,41 +543,36 @@
 		"openStreetMapsA": {
 			"selectedGeoJson": {
 				"name": "selectedGeoJson",
-				"dataNode": "selected_polygon",
-				"dataFields": [],
-				"dataNodeIndex": 11
+				"dataNode": "selected_polygon_geojson",
+				"dataFields": []
 			},
 			"geoJson1": {
 				"name": "geoJson1",
-				"dataNode": "stations_on_map",
-				"dataFields": [],
-				"dataNodeIndex": 15
+				"dataNode": "None",
+				"dataFields": []
 			},
 			"heatMapData1": {
 				"name": "heatMapData1",
-				"dataNode": "heatmap",
-				"dataFields": [],
-				"dataNodeIndex": 6
+				"dataNode": "heatmap_json",
+				"dataFields": []
 			}
 		},
 		"flatUiHorizontalSliderA": {
 			"value": {
 				"name": "value",
-				"dataNode": "heatmap_cfg",
+				"dataNode": "cfg",
 				"dataFields": [
 					"radius"
-				],
-				"dataNodeIndex": 7
+				]
 			}
 		},
 		"flatUiHorizontalSliderB": {
 			"value": {
 				"name": "value",
-				"dataNode": "heatmap_cfg",
+				"dataNode": "cfg",
 				"dataFields": [
 					"opacity"
-				],
-				"dataNodeIndex": 7
+				]
 			}
 		},
 		"annotationLabelA": {},
@@ -641,15 +619,13 @@
 		"echartsGenericA": {
 			"option": {
 				"name": "option",
-				"dataNode": "echarts_bar_graph",
-				"dataFields": [],
-				"dataNodeIndex": 4
+				"dataNode": "echarts_option_json",
+				"dataFields": []
 			},
 			"selection": {
 				"name": "selection",
 				"dataNode": "None",
-				"dataFields": [],
-				"dataNodeIndex": -1
+				"dataFields": []
 			}
 		},
 		"flatUiSwitchA": {
