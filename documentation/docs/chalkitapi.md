@@ -3,8 +3,8 @@
 Chalk'it offers a set of APIs through **_chalkit_** that serve several primary purposes:
 
 - Scheduler APIs: Facilitate the scheduling process by enabling the modification of dataNode variables and launching the scheduler.
-- Datanode IOs
 - Dashboard APIs: Support the developpement of multi-dashboard applications and the display of widgets.
+- Datanode IOs
 
 ## JavaScript and Pyodide
 
