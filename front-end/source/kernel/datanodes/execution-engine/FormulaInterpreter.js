@@ -278,11 +278,9 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           }
 
           let lines = script.split('\n');
-          const patternPage = /\.(goToPage|viewPage|viewProject)/;
-          const patternPython = /\.(output|as_)/;
-          let patternRegex = /\.(goToPage|viewPage|viewProject)/;
+          let patternRegex = /\.(goToPage|viewPage|viewProject|\w+Widget)/;
           if (settingDef.type === 'custom2') {
-            patternRegex = /\.(goToPage|viewPage|viewProject|output|as_)/;
+            patternRegex = /\.(output|as_|goToPage|viewPage|viewProject|\w+Widget)/;
           }
           for (let i = 0; i < lines.length; i++) {
             lines[i] = lines[i].replace(/\s/g, ''); //remove white space

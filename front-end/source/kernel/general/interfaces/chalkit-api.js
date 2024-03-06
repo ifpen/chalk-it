@@ -126,6 +126,38 @@ var chalkit = (function () {
     customNavigationRuntime.customNavigationGoToPage(numPage);
   }
 
+  function enableWidget(widgetName) {
+    //let divElement = document.querySelector('#' + widgetName + 'c');
+    let divElement = $('#' + widgetName + 'c')[0];
+    if (!_.isUndefined(divElement)) {
+      divElement.style.pointerEvents = '';
+      divElement.style.opacity = '';
+    }
+  }
+
+  function disableWidget(widgetName) {
+    //let divElement = document.querySelector('#' + widgetName + 'c');
+    let divElement = $('#' + widgetName + 'c')[0];
+    if (!_.isUndefined(divElement)) {
+      divElement.style.pointerEvents = 'none';
+      divElement.style.opacity = '0.5';
+    }
+  }
+
+  function showWidget(widgetName) {
+    let divElement = $('#' + widgetName + 'c');
+    if (!_.isUndefined(divElement)) {
+      divElement.show();
+    }
+  }
+
+  function hideWidget(widgetName) {
+    let divElement = $('#' + widgetName + 'c');
+    if (!_.isUndefined(divElement)) {
+      divElement.hide();
+    }
+  }
+
   return {
     setVariable,
     setVariables,
@@ -135,5 +167,9 @@ var chalkit = (function () {
     viewProject,
     viewPage,
     goToPage,
+    enableWidget,
+    disableWidget,
+    showWidget,
+    hideWidget,
   };
 })();
