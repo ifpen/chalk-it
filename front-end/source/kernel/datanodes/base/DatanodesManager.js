@@ -387,7 +387,7 @@ var datanodesManager = (function () {
       } else {
         plugin.settings.unshift({
           name: 'name',
-          display_name: 'Generated memory name',
+          display_name: 'Generated memory name', //do not change
           type: 'text',
           disabled: true,
         });
