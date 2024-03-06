@@ -29,7 +29,7 @@ nav:
       - Chalk'it APIs: chalkitapi.md
 theme:
   name: material
-  logo: media/chalk-it-icon.ico
+  logo: media/chalk-it-icon.svg
   font: false
 use_directory_urls: true
 markdown_extensions:
