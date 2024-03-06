@@ -120,7 +120,7 @@ function flatUiBooleanWidgetsPluginClass() {
       // Dynamically set the direction property to 'ltr' or 'rtl'
       document.styleSheets[0].addRule('#checkbox-widget-html' + idWidget, 'direction: ' + widgetDirection);
 
-      if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+      if (modelsParameters[idInstance].displayLabel) {
         //ABK
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
@@ -345,7 +345,7 @@ function flatUiBooleanWidgetsPluginClass() {
       divContent += '</div>';
       divContent += '</label>';
       divContent += '</div>';
-      if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+      if (modelsParameters[idInstance].displayLabel) {
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
 
