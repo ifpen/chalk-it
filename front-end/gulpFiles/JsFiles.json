@@ -53,22 +53,13 @@
       "thirdparty/marked.min.js",
       "thirdparty/jquery.bt.js",
       "thirdparty/moment.min.js",
-      "thirdparty/daterangepicker.js"
+      "thirdparty/daterangepicker.js",
+      "thirdparty/angular-ui-router.js",
+      "thirdparty/underscore.js"
     ],
     "body": [
-      "thirdparty/head.js",
-      "thirdparty/bootstrap-clockpicker.js",
-      "thirdparty/knockout.js",
-      "thirdparty/underscore.js",
-      "thirdparty/togeojson.js",
-      "thirdparty/tarjan-graph.js",
-      "thirdparty/graph-data-structure.js",
-      "thirdparty/leaflet-meanmap.js",
-      "thirdparty/geojson-extent.js",
       "source/kernel/utils/geoConversion.js",
-      "thirdparty/mindmup-editabletable.js",
       "source/kernel/runtime/xdash-load-runtime.js",
-      "thirdparty/angular-ui-router.js",
       "source/angular/modules/components/authentication/userFactory.js",
       "source/angular/modules/components/APIs.js",
       "source/angular/modules/python/python-images.js",
@@ -103,7 +94,6 @@
       "source/kernel/datanodes/plugins/plugin-pyodide.js",
       "source/kernel/datanodes/plugins/plugin-rest-webservice.js",
       "source/kernel/datanodes/plugins/plugin-clock.js",
-      "thirdparty/flat-ui.js",
       "source/kernel/dashboard/plugin-handler.js",
       "source/angular/modules/dashboard/services/edit-play-switch.js",
       "source/kernel/base/main-common.js",
@@ -308,7 +298,6 @@
       "thirdparty/marked.min.js"
     ],
     "body": [
-      "thirdparty/bootstrap-clockpicker.js",
       "source/kernel/datanodes/execution-engine/DatanodeDependency.js",
       "source/kernel/datanodes/gui/GraphVisu.js",
       "source/kernel/datanodes/base/DatanodesListModel.js",
