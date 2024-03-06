@@ -182,7 +182,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
       widgetHtml.setAttribute('id', 'ac-value-widget-html' + idWidget);
       widgetHtml.setAttribute('class', 'ac-value-widget-html');
       let divContent = '';
-      if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+      if (modelsParameters[idInstance].displayLabel) {
         let widthStyle = '';
         valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
         if (!_.isUndefined(modelsParameters[idInstance].valueWidthProportion)) {

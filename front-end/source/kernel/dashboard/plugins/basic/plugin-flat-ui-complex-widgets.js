@@ -157,7 +157,7 @@ function flatUiComplexWidgetsPluginClass() {
       widgetHtml.setAttribute('class', 'select-widget-html');
       let valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
       let divContent = '';
-      if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+      if (modelsParameters[idInstance].displayLabel) {
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
 
