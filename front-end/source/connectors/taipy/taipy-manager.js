@@ -298,10 +298,10 @@ class TaipyManager {
    */
   #initFunctionList() {
     const functionList = this.app.getFunctionList();
-    const fileFunctionSet = new Set(['load_file', 'save_file', 'select_file', 'get_file_list']);
+    const rejectedFunctionSet = new Set(['on_change', 'load_file', 'save_file', 'select_file', 'get_file_list']);
 
     functionList.forEach((funcName) => {
-      if (!fileFunctionSet.has(funcName)) {
+      if (!rejectedFunctionSet.has(funcName)) {
         const dataNodeName = 'function:' + funcName;
         if (!datanodesManager.foundDatanode(dataNodeName)) {
           this.#createDataNode(dataNodeName, funcName);
