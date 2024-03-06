@@ -42,7 +42,7 @@ def get_version():
     else:
         return c
 
-front_end_build_dir_name = 'xdash_' + a + '.' + b + '.' + str(get_version())
+front_end_build_dir_name = 'chalkit_' + a + '.' + b + '.' + str(get_version())
 
 
 # Get the list of all files and directories in the "build" directory
@@ -91,7 +91,7 @@ shutil.copytree(build_dir, './build/chlkt')
 # Copy .whl file to ./build/chlkt directory
 # Specify the source directory and pattern
 source_directory = './front-end/'
-pattern = 'xdash_python_api-*.whl'
+pattern = 'chalkit_python_api-*.whl'
 
 # Use glob to find the matching file
 matching_files = glob.glob(source_directory + pattern)
@@ -103,7 +103,7 @@ if matching_files:
 
     shutil.copy(source_path, destination_directory)
 else:
-    print("xdash_python_api-*.whl file not found.")
+    print("chalkit_python_api-*.whl file not found.")
 
 # Copy main.py and associated .py files to ./build/chlkt directory
 cwd = os.getcwd()

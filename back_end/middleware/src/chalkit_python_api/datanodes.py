@@ -1,6 +1,6 @@
 import typing
 
-from xdash_python_api import PICKLE_MIME
+from chalkit_python_api import PICKLE_MIME
 
 
 class DataNodesProxy:
