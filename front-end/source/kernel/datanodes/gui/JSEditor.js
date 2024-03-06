@@ -10,11 +10,10 @@ JSEditor = function () {
     var exampleText = '';
     if (newSettings.type === 'JSON_formula_plugin')
       exampleText =
-        '// Example: Convert temp from C to F and truncate to 2 decimal places.\n// return (dataNodes["MyDataNode"].sensor.tempInF * 1.8 + 32).toFixed(2);';
+        '// Example: Convert temp from C to F and truncate to 2 decimal places.\n// return (dataNodes["MyDataNode"].sensor.tempInF * 1.8 + 32).toFixed(2);\n';
     else if (newSettings.type === 'Python_inline_plugin')
       exampleText =
-        "//example: create 2 datanodes py_a a,d py_b then use them as follow:\n//return {'a':dataNodes[\"py_a\"],'b':dataNodes[\"py_b\"]}; \n//simple example:\nreturn {'key':'value'}; \n ";
-
+        "#example: create 2 datanodes py_a a,d py_b then use them as follow:\n#return {'a':dataNodes[\"py_a\"],'b':dataNodes[\"py_b\"]}; \n#simple example:\nreturn {'key':'value'}; \n ";
     // If value is empty, go ahead and suggest something
     if (!value) {
       value = exampleText;
@@ -35,7 +34,8 @@ JSEditor = function () {
         '<br>Press <code><span class="cm-keyword">ctrl-space</span></code> to activate dataNodes autocompletion, ' +
         '<code><span class="cm-keyword">Tab</span></code> to go deeper into JSON and ' +
         '<code><span class="cm-keyword">Escape</span></code> to leave it.' +
-        '<br>Press <code><span class="cm-keyword">ctrl-K</span></code> to autoformat (beautify) selection. </span></div>' +
+        '<br>Press <code><span class="cm-keyword">ctrl-K</span></code> to autoformat (beautify) selection. </span>' +
+        '<br>To debug this script effectively, insert the keyword <code><span class="cm-keyword">debugger</span></code> at the points where you want to set breakpoints. Then, open the <code><span class="cm-def">DevTools</span></code> during script execution to pause and inspect the code at those breakpoints.</div>' +
         '</div>'
     );
 
@@ -291,10 +291,8 @@ JSEditor = function () {
     var exampleText = '';
     if (newSettings.type === 'JSON_formula_plugin')
       exampleText =
-        '// Example: Convert temp from C to F and truncate to 2 decimal places.\n// return (dataNodes["MyDataNode"].sensor.tempInF * 1.8 + 32).toFixed(2);';
-    else if (newSettings.type === 'Python_inline_plugin')
-      // exampleText = "//example: create 2 datanodes py_a a,d py_b then use them as follow:\n//return {'a':dataNodes[\"py_a\"],'b':dataNodes[\"py_b\"]}; \n//simple example:\nreturn {'key':'value'}; \n ";
-      exampleText = '';
+        '// Example: Convert temp from C to F and truncate to 2 decimal places.\n// return (dataNodes["MyDataNode"].sensor.tempInF * 1.8 + 32).toFixed(2);\n';
+    else if (newSettings.type === 'Python_inline_plugin') exampleText = '';
     // If value is empty, go ahead and suggest something
     if (!value) {
       value = exampleText;

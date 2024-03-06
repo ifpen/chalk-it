@@ -49,6 +49,8 @@ var datanodesManager = (function () {
     ]);
   }
 
+  var currentDataNode;
+
   // deleteDn: delete a datanode
   function deleteDn(viewModel) {
     const dnName = viewModel.name();
@@ -435,7 +437,7 @@ var datanodesManager = (function () {
       } else {
         plugin.settings.unshift({
           name: 'name',
-          display_name: 'Generated memory name',
+          display_name: 'Generated memory name', //do not change
           type: 'text',
           disabled: true,
         });
@@ -590,6 +592,17 @@ var datanodesManager = (function () {
     },
     getJsonEditor: function () {
       return jsonEdContainer;
+    },
+    datanodesDependency: function () {
+      //need this for chalkit api
+      return datanodesDependency;
+    },
+    setCurrentDataNode: function (datanodeName) {
+      currentDataNode = datanodeName;
+    },
+    getCurrentDataNode: function () {
+      //need this for chalkit api
+      return currentDataNode;
     },
   };
 })();
