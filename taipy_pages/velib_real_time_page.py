@@ -57,7 +57,7 @@ def generate_echarts_bar_graph(data, dockBar):
         "yAxis": {"type": 'category', "data": station_counts['Station Status'].tolist()},
         "series": [{"name": 'Count', "type": 'bar', "data": station_counts['Count'].tolist()}]
     }
-    return json.dumps(echarts_option)  # Convert to JSON string if needed immediately for JavaScript
+    return echarts_option
 
 def generate_heatmap_data(geo_df):
     """

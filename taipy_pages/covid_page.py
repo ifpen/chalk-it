@@ -114,7 +114,7 @@ def echarts_option(covid_df, selected_countries):
     return option
 
 def on_change(state, var, val):
-    if (var == 'selected_countries'):
+    if var == "selected_countries":
         covid_filtered = copy.deepcopy(get_covid_filtered(covid_data_frame, val))
         state.option_e = copy.deepcopy(echarts_option(covid_filtered, val))
 

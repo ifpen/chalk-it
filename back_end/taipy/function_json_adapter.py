@@ -1,37 +1,45 @@
 from taipy.gui import JsonAdapter
+from taipy.gui.utils import _MapDict
 from types import FunctionType
 import json
 import io, base64
 import numpy as np
+import math
 
-class CustomEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, float) and np.isnan(obj):
-            return None
-        return json.JSONEncoder.default(self, obj)
+def replace_nan(obj):
+    """
+    Recursively replace NaN values with None in a nested structure.
+    """
+    if isinstance(obj, float) and math.isnan(obj):
+        return None
+    elif isinstance(obj, dict):
+        return {k: replace_nan(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [replace_nan(item) for item in obj]
+    return obj
+        
 
 class FunctionJsonAdapter(JsonAdapter):
-    @staticmethod
-    def json_fix(obj):
-        jsn_str = json.dumps(obj, cls=CustomEncoder)
-        jsn_obj = json.loads(jsn_str)  # Corrected from json.parse to json.loads
-        return jsn_obj
-        
     def parse(self, o):
         if isinstance(o, FunctionType):
             return o.__name__
         elif "plotly.graph_objs._figure.Figure" in str(type(o)):
             return json.loads(o.to_json(validate=True, pretty=False))
         elif "pandas.core.frame.DataFrame" in str(type(o)):
-            return self.json_fix(json.loads(o.to_json(orient='split')))
+            return replace_nan(json.loads(o.to_json(orient='split')))
         elif "folium.folium.Map" in str(type(o)):
             return o._repr_html_()
         elif "geopandas.geodataframe.GeoDataFrame" in str(type(o)):
-            return self.json_fix(json.loads(o.to_json()))
+            return replace_nan(json.loads(o.to_json()))
         elif "PIL.Image.Image" in str(type(o)):
             return self._image_to_base64(o)
-        else:
-            return self.json_fix(super().parse(o))  # Corrected super().parse(self, o) to super().parse(o)
+        elif isinstance(o, _MapDict):
+            o_=o._dict
+            o__r = replace_nan(o_)
+            return o__r
+        #else:
+        #   o_=super().parse(o)
+        #   return replace_nan(o_)
 
     @staticmethod
     def _image_to_base64(image):
