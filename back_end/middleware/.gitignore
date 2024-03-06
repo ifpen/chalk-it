@@ -3,4 +3,4 @@
 /venv/
 **/__pycache__/
 /.coverage
-/src/xdash_python_api/_version.py
+/src/chalkit_python_api/_version.py

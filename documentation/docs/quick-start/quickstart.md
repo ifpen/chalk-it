@@ -49,7 +49,7 @@ Create a datanode named **dataset** to load the Iris dataset from **Scikit-learn
   ```Python
   from sklearn import datasets
   iris = datasets.load_iris()
-  return xdash.as_python(iris)
+  return chalkit.as_python(iris)
   ```
 
   This step is illustrated below:
@@ -83,7 +83,7 @@ Visualize the dataset in 4 steps:
   target_names = {0: "Setosa", 1: "Versicolour", 2: "Virginica" }
   df['target'] = df['target'].map(target_names)
 
-  return xdash.as_python(df)
+  return chalkit.as_python(df)
   ```
 
   The expression **dataNodes["dataset"]** indicates Chalk'it to read the last execution output of the **dataset** datanode. It also establishes a data and execution flow dependency between **dataset** and **datasetDataframe**.

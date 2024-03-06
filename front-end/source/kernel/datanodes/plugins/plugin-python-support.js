@@ -45,10 +45,10 @@ class PythonPluginLocalExec extends PythonPluginExecBase {
 
   static writePython(script, debug) {
     return `
-from xdash_python_api.outputs import capture 
+from chalkit_python_api.outputs import capture 
 
 @capture(is_debug=${debug ? 'True' : 'False'}, script_name='<exec>', start_line=5)
-def script(dataNodes, xdash):
+def script(dataNodes, chalkit):
 ${PythonPluginLocalExec.shift(script)}
 
 script(dataNodes)
