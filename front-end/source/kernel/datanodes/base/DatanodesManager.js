@@ -220,6 +220,23 @@ var datanodesManager = (function () {
               datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = formula;
             }
           }
+          // handle widget connection
+          [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
+          if (bFoundConnection) {
+            let wdList = [];
+            for (let prop in widgetConnector.widgetsConnection) {
+              for (let i in widgetConnector.widgetsConnection[prop].sliders) {
+                wdList.push(widgetConnector.widgetsConnection[prop].instanceId);
+                widgetConnector.widgetsConnection[prop].sliders[i].dataNode = newSettings.settings.name;
+              }
+            }
+            xdashNotifications.manageNotification(
+              'info',
+              viewModel.name(),
+              'Update new name "' + newSettings.settings.name + '" in connected widgets "' + wdList.join('\n') + '"'
+            );
+          }
+
           //AEF: before renaming datanode, must stop its scheduling before it disappears
           if (viewModel.execInstance() != null) {
             // scheduling is in progress
