@@ -32,11 +32,11 @@ function mapGeoJsonWidgetsPluginClass() {
       },
       tileServer: 'MapboxStreets',
       possibleTileServers: ['MapboxStreets', 'MapboxDark', 'HereSatelliteDay', 'HereTerrainDay', 'HereHybridDay'],
-      activeLayer: 0,
+      possibleLegends : [],
+      selecedLegends : []
     };
 
     var self = this;
-    this.legend = undefined;
     this.legendHeatMap = undefined;
     this.legendChoroplet = undefined;
     this.enable = function () {};
@@ -63,6 +63,8 @@ function mapGeoJsonWidgetsPluginClass() {
     };
 
     this.rescale = function () {};
+
+    
 
     this.getColorScale = function (colorScaleName, min, max) {
       reverseColorScale = false;
@@ -128,6 +130,7 @@ function mapGeoJsonWidgetsPluginClass() {
 
       // internal layer group L.layerGroup
       self.layers = [];
+      self.legends = []
       if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) {
         modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
           let name = 'layer ' + index;
@@ -159,8 +162,9 @@ function mapGeoJsonWidgetsPluginClass() {
     this.addGeoJSONlayer = function (geoJSON, name) {
       var leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
       self.layers.push(leafletLayer);
+      self.legends.push(undefined)
       if(geoJsonTools.findFeatureType(geoJSON)== geoJsonTools.equivalenceTypes.MultiLineString || geoJsonTools.findFeatureType(geoJSON)== geoJsonTools.equivalenceTypes.MultiPolygon){
-//add events :
+      //add events :
       // mouseover
       let leafletIndex = self.getLefletIndex(leafletLayer);
       if (!_.isUndefined(leafletIndex)) {
@@ -363,8 +367,10 @@ function mapGeoJsonWidgetsPluginClass() {
      
       //add layer
       //TO DO check GeoJSON Type :
-      self.ctrl.addBaseLayer(leafletLayer, name);
-      //self.ctrl.addOverlay(leafletLayer, name);
+      //radio button 
+      //self.ctrl.addBaseLayer(leafletLayer, name);
+      //checkbox 
+      self.ctrl.addOverlay(leafletLayer, name);
     };
 
     // Create the style object that will be in out JSON for a geoJSON
@@ -605,9 +611,13 @@ function mapGeoJsonWidgetsPluginClass() {
           name = style.name;
         }
       }
+      //rename Layer 
       if (!_.isUndefined(name)) {
         self.ctrl.removeLayer(leafLetLayer);
-        self.ctrl.addBaseLayer(leafLetLayer, name);
+        //radio button
+       // self.ctrl.addBaseLayer(leafLetLayer, name);
+        //check box
+        self.ctrl.addOverlay(leafLetLayer, name);
       }
 
       let colorScale = undefined;
@@ -657,21 +667,47 @@ function mapGeoJsonWidgetsPluginClass() {
             layer.setStyle(styleForObject);
           }
         });
+        self.map.on('layeradd layerremove', (e) => {
+          if (self.map.hasLayer(self.layers[layerIndex])) {
+            if (!_.isUndefined(styleForObject.showLegend)) {
+              if (!!styleForObject.showLegend) {
+                if (!_.isUndefined(self.legends[layerIndex])) {
+                  self.legends[layerIndex].remove();
+                }
+                self.legends[layerIndex] = self.createChoroplethLegend(min, max, styleForObject.legend.title || '', colorScale);
+              } else {
+                if (!_.isUndefined(self.legends[layerIndex])) {
+                  self.map.removeControl(self.legends[layerIndex]);
+                }
+              }
+            }
+          } else {
+            if (!_.isUndefined(self.legends[layerIndex])) {
+              self.legends[layerIndex].remove();
+            }
+          }
+        });
         //toggle legend
+        if (self.map.hasLayer(self.layers[layerIndex])) {
         if (!_.isUndefined(styleForObject.showLegend)) {
           if (!!styleForObject.showLegend) {
-            if (!_.isUndefined(self.legend)) {
-              self.legend.remove();
-              self.legend = undefined;
+            if (!_.isUndefined(self.legends[layerIndex])) {
+              self.legends[layerIndex].remove();
+              self.legends[layerIndex] = undefined;
             }
-            self.legend = self.createChoroplethLegend(min, max, styleForObject.legend.title || '', colorScale);
+            self.legends[layerIndex] = self.createChoroplethLegend(min, max, styleForObject.legend.title || '', colorScale);
           } else {
-            if (!_.isUndefined(self.legend)) {
-              self.map.removeControl(self.legend);
-              self.legend = undefined;
+            if (!_.isUndefined(self.legends[layerIndex])) {
+              self.map.removeControl(self.legends[layerIndex]);
+              self.legends[layerIndex] = undefined;
             }
           }
         }
+      }else {
+        if (!_.isUndefined(self.legends[layerIndex])) {
+          self.legends[layerIndex].remove();
+        }
+      }
       }
 
       if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
