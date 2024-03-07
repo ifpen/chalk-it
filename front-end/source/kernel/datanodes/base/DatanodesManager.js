@@ -200,30 +200,25 @@ var datanodesManager = (function () {
           //avoid to compare with the same datanode if the name wasn't changed
           if (datanodesManager.foundDatanode(newSettings.settings.name)) {
             swal(
-              "A dataNode with name '" + newSettings.settings.name + "' adready exists.",
+              "A dataNode with name '" + newSettings.settings.name + "' already exists.",
               'Please specify a different name',
               'error'
             );
             return true;
           }
+          // handle dependencies
           if (datanodesDependency.hasSuccessors(viewModel.name())) {
             var successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
-            // warning the user to set modification in formula for example
-            swal(
-              'Renaming dataNode side effects',
-              'Old name "' +
-                viewModel.name() +
-                '" is used in dataNode(s) "' +
-                successors +
-                '" and should be changed by the new one "' +
-                newSettings.settings.name +
-                '".',
-              'warning'
+            xdashNotifications.manageNotification(
+              'info',
+              viewModel.name(),
+              'Update new name "' + newSettings.settings.name + '" in script of "' + successors + '"'
             );
-            //remove dependencies with former name of datanode, new dependency will be added after, when edit datanode
-            //to avoid error alert on datanode that doesn't exist anymore
-            //in the mean time user can add a new datanode with the older name OR can change the formula
-            datanodesDependency.addNode(viewModel.name());
+            for (let prop in successors) {
+              formula = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
+              formula = formula.replaceAll(viewModel.name(), newSettings.settings.name);
+              datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = formula;
+            }
           }
           //AEF: before renaming datanode, must stop its scheduling before it disappears
           if (viewModel.execInstance() != null) {
