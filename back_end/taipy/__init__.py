@@ -18,5 +18,4 @@ __all__=["xprjson_file_name",
          "save_file", 
          "select_file", 
          "get_file_list",
-         "xprjson_file_name",
 		 "PureHTMLResourceHandler"]

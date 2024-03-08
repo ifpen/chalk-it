@@ -3,12 +3,10 @@ This module provides functionalities for loading, saving, and selecting files
 based on user actions, specifically handling .xprjson files.
 """
 
-
 import json
 import sys
 from pathlib import Path
 from typing import Dict, Union
-import os, inspect
 
 from .chalkit_json_adapter import FunctionJsonAdapter
 
@@ -19,8 +17,6 @@ xprjson_file_name: str = "new_project.xprjson"
 json_data: str = ""
 has_file_saved: bool = False
 file_list: Dict[str, Union[str, list]] = {}
-
-
 
 
 def load_file(state: object, action_name: str) -> None: # pylint: disable=unused-argument
