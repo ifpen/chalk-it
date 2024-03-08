@@ -324,15 +324,15 @@ var fileManager = (function () {
       $('.ui-pnotify-container').on('click', function () {
         notice.remove();
       });
-      if (!_.isUndefined(endAction) && _.isFunction(endAction)) {
-        endAction();
-        endAction = undefined;
-      }
 
       if ($rootScope.taipyLink) {
-        updateFileListCallback();
+        datanodesManager.showLoadingIndicator(false);
         $rootScope.updateFlagDirty(false);
       } else {
+        if (!_.isUndefined(endAction) && _.isFunction(endAction)) {
+          endAction();
+          endAction = undefined;
+        }
         const fileType = msg2;
         const FileMngrInst = new FileMngrFct();
         FileMngrInst.GetFileList(fileType, updateFileListCallback, false, null, null);
