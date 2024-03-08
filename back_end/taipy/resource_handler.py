@@ -5,6 +5,7 @@ from taipy.gui.custom import ResourceHandler
 
 class PureHTMLResourceHandler(ResourceHandler):
     id = "htmlresource"
+    run_mode = "editor"
 
     def get_root_directory(self) -> Path:
         """Dynamically set the root directory based on the existence of 'index.html'."""

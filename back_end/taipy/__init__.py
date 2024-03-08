@@ -7,8 +7,10 @@ from .chalkit_manager import (
     load_file, 
     save_file, 
     select_file, 
-    get_file_list
+    get_file_list,
 )
+
+from .chalkit_page import ChalkitPage
 
 __all__=["file_name", 
          "json_data", 
@@ -18,4 +20,5 @@ __all__=["file_name",
          "save_file", 
          "select_file", 
          "get_file_list",
+         "ChalkitPage",
 		 "PureHTMLResourceHandler"]

@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from typing import Dict, Union
 
-from .function_json_adapter import FunctionJsonAdapter
+from .chalkit_json_adapter import FunctionJsonAdapter
 
 # Get the absolute path of the main module
 BASE_PATH: Path = Path(sys.argv[0]).resolve().parent

@@ -3,13 +3,13 @@ from pathlib import Path
 # Add the parent directory of `back_end` to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
-from taipy.gui.custom import Page
+#from taipy.gui.custom import Page
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import shape, Point
 import requests
 import re
-import json
+import numpy as np
 
 def fetch_stations_status():
     url = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=&rows=2000&facet=name&facet=is_installed&facet=is_renting&facet=is_returning"
@@ -37,32 +37,83 @@ def augment_with_geodata(df_rt, selected_polygon_geojson=None):
     dfg['station_empty'] = (dfg['numbikesavailable'] == 0).astype(int)
     geometry = [Point(xy) for xy in zip(dfg['lng'], dfg['lat'])]
     geo_df = gpd.GeoDataFrame(dfg, geometry=geometry)
-    if selected_polygon_geojson is not None:   
-        selected_gpd = gpd.GeoDataFrame.from_features(selected_polygon_geojson)
-        # Assume selected_gpd is a single polygon for simplicity
-        selected_polygon = selected_gpd.iloc[0]['geometry']
-        # Create a boolean mask where each value is True if the point is within the selected geometry
-        mask = geo_df.within(selected_polygon)
-        # Use the mask to filter the GeoDataFrame
-        filtered_geo_df = geo_df[mask]
-        return filtered_geo_df
+    if selected_polygon_geojson is not None:
+        if (len(selected_polygon_geojson["features"]) > 0):
+            selected_gpd = gpd.GeoDataFrame.from_features(selected_polygon_geojson)
+            # Assume selected_gpd is a single polygon for simplicity
+            selected_polygon = selected_gpd.iloc[0]['geometry']
+            # Create a boolean mask where each value is True if the point is within the selected geometry
+            mask = geo_df.within(selected_polygon)
+            # Use the mask to filter the GeoDataFrame
+            filtered_geo_df = geo_df[mask]
+            return filtered_geo_df
+        else:
+            return geo_df
     else:
         return geo_df
 
-def generate_echarts_bar_graph(data, dockBar):
-    station_counts = data.value_counts().reset_index()
-    station_counts.columns = ['Station Status', 'Count']
-    title = 'Docks available per station' if dockBar else 'Bikes available per station'
+def generate_echarts_bar_graph(dfg, dockBar):
+    
+    df = dfg.copy()
+    if (dockBar):
+        metric = 'numdocksavailable'
+        labels = ['Full', '1 dock', '2 docks', '3-5 docks', '6-10 docks', '> 10 docks']   
+    else:
+        metric = 'numbikesavailable'
+        labels = ['Empty', '1 bike', '2 bikes', '3-5 bikes', '6-10 bikes', '> 10 bikes']
 
+    # Assuming df is your DataFrame
+    bins = [-np.inf, 0, 1, 2, 5, 10, np.inf]
+    df['station_status'] = pd.cut(df[metric], bins=bins, labels=labels)
+
+    # Counting the number of stations for each category
+    station_counts = df['station_status'].value_counts().reset_index()
+    station_counts.columns = ['Station Status', 'Count']
+
+    # Convert station_counts dataframe to dict
+    station_counts_dict = station_counts.to_dict('records')
+
+    if dockBar:
+        title = 'Docks available per station'
+    else:
+        title = 'Bikes available per station'
+
+    # Create JSON-like dict for ECharts
     echarts_option = {
-        "title": {"text": title},
-        "tooltip": {"trigger": 'axis', "axisPointer": {"type": 'shadow'}},
-        "grid": {"left": '3%', "right": '4%', "bottom": '3%', "containLabel": True},
-        "xAxis": {"type": 'value', "boundaryGap": [0, 0.01]},
-        "yAxis": {"type": 'category', "data": station_counts['Station Status'].tolist()},
-        "series": [{"name": 'Count', "type": 'bar', "data": station_counts['Count'].tolist()}]
+        "title": {
+            "text": title
+        },
+        "tooltip": {
+            "trigger": 'axis',
+            "axisPointer": {
+                "type": 'shadow'
+            }
+        },
+        "grid": {
+            "left": '3%',
+            "right": '4%',
+            "bottom": '3%',
+            "containLabel": True
+        },
+        "xAxis": {
+            "type": 'value',
+            "boundaryGap": [0, 0.01]
+        },
+        "yAxis": {
+            "type": 'category',
+            "data": [d['Station Status'] for d in station_counts_dict]
+        },
+        "series": [
+            {
+                "name": 'Number of stations',
+                "type": 'bar',
+                "data": [d['Count'] for d in station_counts_dict]
+            }
+        ]
     }
+
     return echarts_option
+    
 
 def generate_heatmap_data(geo_df, cfg):
     """
@@ -96,10 +147,9 @@ def compute_global_stats(dfg):
     "Number of empty stations": "{:,}".format(int(dfg['station_empty'].sum())).replace(',', ' '),
     "Number of renting stations": "{:,}".format(int(dfg['is_renting'].sum())).replace(',', ' '),
     "Max capacity" : int(dfg['capacity'].max())
-
     }
 
-# Example of incorporating the function into the workflow
+# Dashboard parameters
 cfg ={
     "opacity": 0.9,
     "radius": 80,
@@ -110,22 +160,27 @@ cfg ={
     "reverseColorScale": False
 }
 
-stations_status_json = fetch_stations_status()
-df_rt = process_stations_status(stations_status_json)
-dfg = augment_with_geodata(df_rt)
-heatmap_json = generate_heatmap_data(dfg, cfg)
-echarts_option_json = generate_echarts_bar_graph(dfg['numbikesavailable'], dockBar=False)
-global_stats = compute_global_stats(dfg)
-
 selected_polygon_geojson = None
 dockBar = False
+
+# Init dataflow
+stations_status_json = fetch_stations_status()
+indicator=["Availability rate"]
+selected_indicator = indicator[0]
+last_update =stations_status_json["records"][0]["record_timestamp"]
+df_rt = process_stations_status(stations_status_json)
+dfg = augment_with_geodata(df_rt, selected_polygon_geojson)
+heatmap_json = generate_heatmap_data(dfg, cfg)
+echarts_option_json = generate_echarts_bar_graph(dfg, dockBar)
+global_stats = compute_global_stats(dfg)
+
 
 def on_change(state, var, val):
     if var == "selected_polygon_geojson":
         selected_polygon_geojson = val
         dfg = augment_with_geodata(state.df_rt, selected_polygon_geojson)
         heatmap_json = generate_heatmap_data(dfg, state.cfg)
-        echarts_option_json = generate_echarts_bar_graph(dfg['numbikesavailable'], state.dockBar)
+        echarts_option_json = generate_echarts_bar_graph(dfg, state.dockBar)
         state.heatmap_json = heatmap_json
         state.echarts_option_json = echarts_option_json
         state.global_stats = compute_global_stats(dfg)
@@ -134,5 +189,11 @@ def on_change(state, var, val):
         cfg = val
         state.heatmap_json = generate_heatmap_data(state.dfg, cfg)
     
+    if var == "dockBar":
+        dockBar = val
+        state.echarts_option_json = generate_echarts_bar_graph(state.dfg, dockBar)
+    
 # Create a Page instance with the resource handler
-page = Page(PureHTMLResourceHandler())
+#page = ChalkitPage(xpjrson_file_name='velib_real_time_page.xprjson')
+page = ChalkitPage(PureHTMLResourceHandler())
+#page = Page(PureHTMLResourceHandler())

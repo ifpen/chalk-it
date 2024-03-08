@@ -2,8 +2,8 @@
 	"meta": {
 		"version": "3.000.8832",
 		"fileFormatVersion": "0.3",
-		"date": "Wed Mar 06 2024 23:56:12 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "velib-real-time",
+		"date": "Thu Mar 07 2024 10:48:43 GMT+0100 (heure normale dâ€™Europe centrale)",
+		"name": "velib_real_time_page",
 		"description": "Velib bike sharing system in Paris live information",
 		"groupName": "",
 		"tags": [],
@@ -66,9 +66,9 @@
 		"openStreetMapsA": {
 			"layout": {
 				"top": "17.7333vh",
-				"left": "0.720451vw",
+				"left": "0.721008vw",
 				"height": "51.8667vh",
-				"width": "48.9252vw",
+				"width": "48.963vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "1"
@@ -164,9 +164,9 @@
 		"flatUiHorizontalSliderA": {
 			"layout": {
 				"top": "71.4667vh",
-				"left": "0.719895vw",
+				"left": "0.720451vw",
 				"height": "4.93333vh",
-				"width": "24.0183vw",
+				"width": "24.0369vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "3"
@@ -208,9 +208,9 @@
 		"flatUiHorizontalSliderB": {
 			"layout": {
 				"top": "71.4667vh",
-				"left": "26.0471vw",
+				"left": "26.0672vw",
 				"height": "4.93333vh",
-				"width": "24.0183vw",
+				"width": "24.0369vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "4"
@@ -252,9 +252,9 @@
 		"annotationLabelA": {
 			"layout": {
 				"top": "1.64171vh",
-				"left": "0.711989vw",
+				"left": "0.65445vw",
 				"height": "7.25089vh",
-				"width": "83.3849vw",
+				"width": "83.4424vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "5"
@@ -279,9 +279,9 @@
 		"kpiCardA": {
 			"layout": {
 				"top": "12.4497vh",
-				"left": "50.3438vw",
+				"left": "50.3827vw",
 				"height": "16.4171vh",
-				"width": "16.6512vw",
+				"width": "16.6641vw",
 				"minHeight": "32px",
 				"minWidth": "64px",
 				"z-index": "6"
@@ -315,9 +315,9 @@
 		"kpiCardB": {
 			"layout": {
 				"top": "12.3402vh",
-				"left": "67.3852vw",
+				"left": "67.4328vw",
 				"height": "16.4171vh",
-				"width": "16.6512vw",
+				"width": "16.6641vw",
 				"minHeight": "32px",
 				"minWidth": "64px",
 				"z-index": "7"
@@ -350,10 +350,10 @@
 		},
 		"flatUiSelectA": {
 			"layout": {
-				"top": "10.6711vh",
-				"left": "0.71603vw",
-				"height": "4.78833vh",
-				"width": "23.5639vw",
+				"top": "10.6667vh",
+				"left": "0.719895vw",
+				"height": "4.8vh",
+				"width": "23.5602vw",
 				"minHeight": "27px",
 				"minWidth": "40px",
 				"z-index": "12"
@@ -387,9 +387,9 @@
 		"echartsGenericA": {
 			"layout": {
 				"top": "31.7333vh",
-				"left": "50.6281vw",
+				"left": "50.6672vw",
 				"height": "37.6vh",
-				"width": "33.4028vw",
+				"width": "33.4286vw",
 				"minHeight": "32px",
 				"minWidth": "50px",
 				"z-index": "13"
@@ -420,9 +420,9 @@
 		"flatUiSwitchA": {
 			"layout": {
 				"top": "71.9616vh",
-				"left": "56.2627vw",
+				"left": "56.3062vw",
 				"height": "4.92513vh",
-				"width": "5.20349vw",
+				"width": "5.20751vw",
 				"minHeight": "24px",
 				"minWidth": "50px",
 				"z-index": "14"
@@ -449,9 +449,9 @@
 		"annotationLabelB": {
 			"layout": {
 				"top": "71.9616vh",
-				"left": "51.2544vw",
+				"left": "51.294vw",
 				"height": "4.92513vh",
-				"width": "4.61809vw",
+				"width": "4.62166vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "16"
@@ -476,9 +476,9 @@
 		"annotationLabelC": {
 			"layout": {
 				"top": "71.9616vh",
-				"left": "61.5962vw",
+				"left": "61.6438vw",
 				"height": "4.92513vh",
-				"width": "4.61809vw",
+				"width": "4.62166vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "17"
@@ -502,10 +502,10 @@
 		},
 		"flatUiValueDisplayA": {
 			"layout": {
-				"top": "10.6711vh",
-				"left": "26.2328vw",
-				"height": "4.78833vh",
-				"width": "23.6941vw",
+				"top": "10.6667vh",
+				"left": "26.2435vw",
+				"height": "4.8vh",
+				"width": "23.6911vw",
 				"minHeight": "24px",
 				"minWidth": "150px",
 				"z-index": "18"
@@ -599,21 +599,18 @@
 		"flatUiSelectA": {
 			"keys": {
 				"name": "keys",
-				"dataNode": "options",
-				"dataFields": [],
-				"dataNodeIndex": 9
+				"dataNode": "indicator",
+				"dataFields": []
 			},
 			"values": {
 				"name": "values",
-				"dataNode": "options",
-				"dataFields": [],
-				"dataNodeIndex": 9
+				"dataNode": "indicator",
+				"dataFields": []
 			},
 			"selectedValue": {
 				"name": "selectedValue",
-				"dataNode": "selectedIndicator",
-				"dataFields": [],
-				"dataNodeIndex": 12
+				"dataNode": "selected_indicator",
+				"dataFields": []
 			}
 		},
 		"echartsGenericA": {
@@ -641,9 +638,8 @@
 		"flatUiValueDisplayA": {
 			"value": {
 				"name": "value",
-				"dataNode": "lastUpdate",
-				"dataFields": [],
-				"dataNodeIndex": 8
+				"dataNode": "last_update",
+				"dataFields": []
 			}
 		}
 	},
