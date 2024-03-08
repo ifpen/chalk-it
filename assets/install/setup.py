@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 import os
 
-NAME = "py-chalk-it"
-VERSION = "0.4.0"
+NAME = "taipy-designer"
+VERSION = "0.5.0"
 
 with open("README.md", "r") as fh:
     readme = fh.read()
@@ -11,16 +11,16 @@ setup(
     name=NAME,
     version=VERSION,
 	packages=find_packages(),
-    description='Rapid webapplications with Python',
+    description='A 360° open-source platform from Python pilots to production-ready web apps.',
 	long_description=readme,
     long_description_content_type="text/markdown",
-	url='https://github.com/ifpen/chalk-it',
+	url='https://github.com/Avaiga/taipy',
     install_requires=[
         'flask',
     ],
-    author="IFP Energies nouvelles",
+    author="IFPEN",
     author_email="xdash@ifpen.fr",
-    license="Apache License 2.0",
+    license="Taipy End User License Agreement (EULA)",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
