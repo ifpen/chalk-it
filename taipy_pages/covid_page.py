@@ -114,7 +114,7 @@ def echarts_option(covid_df, selected_countries):
     return option
 
 def on_change(state, var, val):
-    if (var == 'selected_countries'):
+    if var == "selected_countries":
         covid_filtered = copy.deepcopy(get_covid_filtered(covid_data_frame, val))
         state.option_e = copy.deepcopy(echarts_option(covid_filtered, val))
 
@@ -128,5 +128,6 @@ covid_filtered = copy.deepcopy(get_covid_filtered(covid_data_frame, selected_cou
 option_e = copy.deepcopy(echarts_option(covid_filtered, selected_countries))
 
 # Create a Page instance with the resource handler
+xprjson_file_name = "covid_page.xprjson"
 page = Page(PureHTMLResourceHandler())
 

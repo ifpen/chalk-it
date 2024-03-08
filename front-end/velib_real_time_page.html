@@ -1,0 +1,806 @@
+﻿<!DOCTYPE html PUBLIC "null" "null"><html lang="en"><head><title>velib_real_time_page</title><meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/><link xmlns="http://www.w3.org/1999/xhtml" rel="stylesheet" href="http://127.0.0.1:5000/source/assets/style/runtime.css" />
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/configs/config.dev.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/pyodide.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/source/kernel/base/pyodide-loader.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/head.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/ajv7.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/angular.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/rzslider.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/angular-datepicker.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/angularjs-gauge.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/jquery.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/knockout.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/bootstrap.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/sweetalert-dev.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/jszip.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/lodash.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/togeojson.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/tarjan-graph.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/graph-data-structure.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/leaflet.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/leaflet.draw.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/leaflet-meanmap.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/Leaflet.Modal.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/leaflet.awesome-markers.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/leaflet-geoman.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/leaflet.markercluster.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/turf.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/idb.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/leaflet.offline.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/geojson-extent.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/mindmup-editabletable.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/plotly.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/vega.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/vega-embed@6.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/echarts.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/dataTool.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/flat-ui.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/d3.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/canvas2image.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/html2canvas.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/thirdparty/papaparse.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/thirdparty/utils.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/thirdparty/reconnecting-websocket.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/source/kernel/general/backend/file-management.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/source/kernel/general/backend/FileMngr.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/source/kernel/base/gui/FreeboardUI.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/pnotify.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/bootstrap-clockpicker.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/w3color.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/json_parseMore.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/marked.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/jquery.bt.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/moment.min.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/thirdparty/daterangepicker.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" charset="UTF-8" src="http://127.0.0.1:5000/source/connectors/taipy/taipy-gui-base.js"></script></head><body ng-app="xCLOUD"><script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/utils/geoConversion.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/runtime/xdash-load-runtime.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/thirdparty/angular-ui-router.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/angular/modules/components/authentication/userFactory.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/angular/modules/components/APIs.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/angular/modules/python/python-images.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/execution-engine/DatanodeDependency.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/gui/GraphVisu.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/base/DatanodesListModel.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/execution-engine/FormulaInterpreter.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/execution-engine/TimeManager.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/execution-engine/DatanodeScheduler.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/base/DatanodeModel.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/gui/DialogBox.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/gui/PluginEditor.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/gui/json-edit.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/gui/JSEditor.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/gui/JSEditorCompletion.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/base/DatanodesManager.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-json-var.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-json-delay.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-json-memory.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-json-formula.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-generic-text-file.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-generic-binary-file.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-csv-file.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-csv-play.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-taipy-link.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-unzip-file.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-websocket.receive.datanodes.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-websocket.send.datanodes.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-geolocation.datanodes.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-python-support.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-python-script.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-rest-webservice.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/datanodes/plugins/plugin-clock.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugin-handler.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/angular/modules/dashboard/services/edit-play-switch.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/base/main-common.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/connection/widget-prototypes-manager.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/scaling/scaling-utils.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/plugin-base.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/widget-base.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/annotation-scoring/plugin-scoring-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/annotation-scoring/plugin-markdown-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/annotation-scoring/plugin-generic-html-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/basic/plugin-any-display-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/basic/plugin-kpi-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/basic/plugin-kpi-advanced-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/basic/plugin-double-slider-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/geo-time/plugin-datepicker-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/geo-time/plugin-daterangepicker-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/geo-time/plugin-timepicker-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/geo-time/plugin-calendar-d3-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/gauges/plugin-led-light.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/basic/plugin-flat-ui-complex-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/basic/plugin-flat-ui-boolean-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/geo-time/plugin-flat-ui-address-completion.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/basic/plugin-flat-ui-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/basic/plugin-save-to-file-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/basic/plugin-load-file-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/plots/plugin-plotly-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/plots/plugin-python-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/plots/plugin-vega-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/plots/plugin-echarts-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/geo-time/plugin-map-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/geo-time/plugin-folium-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/plugins/annotation-scoring/plugin-annotation-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/scaling/scaling-manager.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/general/interfaces/input-params.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/scaling/rescale-helper.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/connection/connect-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/connection/widget-datanode-update.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/rendering/preview-widgets.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/base/pyodide-project.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/general/export/runtime-toolbar.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/runtime/row-to-page-runtime.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/runtime/row-to-tab-runtime.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/runtime/custom-navigation-runtime.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/general/interfaces/xdash-api.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/general/interfaces/chalkit-api.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/runtime/xdash-runtime-main.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/kernel/dashboard/rendering/reconstruct-foundations.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/angular/modules/libs/notification/notification-xdash.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="http://127.0.0.1:5000/source/connectors/taipy/taipy-manager.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml">
+
+tabActive = "play";
+execOutsideEditor = true;
+urlBase = "http://127.0.0.1:5000/";
+navBarNotification = "false" ;
+showNavBar = "false" ;
+$(function()
+{
+jsonContent = {
+  "meta": {
+    "version": "3.000.8832",
+    "fileFormatVersion": "0.3",
+    "date": "Thu Mar 07 2024 14:55:45 GMT+0100 (heure normale d’Europe centrale)",
+    "name": "velib_real_time_page",
+    "description": "Velib bike sharing system in Paris live information",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": []
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": {
+      "widthPx": 1294.4,
+      "heightPx": 590.4,
+      "widthVw": 84.71204188481677,
+      "heightVh": 78.72,
+      "rowHeightPercent": 100
+    }
+  },
+  "device": {
+    "cols": {
+      "valueRow": "1",
+      "valueCol": "1",
+      "maxCells": 1,
+      "maxCols": 1,
+      "classType": "col-md-12"
+    },
+    "droppers": {
+      "dpr1": {
+        "component0": "openStreetMapsA",
+        "component1": "flatUiHorizontalSliderA",
+        "component2": "flatUiHorizontalSliderB",
+        "component3": "annotationLabelA",
+        "component4": "kpiCardA",
+        "component5": "kpiCardB",
+        "component6": "flatUiSelectA",
+        "component7": "echartsGenericA",
+        "component8": "flatUiSwitchA",
+        "component9": "annotationLabelB",
+        "component10": "annotationLabelC",
+        "component11": "flatUiValueDisplayA"
+      }
+    },
+    "backgroundColor": "#efe6e6",
+    "theme": "default"
+  },
+  "dashboard": {
+    "openStreetMapsA": {
+      "layout": {
+        "top": "17.7333vh",
+        "left": "0.721565vw",
+        "height": "51.8667vh",
+        "width": "49.0008vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "openStreetMapsA",
+        "modelJsonId": "openStreetMaps"
+      },
+      "modelParameters": {
+        "geoJson": {
+          "numberOfLayers": 1
+        },
+        "choropleth": {
+          "numberOfLayers": 0
+        },
+        "heatMap": {
+          "numberOfLayers": 1,
+          "sampledDisplay": false,
+          "densityHeatMap": false
+        },
+        "lineHeatMap": {
+          "numberOfLayers": 0
+        },
+        "imageOverlay": {
+          "numberOfLayers": 0
+        },
+        "svgOverlay": {
+          "numberOfLayers": 0
+        },
+        "defaultCenter": {
+          "latitude": 48.872063,
+          "longitude": 2.331773,
+          "zoom": 16
+        },
+        "offlineSupport": false,
+        "tileServer": "MapboxStreets",
+        "drawingFeatures": true,
+        "drawingFeaturesOptions": {
+          "point": false,
+          "line": false,
+          "polygone": true,
+          "rectangle": true,
+          "modal": false
+        },
+        "captureClickEvent": false,
+        "markerCluster": true
+      },
+      "modelHiddenParams": {
+        "geoJson": {
+          "geoJsonLayers": [],
+          "geoJsonBounds": []
+        },
+        "choropleth": {
+          "choroplethLayers": [],
+          "choroplethBounds": []
+        },
+        "lineHeatMap": {
+          "lineHeatMapLayers": [],
+          "lineHeatMapBounds": []
+        },
+        "heatMap": {
+          "heatMapData": [],
+          "heatMapBuffer": []
+        },
+        "imageOverlay": {
+          "imageData": []
+        },
+        "svgOverlay": {
+          "svgData": [],
+          "svgElements": []
+        },
+        "legends": [],
+        "colors": [
+          "#800080",
+          "#FF00FF",
+          "#000080",
+          "#0000FF",
+          "#008080",
+          "#00FFFF",
+          "#FFFF00",
+          "#800000",
+          "#6666ff",
+          "#cc6699",
+          "#66ff66",
+          "#666699",
+          "#996633",
+          "#ff0000",
+          "#669999",
+          "#ffff99"
+        ]
+      }
+    },
+    "flatUiHorizontalSliderA": {
+      "layout": {
+        "top": "71.4667vh",
+        "left": "0.721008vw",
+        "height": "4.93333vh",
+        "width": "24.0555vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "3"
+      },
+      "container": {
+        "instanceId": "flatUiHorizontalSliderA",
+        "modelJsonId": "flatUiHorizontalSlider"
+      },
+      "modelParameters": {
+        "label": "radius",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 10,
+        "max": 100,
+        "step": 1,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "layout": {
+        "top": "71.4667vh",
+        "left": "26.0873vw",
+        "height": "4.93333vh",
+        "width": "24.0555vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "4"
+      },
+      "container": {
+        "instanceId": "flatUiHorizontalSliderB",
+        "modelJsonId": "flatUiHorizontalSlider"
+      },
+      "modelParameters": {
+        "label": "opacity",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)"
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "annotationLabelA": {
+      "layout": {
+        "top": "1.64171vh",
+        "left": "0.65445vw",
+        "height": "7.25089vh",
+        "width": "83.4424vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "5"
+      },
+      "container": {
+        "instanceId": "annotationLabelA",
+        "modelJsonId": "annotationLabel"
+      },
+      "modelParameters": {
+        "text": "Velib bike sharing system availability",
+        "enableActuator": false,
+        "fontsize": 1.5,
+        "backgroundColor": "#988f8f",
+        "textColor": "#ffffff",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "center",
+        "displayBorder": false,
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "kpiCardA": {
+      "layout": {
+        "top": "12.4497vh",
+        "left": "50.4216vw",
+        "height": "16.4171vh",
+        "width": "16.677vw",
+        "minHeight": "32px",
+        "minWidth": "64px",
+        "z-index": "6"
+      },
+      "container": {
+        "instanceId": "kpiCardA",
+        "modelJsonId": "kpiCard"
+      },
+      "modelParameters": {
+        "label": "Number of available bikes",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "valuePosition": "bottom",
+        "valueFontSize": 2,
+        "valueColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "decimalDigits": 3,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "unitColor": "var(--widget-label-color)",
+        "borderShadow": true
+      },
+      "modelHiddenParams": {
+        "value": "--"
+      }
+    },
+    "kpiCardB": {
+      "layout": {
+        "top": "12.3402vh",
+        "left": "67.4199vw",
+        "height": "16.4171vh",
+        "width": "16.677vw",
+        "minHeight": "32px",
+        "minWidth": "64px",
+        "z-index": "7"
+      },
+      "container": {
+        "instanceId": "kpiCardB",
+        "modelJsonId": "kpiCard"
+      },
+      "modelParameters": {
+        "label": "Number of available docks",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "valuePosition": "bottom",
+        "valueFontSize": 2,
+        "valueColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "decimalDigits": 3,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "unitColor": "var(--widget-label-color)",
+        "borderShadow": true
+      },
+      "modelHiddenParams": {
+        "value": "--"
+      }
+    },
+    "flatUiSelectA": {
+      "layout": {
+        "top": "10.6667vh",
+        "left": "0.720451vw",
+        "height": "4.8vh",
+        "width": "23.5784vw",
+        "minHeight": "27px",
+        "minWidth": "40px",
+        "z-index": "12"
+      },
+      "container": {
+        "instanceId": "flatUiSelectA",
+        "modelJsonId": "flatUiSelect"
+      },
+      "modelParameters": {
+        "label": "Indicator",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "selectWidthProportion": "70%",
+        "isNumber": false,
+        "selectValueFontSize": 0.5,
+        "selectedValueColor": "var(--widget-select-option-highlighted-text)",
+        "selectedItemDefaultColor": "var(--widget-select-option-highlighted-color)",
+        "selectedItemHoverColor": "var(--widget-select-option-highlighted-color)",
+        "isKeyValuePairs": false,
+        "selectValueFontFamily": "Helvetica Neue"
+      },
+      "modelHiddenParams": {
+        "keys": [],
+        "values": [],
+        "selectedValue": ""
+      }
+    },
+    "echartsGenericA": {
+      "layout": {
+        "top": "31.7333vh",
+        "left": "50.6424vw",
+        "height": "37.6vh",
+        "width": "33.4544vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "13"
+      },
+      "container": {
+        "instanceId": "echartsGenericA",
+        "modelJsonId": "echartsGeneric"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "option": {
+          "color": [
+            "var(--widget-color-2)",
+            "var(--widget-color-5)",
+            "var(--widget-color-6)",
+            "var(--widget-color-7)",
+            "var(--widget-color-8)",
+            "var(--widget-color-9)",
+            "var(--widget-color-10)",
+            "var(--widget-color-11)",
+            "var(--widget-color-12)",
+            "var(--widget-color-13)"
+          ]
+        },
+        "selection": {}
+      }
+    },
+    "flatUiSwitchA": {
+      "layout": {
+        "top": "71.9616vh",
+        "left": "56.3497vw",
+        "height": "4.92513vh",
+        "width": "5.21153vw",
+        "minHeight": "24px",
+        "minWidth": "50px",
+        "z-index": "14"
+      },
+      "container": {
+        "instanceId": "flatUiSwitchA",
+        "modelJsonId": "flatUiSwitch"
+      },
+      "modelParameters": {
+        "label": "dockBar",
+        "inheritLabelFromData": true,
+        "displayLabel": false,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "switchWidthProportion": "100%",
+        "switchOnColor": "var(--widget-input-checked-color)",
+        "switchOffColor": "var(--widget-input-unchecked-color)"
+      },
+      "modelHiddenParams": {
+        "value": false
+      }
+    },
+    "annotationLabelB": {
+      "layout": {
+        "top": "71.9616vh",
+        "left": "51.3336vw",
+        "height": "4.92513vh",
+        "width": "4.62523vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "16"
+      },
+      "container": {
+        "instanceId": "annotationLabelB",
+        "modelJsonId": "annotationLabel"
+      },
+      "modelParameters": {
+        "text": "Bikes",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "annotationLabelC": {
+      "layout": {
+        "top": "71.9616vh",
+        "left": "61.6914vw",
+        "height": "4.92513vh",
+        "width": "4.62523vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "17"
+      },
+      "container": {
+        "instanceId": "annotationLabelC",
+        "modelJsonId": "annotationLabel"
+      },
+      "modelParameters": {
+        "text": "Docks",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiValueDisplayA": {
+      "layout": {
+        "top": "10.6667vh",
+        "left": "26.2638vw",
+        "height": "4.8vh",
+        "width": "23.7094vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "18"
+      },
+      "container": {
+        "instanceId": "flatUiValueDisplayA",
+        "modelJsonId": "flatUiValueDisplay"
+      },
+      "modelParameters": {
+        "label": "Last update",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "valueWidthProportion": "70%",
+        "decimalDigits": 3,
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-input-text)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    }
+  },
+  "connections": {
+    "openStreetMapsA": {
+      "selectedGeoJson": {
+        "name": "selectedGeoJson",
+        "dataNode": "selected_polygon_geojson",
+        "dataFields": []
+      },
+      "geoJson1": {
+        "name": "geoJson1",
+        "dataNode": "None",
+        "dataFields": []
+      },
+      "heatMapData1": {
+        "name": "heatMapData1",
+        "dataNode": "heatmap_json",
+        "dataFields": []
+      }
+    },
+    "flatUiHorizontalSliderA": {
+      "value": {
+        "name": "value",
+        "dataNode": "cfg",
+        "dataFields": [
+          "radius"
+        ]
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "value": {
+        "name": "value",
+        "dataNode": "cfg",
+        "dataFields": [
+          "opacity"
+        ]
+      }
+    },
+    "annotationLabelA": {},
+    "kpiCardA": {
+      "value": {
+        "name": "value",
+        "dataNode": "global_stats",
+        "dataFields": [
+          "Number of available bikes"
+        ],
+        "dataNodeIndex": 5
+      }
+    },
+    "kpiCardB": {
+      "value": {
+        "name": "value",
+        "dataNode": "global_stats",
+        "dataFields": [
+          "Number of available docks"
+        ],
+        "dataNodeIndex": 5
+      }
+    },
+    "flatUiSelectA": {
+      "keys": {
+        "name": "keys",
+        "dataNode": "indicator",
+        "dataFields": []
+      },
+      "values": {
+        "name": "values",
+        "dataNode": "indicator",
+        "dataFields": []
+      },
+      "selectedValue": {
+        "name": "selectedValue",
+        "dataNode": "selected_indicator",
+        "dataFields": []
+      }
+    },
+    "echartsGenericA": {
+      "option": {
+        "name": "option",
+        "dataNode": "echarts_option_json",
+        "dataFields": []
+      },
+      "selection": {
+        "name": "selection",
+        "dataNode": "None",
+        "dataFields": []
+      }
+    },
+    "flatUiSwitchA": {
+      "value": {
+        "name": "value",
+        "dataNode": "dockBar",
+        "dataFields": [],
+        "dataNodeIndex": 3
+      }
+    },
+    "annotationLabelB": {},
+    "annotationLabelC": {},
+    "flatUiValueDisplayA": {
+      "value": {
+        "name": "value",
+        "dataNode": "last_update",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "projectToTargetWindow",
+  "pages": {
+    "pageNames": [
+      "Page 1"
+    ],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+};reconstructFoundations.loadXprjson(jsonContent);
+});
+</script>
+<div xmlns="http://www.w3.org/1999/xhtml" id="dashboard-zone" class="panel-body" style="padding: 0px"><div id="DropperDroitec" class="dropperR" style="position:relative;z-index:0;border-radius:10px" ng-app="xCLOUD"></div></div></body></html>
