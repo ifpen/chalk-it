@@ -509,7 +509,7 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   set xprjsonFileName(newFileName) {
-    const $rootScope = angular.element(document.body).scope().$root;
+    const $rootScope = angular.element(document.body).scope()?.$root;
     if ($rootScope.currentProject) {
       $rootScope.currentProject.name = newFileName;
     }
@@ -594,5 +594,3 @@ class TaipyManager {
 }
 
 const taipyManager = new TaipyManager();
-
-if (xDashConfig.taipyLink === 'true') taipyManager.initTaipyApp();
