@@ -1,21 +1,21 @@
 <a
   ng-if="xDashFullVersion"
   ng-click="moduleOpenedFunction(false);reset()"
-  title="Back to Chalk'it browser"
+  title="Back to Taipy Designer browser"
   class="brand"
 >
   <span class="brand__placeholder" aria-hidden="true"></span>
-  <span class="sr-only">Chalk'it logo</span>
+  <span class="sr-only">Taipy Designer logo</span>
   <i class="basic icn-menu" aria-hidden="true"></i>
 </a>
 <a ng-if="!xDashFullVersion" class="brand">
   <span class="brand__placeholder" aria-hidden="true"></span>
-  <span class="sr-only">Chalk'it logo</span>
+  <span class="sr-only">Taipy Designer logo</span>
 </a>
 
 <!-- for future version  with multiple projects -->
 <!-- <div class="tabs-container">
-    <a class="tab tab--active" ng-click="closeProject();reset()" title="Home : close project and back to Chalk'it browser">
+    <a class="tab tab--active" ng-click="closeProject();reset()" title="Home : close project and back to Taipy Designer browser">
         <span class="tab__name">{{currentProject.name}}{{currentProject.dirty}}</span>
         <i class="tab__close basic icn-close"></i>
     </a>
@@ -24,13 +24,13 @@
 <div ng-if="xDashFullVersion" class="tabs-container">
   <div class="tab tab--active">
     <span class="tab__name ng-binding">{{currentProject.name}}{{currentPrjDirty}}</span>
-    <a ng-click="closeProject(currentProject.name);reset()" title="Home : close project and back to Chalk'it browser">
+    <a ng-click="closeProject(currentProject.name);reset()" title="Home : close project and back to Taipy Designer browser">
       <i class="tab__close basic icn-close"></i>
     </a>
   </div>
   <!-- <div class="tab tab--inactive">
         <span class="tab__name">Tab name</span>
-        <a ng-click="" title="Home : close project and back to Chalk'it browser">
+        <a ng-click="" title="Home : close project and back to Taipy Designer browser">
             <i class="tab__close basic icn-close"></i>
         </a>
     </div> -->

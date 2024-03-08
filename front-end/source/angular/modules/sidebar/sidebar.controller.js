@@ -179,7 +179,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
       xdash.openFile('project', 'local');
     };
 
-    /*---------- Open Chalk'it documentation ----------------*/
+    /*---------- Open Taipy Designer documentation ----------------*/
     $scope.openDoc = function () {
       const docURL = xDashConfig.urlDoc;
       const tab = window.open(docURL, '_blank');

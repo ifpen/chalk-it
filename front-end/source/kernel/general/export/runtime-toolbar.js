@@ -7,7 +7,7 @@
     '               <a class="top-nav__brand" target="_blank" href="' +
       xDashConfig.urlWebSite +
       '" title="Chalk\'it website">',
-    "                   Powered by Chalk'it",
+    "                   Powered by Taipy Designer",
     '                   <img src="' + xDashConfig.urlBaseForExport + 'source/assets/img/chalk-it-icon.svg" />',
     '               </a>',
     '           </li>',

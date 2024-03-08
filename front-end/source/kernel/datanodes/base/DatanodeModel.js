@@ -219,7 +219,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     } else {
       swal(
         'DataNode Plugin Error',
-        "The required '" + newValue + "' plugin does not exist in this Chalk'it version !",
+        "The required '" + newValue + "' plugin does not exist in this Taipy Designer version !",
         'error'
       );
       self.error(true);

@@ -311,7 +311,7 @@ var xdashUpdateEngine = new XdashDataUpdateEngine();
           settings.sampleTime = settings.refreshRate;
           delete settings.refreshRate;
 
-          //AEF: compatibility with versions before Chalk'it v0.3.7 (xDash 2.890)
+          //AEF: compatibility with versions before Taipy Designer v0.3.7 (xDash 2.890)
           const versionStr = object.version;
           const RegEx = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
           const match = RegEx.exec(versionStr);

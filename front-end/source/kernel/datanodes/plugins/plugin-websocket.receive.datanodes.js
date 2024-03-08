@@ -1,7 +1,7 @@
 /**
  * @author AR
  * @description
- * This Datanode is used to receive data through Web socket. It's allow Chalk'it to retrieve data
+ * This Datanode is used to receive data through Web socket. It's allow Taipy Designer to retrieve data
  */
 // ### Datanode Definition
 //
@@ -355,7 +355,7 @@
     // **icon_type** : icon of the datanode type displayed in data list
     icon_type: 'websocket.svg',
     // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
-    description: "Websocket client to receive data in Chalk'it",
+    description: "Websocket client to receive data in Taipy Designer",
     // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.
     external_scripts: [''],
     // **settings** : An array of settings that will be displayed for this plugin when the user adds it
