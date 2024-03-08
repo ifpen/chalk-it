@@ -14,7 +14,7 @@ from .function_json_adapter import FunctionJsonAdapter
 # Get the absolute path of the main module
 BASE_PATH: Path = Path(sys.argv[0]).resolve().parent
 
-file_name: Path = BASE_PATH / "config.xprjson"
+xprjson_file_name: str = "new_project.xprjson"
 json_data: str = ""
 has_file_saved: bool = False
 file_list: Dict[str, Union[str, list]] = {}
@@ -28,7 +28,8 @@ def load_file(state: object, action_name: str) -> None: # pylint: disable=unused
     - state: The current state object.
     - action_name: The name of the action being performed.
     """
-    state.json_data = Path(state.file_name).read_text(encoding="utf-8")
+    xprjson_file_path = BASE_PATH / state.xprjson_file_name
+    state.json_data = Path(xprjson_file_path).read_text(encoding="utf-8")
 
 
 def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
@@ -45,15 +46,15 @@ def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
     - OSError: If there's an error writing to the file.
     """
     try:
-        state.file_name = BASE_PATH / (
-            "config-recovery.xprjson" if action_name == "reload" else "config.xprjson")
+        xprjson_file_path = BASE_PATH / (
+            state.xprjson_file_name.split('.')[0] + '_recovery.xprjson' if action_name == "reload" else state.xprjson_file_name)
         if "data" not in payload:
             raise ValueError("Payload does not contain 'data'")
-        with open(state.file_name, "w", encoding="utf-8") as f:
+        with open(xprjson_file_path, "w", encoding="utf-8") as f:
             f.write(payload["data"])
             state.has_file_saved = True
     except OSError as error:
-        raise OSError(f"Failed to write to {file_name}: {error}") from error
+        raise OSError(f"Failed to write to {xprjson_file_path}: {error}") from error
 
 
 def select_file(state: object, action_name: str, payload: Dict[str, str]) -> None: # pylint: disable=unused-argument
@@ -67,9 +68,10 @@ def select_file(state: object, action_name: str, payload: Dict[str, str]) -> Non
     """
     if "file_name" not in payload:
         raise ValueError("Payload does not contain 'file_name'")
-    potential_file_path = BASE_PATH / payload['file_name']
-    if potential_file_path.exists():
-        state.file_name = str(potential_file_path)
+    selected_file_name = payload['file_name']
+    selected_file_path = BASE_PATH / selected_file_name
+    if selected_file_path.exists():
+        state.xprjson_file_name = selected_file_name
 
 
 def get_file_list(state: object, action_name: str) -> None: # pylint: disable=unused-argument
