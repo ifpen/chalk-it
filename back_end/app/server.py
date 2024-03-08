@@ -314,7 +314,7 @@ class FileManager:
             return send_from_directory('.', path)
 
         if self.config.xprjson is not None:
-            return self._dashboard(self.config.xprjson)
+            return self.dashboard(self.config.xprjson)
 
         return redirect(url_for('static', filename='index.html'))
     
