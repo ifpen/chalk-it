@@ -6,7 +6,7 @@ from back_end import *
 from taipy.gui.custom import Page
 import pandas as pd
 import geopandas as gpd
-from shapely.geometry import shape, Point
+from shapely.geometry import Point
 import requests
 import re
 import numpy as np
@@ -192,8 +192,8 @@ def on_change(state, var, val):
     if var == "dockBar":
         dockBar = val
         state.echarts_option_json = generate_echarts_bar_graph(state.dfg, dockBar)
-    
+
+# Define xprjson file name
+xprjson_file_name = "velib_real_time_page.xprjson"
 # Create a Page instance with the resource handler
-#page = ChalkitPage(xpjrson_file_name='velib_real_time_page.xprjson')
-#page = ChalkitPage(PureHTMLResourceHandler())
 page = Page(PureHTMLResourceHandler())
