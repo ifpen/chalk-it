@@ -150,7 +150,7 @@ class TaipyManager {
     }
 
     // fileSelect
-    if (encodedName.includes('file_name')) {
+    if (encodedName.includes('xprjson_file_name')) {
       this.loadFile();
     }
 
@@ -208,7 +208,7 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   fileSelect(fileName) {
-    this.app.trigger('select_file', 'first_action', { file_name: fileName });
+    this.app.trigger('select_file', 'first_action', { xprjson_file_name: fileName });
   }
 
   /**
@@ -277,7 +277,7 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   uploadFile(files, callback) {
-    const encodedVarName = this.app.getEncodedName('file_name', this.currentContext);
+    const encodedVarName = this.app.getEncodedName('xprjson_file_name', this.currentContext);
     const printProgressUpload = (progress) => {
       console.log(progress);
     };

@@ -570,17 +570,13 @@ angular.module('modules').service('ManagePrjService', [
     self.saveProjectToLocal = function (callback) {
       const is_defaultOverwrite = true;
       const fileType = 'project';
-      let inputProjectName = $('#projectName').val();
+      const inputProjectName = $('#projectName').val();
       const currentProjectName = $rootScope.currentProject.name;
       $rootScope.oldFileName = currentProjectName;
 
       if ($rootScope.taipyLink) {
         const fileSerialized = xdash.serialize();
-        if (inputProjectName === '') {
-          $('#projectName').val('Untitled');
-          inputProjectName = 'Untitled';
-        }
-        fileManager.saveOnServer('project', inputProjectName, fileSerialized, is_defaultOverwrite, callback);
+        fileManager.saveOnServer('project', currentProjectName, fileSerialized, is_defaultOverwrite, callback);
         return;
       }
 

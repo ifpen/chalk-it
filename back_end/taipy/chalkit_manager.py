@@ -63,11 +63,11 @@ def select_file(state: object, action_name: str, payload: Dict[str, str]) -> Non
     Parameters:
     - state: The current state object.
     - action_name: The name of the action being performed.
-    - payload: Contains the file_name to select.
+    - payload: Contains the xprjson_file_name to select.
     """
-    if "file_name" not in payload:
-        raise ValueError("Payload does not contain 'file_name'")
-    selected_file_name = payload['file_name']
+    if "xprjson_file_name" not in payload:
+        raise ValueError("Payload does not contain 'xprjson_file_name'")
+    selected_file_name = payload['xprjson_file_name']
     selected_file_path = BASE_PATH / selected_file_name
     if selected_file_path.exists():
         state.xprjson_file_name = selected_file_name
