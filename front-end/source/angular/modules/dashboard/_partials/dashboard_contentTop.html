@@ -11,7 +11,7 @@
         placeholder="Name of the project"
         value="{{currentProject.name | limitTo: 30}}"
         autocorrect="off"
-        ng-disabled="isTemplateOpen || isLiveDemo"
+        ng-disabled="isTemplateOpen || isLiveDemo || taipyLink"
       />
       <sapn ng-if="!isTemplateOpen && !isLiveDemo && (enableLocalServer || taipyLink)">{{currentPrjDirty}}</sapn>
     </h1>
@@ -92,7 +92,7 @@
       <button class="btn btn__see-more" title="Preview the HTML page" ng-click="previewDashboard();">Preview</button>
     </div>
 
-    <div class="btn__see-more__wrapper">
+    <div ng-if="!taipyLink" class="btn__see-more__wrapper">
       <button class="btn btn__see-more" title="Export the HTML page" ng-click="exportHTMLPage(currentProject.name);">
         Export
       </button>
