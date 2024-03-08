@@ -115,8 +115,8 @@ def echarts_option(covid_df, selected_countries):
 
 def on_change(state, var, val):
     if var == "selected_countries":
-        covid_filtered = copy.deepcopy(get_covid_filtered(covid_data_frame, val))
-        state.option_e = copy.deepcopy(echarts_option(covid_filtered, val))
+        covid_filtered = get_covid_filtered(covid_data_frame, val)
+        state.option_e = echarts_option(covid_filtered, val)
 
 # Main code
 dataset_name = DATASET_NAMES[0]
@@ -124,10 +124,11 @@ covid_data_frame = fetch_and_prepare_covid_data(dataset_name)
 countries_list = get_countries_list(covid_data_frame)
 selected_countries = ["France"]  # List of countries to process
 
-covid_filtered = copy.deepcopy(get_covid_filtered(covid_data_frame, selected_countries))
-option_e = copy.deepcopy(echarts_option(covid_filtered, selected_countries))
+covid_filtered = (get_covid_filtered(covid_data_frame, selected_countries))
+option_e = echarts_option(covid_filtered, selected_countries)
 
+# Define xprjson file name
+xprjson_file_name = "covid_page"
 # Create a Page instance with the resource handler
-xprjson_file_name = "covid_page.xprjson"
 page = Page(PureHTMLResourceHandler())
 

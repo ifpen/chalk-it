@@ -51,5 +51,7 @@ def on_change(state, var, val):
     if var == 'input_data':
         state.prediction = make_prediction(clf, val)
 
-xprjson_file_name = "iris_demo_page.xprjson"
+# Define xprjson file name
+xprjson_file_name = "iris_demo_page"
+# Create a Page instance with the resource handler
 page = Page(PureHTMLResourceHandler())
