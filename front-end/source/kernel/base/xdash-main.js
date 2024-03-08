@@ -32,7 +32,7 @@ var xdash = (function () {
     xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 
     $rootScope.updateFlagDirty(false);
-    $('#projectName')[0].value = prjName;
+    if (!$rootScope.taipyLink) $('#projectName')[0].value = prjName;
     pyodideManager.reset(true, false);
 
     layoutMgr.resetDashBgColor();

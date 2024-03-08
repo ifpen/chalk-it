@@ -22,8 +22,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- New project ----------------*/
     $scope.newProject = function () {
-      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      const isCurrentPrjDirty = !_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== '';
+      const isCurrentPrjDirty = $rootScope.currentPrjDirty !== '';
       const hasCurrentPrjName = $rootScope.currentProject.name !== '';
 
       if (!$rootScope.xDashFullVersion) {
@@ -31,41 +30,40 @@ angular.module('modules.sidebar').controller('SidebarController', [
           $state.go('modules', {});
           $rootScope.toggleMenuOptionDisplay('none');
         } else {
-          _newPrj(scopeDash);
+          _newPrj();
         }
-      } else {
-        if (isCurrentPrjDirty) {
-          swal(
-            {
-              title: 'Are you sure?',
-              text: 'Your current project will be saved and closed before starting a new project.',
-              type: 'warning',
-              showCancelButton: true,
-              showConfirmButton: false,
-              showConfirmButton1: true,
-              confirmButtonText: 'Yes',
-              cancelButtonText: 'Abandon',
-              closeOnConfirm: true,
-              closeOnConfirm1: true,
-              closeOnCancel: true,
-            },
-            function (isConfirm) {
-              if (isConfirm) {
-                const endAction = function () {
-                  _newPrj(scopeDash);
-                };
-                //save current project
-                fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
-              }
+      } else if (isCurrentPrjDirty) {
+        swal(
+          {
+            title: 'Are you sure?',
+            text: 'Your current project will be saved and closed before starting a new project.',
+            type: 'warning',
+            showCancelButton: true,
+            showConfirmButton: false,
+            showConfirmButton1: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Abandon',
+            closeOnConfirm: true,
+            closeOnConfirm1: true,
+            closeOnCancel: true,
+          },
+          function (isConfirm) {
+            if (isConfirm) {
+              const endAction = function () {
+                _newPrj();
+              };
+              //save current project
+              fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
             }
-          );
-        } else {
-          _newPrj(scopeDash);
-        }
+          }
+        );
+      } else {
+        _newPrj();
       }
     };
 
-    function _newPrj(scopeDash) {
+    function _newPrj() {
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       $state.go('modules', {});
       ManagePrjService.clearForNewProject();
       $rootScope.currentInfoProject = angular.copy($rootScope.currentProject);
@@ -93,7 +91,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
     /*---------- Import project ----------------*/
     $scope.uploadFileToServer = function () {
       $rootScope.origin = 'importProject';
-      var endAction = function () {
+      const endAction = function () {
         datanodesManager.showLoadingIndicator(false);
         $rootScope.updateView();
         $rootScope.toggleMenuOptionDisplay('recent');
@@ -108,7 +106,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
         'https://xfiles20210611165922.azurewebsites.net/Pages/ContactUs.aspx' +
         '?token=' +
         sessionStorage.authorizationToken;
-      var tab = window.open(templUrl, '_blank');
+      const tab = window.open(templUrl, '_blank');
       tab.focus();
     };
 
@@ -184,6 +182,14 @@ angular.module('modules.sidebar').controller('SidebarController', [
       const docURL = xDashConfig.urlDoc;
       const tab = window.open(docURL, '_blank');
       tab.focus();
+    };
+
+    /*---------- start Taipy project ----------------*/
+    $scope.startTaipyProject = function () {
+      //ManagePrjService.openTaipyPage($rootScope.currentProject.name);
+      ManagePrjService.clearForNewProject();
+      $rootScope.origin = 'newProject';
+      taipyManager.initTaipyApp();
     };
   },
 ]);
