@@ -562,4 +562,4 @@ class TaipyManager {
 
 const taipyManager = new TaipyManager();
 
-if (xDashConfig.xDashLiteVersion === 'true') taipyManager.initTaipyApp();
+if (xDashConfig.taipyLink === 'true') taipyManager.initTaipyApp();

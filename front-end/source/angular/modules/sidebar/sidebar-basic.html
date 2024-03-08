@@ -12,7 +12,7 @@
       My project
     </button>
     <button
-      ng-if="enableLocalServer || xDashLiteVersion"
+      ng-if="enableLocalServer || taipyLink"
       title="Open a project"
       class="btn btn-circle"
       ng-click="openFromLocal()"
@@ -23,7 +23,7 @@
       Open
     </button>
     <button
-      ng-if="!enableLocalServer && !xDashLiteVersion"
+      ng-if="!enableLocalServer && !taipyLink"
       title="Import a project"
       class="btn btn-circle"
       ng-click="importFromLocal()"

@@ -329,7 +329,7 @@ var fileManager = (function () {
         endAction = undefined;
       }
 
-      if ($rootScope.xDashLiteVersion) {
+      if ($rootScope.taipyLink) {
         updateFileListCallback();
         $rootScope.updateFlagDirty(false);
       } else {
@@ -417,7 +417,7 @@ var fileManager = (function () {
             if (!$rootScope.xDashFullVersion && _.isUndefined(endAction)) {
               endAction = endActionArg;
             }
-            if (!$rootScope.xDashFullVersion && !$rootScope.enableLocalServer && $rootScope.xDashLiteVersion) {
+            if ($rootScope.taipyLink) {
               datanodesManager.showLoadingIndicator(true);
               taipyManager.endAction = () => {
                 sendTextCallback('', '', 'success');

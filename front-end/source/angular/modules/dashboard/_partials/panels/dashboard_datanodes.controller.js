@@ -240,8 +240,8 @@ angular
       /*---------- edit button ----------------*/
       $scope.openDataNode = function (data) {
         const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-
         const instanceType = data.type();
+
         // Disable edit for taipy_link_plugin
         if ($rootScope.taipyLink && instanceType == 'taipy_link_plugin') return;
 

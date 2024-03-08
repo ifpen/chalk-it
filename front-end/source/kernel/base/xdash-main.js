@@ -494,7 +494,7 @@ var xdash = (function () {
       const xprjson = xdash.serialize();
       xprjson.meta.name = fileName;
 
-      if ($rootScope.xDashLiteVersion) {
+      if ($rootScope.taipyLink) {
         taipyManager.saveFile(xprjson, 'reload');
       } else {
         const xdashFile = JSON.stringify(xprjson, null, '\t');

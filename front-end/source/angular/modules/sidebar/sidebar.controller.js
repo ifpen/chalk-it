@@ -118,8 +118,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- Open project from local ----------------*/
     $scope.openFromLocal = function () {
-      const $rootScope = angular.element(document.body).scope().$root;
-      if ($rootScope.xDashLiteVersion) {
+      if ($rootScope.taipyLink) {
         taipyManager.getFileList();
         taipyManager.endAction = _responseCallback;
       } else {
@@ -129,10 +128,9 @@ angular.module('modules.sidebar').controller('SidebarController', [
     };
 
     function _responseCallback(result, msg2, type) {
-      const $rootScope = angular.element(document.body).scope().$root;
-      const isLiteVersion = $rootScope.xDashLiteVersion;
-      const projectList = isLiteVersion ? result.file_names : result.FileList;
-      const absolutePath = isLiteVersion ? result.base_path : result.Path;
+      const isTaipyLink = $rootScope.taipyLink;
+      const projectList = isTaipyLink ? result.file_names : result.FileList;
+      const absolutePath = isTaipyLink ? result.base_path : result.Path;
 
       const contentElement = document.createElement('div');
       const divContent = document.createElement('div');
@@ -140,8 +138,8 @@ angular.module('modules.sidebar').controller('SidebarController', [
       if (projectList.length) {
         divContent.classList.add('list-project');
         for (const project of projectList) {
-          const projectName = isLiteVersion ? project : project.Name;
-          const displayName = isLiteVersion ? _.split(project, '.')[0] : project.Name;
+          const projectName = isTaipyLink ? project : project.Name;
+          const displayName = isTaipyLink ? _.split(project, '.')[0] : project.Name;
           const divItemContent = document.createRange().createContextualFragment(`
             <div class="list-project__container ">
               <input type="radio" id="${projectName}" name="localProject" value="${projectName}"/>
@@ -163,7 +161,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
           if (selectedProject) {
             const projectName = selectedProject.value;
             const $rootScope = angular.element(document.body).scope().$root;
-            if ($rootScope.xDashLiteVersion) {
+            if ($rootScope.taipyLink) {
               ManagePrjService.openTaipyPage(projectName);
             } else {
               ManagePrjService.openProject(projectName, 'xprjson', '');

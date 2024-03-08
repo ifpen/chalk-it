@@ -185,9 +185,9 @@ angular.module('modules').service('ManagePrjService', [
     /*---------- clearForNewProject ----------------*/
     self.clearForNewProject = function () {
       $rootScope.isLiveDemo = false;
-
+      if ($rootScope.taipyLink) $rootScope.filtredList = [];
       const scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
-      if (!_.isUndefined(scopeDashDn) && !$rootScope.xDashLiteVersion) {
+      if (!_.isUndefined(scopeDashDn)) {
         scopeDashDn.searchDatanodeByName = '';
         scopeDashDn.applyDatanodeFilter();
       }
@@ -553,7 +553,7 @@ angular.module('modules').service('ManagePrjService', [
     };
 
     /*******************************************************/
-    /****************** Opensource version********* ********/
+    /****************** Opensource version *****************/
     /*******************************************************/
 
     /**
@@ -574,7 +574,7 @@ angular.module('modules').service('ManagePrjService', [
       const currentProjectName = $rootScope.currentProject.name;
       $rootScope.oldFileName = currentProjectName;
 
-      if ($rootScope.xDashLiteVersion) {
+      if ($rootScope.taipyLink) {
         const fileSerialized = xdash.serialize();
         if (inputProjectName === '') {
           $('#projectName').val('Untitled');
@@ -834,6 +834,8 @@ angular.module('modules').service('ManagePrjService', [
       $('.ui-pnotify-container').on('click', () => {
         notice.remove();
       });
+      $rootScope.filtredList = [];
+      $rootScope.filtredNodes = $rootScope.alldatanodes.length;
       taipyManager.processVariableData();
       $rootScope.loadingBarStop();
       datanodesManager.showLoadingIndicator(false);

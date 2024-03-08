@@ -84,7 +84,7 @@ function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
     }
 
     if (dnNames.length > 0) {
-      if ($rootScope.xDashLiteVersion) {
+      if ($rootScope.taipyLink) {
         dnNames.forEach((func) => {
           const funName = datanodesManager.getDataNodeByName(func).settings().json_var;
           taipyManager.functionTrigger(JSON.parse(funName));

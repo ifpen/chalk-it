@@ -173,7 +173,8 @@ angular.module('modules').controller('ModulesController', [
           $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
           if (
             (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) ||
-            $rootScope.xDashLiteVersion
+            $rootScope.xDashLiteVersion ||
+            $rootScope.taipyLink
           ) {
             const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
             sidebarController.newProject();

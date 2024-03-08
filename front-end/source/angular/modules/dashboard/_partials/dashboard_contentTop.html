@@ -13,7 +13,7 @@
         autocorrect="off"
         ng-disabled="isTemplateOpen || isLiveDemo"
       />
-      <sapn ng-if="!isTemplateOpen && !isLiveDemo && (enableLocalServer || xDashLiteVersion)">{{currentPrjDirty}}</sapn>
+      <sapn ng-if="!isTemplateOpen && !isLiveDemo && (enableLocalServer || taipyLink)">{{currentPrjDirty}}</sapn>
     </h1>
     <a id="isNavOpen_Project" ng-click="isNavOpen = !isNavOpen" title="More options" style="float: right">
       <i class="basic icn-miniarrowbottom"></i>
@@ -74,7 +74,7 @@
 
   <button
     ng-if="!xDashFullVersion"
-    ng-disabled="isTemplateOpen || isLiveDemo || (!enableLocalServer && !xDashLiteVersion)"
+    ng-disabled="isTemplateOpen || isLiveDemo || !(enableLocalServer || taipyLink)"
     class="btn btn__see-more"
     ng-class="{hidden:editorView.checkboxModelView}"
     title="Save project"
