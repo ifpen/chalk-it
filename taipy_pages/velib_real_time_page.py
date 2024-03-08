@@ -3,7 +3,7 @@ from pathlib import Path
 # Add the parent directory of `back_end` to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
-#from taipy.gui.custom import Page
+from taipy.gui.custom import Page
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import shape, Point
@@ -195,5 +195,5 @@ def on_change(state, var, val):
     
 # Create a Page instance with the resource handler
 #page = ChalkitPage(xpjrson_file_name='velib_real_time_page.xprjson')
-page = ChalkitPage(PureHTMLResourceHandler())
-#page = Page(PureHTMLResourceHandler())
+#page = ChalkitPage(PureHTMLResourceHandler())
+page = Page(PureHTMLResourceHandler())

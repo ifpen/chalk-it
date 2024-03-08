@@ -8,16 +8,22 @@ import json
 import sys
 from pathlib import Path
 from typing import Dict, Union
+import os, inspect
 
 from .chalkit_json_adapter import FunctionJsonAdapter
 
 # Get the absolute path of the main module
 BASE_PATH: Path = Path(sys.argv[0]).resolve().parent
 
-file_name: Path = BASE_PATH / "config.xprjson"
+xprjson_file_name = "new_page.xprjson"
+file_name = xprjson_file_name
+
+file_name: Path = BASE_PATH / "new_page.xprjson"
 json_data: str = ""
 has_file_saved: bool = False
 file_list: Dict[str, Union[str, list]] = {}
+
+
 
 
 def load_file(state: object, action_name: str) -> None: # pylint: disable=unused-argument

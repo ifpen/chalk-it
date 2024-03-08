@@ -8,9 +8,9 @@ from .chalkit_manager import (
     save_file, 
     select_file, 
     get_file_list,
+    xprjson_file_name
 )
 
-from .chalkit_page import ChalkitPage
 
 __all__=["file_name", 
          "json_data", 
@@ -20,5 +20,5 @@ __all__=["file_name",
          "save_file", 
          "select_file", 
          "get_file_list",
-         "ChalkitPage",
+         "xprjson_file_name",
 		 "PureHTMLResourceHandler"]

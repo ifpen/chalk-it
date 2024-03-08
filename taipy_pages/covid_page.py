@@ -128,5 +128,6 @@ covid_filtered = copy.deepcopy(get_covid_filtered(covid_data_frame, selected_cou
 option_e = copy.deepcopy(echarts_option(covid_filtered, selected_countries))
 
 # Create a Page instance with the resource handler
+xprjson_file_name = "covid_page.xprjson"
 page = Page(PureHTMLResourceHandler())
 
