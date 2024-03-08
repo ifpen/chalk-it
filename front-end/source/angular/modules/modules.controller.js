@@ -176,8 +176,12 @@ angular.module('modules').controller('ModulesController', [
             $rootScope.xDashLiteVersion ||
             $rootScope.taipyLink
           ) {
-            const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
-            sidebarController.newProject();
+            const sidebarCtrl = angular.element(document.getElementById('sidebar-ctrl')).scope();
+            if ($rootScope.taipyLink) {
+              sidebarCtrl.startTaipyProject();
+            } else {
+              sidebarCtrl.newProject();
+            }
           }
           freeboardUIInst.showLoadingIndicator(false);
         }
