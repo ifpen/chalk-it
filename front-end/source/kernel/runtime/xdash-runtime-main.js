@@ -88,22 +88,19 @@ var RuntimeDashboard = (function () {
     widgetPreview.resizeDashboard(projectedPreviewDimensions);
   }
 
-  async function loadDashboard(jsonContent, exportOptions) {
-    var decodedData = $('<textarea />').html(JSON.stringify(jsonContent.data)).text(); // MBG : find a better method
-    var data_json = '';
+  function loadDashboard(jsonContent, exportOptions) {
+    const decodedData = $('<textarea />').html(JSON.stringify(jsonContent.data)).text(); // MBG : find a better method
+    let data_json = '';
     try {
       data_json = JSON.parse(decodedData);
     } catch (err) {
       swal('JSON Parse error', err.message, 'error');
       return;
     }
-    await pyodideLib.deserialize(jsonContent); // GHI issue #193
-
+    pyodideLib.deserialize(jsonContent);
     datanodesManager.load(data_json, true); //ABK
-
     initContainers(jsonContent, exportOptions);
-
-    for (var key in jsonContent.dashboard) {
+    for (const key in jsonContent.dashboard) {
       if (!_.isEmpty(jsonContent.dashboard[key].modelParameters)) {
         modelsParameters[key] = jsonContent.dashboard[key].modelParameters;
       }
@@ -111,13 +108,13 @@ var RuntimeDashboard = (function () {
         modelsHiddenParams[key] = jsonContent.dashboard[key].modelHiddenParams;
       }
       if (_.isUndefined(modelsTempParams[key])) {
-        var modelJsonIdStr = key.substring(0, key.length - 1);
+        const modelJsonIdStr = key.substring(0, key.length - 1);
         modelsTempParams[key] = jQuery.extend(true, {}, modelsTempParams[modelJsonIdStr]);
       }
     }
 
     //AEF: issue#304
-    var offSchedLogUser;
+    let offSchedLogUser;
     if (!_.isUndefined(jsonContent.meta.schedulerLogOff)) offSchedLogUser = jsonContent.meta.schedulerLogOff;
     else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
     //
