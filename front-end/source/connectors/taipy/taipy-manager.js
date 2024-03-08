@@ -8,6 +8,7 @@
 class TaipyManager {
   #app;
   #currentContext;
+  #xprjsonFileName;
   #variableData;
   #deletedDnConnections;
   #endAction;
@@ -20,6 +21,7 @@ class TaipyManager {
   constructor() {
     this.#app = {};
     this.#currentContext = '';
+    this.#xprjsonFileName = '';
     this.#variableData = {};
     this.#deletedDnConnections = new Set();
     this.#endAction = undefined;
@@ -47,6 +49,7 @@ class TaipyManager {
    */
   onInit(app) {
     this.currentContext = app.getContext();
+    this.xprjsonFileName = app.getDataTree()[this.currentContext]['xprjson_file_name']?.value ?? '';
     this.processVariableData();
   }
 
@@ -78,8 +81,8 @@ class TaipyManager {
     this.variableData[currentContext] = this.#deepClone(newVariables);
     this.deletedDnConnections.clear();
 
-    //Variables that will be ignored (do not create a dataNode)
-    const fileVariables = new Set(['file_name', 'has_file_saved', 'json_data', 'file_list']);
+    // Variables that will be ignored (do not create a dataNode)
+    const fileVariables = new Set(['xprjson_file_name', 'has_file_saved', 'json_data', 'file_list']);
 
     // Combine current and new variable names to iterate over
     const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
@@ -484,6 +487,33 @@ class TaipyManager {
    */
   set currentContext(newContext) {
     this.#currentContext = newContext;
+  }
+
+  /**
+   * Gets the file name from the application instance.
+   *
+   * @method xprjsonFileName
+   * @public
+   * @returns {string} The current file name.
+   */
+  get xprjsonFileName() {
+    return this.#xprjsonFileName;
+  }
+
+  /**
+   * Sets the new file name for the application instance.
+   *
+   * @method xprjsonFileName
+   * @public
+   * @param {string} newFileName - The new file name.
+   * @returns {void} This method does not return a value.
+   */
+  set xprjsonFileName(newFileName) {
+    const $rootScope = angular.element(document.body).scope().$root;
+    if ($rootScope.currentProject) {
+      $rootScope.currentProject.name = newFileName;
+    }
+    this.#xprjsonFileName = newFileName;
   }
 
   /**
