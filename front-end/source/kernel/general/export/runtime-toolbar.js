@@ -8,7 +8,7 @@
       xDashConfig.urlWebSite +
       '" title="Chalk\'it website">',
     "                   Powered by Taipy Designer",
-    '                   <img src="' + xDashConfig.urlBaseForExport + 'source/assets/img/chalk-it-icon.svg" />',
+    '                   <img src="' + xDashConfig.urlBaseForExport + 'source/assets/img/taipy-icon.svg" />',
     '               </a>',
     '           </li>',
     `           <li ng-if="showPagination && (exportOptions == 'rowToPage')" class="top-nav__nav-item top-nav__nav-item--row-to-page">
