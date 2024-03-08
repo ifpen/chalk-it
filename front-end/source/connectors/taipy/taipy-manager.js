@@ -47,7 +47,6 @@ class TaipyManager {
    */
   onInit(app) {
     this.currentContext = app.getContext();
-    this.#initFunctionList();
     this.processVariableData();
   }
 
@@ -61,10 +60,14 @@ class TaipyManager {
    */
   processVariableData() {
     const currentContext = this.currentContext;
-    const dataTree = this.app.getDataTree();
-    this.#initFunctionList();
     if (this.currentContext !== this.app.getContext()) return;
-
+    this.#initFunctionList();
+    const dataTree = this.app.getDataTree();
+    if (currentContext === '__main__') {
+      dataTree[currentContext] = Object.fromEntries(
+        Object.entries(dataTree[currentContext]).filter(([key]) => !key.startsWith('gui'))
+      );
+    }
     const currentVariables = this.#deepClone(this.variableData)[currentContext] || {};
     const newVariables = this.#deepClone(dataTree)[currentContext] || {};
 
@@ -438,6 +441,17 @@ class TaipyManager {
   }
 
   /**
+   * Retrieves the current application instance being managed by the TaipyManager.
+   *
+   * @method app
+   * @public
+   * @returns {Object} The current application instance.
+   */
+  get app() {
+    return this.#app;
+  }
+
+  /**
    * Sets the application instance. This updates the internal reference to the application.
    *
    * @method app
@@ -450,14 +464,14 @@ class TaipyManager {
   }
 
   /**
-   * Retrieves the current application instance being managed by the TaipyManager.
+   * Gets the current context from the application instance.
    *
-   * @method app
+   * @method currentContext
    * @public
-   * @returns {Object} The current application instance.
+   * @returns {string} The current context.
    */
-  get app() {
-    return this.#app;
+  get currentContext() {
+    return this.#currentContext;
   }
 
   /**
@@ -473,14 +487,14 @@ class TaipyManager {
   }
 
   /**
-   * Gets the current context from the application instance.
+   * Gets the current variable data.
    *
-   * @method currentContext
+   * @method variableData
    * @public
-   * @returns {string} The current context.
+   * @returns {Object} The current variable data.
    */
-  get currentContext() {
-    return this.#currentContext;
+  get variableData() {
+    return this.#variableData;
   }
 
   /**
@@ -496,14 +510,14 @@ class TaipyManager {
   }
 
   /**
-   * Gets the current variable data.
+   * Retrieves the current set of deleted dataNode connections.
    *
-   * @method variableData
+   * @method deletedDnConnections
    * @public
-   * @returns {Object} The current variable data.
+   * @returns {Set<Object>} The current set of deleted dataNode connection objects.
    */
-  get variableData() {
-    return this.#variableData;
+  get deletedDnConnections() {
+    return this.#deletedDnConnections;
   }
 
   /**
@@ -519,17 +533,6 @@ class TaipyManager {
    */
   set deletedDnConnections(newSet) {
     this.#deletedDnConnections = newSet;
-  }
-
-  /**
-   * Retrieves the current set of deleted dataNode connections.
-   *
-   * @method deletedDnConnections
-   * @public
-   * @returns {Set<Object>} The current set of deleted dataNode connection objects.
-   */
-  get deletedDnConnections() {
-    return this.#deletedDnConnections;
   }
 
   /**
@@ -562,4 +565,4 @@ class TaipyManager {
 
 const taipyManager = new TaipyManager();
 
-if (xDashConfig.xDashLiteVersion === 'true') taipyManager.initTaipyApp();
+if (xDashConfig.taipyLink === 'true') taipyManager.initTaipyApp();

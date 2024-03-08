@@ -300,7 +300,7 @@ var angularModule = angular
               //         notice.remove();
               //     });
               // });
-            } else if ($rootScope.xDashLiteVersion) {
+            } else if ($rootScope.xDashLiteVersion || $rootScope.taipyLink) {
               $rootScope.toggleMenuOptionDisplay('discover');
               $state.go('modules.discover.layout').then(() => {
                 $rootScope.toggleMenuOptionDisplay('none');

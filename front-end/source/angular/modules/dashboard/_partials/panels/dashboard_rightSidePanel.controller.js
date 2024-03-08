@@ -280,7 +280,7 @@ angular
           if (this.$window.datanodesManager) {
             // Check if there are any changes in dataTree
             const $rootScope = angular.element(document.body).scope().$root;
-            if ($rootScope.xDashLiteVersion) taipyManager.processVariableData();
+            if ($rootScope.taipyLink) taipyManager.processVariableData();
             // Probably not initialized before angular. TODO should be a service
             this.dataNodes = this.$window.datanodesManager.getAllDataNodes().map((ds, index) => ({
               name: ds.name(),

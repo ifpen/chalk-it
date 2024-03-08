@@ -9,6 +9,9 @@ a = 8
 b = 10
 c = a + b * 2
 
+# Define the path for the upload folder relative to the current script's directory
+upload_folder = Path(__file__).parent.resolve() / "projects"
+
 # Called from a file loader widgets
 def upload_file(state, name, payload):
     print('file data', payload["file_data"])
