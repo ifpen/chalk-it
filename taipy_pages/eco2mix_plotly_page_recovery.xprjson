@@ -2,8 +2,8 @@
 	"meta": {
 		"version": "3.000.8835",
 		"fileFormatVersion": "0.3",
-		"date": "Sat Mar 09 2024 10:54:32 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "eco2mix_plotly_page",
+		"date": "Sat Mar 09 2024 11:09:27 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "eco2mix_plotly_page-recovery",
 		"description": "",
 		"groupName": "",
 		"tags": [],
@@ -45,9 +45,9 @@
 		"plotlyPyGenericA": {
 			"layout": {
 				"top": "19.8667vh",
-				"left": "0.65445vw",
+				"left": "0.654956vw",
 				"height": "54.6667vh",
-				"width": "48.6911vw",
+				"width": "48.7287vw",
 				"minHeight": "32px",
 				"minWidth": "50px",
 				"z-index": "1"
@@ -64,9 +64,9 @@
 		"plotlyPyGenericB": {
 			"layout": {
 				"top": "19.8667vh",
-				"left": "50.7853vw",
+				"left": "50.8245vw",
 				"height": "54.6667vh",
-				"width": "33.1806vw",
+				"width": "33.2062vw",
 				"minHeight": "32px",
 				"minWidth": "50px",
 				"z-index": "2"
@@ -83,9 +83,9 @@
 		"datepickerSimpleA": {
 			"layout": {
 				"top": "11.8667vh",
-				"left": "0.78534vw",
+				"left": "0.785947vw",
 				"height": "5.33333vh",
-				"width": "18.9791vw",
+				"width": "18.9938vw",
 				"minHeight": "32px",
 				"minWidth": "150px",
 				"z-index": "3"
@@ -118,9 +118,9 @@
 		"annotationLabelA": {
 			"layout": {
 				"top": "1.33333vh",
-				"left": "0.65445vw",
+				"left": "0.654956vw",
 				"height": "8.13333vh",
-				"width": "83.0497vw",
+				"width": "83.1139vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "4"
@@ -146,9 +146,9 @@
 		"flatUiSwitchA": {
 			"layout": {
 				"top": "12.1333vh",
-				"left": "31.9372vw",
+				"left": "31.9619vw",
 				"height": "5.06667vh",
-				"width": "6.28272vw",
+				"width": "6.28758vw",
 				"minHeight": "24px",
 				"minWidth": "50px",
 				"z-index": "5"
@@ -176,9 +176,9 @@
 		"annotationLabelB": {
 			"layout": {
 				"top": "12.1333vh",
-				"left": "23.8874vw",
+				"left": "23.9059vw",
 				"height": "5.06667vh",
-				"width": "7.52618vw",
+				"width": "7.532vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "6"
@@ -204,9 +204,9 @@
 		"annotationLabelC": {
 			"layout": {
 				"top": "12.1333vh",
-				"left": "38.6126vw",
+				"left": "38.6424vw",
 				"height": "5.06667vh",
-				"width": "7.52618vw",
+				"width": "7.532vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "7"

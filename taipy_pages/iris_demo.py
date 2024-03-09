@@ -4,4 +4,4 @@ from iris_demo_page import page
 gui = Gui()
 gui.add_page("iris", page)
 
-gui.run(run_browser=False, use_reloader=False)
+gui.run(run_browser=True, use_reloader=False)

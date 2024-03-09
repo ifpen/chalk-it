@@ -9,17 +9,23 @@ import requests
 import plotly.graph_objects as go
 import plotly.express as px
 import re
+from datetime import datetime, timedelta
 
-# Variables declaration (replacing JSON_var_plugin nodes)
-date = "2023-06-19"
+# Variables declaration, first date (yesterday) and sampling mode
+# Get today's date
+today = datetime.now()
+# Calculate yesterday's date
+yesterday = today - timedelta(days=1)
+# Format yesterday's date in the specified format
+date = yesterday.strftime("%Y-%m-%d")
 bSampling = True
 
-# Function to create query URL (replacing queryUrl node)
+# Function to create query URL
 def create_query_url(date):
     date_url = date.replace('-', '%2F')
     return f"https://odre.opendatasoft.com/api/records/1.0/search/?dataset=eco2mix-national-tr&q=&rows=96&sort=-date_heure&facet=nature&facet=date_heure&refine.date_heure={date_url}"
 
-# REST web-service call (replacing eco2mix-national-tr node)
+# REST web-service call
 def fetch_data(url):
     response = requests.get(url, headers={"Content-Type": "application/json"})
     if response.status_code == 200:
@@ -27,7 +33,7 @@ def fetch_data(url):
     else:
         return []
 
-# Processing data (replacing df node)
+# Processing data
 def process_data(records):
     df = pd.json_normalize(records).dropna().reset_index(drop=True)
     df.rename(columns=lambda x: re.sub('^fields\.', '', x), inplace=True)
@@ -45,12 +51,12 @@ def process_data(records):
     df.rename(columns=column_mapping, inplace=True)
     return df[['Nuclear', 'Hydraulic', 'Wind', 'Gas', 'Bioenergies', 'Solar', 'Fuel oil']]
 
-# Further processing for energy sum (replacing energy node)
+# Further processing for energy sum
 def calculate_energy(df):
     dff = df.resample('H').mean()
     return dff.sum()
 
-# Plotting functions (replacing plot and pie nodes)
+# Plotting functions
 def plot_data(df, date, bSampling):
     if not bSampling:
         fig = go.Figure()
@@ -79,18 +85,23 @@ def main_exec(date, bSampling):
     energy_sum = calculate_energy(df)
     fig_data = plot_data(df, date, bSampling)
     fig_pie = plot_pie(energy_sum / 1000)  # Convert to GWh
+    return df, fig_data, fig_pie
+
+def update_exec(df, date, bSampling):
+    energy_sum = calculate_energy(df)
+    fig_data = plot_data(df, date, bSampling)
+    fig_pie = plot_pie(energy_sum / 1000)  # Convert to GWh
     return fig_data, fig_pie
 
-fig_data, fig_pie = main_exec(date, bSampling)
+df, fig_data, fig_pie = main_exec(date, bSampling)
 
 def on_change(state, var, val):
-
     if var == 'date':
-        state.fig_data, state.fig_pie = main_exec(val, state.bSampling)
+        df, state.fig_data, state.fig_pie = main_exec(val, state.bSampling)
     elif var == 'bSampling':
-        state.fig_data, state.fig_pie = main_exec(state.date, val)
+        state.fig_data, state.fig_pie = update_exec(state.df, state.date, val)
 
-
-
+# Define xprjson file name
+xprjson_file_name = "eco2mix_plotly_page"
 # Create a Page instance with the resource handler
 page = Page(PureHTMLResourceHandler())
