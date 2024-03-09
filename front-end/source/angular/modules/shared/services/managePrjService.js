@@ -770,10 +770,10 @@ angular.module('modules').service('ManagePrjService', [
       const currentPrjDirty = $rootScope.currentPrjDirty || '';
       $rootScope.origin = 'projectEdition';
       const commonActions = () => {
-        $rootScope.loadingBarStart();
-        datanodesManager.showLoadingIndicator(true);
         taipyManager.fileSelect(projectName);
         taipyManager.endAction = (xprjson) => {
+          $rootScope.loadingBarStart();
+          datanodesManager.showLoadingIndicator(true);
           _openTaipyPageEndAction(projectName, xprjson);
         };
       };

@@ -186,9 +186,11 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- start Taipy project ----------------*/
     $scope.startTaipyProject = function () {
-      //ManagePrjService.openTaipyPage($rootScope.currentProject.name);
       ManagePrjService.clearForNewProject();
       $rootScope.origin = 'newProject';
+      taipyManager.endAction = () => {
+        ManagePrjService.openTaipyPage($rootScope.currentProject.name);
+      };
       taipyManager.initTaipyApp();
     };
   },

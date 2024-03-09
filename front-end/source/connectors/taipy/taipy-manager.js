@@ -51,6 +51,10 @@ class TaipyManager {
     this.currentContext = app.getContext();
     this.xprjsonFileName = app.getDataTree()[this.currentContext]['xprjson_file_name']?.value ?? '';
     this.processVariableData();
+    if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+      // To load the xprjsonFileName if it exists
+      this.endAction();
+    }
   }
 
   /**
