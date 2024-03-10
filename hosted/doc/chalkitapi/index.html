@@ -741,6 +741,34 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hidewidget" class="md-nav__link">
+    hideWidget
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showwidget" class="md-nav__link">
+    showWidget
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disablewidget" class="md-nav__link">
+    disableWidget
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enablewidget" class="md-nav__link">
+    enableWidget
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -864,6 +892,34 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#hidewidget" class="md-nav__link">
+    hideWidget
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showwidget" class="md-nav__link">
+    showWidget
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disablewidget" class="md-nav__link">
+    disableWidget
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enablewidget" class="md-nav__link">
+    enableWidget
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -887,7 +943,7 @@
 <p>Chalk'it offers a set of APIs through <strong><em>chalkit</em></strong> that serve two primary purposes:</p>
 <ul>
 <li>Scheduler APIs: Facilitate the scheduling process by enabling the modification of dataNode variables and launching the scheduler.</li>
-<li>Dashboard APIs: Support the developpement of multi-dashboard applications.</li>
+<li>Dashboard APIs: Support the developpement of multi-dashboard applications and the display of widgets.</li>
 </ul>
 <p><strong><em>chalkit</em></strong> currently operates with JavaScript-type dataNodes.</p>
 <h2 id="scheduler-features">Scheduler features<a class="headerlink" href="#scheduler-features" title="Permanent link">&para;</a></h2>
@@ -983,6 +1039,25 @@
 <p>Similar to view page, but applies for projects.</p>
 <div class="highlight"><pre><span></span><code><span class="nx">chalkit</span><span class="p">.</span><span class="nx">viewProject</span><span class="p">(</span><span class="nx">projectUrl</span><span class="p">,</span><span class="w"> </span><span class="nx">inputVals</span><span class="p">,</span><span class="w"> </span><span class="nx">bNewTab</span><span class="p">)</span>
 </code></pre></div>
+<h3 id="hidewidget">hideWidget<a class="headerlink" href="#hidewidget" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nx">chalkit</span><span class="p">.</span><span class="nx">hideWidget</span><span class="p">(</span><span class="nx">widgetName</span><span class="p">)</span>
+</code></pre></div>
+<p>Hides the display of the widget.</p>
+<ul>
+<li>widgetName: the name of the widget, which can be obtained by hovering over the widget target, in the edit mode. The widget is visible by default.</li>
+</ul>
+<h3 id="showwidget">showWidget<a class="headerlink" href="#showwidget" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nx">chalkit</span><span class="p">.</span><span class="nx">showWidget</span><span class="p">(</span><span class="nx">widgetName</span><span class="p">)</span>
+</code></pre></div>
+<p>Makes the display of the widget visible.</p>
+<h3 id="disablewidget">disableWidget<a class="headerlink" href="#disablewidget" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nx">chalkit</span><span class="p">.</span><span class="nx">disableWidget</span><span class="p">(</span><span class="nx">widgetName</span><span class="p">)</span>
+</code></pre></div>
+<p>Disables the access of the widget. The widget is enabled by default.</p>
+<h3 id="enablewidget">enableWidget<a class="headerlink" href="#enablewidget" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nx">chalkit</span><span class="p">.</span><span class="nx">enableWidget</span><span class="p">(</span><span class="nx">widgetName</span><span class="p">)</span>
+</code></pre></div>
+<p>Enables the access of the widget (interactive).</p>
 
               
             </article>
