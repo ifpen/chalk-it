@@ -61,6 +61,6 @@ def on_change(state, var, val):
         
 
 # Define xprjson file name
-xprjson_file_name = "iris_demo_page"
+xprjson_file_name = "iris_demo_page.xprjson"
 # Create a Page instance with the resource handler
 page = Page(PureHTMLResourceHandler())
