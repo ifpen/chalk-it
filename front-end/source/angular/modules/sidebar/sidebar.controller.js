@@ -127,21 +127,21 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     function _responseCallback(result, msg2, type) {
       const isTaipyLink = $rootScope.taipyLink;
-      const projectList = isTaipyLink ? result.file_names : result.FileList;
+      const fileList = isTaipyLink ? result.file_names : result.FileList;
       const absolutePath = isTaipyLink ? result.base_path : result.Path;
 
       const contentElement = document.createElement('div');
       const divContent = document.createElement('div');
 
-      if (projectList.length) {
+      if (fileList.length) {
         divContent.classList.add('list-project');
-        for (const project of projectList) {
-          const projectName = isTaipyLink ? project : project.Name;
-          const displayName = isTaipyLink ? _.split(project, '.')[0] : project.Name;
+        for (const file of fileList) {
+          const fileName = isTaipyLink ? file : file.Name;
+          const projectName = isTaipyLink ? file.replace('.xprjson', '') : file.Name;
           const divItemContent = document.createRange().createContextualFragment(`
             <div class="list-project__container ">
-              <input type="radio" id="${projectName}" name="localProject" value="${projectName}"/>
-              <label for="${projectName}" class="list-project__container__label">${displayName}</label>
+              <input type="radio" id="${fileName}" name="localProject" value="${fileName}"/>
+              <label for="${fileName}" class="list-project__container__label">${projectName}</label>
             </div>
           `);
           divContent.appendChild(divItemContent);
@@ -157,12 +157,12 @@ angular.module('modules.sidebar').controller('SidebarController', [
         function () {
           const selectedProject = document.querySelector('input[name="localProject"]:checked');
           if (selectedProject) {
-            const projectName = selectedProject.value;
+            const fileName = selectedProject.value;
             const $rootScope = angular.element(document.body).scope().$root;
             if ($rootScope.taipyLink) {
-              ManagePrjService.openTaipyPage(projectName);
+              ManagePrjService.openTaipyPage(fileName);
             } else {
-              ManagePrjService.openProject(projectName, 'xprjson', '');
+              ManagePrjService.openProject(fileName, 'xprjson', '');
             }
           }
         }
@@ -186,9 +186,11 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- start Taipy project ----------------*/
     $scope.startTaipyProject = function () {
-      //ManagePrjService.openTaipyPage($rootScope.currentProject.name);
       ManagePrjService.clearForNewProject();
       $rootScope.origin = 'newProject';
+      taipyManager.endAction = () => {
+        ManagePrjService.openTaipyPage(taipyManager.xprjsonFileName);
+      };
       taipyManager.initTaipyApp();
     };
   },

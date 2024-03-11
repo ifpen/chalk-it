@@ -194,6 +194,6 @@ def on_change(state, var, val):
         state.echarts_option_json = generate_echarts_bar_graph(state.dfg, dockBar)
 
 # Define xprjson file name
-xprjson_file_name = "velib_real_time_page"
+xprjson_file_name = "velib_real_time_page.xprjson"
 # Create a Page instance with the resource handler
 page = Page(PureHTMLResourceHandler())

@@ -5,7 +5,6 @@ import sys
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
 import pandas as pd
-import copy
 
 # Define URLs and dataset names
 BASE_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series"
@@ -84,13 +83,13 @@ def echarts_option(covid_df, selected_countries):
             {
                 "show": True,
                 "realtime": True,
-                "start": 80,
+                "start": 0,
                 "end": 100
             },
             {
                 "type": "inside",
                 "realtime": True,
-                "start": 80,
+                "start": 0,
                 "end": 100
             }
         ],

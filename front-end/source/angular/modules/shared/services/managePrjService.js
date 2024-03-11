@@ -763,18 +763,18 @@ angular.module('modules').service('ManagePrjService', [
      *
      * @method openTaipyPage
      * @public
-     * @param {string} projectName - The name of the project to be opened.
+     * @param {string} fileName - The name of the file to be opened, including the ".xprjson" extension.
      * @returns {void} This method does not return a value.
      */
-    self.openTaipyPage = function (projectName) {
+    self.openTaipyPage = function (fileName) {
       const currentPrjDirty = $rootScope.currentPrjDirty || '';
       $rootScope.origin = 'projectEdition';
       const commonActions = () => {
-        $rootScope.loadingBarStart();
-        datanodesManager.showLoadingIndicator(true);
-        taipyManager.fileSelect(projectName);
+        taipyManager.fileSelect(fileName);
         taipyManager.endAction = (xprjson) => {
-          _openTaipyPageEndAction(projectName, xprjson);
+          $rootScope.loadingBarStart();
+          datanodesManager.showLoadingIndicator(true);
+          _openTaipyPageEndAction(fileName, xprjson);
         };
       };
       if (currentPrjDirty !== '') {
@@ -812,17 +812,17 @@ angular.module('modules').service('ManagePrjService', [
      *
      * @method _openTaipyPageEndAction
      * @private
-     * @param {*} projectName - The name of the project to be opened.
+     * @param {*} fileName - The name of the file to be opened, including the ".xprjson" extension.
      * @returns {void} This method does not return a value.
      */
-    function _openTaipyPageEndAction(projectName, xprjson) {
+    function _openTaipyPageEndAction(fileName, xprjson) {
       $rootScope.updateFlagDirty(false);
       $rootScope.origin = 'openProject';
       xdash.openProjectManager(xprjson);
-      const displayName = _.split(projectName, '.')[0];
+      const projectName = fileName.replace('.xprjson', '');
       const notice = new PNotify({
-        title: displayName,
-        text: "Your project '" + displayName + "' is ready!",
+        title: projectName,
+        text: "Your project '" + projectName + "' is ready!",
         type: 'success',
         delay: 1000,
         styling: 'bootstrap3',

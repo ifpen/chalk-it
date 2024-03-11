@@ -46,7 +46,7 @@ def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
     """
     try:
         xprjson_file_path = BASE_PATH / (
-            state.xprjson_file_name.split('.')[0] + '_recovery.xprjson' if action_name == "reload" else state.xprjson_file_name)
+            state.xprjson_file_name.split(".")[0] + "_recovery.xprjson" if action_name == "reload" else state.xprjson_file_name)
         if "data" not in payload:
             raise ValueError("Payload does not contain 'data'")
         with open(xprjson_file_path, "w", encoding="utf-8") as f:
@@ -67,7 +67,7 @@ def select_file(state: object, action_name: str, payload: Dict[str, str]) -> Non
     """
     if "xprjson_file_name" not in payload:
         raise ValueError("Payload does not contain 'xprjson_file_name'")
-    selected_file_name = payload['xprjson_file_name']
+    selected_file_name = payload["xprjson_file_name"]
     selected_file_path = BASE_PATH / selected_file_name
     if selected_file_path.exists():
         state.xprjson_file_name = selected_file_name
@@ -81,10 +81,10 @@ def get_file_list(state: object, action_name: str) -> None: # pylint: disable=un
     - state: The current state object.
     - action_name: The name of the action being performed.
     """
-    file_names = [file.name for file in BASE_PATH.glob('*.xprjson')]
+    file_names = [file.name for file in BASE_PATH.glob("*.xprjson")]
     file_list_obj: Dict[str, Union[str, list]] = {
-        'file_names': file_names,
-        'base_path': str(BASE_PATH)
+        "file_names": file_names,
+        "base_path": str(BASE_PATH)
     }
     state.file_list = json.dumps(file_list_obj)
 
