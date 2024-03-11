@@ -505,17 +505,19 @@ class TaipyManager {
   }
 
   /**
-   * Sets the new file name for the application instance.
+   * Sets the new file name for the current project within the application instance.
+   * This setter updates the project's name in the `$rootScope` if a current project is defined.
    *
    * @method xprjsonFileName
    * @public
-   * @param {string} newFileName - The new file name.
+   * @param {string} newFileName - The new file name to be set for the current project, including the ".xprjson" extension.
    * @returns {void} This method does not return a value.
    */
   set xprjsonFileName(newFileName) {
     const $rootScope = angular.element(document.body).scope()?.$root;
     if ($rootScope.currentProject) {
-      $rootScope.currentProject.name = newFileName;
+      const projectName = newFileName.replace('.xprjson', '');
+      $rootScope.currentProject.name = projectName;
     }
     this.#xprjsonFileName = newFileName;
   }
