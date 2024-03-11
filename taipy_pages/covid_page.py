@@ -128,7 +128,7 @@ covid_filtered = (get_covid_filtered(covid_data_frame, selected_countries))
 option_e = echarts_option(covid_filtered, selected_countries)
 
 # Define xprjson file name
-xprjson_file_name = "covid_page"
+xprjson_file_name = "covid_page.xprjson"
 # Create a Page instance with the resource handler
 page = Page(PureHTMLResourceHandler())
 
