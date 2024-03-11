@@ -137,7 +137,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
         divContent.classList.add('list-project');
         for (const file of fileList) {
           const fileName = isTaipyLink ? file : file.Name;
-          const projectName = isTaipyLink ? _.split(file, '.')[0] : file.Name;
+          const projectName = isTaipyLink ? file.replace('.xprjson', '') : file.Name;
           const divItemContent = document.createRange().createContextualFragment(`
             <div class="list-project__container ">
               <input type="radio" id="${fileName}" name="localProject" value="${fileName}"/>
