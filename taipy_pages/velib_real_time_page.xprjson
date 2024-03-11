@@ -1,8 +1,8 @@
 {
 	"meta": {
-		"version": "3.000.8832",
+		"version": "3.000.8837",
 		"fileFormatVersion": "0.3",
-		"date": "Thu Mar 07 2024 10:48:43 GMT+0100 (heure normale d’Europe centrale)",
+		"date": "Mon Mar 11 2024 12:51:29 GMT+0100 (heure normale d’Europe centrale)",
 		"name": "velib_real_time_page",
 		"description": "Velib bike sharing system in Paris live information",
 		"groupName": "",
@@ -254,7 +254,7 @@
 				"top": "1.64171vh",
 				"left": "0.65445vw",
 				"height": "7.25089vh",
-				"width": "83.4424vw",
+				"width": "83.377vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "5"
@@ -315,7 +315,7 @@
 		"kpiCardB": {
 			"layout": {
 				"top": "12.3402vh",
-				"left": "67.4328vw",
+				"left": "67.3673vw",
 				"height": "16.4171vh",
 				"width": "16.6641vw",
 				"minHeight": "32px",
@@ -387,7 +387,7 @@
 		"echartsGenericA": {
 			"layout": {
 				"top": "31.7333vh",
-				"left": "50.6672vw",
+				"left": "50.6028vw",
 				"height": "37.6vh",
 				"width": "33.4286vw",
 				"minHeight": "32px",

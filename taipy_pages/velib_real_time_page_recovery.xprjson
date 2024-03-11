@@ -1,8 +1,8 @@
 {
 	"meta": {
-		"version": "3.000.8835",
+		"version": "3.000.8837",
 		"fileFormatVersion": "0.3",
-		"date": "Sat Mar 09 2024 12:19:32 GMT+0100 (heure normale d’Europe centrale)",
+		"date": "Mon Mar 11 2024 09:59:21 GMT+0100 (heure normale d’Europe centrale)",
 		"name": "velib_real_time_page-recovery",
 		"description": "Velib bike sharing system in Paris live information",
 		"groupName": "",
@@ -66,9 +66,9 @@
 		"openStreetMapsA": {
 			"layout": {
 				"top": "17.7333vh",
-				"left": "0.721565vw",
+				"left": "0.721008vw",
 				"height": "51.8667vh",
-				"width": "49.0008vw",
+				"width": "48.963vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "1"
@@ -164,9 +164,9 @@
 		"flatUiHorizontalSliderA": {
 			"layout": {
 				"top": "71.4667vh",
-				"left": "0.721008vw",
+				"left": "0.720451vw",
 				"height": "4.93333vh",
-				"width": "24.0555vw",
+				"width": "24.0369vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "3"
@@ -208,9 +208,9 @@
 		"flatUiHorizontalSliderB": {
 			"layout": {
 				"top": "71.4667vh",
-				"left": "26.0873vw",
+				"left": "26.0672vw",
 				"height": "4.93333vh",
-				"width": "24.0555vw",
+				"width": "24.0369vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "4"
@@ -254,7 +254,7 @@
 				"top": "1.64171vh",
 				"left": "0.65445vw",
 				"height": "7.25089vh",
-				"width": "83.4424vw",
+				"width": "83.377vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "5"
@@ -279,9 +279,9 @@
 		"kpiCardA": {
 			"layout": {
 				"top": "12.4497vh",
-				"left": "50.4216vw",
+				"left": "50.3827vw",
 				"height": "16.4171vh",
-				"width": "16.677vw",
+				"width": "16.6641vw",
 				"minHeight": "32px",
 				"minWidth": "64px",
 				"z-index": "6"
@@ -315,9 +315,9 @@
 		"kpiCardB": {
 			"layout": {
 				"top": "12.3402vh",
-				"left": "67.4199vw",
+				"left": "67.3673vw",
 				"height": "16.4171vh",
-				"width": "16.677vw",
+				"width": "16.6641vw",
 				"minHeight": "32px",
 				"minWidth": "64px",
 				"z-index": "7"
@@ -351,9 +351,9 @@
 		"flatUiSelectA": {
 			"layout": {
 				"top": "10.6667vh",
-				"left": "0.720451vw",
+				"left": "0.719895vw",
 				"height": "4.8vh",
-				"width": "23.5784vw",
+				"width": "23.5602vw",
 				"minHeight": "27px",
 				"minWidth": "40px",
 				"z-index": "12"
@@ -387,9 +387,9 @@
 		"echartsGenericA": {
 			"layout": {
 				"top": "31.7333vh",
-				"left": "50.6424vw",
+				"left": "50.6028vw",
 				"height": "37.6vh",
-				"width": "33.4544vw",
+				"width": "33.4286vw",
 				"minHeight": "32px",
 				"minWidth": "50px",
 				"z-index": "13"
@@ -420,9 +420,9 @@
 		"flatUiSwitchA": {
 			"layout": {
 				"top": "71.9616vh",
-				"left": "56.3497vw",
+				"left": "56.3062vw",
 				"height": "4.92513vh",
-				"width": "5.21153vw",
+				"width": "5.20751vw",
 				"minHeight": "24px",
 				"minWidth": "50px",
 				"z-index": "14"
@@ -449,9 +449,9 @@
 		"annotationLabelB": {
 			"layout": {
 				"top": "71.9616vh",
-				"left": "51.3336vw",
+				"left": "51.294vw",
 				"height": "4.92513vh",
-				"width": "4.62523vw",
+				"width": "4.62166vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "16"
@@ -476,9 +476,9 @@
 		"annotationLabelC": {
 			"layout": {
 				"top": "71.9616vh",
-				"left": "61.6914vw",
+				"left": "61.6438vw",
 				"height": "4.92513vh",
-				"width": "4.62523vw",
+				"width": "4.62166vw",
 				"minHeight": "5px",
 				"minWidth": "5px",
 				"z-index": "17"
@@ -503,9 +503,9 @@
 		"flatUiValueDisplayA": {
 			"layout": {
 				"top": "10.6667vh",
-				"left": "26.2638vw",
+				"left": "26.2435vw",
 				"height": "4.8vh",
-				"width": "23.7094vw",
+				"width": "23.6911vw",
 				"minHeight": "24px",
 				"minWidth": "150px",
 				"z-index": "18"
