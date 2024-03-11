@@ -35,8 +35,12 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   initTaipyApp() {
-    this.app = TaipyGuiBase.createApp(this.onInit.bind(this));
-    this.app.onChange = this.onChange.bind(this);
+    try {
+      this.app = TaipyGuiBase.createApp(this.onInit.bind(this));
+      this.app.onChange = this.onChange.bind(this);
+    } catch (error) {
+      this.#handleError('Failed to initialize Taipy App', error);
+    }
   }
 
   /**
@@ -66,43 +70,47 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   processVariableData() {
-    const currentContext = this.currentContext;
-    if (this.currentContext !== this.app.getContext()) return;
-    this.#initFunctionList();
-    const dataTree = this.app.getDataTree();
-    if (currentContext === '__main__') {
-      dataTree[currentContext] = Object.fromEntries(
-        Object.entries(dataTree[currentContext]).filter(([key]) => !key.startsWith('gui'))
-      );
-    }
-    const currentVariables = this.#deepClone(this.variableData)[currentContext] || {};
-    const newVariables = this.#deepClone(dataTree)[currentContext] || {};
-
-    // Performs a deep comparison
-    if (_.isEqual(newVariables, currentVariables)) return;
-
-    // Update variableData
-    this.variableData[currentContext] = this.#deepClone(newVariables);
-    this.deletedDnConnections.clear();
-
-    // Variables that will be ignored (do not create a dataNode)
-    const fileVariables = new Set(['xprjson_file_name', 'has_file_saved', 'json_data', 'file_list']);
-
-    // Combine current and new variable names to iterate over
-    const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
-
-    // Filter variableNames to exclude fileVariables
-    [...variableNames].forEach((variableName) => {
-      if (fileVariables.has(variableName)) {
-        variableNames.delete(variableName);
+    try {
+      const currentContext = this.currentContext;
+      if (this.currentContext !== this.app.getContext()) return;
+      this.#initFunctionList();
+      const dataTree = this.app.getDataTree();
+      if (currentContext === '__main__') {
+        dataTree[currentContext] = Object.fromEntries(
+          Object.entries(dataTree[currentContext]).filter(([key]) => !key.startsWith('gui'))
+        );
       }
-    });
+      const currentVariables = this.#deepClone(this.variableData)[currentContext] || {};
+      const newVariables = this.#deepClone(dataTree)[currentContext] || {};
 
-    variableNames.forEach((variableName) => {
-      this.#processDataNode(variableName, newVariables[variableName]);
-    });
+      // Performs a deep comparison
+      if (_.isEqual(newVariables, currentVariables)) return;
 
-    this.#showDeletedDataNodeAlert(this.deletedDnConnections);
+      // Update variableData
+      this.variableData[currentContext] = this.#deepClone(newVariables);
+      this.deletedDnConnections.clear();
+
+      // Variables that will be ignored (do not create a dataNode)
+      const fileVariables = new Set(['xprjson_file_name', 'has_file_saved', 'json_data', 'file_list']);
+
+      // Combine current and new variable names to iterate over
+      const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
+
+      // Filter variableNames to exclude fileVariables
+      [...variableNames].forEach((variableName) => {
+        if (fileVariables.has(variableName)) {
+          variableNames.delete(variableName);
+        }
+      });
+
+      variableNames.forEach((variableName) => {
+        this.#processDataNode(variableName, newVariables[variableName]);
+      });
+
+      this.#showDeletedDataNodeAlert(this.deletedDnConnections);
+    } catch (error) {
+      this.#handleError('Error processing variable data', error);
+    }
   }
 
   /**
@@ -115,15 +123,19 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   sendToTaipy(varName, newValue) {
-    const currentContext = this.currentContext;
-    if (varName.startsWith('function:') || currentContext !== this.app.getContext()) return;
+    try {
+      const currentContext = this.currentContext;
+      if (varName.startsWith('function:') || currentContext !== this.app.getContext()) return;
 
-    const encodedName = this.app.getEncodedName(varName, currentContext);
-    const currentValue = this.variableData[currentContext][varName].value;
-    // Performs a deep comparison
-    if (_.isEqual(currentValue, newValue)) return; // Current simple solution. To be enhanced in the future
-    // Send newValue
-    this.app.update(encodedName, newValue);
+      const encodedName = this.app.getEncodedName(varName, currentContext);
+      const currentValue = this.variableData[currentContext][varName].value;
+      // Performs a deep comparison
+      if (_.isEqual(currentValue, newValue)) return; // Current simple solution. To be enhanced in the future
+      // Send newValue
+      this.app.update(encodedName, newValue);
+    } catch (error) {
+      this.#handleError(`Error sending updated value to Taipy for variable ${varName}`, error);
+    }
   }
 
   /**
@@ -137,47 +149,51 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   onChange(app, encodedName, newValue) {
-    const [varName, context] = app.getName(encodedName);
-    if (this.currentContext !== context) return;
+    try {
+      const [varName, context] = app.getName(encodedName);
+      if (this.currentContext !== context) return;
 
-    // Update variableData
-    this.variableData[context][varName].value = this.#deepClone(newValue);
+      // Update variableData
+      this.variableData[context][varName].value = this.#deepClone(newValue);
 
-    // saveFile
-    if (encodedName.includes('has_file_saved')) {
-      const toSave = newValue;
-      if (toSave) {
-        this.app.update(encodedName, false);
-      } else if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-        this.endAction(); // Do not assign an undefined value
+      // saveFile
+      if (encodedName.includes('has_file_saved')) {
+        const toSave = newValue;
+        if (toSave) {
+          this.app.update(encodedName, false);
+        } else if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          this.endAction(); // Do not assign an undefined value
+        }
       }
-    }
 
-    // fileSelect
-    if (encodedName.includes('xprjson_file_name')) {
-      this.loadFile();
-    }
-
-    // loadFile
-    if (encodedName.includes('json_data')) {
-      if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-        const jsonData = this.variableData[context][varName].value;
-        this.endAction(jsonData);
-        this.endAction = undefined;
+      // fileSelect
+      if (encodedName.includes('xprjson_file_name')) {
+        this.loadFile();
       }
-    }
 
-    // getFileList
-    if (encodedName.includes('file_list')) {
-      if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-        const fileList = JSON.parse(this.variableData[context][varName].value);
-        this.endAction(fileList);
-        this.endAction = undefined;
+      // loadFile
+      if (encodedName.includes('json_data')) {
+        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          const jsonData = this.variableData[context][varName].value;
+          this.endAction(jsonData);
+          this.endAction = undefined;
+        }
       }
-    }
 
-    if (!datanodesManager.foundDatanode(varName)) return;
-    this.#updateDataNode(varName, newValue);
+      // getFileList
+      if (encodedName.includes('file_list')) {
+        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          const fileList = JSON.parse(this.variableData[context][varName].value);
+          this.endAction(fileList);
+          this.endAction = undefined;
+        }
+      }
+
+      if (!datanodesManager.foundDatanode(varName)) return;
+      this.#updateDataNode(varName, newValue);
+    } catch (error) {
+      this.#handleError(`Error handling change for variable ${encodedName}`, error);
+    }
   }
 
   /**
@@ -194,8 +210,12 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   saveFile(xprjson, actionName) {
-    const action_name = actionName ?? 'first_action';
-    this.app.trigger('save_file', action_name, { data: JSON.stringify(xprjson, null, '\t') });
+    try {
+      const action_name = actionName ?? 'first_action';
+      this.app.trigger('save_file', action_name, { data: JSON.stringify(xprjson, null, '\t') });
+    } catch (error) {
+      this.#handleError('Error saving file', error);
+    }
   }
 
   /**
@@ -212,7 +232,11 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   fileSelect(fileName) {
-    this.app.trigger('select_file', 'first_action', { xprjson_file_name: fileName });
+    try {
+      this.app.trigger('select_file', 'first_action', { xprjson_file_name: fileName });
+    } catch (error) {
+      this.#handleError('Error selecting file', error);
+    }
   }
 
   /**
@@ -232,7 +256,11 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   getFileList() {
-    this.app.trigger('get_file_list', 'first_action');
+    try {
+      this.app.trigger('get_file_list', 'first_action');
+    } catch (error) {
+      this.#handleError('Error getting file list', error);
+    }
   }
 
   /**
@@ -251,7 +279,11 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   loadFile() {
-    this.app.trigger('load_file', 'first_action');
+    try {
+      this.app.trigger('load_file', 'first_action');
+    } catch (error) {
+      this.#handleError('Error loading file', error);
+    }
   }
 
   /**
@@ -264,7 +296,11 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   functionTrigger(functionName, fileData) {
-    this.app.trigger(functionName, 'first_action', { file_data: fileData });
+    try {
+      this.app.trigger(functionName, 'first_action', { file_data: fileData });
+    } catch (error) {
+      this.#handleError(`Error triggering function ${functionName}`, error);
+    }
   }
 
   /**
@@ -281,20 +317,24 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   uploadFile(files, callback) {
-    const encodedVarName = this.app.getEncodedName('xprjson_file_name', this.currentContext);
-    const printProgressUpload = (progress) => {
-      console.log(progress);
-    };
-    if (files?.length) {
-      this.app.upload(encodedVarName, files, printProgressUpload).then(
-        (value) => {
-          console.log('upload successful', value);
-          callback();
-        },
-        (reason) => {
-          console.log('upload failed', reason);
-        }
-      );
+    try {
+      const encodedVarName = this.app.getEncodedName('xprjson_file_name', this.currentContext);
+      const printProgressUpload = (progress) => {
+        console.log(progress);
+      };
+      if (files?.length) {
+        this.app.upload(encodedVarName, files, printProgressUpload).then(
+          (value) => {
+            console.log('upload successful', value);
+            callback();
+          },
+          (reason) => {
+            console.log('upload failed', reason);
+          }
+        );
+      }
+    } catch (error) {
+      this.#handleError('Error uploading file', error);
     }
   }
 
@@ -445,6 +485,20 @@ class TaipyManager {
    */
   #deepClone(value) {
     return value !== null && typeof value === 'object' ? _.cloneDeep(value) : value;
+  }
+
+  /**
+   * Handles errors by displaying an alert to the user and logging the error to the console.
+   *
+   * @method handleError
+   * @private
+   * @param {string} message - The user-friendly error message to display in the alert.
+   * @param {Error} error - The error object with details about the error. This is logged to the console.
+   * @returns {void} This method does not return a value.
+   */
+  #handleError(message, error) {
+    swal('Please check and reload the page', message, 'error');
+    console.error(`${message}:`, error);
   }
 
   /**

@@ -28,5 +28,6 @@ def on_change(state, var, val):
     if ((var == 'a') or (var == 'b')):
         state.c = state.a + state.b * 2
 
+xprjson_file_name = "taipy_page.xprjson"
 # Create a Page instance with the resource handler
 page = Page(PureHTMLResourceHandler())
