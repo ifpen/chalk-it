@@ -22,8 +22,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- New project ----------------*/
     $scope.newProject = function () {
-      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      const isCurrentPrjDirty = !_.isUndefined($rootScope.currentPrjDirty) && $rootScope.currentPrjDirty !== '';
+      const isCurrentPrjDirty = $rootScope.currentPrjDirty !== '';
       const hasCurrentPrjName = $rootScope.currentProject.name !== '';
 
       if (!$rootScope.xDashFullVersion) {
@@ -31,41 +30,40 @@ angular.module('modules.sidebar').controller('SidebarController', [
           $state.go('modules', {});
           $rootScope.toggleMenuOptionDisplay('none');
         } else {
-          _newPrj(scopeDash);
+          _newPrj();
         }
-      } else {
-        if (isCurrentPrjDirty) {
-          swal(
-            {
-              title: 'Are you sure?',
-              text: 'Your current project will be saved and closed before starting a new project.',
-              type: 'warning',
-              showCancelButton: true,
-              showConfirmButton: false,
-              showConfirmButton1: true,
-              confirmButtonText: 'Yes',
-              cancelButtonText: 'Abandon',
-              closeOnConfirm: true,
-              closeOnConfirm1: true,
-              closeOnCancel: true,
-            },
-            function (isConfirm) {
-              if (isConfirm) {
-                const endAction = function () {
-                  _newPrj(scopeDash);
-                };
-                //save current project
-                fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
-              }
+      } else if (isCurrentPrjDirty) {
+        swal(
+          {
+            title: 'Are you sure?',
+            text: 'Your current project will be saved and closed before starting a new project.',
+            type: 'warning',
+            showCancelButton: true,
+            showConfirmButton: false,
+            showConfirmButton1: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Abandon',
+            closeOnConfirm: true,
+            closeOnConfirm1: true,
+            closeOnCancel: true,
+          },
+          function (isConfirm) {
+            if (isConfirm) {
+              const endAction = function () {
+                _newPrj();
+              };
+              //save current project
+              fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
             }
-          );
-        } else {
-          _newPrj(scopeDash);
-        }
+          }
+        );
+      } else {
+        _newPrj();
       }
     };
 
-    function _newPrj(scopeDash) {
+    function _newPrj() {
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       $state.go('modules', {});
       ManagePrjService.clearForNewProject();
       $rootScope.currentInfoProject = angular.copy($rootScope.currentProject);
@@ -93,7 +91,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
     /*---------- Import project ----------------*/
     $scope.uploadFileToServer = function () {
       $rootScope.origin = 'importProject';
-      var endAction = function () {
+      const endAction = function () {
         datanodesManager.showLoadingIndicator(false);
         $rootScope.updateView();
         $rootScope.toggleMenuOptionDisplay('recent');
@@ -108,14 +106,13 @@ angular.module('modules.sidebar').controller('SidebarController', [
         'https://xfiles20210611165922.azurewebsites.net/Pages/ContactUs.aspx' +
         '?token=' +
         sessionStorage.authorizationToken;
-      var tab = window.open(templUrl, '_blank');
+      const tab = window.open(templUrl, '_blank');
       tab.focus();
     };
 
-    /**
-     * Basic version
-     *
-     */
+    /*******************************************************/
+    /****************** Opensource version *****************/
+    /*******************************************************/
 
     /*---------- Open project from local ----------------*/
     $scope.openFromLocal = function () {
@@ -124,19 +121,19 @@ angular.module('modules.sidebar').controller('SidebarController', [
     };
 
     function _responseCallback(result, msg2, type) {
-      const projectList = result.FileList;
+      const fileList = result.FileList;
       const absolutePath = result.Path;
 
       const contentElement = document.createElement('div');
       const divContent = document.createElement('div');
 
-      if (projectList.length) {
+      if (fileList.length) {
         divContent.classList.add('list-project');
-        for (const project of projectList) {
+        for (const file of fileList) {
           const divItemContent = document.createRange().createContextualFragment(`
             <div class="list-project__container ">
-              <input type="radio" id="${project.Name}" name="localProject" value="${project.Name}"/>
-              <label for="${project.Name}" class="list-project__container__label">${project.Name}</label>
+              <input type="radio" id="${file.Name}" name="localProject" value="${file.Name}"/>
+              <label for="${file.Name}" class="list-project__container__label">${file.Name}</label>
             </div>
           `);
           divContent.appendChild(divItemContent);
