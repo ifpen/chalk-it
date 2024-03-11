@@ -20,7 +20,7 @@ setup(
     ],
     author="IFPEN",
     author_email="xdash@ifpen.fr",
-    license="Taipy End User License Agreement (EULA)",
+    license="IFPEN collaboration framework",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
