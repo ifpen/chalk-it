@@ -19,13 +19,13 @@
   };
 })(jQuery);
 
-var RuntimeDashboard = (function () {
-  var scalingSrc;
+const RuntimeDashboard = (function () {
+  let scalingSrc;
 
   function initContainers(jsonContent, exportOptions) {
     scalingSrc = jQuery.extend(true, {}, jsonContent.scaling); // MBG fix load order
 
-    var navMenuHeightPx = 0;
+    let navMenuHeightPx = 0;
 
     if ($('#nav-menu')[0]) {
       navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);
@@ -71,14 +71,14 @@ var RuntimeDashboard = (function () {
 
     const cols = jsonContent.device.cols.maxCols;
     const maxCells = jsonContent.device.cols.maxCells;
-    const rows = maxCells / (cols ? cols : 1);
+    const rows = maxCells / (cols || 1);
 
-    var projectedScalingObj = jQuery.extend(true, {}, scalingSrc);
-    var projectedPreviewDimensions = widgetPreview.getCurrentDashZoneDims();
+    let projectedScalingObj = jQuery.extend(true, {}, scalingSrc);
+    let projectedPreviewDimensions = widgetPreview.getCurrentDashZoneDims();
     widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, cols);
     widgetPreview.resizeDashboardCols();
 
-    var mediaChangeProj = widgetPreview.mediaChangeProjection(projectedScalingObj, projectedPreviewDimensions, rows);
+    const mediaChangeProj = widgetPreview.mediaChangeProjection(projectedScalingObj, projectedPreviewDimensions, rows);
 
     projectedScalingObj = mediaChangeProj.referenceFrame;
     projectedPreviewDimensions = mediaChangeProj.targetFrame;
@@ -115,10 +115,7 @@ var RuntimeDashboard = (function () {
     }
 
     //AEF: issue#304
-    let offSchedLogUser;
-    if (!_.isUndefined(jsonContent.meta.schedulerLogOff)) offSchedLogUser = jsonContent.meta.schedulerLogOff;
-    else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
-    //
+    const offSchedLogUser = jsonContent.meta?.schedulerLogOff ?? true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
     // Add theme attribute before loading widgets
     $('html').attr('data-theme', jsonContent.device.theme);
