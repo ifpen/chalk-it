@@ -226,8 +226,12 @@ function flatUiWidgetsPluginClass() {
     this.readFileEvt = function () {
       const input = $('#button' + idWidget + '_select_file');
       input.on('change', function (e) {
-        const reader = new FileReader();
+        if ($rootScope.taipyLink) {
+          taipyManager.uploadFile(e);
+          return;
+        }
         const file = e.target.files[0];
+        const reader = new FileReader();
         const fileSize = file.size;
         let fileSizeFormat = '';
 
@@ -244,6 +248,7 @@ function flatUiWidgetsPluginClass() {
           size: fileSizeFormat,
           name: file.name,
         };
+
         reader.addEventListener('load', function (event) {
           const data = event.target.result;
           if (data instanceof ArrayBuffer) {

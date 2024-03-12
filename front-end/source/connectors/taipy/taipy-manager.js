@@ -12,6 +12,7 @@ class TaipyManager {
   #variableData;
   #deletedDnConnections;
   #endAction;
+  #ignoredVariables;
 
   /**
    * Constructs a new TaipyManager instance.
@@ -25,6 +26,14 @@ class TaipyManager {
     this.#variableData = {};
     this.#deletedDnConnections = new Set();
     this.#endAction = undefined;
+    // Variables that will be ignored (do not create a dataNode)
+    this.#ignoredVariables = new Set([
+      'xprjson_file_name',
+      'upload_file_name',
+      'has_file_saved',
+      'json_data',
+      'file_list',
+    ]);
   }
 
   /**
@@ -90,18 +99,11 @@ class TaipyManager {
       this.variableData[currentContext] = this.#deepClone(newVariables);
       this.deletedDnConnections.clear();
 
-      // Variables that will be ignored (do not create a dataNode)
-      const fileVariables = new Set(['xprjson_file_name', 'has_file_saved', 'json_data', 'file_list']);
-
       // Combine current and new variable names to iterate over
       const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
 
-      // Filter variableNames to exclude fileVariables
-      [...variableNames].forEach((variableName) => {
-        if (fileVariables.has(variableName)) {
-          variableNames.delete(variableName);
-        }
-      });
+      // Filter variableNames to exclude ignoredVariables
+      this.#ignoredVariables.forEach((ignoredVariable) => variableNames.delete(ignoredVariable));
 
       variableNames.forEach((variableName) => {
         this.#processDataNode(variableName, newVariables[variableName]);
@@ -312,13 +314,14 @@ class TaipyManager {
    *
    * @method uploadFile
    * @public
-   * @param {FileList|Array} files - The files to be uploaded. This can be a FileList object or an array of File objects.
-   * @param {Function} callback - A callback function to be executed upon successful upload of the files.
+   * @param {Event} event - The event triggered by the file input element, used to get the selected files.
+   * @param {Function} callback - A callback function to be called upon successful upload of the file.
    * @returns {void} This method does not return a value.
    */
-  uploadFile(files, callback) {
+  uploadFile(event, callback) {
     try {
-      const encodedVarName = this.app.getEncodedName('xprjson_file_name', this.currentContext);
+      const files = event.target.files;
+      const encodedVarName = this.app.getEncodedName('upload_file_name', this.currentContext);
       const printProgressUpload = (progress) => {
         console.log(progress);
       };

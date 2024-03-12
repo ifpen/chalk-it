@@ -14,6 +14,7 @@ from .chalkit_json_adapter import FunctionJsonAdapter
 BASE_PATH: Path = Path(sys.argv[0]).resolve().parent
 
 xprjson_file_name: str = "new_project.xprjson"
+upload_file_name: str = ""
 json_data: str = ""
 has_file_saved: bool = False
 file_list: Dict[str, Union[str, list]] = {}
