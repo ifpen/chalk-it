@@ -33,7 +33,7 @@
 					"name": "convertToCSV",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "\nvar keys = Object.keys(datasources[\"csvFile\"]);    \nvar values = _.zip(..._.values(datasources[\"csvFile\"]));\n    \nvar csv = Papa.unparse({\n\t\"fields\": keys,\n\t\"data\": values\n},\n{\n\tquotes: false, //or array of booleans\n\tquoteChar: '\"',\n\tescapeChar: '\"',\n\tdelimiter: \";\",\n\theader: true,\n\tnewline: \"\\r\\n\",\n\tskipEmptyLines: false, //or 'greedy',\n\tcolumns: null //or array of strings\n});\n\nreturn csv;"
+					"json_var_formula": "\nvar keys = Object.keys(dataNodes[\"csvFile\"]);    \nvar values = _.zip(..._.values(dataNodes[\"csvFile\"]));\n    \nvar csv = Papa.unparse({\n\t\"fields\": keys,\n\t\"data\": values\n},\n{\n\tquotes: false, //or array of booleans\n\tquoteChar: '\"',\n\tescapeChar: '\"',\n\tdelimiter: \";\",\n\theader: true,\n\tnewline: \"\\r\\n\",\n\tskipEmptyLines: false, //or 'greedy',\n\tcolumns: null //or array of strings\n});\n\nreturn csv;"
 				}
 			},
 			{
@@ -43,7 +43,7 @@
 					"name": "saveFile",
 					"autoStart": false,
 					"explicitTrig": true,
-					"json_var_formula": "var data, filename, link;\n\t\t\nvar csv = datasources.convertToCSV;\nif (csv === null) return;\n\nfilename = datasources.fileName.value;\n\nif (!csv.match(/^data:text\\/csv/i)) {\n\tcsv = 'data:text/csv;charset=utf-8,' + csv;\n}\ndata = encodeURI(csv);\nlink = document.createElement('a');\nlink.setAttribute('href', data);\nlink.setAttribute('download', filename);\nlink.click();\n\nreturn true;"
+					"json_var_formula": "var data, filename, link;\n\t\t\nvar csv = dataNodes.convertToCSV;\nif (csv === null) return;\n\nfilename = dataNodes.fileName.value;\n\nif (!csv.match(/^data:text\\/csv/i)) {\n\tcsv = 'data:text/csv;charset=utf-8,' + csv;\n}\ndata = encodeURI(csv);\nlink = document.createElement('a');\nlink.setAttribute('href', data);\nlink.setAttribute('download', filename);\nlink.click();\n\nreturn true;"
 				}
 			},
 			{
@@ -53,7 +53,7 @@
 					"name": "tableDisplay",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "var vals = _.unzip(_.values(datasources[\"csvFile\"]));\nvar keys = _.keys(datasources[\"csvFile\"]);\nvals.unshift(keys);\nreturn vals;\n"
+					"json_var_formula": "var vals = _.unzip(_.values(dataNodes[\"csvFile\"]));\nvar keys = _.keys(dataNodes[\"csvFile\"]);\nvals.unshift(keys);\nreturn vals;\n"
 				}
 			},
 			{
