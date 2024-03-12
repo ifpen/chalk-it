@@ -1,20 +1,39 @@
+const fs = require('fs');
 const env = process.env;
-const VERSION_XDASH_A = env.VERSION_XDASH_A || '0';
-const VERSION_XDASH_B = env.VERSION_XDASH_B || '000';
+
+// Utility function to read and parse JSON from a file
+function readJsonVersion(filePath, formatVersion) {
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');
+    const jsonData = JSON.parse(data);
+    if (formatVersion && typeof formatVersion === 'function') return formatVersion(jsonData);
+    return jsonData;
+  } catch (err) {
+    console.error(`Error reading the version.json file from ${filePath}:`, err);
+  }
+}
+
+const xDashJsonVersion = readJsonVersion('../version.json');
+const chalkitVersion = readJsonVersion('../../version.json', (data) => `${data.major}.${data.minor}.${data.patch}`);
+
+console.log(xDashJsonVersion); // Output the xDash version
+console.log(chalkitVersion); // Output the Chalkit version
 
 function getVersion() {
-  if (env.VERSION_XDASH_C == 0) {
+  if (xDashJsonVersion.C == 0) {
     const dateToday = new Date();
     const dateStart = new Date('01/01/2000');
     const result = Math.abs(dateStart.getTime() - dateToday.getTime());
     return Math.ceil(result / (3600000 * 24));
   }
-  return env.VERSION_XDASH_C;
+  return xDashJsonVersion.C;
 }
 
+const VERSION_XDASH_A = xDashJsonVersion.A || '0';
+const VERSION_XDASH_B = xDashJsonVersion.B || '000';
 const VERSION_XDASH_C = getVersion();
 const VERSION = VERSION_XDASH_A + '.' + VERSION_XDASH_B + '.' + VERSION_XDASH_C;
-const VERSION_CHALK_IT = env.VERSION_CHALK_IT;
+const VERSION_CHALK_IT = chalkitVersion;
 
 if (env.JSON_EDITOR_DATASOURCES != undefined) {
   //compatibility

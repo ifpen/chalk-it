@@ -3,9 +3,8 @@ from pathlib import Path
 import subprocess
 import shutil
 import os
-from dotenv import dotenv_values
 from datetime import datetime
-
+import json
 
 BUILD_FRONT_END = True
 
@@ -17,19 +16,23 @@ dst_dir = 'build'
 if not os.path.exists(dst_dir):
     os.makedirs(dst_dir)
 
-if not Path('./front-end/.env.prod').exists():
-    shutil.copy('front-end/.env.sample', 'front-end/.env.prod')
-	
-# Path to the .env.prod file
-env_file_path = 'front-end/.env.prod'
+# Load Python version from version.json    
+with open("version.json", "r") as fh:
+    version_json = json.load(fh)
+    VERSION = str(version_json["major"]) + "." + str(version_json["minor"]) + "." + str(version_json["patch"])
+    	
+# Path to the front-end version.json file
+env_file_path = 'front-end/version.json'
 
-# Load variables from the .env.prod file
-env_vars = dotenv_values(env_file_path)
+# Load variables from the version.json file
+f = open(env_file_path, "r")
+env_vars = json.load(f)
+f.close()
 
 # Accessing the variables
-a = env_vars.get('VERSION_XDASH_A')
-b = env_vars.get('VERSION_XDASH_B')
-c = env_vars.get('VERSION_XDASH_C')	
+a = str(env_vars['A'])
+b = str(env_vars['B'])
+c = str(env_vars['C'])
 
 
 def get_version():
@@ -139,6 +142,39 @@ def get_python_command():
 
     # If no Python command was found
     raise SystemExit("Python not found. Please install Python.")
+
+def update_version_in_setup_file(file_path, new_version):
+    # Define the line prefix to search for
+    line_prefix = 'VERSION = "'
+    line_suffix = '" # Do not touch. Will be overwritten by version.json'
+    
+    # Initialize an empty list to hold the updated lines
+    updated_lines = []
+    
+    # Open the file and read the lines
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        
+        # Loop through each line in the file
+        for line in lines:
+            # Check if the line contains the version definition
+            if line.strip().startswith(line_prefix) and line.strip().endswith(line_suffix):
+                # Replace the version number in the line
+                updated_line = f'{line_prefix}{new_version}{line_suffix}\n'
+                updated_lines.append(updated_line)
+            else:
+                # If not the version line, keep the line as is
+                updated_lines.append(line)
+    
+    # Write the updated lines back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(updated_lines)
+
+# Example usage:
+file_path = './build/setup.py'  # Path to your setup.py file
+new_version = VERSION  # New version number to update to
+update_version_in_setup_file(file_path, new_version)
+
 
 # Get available python command
 python_cmd = get_python_command()
