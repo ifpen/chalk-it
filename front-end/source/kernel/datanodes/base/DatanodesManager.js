@@ -215,9 +215,14 @@ var datanodesManager = (function () {
               'Update new name "' + newSettings.settings.name + '" in script of "' + successors + '"'
             );
             for (let prop in successors) {
-              formula = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
-              formula = formula.replaceAll(viewModel.name(), newSettings.settings.name);
-              datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = formula;
+              const oldName = viewModel.name();
+              const newName = newSettings.settings.name;
+              script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
+              replacedScript = script
+                .replace(new RegExp('dataNodes\\["' + oldName + '"\\]', 'g'), 'dataNodes["' + newName + '"]')
+                .replace(new RegExp('dataNodes\\.' + oldName, 'g'), 'dataNodes.' + newName);
+
+              datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = replacedScript;
             }
           }
           // handle widget connection
