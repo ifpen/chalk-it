@@ -38,7 +38,7 @@
 					"name": "table-column",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "return _.unzip([_.keys(datasources[\"vehicle\"]), _.values(datasources[\"vehicle\"])]);"
+					"json_var_formula": "return _.unzip([_.keys(dataNodes[\"vehicle\"]), _.values(dataNodes[\"vehicle\"])]);"
 				}
 			}
 		],

@@ -30,7 +30,7 @@
 					"name": "CH4_heatmap",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "return {\n    \"data\": datasources[\"CH4_data\"],\n    \"config\": datasources[\"CH4_heatmap_config\"]\n};"
+					"json_var_formula": "return {\n    \"data\": dataNodes[\"CH4_data\"],\n    \"config\": dataNodes[\"CH4_heatmap_config\"]\n};"
 				}
 			},
 			{
