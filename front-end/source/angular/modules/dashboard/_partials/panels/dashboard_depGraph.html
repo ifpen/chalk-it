@@ -2,7 +2,7 @@
   <button
     ng-repeat="tab in tabs"
     class="custom-tab custom-tab__name"
-    ng-class="isActiveTab(tab.id) ? 'custom-tab--active' : 'tab--inactive'"
+    ng-class="isActiveTab(tab.id) ? 'tab--inactive' : 'custom-tab--active'"
     ng-click="openTab(tab.id); tab.id == 'Tab2' ? startProfiling() : null"
   >
     {{tab.label}}

@@ -55,7 +55,7 @@ module.exports.config = {
     urlBase: env.URL_BASE || '',
     urlBaseForExport: env.URL_BASE_FOR_EXPORT || '',
     urlWebSite: env.URL_WEBSITE || '',
-    jsonEditorDatanodes: jsEditorDn,
+    jsonEditorDatanodes: jsEditorDn.toString(),
     version: {
       major: VERSION_XDASH_A,
       minor: VERSION_XDASH_B,
@@ -63,8 +63,8 @@ module.exports.config = {
       fullVersion: VERSION,
       chalkitVersion: VERSION_CHALK_IT,
     },
-    disableSchedulerLog,
-    disableSchedulerProfiling,
+    disableSchedulerLog: disableSchedulerLog.toString(),
+    disableSchedulerProfiling: disableSchedulerProfiling.toString(),
     pyodide: {
       standard_pyodide_packages: env.STANDARD_PYODIDE_PACKAGES || '',
       micropip_pyodide_packages: env.MICROPIP_PYODIDE_PACKAGES || '',
