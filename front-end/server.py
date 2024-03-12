@@ -365,6 +365,7 @@ def get_project_status():
 def heartbeat():
     return jsonify({"status": "healthy"})
 
+
 def dashboard(xprjson):
     # Load configuration from json file
     with open(xprjson, 'r') as config_file:
