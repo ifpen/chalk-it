@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
-import os
+import json
 
 NAME = "py-chalk-it"
-VERSION = "0.4.0"
+VERSION = "0.0.0" # Do not touch. Will be overwritten by version.json
 
 with open("README.md", "r") as fh:
     readme = fh.read()
-
+    
 setup(
     name=NAME,
     version=VERSION,
@@ -19,7 +19,7 @@ setup(
         'flask',
     ],
     author="IFP Energies nouvelles",
-    author_email="xdash@ifpen.fr",
+    author_email="chalk-it@ifpen.fr",
     license="Apache License 2.0",
     classifiers=[
         "Development Status :: 4 - Beta",
