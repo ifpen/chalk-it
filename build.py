@@ -44,7 +44,7 @@ def get_version():
     else:
         return c
 
-front_end_build_dir_name = 'xdash_' + a + '.' + b + '.' + str(get_version())
+front_end_build_dir_name = 'chalkit_' + a + '.' + b + '.' + str(get_version())
 
 
 # Get the list of all files and directories in the "build" directory
