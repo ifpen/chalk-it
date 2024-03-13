@@ -552,6 +552,22 @@ angular.module('modules.editor').controller('EditorController', [
       }
     };
 
+    vm.spreadVertical = function _spreadVertical() {
+      const elementIds = _getSelection();
+      if (elementIds && elementIds.length > 1) {
+        const action = editorActionFactory.createVerticalSpreadAction(elementIds);
+        undoManagerService.execute(action);
+      }
+    };
+
+    vm.spreadHorizontal = function _spreadRight() {
+      const elementIds = _getSelection();
+      if (elementIds && elementIds.length > 1) {
+        const action = editorActionFactory.createHorizontalSpreadAction(elementIds);
+        undoManagerService.execute(action);
+      }
+    };
+
     vm.resizeSame = function _resizeSame(param) {
       const elementIds = _getSelection();
       if (elementIds && elementIds.length > 1) {
