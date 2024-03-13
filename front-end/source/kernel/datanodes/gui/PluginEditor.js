@@ -416,200 +416,74 @@ PluginEditor = function (jsEditor) {
 
             break;
           }
-          case 'browseText': {
-            newSettings.settings[settingDef.name] = currentSettingsValues[settingDef.name];
-            newSettings.settings['content'] = currentSettingsValues['content'];
-
-            var input = $(
-              '<input type="text" id="select_file_path" style="float:left"></input><input type="file" style="display: none" id="select_file"></input><label class="board-toolbar datasource-input-suffix"><i class="fa-folder-open fa"></i>Browse...</label>'
-            );
-            input.mousedown(function (e) {
-              e.preventDefault();
-
-              $('#select_file').change(function (e) {
-                var fakeFilePath = this.value;
-                var fileName = Path2FileName(fakeFilePath);
-                $('#select_file_path').val(fileName);
-
-                var reader = new FileReader();
-                reader.addEventListener('load', function (event) {
-                  var textFile = event.target;
-                  text = textFile.result;
-                  newSettings.settings['content'] = text;
-                });
-                reader.readAsText(e.target.files[0]);
-              });
-              $('#select_file').trigger('click');
-            });
-
-            input.appendTo(valueCell).change(function () {
-              newSettings.settings[settingDef.name] = Path2FileName($(this).val());
-            });
-
-            if (settingDef.name in currentSettingsValues) {
-              var fakeFilePath = currentSettingsValues[settingDef.name];
-              var fileName = Path2FileName(fakeFilePath);
-              $('#select_file_path').val(fileName);
-            }
-
-            break;
-          }
+          case 'browseText':
           case 'browseBinary': {
+            const isBinary = settingDef.type === 'browseBinary';
             newSettings.settings[settingDef.name] = currentSettingsValues[settingDef.name];
             newSettings.settings['content'] = currentSettingsValues['content'];
-            var input = $(
-              '<input type="text" id="select_file_path" style="float:left"></input><input type="file" style="display: none" id="select_file"></input><label class="board-toolbar datasource-input-suffix"><i class="fa-folder-open fa"></i>Browse...</label>'
-            );
-            input.mousedown(function (e) {
-              e.preventDefault();
 
-              $('#select_file').change(function (e) {
-                var fakeFilePath = this.value;
-                var fileName = Path2FileName(fakeFilePath);
-                $('#select_file_path').val(fileName);
-
-                var reader = new FileReader();
-                reader.addEventListener('load', function (event) {
-                  const data = event.target.result;
-                  newSettings.settings['content'] = btoa(
-                    [].reduce.call(
-                      new Uint8Array(data),
-                      function (p, c) {
-                        return p + String.fromCharCode(c);
-                      },
-                      ''
-                    )
-                  );
-                });
-
-                reader.readAsArrayBuffer(e.target.files[0]);
-              });
-              $('#select_file').trigger('click');
-            });
-
-            input.appendTo(valueCell).change(function () {
-              newSettings.settings[settingDef.name] = Path2FileName($(this).val());
-            });
-
+            const text_input = document.createElement('input');
+            text_input.type = 'text';
+            text_input.style.float = 'left';
             if (settingDef.name in currentSettingsValues) {
-              var fakeFilePath = currentSettingsValues[settingDef.name];
-              var fileName = Path2FileName(fakeFilePath);
-              $('#select_file_path').val(fileName);
+              const path = currentSettingsValues[settingDef.name];
+              const fileName = Path2FileName(path); // TODO drop
+              text_input.value = fileName;
             }
 
-            break;
-          }
-          case 'unzip': {
-            newSettings.settings[settingDef.name] = currentSettingsValues[settingDef.name];
-            newSettings.settings['content'] = currentSettingsValues['content'];
+            const file_input = document.createElement('input');
+            file_input.type = 'file';
+            file_input.style.display = 'none';
+            if (settingDef.accept) {
+              file_input.accept = settingDef.accept;
+            }
 
-            var input = $(
-              '<input type="text" id="select_file_path" style="float:left"></input>' +
-                '<input type="file" style="display: none" id="select_file" accept="application/x-zip-compressed"></input>' +
-                '<label class="board-toolbar datasource-input-suffix">' +
-                '<i class="fa-folder-open fa"></i>Browse...' +
-                '</label>'
+            const label = $(
+              '<label class="board-toolbar datasource-input-suffix"><i class="fa-folder-open fa"></i>Browse...</label>'
             );
-            input.mousedown(function (event) {
-              event.preventDefault();
-              $('#select_file').change(async function (event) {
-                const freeboardUIInst = new FreeboardUI();
-                const file = event.target.files[0];
-                const fileSize = file.size;
-                let fileSizeFormat = '';
 
-                if (fileSize < 1024) {
-                  fileSizeFormat = `${fileSize} bytes`;
-                } else if (fileSize < 1_048_576) {
-                  fileSizeFormat = `${(fileSize / 1024).toFixed(1)} KB`;
-                } else {
-                  fileSizeFormat = `${(fileSize / 1_048_576).toFixed(1)} MB`;
-                }
+            file_input.addEventListener('change', function (e) {
+              if (!e.target.files.length) {
+                return;
+              }
 
-                const result = {
+              const file = e.target.files[0];
+              const fileName = file.name;
+              text_input.value = fileName;
+
+              const reader = new FileReader();
+              reader.addEventListener('load', function (event) {
+                const data = event.target.result;
+                newSettings.settings['content'] = {
+                  name: fileName,
                   type: file.type,
-                  size: fileSizeFormat,
-                  name: file.name,
-                  content: '',
+                  isBinary,
+                  content: isBinary
+                    ? btoa(
+                        [].reduce.call(
+                          new Uint8Array(data),
+                          function (p, c) {
+                            return p + String.fromCharCode(c);
+                          },
+                          ''
+                        )
+                      )
+                    : data,
                 };
-
-                const fileExtension = file.name.split('.').pop();
-                const extensionsText = ['txt', 'json', 'xprjson', 'xml', 'svg', 'html', 'css', 'js', 'ts', 'md', 'csv'];
-                //const extensionsBinary = ['xls', 'xlsx', 'jpg', 'jpeg', 'png', 'tiff', 'gif'];
-                const fileTypes = ['', 'application/json'];
-                const zipContent = [];
-
-                if (fileExtension && fileTypes.includes(result.type)) {
-                  result.type = fileExtension;
-                }
-
-                try {
-                  freeboardUIInst.showLoadingIndicator(true);
-                  const zip = await JSZip.loadAsync(file);
-                  for (const relativePath in zip.files) {
-                    const zipEntry = zip.files[relativePath];
-                    const isDir = zipEntry.dir;
-                    if (isDir) {
-                      continue;
-                    }
-                    const fileExtension = relativePath.split('.').pop();
-                    const fileSize = zipEntry._data.uncompressedSize; // Get the compressed size of the zipEntry
-                    // do not increase this value otherwise the browser will crash
-                    if (fileSize > 73_400_320) {
-                      // 73_400_320 bytes == 70 MB
-                      continue;
-                    }
-
-                    if (fileExtension && extensionsText.includes(fileExtension)) {
-                      const fileData = await zipEntry.async('string');
-                      zipContent.push({
-                        name: relativePath,
-                        content: ['json', 'xprjson'].includes(fileExtension)
-                          ? JSON.parse(JSON.stringify(eval('(' + fileData + ')')), null, 2)
-                          : fileData,
-                      });
-                    } else {
-                      const fileData = await zipEntry.async('uint8array');
-                      zipContent.push({
-                        name: relativePath,
-                        content: btoa(
-                          [].reduce.call(new Uint8Array(fileData), (p, c) => p + String.fromCharCode(c), '')
-                        ),
-                      });
-                    }
-                  }
-                  result.content = zipContent;
-                } catch (error) {
-                  const notice = new PNotify({
-                    title: 'Unzip file',
-                    text: 'Error reading ' + file.name + ': ' + error,
-                    type: 'error',
-                    styling: 'bootstrap3',
-                  });
-                  $('.ui-pnotify-container').on('click', () => notice.remove());
-                  console.error('Error reading ' + file.name + ': ' + error);
-                } finally {
-                  freeboardUIInst.showLoadingIndicator(false);
-                }
-
-                newSettings.settings['content'] = result;
-                const fakeFilePath = this.value;
-                const fileName = Path2FileName(fakeFilePath);
-                $('#select_file_path').val(fileName);
+                newSettings.settings[settingDef.name] = fileName;
               });
-              $('#select_file').trigger('click');
+
+              if (isBinary) {
+                reader.readAsArrayBuffer(file);
+              } else {
+                reader.readAsText(file);
+              }
             });
 
-            input.appendTo(valueCell).change(function () {
-              newSettings.settings[settingDef.name] = Path2FileName($(this).val());
-            });
+            $(text_input).on('click', () => file_input.click());
+            label.on('click', () => file_input.click());
 
-            if (settingDef.name in currentSettingsValues) {
-              var fakeFilePath = currentSettingsValues[settingDef.name];
-              var fileName = Path2FileName(fakeFilePath);
-              $('#select_file_path').val(fileName);
-            }
-
+            valueCell.append([text_input, file_input, label]);
             break;
           }
           case 'json': {
@@ -904,8 +778,7 @@ PluginEditor = function (jsEditor) {
     var labels = [
       //order is important
       { name: 'JSON', searchString: ['Variable'] },
-      { name: 'Python', searchString: ['Pyodide'] },
-      { name: 'JavaScript', searchString: ['client-side'] },
+      { name: 'Scripting', searchString: ['Python', 'JavaScript'] },
       { name: 'APIs', searchString: ['REST'] },
       { name: 'Files', searchString: ['Generic', 'CSV file', 'Unzip'] },
       { name: 'Streams & Real-time', searchString: ['Clock', 'Delay', 'Memory', 'WebSocket', 'MQTT', 'Geoloc'] },
