@@ -78,7 +78,7 @@ function annotationMarkdownWidgetsPluginClass() {
         '<div style="' +
         styleCenterVertically +
         '">' +
-        marked.parse(modelsHiddenParams[idInstance].text) +
+        marked.parse(modelsHiddenParams[idInstance].text || '') +
         '</div></div>';
 
       widgetHtml.innerHTML = divContent;
