@@ -15,8 +15,13 @@
 				"type": "Generic_file_reader_plugin",
 				"settings": {
 					"name": "md",
-					"data_path": "editable-table.md",
-					"content": "Editable table must be connected to a variable-type dataNode. In this example, the `editableCols` parameter of widget's graphical properties was set to `[1,2,3,4]`. You can also use html formatting inside tables."
+					"data_path": "editable-table.md", 
+					"content": {
+						"type": "text/plain",
+						"name": "editable-table.md",
+						"content": "Editable table must be connected to a variable-type dataNode. In this example, the `editableCols` parameter of widget's graphical properties was set to `[1,2,3,4]`. You can also use html formatting inside tables.",
+						"isBinary": false
+					}
 				}
 			},
 			{
