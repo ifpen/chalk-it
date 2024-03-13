@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from taipy.gui import Gui
 
@@ -8,7 +7,7 @@ from taipy_page import page as page1
 #from taipy_file_page import page as page4
 
 # Define the path for the upload folder relative to the current script's directory
-upload_folder = f"{Path(__file__).parent.resolve()}"
+upload_folder = Path(__file__).parent.resolve()
 
 gui = Gui()
 gui.add_page("page1", page1)

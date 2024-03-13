@@ -264,7 +264,7 @@ class FileManager:
         self.config = config
         self.blueprint = Blueprint('file', __name__)
         self.blueprint.route('/GetFiles', methods=['POST'])(RootManager.handle_errors(self.get_files))
-        self.blueprint.route('/GetPythonDataList', methods=['GET'])(RootManager.handle_errors(self.get_python_data_list))
+        self.blueprint.route('/GetPythonDataList', methods=['POST'])(RootManager.handle_errors(self.get_python_data_list))
         self.blueprint.route('/heartbeat')(RootManager.handle_errors(self.heartbeat))
         self.blueprint.add_url_rule('/<path:path>', 
                                     view_func=RootManager.handle_errors(self.static_files), 

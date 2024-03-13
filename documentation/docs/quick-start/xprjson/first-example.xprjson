@@ -11,7 +11,7 @@
 		"allow_edit": true,
 		"plugins": [],
 		"panes": [],
-		"datasources": [
+		"dataNodes": [
 			{
 				"name": "jsvar",
 				"type": "JSON_var_plugin",

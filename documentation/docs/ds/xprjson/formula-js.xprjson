@@ -33,7 +33,7 @@
 				"type": "JSON_formula_plugin",
 				"settings": {
 					"name": "multiply",
-					"json_var_formula": "return datasources.input.length * datasources.input.width;"
+					"json_var_formula": "return dataNodes.input.length * dataNodes.input.width;"
 				}
 			}
 		],
