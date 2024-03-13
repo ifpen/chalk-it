@@ -1,63 +1,105 @@
-<div class="panel--content--top">
-  <h1>Dependency Graph</h1>
-  <div class="content--top__actions">
-    <button id="exportGraph" class="btn btn-rounded-fill btn--icon primary">
-      <i class="basic icn-download"></i>
-      Export
+<div ng-if="!disableSchedulerProfiling" class="tabs-container--center">
+  <button
+    ng-repeat="tab in tabs"
+    class="custom-tab custom-tab__name"
+    ng-class="isActiveTab(tab.id) ? 'tab--inactive' : 'custom-tab--active'"
+    ng-click="openTab(tab.id); tab.id == 'Tab2' ? startProfiling() : null"
+  >
+    {{tab.label}}
+  </button>
+</div>
+
+<div ng-show="isActiveTab('Tab1')">
+  <div class="panel--content--top">
+    <h1>Dependency Graph</h1>
+    <div class="content--top__actions">
+      <button id="exportGraph" class="btn btn-rounded-fill btn--icon primary">
+        <i class="basic icn-download"></i>
+        Export
+      </button>
+      <button ng-click="closeGraph();editorView.showGraphPanel=false" class="btn btn-icon-only" title="Close panel">
+        <i class="basic icn-close close-aside"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="dashboard-form">
+    <div class="dashboard-form__input-wrapper">
+      <input
+        id="inputSearchGraph"
+        type="search"
+        placeholder="Search DataNode names"
+        class="dashboard-form__input--search"
+      />
+      <i class="basic icn-search"></i>
+    </div>
+  </div>
+
+  <div class="tags__list--wrapper">
+    <label>Widget Connexion :</label>
+    <ul class="tags__list">
+      <li id="connectedtowidget" ng-click="selectConnectedWithWidget('connectedtowidget')">
+        <i class="basic icn-tag"></i>Connected
+      </li>
+      <li id="notconnectedtowidget" ng-click="selectConnectedWithWidget('notconnectedtowidget')">
+        <i class="basic icn-tag"></i>Not Connected
+      </li>
+    </ul>
+  </div>
+  <div class="tags__list--wrapper">
+    <label>DataNode types :</label>
+    <ul class="tags__list">
+      <li
+        id="{{type}}"
+        style="cursor: pointer"
+        ng-repeat="type in uniqGraphNodesTypes"
+        ng-click="selectNodeFromTagList(type)"
+      >
+        <i class="basic icn-tag"></i>{{type}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="dependency-graph-actions">
+    <button id="zoomOut" class="btn btn-icon-only" title="Zoom out">
+      <i class="basic icn-minimize" style="font-size: 2em"></i>
     </button>
-    <button ng-click="closeGraph();editorView.showGraphPanel=false" class="btn btn-icon-only" title="Close panel">
-      <i class="basic icn-close close-aside"></i>
+    <button id="zoomIn" class="btn btn-icon-only" title="Zoom in">
+      <i class="basic icn-add" style="font-size: 2em"></i>
+    </button>
+    <button id="openFullScreen" class="btn btn-icon-only" title="Full screen view">
+      <i class="basic icn-full-screen" style="font-size: 2em"></i>
     </button>
   </div>
+
+  <div id="dependencyGraph" style="display: inline-flex"></div>
 </div>
 
-<div class="dashboard-form">
-  <div class="dashboard-form__input-wrapper">
-    <input
-      id="inputSearchGraph"
-      type="search"
-      placeholder="Search DataNode names"
-      class="dashboard-form__input--search"
-    />
-    <i class="basic icn-search"></i>
+<div ng-show="isActiveTab('Tab2')">
+  <div class="panel--content--top">
+    <h1>Scheduling Graph</h1>
+    <div class="content--top__actions">
+      <button id="exportSchedulingGraph" class="btn btn-rounded-fill btn--icon primary">
+        <i class="basic icn-download"></i>
+        Export
+      </button>
+      <button ng-click="closeGraph();editorView.showGraphPanel=false" class="btn btn-icon-only" title="Close panel">
+        <i class="basic icn-close close-aside"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="dependency-graph-actions">
+    <button id="toggleFullScreen" class="btn btn-icon-only" title="Full screen view">
+      <i class="basic icn-full-screen" style="font-size: 2em"></i>
+    </button>
+  </div>
+
+  <div id="schedulingGraph" style="display: inline-flex">
+    <div
+      id="schedulingGraphBody"
+      class="modal-body"
+      style="overflow: auto; width: 938px; height: 625px; border: 1px solid lightgray"
+    ></div>
   </div>
 </div>
-
-<div class="tags__list--wrapper">
-  <label>Widget Connexion :</label>
-  <ul class="tags__list">
-    <li id="connectedtowidget" ng-click="selectConnectedWithWidget('connectedtowidget')">
-      <i class="basic icn-tag"></i>Connected
-    </li>
-    <li id="notconnectedtowidget" ng-click="selectConnectedWithWidget('notconnectedtowidget')">
-      <i class="basic icn-tag"></i>Not Connected
-    </li>
-  </ul>
-</div>
-<div class="tags__list--wrapper">
-  <label>DataNode types :</label>
-  <ul class="tags__list">
-    <li
-      id="{{type}}"
-      style="cursor: pointer"
-      ng-repeat="type in uniqGraphNodesTypes"
-      ng-click="selectNodeFromTagList(type)"
-    >
-      <i class="basic icn-tag"></i>{{type}}
-    </li>
-  </ul>
-</div>
-
-<div class="dependency-graph-actions">
-  <button id="zoomOut" class="btn btn-icon-only" title="Zoom out">
-    <i class="basic icn-minimize" style="font-size: 2em"></i>
-  </button>
-  <button id="zoomIn" class="btn btn-icon-only" title="Zoom in">
-    <i class="basic icn-add" style="font-size: 2em"></i>
-  </button>
-  <button id="openFullScreen" class="btn btn-icon-only" title="Full screen view">
-    <i class="basic icn-full-screen" style="font-size: 2em"></i>
-  </button>
-</div>
-
-<div id="dependencyGraph" style="display: inline-flex"></div>

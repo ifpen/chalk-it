@@ -251,6 +251,7 @@
       "source/angular/modules/dashboard/dashboard.js",
       "source/angular/modules/dashboard/dashboard.controller.js",
       "source/angular/modules/dashboard/services/depGraphService.js",
+      "source/angular/modules/dashboard/services/profGraphService.js",
       "source/angular/modules/dashboard/services/manageDatanodeService.js",
       "source/angular/modules/dashboard/services/jsonDisplayService.js",
       "source/angular/modules/dashboard/services/editPlaySwitchService.js",

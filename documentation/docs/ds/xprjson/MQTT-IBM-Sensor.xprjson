@@ -9,7 +9,7 @@
 		"allow_edit": true,
 		"plugins": [],
 		"panes": [],
-		"datasources": [
+		"dataNodes": [
 			{
 				"name": "demo",
 				"type": "mqtt",

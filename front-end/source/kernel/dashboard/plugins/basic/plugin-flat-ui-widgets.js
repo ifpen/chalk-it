@@ -1262,7 +1262,7 @@ function flatUiWidgetsPluginClass() {
       widgetHtml.setAttribute('id', nameWidget + '-widget-html' + idWidget);
       widgetHtml.setAttribute('class', 'value-widget-html');
       let divContent = '';
-      if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+      if (modelsParameters[idInstance].displayLabel) {
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
         valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio

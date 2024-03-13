@@ -34,7 +34,7 @@
         ' will update the Chalk\'it workspace. You can assume this script is wrapped in a function with a <code><span class="cm-def">dataNodes</span></code> parameter' +
         ' containing the defined input dataNodes.' +
         ' <br>Press <code><span class="cm-keyword">ctrl-space</span></code> to activate autocompletion.' +
-        '</div>'
+        '</div></div>'
     );
 
     var codeWindowContent = $('<div class="cancel__box__container"></div>');
@@ -602,8 +602,8 @@ resRet
       }
 
       try {
-        wrappedScript = wrappedScript.replace('xDashApi', 'js.xDashApi');
-        wrappedScript = wrappedScript.replace('chalkit', 'js.chalkit');
+        wrappedScript = wrappedScript.replaceAll('xDashApi', 'js.xDashApi');
+        wrappedScript = wrappedScript.replaceAll('chalkit', 'js.chalkit');
 
         const result = await pyodideManager.runPythonScript(wrappedScript);
         success(result);

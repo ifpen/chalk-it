@@ -11,7 +11,7 @@
 		"allow_edit": true,
 		"plugins": [],
 		"panes": [],
-		"datasources": [
+		"dataNodes": [
 			{
 				"name": "csv",
 				"type": "CSV_file_reader_plugin",
