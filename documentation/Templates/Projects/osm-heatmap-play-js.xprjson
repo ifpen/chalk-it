@@ -61,7 +61,7 @@
 					"name": "CH4_data_point",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "return {\n    \"data\": {\n        \"lat\": datasources[\"measures\"][\"lat\"],\n        \"lng\": datasources[\"measures\"][\"lng\"],\n        \"CH4\": datasources[\"measures\"][\"CH4\"]\n\t},\n\t\"config\" : datasources[\"CH4_heatmap_config\"]        \n};"
+					"json_var_formula": "return {\n    \"data\": {\n        \"lat\": dataNodes[\"measures\"][\"lat\"],\n        \"lng\": dataNodes[\"measures\"][\"lng\"],\n        \"CH4\": dataNodes[\"measures\"][\"CH4\"]\n\t},\n\t\"config\" : dataNodes[\"CH4_heatmap_config\"]        \n};"
 				}
 			}
 		],

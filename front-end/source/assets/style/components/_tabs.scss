@@ -16,7 +16,23 @@
   padding-right: 1rem;
 }
 
-.tab {
+.tabs-container--center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  border-bottom: 0.25em solid var(--surface-c);
+  margin-bottom: 1em;
+}
+
+// Define a mixin with default parameters, allowing customization
+@mixin tab-styles($bg-color: var(--surface-b),
+  $hover-bg-color: var(--active-color),
+  $hover-text-color: var(--active-color-text),
+  $changed-bg-color: var(--danger-color),
+  $changed-text-color: var(--danger-color-text)) {
+
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
@@ -24,37 +40,60 @@
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   border-bottom: none;
-  background: var(--surface-b);
+  background: $bg-color;
 
-  &:hover {
-    &:not(.tab--inactive) {
-      background-color: var(--active-color);
+  &:hover:not(.tab--inactive) {
+    background-color: $hover-bg-color;
 
-      .tab__name {
-        color: var(--active-color-text);
-      }
+    .tab__name,
+    .custom-tab__name {
+      color: $hover-text-color;
     }
   }
 
   &.changed {
-    background-color: var(--danger-color);
+    background-color: $changed-bg-color;
 
     .tab__name {
-      color: var(--danger-color-text);
+      color: $changed-text-color;
     }
   }
 }
 
-.tab__name {
+// Apply the mixin to .tab with the default background color
+.tab {
+  @include tab-styles;
+}
+
+// Apply the mixin to .tab--custom and customize the background color
+.custom-tab {
+  @include tab-styles(var(--surface-c), var(--active-color), var(--active-color-text), var(--danger-color), var(--danger-color-text));
+
+  padding: 1rem;
+  border: 1px solid var(--primary-color-text);
+  border-bottom: none;
+}
+
+@mixin tab-name-styles($color: var(--text-color), $cursor: default) {
   max-width: 16em;
-  color: var(--text-color);
+  color: $color;
   font-weight: fw('bold');
   font-size: fs('sm');
   transition: var(--default-transition);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  cursor: default;
+  cursor: $cursor;
+}
+
+// Usage with default color
+.tab__name {
+  @include tab-name-styles;
+}
+
+// Usage with custom color
+.custom-tab__name {
+  @include tab-name-styles(var(--primary-color-text), pointer);
 }
 
 .tab__close {
@@ -82,4 +121,9 @@
       color: var(--danger-color);
     }
   }
+}
+
+.custom-tab--active {
+  background: var(--surface-c);
+  color: var(--text-color);
 }

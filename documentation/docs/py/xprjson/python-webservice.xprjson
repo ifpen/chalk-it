@@ -25,7 +25,7 @@
 		"allow_edit": true,
 		"plugins": [],
 		"panes": [],
-		"datasources": [
+		"dataNodes": [
 			{
 				"name": "vectorFunctions",
 				"type": "REST_web-service_from_datasource",
