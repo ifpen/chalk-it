@@ -1,7 +1,7 @@
 {
 	"meta": {
-		"version": "2.470.8480",
-		"date": "Mon Apr 03 2023 17:44:35 GMT+0200 (heure d’été d’Europe centrale)",
+		"version": "2.990.8832",
+		"date": "Wed Mar 13 2024 11:11:40 GMT+0100 (heure normale d’Europe centrale)",
 		"name": "d3-year-heatmap-calendar",
 		"description": "Example with D3.js year calendar",
 		"groupName": "JavaScript",
@@ -27,7 +27,7 @@
 					"name": "CalendarVal2",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "var dateForVal = d3.timeDay.range(new Date(2020, 5, 2), Date.now());\nvar lawForValue = d3.randomLogNormal(3, 2.2);\nvar formatDate = d3.timeFormat(\"%Y-%m-%d\");   \n            \nvar tableForCalendar = dateForVal.map( d => { return { \"date\" : formatDate(d), \"value\" : lawForValue() };});\n\nreturn _.shuffle(tableForCalendar);"
+					"json_var_formula": "var dateForVal = d3.timeDay.range(new Date(2020, 5, 2), Date.now());\nvar lawForValue = d3.randomLogNormal(3, 2.2);\nvar formatDate = d3.timeFormat(\"%Y-%m-%d\");   \n            \nvar tableForCalendar = dateForVal.map( d => { return { \"date\" : formatDate(d), \"value\" : lawForValue() };});\n\nvar values = _.shuffle(tableForCalendar);\n\nconst calendarValuesObject = {\n  start: formatDate(new Date(2020, 5, 2)),\n  end: formatDate(Date.now()),\n  values: values\n};\n\nreturn calendarValuesObject;"
 				}
 			},
 			{
@@ -35,29 +35,24 @@
 				"type": "JSON_var_plugin",
 				"settings": {
 					"name": "SelectedDate",
-					"json_var": "\"2022-09-17\""
+					"json_var": "\"2023-08-31\""
 				}
 			}
-		],
-		"reIndexMap": [
-			0,
-			1
-		],
-		"noTopologicalSortAtSerialize": true
+		]
 	},
 	"libraries": {
 		"pyodideStandard": [],
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1302,
-		"heightPx": 575,
-		"scrollWidthPx": 1302,
-		"scrollHeightPx": 575,
-		"widthVw": 85.54533508541392,
-		"heightVh": 81.56028368794327,
-		"scrollWidthVw": 85.54533508541392,
-		"scrollHeightVh": 81.56028368794327,
+		"widthPx": 1678,
+		"heightPx": 682,
+		"scrollWidthPx": 1678,
+		"scrollHeightPx": 682,
+		"widthVw": 87.76150627615063,
+		"heightVh": 73.17596566523605,
+		"scrollWidthVw": 87.76150627615063,
+		"scrollHeightVh": 73.17596566523605,
 		"scalingMethod": "scaleTwh",
 		"media": "large",
 		"colDims": null
@@ -77,10 +72,10 @@
 	"dashboard": {
 		"calendarD3c": {
 			"layout": {
-				"top": "7.51773vh",
-				"left": "0.919842vw",
-				"height": "62.695vh",
-				"width": "60.5125vw",
+				"top": "3.00429vh",
+				"left": "0.523013vw",
+				"height": "67.9185vh",
+				"width": "60.3556vw",
 				"minHeight": "100px",
 				"minWidth": "100px",
 				"z-index": "1"
@@ -95,14 +90,17 @@
 				"AllYearsVisible": true,
 				"UndefinedValueColor": "#ffffff"
 			},
-			"modelHiddenParams": {}
+			"modelHiddenParams": {
+				"CalendarValues": [],
+				"SelectedDate": ""
+			}
 		},
 		"kpiCard1": {
 			"layout": {
-				"top": "14.3262vh",
-				"left": "61.8265vw",
-				"height": "18.0142vh",
-				"width": "18.9225vw",
+				"top": "12.8535vh",
+				"left": "63.4282vw",
+				"height": "16.1624vh",
+				"width": "19.4127vw",
 				"minHeight": "32px",
 				"minWidth": "64px",
 				"z-index": "2"
@@ -141,8 +139,7 @@
 			"CalendarValues": {
 				"name": "CalendarValues",
 				"dataNode": "CalendarVal2",
-				"dataFields": [],
-				"dataNodeIndex": 0
+				"dataFields": []
 			},
 			"SelectedDate": {
 				"name": "SelectedDate",

@@ -9,9 +9,9 @@
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// |                             displaySpinner                         | \\
+// |                         displayLoadSpinner                         | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function displaySpinner(idWidget) {
+function displayLoadSpinner(idWidget) {
   const self = this;
   const aElement = document.getElementById('button' + idWidget);
   const inputElement = document.getElementById('button' + idWidget + '_select_file');
@@ -115,4 +115,26 @@ function triggerTaipyFunction(idInstance) {
   uniqueFunNames.forEach((funName) => {
     taipyManager.functionTrigger(JSON.parse(funName));
   });
+}
+
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// |                         setFileUploadSpinner                       | \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+function setFileUploadSpinner(idWidget, status) {
+  const buttonElement = document.getElementById('button' + idWidget);
+  const existingSpinner = document.getElementById('icon' + idWidget);
+
+  if (status == 'remove') {
+    buttonElement.classList.remove('disabled');
+    if (existingSpinner) existingSpinner.remove();
+  } else if (status == 'add') {
+    // disable until request finished
+    buttonElement.classList.add('disabled');
+    if (!existingSpinner) {
+      const spinnerElement = document.createElement('i');
+      spinnerElement.setAttribute('id', 'icon' + idWidget);
+      spinnerElement.setAttribute('class', 'fa fa-spinner fa-spin');
+      buttonElement.appendChild(spinnerElement);
+    }
+  }
 }

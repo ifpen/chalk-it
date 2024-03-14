@@ -10,6 +10,38 @@
 const UNDO_MOVE_MERGE_WINDO_MS = 1_000;
 
 /**
+ * Spread elements, defined by a position and a size in a 1D space, so that they occupy the same range in the
+ * same order, but are evenly spread using a constant margin.
+ * @param {Array.<{elementId: string, position:number, size:number}>} elements array of elements to re-arrange
+ * @returns {Array.<{elementId: string, position:number}>} the re-arranged positions
+ */
+function _computeSpread(elements) {
+  const sortedElements = elements.sort((a, b) => a.position - b.position);
+  const nb = elements.length;
+  const start = sortedElements[0].position;
+  const lastElement = sortedElements[nb - 1];
+  const end = lastElement.position + lastElement.size;
+  const availableSpace = end - start;
+  if (availableSpace <= 0) {
+    return elements;
+  }
+
+  let totalSize = 0;
+  for (const e of sortedElements) totalSize += e.size;
+
+  const availableMargin = availableSpace - totalSize; // yes, this may be negative
+  const margin = availableMargin / (nb - 1);
+
+  let position = start;
+  const result = [];
+  for (const { elementId, size } of sortedElements) {
+    result.push({ elementId, position });
+    position += size + margin;
+  }
+  return result;
+}
+
+/**
  * @param {Array.<string>} neededDs array of datanodes names
  * @returns {boolean} true if all input datanodes exists
  */
@@ -1390,6 +1422,78 @@ angular.module('modules.editor').service('EditorActionFactory', [
         eventCenterService,
         geometries,
         'Align widgets right',
+        false
+      );
+    };
+
+    /**
+     * @param {*} elementIds the elements to spread
+     * @returns {UpdateGeometryAction} the action
+     */
+    this.createHorizontalSpreadAction = function _createHorizontalSpreadAction(elementIds) {
+      if (elementIds.length < 2) {
+        throw new Error('At least 2 elements are needed');
+      }
+      const widgetEditor = widgetEditorGetter();
+
+      const positions = elementIds.map((elementId) => {
+        const element = widgetEditor.widgetContainers.get(elementId).divModel;
+        const elementPos = getElementLayoutPx(element);
+        return {
+          elementId,
+          position: elementPos.left,
+          size: elementPos.width,
+        };
+      });
+
+      const spreadPositions = _computeSpread(positions);
+      const geometries = new Map();
+      for (const { elementId, position } of spreadPositions) {
+        geometries.set(elementId, { left: position });
+      }
+
+      return new UpdateGeometryAction(
+        widgetContainerGetter(),
+        widgetEditorGetter(),
+        eventCenterService,
+        geometries,
+        'Spread widgets horizontally',
+        false
+      );
+    };
+
+    /**
+     * @param {*} elementIds the elements to spread
+     * @returns {UpdateGeometryAction} the action
+     */
+    this.createVerticalSpreadAction = function _createVerticalSpreadAction(elementIds) {
+      if (elementIds.length < 2) {
+        throw new Error('At least 2 elements are needed');
+      }
+      const widgetEditor = widgetEditorGetter();
+
+      const positions = elementIds.map((elementId) => {
+        const element = widgetEditor.widgetContainers.get(elementId).divModel;
+        const elementPos = getElementLayoutPx(element);
+        return {
+          elementId,
+          position: elementPos.top,
+          size: elementPos.height,
+        };
+      });
+
+      const spreadPositions = _computeSpread(positions);
+      const geometries = new Map();
+      for (const { elementId, position } of spreadPositions) {
+        geometries.set(elementId, { top: position });
+      }
+
+      return new UpdateGeometryAction(
+        widgetContainerGetter(),
+        widgetEditorGetter(),
+        eventCenterService,
+        geometries,
+        'Spread widgets vertically',
         false
       );
     };
