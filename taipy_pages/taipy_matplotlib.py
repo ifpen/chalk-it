@@ -3,7 +3,6 @@ from pathlib import Path
 # Add the parent directory of `back_end` to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
-from taipy.gui.custom import Page
 import matplotlib.pyplot as plt
 import io, base64
 
@@ -27,5 +26,4 @@ fig.savefig(buf, format='png')
 buf.seek(0)
 img_str = 'data:image/png;base64,' + base64.b64encode(buf.read()).decode('UTF-8')
 
-# Create a Page instance with the resource handler
-page = Page(PureHTMLResourceHandler())
+page = ExtenedPage("taipy_matplotlib.xprjson")

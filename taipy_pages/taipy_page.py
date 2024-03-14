@@ -27,5 +27,4 @@ def on_change(state, var, val):
     if ((var == 'a') or (var == 'b')):
         state.c = state.a + state.b * 2
 
-# Create a Page instance with the resource handler
 page = ExtenedPage("taipy_page.xprjson")

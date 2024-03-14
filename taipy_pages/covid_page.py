@@ -1,4 +1,3 @@
-from taipy.gui.custom import Page
 # Add the parent directory of `back_end` to sys.path
 from pathlib import Path
 import sys
@@ -127,8 +126,5 @@ selected_countries = ["France"]  # List of countries to process
 covid_filtered = (get_covid_filtered(covid_data_frame, selected_countries))
 option_e = echarts_option(covid_filtered, selected_countries)
 
-# Define xprjson file name
-xprjson_file_name = "covid_page.xprjson"
-# Create a Page instance with the resource handler
-page = Page(PureHTMLResourceHandler())
+page = ExtenedPage("covid_page.xprjson")
 
