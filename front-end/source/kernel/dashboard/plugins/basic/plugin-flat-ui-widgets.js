@@ -215,18 +215,14 @@ function flatUiWidgetsPluginClass() {
   this.buttonFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
-    const $rootScope = angular.element(document.body).scope().$root;
-
+    const isTaipyLink = xDashConfig.taipyLink === 'true';
     this.numberOfTriggers = modelsParameters[idInstance].numberOfTriggers;
-
     this.enable = function () {};
-
     this.disable = function () {};
-
     this.readFileEvt = function () {
       const input = $('#button' + idWidget + '_select_file');
       input.on('change', function (e) {
-        if ($rootScope.taipyLink) {
+        if (isTaipyLink) {
           e.stopPropagation();
           e.preventDefault();
           const endAction = () => triggerTaipyFunction(idInstance);
@@ -326,7 +322,6 @@ function flatUiWidgetsPluginClass() {
         content = icon + ' ' + text;
       }
 
-      const isTaipyLink = $rootScope.taipyLink;
       let divContent = '';
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
