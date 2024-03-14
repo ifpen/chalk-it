@@ -3,7 +3,6 @@ from pathlib import Path
 # Add the parent directory of `back_end` to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
-from taipy.gui.custom import Page
 import geopandas as gpd
 from shapely.geometry import shape
 import folium
@@ -51,5 +50,4 @@ folium.Marker(
 # String to sent to Chalk'it
 #map_html = map._repr_html_()
 
-# Create a Page instance with the resource handler
-page = Page(PureHTMLResourceHandler())
+page = ExtenedPage("folium_map.xprjson")

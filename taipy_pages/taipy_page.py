@@ -30,5 +30,4 @@ def on_change(state, var, val):
 def run_simul(state):
     print("running simulation")
 
-# Create a Page instance with the resource handler
 page = ExtenedPage("taipy_page.xprjson")
