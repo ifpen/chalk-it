@@ -36,16 +36,13 @@ class FunctionJsonAdapter(JsonAdapter):
             o.savefig(buf, format='png')
             buf.seek(0)
             img_str = base64.b64encode(buf.read()).decode('UTF-8')    
-            return img_str
+            return {"type":"png", "content" : img_str}
         elif "PIL.Image.Image" in str(type(o)):
             return self._image_to_base64(o)
         elif isinstance(o, _MapDict):
             o_=o._dict
             o__r = replace_nan(o_)
             return o__r
-        #else:
-        #   o_=super().parse(o)
-        #   return replace_nan(o_)
 
     @staticmethod
     def _image_to_base64(image):
