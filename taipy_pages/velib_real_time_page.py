@@ -3,7 +3,6 @@ from pathlib import Path
 # Add the parent directory of `back_end` to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
-from taipy.gui.custom import Page
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
@@ -193,7 +192,4 @@ def on_change(state, var, val):
         dockBar = val
         state.echarts_option_json = generate_echarts_bar_graph(state.dfg, dockBar)
 
-# Define xprjson file name
-xprjson_file_name = "velib_real_time_page.xprjson"
-# Create a Page instance with the resource handler
-page = Page(PureHTMLResourceHandler())
+page = ExtenedPage("velib_real_time_page.xprjson")

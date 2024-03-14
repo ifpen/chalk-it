@@ -31,7 +31,7 @@ class FunctionJsonAdapter(JsonAdapter):
             return o._repr_html_()
         elif "geopandas.geodataframe.GeoDataFrame" in str(type(o)):
             return replace_nan(json.loads(o.to_json()))
-        if "matplotlib.figure.Figure" in str(type(o)): # seems impossible in other thread than main thread
+        elif "matplotlib.figure.Figure" in str(type(o)): # seems impossible in other thread than main thread
             buf = io.BytesIO()
             o.savefig(buf, format='png')
             buf.seek(0)

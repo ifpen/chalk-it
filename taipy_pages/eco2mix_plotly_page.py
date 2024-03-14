@@ -3,7 +3,6 @@ from pathlib import Path
 # Add the parent directory of `back_end` to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
-from taipy.gui.custom import Page
 import pandas as pd
 import requests
 import plotly.graph_objects as go
@@ -101,7 +100,4 @@ def on_change(state, var, val):
     elif var == 'bSampling':
         state.fig_data, state.fig_pie = update_exec(state.df, state.date, val)
 
-# Define xprjson file name
-xprjson_file_name = "eco2mix_plotly_page.xprjson"
-# Create a Page instance with the resource handler
-page = Page(PureHTMLResourceHandler())
+page = ExtenedPage("eco2mix_plotly_page.xprjson")
