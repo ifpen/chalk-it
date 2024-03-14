@@ -1,25 +1,19 @@
 import json
 import os
 import inspect
-from taipy.gui.custom import Page
+from taipy.gui.custom import Page, ResourceHandler
 import typing as t
-from .resource_handler import ResourceHandler, PureHTMLResourceHandler
+from .resource_handler import PureHTMLResourceHandler
+import pathlib
+import typing as t
+from os import sep
 
 class ChalkitPage(Page):
-    def __init__(
-        self, resource_handler: ResourceHandler = PureHTMLResourceHandler(), binding_variables: t.Optional[t.List[str]] = [], **kwargs
-    ) -> None:
-        super().__init__(resource_handler=resource_handler, binding_variables=binding_variables, **kwargs)
-        
-        #self._resource_handler = resource_handler
-        #self._binding_variables = binding_variables
-        
-        # # Get the path of the script that is creating an instance of this class
-        # self.caller_file = inspect.stack()[1].filename
-        # self.caller_dir = os.path.dirname(self.caller_file)
-        # self.filepath = os.path.join(self.caller_dir, xpjrson_file_name)
-        
-        # self.current_xprjson_content = ''
+    def __init__(self, file_path: str):
+        root_path = f"{str(pathlib.Path(inspect.stack()[1].filename).parent.resolve())}{sep}"
+        # Define xprjson file name
+        xprjson_file_name = file_path # not working  yet
+        super().__init__(resource_handler=PureHTMLResourceHandler(), metadata={"file_path": root_path + file_path})
         
         # if not os.path.exists(self.filepath):
         #     # Create the file if it does not exist

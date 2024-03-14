@@ -1,4 +1,5 @@
 from .resource_handler import PureHTMLResourceHandler
+from .chalkit_page import ChalkitPage
 from .chalkit_manager import (
     xprjson_file_name,
 	upload_file_name,
@@ -20,4 +21,5 @@ __all__=["xprjson_file_name",
          "save_file",
          "select_file",
          "get_file_list",
-		 "PureHTMLResourceHandler"]
+		 "PureHTMLResourceHandler",
+         "ChalkitPage"]
