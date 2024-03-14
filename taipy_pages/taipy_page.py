@@ -27,6 +27,9 @@ selectd_count = 40
 def on_change(state, var, val):
     if ((var == 'a') or (var == 'b')):
         state.c = state.a + state.b * 2
+        
+def run_simul(state):
+    print("running simulation")
 
 xprjson_file_name = "taipy_page.xprjson"
 # Create a Page instance with the resource handler
