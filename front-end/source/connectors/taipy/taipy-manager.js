@@ -325,7 +325,7 @@ class TaipyManager {
 
       const encodedVarName = this.app.getEncodedName('upload_file_name', this.currentContext);
       const printProgressUpload = (progress) => console.log(progress);
-      const result = this.app.upload('', files, printProgressUpload);
+      const result = await this.app.upload('', files, printProgressUpload);
       this.#notify('File upload', result, 'success');
       callback();
     } catch (error) {
