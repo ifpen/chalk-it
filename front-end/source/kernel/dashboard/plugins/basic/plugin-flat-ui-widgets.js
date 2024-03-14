@@ -229,10 +229,9 @@ function flatUiWidgetsPluginClass() {
         if ($rootScope.taipyLink) {
           e.stopPropagation();
           e.preventDefault();
-          const endAction = () => {
-            triggerTaipyFunction(idInstance);
-          };
-          taipyManager.uploadFile(e, endAction);
+          const endAction = () => triggerTaipyFunction(idInstance);
+          const displaySpinner = (status) => setFileUploadSpinner(idWidget, status);
+          taipyManager.uploadFile(e, endAction, displaySpinner);
           return;
         }
         const file = e.target.files[0];
@@ -316,7 +315,6 @@ function flatUiWidgetsPluginClass() {
       }"`;
 
       this.setButtonColorStyle();
-      let divContent = '';
 
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
@@ -328,11 +326,14 @@ function flatUiWidgetsPluginClass() {
         content = icon + ' ' + text;
       }
 
+      const isTaipyLink = $rootScope.taipyLink;
+      let divContent = '';
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
-          const fileInput = `<input onclick="displaySpinner('${idWidget}')" type="file" style="display: none;" id="button${idWidget}_select_file"></input>`;
+          const onClickAttribute = isTaipyLink ? '' : `onclick="displayLoadSpinner('${idWidget}')"`;
+          const fileInput = `<input ${onClickAttribute} type="file" style="display: none;" id="button${idWidget}_select_file"></input>`;
           divContent += `<a ${styleDef} id="button${idWidget}">${content}${fileInput}</a>`;
-        } else if ($rootScope.taipyLink) {
+        } else if (isTaipyLink) {
           divContent += `<a onclick="triggerTaipyFunction('${idInstance}')" ${styleDef} id="button${idWidget}">${content}</a>`;
         } else {
           divContent += `<a onclick="updateWidgetDataNode('${idInstance}', '${idWidget}')" ${styleDef} id="button${idWidget}">${content}</a>`;

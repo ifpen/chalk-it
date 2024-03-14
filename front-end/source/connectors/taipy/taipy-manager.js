@@ -315,22 +315,34 @@ class TaipyManager {
    * @async
    * @param {Event} event - The event triggered by the file input element, used to get the selected files.
    * @param {Function} callback - A callback function to be called upon successful upload of the file.
+   * @param {Function} displaySpinner - A function to control the display of a spinner during the upload process.
+   * Accepts a string argument ('add' or 'remove') to show or hide the spinner, respectively.
    * @returns {Promise<void>} A promise that resolves when the upload process is complete. This method does not return any value,
    * but it ensures that the callback is called after the upload completion or the error notification is triggered upon failure.
    */
-  async uploadFile(event, callback) {
+  async uploadFile(event, callback, displaySpinner) {
     try {
       const files = event.target.files;
       if (!files?.length) return;
 
+      const notice = this.#notify('File uploading in progress...', '', 'info', 0, false);
       const encodedVarName = this.app.getEncodedName('upload_file_name', this.currentContext);
-      const printProgressUpload = (progress) => console.log(progress);
+      displaySpinner('add');
+      const printProgressUpload = (progress) => {
+        notice.update({
+          text: `[${progress.toFixed(1)}% completed]`,
+        });
+        console.log(progress.toFixed(2));
+      };
       const result = await this.app.upload('', files, printProgressUpload);
-      this.#notify('File upload', result, 'success');
+      displaySpinner('remove');
+      notice.remove();
+      this.#notify('File upload', result, 'success', 2000);
       callback();
     } catch (error) {
+      displaySpinner('remove');
       console.log('Upload failed', error);
-      this.#notify('File upload', error, 'error');
+      this.#notify('File upload', error, 'error', 2000);
     }
   }
 
@@ -498,27 +510,26 @@ class TaipyManager {
   }
 
   /**
-   * Displays a notification using PNotify with the specified title, text, and type.
-   * Users can also manually close the notification by clicking on it.
+   * Displays a notification using PNotify with the specified title, text, type, and delay.
+   * This method allows for automatic closing of the notification after a specified delay
+   * and gives users the option to manually close the notification by clicking on it.
    *
    * @method notify
    * @private
    * @param {string} title - The title of the notification to be displayed.
    * @param {string} text - The text content of the notification.
    * @param {string} type - The type of the notification, which determines the notification's styling.
-   * @returns {void} This method does not return a value.
+   * @param {number} delay - The delay in milliseconds before the notification automatically closes.
+   * @param {boolean} [hide=true] - Optional. Determines if the notification should be automatically hidden after the delay.
+   * If set to false, the notification remains visible until manually closed by the user.
+   * @returns {PNotify} Returns the PNotify instance created for the notification.
    */
-  #notify(title, text, type) {
-    const notice = new PNotify({
-      title,
-      text,
-      type: type === 'error' ? 'Upload failed' : 'success',
-      delay: 1000,
-      styling: 'bootstrap3',
-    });
+  #notify(title, text, type, delay, hide = true) {
+    const notice = new PNotify({ title, text, type, delay, hide, styling: 'bootstrap3' });
     $('.ui-pnotify-container').on('click', function () {
       notice.remove();
     });
+    return notice;
   }
 
   /**
