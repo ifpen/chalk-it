@@ -332,7 +332,7 @@ class TaipyManager {
         notice.update({
           text: `[${progress.toFixed(1)}% completed]`,
         });
-        console.log(progress.toFixed(2));
+        // console.log(progress.toFixed(2));
       };
       const result = await this.app.upload('', files, printProgressUpload);
       displaySpinner('remove');
