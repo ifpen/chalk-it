@@ -306,38 +306,31 @@ class TaipyManager {
   }
 
   /**
-   * Uploads one or more files to the server by creating a temporary file in the directory and tracks the upload progress.
+   * Asynchronously uploads one or more selected files to the server by creating a temporary file in a predefined directory,
+   * while tracking and logging the upload progress. It executes a callback function upon the successful completion of all file uploads.
    * The directory path is defined in the "upload_folder" variable on the Taipy page.
-   *
-   * This function is designed to handle multiple files and execute a callback upon successful completion,
-   * making it suitable for operations that require post-upload processing.
    *
    * @method uploadFile
    * @public
+   * @async
    * @param {Event} event - The event triggered by the file input element, used to get the selected files.
    * @param {Function} callback - A callback function to be called upon successful upload of the file.
-   * @returns {void} This method does not return a value.
+   * @returns {Promise<void>} A promise that resolves when the upload process is complete. This method does not return any value,
+   * but it ensures that the callback is called after the upload completion or the error notification is triggered upon failure.
    */
-  uploadFile(event, callback) {
+  async uploadFile(event, callback) {
     try {
       const files = event.target.files;
+      if (!files?.length) return;
+
       const encodedVarName = this.app.getEncodedName('upload_file_name', this.currentContext);
-      const printProgressUpload = (progress) => {
-        console.log(progress);
-      };
-      if (files?.length) {
-        this.app.upload(encodedVarName, files, printProgressUpload).then(
-          (value) => {
-            console.log('upload successful', value);
-            callback();
-          },
-          (reason) => {
-            console.log('upload failed', reason);
-          }
-        );
-      }
+      const printProgressUpload = (progress) => console.log(progress);
+      const result = await this.app.upload('', files, printProgressUpload);
+      this.#notify('File upload', result, 'success');
+      callback();
     } catch (error) {
-      this.#handleError('Error uploading file', error);
+      console.log('Upload failed', error);
+      this.#notify('File upload', error, 'error');
     }
   }
 
@@ -502,6 +495,30 @@ class TaipyManager {
   #handleError(message, error) {
     swal('Please check and reload the page', message, 'error');
     console.error(`${message}:`, error);
+  }
+
+  /**
+   * Displays a notification using PNotify with the specified title, text, and type.
+   * Users can also manually close the notification by clicking on it.
+   *
+   * @method notify
+   * @private
+   * @param {string} title - The title of the notification to be displayed.
+   * @param {string} text - The text content of the notification.
+   * @param {string} type - The type of the notification, which determines the notification's styling.
+   * @returns {void} This method does not return a value.
+   */
+  #notify(title, text, type) {
+    const notice = new PNotify({
+      title,
+      text,
+      type: type === 'error' ? 'Upload failed' : 'success',
+      delay: 1000,
+      styling: 'bootstrap3',
+    });
+    $('.ui-pnotify-container').on('click', function () {
+      notice.remove();
+    });
   }
 
   /**

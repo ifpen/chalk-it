@@ -227,7 +227,12 @@ function flatUiWidgetsPluginClass() {
       const input = $('#button' + idWidget + '_select_file');
       input.on('change', function (e) {
         if ($rootScope.taipyLink) {
-          taipyManager.uploadFile(e);
+          e.stopPropagation();
+          e.preventDefault();
+          const endAction = () => {
+            triggerTaipyFunction(idInstance);
+          };
+          taipyManager.uploadFile(e, endAction);
           return;
         }
         const file = e.target.files[0];
@@ -303,14 +308,12 @@ function flatUiWidgetsPluginClass() {
       if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
         fontSize = modelsParameters[idInstance].buttonFontSize;
       }
-      const styleDef =
-        'style="height: inherit; font-size: calc(7px + ' +
-        fontSize * getFontFactor() +
-        'vw + 0.4vh); ' +
-        this.buttonFontFamily() +
-        '" class="btn btn-table-cell btn-lg ' +
-        idInstance +
-        'widgetCustomColor';
+
+      const styleDef = `style="height: inherit; font-size: calc(7px + ${
+        fontSize * getFontFactor()
+      }vw + 0.4vh); ${this.buttonFontFamily()}" class="btn btn-table-cell btn-lg ${idInstance}widgetCustomColor ${
+        !this.bIsInteractive ? ' /*disabled*/' : ''
+      }"`;
 
       this.setButtonColorStyle();
       let divContent = '';
@@ -327,30 +330,16 @@ function flatUiWidgetsPluginClass() {
 
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
-          const fileInput =
-            '<input onclick="displaySpinnerOnInputFileButton(\'' +
-            idWidget +
-            '\')" type="file" style="display : none;" id="button' +
-            idWidget +
-            '_select_file"></input>';
-          divContent += '<a ' + styleDef + '" id="button' + idWidget + '">' + content + fileInput + '</a>';
+          const fileInput = `<input onclick="displaySpinner('${idWidget}')" type="file" style="display: none;" id="button${idWidget}_select_file"></input>`;
+          divContent += `<a ${styleDef} id="button${idWidget}">${content}${fileInput}</a>`;
+        } else if ($rootScope.taipyLink) {
+          divContent += `<a onclick="triggerTaipyFunction('${idInstance}')" ${styleDef} id="button${idWidget}">${content}</a>`;
         } else {
-          divContent +=
-            '<a onclick="updateDataNodeFromWidgetwithspinButton( \'' +
-            idInstance +
-            "', '" +
-            idWidget +
-            '\')" ' +
-            styleDef +
-            '" id="button' +
-            idWidget +
-            '">' +
-            content +
-            '</a>';
+          divContent += `<a onclick="updateWidgetDataNode('${idInstance}', '${idWidget}')" ${styleDef} id="button${idWidget}">${content}</a>`;
         }
         self.enable();
       } else {
-        divContent += '<a ' + styleDef + ' /*disabled*/" id="button' + idWidget + '">' + content + '</a>';
+        divContent += `<a ${styleDef} id="button${idWidget}">${content}</a>`;
         self.disable();
       }
       widgetHtml.innerHTML = divContent;
