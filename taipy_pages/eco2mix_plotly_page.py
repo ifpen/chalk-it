@@ -100,4 +100,4 @@ def on_change(state, var, val):
     elif var == 'bSampling':
         state.fig_data, state.fig_pie = update_exec(state.df, state.date, val)
 
-page = ExtenedPage("eco2mix_plotly_page.xprjson")
+page = ChalkitPage("eco2mix_plotly_page.xprjson")

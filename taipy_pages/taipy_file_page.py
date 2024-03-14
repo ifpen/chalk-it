@@ -15,4 +15,4 @@ def upload_file(state):
 def on_change(state, var, val):
     state.c = state.a + state.b * 2
 
-page = ExtenedPage("taipy_page.xprjson")
+page = ChalkitPage("taipy_page.xprjson")

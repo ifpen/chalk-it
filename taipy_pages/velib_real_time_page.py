@@ -192,4 +192,4 @@ def on_change(state, var, val):
         dockBar = val
         state.echarts_option_json = generate_echarts_bar_graph(state.dfg, dockBar)
 
-page = ExtenedPage("velib_real_time_page.xprjson")
+page = ChalkitPage("velib_real_time_page.xprjson")
