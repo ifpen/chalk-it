@@ -62,7 +62,7 @@ class TaipyManager {
    */
   onInit(app) {
     this.currentContext = app.getContext();
-    this.xprjsonFileName = app.getDataTree()[this.currentContext]['xprjson_file_name']?.value ?? '';
+    this.xprjsonFileName = app.getPageMetadata()['xprjson_file_name'];
     this.processVariableData();
     if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
       // To load the xprjsonFileName if it exists
@@ -168,11 +168,6 @@ class TaipyManager {
         }
       }
 
-      // fileSelect
-      if (encodedName.includes('xprjson_file_name')) {
-        this.loadFile();
-      }
-
       // loadFile
       if (encodedName.includes('json_data')) {
         if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
@@ -214,30 +209,12 @@ class TaipyManager {
   saveFile(xprjson, actionName) {
     try {
       const action_name = actionName ?? 'first_action';
-      this.app.trigger('save_file', action_name, { data: JSON.stringify(xprjson, null, '\t') });
+      this.app.trigger('save_file', action_name, {
+        data: JSON.stringify(xprjson, null, '\t'),
+        xprjson_file_name: this.xprjsonFileName,
+      });
     } catch (error) {
       this.#handleError('Error saving file', error);
-    }
-  }
-
-  /**
-   * Triggers an event when a user selects a file, specifying the file name.
-   * This function allows to update the file path in the Taipy page.
-   *
-   * @remarks
-   * - The file must be in the same directory as the base directory specified in the Taipy page.
-   * - Once the file is selected, it can be opened using the loadFile function.
-   *
-   * @method fileSelect
-   * @public
-   * @param {string} fileName - Name of the selected file.
-   * @returns {void} This method does not return a value.
-   */
-  fileSelect(fileName) {
-    try {
-      this.app.trigger('select_file', 'first_action', { xprjson_file_name: fileName });
-    } catch (error) {
-      this.#handleError('Error selecting file', error);
     }
   }
 
@@ -266,23 +243,18 @@ class TaipyManager {
   }
 
   /**
-   * Triggers an event to load a file from a specified path.
-   *
-   * This method emits an event to signal the application to read a file.
-   * The path of the file to load must be specified in the Taipy page and can be modified using the fileSelect function.
-   *
-   * @remarks
-   * - The file to be loaded can be modified by passing the name of the new file to the fileSelect function.
-   * - The new file must be in the same directory as the current file.
-   * - The directory path must be specified in the Taipy page.
+   * Triggers an event to load a file.
+   * This method emits an event to signal the application to read a file, facilitating
+   * the process of loading content dynamically based on the file name provided.
    *
    * @method loadFile
    * @public
+   * @param {string} fileName - Name of the file to be loaded.
    * @returns {void} This method does not return a value.
    */
-  loadFile() {
+  loadFile(fileName) {
     try {
-      this.app.trigger('load_file', 'first_action');
+      this.app.trigger('load_file', 'first_action', { xprjson_file_name: fileName });
     } catch (error) {
       this.#handleError('Error loading file', error);
     }

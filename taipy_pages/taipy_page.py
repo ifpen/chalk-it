@@ -3,7 +3,6 @@ from pathlib import Path
 # Add the parent directory of `back_end` to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
-from taipy.gui.custom import Page
 import plotly.express as px
 
 a = 8
@@ -28,6 +27,5 @@ def on_change(state, var, val):
     if ((var == 'a') or (var == 'b')):
         state.c = state.a + state.b * 2
 
-xprjson_file_name = "taipy_page.xprjson"
 # Create a Page instance with the resource handler
-page = Page(PureHTMLResourceHandler())
+page = ExtenedPage("taipy_page.xprjson")

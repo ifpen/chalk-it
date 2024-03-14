@@ -1,23 +1,21 @@
 from .resource_handler import PureHTMLResourceHandler
+from .chalkit_page import ExtenedPage
 from .chalkit_manager import (
-    xprjson_file_name,
 	upload_file_name,
     json_data,
     has_file_saved,
     file_list,
     load_file,
     save_file,
-    select_file,
     get_file_list
 )
 
-__all__=["xprjson_file_name",
-		 "upload_file_name",
+__all__=["upload_file_name",
          "json_data",
          "has_file_saved",
          "file_list",
          "load_file",
          "save_file",
-         "select_file",
          "get_file_list",
-		 "PureHTMLResourceHandler"]
+		 "PureHTMLResourceHandler",
+		 "ExtenedPage"]
