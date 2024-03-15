@@ -169,7 +169,7 @@ modelsParameters.flatUiButton = {
   buttonHoverColor: 'var(--widget-button-hover-color)',
 };
 modelsParameters.flatUiFileInputButton = {
-  text: 'Push button',
+  text: 'Load file',
   numberOfTriggers: 1,
   fileInput: true,
   binaryFileInput: false,
