@@ -303,10 +303,7 @@ function doubleSliderWidgetsPluginClass() {
         self.disable();
       },
       setCaption: function (caption, bCaptionManuallyChanged) {},
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      clearCaption: function () {},
     };
 
     this.maxValue = {
@@ -351,10 +348,7 @@ function doubleSliderWidgetsPluginClass() {
         self.disable();
       },
       setCaption: function (caption, bCaptionManuallyChanged) {},
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      clearCaption: function () {},
     };
 
     self.maxRange = {
