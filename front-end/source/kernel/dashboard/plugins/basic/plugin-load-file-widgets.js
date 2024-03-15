@@ -428,16 +428,8 @@ function loadFileWidgetsPluginClass() {
       removeValueChangedHandler: function (updateDataFromWidget) {
         self.disable();
       },
-      setCaption: function (caption, bCaptionManuallyChanged) {
-        if (modelsParameters[idInstance].inheritLabelFromData) {
-          self.captionHelper(caption, self.bIsInteractive, bCaptionManuallyChanged);
-          self.render();
-        }
-      },
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      setCaption: function (caption, bCaptionManuallyChanged) {},
+      clearCaption: function () {},
     };
 
     self.render();

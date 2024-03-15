@@ -251,7 +251,9 @@ function timePickerWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };
