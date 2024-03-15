@@ -401,10 +401,11 @@ function mapGeoJsonWidgetsPluginClass() {
           };
           break;
         case geoJsonTools.equivalenceTypes.MultiPolygon:
-          return {
+          let commonStyle = {
+
             layer: index + 1,
-            name: 'layer ' + (index + 1),
-            showLegend: false,
+            name: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'layer ') + (index + 1),
+            showLegend: true,
             type: 'Multi Polygon',
             stroke: true,
             color: 'black',
@@ -422,7 +423,7 @@ function mapGeoJsonWidgetsPluginClass() {
               properties: [...allProp],
             },
             legend: {
-              title: '',
+              title: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'Legend ') + (index + 1),
             },
             events: {
               mouseover: {
@@ -446,7 +447,14 @@ function mapGeoJsonWidgetsPluginClass() {
                 },
               },
             },
-          };
+          }
+          if(index==modelsHiddenParams[idInstance].GeoJSON.length -1){
+            return  commonStyle;
+          }else {
+            return { ...commonStyle,showLegend:false
+            };
+          }
+         
           break;
         case geoJsonTools.equivalenceTypes.MultiPoint:
           if (allProp.includes('html') || allProp.includes('awesomeMarker') || typeLayer == L.marker) {
