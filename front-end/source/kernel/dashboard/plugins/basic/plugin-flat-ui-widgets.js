@@ -1572,12 +1572,12 @@ function flatUiWidgetsPluginClass() {
       flatUiButton: {
         factory: 'buttonFlatUiWidget',
         title: 'Trigger button',
-        icn: 'button',
+        icn: 'trigger',
         help: 'wdg/wdg-basics/#push-button',
       },
       flatUiFileInputButton: {
         factory: 'buttonFlatUiWidget',
-        title: 'Load file',
+        title: 'Load file button',
         icn: 'button',
         help: 'wdg/wdg-basics/#push-button',
       },      
