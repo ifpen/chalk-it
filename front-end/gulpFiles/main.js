@@ -886,6 +886,10 @@ task('copy-starter', function () {
   return src(['../source/starter-browser-compatibility.js']).pipe(dest(buildDirPath));
 });
 
+task('copy-taipy-worker', function () {
+  return src(['../source/connectors/taipy/677.taipy-gui-base.js']).pipe(dest(buildDirPath));
+});
+
 task(
   'build',
   series(
@@ -896,6 +900,7 @@ task(
     'mkdocs',
     'template',
     'copy-starter',
+    'copy-taipy-worker',
     //'createConfigurationFile',
     //'usemin:xdash_editor:header',
     //'usemin:xdash_editor:body',
@@ -913,7 +918,7 @@ task(
 
 task(
   'build:runtime',
-  series('clear:cache', 'clear:build', 'sass', 'init', 'template', 'copy-starter', 'inject:files:view', 'images')
+  series('clear:cache', 'clear:build', 'sass', 'init', 'template', 'copy-starter', 'copy-taipy-worker', 'inject:files:view', 'images')
 );
 
 task(
@@ -925,6 +930,7 @@ task(
     'init',
     'template',
     'copy-starter',
+    'copy-taipy-worker',    
     'inject:files:prod',
     'inject:files:pyodide_worker',
     'inject:files:view',
