@@ -1,13 +1,29 @@
-from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory, render_template_string
+from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory, render_template_string, logging
 import os
 from pathlib import Path
 import json
-import logging
+import re
 
 app = Flask(__name__)
 
 xprjson = 'dashboard.xprjson'
 DEBUG = False
+
+def get_version(start_path):
+    """
+    Search for a file with a pattern 'index-view-<version>.html' in the specified directory
+    and extract the version number.
+    
+    :param start_path: Directory path where to start the search
+    :return: The version number as a string if found, else None
+    """
+    pattern = re.compile(r'index-view-(\d+\.\d+\.\d+)\.html')
+    for file in os.listdir(start_path):
+        match = pattern.match(file)
+        if match:
+            return "-"+ match.group(1)
+    return "" #debug mode
+
 
 dir_home = os.path.expanduser("~")
 
@@ -16,20 +32,14 @@ settings_file_path = os.path.join(dir_settings_path, 'settings.json')
 
 if (DEBUG):
     dir_name = os.path.dirname(__file__)
-
-    dir_temp_path = os.path.join(dir_name, '../documentation/Templates/Projects')
-    dir_images_path = os.path.join(dir_name, '../documentation/Templates/Images')
-
-    dir_project_path = dir_name
+    dir_html_tmp = dir_name
 else:
     dir_temp_name = os.path.dirname(__file__)
-    
-    dir_temp_path = os.path.join(dir_temp_name, './Templates/Projects')
-    dir_images_path = os.path.join(dir_temp_name, './Templates/Images')
+    dir_html_tmp = os.path.join(os.path.dirname(__file__), './../')
 
-    dir_name = os.getcwd()
-    dir_project_path = dir_name
+print(dir_html_tmp)
 	
+VERSION = get_version(dir_html_tmp)
 
 def throw_error(error):
     logging.error(error, exc_info=True)
@@ -61,7 +71,7 @@ def dashboard(xprjson):
         config_data = json.load(config_file)
 
     # Read the HTML template
-    index_view_path = os.path.join(os.path.dirname(dir_temp_name), 'index-view-2.930.8710.html')
+    index_view_path = os.path.join(os.path.dirname(dir_temp_name), 'index-view' + VERSION + '.html')
     with open(index_view_path, 'r') as template_file:
         template_data = template_file.read()
 

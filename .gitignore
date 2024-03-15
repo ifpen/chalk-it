@@ -81,3 +81,4 @@ ipch/
 .vscode/
 /*.xprjson
 **/__pycache__
+taipy_pages/*_recovery.xprjson

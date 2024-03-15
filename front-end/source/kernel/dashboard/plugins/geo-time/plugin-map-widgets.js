@@ -1113,10 +1113,7 @@ function mapWidgetsPluginClass() {
         },
         removeValueChangedHandler: function (updateDataFromWidget) {},
         setCaption: function (caption) {},
-        clearCaption: function () {
-          modelsParameters[idInstance].label = '';
-          self.render();
-        },
+        clearCaption: function () {},
       };
     }
 
@@ -1137,10 +1134,7 @@ function mapWidgetsPluginClass() {
         },
         removeValueChangedHandler: function (updateDataFromWidget) {},
         setCaption: function (caption) {},
-        clearCaption: function () {
-          modelsParameters[idInstance].label = '';
-          self.render();
-        },
+        clearCaption: function () {},
       };
     }
 
@@ -2154,12 +2148,17 @@ function mapWidgetsPluginClass() {
       const featureTitle = imgStruct.title;
       const addAs = imgStruct.addAs;
 
+      //add options :
+      const options = imgStruct.options;
+
       if (!_.isEmpty(self.mapLayers.imageOverlay.imageLayers[layerIndex - 1])) {
         self.ctrl.removeLayer(self.mapLayers.imageOverlay.imageLayers[layerIndex - 1]);
         self.map.removeLayer(self.mapLayers.imageOverlay.imageLayers[layerIndex - 1]);
       }
 
-      self.mapLayers.imageOverlay.imageLayers[layerIndex - 1] = L.imageOverlay(imageUrl, imageBounds).addTo(self.map);
+      self.mapLayers.imageOverlay.imageLayers[layerIndex - 1] = L.imageOverlay(imageUrl, imageBounds, options).addTo(
+        self.map
+      );
 
       if (addAs == 'overlay')
         self.ctrl.addOverlay(self.mapLayers.imageOverlay.imageLayers[layerIndex - 1], featureTitle);

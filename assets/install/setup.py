@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
-import os
+import json
 
 NAME = "taipy-designer"
 VERSION = "0.5.0"
 
 with open("README.md", "r") as fh:
     readme = fh.read()
-
+    
 setup(
     name=NAME,
     version=VERSION,

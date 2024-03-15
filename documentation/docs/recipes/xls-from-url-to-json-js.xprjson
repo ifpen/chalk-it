@@ -33,7 +33,7 @@
 					"name": "tab",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "var dfDict = datasources[\"xlsxToJson\"];\nvar headers = _.keys( dfDict );\nvar tab = [];\n\n_.each(headers, (header) => {\n\ttab.push(_.values(dfDict[header]));\n});\n\nvar tabOfRows = _.unzip(tab);\n\ntabOfRows.unshift(headers);\nreturn tabOfRows;"
+					"json_var_formula": "var dfDict = dataNodes[\"xlsxToJson\"];\nvar headers = _.keys( dfDict );\nvar tab = [];\n\n_.each(headers, (header) => {\n\ttab.push(_.values(dfDict[header]));\n});\n\nvar tabOfRows = _.unzip(tab);\n\ntabOfRows.unshift(headers);\nreturn tabOfRows;"
 				}
 			},
 			{
@@ -47,7 +47,7 @@
 						"name": "default",
 						"id": ""
 					},
-					"content": "import pandas as pd\nimport base64\nimport io\n\nbuffer = io.BytesIO(base64.b64decode(datasources[\"simpleXls\"][\"content\"]))\niso = pd.read_excel(buffer, sheet_name='Feuil1')\n\nreturn iso.to_dict()",
+					"content": "import pandas as pd\nimport base64\nimport io\n\nbuffer = io.BytesIO(base64.b64decode(dataNodes[\"simpleXls\"][\"content\"]))\niso = pd.read_excel(buffer, sheet_name='Feuil1')\n\nreturn iso.to_dict()",
 					"signature": "610e0224b6394539b9ce1a6df5c58ac782bf90350f4f9b131a4e6a604008c9c2de951133f39481583ac0832ec5ef2296ffe4ed71574648a0188ebeed307102fdc6605b5c590acd51021d7014d1e42a8bf8832a81cef1710e825d57591ad9bf4c951d8dc8a1144d03b6f706400a05f94aac95a2fa8fe6feed22c10b88084b38739c0cd8a9036ae17c5eb9f4ac57e5cbebff40e4bd16cd6fcd197212fa206dabf96349eb670d18780756e1aca3a6271f1a6c14bbc834ba46ff4571dc3e0faeb02103d4f810302520b7a06bcd5b6e684072da5916f67719af0fcfa2a4a043fbb7ed992640356029b6b8ca51eee3d8444e664c16ebe238360ebb8caf7b10830d3e0f10e22752a23faf3a54da008b19e67d0b4ec91d576c026557f40ea9ff3057718c7cad3344b77c157cac91b2fef35084fc3a36721aac38f5cadaeea2a794b4a0b39b511f7c6d41ea7e371a83c637c6047f0cd1c7cc982c073be68e7dcdc7b63661289467ea440da832bc80216ec9534b8805619c22829dd9418ed0b133d889e104e0b3aca4d880283512059283bec2263b4c4c3989a9e32d534a17185b6a4f6c34566feb6ea10656c3e6ae5b36d999633ffd9084851ed365bfe7e7a84b1bea25c35b8bb8524256d642f2932e5482a2b05144303d79ef3c32ea8fa67b09221e9d6fd87a2767cac6fc9f46f4b823b64b216c919ece8aa6ace6f1a61a59874d01cd0e"
 				}
 			},

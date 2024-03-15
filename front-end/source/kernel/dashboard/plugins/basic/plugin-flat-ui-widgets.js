@@ -168,6 +168,20 @@ modelsParameters.flatUiButton = {
   buttonActiveColor: 'var(--widget-button-active-color)',
   buttonHoverColor: 'var(--widget-button-hover-color)',
 };
+modelsParameters.flatUiFileInputButton = {
+  text: 'Load file',
+  numberOfTriggers: 1,
+  fileInput: true,
+  binaryFileInput: false,
+  buttonFontSize: 0.3,
+  displayIcon: false,
+  fontAwesomeIcon: '',
+  buttonFontFamily: 'var(--widget-font-family)',
+  buttonTextColor: 'var(--widget-button-primary-text)',
+  buttonDefaultColor: 'var(--widget-button-primary-color)',
+  buttonActiveColor: 'var(--widget-button-active-color)',
+  buttonHoverColor: 'var(--widget-button-hover-color)',
+};
 
 // Layout (default dimensions)
 modelsLayout.flatUiHorizontalSlider = { height: '5vh', width: '24vw', minWidth: '200px', minHeight: '24px' };
@@ -176,7 +190,8 @@ modelsLayout.flatUiProgressBar = { height: '5vh', width: '24vw', minWidth: '200p
 modelsLayout.flatUiTextInput = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
 modelsLayout.flatUiNumericInput = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
 modelsLayout.flatUiValueDisplay = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
-modelsLayout.flatUiButton = { height: '6vh', width: '8vw', minWidth: '55px', minHeight: '24px' };
+modelsLayout.flatUiButton = { height: '7vh', width: '9vw', minWidth: '55px', minHeight: '24px' };
+modelsLayout.flatUiFileInputButton = { height: '7vh', width: '9vw', minWidth: '55px', minHeight: '24px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -215,19 +230,23 @@ function flatUiWidgetsPluginClass() {
   this.buttonFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
-    const $rootScope = angular.element(document.body).scope().$root;
-
+    const isTaipyLink = xDashConfig.taipyLink === 'true';
     this.numberOfTriggers = modelsParameters[idInstance].numberOfTriggers;
-
     this.enable = function () {};
-
     this.disable = function () {};
-
     this.readFileEvt = function () {
       const input = $('#button' + idWidget + '_select_file');
       input.on('change', function (e) {
-        const reader = new FileReader();
+        if (isTaipyLink) {
+          e.stopPropagation();
+          e.preventDefault();
+          const endAction = () => triggerTaipyFunction(idInstance);
+          const displaySpinner = (status) => setFileUploadSpinner(idWidget, status);
+          taipyManager.uploadFile(e, endAction, displaySpinner);
+          return;
+        }
         const file = e.target.files[0];
+        const reader = new FileReader();
         const fileSize = file.size;
         let fileSizeFormat = '';
 
@@ -244,6 +263,7 @@ function flatUiWidgetsPluginClass() {
           size: fileSizeFormat,
           name: file.name,
         };
+
         reader.addEventListener('load', function (event) {
           const data = event.target.result;
           if (data instanceof ArrayBuffer) {
@@ -298,17 +318,14 @@ function flatUiWidgetsPluginClass() {
       if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
         fontSize = modelsParameters[idInstance].buttonFontSize;
       }
-      const styleDef =
-        'style="height: inherit; font-size: calc(7px + ' +
-        fontSize * getFontFactor() +
-        'vw + 0.4vh); ' +
-        this.buttonFontFamily() +
-        '" class="btn btn-table-cell btn-lg ' +
-        idInstance +
-        'widgetCustomColor';
+
+      const styleDef = `style="height: inherit; font-size: calc(7px + ${
+        fontSize * getFontFactor()
+      }vw + 0.4vh); ${this.buttonFontFamily()}" class="btn btn-table-cell btn-lg ${idInstance}widgetCustomColor ${
+        !this.bIsInteractive ? ' /*disabled*/' : ''
+      }"`;
 
       this.setButtonColorStyle();
-      let divContent = '';
 
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
@@ -320,32 +337,20 @@ function flatUiWidgetsPluginClass() {
         content = icon + ' ' + text;
       }
 
+      let divContent = '';
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
-          const fileInput =
-            '<input onclick="displaySpinnerOnInputFileButton(\'' +
-            idWidget +
-            '\')" type="file" style="display : none;" id="button' +
-            idWidget +
-            '_select_file"></input>';
-          divContent += '<a ' + styleDef + '" id="button' + idWidget + '">' + content + fileInput + '</a>';
+          const onClickAttribute = isTaipyLink ? '' : `onclick="displayLoadSpinner('${idWidget}')"`;
+          const fileInput = `<input ${onClickAttribute} type="file" style="display: none;" id="button${idWidget}_select_file"></input>`;
+          divContent += `<a ${styleDef} id="button${idWidget}">${content}${fileInput}</a>`;
+        } else if (isTaipyLink) {
+          divContent += `<a onclick="triggerTaipyFunction('${idInstance}')" ${styleDef} id="button${idWidget}">${content}</a>`;
         } else {
-          divContent +=
-            '<a onclick="updateDataNodeFromWidgetwithspinButton( \'' +
-            idInstance +
-            "', '" +
-            idWidget +
-            '\')" ' +
-            styleDef +
-            '" id="button' +
-            idWidget +
-            '">' +
-            content +
-            '</a>';
+          divContent += `<a onclick="updateWidgetDataNode('${idInstance}', '${idWidget}')" ${styleDef} id="button${idWidget}">${content}</a>`;
         }
         self.enable();
       } else {
-        divContent += '<a ' + styleDef + ' /*disabled*/" id="button' + idWidget + '">' + content + '</a>';
+        divContent += `<a ${styleDef} id="button${idWidget}">${content}</a>`;
         self.disable();
       }
       widgetHtml.innerHTML = divContent;
@@ -670,7 +675,9 @@ function flatUiWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };
@@ -870,7 +877,9 @@ function flatUiWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };
@@ -1139,7 +1148,9 @@ function flatUiWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };
@@ -1449,7 +1460,9 @@ function flatUiWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };
@@ -1556,10 +1569,16 @@ function flatUiWidgetsPluginClass() {
       },
       flatUiButton: {
         factory: 'buttonFlatUiWidget',
-        title: 'Push button',
-        icn: 'button',
+        title: 'Trigger button',
+        icn: 'trigger',
         help: 'wdg/wdg-basics/#push-button',
       },
+      flatUiFileInputButton: {
+        factory: 'buttonFlatUiWidget',
+        title: 'Load file button',
+        icn: 'load-file',
+        help: 'wdg/wdg-basics/#push-button',
+      },      
     },
   };
 

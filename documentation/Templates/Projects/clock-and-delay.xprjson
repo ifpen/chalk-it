@@ -35,7 +35,7 @@
 				"settings": {
 					"name": "delayed-clock",
 					"json_init": "{}",
-					"json_input": "datasources[\"clock\"]"
+					"json_input": "dataNodes[\"clock\"]"
 				}
 			}
 		],

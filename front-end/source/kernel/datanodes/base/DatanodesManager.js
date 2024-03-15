@@ -244,25 +244,52 @@ var datanodesManager = (function () {
         swal(`A dataNode with name '${newName}' adready exists.`, 'Please specify a different name', 'error');
         return true;
       }
-      if (datanodesDependency.hasSuccessors(oldName)) {
-        const successors = Array.from(datanodesDependency.getSuccessors(oldName));
-        // warning the user to set modification in formula for example
-        swal(
-          'Renaming dataNode side effects',
-          'Old name "' +
-            oldName +
-            '" is used in dataNode(s) "' +
-            successors +
-            '" and should be changed by the new one "' +
-            newName +
-            '".',
-          'warning'
+      // handle dependencies
+      if (datanodesDependency.hasSuccessors(viewModel.name())) {
+        var successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
+        xdashNotifications.manageNotification(
+          'info',
+          viewModel.name(),
+          'Update new name "' + newSettings.settings.name + '" in script of "' + successors + '"'
         );
-        //remove dependencies with former name of datanode, new dependency will be added after, when edit datanode
-        //to avoid error alert on datanode that doesn't exist anymore
-        //in the mean time user can add a new datanode with the older name OR can change the formula
-        datanodesDependency.addNode(voldName);
+        for (let prop in successors) {
+          const oldName = viewModel.name();
+          const newName = newSettings.settings.name;
+          let script = '';
+          if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_plugin') {
+            script = datanodesManager.getDataNodeByName(successors[prop]).settings().content;
+          } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
+            script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
+          }
+          replacedScript = script
+            .replace(new RegExp('dataNodes\\["' + oldName + '"\\]', 'g'), 'dataNodes["' + newName + '"]')
+            .replace(new RegExp('dataNodes\\.' + oldName, 'g'), 'dataNodes.' + newName);
+
+          datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = replacedScript;
+          if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_plugin') {
+            datanodesManager.getDataNodeByName(successors[prop]).settings().content = replacedScript;
+          } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
+            datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = replacedScript;
+          }
+        }
       }
+      // handle widget connection
+      [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
+      if (bFoundConnection) {
+        let wdList = [];
+        for (let prop in widgetConnector.widgetsConnection) {
+          for (let i in widgetConnector.widgetsConnection[prop].sliders) {
+            wdList.push(widgetConnector.widgetsConnection[prop].instanceId);
+            widgetConnector.widgetsConnection[prop].sliders[i].dataNode = newSettings.settings.name;
+          }
+        }
+        xdashNotifications.manageNotification(
+          'info',
+          viewModel.name(),
+          'Update new name "' + newSettings.settings.name + '" in connected widgets "' + wdList.join('\n') + '"'
+        );
+      }
+
       //AEF: before renaming datanode, must stop its scheduling before it disappears
       if (viewModel.execInstance() != null) {
         // scheduling is in progress

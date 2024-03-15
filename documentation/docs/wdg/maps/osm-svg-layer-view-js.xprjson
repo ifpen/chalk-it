@@ -30,7 +30,7 @@
 					"name": "wind_svgLayer",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "return {\n    \"data\": datasources[\"wind_data\"],\n    \"config\": datasources[\"wind_svgLayer_config\"]\n}; "
+					"json_var_formula": "return {\n    \"data\": dataNodes[\"wind_data\"],\n    \"config\": dataNodes[\"wind_svgLayer_config\"]\n}; "
 				}
 			},
 			{
@@ -56,7 +56,7 @@
 					"name": "wind_svgLayer_config",
 					"autoStart": true,
 					"explicitTrig": false,
-					"json_var_formula": "return {\"marker\":  datasources[\"selected\"][\"marker\"],\"title\":\"Wind direction\",\"opacity\":0.5,\"length\": datasources.configs.length, \"disableAutoscale\":datasources.configs.disableAutoscale,\"addAs\":\"overlay\"};\n"
+					"json_var_formula": "return {\"marker\":  dataNodes[\"selected\"][\"marker\"],\"title\":\"Wind direction\",\"opacity\":0.5,\"length\": dataNodes.configs.length, \"disableAutoscale\":dataNodes.configs.disableAutoscale,\"addAs\":\"overlay\"};\n"
 				}
 			},
 			{

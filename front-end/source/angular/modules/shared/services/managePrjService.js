@@ -770,7 +770,7 @@ angular.module('modules').service('ManagePrjService', [
       const currentPrjDirty = $rootScope.currentPrjDirty || '';
       $rootScope.origin = 'projectEdition';
       const commonActions = () => {
-        taipyManager.fileSelect(fileName);
+        taipyManager.loadFile(fileName);
         taipyManager.endAction = (xprjson) => {
           $rootScope.loadingBarStart();
           datanodesManager.showLoadingIndicator(true);

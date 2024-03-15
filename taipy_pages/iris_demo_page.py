@@ -7,7 +7,6 @@ import pandas as pd
 from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier
 import plotly.express as px
-from taipy.gui.custom import Page
 
 prediction = '--'
 
@@ -30,12 +29,6 @@ def train_classifier(iris):
 def plot_data(df, point_of_interest):
     fig = px.scatter(df, x="sepal width (cm)", y="sepal length (cm)", color="target", 
                      size='petal length (cm)', hover_data=['petal width (cm)'])
-    # Add a scatter trace for the point of interest with a big plus marker
-    fig.add_trace(px.scatter(x=[point_of_interest["sepal_width"]], 
-                            y=[point_of_interest["sepal_length"]],
-                            size=[point_of_interest["petal_length"]], # Optional, depends on if you want the size to matter
-                            ).update_traces(marker=dict(symbol='cross', size=12, line=dict(width=2)), 
-                                            mode='markers'))    
     return fig
 
 def make_prediction(clf, input_data):
@@ -52,15 +45,9 @@ df = create_dataframe(iris)
 clf = train_classifier(iris)
 fig = plot_data(df, input_data)
 
-
 def on_change(state, var, val):
 
     if var == 'input_data':
         state.prediction = make_prediction(clf, val)
-        plot_data(df, val)
-        
 
-# Define xprjson file name
-xprjson_file_name = "iris_demo_page.xprjson"
-# Create a Page instance with the resource handler
-page = Page(PureHTMLResourceHandler())
+page = ChalkitPage("iris_demo_page.xprjson")

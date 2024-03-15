@@ -589,6 +589,12 @@ angular
             .filter((_) => _ !== undefined);
           this._notifyChanges();
         }
+
+        filterDataNodes(sliderName) {
+          const taipyLink = angular.element(document.body).scope().$root.taipyLink;
+          const isTrigger = sliderName.startsWith('trigger');
+          return taipyLink ? this.dataNodes.filter((dn) => isTrigger === dn.isFunction) : this.dataNodes;
+        }
       },
     ],
     template: `
@@ -614,7 +620,7 @@ angular
             <label for="DS{{sliderName}}_">DataNodes</label>
             <select id="DS{{sliderName}}" ng-model="$ctrl.currentConnections.sliders[sliderName].dataNode" ng-change="$ctrl.onDatasourceChange(sliderName)">
                 <option>None</option>
-                <option ng-repeat="ds in $ctrl.dataNodes | filter: $ctrl.sliderDescriptions[sliderName].dsFilter" ng-if="$ctrl.sliderDescriptions[sliderName].trigger === ds.isFunction" ng-class="{'validated' : ds.validated[sliderName]}">{{ds.name}}</option>
+                <option ng-repeat="ds in $ctrl.filterDataNodes(sliderName) | filter: $ctrl.sliderDescriptions[sliderName].dsFilter" ng-class="{'validated' : ds.validated[sliderName]}">{{ds.name}}</option>
             </select>
         </div>
         <div class="dataconnection__col" ng-repeat="dataSelect in $ctrl.selectionCombos[sliderName].fieldsCombos">

@@ -22,8 +22,8 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- New project ----------------*/
     $scope.newProject = function () {
-      const isCurrentPrjDirty = $rootScope.currentPrjDirty !== '';
-      const hasCurrentPrjName = $rootScope.currentProject.name !== '';
+      const isCurrentPrjDirty = !!$rootScope.currentPrjDirty;
+      const hasCurrentPrjName = !!$rootScope.currentProject.name;
 
       if (!$rootScope.xDashFullVersion) {
         if (((isCurrentPrjDirty && !hasCurrentPrjName) || hasCurrentPrjName) && !$rootScope.isLiveDemo) {

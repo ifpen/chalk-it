@@ -12,6 +12,8 @@ class TaipyManager {
   #variableData;
   #deletedDnConnections;
   #endAction;
+  #ignoredVariables;
+  #ignoredFunctions;
 
   /**
    * Constructs a new TaipyManager instance.
@@ -25,6 +27,10 @@ class TaipyManager {
     this.#variableData = {};
     this.#deletedDnConnections = new Set();
     this.#endAction = undefined;
+    // Variables that will be ignored (do not create a dataNode)
+    this.#ignoredVariables = new Set(['upload_file_name', 'json_data', 'file_list', 'TaipyOnInit']);
+    // Functions that will be ignored
+    this.#ignoredFunctions = new Set(['on_change', 'load_file', 'save_file', 'get_file_list']);
   }
 
   /**
@@ -36,8 +42,9 @@ class TaipyManager {
    */
   initTaipyApp() {
     try {
-      this.app = TaipyGuiBase.createApp(this.onInit.bind(this));
-      this.app.onChange = this.onChange.bind(this);
+      this.app = TaipyGuiBase.createApp(this.#onInit.bind(this));
+      this.app.onChange = this.#onChange.bind(this);
+      this.app.onNotify = this.#onNotify.bind(this);
     } catch (error) {
       this.#handleError('Failed to initialize Taipy App', error);
     }
@@ -47,17 +54,94 @@ class TaipyManager {
    * Callback function executed upon initialization of the Taipy app.
    *
    * @method onInit
-   * @public
+   * @private
    * @param {Object} app - The initialized Taipy application instance.
    * @returns {void} This method does not return a value.
    */
-  onInit(app) {
+  #onInit(app) {
     this.currentContext = app.getContext();
-    this.xprjsonFileName = app.getDataTree()[this.currentContext]['xprjson_file_name']?.value ?? '';
+    this.xprjsonFileName = app.getPageMetadata()['xprjson_file_name'];
     this.processVariableData();
     if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
       // To load the xprjsonFileName if it exists
       this.endAction();
+    }
+  }
+
+  /**
+   * Callback function handles changes to variables within the application.
+   *
+   * @method onChange
+   * @private
+   * @param {Object} app - The application instance.
+   * @param {string} encodedName - The encoded name of the variable.
+   * @param {*} newValue - The new value of the variable.
+   * @returns {void} This method does not return a value.
+   */
+  #onChange(app, encodedName, newValue) {
+    try {
+      const [varName, context] = app.getName(encodedName);
+      if (this.currentContext !== context) return;
+
+      // Update variableData
+      this.variableData[context][varName].value = this.#deepClone(newValue);
+
+      // loadFile
+      if (encodedName.includes('json_data')) {
+        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          const jsonData = this.variableData[context][varName].value;
+          this.endAction(jsonData);
+          this.endAction = undefined;
+        }
+      }
+
+      // getFileList
+      if (encodedName.includes('file_list')) {
+        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          const fileList = JSON.parse(this.variableData[context][varName].value);
+          this.endAction(fileList);
+          this.endAction = undefined;
+        }
+      }
+
+      if (!datanodesManager.foundDatanode(varName)) return;
+      this.#updateDataNode(varName, newValue);
+    } catch (error) {
+      this.#handleError(`Error handling change for variable ${encodedName}`, error);
+    }
+  }
+
+  /**
+   * Handles notification messages related to application events.
+   *
+   * @method onNotify
+   * @private
+   * @param {Object} app - The application instance.
+   * @param {string} type - The type of message received, expected to be one of the predefined MESSAGE_TYPES.
+   * @param {string} message - The message content, expected to be one of the predefined ACTIONS.
+   * @returns {void} This method does not return a value.
+   */
+  #onNotify(app, type, message) {
+    const MESSAGE_TYPES = { INFO: 'I', ERROR: 'E' };
+    const ACTIONS = { LOAD_FILE: 'load_file', SAVE_FILE: 'save_file' };
+    switch (message) {
+      case ACTIONS.LOAD_FILE:
+        if (type == MESSAGE_TYPES.INFO) {
+          // This case is handled in the #onChange function
+        } else if (type == MESSAGE_TYPES.ERROR) {
+          this.#notify('Info project', 'Error while opening project', 'error', 2000);
+        }
+        break;
+      case ACTIONS.SAVE_FILE:
+        if (type == MESSAGE_TYPES.INFO) {
+          if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+            this.endAction(); // Do not assign undefined value: used in Open function
+          }
+        } else if (type == MESSAGE_TYPES.ERROR) {
+          datanodesManager.showLoadingIndicator(false);
+          this.#notify('Info project', 'Error while saving project', 'error', 2000);
+        }
+        break;
     }
   }
 
@@ -90,18 +174,11 @@ class TaipyManager {
       this.variableData[currentContext] = this.#deepClone(newVariables);
       this.deletedDnConnections.clear();
 
-      // Variables that will be ignored (do not create a dataNode)
-      const fileVariables = new Set(['xprjson_file_name', 'has_file_saved', 'json_data', 'file_list']);
-
       // Combine current and new variable names to iterate over
       const variableNames = new Set([...Object.keys(currentVariables), ...Object.keys(newVariables)]);
 
-      // Filter variableNames to exclude fileVariables
-      [...variableNames].forEach((variableName) => {
-        if (fileVariables.has(variableName)) {
-          variableNames.delete(variableName);
-        }
-      });
+      // Filter variableNames to exclude ignoredVariables
+      this.#ignoredVariables.forEach((ignoredVariable) => variableNames.delete(ignoredVariable));
 
       variableNames.forEach((variableName) => {
         this.#processDataNode(variableName, newVariables[variableName]);
@@ -125,7 +202,7 @@ class TaipyManager {
   sendToTaipy(varName, newValue) {
     try {
       const currentContext = this.currentContext;
-      if (varName.startsWith('function:') || currentContext !== this.app.getContext()) return;
+      if (currentContext !== this.app.getContext()) return;
 
       const encodedName = this.app.getEncodedName(varName, currentContext);
       const currentValue = this.variableData[currentContext][varName].value;
@@ -135,64 +212,6 @@ class TaipyManager {
       this.app.update(encodedName, newValue);
     } catch (error) {
       this.#handleError(`Error sending updated value to Taipy for variable ${varName}`, error);
-    }
-  }
-
-  /**
-   * Callback function handles changes to variables within the application.
-   *
-   * @method onChange
-   * @public
-   * @param {Object} app - The application instance.
-   * @param {string} encodedName - The encoded name of the variable.
-   * @param {*} newValue - The new value of the variable.
-   * @returns {void} This method does not return a value.
-   */
-  onChange(app, encodedName, newValue) {
-    try {
-      const [varName, context] = app.getName(encodedName);
-      if (this.currentContext !== context) return;
-
-      // Update variableData
-      this.variableData[context][varName].value = this.#deepClone(newValue);
-
-      // saveFile
-      if (encodedName.includes('has_file_saved')) {
-        const toSave = newValue;
-        if (toSave) {
-          this.app.update(encodedName, false);
-        } else if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          this.endAction(); // Do not assign an undefined value
-        }
-      }
-
-      // fileSelect
-      if (encodedName.includes('xprjson_file_name')) {
-        this.loadFile();
-      }
-
-      // loadFile
-      if (encodedName.includes('json_data')) {
-        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          const jsonData = this.variableData[context][varName].value;
-          this.endAction(jsonData);
-          this.endAction = undefined;
-        }
-      }
-
-      // getFileList
-      if (encodedName.includes('file_list')) {
-        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          const fileList = JSON.parse(this.variableData[context][varName].value);
-          this.endAction(fileList);
-          this.endAction = undefined;
-        }
-      }
-
-      if (!datanodesManager.foundDatanode(varName)) return;
-      this.#updateDataNode(varName, newValue);
-    } catch (error) {
-      this.#handleError(`Error handling change for variable ${encodedName}`, error);
     }
   }
 
@@ -212,30 +231,30 @@ class TaipyManager {
   saveFile(xprjson, actionName) {
     try {
       const action_name = actionName ?? 'first_action';
-      this.app.trigger('save_file', action_name, { data: JSON.stringify(xprjson, null, '\t') });
+      this.app.trigger('save_file', action_name, {
+        data: JSON.stringify(xprjson, null, '\t'),
+        xprjson_file_name: this.xprjsonFileName,
+      });
     } catch (error) {
       this.#handleError('Error saving file', error);
     }
   }
 
   /**
-   * Triggers an event when a user selects a file, specifying the file name.
-   * This function allows to update the file path in the Taipy page.
+   * Triggers an event to load a file.
+   * This method emits an event to signal the application to read a file, facilitating
+   * the process of loading content dynamically based on the file name provided.
    *
-   * @remarks
-   * - The file must be in the same directory as the base directory specified in the Taipy page.
-   * - Once the file is selected, it can be opened using the loadFile function.
-   *
-   * @method fileSelect
+   * @method loadFile
    * @public
-   * @param {string} fileName - Name of the selected file.
+   * @param {string} fileName - Name of the file to be loaded.
    * @returns {void} This method does not return a value.
    */
-  fileSelect(fileName) {
+  loadFile(fileName) {
     try {
-      this.app.trigger('select_file', 'first_action', { xprjson_file_name: fileName });
+      this.app.trigger('load_file', 'first_action', { xprjson_file_name: fileName });
     } catch (error) {
-      this.#handleError('Error selecting file', error);
+      this.#handleError('Error loading file', error);
     }
   }
 
@@ -264,29 +283,6 @@ class TaipyManager {
   }
 
   /**
-   * Triggers an event to load a file from a specified path.
-   *
-   * This method emits an event to signal the application to read a file.
-   * The path of the file to load must be specified in the Taipy page and can be modified using the fileSelect function.
-   *
-   * @remarks
-   * - The file to be loaded can be modified by passing the name of the new file to the fileSelect function.
-   * - The new file must be in the same directory as the current file.
-   * - The directory path must be specified in the Taipy page.
-   *
-   * @method loadFile
-   * @public
-   * @returns {void} This method does not return a value.
-   */
-  loadFile() {
-    try {
-      this.app.trigger('load_file', 'first_action');
-    } catch (error) {
-      this.#handleError('Error loading file', error);
-    }
-  }
-
-  /**
    * Trigger an event to execute a Taipy function and submit the loaded file data from a file loader widget.
    *
    * @method functionTrigger
@@ -304,45 +300,51 @@ class TaipyManager {
   }
 
   /**
-   * Uploads one or more files to the server by creating a temporary file in the directory and tracks the upload progress.
+   * Asynchronously uploads one or more selected files to the server by creating a temporary file in a predefined directory,
+   * while tracking and logging the upload progress. It executes a callback function upon the successful completion of all file uploads.
    * The directory path is defined in the "upload_folder" variable on the Taipy page.
-   *
-   * This function is designed to handle multiple files and execute a callback upon successful completion,
-   * making it suitable for operations that require post-upload processing.
    *
    * @method uploadFile
    * @public
-   * @param {FileList|Array} files - The files to be uploaded. This can be a FileList object or an array of File objects.
-   * @param {Function} callback - A callback function to be executed upon successful upload of the files.
-   * @returns {void} This method does not return a value.
+   * @async
+   * @param {Event} event - The event triggered by the file input element, used to get the selected files.
+   * @param {Function} callback - A callback function to be called upon successful upload of the file.
+   * @param {Function} displaySpinner - A function to control the display of a spinner during the upload process.
+   * Accepts a string argument ('add' or 'remove') to show or hide the spinner, respectively.
+   * @returns {Promise<void>} A promise that resolves when the upload process is complete. This method does not return any value,
+   * but it ensures that the callback is called after the upload completion or the error notification is triggered upon failure.
    */
-  uploadFile(files, callback) {
+  async uploadFile(event, callback, displaySpinner) {
     try {
-      const encodedVarName = this.app.getEncodedName('xprjson_file_name', this.currentContext);
+      const files = event.target.files;
+      if (!files?.length) return;
+
+      const notice = this.#notify('File uploading in progress...', '', 'info', 0, false);
+      const encodedVarName = this.app.getEncodedName('upload_file_name', this.currentContext);
+      displaySpinner('add');
       const printProgressUpload = (progress) => {
-        console.log(progress);
+        notice.update({
+          text: `[${progress.toFixed(1)}% completed]`,
+        });
+        // console.log(progress.toFixed(2));
       };
-      if (files?.length) {
-        this.app.upload(encodedVarName, files, printProgressUpload).then(
-          (value) => {
-            console.log('upload successful', value);
-            callback();
-          },
-          (reason) => {
-            console.log('upload failed', reason);
-          }
-        );
-      }
+      const result = await this.app.upload(encodedVarName, files, printProgressUpload);
+      displaySpinner('remove');
+      notice.remove();
+      this.#notify('File upload', result, 'success', 2000);
+      callback();
     } catch (error) {
-      this.#handleError('Error uploading file', error);
+      displaySpinner('remove');
+      console.log('Upload failed', error);
+      this.#notify('File upload', error, 'error', 2000);
     }
   }
 
   /**
-   * Create the dataNode according to the function name and delete the file management functions.
+   * Initializes the list of available functions by creating corresponding dataNodes for each, excluding specific file management functions.
    *
-   * If the dataNode doesn't yet exist, it will be created by adding the prefix "function:" to the function name.
-   * The function names correspond to the function names on the taipy page.
+   * This method iterates through the list of function names retrieved from the application,
+   * and for each function name that is not in the set of excluded file management functions
    *
    * @method initFunctionList
    * @private
@@ -350,10 +352,8 @@ class TaipyManager {
    */
   #initFunctionList() {
     const functionList = this.app.getFunctionList();
-    const rejectedFunctionSet = new Set(['on_change', 'load_file', 'save_file', 'select_file', 'get_file_list']);
-
     functionList.forEach((funcName) => {
-      if (!rejectedFunctionSet.has(funcName)) {
+      if (!this.#ignoredFunctions.has(funcName)) {
         const dnName = funcName;
         if (!datanodesManager.foundDatanode(dnName)) {
           this.#createDataNode(dnName, funcName, { isFunction: true });
@@ -410,6 +410,28 @@ class TaipyManager {
   }
 
   /**
+   * Updates an existing dataNode.
+   *
+   * @method updateDataNode
+   * @private
+   * @param {string} dnName - The dataNode name.
+   * @param {*} value - The new value of the dataNode.
+   * @returns {void} This method does not return a value.
+   */
+  #updateDataNode(dnName, value) {
+    const dnModel = datanodesManager.getDataNodeByName(dnName);
+    const dnSettings = {
+      type: 'taipy_link_plugin',
+      iconType: '',
+      settings: {
+        name: dnName,
+        json_var: JSON.stringify(value),
+      },
+    };
+    datanodesManager.updateDatanode(dnModel, dnSettings);
+  }
+
+  /**
    * Deletes an existing dataNode.
    *
    * @method deleteDataNode
@@ -450,28 +472,6 @@ class TaipyManager {
   }
 
   /**
-   * Updates an existing dataNode.
-   *
-   * @method updateDataNode
-   * @private
-   * @param {string} dnName - The dataNode name.
-   * @param {*} value - The new value of the dataNode.
-   * @returns {void} This method does not return a value.
-   */
-  #updateDataNode(dnName, value) {
-    const dnModel = datanodesManager.getDataNodeByName(dnName);
-    const dnSettings = {
-      type: 'taipy_link_plugin',
-      iconType: '',
-      settings: {
-        name: dnName,
-        json_var: JSON.stringify(value),
-      },
-    };
-    datanodesManager.updateDatanode(dnModel, dnSettings);
-  }
-
-  /**
    * Creates a deep clone of the object if the input is a non-null object. If the object contains functions,
    * their references are copied. Returns the input value for non-object types.
    *
@@ -499,6 +499,29 @@ class TaipyManager {
   #handleError(message, error) {
     swal('Please check and reload the page', message, 'error');
     console.error(`${message}:`, error);
+  }
+
+  /**
+   * Displays a notification using PNotify with the specified title, text, type, and delay.
+   * This method allows for automatic closing of the notification after a specified delay
+   * and gives users the option to manually close the notification by clicking on it.
+   *
+   * @method notify
+   * @private
+   * @param {string} title - The title of the notification to be displayed.
+   * @param {string} text - The text content of the notification.
+   * @param {string} type - The type of the notification, which determines the notification's styling.
+   * @param {number} delay - The delay in milliseconds before the notification automatically closes.
+   * @param {boolean} [hide=true] - Optional. Determines if the notification should be automatically hidden after the delay.
+   * If set to false, the notification remains visible until manually closed by the user.
+   * @returns {PNotify} Returns the PNotify instance created for the notification.
+   */
+  #notify(title, text, type, delay, hide = true) {
+    const notice = new PNotify({ title, text, type, delay, hide, styling: 'bootstrap3' });
+    $('.ui-pnotify-container').on('click', function () {
+      notice.remove();
+    });
+    return notice;
   }
 
   /**
