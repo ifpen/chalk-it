@@ -7,14 +7,13 @@ import json
 import sys
 from pathlib import Path
 from typing import Dict, Union
-
+from taipy.gui.gui_actions import notify
 
 # Get the absolute path of the main module
 BASE_PATH: Path = Path(sys.argv[0]).resolve().parent
 
 upload_file_name: str = ""
 json_data: str = ""
-has_file_saved: bool = False
 file_list: Dict[str, Union[str, list]] = {}
 
 
@@ -26,9 +25,17 @@ def load_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
     - state: The current state object.
     - action_name: The name of the action being performed.
     """
+    if "xprjson_file_name" not in payload:
+        notify(state, notification_type="E", message="load_file")
+        return
     xprjson_file_name = payload.get("xprjson_file_name", None)
     xprjson_file_path = BASE_PATH / xprjson_file_name
+    if not xprjson_file_path.is_file():
+        print("Invalid file path")
+        notify(state, notification_type="E", message="load_file")
+        return
     state.json_data = Path(xprjson_file_path).read_text(encoding="utf-8")
+    notify(state, notification_type="I", message="load_file")
 
 
 def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
@@ -45,16 +52,21 @@ def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
     - OSError: If there's an error writing to the file.
     """
     try:
+        if "data" not in payload or "xprjson_file_name" not in payload:
+            notify(state, notification_type="E", message="save_file")
+            return
         xprjson_file_name = payload.get("xprjson_file_name", None)
         xprjson_file_path = BASE_PATH / (
             xprjson_file_name.split(".")[0] + "_recovery.xprjson" if action_name == "reload" else xprjson_file_name)
-        if "data" not in payload:
-            raise ValueError("Payload does not contain 'data'")
+        if not xprjson_file_path.is_file():
+            print("Invalid file path")
+            notify(state, notification_type="E", message="save_file")
+            return
         with open(xprjson_file_path, "w", encoding="utf-8") as f:
             f.write(payload["data"])
-            state.has_file_saved = True
+        notify(state, notification_type="I", message="save_file")
     except OSError as error:
-        raise OSError(f"Failed to write to {xprjson_file_path}: {error}") from error
+        notify(state, notification_type="E", message="save_file")
 
 
 def get_file_list(state: object, action_name: str) -> None: # pylint: disable=unused-argument

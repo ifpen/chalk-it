@@ -27,7 +27,7 @@ class TaipyManager {
     this.#deletedDnConnections = new Set();
     this.#endAction = undefined;
     // Variables that will be ignored (do not create a dataNode)
-    this.#ignoredVariables = new Set(['upload_file_name', 'has_file_saved', 'json_data', 'file_list']);
+    this.#ignoredVariables = new Set(['upload_file_name', 'json_data', 'file_list']);
   }
 
   /**
@@ -39,8 +39,9 @@ class TaipyManager {
    */
   initTaipyApp() {
     try {
-      this.app = TaipyGuiBase.createApp(this.onInit.bind(this));
-      this.app.onChange = this.onChange.bind(this);
+      this.app = TaipyGuiBase.createApp(this.#onInit.bind(this));
+      this.app.onChange = this.#onChange.bind(this);
+      this.app.onNotify = this.#onNotify.bind(this);
     } catch (error) {
       this.#handleError('Failed to initialize Taipy App', error);
     }
@@ -50,11 +51,11 @@ class TaipyManager {
    * Callback function executed upon initialization of the Taipy app.
    *
    * @method onInit
-   * @public
+   * @private
    * @param {Object} app - The initialized Taipy application instance.
    * @returns {void} This method does not return a value.
    */
-  onInit(app) {
+  #onInit(app) {
     this.currentContext = app.getContext();
     this.xprjsonFileName = app.getPageMetadata()['xprjson_file_name'];
     this.processVariableData();
@@ -68,29 +69,19 @@ class TaipyManager {
    * Callback function handles changes to variables within the application.
    *
    * @method onChange
-   * @public
+   * @private
    * @param {Object} app - The application instance.
    * @param {string} encodedName - The encoded name of the variable.
    * @param {*} newValue - The new value of the variable.
    * @returns {void} This method does not return a value.
    */
-  onChange(app, encodedName, newValue) {
+  #onChange(app, encodedName, newValue) {
     try {
       const [varName, context] = app.getName(encodedName);
       if (this.currentContext !== context) return;
 
       // Update variableData
       this.variableData[context][varName].value = this.#deepClone(newValue);
-
-      // saveFile
-      if (encodedName.includes('has_file_saved')) {
-        const toSave = newValue;
-        if (toSave) {
-          this.app.update(encodedName, false);
-        } else if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          this.endAction(); // Do not assign an undefined value
-        }
-      }
 
       // loadFile
       if (encodedName.includes('json_data')) {
@@ -114,6 +105,40 @@ class TaipyManager {
       this.#updateDataNode(varName, newValue);
     } catch (error) {
       this.#handleError(`Error handling change for variable ${encodedName}`, error);
+    }
+  }
+
+  /**
+   * Handles notification messages related to application events.
+   *
+   * @method onNotify
+   * @private
+   * @param {Object} app - The application instance.
+   * @param {string} type - The type of message received, expected to be one of the predefined MESSAGE_TYPES.
+   * @param {string} message - The message content, expected to be one of the predefined ACTIONS.
+   * @returns {void} This method does not return a value.
+   */
+  #onNotify(app, type, message) {
+    const MESSAGE_TYPES = { INFO: 'I', ERROR: 'E' };
+    const ACTIONS = { LOAD_FILE: 'load_file', SAVE_FILE: 'save_file' };
+    switch (message) {
+      case ACTIONS.LOAD_FILE:
+        if (type == MESSAGE_TYPES.INFO) {
+          // This case is handled in the #onChange function
+        } else if (type == MESSAGE_TYPES.ERROR) {
+          this.#notify('Info project', 'Error while opening project', 'error', 2000);
+        }
+        break;
+      case ACTIONS.SAVE_FILE:
+        if (type == MESSAGE_TYPES.INFO) {
+          if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+            this.endAction(); // Do not assign undefined value: used in Open function
+          }
+        } else if (type == MESSAGE_TYPES.ERROR) {
+          datanodesManager.showLoadingIndicator(false);
+          this.#notify('Info project', 'Error while saving project', 'error', 2000);
+        }
+        break;
     }
   }
 
@@ -174,7 +199,7 @@ class TaipyManager {
   sendToTaipy(varName, newValue) {
     try {
       const currentContext = this.currentContext;
-      if (varName.startsWith('function:') || currentContext !== this.app.getContext()) return;
+      if (currentContext !== this.app.getContext()) return;
 
       const encodedName = this.app.getEncodedName(varName, currentContext);
       const currentValue = this.variableData[currentContext][varName].value;
@@ -313,10 +338,10 @@ class TaipyManager {
   }
 
   /**
-   * Create the dataNode according to the function name and delete the file management functions.
+   * Initializes the list of available functions by creating corresponding dataNodes for each, excluding specific file management functions.
    *
-   * If the dataNode doesn't yet exist, it will be created by adding the prefix "function:" to the function name.
-   * The function names correspond to the function names on the taipy page.
+   * This method iterates through the list of function names retrieved from the application,
+   * and for each function name that is not in the set of excluded file management functions
    *
    * @method initFunctionList
    * @private
