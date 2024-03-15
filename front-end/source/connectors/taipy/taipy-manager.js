@@ -13,6 +13,7 @@ class TaipyManager {
   #deletedDnConnections;
   #endAction;
   #ignoredVariables;
+  #ignoredFunctions;
 
   /**
    * Constructs a new TaipyManager instance.
@@ -27,7 +28,9 @@ class TaipyManager {
     this.#deletedDnConnections = new Set();
     this.#endAction = undefined;
     // Variables that will be ignored (do not create a dataNode)
-    this.#ignoredVariables = new Set(['upload_file_name', 'json_data', 'file_list']);
+    this.#ignoredVariables = new Set(['upload_file_name', 'json_data', 'file_list', 'TaipyOnInit']);
+    // Functions that will be ignored
+    this.#ignoredFunctions = new Set(['on_change', 'load_file', 'save_file', 'get_file_list']);
   }
 
   /**
@@ -349,10 +352,8 @@ class TaipyManager {
    */
   #initFunctionList() {
     const functionList = this.app.getFunctionList();
-    const rejectedFunctionSet = new Set(['on_change', 'load_file', 'save_file', 'select_file', 'get_file_list']);
-
     functionList.forEach((funcName) => {
-      if (!rejectedFunctionSet.has(funcName)) {
+      if (!this.#ignoredFunctions.has(funcName)) {
         const dnName = funcName;
         if (!datanodesManager.foundDatanode(dnName)) {
           this.#createDataNode(dnName, funcName, { isFunction: true });
