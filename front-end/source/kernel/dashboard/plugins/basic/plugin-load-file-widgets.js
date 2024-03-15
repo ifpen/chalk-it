@@ -452,7 +452,7 @@ function loadFileWidgetsPluginClass() {
     widgetsDefinitionList: {
       loadFile: {
         factory: 'loadFileWidget',
-        title: 'Load file',
+        title: 'Load file control',
         icn: 'load-file',
         help: 'wdg/wdg-basics/#load-file',
       },

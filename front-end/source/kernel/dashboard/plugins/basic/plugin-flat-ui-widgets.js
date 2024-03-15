@@ -168,6 +168,20 @@ modelsParameters.flatUiButton = {
   buttonActiveColor: 'var(--widget-button-active-color)',
   buttonHoverColor: 'var(--widget-button-hover-color)',
 };
+modelsParameters.flatUiFileInputButton = {
+  text: 'Push button',
+  numberOfTriggers: 1,
+  fileInput: true,
+  binaryFileInput: false,
+  buttonFontSize: 0.3,
+  displayIcon: false,
+  fontAwesomeIcon: '',
+  buttonFontFamily: 'var(--widget-font-family)',
+  buttonTextColor: 'var(--widget-button-primary-text)',
+  buttonDefaultColor: 'var(--widget-button-primary-color)',
+  buttonActiveColor: 'var(--widget-button-active-color)',
+  buttonHoverColor: 'var(--widget-button-hover-color)',
+};
 
 // Layout (default dimensions)
 modelsLayout.flatUiHorizontalSlider = { height: '5vh', width: '24vw', minWidth: '200px', minHeight: '24px' };
@@ -176,7 +190,8 @@ modelsLayout.flatUiProgressBar = { height: '5vh', width: '24vw', minWidth: '200p
 modelsLayout.flatUiTextInput = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
 modelsLayout.flatUiNumericInput = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
 modelsLayout.flatUiValueDisplay = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
-modelsLayout.flatUiButton = { height: '6vh', width: '8vw', minWidth: '55px', minHeight: '24px' };
+modelsLayout.flatUiButton = { height: '7vh', width: '9vw', minWidth: '55px', minHeight: '24px' };
+modelsLayout.flatUiFileInputButton = { height: '7vh', width: '9vw', minWidth: '55px', minHeight: '24px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -1546,10 +1561,16 @@ function flatUiWidgetsPluginClass() {
       },
       flatUiButton: {
         factory: 'buttonFlatUiWidget',
-        title: 'Push button',
-        icn: 'button',
+        title: 'Trigger button',
+        icn: 'trigger',
         help: 'wdg/wdg-basics/#push-button',
       },
+      flatUiFileInputButton: {
+        factory: 'buttonFlatUiWidget',
+        title: 'Load file button',
+        icn: 'button',
+        help: 'wdg/wdg-basics/#push-button',
+      },      
     },
   };
 

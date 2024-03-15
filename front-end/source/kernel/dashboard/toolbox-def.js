@@ -21,6 +21,7 @@ var widgetsEditorToolboxDefinition = {
       'flatUiVerticalSlider',
       'flatUiDoubleSlider',
       'flatUiButton',
+      'flatUiFileInputButton',
       'loadFile',
       'saveToFileButton',
       'flatUiSelect',
