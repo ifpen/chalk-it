@@ -42,10 +42,17 @@ var colorScaleManager = (function() {
 
         return null;
     }
+    function getD3ColorScaleFromScheme(name){
+        const color = d3.scaleOrdinal(d3.schemeAccent);
+        if(  !(_.isUndefined(d3[name])) && (name.includes("scheme")) ) {
+            return d3[name];
+         }
+         return null;
+    }
 
     function getHomogeneousColorScale(name) {
         if(d3.color(name) !== null) {
-            return d3.interpolate(name, name);
+            return d3.interpolate("white", name);
         }
         
         return null;
@@ -74,7 +81,12 @@ var colorScaleManager = (function() {
         } else if(getHomogeneousColorScale(colorScaleName)) {
             var interpolator = getHomogeneousColorScale(colorScaleName);
             colorScale = d3.scaleSequential().interpolator(interpolator)
-        } else {
+        } 
+        else if(getD3ColorScaleFromScheme(colorScaleName)){
+            var interpolator = getD3ColorScaleFromScheme(colorScaleName)
+            colorScale = d3.scaleOrdinal(d3.schemeAccent);
+        }
+        else {
             return null;
         }
 
