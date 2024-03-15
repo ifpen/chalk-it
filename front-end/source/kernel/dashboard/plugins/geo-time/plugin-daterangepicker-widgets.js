@@ -262,10 +262,7 @@ function dateRangePickerWidgetsPluginClass() {
       },
       removeValueChangedHandler: function (updateDataFromWidget) {},
       setCaption: function (caption, bCaptionManuallyChanged) {},
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      clearCaption: function () {},
     };
 
     this.endDateValue = {
@@ -286,10 +283,7 @@ function dateRangePickerWidgetsPluginClass() {
       },
       removeValueChangedHandler: function (updateDataFromWidget) {},
       setCaption: function (caption, bCaptionManuallyChanged) {},
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      clearCaption: function () {},
     };
     self.render();
   };
