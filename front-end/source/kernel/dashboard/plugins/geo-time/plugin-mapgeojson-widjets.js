@@ -66,6 +66,38 @@ function mapGeoJsonWidgetsPluginClass() {
 
     this.getColorScale = colorScaleManager.getColorScale
 
+    this.addImageOverlay = function (imgStruct, layerIndex) {
+      //securities
+      if (_.isUndefined(imgStruct)) return;
+      if (_.isEmpty(imgStruct)) return;
+      if (imgStruct == {}) return;
+
+      const imageUrl = imgStruct.imageUrl;
+      const imageBounds = imgStruct.imageBounds;
+      const featureTitle = imgStruct.title || "";
+      const addAs = imgStruct.addAs; 
+      if(imageUrl=="" ) return;
+      let boundsValid = !_.isUndefined(imageBounds) && Array.isArray(imageBounds) && imageBounds.length==2 
+      && Array.isArray(imageBounds[0]) &&  Array.isArray(imageBounds[1]) && imageBounds[0].length==2 && imageBounds[1].length==2
+      if(!boundsValid){
+        return;
+      }
+      self.imageLayers[layerIndex ] = L.imageOverlay(imageUrl, imageBounds)
+          .addTo(self.map);
+
+      if (addAs == 'overlay')
+          self.ctrl.addOverlay(self.imageLayers[layerIndex ], featureTitle);
+      else
+          self.ctrl.addBaseLayer(self.imageLayers[layerIndex], featureTitle);
+  };
+  this.removeImageOverlay = function (layerIndex) { 
+    if(!_.isUndefined(self.imageLayers[layerIndex ])){
+      self.ctrl.removeLayer(self.imageLayers[layerIndex ]);
+      self.map.removeLayer(self.imageLayers[layerIndex]);
+      self.imageLayers[layerIndex]=undefined
+    }
+};
+
     this.render = function () {
       var widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('id', 'mapGeoJson' + idWidget);
@@ -109,6 +141,8 @@ function mapGeoJsonWidgetsPluginClass() {
       // internal layer group L.layerGroup
       self.layers = [];
       self.legends = [];
+      self.imageLayers = []
+
       if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) {
         modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
           let name = 'layer ' + index;
@@ -141,6 +175,7 @@ function mapGeoJsonWidgetsPluginClass() {
       var leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
+      self.imageLayers.push(undefined)
       if (
         geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiLineString ||
         geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon
@@ -342,6 +377,7 @@ function mapGeoJsonWidgetsPluginClass() {
             layer.on('click', self.clickhandler);
           });
         }
+
       }
 
       //add layer
@@ -406,6 +442,16 @@ function mapGeoJsonWidgetsPluginClass() {
             layer: index + 1,
             name: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'layer ') + (index + 1),
             showLegend: true,
+            legend: {
+              title: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'Legend ') + (index + 1),
+            },
+            showImage : true,
+            image : {
+              imageUrl:"",
+              imageBounds:[],
+              title:"",
+              addAs:""
+            },
             type: 'Multi Polygon',
             stroke: true,
             color: 'black',
@@ -422,9 +468,7 @@ function mapGeoJsonWidgetsPluginClass() {
             tooltip: {
               properties: [...allProp],
             },
-            legend: {
-              title: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'Legend ') + (index + 1),
-            },
+            
             events: {
               mouseover: {
                 style: {
@@ -705,6 +749,25 @@ function mapGeoJsonWidgetsPluginClass() {
         } else {
           if (!_.isUndefined(self.legends[layerIndex])) {
             self.legends[layerIndex].remove();
+          }
+        }
+        //tggole image overlay
+        if (self.map.hasLayer(self.layers[layerIndex])) {
+          if (!_.isUndefined(styleForObject.showImage)) {
+            //showLagend==true 
+            if (!!styleForObject.showImage) {
+              self.removeImageOverlay(layerIndex)
+              self.addImageOverlay(styleForObject.image,layerIndex)
+            } else {
+              //showLagend==false
+              if (!_.isUndefined(self.imageLayers[layerIndex])) {
+                self.removeImageOverlay(layerIndex)
+              }
+            }
+          }
+        } else {
+          if (!_.isUndefined(self.imageLayers[layerIndex])) {
+            self.removeImageOverlay(layerIndex)
           }
         }
       }
