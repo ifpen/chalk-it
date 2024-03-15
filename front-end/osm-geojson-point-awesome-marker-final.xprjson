@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "version": "2.940.8841",
+    "date": "Fri Mar 15 2024 11:30:56 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": "osm-geojson-point-awesome-marker-final",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "Style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"possibleLegends\":[],\"selecedLegends\":[]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"html\",\"awesomeMarker\"],\"tooltip\":{\"properties\":[\"html\",\"awesomeMarker\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
+        }
+      },
+      {
+        "name": "Point",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Point",
+          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"html\":\"See <a href=\\\"https://en.wikipedia.org/wiki/Place_Charles_de_Gaulle\\\" target=\\\"_blank\\\">Place Charles de Gaulle</a>\",\"awesomeMarker\":{\"icon\":\" fa-asterisk\",\"prefix\":\"fa\",\"markerColor\":\"red\"}},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.295,48.8738]}}]}"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1464,
+    "heightPx": 613,
+    "scrollWidthPx": 1464,
+    "scrollHeightPx": 613,
+    "widthVw": 86.21908127208481,
+    "heightVh": 77.01005025125629,
+    "scrollWidthVw": 86.21908127208481,
+    "scrollHeightVh": 77.01005025125629,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {
+    "mapGeoJsonA": {
+      "layout": {
+        "top": "2.76382vh",
+        "left": "1.70789vw",
+        "height": "63.9447vh",
+        "width": "66.3133vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "mapGeoJsonA",
+        "instanceId": "mapGeoJsonA",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "mapGeoJsonA": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "Point",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Style",
+        "dataFields": []
+      },
+      "Selected": {
+        "name": "Selected",
+        "dataNode": "None",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}
