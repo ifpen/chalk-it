@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.940.8841",
-    "date": "Fri Mar 15 2024 11:23:25 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "date": "Fri Mar 15 2024 11:44:25 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-geojson-point-final",
     "description": "",
     "groupName": "",
@@ -11,19 +11,19 @@
   "data": {
     "datanodes": [
       {
-        "name": "Style",
-        "type": "JSON_var_plugin",
-        "settings": {
-          "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"possibleLegends\":[],\"selecedLegends\":[]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"comment\"],\"tooltip\":{\"properties\":[\"comment\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
-        }
-      },
-      {
         "name": "Point",
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Point",
           "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"comment\":\"click to display the contents of the properties object\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.295,48.8738]}}]}"
+        }
+      },
+      {
+        "name": "Style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"possibleLegends\":[],\"selecedLegends\":[]},\"style\":[{\"layer\":1,\"name\":\"Arc de triomphe\",\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"comment\"],\"tooltip\":{\"properties\":[\"comment\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
         }
       }
     ]
@@ -61,9 +61,9 @@
     "mapGeoJsonA": {
       "layout": {
         "top": "2.51256vh",
-        "left": "2.00236vw",
+        "left": "2.00373vw",
         "height": "61.3065vh",
-        "width": "56.9494vw",
+        "width": "56.9883vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
