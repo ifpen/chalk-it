@@ -3,7 +3,6 @@ from .chalkit_page import ChalkitPage
 from .chalkit_manager import (
 	upload_file_name,
     json_data,
-    has_file_saved,
     file_list,
     load_file,
     save_file,
@@ -12,7 +11,6 @@ from .chalkit_manager import (
 
 __all__=["upload_file_name",
          "json_data",
-         "has_file_saved",
          "file_list",
          "load_file",
          "save_file",
