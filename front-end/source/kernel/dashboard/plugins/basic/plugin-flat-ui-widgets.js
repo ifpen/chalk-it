@@ -1576,7 +1576,7 @@ function flatUiWidgetsPluginClass() {
       flatUiFileInputButton: {
         factory: 'buttonFlatUiWidget',
         title: 'Load file button',
-        icn: 'button',
+        icn: 'load-file',
         help: 'wdg/wdg-basics/#push-button',
       },      
     },
