@@ -328,7 +328,7 @@ class TaipyManager {
         });
         // console.log(progress.toFixed(2));
       };
-      const result = await this.app.upload('', files, printProgressUpload);
+      const result = await this.app.upload(encodedVarName, files, printProgressUpload);
       displaySpinner('remove');
       notice.remove();
       this.#notify('File upload', result, 'success', 2000);
