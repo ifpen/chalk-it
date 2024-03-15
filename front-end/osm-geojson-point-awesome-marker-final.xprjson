@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "2.940.8841",
-    "date": "Fri Mar 15 2024 11:30:56 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "date": "Fri Mar 15 2024 11:48:58 GMT+0100 (heure normale d\u2019Europe centrale)",
     "name": "osm-geojson-point-awesome-marker-final",
     "description": "",
     "groupName": "",
@@ -11,19 +11,19 @@
   "data": {
     "datanodes": [
       {
-        "name": "Style",
-        "type": "JSON_var_plugin",
-        "settings": {
-          "name": "Style",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"possibleLegends\":[],\"selecedLegends\":[]},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"html\",\"awesomeMarker\"],\"tooltip\":{\"properties\":[\"html\",\"awesomeMarker\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
-        }
-      },
-      {
         "name": "Point",
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Point",
           "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"html\":\"See <a href=\\\"https://en.wikipedia.org/wiki/Place_Charles_de_Gaulle\\\" target=\\\"_blank\\\">Place Charles de Gaulle</a>\",\"awesomeMarker\":{\"icon\":\" fa-asterisk\",\"prefix\":\"fa\",\"markerColor\":\"red\"}},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.295,48.8738]}}]}"
+        }
+      },
+      {
+        "name": "Style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"possibleLegends\":[],\"selecedLegends\":[]},\"style\":[{\"layer\":1,\"name\":\"Arc de triomphe\",\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"html\",\"awesomeMarker\"],\"tooltip\":{\"properties\":[\"html\",\"awesomeMarker\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
         }
       }
     ]
@@ -61,9 +61,9 @@
     "mapGeoJsonA": {
       "layout": {
         "top": "2.76382vh",
-        "left": "1.70789vw",
+        "left": "1.70906vw",
         "height": "63.9447vh",
-        "width": "66.3133vw",
+        "width": "66.3586vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
