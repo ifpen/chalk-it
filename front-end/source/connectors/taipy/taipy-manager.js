@@ -27,13 +27,7 @@ class TaipyManager {
     this.#deletedDnConnections = new Set();
     this.#endAction = undefined;
     // Variables that will be ignored (do not create a dataNode)
-    this.#ignoredVariables = new Set([
-      'xprjson_file_name',
-      'upload_file_name',
-      'has_file_saved',
-      'json_data',
-      'file_list',
-    ]);
+    this.#ignoredVariables = new Set(['upload_file_name', 'has_file_saved', 'json_data', 'file_list']);
   }
 
   /**
