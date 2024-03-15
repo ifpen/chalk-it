@@ -65,6 +65,59 @@ class TaipyManager {
   }
 
   /**
+   * Callback function handles changes to variables within the application.
+   *
+   * @method onChange
+   * @public
+   * @param {Object} app - The application instance.
+   * @param {string} encodedName - The encoded name of the variable.
+   * @param {*} newValue - The new value of the variable.
+   * @returns {void} This method does not return a value.
+   */
+  onChange(app, encodedName, newValue) {
+    try {
+      const [varName, context] = app.getName(encodedName);
+      if (this.currentContext !== context) return;
+
+      // Update variableData
+      this.variableData[context][varName].value = this.#deepClone(newValue);
+
+      // saveFile
+      if (encodedName.includes('has_file_saved')) {
+        const toSave = newValue;
+        if (toSave) {
+          this.app.update(encodedName, false);
+        } else if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          this.endAction(); // Do not assign an undefined value
+        }
+      }
+
+      // loadFile
+      if (encodedName.includes('json_data')) {
+        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          const jsonData = this.variableData[context][varName].value;
+          this.endAction(jsonData);
+          this.endAction = undefined;
+        }
+      }
+
+      // getFileList
+      if (encodedName.includes('file_list')) {
+        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          const fileList = JSON.parse(this.variableData[context][varName].value);
+          this.endAction(fileList);
+          this.endAction = undefined;
+        }
+      }
+
+      if (!datanodesManager.foundDatanode(varName)) return;
+      this.#updateDataNode(varName, newValue);
+    } catch (error) {
+      this.#handleError(`Error handling change for variable ${encodedName}`, error);
+    }
+  }
+
+  /**
    * Processes variable data, creating or deleting dataNodes based on changes.
    * It updates the variable data if there are changes in the current context.
    *
@@ -135,59 +188,6 @@ class TaipyManager {
   }
 
   /**
-   * Callback function handles changes to variables within the application.
-   *
-   * @method onChange
-   * @public
-   * @param {Object} app - The application instance.
-   * @param {string} encodedName - The encoded name of the variable.
-   * @param {*} newValue - The new value of the variable.
-   * @returns {void} This method does not return a value.
-   */
-  onChange(app, encodedName, newValue) {
-    try {
-      const [varName, context] = app.getName(encodedName);
-      if (this.currentContext !== context) return;
-
-      // Update variableData
-      this.variableData[context][varName].value = this.#deepClone(newValue);
-
-      // saveFile
-      if (encodedName.includes('has_file_saved')) {
-        const toSave = newValue;
-        if (toSave) {
-          this.app.update(encodedName, false);
-        } else if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          this.endAction(); // Do not assign an undefined value
-        }
-      }
-
-      // loadFile
-      if (encodedName.includes('json_data')) {
-        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          const jsonData = this.variableData[context][varName].value;
-          this.endAction(jsonData);
-          this.endAction = undefined;
-        }
-      }
-
-      // getFileList
-      if (encodedName.includes('file_list')) {
-        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          const fileList = JSON.parse(this.variableData[context][varName].value);
-          this.endAction(fileList);
-          this.endAction = undefined;
-        }
-      }
-
-      if (!datanodesManager.foundDatanode(varName)) return;
-      this.#updateDataNode(varName, newValue);
-    } catch (error) {
-      this.#handleError(`Error handling change for variable ${encodedName}`, error);
-    }
-  }
-
-  /**
    * This function allows to save the file in the base directory which defined in the Taipy page.
    * The data is passed as a JSON string, formatted with tab indentation, to enhance readability.
    *
@@ -213,6 +213,24 @@ class TaipyManager {
   }
 
   /**
+   * Triggers an event to load a file.
+   * This method emits an event to signal the application to read a file, facilitating
+   * the process of loading content dynamically based on the file name provided.
+   *
+   * @method loadFile
+   * @public
+   * @param {string} fileName - Name of the file to be loaded.
+   * @returns {void} This method does not return a value.
+   */
+  loadFile(fileName) {
+    try {
+      this.app.trigger('load_file', 'first_action', { xprjson_file_name: fileName });
+    } catch (error) {
+      this.#handleError('Error loading file', error);
+    }
+  }
+
+  /**
    * Triggers a request to obtain a file_list object from the specified base path in Taipy page.
    * The file_list object includes the base path and a list of file names with the .xprjson extension.
    *
@@ -233,24 +251,6 @@ class TaipyManager {
       this.app.trigger('get_file_list', 'first_action');
     } catch (error) {
       this.#handleError('Error getting file list', error);
-    }
-  }
-
-  /**
-   * Triggers an event to load a file.
-   * This method emits an event to signal the application to read a file, facilitating
-   * the process of loading content dynamically based on the file name provided.
-   *
-   * @method loadFile
-   * @public
-   * @param {string} fileName - Name of the file to be loaded.
-   * @returns {void} This method does not return a value.
-   */
-  loadFile(fileName) {
-    try {
-      this.app.trigger('load_file', 'first_action', { xprjson_file_name: fileName });
-    } catch (error) {
-      this.#handleError('Error loading file', error);
     }
   }
 
@@ -384,6 +384,28 @@ class TaipyManager {
   }
 
   /**
+   * Updates an existing dataNode.
+   *
+   * @method updateDataNode
+   * @private
+   * @param {string} dnName - The dataNode name.
+   * @param {*} value - The new value of the dataNode.
+   * @returns {void} This method does not return a value.
+   */
+  #updateDataNode(dnName, value) {
+    const dnModel = datanodesManager.getDataNodeByName(dnName);
+    const dnSettings = {
+      type: 'taipy_link_plugin',
+      iconType: '',
+      settings: {
+        name: dnName,
+        json_var: JSON.stringify(value),
+      },
+    };
+    datanodesManager.updateDatanode(dnModel, dnSettings);
+  }
+
+  /**
    * Deletes an existing dataNode.
    *
    * @method deleteDataNode
@@ -421,28 +443,6 @@ class TaipyManager {
         closeOnConfirm: true,
       });
     }
-  }
-
-  /**
-   * Updates an existing dataNode.
-   *
-   * @method updateDataNode
-   * @private
-   * @param {string} dnName - The dataNode name.
-   * @param {*} value - The new value of the dataNode.
-   * @returns {void} This method does not return a value.
-   */
-  #updateDataNode(dnName, value) {
-    const dnModel = datanodesManager.getDataNodeByName(dnName);
-    const dnSettings = {
-      type: 'taipy_link_plugin',
-      iconType: '',
-      settings: {
-        name: dnName,
-        json_var: JSON.stringify(value),
-      },
-    };
-    datanodesManager.updateDatanode(dnModel, dnSettings);
   }
 
   /**
