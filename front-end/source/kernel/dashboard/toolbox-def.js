@@ -35,7 +35,7 @@ var widgetsEditorToolboxDefinition = {
     widgets: [
       'flatUiValueDisplay',
       'kpiCard',
-      'advancedKpiCard',
+      //'advancedKpiCard',
       'ledStatus',
       'flatUiProgressBar',
       'scoringFullCircularGauge',
