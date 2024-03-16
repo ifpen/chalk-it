@@ -240,9 +240,7 @@ function flatUiWidgetsPluginClass() {
         if (isTaipyLink) {
           e.stopPropagation();
           e.preventDefault();
-          const endAction = () => triggerTaipyFunction(idInstance);
-          const displaySpinner = (status) => setFileUploadSpinner(idWidget, status);
-          taipyManager.uploadFile(e, endAction, displaySpinner);
+          uploadFileToTaipy(e, idInstance, idWidget);
           return;
         }
         const file = e.target.files[0];
@@ -382,6 +380,8 @@ function flatUiWidgetsPluginClass() {
             );
           }
         }
+        if (isTaipyLink && isFile)
+          result.push(new WidgetActuatorDescription('file_path', 'File path', WidgetActuatorDescription.WRITE));
       }
       return result;
     };
@@ -404,6 +404,14 @@ function flatUiWidgetsPluginClass() {
         },
       };
     }
+
+    this['file_path'] = {
+      setValue: function (val) {},
+      getValue: function () {},
+      updateCallback: function () {},
+      addValueChangedHandler: function (updateDataFromWidget) {},
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+    };
 
     self.render();
   };
@@ -1578,7 +1586,7 @@ function flatUiWidgetsPluginClass() {
         title: 'Load file button',
         icn: 'load-file',
         help: 'wdg/wdg-basics/#push-button',
-      },      
+      },
     },
   };
 
