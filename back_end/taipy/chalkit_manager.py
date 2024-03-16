@@ -12,7 +12,6 @@ from taipy.gui.gui_actions import notify
 # Get the absolute path of the main module
 BASE_PATH: Path = Path(sys.argv[0]).resolve().parent
 
-upload_file_name: str = ""
 json_data: str = ""
 file_list: Dict[str, Union[str, list]] = {}
 

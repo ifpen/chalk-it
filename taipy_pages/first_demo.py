@@ -8,6 +8,7 @@ from taipy_page import page as page1
 
 # Define the path for the upload folder relative to the current script's directory
 upload_folder = Path(__file__).parent.resolve()
+path = ""
 
 gui = Gui()
 gui.add_page("page1", page1)

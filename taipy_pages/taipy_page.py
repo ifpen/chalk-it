@@ -28,6 +28,6 @@ def on_change(state, var, val):
         state.c = state.a + state.b * 2
         
 def run_simul(state):
-    print("running simulation")
+    print("running simulation", state.path)
 
 page = ChalkitPage("taipy_page.xprjson")
