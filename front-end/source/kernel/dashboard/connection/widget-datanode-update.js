@@ -1,12 +1,11 @@
-﻿// ┌───────────────────────────────────────────────────────────────────────┐ \\
-// │ widget-datanode-update                                                │ \\
-// ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                           │ \\
-// | Licensed under the Apache License, Version 2.0                        │ \\
-// ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY| \\
-// |                      Ghiles HDIEUR                                    │ \\
-// └───────────────────────────────────────────────────────────────────────┘ \\
+﻿// ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐ \\
+// │ widget-datanode-update                                                                                      │ \\
+// ├─────────────────────────────────────────────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright © 2016-2024 IFPEN                                                                                 │ \\
+// | Licensed under the Apache License, Version 2.0                                                              │ \\
+// ├─────────────────────────────────────────────────────────────────────────────────────────────────────────────┤ \\
+// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY, Ghiles HDIEUR                       | \\
+// └─────────────────────────────────────────────────────────────────────────────────────────────────────────────┘ \\
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                         displayLoadSpinner                         | \\
@@ -93,27 +92,28 @@ function updateWidgetDataNode(idInstance, idWidget) {
 }
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
+// |                          uploadFileToTaipy                         | \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+function uploadFileToTaipy(event, idInstance, idWidget) {
+  const sliders = _.get(widgetConnector, `widgetsConnection[${idInstance}].sliders`);
+  const varFilePath = sliders.file_path.dataNode;
+  const endAction = () => triggerTaipyFunction(sliders);
+  const displaySpinner = (status) => setFileUploadSpinner(idWidget, status);
+  taipyManager.uploadFile(event, varFilePath, endAction, displaySpinner);
+}
+
+// ├────────────────────────────────────────────────────────────────────┤ \\
 // |                          triggerTaipyFunction                      | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function triggerTaipyFunction(idInstance) {
-  const sliders = _.get(widgetConnector, `widgetsConnection[${idInstance}].sliders`);
+function triggerTaipyFunction(sliders) {
   if (_.isEmpty(sliders)) return;
-
-  const dnNames = Object.values(sliders)
-    .map((slider) => slider.dataNode)
-    .filter((dataNodeName) => dataNodeName !== 'None');
-
+  const dnNames = Object.entries(sliders)
+    .filter(([key, _]) => key !== 'file_path') // Ignore file_path, keep only triggers
+    .map(([_, slider]) => slider.dataNode)
+    .filter((dnName) => dnName !== 'None');
   if (_.isEmpty(dnNames)) return;
-
-  const uniqueFunNames = new Set();
-
-  dnNames.forEach((dataNodeName) => {
-    const funName = _.get(datanodesManager.getDataNodeByName(dataNodeName).settings(), 'json_var');
-    if (funName) uniqueFunNames.add(funName);
-  });
-
-  uniqueFunNames.forEach((funName) => {
-    taipyManager.functionTrigger(JSON.parse(funName));
+  dnNames.forEach((funName) => {
+    taipyManager.functionTrigger(funName);
   });
 }
 

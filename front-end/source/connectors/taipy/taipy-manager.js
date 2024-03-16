@@ -28,7 +28,7 @@ class TaipyManager {
     this.#deletedDnConnections = new Set();
     this.#endAction = undefined;
     // Variables that will be ignored (do not create a dataNode)
-    this.#ignoredVariables = new Set(['upload_file_name', 'json_data', 'file_list', 'TaipyOnInit']);
+    this.#ignoredVariables = new Set(['json_data', 'file_list', 'TaipyOnInit']);
     // Functions that will be ignored
     this.#ignoredFunctions = new Set(['on_change', 'load_file', 'save_file', 'get_file_list']);
   }
@@ -308,19 +308,20 @@ class TaipyManager {
    * @public
    * @async
    * @param {Event} event - The event triggered by the file input element, used to get the selected files.
+   * @param {string} varFilePath - The variable that will be defined as the file path.
    * @param {Function} callback - A callback function to be called upon successful upload of the file.
    * @param {Function} displaySpinner - A function to control the display of a spinner during the upload process.
    * Accepts a string argument ('add' or 'remove') to show or hide the spinner, respectively.
    * @returns {Promise<void>} A promise that resolves when the upload process is complete. This method does not return any value,
    * but it ensures that the callback is called after the upload completion or the error notification is triggered upon failure.
    */
-  async uploadFile(event, callback, displaySpinner) {
+  async uploadFile(event, varFilePath, callback, displaySpinner) {
     try {
       const files = event.target.files;
       if (!files?.length) return;
 
       const notice = this.#notify('File uploading in progress...', '', 'info', 0, false);
-      const encodedVarName = this.app.getEncodedName('upload_file_name', this.currentContext);
+      const encodedVarName = this.app.getEncodedName(varFilePath, this.currentContext);
       displaySpinner('add');
       const printProgressUpload = (progress) => {
         notice.update({
