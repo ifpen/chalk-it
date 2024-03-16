@@ -661,7 +661,7 @@ angular.module('modules.editor').controller('EditorController', [
       let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       if (check) {
         if (
-          /*scopeDash.editorView.rightSidePanel.target == "Taipy Variables Connection" &&*/ scopeDash.editorView.rightSidePanel
+          /*scopeDash.editorView.rightSidePanel.target == "Variables Connection" &&*/ scopeDash.editorView.rightSidePanel
             .view
         ) {
           modalCtrl
