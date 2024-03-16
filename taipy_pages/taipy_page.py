@@ -23,7 +23,7 @@ counts = [40, 100, 30, 55]
 selectd_fruit = 'apple'
 selectd_count = 40
 
-path =""
+path = ""
 
 def load_csv(state):
     print("loading csv", state.path)
