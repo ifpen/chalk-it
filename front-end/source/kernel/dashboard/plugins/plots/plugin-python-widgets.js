@@ -90,15 +90,18 @@ function pyodideWidgetsPluginClass() {
             img_url = url;
             Plotly.purge(gd);
             img_png.attr('src', img_url);
-            gd.style.minHeight = gd.parentNode.style.minHeight;
-            gd.style.minWidth = gd.parentNode.style.minWidth;
-            gd.style.width = gd.parentNode.style.width;
-            gd.style.height = gd.parentNode.style.height;
 
-            img_png[0].style.minHeight = parseInt(gd.parentNode.style.minHeight) + 'px';
-            img_png[0].style.minWidth = parseInt(gd.parentNode.style.minWidth) + 'px';
-            img_png[0].style.width = parseFloat(gd.parentNode.style.width) + 'vw';
-            img_png[0].style.height = parseFloat(gd.parentNode.style.height) + 'vh';
+            if (!_.isNull(gd.parentNode)) {
+              gd.style.minHeight = gd.parentNode.style.minHeight;
+              gd.style.minWidth = gd.parentNode.style.minWidth;
+              gd.style.width = gd.parentNode.style.width;
+              gd.style.height = gd.parentNode.style.height;
+
+              img_png[0].style.minHeight = parseInt(gd.parentNode.style.minHeight) + 'px';
+              img_png[0].style.minWidth = parseInt(gd.parentNode.style.minWidth) + 'px';
+              img_png[0].style.width = parseFloat(gd.parentNode.style.width) + 'vw';
+              img_png[0].style.height = parseFloat(gd.parentNode.style.height) + 'vh';
+            }
           });
         });
 
