@@ -23,6 +23,11 @@ counts = [40, 100, 30, 55]
 selectd_fruit = 'apple'
 selectd_count = 40
 
+path =""
+
+def load_csv(state):
+    print("loading csv", state.path)
+
 def on_change(state, var, val):
     if ((var == 'a') or (var == 'b')):
         state.c = state.a + state.b * 2
