@@ -368,7 +368,7 @@ function flatUiWidgetsPluginClass() {
         for (let i = 1; i <= data.numberOfTriggers; i++) {
           const name = 'trigger' + i;
           if (isFile) {
-            result.push(new WidgetActuatorDescription(name, 'File content', WidgetActuatorDescription.WRITE));
+            result.push(new WidgetActuatorDescription(name, 'File content', WidgetActuatorDescription.TRIGGER));
           } else {
             result.push(
               new WidgetActuatorDescription(
