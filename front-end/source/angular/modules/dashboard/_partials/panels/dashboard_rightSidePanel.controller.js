@@ -606,10 +606,10 @@ angular
     <h4 ng-repeat-start="sliderName in $ctrl.sliderNames" title="Actuator trigger of {{$ctrl.title}}{{$ctrl.sliderDescriptions[sliderName].highlight ? ' :\n' + $ctrl.sliderDescriptions[sliderName].highlight : ''}}">
         Actuator : {{sliderName}}
 
-        <small ng-if="$ctrl.sliderDescriptions[sliderName].file" title="Sets a file's content into the bound data node">(<span style="color: var(--main-text-color)">F</span>)</small>
-        <small ng-if="$ctrl.sliderDescriptions[sliderName].trigger" title="Triggers the execution/update of the bound data node">(<span style="color: var(--main-text-color)">X</span>)</small>
+        <small ng-if="$ctrl.sliderDescriptions[sliderName].file" title="Sets a file's content into the bound variable">(<span style="color: var(--main-text-color)">F</span>)</small>
+        <small ng-if="$ctrl.sliderDescriptions[sliderName].trigger" title="Triggers the execution/update of the bound variable">(<span style="color: var(--main-text-color)">X</span>)</small>
         <small ng-if="$ctrl.sliderDescriptions[sliderName].read || $ctrl.sliderDescriptions[sliderName].write">
-            (<span ng-if="$ctrl.sliderDescriptions[sliderName].read" style="color: var(--success-color)" title="Reads data from the data node">R</span><span ng-if="$ctrl.sliderDescriptions[sliderName].write" style="color: var(--danger-color)" title="Writes data to the data node">W</span>)
+            (<span ng-if="$ctrl.sliderDescriptions[sliderName].read" style="color: var(--success-color)" title="Reads data from the variable">R</span><span ng-if="$ctrl.sliderDescriptions[sliderName].write" style="color: var(--danger-color)" title="Writes data to the variable">W</span>)
         </small>
 
         <i ng-if="$ctrl.selectionCombos[sliderName].validationErrors && !$ctrl.selectionCombos[sliderName].validationErrors.length" class="fa fa-check" style="color: var(--primary-color)" aria-hidden="true"></i>
