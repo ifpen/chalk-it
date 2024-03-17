@@ -17,6 +17,7 @@ setup(
 	url='https://github.com/Avaiga/taipy',
     install_requires=[
         'flask',
+        'pytz'
     ],
     author="IFPEN",
     author_email="xdash@ifpen.fr",
