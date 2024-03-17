@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import json
 
 NAME = "taipy-designer"
-VERSION = "0.5.0"
+VERSION = "0.0.0" # Do not touch. Will be overwritten by version.json
 
 with open("README.md", "r") as fh:
     readme = fh.read()
