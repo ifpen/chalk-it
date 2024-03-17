@@ -17,6 +17,7 @@ setup(
 	url='https://github.com/ifpen/chalk-it',
     install_requires=[
         'flask',
+        'pytz'
     ],
     author="IFP Energies nouvelles",
     author_email="chalk-it@ifpen.fr",
