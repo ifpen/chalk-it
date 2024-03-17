@@ -617,7 +617,7 @@ angular
     </h4>
     <div class="dataconnection__row">
         <div class="dataconnection__col">
-            <label for="DS{{sliderName}}_">DataNodes</label>
+            <label for="DS{{sliderName}}_">Variables</label>
             <select id="DS{{sliderName}}" ng-model="$ctrl.currentConnections.sliders[sliderName].dataNode" ng-change="$ctrl.onDatasourceChange(sliderName)">
                 <option>None</option>
                 <option ng-repeat="ds in $ctrl.filterDataNodes(sliderName) | filter: $ctrl.sliderDescriptions[sliderName].dsFilter" ng-class="{'validated' : ds.validated[sliderName]}">{{ds.name}}</option>

@@ -419,7 +419,7 @@ angular.module('modules.editor').controller('EditorController', [
         swal(
           {
             title: 'Are you sure?',
-            text: 'All connections with dataNodes will be cleared!',
+            text: 'All connections with variables will be cleared!',
             type: 'warning',
             showCancelButton: true,
             showConfirmButton: false,
@@ -444,7 +444,7 @@ angular.module('modules.editor').controller('EditorController', [
         swal(
           {
             title: 'Are you sure?',
-            text: 'All widgets and connections with dataNodes will be deleted!',
+            text: 'All widgets and connections with variables will be deleted!',
             type: 'warning',
             showCancelButton: true,
             showConfirmButton: false,
