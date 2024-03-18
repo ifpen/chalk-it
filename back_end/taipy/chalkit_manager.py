@@ -9,35 +9,46 @@ from pathlib import Path
 from typing import Dict, Union
 from taipy.gui.gui_actions import notify
 
+from .template_xprjson import xprjson_template
+from .utils_xprjson import update_xprjson
+
 # Get the absolute path of the main module
 BASE_PATH: Path = Path(sys.argv[0]).resolve().parent
 
-json_data: str = ""
-file_list: Dict[str, Union[str, list]] = {}
+chlkt_json_data_: str = ""
+chlkt_file_list_: Dict[str, Union[str, list]] = {}
 
 
-def load_file(state: object, action_name: str, payload: Dict[str, str]) -> None: # pylint: disable=unused-argument
+def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -> None: # pylint: disable=unused-argument
     """
     Loads file content into the state.
+    If the file does not exist, the code will create it based on a given string template 'xprjson_file_name'.
 
     Parameters:
     - state: The current state object.
     - action_name: The name of the action being performed.
     """
     if "xprjson_file_name" not in payload:
-        notify(state, notification_type="E", message="load_file")
+        notify(state, notification_type="E", message="chlkt_load_file_")
         return
     xprjson_file_name = payload.get("xprjson_file_name", None)
     xprjson_file_path = BASE_PATH / xprjson_file_name
+    if not xprjson_file_path.exists():
+        # If the file does not exist, create it with the contents of 'xprjson_template'
+        with open(xprjson_file_path, 'w') as file:
+            xprjson = xprjson_template
+            xprjson = update_xprjson(xprjson, xprjson_file_name)
+            file.write(json.dumps(xprjson_template))
+            print("File " + xprjson_file_name + " created.")
     if not xprjson_file_path.is_file():
         print("Invalid file path")
-        notify(state, notification_type="E", message="load_file")
+        notify(state, notification_type="E", message="chlkt_load_file_")
         return
-    state.json_data = Path(xprjson_file_path).read_text(encoding="utf-8")
-    notify(state, notification_type="I", message="load_file")
+    state.chlkt_json_data_ = Path(xprjson_file_path).read_text(encoding="utf-8")
+    notify(state, notification_type="I", message="chlkt_load_file_")
 
 
-def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
+def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -> None:
     """
     Saves the provided data into a file, determining the file name based on the action name.
 
@@ -52,23 +63,23 @@ def save_file(state: object, action_name: str, payload: Dict[str, str]) -> None:
     """
     try:
         if "data" not in payload or "xprjson_file_name" not in payload:
-            notify(state, notification_type="E", message="save_file")
+            notify(state, notification_type="E", message="chlkt_save_file_")
             return
         xprjson_file_name = payload.get("xprjson_file_name", None)
         xprjson_file_path = BASE_PATH / (
             xprjson_file_name.split(".")[0] + "_recovery.xprjson" if action_name == "reload" else xprjson_file_name)
         if not xprjson_file_path.is_file():
             print("Invalid file path")
-            notify(state, notification_type="E", message="save_file")
+            notify(state, notification_type="E", message="chlkt_save_file_")
             return
         with open(xprjson_file_path, "w", encoding="utf-8") as f:
             f.write(payload["data"])
-        notify(state, notification_type="I", message="save_file")
+        notify(state, notification_type="I", message="chlkt_save_file_")
     except OSError as error:
-        notify(state, notification_type="E", message="save_file")
+        notify(state, notification_type="E", message="chlkt_save_file_")
 
 
-def get_file_list(state: object, action_name: str) -> None: # pylint: disable=unused-argument
+def chlkt_get_file_list_(state: object, action_name: str) -> None: # pylint: disable=unused-argument
     """
     Updates the state with a list of .xprjson files in the base path.
 
@@ -81,4 +92,4 @@ def get_file_list(state: object, action_name: str) -> None: # pylint: disable=un
         "file_names": file_names,
         "base_path": str(BASE_PATH)
     }
-    state.file_list = json.dumps(file_list_obj)
+    state.chlkt_file_list_ = json.dumps(file_list_obj)

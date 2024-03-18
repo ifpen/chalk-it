@@ -28,9 +28,9 @@ class TaipyManager {
     this.#deletedDnConnections = new Set();
     this.#endAction = undefined;
     // Variables that will be ignored (do not create a dataNode)
-    this.#ignoredVariables = new Set(['json_data', 'file_list', 'TaipyOnInit']);
+    this.#ignoredVariables = new Set(['chlkt_json_data_', 'chlkt_file_list_', 'TaipyOnInit']);
     // Functions that will be ignored
-    this.#ignoredFunctions = new Set(['on_change', 'load_file', 'save_file', 'get_file_list']);
+    this.#ignoredFunctions = new Set(['on_change', 'chlkt_load_file_', 'chlkt_save_file_', 'chlkt_get_file_list_']);
   }
 
   /**
@@ -87,7 +87,7 @@ class TaipyManager {
       this.variableData[context][varName].value = this.#deepClone(newValue);
 
       // loadFile
-      if (encodedName.includes('json_data')) {
+      if (encodedName.includes('chlkt_json_data_')) {
         if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
           const jsonData = this.variableData[context][varName].value;
           this.endAction(jsonData);
@@ -96,7 +96,7 @@ class TaipyManager {
       }
 
       // getFileList
-      if (encodedName.includes('file_list')) {
+      if (encodedName.includes('chlkt_file_list_')) {
         if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
           const fileList = JSON.parse(this.variableData[context][varName].value);
           this.endAction(fileList);
@@ -123,7 +123,7 @@ class TaipyManager {
    */
   #onNotify(app, type, message) {
     const MESSAGE_TYPES = { INFO: 'I', ERROR: 'E' };
-    const ACTIONS = { LOAD_FILE: 'load_file', SAVE_FILE: 'save_file' };
+    const ACTIONS = { LOAD_FILE: 'chlkt_load_file_', SAVE_FILE: 'chlkt_save_file_' };
     switch (message) {
       case ACTIONS.LOAD_FILE:
         if (type == MESSAGE_TYPES.INFO) {
@@ -231,7 +231,7 @@ class TaipyManager {
   saveFile(xprjson, actionName) {
     try {
       const action_name = actionName ?? 'first_action';
-      this.app.trigger('save_file', action_name, {
+      this.app.trigger('chlkt_save_file_', action_name, {
         data: JSON.stringify(xprjson, null, '\t'),
         xprjson_file_name: this.xprjsonFileName,
       });
@@ -252,19 +252,19 @@ class TaipyManager {
    */
   loadFile(fileName) {
     try {
-      this.app.trigger('load_file', 'first_action', { xprjson_file_name: fileName });
+      this.app.trigger('chlkt_load_file_', 'first_action', { xprjson_file_name: fileName });
     } catch (error) {
       this.#handleError('Error loading file', error);
     }
   }
 
   /**
-   * Triggers a request to obtain a file_list object from the specified base path in Taipy page.
-   * The file_list object includes the base path and a list of file names with the .xprjson extension.
+   * Triggers a request to obtain a chlkt_file_list_ object from the specified base path in Taipy page.
+   * The chlkt_file_list_ object includes the base path and a list of file names with the .xprjson extension.
    *
    * @remarks
    * - This method does not return the file list directly; it merely initiates the process of retrieving it.
-   * - The event triggered by this method should be handled to process the file_list object, which will have the following structure:
+   * - The event triggered by this method should be handled to process the chlkt_file_list_ object, which will have the following structure:
    *   {
    *     "file_names": ["string - file name with the .xprjson extension", ...]
    *     "base_path": "string - the path to the directory searched",
@@ -276,7 +276,7 @@ class TaipyManager {
    */
   getFileList() {
     try {
-      this.app.trigger('get_file_list', 'first_action');
+      this.app.trigger('chlkt_get_file_list_', 'first_action');
     } catch (error) {
       this.#handleError('Error getting file list', error);
     }
