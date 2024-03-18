@@ -91,12 +91,13 @@ Depending on the _execution flow control parameters_ and the the data flow depen
 \*By an associated [push button](../../wdg/wdg-basic-inputs/#push-button) widget, by a click on the dataNode update icon ![Update](img/refresh-icon.png "Update"), or by using [executeDataNode API](../../chalkitapi/#executeDataNode).
 
 **For periodic dataNodes (Sample Time > 0)**
-| Cases | Auto Start | Explicit Trigger | Run at project load | Run after predecessor update | Run after a user trigger\* |
-| :----------------: | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: |
-| 5# | `False` | `False` | No | Yes | Yes |
-| 6# | `True` | `False` | Yes | Yes | Yes |
-| 7# | `False` | `True` | No | No | Yes** |
-| 8# | `True` | `True` | Yes | No (last value) | Yes** |
+
+| Cases    | Auto Start    | Explicit Trigger | Run at project load | Run after predecessor update | Run after a user trigger\* |
+| :------: | :-----------: | :--------------: | :-----------------: | :--------------------------: | :------------------------: |
+| 5#       | `False`       | `False`          | No                  | Yes                          | Yes                        |
+| 6#       | `True`        | `False`          | Yes                 | Yes                          | Yes                        |
+| 7#       | `False`       | `True`           | No                  | No                           | Yes**                      |
+| 8#       | `True`        | `True`           | Yes                 | No (last value)              | Yes**                      |
 
 \*\*For cases 7# and 8#, when the user explicitly triggers the periodic dataNode, the _Explicit Trigger_ option is turned to `False`.
 
