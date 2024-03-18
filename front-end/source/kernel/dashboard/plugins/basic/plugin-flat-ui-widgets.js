@@ -368,7 +368,13 @@ function flatUiWidgetsPluginClass() {
         for (let i = 1; i <= data.numberOfTriggers; i++) {
           const name = 'trigger' + i;
           if (isFile) {
-            result.push(new WidgetActuatorDescription(name, 'File content', WidgetActuatorDescription.TRIGGER));
+            result.push(
+              new WidgetActuatorDescription(
+                name,
+                'File content',
+                isTaipyLink ? WidgetActuatorDescription.TRIGGER : WidgetActuatorDescription.WRITE
+              )
+            );
           } else {
             result.push(
               new WidgetActuatorDescription(
