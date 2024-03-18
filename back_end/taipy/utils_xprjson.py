@@ -13,14 +13,10 @@ def _getDateTime():
 
     return formatted_time_with_colon
 
-def _remove_extension(filename):
-    extension = ".xprjson"
+def _remove_extension(filename, extension=".xprjson"):
     if filename.endswith(extension):
-        # Remove the extension and return the modified filename
         return filename[:-len(extension)]
-    else:
-        # Return the original filename if it doesn't end with the specified extension
-        return filename
+    return filename
 
 def update_xprjson(xprjson, name):
     xprjson['meta']['date'] = _getDateTime()
