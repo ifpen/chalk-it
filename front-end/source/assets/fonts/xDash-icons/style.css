@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'xDash-icons';
-  src:  url('fonts/xDash-icons.eot?8hm86g');
-  src:  url('fonts/xDash-icons.eot?8hm86g#iefix') format('embedded-opentype'),
-    url('fonts/xDash-icons.ttf?8hm86g') format('truetype'),
-    url('fonts/xDash-icons.woff?8hm86g') format('woff'),
-    url('fonts/xDash-icons.svg?8hm86g#xDash-icons') format('svg');
+  src:  url('fonts/xDash-icons.eot?p28sxz');
+  src:  url('fonts/xDash-icons.eot?p28sxz#iefix') format('embedded-opentype'),
+    url('fonts/xDash-icons.ttf?p28sxz') format('truetype'),
+    url('fonts/xDash-icons.woff?p28sxz') format('woff'),
+    url('fonts/xDash-icons.svg?p28sxz#xDash-icons') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -288,4 +288,10 @@
 }
 .icn-stretch:before {
   content: "\e948";
+}
+.icn-horizontal-distribute:before {
+  content: "\e959";
+}
+.icn-vertical-distribute:before {
+  content: "\e958";
 }
