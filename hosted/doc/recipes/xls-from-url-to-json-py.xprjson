@@ -51,7 +51,7 @@
 					"name": "tab",
 					"autoStart": true,
 					"explicitTrig": false,
-					"content": "import pandas as pd\n\ndf_dict = datasources[\"xlsxToJson\"]\nheaders = list(df_dict.keys())\ntab = []\n\nfor header in headers:\n    tab.append(list(df_dict[header].values()))\n\ntab_of_rows = list(map(list, zip(*tab)))\n\ntab_of_rows.insert(0, headers)\nreturn tab_of_rows"
+					"content": "import pandas as pd\n\ndf_dict = dataNodes[\"xlsxToJson\"]\nheaders = list(df_dict.keys())\ntab = []\n\nfor header in headers:\n    tab.append(list(df_dict[header].values()))\n\ntab_of_rows = list(map(list, zip(*tab)))\n\ntab_of_rows.insert(0, headers)\nreturn tab_of_rows"
 				}
 			},
 			{
@@ -61,7 +61,7 @@
 					"name": "xlsxToJson",
 					"autoStart": true,
 					"explicitTrig": false,
-					"content": "import pandas as pd\nimport base64\nimport io\n\nbuffer = io.BytesIO(base64.b64decode(datasources[\"simpleXls\"][\"content\"]))\niso = pd.read_excel(buffer, sheet_name='Feuil1')\n\nreturn iso.to_dict()"
+					"content": "import pandas as pd\nimport base64\nimport io\n\nbuffer = io.BytesIO(base64.b64decode(dataNodes[\"simpleXls\"][\"content\"]))\niso = pd.read_excel(buffer, sheet_name='Feuil1')\n\nreturn iso.to_dict()"
 				}
 			}
 		],

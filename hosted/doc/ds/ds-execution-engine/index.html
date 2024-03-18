@@ -1140,13 +1140,53 @@
 </tbody>
 </table>
 <p>*By an associated <a href="../../wdg/wdg-basic-inputs/#push-button">push button</a> widget, by a click on the dataNode update icon <img alt="Update" src="../img/refresh-icon.png" title="Update" />, or by using <a href="../../chalkitapi/#executeDataNode">executeDataNode API</a>.</p>
-<p><strong>For periodic dataNodes (Sample Time &gt; 0)</strong>
-| Cases | Auto Start | Explicit Trigger | Run at project load | Run after predecessor update | Run after a user trigger* |
-| :----------------: | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: |
-| 5# | <code>False</code> | <code>False</code> | No | Yes | Yes |
-| 6# | <code>True</code> | <code>False</code> | Yes | Yes | Yes |
-| 7# | <code>False</code> | <code>True</code> | No | No | Yes<strong> |
-| 8# | <code>True</code> | <code>True</code> | Yes | No (last value) | Yes</strong> |</p>
+<p><strong>For periodic dataNodes (Sample Time &gt; 0)</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Cases</th>
+<th style="text-align: center;">Auto Start</th>
+<th style="text-align: center;">Explicit Trigger</th>
+<th style="text-align: center;">Run at project load</th>
+<th style="text-align: center;">Run after predecessor update</th>
+<th style="text-align: center;">Run after a user trigger*</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">5#</td>
+<td style="text-align: center;"><code>False</code></td>
+<td style="text-align: center;"><code>False</code></td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr>
+<td style="text-align: center;">6#</td>
+<td style="text-align: center;"><code>True</code></td>
+<td style="text-align: center;"><code>False</code></td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr>
+<td style="text-align: center;">7#</td>
+<td style="text-align: center;"><code>False</code></td>
+<td style="text-align: center;"><code>True</code></td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">Yes**</td>
+</tr>
+<tr>
+<td style="text-align: center;">8#</td>
+<td style="text-align: center;"><code>True</code></td>
+<td style="text-align: center;"><code>True</code></td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">No (last value)</td>
+<td style="text-align: center;">Yes**</td>
+</tr>
+</tbody>
+</table>
 <p>**For cases 7# and 8#, when the user explicitly triggers the periodic dataNode, the <em>Explicit Trigger</em> option is turned to <code>False</code>.</p>
 <h2 id="datanodes-capabilities">DataNodes capabilities<a class="headerlink" href="#datanodes-capabilities" title="Permanent link">&para;</a></h2>
 <p>In addition to execution flow control parameters, dataNodes may have common capabilites depending on their type.</p>

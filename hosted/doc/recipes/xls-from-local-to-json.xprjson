@@ -28,7 +28,7 @@
 		"allow_edit": true,
 		"plugins": [],
 		"panes": [],
-		"datasources": [
+		"dataNodes": [
 			{
 				"name": "xlsContent",
 				"type": "JSON_var_plugin",

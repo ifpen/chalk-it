@@ -10,7 +10,7 @@
 		"allow_edit": true,
 		"plugins": [],
 		"panes": [],
-		"datasources": [
+		"dataNodes": [
 			{
 				"name": "point",
 				"type": "JSON_var_plugin",
