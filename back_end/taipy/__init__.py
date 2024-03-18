@@ -1,19 +1,19 @@
 from .resource_handler import PureHTMLResourceHandler
 from .chalkit_page import ChalkitPage
 from .chalkit_manager import (
-    json_data,
-    file_list,
-    load_file,
-    save_file,
-    get_file_list
+    chlkt_json_data_,
+    chlkt_file_list_,
+    chlkt_load_file_,
+    chlkt_save_file_,
+    chlkt_get_file_list_
 )
 
 __all__=[
-	"json_data",
-    "file_list",
-    "load_file",
-    "save_file",
-    "get_file_list",
+	"chlkt_json_data_",
+    "chlkt_file_list_",
+    "chlkt_load_file_",
+    "chlkt_save_file_",
+    "chlkt_get_file_list_",
     "PureHTMLResourceHandler",
     "ChalkitPage"
 ]
