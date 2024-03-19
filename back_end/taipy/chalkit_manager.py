@@ -36,8 +36,7 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
     if not xprjson_file_path.exists():
         # If the file does not exist, create it with the contents of 'xprjson_template'
         with open(xprjson_file_path, 'w') as file:
-            xprjson = xprjson_template
-            xprjson = update_xprjson(xprjson, xprjson_file_name)
+            update_xprjson(xprjson_template, xprjson_file_name)
             file.write(json.dumps(xprjson_template))
             print("File " + xprjson_file_name + " created.")
     if not xprjson_file_path.is_file():
