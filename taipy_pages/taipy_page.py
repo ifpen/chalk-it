@@ -23,6 +23,8 @@ counts = [40, 100, 30, 55]
 selectd_fruit = 'apple'
 selectd_count = 40
 
+hello_var = "toto titi"
+
 path =""
 
 def load_csv(state):
