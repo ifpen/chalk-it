@@ -24,7 +24,7 @@ image = Image.open(image_path)
 
 img_grey = convert_to_grayscale(image, 1)
 
-greyscale_intensity = 0
+greyscale_intensity = 1
 
 def on_change(state, var, val):
     if (var=="greyscale_intensity"):
