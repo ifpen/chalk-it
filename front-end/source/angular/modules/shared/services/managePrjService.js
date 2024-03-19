@@ -819,6 +819,7 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.updateFlagDirty(false);
       $rootScope.origin = 'openProject';
       xdash.openProjectManager(xprjson);
+      taipyManager.processVariableData();
       const projectName = fileName.replace('.xprjson', '');
       const notice = new PNotify({
         title: projectName,
@@ -832,7 +833,6 @@ angular.module('modules').service('ManagePrjService', [
       });
       $rootScope.filtredList = [];
       $rootScope.filtredNodes = $rootScope.alldatanodes.length;
-      taipyManager.processVariableData();
       $rootScope.loadingBarStop();
       datanodesManager.showLoadingIndicator(false);
     }
