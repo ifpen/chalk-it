@@ -1,8 +1,8 @@
 xprjson_template = {
 	"meta": {
 		"version": "2.992.8836",
-		"date": "Sun Mar 17 2024 22:20:12 GMT+0100",
-		"name": "test",
+		"date": "",
+		"name": "",
 		"description": "",
 		"groupName": "",
 		"tags": [],
