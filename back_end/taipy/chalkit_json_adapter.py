@@ -39,14 +39,20 @@ class FunctionJsonAdapter(JsonAdapter):
             return {"type":"png", "content" : img_str}
         elif "PIL.Image.Image" in str(type(o)):
             return self._image_to_base64(o)
-        elif hasattr(o, '_repr_jpeg_') and callable(getattr(o, '_repr_jpeg_')):
-            jpeg_bytes = o._repr_jpeg_()
-            base64_string = base64.b64encode(jpeg_bytes).decode('utf-8')
-            return f'data:image/jpeg;base64,{base64_string}'
         elif isinstance(o, _MapDict):
             o_=o._dict
             o__r = replace_nan(o_)
             return o__r
+        else: 
+            try: 
+                hasattr(o, '_repr_jpeg_')
+                if callable(getattr(o, '_repr_jpeg_')):
+                    jpeg_bytes = o._repr_jpeg_()
+                    base64_string = base64.b64encode(jpeg_bytes).decode('utf-8')
+                    return f'data:image/jpeg;base64,{base64_string}'
+            except AttributeError as e:
+                pass
+
 
     @staticmethod
     def _image_to_base64(image):
