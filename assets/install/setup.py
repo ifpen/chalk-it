@@ -20,7 +20,7 @@ setup(
         'pathvalidate',
         'watchdog',
         'flask-sock',
-        'pyt
+        'pyt'
     ],
     author="IFP Energies nouvelles",
     author_email="chalk-it@ifpen.fr",
