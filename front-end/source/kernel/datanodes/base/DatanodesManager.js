@@ -231,8 +231,10 @@ var datanodesManager = (function () {
             let wdList = [];
             for (let prop in widgetConnector.widgetsConnection) {
               for (let i in widgetConnector.widgetsConnection[prop].sliders) {
-                wdList.push(widgetConnector.widgetsConnection[prop].instanceId);
-                widgetConnector.widgetsConnection[prop].sliders[i].dataNode = newSettings.settings.name;
+                if (viewModel.name() === widgetConnector.widgetsConnection[prop].sliders[i].dataNode) {
+                  wdList.push(widgetConnector.widgetsConnection[prop].instanceId);
+                  widgetConnector.widgetsConnection[prop].sliders[i].dataNode = newSettings.settings.name;
+                }
               }
             }
             xdashNotifications.manageNotification(
