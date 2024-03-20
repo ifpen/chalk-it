@@ -513,7 +513,7 @@ var xdash = (function () {
 
   /*--------manage leave/refresh page--------*/
   $(window).bind('beforeunload', async function () {
-    // await saveAndClosePrj();
+    await saveAndClosePrj();
   });
 
   //-------------------------------------------------------------------------------------------------------------------
