@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import path from 'node:path';
-import { Browser, Builder, WebDriver } from 'selenium-webdriver';
+import { Browser, Builder, WebDriver, Capability } from 'selenium-webdriver';
 import { Options as ChromeOptions } from 'selenium-webdriver/chrome.js';
 import { Options as FirefoxOptions } from 'selenium-webdriver/firefox.js';
 import { Options as EdgeOptions } from 'selenium-webdriver/edge.js';
@@ -16,7 +16,7 @@ export function perBrowser(
   testSuite: (browser: string, driverFixture: () => WebDriver) => void,
   browsers = config.browsers,
 ) {
-  config.browsers.forEach((browser) => {
+  browsers.forEach((browser) => {
     describe(`Using ${browser}`, function () {
       const driverFixture = webDriverFixture(browser);
 
@@ -31,8 +31,10 @@ export function webDriverFixture(browser: string): () => WebDriver {
     const width = config.width;
     const height = config.height;
 
-    // TODO force logs
-    const builder = new Builder().forBrowser(browser);
+    const builder = new Builder().withCapabilities({
+      [Capability.LOGGING_PREFS]: { browser: 'ALL' },
+      [Capability.BROWSER_NAME]: browser,
+    });
     switch (browser) {
       case Browser.CHROME:
         let chromeOptions = new ChromeOptions().windowSize({ width, height });
