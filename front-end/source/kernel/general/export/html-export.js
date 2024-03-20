@@ -11,6 +11,7 @@ var htmlExport = (function () {
   var checkExportOptions = true;
   var navBarNotification = false;
   var is_xDash = true;
+  const $rootScope = angular.element(document.body).scope().$root;
   /*--------create html doc--------*/
   var createHtmlDoc = function (headText, bodyText, doc_impl, dashboardName) {
     var dt = doc_impl.createDocumentType('html', null, null),
@@ -163,7 +164,6 @@ var htmlExport = (function () {
 
   /*--------preview dashboard--------*/
   function previewDashboard(xprjson, projectName, bNoExportModal) {
-    const $rootScope = angular.element(document.body).scope().$root;
     const _projectName = $rootScope.xDashFullVersion ? projectName : $('#projectName').val() || 'Untitled';
     let param;
     if (!_.isUndefined(xprjson) && !_.isUndefined(_projectName)) {
@@ -195,7 +195,7 @@ var htmlExport = (function () {
     }
     if (_.isUndefined(projectName)) dashboardName = $('#projectName')[0].value;
     else dashboardName = projectName;
-
+    if ($rootScope.taipyLink) document.cookie = 'tprh=htmlresource; path=/';
     var tab = window.open('about:blank', '_blank');
     var txt = createDashboardDocument(dashboardName, xprjson);
     tab.document.write(txt);
