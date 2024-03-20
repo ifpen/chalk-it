@@ -1,12 +1,14 @@
 import * as fs from 'fs';
-import path from 'node:path';
-import { ChalkitServer } from '../support/basic-server.js';
-import { config } from '../test-config.js';
-import { PNG } from 'pngjs';
-import { diffScreenshots } from '../support/compare-screenshots.js';
-import { pipeline } from 'node:stream/promises';
 import assert from 'assert';
+import path from 'node:path';
+import { pipeline } from 'node:stream/promises';
+import { PNG } from 'pngjs';
+import { By, until } from 'selenium-webdriver';
+import { config } from '../test-config.js';
+import { ChalkitServer } from '../support/basic-server.js';
+import { diffScreenshots } from '../support/compare-screenshots.js';
 import { perBrowser } from '../fixtures/web-driver-fixture.js';
+import { DashboardPage } from '../support/dashboard/dashboard.js';
 
 /** The more complicated form allows to grab a reference dashboard from the documentation and keep the screenshot here.  */
 type TestCase = string | { dashboard: string; referenceDirectory: string };
@@ -76,14 +78,18 @@ describe('Visual Tests', function () {
     TEST_CASES.forEach((testCase, idx) => {
       const testCaseFile = getDashboardFile(testCase);
       it(testCaseFile, async () => {
+        const driver = driverFixture();
+
         const expectedBuffer = fs.promises.readFile(screenshotReference(testCase, browser));
 
-        await driverFixture().get(server.getDashboardUrl(idx.toString()));
+        await driver.get(server.getDashboardUrl(idx.toString()));
 
-        // TODO find proper condition
-        await delay(5000);
+        const dashboardPage = new DashboardPage(driver);
+        dashboardPage.waitWidgetAreaExists();
+        // If not reliable, add small safety wait.
+        dashboardPage.waitNotLoading();
 
-        const encodedString = await driverFixture().takeScreenshot();
+        const encodedString = await driver.takeScreenshot();
 
         if (config.outputsDir) {
           await fs.promises.writeFile(
