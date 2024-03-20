@@ -225,6 +225,12 @@ var datanodesManager = (function () {
                 script = datanodesManager.getDataNodeByName(successors[prop]).settings().content;
               } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
                 script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
+              } else if (
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'REST_web-service_from_datasource'
+              ) {
+                script = datanodesManager.getDataNodeByName(successors[prop]).settings().body;
+              } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_delay_plugin') {
+                script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_input;
               }
               replacedScript = script
                 .replace(new RegExp('dataNodes\\["' + oldName + '"\\]', 'g'), 'dataNodes["' + newName + '"]')
@@ -237,6 +243,12 @@ var datanodesManager = (function () {
                 datanodesManager.getDataNodeByName(successors[prop]).settings().content = replacedScript;
               } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
                 datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = replacedScript;
+              } else if (
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'REST_web-service_from_datasource'
+              ) {
+                datanodesManager.getDataNodeByName(successors[prop]).settings().body = replacedScript;
+              } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_delay_plugin') {
+                datanodesManager.getDataNodeByName(successors[prop]).settings().json_input = replacedScript;
               }
             }
           }
