@@ -106,7 +106,6 @@ function uploadFileToTaipy(event, idInstance, idWidget) {
 // |                          triggerTaipyFunction                      | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 function triggerTaipyFunction(sliders) {
-  if (_.isEmpty(sliders)) return;
   const dnNames = Object.entries(sliders)
     .filter(([key, _]) => key !== 'file_path') // Ignore file_path, keep only triggers
     .map(([_, slider]) => slider.dataNode)
