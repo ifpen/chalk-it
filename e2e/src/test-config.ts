@@ -2,15 +2,8 @@ import dotenv from 'dotenv';
 import { Browser } from 'selenium-webdriver';
 dotenv.config();
 
-export enum ChalkitServer {
-  Express = 'Express',
-  // Python = 'Python',
-}
-
 export const config = {
   chalkitDir: process.env.CHALKIT_DIR,
-  chalkitCommand: process.env.CHALKIT_COMMAND,
-  chalkitServer: process.env.CHALKIT_SERVER ?? ChalkitServer.Express,
 
   browsers: process.env.BROWSER_LIST?.split(',') ?? [Browser.CHROME, Browser.EDGE],
   headless: (process.env.HEADLESS ?? 'true') === 'true',
