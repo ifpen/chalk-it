@@ -1,12 +1,12 @@
 /**
  * Manages the interaction between Chalk-it and Taipy.
- * It primarily handles the creation, updating, and deletion of dataNodes and
- * sending updated values to Taipy.
+ * It primarily handles the creation, updating, and deletion of dataNodes and sending updated values to Taipy.
  *
  * @class
  */
 class TaipyManager {
   #app;
+  #runMode;
   #currentContext;
   #xprjsonFileName;
   #variableData;
@@ -22,6 +22,7 @@ class TaipyManager {
    */
   constructor() {
     this.#app = {};
+    this.#runMode = '';
     this.#currentContext = '';
     this.#xprjsonFileName = '';
     this.#variableData = {};
@@ -34,14 +35,21 @@ class TaipyManager {
   }
 
   /**
-   * Initializes the Taipy application by creating an app instance and setting up change detection.
+   * Initializes the Taipy application, setting the running mode, and configuring the app instance
+   * with necessary event handlers.
+   * This setup includes change detection and notification handling to ensure the app's responsive
+   * behavior and error management.
    *
    * @method initTaipyApp
    * @public
+   * @param {string} runMode - Specifies the running mode of the application, which can be either 'runtime' or 'studio'.
+   *                           The 'runtime' mode is typically used for production environments,
+   *                           while 'studio' mode is used during development within a dashboard.
    * @returns {void} This method does not return a value.
    */
-  initTaipyApp() {
+  initTaipyApp(runMode) {
     try {
+      this.#runMode = runMode;
       this.app = TaipyGuiBase.createApp(this.#onInit.bind(this));
       this.app.onChange = this.#onChange.bind(this);
       this.app.onNotify = this.#onNotify.bind(this);
@@ -61,7 +69,7 @@ class TaipyManager {
   #onInit(app) {
     this.currentContext = app.getContext();
     this.xprjsonFileName = app.getPageMetadata()['xprjson_file_name'];
-    this.processVariableData();
+    if (this.#runMode == 'runtime') this.processVariableData();
     if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
       // To load the xprjsonFileName if it exists
       this.endAction();
@@ -83,14 +91,15 @@ class TaipyManager {
       const [varName, context] = app.getName(encodedName);
       if (this.currentContext !== context) return;
 
-      // Update variableData
-      this.variableData[context][varName].value = this.#deepClone(newValue);
+      if (this.variableData[context] && Object.keys(this.variableData[context]).length !== 0) {
+        // Update variableData
+        this.variableData[context][varName].value = this.#deepClone(newValue);
+      }
 
       // loadFile
       if (encodedName.includes('chlkt_json_data_')) {
         if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          const jsonData = this.variableData[context][varName].value;
-          this.endAction(jsonData);
+          this.endAction(newValue); // newValue contains xprjson data
           this.endAction = undefined;
         }
       }
@@ -98,7 +107,7 @@ class TaipyManager {
       // getFileList
       if (encodedName.includes('chlkt_file_list_')) {
         if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          const fileList = JSON.parse(this.variableData[context][varName].value);
+          const fileList = JSON.parse(newValue);
           this.endAction(fileList);
           this.endAction = undefined;
         }
