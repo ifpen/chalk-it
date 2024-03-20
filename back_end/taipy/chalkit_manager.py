@@ -102,6 +102,7 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
     - OSError: If there's an error writing to the file.
     """
     action: str = "save_file"
+    is_reload: bool = action_name == "reload"
 
     try:
         if "data" not in payload or "xprjson_file_name" not in payload:
@@ -118,11 +119,11 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
         xprjson_file_name: str = payload.get("xprjson_file_name", None)
         xprjson_file_path: Path = BASE_PATH / (
             xprjson_file_name.split(".")[0] + "_recovery.xprjson"
-            if action_name == "reload"
+            if is_reload
             else xprjson_file_name
         )
 
-        if not xprjson_file_path.is_file():
+        if not xprjson_file_path.is_file() and not is_reload:
             print("Invalid file path")
             notify(
                 state,
