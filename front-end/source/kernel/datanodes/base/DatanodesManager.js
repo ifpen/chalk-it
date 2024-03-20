@@ -217,14 +217,30 @@ var datanodesManager = (function () {
             for (let prop in successors) {
               const oldName = viewModel.name();
               const newName = newSettings.settings.name;
-              script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
+              let script = '';
+              if (
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_plugin' ||
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_pyodide_plugin'
+              ) {
+                script = datanodesManager.getDataNodeByName(successors[prop]).settings().content;
+              } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
+                script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
+              }
               replacedScript = script
                 .replace(new RegExp('dataNodes\\["' + oldName + '"\\]', 'g'), 'dataNodes["' + newName + '"]')
                 .replace(new RegExp('dataNodes\\.' + oldName, 'g'), 'dataNodes.' + newName);
 
-              datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = replacedScript;
+              if (
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_plugin' ||
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_pyodide_plugin'
+              ) {
+                datanodesManager.getDataNodeByName(successors[prop]).settings().content = replacedScript;
+              } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
+                datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = replacedScript;
+              }
             }
           }
+
           // handle widget connection
           [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
           if (bFoundConnection) {
