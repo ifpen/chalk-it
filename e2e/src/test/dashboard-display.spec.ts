@@ -8,6 +8,7 @@ import { pipeline } from 'node:stream/promises';
 import assert from 'assert';
 import { perBrowser } from '../fixtures/web-driver-fixture.js';
 
+/** The more complicated form allows to grab a reference dashboard from the documentation and keep the screenshot here.  */
 type TestCase = string | { dashboard: string; referenceDirectory: string };
 
 const TEST_CASES: TestCase[] = ['resources/list-js.xprjson'];
