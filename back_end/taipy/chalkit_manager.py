@@ -6,7 +6,7 @@ based on user actions, specifically handling .xprjson files.
 import json
 import sys
 from pathlib import Path
-from typing import Dict, Union
+from typing import Dict, List, Union
 from taipy.gui.gui_actions import notify
 
 from .template_xprjson import xprjson_template
@@ -19,32 +19,73 @@ chlkt_json_data_: str = ""
 chlkt_file_list_: Dict[str, Union[str, list]] = {}
 
 
-def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -> None: # pylint: disable=unused-argument
+# pylint: disable=unused-argument
+def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -> None:
     """
     Loads file content into the state.
-    If the file does not exist, the code will create it based on a given string template 'xprjson_file_name'.
+    If the file does not exist, the code will create it based on a given string
+    template 'xprjson_file_name'.
 
     Parameters:
     - state: The current state object.
     - action_name: The name of the action being performed.
     """
-    if "xprjson_file_name" not in payload:
-        notify(state, notification_type="E", message="chlkt_load_file_")
-        return
-    xprjson_file_name = payload.get("xprjson_file_name", None)
-    xprjson_file_path = BASE_PATH / xprjson_file_name
-    if not xprjson_file_path.exists():
-        # If the file does not exist, create it with the contents of 'xprjson_template'
-        with open(xprjson_file_path, 'w') as file:
-            update_xprjson(xprjson_template, xprjson_file_name)
-            file.write(json.dumps(xprjson_template))
-            print("File " + xprjson_file_name + " created.")
-    if not xprjson_file_path.is_file():
-        print("Invalid file path")
-        notify(state, notification_type="E", message="chlkt_load_file_")
-        return
-    state.chlkt_json_data_ = Path(xprjson_file_path).read_text(encoding="utf-8")
-    notify(state, notification_type="I", message="chlkt_load_file_")
+    action: str = "load_file"
+    is_new_file: bool = False
+
+    try:
+        if "xprjson_file_name" not in payload:
+            notify(
+                state,
+                notification_type="E",
+                message={
+                    "action_name": action,
+                    "message": "Error while loading: invalid pyload data",
+                },
+            )
+            return
+
+        xprjson_file_name: str = payload.get("xprjson_file_name", None)
+        xprjson_file_path: Path = BASE_PATH / xprjson_file_name
+
+        if not xprjson_file_path.exists():
+            # If the file does not exist, create it with the contents of 'xprjson_template'
+            with open(xprjson_file_path, "w", encoding="utf-8") as file:
+                update_xprjson(xprjson_template, xprjson_file_name)
+                file.write(json.dumps(xprjson_template))
+                is_new_file = True
+
+        if not xprjson_file_path.is_file():
+            print("Invalid file path")
+            notify(
+                state,
+                notification_type="E",
+                message={
+                    "action_name": action,
+                    "message": "Error while loading: invalid file path",
+                },
+            )
+            return
+
+        state.chlkt_json_data_ = Path(xprjson_file_path).read_text(encoding="utf-8")
+        notify(
+            state,
+            notification_type="I",
+            message={
+                "action_name": action,
+                "message": f"The file {xprjson_file_name} was successfully loaded",
+                "is_new_file": is_new_file,
+            },
+        )
+    except OSError as e:
+        notify(
+            state,
+            notification_type="E",
+            message={
+                "action_name": action,
+                "message": f"Error while loading: {e}",
+            },
+        )
 
 
 def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -> None:
@@ -60,25 +101,62 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
     - ValueError: If the payload does not contain 'data'.
     - OSError: If there's an error writing to the file.
     """
+    action: str = "save_file"
+
     try:
         if "data" not in payload or "xprjson_file_name" not in payload:
-            notify(state, notification_type="E", message="chlkt_save_file_")
+            notify(
+                state,
+                notification_type="E",
+                message={
+                    "action_name": action,
+                    "message": "Error while saving: invalid pyload data",
+                },
+            )
             return
-        xprjson_file_name = payload.get("xprjson_file_name", None)
-        xprjson_file_path = BASE_PATH / (
-            xprjson_file_name.split(".")[0] + "_recovery.xprjson" if action_name == "reload" else xprjson_file_name)
+
+        xprjson_file_name: str = payload.get("xprjson_file_name", None)
+        xprjson_file_path: Path = BASE_PATH / (
+            xprjson_file_name.split(".")[0] + "_recovery.xprjson"
+            if action_name == "reload"
+            else xprjson_file_name
+        )
+
         if not xprjson_file_path.is_file():
             print("Invalid file path")
-            notify(state, notification_type="E", message="chlkt_save_file_")
+            notify(
+                state,
+                notification_type="E",
+                message={
+                    "action_name": action,
+                    "message": "Error while saving: invalid file path",
+                },
+            )
             return
+
         with open(xprjson_file_path, "w", encoding="utf-8") as f:
             f.write(payload["data"])
-        notify(state, notification_type="I", message="chlkt_save_file_")
-    except OSError as error:
-        notify(state, notification_type="E", message="chlkt_save_file_")
+        notify(
+            state,
+            notification_type="I",
+            message={
+                "action_name": action,
+                "message": "The project was successfully saved",
+            },
+        )
+    except OSError as e:
+        notify(
+            state,
+            notification_type="E",
+            message={
+                "action_name": action,
+                "message": f"Error while saving: {e}",
+            },
+        )
 
 
-def chlkt_get_file_list_(state: object, action_name: str) -> None: # pylint: disable=unused-argument
+# pylint: disable=unused-argument
+def chlkt_get_file_list_(state: object, action_name: str) -> None:
     """
     Updates the state with a list of .xprjson files in the base path.
 
@@ -86,9 +164,22 @@ def chlkt_get_file_list_(state: object, action_name: str) -> None: # pylint: dis
     - state: The current state object.
     - action_name: The name of the action being performed.
     """
-    file_names = [file.name for file in BASE_PATH.glob("*.xprjson")]
-    file_list_obj: Dict[str, Union[str, list]] = {
-        "file_names": file_names,
-        "base_path": str(BASE_PATH)
-    }
-    state.chlkt_file_list_ = json.dumps(file_list_obj)
+    action: str = "get_file_list"
+
+    try:
+        file_names: List[str] = [file.name for file in BASE_PATH.glob("*.xprjson")]
+        file_list_obj: Dict[str, Union[str, List[str]]] = {
+            "file_names": file_names,
+            "base_path": str(BASE_PATH),
+        }
+
+        state.chlkt_file_list_ = json.dumps(file_list_obj)
+    except OSError as e:
+        notify(
+            state,
+            notification_type="E",
+            message={
+                "action_name": action,
+                "message": f"Error while getting file list: {e}",
+            },
+        )

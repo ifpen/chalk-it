@@ -123,8 +123,8 @@ class TaipyManager {
    */
   #onNotify(app, type, message) {
     const MESSAGE_TYPES = { INFO: 'I', ERROR: 'E' };
-    const ACTIONS = { LOAD_FILE: 'chlkt_load_file_', SAVE_FILE: 'chlkt_save_file_' };
-    switch (message) {
+    const ACTIONS = { LOAD_FILE: 'load_file', SAVE_FILE: 'save_file' };
+    switch (message.action_name) {
       case ACTIONS.LOAD_FILE:
         if (type == MESSAGE_TYPES.INFO) {
           // This case is handled in the #onChange function
