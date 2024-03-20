@@ -1,15 +1,12 @@
 import * as fs from 'fs';
 import path from 'node:path';
-import { Browser, Builder, WebDriver } from 'selenium-webdriver';
-import { Options as ChromeOptions } from 'selenium-webdriver/chrome.js';
-import { Options as FirefoxOptions } from 'selenium-webdriver/firefox.js';
-import { Options as EdgeOptions } from 'selenium-webdriver/edge.js';
 import { ChalkitServer } from '../support/basic-server.js';
 import { config } from '../test-config.js';
 import { PNG } from 'pngjs';
 import { diffScreenshots } from '../support/compare-screenshots.js';
 import { pipeline } from 'node:stream/promises';
 import assert from 'assert';
+import { perBrowser } from '../fixtures/web-driver-fixture.js';
 
 type TestCase = string | { dashboard: string; referenceDirectory: string };
 
@@ -39,17 +36,11 @@ function screenshotResult(dir: string, testcase: string, browser: string) {
   return path.join(dir, screenshotName(testcase, browser));
 }
 
-function logFile(dir: string, testcase: string, browser: string, logType: string) {
-  const filename = path.basename(testcase, '.xprjson');
-  return path.join(dir, `${filename}-${browser}-${logType}.log`);
-}
-
 function delay(time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 describe('Visual Tests', function () {
-  // TODO factor
   const server = new ChalkitServer({
     staticDir: config.chalkitDir,
   });
@@ -80,105 +71,41 @@ describe('Visual Tests', function () {
     await server.stop();
   });
 
-  // TODO factor
-  config.browsers.forEach((browser) => {
-    describe(`Using ${browser}`, function () {
-      let driver: WebDriver | undefined;
-      beforeEach(async () => {
-        const width = config.width;
-        const height = config.height;
+  perBrowser((browser, driverFixture) => {
+    TEST_CASES.forEach((testCase, idx) => {
+      const testCaseFile = getDashboardFile(testCase);
+      it(testCaseFile, async () => {
+        const expectedBuffer = fs.promises.readFile(screenshotReference(testCase, browser));
 
-        // TODO factor
-        const builder = new Builder().forBrowser(browser);
-        switch (browser) {
-          case Browser.CHROME:
-            let chromeOptions = new ChromeOptions().windowSize({ width, height });
-            if (config.headless) {
-              chromeOptions = chromeOptions.addArguments('--headless=new');
-            }
-            builder.setChromeOptions(chromeOptions);
-            break;
+        await driverFixture().get(server.getDashboardUrl(idx.toString()));
 
-          case Browser.FIREFOX:
-            let ffOptions = new FirefoxOptions().windowSize({ width, height });
-            if (config.headless) {
-              ffOptions = ffOptions.addArguments('--headless');
-            }
-            builder.setFirefoxOptions(ffOptions);
-            break;
+        // TODO find proper condition
+        await delay(5000);
 
-          case Browser.EDGE:
-            let edgeOptions = new EdgeOptions().windowSize({ width, height });
-            if (config.headless) {
-              edgeOptions = edgeOptions.addArguments('--headless');
-            }
-            builder.setEdgeOptions(edgeOptions);
-            break;
+        const encodedString = await driverFixture().takeScreenshot();
 
-          default:
-            throw new Error(`Unknown browser ${browser}`);
-        }
-        driver = await builder.build();
-      });
-
-      afterEach(async function () {
-        if (driver) {
-          const logTypes = await driver.manage().logs().getAvailableLogTypes();
-          for (const logType of logTypes) {
-            const log = await driver.manage().logs().get(logType);
-            if (log.length) {
-              const targetFile = logFile(config.outputsDir, (<any>this).currentTest.title, browser, logType);
-              const fh = await fs.promises.open(targetFile, 'w');
-              const stream = fh.createWriteStream({ encoding: 'utf8' });
-              for (const entry of log) {
-                stream.write(JSON.stringify(entry.toJSON()));
-                stream.write('\n');
-              }
-              stream.end();
-              await fh.close();
-            }
-          }
+        if (config.outputsDir) {
+          await fs.promises.writeFile(
+            screenshotResult(config.outputsDir, testCaseFile, browser),
+            encodedString,
+            'base64',
+          );
         }
 
-        await driver?.close();
-        driver = undefined;
-      });
+        const actualPng = PNG.sync.read(Buffer.from(encodedString, 'base64'));
+        const expectedPng = PNG.sync.read(await expectedBuffer);
 
-      TEST_CASES.forEach((testCase, idx) => {
-        const testCaseFile = getDashboardFile(testCase);
-        it(testCaseFile, async () => {
-          const expectedBuffer = fs.promises.readFile(screenshotReference(testCase, browser));
-
-          await driver!.get(server.getDashboardUrl(idx.toString()));
-
-          // TODO find proper condition
-          await delay(5000);
-
-          const encodedString = await driver!.takeScreenshot();
-
+        const result = diffScreenshots(expectedPng, actualPng);
+        if (result) {
+          const [diff, mismatchedPixels] = result;
           if (config.outputsDir) {
-            await fs.promises.writeFile(
-              screenshotResult(config.outputsDir, testCaseFile, browser),
-              encodedString,
-              'base64',
+            await pipeline(
+              diff.pack(),
+              fs.createWriteStream(path.join(config.outputsDir, diffName(testCaseFile, browser))),
             );
           }
-
-          const actualPng = PNG.sync.read(Buffer.from(encodedString, 'base64'));
-          const expectedPng = PNG.sync.read(await expectedBuffer);
-
-          const result = diffScreenshots(expectedPng, actualPng);
-          if (result) {
-            const [diff, mismatchedPixels] = result;
-            if (config.outputsDir) {
-              await pipeline(
-                diff.pack(),
-                fs.createWriteStream(path.join(config.outputsDir, diffName(testCaseFile, browser))),
-              );
-            }
-            assert.equal(mismatchedPixels, 0);
-          }
-        });
+          assert.equal(mismatchedPixels, 0);
+        }
       });
     });
   });
