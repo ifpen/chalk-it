@@ -7,7 +7,7 @@ from dotenv import dotenv_values
 from datetime import datetime
 import json
 
-BUILD_FRONT_END = True
+BUILD_FRONT_END = False
 
 # Set source and destination directories
 src_dir = 'assets/install'
@@ -16,9 +16,6 @@ dst_dir = 'build'
 # Create destination directory if it doesn't exist
 if not os.path.exists(dst_dir):
     os.makedirs(dst_dir)
-
-if not Path('./front-end/.env.prod').exists():
-    shutil.copy('front-end/.env.sample', 'front-end/.env.prod')
 
 # Load Python version from version.json    
 with open("version.json", "r") as fh:
