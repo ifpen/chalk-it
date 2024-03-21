@@ -7,7 +7,7 @@ from dotenv import dotenv_values
 from datetime import datetime
 import json
 
-BUILD_FRONT_END = False
+BUILD_FRONT_END = True
 
 # Set source and destination directories
 src_dir = 'assets/install'
