@@ -233,6 +233,7 @@ class TaipyManager {
       const files = event.target.files;
       if (!files?.length) return;
 
+      const fileName = event.target.files[0].name;
       const notice = this.#notify('File uploading in progress...', '', 'info', 0, false);
       const encodedVarName = this.app.getEncodedName(varFilePath, this.currentContext);
       displaySpinner('add');
@@ -245,7 +246,7 @@ class TaipyManager {
       const result = await this.app.upload(encodedVarName, files, printProgressUpload);
       displaySpinner('remove');
       notice.remove();
-      this.#notify('File upload', result, 'success', 2000);
+      this.#notify('File upload', `${fileName} uploaded successfully!`, 'success', 2000);
       callback();
     } catch (error) {
       displaySpinner('remove');
