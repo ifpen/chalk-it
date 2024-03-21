@@ -11,5 +11,4 @@ export const config = {
   height: parseInt(process.env.HEIGHT ?? '1080', 10),
 
   outputsDir: process.env.OUTPUT_DIR ?? 'outputs',
-  clearOutputsDir: (process.env.CLEAR_OUTPUT_DIR ?? 'true') === 'true',
 };

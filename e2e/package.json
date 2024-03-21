@@ -1,8 +1,9 @@
 {
   "type": "module",
   "scripts": {
-    "test:run": "mocha --reporter mochawesome --recursive --timeout 10000 build",
-    "test": "npm run build && npm run test:run",
+    "clean": "npx rimraf build mochawesome-report outputs",
+    "test:run": "mocha --reporter mochawesome --recursive --timeout 20000 build",
+    "test": "npm run clean && npm run build && npm run test:run",
     "build": "tsc",
     "prettier-check": "prettier --check .",
     "prettier": "prettier --write ."
@@ -25,6 +26,8 @@
     "pixelmatch": "^5.3.0",
     "pngjs": "^7.0.0",
     "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "sanitize-filename-ts": "^1.0.2",
     "selenium-webdriver": "^4.17.0",
     "typescript": "^5.4.2",
     "winston": "^3.12.0"

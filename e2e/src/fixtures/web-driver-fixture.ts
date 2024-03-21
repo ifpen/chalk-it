@@ -1,31 +1,50 @@
 import * as fs from 'fs';
 import path from 'node:path';
+import { Suite } from 'mocha';
+import { sanitize } from 'sanitize-filename-ts';
 import { Browser, Builder, WebDriver, Capability } from 'selenium-webdriver';
 import { Options as ChromeOptions } from 'selenium-webdriver/chrome.js';
 import { Options as FirefoxOptions } from 'selenium-webdriver/firefox.js';
 import { Options as EdgeOptions } from 'selenium-webdriver/edge.js';
 import { config } from '../test-config.js';
 
-function logFile(dir: string, testcase: string, browser: string, logType: string) {
-  // TODO sanitize
-  const filename = path.basename(testcase, '.xprjson');
-  return path.join(dir, `${filename}-${browser}-${logType}.log`);
+type LogNameProvider = (testSuite: Suite, browser: string, logType: string) => string;
+
+function standardLogFile(testSuite: Suite, browser: string, logType: string): string {
+  let name = `${testSuite.title}[${logType}].log`;
+  while (testSuite.parent) {
+    testSuite = testSuite.parent;
+    if (testSuite.title) {
+      name = testSuite.title + '__' + name;
+    }
+  }
+  const filename = sanitize(name);
+  return path.join(config.outputsDir, filename);
 }
 
 export function perBrowser(
   testSuite: (browser: string, driverFixture: () => WebDriver) => void,
   browsers = config.browsers,
+  logNameProvider?: LogNameProvider,
 ) {
   browsers.forEach((browser) => {
     describe(`Using ${browser}`, function () {
-      const driverFixture = webDriverFixture(browser);
+      const driverFixture = webDriverFixture(browser, logNameProvider);
 
       testSuite(browser, driverFixture);
     });
   });
 }
 
-export function webDriverFixture(browser: string): () => WebDriver {
+export function perBrowserAlt(
+  browsers: string[],
+  logNameProvider: LogNameProvider,
+  testSuite: (browser: string, driverFixture: () => WebDriver) => void,
+) {
+  perBrowser(testSuite, browsers, logNameProvider);
+}
+
+export function webDriverFixture(browser: string, logNameProvider: LogNameProvider = standardLogFile): () => WebDriver {
   let driver: WebDriver | undefined;
   beforeEach(async function () {
     const width = config.width;
@@ -72,7 +91,7 @@ export function webDriverFixture(browser: string): () => WebDriver {
       for (const logType of logTypes) {
         const log = await driver.manage().logs().get(logType);
         if (log.length) {
-          const targetFile = logFile(config.outputsDir, (<any>this).currentTest.title, browser, logType);
+          const targetFile = logNameProvider((<any>this).currentTest, browser, logType);
           const fh = await fs.promises.open(targetFile, 'w');
           const stream = fh.createWriteStream({ encoding: 'utf8' });
           for (const entry of log) {
@@ -84,6 +103,8 @@ export function webDriverFixture(browser: string): () => WebDriver {
         }
       }
     }
+
+    //await sleep(100000)
 
     await driver?.close();
     driver = undefined;
