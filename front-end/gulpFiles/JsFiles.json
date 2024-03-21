@@ -54,7 +54,8 @@
       "thirdparty/jquery.bt.js",
       "thirdparty/moment.min.js",
       "thirdparty/daterangepicker.js",
-      "source/connectors/taipy/taipy-gui-base.js"
+      "source/connectors/taipy/shared.taipy-gui-base.js",
+      "source/connectors/taipy/preview.taipy-gui-base.js"
     ],
     "body": [
       "source/kernel/utils/geoConversion.js",
@@ -299,6 +300,7 @@
       "thirdparty/json_parseMore.js",
       "thirdparty/marked.min.js",
       "thirdparty/daterangepicker.js",
+      "source/connectors/taipy/shared.taipy-gui-base.js",
 	    "source/connectors/taipy/taipy-gui-base.js"
     ],
     "body": [
