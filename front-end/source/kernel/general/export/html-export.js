@@ -195,7 +195,6 @@ var htmlExport = (function () {
     }
     if (_.isUndefined(projectName)) dashboardName = $('#projectName')[0].value;
     else dashboardName = projectName;
-    if ($rootScope.taipyLink) document.cookie = 'tprh=htmlresource; path=/';
     var tab = window.open('about:blank', '_blank');
     var txt = createDashboardDocument(dashboardName, xprjson);
     tab.document.write(txt);
