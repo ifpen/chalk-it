@@ -217,22 +217,52 @@ var datanodesManager = (function () {
             for (let prop in successors) {
               const oldName = viewModel.name();
               const newName = newSettings.settings.name;
-              script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
+              let script = '';
+              if (
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_plugin' ||
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_pyodide_plugin'
+              ) {
+                script = datanodesManager.getDataNodeByName(successors[prop]).settings().content;
+              } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
+                script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
+              } else if (
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'REST_web-service_from_datasource'
+              ) {
+                script = datanodesManager.getDataNodeByName(successors[prop]).settings().body;
+              } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_delay_plugin') {
+                script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_input;
+              }
               replacedScript = script
                 .replace(new RegExp('dataNodes\\["' + oldName + '"\\]', 'g'), 'dataNodes["' + newName + '"]')
                 .replace(new RegExp('dataNodes\\.' + oldName, 'g'), 'dataNodes.' + newName);
 
-              datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = replacedScript;
+              if (
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_plugin' ||
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_pyodide_plugin'
+              ) {
+                datanodesManager.getDataNodeByName(successors[prop]).settings().content = replacedScript;
+              } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
+                datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = replacedScript;
+              } else if (
+                datanodesManager.getDataNodeByName(successors[prop]).type() === 'REST_web-service_from_datasource'
+              ) {
+                datanodesManager.getDataNodeByName(successors[prop]).settings().body = replacedScript;
+              } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_delay_plugin') {
+                datanodesManager.getDataNodeByName(successors[prop]).settings().json_input = replacedScript;
+              }
             }
           }
+
           // handle widget connection
           [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
           if (bFoundConnection) {
             let wdList = [];
             for (let prop in widgetConnector.widgetsConnection) {
               for (let i in widgetConnector.widgetsConnection[prop].sliders) {
-                wdList.push(widgetConnector.widgetsConnection[prop].instanceId);
-                widgetConnector.widgetsConnection[prop].sliders[i].dataNode = newSettings.settings.name;
+                if (viewModel.name() === widgetConnector.widgetsConnection[prop].sliders[i].dataNode) {
+                  wdList.push(widgetConnector.widgetsConnection[prop].instanceId);
+                  widgetConnector.widgetsConnection[prop].sliders[i].dataNode = newSettings.settings.name;
+                }
               }
             }
             xdashNotifications.manageNotification(
