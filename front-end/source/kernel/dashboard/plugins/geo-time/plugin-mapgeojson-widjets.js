@@ -32,8 +32,12 @@ function mapGeoJsonWidgetsPluginClass() {
       },
       tileServer: 'MapboxStreets',
       possibleTileServers: ['MapboxStreets', 'MapboxDark', 'HereSatelliteDay', 'HereTerrainDay', 'HereHybridDay'],
-      possibleLegends: [],
-      selecedLegends: [],
+      image : {
+        imageUrl:"",
+        imageBounds:[],
+        title:"",
+        addAs:""
+      },
     };
 
     var self = this;
@@ -47,9 +51,9 @@ function mapGeoJsonWidgetsPluginClass() {
       // Create new TempleStyle if old has not the same size
       // TODO : Check all style compatible with all element of model
       if (
-        (!Array.isArray(modelsHiddenParams[idInstance].GeoJSONStyle.style) &&
+        (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) && !Array.isArray(modelsHiddenParams[idInstance].GeoJSONStyle.style) &&
           !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) ||
-        modelsHiddenParams[idInstance].GeoJSON.length !== modelsHiddenParams[idInstance].GeoJSONStyle.style.length
+          (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) && !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) && modelsHiddenParams[idInstance].GeoJSON.length !== modelsHiddenParams[idInstance].GeoJSONStyle.style.length)
       ) {
         modelsHiddenParams[idInstance].GeoJSONStyle.style = [];
 
@@ -66,7 +70,7 @@ function mapGeoJsonWidgetsPluginClass() {
 
     this.getColorScale = colorScaleManager.getColorScale
 
-    this.addImageOverlay = function (imgStruct, layerIndex) {
+    this.addImageOverlay = function (imgStruct) {
       //securities
       if (_.isUndefined(imgStruct)) return;
       if (_.isEmpty(imgStruct)) return;
@@ -82,21 +86,14 @@ function mapGeoJsonWidgetsPluginClass() {
       if(!boundsValid){
         return;
       }
-      self.imageLayers[layerIndex ] = L.imageOverlay(imageUrl, imageBounds)
+      let imageLayer = L.imageOverlay(imageUrl, imageBounds)
           .addTo(self.map);
 
       if (addAs == 'overlay')
-          self.ctrl.addOverlay(self.imageLayers[layerIndex ], featureTitle);
+          self.ctrl.addOverlay(imageLayer, featureTitle);
       else
-          self.ctrl.addBaseLayer(self.imageLayers[layerIndex], featureTitle);
-  };
-  this.removeImageOverlay = function (layerIndex) { 
-    if(!_.isUndefined(self.imageLayers[layerIndex ])){
-      self.ctrl.removeLayer(self.imageLayers[layerIndex ]);
-      self.map.removeLayer(self.imageLayers[layerIndex]);
-      self.imageLayers[layerIndex]=undefined
-    }
-};
+          self.ctrl.addBaseLayer(imageLayer, featureTitle);
+  }; 
 
     this.render = function () {
       var widgetHtml = document.createElement('div');
@@ -138,10 +135,16 @@ function mapGeoJsonWidgetsPluginClass() {
         )
         .addTo(self.map);
 
+        //if image overlay exist 
+        if(!_.isUndefined( modelsHiddenParams[idInstance].GeoJSONStyle) && !_.isUndefined( modelsHiddenParams[idInstance].GeoJSONStyle.config)){
+          let image = modelsHiddenParams[idInstance].GeoJSONStyle.config.image
+          self.addImageOverlay(image)
+        }
+        
+
       // internal layer group L.layerGroup
       self.layers = [];
-      self.legends = [];
-      self.imageLayers = []
+      self.legends = []; 
 
       if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) {
         modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
@@ -174,8 +177,7 @@ function mapGeoJsonWidgetsPluginClass() {
     this.addGeoJSONlayer = function (geoJSON, name) {
       var leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
       self.layers.push(leafletLayer);
-      self.legends.push(undefined);
-      self.imageLayers.push(undefined)
+      self.legends.push(undefined); 
       if (
         geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiLineString ||
         geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon
@@ -444,13 +446,6 @@ function mapGeoJsonWidgetsPluginClass() {
             showLegend: true,
             legend: {
               title: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'Legend ') + (index + 1),
-            },
-            showImage : true,
-            image : {
-              imageUrl:"",
-              imageBounds:[],
-              title:"",
-              addAs:""
             },
             type: 'Multi Polygon',
             stroke: true,
@@ -749,25 +744,6 @@ function mapGeoJsonWidgetsPluginClass() {
         } else {
           if (!_.isUndefined(self.legends[layerIndex])) {
             self.legends[layerIndex].remove();
-          }
-        }
-        //tggole image overlay
-        if (self.map.hasLayer(self.layers[layerIndex])) {
-          if (!_.isUndefined(styleForObject.showImage)) {
-            //showLagend==true 
-            if (!!styleForObject.showImage) {
-              self.removeImageOverlay(layerIndex)
-              self.addImageOverlay(styleForObject.image,layerIndex)
-            } else {
-              //showLagend==false
-              if (!_.isUndefined(self.imageLayers[layerIndex])) {
-                self.removeImageOverlay(layerIndex)
-              }
-            }
-          }
-        } else {
-          if (!_.isUndefined(self.imageLayers[layerIndex])) {
-            self.removeImageOverlay(layerIndex)
           }
         }
       }
@@ -1167,7 +1143,7 @@ function mapGeoJsonWidgetsPluginClass() {
         modelsHiddenParams[idInstance].GeoJSONStyle = val;
         if (_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)) {
           modelsHiddenParams[idInstance].GeoJSONStyle.config = self.defaultConfig;
-        }
+        } 
         self.style();
       },
       getValue: function () {
