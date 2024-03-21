@@ -59,102 +59,6 @@ class TaipyManager {
   }
 
   /**
-   * Callback function executed upon initialization of the Taipy app.
-   *
-   * @method onInit
-   * @private
-   * @param {Object} app - The initialized Taipy application instance.
-   * @returns {void} This method does not return a value.
-   */
-  #onInit(app) {
-    this.currentContext = app.getContext();
-    this.xprjsonFileName = app.getPageMetadata()['xprjson_file_name'];
-    if (this.#runMode == 'runtime') this.processVariableData();
-    if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-      // To load the xprjsonFileName if it exists
-      this.endAction();
-    }
-  }
-
-  /**
-   * Callback function handles changes to variables within the application.
-   *
-   * @method onChange
-   * @private
-   * @param {Object} app - The application instance.
-   * @param {string} encodedName - The encoded name of the variable.
-   * @param {*} newValue - The new value of the variable.
-   * @returns {void} This method does not return a value.
-   */
-  #onChange(app, encodedName, newValue) {
-    try {
-      const [varName, context] = app.getName(encodedName);
-      if (this.currentContext !== context) return;
-
-      if (this.variableData[context] && Object.keys(this.variableData[context]).length !== 0) {
-        // Update variableData
-        this.variableData[context][varName].value = this.#deepClone(newValue);
-      }
-
-      // loadFile
-      if (encodedName.includes('chlkt_json_data_')) {
-        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          this.endAction(newValue); // newValue contains xprjson data
-          this.endAction = undefined;
-        }
-      }
-
-      // getFileList
-      if (encodedName.includes('chlkt_file_list_')) {
-        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-          const fileList = JSON.parse(newValue);
-          this.endAction(fileList);
-          this.endAction = undefined;
-        }
-      }
-
-      if (!datanodesManager.foundDatanode(varName)) return;
-      this.#updateDataNode(varName, newValue);
-    } catch (error) {
-      this.#handleError(`Error handling change for variable ${encodedName}`, error);
-    }
-  }
-
-  /**
-   * Handles notification messages related to application events.
-   *
-   * @method onNotify
-   * @private
-   * @param {Object} app - The application instance.
-   * @param {string} type - The type of message received, expected to be one of the predefined MESSAGE_TYPES.
-   * @param {string} message - The message content, expected to be one of the predefined ACTIONS.
-   * @returns {void} This method does not return a value.
-   */
-  #onNotify(app, type, message) {
-    const MESSAGE_TYPES = { INFO: 'I', ERROR: 'E' };
-    const ACTIONS = { LOAD_FILE: 'load_file', SAVE_FILE: 'save_file' };
-    switch (message.action_name) {
-      case ACTIONS.LOAD_FILE:
-        if (type == MESSAGE_TYPES.INFO) {
-          // This case is handled in the #onChange function
-        } else if (type == MESSAGE_TYPES.ERROR) {
-          this.#notify('Info project', 'Error while opening project', 'error', 2000);
-        }
-        break;
-      case ACTIONS.SAVE_FILE:
-        if (type == MESSAGE_TYPES.INFO) {
-          if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
-            this.endAction(); // Do not assign undefined value: used in Open function
-          }
-        } else if (type == MESSAGE_TYPES.ERROR) {
-          datanodesManager.showLoadingIndicator(false);
-          this.#notify('Info project', 'Error while saving project', 'error', 2000);
-        }
-        break;
-    }
-  }
-
-  /**
    * Processes variable data, creating or deleting dataNodes based on changes.
    * It updates the variable data if there are changes in the current context.
    *
@@ -347,6 +251,102 @@ class TaipyManager {
       displaySpinner('remove');
       console.log('Upload failed', error);
       this.#notify('File upload', error, 'error', 2000);
+    }
+  }
+
+  /**
+   * Callback function executed upon initialization of the Taipy app.
+   *
+   * @method onInit
+   * @private
+   * @param {Object} app - The initialized Taipy application instance.
+   * @returns {void} This method does not return a value.
+   */
+  #onInit(app) {
+    this.currentContext = app.getContext();
+    this.xprjsonFileName = app.getPageMetadata()['xprjson_file_name'];
+    if (this.#runMode == 'runtime') this.processVariableData();
+    if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+      // To load the xprjsonFileName if it exists
+      this.endAction();
+    }
+  }
+
+  /**
+   * Callback function handles changes to variables within the application.
+   *
+   * @method onChange
+   * @private
+   * @param {Object} app - The application instance.
+   * @param {string} encodedName - The encoded name of the variable.
+   * @param {*} newValue - The new value of the variable.
+   * @returns {void} This method does not return a value.
+   */
+  #onChange(app, encodedName, newValue) {
+    try {
+      const [varName, context] = app.getName(encodedName);
+      if (this.currentContext !== context) return;
+
+      if (this.variableData[context] && Object.keys(this.variableData[context]).length !== 0) {
+        // Update variableData
+        this.variableData[context][varName].value = this.#deepClone(newValue);
+      }
+
+      // loadFile
+      if (encodedName.includes('chlkt_json_data_')) {
+        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          this.endAction(newValue); // newValue contains xprjson data
+          this.endAction = undefined;
+        }
+      }
+
+      // getFileList
+      if (encodedName.includes('chlkt_file_list_')) {
+        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          const fileList = JSON.parse(newValue);
+          this.endAction(fileList);
+          this.endAction = undefined;
+        }
+      }
+
+      if (!datanodesManager.foundDatanode(varName)) return;
+      this.#updateDataNode(varName, newValue);
+    } catch (error) {
+      this.#handleError(`Error handling change for variable ${encodedName}`, error);
+    }
+  }
+
+  /**
+   * Handles notification messages related to application events.
+   *
+   * @method onNotify
+   * @private
+   * @param {Object} app - The application instance.
+   * @param {string} type - The type of message received, expected to be one of the predefined MESSAGE_TYPES.
+   * @param {string} message - The message content, expected to be one of the predefined ACTIONS.
+   * @returns {void} This method does not return a value.
+   */
+  #onNotify(app, type, message) {
+    const MESSAGE_TYPES = { INFO: 'I', ERROR: 'E' };
+    const ACTIONS = { LOAD_FILE: 'load_file', SAVE_FILE: 'save_file' };
+    switch (message.action_name) {
+      case ACTIONS.LOAD_FILE:
+        if (type == MESSAGE_TYPES.INFO) {
+          // This case is handled in the #onChange function
+        } else if (type == MESSAGE_TYPES.ERROR) {
+          this.#notify('Info project', 'Error while opening project', 'error', 2000);
+        }
+        break;
+      case ACTIONS.SAVE_FILE:
+        if (type == MESSAGE_TYPES.INFO) {
+          if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+            this.endAction(); // Do not assign undefined value: used in Open function
+          }
+        } else if (type == MESSAGE_TYPES.ERROR) {
+          datanodesManager.showLoadingIndicator(false);
+          this.#notify('Info project', 'Error while saving project', 'error', 2000);
+        }
+        break;
     }
   }
 
