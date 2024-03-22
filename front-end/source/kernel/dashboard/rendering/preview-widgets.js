@@ -480,8 +480,8 @@ var widgetPreview = (function () {
    */
   function resizeDashboard(target) {
     // Prepare rescale for rowToPage mode
-    if (typeof execOutisdeEditor != 'undefined') {
-      if (execOutisdeEditor) {
+    if (typeof execOutsideEditor != 'undefined') {
+      if (execOutsideEditor) {
         var navMenuHeightPx = 0;
 
         if ($('#nav-menu')[0]) {
