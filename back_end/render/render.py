@@ -28,7 +28,7 @@ from typing import Any, Dict
 
 
 class RenderApp:
-    XPRJSON_PATH = (Path(__file__).parent / "02_sliders_button_value.xprjson").resolve()
+    XPRJSON_PATH = "path/dashboard.xprjson"
     DEBUG = False
     # Determine the base directory for HTML templates
     BASE_DIR = (
