@@ -10,97 +10,122 @@
 # specific language governing permissions and limitations under the License.
 
 
-from flask import Flask, send_file, jsonify, make_response, json, request, redirect, send_from_directory, render_template_string, logging
-import os
-from pathlib import Path
-import json
+from flask import (
+    Flask,
+    Blueprint,
+    make_response,
+    render_template_string,
+    send_from_directory,
+    Response,
+    jsonify,
+)
+import logging
 import re
-
-app = Flask(__name__)
-
-xprjson = 'dashboard.xprjson'
-DEBUG = False
-
-def get_version(start_path):
-    """
-    Search for a file with a pattern 'index-view-<version>.html' in the specified directory
-    and extract the version number.
-    
-    :param start_path: Directory path where to start the search
-    :return: The version number as a string if found, else None
-    """
-    pattern = re.compile(r'index-view-(\d+\.\d+\.\d+)\.html')
-    for file in os.listdir(start_path):
-        match = pattern.match(file)
-        if match:
-            return "-"+ match.group(1)
-    return "" #debug mode
+import os
+import json
+from pathlib import Path
+from typing import Any, Dict
 
 
-dir_home = os.path.expanduser("~")
+class RenderApp:
+    XPRJSON_PATH = (Path(__file__).parent / "02_sliders_button_value.xprjson").resolve()
+    DEBUG = False
+    # Determine the base directory for HTML templates
+    BASE_DIR = (
+        (Path(__file__).parent / ".." / ".." / "front-end").resolve()
+        if not DEBUG
+        else (Path(__file__).parent.parent).resolve()
+    )
 
-dir_settings_path = os.path.join(dir_home, '.chalk-it')
-settings_file_path = os.path.join(dir_settings_path, 'settings.json')
+    def __init__(self) -> None:
+        self.app: Flask = Flask(__name__)
+        self.dashboard_bp: Blueprint = Blueprint("dashboard", __name__)
+        self.setup_routes()
+        self.app.register_blueprint(self.dashboard_bp)
 
-if (DEBUG):
-    dir_name = os.path.dirname(__file__)
-    dir_html_tmp = dir_name
-else:
-    dir_temp_name = os.path.dirname(__file__)
-    dir_html_tmp = os.path.join(os.path.dirname(__file__), './../')
+    def setup_routes(self) -> None:
+        @self.dashboard_bp.after_request
+        def add_cors_headers(response: Response) -> Response:
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+            response.headers["Access-Control-Allow-Methods"] = "GET, POST"
+            return response
 
-print(dir_html_tmp)
-	
-VERSION = get_version(dir_html_tmp)
+        @self.dashboard_bp.route("/", defaults={"path": ""})
+        @self.dashboard_bp.route("/<path:path>", methods=["GET"])
+        def static_files(path: str) -> Any:
+            if path == "" or path.endswith("/"):
+                return RenderApp.dashboard(RenderApp.XPRJSON_PATH)
+            else:
+                return send_from_directory(str(RenderApp.BASE_DIR), path)
 
-def throw_error(error):
-    logging.error(error, exc_info=True)
-    d = json.dumps({
-        "Success": False,
-        "Msg": f"Error: {error}"
-    })
-    response = make_response(json.dumps({"d": d}), 500)
-    return response
+    @classmethod
+    def get_version(cls) -> str:
+        """
+        Search for a file with a pattern 'index-view-<version>.html' in the specified directory
+        and extract the version number.
+
+        :return: The version number as a string if found, else None
+        """
+        VERSION_PATTERN = re.compile(r"index-view-(\d+\.\d+\.\d+)\.html")
+        for file in os.listdir(str(cls.BASE_DIR)):
+            match = VERSION_PATTERN.match(file)
+            if match:
+                return "-" + match.group(1)
+        return ""  # debug mode
+
+    def throw_error(self, error: str) -> Response:
+        """
+        Log an error and return a 500 response with a JSON payload.
+        """
+        logging.error(error, exc_info=True)
+        error_response: Dict[str, Any] = {"Success": False, "Msg": f"Error: {error}"}
+        return make_response(jsonify({"d": error_response}), 500)
+
+    def send_success(self, json_obj: Dict[str, Any]) -> Response:
+        """
+        Return a 200 response with a JSON payload.
+        """
+        return make_response(jsonify({"d": json_obj}), 200)
+
+    @classmethod
+    def dashboard(cls, xprjson_path: str) -> str:
+        """
+        Serve the dashboard page with dynamic versioning and configuration injected.
+
+        :param xprjson_path: Path to the configuration JSON file.
+        """
+        VERSION: str = cls.get_version()
+        template_data_with_config: str = ""
+        with open(xprjson_path, "r") as config_file:
+            config_data = json.load(config_file)
+
+        index_view_path: Path = cls.BASE_DIR / f"index-view{VERSION}.html"
+
+        with open(index_view_path, "r") as template_file:
+            template_data: str = template_file.read()
+
+            template_data_with_config: str = template_data.replace(
+                "jsonContent = {};", f"var jsonContent = {json.dumps(config_data)};"
+            )
+
+        return render_template_string(template_data_with_config)
+
+    @classmethod
+    def start_runtime(cls, root_dir: Path, xprjson_path: str) -> None:
+        """
+        *** FOR TAIPY DESIGNER ***
+        Start the application runtime with a specified configuration JSON path.
+
+        :param xprjson_path: Path to the configuration JSON file.
+        """
+        cls.BASE_DIR = root_dir
+        return cls.dashboard(xprjson_path)
+
+    def run(self, port: int = 8000) -> None:
+        self.app.run(port=port)
 
 
-def send_success(json_obj):
-    d = json.dumps(json_obj)
-    response = make_response(json.dumps({"d": d}), 200)
-    return response
-
-
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-    response.headers.add('Access-Control-Allow-Methods', 'GET, POST')
-    return response
-	
-
-def dashboard(xprjson):
-    # Load configuration from json file
-    with open(xprjson, 'r') as config_file:
-        config_data = json.load(config_file)
-
-    # Read the HTML template
-    index_view_path = os.path.join(os.path.dirname(dir_temp_name), 'index-view' + VERSION + '.html')
-    with open(index_view_path, 'r') as template_file:
-        template_data = template_file.read()
-
-    # Inject the JSON data into the template
-    template_data_with_config = template_data.replace('jsonContent = {};', f'var jsonContent = {json.dumps(config_data)};')
-
-    # Render the HTML with the configuration inlined
-    return render_template_string(template_data_with_config)
-	
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>', methods=['GET'])
-def static_files(path: str):
-    if path == '' or path.endswith('/'):
-        return dashboard(xprjson)
-    else:
-        return send_from_directory('..', path)
-		
-		
-if __name__ == '__main__':
-    app.run(port=8000)
+if __name__ == "__main__":
+    my_flask_app = RenderApp()
+    my_flask_app.run()
