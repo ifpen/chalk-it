@@ -97,7 +97,7 @@ function updateWidgetDataNode(idInstance, idWidget) {
 function uploadFileToTaipy(event, idInstance, idWidget) {
   const sliders = _.get(widgetConnector, `widgetsConnection[${idInstance}].sliders`);
   const varFilePath = sliders.file_path.dataNode;
-  const endAction = () => triggerTaipyFunction(sliders);
+  const endAction = () => triggerTaipyFunction(idInstance);
   const displaySpinner = (status) => setFileUploadSpinner(idWidget, status);
   taipyManager.uploadFile(event, varFilePath, endAction, displaySpinner);
 }
@@ -105,7 +105,8 @@ function uploadFileToTaipy(event, idInstance, idWidget) {
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                          triggerTaipyFunction                      | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function triggerTaipyFunction(sliders) {
+function triggerTaipyFunction(idInstance) {
+  const sliders = _.get(widgetConnector, `widgetsConnection[${idInstance}].sliders`);
   const dnNames = Object.entries(sliders)
     .filter(([key, _]) => key !== 'file_path') // Ignore file_path, keep only triggers
     .map(([_, slider]) => slider.dataNode)
