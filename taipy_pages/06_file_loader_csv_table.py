@@ -22,4 +22,6 @@ def load_csv(state):
 
 page = ChalkitPage("06_file_loader_csv_table.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+
+upload_folder = Path(__file__).parent.resolve()
+gui.run(run_browser=True, use_reloader=False, upload_folder=upload_folder)

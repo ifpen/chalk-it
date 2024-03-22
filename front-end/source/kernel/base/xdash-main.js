@@ -29,6 +29,7 @@ var xdash = (function () {
 
     datanodesManager.clear();
     widgetEditor.clear();
+    if ($rootScope.taipyLink) taipyManager.variableData = {};
     xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 
     $rootScope.updateFlagDirty(false);

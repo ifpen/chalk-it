@@ -89,7 +89,7 @@ const RuntimeDashboard = (function () {
   }
 
   function loadDashboard(jsonContent, exportOptions) {
-    if (xDashConfig.taipyLink === 'true') taipyManager.initTaipyApp();
+    if (xDashConfig.taipyLink === 'true') taipyManager.initTaipyApp('runtime');
     const decodedData = $('<textarea />').html(JSON.stringify(jsonContent.data)).text(); // MBG : find a better method
     let data_json = '';
     try {

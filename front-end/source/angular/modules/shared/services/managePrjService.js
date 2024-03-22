@@ -772,8 +772,6 @@ angular.module('modules').service('ManagePrjService', [
       const commonActions = () => {
         taipyManager.loadFile(fileName);
         taipyManager.endAction = (xprjson) => {
-          $rootScope.loadingBarStart();
-          datanodesManager.showLoadingIndicator(true);
           _openTaipyPageEndAction(fileName, xprjson);
         };
       };
@@ -816,9 +814,12 @@ angular.module('modules').service('ManagePrjService', [
      * @returns {void} This method does not return a value.
      */
     function _openTaipyPageEndAction(fileName, xprjson) {
+      $rootScope.loadingBarStart();
+      datanodesManager.showLoadingIndicator(true);
       $rootScope.updateFlagDirty(false);
       $rootScope.origin = 'openProject';
       xdash.openProjectManager(xprjson);
+      taipyManager.processVariableData();
       const projectName = fileName.replace('.xprjson', '');
       const notice = new PNotify({
         title: projectName,
@@ -832,7 +833,6 @@ angular.module('modules').service('ManagePrjService', [
       });
       $rootScope.filtredList = [];
       $rootScope.filtredNodes = $rootScope.alldatanodes.length;
-      taipyManager.processVariableData();
       $rootScope.loadingBarStop();
       datanodesManager.showLoadingIndicator(false);
     }
