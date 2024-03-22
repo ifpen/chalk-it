@@ -117,6 +117,7 @@ class RenderApp:
         *** FOR TAIPY DESIGNER ***
         Start the application runtime with a specified configuration JSON path.
 
+        :param root_dir: Path to the index html.
         :param xprjson_path: Path to the configuration JSON file.
         """
         cls.BASE_DIR = root_dir
