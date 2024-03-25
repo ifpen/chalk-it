@@ -117,7 +117,7 @@ class RenderApp:
             template_data: str = template_file.read()
 
             template_data_with_config: str = template_data.replace(
-                "jsonContent = {};", f"var jsonContent = {json.dumps(config_data)};"
+                "jsonContent = {};", f"jsonContent = {json.dumps(config_data)};"
             )
 
         return template_data_with_config
