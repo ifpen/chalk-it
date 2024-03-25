@@ -58,11 +58,8 @@ class RenderApp:
         @self.dashboard_bp.route("/<path:path>", methods=["GET"])
         def static_files(path: str) -> Any:
             if path == "" or path.endswith("/"):
-                return render_template_string(
-                    RenderApp.dashboard(RenderApp.XPRJSON_PATH)
-                )
-            else:
-                return send_from_directory(str(RenderApp.BASE_DIR), path)
+                return RenderApp.dashboard(RenderApp.XPRJSON_PATH)
+            return send_from_directory(str(RenderApp.BASE_DIR), path)
 
     @classmethod
     def get_version(cls) -> str:
@@ -120,7 +117,7 @@ class RenderApp:
                 "jsonContent = {};", f"jsonContent = {json.dumps(config_data)};"
             )
 
-        return template_data_with_config
+        return render_template_string(template_data_with_config)
 
     @classmethod
     def start_runtime(cls, root_dir: Path, xprjson_path: str) -> Union[Response, str]:
@@ -145,38 +142,7 @@ class RenderApp:
         template files.
         """
         cls.BASE_DIR = root_dir
-        html_content: str = cls.dashboard(xprjson_path)
-        # Creates a temporary directory
-        temp_dir_path: Path = Path(tempfile.mkdtemp(dir=root_dir))
-        filename: str = "temp_html.html"
-        temp_path: Path = temp_dir_path / filename
-        with open(temp_path, "w") as file:
-            file.write(html_content)
-        response: Response = send_from_directory(temp_dir_path, path=filename)
-
-        # Setup delayed cleanup for the temporary file and directory
-        cls.delayed_cleanup(temp_path, temp_dir_path)
-
-        return response
-
-    @staticmethod
-    def delayed_cleanup(temp_path: Path, temp_dir_path: Path, delay: float = 1.0):
-        """Clean up the temporary file and directory after a delay."""
-
-        def cleanup():
-            time.sleep(delay)  # Wait for a delay to ensure the file is not in use
-            try:
-                os.remove(temp_path)  # Attempt to delete the file
-            except Exception as e:
-                print(f"Error deleting file {temp_path}: {e}")
-            try:
-                os.rmdir(temp_dir_path)  # Attempt to delete the directory
-            except Exception as e:
-                print(f"Error deleting directory {temp_dir_path}: {e}")
-
-        # Run the cleanup in a separate thread to not block or delay the response
-        cleanup_thread = threading.Thread(target=cleanup)
-        cleanup_thread.start()
+        return cls.dashboard(xprjson_path)
 
     def run(self, port: int = 8000) -> None:
         self.app.run(port=port)
