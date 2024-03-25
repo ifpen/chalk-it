@@ -35,7 +35,7 @@ Similar to the [Horizontal slider](#horizontal-slider) above with a different or
 
 ## Double slider
 
-This slider has two handles, allowing to set both a *minValue* and a *maxValue* ranging between the values of *minRange* and *maxRange* parameters. When *rangeActuator* parameter is set to *true*, new *minRange* and *maxRange* actuators appear in the "Data connection" tab, enabling to set these actuators from other dataNodes.
+This slider has two handles, allowing to set both a *minValue* and a *maxValue* ranging between the values of *minRange* and *maxRange* parameters. When *rangeActuator* parameter is set to *true*, new *minRange* and *maxRange* actuators appear in the "Data connection" tab, enabling to set these actuators from other Python variables.
 
 ## Checkbox
 
