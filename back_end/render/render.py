@@ -23,8 +23,11 @@ import logging
 import re
 import os
 import json
+import tempfile
+import threading
+import time
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 
 class RenderApp:
@@ -55,7 +58,9 @@ class RenderApp:
         @self.dashboard_bp.route("/<path:path>", methods=["GET"])
         def static_files(path: str) -> Any:
             if path == "" or path.endswith("/"):
-                return RenderApp.dashboard(RenderApp.XPRJSON_PATH)
+                return render_template_string(
+                    RenderApp.dashboard(RenderApp.XPRJSON_PATH)
+                )
             else:
                 return send_from_directory(str(RenderApp.BASE_DIR), path)
 
@@ -91,9 +96,15 @@ class RenderApp:
     @classmethod
     def dashboard(cls, xprjson_path: str) -> str:
         """
-        Serve the dashboard page with dynamic versioning and configuration injected.
+        Generates the dashboard HTML content by dynamically injecting configuration data
+        from a JSON file into the dashboard's template HTML.
 
-        :param xprjson_path: Path to the configuration JSON file.
+        Parameters:
+        - xprjson_path (str): The filesystem path to the configuration JSON file. This file
+                            contains the configuration data to be injected into the dashboard
+                            template.
+        Returns:
+        - str: The dashboard HTML content with the configuration data injected.
         """
         VERSION: str = cls.get_version()
         template_data_with_config: str = ""
@@ -109,19 +120,63 @@ class RenderApp:
                 "jsonContent = {};", f"var jsonContent = {json.dumps(config_data)};"
             )
 
-        return render_template_string(template_data_with_config)
+        return template_data_with_config
 
     @classmethod
-    def start_runtime(cls, root_dir: Path, xprjson_path: str) -> None:
+    def start_runtime(cls, root_dir: Path, xprjson_path: str) -> Union[Response, str]:
         """
         *** FOR TAIPY DESIGNER ***
-        Start the application runtime with a specified configuration JSON path.
+        Initializes and starts the application runtime for TAIPY Designer by serving
+        the dynamically generated dashboard HTML content.
 
-        :param root_dir: Path to the index html.
-        :param xprjson_path: Path to the configuration JSON file.
+        - root_dir (Path): The root directory path where the index HTML file is located. This
+                        path is also set as the base directory for the application.
+        - xprjson_path (str): The filesystem path to the configuration JSON file, which is passed
+                            to the `dashboard` method to generate the dynamically configured
+                            dashboard HTML content.
+
+        Returns:
+        - Union[Response, str]: A Flask Response object that serves the generated dashboard HTML
+                                content. In case of any errors during file operations, a string
+                                describing the error might be returned.
+
+        Raises:
+        - See `dashboard` method for possible exceptions related to reading configuration and
+        template files.
         """
         cls.BASE_DIR = root_dir
-        return cls.dashboard(xprjson_path)
+        html_content: str = cls.dashboard(xprjson_path)
+        # Creates a temporary directory
+        temp_dir_path: Path = Path(tempfile.mkdtemp(dir=root_dir))
+        filename: str = "temp_html.html"
+        temp_path: Path = temp_dir_path / filename
+        with open(temp_path, "w") as file:
+            file.write(html_content)
+        response: Response = send_from_directory(temp_dir_path, path=filename)
+
+        # Setup delayed cleanup for the temporary file and directory
+        cls.delayed_cleanup(temp_path, temp_dir_path)
+
+        return response
+
+    @staticmethod
+    def delayed_cleanup(temp_path: Path, temp_dir_path: Path, delay: float = 1.0):
+        """Clean up the temporary file and directory after a delay."""
+
+        def cleanup():
+            time.sleep(delay)  # Wait for a delay to ensure the file is not in use
+            try:
+                os.remove(temp_path)  # Attempt to delete the file
+            except Exception as e:
+                print(f"Error deleting file {temp_path}: {e}")
+            try:
+                os.rmdir(temp_dir_path)  # Attempt to delete the directory
+            except Exception as e:
+                print(f"Error deleting directory {temp_dir_path}: {e}")
+
+        # Run the cleanup in a separate thread to not block or delay the response
+        cleanup_thread = threading.Thread(target=cleanup)
+        cleanup_thread.start()
 
     def run(self, port: int = 8000) -> None:
         self.app.run(port=port)
