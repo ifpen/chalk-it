@@ -1,0 +1,513 @@
+{
+  "stats": {
+    "suites": 6,
+    "tests": 3,
+    "passes": 1,
+    "pending": 0,
+    "failures": 2,
+    "start": "2024-03-22T16:25:59.681Z",
+    "end": "2024-03-22T16:26:54.568Z",
+    "duration": 54887,
+    "testsRegistered": 4,
+    "passPercent": 25,
+    "pendingPercent": 0,
+    "other": 1,
+    "hasOther": true,
+    "skipped": 1,
+    "hasSkipped": true
+  },
+  "results": [
+    {
+      "uuid": "700d8184-eaa6-4a03-9eba-9aa367a151bd",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "65791de0-3edd-42e6-9467-a2d18ba13d53",
+          "title": "Widget creation",
+          "fullFile": "D:\\Repos\\chalk-it\\e2e\\build\\test\\basic-widgets.spec.js",
+          "file": "\\build\\test\\basic-widgets.spec.js",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"Widget creation\"",
+              "fullTitle": "Widget creation \"before all\" hook in \"Widget creation\"",
+              "timedOut": false,
+              "duration": 13,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await server.start();",
+              "err": {},
+              "uuid": "ec51d3ba-183a-4cbe-85fd-8d3d25f4769a",
+              "parentUUID": "65791de0-3edd-42e6-9467-a2d18ba13d53",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [
+            {
+              "title": "\"after all\" hook in \"Widget creation\"",
+              "fullTitle": "Widget creation \"after all\" hook in \"Widget creation\"",
+              "timedOut": false,
+              "duration": 1,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await server.stop();",
+              "err": {},
+              "uuid": "30a92fa6-0a70-43ac-be57-3541b98a64a2",
+              "parentUUID": "65791de0-3edd-42e6-9467-a2d18ba13d53",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "3a64d3a8-6b95-4c27-a5b1-9a152990d580",
+              "title": "Using chrome",
+              "fullFile": "D:\\Repos\\chalk-it\\e2e\\build\\test\\basic-widgets.spec.js",
+              "file": "\\build\\test\\basic-widgets.spec.js",
+              "beforeHooks": [
+                {
+                  "title": "\"before each\" hook for \"Text area\"",
+                  "fullTitle": "Widget creation Using chrome \"before each\" hook for \"Text area\"",
+                  "timedOut": false,
+                  "duration": 30387,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "const width = config.width;\nconst height = config.height;\nconst builder = new Builder().withCapabilities({\n    [Capability.LOGGING_PREFS]: { browser: 'ALL' },\n    [Capability.BROWSER_NAME]: browser,\n});\nswitch (browser) {\n    case Browser.CHROME:\n        let chromeOptions = new ChromeOptions().windowSize({ width, height });\n        if (config.headless) {\n            chromeOptions = chromeOptions.addArguments('--headless=new');\n        }\n        builder.setChromeOptions(chromeOptions);\n        break;\n    case Browser.FIREFOX:\n        let ffOptions = new FirefoxOptions().windowSize({ width, height });\n        if (config.headless) {\n            ffOptions = ffOptions.addArguments('--headless');\n        }\n        builder.setFirefoxOptions(ffOptions);\n        break;\n    case Browser.EDGE:\n        let edgeOptions = new EdgeOptions().windowSize({ width, height });\n        if (config.headless) {\n            edgeOptions = edgeOptions.addArguments('--headless');\n        }\n        builder.setEdgeOptions(edgeOptions);\n        break;\n    default:\n        throw new Error(`Unknown browser ${browser}`);\n}\ndriver = await builder.build();",
+                  "err": {
+                    "message": "Error: Timeout of 20000ms exceeded. For async tests and hooks, ensure \"done()\" is called; if returning a Promise, ensure it resolves. (D:\\Repos\\chalk-it\\e2e\\build\\test\\basic-widgets.spec.js)",
+                    "estack": "Error: Timeout of 20000ms exceeded. For async tests and hooks, ensure \"done()\" is called; if returning a Promise, ensure it resolves. (D:\\Repos\\chalk-it\\e2e\\build\\test\\basic-widgets.spec.js)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                    "diff": null
+                  },
+                  "uuid": "76fc15c0-ad44-45c8-9360-07dd513411df",
+                  "parentUUID": "3a64d3a8-6b95-4c27-a5b1-9a152990d580",
+                  "isHook": true,
+                  "skipped": false
+                }
+              ],
+              "afterHooks": [
+                {
+                  "title": "\"after each\" hook in \"Using chrome\"",
+                  "fullTitle": "Widget creation Using chrome \"after each\" hook in \"Using chrome\"",
+                  "timedOut": false,
+                  "duration": 253,
+                  "state": null,
+                  "speed": null,
+                  "pass": false,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "if (driver) {\n    const logTypes = await driver.manage().logs().getAvailableLogTypes();\n    for (const logType of logTypes) {\n        const log = await driver.manage().logs().get(logType);\n        if (log.length) {\n            const targetFile = logNameProvider(this.currentTest, browser, logType);\n            const fh = await fs.promises.open(targetFile, 'w');\n            const stream = fh.createWriteStream({ encoding: 'utf8' });\n            for (const entry of log) {\n                stream.write(JSON.stringify(entry.toJSON()));\n                stream.write('\\n');\n            }\n            stream.end();\n            await fh.close();\n        }\n    }\n}\n//await sleep(100000)\nawait driver?.close();\ndriver = undefined;",
+                  "err": {},
+                  "uuid": "f89b64fa-6f06-4284-a22e-37951d56f3dc",
+                  "parentUUID": "3a64d3a8-6b95-4c27-a5b1-9a152990d580",
+                  "isHook": true,
+                  "skipped": false
+                }
+              ],
+              "tests": [
+                {
+                  "title": "Text area",
+                  "fullTitle": "Widget creation Using chrome Text area",
+                  "timedOut": false,
+                  "duration": 0,
+                  "state": null,
+                  "speed": null,
+                  "pass": false,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const driver = driverFixture();\nconst editor = await openEditor(server, driver);\nassert.ok(await editor.startPage.isGuidedTourTextVisible(), 'Not on welcome page');\nconst dashboard = await editor.startPage.toMyProject();\ndashboard.waitWidgetAreaExists();\nconst widgetToolbox = await dashboard.toolboxPanel.openWidgetToolbox();\nawait widgetToolbox.createFlatUiTextInput();\nassert.equal((await driverFixture().findElements(By.id('flatUiTextInputA'))).length, 1);",
+                  "err": {},
+                  "uuid": "2331e798-edcc-49f6-9a22-812c05dcc186",
+                  "parentUUID": "3a64d3a8-6b95-4c27-a5b1-9a152990d580",
+                  "isHook": false,
+                  "skipped": true
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [],
+              "pending": [],
+              "skipped": [
+                "2331e798-edcc-49f6-9a22-812c05dcc186"
+              ],
+              "duration": 0,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 20000
+            },
+            {
+              "uuid": "60dc62f3-363d-4bdf-883b-e7b75093ff5a",
+              "title": "Using MicrosoftEdge",
+              "fullFile": "D:\\Repos\\chalk-it\\e2e\\build\\test\\basic-widgets.spec.js",
+              "file": "\\build\\test\\basic-widgets.spec.js",
+              "beforeHooks": [
+                {
+                  "title": "\"before each\" hook in \"Using MicrosoftEdge\"",
+                  "fullTitle": "Widget creation Using MicrosoftEdge \"before each\" hook in \"Using MicrosoftEdge\"",
+                  "timedOut": false,
+                  "duration": 7997,
+                  "state": null,
+                  "speed": null,
+                  "pass": false,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const width = config.width;\nconst height = config.height;\nconst builder = new Builder().withCapabilities({\n    [Capability.LOGGING_PREFS]: { browser: 'ALL' },\n    [Capability.BROWSER_NAME]: browser,\n});\nswitch (browser) {\n    case Browser.CHROME:\n        let chromeOptions = new ChromeOptions().windowSize({ width, height });\n        if (config.headless) {\n            chromeOptions = chromeOptions.addArguments('--headless=new');\n        }\n        builder.setChromeOptions(chromeOptions);\n        break;\n    case Browser.FIREFOX:\n        let ffOptions = new FirefoxOptions().windowSize({ width, height });\n        if (config.headless) {\n            ffOptions = ffOptions.addArguments('--headless');\n        }\n        builder.setFirefoxOptions(ffOptions);\n        break;\n    case Browser.EDGE:\n        let edgeOptions = new EdgeOptions().windowSize({ width, height });\n        if (config.headless) {\n            edgeOptions = edgeOptions.addArguments('--headless');\n        }\n        builder.setEdgeOptions(edgeOptions);\n        break;\n    default:\n        throw new Error(`Unknown browser ${browser}`);\n}\ndriver = await builder.build();",
+                  "err": {},
+                  "uuid": "d5dc5bb4-e5f2-4d11-8107-479ac0a6042f",
+                  "parentUUID": "60dc62f3-363d-4bdf-883b-e7b75093ff5a",
+                  "isHook": true,
+                  "skipped": false
+                }
+              ],
+              "afterHooks": [
+                {
+                  "title": "\"after each\" hook in \"Using MicrosoftEdge\"",
+                  "fullTitle": "Widget creation Using MicrosoftEdge \"after each\" hook in \"Using MicrosoftEdge\"",
+                  "timedOut": false,
+                  "duration": 61,
+                  "state": null,
+                  "speed": null,
+                  "pass": false,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "if (driver) {\n    const logTypes = await driver.manage().logs().getAvailableLogTypes();\n    for (const logType of logTypes) {\n        const log = await driver.manage().logs().get(logType);\n        if (log.length) {\n            const targetFile = logNameProvider(this.currentTest, browser, logType);\n            const fh = await fs.promises.open(targetFile, 'w');\n            const stream = fh.createWriteStream({ encoding: 'utf8' });\n            for (const entry of log) {\n                stream.write(JSON.stringify(entry.toJSON()));\n                stream.write('\\n');\n            }\n            stream.end();\n            await fh.close();\n        }\n    }\n}\n//await sleep(100000)\nawait driver?.close();\ndriver = undefined;",
+                  "err": {},
+                  "uuid": "172a6324-b0ba-4824-af14-d1c8211e3e5d",
+                  "parentUUID": "60dc62f3-363d-4bdf-883b-e7b75093ff5a",
+                  "isHook": true,
+                  "skipped": false
+                }
+              ],
+              "tests": [
+                {
+                  "title": "Text area",
+                  "fullTitle": "Widget creation Using MicrosoftEdge Text area",
+                  "timedOut": false,
+                  "duration": 3002,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const driver = driverFixture();\nconst editor = await openEditor(server, driver);\nassert.ok(await editor.startPage.isGuidedTourTextVisible(), 'Not on welcome page');\nconst dashboard = await editor.startPage.toMyProject();\ndashboard.waitWidgetAreaExists();\nconst widgetToolbox = await dashboard.toolboxPanel.openWidgetToolbox();\nawait widgetToolbox.createFlatUiTextInput();\nassert.equal((await driverFixture().findElements(By.id('flatUiTextInputA'))).length, 1);",
+                  "err": {},
+                  "uuid": "25e6c1d7-f439-4b70-a5d0-7a02c44dcc3d",
+                  "parentUUID": "60dc62f3-363d-4bdf-883b-e7b75093ff5a",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "25e6c1d7-f439-4b70-a5d0-7a02c44dcc3d"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 3002,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 20000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 20000
+        },
+        {
+          "uuid": "007449a7-4495-46e6-9441-81465716d94c",
+          "title": "Visual Tests",
+          "fullFile": "D:\\Repos\\chalk-it\\e2e\\build\\test\\dashboard-display.spec.js",
+          "file": "\\build\\test\\dashboard-display.spec.js",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"Visual Tests\"",
+              "fullTitle": "Visual Tests \"before all\" hook in \"Visual Tests\"",
+              "timedOut": false,
+              "duration": 5,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await server.start();",
+              "err": {},
+              "uuid": "9f3f18a9-b1ab-4c62-a861-359c638bc107",
+              "parentUUID": "007449a7-4495-46e6-9441-81465716d94c",
+              "isHook": true,
+              "skipped": false
+            },
+            {
+              "title": "\"before all\" hook in \"Visual Tests\"",
+              "fullTitle": "Visual Tests \"before all\" hook in \"Visual Tests\"",
+              "timedOut": false,
+              "duration": 2,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const missing = TEST_CASES.filter(function (testCase) {\n    const testFile = getDashboardFile(testCase);\n    return !fs.existsSync(testFile) || !fs.statSync(testFile).isFile();\n});\nif (missing.length) {\n    throw new Error(`Resources are missing or are not files: ${missing.join(', ')}`);\n}\nTEST_CASES.forEach((testCase, idx) => server.registerDashboardFile(getDashboardFile(testCase), idx.toString()));\nif (config.outputsDir) {\n    if (fs.existsSync(config.outputsDir)) {\n        const files = await fs.promises.readdir(config.outputsDir);\n        await Promise.all(files.map((file) => fs.promises.unlink(path.join(config.outputsDir, file))));\n    }\n    else {\n        fs.mkdirSync(config.outputsDir, { recursive: true });\n    }\n}",
+              "err": {},
+              "uuid": "5720db97-8b01-4e39-be97-db9d100c08fb",
+              "parentUUID": "007449a7-4495-46e6-9441-81465716d94c",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [
+            {
+              "title": "\"after all\" hook in \"Visual Tests\"",
+              "fullTitle": "Visual Tests \"after all\" hook in \"Visual Tests\"",
+              "timedOut": false,
+              "duration": 3,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await server.stop();",
+              "err": {},
+              "uuid": "a1b24b15-68ad-4a4e-b73a-0219687a0fdf",
+              "parentUUID": "007449a7-4495-46e6-9441-81465716d94c",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "804a7d55-bbd1-4449-a007-e5f837c73b64",
+              "title": "Using chrome",
+              "fullFile": "D:\\Repos\\chalk-it\\e2e\\build\\test\\dashboard-display.spec.js",
+              "file": "\\build\\test\\dashboard-display.spec.js",
+              "beforeHooks": [
+                {
+                  "title": "\"before each\" hook in \"Using chrome\"",
+                  "fullTitle": "Visual Tests Using chrome \"before each\" hook in \"Using chrome\"",
+                  "timedOut": false,
+                  "duration": 1456,
+                  "state": null,
+                  "speed": null,
+                  "pass": false,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const width = config.width;\nconst height = config.height;\nconst builder = new Builder().withCapabilities({\n    [Capability.LOGGING_PREFS]: { browser: 'ALL' },\n    [Capability.BROWSER_NAME]: browser,\n});\nswitch (browser) {\n    case Browser.CHROME:\n        let chromeOptions = new ChromeOptions().windowSize({ width, height });\n        if (config.headless) {\n            chromeOptions = chromeOptions.addArguments('--headless=new');\n        }\n        builder.setChromeOptions(chromeOptions);\n        break;\n    case Browser.FIREFOX:\n        let ffOptions = new FirefoxOptions().windowSize({ width, height });\n        if (config.headless) {\n            ffOptions = ffOptions.addArguments('--headless');\n        }\n        builder.setFirefoxOptions(ffOptions);\n        break;\n    case Browser.EDGE:\n        let edgeOptions = new EdgeOptions().windowSize({ width, height });\n        if (config.headless) {\n            edgeOptions = edgeOptions.addArguments('--headless');\n        }\n        builder.setEdgeOptions(edgeOptions);\n        break;\n    default:\n        throw new Error(`Unknown browser ${browser}`);\n}\ndriver = await builder.build();",
+                  "err": {},
+                  "uuid": "f63113e7-a016-4bee-8e8e-724cc2f8ab69",
+                  "parentUUID": "804a7d55-bbd1-4449-a007-e5f837c73b64",
+                  "isHook": true,
+                  "skipped": false
+                }
+              ],
+              "afterHooks": [
+                {
+                  "title": "\"after each\" hook in \"Using chrome\"",
+                  "fullTitle": "Visual Tests Using chrome \"after each\" hook in \"Using chrome\"",
+                  "timedOut": false,
+                  "duration": 135,
+                  "state": null,
+                  "speed": null,
+                  "pass": false,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "if (driver) {\n    const logTypes = await driver.manage().logs().getAvailableLogTypes();\n    for (const logType of logTypes) {\n        const log = await driver.manage().logs().get(logType);\n        if (log.length) {\n            const targetFile = logNameProvider(this.currentTest, browser, logType);\n            const fh = await fs.promises.open(targetFile, 'w');\n            const stream = fh.createWriteStream({ encoding: 'utf8' });\n            for (const entry of log) {\n                stream.write(JSON.stringify(entry.toJSON()));\n                stream.write('\\n');\n            }\n            stream.end();\n            await fh.close();\n        }\n    }\n}\n//await sleep(100000)\nawait driver?.close();\ndriver = undefined;",
+                  "err": {},
+                  "uuid": "ebe82cf5-2fce-4287-9666-0e5a7d971e3b",
+                  "parentUUID": "804a7d55-bbd1-4449-a007-e5f837c73b64",
+                  "isHook": true,
+                  "skipped": false
+                }
+              ],
+              "tests": [
+                {
+                  "title": "resources/list-js.xprjson",
+                  "fullTitle": "Visual Tests Using chrome resources/list-js.xprjson",
+                  "timedOut": false,
+                  "duration": 3949,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "const driver = driverFixture();\nconst expectedBuffer = fs.promises.readFile(screenshotReference(testCase, browser));\nawait driver.get(server.getDashboardUrl(idx.toString()));\nconst dashboardEditor = new DashboardEditor(driver);\nawait dashboardEditor.dashboardPage.waitWidgetAreaExists();\n// If not reliable, add small safety wait.\nawait dashboardEditor.waitNotLoading();\nconst encodedString = await driver.takeScreenshot();\nif (config.outputsDir) {\n    await fs.promises.writeFile(screenshotResult(config.outputsDir, testCaseFile, browser), encodedString, 'base64');\n}\nconst actualPng = PNG.sync.read(Buffer.from(encodedString, 'base64'));\nconst expectedPng = PNG.sync.read(await expectedBuffer);\nconst result = diffScreenshots(expectedPng, actualPng);\nif (result) {\n    const [diff, mismatchedPixels] = result;\n    if (config.outputsDir) {\n        await pipeline(diff.pack(), fs.createWriteStream(path.join(config.outputsDir, diffName(testCaseFile, browser))));\n    }\n    assert.equal(mismatchedPixels, 0);\n}",
+                  "err": {
+                    "message": "AssertionError: 37 == 0",
+                    "estack": "AssertionError [ERR_ASSERTION]: 37 == 0\n    at Context.<anonymous> (file:///D:/Repos/chalk-it/e2e/build/test/dashboard-display.spec.js:79:28)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                    "diff": "- 37\n+ 0\n"
+                  },
+                  "uuid": "9f2034de-3347-4df6-ab3f-7d3ceba05523",
+                  "parentUUID": "804a7d55-bbd1-4449-a007-e5f837c73b64",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "9f2034de-3347-4df6-ab3f-7d3ceba05523"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 3949,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 20000
+            },
+            {
+              "uuid": "53d496ca-c30d-4f7f-93b6-25ae46884a2d",
+              "title": "Using MicrosoftEdge",
+              "fullFile": "D:\\Repos\\chalk-it\\e2e\\build\\test\\dashboard-display.spec.js",
+              "file": "\\build\\test\\dashboard-display.spec.js",
+              "beforeHooks": [
+                {
+                  "title": "\"before each\" hook in \"Using MicrosoftEdge\"",
+                  "fullTitle": "Visual Tests Using MicrosoftEdge \"before each\" hook in \"Using MicrosoftEdge\"",
+                  "timedOut": false,
+                  "duration": 3792,
+                  "state": null,
+                  "speed": null,
+                  "pass": false,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "const width = config.width;\nconst height = config.height;\nconst builder = new Builder().withCapabilities({\n    [Capability.LOGGING_PREFS]: { browser: 'ALL' },\n    [Capability.BROWSER_NAME]: browser,\n});\nswitch (browser) {\n    case Browser.CHROME:\n        let chromeOptions = new ChromeOptions().windowSize({ width, height });\n        if (config.headless) {\n            chromeOptions = chromeOptions.addArguments('--headless=new');\n        }\n        builder.setChromeOptions(chromeOptions);\n        break;\n    case Browser.FIREFOX:\n        let ffOptions = new FirefoxOptions().windowSize({ width, height });\n        if (config.headless) {\n            ffOptions = ffOptions.addArguments('--headless');\n        }\n        builder.setFirefoxOptions(ffOptions);\n        break;\n    case Browser.EDGE:\n        let edgeOptions = new EdgeOptions().windowSize({ width, height });\n        if (config.headless) {\n            edgeOptions = edgeOptions.addArguments('--headless');\n        }\n        builder.setEdgeOptions(edgeOptions);\n        break;\n    default:\n        throw new Error(`Unknown browser ${browser}`);\n}\ndriver = await builder.build();",
+                  "err": {},
+                  "uuid": "9a764792-5908-48c6-a24e-d757c6a2ab8f",
+                  "parentUUID": "53d496ca-c30d-4f7f-93b6-25ae46884a2d",
+                  "isHook": true,
+                  "skipped": false
+                }
+              ],
+              "afterHooks": [
+                {
+                  "title": "\"after each\" hook in \"Using MicrosoftEdge\"",
+                  "fullTitle": "Visual Tests Using MicrosoftEdge \"after each\" hook in \"Using MicrosoftEdge\"",
+                  "timedOut": false,
+                  "duration": 47,
+                  "state": null,
+                  "speed": null,
+                  "pass": false,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "if (driver) {\n    const logTypes = await driver.manage().logs().getAvailableLogTypes();\n    for (const logType of logTypes) {\n        const log = await driver.manage().logs().get(logType);\n        if (log.length) {\n            const targetFile = logNameProvider(this.currentTest, browser, logType);\n            const fh = await fs.promises.open(targetFile, 'w');\n            const stream = fh.createWriteStream({ encoding: 'utf8' });\n            for (const entry of log) {\n                stream.write(JSON.stringify(entry.toJSON()));\n                stream.write('\\n');\n            }\n            stream.end();\n            await fh.close();\n        }\n    }\n}\n//await sleep(100000)\nawait driver?.close();\ndriver = undefined;",
+                  "err": {},
+                  "uuid": "ad9c5b4b-8774-477d-aec1-fbba5268d850",
+                  "parentUUID": "53d496ca-c30d-4f7f-93b6-25ae46884a2d",
+                  "isHook": true,
+                  "skipped": false
+                }
+              ],
+              "tests": [
+                {
+                  "title": "resources/list-js.xprjson",
+                  "fullTitle": "Visual Tests Using MicrosoftEdge resources/list-js.xprjson",
+                  "timedOut": false,
+                  "duration": 3772,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "const driver = driverFixture();\nconst expectedBuffer = fs.promises.readFile(screenshotReference(testCase, browser));\nawait driver.get(server.getDashboardUrl(idx.toString()));\nconst dashboardEditor = new DashboardEditor(driver);\nawait dashboardEditor.dashboardPage.waitWidgetAreaExists();\n// If not reliable, add small safety wait.\nawait dashboardEditor.waitNotLoading();\nconst encodedString = await driver.takeScreenshot();\nif (config.outputsDir) {\n    await fs.promises.writeFile(screenshotResult(config.outputsDir, testCaseFile, browser), encodedString, 'base64');\n}\nconst actualPng = PNG.sync.read(Buffer.from(encodedString, 'base64'));\nconst expectedPng = PNG.sync.read(await expectedBuffer);\nconst result = diffScreenshots(expectedPng, actualPng);\nif (result) {\n    const [diff, mismatchedPixels] = result;\n    if (config.outputsDir) {\n        await pipeline(diff.pack(), fs.createWriteStream(path.join(config.outputsDir, diffName(testCaseFile, browser))));\n    }\n    assert.equal(mismatchedPixels, 0);\n}",
+                  "err": {
+                    "message": "AssertionError: 29 == 0",
+                    "estack": "AssertionError [ERR_ASSERTION]: 29 == 0\n    at Context.<anonymous> (file:///D:/Repos/chalk-it/e2e/build/test/dashboard-display.spec.js:79:28)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)",
+                    "diff": "- 29\n+ 0\n"
+                  },
+                  "uuid": "33caae64-3523-4b13-8d97-0fe81fc2c93e",
+                  "parentUUID": "53d496ca-c30d-4f7f-93b6-25ae46884a2d",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "33caae64-3523-4b13-8d97-0fe81fc2c93e"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 3772,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 20000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 20000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 20000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "8.4.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.2.0"
+    }
+  }
+}

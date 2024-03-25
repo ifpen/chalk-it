@@ -1,0 +1,160 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Sun Feb 12 2023 10:25:02 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "pie-chart",
+		"description": "Pie chart example made with Plotly library",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Plots"
+			},
+			{
+				"text": "Plotly"
+			},
+			{
+				"text": "Pie-chart"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "data",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "data",
+					"json_var": "{\"fuel\":[\"Gasoline\",\"Diesel\",\"Biofuel\",\"LPG\",\"NGV\"],\"consumption\":[1010,821,69,25,38]}"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"plotlyPieN": {
+			"layout": {
+				"top": "1.66337vh",
+				"left": "0.806011vw",
+				"height": "71.2478vh",
+				"width": "71.8021vw",
+				"minHeight": "100px",
+				"minWidth": "100px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "plotlyPieN",
+				"instanceId": "plotlyPieN",
+				"modelJsonId": "plotlyPie",
+				"widgetTypeName": "Plotly pie(plotlyPieN)"
+			},
+			"modelParameters": {
+				"layout": {
+					"title": {
+						"text": "Fuel usage in transport"
+					},
+					"paper_bgcolor": "rgba(0, 0, 0, 0)",
+					"plot_bgcolor": "rgba(0, 0, 0, 0)",
+					"showlegend": true,
+					"margin": {
+						"l": 50,
+						"r": 50,
+						"b": 100,
+						"t": 100,
+						"pad": 4
+					},
+					"autosize": true
+				},
+				"hideModeBar": false
+			},
+			"modelHiddenParams": {
+				"data": [
+					{
+						"type": "pie",
+						"labels": [
+							"half1",
+							"half2"
+						],
+						"values": [
+							0.5,
+							0.5
+						],
+						"marker": {
+							"colors": []
+						},
+						"sort": false
+					}
+				],
+				"selection": [
+					{}
+				]
+			}
+		}
+	},
+	"connections": {
+		"plotlyPieN": {
+			"labels": {
+				"name": "labels",
+				"dataFields": [
+					"fuel"
+				],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			},
+			"values": {
+				"name": "values",
+				"dataFields": [
+					"consumption"
+				],
+				"dataNode": "data",
+				"dataNodeIndex": 0
+			},
+			"colors": {
+				"name": "colors",
+				"dataFields": [],
+				"dataNode": "None"
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

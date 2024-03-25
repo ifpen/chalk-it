@@ -1,0 +1,30 @@
+site_name: Chalk'it lite Documentation
+nav:
+  - Welcome: index_taipy.md
+  - Quickstart: taipy_quickstart/quickstart.md
+  - Basics: taipy_basics.md
+  - Widgets:
+      - Introduction: taipy_wdg/wdg.md
+      - Common concepts: taipy_wdg/wdg-common-concept.md
+      - Basic inputs: taipy_wdg/wdg-basic-inputs.md
+      - Basic displays: taipy_wdg/wdg-basic-displays.md
+      - Plots: taipy_wdg/wdg-plots.md
+      - Geo & Time: taipy_wdg/wdg-geo-time.md
+      - Annotation & Video: taipy_wdg/wdg-annotation-video.md
+  - Export: export/export.md
+theme:
+  name: material
+  logo: media/chalk-it-icon.svg
+  font: false
+use_directory_urls: true
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.superfences
+plugins:
+  - search
+

@@ -43,6 +43,7 @@ class LayoutMgrClass {
 
     // Dashboard background color
     this.dashBgColor = '';
+    this.defaultBgColor = '#ffffff';
     this.dashboardTheme = 'default';
     this.$rootScope = angular.element(document.body).scope().$root;
   }
@@ -559,9 +560,9 @@ class LayoutMgrClass {
   }
 
   resetDashBgColor() {
-    this.dashBgColor = '';
-    $('#inputDashBgColor').val('');
-    $('.dropperR').css('background-color', '');
+    this.dashBgColor = this.defaultBgColor;
+    $('#inputDashBgColor').val(this.defaultBgColor);
+    $('.dropperR').css('background-color', this.defaultBgColor);
   }
 
   serializeDashBgColor() {
@@ -573,7 +574,7 @@ class LayoutMgrClass {
 
   deserializeDashBgColor(deviceObj) {
     if (!_.isUndefined(deviceObj.backgroundColor)) {
-      this.dashBgColor = deviceObj.backgroundColor;
+      this.dashBgColor = deviceObj.backgroundColor || this.defaultBgColor;
       this.updateDashBgColor();
     }
   }

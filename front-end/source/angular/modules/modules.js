@@ -7,10 +7,10 @@
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 const xDashLiteVersion = xDashConfig.xDashLiteVersion == 'true';
-const moduleDependencies = ['modules.headerbar', 'modules.editor', 'modules.sidebar', 'modules.discover'];
+const moduleDependencies = ['modules.headerbar', 'modules.editor', 'modules.sidebar', 'modules.discover', 'modules.training'];
 
 if (!xDashLiteVersion) {
-  moduleDependencies.push('modules.cards', 'modules.python-images', 'modules.training');
+  moduleDependencies.push('modules.cards', 'modules.python-images');
 }
 
 angular

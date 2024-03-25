@@ -53,8 +53,8 @@
       </span>
       Help
     </button>
-    <ul ng-if="!xDashLiteVersion" class="sidebar__list">
-      <li>
+    <ul class="sidebar__list">
+      <li ng-if="!xDashLiteVersion">
         <a
           ng-class="{'active' :  displayedId==='discover'}"
           ui-sref="modules.discover.layout"

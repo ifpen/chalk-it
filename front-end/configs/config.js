@@ -44,7 +44,7 @@ const jsEditorDn = env.JSON_EDITOR_DATANODES === 'true';
 const disableAuth = env.DISABLE_AUTH !== 'false';
 const disableSchedulerLog = env.DISABLE_SCHEDULER_LOG !== 'false';
 const disableSchedulerProfiling = env.DISABLE_SCHEDULER_PROFILING === 'true';
-const urlDoc = env.LITE_BUILD === 'true' ? 'https://ifpen.github.io/chalk-it/hosted/doc/' : env.URL_DOC;
+const urlDoc = env.URL_DOC;
 
 module.exports.config = {
   port: env.PORT || 7854,

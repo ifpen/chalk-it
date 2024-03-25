@@ -117,6 +117,8 @@ task('init', (cb) => {
   prefixName = GlobalConfig.config.xDashConfig.xDashBasicVersion ? '/chalkit_' : '/xdash_';
   buildFilePath = prefixName + GlobalConfig.config.xDashConfig.version.fullVersion;
   buildDirPath = '../' + configuration.paths.buildDirectory + buildFilePath;
+  mkDocsFileName = GlobalConfig.config.xDashConfig.xDashLiteVersion ? 'mkdocs.yml' : 'mkdocs_taipy.yml';
+
 
   if (addVersion) {
     filesName.xdash_editor.css = xdashEditorCss + GlobalConfig.config.xDashConfig.version.fullVersion;
@@ -788,7 +790,7 @@ task('copy', () => {
 });
 
 task('buildmk', function (cb) {
-  exec('mkdocs build -c -f "../../documentation/mkdocs.yml"', function (err, stdout, stderr) {
+  exec('mkdocs build -c -f "../../documentation/' + mkDocsFileName + '"', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
