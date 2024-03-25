@@ -1,0 +1,215 @@
+{
+	"meta": {
+		"version": "2.470.8480",
+		"date": "Fri Mar 31 2023 18:32:10 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "real-time-kpi-plotly",
+		"description": "KPI with trend and Plolty real-time widget example",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "widget"
+			},
+			{
+				"text": "plotly"
+			},
+			{
+				"text": "real-time"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "layout",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "layout",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var layout = {\n  title: 'Random variable evolution over time',\n  xaxis: {\n    title: 'Time (s)',\n    showgrid: false,\n    zeroline: false\n  },\n  yaxis: {\n    title: 'Value',\n    showline: false\n  }\n};\n\nreturn layout;\n"
+				}
+			},
+			{
+				"name": "clock",
+				"type": "Clock_web-service",
+				"settings": {
+					"name": "clock",
+					"sampleTime": 1,
+					"autoStart": true
+				}
+			},
+			{
+				"name": "kpiVal",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "kpiVal",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "return {\n\n    \"value\": dataNodes[\"random\"],\n    \"subLabel\": Math.round(dataNodes[\"random\"]-dataNodes[\"lastRandom\"]*100) +\"%\",\n    \"window\" : -1 // - 1 for unlimited\n};"
+				}
+			},
+			{
+				"name": "lastRandom",
+				"type": "JSON_delay_plugin",
+				"settings": {
+					"name": "lastRandom",
+					"json_init": "0",
+					"json_input": "dataNodes[\"random\"]"
+				}
+			},
+			{
+				"name": "random",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "random",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "let dep = dataNodes[\"clock\"];\n\nreturn Math.random();"
+				}
+			}
+		],
+		"reIndexMap": [
+			0,
+			1,
+			4,
+			3,
+			2
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1302,
+		"heightPx": 575,
+		"scrollWidthPx": 1302,
+		"scrollHeightPx": 575,
+		"widthVw": 84.765625,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.765625,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"advancedKpiCardn": {
+			"layout": {
+				"top": "10.5799vh",
+				"left": "7.87109vw",
+				"height": "35.9252vh",
+				"width": "13.5726vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "advancedKpiCardn",
+				"instanceId": "advancedKpiCardn",
+				"modelJsonId": "advancedKpiCard",
+				"widgetTypeName": "Advanced KPI value(advancedKpiCardn)"
+			},
+			"modelParameters": {
+				"label": "kpiVal",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valuePosition": "bottom",
+				"valueFontSize": 3,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"decimalDigits": 3,
+				"subLabelFontSize": 0.5,
+				"subLabelColor": "#34495e",
+				"subLabelFontFamily": "Helvetica Neue",
+				"borderShadow": false,
+				"graphColor": "#007a87"
+			},
+			"modelHiddenParams": {
+				"value": "--",
+				"subLabel": "--"
+			}
+		},
+		"plotlyRealTimek": {
+			"layout": {
+				"top": "7.47922vh",
+				"left": "27.3438vw",
+				"height": "64.9584vh",
+				"width": "53.2552vw",
+				"minHeight": "100px",
+				"minWidth": "100px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "plotlyRealTimek",
+				"instanceId": "plotlyRealTimek",
+				"modelJsonId": "plotlyRealTime",
+				"widgetTypeName": "Plotly real-time(plotlyRealTimek)"
+			},
+			"modelParameters": {
+				"layout": {},
+				"hideModeBar": false
+			},
+			"modelHiddenParams": {
+				"hideModeBar": false,
+				"data": [
+					{
+						"y": [],
+						"mode": "lines"
+					}
+				],
+				"selection": [
+					{}
+				]
+			}
+		}
+	},
+	"connections": {
+		"advancedKpiCardn": {
+			"extendedValue": {
+				"name": "extendedValue",
+				"dataNode": "kpiVal",
+				"dataFields": [],
+				"dataNodeIndex": 2
+			}
+		},
+		"plotlyRealTimek": {
+			"y1": {
+				"name": "y1",
+				"dataNode": "random",
+				"dataFields": [],
+				"dataNodeIndex": 4
+			},
+			"layout": {
+				"name": "layout",
+				"dataNode": "layout",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

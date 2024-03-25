@@ -1,0 +1,112 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Thu Feb 09 2023 21:14:22 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "vega-generic-js",
+		"description": "",
+		"groupName": "JavaScript",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "spec",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "spec",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "const spec = {\n    //$schema: \"https://vega.github.io/schema/vega/v5.json\",\n\tdescription: \"A basic line chart example.\",\n\twidth: 500,\n\theight: 200,\n\tpadding: 5,\n\tsignals: [\n\t\t{\n\t\t\tname: \"interpolate\",\n\t\t\tvalue: \"linear\",\n\t\t\tbind: {\n\t\t\t\tinput: \"select\",\n\t\t\t\toptions: [\"basis\", \"cardinal\", \"catmull-rom\", \"linear\", \"monotone\", \"natural\", \"step\", \"step-after\", \"step-before\"],\n\t\t\t},\n\t\t},\n\t],\n\tdata: [\n\t\t{\n\t\t\tname: \"table\",\n\t\t\tvalues: [\n\t\t\t\t{ x: 0, y: 28, c: 0 },\n\t\t\t\t{ x: 0, y: 20, c: 1 },\n\t\t\t\t{ x: 1, y: 43, c: 0 },\n\t\t\t\t{ x: 1, y: 35, c: 1 },\n\t\t\t\t{ x: 2, y: 81, c: 0 },\n\t\t\t\t{ x: 2, y: 10, c: 1 },\n\t\t\t\t{ x: 3, y: 19, c: 0 },\n\t\t\t\t{ x: 3, y: 15, c: 1 },\n\t\t\t\t{ x: 4, y: 52, c: 0 },\n\t\t\t\t{ x: 4, y: 48, c: 1 },\n\t\t\t\t{ x: 5, y: 24, c: 0 },\n\t\t\t\t{ x: 5, y: 28, c: 1 },\n\t\t\t\t{ x: 6, y: 87, c: 0 },\n\t\t\t\t{ x: 6, y: 66, c: 1 },\n\t\t\t\t{ x: 7, y: 17, c: 0 },\n\t\t\t\t{ x: 7, y: 27, c: 1 },\n\t\t\t\t{ x: 8, y: 68, c: 0 },\n\t\t\t\t{ x: 8, y: 16, c: 1 },\n\t\t\t\t{ x: 9, y: 49, c: 0 },\n\t\t\t\t{ x: 9, y: 25, c: 1 },\n\t\t\t],\n\t\t},\n\t],\n\tscales: [\n\t\t{\n\t\t\tname: \"x\",\n\t\t\ttype: \"point\",\n\t\t\trange: \"width\",\n\t\t\tdomain: { data: \"table\", field: \"x\" },\n\t\t},\n\t\t{\n\t\t\tname: \"y\",\n\t\t\ttype: \"linear\",\n\t\t\trange: \"height\",\n\t\t\tnice: true,\n\t\t\tzero: true,\n\t\t\tdomain: { data: \"table\", field: \"y\" },\n\t\t},\n\t\t{\n\t\t\tname: \"color\",\n\t\t\ttype: \"ordinal\",\n\t\t\trange: \"category\",\n\t\t\tdomain: { data: \"table\", field: \"c\" },\n\t\t},\n\t],\n\taxes: [\n\t\t{ orient: \"bottom\", scale: \"x\" },\n\t\t{ orient: \"left\", scale: \"y\" },\n\t],\n\tmarks: [\n\t\t{\n\t\t\ttype: \"group\",\n\t\t\tfrom: { facet: { name: \"series\", data: \"table\", groupby: \"c\" } },\n\t\t\tmarks: [\n\t\t\t\t{\n\t\t\t\t\ttype: \"line\",\n\t\t\t\t\tfrom: { data: \"series\" },\n\t\t\t\t\tencode: {\n\t\t\t\t\t\tenter: {\n\t\t\t\t\t\t\tx: { scale: \"x\", field: \"x\" },\n\t\t\t\t\t\t\ty: { scale: \"y\", field: \"y\" },\n\t\t\t\t\t\t\tstroke: { scale: \"color\", field: \"c\" },\n\t\t\t\t\t\t\tstrokeWidth: { value: 2 },\n\t\t\t\t\t\t},\n\t\t\t\t\t\tupdate: {\n\t\t\t\t\t\t\tinterpolate: { signal: \"interpolate\" },\n\t\t\t\t\t\t\tstrokeOpacity: { value: 1 },\n\t\t\t\t\t\t},\n\t\t\t\t\t\thover: { strokeOpacity: { value: 0.5 } },\n\t\t\t\t\t},\n\t\t\t\t},\n\t\t\t],\n\t\t},\n\t],\n\tconfig: {},\n};\n\nreturn spec;"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"vegaGenerico": {
+			"layout": {
+				"top": "4.76677vh",
+				"left": "2.32289vw",
+				"height": "56.7361vh",
+				"width": "56.1108vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "vegaGenerico",
+				"instanceId": "vegaGenerico",
+				"modelJsonId": "vegaGeneric",
+				"widgetTypeName": "Vega generic(vegaGenerico)"
+			},
+			"modelParameters": {
+				"inheritWidthAndHeight": true
+			},
+			"modelHiddenParams": {
+				"spec": {
+					"marks": [
+						{
+							"type": "text",
+							"encode": {
+								"update": {
+									"text": {
+										"value": "Write then connect your Vega spec"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		}
+	},
+	"connections": {
+		"vegaGenerico": {
+			"spec": {
+				"name": "spec",
+				"dataNode": "spec",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
