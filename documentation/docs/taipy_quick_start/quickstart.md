@@ -4,12 +4,37 @@
 
 The Iris flower dataset is a multivariate dataset introduced by the British statistician and biologist Ronald Fisher in his 1936 paper "The use of multiple measurements in taxonomic problems" as an example of linear discriminant analysis. It consists of 50 samples from each of three species of Iris (Iris setosa, Iris virginica and Iris versicolor). Four features were measured from each sample: the length and the width of the sepals and petals, in centimeters. The Iris dataset is widely used in machine learning as a benchmark dataset for statistical classification algorithms. It is free and publicly avaible at the [UCI Machine Repository](https://archive.ics.uci.edu/ml/datasets/iris).
 
-The following tutorial allows to illustrate main Chalk'it features througth this dataset. Expected result is provided in the following project:
+The following tutorial allows to illustrate main Chalk'it lite features througth this dataset. Expected result is provided in the following project:
 
-- [iris_demo_page.xprjson](/quick-start/xprjson/iris_demo_page.xprjson)
 - [iris_demo.py](/quick-start/xprjson/iris_demo.py)
+- [iris_demo_page.xprjson](/quick-start/xprjson/iris_demo_page.xprjson)
 
-## 1. Creating an empty projet
+## 1. Installing required Python librairies
+
+Begin by creating a file named **requirements.txt** to specify the necessary Taipy Python libraries:
+
+```sh
+taipy==3.2.0.dev0
+```
+
+Additionally, include the libraries required for the iris example: **pandas**, **scikit-learn** and **plotly**.
+
+```sh
+pandas==2.2.1
+plotly==5.18.0
+scikit_learn==1.4.0
+```
+
+Your final file should resemble the following: [requirements.txt](xprjson/requirements.txt)
+
+After defining the requirements, install them using the command:
+
+```sh
+pip install -r requirements.txt
+```
+
+
+## 2. Creating an empty projet
 
 To start, create a Python script named **iris_demo.py** and insert the following code:
 
@@ -36,38 +61,9 @@ This command will initialize an empty project that you can save as modifications
 
 It will also generate the corresponding **iris_demo.xprjson** project file.
 
-## 2. Installing required Python librairies
-
-Begin by creating a file named **requirements.txt** to specify the necessary Taipy Python libraries:
-
-```sh
-taipy==3.2.0.dev0
-taipy_config==3.0.0
-taipy_core==3.0.0
-taipy_designer==0.5.0
-taipy_rest==3.0.0
-taipy_templates==3.0.0
-```
-
-Additionally, include the libraries required for the iris example: **pandas**, **scikit-learn** and **plotly**.
-
-```sh
-pandas==2.2.1
-plotly==5.18.0
-scikit_learn==1.4.0
-```
-
-Your final file should resemble the following: [requirements.txt](xprjson/requirements.txt)
-
-After defining the requirements, install them using the command:
-
-```sh
-pip install -r requirements.txt
-```
-
 ## 3. Loading dataset data
 
-With the project created and the necessary Python libraries installed, the next step is to load the Iris dataset from **Scikit-learn**. To achieve this, add the following code snippet to your script, creating a variable named **iris**:
+With the project created and the necessary Python libraries installed, the next step is to load the Iris dataset from **scikit-learn**. To achieve this, add the following code snippet to your script, creating a variable named **iris**:
 
 ```Python
   from sklearn import datasets
@@ -88,7 +84,7 @@ To visualize the dataset, follow these steps:
 Begin by loading the dataset into a Pandas dataframe using the following code:
 
 ```Python
-  import pandas as pd
+import pandas as pd
 
 def create_dataframe(iris):
   df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
@@ -104,7 +100,7 @@ Next, visualize the dataset using Plotly Python library by adding the following 
 
 ```Python
 import plotly.express as px
-Rejoindre la réunion maintenant
+
 def plot_data(df):
   fig = px.scatter(df, x="sepal width (cm)", y="sepal length (cm)", color="target",
                    size='petal length (cm)', hover_data=['petal width (cm)'])
@@ -115,7 +111,7 @@ fig = plot_data(df)
 
 ### Step2: Prepare the dashboard
 
-1. Click on the _Widgets_ main tab, then navigate to the \_Plot_s category.
+1. Click on the _Widgets_ main tab, then navigate to the _Plots_ category.
 
 ![Widgets tab](png/plots-tab.png)
 
@@ -164,7 +160,7 @@ Create a variable named **input_data** with the initial values for sepal and pet
 input_data = {"sepal_width": 5.4, "sepal_length": 2.7, "petal_length": 3, "petal_width": 0.5}
 ```
 
-Next, add an horizontal slider to control the values of "sepal\*width". Navigate to the _Widgets_ main tab, then select _Basic Inputs & Controls_.
+Next, add an horizontal slider to control the values of "sepal_width". Navigate to the _Widgets_ main tab, then select _Basic Inputs & Controls_.
 
 ![sliders](png/input-sliders.png)
 
