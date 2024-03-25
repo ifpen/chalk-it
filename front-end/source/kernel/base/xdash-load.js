@@ -52,7 +52,7 @@ var angularModule = angular
       if ($rootScope.xDashFullVersion) {
         document.title = "Chalk'it - SaaS version";
       } else {
-        document.title = "Chalk'it";
+        document.title = "Chalk'it - Lite version";
       }
 
       $rootScope.listAvailablesTags = [
