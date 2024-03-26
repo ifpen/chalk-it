@@ -10,7 +10,7 @@ Label widget allows the user to write multiline text, and apply common widget fo
 
 Image widget allows the user to annotate the dashboard by importing *jpg* or *png* images.
 
-When the **enableActuator** parameter is set to *true*, an actuator named **base64Image** appears in the "Data Connection" tab. It allows to display a base64 string encoded image. Animations may be achieved through dataNodes programming.
+When the **enableActuator** parameter is set to *true*, an actuator named **base64Image** appears in the "Data Connection" tab. It allows to display a base64 string encoded image. Animations may be achieved through Python programming.
 
 See example below.
 
@@ -47,7 +47,7 @@ Example :
 
 The main purpose of this widget  is to use the device's camera.
 
-The widget must be connected to a [variable](../../ds/ds-basics/#variable)-type dataNode and will write information to its **base64Image**, **mimeType** and **imageData** actuators.
+The widget must be connected to a variable and will write information to its **base64Image**, **mimeType** and **imageData** actuators.
 
 Example :
 
