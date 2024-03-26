@@ -318,13 +318,20 @@ class TaipyManager {
   }
 
   /**
-   * Handles notification messages related to application events.
+   * Handles notification messages related to application events. This method reacts differently
+   * based on the type of message received and the specified action within the message. It supports
+   * handling specific actions such as loading and saving files, with distinct behaviors for info
+   * and error message types.
    *
    * @method onNotify
    * @private
    * @param {Object} app - The application instance.
    * @param {string} type - The type of message received, expected to be one of the predefined MESSAGE_TYPES.
-   * @param {string} message - The message content, expected to be one of the predefined ACTIONS.
+   * @param {string} message - The message content. It includes:
+   *      - {string} action_name: The specific action that the notification is about,
+   *                              expected to be one of the predefined ACTIONS ('load_file', 'save_file').
+   *      - {string} text: A descriptive message or information about the action being notified.
+   *      - {boolean} [is_new_file]: Optional. Specifies whether the file involved in the notification is new.
    * @returns {void} This method does not return a value.
    */
   #onNotify(app, type, message) {
@@ -335,7 +342,7 @@ class TaipyManager {
         if (type == MESSAGE_TYPES.INFO) {
           // This case is handled in the #onChange function
         } else if (type == MESSAGE_TYPES.ERROR) {
-          this.#notify('Info project', 'Error while opening project', 'error', 2000);
+          this.#notify('Info project', message.text, 'error', 2000);
         }
         break;
       case ACTIONS.SAVE_FILE:
@@ -345,9 +352,12 @@ class TaipyManager {
           }
         } else if (type == MESSAGE_TYPES.ERROR) {
           datanodesManager.showLoadingIndicator(false);
-          this.#notify('Info project', 'Error while saving project', 'error', 2000);
+          this.#notify('Info project', message.text, 'error', 2000);
         }
         break;
+      default:
+        const notifType = type == MESSAGE_TYPES.INFO ? 'info' : 'error';
+        this.#notify('Info project', message.text, notifType, 2000);
     }
   }
 
