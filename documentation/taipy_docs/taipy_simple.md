@@ -23,7 +23,7 @@ This web-application has 3 Python variables: `a`, `b` and `c`. It simply does th
 
 It defines a Chalk'it lite page named `sliders_value.xprjson`, that will contain the GUI definition.
 
-It creates a Gui instance from taipy.gui to host the Chalk'it lite page.
+It creates a Gui instance from [taipy.gui](https://docs.taipy.io/en/release-3.0/manuals/gui/) to host the Chalk'it lite page.
 
 Let's run it first:
 
@@ -31,7 +31,7 @@ Let's run it first:
 python simple_app.py
 ```
 
-Chalk'it lite is automatically started on the browser at http://127.0.0.1:5000.
+Chalk'it lite is automatically started on the browser at <http://127.0.0.1:5000>.
 
 Let's build its GUI using drag and drop with Chalk'it lite.
 

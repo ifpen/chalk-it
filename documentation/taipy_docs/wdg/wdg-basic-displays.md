@@ -14,15 +14,6 @@ Among its parameters (in tab, "Graphical Properties") :
 
 Is card-like display.
 
-## Real-time KPI display
-
-Like KPI display, but also provides a memory graph of past values.
-
-Examples :
-
-* [advanced-kpi-py.xprjson](/wdg/basic/advanced-kpi-py.xprjson)
-* [advanced-kpi-js.xprjson](/wdg/basic/advanced-kpi-js.xprjson)
-
 ## Status led
 
 For displaying binary status (on/off)
@@ -43,3 +34,17 @@ The other widgets are adapted for real-time display:
 
 More advance displays (like [Label](../../wdg/wdg-annotation-video#label), [Markdown](../../wdg/wdg-annotation-video#markdown) or [HTML](../../wdg/wdg-annotation-video#html)) can be found in the [Annotation & Video] category.
 
+## Table
+
+**Table** widget expects its **value** input to reference a list, containing sub-lists, all of the same dimension, such as :
+
+``` python
+[
+    ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    [5, 6, 9, 11, 15, 16, 20, 20, 16, 12, 7, 5]
+]
+```
+
+This array will be displayed as :
+
+![table](tables/table.png)

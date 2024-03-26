@@ -47,7 +47,7 @@ Example :
 
 The main purpose of this widget  is to use the device's camera.
 
-The widget must be connected to a [variable](../../ds/ds-basics/#variable)-type dataNode and will write information to its **base64Image**, **mimeType** and **imageData** actuators.
+The widget must be connected to a variable and will write information to its **base64Image**, **mimeType** and **imageData** actuators.
 
 Example :
 

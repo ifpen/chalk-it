@@ -4,6 +4,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
 import plotly.express as px
+import cmath
 
 a = 8
 b = 10
@@ -24,6 +25,14 @@ selectd_fruit = 'apple'
 selectd_count = 40
 
 hello_var = "toto titi"
+
+
+# Initializing real numbers
+x = 5
+y = 3
+
+# converting x and y into complex number
+z = complex(x, y)
 
 path =""
 

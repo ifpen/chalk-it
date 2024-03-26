@@ -19,7 +19,7 @@ Depending on the parametrization, new actuators may appear in "Data connection" 
 * 0 to 8 possible layer of [imageOverlay](#imageoverlay-layers) objects
 * 0 to 8 possible layer of [svgOverlay](#svgoverlay-layers) objects
 
-In addition to these pure display layers, selection controls can be activated by enabling the [drawingFeatures](#drawing-features) option. Regions of the map can thus be selected using the mouse. When this option is enabled, the **selectedGeoJson** actuator receives user selection as geoJson, and needs to be connected to a [variable](../../ds/ds-basics/#variable)-type dataNode. This features are based on the [Geoman](https://geoman.io/) plugin.
+In addition to these pure display layers, selection controls can be activated by enabling the [drawingFeatures](#drawing-features) option. Regions of the map can thus be selected using the mouse. When this option is enabled, the **selectedGeoJson** actuator receives user selection as geoJson, and needs to be connected to a variable. This features are based on the [Geoman](https://geoman.io/) plugin.
 
 Enabling the *drawingFeatures* option enables the **drawingFeaturesOptions** parameters set which manages selection options (point, line, polygone, rectangle).
 
@@ -36,7 +36,7 @@ geoJson1 to geoJson8 inputs expect a geoJson object. Basic examples are shown be
 
 Single point on a single layer of the map
 
-``` javascript
+``` python
 {
   "type": "FeatureCollection",
   "features": [
@@ -95,7 +95,7 @@ Examples :
 
 Single line on a single layer of the map
 
-``` javascript
+``` python
 {
   "type": "FeatureCollection",
   "features": [
@@ -142,7 +142,7 @@ Examples :
 
 A polygon on a single layer of the map
 
-``` javascript
+``` python
 {
   "type": "FeatureCollection",
   "features": [
@@ -198,7 +198,7 @@ See also : [Using GeoJSON with Leaflet](https://leafletjs.com/examples/geojson/)
 
 *heatMap1* to *heatMap8* inputs expect a JSON object like the following one :
 
-``` javascript
+``` python
 {
   "data" : [
     {
@@ -245,7 +245,7 @@ Several parameters control the display of the heatmap, in particular :
 
 *lineHeatMap1* to *lineHeatMap8* inputs expect a JSON object like the following one :
 
-``` javascript
+``` python
 {
   "data": [
     {
@@ -301,7 +301,7 @@ Example :
 
 *choropleth1* to *choropleth8* inputs expect a JSON object like the following one :
 
-``` javascript
+``` python
 {
   "data": [
     {
@@ -376,7 +376,7 @@ Example :
 
 *imageOverlay1* to *imageOverlay8* inputs expect a geoJson object like the following one :
 
-``` javascript
+``` python
 {
     "imageUrl" = "http://www.fondation-tuck.fr/upload/docs/image/jpeg/2015-01/logo-ifpen.jpg";
     "imageBounds" = [
@@ -399,7 +399,7 @@ Example :
 
 *svgOverlay1* to *svgOverlay8* inputs expect a JSON object like the following one :
 
-``` javascript
+``` python
 {
   "data": 
   [

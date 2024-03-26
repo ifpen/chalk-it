@@ -119,13 +119,13 @@ fig = plot_data(df)
 
 ![Add Plotly widget](png/plotly-py-widget.png)
 
-### Step3: connect dataNode to widget
+### Step3: connect variable to widget
 
 1. Click on the pencil icon on the top-right corner of the widget to display the widget menu. Select then _Connect widget_ as shown below:
 
-2. A panel will then be displayed on the right-side of the screen. From the first connection dropdown, select the variable datanode _fig_, then its _data_ field as it will provide the plot data needed for the widget. Repeat the process for the _layout_ actuator immediately below, but this time using the _layout_ field of the _fig_ variable. Finally, click _Save_ to validate the choices.
+2. A panel will then be displayed on the right-side of the screen. From the first connection dropdown, select the variable _fig_, then its _data_ field as it will provide the plot data needed for the widget. Repeat the process for the _layout_ actuator immediately below, but this time using the _layout_ field of the _fig_ variable. Finally, click _Save_ to validate the choices.
 
-![Connect widget to datanode](png/plotly-py-widget-actuator.png)
+![Connect widget to variable](png/plotly-py-widget-actuator.png)
 
 ### Step4: Preview the dashboard
 
@@ -206,7 +206,7 @@ Next, go back to the _Widgets_ main tab, open the _Basic Displays_ tabset, and t
 
 ![KPI value](png/kpi-value.png)
 
-Connect this widget to the **predict** datanode.
+Connect this widget to the **prediction** variable.
 
 Switch to \*View\* mode. Use the sliders to change Iris features and view prediction result accordingly:
 

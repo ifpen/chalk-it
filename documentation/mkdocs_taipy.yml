@@ -4,7 +4,7 @@ nav:
   - Welcome: index.md
   - Basics: taipy_basics.md 
   - Simple example: taipy_simple.md
-  - Quickstart: taipy_quickstart/quickstart.md
+  - Quick tutorial: taipy_quickstart/quickstart.md
   - Widgets:
       - Introduction: wdg/wdg.md
       - Common concepts: wdg/wdg-common-concept.md
