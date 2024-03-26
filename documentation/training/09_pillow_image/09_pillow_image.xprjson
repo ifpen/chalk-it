@@ -1,0 +1,212 @@
+{
+	"meta": {
+		"version": "3.000.8844",
+		"fileFormatVersion": "0.3",
+		"date": "Mon Mar 18 2024 13:08:32 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "09_pillow_image",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1294.4,
+			"heightPx": 590.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "annotationImageConnectedA",
+				"component1": "flatUiHorizontalSliderA",
+				"component2": "annotationImageConnectedB",
+				"component3": "annotationLabelA"
+			}
+		},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiHorizontalSliderA": {
+			"layout": {
+				"top": "13.7333vh",
+				"left": "35.8639vw",
+				"height": "5.06667vh",
+				"width": "24.0183vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "flatUiHorizontalSliderA",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "greyscale_intensity",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"rangeActuator": false,
+				"min": 0,
+				"max": 1,
+				"step": 0.01,
+				"displayValue": true,
+				"validationOnFocusOut": true,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueBorderColor": "var(--widget-border-color)",
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "50%",
+				"valueWidthProportion": "30%",
+				"sliderRangeColor": "var(--widget-range-color)",
+				"sliderSegmentColor": "var(--widget-segment-color)",
+				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
+				"valueColor": "var(--widget-color)"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"annotationImageConnectedA": {
+			"layout": {
+				"top": "23.4667vh",
+				"left": "8.90052vw",
+				"height": "38vh",
+				"width": "23.4293vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "3"
+			},
+			"container": {
+				"instanceId": "annotationImageConnectedA",
+				"modelJsonId": "annotationImageConnected"
+			},
+			"modelParameters": {
+				"keepRatio": true,
+				"hideImageURL": true,
+				"enableActuator": true
+			},
+			"modelHiddenParams": {
+				"fileContentBase64": "",
+				"mimeType": ""
+			}
+		},
+		"annotationImageConnectedB": {
+			"layout": {
+				"top": "23.4667vh",
+				"left": "36.4136vw",
+				"height": "38vh",
+				"width": "23.4293vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "4"
+			},
+			"container": {
+				"instanceId": "annotationImageConnectedB",
+				"modelJsonId": "annotationImageConnected"
+			},
+			"modelParameters": {
+				"keepRatio": true,
+				"hideImageURL": true,
+				"enableActuator": true
+			},
+			"modelHiddenParams": {
+				"fileContentBase64": "",
+				"mimeType": ""
+			}
+		},
+		"annotationLabelA": {
+			"layout": {
+				"top": "13.7333vh",
+				"left": "9.22775vw",
+				"height": "5.06667vh",
+				"width": "11.9764vw",
+				"minHeight": "5px",
+				"minWidth": "5px",
+				"z-index": "5"
+			},
+			"container": {
+				"instanceId": "annotationLabelA",
+				"modelJsonId": "annotationLabel"
+			},
+			"modelParameters": {
+				"text": "Original image",
+				"enableActuator": false,
+				"fontsize": 0.5,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "var(--widget-label-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"textAlign": "left",
+				"displayBorder": false,
+				"borderColor": "var(--widget-border-color)",
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		}
+	},
+	"connections": {
+		"flatUiHorizontalSliderA": {
+			"value": {
+				"name": "value",
+				"dataNode": "greyscale_intensity",
+				"dataFields": []
+			}
+		},
+		"annotationImageConnectedA": {
+			"base64Image": {
+				"name": "base64Image",
+				"dataNode": "image",
+				"dataFields": []
+			}
+		},
+		"annotationImageConnectedB": {
+			"base64Image": {
+				"name": "base64Image",
+				"dataNode": "img_grey",
+				"dataFields": []
+			}
+		},
+		"annotationLabelA": {}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
