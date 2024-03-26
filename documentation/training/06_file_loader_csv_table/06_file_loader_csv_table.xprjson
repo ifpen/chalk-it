@@ -1,0 +1,174 @@
+{
+	"meta": {
+		"version": "3.000.8843",
+		"fileFormatVersion": "0.3",
+		"date": "Mon Mar 18 2024 11:56:19 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "06_file_loader_csv_table",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1294.4,
+			"heightPx": 590.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "flatUiFileInputButtonA",
+				"component1": "annotationLabelA",
+				"component2": "annotationHtmlA"
+			}
+		},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiFileInputButtonA": {
+			"layout": {
+				"top": "12.1333vh",
+				"left": "4.38482vw",
+				"height": "7.06667vh",
+				"width": "9.03141vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "flatUiFileInputButtonA",
+				"modelJsonId": "flatUiFileInputButton"
+			},
+			"modelParameters": {
+				"text": "Load csv file",
+				"numberOfTriggers": 1,
+				"fileInput": true,
+				"binaryFileInput": false,
+				"buttonFontSize": 0.3,
+				"displayIcon": false,
+				"fontAwesomeIcon": "",
+				"buttonFontFamily": "var(--widget-font-family)",
+				"buttonTextColor": "var(--widget-button-primary-text)",
+				"buttonDefaultColor": "var(--widget-button-primary-color)",
+				"buttonActiveColor": "var(--widget-button-active-color)",
+				"buttonHoverColor": "var(--widget-button-hover-color)"
+			},
+			"modelHiddenParams": {}
+		},
+		"annotationLabelA": {
+			"layout": {
+				"top": "4.53333vh",
+				"left": "4.31937vw",
+				"height": "5.33333vh",
+				"width": "30.8901vw",
+				"minHeight": "5px",
+				"minWidth": "5px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "annotationLabelA",
+				"modelJsonId": "annotationLabel"
+			},
+			"modelParameters": {
+				"text": "Load the very-simple.csv file or other csv",
+				"enableActuator": false,
+				"fontsize": 0.5,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "var(--widget-label-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"textAlign": "left",
+				"displayBorder": false,
+				"borderColor": "var(--widget-border-color)",
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		},
+		"annotationHtmlA": {
+			"layout": {
+				"top": "23.4133vh",
+				"left": "3.95288vw",
+				"height": "30vh",
+				"width": "29.9738vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "3"
+			},
+			"container": {
+				"instanceId": "annotationHtmlA",
+				"modelJsonId": "annotationHtml"
+			},
+			"modelParameters": {
+				"fontsize": 0.3,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "var(--widget-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {
+				"html": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiFileInputButtonA": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataNode": "load_csv",
+				"dataFields": []
+			},
+			"file_path": {
+				"name": "file_path",
+				"dataNode": "csv_file_path",
+				"dataFields": []
+			}
+		},
+		"annotationLabelA": {},
+		"annotationHtmlA": {
+			"html": {
+				"name": "html",
+				"dataNode": "tab_html",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
