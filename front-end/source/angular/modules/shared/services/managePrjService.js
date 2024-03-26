@@ -816,7 +816,6 @@ angular.module('modules').service('ManagePrjService', [
     function _openTaipyPageEndAction(fileName, xprjson) {
       $rootScope.loadingBarStart();
       datanodesManager.showLoadingIndicator(true);
-      $rootScope.updateFlagDirty(false);
       $rootScope.origin = 'openProject';
       xdash.openProjectManager(xprjson);
       taipyManager.processVariableData();
@@ -833,6 +832,7 @@ angular.module('modules').service('ManagePrjService', [
       });
       $rootScope.filtredList = [];
       $rootScope.filtredNodes = $rootScope.alldatanodes.length;
+      $rootScope.updateFlagDirty(false);
       $rootScope.loadingBarStop();
       datanodesManager.showLoadingIndicator(false);
     }
