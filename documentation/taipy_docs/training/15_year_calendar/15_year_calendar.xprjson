@@ -1,0 +1,146 @@
+{
+	"meta": {
+		"version": "3.000.8848",
+		"fileFormatVersion": "0.3",
+		"date": "Sat Mar 23 2024 23:31:20 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "15_year_calendar",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1294.4,
+			"heightPx": 590.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "calendarD3A",
+				"component1": "kpiCardA"
+			}
+		},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"calendarD3A": {
+			"layout": {
+				"top": "3.2vh",
+				"left": "1.70157vw",
+				"height": "72.2667vh",
+				"width": "46.8586vw",
+				"minHeight": "100px",
+				"minWidth": "100px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "calendarD3A",
+				"modelJsonId": "calendarD3"
+			},
+			"modelParameters": {
+				"AllYearsVisible": true,
+				"UndefinedValueColor": "#F6F6F6"
+			},
+			"modelHiddenParams": {
+				"CalendarValues": [],
+				"SelectedDate": ""
+			}
+		},
+		"kpiCardA": {
+			"layout": {
+				"top": "19.6vh",
+				"left": "55.0393vw",
+				"height": "26.9333vh",
+				"width": "20.2225vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "kpiCardA",
+				"modelJsonId": "kpiCard"
+			},
+			"modelParameters": {
+				"label": "selected_date",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valuePosition": "bottom",
+				"valueFontSize": 2,
+				"valueColor": "var(--widget-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"decimalDigits": 3,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"unitColor": "var(--widget-label-color)",
+				"borderShadow": false
+			},
+			"modelHiddenParams": {
+				"value": "--"
+			}
+		}
+	},
+	"connections": {
+		"calendarD3A": {
+			"CalendarValues": {
+				"name": "CalendarValues",
+				"dataNode": "calendar_values_object",
+				"dataFields": []
+			},
+			"SelectedDate": {
+				"name": "SelectedDate",
+				"dataNode": "selected_date",
+				"dataFields": []
+			}
+		},
+		"kpiCardA": {
+			"value": {
+				"name": "value",
+				"dataNode": "selected_date",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

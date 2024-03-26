@@ -1,0 +1,95 @@
+{
+	"meta": {
+		"version": "3.000.8841",
+		"fileFormatVersion": "0.3",
+		"date": "Sat Mar 16 2024 23:17:34 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "08_folium_map",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1294.4,
+			"heightPx": 590.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "foliumMapsA"
+			}
+		},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"foliumMapsA": {
+			"layout": {
+				"top": "10.1333vh",
+				"left": "2.08115vw",
+				"height": "44.1333vh",
+				"width": "39.1361vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "foliumMapsA",
+				"modelJsonId": "foliumMaps"
+			},
+			"modelParameters": {
+				"backgroundColor": "rgba(0, 0, 0, 0)"
+			},
+			"modelHiddenParams": {
+				"map": ""
+			}
+		}
+	},
+	"connections": {
+		"foliumMapsA": {
+			"_repr_html_": {
+				"name": "_repr_html_",
+				"dataNode": "m",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
