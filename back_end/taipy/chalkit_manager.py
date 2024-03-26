@@ -52,7 +52,7 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
                 notification_type="E",
                 message={
                     "action_name": action,
-                    "message": "Error while loading: invalid pyload data",
+                    "text": "Error while loading: invalid pyload data",
                 },
             )
             return
@@ -74,7 +74,7 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
                 notification_type="E",
                 message={
                     "action_name": action,
-                    "message": "Error while loading: invalid file path",
+                    "text": "Error while loading: invalid file path",
                 },
             )
             return
@@ -85,7 +85,7 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
             notification_type="I",
             message={
                 "action_name": action,
-                "message": f"The file {xprjson_file_name} was successfully loaded",
+                "text": f"The file {xprjson_file_name} was successfully loaded",
                 "is_new_file": is_new_file,
             },
         )
@@ -95,7 +95,7 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
             notification_type="E",
             message={
                 "action_name": action,
-                "message": f"Error while loading: {e}",
+                "text": f"Error while loading: {e}",
             },
         )
 
@@ -123,7 +123,7 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
                 notification_type="E",
                 message={
                     "action_name": action,
-                    "message": "Error while saving: invalid pyload data",
+                    "text": "Error while saving: invalid pyload data",
                 },
             )
             return
@@ -142,7 +142,7 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
                 notification_type="E",
                 message={
                     "action_name": action,
-                    "message": "Error while saving: invalid file path",
+                    "text": "Error while saving: invalid file path",
                 },
             )
             return
@@ -154,7 +154,7 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
             notification_type="I",
             message={
                 "action_name": action,
-                "message": "The project was successfully saved",
+                "text": "The project was successfully saved",
             },
         )
     except OSError as e:
@@ -163,7 +163,7 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
             notification_type="E",
             message={
                 "action_name": action,
-                "message": f"Error while saving: {e}",
+                "text": f"Error while saving: {e}",
             },
         )
 
@@ -193,6 +193,6 @@ def chlkt_get_file_list_(state: object, action_name: str) -> None:
             notification_type="E",
             message={
                 "action_name": action,
-                "message": f"Error while getting file list: {e}",
+                "text": f"Error while getting file list: {e}",
             },
         )
