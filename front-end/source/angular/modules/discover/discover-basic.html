@@ -4,20 +4,20 @@
 </div>
 
 <div class="discover__layout--content__grid discover__layout--content__grid--basic">
-  <div class="discover__layout--content__grid--card item-a" ng-class="{'disabled': !enableLocalServer}">
+  <div class="discover__layout--content__grid--card item-a" ng-class="{'disabled': !enableLocalServer && !taipyLink}">
     <div class="card_content">
       <div id="discStep1" class="card__state" ng-class="{'validate':discoverSteps[0]}">
         <span ng-if="!discoverSteps[0]">1</span>
         <i ng-if="discoverSteps[0]" class="basic icn-check"></i>
       </div>
       <h3>Start with a guided tour</h3>
-      <a class="btn btn-rounded btn-rounded-light" ng-class="{'a--disabled': !enableLocalServer}">
+      <a class="btn btn-rounded btn-rounded-light" ng-class="{'a--disabled': !enableLocalServer && !taipyLink}">
         <i class="basic icn-eye"></i>Play
       </a>
     </div>
     <a
       class="a--full"
-      ng-class="{'a--disabled ': !enableLocalServer}"
+      ng-class="{'a--disabled ': !enableLocalServer && !taipyLink}"
       ng-click="startGuidedTour(); saveConfigDiscover(0)"
     ></a>
   </div>
