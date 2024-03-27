@@ -115,6 +115,21 @@
               headers[param] = jbody.headersFromDataNodeWS[param];
             }
           }
+          if (Array.isArray(jbody)) {
+            for (let i = 0; i < jbody.length; i++) {
+              //for compatibility
+              if (!_.isUndefined(jbody[i].headersFromDatasourceWS)) {
+                jbody[i].headersFromDataNodeWS = jbody[i].headersFromDatasourceWS;
+                delete jbody[i].headersFromDatasourceWS;
+              }
+              //
+              if (!_.isUndefined(jbody[i].headersFromDataNodeWS)) {
+                for (var param in jbody[i].headersFromDataNodeWS) {
+                  headers[param] = jbody[i].headersFromDataNodeWS[param];
+                }
+              }
+            }
+          }
         }
         //
 
@@ -124,6 +139,18 @@
           if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
             if (!_.isUndefined(tpbody.headersFromDataNodeWS)) {
               delete tpbody.headersFromDataNodeWS;
+            }
+            if (Array.isArray(tpbody)) {
+              for (let i = 0; i < tpbody.length; i++) {
+                //for compatibility
+                if (!_.isUndefined(tpbody[i].headersFromDatasourceWS)) {
+                  delete tpbody[i].headersFromDatasourceWS;
+                }
+                //
+                if (!_.isUndefined(tpbody[i].headersFromDataNodeWS)) {
+                  delete tpbody[i].headersFromDataNodeWS;
+                }
+              }
             }
           }
           if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
@@ -148,6 +175,18 @@
             if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
               if (!_.isUndefined(tpbody.headersFromDataNodeWS)) {
                 delete tpbody.headersFromDataNodeWS;
+              }
+              if (Array.isArray(tpbody)) {
+                for (let i = 0; i < tpbody.length; i++) {
+                  //for compatibility
+                  if (!_.isUndefined(tpbody[i].headersFromDatasourceWS)) {
+                    delete tpbody[i].headersFromDatasourceWS;
+                  }
+                  //
+                  if (!_.isUndefined(tpbody[i].headersFromDataNodeWS)) {
+                    delete tpbody[i].headersFromDataNodeWS;
+                  }
+                }
               }
             }
             if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
@@ -270,6 +309,21 @@
                 if (!_.isUndefined(jbody.headersFromDataNodeWS)) {
                   for (var param in jbody.headersFromDataNodeWS) {
                     xhr.setRequestHeader(param, jbody.headersFromDataNodeWS[param]);
+                  }
+                }
+                if (Array.isArray(jbody)) {
+                  for (let i = 0; i < jbody.length; i++) {
+                    //for compatibility
+                    if (!_.isUndefined(jbody[i].headersFromDatasourceWS)) {
+                      jbody[i].headersFromDataNodeWS = jbody[i].headersFromDatasourceWS;
+                      delete jbody[i].headersFromDatasourceWS;
+                    }
+                    //
+                    if (!_.isUndefined(jbody[i].headersFromDataNodeWS)) {
+                      for (var param in jbody[i].headersFromDataNodeWS) {
+                        xhr.setRequestHeader(param, jbody[i].headersFromDataNodeWS[param]);
+                      }
+                    }
                   }
                 }
               }

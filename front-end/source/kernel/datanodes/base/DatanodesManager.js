@@ -448,7 +448,7 @@ var datanodesManager = (function () {
 
       var matches = document.querySelectorAll('.docsLink');
       matches.forEach(function (item) {
-        item.href = xDashConfig.urlDoc + 'index.html';
+        item.href = xDashConfig.urlDoc;
       });
       urlQueryEntry.process(isHtmlLoad);
     },
