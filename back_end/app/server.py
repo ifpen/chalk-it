@@ -55,21 +55,23 @@ class AppConfig:
 
     def _setup_paths(self) -> None:
         self.project_dir = Path.cwd()
+        self.base_dir = Path(__file__).parent.resolve()
         if self.DEBUG:
             # Development mode paths
             self.templates_dir = (
-                self.project_dir / "documentation" / "Templates" / "Projects"
-            )
+                self.base_dir / ".." / ".." / "documentation" / "Templates" / "Projects"
+            ).resolve()
             self.images_dir = (
-                self.project_dir / "documentation" / "Templates" / "Images"
-            )
-            self.static_folder = self.project_dir / "front-end"
+                self.base_dir / ".." / ".." / "documentation" / "Templates" / "Images"
+            ).resolve()
+            self.static_folder = (self.base_dir / ".." / ".." / "front-end").resolve()
         else:
             # Production mode paths
-            self.base_dir = Path(__file__).parent.resolve()
-            self.templates_dir = self.base_dir / ".." / "Templates/Projects"
-            self.images_dir = self.base_dir / ".." / "Templates/Images"
-            self.static_folder = ".."
+            self.templates_dir = (
+                self.base_dir / ".." / "Templates" / "Projects"
+            ).resolve()
+            self.images_dir = (self.base_dir / ".." / "Templates" / "Images").resolve()
+            self.static_folder = (self.base_dir / "..").resolve()
 
 
 class RootManager:
@@ -82,6 +84,9 @@ class RootManager:
         # Initialize and register blueprints
         self.file_manager = FileManager(config)
         self.app.register_blueprint(self.file_manager.blueprint)
+
+        self.doc_manager = DocManager(config)
+        self.app.register_blueprint(self.doc_manager.blueprint)
 
         self.settings_manager = SettingsManager(config)
         self.app.register_blueprint(self.settings_manager.blueprint)
@@ -147,7 +152,9 @@ class RootManager:
 class SettingsManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
-        self.blueprint = Blueprint("settings", __name__)
+        self.blueprint = Blueprint(
+            "settings", __name__, static_folder=config.static_folder
+        )
         self.blueprint.route("/SaveSettings", methods=["POST"])(
             RootManager.handle_errors(self.save_settings)
         )
@@ -222,7 +229,9 @@ class SettingsManager:
 class ProjectManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
-        self.blueprint = Blueprint("project", __name__)
+        self.blueprint = Blueprint(
+            "project", __name__, static_folder=config.static_folder
+        )
         self.blueprint.route("/SaveProject", methods=["POST"])(
             RootManager.handle_errors(self.save_project)
         )
@@ -315,7 +324,7 @@ class ProjectManager:
 class FileManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
-        self.blueprint = Blueprint("file", __name__)
+        self.blueprint = Blueprint("file", __name__, static_folder=config.static_folder)
         self.blueprint.route("/GetFiles", methods=["POST"])(
             RootManager.handle_errors(self.get_files)
         )
@@ -328,14 +337,14 @@ class FileManager:
             view_func=RootManager.handle_errors(self.static_files),
             methods=["GET"],
             endpoint="static_file_with_path",
-        )  # Unique endpoint name
+        )
         self.blueprint.add_url_rule(
             "/",
             view_func=RootManager.handle_errors(self.static_files),
             methods=["GET"],
-            defaults={"path": ""},
+            defaults={"path": "index.html"},
             endpoint="static_file_root",
-        )  # Another unique endpoint name
+        )
 
     def get_files(self) -> Response:
         relative_path_dir = ""
@@ -376,13 +385,20 @@ class FileManager:
         """
         Handles requests for static files.
         """
-        if path and not path.endswith("/"):
-            return send_from_directory(".", path)
+        static_file_directory = Path(self.blueprint.static_folder)
+        full_path = (static_file_directory / path).resolve()
+
+        # Safety check: Ensure the resolved path is within the static directory
+        if not str(full_path).startswith(str(static_file_directory)):
+            return "Invalid path", 404
+
+        if full_path.is_file():
+            return send_from_directory(static_file_directory, path)
 
         if self.config.xprjson is not None:
             return self.dashboard(self.config.xprjson)
 
-        return redirect(url_for("static", filename="index.html"))
+        return "Invalid path", 404
 
     def dashboard(self, xprjson: str) -> str:
         # Load configuration from json file
@@ -420,7 +436,9 @@ class FileManager:
 class TemplateManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
-        self.blueprint = Blueprint("template", __name__)
+        self.blueprint = Blueprint(
+            "template", __name__, static_folder=config.static_folder
+        )
         self.blueprint.route("/GetImages", methods=["GET"])(
             RootManager.handle_errors(self.get_template_image)
         )
