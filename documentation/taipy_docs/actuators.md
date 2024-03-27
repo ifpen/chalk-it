@@ -5,6 +5,7 @@ Actuators are connection (binding) points between widgets and Python variables.
 Widgets expect that the Python variables to connect, at their actuators level, have a compatible type.
 
 Actuators may have the following causalities:
+
 - Read: read and display the value of the connected Python variable
 - Write: write to the connected Python variable
 - File: handle file loading (from the dashboard) for the Python code that will use it
