@@ -177,13 +177,6 @@ angular.module('modules.sidebar').controller('SidebarController', [
       xdash.openFile('project', 'local');
     };
 
-    /*---------- Open Chalk'it documentation ----------------*/
-    $scope.openDoc = function () {
-      const docURL = xDashConfig.urlDoc;
-      const tab = window.open(docURL, '_blank');
-      tab.focus();
-    };
-
     /*---------- start Taipy project ----------------*/
     $scope.startTaipyProject = function () {
       ManagePrjService.clearForNewProject();
