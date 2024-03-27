@@ -2,11 +2,11 @@
 
 This category includes widgets related to location, date and time.
 
-## Leaflet maps
+## Leaflet JSON maps
 
-**Leaflet maps** widget has rich and versatile features for displaying various information on maps. It also has selection and interaction features. It is based on [Leaflet](https://leafletjs.com/) library and its various plugins.
+**Leaflet JSON maps** widget has rich and versatile features for displaying various information on maps. It also has selection and interaction features. It is based on [Leaflet](https://leafletjs.com/) library and its various plugins.
 
-When a new **Leaflet maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 5 types of display layers, according to the value of the associated parameter *numberOfLayers*. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
+When a new **Leaflet JSON maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 5 types of display layers, according to the value of the associated parameter *numberOfLayers*. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
 
 ![leaflet-maps-graphical-properties](maps/leaflet-maps-graphical-properties.png)
 
@@ -37,7 +37,7 @@ geoJson1 to geoJson8 inputs expect a geoJson object. Basic examples are shown be
 Single point on a single layer of the map
 
 ``` python
-{
+point = {
   "type": "FeatureCollection",
   "features": [
     {
@@ -61,7 +61,7 @@ Single point on a single layer of the map
   ],
   "properties": {
     "description": "Arc de triomphe",
-    "disableAutoscale": false
+    "disableAutoscale": False
   }
 }
 ```
@@ -73,7 +73,7 @@ which will be displayed as :
 Properties field of each feature allows to configure it. It comprises the following items :
 
 - **html** : allows to write html call to be rendered inside the popup.
-- **awesomeMarker** : JSON configuration object for the [Leaflet.awesome-markers](https://github.com/lvoogdt/Leaflet.awesome-markers) library, allowing colorful iconic & retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. **Only Font-Awesome icons** are supported with xDash.
+- **awesomeMarker** : JSON configuration object for the [Leaflet.awesome-markers](https://github.com/lvoogdt/Leaflet.awesome-markers) library, allowing colorful iconic & retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. **Only Font-Awesome icons** are supported with Chalk'it.
 
   | Property        | Description            | Default Value | Possible  values                                     |
   | --------------- | ---------------------- | ------------- | ---------------------------------------------------- |
