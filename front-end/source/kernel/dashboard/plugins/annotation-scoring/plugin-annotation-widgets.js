@@ -64,6 +64,7 @@ modelsParameters.annotationLabel = {
   textItalic: false,
   displayBorder: false,
   borderColor: 'var(--widget-border-color)',
+  borderWidth: '2px',
   centerVertically: true,
 };
 modelsParameters.annotationImage = {
