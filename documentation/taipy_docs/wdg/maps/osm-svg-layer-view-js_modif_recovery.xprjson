@@ -2,10 +2,10 @@
 	"meta": {
 		"version": "3.000.8848",
 		"fileFormatVersion": "0.3",
-		"date": "Thu Mar 28 2024 17:15:48 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "osm-heatmap-view-recovery",
-		"description": "Heat map display on map with display configuration parameters",
-		"groupName": "Neutral",
+		"date": "Thu Mar 28 2024 17:07:05 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "osm-svg-layer-view-js-recovery",
+		"description": "SVG overlay example displaying shapes on maps with configuration parameters",
+		"groupName": "JavaScript",
 		"tags": [
 			{
 				"text": "Widgets"
@@ -17,7 +17,7 @@
 				"text": "Geo&Time"
 			},
 			{
-				"text": "Heatmap"
+				"text": "SVG-overlay"
 			}
 		],
 		"schedulerLogOff": true
@@ -42,9 +42,9 @@
 		"media": "large",
 		"colDims": {
 			"widthPx": 1294.4,
-			"heightPx": 593.4,
+			"heightPx": 591.4,
 			"widthVw": 84.71204188481677,
-			"heightVh": 79.12,
+			"heightVh": 78.85333333333334,
 			"rowHeightPercent": 100
 		}
 	},
@@ -59,8 +59,9 @@
 		"droppers": {
 			"dpr1": {
 				"component0": "flatUiHorizontalSliderp",
-				"component1": "flatUiHorizontalSlider5",
-				"component2": "openStreetMapsA"
+				"component1": "flatUiCheckboxv",
+				"component2": "flatUiSelectI",
+				"component3": "openStreetMapsA"
 			}
 		},
 		"backgroundColor": "#ffffff",
@@ -69,25 +70,25 @@
 	"dashboard": {
 		"flatUiHorizontalSliderp": {
 			"layout": {
-				"top": "63.0667vh",
-				"left": "0.850785vw",
+				"top": "61.7333vh",
+				"left": "17.0157vw",
 				"height": "6.8vh",
-				"width": "28.9267vw",
+				"width": "33.4424vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
-				"z-index": "2"
+				"z-index": "4"
 			},
 			"container": {
 				"instanceId": "flatUiHorizontalSliderp",
 				"modelJsonId": "flatUiHorizontalSlider"
 			},
 			"modelParameters": {
-				"label": "radius",
+				"label": "length",
 				"inheritLabelFromData": true,
 				"displayLabel": true,
 				"labelFontSize": 0.5,
 				"min": 0,
-				"max": 20,
+				"max": 10,
 				"step": 0.1,
 				"displayValue": true,
 				"valueFontSize": 0.5,
@@ -109,57 +110,80 @@
 				"value": 0
 			}
 		},
-		"flatUiHorizontalSlider5": {
+		"flatUiCheckboxv": {
 			"layout": {
-				"top": "63.0667vh",
-				"left": "32.3953vw",
-				"height": "6.8vh",
-				"width": "28.9267vw",
+				"top": "61.6vh",
+				"left": "2.09424vw",
+				"height": "7.06667vh",
+				"width": "13.678vw",
 				"minHeight": "24px",
-				"minWidth": "200px",
-				"z-index": "3"
+				"minWidth": "32px",
+				"z-index": "5"
 			},
 			"container": {
-				"instanceId": "flatUiHorizontalSlider5",
-				"modelJsonId": "flatUiHorizontalSlider"
+				"instanceId": "flatUiCheckboxv",
+				"modelJsonId": "flatUiCheckbox"
 			},
 			"modelParameters": {
-				"label": "opacity",
+				"label": "disableAutoscale",
 				"inheritLabelFromData": true,
 				"displayLabel": true,
 				"labelFontSize": 0.5,
-				"min": 0,
-				"max": 1,
-				"step": 0.01,
-				"displayValue": true,
-				"valueFontSize": 0.5,
-				"labelWidthProportion": "20%",
-				"sliderWidthProportion": "60%",
-				"valueWidthProportion": "20%",
+				"checkboxSize": 1,
 				"labelColor": "#2154ab",
 				"labelFontFamily": "Helvetica Neue",
-				"valueColor": "#34495e",
-				"valueFontFamily": "Helvetica Neue",
-				"sliderSegmentColor": "#ebedef",
-				"sliderRangeColor": "#447bdc",
-				"sliderHandleDefaultColor": "#2154ab",
-				"sliderHandleHoverColor": "#a9c3ef",
-				"sliderHandleActiveColor": "#a9c3ef",
-				"valueBorderColor": "#447bdc"
+				"checkedColor": "var(--widget-input-checked-color)",
+				"uncheckedColor": "var(--widget-input-unchecked-color)"
 			},
 			"modelHiddenParams": {
-				"value": 0
+				"value": false
+			}
+		},
+		"flatUiSelectI": {
+			"layout": {
+				"top": "61.6vh",
+				"left": "51.8325vw",
+				"height": "7.06667vh",
+				"width": "22.9058vw",
+				"minHeight": "27px",
+				"minWidth": "40px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "flatUiSelectI",
+				"modelJsonId": "flatUiSelect"
+			},
+			"modelParameters": {
+				"label": "selected_marker",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"selectWidthProportion": "70%",
+				"isNumber": false,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"selectValueFontSize": 0.5,
+				"isKeyValuePairs": true,
+				"selectValueFontFamily": "Helvetica Neue",
+				"selectedValueColor": "var(--widget-select-option-highlighted-text)",
+				"selectedItemDefaultColor": "var(--widget-select-option-highlighted-color)",
+				"selectedItemHoverColor": "var(--widget-select-option-highlighted-color)"
+			},
+			"modelHiddenParams": {
+				"keys": [],
+				"values": [],
+				"selectedValue": ""
 			}
 		},
 		"openStreetMapsA": {
 			"layout": {
-				"top": "1.6vh",
-				"left": "0.850785vw",
-				"height": "57.4667vh",
-				"width": "82.5262vw",
+				"top": "1.33333vh",
+				"left": "1.63613vw",
+				"height": "57.2vh",
+				"width": "73.5602vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
-				"z-index": "4"
+				"z-index": "6"
 			},
 			"container": {
 				"instanceId": "openStreetMapsA",
@@ -173,7 +197,7 @@
 					"numberOfLayers": 0
 				},
 				"heatMap": {
-					"numberOfLayers": 1,
+					"numberOfLayers": 0,
 					"sampledDisplay": false,
 					"densityHeatMap": false
 				},
@@ -184,7 +208,7 @@
 					"numberOfLayers": 0
 				},
 				"svgOverlay": {
-					"numberOfLayers": 0
+					"numberOfLayers": 1
 				},
 				"defaultCenter": {
 					"latitude": 48.872063,
@@ -192,7 +216,7 @@
 					"zoom": 16
 				},
 				"offlineSupport": false,
-				"tileServer": "HereHybridDay",
+				"tileServer": "MapboxStreets",
 				"drawingFeatures": false,
 				"drawingFeaturesOptions": {
 					"point": true,
@@ -256,27 +280,38 @@
 				"name": "value",
 				"dataFields": [
 					"config",
-					"radius"
+					"length"
 				],
-				"dataNode": "CH4_heatmap",
-				"dataNodeIndex": 2
+				"dataNode": "wind_svg_layer",
+				"dataNodeIndex": 4
 			}
 		},
-		"flatUiHorizontalSlider5": {
+		"flatUiCheckboxv": {
 			"value": {
 				"name": "value",
+				"dataNode": "wind_svg_layer",
 				"dataFields": [
 					"config",
-					"opacity"
-				],
-				"dataNode": "CH4_heatmap",
-				"dataNodeIndex": 2
+					"disableAutoscale"
+				]
+			}
+		},
+		"flatUiSelectI": {
+			"keyValuePairs": {
+				"name": "keyValuePairs",
+				"dataNode": "markers",
+				"dataFields": []
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataNode": "selected_marker",
+				"dataFields": []
 			}
 		},
 		"openStreetMapsA": {
-			"heatMapData1": {
-				"name": "heatMapData1",
-				"dataNode": "CH4_heatmap",
+			"svgOverlay1": {
+				"name": "svgOverlay1",
+				"dataNode": "wind_svg_layer",
 				"dataFields": []
 			}
 		}
