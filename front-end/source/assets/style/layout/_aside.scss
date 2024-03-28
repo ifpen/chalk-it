@@ -278,17 +278,15 @@ aside {
     border-radius: br('8');
     text-align: center;
     padding: 0.5em;
-    background-color: var(--light-color);
-    color: var(--light-color-text);
-
-    i {
-      font-size: 1.8em;
-    }
+    color: var(--text-color);
 
     &:hover {
       box-shadow: var(--default-box-shadow);
-      background-color: var(--light-color-darker);
-      color: var(--primary-color);
+      background-color: var(--surface-b);
+    }
+
+    i {
+      font-size: 1.8em;
     }
 
     label {
