@@ -4,10 +4,7 @@ Chalk'it offers a set of APIs through **_chalkit_** that serve several primary p
 
 - Scheduler APIs: Facilitate the scheduling process by enabling the modification of dataNode variables and launching the scheduler.
 - Dashboard APIs: Support the developpement of multi-dashboard applications and the display of widgets.
-<<<<<<< HEAD
 - Datanode IOs
-=======
->>>>>>> main
 
 ## JavaScript and Pyodide
 
@@ -192,7 +189,6 @@ chalkit.enableWidget(widgetName)
 ```
 
 Enables the access of the widget (interactive).
-<<<<<<< HEAD
 
 ## Python
 
@@ -206,5 +202,3 @@ The Python API mostly deals with input and outputs, but should ultimately offer 
       show_signature_annotations: true
       show_object_full_path: false
       show_root_toc_entry: false
-=======
->>>>>>> main

@@ -107,7 +107,7 @@ Visualize the dataset in 4 steps:
 
 - To add a _Plotly generic_ widget to the dashboard editor, click on the corresponding icon or just perform a drag and drop.
 
-  ![Add Plotly widget](png/plotly-widget.png)
+  ![Add Plotly widget](png/plotly-py-widget.png)
 
 #### Step3: connect dataNode to widget
 
@@ -116,7 +116,7 @@ Visualize the dataset in 4 steps:
 
 - A panel will then be displayed on the right-side of the screen. From the first connection dropdown, select the datanode _plot_, then its _data_ field as it will provide the plot data needed for the widget. Repeat the process for the _layout_ actuator immediately below, but this time using the _layout_ field of the _plot_ datanode. Finally, click _Save_ to validate the choices.
 
-  ![Connect widget to datanode](png/plotly-widget-actuator.png)
+  ![Connect widget to datanode](png/plotly-py-widget-actuator.png)
 
 #### Step4: Preview the dashboard
 
