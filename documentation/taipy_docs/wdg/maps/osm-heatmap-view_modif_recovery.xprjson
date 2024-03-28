@@ -1,0 +1,282 @@
+{
+	"meta": {
+		"version": "3.000.8848",
+		"fileFormatVersion": "0.3",
+		"date": "Thu Mar 28 2024 13:22:52 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "osm-heatmap-view-recovery",
+		"description": "Heat map display on map with display configuration parameters",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Maps"
+			},
+			{
+				"text": "Geo&Time"
+			},
+			{
+				"text": "Heatmap"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1367,
+		"heightPx": 590,
+		"scrollWidthPx": 1367,
+		"scrollHeightPx": 590,
+		"widthVw": 89.46335078534031,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 89.46335078534031,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1367.4,
+			"heightPx": 590.4,
+			"widthVw": 89.48952879581152,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "openStreetMapsA",
+				"component1": "flatUiHorizontalSliderp",
+				"component2": "flatUiHorizontalSlider5"
+			}
+		},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"openStreetMapsA": {
+			"layout": {
+				"top": "1.73333vh",
+				"left": "0.850785vw",
+				"height": "58.4vh",
+				"width": "81.8063vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "openStreetMapsA",
+				"modelJsonId": "openStreetMaps"
+			},
+			"modelParameters": {
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"geoJson": {
+					"numberOfLayers": 0
+				},
+				"heatMap": {
+					"numberOfLayers": 1,
+					"sampledDisplay": false,
+					"densityHeatMap": false
+				},
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"offlineSupport": false,
+				"tileServer": "HereHybridDay",
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"choropleth": {
+					"numberOfLayers": 0
+				}
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
+		},
+		"flatUiHorizontalSliderp": {
+			"layout": {
+				"top": "63.0667vh",
+				"left": "0.850785vw",
+				"height": "6.76187vh",
+				"width": "28.9374vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "flatUiHorizontalSliderp",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "radius",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 20,
+				"step": 0.1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSlider5": {
+			"layout": {
+				"top": "63.0667vh",
+				"left": "32.3953vw",
+				"height": "6.76187vh",
+				"width": "28.9374vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "3"
+			},
+			"container": {
+				"instanceId": "flatUiHorizontalSlider5",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "opacity",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 1,
+				"step": 0.01,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		}
+	},
+	"connections": {
+		"openStreetMapsA": {
+			"heatMapData1": {
+				"name": "heatMapData1",
+				"dataFields": [],
+				"dataNode": "None",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiHorizontalSliderp": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"radius"
+				],
+				"dataNode": "CH4_heatmap_config",
+				"dataNodeIndex": 2
+			}
+		},
+		"flatUiHorizontalSlider5": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"opacity"
+				],
+				"dataNode": "CH4_heatmap_config",
+				"dataNodeIndex": 2
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

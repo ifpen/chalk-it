@@ -1,0 +1,105 @@
+{
+	"meta": {
+		"version": "3.000.8848",
+		"fileFormatVersion": "0.3",
+		"date": "Thu Mar 28 2024 12:31:14 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "folium-point-recovery",
+		"description": "Simple demo with geopandas and folium",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "Python"
+			},
+			{
+				"text": "maps"
+			},
+			{
+				"text": "folium"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1367,
+		"heightPx": 590,
+		"scrollWidthPx": 1367,
+		"scrollHeightPx": 590,
+		"widthVw": 89.46335078534031,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 89.46335078534031,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1367.4,
+			"heightPx": 590.4,
+			"widthVw": 89.48952879581152,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "foliumMapsE"
+			}
+		},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"foliumMapsE": {
+			"layout": {
+				"top": "2vh",
+				"left": "0.65445vw",
+				"height": "62.9333vh",
+				"width": "66.5576vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "foliumMapsE",
+				"modelJsonId": "foliumMaps"
+			},
+			"modelParameters": {
+				"backgroundColor": "rgba(0, 0, 0, 0)"
+			},
+			"modelHiddenParams": {
+				"map": ""
+			}
+		}
+	},
+	"connections": {
+		"foliumMapsE": {
+			"_repr_html_": {
+				"name": "_repr_html_",
+				"dataNode": "eiffel_tour",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
