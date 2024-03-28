@@ -1,86 +1,84 @@
-<div ng-if="!xDashLiteVersion">
-  <div class="main__layout--content--top">
-    <!-- title -->
-    <h1>Discover Chalk'it</h1>
+<div class="main__layout--content--top">
+  <!-- title -->
+  <h1>Discover Chalk'it</h1>
+</div>
+
+<div class="discover__layout--content__grid discover__layout--content__grid--basic">
+  <div class="discover__layout--content__grid--card item-a" ng-class="{'disabled': !enableLocalServer && !taipyLink}">
+    <div class="card_content">
+      <div id="discStep1" class="card__state" ng-class="{'validate':discoverSteps[0]}">
+        <span ng-if="!discoverSteps[0]">1</span>
+        <i ng-if="discoverSteps[0]" class="basic icn-check"></i>
+      </div>
+      <h3>Start with a guided tour</h3>
+      <a class="btn btn-rounded btn-rounded-light" ng-class="{'a--disabled': !enableLocalServer && !taipyLink}">
+        <i class="basic icn-eye"></i>Play
+      </a>
+    </div>
+    <a
+      class="a--full"
+      ng-class="{'a--disabled ': !enableLocalServer && !taipyLink}"
+      ng-click="startGuidedTour(); saveConfigDiscover(0)"
+    ></a>
   </div>
 
-  <div class="discover__layout--content__grid discover__layout--content__grid--basic">
-    <div class="discover__layout--content__grid--card item-a" ng-class="{'disabled': !enableLocalServer}">
-      <div class="card_content">
-        <div id="discStep1" class="card__state" ng-class="{'validate':discoverSteps[0]}">
-          <span ng-if="!discoverSteps[0]">1</span>
-          <i ng-if="discoverSteps[0]" class="basic icn-check"></i>
-        </div>
-        <h3>Start with a guided tour</h3>
-        <a class="btn btn-rounded btn-rounded-light" ng-class="{'a--disabled': !enableLocalServer}">
-          <i class="basic icn-eye"></i>Play
-        </a>
+  <div class="discover__layout--content__grid--card item-b" ng-class="{'disabled': !enableLocalServer}">
+    <div class="card_content">
+      <div id="discStep2" class="card__state" ng-class="{'validate':discoverSteps[1]}">
+        <span ng-if="!discoverSteps[1]">2</span>
+        <i ng-if="discoverSteps[1]" class="basic icn-check"></i>
       </div>
-      <a
-        class="a--full"
-        ng-class="{'a--disabled ': !enableLocalServer}"
-        ng-click="startGuidedTour(); saveConfigDiscover(0)"
-      ></a>
+      <h3>Consult the gallery of demo projects</h3>
+      <a class="btn btn-rounded btn-rounded-light" ng-class="{'a--disabled': !enableLocalServer}">
+        <i class="basic icn-eye"></i>Discover
+      </a>
     </div>
-
-    <div class="discover__layout--content__grid--card item-b" ng-class="{'disabled': !enableLocalServer}">
-      <div class="card_content">
-        <div id="discStep2" class="card__state" ng-class="{'validate':discoverSteps[1]}">
-          <span ng-if="!discoverSteps[1]">2</span>
-          <i ng-if="discoverSteps[1]" class="basic icn-check"></i>
-        </div>
-        <h3>Consult the gallery of demo projects</h3>
-        <a class="btn btn-rounded btn-rounded-light" ng-class="{'a--disabled': !enableLocalServer}">
-          <i class="basic icn-eye"></i>Discover
-        </a>
-      </div>
-      <a
-        ui-sref="modules.cards.layout({action: 'templateGallery'})"
-        class="a--full"
-        ng-class="{'a--disabled ': !enableLocalServer}"
-        ng-click="toggleMenuOptionDisplay('gallery');saveConfigDiscover(1)"
-      ></a>
-    </div>
-
-    <div class="discover__layout--content__grid--card item-c">
-      <div class="card_content">
-        <div id="discStep3" class="card__state" ng-class="{'validate':discoverSteps[2]}">
-          <span ng-if="!discoverSteps[2]">3</span>
-          <i ng-if="discoverSteps[2]" class="basic icn-check"></i>
-        </div>
-        <h3>Start a training project</h3>
-        <a class="btn btn-rounded btn-rounded-light"> <i class="basic icn-eye"></i>Discover </a>
-      </div>
-      <a
-        ui-sref="modules.training.layout"
-        ng-click="toggleMenuOptionDisplay('training');saveConfigDiscover(2)"
-        class="a--full"
-      ></a>
-    </div>
-
-    <div class="discover__layout--content__grid--card item-d">
-      <div class="card_content">
-        <div id="discStep4" class="card__state" ng-class="{'validate':discoverSteps[3]}">
-          <span ng-if="!discoverSteps[3]">4</span>
-          <i ng-if="discoverSteps[3]" class="basic icn-check"></i>
-        </div>
-        <h3>Read the full documentation</h3>
-        <a title="Open the documentation in a new tab" class="btn btn-rounded btn-rounded-light">
-          <i class="basic icn-openfolder"></i>Open
-        </a>
-      </div>
-      <a class="docsLink a--full" target="_blank" ng-click="saveConfigDiscover(3); saveConfigDiscover(4)"></a>
-    </div>
+    <a
+      ui-sref="modules.cards.layout({action: 'templateGallery'})"
+      class="a--full"
+      ng-class="{'a--disabled ': !enableLocalServer}"
+      ng-click="toggleMenuOptionDisplay('gallery');saveConfigDiscover(1)"
+    ></a>
   </div>
 
-  <div class="discover__layout--content__btn-skip">
-    <button
-      class="btn btn-rounded btn-rounded-light"
-      ng-click="newProject();skipTutorial()"
-      ng-disabled="!enableLocalServer"
-    >
-      Skip the tutorial
-      <i class="basic icn-arrowright"></i>
-    </button>
+  <div class="discover__layout--content__grid--card item-c">
+    <div class="card_content">
+      <div id="discStep3" class="card__state" ng-class="{'validate':discoverSteps[2]}">
+        <span ng-if="!discoverSteps[2]">3</span>
+        <i ng-if="discoverSteps[2]" class="basic icn-check"></i>
+      </div>
+      <h3>Start a training project</h3>
+      <a class="btn btn-rounded btn-rounded-light"> <i class="basic icn-eye"></i>Discover </a>
+    </div>
+    <a
+      ui-sref="modules.training.layout"
+      ng-click="toggleMenuOptionDisplay('training');saveConfigDiscover(2)"
+      class="a--full"
+    ></a>
   </div>
+
+  <div class="discover__layout--content__grid--card item-d">
+    <div class="card_content">
+      <div id="discStep4" class="card__state" ng-class="{'validate':discoverSteps[3]}">
+        <span ng-if="!discoverSteps[3]">4</span>
+        <i ng-if="discoverSteps[3]" class="basic icn-check"></i>
+      </div>
+      <h3>Read the full documentation</h3>
+      <a title="Open the documentation in a new tab" class="btn btn-rounded btn-rounded-light">
+        <i class="basic icn-openfolder"></i>Open
+      </a>
+    </div>
+    <a class="docsLink a--full" target="_blank" ng-click="saveConfigDiscover(3); saveConfigDiscover(4)"></a>
+  </div>
+</div>
+
+<div ng-if="!xDashLiteVersion" class="discover__layout--content__btn-skip">
+  <button
+    class="btn btn-rounded btn-rounded-light"
+    ng-click="newProject();skipTutorial()"
+    ng-disabled="!enableLocalServer"
+  >
+    Skip the tutorial
+    <i class="basic icn-arrowright"></i>
+  </button>
 </div>

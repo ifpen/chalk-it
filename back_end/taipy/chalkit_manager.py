@@ -46,7 +46,7 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
     is_new_file: bool = False
 
     try:
-        if "xprjson_file_name" not in payload:
+        if not all(key in payload for key in ["xprjson_file_name", "is_template_file"]):
             notify(
                 state,
                 notification_type="E",
@@ -57,8 +57,19 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
             )
             return
 
+        is_template_file: bool = payload.get("is_template_file", None)
         xprjson_file_name: str = payload.get("xprjson_file_name", None)
-        xprjson_file_path: Path = BASE_PATH / xprjson_file_name
+        xprjson_file_path: Path = (
+            Path(__file__).parent
+            / ".."
+            / ".."
+            / "documentation"
+            / "Templates"
+            / "Projects"
+            / xprjson_file_name
+            if is_template_file
+            else BASE_PATH / xprjson_file_name
+        )
 
         if not xprjson_file_path.exists():
             # If the file does not exist, create it with the contents of 'xprjson_template'

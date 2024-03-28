@@ -154,18 +154,25 @@ class TaipyManager {
   }
 
   /**
-   * Triggers an event to load a file.
-   * This method emits an event to signal the application to read a file, facilitating
-   * the process of loading content dynamically based on the file name provided.
+   * Initiates the loading of a specified file within the application.
+   * This method triggers an event, signaling the application to read a file,
+   * which facilitates the dynamic loading of content based on the provided file name
    *
    * @method loadFile
    * @public
    * @param {string} fileName - Name of the file to be loaded.
+   * @param {boolean} [isTemplateFile=false] -  Specifies whether the file is a template. If true,
+   *                                            the file will be loaded from the template directory;
+   *                                            otherwise, it will be loaded from the current working directory (cwd).
+   *                                            Defaults to false.
    * @returns {void} This method does not return a value.
    */
-  loadFile(fileName) {
+  loadFile(fileName, isTemplateFile = false) {
     try {
-      this.app.trigger('chlkt_load_file_', 'first_action', { xprjson_file_name: fileName });
+      this.app.trigger('chlkt_load_file_', 'first_action', {
+        xprjson_file_name: fileName,
+        is_template_file: isTemplateFile,
+      });
     } catch (error) {
       this.#handleError('Error loading file', error);
     }
@@ -267,7 +274,7 @@ class TaipyManager {
     this.currentContext = app.getContext();
     this.xprjsonFileName = app.getPageMetadata()['xprjson_file_name'];
     if (this.#runMode == 'runtime') this.processVariableData();
-    if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+    if (_.isFunction(this.endAction)) {
       // To load the xprjsonFileName if it exists
       this.endAction();
     }
@@ -295,7 +302,7 @@ class TaipyManager {
 
       // loadFile
       if (encodedName.includes('chlkt_json_data_')) {
-        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+        if (_.isFunction(this.endAction)) {
           this.endAction(newValue); // newValue contains xprjson data
           this.endAction = undefined;
         }
@@ -303,7 +310,7 @@ class TaipyManager {
 
       // getFileList
       if (encodedName.includes('chlkt_file_list_')) {
-        if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+        if (_.isFunction(this.endAction)) {
           const fileList = JSON.parse(newValue);
           this.endAction(fileList);
           this.endAction = undefined;
@@ -347,7 +354,7 @@ class TaipyManager {
         break;
       case ACTIONS.SAVE_FILE:
         if (type == MESSAGE_TYPES.INFO) {
-          if (!_.isUndefined(this.endAction) && _.isFunction(this.endAction)) {
+          if (_.isFunction(this.endAction)) {
             this.endAction(); // Do not assign undefined value: used in Open function
           }
         } else if (type == MESSAGE_TYPES.ERROR) {
