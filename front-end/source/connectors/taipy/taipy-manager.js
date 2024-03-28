@@ -154,18 +154,25 @@ class TaipyManager {
   }
 
   /**
-   * Triggers an event to load a file.
-   * This method emits an event to signal the application to read a file, facilitating
-   * the process of loading content dynamically based on the file name provided.
+   * Initiates the loading of a specified file within the application.
+   * This method triggers an event, signaling the application to read a file,
+   * which facilitates the dynamic loading of content based on the provided file name
    *
    * @method loadFile
    * @public
    * @param {string} fileName - Name of the file to be loaded.
+   * @param {boolean} [isTemplateFile=false] -  Specifies whether the file is a template. If true,
+   *                                            the file will be loaded from the template directory;
+   *                                            otherwise, it will be loaded from the current working directory (cwd).
+   *                                            Defaults to false.
    * @returns {void} This method does not return a value.
    */
-  loadFile(fileName) {
+  loadFile(fileName, isTemplateFile = false) {
     try {
-      this.app.trigger('chlkt_load_file_', 'first_action', { xprjson_file_name: fileName });
+      this.app.trigger('chlkt_load_file_', 'first_action', {
+        xprjson_file_name: fileName,
+        is_template_file: isTemplateFile,
+      });
     } catch (error) {
       this.#handleError('Error loading file', error);
     }
