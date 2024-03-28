@@ -46,4 +46,4 @@ def on_change(state, var, val):
 def run_simul(state):
     print("running simulation", state.path)
 
-page = ChalkitPage("taipy_page.xprjson")
+page = ChalkitPage("taipy_page.xprjson", TAIPY_GUI_DESIGN_MODE=True)

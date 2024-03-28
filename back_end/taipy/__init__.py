@@ -9,23 +9,20 @@
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-
-from .resource_handler import PureHTMLResourceHandler
 from .chalkit_page import ChalkitPage
 from .chalkit_manager import (
     chlkt_json_data_,
     chlkt_file_list_,
     chlkt_load_file_,
     chlkt_save_file_,
-    chlkt_get_file_list_
+    chlkt_get_file_list_,
 )
 
-__all__=[
-	"chlkt_json_data_",
+__all__ = [
+    "chlkt_json_data_",
     "chlkt_file_list_",
     "chlkt_load_file_",
     "chlkt_save_file_",
     "chlkt_get_file_list_",
-    "PureHTMLResourceHandler",
-    "ChalkitPage"
+    "ChalkitPage",
 ]
