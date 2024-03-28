@@ -24,7 +24,7 @@ import re
 import os
 import json
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 
 class RenderApp:
@@ -115,6 +115,31 @@ class RenderApp:
             )
 
         return render_template_string(template_data_with_config)
+
+    @classmethod
+    def start_runtime(cls, root_dir: Path, xprjson_path: str) -> Union[Response, str]:
+        """
+        *** FOR TAIPY DESIGNER ***
+        Initializes and starts the application runtime for TAIPY Designer by serving
+        the dynamically generated dashboard HTML content.
+
+        - root_dir (Path): The root directory path where the index HTML file is located. This
+                        path is also set as the base directory for the application.
+        - xprjson_path (str): The filesystem path to the configuration JSON file, which is passed
+                            to the `dashboard` method to generate the dynamically configured
+                            dashboard HTML content.
+
+        Returns:
+        - Union[Response, str]: A Flask Response object that serves the generated dashboard HTML
+                                content. In case of any errors during file operations, a string
+                                describing the error might be returned.
+
+        Raises:
+        - See `dashboard` method for possible exceptions related to reading configuration and
+        template files.
+        """
+        cls.BASE_DIR = root_dir
+        return cls.dashboard(xprjson_path)
 
     def run(self, port: int = 8000) -> None:
         self.app.run(port=port)
