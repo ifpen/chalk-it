@@ -100,6 +100,7 @@ modelsParameters.flatUiValue = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
+  labelTextAlign: 'left',
   valueWidthProportion: '70%',
   validationButton: false,
   validationBtnDefaultColor: 'var(--widget-button-primary-color)',
@@ -126,6 +127,7 @@ modelsParameters.flatUiTextInput = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
+  labelTextAlign: 'left',
   valueWidthProportion: '70%',
   validationButton: false,
   validationBtnDefaultColor: 'var(--widget-button-primary-color)',
@@ -148,6 +150,7 @@ modelsParameters.flatUiNumericInput = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
+  labelTextAlign: 'left',
   valueWidthProportion: '70%',
   validationButton: false,
   validationBtnDefaultColor: 'var(--widget-button-primary-color)',
@@ -172,6 +175,7 @@ modelsParameters.flatUiValueDisplay = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
+  labelTextAlign: 'left',
   valueWidthProportion: '70%',
   decimalDigits: 3,
   valueFontSize: 0.5,
@@ -1303,6 +1307,8 @@ function flatUiWidgetsPluginClass() {
             this.labelFontSize() +
             this.labelColor() +
             this.labelFontFamily() +
+            ' text-align:' +
+            modelsParameters[idInstance].labelTextAlign +
             '">' +
             labelText +
             '</span>';
@@ -1316,6 +1322,9 @@ function flatUiWidgetsPluginClass() {
             +this.labelFontSize() +
             this.labelColor() +
             this.labelFontFamily() +
+            this.valueFontSize() +
+            ' text-align:' +
+            modelsParameters[idInstance].labelTextAlign +
             '">' +
             labelText +
             '</span>';
