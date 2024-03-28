@@ -827,6 +827,8 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.loadingBarStart();
       datanodesManager.showLoadingIndicator(true);
       $rootScope.origin = 'openProject';
+      $rootScope.toggleMenuOptionDisplay('none');
+      $state.go('modules', {});
       xdash.openProjectManager(xprjson);
       taipyManager.processVariableData();
       const projectName = fileName.replace('.xprjson', '');
