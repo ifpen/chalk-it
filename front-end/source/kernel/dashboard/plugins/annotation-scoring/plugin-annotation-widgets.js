@@ -59,6 +59,9 @@ modelsParameters.annotationLabel = {
   textColor: 'var(--widget-label-color)',
   valueFontFamily: 'var(--widget-font-family)',
   textAlign: 'left',
+  textBold: false,
+  textUnderline: false,
+  textItalic: false,
   displayBorder: false,
   borderColor: 'var(--widget-border-color)',
   centerVertically: true,
@@ -257,6 +260,13 @@ function annotationWidgetsPluginClass() {
       //AEF: modif to allow multilines
       //AEF: adapt height depending if text is in simple line or multilines
       //MBG : fix for Mozilla Firefox. No distinction between single line and multline. To check.
+      if (modelsParameters[idInstance].textBold) textBold = 'font-weight: bold;';
+      else textBold = 'font-weight: normal;';
+      if (modelsParameters[idInstance].textUnderline) textUnderline = 'text-decoration: underline;';
+      else textUnderline = 'text-decoration: none;';
+      if (modelsParameters[idInstance].textBold) textItalic = 'font-style: italic;';
+      else textItalic = 'font-style: normal;';
+
       var divContent =
         '<div id="annotationLabelTextArea' +
         idWidget +
@@ -267,6 +277,10 @@ function annotationWidgetsPluginClass() {
         modelsParameters[idInstance].textColor +
         '; text-align: ' +
         modelsParameters[idInstance].textAlign +
+        ';' +
+        textBold +
+        textUnderline +
+        textItalic +
         '; background-color: ' +
         modelsParameters[idInstance].backgroundColor +
         '; padding: 4px; resize: inherit; margin: auto; vertical-align: middle ; border-radius: 6px; ' +
