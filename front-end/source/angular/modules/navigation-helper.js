@@ -21,7 +21,6 @@ function navigationHelperClass() {
     const $body = angular.element(document.body); // 1
     const $rootScope = $body.scope().$root;
     const $state = $body.scope().$state; //AEF
-    $rootScope.isLiveDemo = !$rootScope.xDashFullVersion;
     if (!$rootScope.xDashFullVersion) {
       const $scopeDashCtrl = angular.element(document.getElementById('dash-ctrl')).scope();
       $scopeDashCtrl.closeLeftSidePanel();
@@ -35,7 +34,7 @@ function navigationHelperClass() {
         .invoke([
           'ManagePrjService',
           (ManagePrjService) => {
-            ManagePrjService.openTaipyPage('live-demo-js.xprjson', callback);
+            ManagePrjService.openTaipyPage('live-demo-js.xprjson', true, callback);
           },
         ]);
       return;
@@ -45,6 +44,7 @@ function navigationHelperClass() {
     $rootScope.loadingBarStart();
     $rootScope.toggleMenuOptionDisplay('none');
     $state.go('modules', {});
+    $rootScope.isLiveDemo = !$rootScope.xDashFullVersion;
     const projectName = demoPrj;
     const FileMngrInst = new FileMngrFct();
     const fileTypeServer = 'template';
