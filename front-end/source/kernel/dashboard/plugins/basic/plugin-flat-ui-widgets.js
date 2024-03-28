@@ -52,6 +52,9 @@ modelsParameters.flatUiHorizontalSlider = {
   sliderHandleHoverColor: 'var(--widget-handle-hover-color)',
   sliderHandleActiveColor: 'var(--widget-handle-active-color)',
   valueColor: 'var(--widget-color)',
+  unit: 'unitText',
+  displayUnit: false,
+  unitFontSize: 0.5,
 };
 modelsParameters.flatUiVerticalSlider = {
   label: 'labelText',
@@ -585,6 +588,21 @@ function flatUiWidgetsPluginClass() {
       if (modelsParameters[idInstance].displayValue) {
         this.insertValue(widgetHtml);
       }
+      //AEF: add unitText
+      if (modelsParameters[idInstance].unit != '' && modelsParameters[idInstance].displayUnit) {
+        const widgetUnit = document.createElement('span');
+        widgetUnit.setAttribute('class', 'value-span');
+        widgetUnit.setAttribute(
+          'style',
+          'max-width: 45%; font-size: calc(7px + ' +
+            modelsParameters[idInstance].unitFontSize * getFontFactor() +
+            'vw + 0.4vh);'
+        );
+        widgetUnit.setAttribute('id', 'unit-span' + idWidget);
+        widgetUnit.innerHTML = modelsParameters[idInstance].unit;
+        widgetHtml.appendChild(widgetUnit);
+      }
+
       $('#' + idDivContainer).html(widgetHtml);
       var $slider = $('#slider' + idWidget);
       if ($slider.length > 0) {
