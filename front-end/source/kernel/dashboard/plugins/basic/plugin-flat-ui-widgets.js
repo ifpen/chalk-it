@@ -101,6 +101,7 @@ modelsParameters.flatUiValue = {
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
   labelTextAlign: 'left',
+  labelTextPosition: 'left',
   valueWidthProportion: '70%',
   validationButton: false,
   validationBtnDefaultColor: 'var(--widget-button-primary-color)',
@@ -128,6 +129,7 @@ modelsParameters.flatUiTextInput = {
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
   labelTextAlign: 'left',
+  labelTextPosition: 'left',
   valueWidthProportion: '70%',
   validationButton: false,
   validationBtnDefaultColor: 'var(--widget-button-primary-color)',
@@ -151,6 +153,7 @@ modelsParameters.flatUiNumericInput = {
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
   labelTextAlign: 'left',
+  labelTextPosition: 'left',
   valueWidthProportion: '70%',
   validationButton: false,
   validationBtnDefaultColor: 'var(--widget-button-primary-color)',
@@ -1291,6 +1294,12 @@ function flatUiWidgetsPluginClass() {
       widgetHtml.setAttribute('class', 'value-widget-html');
       let divContent = '';
       if (modelsParameters[idInstance].displayLabel) {
+        if (modelsParameters[idInstance].labelTextPosition == 'left') labelTextPosition = 'display: table-cell';
+        else if (modelsParameters[idInstance].labelTextPosition == 'right') labelTextPosition = 'display: table-cell';
+        else if (modelsParameters[idInstance].labelTextPosition == 'top')
+          labelTextPosition = 'display: table-header-group';
+        else if (modelsParameters[idInstance].labelTextPosition == 'bottom')
+          labelTextPosition = 'display: table-footer-group';
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
         valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
@@ -1309,6 +1318,8 @@ function flatUiWidgetsPluginClass() {
             this.labelFontFamily() +
             ' text-align:' +
             modelsParameters[idInstance].labelTextAlign +
+            ';' +
+            labelTextPosition +
             '">' +
             labelText +
             '</span>';
@@ -1325,6 +1336,8 @@ function flatUiWidgetsPluginClass() {
             this.valueFontSize() +
             ' text-align:' +
             modelsParameters[idInstance].labelTextAlign +
+            ';' +
+            labelTextPosition +
             '">' +
             labelText +
             '</span>';
@@ -1387,8 +1400,7 @@ function flatUiWidgetsPluginClass() {
         inputStyle = 'float: right;';
       }
 
-      divContent += inputGroup;
-      divContent +=
+      inputContent =
         '<input ' +
         valuedisabled +
         readOnlyValue +
@@ -1412,8 +1424,11 @@ function flatUiWidgetsPluginClass() {
         modelsParameters[idInstance].valueTextAlign +
         ';"' +
         '</input>';
-      divContent += btnCtrl;
-      divContent += '</div>';
+      inputContent += btnCtrl;
+      inputGroup += inputContent;
+      inputGroup += '</div>';
+      if (modelsParameters[idInstance].labelTextPosition == 'right') divContent = inputGroup + divContent;
+      else divContent += inputGroup;
 
       if (nameWidget != 'text-input') {
         //AEF: add unitText
