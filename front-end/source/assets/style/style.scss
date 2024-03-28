@@ -44,6 +44,8 @@
 @import './components/popover';
 @import './components/export-messages'; // TODO: check if its really used in both cases (runtime & studio)
 @import './components/popup'; // TODO: check if its really used in both cases (runtime & studio)
+@import './components/dashboard-forms';
+@import './components/sweet-alert';
 
 // Layout parts
 @import './layout/common';
