@@ -1,0 +1,318 @@
+{
+    "meta": {
+        "version": "2.410.8418",
+        "date": "Wed Feb 08 2023 17:28:07 GMT+0100 (heure normale d\u00e2\u20ac\u2122Europe centrale)",
+        "name": "osm-svg-layer-view-js",
+        "description": "SVG overlay example displaying shapes on maps with configuration parameters",
+        "groupName": "JavaScript",
+        "tags": [
+            {
+                "text": "Widgets"
+            },
+            {
+                "text": "Maps"
+            },
+            {
+                "text": "Geo&Time"
+            },
+            {
+                "text": "SVG-overlay"
+            }
+        ],
+        "schedulerLogOff": true
+    },
+    "data": {
+        "datanodes": [],
+        "reIndexMap": [
+            5,
+            0,
+            1,
+            4,
+            3,
+            2
+        ],
+        "noTopologicalSortAtSerialize": true
+    },
+    "libraries": {
+        "pyodideStandard": [],
+        "pyodideMicropip": []
+    },
+    "scaling": {
+        "widthPx": 1639,
+        "heightPx": 685,
+        "scrollWidthPx": 1639,
+        "scrollHeightPx": 685,
+        "widthVw": 87.50667378537106,
+        "heightVh": 73.10565635005337,
+        "scrollWidthVw": 87.50667378537106,
+        "scrollHeightVh": 73.10565635005337,
+        "scalingMethod": "scaleTwSp",
+        "media": "large",
+        "colDims": null
+    },
+    "device": {
+        "cols": {
+            "valueRow": "none",
+            "valueCol": "1",
+            "maxCells": 0,
+            "maxCols": 0,
+            "classType": ""
+        },
+        "droppers": {},
+        "backgroundColor": "#ffffff"
+    },
+    "dashboard": {
+        "openStreetMapsA": {
+            "layout": {
+                "top": "1.67388vh",
+                "left": "0.837385vw",
+                "height": "78.3767vh",
+                "width": "84.3907vw",
+                "minHeight": "20px",
+                "minWidth": "20px",
+                "z-index": "3"
+            },
+            "container": {
+                "id": "openStreetMapsA",
+                "instanceId": "openStreetMapsA",
+                "modelJsonId": "openStreetMaps",
+                "widgetTypeName": "Leaflet maps(openStreetMapsA)"
+            },
+            "modelParameters": {
+                "defaultCenter": {
+                    "latitude": 48.872063,
+                    "longitude": 2.331773,
+                    "zoom": 17
+                },
+                "geoJson": {
+                    "numberOfLayers": 0
+                },
+                "heatMap": {
+                    "numberOfLayers": 0,
+                    "sampledDisplay": false,
+                    "densityHeatMap": false
+                },
+                "imageOverlay": {
+                    "numberOfLayers": 0
+                },
+                "offlineSupport": false,
+                "tileServer": "MapboxStreets",
+                "svgOverlay": {
+                    "numberOfLayers": 1
+                },
+                "lineHeatMap": {
+                    "numberOfLayers": 0
+                },
+                "choropleth": {
+                    "numberOfLayers": 0
+                }
+            },
+            "modelHiddenParams": {
+                "geoJson": {
+                    "geoJsonLayers": [],
+                    "geoJsonBounds": []
+                },
+                "choropleth": {
+                    "choroplethLayers": [],
+                    "choroplethBounds": []
+                },
+                "lineHeatMap": {
+                    "lineHeatMapLayers": [],
+                    "lineHeatMapBounds": []
+                },
+                "heatMap": {
+                    "heatMapData": [],
+                    "heatMapBuffer": []
+                },
+                "imageOverlay": {
+                    "imageData": []
+                },
+                "svgOverlay": {
+                    "svgData": [],
+                    "svgElements": []
+                },
+                "legends": [],
+                "colors": [
+                    "#800080",
+                    "#FF00FF",
+                    "#000080",
+                    "#0000FF",
+                    "#008080",
+                    "#00FFFF",
+                    "#FFFF00",
+                    "#800000",
+                    "#6666ff",
+                    "#cc6699",
+                    "#66ff66",
+                    "#666699",
+                    "#996633",
+                    "#ff0000",
+                    "#669999",
+                    "#ffff99"
+                ]
+            }
+        },
+        "flatUiHorizontalSliderp": {
+            "layout": {
+                "top": "83.0481vh",
+                "left": "0.837385vw",
+                "height": "6.87742vh",
+                "width": "29.9263vw",
+                "minHeight": "24px",
+                "minWidth": "200px",
+                "z-index": "4"
+            },
+            "container": {
+                "id": "flatUiHorizontalSliderp",
+                "instanceId": "flatUiHorizontalSliderp",
+                "modelJsonId": "flatUiHorizontalSlider",
+                "widgetTypeName": "Horizontal slider(flatUiHorizontalSliderp)"
+            },
+            "modelParameters": {
+                "label": "length",
+                "inheritLabelFromData": true,
+                "displayLabel": true,
+                "labelFontSize": 0.5,
+                "min": 0,
+                "max": 10,
+                "step": 0.1,
+                "displayValue": true,
+                "valueFontSize": 0.5,
+                "labelWidthProportion": "20%",
+                "sliderWidthProportion": "60%",
+                "valueWidthProportion": "20%",
+                "labelColor": "#2154ab",
+                "labelFontFamily": "Helvetica Neue",
+                "valueColor": "#34495e",
+                "valueFontFamily": "Helvetica Neue",
+                "sliderSegmentColor": "#ebedef",
+                "sliderRangeColor": "#447bdc",
+                "sliderHandleDefaultColor": "#2154ab",
+                "sliderHandleHoverColor": "#a9c3ef",
+                "sliderHandleActiveColor": "#a9c3ef",
+                "valueBorderColor": "#447bdc"
+            },
+            "modelHiddenParams": {
+                "value": 0
+            }
+        },
+        "flatUiCheckboxv": {
+            "layout": {
+                "top": "92.0017vh",
+                "left": "2.59664vw",
+                "height": "7.13695vh",
+                "width": "14.1517vw",
+                "minHeight": "24px",
+                "minWidth": "32px",
+                "z-index": "5"
+            },
+            "container": {
+                "id": "flatUiCheckboxv",
+                "instanceId": "flatUiCheckboxv",
+                "modelJsonId": "flatUiCheckbox",
+                "widgetTypeName": "Checkbox(flatUiCheckboxv)"
+            },
+            "modelParameters": {
+                "label": "disableAutoscale",
+                "inheritLabelFromData": true,
+                "displayLabel": true,
+                "labelFontSize": 0.5,
+                "checkboxSize": 1,
+                "checkboxColor": "#447bdc",
+                "labelColor": "#2154ab",
+                "labelFontFamily": "Helvetica Neue"
+            },
+            "modelHiddenParams": {
+                "value": false
+            }
+        },
+        "flatUiSelectI": {
+            "layout": {
+                "top": "83.0481vh",
+                "left": "34.9896vw",
+                "height": "7.13046vh",
+                "width": "23.6813vw",
+                "minHeight": "32px",
+                "minWidth": "80px",
+                "z-index": "2"
+            },
+            "container": {
+                "id": "flatUiSelectI",
+                "instanceId": "flatUiSelectI",
+                "modelJsonId": "flatUiSelect",
+                "widgetTypeName": "Select(flatUiSelectI)"
+            },
+            "modelParameters": {
+                "label": "marker",
+                "inheritLabelFromData": true,
+                "displayLabel": true,
+                "labelFontSize": 0.5,
+                "selectWidthProportion": "70%",
+                "isNumber": false,
+                "labelColor": "#2154ab",
+                "labelFontFamily": "Helvetica Neue",
+                "selectValueFontSize": 0.5,
+                "isKeyValuePairs": true
+            },
+            "modelHiddenParams": {
+                "values": [],
+                "keys": [],
+                "value": [],
+                "selectedValue": ""
+            }
+        }
+    },
+    "connections": {
+        "openStreetMapsA": {
+            "svgOverlay1": {
+                "name": "svgOverlay1",
+                "dataFields": [],
+                "dataNode": "wind_svgLayer",
+                "dataNodeIndex": 0
+            }
+        },
+        "flatUiHorizontalSliderp": {
+            "value": {
+                "name": "value",
+                "dataFields": [
+                    "length"
+                ],
+                "dataNode": "configs",
+                "dataNodeIndex": 4
+            }
+        },
+        "flatUiCheckboxv": {
+            "value": {
+                "name": "value",
+                "dataFields": [
+                    "disableAutoscale"
+                ],
+                "dataNode": "wind_svgLayer_config",
+                "dataNodeIndex": 3
+            }
+        },
+        "flatUiSelectI": {
+            "keyValuePairs": {
+                "name": "keyValuePairs",
+                "dataFields": [],
+                "dataNode": "markers",
+                "dataNodeIndex": 2
+            },
+            "selectedValue": {
+                "name": "selectedValue",
+                "dataFields": [
+                    "marker"
+                ],
+                "dataNode": "selected",
+                "dataNodeIndex": 1
+            }
+        }
+    },
+    "exportOptions": "projectToTargetWindow",
+    "pages": {
+        "pageNames": [],
+        "defaultPage": {}
+    },
+    "checkExportOptions": true,
+    "navBarNotification": false
+}

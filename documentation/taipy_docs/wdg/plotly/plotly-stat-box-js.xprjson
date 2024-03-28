@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "version": "2.999.8452",
+    "date": "Mon Feb 20 2023 14:35:36 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": "plotly-stat-box-js",
+    "description": "Box plot with Plotly library",
+    "groupName": "JavaScript",
+    "tags": [
+      {
+        "text": "Widgets"
+      },
+      {
+        "text": "Plots"
+      },
+      {
+        "text": "Plotly"
+      },
+      {
+        "text": "Box-plot"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "data",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "data",
+          "json_var_formula": "var y0=[];\nvar y1=[];\n\nfor (var i = 0; i < 50; i ++) {\n\ty0[i] = Math.random();\n\ty1[i] = Math.random() + 1;\n}\n\nvar trace1 = {\n  y: y0,\n  type: 'box'\n};\n\nvar trace2 = {\n  y: y1,\n  type: 'box'\n};\n\nvar data = [trace1, trace2];\n\nreturn data;",
+          "autoStart": true,
+          "explicitTrig": false
+        }
+      }
+    ],
+    "reIndexMap": [
+      0
+    ],
+    "noTopologicalSortAtSerialize": true
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1256,
+    "heightPx": 575,
+    "scrollWidthPx": 1256,
+    "scrollHeightPx": 575,
+    "widthVw": 84.29530201342281,
+    "heightVh": 79.6398891966759,
+    "scrollWidthVw": 84.29530201342281,
+    "scrollHeightVh": 79.6398891966759,
+    "scalingMethod": "scaleTwSp",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "#ffffff",
+    "theme": "default"
+  },
+  "dashboard": {
+    "plotlyGeneric6": {
+      "layout": {
+        "top": "1.6647vh",
+        "left": "0.806654vw",
+        "height": "50.2362vh",
+        "width": "48.8057vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "plotlyGeneric6",
+        "instanceId": "plotlyGeneric6",
+        "modelJsonId": "plotlyGeneric",
+        "widgetTypeName": "Plotly JavaScript generic(plotlyGeneric6)"
+      },
+      "modelParameters": {
+        "layout": null,
+        "hideModeBar": false
+      },
+      "modelHiddenParams": {
+        "data": [
+          {}
+        ],
+        "layout": [
+          {}
+        ],
+        "selection": [
+          {}
+        ]
+      }
+    }
+  },
+  "connections": {
+    "plotlyGeneric6": {
+      "data": {
+        "name": "data",
+        "dataFields": [],
+        "dataNode": "data",
+        "dataNodeIndex": 0
+      },
+      "layout": {
+        "name": "layout",
+        "dataFields": [],
+        "dataNode": "None",
+        "dataNodeIndex": -1
+      }
+    }
+  },
+  "exportOptions": "projectToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

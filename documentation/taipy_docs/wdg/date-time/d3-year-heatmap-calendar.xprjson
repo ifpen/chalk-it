@@ -1,0 +1,167 @@
+{
+	"meta": {
+		"version": "2.990.8832",
+		"date": "Wed Mar 13 2024 11:11:40 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "d3-year-heatmap-calendar",
+		"description": "Example with D3.js year calendar",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "D3.js"
+			},
+			{
+				"text": "Calendar"
+			},
+			{
+				"text": "Yearly"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "CalendarVal2",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "CalendarVal2",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "var dateForVal = d3.timeDay.range(new Date(2020, 5, 2), Date.now());\nvar lawForValue = d3.randomLogNormal(3, 2.2);\nvar formatDate = d3.timeFormat(\"%Y-%m-%d\");   \n            \nvar tableForCalendar = dateForVal.map( d => { return { \"date\" : formatDate(d), \"value\" : lawForValue() };});\n\nvar values = _.shuffle(tableForCalendar);\n\nconst calendarValuesObject = {\n  start: formatDate(new Date(2020, 5, 2)),\n  end: formatDate(Date.now()),\n  values: values\n};\n\nreturn calendarValuesObject;"
+				}
+			},
+			{
+				"name": "SelectedDate",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "SelectedDate",
+					"json_var": "\"2023-08-31\""
+				}
+			}
+		]
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1678,
+		"heightPx": 682,
+		"scrollWidthPx": 1678,
+		"scrollHeightPx": 682,
+		"widthVw": 87.76150627615063,
+		"heightVh": 73.17596566523605,
+		"scrollWidthVw": 87.76150627615063,
+		"scrollHeightVh": 73.17596566523605,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"calendarD3c": {
+			"layout": {
+				"top": "3.00429vh",
+				"left": "0.523013vw",
+				"height": "67.9185vh",
+				"width": "60.3556vw",
+				"minHeight": "100px",
+				"minWidth": "100px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "calendarD3c",
+				"instanceId": "calendarD3c",
+				"modelJsonId": "calendarD3",
+				"widgetTypeName": "Year Calenddar(calendarD3c)"
+			},
+			"modelParameters": {
+				"AllYearsVisible": true,
+				"UndefinedValueColor": "#ffffff"
+			},
+			"modelHiddenParams": {
+				"CalendarValues": [],
+				"SelectedDate": ""
+			}
+		},
+		"kpiCard1": {
+			"layout": {
+				"top": "12.8535vh",
+				"left": "63.4282vw",
+				"height": "16.1624vh",
+				"width": "19.4127vw",
+				"minHeight": "32px",
+				"minWidth": "64px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "kpiCard1",
+				"instanceId": "kpiCard1",
+				"modelJsonId": "kpiCard",
+				"widgetTypeName": "KPI value(kpiCard1)"
+			},
+			"modelParameters": {
+				"label": "SelectedDate",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valuePosition": "bottom",
+				"valueFontSize": 2,
+				"valueColor": "var(--widget-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"decimalDigits": 3,
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"unitColor": "var(--widget-label-color)",
+				"borderShadow": false
+			},
+			"modelHiddenParams": {
+				"value": "--"
+			}
+		}
+	},
+	"connections": {
+		"calendarD3c": {
+			"CalendarValues": {
+				"name": "CalendarValues",
+				"dataNode": "CalendarVal2",
+				"dataFields": []
+			},
+			"SelectedDate": {
+				"name": "SelectedDate",
+				"dataNode": "SelectedDate",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			}
+		},
+		"kpiCard1": {
+			"value": {
+				"name": "value",
+				"dataNode": "SelectedDate",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

@@ -1,0 +1,112 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Fri Feb 10 2023 09:42:55 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "matplotlib-bar-py",
+		"description": "",
+		"groupName": "Python",
+		"tags": [
+			{
+				"text": "widgets"
+			},
+			{
+				"text": "plots"
+			},
+			{
+				"text": "matplotlib"
+			},
+			{
+				"text": "pyodide"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "plt",
+				"type": "Python_pyodide_plugin",
+				"settings": {
+					"name": "plt",
+					"autoStart": true,
+					"explicitTrig": false,
+					"content": "import matplotlib.pyplot as plt\n\nlabels = ['G1', 'G2', 'G3', 'G4', 'G5']\nmen_means = [20, 35, 30, 35, 27]\nwomen_means = [25, 32, 34, 20, 25]\nmen_std = [2, 3, 4, 1, 2]\nwomen_std = [3, 5, 2, 3, 3]\nwidth = 0.35       # the width of the bars: can also be len(x) sequence\n\nfig, ax = plt.subplots()\n\nax.bar(labels, men_means, width, yerr=men_std, label='Men')\nax.bar(labels, women_means, width, yerr=women_std, bottom=men_means,\n       label='Women')\n\nax.set_ylabel('Scores')\nax.set_title('Scores by group and gender')\nax.legend()\n\nreturn fig"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [
+			"matplotlib"
+		],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"matplotlibJ": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "1.00671vw",
+				"height": "53.1856vh",
+				"width": "38.6577vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "matplotlibJ",
+				"instanceId": "matplotlibJ",
+				"modelJsonId": "matplotlib",
+				"widgetTypeName": "Matplotlib generic(matplotlibJ)"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"fig": ""
+			}
+		}
+	},
+	"connections": {
+		"matplotlibJ": {
+			"fig": {
+				"name": "fig",
+				"dataFields": [],
+				"dataNode": "plt",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

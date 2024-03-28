@@ -1,0 +1,391 @@
+{
+	"meta": {
+		"version": "3.000.8848",
+		"fileFormatVersion": "0.3",
+		"date": "Thu Mar 28 2024 14:35:31 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "osm-lineheatmap",
+		"description": "Line heatmap on map with display configuration parameters",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Maps"
+			},
+			{
+				"text": "Geo&Time"
+			},
+			{
+				"text": "Line-heatmap"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1294.4,
+			"heightPx": 590.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "openStreetMapsq",
+				"component1": "flatUiCheckboxw",
+				"component2": "flatUiDoubleSliderw",
+				"component3": "flatUiHorizontalSliderj",
+				"component4": "flatUiHorizontalSliderX"
+			}
+		},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"openStreetMapsq": {
+			"layout": {
+				"top": "2.13333vh",
+				"left": "1.70157vw",
+				"height": "53.0667vh",
+				"width": "80.5628vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "4"
+			},
+			"container": {
+				"instanceId": "openStreetMapsq",
+				"modelJsonId": "openStreetMaps"
+			},
+			"modelParameters": {
+				"drawingFeatures": false,
+				"drawingFeaturesOptions": {
+					"point": true,
+					"line": true,
+					"polygone": true,
+					"rectangle": true,
+					"modal": false
+				},
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"geoJson": {
+					"numberOfLayers": 0
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 1
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false,
+					"densityHeatMap": false
+				},
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
+				"choropleth": {
+					"numberOfLayers": 0
+				}
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
+		},
+		"flatUiCheckboxw": {
+			"layout": {
+				"top": "57.6vh",
+				"left": "1.70157vw",
+				"height": "6.8vh",
+				"width": "13.6126vw",
+				"minHeight": "24px",
+				"minWidth": "32px",
+				"z-index": "6"
+			},
+			"container": {
+				"instanceId": "flatUiCheckboxw",
+				"modelJsonId": "flatUiCheckbox"
+			},
+			"modelParameters": {
+				"label": "disableAutoscale",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"checkboxSize": 1,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"checkedColor": "var(--widget-input-checked-color)",
+				"uncheckedColor": "var(--widget-input-unchecked-color)"
+			},
+			"modelHiddenParams": {
+				"value": false
+			}
+		},
+		"flatUiHorizontalSliderj": {
+			"layout": {
+				"top": "57.6vh",
+				"left": "53.0105vw",
+				"height": "7.06667vh",
+				"width": "28.9267vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "3"
+			},
+			"container": {
+				"instanceId": "flatUiHorizontalSliderj",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "weight",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 10,
+				"step": 0.1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiHorizontalSliderX": {
+			"layout": {
+				"top": "68.5333vh",
+				"left": "53.0105vw",
+				"height": "7.06667vh",
+				"width": "28.9267vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "flatUiHorizontalSliderX",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "opacity",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 1,
+				"step": 0.1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiDoubleSliderw": {
+			"layout": {
+				"top": "57.6vh",
+				"left": "18.4555vw",
+				"height": "11.3333vh",
+				"width": "31.4136vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "5"
+			},
+			"container": {
+				"instanceId": "flatUiDoubleSliderw",
+				"modelJsonId": "flatUiDoubleSlider"
+			},
+			"modelParameters": {
+				"label": "min/max",
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelWidthProportion": "30%",
+				"minRange": 0,
+				"maxRange": 20,
+				"step": 0.1,
+				"disableAnimation": false,
+				"forceValuesToMinAndMax": false,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef"
+			},
+			"modelHiddenParams": {
+				"minValue": 25,
+				"maxValue": 75
+			}
+		}
+	},
+	"connections": {
+		"openStreetMapsq": {
+			"lineHeatMap1": {
+				"name": "lineHeatMap1",
+				"dataFields": [],
+				"dataNode": "lineHeatMap",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiCheckboxw": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"config",
+					"disableAutoscale"
+				],
+				"dataNode": "lineHeatMap",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiHorizontalSliderj": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"config",
+					"weight"
+				],
+				"dataNode": "lineHeatMap",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiHorizontalSliderX": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"config",
+					"opacity"
+				],
+				"dataNode": "lineHeatMap",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiDoubleSliderw": {
+			"minValue": {
+				"name": "minValue",
+				"dataFields": [
+					"config",
+					"min"
+				],
+				"dataNode": "lineHeatMap",
+				"dataNodeIndex": 0
+			},
+			"maxValue": {
+				"name": "maxValue",
+				"dataFields": [
+					"config",
+					"max"
+				],
+				"dataNode": "lineHeatMap",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

@@ -9,34 +9,45 @@
 
 function navigationHelperClass() {
   this.gotoMyProjects = function () {
-    var $body = angular.element(document.body); // 1
-    var $rootScope = $body.scope().$root;
-    var $state = $body.scope().$state; //AEF
+    const $body = angular.element(document.body); // 1
+    const $rootScope = $body.scope().$root;
+    const $state = $body.scope().$state; //AEF
     $rootScope.toggleMenuOptionDisplay('cards');
     $state.go('modules.cards.layout', { action: 'myProjects' });
   };
 
   // TODO refactor with openProjectFromServer in modules.js
   this.openDemoProject = function (demoPrj, callback) {
-    var projectName = demoPrj;
-    var $body = angular.element(document.body); // 1
-    var $rootScope = $body.scope().$root;
-    var $state = $body.scope().$state; //AEF
-    $rootScope.origin = 'openProject';
-    $rootScope.loadingBarStart();
-    $rootScope.toggleMenuOptionDisplay('none');
-    $state.go('modules', {});
-    $rootScope.isLiveDemo = false;
+    const $body = angular.element(document.body); // 1
+    const $rootScope = $body.scope().$root;
+    const $state = $body.scope().$state; //AEF
     if (!$rootScope.xDashFullVersion) {
       const $scopeDashCtrl = angular.element(document.getElementById('dash-ctrl')).scope();
       $scopeDashCtrl.closeLeftSidePanel();
-      $rootScope.isLiveDemo = true;
+    }
+    $rootScope.loadingBarStart();
+    $rootScope.toggleMenuOptionDisplay('none');
+    $rootScope.moduleOpened = false;
+
+    if ($rootScope.taipyLink) {
+      angular
+        .element(document.body)
+        .injector()
+        .invoke([
+          'ManagePrjService',
+          (ManagePrjService) => {
+            ManagePrjService.openTaipyPage('live-demo-js.xprjson', true, callback);
+          },
+        ]);
+      return;
     }
 
-    $rootScope.moduleOpened = false;
-    var FileMngrInst = new FileMngrFct();
-
-    var fileTypeServer = 'template';
+    $rootScope.origin = 'openProject';
+    $state.go('modules', {});
+    $rootScope.isLiveDemo = !$rootScope.xDashFullVersion;
+    const projectName = demoPrj;
+    const FileMngrInst = new FileMngrFct();
+    const fileTypeServer = 'template';
 
     FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + 'xprjson', function (msg1, msg2, type) {
       //AEF: fix bug add params and test on it

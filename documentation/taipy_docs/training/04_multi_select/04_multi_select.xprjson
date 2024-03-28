@@ -1,0 +1,163 @@
+{
+	"meta": {
+		"version": "3.000.8841",
+		"fileFormatVersion": "0.3",
+		"date": "Fri Mar 15 2024 14:03:46 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "04_multi_select",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1294.4,
+			"heightPx": 590.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "flatUiMultiSelectA",
+				"component1": "flatUiValueDisplayA"
+			}
+		},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiMultiSelectA": {
+			"layout": {
+				"top": "4.93333vh",
+				"left": "1.96335vw",
+				"height": "50.5333vh",
+				"width": "22.055vw",
+				"minHeight": "75px",
+				"minWidth": "80px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "flatUiMultiSelectA",
+				"modelJsonId": "flatUiMultiSelect"
+			},
+			"modelParameters": {
+				"addControls": false,
+				"resetPastSelection": false,
+				"valueFontSize": 0.4,
+				"valueFontFamily": "var(--widget-font-family)",
+				"checkboxWidth": 7,
+				"checkboxHeight": 1.5,
+				"valueDefaultColor": "var(--widget-label-color)",
+				"checkboxDefaultColor": "var(--widget-multiselect-color)",
+				"checkboxBorderColor": "var(--widget-multiselect-border-color)",
+				"valueHoverColor": "var(--widget-multiselect-hover-text)",
+				"checkboxHoverColor": "var(--widget-multiselect-hover-color)",
+				"checkboxHoverBorderColor": "var(--widget-multiselect-hover-border-color)",
+				"valueFocusColor": "var(--widget-multiselect-checked-text)",
+				"checkboxFocusColor": "var(--widget-multiselect-checked-color)",
+				"checkboxFocusBorderColor": "var(--widget-multiselect-checked-border-color)",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"isNumber": false
+			},
+			"modelHiddenParams": {
+				"value": [],
+				"selectedValue": ""
+			}
+		},
+		"flatUiValueDisplayA": {
+			"layout": {
+				"top": "8.8vh",
+				"left": "25.6545vw",
+				"height": "5.06667vh",
+				"width": "57.0681vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "flatUiValueDisplayA",
+				"modelJsonId": "flatUiValueDisplay"
+			},
+			"modelParameters": {
+				"label": "message",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valueWidthProportion": "90%",
+				"valueFontSize": 0.5,
+				"valueColor": "var(--widget-input-text)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"backgroundColor": "var(--widget-input-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiMultiSelectA": {
+			"value": {
+				"name": "value",
+				"dataNode": "fruits",
+				"dataFields": []
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataNode": "select_fruits",
+				"dataFields": []
+			}
+		},
+		"flatUiValueDisplayA": {
+			"value": {
+				"name": "value",
+				"dataNode": "message",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

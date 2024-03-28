@@ -8,7 +8,7 @@
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
 function startIntroGallery() {
-  var intro = introJs();
+  const intro = introJs();
 
   intro.onbeforechange(function (targetElement) {
     switch (targetElement.id) {
@@ -47,57 +47,81 @@ function startIntroGallery() {
 
 /*--------startIntro --------*/
 function startIntroProject() {
-  var intro = introJs();
-  var options = {
+  const isTaipyLink = xDashConfig.taipyLink === 'true';
+  const intro = introJs();
+  const commonSteps = [
+    {
+      element: '#dashboard-editor',
+      intro: 'This is dashboard edition area',
+    },
+    {
+      element: '#editor-widget-toolbox',
+      intro: 'This is the widgets toolbox',
+    },
+    {
+      element: '#widget__groups--wrapper--icons',
+      intro: 'Widgets are added to the dashboard edition area from the widgets toolbox',
+    },
+    {
+      element: '#widgetGroups',
+      intro: 'Available widgets are arranged according to 5 main groups',
+    },
+    {
+      element: '#kpiCard',
+      intro: 'Widgets are placed into the dashboard editor using click or drag and drop',
+    },
+  ];
+
+  const taipyLinkSteps = [
+    {
+      element: '#li_flatUiHorizontalSliderj',
+      intro: 'This is widget connection and configuration menu',
+    },
+    {
+      element: '#datanodes-widget-connect',
+      intro:
+        'Widget connection to dataNodes, configuration, placement, z-order, etc. features are provided by this menu',
+    },
+    {
+      element: '#panel--right',
+      intro: 'Here, widget and dataNode connection is configured',
+    },
+  ];
+
+  const chalkitSteps = [
+    {
+      element: '#editor-datanodes-list',
+      intro: 'This is the dataNodes editor',
+    },
+    {
+      element: '#editor-left-side-panel',
+      intro: 'DataNodes are added, configured, listed and controlled here',
+    },
+    {
+      element: '#li_flatUiHorizontalSliderj',
+      intro: 'This is widget connection and configuration menu',
+    },
+    {
+      element: '#datanodes-widget-connect',
+      intro:
+        'Widget connection to dataNodes, configuration, placement, z-order, etc. features are provided by this menu',
+    },
+    {
+      element: '#panel--right',
+      intro: 'Here, widget and dataNode connection is configured',
+    },
+  ];
+
+  const steps = isTaipyLink ? [...commonSteps, ...taipyLinkSteps] : [...commonSteps, ...chalkitSteps];
+
+  const options = {
     exitOnOverlayClick: false,
     showBullets: false,
     showStepNumbers: true,
     //skipLabel: 'Exit',
     tooltipPosition: 'right',
     //disableInteraction: true,
-    steps: [
-      {
-        element: '#dashboard-editor',
-        intro: 'This is dashboard edition area',
-      },
-      {
-        element: '#editor-widget-toolbox',
-        intro: 'This is the widgets toolbox',
-      },
-      {
-        element: '#widget__groups--wrapper--icons',
-        intro: 'Widgets are added to the dashboard edition area from the widgets toolbox',
-      },
-      {
-        element: '#widgetGroups',
-        intro: 'Available widgets are arranged according to 5 main groups',
-      },
-      {
-        element: '#kpiCard',
-        intro: 'Widgets are placed into the dashboard editor using click or drag and drop',
-      },
-      {
-        element: '#editor-datanodes-list',
-        intro: 'This is the dataNodes editor',
-      },
-      {
-        element: '#editor-left-side-panel',
-        intro: 'DataNodes are added, configured, listed and controlled here',
-      },
-      {
-        element: '#li_flatUiHorizontalSliderj',
-        intro: 'This is widget connection and configuration menu',
-      },
-      {
-        element: '#datanodes-widget-connect',
-        intro:
-          'Widget connection to dataNodes, configuration, placement, z-order, etc. features are provided by this menu',
-      },
-      {
-        element: '#panel--right',
-        intro: 'Here, widget and dataNode connection is configured',
-      },
-    ],
+    steps: steps,
   };
 
   intro.setOptions(options);
@@ -142,12 +166,15 @@ function startIntroProject() {
         }
         break;
       case 'li_flatUiHorizontalSliderj':
-        if (this._direction == 'forward') document.getElementById('showHideWidgetMenu').click();
+        if (this._direction == 'forward') {
+          if (isTaipyLink) document.getElementById('editor-widget-toolbox').click();
+          document.getElementById('showHideWidgetMenu').click();
+        }
         break;
       case 'datanodes-widget-connect':
         if (this._direction == 'backward') {
           document.getElementById('open-datanodes-widget-connect').click();
-          document.getElementById('editor-datanodes-list').click();
+          if (!isTaipyLink) document.getElementById('editor-datanodes-list').click();
           document.getElementById('showHideWidgetMenu').click();
         }
         break;
@@ -158,8 +185,8 @@ function startIntroProject() {
   });
 
   intro.onafterchange(async function (targetElement) {
-    var el0 = document.querySelectorAll('.introjs-helperLayer')[0];
-    var el1 = document.querySelectorAll('.introjs-tooltipReferenceLayer')[0];
+    const el0 = document.querySelectorAll('.introjs-helperLayer')[0];
+    const el1 = document.querySelectorAll('.introjs-tooltipReferenceLayer')[0];
     setTimeout(() => {
       let clientRect = targetElement.getBoundingClientRect();
       el0.style.setProperty('left', parseInt(clientRect.left) - 5 + 'px');

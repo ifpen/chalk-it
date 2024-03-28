@@ -1,0 +1,201 @@
+{
+	"meta": {
+		"version": "3.000.8848",
+		"fileFormatVersion": "0.3",
+		"date": "Sat Mar 23 2024 23:44:07 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "16_crud_template",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1367,
+		"heightPx": 590,
+		"scrollWidthPx": 1367,
+		"scrollHeightPx": 590,
+		"widthVw": 89.46335078534031,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 89.46335078534031,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1367.4,
+			"heightPx": 590.4,
+			"widthVw": 89.48952879581152,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "flatUiSelectA",
+				"component1": "flatUiButtonA",
+				"component2": "flatUiListA"
+			}
+		},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiSelectA": {
+			"layout": {
+				"top": "10.4vh",
+				"left": "5.69372vw",
+				"height": "5.06667vh",
+				"width": "18.9791vw",
+				"minHeight": "27px",
+				"minWidth": "40px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "flatUiSelectA",
+				"modelJsonId": "flatUiSelect"
+			},
+			"modelParameters": {
+				"label": "seleced_fruit",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"selectWidthProportion": "70%",
+				"isNumber": false,
+				"selectValueFontFamily": "var(--widget-font-family)",
+				"selectValueFontSize": 0.5,
+				"selectedValueColor": "var(--widget-select-option-highlighted-text)",
+				"selectedItemDefaultColor": "var(--widget-select-option-highlighted-color)",
+				"selectedItemHoverColor": "var(--widget-select-option-highlighted-color)",
+				"isKeyValuePairs": false
+			},
+			"modelHiddenParams": {
+				"keys": [],
+				"values": [],
+				"selectedValue": ""
+			}
+		},
+		"flatUiButtonA": {
+			"layout": {
+				"top": "10vh",
+				"left": "26.0471vw",
+				"height": "7.06667vh",
+				"width": "9.03141vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "flatUiButtonA",
+				"modelJsonId": "flatUiButton"
+			},
+			"modelParameters": {
+				"text": "Add to list",
+				"numberOfTriggers": 1,
+				"fileInput": false,
+				"binaryFileInput": false,
+				"buttonFontSize": 0.3,
+				"displayIcon": false,
+				"fontAwesomeIcon": "",
+				"buttonFontFamily": "var(--widget-font-family)",
+				"buttonTextColor": "var(--widget-button-primary-text)",
+				"buttonDefaultColor": "var(--widget-button-primary-color)",
+				"buttonActiveColor": "var(--widget-button-active-color)",
+				"buttonHoverColor": "var(--widget-button-hover-color)"
+			},
+			"modelHiddenParams": {}
+		},
+		"flatUiListA": {
+			"layout": {
+				"top": "7.86667vh",
+				"left": "38.678vw",
+				"height": "68.5333vh",
+				"width": "25.589vw",
+				"minHeight": "75px",
+				"minWidth": "80px",
+				"z-index": "3"
+			},
+			"container": {
+				"instanceId": "flatUiListA",
+				"modelJsonId": "flatUiList"
+			},
+			"modelParameters": {
+				"addControls": false,
+				"listValueFontSize": 0.5,
+				"listValueColor": "var(--widget-select-drop-text)",
+				"listBackgroundColor": "var(--widget-select-drop-color)",
+				"selectValueColor": "var(--widget-select-option-highlighted-text)",
+				"selectValueBackgroundColor": "var(--widget-select-option-highlighted-color)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"borderColor": "var(--widget-border-color)",
+				"displayBorder": true
+			},
+			"modelHiddenParams": {
+				"value": [],
+				"selectedValue": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiSelectA": {
+			"keys": {
+				"name": "keys",
+				"dataNode": "fruits",
+				"dataFields": []
+			},
+			"values": {
+				"name": "values",
+				"dataNode": "fruits",
+				"dataFields": []
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataNode": "seleced_fruit",
+				"dataFields": []
+			}
+		},
+		"flatUiButtonA": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataNode": "add_fruit_to_list",
+				"dataFields": []
+			}
+		},
+		"flatUiListA": {
+			"value": {
+				"name": "value",
+				"dataNode": "list_fruits",
+				"dataFields": []
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataNode": "None",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

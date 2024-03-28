@@ -46,19 +46,30 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
     is_new_file: bool = False
 
     try:
-        if "xprjson_file_name" not in payload:
+        if not all(key in payload for key in ["xprjson_file_name", "is_template_file"]):
             notify(
                 state,
                 notification_type="E",
                 message={
                     "action_name": action,
-                    "message": "Error while loading: invalid pyload data",
+                    "text": "Error while loading: invalid pyload data",
                 },
             )
             return
 
+        is_template_file: bool = payload.get("is_template_file", None)
         xprjson_file_name: str = payload.get("xprjson_file_name", None)
-        xprjson_file_path: Path = BASE_PATH / xprjson_file_name
+        xprjson_file_path: Path = (
+            Path(__file__).parent
+            / ".."
+            / ".."
+            / "documentation"
+            / "Templates"
+            / "Projects"
+            / xprjson_file_name
+            if is_template_file
+            else BASE_PATH / xprjson_file_name
+        )
 
         if not xprjson_file_path.exists():
             # If the file does not exist, create it with the contents of 'xprjson_template'
@@ -74,7 +85,7 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
                 notification_type="E",
                 message={
                     "action_name": action,
-                    "message": "Error while loading: invalid file path",
+                    "text": "Error while loading: invalid file path",
                 },
             )
             return
@@ -85,7 +96,7 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
             notification_type="I",
             message={
                 "action_name": action,
-                "message": f"The file {xprjson_file_name} was successfully loaded",
+                "text": f"The file {xprjson_file_name} was successfully loaded",
                 "is_new_file": is_new_file,
             },
         )
@@ -95,7 +106,7 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
             notification_type="E",
             message={
                 "action_name": action,
-                "message": f"Error while loading: {e}",
+                "text": f"Error while loading: {e}",
             },
         )
 
@@ -123,7 +134,7 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
                 notification_type="E",
                 message={
                     "action_name": action,
-                    "message": "Error while saving: invalid pyload data",
+                    "text": "Error while saving: invalid pyload data",
                 },
             )
             return
@@ -142,7 +153,7 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
                 notification_type="E",
                 message={
                     "action_name": action,
-                    "message": "Error while saving: invalid file path",
+                    "text": "Error while saving: invalid file path",
                 },
             )
             return
@@ -154,7 +165,7 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
             notification_type="I",
             message={
                 "action_name": action,
-                "message": "The project was successfully saved",
+                "text": "The project was successfully saved",
             },
         )
     except OSError as e:
@@ -163,7 +174,7 @@ def chlkt_save_file_(state: object, action_name: str, payload: Dict[str, str]) -
             notification_type="E",
             message={
                 "action_name": action,
-                "message": f"Error while saving: {e}",
+                "text": f"Error while saving: {e}",
             },
         )
 
@@ -193,6 +204,6 @@ def chlkt_get_file_list_(state: object, action_name: str) -> None:
             notification_type="E",
             message={
                 "action_name": action,
-                "message": f"Error while getting file list: {e}",
+                "text": f"Error while getting file list: {e}",
             },
         )

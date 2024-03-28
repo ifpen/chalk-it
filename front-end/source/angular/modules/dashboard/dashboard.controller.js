@@ -115,7 +115,7 @@ angular
       /*---------- dataConnectionPanel ----------------*/
       $scope.dataConnectionPanel = function (vm) {
         $scope.resetPanelStateL();
-        $scope.editorView.rightSidePanel.target = 'DataNode Connection';
+        $scope.editorView.rightSidePanel.target = 'Variables Connection';
         $scope.editorView.rightSidePanel.size = 1;
 
         if (!$scope.editorView.rightSidePanel.view) {
@@ -136,7 +136,7 @@ angular
 
         if ($scope.editorView.rightSidePanel.view) {
           switch (name) {
-            case 'DataNode Connection':
+            case 'Variables Connection':
               $scope.editorView.rightSidePanel.size = 1;
               break;
             case 'Graphical Properties':
