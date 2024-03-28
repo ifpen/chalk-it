@@ -51,6 +51,11 @@ angular
       }
 
       $scope.startGuidedTour = function () {
+        if ($rootScope.taipyLink) {
+          navHelper.openDemoProject('', startIntroProject);
+          return;
+        }
+
         const projectName = 'live-demo-py';
         if (
           !_.isUndefined($rootScope.currentPrjDirty) &&

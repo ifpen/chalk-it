@@ -764,15 +764,17 @@ angular.module('modules').service('ManagePrjService', [
      * @method openTaipyPage
      * @public
      * @param {string} fileName - The name of the file to be opened, including the ".xprjson" extension.
+     * @param {Function} callback - A callback function that is called after the project file has been successfully
+     * opened and processed.
      * @returns {void} This method does not return a value.
      */
-    self.openTaipyPage = function (fileName) {
+    self.openTaipyPage = function (fileName, callback) {
       const currentPrjDirty = $rootScope.currentPrjDirty || '';
       $rootScope.origin = 'projectEdition';
       const commonActions = () => {
         taipyManager.loadFile(fileName);
         taipyManager.endAction = (xprjson) => {
-          _openTaipyPageEndAction(fileName, xprjson);
+          _openTaipyPageEndAction(fileName, xprjson, callback);
         };
       };
       if (currentPrjDirty !== '') {
@@ -806,14 +808,17 @@ angular.module('modules').service('ManagePrjService', [
     };
 
     /**
-     * This function opens the selected project.
+     * Opens the selected project by loading the specified project file and executing a callback function upon completion.
      *
      * @method _openTaipyPageEndAction
      * @private
      * @param {*} fileName - The name of the file to be opened, including the ".xprjson" extension.
+     * @param {Object} xprjson - The parsed JSON object from the project file.
+     * @param {Function} callback - A callback function that is called after the project file has been successfully
+     * opened and processed.
      * @returns {void} This method does not return a value.
      */
-    function _openTaipyPageEndAction(fileName, xprjson) {
+    function _openTaipyPageEndAction(fileName, xprjson, callback) {
       $rootScope.loadingBarStart();
       datanodesManager.showLoadingIndicator(true);
       $rootScope.origin = 'openProject';
@@ -835,6 +840,7 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.updateFlagDirty(false);
       $rootScope.loadingBarStop();
       datanodesManager.showLoadingIndicator(false);
+      if (_.isFunction(callback)) callback();
     }
   },
 ]);
