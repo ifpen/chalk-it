@@ -25,6 +25,8 @@ function navigationHelperClass() {
       const $scopeDashCtrl = angular.element(document.getElementById('dash-ctrl')).scope();
       $scopeDashCtrl.closeLeftSidePanel();
     }
+    $rootScope.loadingBarStart();
+    $rootScope.toggleMenuOptionDisplay('none');
     $rootScope.moduleOpened = false;
 
     if ($rootScope.taipyLink) {
@@ -41,8 +43,6 @@ function navigationHelperClass() {
     }
 
     $rootScope.origin = 'openProject';
-    $rootScope.loadingBarStart();
-    $rootScope.toggleMenuOptionDisplay('none');
     $state.go('modules', {});
     $rootScope.isLiveDemo = !$rootScope.xDashFullVersion;
     const projectName = demoPrj;
