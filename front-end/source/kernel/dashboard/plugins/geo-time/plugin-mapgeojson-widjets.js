@@ -223,7 +223,6 @@ function mapGeoJsonWidgetsPluginClass() {
       self.layers.push(leafletLayer);
       self.legends.push(undefined); 
       if (
-        geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiLineString ||
         geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon
       ) {
         //add events :
@@ -278,9 +277,13 @@ function mapGeoJsonWidgetsPluginClass() {
         if (!_.isUndefined(leafletIndex)) {
           self.mouseoutHandler = (e) => { 
             let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+
             //if the curent layer is the clicked layer, apply click style
             if (e.target == self.state.selectedElement) {
               //apply click style
+              if(_.isUndefined(style) || _.isUndefined(style.events) || _.isUndefined(style.events.click) || _.isUndefined(style.events.click.enabled) || !style.events.click.enabled){
+                return;
+              }  
               let eventStyle = {};
               if(!_.isUndefined(style) && !_.isUndefined(style.events) && !_.isUndefined(style.events.click) && !_.isUndefined(style.events.click.style)){
                 eventStyle = { ...style.events.click.style };
@@ -292,6 +295,9 @@ function mapGeoJsonWidgetsPluginClass() {
               }
               return;
             }
+            if(_.isUndefined(style) || _.isUndefined(style.events) || _.isUndefined(style.events.mouseover) || _.isUndefined(style.events.mouseover.enabled) || !style.events.mouseover.enabled){
+              return;
+            }  
             let eventStyle = {};
 
             if(!_.isUndefined(e.target.feature.properties) && style.property in e.target.feature.properties ){
@@ -384,6 +390,193 @@ function mapGeoJsonWidgetsPluginClass() {
           });
         }
 
+      }else if(geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiLineString){
+
+ //add events :
+        // mouseover
+        let leafletIndex = self.getLefletIndex(leafletLayer);
+        if (!_.isUndefined(leafletIndex)) {
+          self.mouseoverHandler = (e) => {
+            let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+            if(_.isUndefined(style) || _.isUndefined(style.events) || _.isUndefined(style.events.mouseover) || _.isUndefined(style.events.mouseover.enabled) || !style.events.mouseover.enabled){
+              return;
+            }  
+            //  mouseoverHandler(e)
+            let eventStyle = {}
+            if(!_.isUndefined(style) && !_.isUndefined(style.events) && !_.isUndefined(style.events.mouseover) && !_.isUndefined(style.events.mouseover.style)){
+              eventStyle = { ...style.events.mouseover.style };
+            } else {
+              return;
+            }
+            
+            if (!_.isUndefined(eventStyle)) {
+              e.target.setStyle(eventStyle);
+            }
+            e.target.bringToFront();
+            //create popup
+            let popup = new L.Popup();
+            var bounds = e.target.getBounds();
+            let popupContent = '<div>';
+            let properties = style.tooltip.properties;
+            _.each(properties, (property) => {
+              popupContent =
+                popupContent +
+                '<p> <strong>' +
+                property +
+                '</strong> : ' +
+                e.target.feature.properties[property] +
+                '</p>';
+            });
+            popupContent = popupContent + '</div>';
+            popup.setLatLng(bounds.getCenter());
+            popup.setContent(popupContent);
+            //open popup
+            if (!_.isUndefined(properties) && properties.length > 0) {
+              self.map.openPopup(popup);
+            }
+          };
+          //handle mouse event for each layer
+          leafletLayer.eachLayer(function (layer) {
+            layer.on('mouseover', self.mouseoverHandler);
+          });
+        }
+        //mouseout
+        if (!_.isUndefined(leafletIndex)) {
+          self.mouseoutHandler = (e) => { 
+            let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+
+            //if the curent layer is the clicked layer, apply click style
+            if (e.target == self.state.selectedElement) {
+              //apply click style
+              if(_.isUndefined(style) || _.isUndefined(style.events) || _.isUndefined(style.events.click) || _.isUndefined(style.events.click.enabled) || !style.events.click.enabled){
+                return;
+              }  
+              let eventStyle = {};
+              if(!_.isUndefined(style) && !_.isUndefined(style.events) && !_.isUndefined(style.events.click) && !_.isUndefined(style.events.click.style)){
+                eventStyle = { ...style.events.click.style };
+              } else {
+                return;
+              }
+              if (!_.isUndefined(eventStyle)) {
+                e.target.setStyle(eventStyle);
+              }
+              return;
+            }
+            if(_.isUndefined(style) || _.isUndefined(style.events) || _.isUndefined(style.events.mouseover) || _.isUndefined(style.events.mouseover.enabled) || !style.events.mouseover.enabled){
+              return;
+            }  
+            let eventStyle = {};
+            let styleForObject = {...style}
+            var minMaxAuto = style.possibleProperties[styleForObject.property];
+
+        if (!_.isUndefined(styleForObject.propertyMin) && typeof styleForObject.propertyMin === 'number')
+          minMaxAuto[0] = styleForObject.propertyMin;
+        if (!_.isUndefined(styleForObject.propertyMax) && typeof styleForObject.propertyMax === 'number')
+          minMaxAuto[1] = styleForObject.propertyMax;
+
+        let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, styleForObject.property);
+        if(Array.isArray(minMaxAuto)){
+          var  min = minMaxAuto[0];
+          var  max = minMaxAuto[1];
+        }
+        if(Array.isArray(minMax)){
+          if(!_.isUndefined(min) && !_.isUndefined(max) ){
+            if (min < minMax[0]) min = minMax[0];
+            if (max > minMax[1]) max = minMax[1];
+          }
+        }
+        let color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
+        if (!_.isUndefined(color)) {
+          colorScale = self.getColorScale(color, 0, 100);
+        }
+          if (!_.isUndefined(colorScale)) {
+            if(styleForObject.property in e.target.feature.properties ){
+              var value = e.target.feature.properties[styleForObject.property];
+              let pct = ((value - min) / (max - min)) * 100;
+              eventStyle.color = colorScale(pct);
+            }
+          }
+            if (_.isUndefined(eventStyle.fillOpacity)) {
+              eventStyle.fillOpacity = style.fillOpacity;
+            }
+            if (_.isUndefined(eventStyle.color)) {
+              eventStyle.color = style.color;
+            }
+            if (_.isUndefined(eventStyle.weight)) {
+              eventStyle.weight = style.weight;
+            }
+            e.target.setStyle(eventStyle);
+            //close popup
+            self.map.closePopup();
+          };
+          //add event handler to each layer
+          leafletLayer.eachLayer(function (layer) {
+            layer.on('mouseout', self.mouseoutHandler);
+          });
+        }
+        //click event
+        if (!_.isUndefined(leafletIndex)) {
+          self.clickhandler = (e) => {
+          let style = { ...modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex] };
+            if(_.isUndefined(style) || _.isUndefined(style.events) || _.isUndefined(style.events.click) || _.isUndefined(style.events.click.enabled) || !style.events.click.enabled){
+              return;
+            }  
+            //save layer selected info
+            self.Selected.setValue(e.target.feature.properties);
+            self.Selected.updateCallback(self.Selected, self.Selected.getValue());
+            //change style
+
+            let eventStyle = {};
+            if(!_.isUndefined(style) && !_.isUndefined(style.events) && !_.isUndefined(style.events.click) && !_.isUndefined(style.events.click.style)){
+              eventStyle = { ...style.events.click.style };
+            } else {
+              return;
+            }
+            //initial style for other layers
+            leafletLayer.eachLayer(function (layer) {
+              let layerStyle = { ...style };
+              if (e.target != layer) {
+                if(!_.isUndefined(layer.feature.properties) && style.property in layer.feature.properties ){
+                  var fillColor = self.getFillColor(geoJSON,style,layer.feature.properties[style.property])
+                }
+                if(!_.isUndefined(fillColor)){
+                  layerStyle.fillColor = fillColor
+                }
+                layer.setStyle(layerStyle);
+              } else {
+                //case : unselect event (double click)
+                if (self.state.selectedElement == e.target) {
+                  if(!_.isUndefined(e.target.feature.properties) && style.property in e.target.feature.properties ){
+                    var fillColor = self.getFillColor(geoJSON,style,e.target.feature.properties[style.property])
+                  }
+                  if (!_.isUndefined(fillColor)) {
+                    style.fillColor = fillColor;
+                  }
+                  layer.setStyle(style);
+                } else {
+                  //select event
+                  e.target.setStyle(eventStyle);
+                }
+              }
+            });
+
+            //self.GeoJSONStyle.updateCallback(self.GeoJSONStyle, self.GeoJSONStyle.getValue());
+            if (self.state.selectedElement == e.target) {
+              //unselect element
+              self.state.selectedElement = '';
+              //save layer selected info
+              self.Selected.setValue({});
+              self.Selected.updateCallback(self.Selected, self.Selected.getValue());
+            } else {
+              //set selected element
+              self.state.selectedElement = e.target;
+            }
+          };
+          //add event handler to each layer
+          leafletLayer.eachLayer(function (layer) {
+            layer.on('click', self.clickhandler);
+          });
+        }
       }
 
       //add layer
@@ -703,18 +896,32 @@ function mapGeoJsonWidgetsPluginClass() {
           minMaxAuto[1] = styleForObject.propertyMax;
 
         let minMax = geoJsonTools.getMinMaxByProperty(geoJSONinLayer, styleForObject.property);
-        let min = minMaxAuto[0];
-        let max = minMaxAuto[1];
-        if (min < minMax[0]) min = minMax[0];
-        if (max > minMax[1]) max = minMax[1];
+        if(Array.isArray(minMaxAuto)){
+          var  min = minMaxAuto[0];
+          var  max = minMaxAuto[1];
+        }
+        if(Array.isArray(minMax)){
+          if(!_.isUndefined(min) && !_.isUndefined(max) ){
+            if (min < minMax[0]) min = minMax[0];
+            if (max > minMax[1]) max = minMax[1];
+          }
+        }
         leafLetLayer.eachLayer(function (layer) {
           if (!_.isUndefined(colorScale)) {
-            let value = layer.feature.properties[styleForObject.property];
-
-            let pct = ((value - min) / (max - min)) * 100;
-            styleForObject.color = colorScale(pct);
+            if(styleForObject.property in layer.feature.properties ){
+              var value = layer.feature.properties[styleForObject.property];
+              let pct = ((value - min) / (max - min)) * 100;
+              styleForObject.color = colorScale(pct);
+            }
           }
-          layer.setStyle(styleForObject);
+          if (layer == self.state.selectedElement) {
+            layer.setStyle({
+              fillOpacity: styleForObject.fillOpacity,
+              weight: styleForObject.weight,
+            });
+          } else {
+            layer.setStyle(styleForObject);
+          } 
         });
         //legend
         var length = 100;
