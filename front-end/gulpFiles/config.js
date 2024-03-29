@@ -21,6 +21,9 @@ module.exports = {
       body: 'body-all-js-runtime-',
       path: 'xdash_runtime:',
     },
+    taipy_runtime: {
+      header: 'header-all-js-taipy-runtime-',
+    },
     workers: {
       pyodide: 'pyodide-worker-',
     },
