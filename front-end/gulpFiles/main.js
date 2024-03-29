@@ -22,7 +22,6 @@ let browsersync = require('browser-sync').create(),
   newfile = require('gulp-file'),
   injectString = require('gulp-inject-string'),
   jshint = require('gulp-jshint'),
-  merge = require('merge-stream'),
   pkg = require('../package.json'),
   semver = require('semver'),
   cors = require('cors'),
@@ -123,20 +122,20 @@ task('init', (cb) => {
   mkDocsFileName = GlobalConfig.config.xDashConfig.xDashLiteVersion ? 'mkdocs.yml' : 'mkdocs_taipy.yml';
 
   if (addVersion) {
-    xdashEditorCss += VERSION;
-    xdashEditorHeader += VERSION;
-    xdashEditorBody += VERSION;
-    xdashRuntimeCss += VERSION;
-    xdashRuntimeHeader += VERSION;
-    xdashRuntimeBody += VERSION;
+    filesName.xdash_editor.css = xdashEditorCss + VERSION;
+    filesName.xdash_editor.header = xdashEditorHeader + VERSION;
+    filesName.xdash_editor.body = xdashEditorBody + VERSION;
+    filesName.xdash_runtime.css = xdashRuntimeCss + VERSION;
+    filesName.xdash_runtime.header = xdashRuntimeHeader + VERSION;
+    filesName.xdash_runtime.body = xdashRuntimeBody + VERSION;
   }
 
-  // On insère la configuration en haut
+  // Insert the configuration at the top
   GlobalConfig.allFiles.xDashStudio.header.unshift('configs/config.' + Env + '.js');
   GlobalConfig.allFiles.xDashRuntime.header.unshift('configs/config.' + Env + '.js');
 
-  // En production, les html sont inlinées dans le fichier templates.js
-  // Pas en développement sinon problème de reload après modif
+  // In production, html is inlined in templates.js
+  // Not in development, otherwise reload problem after modification
   if (Env === 'prod') {
     GlobalConfig.allFiles.xDashStudio.header.push('.tmp/templates.js');
   }
