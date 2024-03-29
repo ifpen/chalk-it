@@ -1,4 +1,4 @@
-﻿# Basic inputs and controls
+# Basic inputs and controls
 
 **Basic inputs and controls** widgets allow the dashboard end-user to set numeric values (such as [Horizontal slider](#horizontal-slider) or [Numeric input](#numeric-input) widgets), binary values (such as [Checkbox](#checkbox) or [Switch](#switch) widgets) or text values (such as [Text input](#text-input) widget). More complex ones operate on lists or tuples (like [select](#select) or [list](#list)). Some examples are illustrated below.
 
@@ -76,8 +76,7 @@ and an (optional) list or tuple of **values** that the widget will output to the
 If **values** actuator is not specifed, the **selectedValue** will contain the value of the item selected in the **keys** list.
 Otherwise, the **selectedValue** will contain the item from the **values** list or tuple corresponding to the selected key.
 
-* [combo-box-py.xprjson](/wdg/basic/combo-box-py.xprjson)
-* [combo-box-js.xprjson](/wdg/basic/combo-box-js.xprjson)
+* [select_combo.py](/wdg/basic/select_combo.py)
 
 ![combo-box](basic/combo-box.png)
 
@@ -95,15 +94,13 @@ Otherwise, the **selectedValue** will contain the item from the **values** list 
 
 Example :
 
-* [list-py.xprjson](/wdg/basic/list-py.xprjson)
-* [list-js.xprjson](/wdg/basic/list-js.xprjson)
+* [list.py](/wdg/basic/list.py)
 
 ## Multi-select
 
 Example :
 
-* [multi-select-py.xprjson](/wdg/basic/multi-select-py.xprjson)
-* [multi-select-js.xprjson](/wdg/basic/multi-select-js.xprjson)
+* [multi_select.py](/wdg/basic/multi_select.py)
 
 ## Editable Table
 
@@ -120,16 +117,13 @@ This array will be displayed as :
 
 ![table](tables/table.png)
 
-Example : [table.xprjson](/wdg/tables/table.xprjson)
-
 Table is fully editable by default. *Editable* property can be set in a column-basis using the parameter *editableCols*. For example, if editableCols equals [0,1,2], columns 0, 1 and 2 are editable (i.e. cells in these columns, excluding headers, can be modified). The modifications will be assigned to the connected variable.
 
 Editable tables may also be two dimentional.
 
 ![editable-table-2D](tables/editable-table-2D.png)
 
-Examples : 
+Example : [editable_table.py](editable_table.py)
 
-* [table-editable.xprjson](/wdg/tables/table-editable.xprjson)
-* [editable-table-2D.xprjson](/wdg/tables/editable-table-2D.xprjson)
+
 
