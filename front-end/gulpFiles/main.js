@@ -311,6 +311,9 @@ task(
     const taipyRuntimeHeaderFiles = [...xDashRuntimeHeaderFiles, fixPath(taipyGuiFile)];
 
     const xDashFileStream = src(fixPath(GlobalConfig.allFiles.xDashRuntime.header))
+      .on('error', () => {
+        /* Ignore compiler errors */
+      })
       .pipe(
         terser().on('error', function (e) {
           console.log(e);
@@ -320,6 +323,9 @@ task(
       .pipe(concat(filesName.xdash_runtime.header + '.min.js'));
 
     const taipyFileStream = src(fixPath(taipyRuntimeHeaderFiles))
+      .on('error', () => {
+        /* Ignore compiler errors */
+      })
       .pipe(
         terser().on('error', function (e) {
           console.log(e);
