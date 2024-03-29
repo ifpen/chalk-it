@@ -3,7 +3,7 @@
 		"version": "3.000.8848",
 		"fileFormatVersion": "0.3",
 		"date": "Thu Mar 28 2024 12:51:26 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "osm_geojson-point",
+		"name": "osm_geojson_point",
 		"description": "Single point display with geoJSON on map",
 		"groupName": "Neutral",
 		"tags": [

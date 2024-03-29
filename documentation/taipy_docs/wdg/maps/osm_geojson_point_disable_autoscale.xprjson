@@ -2,24 +2,8 @@
 	"meta": {
 		"version": "3.000.8848",
 		"fileFormatVersion": "0.3",
-		"date": "Fri Mar 29 2024 10:21:36 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "osm_geojson_lines",
-		"description": "Multiple lines display with geoJSON on map",
-		"groupName": "Neutral",
-		"tags": [
-			{
-				"text": "Widgets"
-			},
-			{
-				"text": "Maps"
-			},
-			{
-				"text": "Geo&Time"
-			},
-			{
-				"text": "geoJSON"
-			}
-		],
+		"date": "Fri Mar 29 2024 10:40:19 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "osm_geojson_point_disable_autoscale",
 		"schedulerLogOff": true
 	},
 	"data": {
@@ -58,25 +42,27 @@
 		},
 		"droppers": {
 			"dpr1": {
-				"component0": "openStreetMaps2"
+				"component0": "openStreetMapsm",
+				"component1": "flatUiSwitchj",
+				"component2": "flatUiButtond"
 			}
 		},
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {
-		"openStreetMaps2": {
+		"openStreetMapsm": {
 			"layout": {
-				"top": "2.13333vh",
-				"left": "0.78534vw",
-				"height": "55.7333vh",
-				"width": "77.2251vw",
+				"top": "11.2vh",
+				"left": "1.11257vw",
+				"height": "54.5742vh",
+				"width": "71.8007vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "1"
 			},
 			"container": {
-				"instanceId": "openStreetMaps2",
+				"instanceId": "openStreetMapsm",
 				"modelJsonId": "openStreetMaps"
 			},
 			"modelParameters": {
@@ -90,9 +76,11 @@
 				},
 				"heatMap": {
 					"numberOfLayers": 0,
-					"sampledDisplay": false
+					"sampledDisplay": false,
+					"densityHeatMap": true
 				},
 				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
 				"imageOverlay": {
 					"numberOfLayers": 0
 				},
@@ -150,14 +138,89 @@
 					"#ffff99"
 				]
 			}
+		},
+		"flatUiSwitchj": {
+			"layout": {
+				"top": "2vh",
+				"left": "1.04712vw",
+				"height": "5.06667vh",
+				"width": "21.0733vw",
+				"minHeight": "24px",
+				"minWidth": "50px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "flatUiSwitchj",
+				"modelJsonId": "flatUiSwitch"
+			},
+			"modelParameters": {
+				"label": "disableAutoScale",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"switchWidthProportion": "30%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"switchOffColor": "var(--widget-input-unchecked-color)",
+				"switchOnColor": "var(--widget-input-checked-color)"
+			},
+			"modelHiddenParams": {
+				"value": false
+			}
+		},
+		"flatUiButtond": {
+			"layout": {
+				"top": "1.46667vh",
+				"left": "26.8979vw",
+				"height": "7.06667vh",
+				"width": "9.8822vw",
+				"minHeight": "24px",
+				"minWidth": "55px",
+				"z-index": "3"
+			},
+			"container": {
+				"instanceId": "flatUiButtond",
+				"modelJsonId": "flatUiButton"
+			},
+			"modelParameters": {
+				"text": "Test",
+				"numberOfTriggers": 1,
+				"fileInput": false,
+				"binaryFileInput": false,
+				"buttonFontSize": 0.5,
+				"buttonFontFamily": "Helvetica Neue",
+				"buttonTextColor": "#ffffff",
+				"buttonDefaultColor": "#447bdc",
+				"buttonActiveColor": "#2154ab",
+				"buttonHoverColor": "#a9c3ef",
+				"displayIcon": false
+			},
+			"modelHiddenParams": {}
 		}
 	},
 	"connections": {
-		"openStreetMaps2": {
+		"openStreetMapsm": {
 			"geoJson1": {
 				"name": "geoJson1",
-				"dataNode": "paris_first_arrd_cycle_network",
-				"dataFields": []
+				"dataFields": [],
+				"dataSourceIndex": 0,
+				"dataNode": "point"
+			}
+		},
+		"flatUiSwitchj": {
+			"value": {
+				"name": "value",
+				"dataFields": [],
+				"dataSourceIndex": 0,
+				"dataNode": "disableAutoScale"
+			}
+		},
+		"flatUiButtond": {
+			"trigger1": {
+				"name": "trigger1",
+				"dataFields": [],
+				"dataSourceIndex": 0,
+				"dataNode": "update"
 			}
 		}
 	},

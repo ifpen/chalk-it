@@ -1,7 +1,10 @@
 from taipy.gui import Gui
 from chlkt import *
 
-geoJsonParkings = 
+import json
+
+with open("paris_parkings.json") as f:
+    geoJsonParkings = json.load(f)
 
 gui = Gui()
 page = ChalkitPage("osm_geojson_points.xprjson")

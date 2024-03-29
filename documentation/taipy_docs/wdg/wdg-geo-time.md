@@ -68,7 +68,7 @@ point = {
 
 which will be displayed as :
 
-![osm-geojson-point](maps/osm-geojson-point.png)
+![osm-geojson-point](maps/osm_geojson_point.png)
 
 Properties field of each feature allows to configure it. It comprises the following items :
 
@@ -86,17 +86,17 @@ Properties field of each feature allows to configure it. It comprises the follow
 
 Examples :
 
-* Single point : [osm-geojson-point.xprjson](/wdg/maps/osm-geojson-point.xprjson)
-* Multiple points : [osm-geojson-points.xprjson](/wdg/maps/osm-geojson-points.xprjson)
-* Awesome markers : [osm-geojson-point-awesome-marker.xprjson](/wdg/maps/osm-geojson-point-awesome-marker.xprjson)
-* Disable autoscale with geoJSON point : [osm-geojson-point-disable-autoscale.xprjson](/wdg/maps/osm-geojson-point-disable-autoscale.xprjson)
+* Single point : [osm_geojson_point.py](/wdg/maps/osm_geojson_point.py)
+* Multiple points : [osm_geojson_points.py](/wdg/maps/osm_geojson_points.py)
+* Awesome markers : [osm-geojson-point-awesome-marker.py](/wdg/maps/osm_geojson_point_awesome_marker.py)
+* Disable autoscale with geoJSON point : [osm_geojson_point_disable_autoscale.py](/wdg/maps/osm_geojson_point_disable_autoscale.py)
 
 #### Line
 
 Single line on a single layer of the map
 
 ``` python
-{
+line = {
   "type": "FeatureCollection",
   "features": [
     {
@@ -131,19 +131,19 @@ Single line on a single layer of the map
 
 which will be displayed as :
 
-![osm-geojson-line](maps/osm-geojson-line.png)
+![osm-geojson-line](maps/osm_geojson_line.png)
 
 Examples :
 
-* Single line : [osm-geojson-line.xprjson](/wdg/maps/osm-geojson-line.xprjson)
-* Multiple lines :  [osm-geojson-lines.xprjson](/wdg/maps/osm-geojson-lines.xprjson)
+* Single line : [osm_geojson_line.py](/wdg/maps/osm_geojson_line.py)
+* Multiple lines :  [osm_geojson_lines.py](/wdg/maps/osm_geojson_lines.xprjson)
 
 #### Polygon
 
 A polygon on a single layer of the map
 
 ``` python
-{
+polygon = {
   "type": "FeatureCollection",
   "features": [
     {
@@ -186,11 +186,11 @@ A polygon on a single layer of the map
 
 which will be displayed as :
 
-![osm-geojson-polygon](maps/osm-geojson-polygon.png)
+![osm_geojson_polygon](maps/osm_geojson_polygon.png)
 
 Example :
 
-* [osm-geojson-polygon.xprjson](/wdg/maps/osm-geojson-polygon.xprjson)
+* [osm_geojson_polygon.py](/wdg/maps/osm_geojson_polygon.xprjson)
 
 See also : [Using GeoJSON with Leaflet](https://leafletjs.com/examples/geojson/)
 
@@ -199,7 +199,7 @@ See also : [Using GeoJSON with Leaflet](https://leafletjs.com/examples/geojson/)
 *heatMap1* to *heatMap8* inputs expect a JSON object like the following one :
 
 ``` python
-{
+heatmap = {
   "data" : [
     {
     "lat": 44.78857833333333,
@@ -215,11 +215,11 @@ See also : [Using GeoJSON with Leaflet](https://leafletjs.com/examples/geojson/)
   "config": {
     "opacity": 0.5,
     "radius": 1,
-    "disableAutoscale": false,
+    "disableAutoscale": False,
     "min": 0,
     "max": 100,
     "colorScale": "interpolateSpectral",
-    "reverseColorScale": true
+    "reverseColorScale": True
   }
 }
 ```
@@ -228,25 +228,20 @@ When **min** and/or **max** config parameters are not specified, they are automa
 
 Example of display (for a larger data set) :
 
-![osm-heatmap](maps/osm-heatmap.png)
+![osm_heatmap](maps/osm_heatmap.png)
 
 Example :
 
-* [osm-heatmap-view.xprjson](/wdg/maps/osm-heatmap-view.xprjson)
+* [osm_heatmap_view.py](/wdg/maps/osm_heatmap_view.py)
 
 Several parameters control the display of the heatmap, in particular :
-
-* **sampledDisplay** : allows to feed the map in real-time with instantaneous measures (single heatmap point). The config of the first point will be used. See corresponding examples: 
-
-* [osm-heatmap-play-py.xprjson](/wdg/maps/osm-heatmap-play-py.xprjson)
-* [osm-heatmap-play-js.xprjson](/wdg/maps/osm-heatmap-play-js.xprjson)
 
 ### lineHeatMap layers
 
 *lineHeatMap1* to *lineHeatMap8* inputs expect a JSON object like the following one :
 
 ``` python
-{
+line_heatmap = {
   "data": [
     {
       "coordinates": [
@@ -278,31 +273,31 @@ Several parameters control the display of the heatmap, in particular :
   "config": {
     "opacity": 0.9,
     "weight": 4,
-    "disableAutoscale": false,
+    "disableAutoscale": False,
     "min": 0,
     "max": 10,
     "colorScale": "interpolateSpectral",
-    "reverseColorScale": true    
+    "reverseColorScale": True    
   }
 }
 ```
 
 When **min** and/or **max** config parameters are not specified, they are automatically computed from the data set. **colorScale** is a string from interpolate-type colorscales of D3.js : <https://github.com/d3/d3-scale-chromatic>.
 
-Example of display (for a larger data set) :
+Example of display:
 
-![osm-lineheatmap](maps/osm-lineheatmap.png)
+![osm-lineheatmap](maps/osm_lineheatmap.png)
 
 Example :
 
-* [osm-lineheatmap.xprjson](/wdg/maps/osm-lineheatmap.xprjson)
+* [osm_lineheatmap.py](/wdg/maps/osm_lineheatmap.py)
 
 ### Choropleth layers
 
 *choropleth1* to *choropleth8* inputs expect a JSON object like the following one :
 
 ``` python
-{
+choropleth = {
   "data": [
     {
       "geometry": {
@@ -352,11 +347,11 @@ Example :
   "config": {
     "opacity": 0.9,
     "weight": 4,
-    "disableAutoscale": false,
+    "disableAutoscale": False,
     "min": 0,
     "max": 10,
     "colorScale": "interpolateOranges",
-    "reverseColorScale": false
+    "reverseColorScale": False
   }
 }
 ```
@@ -365,12 +360,11 @@ When **min** and/or **max** config parameters are not specified, they are automa
 
 Example of display (for a larger data set) :
 
-![osm-choropleth](maps/osm-choropleth.png)
+![osm_choropleth](maps/osm_choropleth.png)
 
 Example :
 
-* [osm-choropleth-py.xprjson](/wdg/maps/osm-choropleth-py.xprjson)
-* [osm-choropleth-js.xprjson](/wdg/maps/osm-choropleth-js.xprjson)
+* [osm_choropleth.xprjson](/wdg/maps/osm_choropleth.xprjson)
 
 ### imageOverlay layers
 
@@ -393,7 +387,7 @@ As shown in the code snippet above, the **addAs** parameter may take two values:
 
 Example :
 
-* [osm-image-overlay.xprjson](/wdg/maps/osm-image-overlay.xprjson)
+* [osm_image_overlay.py](/wdg/maps/osm_image_overlay.py)
 
 ### svgOverlay layers
 
@@ -419,8 +413,8 @@ Example :
     "title": "Wind direction",
     "opacity": 0.5,
     "length": 9.3,
-    "disableAutoscale": false,
-    "addAs": "overlay" // overlay or baseLayer
+    "disableAutoscale": False,
+    "addAs": "overlay" # overlay or baseLayer
   }
 }
 ```
@@ -431,19 +425,19 @@ Example of display (for a larger data set) :
 
 Example :
 
-* [osm-svg-layer-view-js.xprjson](/wdg/maps/osm-svg-layer-view-js.xprjson)
+* [osm-svg_layer_view.py](/wdg/maps/osm_svg_layer_view.py)
 
 ### Drawing features
 
 It is possible to allow the user to manually select points, lines, rectangles or polygone regions in the map. This is possible by enable the *drawingFeatures* option.
 
-![osm-drawing-features](maps/osm-drawing-features.png)
+![osm_drawing_features](maps/osm_drawing-features.png)
 
 Selection result will be written to the *selectedGeoJson* actuator.
 
 Example :
 
-* [osm-drawing-features.xprjson](/wdg/maps/osm-drawing-features.xprjson)
+* [osm_drawing_features.py](/wdg/maps/osm_drawing_features.py)
 
 ## Folium Maps
 
@@ -454,7 +448,7 @@ Folium is built on top of the Python data analysis library pandas, which makes i
 
 Usage examples:
 
-* [folium-point.xprjson](/wdg/maps/folium-point.xprjson)
+* [folium-point.py](/wdg/maps/folium_point.py)
 
 ## Address autocompletion
 
