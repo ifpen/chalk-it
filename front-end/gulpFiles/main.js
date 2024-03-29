@@ -49,11 +49,11 @@ let browsersync = require('browser-sync').create(),
   xdashRuntimeBody = filesName.xdash_runtime.body,
   buildFilePath,
   buildDirPath,
-  VERSION;
-getXdashWorkerPyodideFile = () =>
-  `${filesName.workers.pyodide}${
-    addVersion && Env === 'prod' ? GlobalConfig.config.xDashConfig.version.fullVersion : Env
-  }.js`;
+  VERSION,
+  getXdashWorkerPyodideFile = () =>
+    `${filesName.workers.pyodide}${
+      addVersion && Env === 'prod' ? GlobalConfig.config.xDashConfig.version.fullVersion : Env
+    }.js`;
 
 ListTasksBeforeInject = 'createConfigurationFile';
 
