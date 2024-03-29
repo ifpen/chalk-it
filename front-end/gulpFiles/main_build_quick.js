@@ -28,7 +28,7 @@ let browsersync = require('browser-sync').create(),
   connect = require('gulp-connect'),
   fs = require('fs'),
   exec = require('child_process').exec,
-  Env = argv.env ?? 'dev',
+  Env = argv.env || 'dev',
   addVersion = true,
   GlobalConfig = [],
   filesName = configuration.filesName,
@@ -125,6 +125,7 @@ task('init', (cb) => {
     filesName.xdash_editor.css = xdashEditorCss + VERSION;
     filesName.xdash_editor.header = xdashEditorHeader + VERSION;
     filesName.xdash_editor.body = xdashEditorBody + VERSION;
+
     filesName.xdash_runtime.css = xdashRuntimeCss + VERSION;
     filesName.xdash_runtime.header = xdashRuntimeHeader + VERSION;
     filesName.xdash_runtime.body = xdashRuntimeBody + VERSION;
@@ -199,17 +200,17 @@ task(
     const allFiles = GlobalConfig.allFiles;
 
     if (Env === 'prod') {
-      generatedPageHeaderJsList = [xdashRuntimeHeader + '.min.js'];
-      generatedPageBodyJsList = [xdashRuntimeBody + '.min.js'];
-      generatedPageCssList = ['assets/' + xdashRuntimeCss + '.min.css'];
+      generatedPageHeaderJsList = [filesName.xdash_runtime.header + '.min.js'];
+      generatedPageBodyJsList = [filesName.xdash_runtime.body + '.min.js'];
+      generatedPageCssList = ['assets/' + filesName.xdash_runtime.css + '.min.css'];
 
-      xdashEditorBodyJsList = [xdashEditorBody + '.min.js'];
-      xdashEditorHeaderJsList = [xdashEditorHeader + '.min.js'];
-      xdashEditorCssJsList = [xdashEditorCss + '.min.css'];
+      xdashEditorBodyJsList = [filesName.xdash_editor.body + '.min.js'];
+      xdashEditorHeaderJsList = [filesName.xdash_editor.header + '.min.js'];
+      xdashEditorCssJsList = [filesName.xdash_editor.css + '.min.css'];
 
-      xdashRuntimeHeaderJsList = [xdashRuntimeHeader + '.min.js'];
-      xdashRuntimeBodyJsList = [xdashRuntimeBody + '.min.js'];
-      xdashRuntimeCssJsList = [xdashRuntimeCss + '.min.css'];
+      xdashRuntimeHeaderJsList = [filesName.xdash_runtime.header + '.min.js'];
+      xdashRuntimeBodyJsList = [filesName.xdash_runtime.body + '.min.js'];
+      xdashRuntimeCssJsList = [filesName.xdash_runtime.css + '.min.css'];
     } else {
       generatedPageHeaderJsList = allFiles.xDashRuntime.header;
       generatedPageBodyJsList = allFiles.xDashRuntime.body;
@@ -269,7 +270,7 @@ task(
         //     return this.end();
         //   })
         // )
-        .pipe(concat(xdashEditorBody + '.min.js'))
+        .pipe(concat(filesName.xdash_editor.body + '.min.js'))
         .pipe(replace('source/assets/', 'assets/'))
         .pipe(dest(buildDirPath))
     );
@@ -290,7 +291,7 @@ task(
         //     return this.end();
         //   })
         // )
-        .pipe(concat(xdashRuntimeBody + '.min.js'))
+        .pipe(concat(filesName.xdash_runtime.body + '.min.js'))
         .pipe(replace('source/assets/', 'assets/'))
         .pipe(dest(buildDirPath))
     );
@@ -308,10 +309,10 @@ task(
         // .pipe(
         //   terser().on('error', function (e) {
         //     console.log(e);
-        //     return this.end();
+        //     this.emit('end');
         //   })
         // )
-        .pipe(concat(xdashRuntimeHeader + '.min.js'))
+        .pipe(concat(filesName.xdash_runtime.header + '.min.js'))
         .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
         .pipe(replace('source/assets/', 'assets/'))
         .pipe(dest(buildDirPath))
@@ -333,7 +334,7 @@ task(
         //     return this.end();
         //   })
         // )
-        .pipe(concat(xdashEditorHeader + '.min.js'))
+        .pipe(concat(filesName.xdash_editor.header + '.min.js'))
         .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
         .pipe(replace('source/assets/', 'assets/'))
         .pipe(dest(buildDirPath))
@@ -348,7 +349,7 @@ task(
   series('init', () => {
     return src(fixPath(GlobalConfig.allFiles.xDashStudio.css))
       .pipe(cleanCSS({ compatibility: 'ie8' }))
-      .pipe(concat(xdashEditorCss + '.min.css'))
+      .pipe(concat(filesName.xdash_editor.css + '.min.css'))
       .pipe(replace('../fonts/', './fonts/'))
       .pipe(replace('../img/', './img/'))
       .pipe(replace('../icon/', './icon/'))
@@ -361,7 +362,7 @@ task(
   series('init', () => {
     return src(fixPath(GlobalConfig.allFiles.xDashRuntime.css))
       .pipe(cleanCSS({ compatibility: 'ie8' }))
-      .pipe(concat(xdashRuntimeCss + '.min.css'))
+      .pipe(concat(filesName.xdash_runtime.css + '.min.css'))
       .pipe(replace('../fonts/', './fonts/'))
       .pipe(replace('../img/', './img/'))
       .pipe(replace('../icon/', './icon/'))
@@ -372,14 +373,8 @@ task(
 task(
   'inject:files:pyodide_worker',
   series('init', () => {
-    Env = argv.env ?? 'dev';
     const isProd = Env === 'prod';
-
-    let destination = '../';
-    if (isProd) {
-      destination = buildDirPath + '/';
-    }
-
+    const destination = !isProd ? '../' : buildDirPath + '/';
     const configFile = '../configs/config.' + Env + '.js';
     const dependenciesFiles = ['../thirdparty/pyodide.js', '../thirdparty/json_parseMore.js'];
     const workerFile = '../source/kernel/base/pyodide-worker.js';
@@ -503,16 +498,16 @@ task(
         ...options,
       });
 
-    const headerStream = injectFiles(xdashRuntimeHeaderJsList, baseFileJs);
-    const bodyStream = injectFiles(xdashRuntimeBodyJsList, baseFileJs);
-    const cssStream = injectFiles(xdashRuntimeCssJsList, baseFileCss, { addRootSlash: true });
+    const header = injectFiles(xdashRuntimeHeaderJsList, baseFileJs);
+    const body = injectFiles(xdashRuntimeBodyJsList, baseFileJs);
+    const css = injectFiles(xdashRuntimeCssJsList, baseFileCss, { addRootSlash: true });
 
     const fileName = isProd ? `index-view-${VERSION}.html` : 'index-view.html';
 
     let fileStream = src('../xprjson-view_tmp.html')
-      .pipe(inject(headerStream, { ...injectOptions, name: 'header' }))
-      .pipe(inject(bodyStream, { ...injectOptions, name: 'body' }))
-      .pipe(inject(cssStream, injectOptions))
+      .pipe(inject(header, { ...injectOptions, name: 'header' }))
+      .pipe(inject(body, { ...injectOptions, name: 'body' }))
+      .pipe(inject(css, injectOptions))
       .pipe(debug())
       .pipe(rename(fileName))
       .pipe(dest(destination));
