@@ -22,6 +22,7 @@ let browsersync = require('browser-sync').create(),
   newfile = require('gulp-file'),
   injectString = require('gulp-inject-string'),
   jshint = require('gulp-jshint'),
+  merge = require('merge-stream'),
   pkg = require('../package.json'),
   semver = require('semver'),
   cors = require('cors'),
@@ -41,12 +42,15 @@ let browsersync = require('browser-sync').create(),
   xdashRuntimeHeaderJsList,
   xdashRuntimeBodyJsList,
   xdashRuntimeCssJsList,
+  taipyRuntimeHeaderJsList,
   xdashEditorCss = filesName.xdash_editor.css,
   xdashEditorHeader = filesName.xdash_editor.header,
   xdashEditorBody = filesName.xdash_editor.body,
   xdashRuntimeCss = filesName.xdash_runtime.css,
   xdashRuntimeHeader = filesName.xdash_runtime.header,
   xdashRuntimeBody = filesName.xdash_runtime.body,
+  taipyRuntimeHeader = filesName.taipy_runtime.header,
+  taipyGuiFile = 'source/connectors/taipy/taipy-gui-base.js',
   buildFilePath,
   buildDirPath,
   VERSION,
@@ -129,6 +133,8 @@ task('init', (cb) => {
     filesName.xdash_runtime.css = xdashRuntimeCss + VERSION;
     filesName.xdash_runtime.header = xdashRuntimeHeader + VERSION;
     filesName.xdash_runtime.body = xdashRuntimeBody + VERSION;
+
+    filesName.taipy_runtime.header = taipyRuntimeHeader + VERSION;
   }
 
   // Insert the configuration at the top
@@ -211,6 +217,8 @@ task(
       xdashRuntimeHeaderJsList = [filesName.xdash_runtime.header + '.min.js'];
       xdashRuntimeBodyJsList = [filesName.xdash_runtime.body + '.min.js'];
       xdashRuntimeCssJsList = [filesName.xdash_runtime.css + '.min.css'];
+
+      taipyRuntimeHeaderJsList = [filesName.taipy_runtime.header + '.min.js'];
     } else {
       generatedPageHeaderJsList = allFiles.xDashRuntime.header;
       generatedPageBodyJsList = allFiles.xDashRuntime.body;
@@ -223,6 +231,8 @@ task(
       xdashRuntimeHeaderJsList = allFiles.xDashRuntime.header;
       xdashRuntimeBodyJsList = allFiles.xDashRuntime.body;
       xdashRuntimeCssJsList = allFiles.xDashRuntime.css;
+
+      taipyRuntimeHeaderJsList = [...allFiles.xDashRuntime.header, taipyGuiFile];
     }
 
     jsFile +=
@@ -301,22 +311,38 @@ task(
 task(
   'usemin:xdash_runtime:header',
   series('createConfigurationFile', () => {
-    return (
-      src(fixPath(GlobalConfig.allFiles.xDashRuntime.header))
-        .on('error', () => {
-          /* Ignore compiler errors */
-        })
-        // .pipe(
-        //   terser().on('error', function (e) {
-        //     console.log(e);
-        //     this.emit('end');
-        //   })
-        // )
-        .pipe(concat(filesName.xdash_runtime.header + '.min.js'))
-        .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
-        .pipe(replace('source/assets/', 'assets/'))
-        .pipe(dest(buildDirPath))
-    );
+    const xDashRuntimeHeaderFiles = GlobalConfig.allFiles.xDashRuntime.header;
+    const taipyRuntimeHeaderFiles = [...xDashRuntimeHeaderFiles, fixPath(taipyGuiFile)];
+
+    const xDashFileStream = src(fixPath(GlobalConfig.allFiles.xDashRuntime.header))
+      .on('error', () => {
+        /* Ignore compiler errors */
+      })
+      // .pipe(
+      //   terser().on('error', function (e) {
+      //     console.log(e);
+      //     this.emit('end');
+      //   })
+      // )
+      .pipe(concat(filesName.xdash_runtime.header + '.min.js'));
+
+    const taipyFileStream = src(fixPath(taipyRuntimeHeaderFiles))
+      .on('error', () => {
+        /* Ignore compiler errors */
+      })
+      // .pipe(
+      //   terser().on('error', function (e) {
+      //     console.log(e);
+      //     this.emit('end');
+      //   })
+      // )
+      .pipe(concat(filesName.taipy_runtime.header + '.min.js'));
+
+    // Merge the two processes to ensure both complete before signaling task completion
+    return merge(xDashFileStream, taipyFileStream)
+      .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
+      .pipe(replace('source/assets/', 'assets/'))
+      .pipe(dest(buildDirPath));
   })
 );
 
@@ -498,21 +524,30 @@ task(
         ...options,
       });
 
-    const header = injectFiles(xdashRuntimeHeaderJsList, baseFileJs);
+    const xDashHeader = injectFiles(xdashRuntimeHeaderJsList, baseFileJs);
+    const taipyHeader = injectFiles(taipyRuntimeHeaderJsList, baseFileJs);
     const body = injectFiles(xdashRuntimeBodyJsList, baseFileJs);
     const css = injectFiles(xdashRuntimeCssJsList, baseFileCss, { addRootSlash: true });
 
-    const fileName = isProd ? `index-view-${VERSION}.html` : 'index-view.html';
+    const xDashFileName = isProd ? `index-view-${VERSION}.html` : 'index-view.html';
+    const taipyFileName = isProd ? `index-taipy-view-${VERSION}.html` : 'index-taipy-view.html';
 
-    let fileStream = src('../xprjson-view_tmp.html')
-      .pipe(inject(header, { ...injectOptions, name: 'header' }))
+    const xDashFileStream = src('../xprjson-view_tmp.html')
+      .pipe(inject(xDashHeader, { ...injectOptions, name: 'header' }))
       .pipe(inject(body, { ...injectOptions, name: 'body' }))
       .pipe(inject(css, injectOptions))
       .pipe(debug())
-      .pipe(rename(fileName))
-      .pipe(dest(destination));
+      .pipe(rename(xDashFileName));
+
+    const taipyFileStream = src('../xprjson-view_tmp.html')
+      .pipe(inject(taipyHeader, { ...injectOptions, name: 'header' }))
+      .pipe(inject(body, { ...injectOptions, name: 'body' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(debug())
+      .pipe(rename(taipyFileName));
 
     // Apply live reload for development environment
+    let fileStream = merge(xDashFileStream, taipyFileStream).pipe(dest(destination));
     if (!isProd) {
       fileStream = fileStream.pipe(connect.reload());
     }
@@ -544,19 +579,30 @@ task(
         ...options,
       });
 
-    const header = injectFiles(xdashRuntimeHeaderJsList, baseFileJs);
+    const xDashHeader = injectFiles(xdashRuntimeHeaderJsList, baseFileJs);
+    const taipyHeader = injectFiles(taipyRuntimeHeaderJsList, baseFileJs);
     const body = injectFiles(xdashRuntimeBodyJsList, baseFileJs);
     const css = injectFiles(xdashRuntimeCssJsList, baseFileCss, { addRootSlash: true });
 
-    const fileName = isProd ? `index-view-${VERSION}.html` : 'index-view.html';
+    const xDashFileName = isProd ? `index-view-${VERSION}.html` : 'index-view.html';
+    const taipyFileName = isProd ? `index-taipy-view-${VERSION}.html` : 'index-taipy-view.html';
 
-    return src('../xprjson-view_tmp.html')
-      .pipe(inject(header, { ...injectOptions, name: 'header' }))
+    const xDashFileStream = src('../xprjson-view_tmp.html')
+      .pipe(inject(xDashHeader, { ...injectOptions, name: 'header' }))
       .pipe(inject(body, { ...injectOptions, name: 'body' }))
       .pipe(inject(css, injectOptions))
-      .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
       .pipe(debug())
-      .pipe(rename(fileName))
+      .pipe(rename(xDashFileName));
+
+    const taipyFileStream = src('../xprjson-view_tmp.html')
+      .pipe(inject(taipyHeader, { ...injectOptions, name: 'header' }))
+      .pipe(inject(body, { ...injectOptions, name: 'body' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(debug())
+      .pipe(rename(taipyFileName));
+
+    return merge(xDashFileStream, taipyFileStream)
+      .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
       .pipe(dest(destination));
   })
 );
