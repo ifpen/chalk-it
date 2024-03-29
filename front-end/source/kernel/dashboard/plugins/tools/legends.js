@@ -54,6 +54,7 @@ this.createLegend = function (color, length, colorStops, min, max, featureTitle)
 };
 
 this.createChoroplethLegend = function (getColor, min, max, featureTitle, colorScale) {
+  if(min == max) return;
   featureTitle = featureTitle ? featureTitle.charAt(0).toUpperCase() + featureTitle.toLowerCase().slice(1) : ""
   var legend = L.control({ position: 'topleft' });
   var min = Number(min);
@@ -62,28 +63,30 @@ this.createChoroplethLegend = function (getColor, min, max, featureTitle, colorS
   legend.onAdd = function (map) {
     var step = (max - min) / 8;
     var div = L.DomUtil.create('div', 'info legend');
-    div.setAttribute('id', 'legendChoroplet');
-    var grades = [min, min + step, min + step * 2, min + step * 3, min + step * 4, min + step * 5, min + step * 6, max],
-      labels = [],
+    div.setAttribute('id', 'legendChoroplet'); 
+    grades = [min, min + step, min + step * 2, min + step * 3, min + step * 4, min + step * 5, min + step * 6, max];
+    var labels = [],
       from,
       to;
       f = d3.format(".1s")
       labels.push('<div style="display:flex;flex-direction:column;row-gap:2px;">')
       labels.push('<h2 style="margin-bottom: 4px;">'+featureTitle+'</h2>')
     //   div.innerHTML += '<h6>              </h6>';
-    for (var i = 0; i < grades.length; i++) {
-      from = grades[i];
-      to = grades[i + 1];
-      labels.push(
-        '<div style="display:flex;flex-direction:row;justify-content:space-between;"><i style="background:' +
-          getColor(min, max, from + 1, colorScale) +
-          ';margin-left:0px;"></i> ' +
-          '<span>' +
-          f(from) +
-          (to ? '&ndash;' + f(to) : '+') +
-          '</span> </div>'
-      )  ;
+   
+      for (var i = 0; i < grades.length; i++) {
+        from = grades[i];
+        to = grades[i + 1];
+        labels.push(
+          '<div style="display:flex;flex-direction:row;justify-content:space-between;"><i style="background:' +
+            getColor(min, max, from + 1, colorScale) +
+            ';margin-left:0px;"></i> ' +
+            '<span>' +
+            f(from) +
+            (to ? '&ndash;' + f(to) : '+') +
+            '</span> </div>'
+        )  ; 
     }
+    
     labels.push('</div>')
     div.innerHTML = labels.join('');
     return div;
