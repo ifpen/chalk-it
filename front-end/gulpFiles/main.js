@@ -51,6 +51,7 @@ let browsersync = require('browser-sync').create(),
   xdashRuntimeBody = filesName.xdash_runtime.body,
   taipyRuntimeHeader = filesName.taipy_runtime.header,
   taipyGuiFile = 'source/connectors/taipy/taipy-gui-base.js',
+  previewTaipyGuiFile = 'source/connectors/taipy/preview.taipy-gui-base.js',
   buildFilePath,
   buildDirPath,
   VERSION,
@@ -232,7 +233,9 @@ task(
       xdashRuntimeBodyJsList = allFiles.xDashRuntime.body;
       xdashRuntimeCssJsList = allFiles.xDashRuntime.css;
 
-      taipyRuntimeHeaderJsList = [...allFiles.xDashRuntime.header, taipyGuiFile];
+      taipyRuntimeHeaderJsList = [...allFiles.xDashRuntime.header, taipyGuiFile].filter(
+        (file) => file !== previewTaipyGuiFile
+      );
     }
 
     jsFile +=
@@ -308,7 +311,9 @@ task(
   'usemin:xdash_runtime:header',
   series('createConfigurationFile', () => {
     const xDashRuntimeHeaderFiles = GlobalConfig.allFiles.xDashRuntime.header;
-    const taipyRuntimeHeaderFiles = [...xDashRuntimeHeaderFiles, fixPath(taipyGuiFile)];
+    const taipyRuntimeHeaderFiles = [...xDashRuntimeHeaderFiles, fixPath(taipyGuiFile)].filter(
+      (file) => file !== previewTaipyGuiFile
+    );
 
     const xDashFileStream = src(fixPath(GlobalConfig.allFiles.xDashRuntime.header))
       .on('error', () => {
