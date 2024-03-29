@@ -6,7 +6,7 @@ This category includes widgets related to location, date and time.
 
 **Leaflet JSON maps** widget has rich and versatile features for displaying various information on maps. It also has selection and interaction features. It is based on [Leaflet](https://leafletjs.com/) library and its various plugins.
 
-When a new **Leaflet JSON maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 5 types of display layers, according to the value of the associated parameter *numberOfLayers*. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
+When a new **Leaflet JSON maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 6 types of display layers, according to the value of the associated parameter *numberOfLayers*. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
 
 ![leaflet-maps-graphical-properties](maps/leaflet-maps-graphical-properties.png)
 
@@ -421,7 +421,7 @@ Example :
 
 Example of display (for a larger data set) :
 
-![osm-svg-layer-view](maps/osm-svg-layer-view.png)
+![osm_svg_layer_view](maps/osm_svg_layer_view.png)
 
 Example :
 
@@ -464,7 +464,7 @@ Use the *Simple calendar* widget to select a date.
 
 Example :
 
-* [date-picker.xprjson](/wdg/date-time/date-picker.xprjson)
+* [date_picker.py](/wdg/date-time/date_picker.py)
 
 ## Date-range calendar
 
@@ -478,7 +478,7 @@ Allows to associate range heatmap to a yearly-based calendar. Very useful to vis
 
 Example :
 
-* [d3-year-heatmap-calendar.xprjson](/wdg/date-time/d3-year-heatmap-calendar.xprjson)
+* [d3_year_heatmap_calendar.py](/wdg/date-time/d3_year_heatmap_calendar.py)
 
 ## Simple clock
 
@@ -488,4 +488,4 @@ Use the *Simple clock* widget to select a time.
 
 Example :
 
-* [time-picker.xprjson](/wdg/date-time/time-picker.xprjson)
+* [time_picker.py](/wdg/date-time/time_picker.py)
