@@ -5,6 +5,10 @@ on:
   pull_request:
     types:
       - ready_for_review
+    paths:
+      - 'front-end/**'
+      - 'e2e/**'
+
 
 jobs:
   e2e-tests:
