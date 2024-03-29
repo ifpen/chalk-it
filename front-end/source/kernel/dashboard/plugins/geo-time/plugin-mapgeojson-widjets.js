@@ -163,6 +163,40 @@ function mapGeoJsonWidgetsPluginClass() {
       }
     };
 
+    this.getFillColor =  function(geoJSON,style,value) {
+      if(_.isUndefined(style) || _.isUndefined(value) || _.isUndefined(geoJSON) ){
+        return undefined
+      }
+      if (
+        !_.isUndefined(style.property) &&
+        !_.isUndefined(style.possibleProperties) &&
+        style.property in style.possibleProperties
+      ) {
+        //create old style before mouseover
+        var minMaxAuto = style.possibleProperties[style.property];
+
+        if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
+          minMaxAuto[0] = style.propertyMin;
+        if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
+          minMaxAuto[1] = style.propertyMax; 
+      }
+      var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
+      var colorScale = undefined
+        if (!_.isUndefined(color)) {
+          colorScale = self.getColorScale(color, 0, 100);
+      }
+      let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, style.property);
+      let min = 0;
+      let max = 0;
+      if(!_.isUndefined(minMaxAuto) && Array.isArray(minMaxAuto) && minMaxAuto.length >1){
+        min = minMaxAuto[0];
+        max = minMaxAuto[1];
+      }
+      if (min < minMax[0]) min = minMax[0];
+      if (max > minMax[1]) max = minMax[1];
+      return self.getColor(min, max, value, colorScale);
+    }
+
     // Create a Layer from a GeoJSON
     // Simple function dont take into account the style
     this.getLefletIndex = (leafletLayer) => {
@@ -190,9 +224,9 @@ function mapGeoJsonWidgetsPluginClass() {
             //  mouseoverHandler(e)
             let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
             let eventStyle = {}
-            if(!_.isUndefined(style.events.mouseover.style)){
+            if(!_.isUndefined(style) && !_.isUndefined(style.events) && !_.isUndefined(style.events.mouseover) && !_.isUndefined(style.events.mouseover.style)){
               eventStyle = { ...style.events.mouseover.style };
-            }else {
+            } else {
               return;
             }
             
@@ -234,43 +268,25 @@ function mapGeoJsonWidgetsPluginClass() {
             //if the curent layer is the clicked layer, apply click style
             if (e.target == self.state.selectedElement) {
               //apply click style
-              let eventStyle = style.events.click.style;
+              let eventStyle = {};
+              if(!_.isUndefined(style) && !_.isUndefined(style.events) && !_.isUndefined(style.events.click) && !_.isUndefined(style.events.click.style)){
+                eventStyle = { ...style.events.click.style };
+              } else {
+                return;
+              }
               if (!_.isUndefined(eventStyle)) {
                 e.target.setStyle(eventStyle);
               }
               return;
             }
-            if (
-              !_.isUndefined(style.property) &&
-              !_.isUndefined(style.possibleProperties) &&
-              style.property in style.possibleProperties
-            ) {
-              //create old style before mouseover
-              var minMaxAuto = style.possibleProperties[style.property];
-
-              if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
-                minMaxAuto[0] = style.propertyMin;
-              if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
-                minMaxAuto[1] = style.propertyMax; 
-            }
-            var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
-              if (!_.isUndefined(color)) {
-                colorScale = self.getColorScale(color, 0, 100);
-            }
-            let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, style.property);
-            let min = 0;
-            let max = 0;
-            if(!_.isUndefined(minMaxAuto) && Array.isArray(minMaxAuto) && minMaxAuto.length >1){
-              min = minMaxAuto[0];
-              max = minMaxAuto[1];
-            }
-            if (min < minMax[0]) min = minMax[0];
-            if (max > minMax[1]) max = minMax[1];
             let eventStyle = {};
-            if (!_.isUndefined(colorScale)) {
-              let value = e.target.feature.properties[style.property];
-              eventStyle.fillColor = self.getColor(min, max, value, colorScale);
+
+            if(!_.isUndefined(e.target.feature.properties) && style.property in e.target.feature.properties ){
+              var fillColor = self.getFillColor(geoJSON,style,e.target.feature.properties[style.property])
             }
+            if (!_.isUndefined(fillColor)) {
+              eventStyle.fillColor=fillColor
+            } 
             if (_.isUndefined(eventStyle.fillOpacity)) {
               eventStyle.fillOpacity = style.fillOpacity;
             }
@@ -298,82 +314,32 @@ function mapGeoJsonWidgetsPluginClass() {
             //change style
 
             let style = { ...modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex] };
-            let eventStyle = {}
-            if(!_.isUndefined(style.events.click.style)){
+            let eventStyle = {};
+            if(!_.isUndefined(style) && !_.isUndefined(style.events) && !_.isUndefined(style.events.click) && !_.isUndefined(style.events.click.style)){
               eventStyle = { ...style.events.click.style };
-            }else {
+            } else {
               return;
             }
             //initial style for other layers
             leafletLayer.eachLayer(function (layer) {
               let layerStyle = { ...style };
               if (e.target != layer) {
-                if (
-                  !_.isUndefined(layerStyle.property) &&
-                  !_.isUndefined(layerStyle.possibleProperties) &&
-                  layerStyle.property in layerStyle.possibleProperties
-                ) {
-                  //create old style before mouseover
-                  var minMaxAuto = layerStyle.possibleProperties[layerStyle.property];
-
-                  if (!_.isUndefined(layerStyle.propertyMin) && typeof layerStyle.propertyMin === 'number')
-                    minMaxAuto[0] = layerStyle.propertyMin;
-                  if (!_.isUndefined(layerStyle.propertyMax) && typeof layerStyle.propertyMax === 'number')
-                    minMaxAuto[1] = layerStyle.propertyMax;
+                if(!_.isUndefined(layer.feature.properties) && style.property in layer.feature.properties ){
+                  var fillColor = self.getFillColor(geoJSON,style,layer.feature.properties[style.property])
                 }
-                var color = !_.isUndefined(layerStyle.fillColor) ? layerStyle.fillColor : layerStyle.color;
-                  if (!_.isUndefined(color)) {
-                    colorScale = self.getColorScale(color, 0, 100);
-                  }
-                let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, style.property);
-                let min = 0;
-                let max = 0;
-                if(!_.isUndefined(minMaxAuto) && Array.isArray(minMaxAuto) && minMaxAuto.length >1){
-                  min = minMaxAuto[0];
-                  max = minMaxAuto[1];
+                if(!_.isUndefined(fillColor)){
+                  layerStyle.fillColor = fillColor
                 }
-            if (min < minMax[0]) min = minMax[0];
-            if (max > minMax[1]) max = minMax[1];
-                if (!_.isUndefined(colorScale)) {
-                  let value = layer.feature.properties[layerStyle.property];
-                  layerStyle.fillColor = self.getColor(min, max, value, colorScale);
-                }
-                console.log('style', layerStyle);
                 layer.setStyle(layerStyle);
               } else {
                 //case : unselect event (double click)
                 if (self.state.selectedElement == e.target) {
-                  if (
-                    !_.isUndefined(style.property) &&
-                    !_.isUndefined(style.possibleProperties) &&
-                    style.property in style.possibleProperties
-                  ) {
-                    //create old style before mouseover
-                    var minMaxAuto = style.possibleProperties[style.property];
-
-                    if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
-                      minMaxAuto[0] = style.propertyMin;
-                    if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
-                      minMaxAuto[1] = style.propertyMax;
+                  if(!_.isUndefined(e.target.feature.properties) && style.property in e.target.feature.properties ){
+                    var fillColor = self.getFillColor(geoJSON,style,e.target.feature.properties[style.property])
                   }
-                  var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
-                    if (!_.isUndefined(color)) {
-                      colorScale = self.getColorScale(color, 0, 100);
-                    }
-                  let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, style.property);
-                  let min = 0;
-                  let max = 0;
-                  if(!_.isUndefined(minMaxAuto) && Array.isArray(minMaxAuto) && minMaxAuto.length >1){
-                    min = minMaxAuto[0];
-                    max = minMaxAuto[1];
+                  if (!_.isUndefined(fillColor)) {
+                    style.fillColor = fillColor;
                   }
-                  if (min < minMax[0]) min = minMax[0];
-                  if (max > minMax[1]) max = minMax[1];
-                  if (!_.isUndefined(colorScale)) {
-                    let value = layer.feature.properties[style.property];
-                    style.fillColor = self.getColor(min, max, value, colorScale);
-                  }
-
                   layer.setStyle(style);
                 } else {
                   //select event
