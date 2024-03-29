@@ -15,7 +15,7 @@ Actuators with both Read/Write causality typically first read the variables to i
 
 ## Basic inputs and controls
 
-| Widget            | actuator(s) name(s) | Variable types (py) | Read | Write | File | Execute | 
+| Widget            | Actuator(s) name(s) | Variable types (py) | Read | Write | File | Execute | 
 | ----------------- | ------------------- | ------------------- | -----| ----- | ---- | ------- |
 | Numeric input     | value               | int,float           | X    | X     |      |         |
 | Text input        | value               | str                 | X    | X     |      |         |
@@ -48,7 +48,7 @@ Actuators with both Read/Write causality typically first read the variables to i
 
 ## Basic displays
 
-| Widget              | actuator(s) name(s) | Variable types (py)  | Read | Write | File | Execute | 
+| Widget              | Actuator(s) name(s) | Variable types (py)  | Read | Write | File | Execute | 
 | ------------------- | ------------------- | -------------------- | ---- | ----- | ---- | ------- |
 | Value display       | value               | int,float or str     | X    |       |      |         |
 | KPI value           | value               | int,float            | X    |       |      |         |
@@ -60,7 +60,7 @@ Actuators with both Read/Write causality typically first read the variables to i
 
 ## Plots
 
-| Widget              | actuator(s) name(s) | Variable types (py)  | Read | Write | File | Execute | 
+| Widget              | Actuator(s) name(s) | Variable types (py)  | Read | Write | File | Execute | 
 | ------------------- | ------------------- | -------------------- | ---- | ----- | ---- | ------- |
 | Plotly line         | x                   | list,numpy.array     | X    |       |      |         |
 | Plotly line         | y{i}(*)             | list,numpy.array     | X    |       |      |         |
@@ -76,7 +76,7 @@ Actuators with both Read/Write causality typically first read the variables to i
 
 ## Geo & Time
 
-| Widget              | actuator(s) name(s) | Variable types (py) | Read | Write | File | Execute | 
+| Widget              | Actuator(s) name(s) | Variable types (py) | Read | Write | File | Execute | 
 | ------------------- | ------------------- | ------------------- | ---- | ----- | ---- | ------- |
 | Leafet maps         | geoJSON{i}(*)       | dict (geoJSON)      | X    |       |      |         |
 | Leafet maps         | heatMap{i}(*)       | dict                | X    |       |      |         |
@@ -100,7 +100,7 @@ Actuators with both Read/Write causality typically first read the variables to i
 
 ## Annotation & Video
 
-| Widget              | actuator(s) name(s)   | Variable types (py)   | Read | Write | File | Execute | 
+| Widget              | Actuator(s) name(s)   | Variable types (py)   | Read | Write | File | Execute | 
 | ------------------- | --------------------- | --------------------- | ---- | ----- | ---- | ------- |
 | Info                | value(*)              | str                   | X    |       |      |         |
 | Label               | value(*)              | str                   | X    |       |      |         |
