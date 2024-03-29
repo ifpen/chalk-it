@@ -39,7 +39,10 @@ jobs:
         working-directory: ./front-end
 
       - name: Build
-        run: npm run build
+        run: |
+          echo "" >> .env.prod
+          echo "URL_LOCAL_SERVER=api/" >> .env.prod
+          npm run build
         working-directory: ./front-end
 
       - name: Build

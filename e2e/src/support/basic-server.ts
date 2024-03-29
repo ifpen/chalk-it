@@ -36,6 +36,8 @@ export class ChalkitServer {
       this.app.use('/', express.static(serverConf.staticDir));
     }
     this.app.get(`/${this.dashboardsRoot}/:id`, this.getDashboard.bind(this));
+
+    this.app.post('/api/ReadSettings', this.readSettings.bind(this));
   }
 
   public get port(): number {
@@ -63,6 +65,47 @@ export class ChalkitServer {
       logger.warn(`Dashboard ${id} not found`);
       res.sendStatus(404);
     }
+  }
+
+  private readSettings(req: Request, res: Response) {
+    res.setHeader('Content-Type', 'application/json');
+
+    const payload = {
+      data: {},
+      projects: [],
+      dataNode: [],
+      tags: [],
+      updatedAt: '',
+      createdAt: '',
+      scope: {},
+      info: {},
+      settings: {},
+      profile: {
+        userName: 'Guest',
+        Id: '-1',
+      },
+      help: {
+        isDiscoverDone: false,
+        displayHelp: true,
+        discoverSteps: [0, 0, 0, 0, 0],
+      },
+    };
+
+    const b64Payload = Buffer.from(JSON.stringify(payload)).toString('base64');
+    res.end(
+      JSON.stringify({
+        d: JSON.stringify({
+          Success: true,
+          Msg: null,
+          Offset: 0,
+          NbBytes: b64Payload.length,
+          LastChunk: true,
+          ReadOnly: false,
+          FileData: b64Payload,
+          Array: null,
+        }),
+      }),
+    );
   }
 
   public async start(): Promise<void> {
