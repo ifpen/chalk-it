@@ -221,8 +221,11 @@ function mapGeoJsonWidgetsPluginClass() {
         let leafletIndex = self.getLefletIndex(leafletLayer);
         if (!_.isUndefined(leafletIndex)) {
           self.mouseoverHandler = (e) => {
-            //  mouseoverHandler(e)
             let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+            if(_.isUndefined(style) || _.isUndefined(style.events) || _.isUndefined(style.events.mouseover) || _.isUndefined(style.events.mouseover.enabled)){
+              return;
+            }  
+            //  mouseoverHandler(e)
             let eventStyle = {}
             if(!_.isUndefined(style) && !_.isUndefined(style.events) && !_.isUndefined(style.events.mouseover) && !_.isUndefined(style.events.mouseover.style)){
               eventStyle = { ...style.events.mouseover.style };
@@ -263,7 +266,7 @@ function mapGeoJsonWidgetsPluginClass() {
         }
         //mouseout
         if (!_.isUndefined(leafletIndex)) {
-          self.mouseoutHandler = (e) => {
+          self.mouseoutHandler = (e) => { 
             let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
             //if the curent layer is the clicked layer, apply click style
             if (e.target == self.state.selectedElement) {
@@ -285,7 +288,9 @@ function mapGeoJsonWidgetsPluginClass() {
               var fillColor = self.getFillColor(geoJSON,style,e.target.feature.properties[style.property])
             }
             if (!_.isUndefined(fillColor)) {
-              eventStyle.fillColor=fillColor
+              eventStyle.fillColor= fillColor
+            }else {
+              eventStyle.fillColor= style.fillColor
             } 
             if (_.isUndefined(eventStyle.fillOpacity)) {
               eventStyle.fillOpacity = style.fillOpacity;
@@ -308,12 +313,15 @@ function mapGeoJsonWidgetsPluginClass() {
         //click event
         if (!_.isUndefined(leafletIndex)) {
           self.clickhandler = (e) => {
+          let style = { ...modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex] };
+            if(_.isUndefined(style) || _.isUndefined(style.events) || _.isUndefined(style.events.click) || _.isUndefined(style.events.click.enabled)){
+              return;
+            }  
             //save layer selected info
             self.Selected.setValue(e.target.feature.properties);
             self.Selected.updateCallback(self.Selected, self.Selected.getValue());
             //change style
 
-            let style = { ...modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex] };
             let eventStyle = {};
             if(!_.isUndefined(style) && !_.isUndefined(style.events) && !_.isUndefined(style.events.click) && !_.isUndefined(style.events.click.style)){
               eventStyle = { ...style.events.click.style };
@@ -382,19 +390,38 @@ function mapGeoJsonWidgetsPluginClass() {
       prop = geoJsonTools.findPropertiesWithNumber(geoJSON);
       allProp = geoJsonTools.findAllProperties(geoJSON);
       JSONtype = geoJsonTools.findFeatureType(geoJSON);
+      baseStyle = {
+        layer:(Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'layer ') + (index + 1),
+        name: 'layer ' + (index + 1),
+        stroke: true,
+        color: 'black',
+        weight: 1,
+        opacity: 1,
+        events: {
+          mouseover: {
+            enabled : false,
+            style: {
+              color: 'black',
+              weight: 3,
+            },
+          } ,
+          click: {
+            enabled : false,
+            style: {
+              color: 'black',
+              weight: 1,
+            },
+          },
+        },
+      }
 
       switch (JSONtype) {
         case geoJsonTools.equivalenceTypes.MultiLineString:
-          return {
-            layer: index + 1,
+          return { 
+            ...baseStyle,
             showLegend: false,
-            name: 'layer ' + (index + 1),
             type: 'Multi Line',
-            stroke: true,
             dashArray: [],
-            color: 'black',
-            weight: 1,
-            opacity: 1,
             property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
             propertyMin: 'Auto',
             propertyMax: 'Auto',
@@ -402,37 +429,17 @@ function mapGeoJsonWidgetsPluginClass() {
             tooltip: {
               properties: [...allProp],
             },
-            events: {
-              mouseover: {
-                style: {
-                  color: 'black',
-                  weight: 3,
-                },
-              } ,
-              click: {
-                style: {
-                  color: 'black',
-                  weight: 1,
-                },
-              },
-            },
           };
           break;
         case geoJsonTools.equivalenceTypes.MultiPolygon:
-          let commonStyle = {
-
-            layer: index + 1,
-            name: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'layer ') + (index + 1),
+          let commonStyle = { 
+            ...baseStyle,
             showLegend: true,
             legend: {
               title: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'Legend ') + (index + 1),
             },
             type: 'Multi Polygon',
-            stroke: true,
-            color: 'black',
             dashArray: [],
-            weight: 1,
-            opacity: 1,
             fillColor: 'red',
             property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
             propertyMin: 'Auto',
@@ -442,30 +449,7 @@ function mapGeoJsonWidgetsPluginClass() {
             allProperties: allProp,
             tooltip: {
               properties: [...allProp],
-            },
-            
-            events: {
-              mouseover: {
-                style: {
-                  color: "black",
-                  fillColor: "#1179d4",
-                  weight: 3
-                },
-              },
-              /*   mouseout: {
-                style: {
-                  color: 'black',
-                  weight: 1,
-                },
-              },*/
-              click: {
-                style: {
-                  color: 'black',
-                  fillColor: '#e807e1',
-                  weight: 3,
-                },
-              },
-            },
+            } 
           }
           if(index==modelsHiddenParams[idInstance].GeoJSON.length -1){
             return  commonStyle;
@@ -478,8 +462,7 @@ function mapGeoJsonWidgetsPluginClass() {
         case geoJsonTools.equivalenceTypes.MultiPoint:
           if (allProp.includes('html') || allProp.includes('awesomeMarker') || typeLayer == L.marker) {
             return {
-              layer: index + 1,
-              name: 'layer ' + (index + 1),
+              ...baseStyle,
               type: 'Multi Point',
               pointAreMarker: true,
               clickPopup: true,
@@ -487,27 +470,7 @@ function mapGeoJsonWidgetsPluginClass() {
               PropertiesList: allProp,
               tooltip: {
                 properties: [...allProp],
-              },
-              events: {
-                mouseover: {
-                  style: {
-                    color: 'black',
-                    weight: 3,
-                  },
-                },
-                /* mouseout: {
-                  style: {
-                    color: 'black',
-                    weight: 1,
-                  },
-                },*/
-                click: {
-                  style: {
-                    color: 'black',
-                    weight: 1,
-                  },
-                },
-              },
+              }
             };
           } else {
             return {
@@ -529,27 +492,7 @@ function mapGeoJsonWidgetsPluginClass() {
               possibleProperties: prop,
               tooltip: {
                 properties: [...allProp],
-              },
-              events: {
-                mouseover: {
-                  style: {
-                    color: 'black',
-                    weight: 3,
-                  },
-                },
-                /*  mouseout: {
-                  style: {
-                    color: 'black',
-                    weight: 1,
-                  },
-                },*/
-                click: {
-                  style: {
-                    color: 'black',
-                    weight: 1,
-                  },
-                },
-              },
+              } 
             };
           }
           break;
@@ -656,16 +599,25 @@ function mapGeoJsonWidgetsPluginClass() {
 
       if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPolygon) {
         let minMax = geoJsonTools.getMinMaxByProperty(geoJSONinLayer, styleForObject.property);
-        let min = minMaxAuto[0];
-        let max = minMaxAuto[1];
-        if (min < minMax[0]) min = minMax[0];
-        if (max > minMax[1]) max = minMax[1];
-        leafLetLayer.eachLayer(function (layer) {
-          if (!_.isUndefined(colorScale)) {
-            let value = layer.feature.properties[styleForObject.property];
-
-            styleForObject.fillColor = self.getColor(min, max, value, colorScale);
+        if(Array.isArray(minMaxAuto)){
+          var  min = minMaxAuto[0];
+          var  max = minMaxAuto[1];
+        }
+        if(Array.isArray(minMax)){
+          if(!_.isUndefined(min) && !_.isUndefined(max) ){
+            if (min < minMax[0]) min = minMax[0];
+            if (max > minMax[1]) max = minMax[1];
           }
+        }
+        leafLetLayer.eachLayer(function (layer) {
+          if(!_.isUndefined(layer.feature.properties) && styleForObject.property in layer.feature.properties ){
+            var fillColor = self.getFillColor(geoJSON,styleForObject,layer.feature.properties[styleForObject.property])
+          }
+          if(!_.isUndefined(fillColor)){
+            styleForObject.fillColor = fillColor
+          }else {
+            styleForObject.fillColor= style.fillColor
+          } 
           if (layer == self.state.selectedElement) {
             layer.setStyle({
               fillOpacity: styleForObject.fillOpacity,
@@ -682,12 +634,15 @@ function mapGeoJsonWidgetsPluginClass() {
                 if (!_.isUndefined(self.legends[layerIndex])) {
                   self.legends[layerIndex].remove();
                 }
-                self.legends[layerIndex] = self.createChoroplethLegend(
-                  min,
-                  max,
-                  styleForObject.legend.title || '',
-                  colorScale
-                );
+                if(!_.isUndefined(min) && !_.isUndefined(max) &&  !_.isUndefined(colorScale) ){
+                  self.legends[layerIndex] = self.createChoroplethLegend(
+                    min,
+                    max,
+                    styleForObject.legend.title || '',
+                    colorScale
+                  );
+                }
+               
               } else {
                 if (!_.isUndefined(self.legends[layerIndex])) {
                   self.map.removeControl(self.legends[layerIndex]);
@@ -708,12 +663,13 @@ function mapGeoJsonWidgetsPluginClass() {
                 self.legends[layerIndex].remove();
                 self.legends[layerIndex] = undefined;
               }
-              self.legends[layerIndex] = self.createChoroplethLegend(
-                min,
-                max,
-                styleForObject.legend.title || '',
-                colorScale
-              );
+              if(!_.isUndefined(min) && !_.isUndefined(max) &&  !_.isUndefined(colorScale) ){
+                self.legends[layerIndex] = self.createChoroplethLegend(
+                  min,
+                  max,
+                  styleForObject.legend.title || '',
+                  colorScale
+                );}
             } else {
               if (!_.isUndefined(self.legends[layerIndex])) {
                 self.map.removeControl(self.legends[layerIndex]);
