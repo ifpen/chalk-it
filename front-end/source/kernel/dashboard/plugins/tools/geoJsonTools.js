@@ -63,7 +63,6 @@ this.findPropertiesWithNumber = function (geoJSON) {
     if(GeoJSON.features.length ==0) return
     if(!("properties" in GeoJSON.features[0])) return 
     if(!(property in GeoJSON.features[0].properties) ) return 
-    if(property in GeoJSON.features[0].properties ) return 
     
     var minMax = [GeoJSON.features[0].properties[property], GeoJSON.features[0].properties[property]];
     GeoJSON.features.forEach((feature) => {
