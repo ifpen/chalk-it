@@ -68,4 +68,4 @@ def on_change(state, var, val):
         state.prediction = make_prediction(clf, val)
 
 
-page = ChalkitPage("iris_demo_page.xprjson")
+page = ChalkitPage("iris_demo_page.xprjson", TAIPY_GUI_DESIGN_MODE=True)

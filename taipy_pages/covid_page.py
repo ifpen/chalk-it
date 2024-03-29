@@ -109,4 +109,4 @@ selected_countries = ["France"]  # List of countries to process
 covid_filtered = get_covid_filtered(covid_data_frame, selected_countries)
 option_e = echarts_option(covid_filtered, selected_countries)
 
-page = ChalkitPage("covid_page.xprjson")
+page = ChalkitPage("covid_page.xprjson", TAIPY_GUI_DESIGN_MODE=True)

@@ -21,7 +21,7 @@ def load_csv(state):
     print(state.tab_html)
 
 
-page = ChalkitPage("06_file_loader_csv_table.xprjson")
+page = ChalkitPage("06_file_loader_csv_table.xprjson", TAIPY_GUI_DESIGN_MODE=True)
 gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False, upload_folder=upload_folder)
