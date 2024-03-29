@@ -5,12 +5,15 @@ import { pipeline } from 'node:stream/promises';
 import { PNG } from 'pngjs';
 import { sanitize } from 'sanitize-filename-ts';
 import { Suite } from 'mocha';
+import { createModuleLogger } from '../logging.js';
 import { config } from '../test-config.js';
 import { ChalkitServer } from '../support/basic-server.js';
 import { diffScreenshots } from '../support/compare-screenshots.js';
 import { perBrowserAlt } from '../fixtures/web-driver-fixture.js';
 import { DashboardEditor } from '../support/elements/dashboard.js';
 import { describeWithServer } from '../fixtures/e2e-tests.js';
+
+const logger = createModuleLogger('dashboard-display.spec');
 
 /** The more complicated form allows to grab a reference dashboard from the documentation and keep the screenshot here.  */
 type TestCase = string | { dashboard: string; referenceDirectory: string };
@@ -73,7 +76,9 @@ describeWithServer('Visual Tests', function (server: ChalkitServer) {
       it(testCaseFile, async () => {
         const driver = driverFixture();
 
-        const expectedBuffer = fs.promises.readFile(screenshotReference(testCase, browser));
+        const referenceScreenshot = screenshotReference(testCase, browser);
+        logger.debug(`referenceScreenshot=${referenceScreenshot}`);
+        const expectedBuffer = fs.promises.readFile(referenceScreenshot);
 
         await driver.get(server.getDashboardUrl(idx.toString()));
 
@@ -93,7 +98,9 @@ describeWithServer('Visual Tests', function (server: ChalkitServer) {
         }
 
         const actualPng = PNG.sync.read(Buffer.from(encodedString, 'base64'));
+        logger.debug('actualPng ok');
         const expectedPng = PNG.sync.read(await expectedBuffer);
+        logger.debug('expectedPng ok');
 
         const result = diffScreenshots(expectedPng, actualPng);
         if (result) {
