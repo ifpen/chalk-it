@@ -1,31 +1,22 @@
 import sys
+import folium
+import geopandas as gpd
 from pathlib import Path
-# Add the parent directory of `back_end` to sys.path
+from shapely.geometry import shape
+
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from back_end import *
-import geopandas as gpd
-from shapely.geometry import shape
-import folium
 
 # user code starts here
-eiffel_tour ={
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.2945,
-          48.8584
-        ]
-      },
-      "properties": {
-        "name": "Eiffel Tower",
-        "city": "Paris"
-      }
-    }
-  ]
+eiffel_tour = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [2.2945, 48.8584]},
+            "properties": {"name": "Eiffel Tower", "city": "Paris"},
+        }
+    ],
 }
 
 # Read the GeoJSON file with GeoPandas
@@ -48,6 +39,6 @@ folium.Marker(
 # User code ends here
 
 # String to sent to Chalk'it
-#map_html = map._repr_html_()
+# map_html = map._repr_html_()
 
 page = ChalkitPage("folium_map.xprjson")
