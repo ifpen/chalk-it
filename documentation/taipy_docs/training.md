@@ -2,19 +2,19 @@
 
 16 training examples shall guide you to master all Chalk'it lite features:
 
-- 01_sliders_value	  	
-- 02_sliders_button_value   		
-- 03_list			  	
-- 04_multi_select		  	
-- 05_editable_table	  		
-- 06_file_loader_csv_table  
-- 07_plotly_figure
-- 08_folium_map
-- 09_pillow_image
-- 10_matplotlib_figure
-- 11_select
-- 12_markdown
-- 13_multi_page
-- 14_date_picker
-- 15_year_calendar
-- 16_crud_template
+- a_sliders_value	  	
+- b_sliders_button_value   		
+- c_list			  	
+- d_multi_select		  	
+- e_editable_table	  
+- f_select
+- g_file_loader_csv_table  
+- h_date_picker
+- i_plotly_figure
+- j_matplotlib_figure
+- k_folium_map
+- k_pillow_image
+- m_markdown
+- n_year_calendar
+- o_crud_template
+- p_multi_page
