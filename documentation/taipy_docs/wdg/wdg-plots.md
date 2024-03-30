@@ -1,6 +1,6 @@
 ﻿# Plots
 
-Plots in Chalk'it lite may be made with the following widget types:
+Plots in Taipy Designer may be made with the following widget types:
 
 * Python-based plots are available using [Plolty Python](https://plotly.com/python/) or [Matplotlib](https://matplotlib.org/)
 * Simplified usage (array actuators) is available for [Plotly line](#plotly-line), [Plotly bar](#plotly-bar) or [Plotly pie](#plotly-pie). Otherwise, use the [Plotly Python generic](#plotly-python-generic) for a complete Plotly options and configurations
@@ -58,7 +58,7 @@ return fig
 
 All receipes may be found in [Ploty Python documentation](https://plotly.com/python/line-charts/).
 
-No call to `fig.show()` is needed because rendering process will be entirely handled by Chalk'it lite according to its rendering rules.
+No call to `fig.show()` is needed because rendering process will be entirely handled by Taipy Designer according to its rendering rules.
 
 Example:
 
@@ -87,7 +87,7 @@ ax.legend(title='Fruit color')
 
 All receipes may be found in [Matplotlib documentation](https://matplotlib.org/stable/gallery/index.html).
 
-- No call to `plt.show()` is needed because rendering process will be entirely handled by Chalk'it lite according to its rendering rules.
+- No call to `plt.show()` is needed because rendering process will be entirely handled by Taipy Designer according to its rendering rules.
 
 Example:
 

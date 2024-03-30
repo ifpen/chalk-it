@@ -48,7 +48,7 @@ def on_change(state, var, val):
     if var == 'input_data':
         state.prediction = make_prediction(clf, val)
 
-# Create a Chalk'it Page instance with the resource handler
+# Create a Taipy Designer Page instance with the resource handler
 page = ChalkitPage("iris_demo.xprjson")
 
 gui = Gui()

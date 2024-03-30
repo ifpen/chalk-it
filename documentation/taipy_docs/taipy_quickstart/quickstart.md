@@ -4,7 +4,7 @@
 
 The Iris flower dataset is a multivariate dataset introduced by the British statistician and biologist Ronald Fisher in his 1936 paper "The use of multiple measurements in taxonomic problems" as an example of linear discriminant analysis. It consists of 50 samples from each of three species of Iris (Iris setosa, Iris virginica and Iris versicolor). Four features were measured from each sample: the length and the width of the sepals and petals, in centimeters. The Iris dataset is widely used in machine learning as a benchmark dataset for statistical classification algorithms. It is free and publicly avaible at the [UCI Machine Repository](https://archive.ics.uci.edu/ml/datasets/iris).
 
-The following tutorial allows to illustrate main Chalk'it lite features througth this dataset. Expected result is provided in the following project:
+The following tutorial allows to illustrate main Taipy Designer features througth this dataset. Expected result is provided in the following project:
 
 - [iris_demo.py](/quick-start/xprjson/iris_demo.py)
 - [iris_demo_page.xprjson](/quick-start/xprjson/iris_demo_page.xprjson)

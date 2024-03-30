@@ -126,7 +126,7 @@ covid_filtered = (get_covid_filtered(covid_data_frame, selected_countries))
 option_e = echarts_option(covid_filtered, selected_countries)
 
 
-# Create a Chalk'it Page instance
+# Create a Taipy Designer Page instance
 page = ChalkitPage("echarts_covid_comparison.xprjson")
 
 gui = Gui()

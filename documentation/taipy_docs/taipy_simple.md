@@ -1,6 +1,6 @@
 # Simple application
 
-Let this simple Taipy application. Add Chalk'it lite (`chlkt`) import to activate it.
+Let this simple Taipy application. Add Taipy Designer (`chlkt`) import to activate it.
 
 ```python
 from taipy.gui import Gui
@@ -21,9 +21,9 @@ Let's save this code into `simple_app.py`.
 
 This web-application has 3 Python variables: `a`, `b` and `c`. It simply does the addition of `a` and `b` into `c`.
 
-It defines a Chalk'it lite page named `sliders_value.xprjson`, that will contain the GUI definition.
+It defines a Taipy Designer page named `sliders_value.xprjson`, that will contain the GUI definition.
 
-It creates a Gui instance from [taipy.gui](https://docs.taipy.io/en/release-3.0/manuals/gui/) to host the Chalk'it lite page.
+It creates a Gui instance from [taipy.gui](https://docs.taipy.io/en/release-3.0/manuals/gui/) to host the Taipy Designer page.
 
 Let's run it first:
 
@@ -31,9 +31,9 @@ Let's run it first:
 python simple_app.py
 ```
 
-Chalk'it lite is automatically started on the browser at <http://127.0.0.1:5000>.
+Taipy Designer is automatically started on the browser at <http://127.0.0.1:5000>.
 
-Let's build its GUI using drag and drop with Chalk'it lite.
+Let's build its GUI using drag and drop with Taipy Designer.
 
 Widgets are dropped in the *Widgets* main tabset to the dashboard edition zone.
 
