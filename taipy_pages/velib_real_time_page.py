@@ -191,4 +191,4 @@ def on_change(state, var, val):
         state.echarts_option_json = generate_echarts_bar_graph(state.dfg, dockBar)
 
 
-page = ChalkitPage("velib_real_time_page.xprjson", TAIPY_GUI_DESIGN_MODE=True)
+page = ChalkitPage("velib_real_time_page.xprjson", designer_mode=True)

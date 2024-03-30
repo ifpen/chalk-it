@@ -20,10 +20,10 @@ from ..render import RenderApp
 class PureHTMLResourceHandler(ResourceHandler):
     id = "htmlresource"
 
-    def __init__(self, xprjson_file_name: str, TAIPY_GUI_DESIGN_MODE: bool):
+    def __init__(self, xprjson_file_name: str, designer_mode: bool):
         super().__init__()
         self.xprjson_file_name = xprjson_file_name
-        self.TAIPY_GUI_DESIGN_MODE = TAIPY_GUI_DESIGN_MODE
+        self.designer_mode = designer_mode
 
     def get_root_directory(self) -> Path:
         """Dynamically set the root directory based on the existence of 'index.html'."""
@@ -39,7 +39,7 @@ class PureHTMLResourceHandler(ResourceHandler):
         """Get the resources from the specified path."""
         root_dir: Path = self.get_root_directory()  # Set root_dir dynamically
         if not path or path == "index.html" or "." not in path:
-            if self.TAIPY_GUI_DESIGN_MODE:
+            if self.designer_mode:
                 return send_from_directory(root_dir, "index.html")
             xprjson_path: Path = (Path.cwd() / self.xprjson_file_name).resolve()
             if xprjson_path.is_file():
