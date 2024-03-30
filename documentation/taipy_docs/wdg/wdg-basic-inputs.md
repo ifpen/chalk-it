@@ -123,7 +123,7 @@ Editable tables may also be two dimentional.
 
 ![editable-table-2D](tables/editable-table-2D.png)
 
-Example : [editable_table.py](editable_table.py)
+Example : [editable_table.py](tables/editable_table.py)
 
 
 
