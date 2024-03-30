@@ -49,4 +49,4 @@ def run_simul(state):
     print("running simulation", state.path)
 
 
-page = ChalkitPage("taipy_page.xprjson", TAIPY_GUI_DESIGN_MODE=True)
+page = ChalkitPage("taipy_page.xprjson", designer_mode=True)

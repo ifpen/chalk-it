@@ -20,11 +20,11 @@ class ChalkitPage(Page):
     def __init__(
         self,
         xprjson_file_name: str = "new_project.xprjson",
-        TAIPY_GUI_DESIGN_MODE: bool = False,
+        designer_mode: bool = False,
     ):
         super().__init__(
             resource_handler=PureHTMLResourceHandler(
-                xprjson_file_name, TAIPY_GUI_DESIGN_MODE
+                xprjson_file_name, designer_mode
             ),
             metadata={"xprjson_file_name": xprjson_file_name},
         )
