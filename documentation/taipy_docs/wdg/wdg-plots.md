@@ -3,9 +3,8 @@
 Plots in Chalk'it lite may be made with the following widget types:
 
 * Python-based plots are available using [Plolty Python](https://plotly.com/python/) or [Matplotlib](https://matplotlib.org/)
-* Simplified usage (array actuators) is available for [Plotly line](#plotly-line), [Plotly bar](#plotly-bar), [Plotly pie](#plotly-pie) and [Plotly 3D surface](#plotly-3d-surface). Otherwise, use the [Plotly Python generic](#plotly-python-generic) for a complete Plotly.js options and configurations
+* Simplified usage (array actuators) is available for [Plotly line](#plotly-line), [Plotly bar](#plotly-bar) or [Plotly pie](#plotly-pie). Otherwise, use the [Plotly Python generic](#plotly-python-generic) for a complete Plotly options and configurations
 * JavaScript-based plots are available [Apache ECharts](https://echarts.apache.org/). They are usable by writing Python code with JSON-like dicts.
-
 
 Plotly-based widgets share common parameters, especially *hideModeBar* which allows to hide plot options toolbar at dashboard play.
 
@@ -92,7 +91,7 @@ All receipes may be found in [Matplotlib documentation](https://matplotlib.org/s
 
 Example:
 
-- [matplotlib-bar-color.py](/wdg/plots/matplotlib-bar-color.py)
+- [matplotlib_bar_color.py](/wdg/plots/matplotlib_bar_color.py)
 
 ## ECharts
 
@@ -100,4 +99,4 @@ Simply, copy and paste the needed visualization from [ECharts examples gallery](
 
 Some examples:
 
-* [echarts-covid-comparison.py](/wdg/plots/echarts-covid-comparison.py)
+* [echarts_covid_comparison.py](/wdg/plots/echarts_covid_comparison.py)
