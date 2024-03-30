@@ -10,6 +10,8 @@
 # specific language governing permissions and limitations under the License.
 
 from .chalkit_page import ChalkitPage
+from .designer_page import DesignerPage
+
 from .chalkit_manager import (
     chlkt_json_data_,
     chlkt_file_list_,
