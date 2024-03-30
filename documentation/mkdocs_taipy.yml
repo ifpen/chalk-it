@@ -1,4 +1,4 @@
-site_name: Chalk'it lite Documentation
+site_name: Taipy Designer Documentation
 docs_dir: taipy_docs
 nav:
   - Welcome: index.md
@@ -17,7 +17,7 @@ nav:
   - Training: training.md 
 theme:
   name: material
-  logo: media/chalk-it-icon.svg
+  logo: media/taipy-icon.png
   font: false
 use_directory_urls: true
 markdown_extensions:
