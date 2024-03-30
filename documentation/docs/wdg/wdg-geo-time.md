@@ -6,7 +6,7 @@ This category includes widgets related to location, date and time.
 
 **Leaflet maps** widget has rich and versatile features for displaying various information on maps. It also has selection and interaction features. It is based on [Leaflet](https://leafletjs.com/) library and its various plugins.
 
-When a new **Leaflet maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 5 types of display layers, according to the value of the associated parameter *numberOfLayers*. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
+When a new **Leaflet maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 6 types of display layers, according to the value of the associated parameter *numberOfLayers*. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
 
 ![leaflet-maps-graphical-properties](maps/leaflet-maps-graphical-properties.png)
 

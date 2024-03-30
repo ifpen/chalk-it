@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "version": "2.994.8844",
+    "date": "Tue Mar 26 2024 12:02:23 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": "widgetParams",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "modelsAlphabeticList",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "modelsAlphabeticList",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "m = modelsParameters;\nvar parSet = new Set();\n\nwdgs = _.keys(modelsParameters);\n\nfor (k=0; k < wdgs.length; k++) {\n    wdgsPars = _.keys(modelsParameters[wdgs[k]]);\n    for (j=0; j < wdgsPars.length; j++) {\n    \tparSet.add(wdgsPars[j]);\n    }\n}\n\nparArray = Array.from(parSet);\n\nparArray.sort();\nreturn parArray;"
+        }
+      },
+      {
+        "name": "paramsReference",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "paramsReference",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "ref = [];\n\nwdgs = _.keys(modelsParameters);\n\nfor (k=0; k < wdgs.length; k++) {\n    wdgsPars = _.keys(modelsParameters[wdgs[k]]);\n    wdgsVals = _.values(modelsParameters[wdgs[k]]);\n    for (j=0; j < wdgsPars.length; j++) {\n        typePar = typeof wdgsVals[j];\n    \tref.push({\"typeWidget\": wdgs[k] ,\"name\": wdgsPars[j], \"type\" : typePar, \"defaultValue\": wdgsVals[j]});\n    }\n}\n\nreturn ref;"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1295,
+    "heightPx": 590,
+    "scrollWidthPx": 1295,
+    "scrollHeightPx": 590,
+    "widthVw": 84.75130890052355,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.75130890052355,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {},
+  "connections": {},
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

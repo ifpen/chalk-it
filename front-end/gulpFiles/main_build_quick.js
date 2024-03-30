@@ -22,13 +22,14 @@ let browsersync = require('browser-sync').create(),
   newfile = require('gulp-file'),
   injectString = require('gulp-inject-string'),
   jshint = require('gulp-jshint'),
+  merge = require('merge-stream'),
   pkg = require('../package.json'),
   semver = require('semver'),
   cors = require('cors'),
   connect = require('gulp-connect'),
   fs = require('fs'),
   exec = require('child_process').exec,
-  Env = argv.env ?? 'dev',
+  Env = argv.env || 'dev',
   addVersion = true,
   GlobalConfig = [],
   filesName = configuration.filesName,
@@ -41,14 +42,18 @@ let browsersync = require('browser-sync').create(),
   xdashRuntimeHeaderJsList,
   xdashRuntimeBodyJsList,
   xdashRuntimeCssJsList,
+  taipyRuntimeHeaderJsList,
   xdashEditorCss = filesName.xdash_editor.css,
   xdashEditorHeader = filesName.xdash_editor.header,
   xdashEditorBody = filesName.xdash_editor.body,
   xdashRuntimeCss = filesName.xdash_runtime.css,
   xdashRuntimeHeader = filesName.xdash_runtime.header,
   xdashRuntimeBody = filesName.xdash_runtime.body,
+  taipyRuntimeHeader = filesName.taipy_runtime.header,
+  taipyGuiFile = 'source/connectors/taipy/taipy-gui-base.js',
   buildFilePath,
   buildDirPath,
+  VERSION,
   getXdashWorkerPyodideFile = () =>
     `${filesName.workers.pyodide}${
       addVersion && Env === 'prod' ? GlobalConfig.config.xDashConfig.version.fullVersion : Env
@@ -114,27 +119,30 @@ task('init', (cb) => {
   }
   GlobalConfig = require('./index').config(Env);
 
+  VERSION = GlobalConfig.config.xDashConfig.version.fullVersion;
   prefixName = GlobalConfig.config.xDashConfig.xDashBasicVersion ? '/chalkit_' : '/xdash_';
-  buildFilePath = prefixName + GlobalConfig.config.xDashConfig.version.fullVersion;
+  buildFilePath = prefixName + VERSION;
   buildDirPath = '../' + configuration.paths.buildDirectory + buildFilePath;
   mkDocsFileName = GlobalConfig.config.xDashConfig.xDashLiteVersion ? 'mkdocs.yml' : 'mkdocs_taipy.yml';
 
-
   if (addVersion) {
-    filesName.xdash_editor.css = xdashEditorCss + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_editor.header = xdashEditorHeader + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_editor.body = xdashEditorBody + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_runtime.css = xdashRuntimeCss + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_runtime.header = xdashRuntimeHeader + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_runtime.body = xdashRuntimeBody + GlobalConfig.config.xDashConfig.version.fullVersion;
+    filesName.xdash_editor.css = xdashEditorCss + VERSION;
+    filesName.xdash_editor.header = xdashEditorHeader + VERSION;
+    filesName.xdash_editor.body = xdashEditorBody + VERSION;
+
+    filesName.xdash_runtime.css = xdashRuntimeCss + VERSION;
+    filesName.xdash_runtime.header = xdashRuntimeHeader + VERSION;
+    filesName.xdash_runtime.body = xdashRuntimeBody + VERSION;
+
+    filesName.taipy_runtime.header = taipyRuntimeHeader + VERSION;
   }
 
-  // On insère la configuration en haut
+  // Insert the configuration at the top
   GlobalConfig.allFiles.xDashStudio.header.unshift('configs/config.' + Env + '.js');
   GlobalConfig.allFiles.xDashRuntime.header.unshift('configs/config.' + Env + '.js');
 
-  // En production, les html sont inlinées dans le fichier templates.js
-  // Pas en développement sinon problème de reload après modif
+  // In production, html is inlined in templates.js
+  // Not in development, otherwise reload problem after modification
   if (Env === 'prod') {
     GlobalConfig.allFiles.xDashStudio.header.push('.tmp/templates.js');
   }
@@ -158,7 +166,7 @@ task(
   'logs',
   series('clear:cache', 'init', (cb) => {
     console.log('\n                         -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*');
-    console.log('                              xDash Vesion : ' + GlobalConfig.config.xDashConfig.version.fullVersion);
+    console.log('                              xDash Vesion : ' + VERSION);
     console.log('                         -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*');
     console.log('                                    EV ENV :', Env);
     console.log('                                       --------- \n');
@@ -183,9 +191,9 @@ task(
       '}}.config.js files \n' +
       ' */\n\n\n';
 
-    let nameFile = 'config.' + Env + '.js';
+    const nameFile = 'config.' + Env + '.js';
 
-    for (var prop in GlobalConfig.config) {
+    for (const prop in GlobalConfig.config) {
       if (GlobalConfig.config.hasOwnProperty(prop)) {
         if (prop == 'here_app_id' || prop == 'here_app_code') {
           jsFile += 'var ' + prop + ' = ' + JSON.stringify(GlobalConfig.config[prop]) + ' ;\n';
@@ -194,7 +202,9 @@ task(
         }
       }
     }
-    var dirConfig = '../configs';
+    const dirConfig = '../configs';
+    const allFiles = GlobalConfig.allFiles;
+
     if (Env === 'prod') {
       generatedPageHeaderJsList = [filesName.xdash_runtime.header + '.min.js'];
       generatedPageBodyJsList = [filesName.xdash_runtime.body + '.min.js'];
@@ -207,18 +217,22 @@ task(
       xdashRuntimeHeaderJsList = [filesName.xdash_runtime.header + '.min.js'];
       xdashRuntimeBodyJsList = [filesName.xdash_runtime.body + '.min.js'];
       xdashRuntimeCssJsList = [filesName.xdash_runtime.css + '.min.css'];
+
+      taipyRuntimeHeaderJsList = [filesName.taipy_runtime.header + '.min.js'];
     } else {
-      generatedPageHeaderJsList = GlobalConfig.allFiles.xDashRuntime.header;
-      generatedPageBodyJsList = GlobalConfig.allFiles.xDashRuntime.body;
-      generatedPageCssList = GlobalConfig.allFiles.xDashRuntime.css;
+      generatedPageHeaderJsList = allFiles.xDashRuntime.header;
+      generatedPageBodyJsList = allFiles.xDashRuntime.body;
+      generatedPageCssList = allFiles.xDashRuntime.css;
 
-      xdashEditorBodyJsList = GlobalConfig.allFiles.xDashStudio.body;
-      xdashEditorHeaderJsList = GlobalConfig.allFiles.xDashStudio.header;
-      xdashEditorCssJsList = GlobalConfig.allFiles.xDashStudio.css;
+      xdashEditorBodyJsList = allFiles.xDashStudio.body;
+      xdashEditorHeaderJsList = allFiles.xDashStudio.header;
+      xdashEditorCssJsList = allFiles.xDashStudio.css;
 
-      xdashRuntimeHeaderJsList = GlobalConfig.allFiles.xDashRuntime.header;
-      xdashRuntimeBodyJsList = GlobalConfig.allFiles.xDashRuntime.body;
-      xdashRuntimeCssJsList = GlobalConfig.allFiles.xDashRuntime.css;
+      xdashRuntimeHeaderJsList = allFiles.xDashRuntime.header;
+      xdashRuntimeBodyJsList = allFiles.xDashRuntime.body;
+      xdashRuntimeCssJsList = allFiles.xDashRuntime.css;
+
+      taipyRuntimeHeaderJsList = [...allFiles.xDashRuntime.header, taipyGuiFile];
     }
 
     jsFile +=
@@ -297,22 +311,38 @@ task(
 task(
   'usemin:xdash_runtime:header',
   series('createConfigurationFile', () => {
-    return (
-      src(fixPath(GlobalConfig.allFiles.xDashRuntime.header))
-        .on('error', () => {
-          /* Ignore compiler errors */
-        })
-        // .pipe(
-        //   terser().on('error', function (e) {
-        //     console.log(e);
-        //     return this.end();
-        //   })
-        // )
-        .pipe(concat(filesName.xdash_runtime.header + '.min.js'))
-        .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
-        .pipe(replace('source/assets/', 'assets/'))
-        .pipe(dest(buildDirPath))
-    );
+    const xDashRuntimeHeaderFiles = GlobalConfig.allFiles.xDashRuntime.header;
+    const taipyRuntimeHeaderFiles = [...xDashRuntimeHeaderFiles, fixPath(taipyGuiFile)];
+
+    const xDashFileStream = src(fixPath(GlobalConfig.allFiles.xDashRuntime.header))
+      .on('error', () => {
+        /* Ignore compiler errors */
+      })
+      // .pipe(
+      //   terser().on('error', function (e) {
+      //     console.log(e);
+      //     this.emit('end');
+      //   })
+      // )
+      .pipe(concat(filesName.xdash_runtime.header + '.min.js'));
+
+    const taipyFileStream = src(fixPath(taipyRuntimeHeaderFiles))
+      .on('error', () => {
+        /* Ignore compiler errors */
+      })
+      // .pipe(
+      //   terser().on('error', function (e) {
+      //     console.log(e);
+      //     this.emit('end');
+      //   })
+      // )
+      .pipe(concat(filesName.taipy_runtime.header + '.min.js'));
+
+    // Merge the two processes to ensure both complete before signaling task completion
+    return merge(xDashFileStream, taipyFileStream)
+      .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
+      .pipe(replace('source/assets/', 'assets/'))
+      .pipe(dest(buildDirPath));
   })
 );
 
@@ -369,14 +399,8 @@ task(
 task(
   'inject:files:pyodide_worker',
   series('init', () => {
-    Env = argv.env ?? 'dev';
     const isProd = Env === 'prod';
-
-    let destination = '../';
-    if (isProd) {
-      destination = buildDirPath + '/';
-    }
-
+    const destination = !isProd ? '../' : buildDirPath + '/';
     const configFile = '../configs/config.' + Env + '.js';
     const dependenciesFiles = ['../thirdparty/pyodide.js', '../thirdparty/json_parseMore.js'];
     const workerFile = '../source/kernel/base/pyodide-worker.js';
@@ -407,344 +431,179 @@ task(
 task(
   'inject:files:prod',
   series('usemin:xdash_editor:header', 'usemin:xdash_editor:body', 'usemin:xdash_editor:css', () => {
-    Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
 
-    let baseFileJs = '';
-    let baseFileCss = '';
-    let destination = '../';
-    if (Env === 'prod') {
-      destination = buildDirPath + '/';
-      baseFileJs = destination;
-      baseFileCss = baseFileJs + 'assets/';
-    }
-    let header = src(fixPath(xdashEditorHeaderJsList, baseFileJs), {
-      read: false,
-    });
+    const destination = `${buildDirPath}/`;
+    const baseFileJs = destination;
+    const baseFileCss = `${baseFileJs}assets/`;
 
-    let css = src(fixPath(xdashEditorCssJsList, baseFileCss), {
-      read: false,
-      addRootSlash: true,
-    });
+    const header = src(fixPath(xdashEditorHeaderJsList, baseFileJs), { read: false });
+    const css = src(fixPath(xdashEditorCssJsList, baseFileCss), { read: false, addRootSlash: true });
 
-    if (Env === 'prod') {
-      return src('../index_tmp.html')
-        .pipe(
-          inject(header, {
-            ignorePath: destination,
-            name: 'third',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index.html'))
-        .pipe(replace('source/assets', 'assets'))
-        .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
-        .pipe(
-          usemin({
-            html: [
-              function () {
-                return htmlmin({ collapseWhitespace: true });
-              },
-            ],
-          })
-        )
-        .pipe(dest(destination));
-    } else {
-      return src('../index_tmp.html')
-        .pipe(
-          inject(header, {
-            ignorePath: destination,
-            name: 'third',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index.html'))
-        .pipe(replace('source/assets', 'assets'))
-        .pipe(
-          usemin({
-            html: [
-              function () {
-                return htmlmin({ collapseWhitespace: true });
-              },
-            ],
-          })
-        )
-        .pipe(dest(destination));
-    }
+    const injectOptions = { ignorePath: destination, empty: true, addRootSlash: false };
+
+    return src('../index_tmp.html')
+      .pipe(inject(header, { ...injectOptions, name: 'third' }))
+      .pipe(inject(css, { ...injectOptions }))
+      .pipe(debug())
+      .pipe(rename('index.html'))
+      .pipe(replace('source/assets', 'assets'))
+      .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
+      .pipe(
+        usemin({
+          html: [() => htmlmin({ collapseWhitespace: true })],
+        })
+      )
+      .pipe(dest(destination));
   })
 );
 
 task(
   'inject:files',
   series(ListTasksBeforeInject, () => {
-    Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
 
-    let baseFileJs = '';
-    let baseFileCss = '';
-    let destination = '../';
-    if (Env === 'prod') {
-      destination = buildDirPath + '/';
-      baseFileJs = destination;
-      baseFileCss = baseFileJs + 'assets/';
-    }
-    let header = src(fixPath(xdashEditorHeaderJsList, baseFileJs), {
-      read: false,
-    });
+    const isProd = Env === 'prod';
+    const destination = isProd ? `${buildDirPath}/` : '../';
+    const baseFileJs = isProd ? destination : '';
+    const baseFileCss = isProd ? `${baseFileJs}assets/` : '';
 
-    let css = src(fixPath(xdashEditorCssJsList, baseFileCss), {
-      read: false,
-      addRootSlash: true,
-    });
+    const injectOptions = {
+      ignorePath: destination,
+      empty: true,
+      addRootSlash: false,
+    };
 
-    if (Env === 'prod') {
-      return src('../index_tmp.html')
-        .pipe(
-          inject(header, {
-            ignorePath: destination,
-            name: 'third',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(debug())
+    const header = src(fixPath(xdashEditorHeaderJsList, baseFileJs), { read: false });
+    const css = src(fixPath(xdashEditorCssJsList, baseFileCss), { read: false, addRootSlash: true });
+
+    let stream = src('../index_tmp.html')
+      .pipe(inject(header, { ...injectOptions, name: 'third' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(debug())
+      .pipe(rename('index.html'));
+
+    if (isProd) {
+      stream = stream
         .pipe(replace('source/assets', 'assets'))
         .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
-        .pipe(rename('index.html'))
         .pipe(
           usemin({
-            html: [
-              function () {
-                return htmlmin({ collapseWhitespace: true });
-              },
-            ],
+            html: [() => htmlmin({ collapseWhitespace: true })],
           })
         )
         .pipe(dest(destination));
     } else {
-      return src('../index_tmp.html')
-        .pipe(
-          inject(header, {
-            ignorePath: destination,
-            name: 'third',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index.html'))
-        .pipe(dest(destination))
-        .pipe(connect.reload());
+      stream = stream.pipe(dest(destination)).pipe(connect.reload());
     }
+
+    return stream;
   })
 );
 
 task(
   'inject:files:view:dev',
   series('createConfigurationFile', () => {
-    Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
 
-    let baseFileJs = '';
-    let baseFileCss = '';
-    let destination = '../';
-    if (Env === 'prod') {
-      destination = buildDirPath + '/';
-      baseFileJs = destination;
-      baseFileCss = baseFileJs + 'assets/';
-    }
-    let header = src(fixPath(xdashRuntimeHeaderJsList, baseFileJs), {
-      read: false,
-    });
-    let body = src(fixPath(xdashRuntimeBodyJsList, baseFileJs), {
-      read: false,
-    });
+    const isProd = Env === 'prod';
+    const destination = isProd ? `${buildDirPath}/` : '../';
+    const baseFileJs = isProd ? destination : '';
+    const baseFileCss = isProd ? `${baseFileJs}assets/` : '';
 
-    let css = src(fixPath(xdashRuntimeCssJsList, baseFileCss), {
-      read: false,
-      addRootSlash: true,
-    });
+    const injectOptions = {
+      ignorePath: destination,
+      empty: true,
+      addRootSlash: false,
+      selfClosingTag: true,
+    };
 
-    if (Env === 'prod') {
-      return src('../xprjson-view_tmp.html')
-        .pipe(
-          inject(header, {
-            ignorePath: destination,
-            name: 'header',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(body, {
-            ignorePath: destination,
-            name: 'body',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-            selfClosingTag: true,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index-view-' + GlobalConfig.config.xDashConfig.version.fullVersion + '.html'))
-        .pipe(dest(destination));
-    } else {
-      return src('../xprjson-view_tmp.html')
-        .pipe(
-          inject(header, {
-            ignorePath: destination,
-            name: 'header',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(body, {
-            ignorePath: destination,
-            name: 'body',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-            selfClosingTag: true,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index-view.html'))
-        .pipe(dest(destination))
-        .pipe(connect.reload());
+    const injectFiles = (fileList, basePath, options = {}) =>
+      src(fixPath(fileList, basePath), {
+        read: false,
+        ...options,
+      });
+
+    const xDashHeader = injectFiles(xdashRuntimeHeaderJsList, baseFileJs);
+    const taipyHeader = injectFiles(taipyRuntimeHeaderJsList, baseFileJs);
+    const body = injectFiles(xdashRuntimeBodyJsList, baseFileJs);
+    const css = injectFiles(xdashRuntimeCssJsList, baseFileCss, { addRootSlash: true });
+
+    const xDashFileName = isProd ? `index-view-${VERSION}.html` : 'index-view.html';
+    const taipyFileName = isProd ? `index-taipy-view-${VERSION}.html` : 'index-taipy-view.html';
+
+    const xDashFileStream = src('../xprjson-view_tmp.html')
+      .pipe(inject(xDashHeader, { ...injectOptions, name: 'header' }))
+      .pipe(inject(body, { ...injectOptions, name: 'body' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(debug())
+      .pipe(rename(xDashFileName));
+
+    const taipyFileStream = src('../xprjson-view_tmp.html')
+      .pipe(inject(taipyHeader, { ...injectOptions, name: 'header' }))
+      .pipe(inject(body, { ...injectOptions, name: 'body' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(debug())
+      .pipe(rename(taipyFileName));
+
+    // Apply live reload for development environment
+    let fileStream = merge(xDashFileStream, taipyFileStream).pipe(dest(destination));
+    if (!isProd) {
+      fileStream = fileStream.pipe(connect.reload());
     }
+
+    return fileStream;
   })
 );
 
 task(
   'inject:files:view',
   series('usemin:xdash_runtime:header', 'usemin:xdash_runtime:body', 'usemin:xdash_runtime:css', () => {
-    Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
-    let baseFileJs = '';
-    let baseFileCss = '';
-    let destination = '../';
-    if (Env === 'prod') {
-      destination = buildDirPath + '/';
-      baseFileJs = destination;
-      baseFileCss = baseFileJs + 'assets/';
-    }
-    let header = src(fixPath(xdashRuntimeHeaderJsList, baseFileJs), {
-      read: false,
-    });
-    let body = src(fixPath(xdashRuntimeBodyJsList, baseFileJs), {
-      read: false,
-    });
 
-    let css = src(fixPath(xdashRuntimeCssJsList, baseFileCss), {
-      read: false,
-      addRootSlash: true,
-    });
+    const isProd = Env === 'prod';
+    const destination = isProd ? `${buildDirPath}/` : '../';
+    const baseFileJs = isProd ? destination : '';
+    const baseFileCss = isProd ? `${baseFileJs}assets/` : '';
 
-    if (Env === 'prod') {
-      return src('../xprjson-view_tmp.html')
-        .pipe(
-          inject(header, {
-            ignorePath: destination,
-            name: 'header',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(body, {
-            ignorePath: destination,
-            name: 'body',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-            selfClosingTag: true,
-          })
-        )
-        .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
-        .pipe(debug())
-        .pipe(rename('index-view-' + GlobalConfig.config.xDashConfig.version.fullVersion + '.html'))
-        .pipe(dest(destination));
-    } else {
-      return src('../xprjson-view_tmp.html')
-        .pipe(
-          inject(header, {
-            ignorePath: destination,
-            name: 'header',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(body, {
-            ignorePath: destination,
-            name: 'body',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-            selfClosingTag: true,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index-view.html'))
-        .pipe(dest(destination));
-    }
+    const injectOptions = {
+      ignorePath: destination,
+      empty: true,
+      addRootSlash: false,
+      selfClosingTag: true,
+    };
+
+    const injectFiles = (fileList, basePath, options = {}) =>
+      src(fixPath(fileList, basePath), {
+        read: false,
+        ...options,
+      });
+
+    const xDashHeader = injectFiles(xdashRuntimeHeaderJsList, baseFileJs);
+    const taipyHeader = injectFiles(taipyRuntimeHeaderJsList, baseFileJs);
+    const body = injectFiles(xdashRuntimeBodyJsList, baseFileJs);
+    const css = injectFiles(xdashRuntimeCssJsList, baseFileCss, { addRootSlash: true });
+
+    const xDashFileName = isProd ? `index-view-${VERSION}.html` : 'index-view.html';
+    const taipyFileName = isProd ? `index-taipy-view-${VERSION}.html` : 'index-taipy-view.html';
+
+    const xDashFileStream = src('../xprjson-view_tmp.html')
+      .pipe(inject(xDashHeader, { ...injectOptions, name: 'header' }))
+      .pipe(inject(body, { ...injectOptions, name: 'body' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(debug())
+      .pipe(rename(xDashFileName));
+
+    const taipyFileStream = src('../xprjson-view_tmp.html')
+      .pipe(inject(taipyHeader, { ...injectOptions, name: 'header' }))
+      .pipe(inject(body, { ...injectOptions, name: 'body' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(debug())
+      .pipe(rename(taipyFileName));
+
+    return merge(xDashFileStream, taipyFileStream)
+      .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
+      .pipe(dest(destination));
   })
 );
 
@@ -900,6 +759,10 @@ task('copy-starter', function () {
   return src(['../source/starter-browser-compatibility.js']).pipe(dest(buildDirPath));
 });
 
+task('copy-taipy-worker', function () {
+  return src(['../source/connectors/taipy/677.taipy-gui-base.js']).pipe(dest(buildDirPath));
+});
+
 task(
   'build',
   series(
@@ -910,6 +773,7 @@ task(
     'mkdocs',
     'template',
     'copy-starter',
+    'copy-taipy-worker',
     //'createConfigurationFile',
     //'usemin:xdash_editor:header',
     //'usemin:xdash_editor:body',
@@ -927,7 +791,17 @@ task(
 
 task(
   'build:runtime',
-  series('clear:cache', 'clear:build', 'sass', 'init', 'template', 'copy-starter', 'inject:files:view', 'images')
+  series(
+    'clear:cache',
+    'clear:build',
+    'sass',
+    'init',
+    'template',
+    'copy-starter',
+    'copy-taipy-worker',
+    'inject:files:view',
+    'images'
+  )
 );
 
 task(
@@ -939,6 +813,7 @@ task(
     'init',
     'template',
     'copy-starter',
+    'copy-taipy-worker',
     'inject:files:prod',
     'inject:files:pyodide_worker',
     'inject:files:view',

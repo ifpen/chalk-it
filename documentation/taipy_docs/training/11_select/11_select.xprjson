@@ -2,7 +2,7 @@
 	"meta": {
 		"version": "3.000.8848",
 		"fileFormatVersion": "0.3",
-		"date": "Fri Mar 22 2024 14:25:57 GMT+0100 (heure normale d’Europe centrale)",
+		"date": "Fri Mar 29 2024 16:03:14 GMT+0100 (heure normale d’Europe centrale)",
 		"name": "11_select",
 		"description": "",
 		"groupName": "",
@@ -45,7 +45,8 @@
 		},
 		"droppers": {
 			"dpr1": {
-				"component0": "flatUiSelectA"
+				"component0": "flatUiSelectA",
+				"component1": "flatUiValueDisplayA"
 			}
 		},
 		"backgroundColor": "",
@@ -54,8 +55,8 @@
 	"dashboard": {
 		"flatUiSelectA": {
 			"layout": {
-				"top": "17.4667vh",
-				"left": "5.17016vw",
+				"top": "6.13333vh",
+				"left": "3.20681vw",
 				"height": "5.06667vh",
 				"width": "18.9791vw",
 				"minHeight": "27px",
@@ -67,7 +68,7 @@
 				"modelJsonId": "flatUiSelect"
 			},
 			"modelParameters": {
-				"label": "labelText",
+				"label": "select_fruit",
 				"inheritLabelFromData": true,
 				"displayLabel": true,
 				"labelFontSize": 0.5,
@@ -87,6 +88,43 @@
 				"values": [],
 				"selectedValue": ""
 			}
+		},
+		"flatUiValueDisplayA": {
+			"layout": {
+				"top": "16.6667vh",
+				"left": "3.20681vw",
+				"height": "5.06667vh",
+				"width": "34.7513vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "flatUiValueDisplayA",
+				"modelJsonId": "flatUiValueDisplay"
+			},
+			"modelParameters": {
+				"label": "message",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"valueWidthProportion": "70%",
+				"valueFontSize": 0.5,
+				"valueColor": "var(--widget-input-text)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"backgroundColor": "var(--widget-input-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
 		}
 	},
 	"connections": {
@@ -98,12 +136,19 @@
 			},
 			"values": {
 				"name": "values",
-				"dataNode": "select_fruits",
+				"dataNode": "fruits",
 				"dataFields": []
 			},
 			"selectedValue": {
 				"name": "selectedValue",
-				"dataNode": "None",
+				"dataNode": "select_fruit",
+				"dataFields": []
+			}
+		},
+		"flatUiValueDisplayA": {
+			"value": {
+				"name": "value",
+				"dataNode": "message",
 				"dataFields": []
 			}
 		}

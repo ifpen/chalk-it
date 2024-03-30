@@ -3,9 +3,8 @@
 Plots in Chalk'it lite may be made with the following widget types:
 
 * Python-based plots are available using [Plolty Python](https://plotly.com/python/) or [Matplotlib](https://matplotlib.org/)
-* Simplified usage (array actuators) is available for [Plotly line](#plotly-line), [Plotly bar](#plotly-bar), [Plotly pie](#plotly-pie) and [Plotly 3D surface](#plotly-3d-surface). Otherwise, use the [Plotly Python generic](#plotly-python-generic) for a complete Plotly.js options and configurations
+* Simplified usage (array actuators) is available for [Plotly line](#plotly-line), [Plotly bar](#plotly-bar) or [Plotly pie](#plotly-pie). Otherwise, use the [Plotly Python generic](#plotly-python-generic) for a complete Plotly options and configurations
 * JavaScript-based plots are available [Apache ECharts](https://echarts.apache.org/). They are usable by writing Python code with JSON-like dicts.
-
 
 Plotly-based widgets share common parameters, especially *hideModeBar* which allows to hide plot options toolbar at dashboard play.
 
@@ -13,7 +12,7 @@ Plotly-based widgets share common parameters, especially *hideModeBar* which all
 
 Allows to quickly display line charts, when x and y axis are expressed as lists of numbers. The parameter *numberOfAxis* allows to specifiy up to 8 y-axis actuators (named **y1** to **y8**), sharing the same x-axis actuator (named **x**). Widget layout may be configured in the "Graphical properties" tab.
 
-* [line-chart.xprjson](/wdg/plotly/line-chart.xprjson)
+* [line_chart.py](/wdg/plotly/line_chart.py)
 
 ![line-chart](plotly/line-chart.png)
 
@@ -23,11 +22,11 @@ Here parameter *numberOfAxis* allows to specify couples of x and y axis actuator
 
 Some examples :
 
-* [bar-chart.xprjson](/wdg/plotly/bar-chart.xprjson)
+* [bar_chart.py](/wdg/plotly/bar_chart.py)
 
 ![bar-chart](plotly/bar-chart.png)
 
-* [stack-bar-chart-js.xprjson](/wdg/plotly/stack-bar-chart-js.xprjson)
+* [stack_bar_chart.py](/wdg/plotly/stack_bar_chart.py)
 
 ![stack-bar-chart](plotly/stack-bar-chart.png)
 
@@ -42,7 +41,7 @@ This widget has two actuators :
 
 Example :
 
-* [pie-chart.xprjson](/wdg/plotly/pie-chart.xprjson)
+* [pie_chart.py](/wdg/plotly/pie_chart.py)
 
 ## Plotly Python Generic
 
@@ -63,7 +62,7 @@ No call to `fig.show()` is needed because rendering process will be entirely han
 
 Example:
 
-- [plotly-density-heatmap-py.xprjson](/wdg/plotly/plotly-density-heatmap-py.xprjson)
+- [plotly_density_heatmap.py](/wdg/plotly/plotly_density_heatmap.py)
 
 ## Matplotlib
 
@@ -84,8 +83,6 @@ ax.bar(fruits, counts, label=bar_labels, color=bar_colors)
 ax.set_ylabel('fruit supply')
 ax.set_title('Fruit supply by kind and color')
 ax.legend(title='Fruit color')
-
-return fig
 ```
 
 All receipes may be found in [Matplotlib documentation](https://matplotlib.org/stable/gallery/index.html).
@@ -94,7 +91,7 @@ All receipes may be found in [Matplotlib documentation](https://matplotlib.org/s
 
 Example:
 
-- [matplotlib-bar-color-py.xprjson](/wdg/plots/matplotlib-bar-color-py.xprjson)
+- [matplotlib_bar_color.py](/wdg/plots/matplotlib_bar_color.py)
 
 ## ECharts
 
@@ -102,4 +99,4 @@ Simply, copy and paste the needed visualization from [ECharts examples gallery](
 
 Some examples:
 
-* [echarts-covid-comparison-js.xprjson](/wdg/plots/echarts-covid-comparison-js.xprjson)
+* [echarts_covid_comparison.py](/wdg/plots/echarts_covid_comparison.py)

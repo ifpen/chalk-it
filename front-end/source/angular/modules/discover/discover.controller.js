@@ -31,7 +31,7 @@ angular
     function ($scope, $rootScope, $stateParams, $state, ApisFactory, ManagePrjService) {
       const matches = document.querySelectorAll('.docsLink');
       matches.forEach(function (item) {
-        item.href = xDashConfig.urlDoc + 'index.html';
+        item.href = xDashConfig.urlDoc;
       });
 
       $scope.discoverSteps = [0, 0, 0, 0, 0];
@@ -51,6 +51,11 @@ angular
       }
 
       $scope.startGuidedTour = function () {
+        if ($rootScope.taipyLink) {
+          navHelper.openDemoProject('', startIntroProject);
+          return;
+        }
+
         const projectName = 'live-demo-py';
         if (
           !_.isUndefined($rootScope.currentPrjDirty) &&

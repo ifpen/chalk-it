@@ -1,0 +1,90 @@
+{
+	"meta": {
+		"version": "3.000.8848",
+		"fileFormatVersion": "0.3",
+		"date": "Fri Mar 29 2024 15:35:00 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "image_switch-recovery",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1295,
+		"heightPx": 590,
+		"scrollWidthPx": 1295,
+		"scrollHeightPx": 590,
+		"widthVw": 84.75130890052355,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.75130890052355,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1295.4,
+			"heightPx": 590.4,
+			"widthVw": 84.77748691099477,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "annotationImageA"
+			}
+		},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"annotationImageA": {
+			"layout": {
+				"top": "27.9467vh",
+				"left": "7.51309vw",
+				"height": "20vh",
+				"width": "17vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "annotationImageA",
+				"modelJsonId": "annotationImage"
+			},
+			"modelParameters": {
+				"keepRatio": true,
+				"hideImageURL": false,
+				"enableActuator": false
+			},
+			"modelHiddenParams": {
+				"fileContentBase64": "",
+				"mimeType": ""
+			}
+		}
+	},
+	"connections": {},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

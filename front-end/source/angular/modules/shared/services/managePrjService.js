@@ -764,15 +764,22 @@ angular.module('modules').service('ManagePrjService', [
      * @method openTaipyPage
      * @public
      * @param {string} fileName - The name of the file to be opened, including the ".xprjson" extension.
+     * @param {boolean} [isTemplateFile=false] -  Specifies whether the file is a template. If true,
+     *                                            the file will be loaded from the template directory;
+     *                                            otherwise, it will be loaded from the current working directory (cwd).
+     *                                            Defaults to false.
+     * @param {Function} callback - A callback function that is called after the project file has been successfully
+     * opened and processed.
      * @returns {void} This method does not return a value.
      */
-    self.openTaipyPage = function (fileName) {
+    self.openTaipyPage = function (fileName, isTemplateFile = false, callback) {
       const currentPrjDirty = $rootScope.currentPrjDirty || '';
       $rootScope.origin = 'projectEdition';
       const commonActions = () => {
-        taipyManager.loadFile(fileName);
+        $rootScope.isLiveDemo = isTemplateFile;
+        taipyManager.loadFile(fileName, isTemplateFile);
         taipyManager.endAction = (xprjson) => {
-          _openTaipyPageEndAction(fileName, xprjson);
+          _openTaipyPageEndAction(fileName, xprjson, callback);
         };
       };
       if (currentPrjDirty !== '') {
@@ -806,17 +813,22 @@ angular.module('modules').service('ManagePrjService', [
     };
 
     /**
-     * This function opens the selected project.
+     * Opens the selected project by loading the specified project file and executing a callback function upon completion.
      *
      * @method _openTaipyPageEndAction
      * @private
      * @param {*} fileName - The name of the file to be opened, including the ".xprjson" extension.
+     * @param {Object} xprjson - The parsed JSON object from the project file.
+     * @param {Function} callback - A callback function that is called after the project file has been successfully
+     * opened and processed.
      * @returns {void} This method does not return a value.
      */
-    function _openTaipyPageEndAction(fileName, xprjson) {
+    function _openTaipyPageEndAction(fileName, xprjson, callback) {
       $rootScope.loadingBarStart();
       datanodesManager.showLoadingIndicator(true);
       $rootScope.origin = 'openProject';
+      $rootScope.toggleMenuOptionDisplay('none');
+      $state.go('modules', {});
       xdash.openProjectManager(xprjson);
       taipyManager.processVariableData();
       const projectName = fileName.replace('.xprjson', '');
@@ -835,6 +847,7 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.updateFlagDirty(false);
       $rootScope.loadingBarStop();
       datanodesManager.showLoadingIndicator(false);
+      if (_.isFunction(callback)) callback();
     }
   },
 ]);
