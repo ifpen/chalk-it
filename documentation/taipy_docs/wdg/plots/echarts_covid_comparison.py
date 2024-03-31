@@ -127,7 +127,7 @@ option_e = echarts_option(covid_filtered, selected_countries)
 
 
 # Create a Taipy Designer Page instance
-page = ChalkitPage("echarts_covid_comparison.xprjson")
+page = DesignerPage("echarts_covid_comparison.xprjson")
 
 gui = Gui()
 gui.add_page("covid", page)

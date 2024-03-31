@@ -9,4 +9,4 @@ def on_change(state, var, val):
         state.c = state.a + state.b
 
 
-page = ChalkitPage("p_page1.xprjson")
+page = DesignerPage("p_page1.xprjson")

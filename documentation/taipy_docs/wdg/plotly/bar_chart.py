@@ -19,6 +19,6 @@ data = {
 }
 
 gui = Gui()
-page = ChalkitPage("bar_chart.xprjson")
+page = DesignerPage("bar_chart.xprjson")
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

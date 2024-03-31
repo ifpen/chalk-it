@@ -21,6 +21,6 @@ plot = {
 }
 
 gui = Gui()
-page = ChalkitPage("line_chart.xprjson")
+page = DesignerPage("line_chart.xprjson")
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

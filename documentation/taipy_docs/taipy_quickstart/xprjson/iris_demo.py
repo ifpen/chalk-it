@@ -49,7 +49,7 @@ def on_change(state, var, val):
         state.prediction = make_prediction(clf, val)
 
 # Create a Taipy Designer Page instance with the resource handler
-page = ChalkitPage("iris_demo.xprjson")
+page = DesignerPage("iris_demo.xprjson")
 
 gui = Gui()
 gui.add_page("iris", page)

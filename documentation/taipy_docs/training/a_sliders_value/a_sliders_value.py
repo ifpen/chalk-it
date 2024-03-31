@@ -12,6 +12,6 @@ def on_change(state, var, val):
         state.c = state.a + state.b
 
 
-page = ChalkitPage("a_sliders_value.xprjson")
+page = DesignerPage("a_sliders_value.xprjson")
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

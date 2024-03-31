@@ -16,7 +16,7 @@ def write_python_file(filename, datanodes):
  
     python_variables_code += 'gui = Gui()\n'      
     new_xprjson_file_name = filename.replace('.xprjson', '_modif.xprjson')      
-    python_variables_code += 'page = ChalkitPage("' + new_xprjson_file_name + '")\n'
+    python_variables_code += 'page = DesignerPage("' + new_xprjson_file_name + '")\n'
     python_variables_code += 'gui.add_page("page", page)\n'
     python_variables_code += 'gui.run(run_browser=True, use_reloader=False)\n'
     

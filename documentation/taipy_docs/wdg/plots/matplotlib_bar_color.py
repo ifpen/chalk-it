@@ -22,6 +22,6 @@ ax.set_ylabel('fruit supply')
 ax.set_title('Fruit supply by kind and color')
 ax.legend(title='Fruit color')
 
-page = ChalkitPage("matplotlib_bar_color.xprjson")
+page = DesignerPage("matplotlib_bar_color.xprjson")
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

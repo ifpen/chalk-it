@@ -5,7 +5,7 @@ a = 1
 b = 5
 c = a + b
 
-page = ChalkitPage("sliders_value.xprjson")
+page = DesignerPage("sliders_value.xprjson")
 
 gui = Gui()
 gui.add_page("page", page)

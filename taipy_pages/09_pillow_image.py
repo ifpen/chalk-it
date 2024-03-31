@@ -30,7 +30,7 @@ def on_change(state, var, val):
         state.img_grey = convert_to_grayscale(state.image, val)
 
 
-page = ChalkitPage("09_pillow_image.xprjson", designer_mode=True)
+page = DesignerPage("09_pillow_image.xprjson", designer_mode=True)
 gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

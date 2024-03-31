@@ -9,6 +9,6 @@ with open('example.md', 'r') as file:
     markdown_content = file.read()
 
 
-page = ChalkitPage("markdown_doc.xprjson")
+page = DesignerPage("markdown_doc.xprjson")
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

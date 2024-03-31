@@ -11,6 +11,6 @@ imgStruct = {
 }
 
 gui = Gui()
-page = ChalkitPage("osm_image_overlay.xprjson")
+page = DesignerPage("osm_image_overlay.xprjson")
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

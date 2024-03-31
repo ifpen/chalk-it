@@ -6,6 +6,6 @@ time = {
 }
 
 gui = Gui()
-page = ChalkitPage("time_picker.xprjson")
+page = DesignerPage("time_picker.xprjson")
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

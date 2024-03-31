@@ -9,6 +9,6 @@ with open('sample.html', 'r') as file:
     html_content = file.read()
 
 
-page = ChalkitPage("html_doc.xprjson")
+page = DesignerPage("html_doc.xprjson")
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

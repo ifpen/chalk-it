@@ -41,4 +41,4 @@ folium.Marker(
 # String to sent to Chalk'it
 # map_html = map._repr_html_()
 
-page = ChalkitPage("folium_map.xprjson", designer_mode=True)
+page = DesignerPage("folium_map.xprjson", designer_mode=True)
