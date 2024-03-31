@@ -40,7 +40,7 @@ To start, create a Python script named **iris_demo.py** and insert the following
 
 ```python
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 page = DesignerPage("iris_demo.xprjson")
 

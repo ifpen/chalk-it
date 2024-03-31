@@ -1,10 +1,10 @@
 # Simple application
 
-Let this simple Taipy application. Add Taipy Designer (`chlkt`) import to activate it.
+Let this simple Taipy application. Add Taipy Designer (`taipy_designer`) import to activate it.
 
 ```python
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 a = 1
 b = 5
@@ -55,7 +55,7 @@ To make our dashboard interactive, add the following `on_change` callback as fol
 
 ```python
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 a = 1
 b = 5
