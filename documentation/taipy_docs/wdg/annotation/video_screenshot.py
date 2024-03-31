@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 imageData = {
   "b64":"iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk",

@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 gui = Gui()
 page = ChalkitPage("d3_year_heatmap_calendar_modif.xprjson")

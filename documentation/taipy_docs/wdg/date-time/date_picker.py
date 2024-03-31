@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 gui = Gui()
 page = ChalkitPage("date_picker_modif.xprjson")

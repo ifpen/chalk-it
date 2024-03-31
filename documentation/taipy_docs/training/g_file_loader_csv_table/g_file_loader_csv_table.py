@@ -1,6 +1,6 @@
 from taipy.gui import Gui
 import pandas as pd
-from chlkt import *
+from taipy_designer import *
 
 # Initialize the GUI and set the default DataFrame
 gui = Gui()

@@ -1,4 +1,4 @@
-from chlkt import *
+from taipy_designer import *
 
 
 text = "this is page 2"

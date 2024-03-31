@@ -1,4 +1,4 @@
-from chlkt import *
+from taipy_designer import *
 from taipy.gui.custom import Page
 import pandas as pd
 

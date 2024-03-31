@@ -2,7 +2,7 @@ from PIL import Image
 import os
 
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 # Get the directory of the current Python script
 dir_path = os.path.dirname(os.path.abspath(__file__))

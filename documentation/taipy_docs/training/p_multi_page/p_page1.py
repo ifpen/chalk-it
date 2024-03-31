@@ -1,4 +1,4 @@
-from chlkt import *
+from taipy_designer import *
 
 a = 1
 b = 5

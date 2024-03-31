@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 trace1 = {
   "x": [2015, 2016, 2017],
