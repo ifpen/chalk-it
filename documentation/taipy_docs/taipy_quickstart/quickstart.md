@@ -42,7 +42,7 @@ To start, create a Python script named **iris_demo.py** and insert the following
 from taipy.gui import Gui
 from chlkt import *
 
-page = ChalkitPage("iris_demo.xprjson")
+page = ChalkitPage("iris_demo.xprjson", designer_mode=True)
 
 gui = Gui()
 gui.add_page("iris", page)

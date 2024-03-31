@@ -32,6 +32,6 @@ def on_change(state, var, val):
             state.image_to_dispaly = versicolor
 
 gui = Gui()
-page = ChalkitPage("image_switch.xprjson")
+page = ChalkitPage("image_switch.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

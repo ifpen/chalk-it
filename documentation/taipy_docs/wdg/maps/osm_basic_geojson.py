@@ -88,6 +88,6 @@ basicGeoJSON = {
 }
 
 gui = Gui()
-page = ChalkitPage("osm_basic_geojson.xprjson")
+page = ChalkitPage("osm_basic_geojson.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

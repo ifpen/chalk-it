@@ -11,6 +11,6 @@ def compute_addition(state, var, val):
         state.c = state.a + state.b
 
 
-page = ChalkitPage("b_sliders_button_value.xprjson")
+page = ChalkitPage("b_sliders_button_value.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

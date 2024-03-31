@@ -21,6 +21,6 @@ def on_change(state, var, val):
     if var == "editable_table":
         state.total = compute_total(val)
 
-page = ChalkitPage("editable_table.xprjson")
+page = ChalkitPage("editable_table.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

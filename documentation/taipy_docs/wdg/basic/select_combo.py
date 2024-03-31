@@ -16,6 +16,6 @@ def on_change(state, var, val):
         state.message = print_message(state.select_fruit)
 
 
-page = ChalkitPage("select_combo.xprjson")
+page = ChalkitPage("select_combo.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

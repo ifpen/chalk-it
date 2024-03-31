@@ -24,6 +24,6 @@ choropleth = {
 }
 
 gui = Gui()
-page = ChalkitPage("osm_choropleth.xprjson")
+page = ChalkitPage("osm_choropleth.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

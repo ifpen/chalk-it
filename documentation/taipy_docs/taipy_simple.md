@@ -10,7 +10,7 @@ a = 1
 b = 5
 c = a + b
 
-page = ChalkitPage("sliders_value.xprjson")
+page = ChalkitPage("sliders_value.xprjson", designer_mode=True)
 
 gui = Gui()
 gui.add_page("page", page)
@@ -65,7 +65,7 @@ def on_change(state, var, val):
     if (var == "a" or var == "b"):
         state.c = state.a + state.b
 
-page = ChalkitPage("sliders_value.xprjson")
+page = ChalkitPage("sliders_value.xprjson", designer_mode=True)
 
 gui = Gui()
 gui.add_page("page", page)

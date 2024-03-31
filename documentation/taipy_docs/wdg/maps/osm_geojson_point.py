@@ -24,6 +24,6 @@ point = {
 }
 
 gui = Gui()
-page = ChalkitPage("osm_geojson_point.xprjson")
+page = ChalkitPage("osm_geojson_point.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)
