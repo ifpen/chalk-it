@@ -3,7 +3,7 @@
 		"version": "3.000.8843",
 		"fileFormatVersion": "0.3",
 		"date": "Mon Mar 18 2024 11:32:10 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "06_file_loader_csv_table",
+		"name": "file_loader_csv_table",
 		"description": "",
 		"groupName": "",
 		"tags": [],
