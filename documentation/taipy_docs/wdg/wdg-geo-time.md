@@ -136,7 +136,7 @@ which will be displayed as :
 Examples :
 
 * Single line : [osm_geojson_line.py](/wdg/maps/osm_geojson_line.py)
-* Multiple lines :  [osm_geojson_lines.py](/wdg/maps/osm_geojson_lines.xprjson)
+* Multiple lines :  [osm_geojson_lines.py](/wdg/maps/osm_geojson_lines.py)
 
 #### Polygon
 
@@ -190,7 +190,7 @@ which will be displayed as :
 
 Example :
 
-* [osm_geojson_polygon.py](/wdg/maps/osm_geojson_polygon.xprjson)
+* [osm_geojson_polygon.py](/wdg/maps/osm_geojson_polygon.py)
 
 See also : [Using GeoJSON with Leaflet](https://leafletjs.com/examples/geojson/)
 
@@ -364,7 +364,7 @@ Example of display (for a larger data set) :
 
 Example :
 
-* [osm_choropleth.xprjson](/wdg/maps/osm_choropleth.xprjson)
+* [osm_choropleth.py](/wdg/maps/osm_choropleth.py)
 
 ### imageOverlay layers
 

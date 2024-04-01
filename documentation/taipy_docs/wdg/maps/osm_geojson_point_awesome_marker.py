@@ -29,6 +29,6 @@ point = {
 }
 
 gui = Gui()
-page = DesignerPage("osm_geojson_point_awesome_marker.xprjson")
+page = DesignerPage("osm_geojson_point_awesome_marker.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

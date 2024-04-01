@@ -1,9 +1,9 @@
 {
 	"meta": {
-		"version": "3.000.8841",
+		"version": "3.000.8858",
 		"fileFormatVersion": "0.3",
-		"date": "Sat Mar 16 2024 23:17:34 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "k_folium_map",
+		"date": "Mon Apr 01 2024 17:06:37 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "progress_bar",
 		"description": "",
 		"groupName": "",
 		"tags": [],
@@ -45,40 +45,57 @@
 		},
 		"droppers": {
 			"dpr1": {
-				"component0": "foliumMapsA"
+				"component0": "flatUiProgressBarA"
 			}
 		},
-		"backgroundColor": "",
+		"backgroundColor": "#ffffff",
 		"theme": "default"
 	},
 	"dashboard": {
-		"foliumMapsA": {
+		"flatUiProgressBarA": {
 			"layout": {
-				"top": "10.1333vh",
-				"left": "2.08115vw",
-				"height": "44.1333vh",
-				"width": "39.1361vw",
-				"minHeight": "32px",
-				"minWidth": "50px",
+				"top": "8.93333vh",
+				"left": "4.05759vw",
+				"height": "5.06667vh",
+				"width": "24.0183vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
 				"z-index": "1"
 			},
 			"container": {
-				"instanceId": "foliumMapsA",
-				"modelJsonId": "foliumMaps"
+				"instanceId": "flatUiProgressBarA",
+				"modelJsonId": "flatUiProgressBar"
 			},
 			"modelParameters": {
-				"backgroundColor": "rgba(0, 0, 0, 0)"
+				"label": "progress",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"rangeActuator": false,
+				"min": 0,
+				"max": 100,
+				"displayValue": false,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "var(--widget-font-family)",
+				"labelWidthProportion": "20%",
+				"progressBarWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"progressBarRangeColor": "var(--widget-range-color)",
+				"progressBarSegmentColor": "var(--widget-segment-color)",
+				"valueColor": "var(--widget-color)"
 			},
 			"modelHiddenParams": {
-				"map": ""
+				"value": 0
 			}
 		}
 	},
 	"connections": {
-		"foliumMapsA": {
-			"_repr_html_": {
-				"name": "_repr_html_",
-				"dataNode": "m",
+		"flatUiProgressBarA": {
+			"value": {
+				"name": "value",
+				"dataNode": "progress",
 				"dataFields": []
 			}
 		}

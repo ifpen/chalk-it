@@ -6,8 +6,8 @@ The Iris flower dataset is a multivariate dataset introduced by the British stat
 
 The following tutorial allows to illustrate main Taipy Designer features througth this dataset. Expected result is provided in the following project:
 
-- [iris_demo.py](/quick-start/xprjson/iris_demo.py)
-- [iris_demo_page.xprjson](/quick-start/xprjson/iris_demo_page.xprjson)
+- [iris_demo.py](/taipy_quickstart/xprjson/iris_demo.py)
+- [iris_demo_page.xprjson](/taipy_quickstart/xprjson/iris_demo_page.xprjson)
 
 ## 1. Installing required Python librairies
 
@@ -42,7 +42,7 @@ To start, create a Python script named **iris_demo.py** and insert the following
 from taipy.gui import Gui
 from taipy_designer import *
 
-page = DesignerPage("iris_demo.xprjson")
+page = DesignerPage("iris_demo.xprjson", designer_mode=True)
 
 gui = Gui()
 gui.add_page("iris", page)

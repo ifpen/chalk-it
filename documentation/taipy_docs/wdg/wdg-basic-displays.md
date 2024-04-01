@@ -6,7 +6,7 @@ Basic widgets typically perform display of numeric values.
 
 **Value display** is a generic display widget, which is intended to operate on primitive datatypes string and number.
 
-Among its parameters (in tab, "Graphical Properties") :
+Among its parameters (in tab, "Graphical Properties"):
 
 - decimalDigits : decimal precision of number. Default value is 3
 
@@ -20,9 +20,9 @@ For displaying binary status (on/off)
 
 ## Progress bar
 
-Enables to display a progress over a range. See example :
+Enables to display a progress over a range. See example:
 
-* [progress-bar.xprjson](/wdg/basic/progress-bar.xprjson)
+* [progress_bar.py](/wdg/basic/progress_bar.py)
 
 ## Full-circular, semi-circular or arch-circular gauges
 
@@ -36,7 +36,7 @@ More advance displays (like [Label](../../wdg/wdg-annotation-video#label), [Mark
 
 ## Table
 
-**Table** widget expects its **value** input to reference a list, containing sub-lists, all of the same dimension, such as :
+**Table** widget expects its **value** input to reference a list, containing sub-lists, all of the same dimension, such as:
 
 ``` python
 [

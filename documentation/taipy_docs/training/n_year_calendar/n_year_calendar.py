@@ -37,6 +37,6 @@ calendar_values_object = {
 
 selected_date = "2020-06-02"
 
-page = DesignerPage("n_year_calendar.xprjson")
+page = DesignerPage("n_year_calendar.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

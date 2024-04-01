@@ -30,6 +30,6 @@ folium.Choropleth(
 
 folium.LayerControl().add_to(m)
 
-page = DesignerPage("08_folium_map.xprjson")
+page = DesignerPage("k_folium_map.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)
