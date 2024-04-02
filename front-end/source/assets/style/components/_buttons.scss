@@ -299,7 +299,7 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
 
 // Close buttons (for asides, tabs...)
 .close-aside {
-  background-color: var(--surface-c);
+  background: var(--surface-c);
   color: var(--text-color);
   border-radius: br('full');
   font-size: 2em;

@@ -22,17 +22,18 @@
   align-items: center;
   justify-content: center;
   gap: 1em;
-  border-bottom: 0.25em solid var(--surface-c);
+  border-bottom: 0.25em solid var(--surface-b);
   margin-bottom: 1em;
 }
 
 // Define a mixin with default parameters, allowing customization
-@mixin tab-styles($bg-color: var(--surface-b),
+@mixin tab-styles(
+  $bg-color: var(--surface-b),
   $hover-bg-color: var(--active-color),
   $hover-text-color: var(--active-color-text),
   $changed-bg-color: var(--danger-color),
-  $changed-text-color: var(--danger-color-text)) {
-
+  $changed-text-color: var(--danger-color-text)
+) {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
@@ -67,7 +68,13 @@
 
 // Apply the mixin to .tab--custom and customize the background color
 .custom-tab {
-  @include tab-styles(var(--surface-c), var(--active-color), var(--active-color-text), var(--danger-color), var(--danger-color-text));
+  @include tab-styles(
+    var(--surface-c),
+    var(--active-color),
+    var(--active-color-text),
+    var(--danger-color),
+    var(--danger-color-text)
+  );
 
   padding: 1rem;
   border: 1px solid var(--primary-color-text);

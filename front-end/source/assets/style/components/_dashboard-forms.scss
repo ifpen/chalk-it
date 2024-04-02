@@ -24,7 +24,7 @@
     border-radius: br('8');
     padding: 0.5em 1em;
     box-shadow: none;
-    background-color: var(--surface-c);
+    background: var(--surface-c);
     color: var(--text-color);
     line-height: 2;
     appearance: none;
@@ -325,7 +325,7 @@ tags-input .autocomplete {
   padding: 5px 0;
   z-index: $zindex-dropdown;
   width: 100%;
-  background-color: var(--surface-c);
+  background: var(--surface-c);
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
