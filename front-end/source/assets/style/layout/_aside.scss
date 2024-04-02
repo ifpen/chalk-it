@@ -26,6 +26,7 @@ aside {
   display: flex;
   align-items: center;
   gap: $aside-panel-gap;
+  background-color: var(--surface-b);
   flex-shrink: 0;
   overflow: visible;
   transition: var(--default-transition);
