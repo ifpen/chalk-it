@@ -26,6 +26,7 @@ aside {
   display: flex;
   align-items: center;
   gap: $aside-panel-gap;
+  background-color: var(--surface-b);
   flex-shrink: 0;
   overflow: visible;
   transition: var(--default-transition);
@@ -147,11 +148,11 @@ aside {
   overflow: auto;
 
   &#panel-left {
-    border-right: 0.125em solid var(--surface-c);
+    border-right: 0.125em solid var(--surface-b);
   }
 
   &#panel-right {
-    border-left: 0.125em solid var(--surface-c);
+    border-left: 0.125em solid var(--surface-b);
   }
 
   .btn-circle {
@@ -486,8 +487,8 @@ aside {
     width: max-content;
     min-width: 19.3125em;
     padding: 1em 0.8125em;
-    border-right: 0.125em solid var(--surface-c);
-    background-color: var(--surface-c);
+    border-right: 0.125em solid var(--surface-b);
+    background: var(--surface-c);
     pointer-events: all;
     overflow-y: scroll;
     opacity: 1;
@@ -641,7 +642,7 @@ aside {
   margin-top: spacer('12');
   padding: spacer('6') 0;
   border-radius: br('4');
-  background-color: var(--surface-c);
+  background: var(--surface-c);
   color: var(--text-color);
   cursor: pointer;
 
@@ -770,7 +771,7 @@ aside {
   border: none;
   border-radius: br('8');
   padding: 0.5em 2em 0.5em 1em;
-  background-color: var(--surface-c);
+  background: var(--surface-c);
   background-image: var(--dropdown-arrow-url);
   background-repeat: no-repeat;
   background-position: calc(100% - 0.5rem) center;
