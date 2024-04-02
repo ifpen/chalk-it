@@ -121,7 +121,7 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
 
 .btn-rounded {
   padding: 0.25em 1em;
-  border: 0.125em solid var(--text-color-secondary);
+  border: 0.125em solid var(--color-secondary);
   border-radius: br('20');
   background-color: transparent;
   background-origin: padding-box;

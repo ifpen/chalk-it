@@ -27,7 +27,7 @@ $text-color: #ffffff;
   --primary-color: #ff371a;
   --primary-color-text: #ffffff;
   --primary-hover-color: #ff634d;
-  --primary-color-rgb: 0 123 255; // Used for discover tiles
+  --primary-color-rgb: 255 55 26; // Used for discover tiles
   --secondary-color: #ffffff;
   --secondary-hover-color: #e4e5e8;
   --secondary-active-color: #565b71;
@@ -73,6 +73,7 @@ $text-color: #ffffff;
   --header-color-text: #ffffff;
 
   // Border colors
+  --dark-grey-border: #333333;
   --aside-border-gradient: linear-gradient(to bottom, #383839 4%, #5d2822 16%, #1e1e21 30%, #151517 54.82%);
 
   // Variables for Switch elements
