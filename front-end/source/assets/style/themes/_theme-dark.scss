@@ -39,8 +39,10 @@ $text-color: #ffffff;
   --light-color-text-rgb: 5 0 56;
 
   // Active/hover for nav items
-  --active-color: #ff634d;
+  --active-color: #ff371a;
   --active-color-text: #ffffff;
+  --hover-color: var(--primary-hover-color);
+  --hover-color-text: #ffffff;
 
   // Active/hover for dropdowns
   --active-color-item: #ffffff;
@@ -69,6 +71,9 @@ $text-color: #ffffff;
   // Layout custom colors
   --header-color: var(--surface-a);
   --header-color-text: #ffffff;
+
+  // Border colors
+  --aside-border-gradient: linear-gradient(to bottom, #383839 4%, #5d2822 16%, #1e1e21 30%, #151517 54.82%);
 
   // Variables for Switch elements
   --switch-background-color: #cccccc;
