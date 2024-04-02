@@ -100,6 +100,11 @@ aside {
       &.open {
         .aside__panel--content--left {
           height: auto;
+          border-top: 0;
+          border-bottom: 0;
+          border-left: 0;
+          border-right: 1px solid;
+          border-image: var(--aside-border-gradient) 0 100% 0 0;
         }
       }
     }
@@ -115,11 +120,6 @@ aside {
       margin-right: 0;
       position: absolute;
       margin-left: 0;
-      border: 0.125em solid;
-      border-right: 0;
-      border-top: 0;
-      border-bottom: 0;
-      border-image: var(--aside-border-gradient) 0 0 0 100%;
 
       &.normal__panel {
         max-width: $aside-panel-max-width;
@@ -151,19 +151,20 @@ aside {
   padding: 1em 0.8125em;
   background-color: var(--surface-b);
   overflow: auto;
-
-  &#panel--left {
-    border: 3em solid;
-    border-image: var(--aside-border-gradient);
-  }
-
-  &#panel--right {
-    border: 1px solid;
-    border-image: var(--aside-border-gradient);
-  }
+  border: 1px solid;
+  border-top: 0;
+  border-bottom: 0;
+  border-right: 0;
+  border-image: var(--aside-border-gradient) 0 0 0 100%;
 
   .btn-circle {
     margin: 2em 0;
+  }
+
+  &.aside__panel--content--left {
+    border-left: 0;
+    border-right: 1px solid;
+    border-image: var(--aside-border-gradient) 0 100% 0 0;
   }
 }
 
