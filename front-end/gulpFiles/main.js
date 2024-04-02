@@ -124,7 +124,7 @@ task('init', (cb) => {
   prefixName = GlobalConfig.config.xDashConfig.xDashBasicVersion ? '/chalkit_' : '/xdash_';
   buildFilePath = prefixName + VERSION;
   buildDirPath = '../' + configuration.paths.buildDirectory + buildFilePath;
-  mkDocsFileName = GlobalConfig.config.xDashConfig.xDashLiteVersion ? 'mkdocs.yml' : 'mkdocs_taipy.yml';
+  mkDocsFileName = GlobalConfig.config.xDashConfig.xDashLiteVersion ? 'mkdocs_taipy.yml' : 'mkdocs.yml';
 
   if (addVersion) {
     filesName.xdash_editor.css = xdashEditorCss + VERSION;
