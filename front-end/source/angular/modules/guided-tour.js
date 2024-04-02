@@ -80,11 +80,11 @@ function startIntroProject() {
     {
       element: '#datanodes-widget-connect',
       intro:
-        'Widget connection to dataNodes, configuration, placement, z-order, etc. features are provided by this menu',
+        'Widget connection to variables, configuration, placement, z-order, etc. features are provided by this menu',
     },
     {
       element: '#panel--right',
-      intro: 'Here, widget and dataNode connection is configured',
+      intro: 'Here, widget and variable connection is configured',
     },
   ];
 

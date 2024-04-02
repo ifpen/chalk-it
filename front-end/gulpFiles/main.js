@@ -708,7 +708,7 @@ task('inject:after', () => {
 });
 
 task('injectmk:after', done => {
-  if (mkDocsFileName==='mkdocs_taipy.yml') { return done(); }
+  //if (mkDocsFileName==='mkdocs_taipy.yml') { return done(); }
   return src(DocDirectory + '/mkdocs-open-xprjson.js')
     .pipe(
       injectString.after(
