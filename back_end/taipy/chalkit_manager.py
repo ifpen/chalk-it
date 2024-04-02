@@ -58,17 +58,21 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
             return
 
         is_template_file: bool = payload.get("is_template_file", None)
+        is_prod: bool = (Path(__file__).parent.parent / "index.html").exists()
         xprjson_file_name: str = payload.get("xprjson_file_name", None)
-        xprjson_file_path: Path = (
-            Path(__file__).parent
+        projects_dir: str = (
+            Path(__file__).parent / ".." / "Templates" / "Projects" / xprjson_file_name
+            if is_prod
+            else Path(__file__).parent
             / ".."
             / ".."
             / "documentation"
             / "Templates"
             / "Projects"
             / xprjson_file_name
-            if is_template_file
-            else BASE_PATH / xprjson_file_name
+        )
+        xprjson_file_path: Path = (
+            projects_dir if is_template_file else BASE_PATH / xprjson_file_name
         )
 
         if not xprjson_file_path.exists():
