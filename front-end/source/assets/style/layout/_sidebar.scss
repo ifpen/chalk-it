@@ -56,13 +56,18 @@
   line-height: 2.5em;
   color: inherit;
   text-decoration: none;
+  transition: background-color 0.3s ease;
 
   &:active,
   &:visited {
     color: inherit;
   }
 
-  &:hover,
+  &:hover {
+    background-color: var(--hover-color);
+    color: var(--hover-color-text);
+  }
+
   &.active {
     background-color: var(--active-color);
     color: var(--active-color-text);

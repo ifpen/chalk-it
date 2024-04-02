@@ -49,6 +49,11 @@ aside {
 
     &.open {
       margin-left: 0;
+      border: 1px solid;
+      border-left: 0;
+      border-top: 0;
+      border-bottom: 0;
+      border-image: var(--aside-border-gradient) 0 100% 0 0;
 
       &.normal__panel {
         max-width: $aside-panel-max-width;
@@ -115,6 +120,12 @@ aside {
       right: 0;
       margin-right: 0;
       position: absolute;
+      margin-left: 0;
+      border: 0.125em solid;
+      border-right: 0;
+      border-top: 0;
+      border-bottom: 0;
+      border-image: var(--aside-border-gradient) 0 0 0 100%;
 
       &.normal__panel {
         max-width: $aside-panel-max-width;
@@ -147,12 +158,14 @@ aside {
   background-color: var(--surface-b);
   overflow: auto;
 
-  &#panel-left {
-    border-right: 0.125em solid var(--surface-b);
+  &#panel--left {
+    border: 3em solid;
+    border-image: var(--aside-border-gradient);
   }
 
-  &#panel-right {
-    border-left: 0.125em solid var(--surface-b);
+  &#panel--right {
+    border: 1px solid;
+    border-image: var(--aside-border-gradient);
   }
 
   .btn-circle {
@@ -840,6 +853,17 @@ aside {
   i {
     padding-left: spacer('3');
   }
+
+  a {
+    font-weight: fw('normal');
+    padding: 0.25em 0.5em;
+    border-radius: br('full');
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: var(--hover-color);
+    }
+  }
 }
 
 .help-container__iframe-wrapper {
@@ -955,8 +979,10 @@ aside {
 
   li {
     border-radius: br('full');
+    transition: background-color 0.3s ease;
 
     .tooltip {
+      transition: opacity 0.3s ease;
       top: 50%;
       transform: translateY(-50%);
       padding: 0.15em 0.5em;
@@ -979,11 +1005,12 @@ aside {
     }
 
     &:hover {
-      background-color: var(--active-color);
-      color: var(--active-color-text);
+      background-color: var(--hover-color);
+      color: var(--hover-color-text);
 
       .tooltip {
         opacity: 1;
+        background-color: var(--hover-color);
       }
     }
 
