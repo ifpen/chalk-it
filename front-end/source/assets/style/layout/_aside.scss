@@ -26,7 +26,6 @@ aside {
   display: flex;
   align-items: center;
   gap: $aside-panel-gap;
-  background-color: var(--surface-b);
   flex-shrink: 0;
   overflow: visible;
   transition: var(--default-transition);
@@ -49,11 +48,6 @@ aside {
 
     &.open {
       margin-left: 0;
-      border: 1px solid;
-      border-left: 0;
-      border-top: 0;
-      border-bottom: 0;
-      border-image: var(--aside-border-gradient) 0 100% 0 0;
 
       &.normal__panel {
         max-width: $aside-panel-max-width;
