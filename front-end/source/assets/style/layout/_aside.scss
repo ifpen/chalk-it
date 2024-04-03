@@ -27,7 +27,6 @@ aside {
   align-items: center;
   gap: $aside-panel-gap;
   flex-shrink: 0;
-  overflow: visible;
   transition: var(--default-transition);
 
   > * {
@@ -82,6 +81,14 @@ aside {
       + .main__layout--content {
         overflow: scroll;
       }
+
+      .aside__panel--content--left {
+        border-top: 0;
+        border-bottom: 0;
+        border-left: 0;
+        border-right: 1px solid;
+        border-image: var(--aside-border-gradient) 0 100% 0 0;
+      }
     }
   }
 
@@ -100,11 +107,6 @@ aside {
       &.open {
         .aside__panel--content--left {
           height: auto;
-          border-top: 0;
-          border-bottom: 0;
-          border-left: 0;
-          border-right: 1px solid;
-          border-image: var(--aside-border-gradient) 0 100% 0 0;
         }
       }
     }
@@ -151,20 +153,9 @@ aside {
   padding: 1em 0.8125em;
   background-color: var(--surface-b);
   overflow: auto;
-  border: 1px solid;
-  border-top: 0;
-  border-bottom: 0;
-  border-right: 0;
-  border-image: var(--aside-border-gradient) 0 0 0 100%;
 
   .btn-circle {
     margin: 2em 0;
-  }
-
-  &.aside__panel--content--left {
-    border-left: 0;
-    border-right: 1px solid;
-    border-image: var(--aside-border-gradient) 0 100% 0 0;
   }
 }
 
