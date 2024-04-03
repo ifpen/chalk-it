@@ -235,6 +235,7 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   background-color: transparent;
   color: var(--active-color-text);
   font-weight: fw('bold');
+  transition: background-color 0.3s ease;
 
   .icon__container {
     @extend %dashboard-btn-primary;
@@ -261,8 +262,11 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
     }
   }
 
-  &:hover {
-    color: var(--active-color-text);
+  &:not(.btn-help):hover {
+    color: var(--hover-color-text);
+    .icon__container {
+      background-color: var(--hover-color);
+    }
 
     .icon__container.alt {
       box-shadow: none;
@@ -277,6 +281,7 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   background-color: var(--primary-color);
   color: var(--primary-color-text);
   white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   > * {
     display: inline-block;
@@ -285,7 +290,8 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
 
   &:hover,
   &:focus {
-    color: var(--primary-color-text);
+    background-color: var(--hover-color);
+    color: var(--hover-color-text);
   }
 
   &[disabled] {
