@@ -234,6 +234,13 @@ aside {
 .widget__groups--wrapper {
   margin-top: 1.5em;
 
+  .widget__groups--wrapper--top {
+    transition: color 0.3s ease;
+    &:hover {
+      color: var(--hover-color);
+    }
+  }
+
   &.open {
     .widget__groups--wrapper--icons {
       max-height: 45em;

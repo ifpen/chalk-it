@@ -97,6 +97,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  a {
+    transition: color 0.3s ease;
+    &:hover {
+      color: var(--hover-color);
+    }
+  }
 }
 
 .undo-redo {
