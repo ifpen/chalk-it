@@ -185,6 +185,7 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   background-color: transparent;
   color: var(--text-color);
   line-height: 1em;
+  transition: color 0.3s ease;
 
   &:hover,
   &:focus {
@@ -244,11 +245,12 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
     width: 3.5em;
     height: 3.5em;
     border-radius: br('full');
+    transition: background-color 0.3s ease;
 
     &.icon__container--active {
-      border: 0.175em var(--primary-hover-color) solid;
-      background-color: var(--primary-color-text);
-      color: var(--primary-hover-color);
+      border: 1px var(--primary-hover-color) solid;
+      background-color: rgba(255, 55, 26, 0.2);
+      color: var(--primary-color-text);
     }
 
     &.alt {
@@ -261,10 +263,6 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
 
   &:hover {
     color: var(--active-color-text);
-
-    .icon__container {
-      box-shadow: var(--default-box-shadow);
-    }
 
     .icon__container.alt {
       box-shadow: none;
@@ -303,12 +301,11 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   color: var(--text-color);
   border-radius: br('full');
   font-size: 2em;
-  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .close-aside:hover {
-  background-color: var(--danger-color-text);
-  color: var(--danger-color);
+  color: var(--hover-color);
 }
 
 // Bootstrap close button

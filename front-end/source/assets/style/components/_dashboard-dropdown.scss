@@ -48,10 +48,11 @@
         padding: 0.25em 1.5em;
         line-height: 2.25em;
         white-space: nowrap;
+        transition: background-color 0.3s ease;
 
         &:hover {
-          background-color: var(--active-color);
-          color: var(--active-color-text);
+          background-color: var(--hover-color);
+          color: var(--hover-color-text);
         }
       }
     }
