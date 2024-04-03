@@ -1402,7 +1402,7 @@ function flatUiWidgetsPluginClass() {
       }
 
       let valueTextAlign = 'left';
-      if (!_isUndefined(modelsParameters[idInstance].valueTextAlign))
+      if (!_.isUndefined(modelsParameters[idInstance].valueTextAlign))
         valueTextAlign = modelsParameters[idInstance].valueTextAlign;
 
       inputContent =
