@@ -27,6 +27,7 @@ aside {
   align-items: center;
   gap: $aside-panel-gap;
   flex-shrink: 0;
+  overflow: visible;
   transition: var(--default-transition);
 
   > * {
