@@ -280,10 +280,10 @@ aside {
     text-align: center;
     padding: 0.5em;
     color: var(--text-color);
+    transition: background-color 0.3s ease-in-out;
 
     &:hover {
-      box-shadow: var(--default-box-shadow);
-      background-color: var(--surface-b);
+      background-color: var(--surface-a);
     }
 
     i {
