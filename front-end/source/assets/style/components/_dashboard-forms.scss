@@ -20,7 +20,7 @@
   input,
   tags-input {
     width: 100%;
-    border: none;
+    border: 1px solid var(--dark-grey-border);
     border-radius: br('8');
     padding: 0.5em 1em;
     box-shadow: none;
@@ -31,7 +31,7 @@
 
     &:focus,
     &:focus-within {
-      outline: thin solid var(--active-color-text);
+      outline: thin solid var(--hover-color);
       box-shadow: none;
     }
 
@@ -42,6 +42,11 @@
 
     &:autofill + i {
       color: fieldtext;
+    }
+
+    &:disabled {
+      border-color: transparent;
+      opacity: 0.5;
     }
   }
 
@@ -156,6 +161,10 @@
   @include media-breakpoint-up('md') {
     text-align: right;
   }
+}
+
+.required {
+  color: var(--active-color);
 }
 
 .form-group {
