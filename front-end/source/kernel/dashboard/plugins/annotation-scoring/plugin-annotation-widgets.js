@@ -261,12 +261,12 @@ function annotationWidgetsPluginClass() {
       //AEF: modif to allow multilines
       //AEF: adapt height depending if text is in simple line or multilines
       //MBG : fix for Mozilla Firefox. No distinction between single line and multline. To check.
+      let textBold = 'font-weight: normal;';
+      let textUnderline = 'text-decoration: none;';
+      let textItalic = 'font-style: normal;';
       if (modelsParameters[idInstance].textBold) textBold = 'font-weight: bold;';
-      else textBold = 'font-weight: normal;';
       if (modelsParameters[idInstance].textUnderline) textUnderline = 'text-decoration: underline;';
-      else textUnderline = 'text-decoration: none;';
       if (modelsParameters[idInstance].textBold) textItalic = 'font-style: italic;';
-      else textItalic = 'font-style: normal;';
 
       var divContent =
         '<div id="annotationLabelTextArea' +
