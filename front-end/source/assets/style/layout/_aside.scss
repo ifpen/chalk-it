@@ -26,7 +26,6 @@ aside {
   display: flex;
   align-items: center;
   gap: $aside-panel-gap;
-  background-color: var(--surface-b);
   flex-shrink: 0;
   overflow: visible;
   transition: var(--default-transition);
@@ -49,11 +48,6 @@ aside {
 
     &.open {
       margin-left: 0;
-      border: 1px solid;
-      border-left: 0;
-      border-top: 0;
-      border-bottom: 0;
-      border-image: var(--aside-border-gradient) 0 100% 0 0;
 
       &.normal__panel {
         max-width: $aside-panel-max-width;
@@ -88,6 +82,14 @@ aside {
       + .main__layout--content {
         overflow: scroll;
       }
+
+      .aside__panel--content--left {
+        border-top: 0;
+        border-bottom: 0;
+        border-left: 0;
+        border-right: 1px solid;
+        border-image: var(--aside-border-gradient) 0 100% 0 0;
+      }
     }
   }
 
@@ -121,11 +123,6 @@ aside {
       margin-right: 0;
       position: absolute;
       margin-left: 0;
-      border: 0.125em solid;
-      border-right: 0;
-      border-top: 0;
-      border-bottom: 0;
-      border-image: var(--aside-border-gradient) 0 0 0 100%;
 
       &.normal__panel {
         max-width: $aside-panel-max-width;
@@ -157,16 +154,6 @@ aside {
   padding: 1em 0.8125em;
   background-color: var(--surface-b);
   overflow: auto;
-
-  &#panel--left {
-    border: 3em solid;
-    border-image: var(--aside-border-gradient);
-  }
-
-  &#panel--right {
-    border: 1px solid;
-    border-image: var(--aside-border-gradient);
-  }
 
   .btn-circle {
     margin: 2em 0;
@@ -944,10 +931,22 @@ aside {
 .aside__panel--nav {
   flex-shrink: 0;
   width: $aside-panel-nav-width;
-  padding: 0.5em;
   border-radius: br('16');
+  padding: 0.5em;
   background-color: var(--surface-b);
-  filter: var(--panel-filter);
+}
+
+.aside__panel--nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: br('16');
+  padding: 1px;
+  background: var(--nav-border-gradient);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
 
 .aside__panel--nav--wrapper {
@@ -1037,7 +1036,6 @@ aside {
     border-radius: 0 br('full') br('full') 0;
     color: var(--primary-color-text);
     background-color: var(--primary-color);
-    filter: var(--panel-filter);
 
     &:hover {
       color: var(--active-color-text);
