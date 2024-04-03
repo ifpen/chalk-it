@@ -931,10 +931,22 @@ aside {
 .aside__panel--nav {
   flex-shrink: 0;
   width: $aside-panel-nav-width;
-  padding: 0.5em;
   border-radius: br('16');
+  padding: 0.5em;
   background-color: var(--surface-b);
-  filter: var(--panel-filter);
+}
+
+.aside__panel--nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: br('16');
+  padding: 1px;
+  background: var(--nav-border-gradient);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
 
 .aside__panel--nav--wrapper {
@@ -1024,7 +1036,6 @@ aside {
     border-radius: 0 br('full') br('full') 0;
     color: var(--primary-color-text);
     background-color: var(--primary-color);
-    filter: var(--panel-filter);
 
     &:hover {
       color: var(--active-color-text);
