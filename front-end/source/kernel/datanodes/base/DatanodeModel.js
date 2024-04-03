@@ -628,12 +628,17 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
 
   this.setValue = function (propertyName, val, fromApi) {
     // dirty flag handling
-    if (_.isFunction(self.datanodeInstance.getValue)) {
-      if (val != self.datanodeInstance.getValue(propertyName)) {
+    const dnName = self.datanodeInstance.currentSettings.name;
+    const dnType = datanodesManager.getDataNodeByName(dnName)?.type() ?? '';
+
+    if (dnType !== 'taipy_link_plugin') {
+      if (_.isFunction(self.datanodeInstance.getValue)) {
+        if (val != self.datanodeInstance.getValue(propertyName)) {
+          setDirtyFlagSafe(true);
+        }
+      } else {
         setDirtyFlagSafe(true);
       }
-    } else {
-      setDirtyFlagSafe(true);
     }
 
     self.datanodeInstance.setValue(propertyName, val);
