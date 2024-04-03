@@ -1009,7 +1009,7 @@ function annotationWidgetsPluginClass() {
       annotationRectangle: {
         factory: 'labelAnnotationWidget',
         title: 'Rectangle',
-        icn: 'label',
+        icn: 'rectangle',
         help: 'wdg/wdg-annotation-video/#label',
       },
       annotationImage: {
@@ -1021,7 +1021,7 @@ function annotationWidgetsPluginClass() {
       annotationImageConnected: {
         factory: 'imageAnnotationWidget',
         title: 'Connect Image',
-        icn: 'image',
+        icn: 'image-connect',
         help: 'wdg/wdg-annotation-video/#image',
       },
       annotationVideo: {
