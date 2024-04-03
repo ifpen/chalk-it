@@ -1293,6 +1293,7 @@ function flatUiWidgetsPluginClass() {
       widgetHtml.setAttribute('id', nameWidget + '-widget-html' + idWidget);
       widgetHtml.setAttribute('class', 'value-widget-html');
       let divContent = '';
+      let labelTextPosition = 'left';
       if (modelsParameters[idInstance].displayLabel) {
         if (modelsParameters[idInstance].labelTextPosition == 'left') labelTextPosition = 'display: table-cell';
         else if (modelsParameters[idInstance].labelTextPosition == 'right') labelTextPosition = 'display: table-cell';
@@ -1400,6 +1401,10 @@ function flatUiWidgetsPluginClass() {
         inputStyle = 'float: right;';
       }
 
+      let valueTextAlign = 'left';
+      if (!_isUndefined(modelsParameters[idInstance].valueTextAlign))
+        valueTextAlign = modelsParameters[idInstance].valueTextAlign;
+
       inputContent =
         '<input ' +
         valuedisabled +
@@ -1421,7 +1426,7 @@ function flatUiWidgetsPluginClass() {
         this.valueFontSize() +
         inputStyle +
         ' text-align:' +
-        modelsParameters[idInstance].valueTextAlign +
+        valueTextAlign +
         ';"' +
         '</input>';
       inputContent += btnCtrl;
