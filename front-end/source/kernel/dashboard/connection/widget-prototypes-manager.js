@@ -41,6 +41,12 @@ class WidgetPrototypesManager {
     type: 'array',
     items: { type: 'number' },
   };
+  static SCHEMA_BOOLEAN_ARRAY = {
+    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:boolean_array',
+    type: 'array',
+    items: { type: 'boolean' },
+  };
 
   static SCHEMA_NUMBER_ARRAY_2D = {
     $schema: WidgetPrototypesManager.SCHEMA_VERSION,
