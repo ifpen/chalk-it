@@ -335,7 +335,7 @@
   cursor: pointer;
   transition: border-color 0.3s ease;
 
-  &:hover {
+  &:not(.disabled):hover {
     border-color: var(--primary-color);
 
     .btn-rounded {
