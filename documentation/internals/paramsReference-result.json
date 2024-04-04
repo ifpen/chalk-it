@@ -1547,7 +1547,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "flatUiHereAutocompleteValue",
@@ -1645,7 +1645,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "flatUiHorizontalSlider",
@@ -1813,7 +1813,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "flatUiVerticalSlider",
@@ -1918,7 +1918,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "flatUiProgressBar",
@@ -2044,7 +2044,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "flatUiValue",
@@ -2212,7 +2212,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "flatUiTextInput",
@@ -2352,7 +2352,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "flatUiNumericInput",
@@ -2506,7 +2506,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "flatUiValueDisplay",
@@ -2765,7 +2765,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "loadFile",
@@ -2961,7 +2961,7 @@
 		"name": "displayLabel",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "When set to true, the label will be displayed"
 	},
 	{
 		"typeWidget": "ledStatus",
@@ -2989,21 +2989,21 @@
 		"name": "labelWidthProportion",
 		"type": "string",
 		"defaultValue": "60%",
-		"description": ""
+		"description": "The width proportation of the label. The value should be in percentage"
 	},
 	{
 		"typeWidget": "ledStatus",
 		"name": "onColor",
 		"type": "string",
 		"defaultValue": "#00b700",
-		"description": ""
+		"description": "Led on color"
 	},
 	{
 		"typeWidget": "ledStatus",
 		"name": "offColor",
 		"type": "string",
 		"defaultValue": "#004d00",
-		"description": ""
+		"description": "Led off color"
 	},
 	{
 		"typeWidget": "annotationIconInfo",
@@ -3138,7 +3138,7 @@
 		"name": "text",
 		"type": "string",
 		"defaultValue": "Type texte",
-		"description": ""
+		"description": "The label text"
 	},
 	{
 		"typeWidget": "annotationLabel",
@@ -3152,14 +3152,14 @@
 		"name": "fontsize",
 		"type": "number",
 		"defaultValue": 0.5,
-		"description": ""
+		"description": "Label text font-size"
 	},
 	{
 		"typeWidget": "annotationLabel",
 		"name": "backgroundColor",
 		"type": "string",
 		"defaultValue": "rgba(0, 0, 0, 0)",
-		"description": ""
+		"description": "Label background color"
 	},
 	{
 		"typeWidget": "annotationLabel",
@@ -3479,7 +3479,7 @@
 		"name": "inheritWidthAndHeight",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "Inherits widget width and length from the parent container, overriding the width and height properties of the grammar of graphics"
 	},
 	{
 		"typeWidget": "openStreetMaps",
@@ -3546,7 +3546,7 @@
 			"longitude": 2.331773,
 			"zoom": 16
 		},
-		"description": ""
+		"description": "Defines the default center and zoom of the map"
 	},
 	{
 		"typeWidget": "openStreetMaps",
@@ -3567,7 +3567,7 @@
 		"name": "drawingFeatures",
 		"type": "boolean",
 		"defaultValue": false,
-		"description": ""
+		"description": "When set to true, it allows the user to manually select points, lines, rectangles or polygone regions in the map. The user can also delete the selected features. The selected features can be saved in a variable conntected to the selectedGeoJson actuator"
 	},
 	{
 		"typeWidget": "openStreetMaps",
@@ -3580,20 +3580,20 @@
 			"rectangle": true,
 			"modal": false
 		},
-		"description": ""
+		"description": "Defines the available drawing features"
 	},
 	{
 		"typeWidget": "openStreetMaps",
 		"name": "captureClickEvent",
 		"type": "boolean",
 		"defaultValue": false,
-		"description": ""
+		"description": "Enables the click event capture. Returns a lat/lng object to the connected variable to the selectedPoint actuator"
 	},
 	{
 		"typeWidget": "openStreetMaps",
 		"name": "markerCluster",
 		"type": "boolean",
 		"defaultValue": true,
-		"description": ""
+		"description": "Enables the clustering of point markers"
 	}
 ]
