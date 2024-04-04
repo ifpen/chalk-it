@@ -86,16 +86,29 @@
   }
 
   input[type='text'] {
-    border-radius: br('24');
+    width: 100%;
+    border: 1px solid var(--border-a);
+    border-radius: br('8');
+    padding: 0.5em 1em;
+
     font-style: italic;
     font-size: fs('xl');
-    border: none;
     box-shadow: none;
-    padding: 0.3em 0.6em;
-    background-color: var(--light-color-darker);
+    background: var(--surface-c);
+    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    &:focus,
+    &:focus-within {
+      border: 1px solid var(--hover-color);
+      box-shadow: none;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
   }
 
   a {
@@ -335,7 +348,7 @@
   padding: 2em;
   height: 16.75em;
   border-radius: br('16');
-  border: 0.125em solid var(--dark-grey-border);
+  border: 0.125em solid var(--border-a);
   background: var(--surface-b);
   text-align: center;
   overflow: hidden;

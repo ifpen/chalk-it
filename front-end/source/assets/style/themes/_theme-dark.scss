@@ -77,7 +77,8 @@ $text-color: #ffffff;
   --header-color-text: #ffffff;
 
   // Border colors
-  --dark-grey-border: #333333;
+  --border-a: #333333;
+  --border-b: #777777;
   $gradient: #383839 4%, #5d2822 16%, #1e1e21 30%, #151517 54.82%;
   --aside-border-gradient: linear-gradient(to bottom, #{$gradient});
   --nav-border-gradient: linear-gradient(135deg, #{$gradient});
@@ -91,7 +92,7 @@ $text-color: #ffffff;
   --switch-wrapper-text-color: var(--secondary-color-text);
 
   // Forms
-  --placeholder-color: rgb(var(--text-color-rgb) / 0.6);
+  --placeholder-color: rgb(var(--text-color-rgb) / 0.9);
 
   // Transition
   --default-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);

@@ -20,7 +20,7 @@
   input,
   tags-input {
     width: 100%;
-    border: none;
+    border: 1px solid var(--border-a);
     border-radius: br('8');
     padding: 0.5em 1em;
     box-shadow: none;
@@ -31,7 +31,7 @@
 
     &:focus,
     &:focus-within {
-      outline: thin solid var(--active-color-text);
+      outline: thin solid var(--hover-color);
       box-shadow: none;
     }
 
@@ -42,6 +42,10 @@
 
     &:autofill + i {
       color: fieldtext;
+    }
+
+    &:disabled {
+      opacity: 0.5;
     }
   }
 
@@ -158,6 +162,10 @@
   }
 }
 
+.required {
+  color: var(--active-color);
+}
+
 .form-group {
   margin-bottom: 10px;
   margin-top: 10px;
@@ -264,7 +272,7 @@ tags-input .remove-button {
   cursor: pointer;
   transition: color 0.3s ease;
   &:hover {
-    color: var(--primary-color);
+    color: var(--hover-color);
   }
 }
 
