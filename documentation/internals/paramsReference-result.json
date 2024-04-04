@@ -725,7 +725,7 @@
     "name": "valueTextAlign",
     "type": "string",
     "defaultValue": "left",
-    "description": "Text horizontal alignment. Possible values: left, center, right"
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "datepickerSimple",
@@ -893,7 +893,7 @@
     "name": "valueTextAlign",
     "type": "string",
     "defaultValue": "left",
-    "description": "Text horizontal alignment. Possible values: left, center, right"
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "dateRangePicker",
@@ -991,7 +991,7 @@
     "name": "valueTextAlign",
     "type": "string",
     "defaultValue": "left",
-    "description": "Text horizontal alignment. Possible values: left, center, right"
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "timepickerSimple",
@@ -1355,7 +1355,7 @@
     "name": "valueAlign",
     "type": "string",
     "defaultValue": "left",
-    "description": ""
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "flatUiTable",
@@ -2083,6 +2083,20 @@
   },
   {
     "typeWidget": "flatUiValue",
+    "name": "labelTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "labelTextPosition",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text position. Possible values: left, top, right, bottom"
+  },
+  {
+    "typeWidget": "flatUiValue",
     "name": "valueWidthProportion",
     "type": "string",
     "defaultValue": "70%",
@@ -2170,7 +2184,7 @@
     "name": "valueTextAlign",
     "type": "string",
     "defaultValue": "left",
-    "description": "Text horizontal alignment. Possible values: left, center, right"
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2251,6 +2265,20 @@
   },
   {
     "typeWidget": "flatUiTextInput",
+    "name": "labelTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "labelTextPosition",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text position. Possible values: left, top, right, bottom"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
     "name": "valueWidthProportion",
     "type": "string",
     "defaultValue": "70%",
@@ -2324,7 +2352,7 @@
     "name": "valueTextAlign",
     "type": "string",
     "defaultValue": "left",
-    "description": "Text horizontal alignment. Possible values: left, center, right"
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "flatUiTextInput",
@@ -2388,6 +2416,20 @@
     "type": "string",
     "defaultValue": "var(--widget-font-family)",
     "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "labelTextPosition",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text position. Possible values: left, top, right, bottom"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "labelTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2457,7 +2499,7 @@
     "name": "valueTextAlign",
     "type": "string",
     "defaultValue": "left",
-    "description": "Text horizontal alignment. Possible values: left, center, right"
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2545,6 +2587,20 @@
   },
   {
     "typeWidget": "flatUiValueDisplay",
+    "name": "labelTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "labelTextPosition",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text position. Possible values: left, top, right, bottom"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
     "name": "valueWidthProportion",
     "type": "string",
     "defaultValue": "70%",
@@ -2583,7 +2639,7 @@
     "name": "valueTextAlign",
     "type": "string",
     "defaultValue": "left",
-    "description": "Text horizontal alignment. Possible values: left, center, right"
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "flatUiValueDisplay",
@@ -2807,7 +2863,7 @@
     "name": "labelAlign",
     "type": "string",
     "defaultValue": "left",
-    "description": ""
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
   },
   {
     "typeWidget": "loadFile",
