@@ -466,14 +466,14 @@
     "name": "valuePosition",
     "type": "string",
     "defaultValue": "bottom",
-    "description": ""
+    "description": "Value position. Possible values: bottom, top"
   },
   {
     "typeWidget": "advancedKpiCard",
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 3,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "advancedKpiCard",
@@ -704,7 +704,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "datepickerSimple",
@@ -795,7 +795,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "datepickerVisible",
@@ -872,7 +872,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "dateRangePicker",
@@ -970,7 +970,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "timepickerSimple",
@@ -1096,7 +1096,7 @@
     "name": "selectValueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiSelect",
@@ -1145,7 +1145,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.4,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiMultiSelect",
@@ -1264,7 +1264,7 @@
     "name": "listValueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiList",
@@ -1327,7 +1327,7 @@
     "name": "tableValueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiTable",
@@ -1582,7 +1582,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiHereAutocompleteValue",
@@ -1715,7 +1715,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -1988,7 +1988,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiProgressBar",
@@ -2163,7 +2163,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2331,7 +2331,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiTextInput",
@@ -2478,7 +2478,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2618,7 +2618,7 @@
     "name": "valueFontSize",
     "type": "number",
     "defaultValue": 0.5,
-    "description": ""
+    "description": "Value font-size"
   },
   {
     "typeWidget": "flatUiValueDisplay",
