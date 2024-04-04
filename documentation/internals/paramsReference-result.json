@@ -2940,7 +2940,7 @@
     "name": "fontsize",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Spinner dots font-size"
   },
   {
     "typeWidget": "spinnerStatus",
@@ -3038,7 +3038,7 @@
     "name": "fontSize",
     "type": "string",
     "defaultValue": "medium",
-    "description": ""
+    "description": "Tooltip text font size. It could be small, medium, large, or a number as 10px"
   },
   {
     "typeWidget": "annotationIconInfo",
