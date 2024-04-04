@@ -74,7 +74,7 @@
     "name": "label",
     "type": "string",
     "defaultValue": "",
-    "description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
   },
   {
     "typeWidget": "scoringSemiCircularGauge",
@@ -144,7 +144,7 @@
     "name": "label",
     "type": "string",
     "defaultValue": "",
-    "description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
@@ -312,7 +312,7 @@
     "name": "label",
     "type": "string",
     "defaultValue": "labelText",
-    "description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
   },
   {
     "typeWidget": "kpiCard",
@@ -424,7 +424,7 @@
     "name": "label",
     "type": "string",
     "defaultValue": "labelText",
-    "description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
   },
   {
     "typeWidget": "advancedKpiCard",
@@ -536,7 +536,7 @@
     "name": "label",
     "type": "string",
     "defaultValue": "labelText",
-    "description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
