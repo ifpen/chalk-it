@@ -88,14 +88,14 @@
     "name": "min",
     "type": "number",
     "defaultValue": 0,
-    "description": ""
+    "description": "Min value of the gauge"
   },
   {
     "typeWidget": "scoringSemiCircularGauge",
     "name": "max",
     "type": "number",
     "defaultValue": 100,
-    "description": ""
+    "description": "Max value of the gauge"
   },
   {
     "typeWidget": "scoringSemiCircularGauge",
@@ -158,14 +158,14 @@
     "name": "min",
     "type": "number",
     "defaultValue": 0,
-    "description": ""
+    "description": "Min value of the gauge"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
     "name": "max",
     "type": "number",
     "defaultValue": 100,
-    "description": ""
+    "description": "Max value of the gauge"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
@@ -1680,14 +1680,14 @@
     "name": "min",
     "type": "number",
     "defaultValue": 0,
-    "description": ""
+    "description": "Min value of the slider"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
     "name": "max",
     "type": "number",
     "defaultValue": 100,
-    "description": ""
+    "description": "Max value of the slider"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -1848,14 +1848,14 @@
     "name": "min",
     "type": "number",
     "defaultValue": 0,
-    "description": ""
+    "description": "Min value of the slider"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
     "name": "max",
     "type": "number",
     "defaultValue": 100,
-    "description": ""
+    "description": "Max value of the slider"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
@@ -1953,14 +1953,14 @@
     "name": "min",
     "type": "number",
     "defaultValue": 0,
-    "description": ""
+    "description": "Min value of the progress bar"
   },
   {
     "typeWidget": "flatUiProgressBar",
     "name": "max",
     "type": "number",
     "defaultValue": 100,
-    "description": ""
+    "description": "Max value of the progress bar"
   },
   {
     "typeWidget": "flatUiProgressBar",
