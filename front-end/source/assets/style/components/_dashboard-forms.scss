@@ -73,8 +73,13 @@
   select.multiple {
     background-color: var(--surface-b);
     background-image: none;
-    border: thin solid;
+    border: 1px solid var(--border-b);
     cursor: pointer;
+
+    &:focus,
+    :focus-within {
+      border-color: transparent;
+    }
   }
 
   label {
