@@ -72,7 +72,21 @@ function mapGeoJsonWidgetsPluginClass() {
     this.rescale = function () {};
 
     this.getColorScale = colorScaleManager.getColorScale;
-
+    this.getColorScaleFromStyle = function (index) {
+      if (
+        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style) &&
+        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style.length > 0)
+      ) {
+        let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[index];
+        var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
+        var colorScale = undefined;
+        if (!_.isUndefined(color)) {
+          colorScale = self.getColorScale(color, 0, 100);
+        }
+        return colorScale;
+      }
+    };
     this.addImageOverlay = function (imgStruct) {
       //securities
       if (_.isUndefined(imgStruct)) return;
@@ -232,17 +246,13 @@ function mapGeoJsonWidgetsPluginClass() {
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
       let leafletIndex = self.getLefletIndex(leafletLayer);
-      let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
-      var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
-      var colorScale = undefined;
-      if (!_.isUndefined(color)) {
-        colorScale = self.getColorScale(color, 0, 100);
-      }
       if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon) {
         //add events :
         // mouseover
         if (!_.isUndefined(leafletIndex)) {
           self.mouseoverHandler = (e) => {
+            let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+
             if (
               _.isUndefined(style) ||
               _.isUndefined(style.events) ||
@@ -299,6 +309,8 @@ function mapGeoJsonWidgetsPluginClass() {
         //mouseout
         if (!_.isUndefined(leafletIndex)) {
           self.mouseoutHandler = (e) => {
+            let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+
             //if the curent layer is the clicked layer, apply click style
             if (e.target == self.state.selectedElement) {
               //apply click style
@@ -337,6 +349,7 @@ function mapGeoJsonWidgetsPluginClass() {
               return;
             }
             let eventStyle = {};
+            let colorScale = self.getColorScaleFromStyle(layerIndex);
             if (!_.isUndefined(e.target.feature.properties) && style.property in e.target.feature.properties) {
               var fillColor = self.getFillColor(
                 geoJSON,
@@ -371,6 +384,8 @@ function mapGeoJsonWidgetsPluginClass() {
         //click event
         if (!_.isUndefined(leafletIndex)) {
           self.clickhandler = (e) => {
+            let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+
             if (
               _.isUndefined(style) ||
               _.isUndefined(style.events) ||
@@ -396,6 +411,7 @@ function mapGeoJsonWidgetsPluginClass() {
             } else {
               return;
             }
+            let colorScale = self.getColorScaleFromStyle(layerIndex);
             //initial style for other layers
             leafletLayer.eachLayer(function (layer) {
               let layerStyle = { ...style };
@@ -457,6 +473,8 @@ function mapGeoJsonWidgetsPluginClass() {
         let leafletIndex = self.getLefletIndex(leafletLayer);
         if (!_.isUndefined(leafletIndex)) {
           self.mouseoverHandler = (e) => {
+            let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
+
             if (
               _.isUndefined(style) ||
               _.isUndefined(style.events) ||
@@ -513,6 +531,7 @@ function mapGeoJsonWidgetsPluginClass() {
         //mouseout
         if (!_.isUndefined(leafletIndex)) {
           self.mouseoutHandler = (e) => {
+            let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
             //if the curent layer is the clicked layer, apply click style
             if (e.target == self.state.selectedElement) {
               //apply click style
@@ -552,7 +571,7 @@ function mapGeoJsonWidgetsPluginClass() {
             }
             let eventStyle = {};
             let styleForObject = { ...style };
-
+            let colorScale = self.getColorScaleFromStyle(layerIndex);
             eventStyle.color = self.getFillColor(
               geoJSON,
               { ...styleForObject },
@@ -580,6 +599,7 @@ function mapGeoJsonWidgetsPluginClass() {
         //click event
         if (!_.isUndefined(leafletIndex)) {
           self.clickhandler = (e) => {
+            let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[leafletIndex];
             if (
               _.isUndefined(style) ||
               _.isUndefined(style.events) ||
@@ -593,7 +613,7 @@ function mapGeoJsonWidgetsPluginClass() {
             self.Selected.setValue(e.target.feature.properties);
             self.Selected.updateCallback(self.Selected, self.Selected.getValue());
             //change style
-
+            let colorScale = self.getColorScaleFromStyle(layerIndex);
             let eventStyle = {};
             if (
               !_.isUndefined(style) &&
@@ -605,6 +625,7 @@ function mapGeoJsonWidgetsPluginClass() {
             } else {
               return;
             }
+
             //a layer was selected
             if (!_.isUndefined(self.state.selectedElement)) {
               //reset the style of old selected layer
@@ -625,7 +646,7 @@ function mapGeoJsonWidgetsPluginClass() {
                 layerStyle.color = style.color;
               }
               lastSelectedLayer.setStyle(layerStyle);
-              //if the current clicked is not the older : change the style 
+              //if the current clicked is not the older : change the style
               if (e.target != lastSelectedLayer) {
                 //style the selected layer
                 e.target.setStyle(eventStyle);
@@ -634,10 +655,7 @@ function mapGeoJsonWidgetsPluginClass() {
               } else {
                 //set layer style
                 let layerStyle = { ...style };
-                if (
-                  !_.isUndefined(e.target .feature.properties) &&
-                  style.property in e.target.feature.properties
-                ) {
+                if (!_.isUndefined(e.target.feature.properties) && style.property in e.target.feature.properties) {
                   layerStyle.color = self.getFillColor(
                     geoJSON,
                     { ...style },
@@ -649,7 +667,7 @@ function mapGeoJsonWidgetsPluginClass() {
                   layerStyle.color = style.color;
                 }
                 e.target.setStyle(layerStyle);
-                //unselect element 
+                //unselect element
                 self.state.selectedElement = undefined;
                 self.Selected.setValue({});
               }
@@ -846,7 +864,7 @@ function mapGeoJsonWidgetsPluginClass() {
 
       if (self.styleChanged) {
         self.styleChanged = false;
-        self.updateValue();
+        //  self.updateValue();
       }
     };
     // Set Style on GeoJSON layer
@@ -1066,30 +1084,28 @@ function mapGeoJsonWidgetsPluginClass() {
       if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPoint) {
         if (styleForObject.pointAreMarker) {
           // Change All Circle in Marker if L.Circle was transformed in L.Marker
-          if (leafLetLayer.getLayers()[0] instanceof L.Circle) {
-            if (!_.isUndefined(style.property)) {
-              newStyle = self.createTemplateStyle(geoJSONinLayer, layerIndex, L.marker);
-              Object.keys(style).forEach((key) => {
-                delete style[key];
-              });
-              Object.assign(style, { ...newStyle });
+          // if (leafLetLayer.getLayers()[0] instanceof L.Circle) {
+          newStyle = self.createTemplateStyle(geoJSONinLayer, layerIndex, L.marker);
+          Object.keys(style).forEach((key) => {
+            delete style[key];
+          });
+          Object.assign(style, { ...newStyle });
 
-              self.styleChanged = true;
-            }
+          self.styleChanged = true;
 
-            LMarkers = leafLetLayer.getLayers().map(function (layer) {
-              const marker = L.marker(layer.getLatLng());
-              marker.feature = layer.feature;
-              return marker;
-            });
+          LMarkers = leafLetLayer.getLayers().map(function (layer) {
+            const marker = L.marker(layer.getLatLng());
+            marker.feature = layer.feature;
+            return marker;
+          });
 
-            leafLetLayer.clearLayers();
+          leafLetLayer.clearLayers();
 
-            // Add Marker TODO : Create a markerClusterGroup and the option to do so
-            LMarkers.forEach(function (layerMarker) {
-              leafLetLayer.addLayer(layerMarker);
-            });
-          }
+          // Add Marker TODO : Create a markerClusterGroup and the option to do so
+          LMarkers.forEach(function (layerMarker) {
+            leafLetLayer.addLayer(layerMarker);
+          });
+          // }
 
           // TODO : in futur if first item is a markerClusterGroup do the eachLayer on the markerClusterGroup
           //
@@ -1144,15 +1160,12 @@ function mapGeoJsonWidgetsPluginClass() {
         } else {
           // Transform each L.Marker in L.Circle
           if (leafLetLayer.getLayers()[0] instanceof L.Marker) {
-            if (_.isUndefined(style.property)) {
-              newStyle = self.createTemplateStyle(geoJSONinLayer, layerIndex, L.circle);
-              Object.keys(style.style).forEach((key) => {
-                delete style.style[key];
-              });
-              Object.assign(style.style, { ...newStyle });
-
-              self.styleChanged = true;
-            }
+            newStyle = self.createTemplateStyle(geoJSONinLayer, layerIndex, L.circle);
+            Object.keys(style).forEach((key) => {
+              delete style[key];
+            });
+            Object.assign(style, { ...newStyle });
+            self.styleChanged = true;
             LCircles = leafLetLayer.getLayers().map(function (layer) {
               const { lat, lng } = layer.getLatLng();
               const circle = L.circle([lat, lng]);
