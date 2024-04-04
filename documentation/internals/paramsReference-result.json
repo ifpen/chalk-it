@@ -221,7 +221,7 @@
     "name": "backgroundColor",
     "type": "string",
     "defaultValue": "rgba(0, 0, 0, 0)",
-    "description": "Background color"
+    "description": "Background color of the markdown"
   },
   {
     "typeWidget": "annotationMarkdown",
@@ -270,7 +270,7 @@
     "name": "backgroundColor",
     "type": "string",
     "defaultValue": "rgba(0, 0, 0, 0)",
-    "description": "Background color"
+    "description": "Background color of the generic HTML"
   },
   {
     "typeWidget": "annotationHtml",
@@ -746,7 +746,7 @@
     "name": "backgroundColor",
     "type": "string",
     "defaultValue": "var(--widget-input-color)",
-    "description": "Background color"
+    "description": "Background color of the simple calendar"
   },
   {
     "typeWidget": "datepickerVisible",
@@ -914,7 +914,7 @@
     "name": "backgroundColor",
     "type": "string",
     "defaultValue": "var(--widget-input-color)",
-    "description": "Background color"
+    "description": "Background color of the date-range calendar"
   },
   {
     "typeWidget": "timepickerSimple",
@@ -1012,7 +1012,7 @@
     "name": "backgroundColor",
     "type": "string",
     "defaultValue": "var(--widget-input-color)",
-    "description": "Background color"
+    "description": "Background color of the simple clock"
   },
   {
     "typeWidget": "calendarD3",
@@ -1617,7 +1617,7 @@
     "name": "backgroundColor",
     "type": "string",
     "defaultValue": "var(--widget-input-color)",
-    "description": "Background color"
+    "description": "Background color of the address auto-completion"
   },
   {
     "typeWidget": "flatUiHereAutocompleteValue",
@@ -2954,7 +2954,7 @@
     "name": "backgroundColor",
     "type": "string",
     "defaultValue": "var(--disabled-color-opacity)",
-    "description": ""
+    "description": "Background color of the spinner"
   },
   {
     "typeWidget": "ledStatus",
