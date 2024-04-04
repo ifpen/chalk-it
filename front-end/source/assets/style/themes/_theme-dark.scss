@@ -21,7 +21,7 @@ $text-color: #ffffff;
   --text-color: #{$text-color};
   --text-color-rgb: 248 248 248;
   --text-color-secondary: #0b0b0e;
-  --text-color-inverted: #050038;
+  --text-color-inverted: #2c0000;
 
   // Main colors
   --primary-color: #ff371a;
@@ -30,7 +30,6 @@ $text-color: #ffffff;
   --primary-color-rgb: 255 55 26; // Used for discover tiles
   --secondary-color: #ffffff;
   --secondary-hover-color: #e4e5e8;
-  --secondary-active-color: #565b71;
   --secondary-color-text: #18181b;
   // for dark elements that must ALWAYS need to be on light background, like widgets icons
   --light-color: #ffffff;
@@ -58,9 +57,9 @@ $text-color: #ffffff;
   --success-active-color: #049558;
   --success-color-text: #ffffff;
   --success-color-rgb: 5 199 118; // Used for editor mode
-  --info-color: #0ea5e9;
-  --info-hover-color: #35b7f3;
-  --info-active-color: #0b81b7;
+  --info-color: #55c1f6;
+  --info-hover-color: #7ddaf7;
+  --info-active-color: #0f9bd7;
   --info-color-text: #ffffff;
   --warning-color: #fbbf24;
   --warning-hover-color: #fccc55;
