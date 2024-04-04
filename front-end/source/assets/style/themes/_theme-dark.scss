@@ -48,6 +48,10 @@ $text-color: #ffffff;
   --active-color-item: #ffffff;
   --active-color-item-text: #6b728e;
 
+  // Tag-items from tags-input library
+  --tag-color: var(--surface-a);
+  --tag-color-text: var(--primary-color-text);
+
   // Validation colors
   --success-color: #05c776;
   --success-hover-color: #049558;
@@ -74,8 +78,9 @@ $text-color: #ffffff;
 
   // Border colors
   --dark-grey-border: #333333;
-  --aside-border-gradient: linear-gradient(to bottom, #383839 4%, #5d2822 16%, #1e1e21 30%, #151517 54.82%);
-  --nav-border-gradient: linear-gradient(135deg, #383839 4%, #5d2822 16%, #1e1e21 30%, #151517 54.82%);
+  $gradient: #383839 4%, #5d2822 16%, #1e1e21 30%, #151517 54.82%;
+  --aside-border-gradient: linear-gradient(to bottom, #{$gradient});
+  --nav-border-gradient: linear-gradient(135deg, #{$gradient});
 
   // Variables for Switch elements
   --switch-background-color: #cccccc;

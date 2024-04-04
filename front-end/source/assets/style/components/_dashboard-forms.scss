@@ -235,8 +235,8 @@ tags-input .tag-item {
   font-family: var(--font-family-base);
   line-height: 26px;
   border-radius: br('2');
-  background: var(--active-color-item);
-  color: var(--active-color-item-text);
+  background: var(--tag-color);
+  color: var(--tag-color-text);
   cursor: default;
 }
 
@@ -262,10 +262,13 @@ tags-input .remove-button {
   font-weight: fw('bold');
   text-align: center;
   cursor: pointer;
+  transition: color 0.3s ease;
+  &:hover {
+    color: var(--primary-color);
+  }
 }
 
-tags-input .input.invalid-tag,
-tags-input .remove-button:active {
+tags-input .input.invalid-tag {
   background: var(--danger-color);
   color: var(--danger-color-text);
 }
