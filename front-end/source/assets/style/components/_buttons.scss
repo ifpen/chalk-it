@@ -236,6 +236,8 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   color: var(--active-color-text);
   font-weight: fw('bold');
   transition: background-color 0.3s ease;
+  position: relative;
+  z-index: 0;
 
   .icon__container {
     @extend %dashboard-btn-primary;
@@ -249,9 +251,22 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
     transition: background-color 0.3s ease;
 
     &.icon__container--active {
-      border: 1px var(--primary-hover-color) solid;
-      background-color: rgba(255, 55, 26, 0.2);
+      background-color: var(--primary-color);
       color: var(--primary-color-text);
+      position: unset;
+
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        border-radius: br('8');
+        z-index: -1;
+      }
     }
 
     &.alt {
@@ -265,6 +280,9 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   &:not(.btn-help):hover {
     color: var(--hover-color-text);
     .icon__container {
+      background-color: var(--hover-color);
+    }
+    &.icon__container--active::after {
       background-color: var(--hover-color);
     }
 
