@@ -102,7 +102,7 @@
     "name": "unit",
     "type": "string",
     "defaultValue": "",
-    "description": ""
+    "description": "The unit to display next to the value"
   },
   {
     "typeWidget": "scoringSemiCircularGauge",
@@ -172,7 +172,7 @@
     "name": "unit",
     "type": "string",
     "defaultValue": "",
-    "description": ""
+    "description": "The unit to display next to the value"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
@@ -1795,6 +1795,20 @@
     "description": ""
   },
   {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "unit",
+    "type": "string",
+    "defaultValue": "unitText",
+    "description": "The unit to display next to the slider value"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "displayUnit",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Displays the unit text next to the value"
+  },
+  {
     "typeWidget": "flatUiVerticalSlider",
     "name": "label",
     "type": "string",
@@ -2177,7 +2191,7 @@
     "name": "unit",
     "type": "string",
     "defaultValue": "unitText",
-    "description": ""
+    "description": "The unit to display next to the value"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2471,14 +2485,14 @@
     "name": "unit",
     "type": "string",
     "defaultValue": "unitText",
-    "description": ""
+    "description": "The unit to display next to the value"
   },
   {
     "typeWidget": "flatUiNumericInput",
     "name": "displayUnit",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "Displays the unit text next to the value"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2597,14 +2611,14 @@
     "name": "unit",
     "type": "string",
     "defaultValue": "unitText",
-    "description": ""
+    "description": "The unit to display next to the value"
   },
   {
     "typeWidget": "flatUiValueDisplay",
     "name": "displayUnit",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "Displays the unit text next to the value"
   },
   {
     "typeWidget": "flatUiValueDisplay",
