@@ -494,7 +494,7 @@
     "name": "decimalDigits",
     "type": "number",
     "defaultValue": 3,
-    "description": ""
+    "description": "Number decimal digitls precision for display"
   },
   {
     "typeWidget": "advancedKpiCard",
@@ -2156,7 +2156,7 @@
     "name": "decimalDigits",
     "type": "number",
     "defaultValue": 3,
-    "description": ""
+    "description": "Number decimal digitls precision for display"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2611,7 +2611,7 @@
     "name": "decimalDigits",
     "type": "number",
     "defaultValue": 3,
-    "description": ""
+    "description": "Number decimal digitls precision for display"
   },
   {
     "typeWidget": "flatUiValueDisplay",
