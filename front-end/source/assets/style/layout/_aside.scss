@@ -284,13 +284,15 @@ aside {
 
   .icons__item {
     border-radius: br('8');
+    border: 1px solid transparent;
     text-align: center;
     padding: 0.5em;
     color: var(--text-color);
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out;
 
     &:hover {
       background-color: var(--surface-a);
+      border: 1px solid var(--primary-color);
     }
 
     i {
