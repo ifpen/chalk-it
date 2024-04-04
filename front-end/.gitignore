@@ -18,6 +18,7 @@ configs/config.dev.js
 
 index.html
 index-view.html
+index-taipy-view.html
 test/jshint/*
 
 doc/
