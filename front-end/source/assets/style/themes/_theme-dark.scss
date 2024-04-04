@@ -77,8 +77,8 @@ $text-color: #ffffff;
   --header-color-text: #ffffff;
 
   // Border colors
-  --dark-grey-border: #333333;
-  --light-grey-border: #777777;
+  --border-a: #333333;
+  --border-b: #777777;
   $gradient: #383839 4%, #5d2822 16%, #1e1e21 30%, #151517 54.82%;
   --aside-border-gradient: linear-gradient(to bottom, #{$gradient});
   --nav-border-gradient: linear-gradient(135deg, #{$gradient});

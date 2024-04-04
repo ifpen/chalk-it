@@ -20,7 +20,7 @@
   input,
   tags-input {
     width: 100%;
-    border: 1px solid var(--dark-grey-border);
+    border: 1px solid var(--border-a);
     border-radius: br('8');
     padding: 0.5em 1em;
     box-shadow: none;
@@ -272,7 +272,7 @@ tags-input .remove-button {
   cursor: pointer;
   transition: color 0.3s ease;
   &:hover {
-    color: var(--primary-color);
+    color: var(--hover-color);
   }
 }
 
