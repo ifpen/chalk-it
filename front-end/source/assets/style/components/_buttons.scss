@@ -58,12 +58,6 @@
     opacity: var(--disabled-opacity);
     cursor: not-allowed;
   }
-
-  &:not(.btn-circle):not(.btn-icon-only):not(.btn-back) {
-    &:hover {
-      box-shadow: var(--default-box-shadow);
-    }
-  }
 }
 
 // Color variations
@@ -165,10 +159,6 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   &.cancel {
     @extend %dashboard-btn-secondary;
     padding: 0.5em 2em;
-  }
-
-  &:hover {
-    box-shadow: var(--default-box-shadow);
   }
 }
 
