@@ -235,7 +235,7 @@
     "name": "valueFontFamily",
     "type": "string",
     "defaultValue": "var(--widget-font-family)",
-    "description": "Text font-family"
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
   },
   {
     "typeWidget": "annotationMarkdown",
@@ -284,7 +284,7 @@
     "name": "valueFontFamily",
     "type": "string",
     "defaultValue": "var(--widget-font-family)",
-    "description": "Text font-family"
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
   },
   {
     "typeWidget": "annotationHtml",
@@ -487,7 +487,7 @@
     "name": "valueFontFamily",
     "type": "string",
     "defaultValue": "var(--widget-font-family)",
-    "description": ""
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
   },
   {
     "typeWidget": "advancedKpiCard",
