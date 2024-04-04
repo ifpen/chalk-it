@@ -234,6 +234,13 @@ aside {
 .widget__groups--wrapper {
   margin-top: 1.5em;
 
+  .widget__groups--wrapper--top {
+    transition: color 0.3s ease;
+    &:hover {
+      color: var(--hover-color);
+    }
+  }
+
   &.open {
     .widget__groups--wrapper--icons {
       max-height: 45em;
@@ -277,13 +284,15 @@ aside {
 
   .icons__item {
     border-radius: br('8');
+    border: 1px solid transparent;
     text-align: center;
     padding: 0.5em;
     color: var(--text-color);
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out;
 
     &:hover {
       background-color: var(--surface-a);
+      border: 1px solid var(--primary-color);
     }
 
     i {
@@ -842,6 +851,8 @@ aside {
   }
 
   a {
+    display: flex;
+    align-items: center;
     font-weight: fw('normal');
     padding: 0.25em 0.5em;
     border-radius: br('full');
@@ -903,6 +914,7 @@ aside {
   display: flex;
   flex-direction: row;
   gap: 1em;
+  margin-bottom: spacer('3');
 
   @include media-breakpoint-up('md') {
     justify-content: flex-end;
@@ -915,14 +927,13 @@ aside {
   a {
     display: flex;
     align-items: center;
-    gap: 0.5em;
+    font-weight: fw('normal');
     padding: 0.25em 0.5em;
-    text-transform: uppercase;
-    font-size: fs('xs');
+    border-radius: br('full');
+    transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: var(--active-color);
-      color: var(--active-color-text);
+      background-color: var(--hover-color);
     }
   }
 }
@@ -1036,10 +1047,11 @@ aside {
     border-radius: 0 br('full') br('full') 0;
     color: var(--primary-color-text);
     background-color: var(--primary-color);
+    transition: background-color 0.3s ease;
 
     &:hover {
       color: var(--active-color-text);
-      background-color: var(--active-color);
+      background-color: var(--hover-color);
     }
   }
 }
