@@ -116,28 +116,28 @@
     "name": "thick",
     "type": "number",
     "defaultValue": 10,
-    "description": ""
+    "description": "Thickness of the gauge"
   },
   {
     "typeWidget": "scoringSemiCircularGauge",
     "name": "thicknessColor",
     "type": "string",
     "defaultValue": "var(--widget-range-color)",
-    "description": ""
+    "description": "The color of the gauge thickness"
   },
   {
     "typeWidget": "scoringSemiCircularGauge",
     "name": "duration",
     "type": "number",
     "defaultValue": 1500,
-    "description": ""
+    "description": "Animation duration in milliseconds"
   },
   {
     "typeWidget": "scoringSemiCircularGauge",
     "name": "thicknessBackgroundColor",
     "type": "string",
     "defaultValue": "var(--widget-segment-color)",
-    "description": ""
+    "description": "Background color of the gauge"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
@@ -186,28 +186,28 @@
     "name": "thick",
     "type": "number",
     "defaultValue": 10,
-    "description": ""
+    "description": "Thickness of the gauge"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
     "name": "thicknessColor",
     "type": "string",
     "defaultValue": "var(--widget-range-color)",
-    "description": ""
+    "description": "The color of the gauge thickness"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
     "name": "duration",
     "type": "number",
     "defaultValue": 1500,
-    "description": ""
+    "description": "Animation duration in milliseconds"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
     "name": "thicknessBackgroundColor",
     "type": "string",
     "defaultValue": "var(--widget-segment-color)",
-    "description": ""
+    "description": "Background color of the gauge"
   },
   {
     "typeWidget": "annotationMarkdown",
