@@ -571,42 +571,42 @@
     "name": "minRange",
     "type": "number",
     "defaultValue": 0,
-    "description": ""
+    "description": "Minimum range allowed between the two handles of the slider"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "maxRange",
     "type": "number",
     "defaultValue": 100,
-    "description": ""
+    "description": "Maximum range allowed between the two handles of the slider"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "step",
     "type": "number",
     "defaultValue": 0.1,
-    "description": ""
+    "description": "Increment of the slider"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "precision",
     "type": "number",
     "defaultValue": 2,
-    "description": ""
+    "description": "Number decimal digitls precision for display"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "enforceStep",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "Enforce value to align precisely with the defined step size"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "disableAnimation",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "Disable slider animation"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
@@ -620,42 +620,42 @@
     "name": "forceValuesToMinAndMax",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "Force values to min and max values"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "sliderSegmentColor",
     "type": "string",
     "defaultValue": "var(--widget-segment-color)",
-    "description": ""
+    "description": "Slider segment color"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "sliderRangeColor",
     "type": "string",
     "defaultValue": "var(--widget-range-color)",
-    "description": ""
+    "description": "Slider Range color"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "sliderHandleDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-default-color)",
-    "description": ""
+    "description": "Slider handle default color"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "sliderHandleHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-hover-color)",
-    "description": ""
+    "description": "Slider handle hover color"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "sliderHandleActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-active-color)",
-    "description": ""
+    "description": "Slider handle active color"
   },
   {
     "typeWidget": "datepickerSimple",
