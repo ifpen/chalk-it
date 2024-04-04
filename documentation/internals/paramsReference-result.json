@@ -522,14 +522,14 @@
     "name": "borderShadow",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "Enable border shadow effect"
   },
   {
     "typeWidget": "advancedKpiCard",
     "name": "graphColor",
     "type": "string",
     "defaultValue": "var(--widget-label-color)",
-    "description": ""
+    "description": "Color of the graph"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
