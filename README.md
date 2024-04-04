@@ -15,7 +15,7 @@ For more details, you can browse the online [documentation](https://ifpen.github
 ### Install
 
 ```sh
-pip install py-chalk-it
+pip install chalk-it-lite
 ```
 
 ### Run

@@ -13,7 +13,7 @@
 from setuptools import setup, find_packages
 import json
 
-NAME = "py-chalk-it"
+NAME = "chalk-it-lite"
 VERSION = "0.0.0" # Do not touch. Will be overwritten by version.json
 
 with open("README.md", "r") as fh:
