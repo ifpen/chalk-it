@@ -84,16 +84,21 @@
   padding: 0.5em;
   border-radius: br('full');
   color: var(--header-color-text);
+  transition: background-color 0.3s ease;
   cursor: pointer;
 
   &:hover {
-    background: var(--surface-c);
+    background-color: var(--hover-color);
     color: var(--text-color);
+
+    .user__actions--notifications__counter {
+      background-color: var(--hover-color);
+    }
   }
 }
 
 .user__actions--notifications__counter {
-  background: var(--danger-color);
+  background-color: var(--active-color);
   color: var(--danger-color-text);
   width: 16px;
   height: 16px;
