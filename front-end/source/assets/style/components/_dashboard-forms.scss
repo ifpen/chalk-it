@@ -58,6 +58,7 @@
 
   select:not([multiple]) {
     padding-right: 2em;
+    background-color: var(--surface-b);
     background-image: var(--dropdown-arrow-url);
     background-repeat: no-repeat;
     background-position: calc(100% - 0.5rem) center;
