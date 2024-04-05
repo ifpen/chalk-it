@@ -7,6 +7,37 @@
 
 $themes: (
   'default': (
+    'hue': 'dark',
+    0: #0b0b0e,
+    // Background color
+    1: #fff,
+    // Main text
+    2: #ff371a,
+    // Main color
+    3: #ff5c4d,
+    // Active color
+    4: #c66563,
+    // Light color
+    5: #ff6751,
+    // Accent 1
+    6: #ff4f36,
+    // Accent 2
+    7: #e63217,
+    // Accent 3
+    8: #cc2c15,
+    // Accent 4
+    9: #ad2512,
+    // Accent 5
+    10: #8f1f0f,
+    // Accent 6
+    11: #70180b,
+    // Accent 7
+    12: #521208,
+    // Accent 8
+    13: #330b05,
+    // Accent 9
+  ),
+  'blue': (
     'hue': 'light',
     0: #fff,
     // Background color

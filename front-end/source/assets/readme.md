@@ -17,8 +17,8 @@ What's new:
 Why we did it:
 
 - We tried as much as we can to not rely anymore on CSS frameworks and only picked the useful bits that we needed, like Bootstrap's grid or flat UI widgets.
-- Another great deal was to suppress as much duplicates as we could, by isolating the xDash App styles from the Users Projects styles for components like forms and buttons for example.
-- Doing so, we now have a `front-end/source/assets/style/components` folder and a `front-end/source/assets/style/widgets` folder, the former being for the xDash App and the latter for the Projects built by the users.
+- Another great deal was to suppress as much duplicates as we could, by isolating the Chalk'it App styles from the Users Projects styles for components like forms and buttons for example.
+- Doing so, we now have a `front-end/source/assets/style/components` folder and a `front-end/source/assets/style/widgets` folder, the former being for the Chalk'it App and the latter for the Projects built by the users.
 
 How we did it:
 
@@ -29,8 +29,8 @@ How we did it:
   - The `utils` folder contains the foundations of all SCSS files (variables, functions and mixins).
   - The `base` folder contains the first CSS rules like the reset file and the general typography rules (we mostly target HTML elements, so it's easy to override inside layouts/components).
   - Because it was quite a big subject on its own, the icons related rules are not included in the base folder, but got their own `icon` folder (read below for more infos).
-  - The `theme` contains the xDash app theming color declarations (read below for more details).
-  - The `layout` contains the xDash app scructure rules like header, asides, main and footer.
+  - The `theme` contains the Chalk'it app theming color declarations (read below for more details).
+  - The `layout` contains the Chalk'it app scructure rules like header, asides, main and footer.
   - The `components` and `widgets` are more precise and target one object at a time. Most of the widgets are Third parties and could (should) be imported as dependencies (leaflets, charts...). There were not much work done on these.
   - All that's left are the 2 main files, the style file and the `_utils.scss` cheat sheet file that contains rules that are not related to any above mentioned categories. It should be kept as small as possible.
 
@@ -43,13 +43,13 @@ How to keep it clean:
 - Try not to add much content inside the `_utils.scss` file and refrain from using `!important`.
 - Also try to use `flex` or `grid` rules instead of `float` for positioning elements.
 
-### xDash themes
+### Chalk'it themes
 
-xDash themes are a new concept introduced with the refactoring of the CSS rules. We detect the user browser settings to show a light or dark theme.
+Chalk'it themes are a new concept introduced with the refactoring of the CSS rules. We detect the user browser settings to show a light or dark theme.
 To do so, we use CSS Custom Properties (also known as CSS variables).
 We set all the CSS Custom Properties in the `front-end/source/assets/style/themes`.
 
-These themes "only" affect the xDash app by customizing its layout parts like header, asides, main, footer and most of its components like buttons, forms, modals and so on.
+These themes "only" affect the Chalk'it app by customizing its layout parts like header, asides, main, footer and most of its components like buttons, forms, modals and so on.
 
 The projects themes are an entirely different functionality.
 
@@ -100,4 +100,4 @@ Other Icons are found in `front-end/source/assets/icons` and are used for exampl
 
 ## Images
 
-We still use images like the xDash logos or with third parties like Leaflet or Sweet Alert. We cleaned up the unused files and reorganized some folders.
+We still use images like the Chalk'it logos or with third parties like Leaflet or Sweet Alert. We cleaned up the unused files and reorganized some folders.

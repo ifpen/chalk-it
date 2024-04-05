@@ -154,6 +154,6 @@ $zindex-pnotify: 10001;
   --font-family-mono: monospace, monospace;
   --selection-background-color: rgba(246, 192, 68, 0.15);
   --line-height-base: 1.25em;
-  --overlay-color: rgb(10, 15, 40);
+  --overlay-color: var(--surface-c);
   --disabled-opacity: 0.7;
 }

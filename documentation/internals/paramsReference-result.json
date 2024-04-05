@@ -1,3599 +1,3652 @@
 [
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "",
-		"description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
-	},
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "min",
-		"type": "number",
-		"defaultValue": 0,
-		"description": "Min value of the gauge"
-	},
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "max",
-		"type": "number",
-		"defaultValue": 100,
-		"description": "Max value of the gauge"
-	},
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "unit",
-		"type": "string",
-		"defaultValue": "",
-		"description": "The unit to display next to the value"
-	},
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": "The color of the value displayed in the gauge"
-	},
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "thick",
-		"type": "number",
-		"defaultValue": 10,
-		"description": "Thickness of the gauge"
-	},
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "thicknessColor",
-		"type": "string",
-		"defaultValue": "var(--widget-range-color)",
-		"description": "The color of the gauge thickness"
-	},
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "duration",
-		"type": "number",
-		"defaultValue": 1500,
-		"description": "Animation duration in milliseconds"
-	},
-	{
-		"typeWidget": "scoringFullCircularGauge",
-		"name": "thicknessBackgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-segment-color)",
-		"description": "Background color of the gauge"
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "",
-		"description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "min",
-		"type": "number",
-		"defaultValue": 0,
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "max",
-		"type": "number",
-		"defaultValue": 100,
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "unit",
-		"type": "string",
-		"defaultValue": "",
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "thick",
-		"type": "number",
-		"defaultValue": 10,
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "thicknessColor",
-		"type": "string",
-		"defaultValue": "var(--widget-range-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "duration",
-		"type": "number",
-		"defaultValue": 1500,
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringSemiCircularGauge",
-		"name": "thicknessBackgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-segment-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "",
-		"description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "min",
-		"type": "number",
-		"defaultValue": 0,
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "max",
-		"type": "number",
-		"defaultValue": 100,
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "unit",
-		"type": "string",
-		"defaultValue": "",
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "thick",
-		"type": "number",
-		"defaultValue": 10,
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "thicknessColor",
-		"type": "string",
-		"defaultValue": "var(--widget-range-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "duration",
-		"type": "number",
-		"defaultValue": 1500,
-		"description": ""
-	},
-	{
-		"typeWidget": "scoringArchCircularGauge",
-		"name": "thicknessBackgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-segment-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationMarkdown",
-		"name": "fontsize",
-		"type": "number",
-		"defaultValue": 0.3,
-		"description": "Markdown text font-size"
-	},
-	{
-		"typeWidget": "annotationMarkdown",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "rgba(0, 0, 0, 0)",
-		"description": "Background color"
-	},
-	{
-		"typeWidget": "annotationMarkdown",
-		"name": "textColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": "Text color"
-	},
-	{
-		"typeWidget": "annotationMarkdown",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Text font-family"
-	},
-	{
-		"typeWidget": "annotationMarkdown",
-		"name": "textAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "annotationMarkdown",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "annotationMarkdown",
-		"name": "centerVertically",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Ensure vertical centering of the text"
-	},
-	{
-		"typeWidget": "annotationHtml",
-		"name": "fontsize",
-		"type": "number",
-		"defaultValue": 0.3,
-		"description": "Inner text font-size"
-	},
-	{
-		"typeWidget": "annotationHtml",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "rgba(0, 0, 0, 0)",
-		"description": "Background color"
-	},
-	{
-		"typeWidget": "annotationHtml",
-		"name": "textColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": "Text color"
-	},
-	{
-		"typeWidget": "annotationHtml",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Text font-family"
-	},
-	{
-		"typeWidget": "annotationHtml",
-		"name": "textAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "annotationHtml",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "annotationHtml",
-		"name": "centerVertically",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Ensure vertical centering of the text"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "If true, a label is displayed above or below the value"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "valuePosition",
-		"type": "string",
-		"defaultValue": "bottom",
-		"description": "Value position. Possible values: bottom, top"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 2,
-		"description": "Value font-size"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "decimalDigits",
-		"type": "number",
-		"defaultValue": 3,
-		"description": "Number decimal digitls precision for display"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "unit",
-		"type": "string",
-		"defaultValue": "unitText",
-		"description": "The unit to display next to the value"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "displayUnit",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Displays the unit text next to the value"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "unitFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "The font-size of the unit text"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "unitColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "The color of the unit text"
-	},
-	{
-		"typeWidget": "kpiCard",
-		"name": "borderShadow",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Enable border shadow effect"
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "valuePosition",
-		"type": "string",
-		"defaultValue": "bottom",
-		"description": ""
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 3,
-		"description": ""
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": ""
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "decimalDigits",
-		"type": "number",
-		"defaultValue": 3,
-		"description": ""
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "subLabelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Sub-label font-size"
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "subLabelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-subtext-color)",
-		"description": "Sub-label text color"
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "subLabelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "borderShadow",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "advancedKpiCard",
-		"name": "graphColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Displays a label on the left side of the slider"
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "labelWidthProportion",
-		"type": "string",
-		"defaultValue": "30%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "minRange",
-		"type": "number",
-		"defaultValue": 0,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "maxRange",
-		"type": "number",
-		"defaultValue": 100,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "step",
-		"type": "number",
-		"defaultValue": 0.1,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "precision",
-		"type": "number",
-		"defaultValue": 2,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "enforceStep",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "disableAnimation",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "rangeActuator",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "forceValuesToMinAndMax",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "sliderSegmentColor",
-		"type": "string",
-		"defaultValue": "var(--widget-segment-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "sliderRangeColor",
-		"type": "string",
-		"defaultValue": "var(--widget-range-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "sliderHandleDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-handle-default-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "sliderHandleHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-handle-hover-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiDoubleSlider",
-		"name": "sliderHandleActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-handle-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Displays a label on the left side of the date picker"
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "labelWidthProportion",
-		"type": "string",
-		"defaultValue": "30%",
-		"description": ""
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "valueTextAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "datepickerSimple",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-color)",
-		"description": "Background color"
-	},
-	{
-		"typeWidget": "datepickerVisible",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "datepickerVisible",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "datepickerVisible",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Displays a label on the left side of the date picker"
-	},
-	{
-		"typeWidget": "datepickerVisible",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "datepickerVisible",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "datepickerVisible",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "datepickerVisible",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "datepickerVisible",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "datepickerVisible",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Displays a label on the left side of the date-range picker"
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "displayTimePicker",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "displayTimePicker24Hour",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "labelWidthProportion",
-		"type": "string",
-		"defaultValue": "25%",
-		"description": ""
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "valueTextAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "dateRangePicker",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-color)",
-		"description": "Background color"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Displays a label on the left side of the time picker"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "labelWidthProportion",
-		"type": "string",
-		"defaultValue": "30%",
-		"description": ""
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "valueTextAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "timepickerSimple",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-color)",
-		"description": "Background color"
-	},
-	{
-		"typeWidget": "calendarD3",
-		"name": "AllYearsVisible",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "calendarD3",
-		"name": "UndefinedValueColor",
-		"type": "string",
-		"defaultValue": "#F6F6F6",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Displays a label on the left side of the select widget"
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "selectWidthProportion",
-		"type": "string",
-		"defaultValue": "70%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "isNumber",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "selectValueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "selectValueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "selectedValueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-select-option-highlighted-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "selectedItemDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-select-option-highlighted-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "selectedItemHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-select-option-highlighted-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiSelect",
-		"name": "isKeyValuePairs",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "addControls",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "resetPastSelection",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.4,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "checkboxWidth",
-		"type": "number",
-		"defaultValue": 7,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "checkboxHeight",
-		"type": "number",
-		"defaultValue": 1.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "valueDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "checkboxDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-multiselect-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "checkboxBorderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-multiselect-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "valueHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-multiselect-hover-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "checkboxHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-multiselect-hover-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "checkboxHoverBorderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-multiselect-hover-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "valueFocusColor",
-		"type": "string",
-		"defaultValue": "var(--widget-multiselect-checked-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "checkboxFocusColor",
-		"type": "string",
-		"defaultValue": "var(--widget-multiselect-checked-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "checkboxFocusBorderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-multiselect-checked-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiMultiSelect",
-		"name": "isNumber",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiList",
-		"name": "addControls",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiList",
-		"name": "listValueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiList",
-		"name": "listValueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-select-drop-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiList",
-		"name": "listBackgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-select-drop-color)",
-		"description": "Background color"
-	},
-	{
-		"typeWidget": "flatUiList",
-		"name": "selectValueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-select-option-highlighted-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiList",
-		"name": "selectValueBackgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-select-option-highlighted-color)",
-		"description": "Background color"
-	},
-	{
-		"typeWidget": "flatUiList",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiList",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiList",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "headerLine",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "tableValueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "striped",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-table-value-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "valueAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "bordered",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "noBorder",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "editableCols",
-		"type": "string",
-		"defaultValue": "[]",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTable",
-		"name": "backgroundColor",
-		"type": "object",
-		"defaultValue": {
-			"primary": "var(--widget-color-0)",
-			"secondary": "var(--widget-table-striped-odd)"
-		},
-		"description": "Background color regarding primary and secondary rows"
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Displays a label on left or right side position of the checkbox"
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "labelPosition",
-		"type": "string",
-		"defaultValue": "right",
-		"description": "Label position. Possible values: left, right"
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "checkboxSize",
-		"type": "number",
-		"defaultValue": 1,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "checkedColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-checked-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiCheckbox",
-		"name": "uncheckedColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-unchecked-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Displays a label on the left or right side of the switch"
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "labelPosition",
-		"type": "string",
-		"defaultValue": "right",
-		"description": "Label position. Possible values: left, right"
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "switchWidthProportion",
-		"type": "string",
-		"defaultValue": "30%",
-		"description": "Slider width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + switchWidthProportion must be 100%"
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "switchOnColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-checked-color)",
-		"description": "The on color of the switch"
-	},
-	{
-		"typeWidget": "flatUiSwitch",
-		"name": "switchOffColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-unchecked-color)",
-		"description": "The off color of the switch"
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "valueWidthProportion",
-		"type": "string",
-		"defaultValue": "70%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-color)",
-		"description": "Background color"
-	},
-	{
-		"typeWidget": "flatUiHereAutocompleteValue",
-		"name": "countryIsoCodes",
-		"type": "string",
-		"defaultValue": "FRA",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "rangeActuator",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "min",
-		"type": "number",
-		"defaultValue": 0,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "max",
-		"type": "number",
-		"defaultValue": 100,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "step",
-		"type": "number",
-		"defaultValue": 1,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "displayValue",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "validationOnFocusOut",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "valueBorderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "labelWidthProportion",
-		"type": "string",
-		"defaultValue": "20%",
-		"description": "Label width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + sliderWidthProportion + valueWidthProportion must be 100%"
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "sliderWidthProportion",
-		"type": "string",
-		"defaultValue": "60%",
-		"description": "Slider width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + sliderWidthProportion + valueWidthProportion must be 100%"
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "valueWidthProportion",
-		"type": "string",
-		"defaultValue": "20%",
-		"description": "Value width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + sliderWidthProportion + valueWidthProportion must be 100%"
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "sliderRangeColor",
-		"type": "string",
-		"defaultValue": "var(--widget-range-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "sliderSegmentColor",
-		"type": "string",
-		"defaultValue": "var(--widget-segment-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "sliderHandleDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-handle-default-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "sliderHandleHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-handle-hover-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "sliderHandleActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-handle-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiHorizontalSlider",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "rangeActuator",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "min",
-		"type": "number",
-		"defaultValue": 0,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "max",
-		"type": "number",
-		"defaultValue": 100,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "step",
-		"type": "number",
-		"defaultValue": 1,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "sliderRangeColor",
-		"type": "string",
-		"defaultValue": "var(--widget-range-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "sliderSegmentColor",
-		"type": "string",
-		"defaultValue": "var(--widget-segment-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "sliderHandleDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-handle-default-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "sliderHandleHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-handle-hover-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiVerticalSlider",
-		"name": "sliderHandleActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-handle-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "rangeActuator",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "min",
-		"type": "number",
-		"defaultValue": 0,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "max",
-		"type": "number",
-		"defaultValue": 100,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "displayValue",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "labelWidthProportion",
-		"type": "string",
-		"defaultValue": "20%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "progressBarWidthProportion",
-		"type": "string",
-		"defaultValue": "60%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "valueWidthProportion",
-		"type": "string",
-		"defaultValue": "20%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "progressBarRangeColor",
-		"type": "string",
-		"defaultValue": "var(--widget-range-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "progressBarSegmentColor",
-		"type": "string",
-		"defaultValue": "var(--widget-segment-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiProgressBar",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "valueWidthProportion",
-		"type": "string",
-		"defaultValue": "70%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "validationButton",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "validationBtnDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-primary-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "validationBtnActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "validationBtnHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-hover-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "validationOnFocusOut",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "isNumber",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "isPassword",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "decimalDigits",
-		"type": "number",
-		"defaultValue": 3,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "valueTextAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "unit",
-		"type": "string",
-		"defaultValue": "unitText",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "displayUnit",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Displays the unit text next to the value"
-	},
-	{
-		"typeWidget": "flatUiValue",
-		"name": "unitFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "The font-size of the unit text"
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "valueWidthProportion",
-		"type": "string",
-		"defaultValue": "70%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "validationButton",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "validationBtnDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-primary-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "validationBtnActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "validationBtnHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-hover-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "validationOnFocusOut",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "isPassword",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "valueTextAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiTextInput",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-color)",
-		"description": "Background color of the text input"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "valueWidthProportion",
-		"type": "string",
-		"defaultValue": "70%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "validationButton",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "validationBtnDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-primary-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "validationBtnActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "validationBtnHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-hover-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "validationOnFocusOut",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "valueTextAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-color)",
-		"description": "Background color of the numeric input"
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "unit",
-		"type": "string",
-		"defaultValue": "unitText",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "displayUnit",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiNumericInput",
-		"name": "unitFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "The font-size of the unit text"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "valueWidthProportion",
-		"type": "string",
-		"defaultValue": "70%",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "decimalDigits",
-		"type": "number",
-		"defaultValue": 3,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "valueFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "valueColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "valueTextAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-input-color)",
-		"description": "Background color of the value display"
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "unit",
-		"type": "string",
-		"defaultValue": "unitText",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "displayUnit",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiValueDisplay",
-		"name": "unitFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "The font-size of the unit text"
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "text",
-		"type": "string",
-		"defaultValue": "Push button",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "numberOfTriggers",
-		"type": "number",
-		"defaultValue": 1,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "fileInput",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "binaryFileInput",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "buttonFontSize",
-		"type": "number",
-		"defaultValue": 0.3,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "displayIcon",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "fontAwesomeIcon",
-		"type": "string",
-		"defaultValue": "",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "buttonFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "buttonTextColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-primary-text)",
-		"description": "Text color"
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "buttonDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-primary-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "buttonActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "flatUiButton",
-		"name": "buttonHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-hover-color)",
-		"description": "Button hover color"
-	},
-	{
-		"typeWidget": "saveToFileButton",
-		"name": "text",
-		"type": "string",
-		"defaultValue": "Save to file",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "saveToFileButton",
-		"name": "fileName",
-		"type": "string",
-		"defaultValue": "export.txt",
-		"description": "File name to export"
-	},
-	{
-		"typeWidget": "saveToFileButton",
-		"name": "buttonFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Text font size"
-	},
-	{
-		"typeWidget": "saveToFileButton",
-		"name": "buttonFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": ""
-	},
-	{
-		"typeWidget": "saveToFileButton",
-		"name": "buttonTextColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-primary-text)",
-		"description": "Text color"
-	},
-	{
-		"typeWidget": "saveToFileButton",
-		"name": "buttonDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-primary-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "saveToFileButton",
-		"name": "buttonActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "saveToFileButton",
-		"name": "buttonHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-hover-color)",
-		"description": "Button hover color"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "Choose a file",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.1,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "labelAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "textColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": "Text color"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "subTextColor",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": "Sub-text color"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "textSize",
-		"type": "number",
-		"defaultValue": 0.1,
-		"description": "Text font-size"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "binaryFileInput",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-dropzone-background-color)",
-		"description": "Background color of the file loader"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "displayBrowseButton",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "labelBackgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-dropzone-label-background-color)",
-		"description": "Background color of the label"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "browseButtonTextColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-text)",
-		"description": "Button text color"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "browseButtonDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "browseButtonActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "browseButtonHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-hover-color)",
-		"description": "Browse button hover color"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "deleteButtonDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-delete-button-default-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "deleteButtonActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-delete-button-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "deleteButtonHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-delete-button-hover-color)",
-		"description": "Delete button hover color"
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "deleteButtonIconColor",
-		"type": "string",
-		"defaultValue": "var(--widget-delete-button-icon-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "loadFile",
-		"name": "deleteButtonIconHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-delete-button-icon-hover-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "spinnerStatus",
-		"name": "fontsize",
-		"type": "number",
-		"defaultValue": 1,
-		"description": ""
-	},
-	{
-		"typeWidget": "spinnerStatus",
-		"name": "color",
-		"type": "string",
-		"defaultValue": "var(--widget-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "spinnerStatus",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "var(--disabled-color-opacity)",
-		"description": ""
-	},
-	{
-		"typeWidget": "ledStatus",
-		"name": "label",
-		"type": "string",
-		"defaultValue": "labelText",
-		"description": "Text label"
-	},
-	{
-		"typeWidget": "ledStatus",
-		"name": "inheritLabelFromData",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "When set to true, the label will be inherited from the connected variable"
-	},
-	{
-		"typeWidget": "ledStatus",
-		"name": "displayLabel",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "ledStatus",
-		"name": "labelFontSize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": "Label font-size"
-	},
-	{
-		"typeWidget": "ledStatus",
-		"name": "labelColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Label text color"
-	},
-	{
-		"typeWidget": "ledStatus",
-		"name": "labelFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "ledStatus",
-		"name": "labelWidthProportion",
-		"type": "string",
-		"defaultValue": "60%",
-		"description": ""
-	},
-	{
-		"typeWidget": "ledStatus",
-		"name": "onColor",
-		"type": "string",
-		"defaultValue": "#00b700",
-		"description": ""
-	},
-	{
-		"typeWidget": "ledStatus",
-		"name": "offColor",
-		"type": "string",
-		"defaultValue": "#004d00",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "text",
-		"type": "string",
-		"defaultValue": "Type texte",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "enableActuator",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "fontSize",
-		"type": "string",
-		"defaultValue": "medium",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "fontWeight",
-		"type": "string",
-		"defaultValue": "bold",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "fontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Text font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "textColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-text)",
-		"description": "Text color"
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "textPadding",
-		"type": "number",
-		"defaultValue": 10,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "tipBackgroundColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-color)",
-		"description": "Background color of the tip"
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "tipBorderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-text)",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "tipWidth",
-		"type": "number",
-		"defaultValue": 200,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "tipPositions",
-		"type": "object",
-		"defaultValue": [
-			"right"
-		],
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "tipEventTrigger",
-		"type": "string",
-		"defaultValue": "hover",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "iconColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "iconSize",
-		"type": "number",
-		"defaultValue": 1,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "iconSign",
-		"type": "string",
-		"defaultValue": "info-circle",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "cornerRadius",
-		"type": "number",
-		"defaultValue": 10,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "spikeLength",
-		"type": "number",
-		"defaultValue": 15,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationIconInfo",
-		"name": "spikeGirth",
-		"type": "number",
-		"defaultValue": 5,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "text",
-		"type": "string",
-		"defaultValue": "Type texte",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "enableActuator",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "fontsize",
-		"type": "number",
-		"defaultValue": 0.5,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "backgroundColor",
-		"type": "string",
-		"defaultValue": "rgba(0, 0, 0, 0)",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "textColor",
-		"type": "string",
-		"defaultValue": "var(--widget-label-color)",
-		"description": "Text color"
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "valueFontFamily",
-		"type": "string",
-		"defaultValue": "var(--widget-font-family)",
-		"description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "textAlign",
-		"type": "string",
-		"defaultValue": "left",
-		"description": "Text horizontal alignment. Possible values: left, center, right"
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "displayBorder",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Display border around the widget"
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "borderColor",
-		"type": "string",
-		"defaultValue": "var(--widget-border-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationLabel",
-		"name": "centerVertically",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": "Ensure vertical centering of the text"
-	},
-	{
-		"typeWidget": "annotationImage",
-		"name": "keepRatio",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationImage",
-		"name": "hideImageURL",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationImage",
-		"name": "enableActuator",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationVideo",
-		"name": "enforceCaptureRatio",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationVideo",
-		"name": "captureRatio",
-		"type": "number",
-		"defaultValue": 1,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationVideo",
-		"name": "pauseOnCapture",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationVideo",
-		"name": "buttonTextColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-text)",
-		"description": "Buttons text color"
-	},
-	{
-		"typeWidget": "annotationVideo",
-		"name": "buttonDefaultColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationVideo",
-		"name": "buttonActiveColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-active-color)",
-		"description": ""
-	},
-	{
-		"typeWidget": "annotationVideo",
-		"name": "buttonHoverColor",
-		"type": "string",
-		"defaultValue": "var(--widget-button-active-color)",
-		"description": "Button hover color"
-	},
-	{
-		"typeWidget": "plotlyLine",
-		"name": "numberOfAxis",
-		"type": "number",
-		"defaultValue": 1,
-		"description": ""
-	},
-	{
-		"typeWidget": "plotlyLine",
-		"name": "layout",
-		"type": "object",
-		"defaultValue": {
-			"title": "",
-			"xaxis": {
-				"title": "x",
-				"tickfont": {
-					"color": "var(--widget-color)"
-				}
-			},
-			"yaxis": {
-				"title": "y",
-				"tickfont": {
-					"color": "var(--widget-color)"
-				}
-			},
-			"paper_bgcolor": "rgba(0,0,0,0)",
-			"plot_bgcolor": "rgba(0,0,0,0)",
-			"colorway": [
-				"var(--widget-color-2)",
-				"var(--widget-color-5)",
-				"var(--widget-color-6)",
-				"var(--widget-color-7)"
-			],
-			"legend": {
-				"font": {
-					"color": "var(--widget-color)"
-				}
-			},
-			"showlegend": false,
-			"margin": {
-				"l": 50,
-				"r": 50,
-				"b": 100,
-				"t": 100,
-				"pad": 4
-			}
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "plotlyLine",
-		"name": "hideModeBar",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "plotlyBar",
-		"name": "numberOfAxis",
-		"type": "number",
-		"defaultValue": 1,
-		"description": ""
-	},
-	{
-		"typeWidget": "plotlyBar",
-		"name": "layout",
-		"type": "object",
-		"defaultValue": {
-			"title": "",
-			"barmode": "group",
-			"xaxis": {
-				"title": "x",
-				"tickfont": {
-					"color": "var(--widget-color)"
-				}
-			},
-			"yaxis": {
-				"title": "y",
-				"tickfont": {
-					"color": "var(--widget-color)"
-				}
-			},
-			"paper_bgcolor": "rgba(0,0,0,0)",
-			"plot_bgcolor": "rgba(0,0,0,0)",
-			"colorway": [
-				"var(--widget-color-2)",
-				"var(--widget-color-5)",
-				"var(--widget-color-6)",
-				"var(--widget-color-7)"
-			],
-			"legend": {
-				"font": {
-					"color": "var(--widget-color)"
-				}
-			},
-			"showlegend": false,
-			"margin": {
-				"l": 50,
-				"r": 50,
-				"b": 100,
-				"t": 100,
-				"pad": 4
-			}
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "plotlyBar",
-		"name": "hideModeBar",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "plotlyPie",
-		"name": "layout",
-		"type": "object",
-		"defaultValue": {
-			"title": "",
-			"paper_bgcolor": "rgba(0,0,0,0)",
-			"plot_bgcolor": "rgba(0,0,0,0)",
-			"colorway": [
-				"var(--widget-color-2)",
-				"var(--widget-color-5)",
-				"var(--widget-color-6)",
-				"var(--widget-color-7)"
-			],
-			"legend": {
-				"font": {
-					"color": "var(--widget-color)"
-				}
-			},
-			"showlegend": false,
-			"margin": {
-				"l": 50,
-				"r": 50,
-				"b": 100,
-				"t": 100,
-				"pad": 4
-			}
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "plotlyPie",
-		"name": "hideModeBar",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "plotly3dSurface",
-		"name": "layout",
-		"type": "object",
-		"defaultValue": {
-			"title": "",
-			"scene": {
-				"xaxis": {
-					"title": "x"
-				},
-				"yaxis": {
-					"title": "y"
-				},
-				"zaxis": {
-					"title": "z"
-				}
-			},
-			"paper_bgcolor": "rgba(0,0,0,0)",
-			"plot_bgcolor": "rgba(0,0,0,0)",
-			"showlegend": false,
-			"margin": {
-				"l": 50,
-				"r": 50,
-				"b": 100,
-				"t": 100,
-				"pad": 4
-			}
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "plotly3dSurface",
-		"name": "hideModeBar",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Hide Plotly widget Modebar"
-	},
-	{
-		"typeWidget": "plotlyGeneric",
-		"name": "hideModeBar",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Hide Plotly widget Modebar"
-	},
-	{
-		"typeWidget": "plotlyRealTime",
-		"name": "hideModeBar",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Hide Plotly widget Modebar"
-	},
-	{
-		"typeWidget": "vegaGeneric",
-		"name": "inheritWidthAndHeight",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "geoJson",
-		"type": "object",
-		"defaultValue": {
-			"numberOfLayers": 1
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "choropleth",
-		"type": "object",
-		"defaultValue": {
-			"numberOfLayers": 0
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "heatMap",
-		"type": "object",
-		"defaultValue": {
-			"numberOfLayers": 0,
-			"sampledDisplay": false,
-			"densityHeatMap": false
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "lineHeatMap",
-		"type": "object",
-		"defaultValue": {
-			"numberOfLayers": 0
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "imageOverlay",
-		"type": "object",
-		"defaultValue": {
-			"numberOfLayers": 0
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "svgOverlay",
-		"type": "object",
-		"defaultValue": {
-			"numberOfLayers": 0
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "defaultCenter",
-		"type": "object",
-		"defaultValue": {
-			"latitude": 48.872063,
-			"longitude": 2.331773,
-			"zoom": 16
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "offlineSupport",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": "Provides support for storing map tiles into the current browser local storage. This allows the map to be used offline. The map will be stored in the browser local storage and will be available even if the user closes the browser. Select the geographic area and click the save button to store the tiles."
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "tileServer",
-		"type": "string",
-		"defaultValue": "MapboxStreets",
-		"description": "Map tile provider. Possible values: MapboxStreets, MapboxDark, HereSatelliteDay, HereTerrainDay, HereHybridDay"
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "drawingFeatures",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "drawingFeaturesOptions",
-		"type": "object",
-		"defaultValue": {
-			"point": true,
-			"line": true,
-			"polygone": true,
-			"rectangle": true,
-			"modal": false
-		},
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "captureClickEvent",
-		"type": "boolean",
-		"defaultValue": false,
-		"description": ""
-	},
-	{
-		"typeWidget": "openStreetMaps",
-		"name": "markerCluster",
-		"type": "boolean",
-		"defaultValue": true,
-		"description": ""
-	}
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "",
+    "description": "Text label to display below the value. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "min",
+    "type": "number",
+    "defaultValue": 0,
+    "description": "Min value of the gauge"
+  },
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "max",
+    "type": "number",
+    "defaultValue": 100,
+    "description": "Max value of the gauge"
+  },
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "unit",
+    "type": "string",
+    "defaultValue": "",
+    "description": "The unit to display next to the value"
+  },
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the value displayed in the gauge"
+  },
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "thick",
+    "type": "number",
+    "defaultValue": 10,
+    "description": "Thickness of the gauge"
+  },
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "thicknessColor",
+    "type": "string",
+    "defaultValue": "var(--widget-range-color)",
+    "description": "The color of the gauge thickness"
+  },
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "duration",
+    "type": "number",
+    "defaultValue": 1500,
+    "description": "Animation duration in milliseconds"
+  },
+  {
+    "typeWidget": "scoringFullCircularGauge",
+    "name": "thicknessBackgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-segment-color)",
+    "description": "Background color of the gauge"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "min",
+    "type": "number",
+    "defaultValue": 0,
+    "description": "Min value of the gauge"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "max",
+    "type": "number",
+    "defaultValue": 100,
+    "description": "Max value of the gauge"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "unit",
+    "type": "string",
+    "defaultValue": "",
+    "description": "The unit to display next to the value"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the value displayed in the gauge"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "thick",
+    "type": "number",
+    "defaultValue": 10,
+    "description": "Thickness of the gauge"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "thicknessColor",
+    "type": "string",
+    "defaultValue": "var(--widget-range-color)",
+    "description": "The color of the gauge thickness"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "duration",
+    "type": "number",
+    "defaultValue": 1500,
+    "description": "Animation duration in milliseconds"
+  },
+  {
+    "typeWidget": "scoringSemiCircularGauge",
+    "name": "thicknessBackgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-segment-color)",
+    "description": "Background color of the gauge"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "min",
+    "type": "number",
+    "defaultValue": 0,
+    "description": "Min value of the gauge"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "max",
+    "type": "number",
+    "defaultValue": 100,
+    "description": "Max value of the gauge"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "unit",
+    "type": "string",
+    "defaultValue": "",
+    "description": "The unit to display next to the value"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the value displayed in the gauge"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "thick",
+    "type": "number",
+    "defaultValue": 10,
+    "description": "Thickness of the gauge"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "thicknessColor",
+    "type": "string",
+    "defaultValue": "var(--widget-range-color)",
+    "description": "The color of the gauge thickness"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "duration",
+    "type": "number",
+    "defaultValue": 1500,
+    "description": "Animation duration in milliseconds"
+  },
+  {
+    "typeWidget": "scoringArchCircularGauge",
+    "name": "thicknessBackgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-segment-color)",
+    "description": "Background color of the gauge"
+  },
+  {
+    "typeWidget": "annotationMarkdown",
+    "name": "fontsize",
+    "type": "number",
+    "defaultValue": 0.3,
+    "description": "Markdown text font-size"
+  },
+  {
+    "typeWidget": "annotationMarkdown",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "rgba(0, 0, 0, 0)",
+    "description": "Background color of the markdown"
+  },
+  {
+    "typeWidget": "annotationMarkdown",
+    "name": "textColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "Text color"
+  },
+  {
+    "typeWidget": "annotationMarkdown",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "annotationMarkdown",
+    "name": "textAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "annotationMarkdown",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "annotationMarkdown",
+    "name": "centerVertically",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Ensure vertical centering of the text"
+  },
+  {
+    "typeWidget": "annotationHtml",
+    "name": "fontsize",
+    "type": "number",
+    "defaultValue": 0.3,
+    "description": "Inner text font-size"
+  },
+  {
+    "typeWidget": "annotationHtml",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "rgba(0, 0, 0, 0)",
+    "description": "Background color of the generic HTML"
+  },
+  {
+    "typeWidget": "annotationHtml",
+    "name": "textColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "Text color"
+  },
+  {
+    "typeWidget": "annotationHtml",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "annotationHtml",
+    "name": "textAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "annotationHtml",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "annotationHtml",
+    "name": "centerVertically",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Ensure vertical centering of the text"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "If true, a label is displayed above or below the value"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "valuePosition",
+    "type": "string",
+    "defaultValue": "bottom",
+    "description": "Value position. Possible values: bottom, top"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 2,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the value displayed in the kpi card"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "decimalDigits",
+    "type": "number",
+    "defaultValue": 3,
+    "description": "Number decimal digitls precision for display"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "unit",
+    "type": "string",
+    "defaultValue": "unitText",
+    "description": "The unit to display next to the value"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "displayUnit",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Displays the unit text next to the value"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "unitFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "The font-size of the unit text"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "unitColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "The color of the unit text"
+  },
+  {
+    "typeWidget": "kpiCard",
+    "name": "borderShadow",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Enable border shadow effect"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "valuePosition",
+    "type": "string",
+    "defaultValue": "bottom",
+    "description": "Value position. Possible values: bottom, top"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 3,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the value displayed in the kpi card"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "decimalDigits",
+    "type": "number",
+    "defaultValue": 3,
+    "description": "Number decimal digitls precision for display"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "subLabelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Sub-label font-size"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "subLabelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-subtext-color)",
+    "description": "Sub-label text color"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "subLabelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "borderShadow",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Enable border shadow effect"
+  },
+  {
+    "typeWidget": "advancedKpiCard",
+    "name": "graphColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Color of the graph"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Displays a label on the left side of the slider"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "labelWidthProportion",
+    "type": "string",
+    "defaultValue": "30%",
+    "description": "Label width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "minRange",
+    "type": "number",
+    "defaultValue": 0,
+    "description": "Minimum range allowed between the two handles of the slider"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "maxRange",
+    "type": "number",
+    "defaultValue": 100,
+    "description": "Maximum range allowed between the two handles of the slider"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "step",
+    "type": "number",
+    "defaultValue": 0.1,
+    "description": "Increment of the slider"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "precision",
+    "type": "number",
+    "defaultValue": 2,
+    "description": "Number decimal digitls precision for display"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "enforceStep",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Enforce value to align precisely with the defined step size"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "disableAnimation",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Disable slider animation"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "rangeActuator",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "forceValuesToMinAndMax",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Force values to min and max values"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "sliderSegmentColor",
+    "type": "string",
+    "defaultValue": "var(--widget-segment-color)",
+    "description": "Slider segment color"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "sliderRangeColor",
+    "type": "string",
+    "defaultValue": "var(--widget-range-color)",
+    "description": "Slider Range color"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "sliderHandleDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-handle-default-color)",
+    "description": "Slider handle default color"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "sliderHandleHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-handle-hover-color)",
+    "description": "Slider handle hover color"
+  },
+  {
+    "typeWidget": "flatUiDoubleSlider",
+    "name": "sliderHandleActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-handle-active-color)",
+    "description": "Slider handle active color"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Displays a label on the left side of the date picker"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "labelWidthProportion",
+    "type": "string",
+    "defaultValue": "30%",
+    "description": "Label width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "valueTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "datepickerSimple",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-color)",
+    "description": "Background color of the simple calendar"
+  },
+  {
+    "typeWidget": "datepickerVisible",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "datepickerVisible",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "datepickerVisible",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Displays a label on the left side of the date picker"
+  },
+  {
+    "typeWidget": "datepickerVisible",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "datepickerVisible",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "datepickerVisible",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "datepickerVisible",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "datepickerVisible",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "datepickerVisible",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Displays a label on the left side of the date-range picker"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "displayTimePicker",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "displayTimePicker24Hour",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "labelWidthProportion",
+    "type": "string",
+    "defaultValue": "25%",
+    "description": "Label width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "valueTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "dateRangePicker",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-color)",
+    "description": "Background color of the date-range calendar"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Displays a label on the left side of the time picker"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "labelWidthProportion",
+    "type": "string",
+    "defaultValue": "30%",
+    "description": "Label width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "valueTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "timepickerSimple",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-color)",
+    "description": "Background color of the simple clock"
+  },
+  {
+    "typeWidget": "calendarD3",
+    "name": "AllYearsVisible",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "calendarD3",
+    "name": "UndefinedValueColor",
+    "type": "string",
+    "defaultValue": "#F6F6F6",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Displays a label on the left side of the select widget"
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "selectWidthProportion",
+    "type": "string",
+    "defaultValue": "70%",
+    "description": "Value width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "isNumber",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "selectValueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "selectValueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "selectedValueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-select-option-highlighted-text)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "selectedItemDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-select-option-highlighted-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "selectedItemHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-select-option-highlighted-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiSelect",
+    "name": "isKeyValuePairs",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "addControls",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "resetPastSelection",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.4,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "checkboxWidth",
+    "type": "number",
+    "defaultValue": 7,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "checkboxHeight",
+    "type": "number",
+    "defaultValue": 1.5,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "valueDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "checkboxDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-multiselect-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "checkboxBorderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-multiselect-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "valueHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-multiselect-hover-text)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "checkboxHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-multiselect-hover-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "checkboxHoverBorderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-multiselect-hover-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "valueFocusColor",
+    "type": "string",
+    "defaultValue": "var(--widget-multiselect-checked-text)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "checkboxFocusColor",
+    "type": "string",
+    "defaultValue": "var(--widget-multiselect-checked-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "checkboxFocusBorderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-multiselect-checked-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiMultiSelect",
+    "name": "isNumber",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiList",
+    "name": "addControls",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiList",
+    "name": "listValueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiList",
+    "name": "listValueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-select-drop-text)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiList",
+    "name": "listBackgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-select-drop-color)",
+    "description": "Background color"
+  },
+  {
+    "typeWidget": "flatUiList",
+    "name": "selectValueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-select-option-highlighted-text)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiList",
+    "name": "selectValueBackgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-select-option-highlighted-color)",
+    "description": "Background color"
+  },
+  {
+    "typeWidget": "flatUiList",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiList",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiList",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "headerLine",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "tableValueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "striped",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-table-value-color)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "valueAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "bordered",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "noBorder",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "editableCols",
+    "type": "string",
+    "defaultValue": "[]",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTable",
+    "name": "backgroundColor",
+    "type": "object",
+    "defaultValue": {
+      "primary": "var(--widget-color-0)",
+      "secondary": "var(--widget-table-striped-odd)"
+    },
+    "description": "Background color regarding primary and secondary rows"
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Displays a label on left or right side position of the checkbox"
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "labelPosition",
+    "type": "string",
+    "defaultValue": "right",
+    "description": "Label position. Possible values: left, right"
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "checkboxSize",
+    "type": "number",
+    "defaultValue": 1,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "checkedColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-checked-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiCheckbox",
+    "name": "uncheckedColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-unchecked-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Displays a label on the left or right side of the switch"
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "labelPosition",
+    "type": "string",
+    "defaultValue": "right",
+    "description": "Label position. Possible values: left, right"
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "switchWidthProportion",
+    "type": "string",
+    "defaultValue": "30%",
+    "description": "switch width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "switchOnColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-checked-color)",
+    "description": "The on color of the switch"
+  },
+  {
+    "typeWidget": "flatUiSwitch",
+    "name": "switchOffColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-unchecked-color)",
+    "description": "The off color of the switch"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "valueWidthProportion",
+    "type": "string",
+    "defaultValue": "70%",
+    "description": "Value width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-color)",
+    "description": "Background color of the address auto-completion"
+  },
+  {
+    "typeWidget": "flatUiHereAutocompleteValue",
+    "name": "countryIsoCodes",
+    "type": "string",
+    "defaultValue": "FRA",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "rangeActuator",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "min",
+    "type": "number",
+    "defaultValue": 0,
+    "description": "Min value of the slider"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "max",
+    "type": "number",
+    "defaultValue": 100,
+    "description": "Max value of the slider"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "step",
+    "type": "number",
+    "defaultValue": 1,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "displayValue",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "validationOnFocusOut",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "valueBorderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "labelWidthProportion",
+    "type": "string",
+    "defaultValue": "20%",
+    "description": "Label width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + sliderWidthProportion + valueWidthProportion must be 100%"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "sliderWidthProportion",
+    "type": "string",
+    "defaultValue": "60%",
+    "description": "Slider width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + sliderWidthProportion + valueWidthProportion must be 100%"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "valueWidthProportion",
+    "type": "string",
+    "defaultValue": "20%",
+    "description": "Value width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + sliderWidthProportion + valueWidthProportion must be 100%"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "sliderRangeColor",
+    "type": "string",
+    "defaultValue": "var(--widget-range-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "sliderSegmentColor",
+    "type": "string",
+    "defaultValue": "var(--widget-segment-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "sliderHandleDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-handle-default-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "sliderHandleHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-handle-hover-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "sliderHandleActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-handle-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "unit",
+    "type": "string",
+    "defaultValue": "unitText",
+    "description": "The unit to display next to the slider value"
+  },
+  {
+    "typeWidget": "flatUiHorizontalSlider",
+    "name": "displayUnit",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Displays the unit text next to the value"
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "rangeActuator",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "min",
+    "type": "number",
+    "defaultValue": 0,
+    "description": "Min value of the slider"
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "max",
+    "type": "number",
+    "defaultValue": 100,
+    "description": "Max value of the slider"
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "step",
+    "type": "number",
+    "defaultValue": 1,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "sliderRangeColor",
+    "type": "string",
+    "defaultValue": "var(--widget-range-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "sliderSegmentColor",
+    "type": "string",
+    "defaultValue": "var(--widget-segment-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "sliderHandleDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-handle-default-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "sliderHandleHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-handle-hover-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiVerticalSlider",
+    "name": "sliderHandleActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-handle-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "rangeActuator",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "min",
+    "type": "number",
+    "defaultValue": 0,
+    "description": "Min value of the progress bar"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "max",
+    "type": "number",
+    "defaultValue": 100,
+    "description": "Max value of the progress bar"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "displayValue",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "labelWidthProportion",
+    "type": "string",
+    "defaultValue": "20%",
+    "description": "Label width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + progressBarWidthProportion + valueWidthProportion must be 100%"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "progressBarWidthProportion",
+    "type": "string",
+    "defaultValue": "60%",
+    "description": "Progress bar width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + progressBarWidthProportion + valueWidthProportion must be 100%"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "valueWidthProportion",
+    "type": "string",
+    "defaultValue": "20%",
+    "description": "Value width proportion with respect to the widget width. Possible values: 0-100%. labelWidthProportion + progressBarWidthProportion + valueWidthProportion must be 100%"
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "progressBarRangeColor",
+    "type": "string",
+    "defaultValue": "var(--widget-range-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "progressBarSegmentColor",
+    "type": "string",
+    "defaultValue": "var(--widget-segment-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiProgressBar",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "labelTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "labelTextPosition",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text position. Possible values: left, top, right, bottom"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "valueWidthProportion",
+    "type": "string",
+    "defaultValue": "70%",
+    "description": "Value width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "validationButton",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "validationBtnDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-primary-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "validationBtnActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "validationBtnHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-hover-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "validationOnFocusOut",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "isNumber",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "isPassword",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "decimalDigits",
+    "type": "number",
+    "defaultValue": 3,
+    "description": "Number decimal digitls precision for display"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-text)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "valueTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "unit",
+    "type": "string",
+    "defaultValue": "unitText",
+    "description": "The unit to display next to the value"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "displayUnit",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Displays the unit text next to the value"
+  },
+  {
+    "typeWidget": "flatUiValue",
+    "name": "unitFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "The font-size of the unit text"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "labelTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "labelTextPosition",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text position. Possible values: left, top, right, bottom"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "valueWidthProportion",
+    "type": "string",
+    "defaultValue": "70%",
+    "description": "Value width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "validationButton",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "validationBtnDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-primary-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "validationBtnActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "validationBtnHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-hover-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "validationOnFocusOut",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "isPassword",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-text)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "valueTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiTextInput",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-color)",
+    "description": "Background color of the text input"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "labelTextPosition",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text position. Possible values: left, top, right, bottom"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "labelTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "valueWidthProportion",
+    "type": "string",
+    "defaultValue": "70%",
+    "description": "Value width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "validationButton",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "validationBtnDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-primary-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "validationBtnActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "validationBtnHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-hover-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "validationOnFocusOut",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-text)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "valueTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-color)",
+    "description": "Background color of the numeric input"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "unit",
+    "type": "string",
+    "defaultValue": "unitText",
+    "description": "The unit to display next to the value"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "displayUnit",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Displays the unit text next to the value"
+  },
+  {
+    "typeWidget": "flatUiNumericInput",
+    "name": "unitFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "The font-size of the unit text"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "labelTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "labelTextPosition",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text position. Possible values: left, top, right, bottom"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "valueWidthProportion",
+    "type": "string",
+    "defaultValue": "70%",
+    "description": "Value width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "decimalDigits",
+    "type": "number",
+    "defaultValue": 3,
+    "description": "Number decimal digitls precision for display"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "valueFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Value font-size"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "valueColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-text)",
+    "description": "The color of the displayed value"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "valueTextAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Value text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-input-color)",
+    "description": "Background color of the value display"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "unit",
+    "type": "string",
+    "defaultValue": "unitText",
+    "description": "The unit to display next to the value"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "displayUnit",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Displays the unit text next to the value"
+  },
+  {
+    "typeWidget": "flatUiValueDisplay",
+    "name": "unitFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "The font-size of the unit text"
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "text",
+    "type": "string",
+    "defaultValue": "Push button",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "numberOfTriggers",
+    "type": "number",
+    "defaultValue": 1,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "fileInput",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "binaryFileInput",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "buttonFontSize",
+    "type": "number",
+    "defaultValue": 0.3,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "displayIcon",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "fontAwesomeIcon",
+    "type": "string",
+    "defaultValue": "",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "buttonFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "buttonTextColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-primary-text)",
+    "description": "Text color"
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "buttonDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-primary-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "buttonActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "flatUiButton",
+    "name": "buttonHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-hover-color)",
+    "description": "Button hover color"
+  },
+  {
+    "typeWidget": "saveToFileButton",
+    "name": "text",
+    "type": "string",
+    "defaultValue": "Save to file",
+    "description": "Text label"
+  },
+  {
+    "typeWidget": "saveToFileButton",
+    "name": "fileName",
+    "type": "string",
+    "defaultValue": "export.txt",
+    "description": "File name to export"
+  },
+  {
+    "typeWidget": "saveToFileButton",
+    "name": "buttonFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Text font size"
+  },
+  {
+    "typeWidget": "saveToFileButton",
+    "name": "buttonFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": ""
+  },
+  {
+    "typeWidget": "saveToFileButton",
+    "name": "buttonTextColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-primary-text)",
+    "description": "Text color"
+  },
+  {
+    "typeWidget": "saveToFileButton",
+    "name": "buttonDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-primary-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "saveToFileButton",
+    "name": "buttonActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "saveToFileButton",
+    "name": "buttonHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-hover-color)",
+    "description": "Button hover color"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "Choose a file",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.1,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "labelAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Label text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "textColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "Text color"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "subTextColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "Sub-text color"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "textSize",
+    "type": "number",
+    "defaultValue": 0.1,
+    "description": "Text font-size"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "binaryFileInput",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-dropzone-background-color)",
+    "description": "Background color of the file loader"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "displayBrowseButton",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "labelBackgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-dropzone-label-background-color)",
+    "description": "Background color of the label"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "browseButtonTextColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-text)",
+    "description": "Button text color"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "browseButtonDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "browseButtonActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "browseButtonHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-hover-color)",
+    "description": "Browse button hover color"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "deleteButtonDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-delete-button-default-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "deleteButtonActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-delete-button-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "deleteButtonHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-delete-button-hover-color)",
+    "description": "Delete button hover color"
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "deleteButtonIconColor",
+    "type": "string",
+    "defaultValue": "var(--widget-delete-button-icon-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "loadFile",
+    "name": "deleteButtonIconHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-delete-button-icon-hover-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "spinnerStatus",
+    "name": "fontsize",
+    "type": "number",
+    "defaultValue": 1,
+    "description": "Spinner dots font-size"
+  },
+  {
+    "typeWidget": "spinnerStatus",
+    "name": "color",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "spinnerStatus",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "var(--disabled-color-opacity)",
+    "description": "Background color of the spinner"
+  },
+  {
+    "typeWidget": "ledStatus",
+    "name": "label",
+    "type": "string",
+    "defaultValue": "labelText",
+    "description": "Text label to display. Manually editing this field will set the inheritLabelFromData parameter to false"
+  },
+  {
+    "typeWidget": "ledStatus",
+    "name": "inheritLabelFromData",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be inherited from the connected variable"
+  },
+  {
+    "typeWidget": "ledStatus",
+    "name": "displayLabel",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "When set to true, the label will be displayed"
+  },
+  {
+    "typeWidget": "ledStatus",
+    "name": "labelFontSize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label font-size"
+  },
+  {
+    "typeWidget": "ledStatus",
+    "name": "labelColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Label text color"
+  },
+  {
+    "typeWidget": "ledStatus",
+    "name": "labelFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Label font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "ledStatus",
+    "name": "labelWidthProportion",
+    "type": "string",
+    "defaultValue": "60%",
+    "description": "Label width proportion with respect to the widget width. The value should be in percentage"
+  },
+  {
+    "typeWidget": "ledStatus",
+    "name": "onColor",
+    "type": "string",
+    "defaultValue": "#00b700",
+    "description": "Led on color"
+  },
+  {
+    "typeWidget": "ledStatus",
+    "name": "offColor",
+    "type": "string",
+    "defaultValue": "#004d00",
+    "description": "Led off color"
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "text",
+    "type": "string",
+    "defaultValue": "Type texte",
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "enableActuator",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "fontSize",
+    "type": "string",
+    "defaultValue": "medium",
+    "description": "Tooltip text font size. It could be small, medium, large, or a number as 10px"
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "fontWeight",
+    "type": "string",
+    "defaultValue": "bold",
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "fontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Text font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "textColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-text)",
+    "description": "Text color"
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "textPadding",
+    "type": "number",
+    "defaultValue": 10,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "tipBackgroundColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-color)",
+    "description": "Background color of the tip"
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "tipBorderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-text)",
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "tipWidth",
+    "type": "number",
+    "defaultValue": 200,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "tipPositions",
+    "type": "object",
+    "defaultValue": ["right"],
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "tipEventTrigger",
+    "type": "string",
+    "defaultValue": "hover",
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "iconColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "iconSize",
+    "type": "number",
+    "defaultValue": 1,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "iconSign",
+    "type": "string",
+    "defaultValue": "info-circle",
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "cornerRadius",
+    "type": "number",
+    "defaultValue": 10,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "spikeLength",
+    "type": "number",
+    "defaultValue": 15,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationIconInfo",
+    "name": "spikeGirth",
+    "type": "number",
+    "defaultValue": 5,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "text",
+    "type": "string",
+    "defaultValue": "Type texte",
+    "description": "The label text"
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "enableActuator",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "fontsize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Label text font-size"
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "rgba(0, 0, 0, 0)",
+    "description": "Label background color"
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "textColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Text color"
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "textAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Display border around the widget"
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationLabel",
+    "name": "centerVertically",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Ensure vertical centering of the text"
+  },
+  {
+    "typeWidget": "annotationImage",
+    "name": "keepRatio",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationImage",
+    "name": "hideImageURL",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationImage",
+    "name": "enableActuator",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationVideo",
+    "name": "enforceCaptureRatio",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationVideo",
+    "name": "captureRatio",
+    "type": "number",
+    "defaultValue": 1,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationVideo",
+    "name": "pauseOnCapture",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationVideo",
+    "name": "buttonTextColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-text)",
+    "description": "Buttons text color"
+  },
+  {
+    "typeWidget": "annotationVideo",
+    "name": "buttonDefaultColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationVideo",
+    "name": "buttonActiveColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-active-color)",
+    "description": ""
+  },
+  {
+    "typeWidget": "annotationVideo",
+    "name": "buttonHoverColor",
+    "type": "string",
+    "defaultValue": "var(--widget-button-active-color)",
+    "description": "Button hover color"
+  },
+  {
+    "typeWidget": "plotlyLine",
+    "name": "numberOfAxis",
+    "type": "number",
+    "defaultValue": 1,
+    "description": ""
+  },
+  {
+    "typeWidget": "plotlyLine",
+    "name": "layout",
+    "type": "object",
+    "defaultValue": {
+      "title": "",
+      "xaxis": {
+        "title": "x",
+        "tickfont": {
+          "color": "var(--widget-color)"
+        }
+      },
+      "yaxis": {
+        "title": "y",
+        "tickfont": {
+          "color": "var(--widget-color)"
+        }
+      },
+      "paper_bgcolor": "rgba(0,0,0,0)",
+      "plot_bgcolor": "rgba(0,0,0,0)",
+      "colorway": ["var(--widget-color-2)", "var(--widget-color-5)", "var(--widget-color-6)", "var(--widget-color-7)"],
+      "legend": {
+        "font": {
+          "color": "var(--widget-color)"
+        }
+      },
+      "showlegend": false,
+      "margin": {
+        "l": 50,
+        "r": 50,
+        "b": 100,
+        "t": 100,
+        "pad": 4
+      }
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "plotlyLine",
+    "name": "hideModeBar",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "plotlyBar",
+    "name": "numberOfAxis",
+    "type": "number",
+    "defaultValue": 1,
+    "description": ""
+  },
+  {
+    "typeWidget": "plotlyBar",
+    "name": "layout",
+    "type": "object",
+    "defaultValue": {
+      "title": "",
+      "barmode": "group",
+      "xaxis": {
+        "title": "x",
+        "tickfont": {
+          "color": "var(--widget-color)"
+        }
+      },
+      "yaxis": {
+        "title": "y",
+        "tickfont": {
+          "color": "var(--widget-color)"
+        }
+      },
+      "paper_bgcolor": "rgba(0,0,0,0)",
+      "plot_bgcolor": "rgba(0,0,0,0)",
+      "colorway": ["var(--widget-color-2)", "var(--widget-color-5)", "var(--widget-color-6)", "var(--widget-color-7)"],
+      "legend": {
+        "font": {
+          "color": "var(--widget-color)"
+        }
+      },
+      "showlegend": false,
+      "margin": {
+        "l": 50,
+        "r": 50,
+        "b": 100,
+        "t": 100,
+        "pad": 4
+      }
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "plotlyBar",
+    "name": "hideModeBar",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "plotlyPie",
+    "name": "layout",
+    "type": "object",
+    "defaultValue": {
+      "title": "",
+      "paper_bgcolor": "rgba(0,0,0,0)",
+      "plot_bgcolor": "rgba(0,0,0,0)",
+      "colorway": ["var(--widget-color-2)", "var(--widget-color-5)", "var(--widget-color-6)", "var(--widget-color-7)"],
+      "legend": {
+        "font": {
+          "color": "var(--widget-color)"
+        }
+      },
+      "showlegend": false,
+      "margin": {
+        "l": 50,
+        "r": 50,
+        "b": 100,
+        "t": 100,
+        "pad": 4
+      }
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "plotlyPie",
+    "name": "hideModeBar",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": ""
+  },
+  {
+    "typeWidget": "plotly3dSurface",
+    "name": "layout",
+    "type": "object",
+    "defaultValue": {
+      "title": "",
+      "scene": {
+        "xaxis": {
+          "title": "x"
+        },
+        "yaxis": {
+          "title": "y"
+        },
+        "zaxis": {
+          "title": "z"
+        }
+      },
+      "paper_bgcolor": "rgba(0,0,0,0)",
+      "plot_bgcolor": "rgba(0,0,0,0)",
+      "showlegend": false,
+      "margin": {
+        "l": 50,
+        "r": 50,
+        "b": 100,
+        "t": 100,
+        "pad": 4
+      }
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "plotly3dSurface",
+    "name": "hideModeBar",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Hide Plotly widget Modebar"
+  },
+  {
+    "typeWidget": "plotlyGeneric",
+    "name": "hideModeBar",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Hide Plotly widget Modebar"
+  },
+  {
+    "typeWidget": "plotlyRealTime",
+    "name": "hideModeBar",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Hide Plotly widget Modebar"
+  },
+  {
+    "typeWidget": "vegaGeneric",
+    "name": "inheritWidthAndHeight",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Inherits widget width and length from the parent container, overriding the width and height properties of the grammar of graphics"
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "geoJson",
+    "type": "object",
+    "defaultValue": {
+      "numberOfLayers": 1
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "choropleth",
+    "type": "object",
+    "defaultValue": {
+      "numberOfLayers": 0
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "heatMap",
+    "type": "object",
+    "defaultValue": {
+      "numberOfLayers": 0,
+      "sampledDisplay": false,
+      "densityHeatMap": false
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "lineHeatMap",
+    "type": "object",
+    "defaultValue": {
+      "numberOfLayers": 0
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "imageOverlay",
+    "type": "object",
+    "defaultValue": {
+      "numberOfLayers": 0
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "svgOverlay",
+    "type": "object",
+    "defaultValue": {
+      "numberOfLayers": 0
+    },
+    "description": ""
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "defaultCenter",
+    "type": "object",
+    "defaultValue": {
+      "latitude": 48.872063,
+      "longitude": 2.331773,
+      "zoom": 16
+    },
+    "description": "Defines the default center and zoom of the map"
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "offlineSupport",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Provides support for storing map tiles into the current browser local storage. This allows the map to be used offline. The map will be stored in the browser local storage and will be available even if the user closes the browser. Select the geographic area and click the save button to store the tiles."
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "tileServer",
+    "type": "string",
+    "defaultValue": "MapboxStreets",
+    "description": "Map tile provider. Possible values: MapboxStreets, MapboxDark, HereSatelliteDay, HereTerrainDay, HereHybridDay"
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "drawingFeatures",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "When set to true, it allows the user to manually select points, lines, rectangles or polygone regions in the map. The user can also delete the selected features. The selected features can be saved in a variable conntected to the selectedGeoJson actuator"
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "drawingFeaturesOptions",
+    "type": "object",
+    "defaultValue": {
+      "point": true,
+      "line": true,
+      "polygone": true,
+      "rectangle": true,
+      "modal": false
+    },
+    "description": "Defines the available drawing features"
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "captureClickEvent",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "Enables the click event capture. Returns a lat/lng object to the connected variable to the selectedPoint actuator"
+  },
+  {
+    "typeWidget": "openStreetMaps",
+    "name": "markerCluster",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Enables the clustering of point markers"
+  }
 ]

@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from chlkt import *
 
 a = 1
 b = 5
@@ -9,7 +9,7 @@ def on_change(state, var, val):
     if (var == "a" or var == "b"):
         state.c = state.a + state.b
 
-page = DesignerPage("sliders_value.xprjson", designer_mode=True)
+page = ChalkitPage("sliders_value.xprjson", designer_mode=True)
 
 gui = Gui()
 gui.add_page("page", page)

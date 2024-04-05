@@ -200,8 +200,6 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.alldatanodes = [];
       $rootScope.safeApply();
       xdash.clear();
-      // To apply row == 1 & col == 1
-      if ($rootScope.xDashLiteVersion) layoutMgr.applyCells();
     };
 
     /*---------- downloadFile ----------------*/

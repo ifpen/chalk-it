@@ -12,7 +12,7 @@
   padding: 1em 0;
   border-radius: br('8');
   background: var(--surface-c);
-  box-shadow: var(--default-box-shadow);
+  border: 1px solid var(--active-color);
   color: var(--text-color);
   text-align: left;
 
