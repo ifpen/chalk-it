@@ -1023,7 +1023,7 @@ function annotationWidgetsPluginClass() {
       },
       annotationRectangle: {
         factory: 'labelAnnotationWidget',
-        title: 'Rectangle',
+        title: 'Form',
         icn: 'label',
         help: 'wdg/wdg-annotation-video/#label',
       },
