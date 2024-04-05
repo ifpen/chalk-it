@@ -1643,14 +1643,33 @@ function mapGeoJsonWidgetsPluginClass() {
           //calcul layer 0 center
           const center = turf.centerOfMass(modelsHiddenParams[idInstance].GeoJSON[0]);
           modelsHiddenParams[idInstance].GeoJSONStyle.config = {
-            ...self.defaultConfig,
+            ...val.config,
             defaultCenter: {
               latitude: center.geometry.coordinates[0],
               longitude: center.geometry.coordinates[1],
               zoom: 14,
             },
           };
-        }else {
+        }
+        else if(!_.isUndefined(val.config.image.imageBounds)){
+          let bounds = val.config.image.imageBounds;
+          if(Array.isArray(bounds) && bounds.length == 2){
+            let p1 = bounds[0]
+            let p2 = bounds[1]
+            let longMoy = (p1[0]+p2[0])/2
+            let latMoy = (p1[1]+p2[1])/2
+            modelsHiddenParams[idInstance].GeoJSONStyle.config = {
+              ...val.config,
+              defaultCenter: {
+                latitude: latMoy,
+                longitude: longMoy,
+                zoom: 14,
+              },
+            };
+          }
+
+        }
+        else {
           if (_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)) {
             modelsHiddenParams[idInstance].GeoJSONStyle.config = {
               ...self.defaultConfig,
