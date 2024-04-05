@@ -183,12 +183,12 @@
 $icon-urls: (
   widget: (
     light: '../icon/widgets/light-mode/',
-    dark: '../icon/widgets/light-mode/'  // Change it to '../icon/widgets/dark-mode/' to use the dark icons
+    dark: '../icon/widgets/light-mode/' // Change it to '../icon/widgets/dark-mode/' to use the dark icons,
   ),
   datanode: (
     light: '../icon/datanodes/light-mode/',
-    dark: '../icon/datanodes/dark-mode/'
-  )
+    dark: '../icon/datanodes/dark-mode/',
+  ),
 );
 
 @mixin icon-background($icon-name, $type) {

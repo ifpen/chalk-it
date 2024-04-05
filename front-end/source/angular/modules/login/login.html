@@ -1,0 +1,348 @@
+<div ng-show="!UserProfile.userId && !reloadLoginForm">
+  <a class="hidden" id="signup"></a>
+  <a class="hidden" id="signin"></a>
+
+  <div class="login__wrapper">
+    <img src="source/assets/img/chalk-it-icon.svg" alt="Logo Chalk'it" class="login__avatar" />
+    <div class="alert alert-error" role="alert" ng-show="errorAuthentication">{{errorAuthentication}}</div>
+
+    <section ng-if="contentType=='login'" class="login__section">
+      <form class="dashboard-form">
+        <h1>Chalk'it login</h1>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper">
+            <input
+              type="text"
+              ng-model="userModel.email"
+              placeholder="Please fill your email"
+              id="email"
+              name="email"
+              required=""
+              ng-change="verifyEmail(userModel.email)"
+            />
+            <i class="fa fa-envelope"></i>
+          </div>
+          <div ng-show="!verifyEmail(userModel.email).success" class="text-danger">
+            <div>{{errorMessagesMapping.email.msg}}</div>
+          </div>
+        </div>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper password">
+            <input
+              type="password"
+              ng-model="userModel.password"
+              placeholder="Please fill your password"
+              id="password"
+              name="password"
+              required=""
+            />
+            <i class="fa fa-lock" aria-hidden="true" ng-click="togglePasswordClickedAction('password')"> </i>
+          </div>
+        </div>
+        <ul ng-if="enableRegistration" class="text-right">
+          <li>
+            <a ng-click="changeContentType('resetPassword')">Forgot your password?</a>
+          </li>
+        </ul>
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="loginWithEmailPasswordAction()">
+          Sign in
+        </button>
+        <div class="clearfix"></div>
+        <div class="divider"></div>
+        <div ng-if="enableRegistration">
+          <ul class="login__secondary-action">
+            <li>Don't have an account yet?</li>
+            <li>
+              <a ng-click="changeContentType('registration')" role="button">Register now</a>
+            </li>
+          </ul>
+        </div>
+      </form>
+    </section>
+    <section ng-if="contentType=='registration'" class="login__section">
+      <div class="alert alert-success" role="alert" ng-show="successRegisterMessage">{{successRegisterMessage}}</div>
+      <div class="alert alert-error" role="alert" ng-show="errorRegisterMessage">{{errorRegisterMessage}}</div>
+      <form class="dashboard-form">
+        <h1>Registration</h1>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper">
+            <input
+              type="text"
+              ng-model="UserRegisterModel.username"
+              placeholder="Please fill your username"
+              required=""
+            />
+            <i class="fa fa-user"></i>
+            <div ng-show="errorMessagesMapping.username" class="text-danger">
+              <div>{{errorMessagesMapping.username.msg}}</div>
+            </div>
+          </div>
+          <div ng-show="!UserRegisterModel.username && formRegisterSubmitted" class="text-danger">
+            <div>User name cannot be empty</div>
+          </div>
+        </div>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper">
+            <input
+              type="text"
+              ng-model="UserRegisterModel.fname"
+              placeholder="Please fill your first Name"
+              required=""
+            />
+            <i class="fa fa-user"></i>
+          </div>
+          <div ng-show="errorMessagesMapping.fname" class="text-danger">
+            <div>{{errorMessagesMapping.fname.msg}}.</div>
+          </div>
+          <div ng-show="!UserRegisterModel.fname && formRegisterSubmitted" class="text-danger">
+            <div>First name cannot be empty</div>
+          </div>
+        </div>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper">
+            <input
+              type="text"
+              ng-model="UserRegisterModel.lname"
+              placeholder="Please fill your last Name"
+              required=""
+            />
+            <i class="fa fa-user"></i>
+          </div>
+          <div ng-show="errorMessagesMapping.fname" class="text-danger">
+            <div ng-show="errorMessagesMapping.lname" class="text-danger">
+              <div>{{errorMessagesMapping.lname.msg}}</div>
+            </div>
+            <div ng-show="!UserRegisterModel.lname && formRegisterSubmitted" class="text-danger">
+              <div>Last name cannot be empty</div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper">
+            <input
+              type="text"
+              ng-model="UserRegisterModel.email"
+              placeholder="Please fill your email"
+              id="email"
+              name="email"
+              required=""
+              ng-change="verifyEmail(UserRegisterModel.email)"
+              autocomplete="off"
+            />
+            <i class="fa fa-envelope"></i>
+          </div>
+          <div ng-show="!verifyEmail(UserRegisterModel.email).success" class="text-danger">
+            <div>{{errorMessagesMapping.email.msg}}</div>
+          </div>
+        </div>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper password">
+            <input
+              type="password"
+              ng-model="UserRegisterModel.password"
+              placeholder="Please fill your password"
+              id="password"
+              name="password"
+              required=""
+              ng-change="verifyPassword(UserRegisterModel.password)"
+              autocomplete="off"
+            />
+            <i class="fa fa-lock" aria-hidden="true" ng-click="togglePasswordClickedAction('password')"> </i>
+          </div>
+          <div ng-show="!verifyPassword(UserRegisterModel.password).success" class="text-danger">
+            <div>{{errorMessagesMapping.password.msg}}</div>
+          </div>
+          <div
+            ng-show="UserRegisterModel.password && verifyPassword(UserRegisterModel.password).success"
+            class="text-success"
+          >
+            <div>{{errorMessagesMapping.password.msg}}</div>
+          </div>
+        </div>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper repeatpassword">
+            <input
+              type="password"
+              ng-model="UserRegisterModel.repeatpassword"
+              placeholder="Please repeat your password"
+              onselectstart="return false;"
+              onpaste="return false;"
+              onCopy="return false;"
+              onCut="return false;"
+              onDrag="return false;"
+              onDrop="return false;"
+              id="repeatpassword"
+              name="repeatpassword"
+              required
+              ng-change="verifyRepeatPassword(UserRegisterModel.repeatpassword)"
+              autocomplete="off"
+            />
+            <i class="fa fa-lock" aria-hidden="true" ng-click="togglePasswordClickedAction('repeatpassword')"> </i>
+          </div>
+          <div
+            ng-show="!verifyRepeatPassword(UserRegisterModel.repeatpassword, UserRegisterModel.password).success"
+            class="text-danger"
+          >
+            <div>{{errorMessagesMapping.repeatpassword.msg}}</div>
+          </div>
+          <div
+            ng-show="UserRegisterModel.password && UserRegisterModel.repeatpassword && verifyRepeatPassword(UserRegisterModel.repeatpassword, UserRegisterModel.password).success"
+            class="text-success"
+          >
+            <div>{{errorMessagesMapping.repeatpassword.msg}}</div>
+          </div>
+        </div>
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="registerAction()">Register</button>
+        <div class="clearfix"></div>
+        <div class="divider"></div>
+        <ul class="login__secondary-action">
+          <li>Already have login and password?</li>
+          <li>
+            <a ng-click="changeContentType('login')" role="button">Sign in</a>
+          </li>
+        </ul>
+      </form>
+    </section>
+    <section ng-if="contentType=='resetPassword'" class="login__section">
+      <div class="alert alert-success" role="alert" ng-show="resetPasswordRequestSuccess">
+        {{resetPasswordRequestSuccess}}
+      </div>
+      <div class="alert alert-error" role="alert" ng-show="resetPasswordRequestError">
+        {{resetPasswordRequestError}}
+      </div>
+      <form class="dashboard-form">
+        <h1>Reset password</h1>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper">
+            <input
+              type="text"
+              ng-model="UserRequestResetPassword.email"
+              placeholder="Please fill your email"
+              id="email"
+              name="email"
+              required=""
+              ng-change="verifyEmail(UserRequestResetPassword.email)"
+            />
+            <i class="fa fa-envelope"></i>
+          </div>
+          <div ng-show="!verifyEmail(UserRequestResetPassword.email).success" class="text-danger">
+            <div>{{errorMessagesMapping.email.msg}}</div>
+          </div>
+        </div>
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="resetPasswordRequest()">Reset password</button>
+        <div class="clearfix"></div>
+        <div class="divider"></div>
+        <ul class="login__secondary-action">
+          <li>Already have login and password?</li>
+          <li>
+            <a ng-click="changeContentType('login')" role="button">Sign in</a>
+          </li>
+        </ul>
+        <br />
+      </form>
+    </section>
+    <section ng-if="contentType=='resetPasswordForm'" class="login__section">
+      <div class="alert alert-success" role="alert" ng-show="resetPasswordFormSuccess">
+        {{resetPasswordFormSuccess}}
+      </div>
+      <div class="alert alert-error" role="alert" ng-show="resetPasswordFormError">{{resetPasswordFormError}}</div>
+      <form class="dashboard-form">
+        <h1>New Password</h1>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper">
+            <input
+              type="text"
+              ng-model="UserResetPasswordForm.email"
+              placeholder="Please fill your Email"
+              id="email"
+              name="email"
+              required=""
+              ng-enter="verifyEmail(UserResetPasswordForm.email)"
+            />
+            <i class="fa fa-envelope"></i>
+          </div>
+          <div
+            ng-show="UserResetPasswordForm.email && !verifyEmail(UserResetPasswordForm.email).success"
+            class="text-danger"
+          >
+            <div>{{errorMessagesMapping.email.msg}}</div>
+          </div>
+          <div ng-show="!UserResetPasswordForm.email" class="text-danger">
+            <div>Email cannot be empty</div>
+          </div>
+        </div>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper password">
+            <input
+              type="password"
+              ng-model="UserResetPasswordForm.password"
+              placeholder="Please fill your Password"
+              id="password"
+              name="password"
+              required=""
+              ng-enter="verifyPassword(UserResetPasswordForm.password, UserResetPasswordForm.password)"
+            />
+            <i
+              class="fa fa-lock"
+              aria-hidden="true"
+              ng-enter="verifyPassword(UserResetPasswordForm.password, UserResetPasswordForm.password)"
+              ng-click="togglePasswordClickedAction('password')"
+            >
+            </i>
+          </div>
+          <div
+            ng-show="UserResetPasswordForm.password && !verifyPassword(UserResetPasswordForm.password, UserResetPasswordForm.password).success"
+            class="text-danger"
+          >
+            <div>{{errorMessagesMapping.password.msg}}</div>
+          </div>
+        </div>
+        <div class="dashboard-form__group has-warning has-feedback">
+          <div class="dashboard-form__input-wrapper repeatpassword">
+            <input
+              type="password"
+              ng-model="UserResetPasswordForm.repeatpassword"
+              placeholder="Please repeat your Password"
+              onselectstart="return false;"
+              onpaste="return false;"
+              onCopy="return false;"
+              onCut="return false;"
+              onDrag="return false;"
+              onDrop="return false;"
+              id="repeatpassword"
+              name="repeatpassword"
+              required
+            />
+            <i
+              class="fa fa-lock"
+              aria-hidden="true"
+              ng-enter="verifyPassword(UserResetPasswordForm.repeatpassword, UserResetPasswordForm.repeatpassword)"
+              ng-click="togglePasswordClickedAction('repeatpassword')"
+            >
+            </i>
+          </div>
+          <div
+            ng-show="UserResetPasswordForm.repeatpassword && !verifyRepeatPassword(UserResetPasswordForm.repeatpassword, UserResetPasswordForm.password).success"
+            class="text-danger"
+          >
+            <div>{{errorMessagesMapping.repeatpassword.msg}}</div>
+          </div>
+          <div
+            ng-show="UserResetPasswordForm.repeatpassword && UserResetPasswordForm.repeatpassword && verifyRepeatPassword(UserResetPasswordForm.password, UserResetPasswordForm.repeatpassword).success"
+            class="text-success"
+          >
+            <div>{{errorMessagesMapping.repeatpassword.msg}}</div>
+          </div>
+        </div>
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="resetPasswordForm()">Renew</button>
+        <div class="clearfix"></div>
+        <div class="divider"></div>
+        <button class="btn btn-rounded-fill btn--icon primary" ng-click="changeContentType('login')">Login</button>
+      </form>
+    </section>
+  </div>
+  <footer class="login__footer">
+    <p>Version {{xdashVersion}}</p>
+    <p>{{copyright}}</p>
+  </footer>
+</div>

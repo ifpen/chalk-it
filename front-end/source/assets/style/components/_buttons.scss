@@ -7,7 +7,7 @@
 .btn {
   padding: 2px;
   border: none;
-  border-radius: br("2");
+  border-radius: br('2');
   font-size: 15px;
   font-weight: normal;
   line-height: 2em;
@@ -67,7 +67,7 @@
 }
 
 // Color variations
-$btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
+$btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
 
 @each $color in $btn-colors {
   %dashboard-btn-#{$color} {
@@ -122,11 +122,11 @@ $btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
 .btn-rounded {
   padding: 0.25em 1em;
   border: 0.125em solid var(--text-color-secondary);
-  border-radius: br("20");
+  border-radius: br('20');
   background-color: transparent;
   background-origin: padding-box;
   color: var(--text-color-secondary);
-  font-weight: fw("bold");
+  font-weight: fw('bold');
 
   i {
     display: inline-block;
@@ -147,8 +147,8 @@ $btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
 .btn-rounded-fill {
   display: inline-flex;
   align-items: center;
-  font-weight: fw("bold");
-  border-radius: br("20");
+  font-weight: fw('bold');
+  border-radius: br('20');
   background-origin: padding-box;
   transition: var(--default-transition);
 
@@ -212,7 +212,7 @@ $btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
   height: 2em;
   line-height: 2.5em;
   border: 0.125em solid var(--text-color);
-  border-radius: br("full");
+  border-radius: br('full');
   background-color: transparent;
   color: var(--text-color);
   text-align: center;
@@ -233,7 +233,7 @@ $btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
   border: none;
   background-color: transparent;
   color: var(--active-color-text);
-  font-weight: fw("bold");
+  font-weight: fw('bold');
 
   .icon__container {
     @extend %dashboard-btn-primary;
@@ -243,12 +243,12 @@ $btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
     justify-content: center;
     width: 3.5em;
     height: 3.5em;
-    border-radius: br("full");
+    border-radius: br('full');
 
     &.icon__container--active {
       border: 0.175em var(--primary-hover-color) solid;
-      background-color: var(--primary-color-text); 
-      color: var(--primary-hover-color); 
+      background-color: var(--primary-color-text);
+      color: var(--primary-hover-color);
     }
 
     &.alt {
@@ -275,7 +275,7 @@ $btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
 .btn__see-more {
   padding: 0.5em 0.75em;
   border: none;
-  border-radius: br("full");
+  border-radius: br('full');
   background-color: var(--primary-color);
   color: var(--primary-color-text);
   white-space: nowrap;
@@ -301,7 +301,7 @@ $btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
 .close-aside {
   background-color: var(--surface-c);
   color: var(--text-color);
-  border-radius: br("full");
+  border-radius: br('full');
   font-size: 2em;
   cursor: pointer;
 }
@@ -320,8 +320,8 @@ $btn-colors: "primary", "secondary", "info", "success", "warning", "danger";
   border-radius: 12px;
   text-align: center;
   text-decoration: none;
-  font-weight: fw("bold");
-  font-size: fs("xl");
+  font-weight: fw('bold');
+  font-size: fs('xl');
   line-height: 24px;
   color: var(--text-color);
   text-shadow: 0 1px 0 var(--text-color-inverted);

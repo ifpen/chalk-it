@@ -1,39 +1,50 @@
 <div class="cancel__box cancel__box--xl">
-    <div class="cancel__title">DataNode notifications: {{popup.title}}</div>
-    <div class="cancel__text datanodes__notification-content">
-        <div class="css-treeview bordered">
-            <div ng-bind-html="beautifulStringFromHtml(data)">
-            </div>
-        </div>
-        <div>
-            <div class="datanodes__notification-filters">
-                <a ng-click="notificationFilters('all')" class="btn btn-primary btn-xs"><i class="fa fa-folder" aria-hidden="true"></i>All </a>
-                <a ng-click="notificationFilters('info')" class="btn btn-info btn-xs "><i class="fa fa-folder" aria-hidden="true"></i>Info </a>
-                <a ng-click="notificationFilters('success')" class="btn btn-success btn-xs "><i class="fa fa-folder" aria-hidden="true"></i>Success </a>
-                <a ng-click="notificationFilters('error')" class="btn btn-danger btn-xs"><i class="fa fa-folder" aria-hidden="true"></i>Error </a>
-                <a ng-click="notificationFilters('warning')" class="btn btn-warning btn-xs"><i class="fa fa-folder" aria-hidden="true"></i>Warning </a>
-            </div>
-            <div class="datanodes__notification-list">
-                <div ng-repeat="notification in showOneDatanodeData.__notifications" 
-                        ng-show="!notification.hide&amp;&amp;(notification.type==notificationFilerValue||notificationFilerValue=='all' )" 
-                        class="alert alert-dismissible fade in" 
-                        ng-class="{'alert-success':notification.type=='success',
+  <div class="cancel__title">DataNode notifications: {{popup.title}}</div>
+  <div class="cancel__text datanodes__notification-content">
+    <div class="css-treeview bordered">
+      <div ng-bind-html="beautifulStringFromHtml(data)"></div>
+    </div>
+    <div>
+      <div class="datanodes__notification-filters">
+        <a ng-click="notificationFilters('all')" class="btn btn-primary btn-xs"
+          ><i class="fa fa-folder" aria-hidden="true"></i>All
+        </a>
+        <a ng-click="notificationFilters('info')" class="btn btn-info btn-xs"
+          ><i class="fa fa-folder" aria-hidden="true"></i>Info
+        </a>
+        <a ng-click="notificationFilters('success')" class="btn btn-success btn-xs"
+          ><i class="fa fa-folder" aria-hidden="true"></i>Success
+        </a>
+        <a ng-click="notificationFilters('error')" class="btn btn-danger btn-xs"
+          ><i class="fa fa-folder" aria-hidden="true"></i>Error
+        </a>
+        <a ng-click="notificationFilters('warning')" class="btn btn-warning btn-xs"
+          ><i class="fa fa-folder" aria-hidden="true"></i>Warning
+        </a>
+      </div>
+      <div class="datanodes__notification-list">
+        <div
+          ng-repeat="notification in showOneDatanodeData.__notifications"
+          ng-show="!notification.hide&amp;&amp;(notification.type==notificationFilerValue||notificationFilerValue=='all' )"
+          class="alert alert-dismissible fade in"
+          ng-class="{'alert-success':notification.type=='success',
                                 'alert-error':notification.type=='error', 
                                 'alert-danger':notification.type=='danger',          
                                 'alert-info':notification.type=='info', 
                                 'alert-warning':notification.type=='warning'}"
-                    role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <strong>{{notification.title+' '}}: {{' '}}</strong>{{notification.text +'. '}} <strong>{{notification.time}}</strong>
-                </div>
-            </div>
+          role="alert"
+        >
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <strong>{{notification.title+' '}}: {{' '}}</strong>{{notification.text +'. '}}
+          <strong>{{notification.time}}</strong>
         </div>
+      </div>
     </div>
-    <div class="cancel__box__bottom">
-        <button class="btn btn-rounded-fill primary" ng-click="popup.datanodeNotif=false">OK</button>
-    </div>
-
+  </div>
+  <div class="cancel__box__bottom">
+    <button class="btn btn-rounded-fill primary" ng-click="popup.datanodeNotif=false">OK</button>
+  </div>
 </div>
 <div class="cancel__overlay"></div>

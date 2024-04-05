@@ -1,4 +1,4 @@
-﻿﻿let { src, dest, watch, series, parallel, task } = require('gulp');
+﻿let { src, dest, watch, series, parallel, task } = require('gulp');
 
 let browsersync = require('browser-sync').create(),
   gulp = require('gulp'),
@@ -849,7 +849,9 @@ task('inject:after', () => {
       injectString.after(
         'above declarations **',
         '\n  xdashAddr ="' +
-          (GlobalConfig.config.xDashConfig.urlBase ? GlobalConfig.config.xDashConfig.urlBase : GlobalConfig.config.xDashConfig.urlBaseForExport) +
+          (GlobalConfig.config.xDashConfig.urlBase
+            ? GlobalConfig.config.xDashConfig.urlBase
+            : GlobalConfig.config.xDashConfig.urlBaseForExport) +
           '";\n' +
           '  xdashDocAddr ="' +
           (GlobalConfig.config.xDashConfig.urlDoc ? GlobalConfig.config.xDashConfig.urlDoc : '/doc/') +
@@ -871,7 +873,9 @@ task('injectmk:after', () => {
       injectString.after(
         'above declarations **',
         '\n  xdashAddr ="' +
-          (GlobalConfig.config.xDashConfig.urlBase ? GlobalConfig.config.xDashConfig.urlBase : GlobalConfig.config.xDashConfig.urlBaseForExport) +
+          (GlobalConfig.config.xDashConfig.urlBase
+            ? GlobalConfig.config.xDashConfig.urlBase
+            : GlobalConfig.config.xDashConfig.urlBaseForExport) +
           '";\n' +
           '  xdashDocAddr ="' +
           (GlobalConfig.config.xDashConfig.urlDoc ? GlobalConfig.config.xDashConfig.urlDoc : '/doc/') +

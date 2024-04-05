@@ -58,7 +58,7 @@
   -ms-box-shadow: var(--primary-color) 1px 0 6px 1px;
   -webkit-box-shadow: var(--primary-color) 1px 0 6px 1px;
   box-shadow: var(--primary-color) 1px 0 6px 1px;
-  border-radius: br("full");
+  border-radius: br('full');
 }
 
 #loading-bar-spinner {
@@ -76,7 +76,7 @@
   border: solid 2px transparent;
   border-top-color: var(--primary-color);
   border-left-color: var(--primary-color);
-  border-radius: br("full");
+  border-radius: br('full');
 
   -webkit-animation: loading-bar-spinner 400ms linear infinite;
   -moz-animation: loading-bar-spinner 400ms linear infinite;

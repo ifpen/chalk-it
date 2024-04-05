@@ -77,9 +77,9 @@ modelsParameters.flatUiTable = {
   noBorder: false,
   editableCols: '[]',
   backgroundColor: {
-    primary: "var(--widget-color-0)",
-    secondary: "var(--widget-table-striped-odd)"
-  }
+    primary: 'var(--widget-color-0)',
+    secondary: 'var(--widget-table-striped-odd)',
+  },
 };
 
 // Layout (default dimensions)
@@ -141,7 +141,7 @@ function flatUiComplexWidgetsPluginClass() {
       let divContent = '';
       if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
         // conversion to enable HTML tags
-        const labelText = this.getTransformedText("label");
+        const labelText = this.getTransformedText('label');
 
         valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
         if (!_.isUndefined(modelsParameters[idInstance].selectWidthProportion)) {
@@ -195,7 +195,8 @@ function flatUiComplexWidgetsPluginClass() {
         }
       }
 
-      divContent +=  '<select data-toggle="select" id="select' +
+      divContent +=
+        '<select data-toggle="select" id="select' +
         idWidget +
         '" class="select-div form-control select select-primary select-block mbl" style="height: ' +
         valueHeightPx +
@@ -208,8 +209,10 @@ function flatUiComplexWidgetsPluginClass() {
 
       widgetHtml.innerHTML = divContent;
       widgetHtml.setAttribute('id', 'select-div-container' + idWidget);
-      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; ' + this.selectFontSize() + 
-        this.selectValueFontFamily());
+      widgetHtml.setAttribute(
+        'style',
+        'height: ' + valueHeightPx + 'px; ' + this.selectFontSize() + this.selectValueFontFamily()
+      );
       $('#' + idDivContainer).html(widgetHtml);
 
       if (this.bIsInteractive) {
@@ -231,7 +234,7 @@ function flatUiComplexWidgetsPluginClass() {
               const idNumber = parts[parts.length - 1];
               document.styleSheets[0].addRule('#select2-results-' + idNumber, self.selectValueFontFamily());
               // Stop observing once the element is found
-              observer.disconnect(); 
+              observer.disconnect();
             }
           }
         }
@@ -630,7 +633,7 @@ function flatUiComplexWidgetsPluginClass() {
           divContent += '</label>';
         }
       }
-      divContent += + '</div>';
+      divContent += '</div>';
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
 
@@ -921,10 +924,10 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.value = {
       updateCallback: function () {},
-      setValue: function (val) {
+      setValue: function (val, isSameSelectedValue) {
         modelsHiddenParams[idInstance].value = val;
         self.render();
-        self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+        if (!isSameSelectedValue) self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
       },
       getValue: function () {
         return modelsHiddenParams[idInstance].value;
@@ -1056,13 +1059,13 @@ function flatUiComplexWidgetsPluginClass() {
           tableContent += '<tbody>';
           for (let i = startIndex; i < val.length; i++) {
             if (modelsParameters[idInstance].striped) {
-              if (i%2 !== 0) {
-                tableContent += '<tr style="' + this.tableBackgroundColor("secondary") + '">';
+              if (i % 2 !== 0) {
+                tableContent += '<tr style="' + this.tableBackgroundColor('secondary') + '">';
               }
             } else {
               tableContent += '<tr>';
             }
-            
+
             for (let j = 0; j < val[i].length; j++) {
               let ParsedEditableCols = [];
               try {
@@ -1131,13 +1134,15 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.render = function () {
       const widgetHtml = document.createElement('div');
-      const displayStyle = 'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto';
+      const displayStyle =
+        'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto';
       widgetHtml.setAttribute('style', displayStyle);
-      let divContent = '<table style="margin: 0; height: 100%; ' + this.tableBackgroundColor("primary") + '" class="table';
-      
+      let divContent =
+        '<table style="margin: 0; height: 100%; ' + this.tableBackgroundColor('primary') + '" class="table';
+
       // Instead, the primary and secondary background colour is used.
       // if (modelsParameters[idInstance].striped) {
-      //   divContent = divContent + ' table-striped '; 
+      //   divContent = divContent + ' table-striped ';
       // }
 
       if (modelsParameters[idInstance].bordered) {
@@ -1160,7 +1165,7 @@ function flatUiComplexWidgetsPluginClass() {
       divContent += insideTable + '</table>';
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
-      
+
       if (this.bIsInteractive) {
         self.enable();
       } else {

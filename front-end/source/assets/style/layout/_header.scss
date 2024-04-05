@@ -4,7 +4,7 @@
  * 
  */
 
-@import "../components/tabs";
+@import '../components/tabs';
 
 .brand {
   display: flex;
@@ -43,19 +43,19 @@
   width: 2.1875em;
   height: 2.1875em;
   margin: 0 0.625em;
-  border-radius: br("full");
+  border-radius: br('full');
   border: 0.125em solid var(--header-color-text);
 
   // Disponibility indicator
   &.available::after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     right: 0;
     width: 0.5625em;
     height: 0.5625em;
     transform: translate(25%, -25%);
-    border-radius: br("full");
+    border-radius: br('full');
     border: 0.125em solid var(--surface-a);
     background-color: var(--success-color);
     color: var(--success-color-text);
@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
-  font-weight: fw("bold");
+  font-weight: fw('bold');
   color: var(--header-color-text);
   cursor: pointer;
 }
@@ -82,7 +82,7 @@
 
 .user__actions--notifications__link {
   padding: 0.5em;
-  border-radius: br("full");
+  border-radius: br('full');
   color: var(--header-color-text);
   cursor: pointer;
 
@@ -100,9 +100,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: br("full");
-  font-size: fs("2xs");
-  font-weight: fw("bold");
+  border-radius: br('full');
+  font-size: fs('2xs');
+  font-weight: fw('bold');
   position: absolute;
   top: 0;
   right: 0;

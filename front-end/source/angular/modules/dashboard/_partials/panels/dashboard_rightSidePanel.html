@@ -1,127 +1,205 @@
 <div class="aside__panel--nav">
-    <ul class="aside__panel--nav--wrapper rtl">
-        <li ng-class="{'active':(editorView.rightSidePanel.target==='DataNode Connection' && editorView.rightSidePanel.view)}">
-            <a id="open-datanodes-widget-connect" ng-click="setRightContent('DataNode Connection',vmd);">
-                <i class="specific icn-data-connection right-panel-toggle"></i>
-            </a>
-            <span class="tooltip">DataNode connection</span>
-        </li>
-        <li ng-class="{'active':(editorView.rightSidePanel.target==='Graphical Properties' && editorView.rightSidePanel.view)}">
-            <a ng-click="setRightContent('Graphical Properties',vmd);">
-                <i class="specific icn-graphical-properties right-panel-toggle"></i>
-            </a>
-            <span class="tooltip">Graphical Properties</span>
-        </li>
-        <li ng-class="{'active':(editorView.rightSidePanel.target==='Aspect' && editorView.rightSidePanel.view)}">
-            <a ng-click="setRightContent('Aspect',vmd)">
-                <i class="specific icn-aspect"></i>
-            </a>
-            <span class="tooltip">Aspect</span>
-        </li>
-    </ul>
+  <ul class="aside__panel--nav--wrapper rtl">
+    <li
+      ng-class="{'active':(editorView.rightSidePanel.target==='DataNode Connection' && editorView.rightSidePanel.view)}"
+    >
+      <a id="open-datanodes-widget-connect" ng-click="setRightContent('DataNode Connection',vmd);">
+        <i class="specific icn-data-connection right-panel-toggle"></i>
+      </a>
+      <span class="tooltip">DataNode connection</span>
+    </li>
+    <li
+      ng-class="{'active':(editorView.rightSidePanel.target==='Graphical Properties' && editorView.rightSidePanel.view)}"
+    >
+      <a ng-click="setRightContent('Graphical Properties',vmd);">
+        <i class="specific icn-graphical-properties right-panel-toggle"></i>
+      </a>
+      <span class="tooltip">Graphical Properties</span>
+    </li>
+    <li ng-class="{'active':(editorView.rightSidePanel.target==='Aspect' && editorView.rightSidePanel.view)}">
+      <a ng-click="setRightContent('Aspect',vmd)">
+        <i class="specific icn-aspect"></i>
+      </a>
+      <span class="tooltip">Aspect</span>
+    </li>
+  </ul>
 </div>
 <div class="aside__panel--content">
-    <div class="panel--content--top">
-        <h1 id="panel_right_title">Edit {{editorView.rightSidePanel.target}}</h1>
-        <button ng-click="closeRightSidePanel();" class="btn btn-icon-only" title="Close panel">
-            <i class="basic icn-close close-aside"></i>
+  <div class="panel--content--top">
+    <h1 id="panel_right_title">Edit {{editorView.rightSidePanel.target}}</h1>
+    <button ng-click="closeRightSidePanel();" class="btn btn-icon-only" title="Close panel">
+      <i class="basic icn-close close-aside"></i>
+    </button>
+  </div>
+  <div
+    id="dataconnection__wrap1"
+    ng-class="{'show':(editorView.rightSidePanel.target==='DataNode Connection')}"
+    class="dashboard-form panel--content--wrapper"
+  >
+    <div class="panel--selected--content">
+      <xdash-widget-connections-editor
+        widget-params="vmd.currentWidgetParams"
+        widget-connections="vmd.widgetConnection"
+        changes="vmd.onWidgetConnectionsChange(newValue)"
+      ></xdash-widget-connections-editor>
+    </div>
+
+    <div class="panel--footer">
+      <div class="btn-wrapper">
+        <button class="btn btn-rounded-fill cancel" ng-click="vmd.requestResetDataConnection()" js-reset-toggle>
+          Reset
         </button>
+        <button
+          class="btn btn-rounded-fill primary"
+          ng-click="vmd.savePanel();closeRightSidePanel();"
+          ng-disabled="!vmd.dirty"
+        >
+          Save
+        </button>
+      </div>
     </div>
-    <div id="dataconnection__wrap1" ng-class="{'show':(editorView.rightSidePanel.target==='DataNode Connection')}" class="dashboard-form panel--content--wrapper">
-        <div class="panel--selected--content">
-            <xdash-widget-connections-editor widget-params="vmd.currentWidgetParams" widget-connections="vmd.widgetConnection" changes="vmd.onWidgetConnectionsChange(newValue)"></xdash-widget-connections-editor>
+  </div>
+  <div
+    id="properties__wrap1"
+    ng-class="{'show':(editorView.rightSidePanel.target==='Graphical Properties')}"
+    class="panel--content--wrapper"
+  >
+    <div class="panel--selected--content">
+      <div class="tree__preview__container">
+        <div class="tree__preview__container--top">
+          <a ng-click="enlargeScreenRight()"
+            >{{editorView.rightSidePanel.screen}}<i
+              class="basic {{editorView.rightSidePanel.icn}}"
+              style="padding-left: 5px"
+            ></i
+          ></a>
         </div>
-
-        <div class="panel--footer">
-            <div class="btn-wrapper">
-                <button class="btn btn-rounded-fill cancel" ng-click="vmd.requestResetDataConnection()" js-reset-toggle>
-                    Reset
-                </button>
-                <button class="btn btn-rounded-fill primary" ng-click="vmd.savePanel();closeRightSidePanel();" ng-disabled="!vmd.dirty">
-                    Save
-                </button>
-            </div>
+        <div class="jsoneditor-wrapper">
+          <xdash-json-editor
+            json="vmd.originalWidgetParams"
+            changes="vmd.onWidgetParamChange(newValue)"
+            class="jsoneditor-component"
+          ></xdash-json-editor>
         </div>
+      </div>
     </div>
-    <div id="properties__wrap1" ng-class="{'show':(editorView.rightSidePanel.target==='Graphical Properties')}" class="panel--content--wrapper">
-        <div class="panel--selected--content">
-            <div class="tree__preview__container">
-                <div class="tree__preview__container--top">
-                    <a ng-click="enlargeScreenRight()">{{editorView.rightSidePanel.screen}}<i class="basic {{editorView.rightSidePanel.icn}}" style="padding-left: 5px;"></i></a>
-                </div>
-                <div class="jsoneditor-wrapper">
-                    <xdash-json-editor json="vmd.originalWidgetParams" changes="vmd.onWidgetParamChange(newValue)" class="jsoneditor-component"></xdash-json-editor>
-                </div>
-            </div>
-        </div>
-        <div class="panel--footer">
-            <div class="btn-wrapper">
-                <button class="btn btn-rounded-fill cancel" ng-click="vmd.requestResetGraphicalProperties()" js-reset-toggle>
-                    Reset
-                </button>
-                <button class="btn btn-rounded-fill primary" ng-click="vmd.savePanel();closeRightSidePanel();" ng-disabled="!vmd.dirty">
-                    Save
-                </button>
-            </div>
-        </div>
+    <div class="panel--footer">
+      <div class="btn-wrapper">
+        <button class="btn btn-rounded-fill cancel" ng-click="vmd.requestResetGraphicalProperties()" js-reset-toggle>
+          Reset
+        </button>
+        <button
+          class="btn btn-rounded-fill primary"
+          ng-click="vmd.savePanel();closeRightSidePanel();"
+          ng-disabled="!vmd.dirty"
+        >
+          Save
+        </button>
+      </div>
     </div>
-    <div id="aspects__wrap" ng-class="{'show':(editorView.rightSidePanel.target==='Aspect')}" class="dashboard-form panel--content--wrapper">
-        <div class="panel--selected--content">
-            <h2 style="margin:15px 0">Widget position</h2>
-            <form class="Table" style="padding-top: 5px; padding-bottom: 5px">
-                <div class="dashboard-form__group">
-                    <div class="CellH">
-                        <p>X (px)</p>
-                    </div>
-                    <div class="Cell">
-                        <input type="number" min="{{vm.widgetGeometryConstraints.left.min}}" max="{{vm.widgetGeometryConstraints.left.max}}" name="x" id="positionLeft" ng-disabled="!vm.hasSelection()" ng-model="vm.widgetGeometry.left" ng-change="vm.positionLeftChange()"
-                            ng-focus="vm.posXFocused=true" ng-blur="vm.posXFocused=false; vm.positionLeftBlur()" />
-                    </div>
-                </div>
-                <div class="dashboard-form__group">
-                    <div class="CellH">
-                        <p>Y (px)</p>
-                    </div>
-                    <div class="Cell">
-                        <input type="number" min="{{vm.widgetGeometryConstraints.top.min}}" max="{{vm.widgetGeometryConstraints.top.max}}" name="y" id="positionTop" ng-disabled="!vm.hasSelection()" ng-model="vm.widgetGeometry.top" ng-change="vm.positionTopChange()"
-                            ng-focus="vm.posYFocused=true" ng-blur="vm.posYFocused=false; vm.positionTopBlur()" />
-                    </div>
-                </div>
-            </form>
-            <h2 style="margin: 15px 0">Resize widget</h2>
-            <form class="Table" style="padding-top: 5px; padding-bottom: 5px">
-                <div class="dashboard-form__group">
-                    <div class="CellH">
-                        <p>Width (px)</p>
-                    </div>
-                    <div class="Cell">
-                        <input type="number" min="{{vm.widgetGeometryConstraints.width.min}}" max="{{vm.widgetGeometryConstraints.width.max}}" name="width" id="sizeWidth" ng-disabled="!vm.hasSelection()" ng-model="vm.widgetGeometry.width" ng-change="vm.sizeWidthChange()"
-                            ng-focus="vm.widthFocused=true" ng-blur="vm.widthFocused=false; vm.sizeWidthBlur()" />
-                    </div>
-                </div>
-                <div class="dashboard-form__group">
-                    <div class="CellH">
-                        <p>Height (px)</p>
-                    </div>
-                    <div class="Cell">
-                        <input type="number" min="{{vm.widgetGeometryConstraints.height.min}}" max="{{vm.widgetGeometryConstraints.height.max}}" name="length" id="sizeHeight" ng-disabled="!vm.hasSelection()" ng-model="vm.widgetGeometry.height"
-                            ng-change="vm.sizeHeightChange()" ng-focus="vm.heightFocused=true" ng-blur="vm.heightFocused=false; vm.sizeHeightBlur()" />
-                    </div>
-                </div>
-            </form>
+  </div>
+  <div
+    id="aspects__wrap"
+    ng-class="{'show':(editorView.rightSidePanel.target==='Aspect')}"
+    class="dashboard-form panel--content--wrapper"
+  >
+    <div class="panel--selected--content">
+      <h2 style="margin: 15px 0">Widget position</h2>
+      <form class="Table" style="padding-top: 5px; padding-bottom: 5px">
+        <div class="dashboard-form__group">
+          <div class="CellH">
+            <p>X (px)</p>
+          </div>
+          <div class="Cell">
+            <input
+              type="number"
+              min="{{vm.widgetGeometryConstraints.left.min}}"
+              max="{{vm.widgetGeometryConstraints.left.max}}"
+              name="x"
+              id="positionLeft"
+              ng-disabled="!vm.hasSelection()"
+              ng-model="vm.widgetGeometry.left"
+              ng-change="vm.positionLeftChange()"
+              ng-focus="vm.posXFocused=true"
+              ng-blur="vm.posXFocused=false; vm.positionLeftBlur()"
+            />
+          </div>
         </div>
-    </div>
-    <div class="cancel__container" ng-class="{'open':vmd.popup}">
-        <div class="cancel__box">
-            <div class="cancel__box__top">
-                <div class="cancel__title">{{vmd.popup.title}}</div>
-            </div>
-            <div class="cancel__box__bottom">
-                <button class="btn btn-rounded-fill cancel" ng-click="vmd.popup.resolve(false)">{{vmd.popup.textBtnNo}}</button>
-                <button class="btn btn-rounded-fill primary" ng-click="vmd.popup.resolve(true);">{{vmd.popup.textBtnYes}}</button>
-            </div>
+        <div class="dashboard-form__group">
+          <div class="CellH">
+            <p>Y (px)</p>
+          </div>
+          <div class="Cell">
+            <input
+              type="number"
+              min="{{vm.widgetGeometryConstraints.top.min}}"
+              max="{{vm.widgetGeometryConstraints.top.max}}"
+              name="y"
+              id="positionTop"
+              ng-disabled="!vm.hasSelection()"
+              ng-model="vm.widgetGeometry.top"
+              ng-change="vm.positionTopChange()"
+              ng-focus="vm.posYFocused=true"
+              ng-blur="vm.posYFocused=false; vm.positionTopBlur()"
+            />
+          </div>
         </div>
-        <div class="cancel__overlay"></div>
+      </form>
+      <h2 style="margin: 15px 0">Resize widget</h2>
+      <form class="Table" style="padding-top: 5px; padding-bottom: 5px">
+        <div class="dashboard-form__group">
+          <div class="CellH">
+            <p>Width (px)</p>
+          </div>
+          <div class="Cell">
+            <input
+              type="number"
+              min="{{vm.widgetGeometryConstraints.width.min}}"
+              max="{{vm.widgetGeometryConstraints.width.max}}"
+              name="width"
+              id="sizeWidth"
+              ng-disabled="!vm.hasSelection()"
+              ng-model="vm.widgetGeometry.width"
+              ng-change="vm.sizeWidthChange()"
+              ng-focus="vm.widthFocused=true"
+              ng-blur="vm.widthFocused=false; vm.sizeWidthBlur()"
+            />
+          </div>
+        </div>
+        <div class="dashboard-form__group">
+          <div class="CellH">
+            <p>Height (px)</p>
+          </div>
+          <div class="Cell">
+            <input
+              type="number"
+              min="{{vm.widgetGeometryConstraints.height.min}}"
+              max="{{vm.widgetGeometryConstraints.height.max}}"
+              name="length"
+              id="sizeHeight"
+              ng-disabled="!vm.hasSelection()"
+              ng-model="vm.widgetGeometry.height"
+              ng-change="vm.sizeHeightChange()"
+              ng-focus="vm.heightFocused=true"
+              ng-blur="vm.heightFocused=false; vm.sizeHeightBlur()"
+            />
+          </div>
+        </div>
+      </form>
     </div>
-
+  </div>
+  <div class="cancel__container" ng-class="{'open':vmd.popup}">
+    <div class="cancel__box">
+      <div class="cancel__box__top">
+        <div class="cancel__title">{{vmd.popup.title}}</div>
+      </div>
+      <div class="cancel__box__bottom">
+        <button class="btn btn-rounded-fill cancel" ng-click="vmd.popup.resolve(false)">{{vmd.popup.textBtnNo}}</button>
+        <button class="btn btn-rounded-fill primary" ng-click="vmd.popup.resolve(true);">
+          {{vmd.popup.textBtnYes}}
+        </button>
+      </div>
+    </div>
+    <div class="cancel__overlay"></div>
+  </div>
 </div>
