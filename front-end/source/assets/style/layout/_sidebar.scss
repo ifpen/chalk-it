@@ -12,9 +12,12 @@
 }
 
 .sidebar__brand {
+  display: flex;
+  align-items: center;
   width: 100%;
-  margin-bottom: 1.25em;
-  padding-left: 0.1875em;
+  height: 3em;
+  margin-bottom: 1.125em;
+  padding-left: 0.4375em;
 
   .brand__placeholder {
     background-image: var(--main-logo-url);
