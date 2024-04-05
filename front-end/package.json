@@ -13,7 +13,7 @@
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "babel-cli": "^6.26.0",
-    "browser-sync": "^2.28.3",
+    "browser-sync": "^3.0.2",
     "codeceptjs": "^3.5.15",
     "del": "^5.1.0",
     "eslint-html-reporter": "^0.7.4",
@@ -47,7 +47,7 @@
     "sass": "^1.56.1"
   },
   "dependencies": {
-    "browser-sync": "^2.28.3",
+    "browser-sync": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^5.0.1",
     "jshint": "^2.13.6",
