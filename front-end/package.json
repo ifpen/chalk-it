@@ -27,7 +27,7 @@
     "gulp-debug": "^4.0.0",
     "gulp-file": "latest",
     "gulp-htmlmin": "latest",
-    "gulp-imagemin": "^7.1.0",
+    "gulp-imagemin": "^9.0.0",
     "gulp-inject": "^5.0.5",
     "gulp-inject-string": "^1.1.2",
     "gulp-jshint": "^2.1.0",
