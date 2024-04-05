@@ -181,12 +181,6 @@ var xdash = (function () {
 
       layoutMgr.deserializeExportOptions(jsonObject.exportOptions);
 
-      if ($rootScope.xDashLiteVersion) {
-        jsonObject.device.cols.valueRow = 1;
-        jsonObject.device.cols.valueCol = 1;
-        layoutMgr.applyCells();
-      }
-
       if (!_.isUndefined(jsonObject.navBarNotification)) {
         // MBG 21/09/2021
         htmlExport.navBarNotification = jsonObject.navBarNotification;

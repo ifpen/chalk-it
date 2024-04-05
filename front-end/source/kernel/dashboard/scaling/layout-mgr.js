@@ -238,7 +238,7 @@ class LayoutMgrClass {
   }
 
   _readRows() {
-    const strRows = $('#select-rows').val() ?? this.$rootScope.xDashLiteVersion ? 1 : 0;
+    const strRows = $('#select-rows').val() ?? 0;
     return parseInt(strRows, 10);
   }
 
@@ -269,7 +269,6 @@ class LayoutMgrClass {
         (undoManagerService, editorActionFactory) => {
           const action = editorActionFactory.createUpdateLayoutAction(newRows, newCols, this.newHeightCols);
           undoManagerService.execute(action);
-          if (this.$rootScope.xDashLiteVersion) undoManagerService.clear();
         },
       ]);
 
