@@ -17,6 +17,8 @@ function widgetInstanceClass() {
     // Create instance
     if (_.isUndefined(modelsParameters[instanceId])) {
       modelsParameters[instanceId] = jQuery.extend(true, {}, modelsParameters[modelJsonIdStr]);
+    } else {
+      modelsParameters[instanceId] = { ...modelsParameters[modelJsonIdStr], ...modelsParameters[instanceId] };
     }
     if (_.isUndefined(models[instanceId])) {
       models[instanceId] = jQuery.extend(true, {}, models[modelJsonIdStr]);

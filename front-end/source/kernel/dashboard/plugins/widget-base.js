@@ -110,7 +110,8 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     let border = 'border: none; ';
     if (modelsParameters[idInstance].displayBorder) {
       const borderColor = this.setColorValueFromModelParameters('borderColor', 'var(--widget-border-color)');
-      border = 'border: 2px solid ' + borderColor + '; ';
+      const borderWidth = this.setColorValueFromModelParameters('borderWidth', '2px');
+      border = 'border: ' + borderWidth + ' solid ' + borderColor + '; ';
     } else {
       border += +'-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
       border += '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';

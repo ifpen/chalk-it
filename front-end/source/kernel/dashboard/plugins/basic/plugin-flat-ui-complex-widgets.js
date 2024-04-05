@@ -29,6 +29,7 @@ modelsParameters.flatUiSelect = {
   labelFontFamily: 'var(--widget-font-family)',
   selectWidthProportion: '70%',
   isNumber: false,
+  isBoolean: false,
   selectValueFontFamily: 'var(--widget-font-family)',
   selectValueFontSize: 0.5,
   selectedValueColor: 'var(--widget-select-option-highlighted-text)',
@@ -55,6 +56,7 @@ modelsParameters.flatUiMultiSelect = {
   displayBorder: true,
   borderColor: 'var(--widget-border-color)',
   isNumber: false,
+  isBoolean: false,
 };
 modelsParameters.flatUiList = {
   addControls: false,
@@ -260,6 +262,12 @@ function flatUiComplexWidgetsPluginClass() {
       WidgetActuatorDescription.READ_WRITE,
       WidgetPrototypesManager.SCHEMA_STRING
     );
+    const _VALUE_BOOLEAN_DESCRIPTOR = new WidgetActuatorDescription(
+      'selectedValue',
+      'Selected value',
+      WidgetActuatorDescription.READ_WRITE,
+      WidgetPrototypesManager.SCHEMA_BOOLEAN
+    );
     const _VALUE_DESCRIPTOR = new WidgetActuatorDescription(
       'selectedValue',
       'Selected value',
@@ -285,6 +293,12 @@ function flatUiComplexWidgetsPluginClass() {
       "Selectable values. Must match 'keys'.",
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_NUMBER_ARRAY
+    );
+    const _VALUES_BOOLEAN_DESCRIPTOR = new WidgetActuatorDescription(
+      'values',
+      "Selectable values. Must match 'keys'.",
+      WidgetActuatorDescription.READ,
+      WidgetPrototypesManager.SCHEMA_BOOLEAN_ARRAY
     );
 
     // isKeyValuePairs
@@ -324,21 +338,54 @@ function flatUiComplexWidgetsPluginClass() {
         },
       }
     );
-
+    const _KEYVALUE_BOOLEAN_DESCRIPTOR = new WidgetActuatorDescription(
+      'keyValuePairs',
+      'Array of selectable key-value objects; Key being the displayed label',
+      WidgetActuatorDescription.READ,
+      {
+        $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+        $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:selectFlatUiWidget_keyValuePairs',
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            key: { type: ['string', 'number', 'boolean'] },
+            value: { type: 'boolean' },
+          },
+          required: ['key'],
+        },
+      }
+    );
     this.getActuatorDescriptions = function (model = null) {
       const data = model || modelsParameters[idInstance];
       const result = [];
 
       if (data && data.isKeyValuePairs) {
-        result.push(data.isNumber ? _KEYVALUE_NUMBER_DESCRIPTOR : _KEYVALUE_STRING_DESCRIPTOR);
+        result.push(
+          data.isNumber
+            ? _KEYVALUE_NUMBER_DESCRIPTOR
+            : data.isBoolean
+            ? _KEYVALUE_BOOLEAN_DESCRIPTOR
+            : _KEYVALUE_STRING_DESCRIPTOR
+        );
       } else {
         result.push(_KEYS_DESCRIPTOR);
-        result.push(data && data.isNumber ? _VALUES_NUMBER_DESCRIPTOR : _VALUES_STRING_DESCRIPTOR);
+        result.push(
+          data && data.isNumber
+            ? _VALUES_NUMBER_DESCRIPTOR
+            : data.isBoolean
+            ? _VALUES_BOOLEAN_DESCRIPTOR
+            : _VALUES_STRING_DESCRIPTOR
+        );
       }
 
       let selectedValue = _VALUE_DESCRIPTOR;
       if (data) {
-        selectedValue = data.isNumber ? _VALUE_NUMBER_DESCRIPTOR : _VALUE_STRING_DESCRIPTOR;
+        selectedValue = data.isNumber
+          ? _VALUE_NUMBER_DESCRIPTOR
+          : data.isBoolean
+          ? _VALUE_BOOLEAN_DESCRIPTOR
+          : _VALUE_STRING_DESCRIPTOR;
       }
       result.push(selectedValue);
 
@@ -356,6 +403,8 @@ function flatUiComplexWidgetsPluginClass() {
         const val = $('#select' + idWidget)[0].value;
         if (modelsParameters[idInstance].isNumber) {
           return Number(val);
+        } else if (modelsParameters[idInstance].isBoolean) {
+          return val === 'false' ? false : Boolean(val);
         } else {
           return val;
         }
@@ -638,6 +687,10 @@ function flatUiComplexWidgetsPluginClass() {
       getValue: function () {
         if (modelsParameters[idInstance].isNumber) {
           return Number(modelsHiddenParams[idInstance].value);
+        } else if (modelsParameters[idInstance].isBoolean) {
+          return modelsHiddenParams[idInstance].value === 'false'
+            ? false
+            : Boolean(modelsHiddenParams[idInstance].value);
         } else {
           return modelsHiddenParams[idInstance].value;
         }
@@ -667,6 +720,9 @@ function flatUiComplexWidgetsPluginClass() {
         $('#multi-select' + idWidget + " > label > input[type='checkbox']:checked").each(function () {
           if (modelsParameters[idInstance].isNumber) {
             selectedVal.push(Number($(this).val()));
+          } else if (modelsParameters[idInstance].isBoolean) {
+            const sval = $(this).val() === 'false' ? false : Boolean($(this).val());
+            selectedVal.push(sval);
           } else {
             selectedVal.push($(this).val());
           }
