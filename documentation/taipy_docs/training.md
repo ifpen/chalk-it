@@ -1,6 +1,6 @@
 # Training
 
-16 training examples shall guide you to master all Chalk'it lite features:
+16 training examples shall guide you to master all Taipy Designer features:
 
 - a_sliders_value	  	
 - b_sliders_button_value   		

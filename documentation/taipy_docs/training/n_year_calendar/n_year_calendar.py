@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 import pandas as pd
 import numpy as np
@@ -37,6 +37,6 @@ calendar_values_object = {
 
 selected_date = "2020-06-02"
 
-page = ChalkitPage("n_year_calendar.xprjson", designer_mode=True)
+page = DesignerPage("n_year_calendar.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

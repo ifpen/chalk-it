@@ -1550,7 +1550,7 @@ var FileMngrFct = function () {
     var res = '';
 
     if (fileType === 'fmi') res = 'FMI uploaded and unzipped';
-    else if (fileType === 'project') res = "Chalk'it project uploaded";
+    else if (fileType === 'project') res = "Taipy Designer project uploaded";
     else if (fileType === 'settings') res = 'User settings uploaded';
     else if (fileType === 'avatar') res = 'User avatar uploaded';
     else if (fileType === 'datanode') res = 'Datanode file uploaded';

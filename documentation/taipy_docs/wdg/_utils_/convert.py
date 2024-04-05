@@ -6,7 +6,7 @@ import copy
 def write_python_file(filename, datanodes):
     python_variables_code = ""
     python_variables_code += "from taipy.gui import Gui\n"
-    python_variables_code += "from chlkt import *\n\n"
+    python_variables_code += "from taipy_designer import *\n\n"
     
     for node in datanodes:
         if node["type"] == "JSON_var_plugin":
@@ -16,7 +16,7 @@ def write_python_file(filename, datanodes):
  
     python_variables_code += 'gui = Gui()\n'      
     new_xprjson_file_name = filename.replace('.xprjson', '_modif.xprjson')      
-    python_variables_code += 'page = ChalkitPage("' + new_xprjson_file_name + '")\n'
+    python_variables_code += 'page = DesignerPage("' + new_xprjson_file_name + '")\n'
     python_variables_code += 'gui.add_page("page", page)\n'
     python_variables_code += 'gui.run(run_browser=True, use_reloader=False)\n'
     

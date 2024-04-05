@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 disableAutoScale = False
 
@@ -37,6 +37,6 @@ def on_change(state, var, val):
     state.point = define_point(val)
 
 gui = Gui()
-page = ChalkitPage("osm_geojson_point_disable_autoscale.xprjson", designer_mode=True)
+page = DesignerPage("osm_geojson_point_disable_autoscale.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

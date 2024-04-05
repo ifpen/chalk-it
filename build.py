@@ -104,11 +104,11 @@ if (BUILD_FRONT_END):
     else:
         run_npm('npm', 'run', 'build:lite')
 
-# Copy build result to ./build/chlkt directory
+# Copy build result to ./build/taipy_designer directory
 build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
-shutil.copytree(build_dir, './build/chlkt')
+shutil.copytree(build_dir, './build/taipy_designer')
 
-# Copy .whl file to ./build/chlkt directory
+# Copy .whl file to ./build/taipy_designer directory
 # Specify the source directory and pattern
 source_directory = './front-end/'
 pattern = 'chalkit_python_api-*.whl'
@@ -119,15 +119,15 @@ matching_files = glob.glob(source_directory + pattern)
 if matching_files:
     # Assign the path of the first matching file
     source_path = matching_files[0]
-    destination_directory = './build/chlkt/'
+    destination_directory = './build/taipy_designer/'
 
     shutil.copy(source_path, destination_directory)
 else:
     print("chalkit_python_api-*.whl file not found.")
 
-# Copy main.py and associated .py files to ./build/chlkt directory
+# Copy main.py and associated .py files to ./build/taipy_designer directory
 cwd = os.getcwd()
-build_path = Path('./build/chlkt/')
+build_path = Path('./build/taipy_designer/')
 
 # Ensure the directory exists
 build_path.mkdir(parents=True, exist_ok=True)

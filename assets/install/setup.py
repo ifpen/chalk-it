@@ -13,7 +13,7 @@
 from setuptools import setup, find_packages
 import json
 
-NAME = "chalk-it-lite"
+NAME = "taipy-designer"
 VERSION = "0.0.0" # Do not touch. Will be overwritten by version.json
 
 with open("README.md", "r") as fh:
@@ -27,7 +27,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     url="https://github.com/ifpen/chalk-it",
-    install_requires=["flask", "pathvalidate", "watchdog", "flask-sock", "pyt"],
+    install_requires=["flask", "pathvalidate", "watchdog", "flask-sock", "pytz"],
     author="IFP Energies nouvelles",
     author_email="chalk-it@ifpen.fr",
     license="Apache License 2.0",
@@ -55,7 +55,7 @@ setup(
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "chalk-it=chlkt.main:Main.main",
+            "chalk-it=taipy_designer.main:Main.main",
         ]
     },
 )

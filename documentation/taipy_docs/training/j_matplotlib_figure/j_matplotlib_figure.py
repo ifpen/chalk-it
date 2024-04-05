@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -36,6 +36,6 @@ fig.colorbar(pcm, ax=ax[1], extend='both')
 ax[1].text(-2.5, 1.5, 'linear')
 
 
-page = ChalkitPage("j_matplotlib_figure.xprjson", designer_mode=True)
+page = DesignerPage("j_matplotlib_figure.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

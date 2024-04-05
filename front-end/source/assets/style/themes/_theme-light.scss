@@ -8,98 +8,97 @@
 // Needed as SASS variable for dropdown arrow color
 $text-color: #050038;
 
-@media (prefers-color-scheme: light) {
-  :root {
-    // Background colors
-    --surface-a: #ffffff;
-    --surface-b: #f1f4f7;
-    --surface-c: #e5eaf1;
+// @media (prefers-color-scheme: light) {
+:root {
+  // Background colors
+  --surface-a: #ffffff;
+  --surface-b: #f1f4f7;
+  --surface-c: #e5eaf1;
 
-    // Text colors
-    --text-color: #{$text-color};
-    --text-color-rgb: 5 0 56;
-    --text-color-secondary: #5f5c80;
-    --text-color-inverted: #ffffff;
+  // Text colors
+  --text-color: #{$text-color};
+  --text-color-rgb: 5 0 56;
+  --text-color-secondary: #5f5c80;
+  --text-color-inverted: #ffffff;
 
-    // Main colors
-    --primary-color: #007bff;
-    --primary-hover-color: #3396ff;
-    --primary-active-color: #0063cc;
-    --primary-color-text: #ffffff;
-    --primary-color-rgb: 0 123 255; // Used for discover tiles
-    --secondary-color: #5f5c80;
-    --secondary-hover-color: #77749a;
-    --secondary-active-color: #494762;
-    --secondary-color-text: #ffffff;
-    // for dark elements that must ALWAYS need to be on light background, like widgets icons
-    --light-color: transparent;
-    --light-color-darker: var(--surface-b);
-    --light-color-text: #050038;
-    --light-color-text-rgb: 5 0 56;
+  // Main colors
+  --primary-color: #007bff;
+  --primary-hover-color: #3396ff;
+  --primary-active-color: #0063cc;
+  --primary-color-text: #ffffff;
+  --primary-color-rgb: 0 123 255; // Used for discover tiles
+  --secondary-color: #5f5c80;
+  --secondary-hover-color: #77749a;
+  --secondary-color-text: #ffffff;
+  // for dark elements that must ALWAYS need to be on light background, like widgets icons
+  --light-color: transparent;
+  --light-color-darker: var(--surface-b);
+  --light-color-text: #050038;
+  --light-color-text-rgb: 5 0 56;
 
-    // Active/hover for nav items
-    --active-color: #e5eaf1;
-    --active-color-text: #007bff;
+  // Active/hover for nav items
+  --active-color: #e5eaf1;
+  --active-color-text: #007bff;
 
-    // Active/hover for dropdowns
-    --active-color-item: #007bff;
-    --active-color-item-text: #e5eaf1;
+  // Active/hover for dropdowns
+  --active-color-item: #007bff;
+  --active-color-item-text: #e5eaf1;
 
-    // Validation colors
-    --success-color: #34d399;
-    --success-hover-color: #60dcaf;
-    --success-active-color: #27b07d;
-    --success-color-text: #ffffff;
-    --success-color-rgb: 52 211 153; // Used for editor mode
-    --info-color: #0ea5e9;
-    --info-hover-color: #35b7f3;
-    --info-active-color: #0b81b7;
-    --info-color-text: #ffffff;
-    --warning-color: #fbbf24;
-    --warning-hover-color: #fccc55;
-    --warning-active-color: #e6a605;
-    --warning-color-text: #ffffff;
-    --danger-color: #f87171;
-    --danger-hover-color: #fba2a2;
-    --danger-active-color: #f64141;
-    --danger-color-text: #ffffff;
-    --disabled-color: #bdc3c7;
+  // Validation colors
+  --success-color: #34d399;
+  --success-hover-color: #60dcaf;
+  --success-active-color: #27b07d;
+  --success-color-text: #ffffff;
+  --success-color-rgb: 52 211 153; // Used for editor mode
+  --info-color: #0ea5e9;
+  --info-hover-color: #35b7f3;
+  --info-active-color: #0b81b7;
+  --info-color-text: #ffffff;
+  --warning-color: #fbbf24;
+  --warning-hover-color: #fccc55;
+  --warning-active-color: #e6a605;
+  --warning-color-text: #ffffff;
+  --danger-color: #f87171;
+  --danger-hover-color: #fba2a2;
+  --danger-active-color: #f64141;
+  --danger-color-text: #ffffff;
+  --disabled-color: #bdc3c7;
 
-    // Layout custom colors
-    --header-color: #243674;
-    --header-color-text: #ffffff;
+  // Layout custom colors
+  --header-color: #243674;
+  --header-color-text: #ffffff;
 
-    // Variables for Switch elements
-    --switch-background-color: #cccccc;
-    --checked-switch-background-color: var(--primary-color);
-    --checked-switch-text-color: var(--primary-color-text);
-    --disabled-switch-background-color: #eae6e6;
-    --switch-wrapper-background-color: var(--secondary-color);
-    --switch-wrapper-text-color: var(--secondary-color-text);
+  // Variables for Switch elements
+  --switch-background-color: #cccccc;
+  --checked-switch-background-color: var(--primary-color);
+  --checked-switch-text-color: var(--primary-color-text);
+  --disabled-switch-background-color: #eae6e6;
+  --switch-wrapper-background-color: var(--secondary-color);
+  --switch-wrapper-text-color: var(--secondary-color-text);
 
-    // Forms
-    --placeholder-color: rgb(var(--text-color-rgb) / 0.6);
+  // Forms
+  --placeholder-color: rgb(var(--text-color-rgb) / 0.6);
 
-    // Transition
-    --default-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  // Transition
+  --default-transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-    // Shadows
-    --shadow-a-rgb: 17 17 17;
-    --shadow-b-rgb: 0 0 0;
-    --header-filter: drop-shadow(0px 8px 16px rgb(var(--shadow-a-rgb) / 0.08)); // Header
-    --card-filter: drop-shadow(0px 8px 16px rgb(var(--shadow-a-rgb) / 0.08)); // Dashboard cards
-    --panel-filter: drop-shadow(3px 1px 8px rgb(var(--shadow-a-rgb) / 0.3)); // Aside panels toolbar with icons
-    --dashboard-filter: drop-shadow(0px 8px 16px rgb(var(--shadow-a-rgb) / 0.3)); // Editor dropzone
-    --default-box-shadow: 0 1.3px 3px rgb(var(--shadow-b-rgb) / 0.02), 0 3.2px 7.2px rgb(var(--shadow-b-rgb) / 0.028),
-      0 6px 13.5px rgb(var(--shadow-b-rgb) / 0.035), 0 10.7px 24.1px rgb(var(--shadow-b-rgb) / 0.042),
-      0 20.1px 45.1px rgb(var(--shadow-b-rgb) / 0.05), 0 48px 108px rgb(var(--shadow-b-rgb) / 0.07); // Buttons (hover), dropdowns, filters, widget icons
-    --small-box-shadow: 0 2px 10px 0px rgb(var(--shadow-b-rgb) / 0.5); // View mode buttons (device sizes)
-    --small-box-shadow-hover: 0 2px 7px 0px rgb(var(--shadow-b-rgb) / 0.3); // View mode buttons (hover)
+  // Shadows
+  --shadow-a-rgb: 17 17 17;
+  --shadow-b-rgb: 0 0 0;
+  --header-filter: drop-shadow(0px 8px 16px rgb(var(--shadow-a-rgb) / 0.08)); // Header
+  --card-filter: drop-shadow(0px 8px 16px rgb(var(--shadow-a-rgb) / 0.08)); // Dashboard cards
+  --panel-filter: drop-shadow(3px 1px 8px rgb(var(--shadow-a-rgb) / 0.3)); // Aside panels toolbar with icons
+  --dashboard-filter: drop-shadow(0px 8px 16px rgb(var(--shadow-a-rgb) / 0.3)); // Editor dropzone
+  --default-box-shadow: 0 1.3px 3px rgb(var(--shadow-b-rgb) / 0.02), 0 3.2px 7.2px rgb(var(--shadow-b-rgb) / 0.028),
+    0 6px 13.5px rgb(var(--shadow-b-rgb) / 0.035), 0 10.7px 24.1px rgb(var(--shadow-b-rgb) / 0.042),
+    0 20.1px 45.1px rgb(var(--shadow-b-rgb) / 0.05), 0 48px 108px rgb(var(--shadow-b-rgb) / 0.07); // Buttons (hover), dropdowns, filters, widget icons
+  --small-box-shadow: 0 2px 10px 0px rgb(var(--shadow-b-rgb) / 0.5); // View mode buttons (device sizes)
+  --small-box-shadow-hover: 0 2px 7px 0px rgb(var(--shadow-b-rgb) / 0.3); // View mode buttons (hover)
 
-    // Dropdown arrow
-    --dropdown-arrow-url: url("data:image/svg+xml;utf8,%3csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='none'%3e%3cpath fill='%23050038' d='m9.487 11.06 6.12 6.107 6.12-6.107 1.88 1.88-8 8-8-8 1.88-1.88z'/%3e%3c/svg%3e");
-    // Images
-    --main-logo-url: url('../img/chalk-it-logo.svg');
-    --header-logo-url: url('../img/chalk-it-logo-inverted.svg');
-  }
+  // Dropdown arrow
+  --dropdown-arrow-url: url("data:image/svg+xml;utf8,%3csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='none'%3e%3cpath fill='%23050038' d='m9.487 11.06 6.12 6.107 6.12-6.107 1.88 1.88-8 8-8-8 1.88-1.88z'/%3e%3c/svg%3e");
+  // Images
+  --main-logo-url: url('../img/logo_taipy_color_without background.png');
+  --header-logo-url: url('../img/logo_taipy_color_without background.png');
 }
+// }

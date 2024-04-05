@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 import copy
 
 gui = Gui()
@@ -36,6 +36,6 @@ def add_fruit_to_list(state):
     list_fruits.append(state.seleced_fruit)
     state.list_fruits = copy.deepcopy(list_fruits)
 
-page = ChalkitPage("o_crud_template.xprjson", designer_mode=True)
+page = DesignerPage("o_crud_template.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

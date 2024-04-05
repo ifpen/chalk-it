@@ -113,7 +113,7 @@
   if (!checkES9()) {
     // MBG 06/07/2021
     title = 'This version of "' + browser.name + '" is not compatible with Chalk\'it!';
-    text1 = "Chalk'it loading is interrupted.";
+    text1 = "Taipy Designer loading is interrupted.";
     text2 = 'Please try with a recent version of ' + browser.name + ' than "v' + browser.version + '".';
     preprocessPage(title, text1, text2);
   } else if (

@@ -18,7 +18,7 @@ angular.module('modules.headerbar').service('LogoutService', [
       swal(
         {
           title: 'Are you sure?',
-          text: "You will be signed out of Chalk'it.",
+          text: "You will be signed out of Taipy Designer.",
           type: 'warning',
           showConfirmButton: false,
           showConfirmButton1: true,

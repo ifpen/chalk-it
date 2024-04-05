@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 import json
 
@@ -24,6 +24,6 @@ choropleth = {
 }
 
 gui = Gui()
-page = ChalkitPage("osm_choropleth.xprjson", designer_mode=True)
+page = DesignerPage("osm_choropleth.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

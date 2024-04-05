@@ -145,7 +145,7 @@ angular.module('xCLOUD').service('ApisFactory', [
         );
     };
 
-    // add new API calls with the Chalk'it Node server
+    // add new API calls with the Taipy Designer Node server
     this.sentResetPasswordRequest = function (email) {
       return callxDashNodeServerAPI('PUT', 'auth/updatepassword', {
         email: email,

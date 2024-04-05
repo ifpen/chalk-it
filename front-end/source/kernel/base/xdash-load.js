@@ -50,9 +50,9 @@ var angularModule = angular
       $rootScope.enablePythonManagement = !_.isUndefined(urlPython) && $rootScope.xDashFullVersion;
 
       if ($rootScope.xDashFullVersion) {
-        document.title = "Chalk'it - SaaS version";
+        document.title = "Taipy Designer - SaaS version";
       } else {
-        document.title = "Chalk'it - Lite version";
+        document.title = "Taipy Designer";
       }
 
       $rootScope.listAvailablesTags = [

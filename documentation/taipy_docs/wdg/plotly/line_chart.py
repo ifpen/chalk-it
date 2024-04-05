@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 plot = {
   "x": [
@@ -21,6 +21,6 @@ plot = {
 }
 
 gui = Gui()
-page = ChalkitPage("line_chart.xprjson", designer_mode=True)
+page = DesignerPage("line_chart.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

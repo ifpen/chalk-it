@@ -1,4 +1,4 @@
-from chlkt import *
+from taipy_designer import *
 
 a = 1
 b = 5
@@ -9,4 +9,4 @@ def on_change(state, var, val):
         state.c = state.a + state.b
 
 
-page = ChalkitPage("p_page1.xprjson", designer_mode=True)
+page = DesignerPage("p_page1.xprjson", designer_mode=True)

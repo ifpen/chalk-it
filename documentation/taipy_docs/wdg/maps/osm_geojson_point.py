@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 point = {
   "type": "FeatureCollection",
@@ -24,6 +24,6 @@ point = {
 }
 
 gui = Gui()
-page = ChalkitPage("osm_geojson_point.xprjson", designer_mode=True)
+page = DesignerPage("osm_geojson_point.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

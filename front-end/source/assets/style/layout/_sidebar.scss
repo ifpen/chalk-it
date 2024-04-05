@@ -7,12 +7,14 @@
 .sidebar {
   max-width: 17em;
   background: var(--surface-a);
+  padding: 1.5em 0.8125em;
+  padding-top: 0.5em;
 }
 
 .sidebar__brand {
-  margin-bottom: 2em;
-  padding: 0.5em 1em;
   width: 100%;
+  margin-bottom: 1.25em;
+  padding-left: 0.1875em;
 
   .brand__placeholder {
     background-image: var(--main-logo-url);
@@ -32,7 +34,7 @@
 .sidebar__actions {
   display: flex;
   flex-direction: column;
-  gap: 1.5em;
+  gap: 2em;
   margin-top: 2em;
 }
 
@@ -56,13 +58,18 @@
   line-height: 2.5em;
   color: inherit;
   text-decoration: none;
+  transition: background-color 0.3s ease;
 
   &:active,
   &:visited {
     color: inherit;
   }
 
-  &:hover,
+  &:hover {
+    background-color: var(--hover-color);
+    color: var(--hover-color-text);
+  }
+
   &.active {
     background-color: var(--active-color);
     color: var(--active-color-text);

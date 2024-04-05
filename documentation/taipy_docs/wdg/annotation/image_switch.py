@@ -2,7 +2,7 @@ from PIL import Image
 import os
 
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 # Get the directory of the current Python script
 dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -32,6 +32,6 @@ def on_change(state, var, val):
             state.image_to_dispaly = versicolor
 
 gui = Gui()
-page = ChalkitPage("image_switch.xprjson", designer_mode=True)
+page = DesignerPage("image_switch.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

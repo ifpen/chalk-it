@@ -94,6 +94,10 @@
     @include icon-background('image.svg', 'widget');
   }
 
+  &.icn-image-connect {
+    @include icon-background('image-connect.svg', 'widget');
+  }
+
   &.icn-info {
     @include icon-background('info.svg', 'widget');
   }
@@ -184,6 +188,10 @@
 
   &.icn-range {
     @include icon-background('range.svg', 'widget');
+  }
+
+  &.icn-rectangle {
+    @include icon-background('rectangle.svg', 'widget');
   }
 
   &.icn-select {

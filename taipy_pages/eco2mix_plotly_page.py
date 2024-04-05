@@ -141,4 +141,4 @@ def on_change(state, var, val):
         state.fig_data, state.fig_pie = update_exec(state.df, state.date, val)
 
 
-page = ChalkitPage("eco2mix_plotly_page.xprjson", designer_mode=True)
+page = DesignerPage("eco2mix_plotly_page.xprjson", designer_mode=True)

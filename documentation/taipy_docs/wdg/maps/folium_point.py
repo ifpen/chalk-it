@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 import geopandas as gpd
 import folium
@@ -42,6 +42,6 @@ folium.Marker(
 ).add_to(map)
 
 gui = Gui()
-page = ChalkitPage("folium_point.xprjson", designer_mode=True)
+page = DesignerPage("folium_point.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

@@ -58,12 +58,6 @@
     opacity: var(--disabled-opacity);
     cursor: not-allowed;
   }
-
-  &:not(.btn-circle):not(.btn-icon-only):not(.btn-back) {
-    &:hover {
-      box-shadow: var(--default-box-shadow);
-    }
-  }
 }
 
 // Color variations
@@ -121,7 +115,7 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
 
 .btn-rounded {
   padding: 0.25em 1em;
-  border: 0.125em solid var(--text-color-secondary);
+  border: 0.125em solid var(--color-secondary);
   border-radius: br('20');
   background-color: transparent;
   background-origin: padding-box;
@@ -166,10 +160,6 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
     @extend %dashboard-btn-secondary;
     padding: 0.5em 2em;
   }
-
-  &:hover {
-    box-shadow: var(--default-box-shadow);
-  }
 }
 
 .btn-min-width {
@@ -185,6 +175,7 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   background-color: transparent;
   color: var(--text-color);
   line-height: 1em;
+  transition: color 0.3s ease;
 
   &:hover,
   &:focus {
@@ -234,6 +225,9 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   background-color: transparent;
   color: var(--active-color-text);
   font-weight: fw('bold');
+  transition: background-color 0.3s ease;
+  position: relative;
+  z-index: 0;
 
   .icon__container {
     @extend %dashboard-btn-primary;
@@ -244,11 +238,25 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
     width: 3.5em;
     height: 3.5em;
     border-radius: br('full');
+    transition: background-color 0.3s ease;
 
     &.icon__container--active {
-      border: 0.175em var(--primary-hover-color) solid;
-      background-color: var(--primary-color-text);
-      color: var(--primary-hover-color);
+      background-color: var(--primary-color);
+      color: var(--primary-color-text);
+      position: unset;
+
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        border-radius: br('8');
+        z-index: -1;
+      }
     }
 
     &.alt {
@@ -259,11 +267,13 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
     }
   }
 
-  &:hover {
-    color: var(--active-color-text);
-
+  &:not(.btn-help):hover {
+    color: var(--hover-color-text);
     .icon__container {
-      box-shadow: var(--default-box-shadow);
+      background-color: var(--hover-color);
+    }
+    &.icon__container--active::after {
+      background-color: var(--hover-color);
     }
 
     .icon__container.alt {
@@ -279,6 +289,7 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   background-color: var(--primary-color);
   color: var(--primary-color-text);
   white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   > * {
     display: inline-block;
@@ -287,7 +298,8 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
 
   &:hover,
   &:focus {
-    color: var(--primary-color-text);
+    background-color: var(--hover-color);
+    color: var(--hover-color-text);
   }
 
   &[disabled] {
@@ -299,16 +311,15 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
 
 // Close buttons (for asides, tabs...)
 .close-aside {
-  background-color: var(--surface-c);
+  background: var(--surface-c);
   color: var(--text-color);
   border-radius: br('full');
   font-size: 2em;
-  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .close-aside:hover {
-  background-color: var(--danger-color-text);
-  color: var(--danger-color);
+  color: var(--hover-color);
 }
 
 // Bootstrap close button

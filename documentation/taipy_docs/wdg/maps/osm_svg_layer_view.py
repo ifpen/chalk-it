@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 import pandas as pd
 
@@ -22,6 +22,6 @@ wind_svg_layer = {
 }
 
 gui = Gui()
-page = ChalkitPage("osm_svg_layer_view.xprjson", designer_mode=True)
+page = DesignerPage("osm_svg_layer_view.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

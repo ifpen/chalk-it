@@ -12,7 +12,7 @@
   padding: 1em 0;
   border-radius: br('8');
   background: var(--surface-c);
-  box-shadow: var(--default-box-shadow);
+  border: 1px solid var(--active-color);
   color: var(--text-color);
   text-align: left;
 
@@ -48,10 +48,11 @@
         padding: 0.25em 1.5em;
         line-height: 2.25em;
         white-space: nowrap;
+        transition: background-color 0.3s ease;
 
         &:hover {
-          background-color: var(--active-color);
-          color: var(--active-color-text);
+          background-color: var(--hover-color);
+          color: var(--hover-color-text);
         }
       }
     }

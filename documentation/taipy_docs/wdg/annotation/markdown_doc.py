@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 gui = Gui()
 
@@ -9,6 +9,6 @@ with open('example.md', 'r') as file:
     markdown_content = file.read()
 
 
-page = ChalkitPage("markdown_doc.xprjson", designer_mode=True)
+page = DesignerPage("markdown_doc.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

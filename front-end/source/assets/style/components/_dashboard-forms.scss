@@ -20,18 +20,18 @@
   input,
   tags-input {
     width: 100%;
-    border: none;
+    border: 1px solid var(--border-a);
     border-radius: br('8');
     padding: 0.5em 1em;
     box-shadow: none;
-    background-color: var(--surface-c);
+    background: var(--surface-c);
     color: var(--text-color);
     line-height: 2;
     appearance: none;
 
     &:focus,
     &:focus-within {
-      outline: thin solid var(--active-color-text);
+      outline: thin solid var(--hover-color);
       box-shadow: none;
     }
 
@@ -42,6 +42,10 @@
 
     &:autofill + i {
       color: fieldtext;
+    }
+
+    &:disabled {
+      opacity: 0.5;
     }
   }
 
@@ -54,6 +58,7 @@
 
   select:not([multiple]) {
     padding-right: 2em;
+    background-color: var(--surface-b);
     background-image: var(--dropdown-arrow-url);
     background-repeat: no-repeat;
     background-position: calc(100% - 0.5rem) center;
@@ -69,8 +74,13 @@
   select.multiple {
     background-color: var(--surface-b);
     background-image: none;
-    border: thin solid;
+    border: 1px solid var(--border-b);
     cursor: pointer;
+
+    &:focus,
+    :focus-within {
+      border-color: transparent;
+    }
   }
 
   label {
@@ -158,6 +168,10 @@
   }
 }
 
+.required {
+  color: var(--active-color);
+}
+
 .form-group {
   margin-bottom: 10px;
   margin-top: 10px;
@@ -235,8 +249,8 @@ tags-input .tag-item {
   font-family: var(--font-family-base);
   line-height: 26px;
   border-radius: br('2');
-  background: var(--active-color-item);
-  color: var(--active-color-item-text);
+  background: var(--tag-color);
+  color: var(--tag-color-text);
   cursor: default;
 }
 
@@ -262,10 +276,13 @@ tags-input .remove-button {
   font-weight: fw('bold');
   text-align: center;
   cursor: pointer;
+  transition: color 0.3s ease;
+  &:hover {
+    color: var(--hover-color);
+  }
 }
 
-tags-input .input.invalid-tag,
-tags-input .remove-button:active {
+tags-input .input.invalid-tag {
   background: var(--danger-color);
   color: var(--danger-color-text);
 }
@@ -325,7 +342,7 @@ tags-input .autocomplete {
   padding: 5px 0;
   z-index: $zindex-dropdown;
   width: 100%;
-  background-color: var(--surface-c);
+  background: var(--surface-c);
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }

@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 basicGeoJSON = {
   "type": "FeatureCollection",
@@ -88,6 +88,6 @@ basicGeoJSON = {
 }
 
 gui = Gui()
-page = ChalkitPage("osm_basic_geojson.xprjson", designer_mode=True)
+page = DesignerPage("osm_basic_geojson.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

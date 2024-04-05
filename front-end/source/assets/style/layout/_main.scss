@@ -22,7 +22,6 @@
     height: 4em;
     padding-right: 5em;
     background-color: var(--header-color);
-    filter: var(--header-filter);
     z-index: $zindex-sticky;
 
     &.with__brand {
@@ -34,6 +33,7 @@
 
 // For Dashboard and Studio
 .main__layout--content {
+  background-color: var(--surface-a);
   flex-grow: 1;
   width: 100%;
   padding: 0.5em 2.1875em 1em 2.1875em;
@@ -86,16 +86,36 @@
   }
 
   input[type='text'] {
-    border-radius: br('24');
+    width: 100%;
+    border: 1px solid var(--border-a);
+    border-radius: br('8');
+    padding: 0.5em 1em;
+
     font-style: italic;
     font-size: fs('xl');
-    border: none;
     box-shadow: none;
-    padding: 0.3em 0.6em;
-    background-color: var(--light-color-darker);
+    background: var(--surface-c);
+    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    &:focus,
+    &:focus-within {
+      border: 1px solid var(--hover-color);
+      box-shadow: none;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+
+  a {
+    transition: color 0.3s ease;
+    &:hover {
+      color: var(--hover-color);
+    }
   }
 }
 
@@ -285,27 +305,22 @@
 
   .item-a {
     grid-area: item-a;
-    background-color: rgb(var(--primary-color-rgb) / 0.17);
   }
 
   .item-b {
     grid-area: item-b;
-    background-color: rgb(var(--primary-color-rgb) / 0.31);
   }
 
   .item-c {
     grid-area: item-c;
-    background-color: rgb(var(--primary-color-rgb) / 0.41);
   }
 
   .item-d {
     grid-area: item-d;
-    background-color: rgb(var(--primary-color-rgb) / 0.55);
   }
 
   .item-e {
     grid-area: item-e;
-    background-color: rgb(var(--primary-color-rgb) / 0.72);
   }
 }
 
@@ -333,15 +348,20 @@
   padding: 2em;
   height: 16.75em;
   border-radius: br('16');
-  border: 0.125em solid transparent;
-  background-color: var(--surface-b);
-  filter: var(--card-filter);
+  border: 0.125em solid var(--border-a);
+  background: var(--surface-b);
   text-align: center;
   overflow: hidden;
   cursor: pointer;
+  transition: border-color 0.3s ease;
 
-  &:hover {
+  &:not(.disabled):hover {
     border-color: var(--primary-color);
+
+    .btn-rounded {
+      background-color: var(--secondary-hover-color);
+      color: var(--secondary-color-text);
+    }
   }
 
   &.disabled {
@@ -373,6 +393,8 @@
   }
 
   .btn-rounded {
+    transition: color 0.3s ease, background-color 0.3s ease;
+    background-color: var(--secondary-color);
     display: inline-flex;
     align-items: center;
     margin: 0;

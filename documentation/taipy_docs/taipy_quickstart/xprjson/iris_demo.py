@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 import pandas as pd
 from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier
@@ -49,7 +49,7 @@ def on_change(state, var, val):
         state.prediction = make_prediction(clf, val)
 
 # Create a Chalk'it Page instance with the resource handler
-page = ChalkitPage("iris_demo_page.xprjson", designer_mode=True)
+page = DesignerPage("iris_demo_page.xprjson", designer_mode=True)
 
 gui = Gui()
 gui.add_page("iris", page)

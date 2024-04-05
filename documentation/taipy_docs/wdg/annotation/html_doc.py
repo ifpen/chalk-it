@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from chlkt import *
+from taipy_designer import *
 
 gui = Gui()
 
@@ -9,6 +9,6 @@ with open('sample.html', 'r') as file:
     html_content = file.read()
 
 
-page = ChalkitPage("html_doc.xprjson", designer_mode=True)
+page = DesignerPage("html_doc.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)
