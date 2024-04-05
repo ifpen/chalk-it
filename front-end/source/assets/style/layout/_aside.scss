@@ -814,9 +814,11 @@ aside {
   background-color: var(--widget-color-0);
   overflow: hidden;
   cursor: pointer;
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease;
 
-  .theme__list &:hover {
-    box-shadow: var(--default-box-shadow);
+  &:not(#current-theme):hover {
+    border-color: var(--hover-color);
   }
 }
 
@@ -825,7 +827,6 @@ aside {
   width: 1.5em;
   height: 1.5em;
   border-radius: br('4');
-  box-shadow: var(--small-box-shadow);
 
   @for $key from 1 through 7 {
     &:nth-child(#{$key}) {

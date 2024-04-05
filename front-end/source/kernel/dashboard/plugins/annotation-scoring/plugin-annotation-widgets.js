@@ -61,8 +61,12 @@ modelsParameters.annotationLabel = {
   textColor: 'var(--widget-label-color)',
   valueFontFamily: 'var(--widget-font-family)',
   textAlign: 'left',
+  textBold: false,
+  textUnderline: false,
+  textItalic: false,
   displayBorder: false,
   borderColor: 'var(--widget-border-color)',
+  borderWidth: '2px',
   centerVertically: true,
 };
 modelsParameters.annotationRectangle = {
@@ -278,6 +282,13 @@ function annotationWidgetsPluginClass() {
       //AEF: modif to allow multilines
       //AEF: adapt height depending if text is in simple line or multilines
       //MBG : fix for Mozilla Firefox. No distinction between single line and multline. To check.
+      let textBold = 'font-weight: normal;';
+      let textUnderline = 'text-decoration: none;';
+      let textItalic = 'font-style: normal;';
+      if (modelsParameters[idInstance].textBold) textBold = 'font-weight: bold;';
+      if (modelsParameters[idInstance].textUnderline) textUnderline = 'text-decoration: underline;';
+      if (modelsParameters[idInstance].textBold) textItalic = 'font-style: italic;';
+
       var divContent =
         '<div id="annotationLabelTextArea' +
         idWidget +
@@ -288,6 +299,10 @@ function annotationWidgetsPluginClass() {
         modelsParameters[idInstance].textColor +
         '; text-align: ' +
         modelsParameters[idInstance].textAlign +
+        ';' +
+        textBold +
+        textUnderline +
+        textItalic +
         '; background-color: ' +
         modelsParameters[idInstance].backgroundColor +
         '; padding: 4px; resize: inherit; margin: auto; vertical-align: middle ; border-radius: 6px; ' +
@@ -1008,8 +1023,8 @@ function annotationWidgetsPluginClass() {
       },
       annotationRectangle: {
         factory: 'labelAnnotationWidget',
-        title: 'Rectangle',
-        icn: 'rectangle',
+        title: 'Form',
+        icn: 'label',
         help: 'wdg/wdg-annotation-video/#label',
       },
       annotationImage: {
