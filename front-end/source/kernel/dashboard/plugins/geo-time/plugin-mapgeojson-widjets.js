@@ -1361,9 +1361,18 @@ function mapGeoJsonWidgetsPluginClass() {
             } else if (layer.feature.properties.html) {
               popupText = layer.feature.properties.html;
             } else {
-              var jsonDisplay = jQuery.extend(true, {}, layer.feature.properties);
-              if (jsonDisplay.awesomeMarker) delete jsonDisplay.awesomeMarker;
-              popupText = syntaxHighlight(JSON.stringify(jsonDisplay));
+              let popupText = '<div>';
+              let properties = style.tooltip.properties;
+              _.each(properties, (property) => {
+                popupText =
+                popupText +
+                  '<p> <strong>' +
+                  property +
+                  '</strong> : ' +
+                  layer.feature.properties[property] +
+                  '</p>';
+              });
+              popupText = popupText + '</div>'; 
             }
 
             // Add The popup
@@ -1384,9 +1393,16 @@ function mapGeoJsonWidgetsPluginClass() {
           if (leafLetLayer.getLayers()[0] instanceof L.Marker) {
             newStyle = self.createTemplateStyle(geoJSONinLayer, layerIndex, L.circle);
             Object.keys(style).forEach((key) => {
-              delete style[key];
+              if(!(key in newStyle)) {
+                delete style[key];
+              }
             });
-            Object.assign(style, { ...newStyle });
+            Object.keys(newStyle).forEach((key) => {
+              if(!(key in style)) {
+                style[key] = newStyle[key]
+              }
+            });
+            //Object.assign(style, { ...newStyle });
             self.styleChanged = true;
             LCircles = leafLetLayer.getLayers().map(function (layer) {
               const { lat, lng } = layer.getLatLng();
