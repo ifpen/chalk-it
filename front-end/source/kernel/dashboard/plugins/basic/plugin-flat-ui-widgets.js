@@ -51,6 +51,9 @@ modelsParameters.flatUiHorizontalSlider = {
   sliderHandleHoverColor: 'var(--widget-handle-hover-color)',
   sliderHandleActiveColor: 'var(--widget-handle-active-color)',
   valueColor: 'var(--widget-color)',
+  unit: 'unitText',
+  displayUnit: false,
+  unitFontSize: 0.5,
 };
 modelsParameters.flatUiVerticalSlider = {
   label: 'labelText',
@@ -96,6 +99,8 @@ modelsParameters.flatUiTextInput = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
+  labelTextAlign: 'left',
+  labelTextPosition: 'left',
   valueWidthProportion: '70%',
   validationButton: false,
   validationBtnDefaultColor: 'var(--widget-button-primary-color)',
@@ -118,6 +123,8 @@ modelsParameters.flatUiNumericInput = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
+  labelTextAlign: 'left',
+  labelTextPosition: 'left',
   valueWidthProportion: '70%',
   validationButton: false,
   validationBtnDefaultColor: 'var(--widget-button-primary-color)',
@@ -142,6 +149,7 @@ modelsParameters.flatUiValueDisplay = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
+  labelTextAlign: 'left',
   valueWidthProportion: '70%',
   valueFontSize: 0.5,
   valueColor: 'var(--widget-input-text)',
@@ -589,6 +597,21 @@ function flatUiWidgetsPluginClass() {
       if (modelsParameters[idInstance].displayValue) {
         this.insertValue(widgetHtml);
       }
+      //AEF: add unitText
+      if (modelsParameters[idInstance].unit != '' && modelsParameters[idInstance].displayUnit) {
+        const widgetUnit = document.createElement('span');
+        widgetUnit.setAttribute('class', 'value-span');
+        widgetUnit.setAttribute(
+          'style',
+          'max-width: 45%; font-size: calc(7px + ' +
+            modelsParameters[idInstance].unitFontSize * getFontFactor() +
+            'vw + 0.4vh);'
+        );
+        widgetUnit.setAttribute('id', 'unit-span' + idWidget);
+        widgetUnit.innerHTML = modelsParameters[idInstance].unit;
+        widgetHtml.appendChild(widgetUnit);
+      }
+
       $('#' + idDivContainer).html(widgetHtml);
       var $slider = $('#slider' + idWidget);
       if ($slider.length > 0) {
@@ -1270,7 +1293,14 @@ function flatUiWidgetsPluginClass() {
       widgetHtml.setAttribute('id', nameWidget + '-widget-html' + idWidget);
       widgetHtml.setAttribute('class', 'value-widget-html');
       let divContent = '';
+      let labelTextPosition = 'left';
       if (modelsParameters[idInstance].displayLabel) {
+        if (modelsParameters[idInstance].labelTextPosition == 'left') labelTextPosition = 'display: table-cell';
+        else if (modelsParameters[idInstance].labelTextPosition == 'right') labelTextPosition = 'display: table-cell';
+        else if (modelsParameters[idInstance].labelTextPosition == 'top')
+          labelTextPosition = 'display: table-header-group';
+        else if (modelsParameters[idInstance].labelTextPosition == 'bottom')
+          labelTextPosition = 'display: table-footer-group';
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
         valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
@@ -1287,6 +1317,10 @@ function flatUiWidgetsPluginClass() {
             this.labelFontSize() +
             this.labelColor() +
             this.labelFontFamily() +
+            ' text-align:' +
+            modelsParameters[idInstance].labelTextAlign +
+            ';' +
+            labelTextPosition +
             '">' +
             labelText +
             '</span>';
@@ -1300,6 +1334,11 @@ function flatUiWidgetsPluginClass() {
             +this.labelFontSize() +
             this.labelColor() +
             this.labelFontFamily() +
+            this.valueFontSize() +
+            ' text-align:' +
+            modelsParameters[idInstance].labelTextAlign +
+            ';' +
+            labelTextPosition +
             '">' +
             labelText +
             '</span>';
@@ -1361,8 +1400,11 @@ function flatUiWidgetsPluginClass() {
         inputStyle = 'float: right;';
       }
 
-      divContent += inputGroup;
-      divContent +=
+      let valueTextAlign = 'left';
+      if (!_.isUndefined(modelsParameters[idInstance].valueTextAlign))
+        valueTextAlign = modelsParameters[idInstance].valueTextAlign;
+
+      inputContent =
         '<input ' +
         valuedisabled +
         readOnlyValue +
@@ -1383,11 +1425,14 @@ function flatUiWidgetsPluginClass() {
         this.valueFontSize() +
         inputStyle +
         ' text-align:' +
-        modelsParameters[idInstance].valueTextAlign +
+        valueTextAlign +
         ';"' +
         '</input>';
-      divContent += btnCtrl;
-      divContent += '</div>';
+      inputContent += btnCtrl;
+      inputGroup += inputContent;
+      inputGroup += '</div>';
+      if (modelsParameters[idInstance].labelTextPosition == 'right') divContent = inputGroup + divContent;
+      else divContent += inputGroup;
 
       if (nameWidget != 'text-input') {
         //AEF: add unitText
