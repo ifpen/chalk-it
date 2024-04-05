@@ -1365,14 +1365,9 @@ function mapGeoJsonWidgetsPluginClass() {
               let properties = style.tooltip.properties;
               _.each(properties, (property) => {
                 popupText =
-                popupText +
-                  '<p> <strong>' +
-                  property +
-                  '</strong> : ' +
-                  layer.feature.properties[property] +
-                  '</p>';
+                  popupText + '<p> <strong>' + property + '</strong> : ' + layer.feature.properties[property] + '</p>';
               });
-              popupText = popupText + '</div>'; 
+              popupText = popupText + '</div>';
             }
 
             // Add The popup
@@ -1393,13 +1388,13 @@ function mapGeoJsonWidgetsPluginClass() {
           if (leafLetLayer.getLayers()[0] instanceof L.Marker) {
             newStyle = self.createTemplateStyle(geoJSONinLayer, layerIndex, L.circle);
             Object.keys(style).forEach((key) => {
-              if(!(key in newStyle)) {
+              if (!(key in newStyle)) {
                 delete style[key];
               }
             });
             Object.keys(newStyle).forEach((key) => {
-              if(!(key in style)) {
-                style[key] = newStyle[key]
+              if (!(key in style)) {
+                style[key] = newStyle[key];
               }
             });
             //Object.assign(style, { ...newStyle });
@@ -1413,16 +1408,16 @@ function mapGeoJsonWidgetsPluginClass() {
 
             leafLetLayer.clearLayers();
             LCircles.forEach(function (layerCircle) {
-              if(!_.isUndefined(self.mouseoverHandler)){
+              if (!_.isUndefined(self.mouseoverHandler)) {
                 layerCircle.on('mouseover', self.mouseoverHandler);
               }
-              if(!_.isUndefined(self.mouseoutHandler)){
+              if (!_.isUndefined(self.mouseoutHandler)) {
                 layerCircle.on('mouseout', self.mouseoutHandler);
               }
-              if(!_.isUndefined(self.clickHandler)){
+              if (!_.isUndefined(self.clickHandler)) {
                 layerCircle.on('click', self.clickHandler);
               }
-              
+
               leafLetLayer.addLayer(layerCircle);
             });
             styleForObject = { ...style };
@@ -1640,9 +1635,34 @@ function mapGeoJsonWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (val) {
         modelsHiddenParams[idInstance].GeoJSONStyle = val;
-        if (_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)) {
-          modelsHiddenParams[idInstance].GeoJSONStyle.config = self.defaultConfig;
+
+        if (
+          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
+          modelsHiddenParams[idInstance].GeoJSON.length > 0
+        ) {
+          //calcul layer 0 center
+          const center = turf.centerOfMass(modelsHiddenParams[idInstance].GeoJSON[0]);
+          modelsHiddenParams[idInstance].GeoJSONStyle.config = {
+            ...self.defaultConfig,
+            defaultCenter: {
+              latitude: center.geometry.coordinates[0],
+              longitude: center.geometry.coordinates[1],
+              zoom: 14,
+            },
+          };
+        }else {
+          if (_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)) {
+            modelsHiddenParams[idInstance].GeoJSONStyle.config = {
+              ...self.defaultConfig,
+              defaultCenter: {
+                latitude: 2.295,
+                longitude: 48.8738,
+                zoom: 8,
+              },
+            };
+          }
         }
+        
         self.style();
       },
       getValue: function () {
