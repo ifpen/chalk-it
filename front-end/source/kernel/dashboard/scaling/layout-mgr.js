@@ -559,10 +559,10 @@ class LayoutMgrClass {
     $('.dropperR').css('background-color', this.dashBgColor);
   }
 
-  resetDashBgColor() {
-    this.dashBgColor = this.defaultBgColor;
-    $('#inputDashBgColor').val(this.defaultBgColor);
-    $('.dropperR').css('background-color', this.defaultBgColor);
+  resetDashBgColor(bgColor = this.defaultBgColor) {
+    this.dashBgColor = bgColor;
+    $('#inputDashBgColor').val(bgColor);
+    $('.dropperR').css('background-color', bgColor);
   }
 
   serializeDashBgColor() {
@@ -586,6 +586,10 @@ class LayoutMgrClass {
     this.dashboardTheme = theme;
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
+
+    const bgColor = theme == 'dark' ? '#333333' : this.defaultBgColor;
+    this.resetDashBgColor(bgColor);
+
     // TODO Open Sweet alert to ask the user if he wants to reset styles for all components
     widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
     this.$rootScope.updateFlagDirty(true);

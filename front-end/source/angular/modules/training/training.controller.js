@@ -21,7 +21,7 @@ angular
     'SessionUser',
     function ($scope, $rootScope, $state, $http, SessionUser) {
       var iframe = document.getElementById('trainingFrame');
-      iframe.src = xDashConfig.urlDoc + 'taipy_quick_start/quickstart/index.html';
+      iframe.src = xDashConfig.urlDoc + 'taipy_quickstart/quickstart/index.html';
       iframe.onload = function () {
         var sidebar = iframe.contentWindow.document.getElementsByClassName('md-sidebar')[0];
         sidebar.style.display = 'none';
