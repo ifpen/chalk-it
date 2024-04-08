@@ -438,7 +438,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, a label is displayed above or below the value"
   },
   {
     "typeWidget": "advancedKpiCard",
@@ -543,7 +543,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the slider"
+    "description": "If true, a label is displayed on the left side of the slider"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
@@ -676,7 +676,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the date picker"
+    "description": "If true, a label is displayed on the left side of the date picker"
   },
   {
     "typeWidget": "datepickerSimple",
@@ -767,7 +767,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the date picker"
+    "description": "If true, a label is displayed on the left side of the date picker"
   },
   {
     "typeWidget": "datepickerVisible",
@@ -823,7 +823,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the date-range picker"
+    "description": "If true, a label is displayed on the left side of the date-range picker"
   },
   {
     "typeWidget": "dateRangePicker",
@@ -935,7 +935,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the time picker"
+    "description": "If true, a label is displayed on the left side of the time picker"
   },
   {
     "typeWidget": "timepickerSimple",
@@ -1047,7 +1047,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the select widget"
+    "description": "If true, a label is displayed on the left side of the select widget"
   },
   {
     "typeWidget": "flatUiSelect",
@@ -1407,7 +1407,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on left or right side position of the checkbox"
+    "description": "If true, a label is displayed above on left or right side position of the checkbox"
   },
   {
     "typeWidget": "flatUiCheckbox",
@@ -1477,7 +1477,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left or right side of the switch"
+    "description": "If true, a label is displayed on the left or right side of the switch"
   },
   {
     "typeWidget": "flatUiSwitch",
@@ -1547,7 +1547,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiHereAutocompleteValue",
@@ -1645,7 +1645,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -1827,7 +1827,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
@@ -1932,7 +1932,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiProgressBar",
@@ -2058,7 +2058,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2240,7 +2240,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiTextInput",
@@ -2394,7 +2394,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2562,7 +2562,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiValueDisplay",
@@ -2835,7 +2835,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "loadFile",
@@ -3031,7 +3031,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "ledStatus",
