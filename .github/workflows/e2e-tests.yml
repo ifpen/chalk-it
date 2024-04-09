@@ -2,12 +2,10 @@
 name: 'Run e2e Tests'
 
 on:
+  push:
+    branches: [ e2e ]
   pull_request:
-    types:
-      - ready_for_review
-    paths:
-      - 'front-end/**'
-      - 'e2e/**'
+    branches: [ e2e ]
 
 
 jobs:
