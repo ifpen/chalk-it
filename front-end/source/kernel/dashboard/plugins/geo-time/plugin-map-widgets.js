@@ -62,7 +62,7 @@ modelsParameters.openStreetMaps = {
   svgOverlay: { numberOfLayers: 0 /*, 'sampledDisplay': false*/ },
   defaultCenter: { latitude: 48.872063, longitude: 2.331773, zoom: 16 },
   offlineSupport: false,
-  tileServer: 'MapboxStreets',
+  tileServer: 'MapboxDark',
   drawingFeatures: false,
   drawingFeaturesOptions: {
     point: true,

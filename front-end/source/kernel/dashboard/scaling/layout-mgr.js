@@ -238,7 +238,7 @@ class LayoutMgrClass {
   }
 
   _readRows() {
-    const strRows = $('#select-rows').val() ?? this.$rootScope.xDashLiteVersion ? 1 : 0;
+    const strRows = $('#select-rows').val() ?? 0;
     return parseInt(strRows, 10);
   }
 
@@ -269,7 +269,6 @@ class LayoutMgrClass {
         (undoManagerService, editorActionFactory) => {
           const action = editorActionFactory.createUpdateLayoutAction(newRows, newCols, this.newHeightCols);
           undoManagerService.execute(action);
-          if (this.$rootScope.xDashLiteVersion) undoManagerService.clear();
         },
       ]);
 
@@ -559,10 +558,10 @@ class LayoutMgrClass {
     $('.dropperR').css('background-color', this.dashBgColor);
   }
 
-  resetDashBgColor(bgColor = this.defaultBgColor) {
-    this.dashBgColor = bgColor;
-    $('#inputDashBgColor').val(bgColor);
-    $('.dropperR').css('background-color', bgColor);
+  resetDashBgColor() {
+    this.dashBgColor = '';
+    $('#inputDashBgColor').val('');
+    $('.dropperR').css('background-color', '');
   }
 
   serializeDashBgColor() {
@@ -574,7 +573,7 @@ class LayoutMgrClass {
 
   deserializeDashBgColor(deviceObj) {
     if (!_.isUndefined(deviceObj.backgroundColor)) {
-      this.dashBgColor = deviceObj.backgroundColor || this.defaultBgColor;
+      this.dashBgColor = deviceObj.backgroundColor;
       this.updateDashBgColor();
     }
   }
@@ -586,10 +585,6 @@ class LayoutMgrClass {
     this.dashboardTheme = theme;
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
-
-    const bgColor = theme == 'dark' ? '#333333' : this.defaultBgColor;
-    this.resetDashBgColor(bgColor);
-
     // TODO Open Sweet alert to ask the user if he wants to reset styles for all components
     widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
     this.$rootScope.updateFlagDirty(true);
