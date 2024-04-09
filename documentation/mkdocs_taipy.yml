@@ -17,9 +17,34 @@ nav:
   - Training: training.md 
 theme:
   name: material
-  logo: media/taipy-icon.png
-  font: false
-use_directory_urls: true
+  language: en
+  custom_dir: taipy_theme
+  font:
+    text: Lato
+  icon:
+    logo: taipy-logo-icon
+    repo: fontawesome/brands/git-alt
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+extra_css:
+  - assets/stylesheets/avaiga.css
+extra_javascript:
+  - assets/js/filter.js
+  - mkdocs-open-xprjson.js
+markdown_extensions:
 markdown_extensions:
   - toc:
       permalink: true
@@ -28,7 +53,29 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight
   - pymdownx.superfences
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - attr_list
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - admonition
+  - toc:
+      baselevel: 2
+      permalink: true
+  - meta
 plugins:
-  - search
-extra_javascript:
-  - mkdocs-open-xprjson.js
+  - search:
+      lang: en
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: false
