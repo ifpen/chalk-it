@@ -248,12 +248,18 @@ modelsHiddenParams.plotlyRealTime = {
       mode: 'lines',
     },
   ],
+  layout: {
+    ...plotlyColorParams,
+  },
   selection: [{}],
 };
 
 modelsHiddenParams.plotlyGeneric = {
+  ...modelsParameters.plotlyGeneric,
   data: [{}],
-  layout: [{}],
+  layout: {
+    ...plotlyColorParams,
+  },
   selection: [{}],
 };
 
@@ -443,68 +449,54 @@ function plotlyWidgetsPluginClass() {
       }
 
       /* Apply colors from modelsParameters */
-      if (modelsHiddenParams[idInstance].layout) {
-        let modelLayout = JSON.parse(JSON.stringify(modelsHiddenParams[idInstance].layout));
-        modelsHiddenParams[idInstance].layout = modelLayout;
-        if (modelsParameters[idInstance].layout) {
-          modelLayout = JSON.parse(JSON.stringify(modelsParameters[idInstance].layout));
-        }
+      let hiddenLayout = modelsHiddenParams[idInstance].layout;
+      if (hiddenLayout) {
+        hiddenLayout = JSON.parse(JSON.stringify(hiddenLayout));
+        const modelLayout = modelsParameters[idInstance].layout
+          ? JSON.parse(JSON.stringify(modelsParameters[idInstance].layout))
+          : hiddenLayout;
+
         // Set colorway
         if (this.checkNested(modelLayout, 'colorway')) {
-          modelsHiddenParams[idInstance].layout.colorway = modelLayout.colorway.map((color) =>
-            this.getColorValueFromCSSProperty(color)
-          );
+          hiddenLayout.colorway = modelLayout.colorway.map((color) => this.getColorValueFromCSSProperty(color));
         }
         // Set x, y, z Axis ticks color
         ['xaxis', 'yaxis', 'zaxis'].forEach((axis) => {
           if (this.checkNested(modelLayout, axis, 'tickfont', 'color')) {
-            modelsHiddenParams[idInstance].layout[axis].tickfont.color = this.getColorValueFromCSSProperty(
-              modelLayout[axis].tickfont.color
-            );
+            hiddenLayout[axis].tickfont.color = this.getColorValueFromCSSProperty(modelLayout[axis].tickfont.color);
           }
         });
         // Set legend color
         if (this.checkNested(modelLayout, 'legend', 'font', 'color')) {
-          modelsHiddenParams[idInstance].layout.legend.font.color = this.getColorValueFromCSSProperty(
-            modelLayout.legend.font.color
-          );
+          hiddenLayout.legend.font.color = this.getColorValueFromCSSProperty(modelLayout.legend.font.color);
         }
         // Set paper_bgcolor
         if (this.checkNested(modelLayout, 'paper_bgcolor')) {
-          modelsHiddenParams[idInstance].layout.paper_bgcolor = this.getColorValueFromCSSProperty(
-            modelLayout.paper_bgcolor
-          );
+          hiddenLayout.paper_bgcolor = this.getColorValueFromCSSProperty(modelLayout.paper_bgcolor);
         }
         // Set plot_bgcolor
         if (this.checkNested(modelLayout, 'plot_bgcolor')) {
-          modelsHiddenParams[idInstance].layout.plot_bgcolor = this.getColorValueFromCSSProperty(
-            modelLayout.plot_bgcolor
-          );
+          hiddenLayout.plot_bgcolor = this.getColorValueFromCSSProperty(modelLayout.plot_bgcolor);
         }
       }
 
+      $('#' + idDivPlotly).html('');
+
       /* MBG issue bad width at runtime for Ploty widgets*/
       if (this.bIsInteractive) {
-        $('#' + idDivPlotly).html('');
-        if (!_.isUndefined(modelsHiddenParams[idInstance].layout) && !_.isNull(modelsHiddenParams[idInstance].layout)) {
-          if (modelsHiddenParams[idInstance].layout.autosize) {
-            delete modelsHiddenParams[idInstance].layout.width;
-            delete modelsHiddenParams[idInstance].layout.height;
-          }
-        }
-        let opts = {};
-        if (modelsParameters[idInstance].hideModeBar) {
-          opts = { displayModeBar: false };
+        if (hiddenLayout && hiddenLayout.autosize) {
+          delete hiddenLayout.width;
+          delete hiddenLayout.height;
         }
 
-        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, modelsHiddenParams[idInstance].layout, opts);
+        const opts = modelsParameters[idInstance].hideModeBar ? { displayModeBar: false } : {};
 
+        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, hiddenLayout, opts);
         this.setSelectionActuator();
       } else {
-        $('#' + idDivPlotly).html('');
         $('#' + idDivPlotly).html('<img id="png-export-' + idDivPlotly + '"></img>');
+
         const img_png = $('#png-export-' + idDivPlotly);
-        let img_url;
         const UNSENSIBLE_TIME_INTERVAL = 6000;
         if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
           // MBG tmp optim
@@ -517,30 +509,28 @@ function plotlyWidgetsPluginClass() {
           img_png[0].style.margin = '3px';
           return;
         }
-        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, modelsHiddenParams[idInstance].layout).then(
-          function (gd) {
-            Plotly.toImage(gd, {
-              height: $('#' + idDivContainer).height(),
-              width: $('#' + idDivContainer).width(),
-            }).then(function (url) {
-              img_url = url;
-              Plotly.purge(gd);
-              img_png.attr('src', img_url);
-              gd.style.minHeight = gd.parentNode.style.minHeight;
-              gd.style.minWidth = gd.parentNode.style.minWidth;
-              gd.style.width = gd.parentNode.style.width;
-              gd.style.height = gd.parentNode.style.height;
+        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, hiddenLayout).then(function (gd) {
+          Plotly.toImage(gd, {
+            height: $('#' + idDivContainer).height(),
+            width: $('#' + idDivContainer).width(),
+          }).then(function (url) {
+            const img_url = url;
+            Plotly.purge(gd);
+            img_png.attr('src', img_url);
+            gd.style.minHeight = gd.parentNode.style.minHeight;
+            gd.style.minWidth = gd.parentNode.style.minWidth;
+            gd.style.width = gd.parentNode.style.width;
+            gd.style.height = gd.parentNode.style.height;
 
-              img_png[0].style.minHeight = parseInt(gd.parentNode.style.minHeight) - 3 + 'px';
-              img_png[0].style.minWidth = parseInt(gd.parentNode.style.minWidth) - 3 + 'px';
-              img_png[0].style.width = parseFloat(gd.parentNode.style.width) - 1 + 'vw';
-              img_png[0].style.height = parseFloat(gd.parentNode.style.height) - 1 + 'vh';
-              img_png[0].style.margin = '3px';
-              modelsTempParams[idInstance].lastEditTimeStamp = Date.now(); // MBG tmp optim
-              modelsTempParams[idInstance].pngCache = img_url;
-            });
-          }
-        );
+            img_png[0].style.minHeight = parseInt(gd.parentNode.style.minHeight) - 3 + 'px';
+            img_png[0].style.minWidth = parseInt(gd.parentNode.style.minWidth) - 3 + 'px';
+            img_png[0].style.width = parseFloat(gd.parentNode.style.width) - 1 + 'vw';
+            img_png[0].style.height = parseFloat(gd.parentNode.style.height) - 1 + 'vh';
+            img_png[0].style.margin = '3px';
+            modelsTempParams[idInstance].lastEditTimeStamp = Date.now(); // MBG tmp optim
+            modelsTempParams[idInstance].pngCache = img_url;
+          });
+        });
       }
     };
 
@@ -549,7 +539,7 @@ function plotlyWidgetsPluginClass() {
       this.bIsInteractive = bInteractive;
       let idDivPlotly = 'plotly' + idWidget;
       if (bInteractive) {
-        idDivPlotly = idDivPlotly + 'c';
+        idDivPlotly += 'c';
         const graphDiv = document.getElementById(idDivPlotly);
         graphDiv.on('plotly_selected', function (eventData) {
           if (!_.isUndefined(eventData)) {
