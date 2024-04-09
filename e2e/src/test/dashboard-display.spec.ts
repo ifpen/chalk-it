@@ -18,7 +18,20 @@ const logger = createModuleLogger('dashboard-display.spec');
 /** The more complicated form allows to grab a reference dashboard from the documentation and keep the screenshot here.  */
 type TestCase = string | { dashboard: string; referenceDirectory: string };
 
-const TEST_CASES: TestCase[] = ['resources/list-js.xprjson'];
+const TEST_CASES: TestCase[] = [
+  'resources/bar-chart.xprjson',
+  'resources/combo-box-js.xprjson',
+  'resources/date-picker.xprjson',
+  'resources/generic-html-js.xprjson',
+  'resources/line-chart.xprjson',
+  'resources/list-js.xprjson',
+  'resources/markdown-js.xprjson',
+  'resources/multi-select-js.xprjson',
+  'resources/pie-chart.xprjson',
+  'resources/progress-bar.xprjson',
+  'resources/table.xprjson',
+  'resources/time-picker.xprjson',
+];
 
 function getDashboardFile(testCase: TestCase): string {
   return typeof testCase === 'string' ? testCase : testCase.dashboard;
