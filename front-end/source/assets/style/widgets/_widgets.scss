@@ -294,6 +294,7 @@ html {
 
       // Dropzone
       --widget-dropzone-background-color: #{darken(map-get($theme, 0), 6%)};
+      --widget-dropzone-grid-color: #e6e6e6;
       --widget-dropzone-label-background-color: #{darken(map-get($theme, 0), 3%)};
       --widget-delete-button-default-color: #{darken(map-get($theme, 0), 6%)};
 
@@ -320,6 +321,7 @@ html {
 
       // Dropzone
       --widget-dropzone-background-color: #{lighten(map-get($theme, 0), 6%)};
+      --widget-dropzone-grid-color: #555555;
       --widget-dropzone-label-background-color: #{lighten(map-get($theme, 0), 3%)};
       --widget-delete-button-default-color: #{lighten(map-get($theme, 0), 6%)};
 
