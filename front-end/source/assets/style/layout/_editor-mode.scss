@@ -83,8 +83,8 @@
 .dropperR.show-grid:not(#DropperDroitec) .device-col {
   background-size: 20px 20px;
   background-attachment: local;
-  background-image: linear-gradient(to right, #e6e6e6 1px, transparent 1px),
-    linear-gradient(to bottom, #e6e6e6 1px, transparent 1px);
+  background-image: linear-gradient(to right, var(--widget-dropzone-grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--widget-dropzone-grid-color) 1px, transparent 1px);
 }
 
 .overflow-type1 {
