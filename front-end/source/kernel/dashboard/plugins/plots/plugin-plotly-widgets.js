@@ -67,6 +67,7 @@ const _SCHEMA_PLOTLY_LAYOUT = {
 modelsParameters.plotlyLine = {
   numberOfAxis: 1,
   layout: {
+    ...plotlyColorParams,
     // all "layout" attributes: #layout
     title: '', // more about "layout.title": #layout-title
     xaxis: {
@@ -79,14 +80,6 @@ modelsParameters.plotlyLine = {
     yaxis: {
       title: 'y',
       tickfont: {
-        color: textColor,
-      },
-    },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    colorway: colorway,
-    legend: {
-      font: {
         color: textColor,
       },
     },
@@ -105,6 +98,7 @@ modelsParameters.plotlyLine = {
 modelsParameters.plotlyBar = {
   numberOfAxis: 1,
   layout: {
+    ...plotlyColorParams,
     // all "layout" attributes: #layout
     title: '', // more about "layout.title": #layout-title
     barmode: 'group',
@@ -118,14 +112,6 @@ modelsParameters.plotlyBar = {
     yaxis: {
       title: 'y',
       tickfont: {
-        color: textColor,
-      },
-    },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    colorway: colorway,
-    legend: {
-      font: {
         color: textColor,
       },
     },
@@ -143,16 +129,9 @@ modelsParameters.plotlyBar = {
 
 modelsParameters.plotlyPie = {
   layout: {
+    ...plotlyColorParams,
     // all "layout" attributes: #layout
     title: '',
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    colorway: colorway,
-    legend: {
-      font: {
-        color: textColor,
-      },
-    },
     showlegend: true,
     margin: {
       l: 50,
@@ -167,6 +146,7 @@ modelsParameters.plotlyPie = {
 
 modelsParameters.plotly3dSurface = {
   layout: {
+    ...plotlyColorParams,
     // all "layout" attributes: #layout
     title: '', // more about "layout.title": #layout-title
     scene: {
@@ -181,8 +161,6 @@ modelsParameters.plotly3dSurface = {
         title: 'z',
       },
     },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
     showlegend: true,
     margin: {
       l: 50,
