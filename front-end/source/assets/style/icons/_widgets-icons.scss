@@ -18,6 +18,10 @@
     @include icon-background('address-autocompletion.svg', 'widget');
   }
 
+  &.icn-any-widget {
+    @include icon-background('any-widget.svg', 'widget');
+  }
+
   &.icn-arch-circular-gauge {
     @include icon-background('arch-circular-gauge.svg', 'widget');
   }
