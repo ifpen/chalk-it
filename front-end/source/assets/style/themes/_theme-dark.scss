@@ -112,5 +112,15 @@ $text-color: #ffffff;
   // Images
   --main-logo-url: url('../img/logo-taipy.svg');
   --header-logo-url: url('../img/logo-taipy.svg');
+
+  //Json Editor
+--json-key-color: var(--primary-color-text);
+--string-value-color: #5ba95b
+--number-value-color: #55c1f6;
+--boolean-value-color: #569cd6;
+--null-value-color: #004ed0;
+--hexa-value-color: #5ba95b;
+--invalid-value-color: #ff0000;
+
 }
 // }

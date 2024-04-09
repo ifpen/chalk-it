@@ -100,5 +100,14 @@ $text-color: #050038;
   // Images
   --main-logo-url: url('../img/logo_taipy_color_without background.png');
   --header-logo-url: url('../img/logo_taipy_color_without background.png');
+
+  //Json Editor
+  --json-key-color: var(--primary-color);
+  --string-value-color: #5ba95b;
+  --number-value-color: #ee422e;
+  --boolean-value-color: #ff8c00;
+  --null-value-color: #004ed0;
+  --hexa-value-color: #5ba95b;
+  --invalid-value-color: #ff0000;
 }
 // }
