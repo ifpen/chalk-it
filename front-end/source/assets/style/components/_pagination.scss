@@ -18,12 +18,12 @@
   width: 42px;
   height: 42px;
   padding: 0.5em;
-  border-radius: br('full');
+  border-radius: br("full");
   border: 1px solid var(--active-color-text);
   background-color: var(--active-color-text);
   color: var(--active-color);
-  font-size: fs('xs');
-  font-weight: fw('bold');
+  font-size: fs("xs");
+  font-weight: fw("bold");
   outline: none;
   transition: var(--default-transition);
   transition-property: background-color, color;

@@ -14,10 +14,11 @@
     align-content: stretch;
     overflow-y: scroll;
     width: 100%;
-    box-sizing: border-box;
-    cursor: inherit;
-    max-width: 2000px;
+    box-sizing: border-box; 
+    cursor: inherit; 
+    max-width : 2000px;
     border-radius: 0.375rem;
+    
   }
 
   .multi-select-div > label > span {

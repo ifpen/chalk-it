@@ -1,12 +1,11 @@
 <div class="cancel__box cancel__box--xl">
-  <div class="cancel__title">DataNode JSON result: {{popup.title}}</div>
-  <div class="cancel__text" id="popup-text" style="overflow: auto; height: 84%; min-height: 50px; text-align: initial">
-    {{popup.text}}
-  </div>
+    <div class="cancel__title">DataNode JSON result: {{popup.title}}</div>
+    <div class="cancel__text" id="popup-text" style="overflow: auto;height:84%;min-height:50px;text-align: initial;">{{popup.text}}</div>
 
-  <div class="cancel__box__bottom">
-    <button class="btn btn-rounded-fill primary" ng-click="popup.datanodeInfo=false">OK</button>
-    <button class="btn btn-rounded-fill primary" ng-click="copyContent(copyContentValue)">Copy</button>
-  </div>
+    <div class="cancel__box__bottom">
+        <button class="btn btn-rounded-fill primary" ng-click="popup.datanodeInfo=false">OK</button>
+        <button class="btn btn-rounded-fill primary" ng-click="copyContent(copyContentValue)">Copy</button>
+    </div>
+
 </div>
 <div class="cancel__overlay"></div>

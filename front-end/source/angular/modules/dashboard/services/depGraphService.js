@@ -7,53 +7,56 @@
 // │ Original authors(s): Abir EL FEKI, Mondher AJIMI                                     │ \\
 // └──────────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules.dashboard').service('DepGraphService', [
-  '$rootScope',
-  function ($rootScope) {
-    const self = this;
+angular
+    .module('modules.dashboard')
+    .service('DepGraphService', ['$rootScope', function($rootScope) {
 
-    /*---------- showDepGraph ----------------*/
-    self.showDepGraph = function (event, scopeDash) {
-      datanodesManager.showDepGraph(event);
-      scopeDash.editorView.showGraphPanel = true;
-    };
+        const self = this;
 
-    /*---------- seeInDepGraph ----------------*/
-    self.seeInDepGraph = function (event, scopeDash) {
-      datanodesManager.showDepGraph(event); //to be changed later
-      scopeDash.editorView.showGraphPanel = true;
-    };
+        /*---------- showDepGraph ----------------*/
+        self.showDepGraph = function(event, scopeDash) {
+            datanodesManager.showDepGraph(event);
+            scopeDash.editorView.showGraphPanel = true;
+        };
 
-    /*---------- selectNodeFromTagList ----------------*/
-    self.selectNodeFromTagList = function (type) {
-      datanodesManager.selectNodeFromTagList(type);
-    };
+        /*---------- seeInDepGraph ----------------*/
+        self.seeInDepGraph = function(event, scopeDash) {
+            datanodesManager.showDepGraph(event); //to be changed later
+            scopeDash.editorView.showGraphPanel = true;
+        };
 
-    /*---------- selectConnectedWithWidget ----------------*/
-    self.selectConnectedWithWidget = function (tag) {
-      datanodesManager.selectConnectedWithWidget(tag);
-    };
+        /*---------- selectNodeFromTagList ----------------*/
+        self.selectNodeFromTagList = function(type) {
+            datanodesManager.selectNodeFromTagList(type);
+        };
 
-    /*---------- closeGraph ----------------*/
-    self.closeGraph = function () {
-      datanodesManager.closeGraph();
-    };
+        /*---------- selectConnectedWithWidget ----------------*/
+        self.selectConnectedWithWidget = function(tag) {
+            datanodesManager.selectConnectedWithWidget(tag);
+        };
 
-    /*---------- editNodeFromGraph ----------------*/
-    self.editNodeFromGraph = function (dataNode, scopeDash, scopeDashDn) {
-      scopeDash.resetPanelStateR();
-      scopeDash.editorView.showGraphPanel = false;
-      self.closeGraph();
-      scopeDashDn.openDataNode(dataNode);
-    };
+        /*---------- closeGraph ----------------*/
+        self.closeGraph = function() {
+            datanodesManager.closeGraph();
+        };
 
-    /*---------- getUniqTypes ----------------*/
-    self.getUniqTypes = function (scopeDash) {
-      let allTypes = [];
-      for (let i = 0; i < $rootScope.alldatanodes.length; i++) {
-        allTypes.push($rootScope.alldatanodes[i].type());
-      }
-      scopeDash.uniqGraphNodesTypes = _.uniq(allTypes);
-    };
-  },
-]);
+        /*---------- editNodeFromGraph ----------------*/
+        self.editNodeFromGraph = function(dataNode, scopeDash, scopeDashDn) {
+            scopeDash.resetPanelStateR();
+            scopeDash.editorView.showGraphPanel = false;
+            self.closeGraph();
+            scopeDashDn.openDataNode(dataNode);
+        };
+
+
+        /*---------- getUniqTypes ----------------*/
+        self.getUniqTypes = function(scopeDash) {
+            let allTypes = [];
+            for (let i = 0; i < $rootScope.alldatanodes.length; i++) {
+                allTypes.push($rootScope.alldatanodes[i].type());
+            }
+            scopeDash.uniqGraphNodesTypes = _.uniq(allTypes);
+        };
+
+
+    }]);

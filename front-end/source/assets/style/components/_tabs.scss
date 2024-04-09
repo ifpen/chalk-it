@@ -48,8 +48,8 @@
 .tab__name {
   max-width: 16em;
   color: var(--text-color);
-  font-weight: fw('bold');
-  font-size: fs('sm');
+  font-weight: fw("bold");
+  font-size: fs("sm");
   transition: var(--default-transition);
   overflow: hidden;
   white-space: nowrap;
@@ -59,7 +59,7 @@
 
 .tab__close {
   @extend .close-aside;
-  font-size: fs('md');
+  font-size: fs("md");
 }
 
 .tab--inactive:not(.changed) {

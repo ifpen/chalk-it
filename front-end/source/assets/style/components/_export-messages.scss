@@ -26,7 +26,7 @@ img.avatar {
   padding-top: 2px;
   padding-left: 90px;
   padding-right: 90px;
-  border-radius: br('1');
+  border-radius: br("1");
   /*background: #f7f7f7;
     border: 1px solid #e6e6e6;*/
 }
@@ -42,7 +42,7 @@ ul.messages li .message_wrapper {
 }
 
 ul.messages li .message_wrapper h4.heading {
-  font-weight: fw('semi');
+  font-weight: fw("semi");
   margin: 0;
   cursor: pointer;
   margin-bottom: 10px;

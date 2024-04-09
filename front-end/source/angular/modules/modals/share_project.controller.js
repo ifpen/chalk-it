@@ -7,29 +7,30 @@
 // │ Original authors(s): Abir EL FEKI                                               │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules').controller('ShareProjectController', [
-  '$scope',
-  '$rootScope',
-  'ManagePrjSharingService',
-  function ($scope, $rootScope, ManagePrjSharingService) {
-    /*---------- closeShareProject ----------------*/
-    $scope.closeShareProject = function (flag) {
-      ManagePrjSharingService.closeShareProject(flag);
-    };
+angular
+    .module('modules')
+    .controller('ShareProjectController', ['$scope', '$rootScope', 'ManagePrjSharingService',
+        function($scope, $rootScope, ManagePrjSharingService) {
 
-    /*---------- updateTypedEmail ----------------*/
-    $scope.updateTypedEmail = function () {
-      ManagePrjSharingService.updateTypedEmail();
-    };
+            /*---------- closeShareProject ----------------*/
+            $scope.closeShareProject = function(flag) {
+                ManagePrjSharingService.closeShareProject(flag);
+            };
 
-    /*---------- shareProjectWithEmail ----------------*/
-    $scope.shareProjectWithEmail = function () {
-      ManagePrjSharingService.shareProjectWithEmail();
-    };
+            /*---------- updateTypedEmail ----------------*/
+            $scope.updateTypedEmail = function() {
+                ManagePrjSharingService.updateTypedEmail();
+            };
 
-    /*---------- unshareProjectWithEmail ----------------*/
-    $scope.unshareProjectWithEmail = function () {
-      ManagePrjSharingService.unshareProjectWithEmail();
-    };
-  },
-]);
+            /*---------- shareProjectWithEmail ----------------*/
+            $scope.shareProjectWithEmail = function() {
+                ManagePrjSharingService.shareProjectWithEmail();
+            };
+
+            /*---------- unshareProjectWithEmail ----------------*/
+            $scope.unshareProjectWithEmail = function() {
+                ManagePrjSharingService.unshareProjectWithEmail();
+            };
+
+        }
+    ]);

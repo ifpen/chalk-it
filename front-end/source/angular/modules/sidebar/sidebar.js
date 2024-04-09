@@ -7,15 +7,16 @@
 // │ Original authors(s): Abir EL FEKI                                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules.sidebar', []).config([
-  '$stateProvider',
-  function ($stateProvider) {
-    $stateProvider.state('modules.sidebar', {
-      notAuthenticate: true,
-      userAuthenticated: false,
-      abstract: true,
-      url: '/sidebar',
-      templateUrl: '',
-    });
-  },
-]);
+angular.module('modules.sidebar', [])
+    .config(['$stateProvider',
+        function($stateProvider) {
+            $stateProvider
+                .state('modules.sidebar', {
+                    notAuthenticate: true,
+                    userAuthenticated: false,
+                    abstract: true,
+                    url: '/sidebar',
+                    templateUrl: '',
+                });
+        }
+    ]);

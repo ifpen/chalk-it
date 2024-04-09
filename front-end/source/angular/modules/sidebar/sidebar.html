@@ -1,112 +1,74 @@
 <div class="sidebar__brand">
-  <span class="brand__placeholder" aria-hidden="true"></span>
-  <span class="sr-only">Chalk'it logo</span>
+    <span class="brand__placeholder" aria-hidden="true"></span>
+    <span class="sr-only">Chalk'it logo</span>
 </div>
 
 <div class="sidebar__menu">
-  <div class="dashboard-form">
-    <div class="dashboard-form__input-wrapper">
-      <input
-        type="search"
-        placeholder="Search"
-        id="search-input-sidebar"
-        class="dashboard-form__input--search"
-        ng-model="projectsFilterField.value"
-        ng-change="ProjectsFilter(projectsFilterField.value)"
-      />
-      <i class="basic icn-search"></i>
+    <div class="dashboard-form">
+        <div class="dashboard-form__input-wrapper">
+            <input type="search" placeholder="Search" id="search-input-sidebar" class="dashboard-form__input--search" ng-model="projectsFilterField.value" ng-change="ProjectsFilter(projectsFilterField.value)" />
+            <i class="basic icn-search"></i>
+        </div>
     </div>
-  </div>
-  <div class="sidebar__actions">
-    <button class="btn btn-circle" ng-click="newProject()" title="Create a new project">
-      <span class="icon__container">
-        <i class="basic icn-add" aria-hidden="true"></i>
-      </span>
-      New
-    </button>
-    <button class="btn btn-circle" ng-click="uploadFileToServer()" title="Import a project">
-      <span class="icon__container">
-        <i class="basic icn-upload-cloud"></i>
-      </span>
-      Import
-    </button>
-    <ul class="sidebar__list">
-      <!-- <li><a href="index.html"><i class="basic icn-schedule"></i> RecentTemplate</a></li> -->
-      <li>
-        <a
-          ui-sref="modules.cards.layout({action: 'recent'})"
-          ng-click="toggleMenuOptionDisplay('recent')"
-          ng-class="{'active' :  displayedId==='recent'}"
-        >
-          <i class="basic icn-schedule"></i>Recent
-        </a>
-      </li>
-      <li>
-        <a
-          id="my-projects-cards-explorer"
-          ui-sref="modules.cards.layout({action: 'myProjects'})"
-          ng-click="toggleMenuOptionDisplay('cards')"
-          ng-class="{'active' :  displayedId==='cards'}"
-        >
-          <i class="basic icn-folder"></i>My projects
-        </a>
-      </li>
-      <!-- <li><a href="template.html"><i class="basic icn-template"></i>Template Gallery</a></li> -->
-      <li>
-        <a
-          ui-sref="modules.cards.layout({action: 'templateGallery'})"
-          ng-click="toggleMenuOptionDisplay('gallery')"
-          ng-class="{'active' :  displayedId==='gallery'}"
-        >
-          <i class="basic icn-template"></i>Template Gallery
-        </a>
-      </li>
-      <li ng-if="enablePython">
-        <a
-          ui-sref="modules.python-images.list"
-          ng-click="toggleMenuOptionDisplay('python')"
-          ng-class="{'active' :  displayedId==='python'}"
-        >
-          <i class="basic icn-python"></i>Python management
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div class="divider"></div>
-  <div class="sidebar__actions">
-    <button class="btn btn-circle" style="cursor: default">
-      <span class="icon__container alt">
-        <i class="basic icn-help-big"></i>
-      </span>
-      Help
-    </button>
-    <ul class="sidebar__list">
-      <li>
-        <a
-          ng-class="{'active' :  displayedId==='discover'}"
-          ui-sref="modules.discover.layout"
-          ng-click="toggleMenuOptionDisplay('discover')"
-          >Discover Chalk'it</a
-        >
-      </li>
-      <li>
-        <a
-          ng-class="{'active' :  displayedId==='training'}"
-          ui-sref="modules.training.layout"
-          ng-click="toggleMenuOptionDisplay('training')"
-          >Training document</a
-        >
-      </li>
-      <!--<li>
+    <div class="sidebar__actions">
+        <button class="btn btn-circle" ng-click="newProject()" title="Create a new project">
+            <span class="icon__container">
+                <i class="basic icn-add" aria-hidden="true"></i>
+            </span>
+            New
+        </button>
+        <button class="btn btn-circle" ng-click="uploadFileToServer()" title="Import a project">
+            <span class="icon__container">
+                <i class="basic icn-upload-cloud"></i>
+            </span>
+            Import
+        </button>
+        <ul class="sidebar__list">
+            <!-- <li><a href="index.html"><i class="basic icn-schedule"></i> RecentTemplate</a></li> -->
+            <li>
+                <a ui-sref="modules.cards.layout({action: 'recent'})" ng-click="toggleMenuOptionDisplay('recent')" ng-class="{'active' :  displayedId==='recent'}">
+                    <i class="basic icn-schedule"></i>Recent
+                </a>
+            </li>
+            <li>
+                <a id="my-projects-cards-explorer" ui-sref="modules.cards.layout({action: 'myProjects'})" ng-click="toggleMenuOptionDisplay('cards')" ng-class="{'active' :  displayedId==='cards'}">
+                    <i class="basic icn-folder"></i>My projects
+                </a>
+            </li>
+            <!-- <li><a href="template.html"><i class="basic icn-template"></i>Template Gallery</a></li> -->
+            <li>
+                <a ui-sref="modules.cards.layout({action: 'templateGallery'})" ng-click="toggleMenuOptionDisplay('gallery')" ng-class="{'active' :  displayedId==='gallery'}">
+                    <i class="basic icn-template"></i>Template Gallery
+                </a>
+            </li>
+            <li ng-if="enablePython">
+                <a ui-sref="modules.python-images.list" ng-click="toggleMenuOptionDisplay('python')" ng-class="{'active' :  displayedId==='python'}">
+                    <i class="basic icn-python"></i>Python management
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="divider"></div>
+    <div class="sidebar__actions">
+        <button class="btn btn-circle" style="cursor:default">
+            <span class="icon__container alt">
+                <i class="basic icn-help-big"></i>
+            </span>
+            Help
+        </button>
+        <ul class="sidebar__list">
+            <li>
+                <a ng-class="{'active' :  displayedId==='discover'}" ui-sref="modules.discover.layout" ng-click="toggleMenuOptionDisplay('discover')">Discover Chalk'it</a>
+            </li>
+            <li>
+                <a ng-class="{'active' :  displayedId==='training'}" ui-sref="modules.training.layout" ng-click="toggleMenuOptionDisplay('training')">Training document</a>
+            </li>
+            <!--<li>
                 <a ng-class="{'active' :  displayedId==='FAQ'}" ng-click="toggleMenuOptionDisplay('FAQ')">Questions & answers</a>
             </li>-->
-      <li>
-        <a
-          ng-class="{'active' :  displayedId==='contact'}"
-          ng-click="toggleMenuOptionDisplay('contact');openContactUs()"
-          >Contact us</a
-        >
-      </li>
-    </ul>
-  </div>
+            <li>
+                <a ng-class="{'active' :  displayedId==='contact'}" ng-click="toggleMenuOptionDisplay('contact');openContactUs()">Contact us</a>
+            </li>
+        </ul>
+    </div>
 </div>

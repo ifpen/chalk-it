@@ -48,16 +48,16 @@
     background-repeat: no-repeat;
     background-size: 32px 32px;
     background-position: center;
-    border-radius: br('full');
+    border-radius: br("full");
     box-shadow: var(--small-box-shadow);
     &--mobile {
-      background-image: url('../icon/views/smartphone.svg');
+      background-image: url("../icon/views/smartphone.svg");
     }
     &--tablet {
-      background-image: url('../icon/views/tablet_android.svg');
+      background-image: url("../icon/views/tablet_android.svg");
     }
     &--desktop {
-      background-image: url('../icon/views/laptop.svg');
+      background-image: url("../icon/views/laptop.svg");
     }
     &:hover {
       box-shadow: var(--small-box-shadow-hover);
@@ -69,8 +69,8 @@
     left: 50%;
     transform: translate(-50%, 100%);
     padding-top: 0.25rem;
-    font-weight: fw('bold');
-    font-size: fs('xs');
+    font-weight: fw("bold");
+    font-size: fs("xs");
     color: var(--primary-color);
     opacity: 1;
   }

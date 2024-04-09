@@ -11,7 +11,7 @@
   left: 0;
   bottom: 0;
   background: var(--overlay-color);
-  opacity: 0.75;
+  opacity: .75;
   z-index: $zindex-overlay;
 }
 
@@ -31,7 +31,7 @@
   position: absolute;
   height: 200px;
   width: 200px;
-  border-radius: br('full');
+  border-radius: br("full");
   border: 3px solid var(--text-color-inverted);
   border-top-color: var(--text-color-inverted);
   border-left-color: var(--text-color);
@@ -51,7 +51,7 @@
   margin-top: -50px;
   left: 50%;
   margin-left: -50px;
-  border-radius: br('full');
+  border-radius: br("full");
   border: 3px solid var(--text-color-inverted);
   border-top-color: var(--text-color-inverted);
   border-left-color: var(--text-color);

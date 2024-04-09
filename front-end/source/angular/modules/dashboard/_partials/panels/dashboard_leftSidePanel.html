@@ -1,170 +1,103 @@
-<div
-  class="aside__panel--content aside__panel--content--left"
-  ng-class="{sidebar: editorView.leftSidePanel.target==''}"
-  id="editor-left-side-panel"
->
-  <div ng-if="editorView.leftSidePanel.target!=='Menu'" class="panel--content--top">
-    <h1 id="panel_left_title">{{editorView.leftSidePanel.target}}</h1>
-    <button ng-click="closeLeftSidePanel()" class="btn btn-icon-only" title="Close panel">
-      <i class="basic icn-close close-aside"></i>
-    </button>
-  </div>
+<div class="aside__panel--content aside__panel--content--left" ng-class="{sidebar: editorView.leftSidePanel.target==''}" id="editor-left-side-panel">
+    <div ng-if="editorView.leftSidePanel.target!=='Menu'" class="panel--content--top">
+        <h1 id="panel_left_title">{{editorView.leftSidePanel.target}}</h1>
+        <button ng-click="closeLeftSidePanel()" class="btn btn-icon-only" title="Close panel">
+            <i class="basic icn-close close-aside"></i>
+        </button>
+    </div>
 
-  <div
-    ng-if="!xDashFullVersion"
-    id="sidebar__wrap"
-    ng-class="{show:(editorView.leftSidePanel.target==='Menu')}"
-    class="panel--content--wrapper"
-  >
-    <div>
-      <ng-include
-        ng-controller="SidebarController"
-        src="'source/angular/modules/sidebar/sidebar-basic.html'"
-      ></ng-include>
+    <div ng-if="!xDashFullVersion" id="sidebar__wrap"  ng-class="{show:(editorView.leftSidePanel.target==='Menu')}" class="panel--content--wrapper">
+        <div>
+            <ng-include ng-controller="SidebarController" src="'source/angular/modules/sidebar/sidebar-basic.html'"></ng-include>
+        </div>
     </div>
-  </div>
-  <div
-    id="widget__wrap"
-    ng-controller="DashboardWdgtLibsController"
-    ng-class="{show:(editorView.leftSidePanel.target==='Widgets')}"
-    class="panel--content--wrapper"
-  >
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_wdgtLibs.html'"></ng-include>
+    <div id="widget__wrap" ng-controller="DashboardWdgtLibsController" ng-class="{show:(editorView.leftSidePanel.target==='Widgets')}" class="panel--content--wrapper">
+        <div>
+            <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_wdgtLibs.html'"></ng-include>
+        </div>
     </div>
-  </div>
 
-  <div
-    id="datanode__wrap"
-    ng-class="{show:(editorView.leftSidePanel.target==='DataNode')}"
-    class="panel--content--wrapper"
-  >
-    <div>
-      <ng-include
-        id="dash-datanode-ctrl"
-        ng-controller="DashboardDatanodesController as vmDn"
-        src="'source/angular/modules/dashboard/_partials/panels/dashboard_datanodes.html'"
-      ></ng-include>
+    <div id="datanode__wrap" ng-class="{show:(editorView.leftSidePanel.target==='DataNode')}" class="panel--content--wrapper">
+        <div>
+            <ng-include id="dash-datanode-ctrl" ng-controller="DashboardDatanodesController as vmDn" src="'source/angular/modules/dashboard/_partials/panels/dashboard_datanodes.html'"></ng-include>
+        </div>
     </div>
-  </div>
 
-  <div
-    id="library__wrap"
-    ng-controller="DashboardLibrariesController"
-    ng-class="{show:(editorView.leftSidePanel.target==='Libraries')}"
-    class="panel--content--wrapper"
-  >
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_libraries.html'"></ng-include>
+    <div id="library__wrap" ng-controller="DashboardLibrariesController" ng-class="{show:(editorView.leftSidePanel.target==='Libraries')}" class="panel--content--wrapper">
+        <div>
+            <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_libraries.html'"></ng-include>
+        </div>
     </div>
-  </div>
 
-  <div id="aspect__wrap" ng-class="{show:(editorView.leftSidePanel.target==='Aspect')}" class="panel--content--wrapper">
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_aspects.html'"></ng-include>
+    <div id="aspect__wrap" ng-class="{show:(editorView.leftSidePanel.target==='Aspect')}" class="panel--content--wrapper">
+        <div>
+            <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_aspects.html'"></ng-include>
+        </div>
     </div>
-  </div>
 
-  <div
-    id="historic__wrap"
-    ng-class="{show:(editorView.leftSidePanel.target==='Historic')}"
-    class="panel--content--wrapper"
-  >
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_historic.html'"></ng-include>
+    <div id="historic__wrap" ng-class="{show:(editorView.leftSidePanel.target==='Historic')}" class="panel--content--wrapper">
+        <div>
+            <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_historic.html'"></ng-include>
+        </div>
     </div>
-  </div>
 
-  <div id="help__wrap" ng-class="{show:(editorView.leftSidePanel.target==='Help')}" class="panel--content--wrapper">
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_help.html'"></ng-include>
+    <div id="help__wrap" ng-class="{show:(editorView.leftSidePanel.target==='Help')}" class="panel--content--wrapper">
+        <div>
+            <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_help.html'"></ng-include>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="aside__panel--nav--left">
-  <div
-    ng-if="!xDashFullVersion && !isTemplateOpen"
-    class="aside__panel--nav--btn-menu"
-    ng-class="{'active':(editorView.leftSidePanel.target==='DataNode' && editorView.leftSidePanel.view)}"
-  >
-    <a id="btn-menu" ng-click="setLeftContent('Menu')">
-      <i
-        class="basic {{ (editorView.leftSidePanel.view && (editorView.leftSidePanel.target==='Menu')) ? 'icn-menu-close' : 'icn-menu-open' }}"
-      ></i>
-    </a>
-  </div>
-  <div class="aside__panel--nav">
-    <ul class="aside__panel--nav--wrapper ltr">
-      <li
-        id="li_editor-widget-toolbox"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Widgets' && editorView.leftSidePanel.view)}"
-        js-edit-mode
-      >
-        <a id="editor-widget-toolbox" ng-click="setLeftContent('Widgets')">
-          <i class="specific icn-widget left-panel-toggle"></i>
+    <div ng-if="!xDashFullVersion && !isTemplateOpen" class="aside__panel--nav--btn-menu" ng-class="{'active':(editorView.leftSidePanel.target==='DataNode' && editorView.leftSidePanel.view)}">
+        <a id="btn-menu" ng-click="setLeftContent('Menu')">
+            <i class="basic {{ (editorView.leftSidePanel.view && (editorView.leftSidePanel.target==='Menu')) ? 'icn-menu-close' : 'icn-menu-open' }}"></i>
         </a>
-        <span class="tooltip">Widgets</span>
-      </li>
-      <li
-        id="li_editor-datanodes-list"
-        ng-class="{'active':(editorView.leftSidePanel.target==='DataNode' && editorView.leftSidePanel.view)}"
-      >
-        <a id="editor-datanodes-list" ng-click="setLeftContent('DataNode');isFilterOpen=false;">
-          <i class="specific icn-datanode left-panel-toggle"></i>
-        </a>
-        <span class="tooltip">DataNodes</span>
-      </li>
-      <li
-        id="editor-datanodes-graph"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.showGraphPanel && editorView.leftSidePanel.view)}"
-        js-edit-mode
-      >
-        <a ng-click="showDepGraph()">
-          <i class="specific icn-graph"></i>
-        </a>
-        <span class="tooltip">Graph</span>
-      </li>
-      <li
-        id="li_editor-project-libraries"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Libraries' && editorView.leftSidePanel.view)}"
-        js-edit-mode
-      >
-        <a ng-click="setLeftContent('Libraries')">
-          <i class="specific icn-libraries-pyodide left-panel-toggle"></i>
-        </a>
-        <span class="tooltip">Project Libraries</span>
-      </li>
-      <li
-        id="editor-dashboard-aspect"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Aspect' && editorView.leftSidePanel.view)}"
-        js-edit-mode
-      >
-        <a ng-click="setLeftContent('Aspect')">
-          <i class="specific icn-dashboard-aspect"></i>
-        </a>
-        <span class="tooltip">Dashboard aspect</span>
-      </li>
-      <li
-        id="editor-dashboard-history"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Historic' && editorView.leftSidePanel.view)}"
-        js-edit-mode
-      >
-        <a ng-click="setLeftContent('Historic')">
-          <i class="specific icn-historic"></i>
-        </a>
-        <span class="tooltip">Historic</span>
-      </li>
-      <li
-        id="editor-help"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Help' && editorView.leftSidePanel.view)}"
-        js-edit-mode
-      >
-        <a ng-click="setLeftContent('Help')">
-          <i class="basic icn-help"></i>
-        </a>
-        <span class="tooltip">Help</span>
-      </li>
-    </ul>
-  </div>
+    </div>
+    <div class="aside__panel--nav">
+        <ul class="aside__panel--nav--wrapper ltr">
+            <li id="li_editor-widget-toolbox" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Widgets' && editorView.leftSidePanel.view)}"  js-edit-mode>
+                <a id="editor-widget-toolbox" ng-click="setLeftContent('Widgets')">
+                    <i class="specific icn-widget left-panel-toggle"></i>
+                </a>
+                <span class="tooltip">Widgets</span>
+            </li>
+            <li id="li_editor-datanodes-list" ng-class="{'active':(editorView.leftSidePanel.target==='DataNode' && editorView.leftSidePanel.view)}">
+                <a id="editor-datanodes-list" ng-click="setLeftContent('DataNode');isFilterOpen=false;">
+                    <i class="specific icn-datanode left-panel-toggle"></i>
+                </a>
+                <span class="tooltip">DataNodes</span>
+            </li>
+            <li id="editor-datanodes-graph" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.showGraphPanel && editorView.leftSidePanel.view)}" js-edit-mode>
+                <a ng-click="showDepGraph()">
+                    <i class="specific icn-graph"></i>
+                </a>
+                <span class="tooltip">Graph</span>
+            </li>
+            <li id="li_editor-project-libraries" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Libraries' && editorView.leftSidePanel.view)}" js-edit-mode>
+                <a ng-click="setLeftContent('Libraries')">
+                    <i class="specific icn-libraries-pyodide left-panel-toggle"></i>
+                </a>
+                <span class="tooltip">Project Libraries</span>
+            </li>
+            <li id="editor-dashboard-aspect" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Aspect' && editorView.leftSidePanel.view)}" js-edit-mode>
+                <a ng-click="setLeftContent('Aspect')">
+                    <i class="specific icn-dashboard-aspect"></i>
+                </a>
+                <span class="tooltip">Dashboard aspect</span>
+            </li>
+            <li id="editor-dashboard-history" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Historic' && editorView.leftSidePanel.view)}" js-edit-mode>
+                <a ng-click="setLeftContent('Historic')">
+                    <i class="specific icn-historic"></i>
+                </a>
+                <span class="tooltip">Historic</span>
+            </li>
+            <li id="editor-help" ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Help' && editorView.leftSidePanel.view)}" js-edit-mode>
+                <a ng-click="setLeftContent('Help')">
+                    <i class="basic icn-help"></i>
+                </a>
+                <span class="tooltip">Help</span>
+            </li>
+        </ul>
+    </div>
 </div>

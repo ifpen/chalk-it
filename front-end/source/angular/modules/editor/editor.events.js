@@ -7,54 +7,55 @@
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
+
 /**
  * Allows to register listeners for 'events' and post notifications
  */
 class EventCenter {
-  constructor() {
-    // Listener sets indexed by topic
-    this._listeners = new Map();
-  }
-
-  /**
-   * @description adds change a listener. Remember to unsubscribe when appropriate to avoir leaks (ex: when listener gets out of scope)
-   * @param {string} event the event to listen for
-   * @param {()=>void} listener will be called whenever an action is added, removed or moved.
-   */
-  addListener(event, listener) {
-    let listeners = this._listeners.get(event);
-    if (!listeners) {
-      listeners = new Set();
-      this._listeners.set(event, listeners);
+    constructor() {
+        // Listener sets indexed by topic
+        this._listeners = new Map();
     }
-    listeners.add(listener);
-  }
 
-  /**
-   * @description removes change a listener
-   * @param {string} event the event to stop listening listen for
-   * @param {()=>void} listener
-   */
-  removeListener(event, listener) {
-    const listeners = this._listeners.get(event);
-    if (listeners) {
-      listeners.delete(listener);
-      if (listeners.size === 0) {
-        this._listeners.delete(event);
-      }
+    /**
+     * @description adds change a listener. Remember to unsubscribe when appropriate to avoir leaks (ex: when listener gets out of scope)
+     * @param {string} event the event to listen for
+     * @param {()=>void} listener will be called whenever an action is added, removed or moved.
+     */
+    addListener(event, listener) {
+        let listeners = this._listeners.get(event);
+        if (!listeners) {
+            listeners = new Set();
+            this._listeners.set(event, listeners);
+        }
+        listeners.add(listener);
     }
-  }
 
-  /**
-   * @description posts an event
-   * @param {string} event
-   */
-  sendEvent(event) {
-    const listeners = this._listeners.get(event);
-    if (listeners) {
-      listeners.forEach((listener) => listener());
+    /**
+     * @description removes change a listener
+     * @param {string} event the event to stop listening listen for
+     * @param {()=>void} listener 
+     */
+    removeListener(event, listener) {
+        const listeners = this._listeners.get(event);
+        if (listeners) {
+            listeners.delete(listener);
+            if (listeners.size === 0) {
+                this._listeners.delete(event);
+            }
+        }
     }
-  }
+
+    /**
+     * @description posts an event
+     * @param {string} event 
+     */
+    sendEvent(event) {
+        const listeners = this._listeners.get(event);
+        if (listeners) {
+            listeners.forEach(listener => listener());
+        }
+    }
 }
 
 angular.module('modules.editor').service('EventCenterService', [EventCenter]);

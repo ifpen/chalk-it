@@ -31,7 +31,7 @@
 			},
 			{
 				"name": "delayed-clock",
-				"type": "JSON_delay_plugin",
+				"type": "JSON_memory_plugin",
 				"settings": {
 					"name": "delayed-clock",
 					"json_init": "{}",

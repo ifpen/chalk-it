@@ -12,7 +12,7 @@
   background: var(--surface-b);
   box-shadow: var(--default-box-shadow);
   padding: 1rem;
-  border-radius: br('8');
+  border-radius: br("8");
   transition: var(--default-transition);
   z-index: $zindex-dropdown;
 
@@ -21,7 +21,7 @@
     visibility: hidden;
   }
   &:before {
-    content: '';
+    content: "";
     width: 0;
     height: 0;
     top: -5px;
@@ -64,9 +64,9 @@
     }
     &__search {
       height: auto;
-      border-radius: br('full');
+      border-radius: br("full");
       input {
-        border-radius: br('full');
+        border-radius: br("full");
         padding: 0.75rem 1rem;
         border: 0.0625em solid transparent;
       }

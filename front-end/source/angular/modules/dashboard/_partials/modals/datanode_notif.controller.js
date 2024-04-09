@@ -7,22 +7,23 @@
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                               │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules.dashboard').controller('DatanodeNotifController', [
-  '$scope',
-  '$rootScope',
-  'JsonDisplayService',
-  function ($scope, $rootScope, JsonDisplayService) {
-    $scope.notificationFilerValue = 'all';
-    $scope.showOneDatanodeData = {};
+angular
+    .module('modules.dashboard')
+    .controller('DatanodeNotifController', ['$scope', '$rootScope', 'JsonDisplayService',
+        function($scope, $rootScope, JsonDisplayService) {
 
-    /*---------- Notification filter button ----------------*/
-    $scope.notificationFilters = function (filter) {
-      $scope.notificationFilerValue = filter;
-    };
+            $scope.notificationFilerValue = "all";
+            $scope.showOneDatanodeData = {};
 
-    /*---------- json result display ----------------*/
-    $scope.beautifulStringFromHtml = function (data) {
-      return JsonDisplayService.beautifulStringFromHtml(data);
-    };
-  },
-]);
+            /*---------- Notification filter button ----------------*/
+            $scope.notificationFilters = function(filter) {
+                $scope.notificationFilerValue = filter;
+            };
+
+            /*---------- json result display ----------------*/
+            $scope.beautifulStringFromHtml = function(data) {
+                return JsonDisplayService.beautifulStringFromHtml(data);
+            };
+
+        }
+    ]);

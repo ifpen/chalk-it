@@ -6,61 +6,56 @@
 // │ Original authors(s): Abir EL FEKI                                             │ \\
 // └───────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules').controller('ShareController', [
-  '$scope',
-  '$rootScope',
-  function ($scope, $rootScope) {
-    /*----------  Close btn ----------------*/
-    $scope.resetShareLink = function () {
-      let scopeDash = angular.element(document.getElementById('cards-ctrl')).scope();
+angular
+    .module('modules')
+    .controller('ShareController', ['$scope', '$rootScope',
+        function($scope, $rootScope) {
 
-      scopeDash.showShareLink = false;
-      $scope.publicHtmlLink = '';
-    };
-    $scope.resetShareLink();
+            /*----------  Close btn ----------------*/
+            $scope.resetShareLink = function() {
+                let scopeDash = angular.element(document.getElementById('cards-ctrl')).scope();
 
-    /*----------  CopyUrl btn ----------------*/
-    $scope.copyURLtoClipboard = function () {
-      $('#pLink')[0].select();
-      document.execCommand('copy');
-    };
+                scopeDash.showShareLink = false;
+                $scope.publicHtmlLink = "";
+            };
+            $scope.resetShareLink();
 
-    /*----------  RenewLink btn ----------------*/
-    $scope.renewShareLink = function () {
-      swal(
-        {
-          title: 'Are you sure?',
-          text: 'Your current link will be changed!',
-          type: 'warning',
-          showCancelButton: true,
-          showConfirmButton: false,
-          showConfirmButton1: true,
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'Abandon',
-          closeOnConfirm: true,
-          closeOnConfirm1: true,
-          closeOnCancel: true,
-        },
-        function (isConfirm) {
-          if (isConfirm) {
-            $scope.publicHtmlLink = '';
-            var FileMngrInst = new FileMngrFct();
-            FileMngrInst.GetThumbnailURL(
-              'page',
-              $scope.pageName + '.html',
-              function (msg1, msg2) {
-                if (msg1) {
-                  $scope.publicHtmlLink = encodeURI(msg2);
-                  $('#pLink').attr('placeholder', msg2);
-                }
-              },
-              true
-            );
-          } else {
-            //nothing
-          }
+            /*----------  CopyUrl btn ----------------*/
+            $scope.copyURLtoClipboard = function() {
+                $("#pLink")[0].select();
+                document.execCommand("copy");
+            };
+
+            /*----------  RenewLink btn ----------------*/
+            $scope.renewShareLink = function() {
+                swal({
+                        title: "Are you sure?",
+                        text: "Your current link will be changed!",
+                        type: "warning",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                        showConfirmButton1: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: "Abandon",
+                        closeOnConfirm: true,
+                        closeOnConfirm1: true,
+                        closeOnCancel: true
+                    },
+                    function(isConfirm) {
+                        if (isConfirm) {
+                            $scope.publicHtmlLink = "";
+                            var FileMngrInst = new FileMngrFct();
+                            FileMngrInst.GetThumbnailURL("page", $scope.pageName + ".html", function(msg1, msg2) {
+                                if (msg1) {
+                                    $scope.publicHtmlLink = encodeURI(msg2);
+                                    $("#pLink").attr("placeholder", msg2);
+                                }
+                            }, true);
+                        } else {
+                            //nothing
+                        }
+                    });
+
+            };
         }
-      );
-    };
-  },
-]);
+    ]);

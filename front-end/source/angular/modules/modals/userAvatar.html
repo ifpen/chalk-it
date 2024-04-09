@@ -1,50 +1,29 @@
 <div class="cancel__box cancel__box--lg" ng-style="{'left':info.left}">
-  <div class="cancel__box__top">
-    <div class="cancel__title">Manage user avatar</div>
-    <br /><br />
-    <form class="dashboard-form">
-      <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
-        <label class="dashboard-form__label" for="userAvat">Avatar file</label>
-        <input ng-model="userAvatar.text" name="userAvat" type="text" disabled />
-        <div>
-          <button
-            type="button"
-            style="width: 8em; padding: 0.5em 2.25em"
-            class="btn btn-rounded-fill primary"
-            ng-click="selectAvatar()"
-            uploadfile
-          >
-            Select
-          </button>
-          <input
-            ng-upload-change="updateSelectedAvatar($event)"
-            class="hidden inputFile"
-            type="file"
-            id="txtSelectAvatar"
-            value=""
-            accept=".jpg,.png,.bmp,.gif"
-          />
-        </div>
-      </div>
-      <div class="dashboard-form__group dashboard-form__group--inline justify-content-center">
-        <button type="button" class="btn btn-rounded-fill cancel btn-min-width" ng-click="deleteAvatar()">
-          Delete
-        </button>
-        <button
-          type="button"
-          class="btn btn-rounded-fill primary btn-min-width"
-          ng-click="sendAvatar()"
-          ng-disabled="userAvatar.text===''"
-        >
-          Save
-        </button>
-      </div>
-    </form>
+    <div class="cancel__box__top">
+        <div class="cancel__title">Manage user avatar</div>
+        <br><br>
+        <form class="dashboard-form">
+            <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+                <label class="dashboard-form__label" for="userAvat">Avatar file</label>
+                <input ng-model="userAvatar.text" name="userAvat" type="text" disabled>
+                <div>
+                    <button type="button" style="width:8em;padding:0.5em 2.25em" class="btn btn-rounded-fill primary" ng-click="selectAvatar()" uploadfile>Select</button>
+                    <input ng-upload-change="updateSelectedAvatar($event)" class="hidden inputFile" type="file" id="txtSelectAvatar" value="" accept=".jpg,.png,.bmp,.gif" />
+                </div>
+            </div>
+            <div class="dashboard-form__group dashboard-form__group--inline justify-content-center">
+                <button type="button" class="btn btn-rounded-fill cancel btn-min-width" ng-click="deleteAvatar()">Delete</button>
+                <button type="button" class="btn btn-rounded-fill primary btn-min-width" ng-click="sendAvatar()" ng-disabled="userAvatar.text===''">Save</button>
+            </div>
+        </form>
 
-    <div class="divider"></div>
-  </div>
-  <div class="cancel__box__bottom">
-    <button type="button" class="btn btn-rounded-fill primary" ng-click="closeAvatarManager();">Ok</button>
-  </div>
+        <div class="divider"></div>
+
+
+    </div>
+    <div class="cancel__box__bottom">
+        <button type="button" class="btn btn-rounded-fill primary" ng-click="closeAvatarManager();">Ok</button>
+    </div>
+
 </div>
 <div class="cancel__overlay"></div>

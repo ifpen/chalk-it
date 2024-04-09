@@ -4,12 +4,12 @@
  * 
  */
 
-@import 'leaflet/leaflet';
-@import 'leaflet/leaflet-geoman';
-@import 'leaflet/leaflet.awesome-markers';
-@import 'leaflet/leaflet.draw';
-@import 'leaflet/leaflet.modal';
-@import 'leaflet/legend';
+@import "leaflet/leaflet";
+@import "leaflet/leaflet-geoman";
+@import "leaflet/leaflet.awesome-markers";
+@import "leaflet/leaflet.draw";
+@import "leaflet/leaflet.modal";
+@import "leaflet/legend";
 
 .scaleLegend {
   background-color: #fff;
@@ -39,9 +39,12 @@
 
 .leaflet-cluster-spider-leg {
   /* stroke-dashoffset (duration and function) should match with leaflet-marker-icon transform in order to track it exactly */
-  -webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out, -webkit-stroke-opacity 0.3s ease-in;
-  -moz-transition: -moz-stroke-dashoffset 0.3s ease-out, -moz-stroke-opacity 0.3s ease-in;
-  -o-transition: -o-stroke-dashoffset 0.3s ease-out, -o-stroke-opacity 0.3s ease-in;
+  -webkit-transition: -webkit-stroke-dashoffset 0.3s ease-out,
+    -webkit-stroke-opacity 0.3s ease-in;
+  -moz-transition: -moz-stroke-dashoffset 0.3s ease-out,
+    -moz-stroke-opacity 0.3s ease-in;
+  -o-transition: -o-stroke-dashoffset 0.3s ease-out,
+    -o-stroke-opacity 0.3s ease-in;
   transition: stroke-dashoffset 0.3s ease-out, stroke-opacity 0.3s ease-in;
 }
 .marker-cluster-small {
@@ -103,7 +106,7 @@
 
   text-align: center;
   border-radius: 15px;
-  font: 12px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 .marker-cluster span {

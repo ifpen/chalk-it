@@ -7,17 +7,18 @@
 // │ Original authors(s): Abir EL FEKI                                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules').controller('ManagePageShareController', [
-  '$scope',
-  '$rootScope',
-  'ManagePageSharingService',
-  function ($scope, $rootScope, ManagePgSharingService) {
-    /*********************************************************************/
-    /*******************dashboard_contentTop: View mode*******************/
-    /*********************************************************************/
-    /*-------- Export button --> Dashboard --> ok btn -------*/
-    $scope.okPage = function () {
-      ManagePgSharingService.okPage();
-    };
-  },
-]);
+angular
+    .module('modules')
+    .controller('ManagePageShareController', ['$scope', '$rootScope', 'ManagePageSharingService',
+        function ($scope, $rootScope, ManagePgSharingService) {
+
+            /*********************************************************************/
+            /*******************dashboard_contentTop: View mode*******************/
+            /*********************************************************************/
+            /*-------- Export button --> Dashboard --> ok btn -------*/
+            $scope.okPage = function () {
+                ManagePgSharingService.okPage();
+            };
+
+        }
+    ]);

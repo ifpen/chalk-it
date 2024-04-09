@@ -92,7 +92,6 @@
       statusCallback('OK'); // MBG for scheduler : put statusCallback before updateCallback
       pastStatus = 'OK';
       pastSettings = currentSettings;
-      currentSettings.json_var = JSON.stringify(json_var_value);
       updateCallback(json_var_value);
       return true;
     };
@@ -125,10 +124,11 @@
       return self.isJsonParsingSuccess();
     };
 
-    // **setValue()**
+    // **setValue()** (optional)
     self.setValue = function (propertyName, val) {
       if (propertyName.length == 0) {
         json_var_value = val;
+        currentSettings.json_var = JSON.stringify(json_var_value);
         return;
       } else if (propertyName.length == 1) {
         json_var_value[propertyName[0]] = val;
@@ -140,6 +140,7 @@
         }
         varInter[propertyName[propertyName.length - 1]] = val;
       }
+      currentSettings.json_var = JSON.stringify(json_var_value);
     };
 
     // **getValue()** (optional)

@@ -167,3 +167,4 @@ function TimeManager() {
     getCurrentTime,
   };
 }
+

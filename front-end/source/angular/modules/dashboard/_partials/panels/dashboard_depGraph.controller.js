@@ -7,48 +7,47 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules.dashboard').controller('DashboardGraphDepController', [
-  '$scope',
-  '$rootScope',
-  '$state',
-  'DepGraphService',
-  function ($scope, $rootScope, $state, DepGraphService) {
-    /**************************************************************/
-    /***********************Dependency graph***********************/
-    /**************************************************************/
+angular.module('modules.dashboard')
+    .controller('DashboardGraphDepController', ['$scope', '$rootScope', '$state', 'DepGraphService',
+        function($scope, $rootScope, $state, DepGraphService) {
 
-    /*---------- selectConnectedWithWidget ----------------*/
-    $scope.selectConnectedWithWidget = function (tag) {
-      DepGraphService.selectConnectedWithWidget(tag);
-    };
+            /**************************************************************/
+            /***********************Dependency graph***********************/
+            /**************************************************************/
 
-    /*---------- filter By Type btn ----------------*/
-    $scope.getUniqTypes = function () {
-      let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      DepGraphService.getUniqTypes(scopeDash);
-    };
+            /*---------- selectConnectedWithWidget ----------------*/
+            $scope.selectConnectedWithWidget = function(tag) {
+                DepGraphService.selectConnectedWithWidget(tag);
+            };
 
-    /*---------- seeInDepGraph ----------------*/
-    $scope.seeInDepGraph = function (event) {
-      let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      DepGraphService.seeInDepGraph(event, scopeDash);
-    };
+            /*---------- filter By Type btn ----------------*/
+            $scope.getUniqTypes = function() {
+                let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+                DepGraphService.getUniqTypes(scopeDash);
+            };
 
-    /*---------- selectNodeFromTagList ----------------*/
-    $scope.selectNodeFromTagList = function (type) {
-      DepGraphService.selectNodeFromTagList(type);
-    };
+            /*---------- seeInDepGraph ----------------*/
+            $scope.seeInDepGraph = function(event) {
+                let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+                DepGraphService.seeInDepGraph(event, scopeDash);
+            };
 
-    /*---------- closeGraph ----------------*/
-    $scope.closeGraph = function () {
-      DepGraphService.closeGraph();
-    };
+            /*---------- selectNodeFromTagList ----------------*/
+            $scope.selectNodeFromTagList = function(type) {
+                DepGraphService.selectNodeFromTagList(type);
+            };
 
-    /*---------- editNodeFromGraph ----------------*/
-    $scope.editNodeFromGraph = function (dataNode) {
-      let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
-      DepGraphService.editNodeFromGraph(dataNode, scopeDash, scopeDashDn);
-    };
-  },
-]);
+            /*---------- closeGraph ----------------*/
+            $scope.closeGraph = function() {
+                DepGraphService.closeGraph();
+            };
+
+            /*---------- editNodeFromGraph ----------------*/
+            $scope.editNodeFromGraph = function(dataNode) {
+                let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+                let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
+                DepGraphService.editNodeFromGraph(dataNode, scopeDash, scopeDashDn);
+            };
+
+        }
+    ]);

@@ -1,19 +1,21 @@
 @font-face {
-  font-family: 'xDash-icons';
-  src: url('../fonts/xDash-icons/fonts/xDash-icons.eot?nu22dj');
-  src: url('../fonts/xDash-icons/fonts/xDash-icons.eot?nu22dj#iefix') format('embedded-opentype'),
-    url('../fonts/xDash-icons/fonts/xDash-icons.ttf?nu22dj') format('truetype'),
-    url('../fonts/xDash-icons/fonts/xDash-icons.woff?nu22dj') format('woff'),
-    url('../fonts/xDash-icons/fonts/xDash-icons.svg?nu22dj#xDash-icons') format('svg');
+  font-family: "xDash-icons";
+  src: url("../fonts/xDash-icons/fonts/xDash-icons.eot?nu22dj");
+  src: url("../fonts/xDash-icons/fonts/xDash-icons.eot?nu22dj#iefix")
+      format("embedded-opentype"),
+    url("../fonts/xDash-icons/fonts/xDash-icons.ttf?nu22dj") format("truetype"),
+    url("../fonts/xDash-icons/fonts/xDash-icons.woff?nu22dj") format("woff"),
+    url("../fonts/xDash-icons/fonts/xDash-icons.svg?nu22dj#xDash-icons")
+      format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-[class^='icn-'],
-[class*=' icn-'] {
+[class^="icn-"],
+[class*=" icn-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'xDash-icons' !important;
+  font-family: "xDash-icons" !important;
   speak: never; // TODO: should be completed by aria-hidden="true" attribute on HTML element to prevent screen reader to mention icon element
   font-style: normal;
   font-weight: normal;
@@ -31,177 +33,177 @@
 
 // Basic icons
 .icn-add:before {
-  content: '\e900';
+  content: "\e900";
 }
 .icn-arrowback:before {
-  content: '\e901';
+  content: "\e901";
 }
 .icn-arrowbotom:before {
-  content: '\e902';
+  content: "\e902";
 }
 .icn-arrowright:before {
-  content: '\e903';
+  content: "\e903";
 }
 .icn-arrowup:before {
-  content: '\e904';
+  content: "\e904";
 }
 .icn-check:before {
-  content: '\e905';
+  content: "\e905";
 }
 .icn-close:before {
-  content: '\e906';
+  content: "\e906";
 }
 .icn-contact:before {
-  content: '\e907';
+  content: "\e907";
 }
 .icn-delete:before {
-  content: '\e908';
+  content: "\e908";
 }
 .icn-download:before {
-  content: '\e909';
+  content: "\e909";
 }
 .icn-duplicate:before {
-  content: '\e90a';
+  content: "\e90a";
 }
 .icn-edit:before {
-  content: '\e90b';
+  content: "\e90b";
 }
 .icn-expand:before {
-  content: '\e90c';
+  content: "\e90c";
 }
 .icn-eye:before {
-  content: '\e90d';
+  content: "\e90d";
 }
 .icn-filters:before {
-  content: '\e90e';
+  content: "\e90e";
 }
 .icn-folder:before {
-  content: '\e90f';
+  content: "\e90f";
 }
 .icn-full-screen:before {
-  content: '\e910';
+  content: "\e910";
 }
 .icn-help:before {
-  content: '\e911';
+  content: "\e911";
 }
 .icn-info:before {
-  content: '\e912';
+  content: "\e912";
 }
 .icn-menu:before {
-  content: '\e913';
+  content: "\e913";
 }
 .icn-miniarrowbottom:before {
-  content: '\e914';
+  content: "\e914";
 }
 .icn-miniarrowleft:before {
-  content: '\e915';
+  content: "\e915";
 }
 .icn-miniarrowright:before {
-  content: '\e916';
+  content: "\e916";
 }
 .icn-miniarrowup:before {
-  content: '\e917';
+  content: "\e917";
 }
 .icn-minimize:before {
-  content: '\e918';
+  content: "\e918";
 }
 .icn-more:before {
-  content: '\e919';
+  content: "\e919";
 }
 .icn-move:before {
-  content: '\e91a';
+  content: "\e91a";
 }
 .icn-notifications:before {
-  content: '\e91b';
+  content: "\e91b";
 }
 .icn-pause:before {
-  content: '\e91c';
+  content: "\e91c";
 }
 .icn-play:before {
-  content: '\e91d';
+  content: "\e91d";
 }
 .icn-reduced-screen:before {
-  content: '\e91e';
+  content: "\e91e";
 }
 .icn-schedule:before {
-  content: '\e91f';
+  content: "\e91f";
 }
 .icn-search:before {
-  content: '\e920';
+  content: "\e920";
 }
 .icn-share:before {
-  content: '\e921';
+  content: "\e921";
 }
 .icn-sorting:before {
-  content: '\e922';
+  content: "\e922";
 }
 .icn-tag:before {
-  content: '\e923';
+  content: "\e923";
 }
 .icn-template:before {
-  content: '\e924';
+  content: "\e924";
 }
 .icn-upload:before {
-  content: '\e925';
+  content: "\e925";
 }
 .icn-bringforward:before {
-  content: '\e926';
+  content: "\e926";
 }
 .icn-home:before {
-  content: '\e927';
+  content: "\e927";
 }
 .icn-logout:before {
-  content: '\e928';
+  content: "\e928";
 }
 .icn-rename:before {
-  content: '\e929';
+  content: "\e929";
 }
 .icn-sendbackword:before {
-  content: '\e92a';
+  content: "\e92a";
 }
 .icn-dashboard:before {
-  content: '\e92b';
+  content: "\e92b";
 }
 .icn-openfolder:before {
-  content: '\e92c';
+  content: "\e92c";
 }
 .icn-refresh:before {
-  content: '\e92d';
+  content: "\e92d";
 }
 .icn-remove:before {
-  content: '\e92e';
+  content: "\e92e";
 }
 .icn-save:before {
-  content: '\e92f';
+  content: "\e92f";
 }
 .icn-settings:before {
-  content: '\e930';
+  content: "\e930";
 }
 .icn-cloud:before {
-  content: '\e93c';
+  content: "\e93c";
 }
 .icn-help-big:before {
-  content: '\e940';
+  content: "\e940";
 }
 .icn-download-cloud:before {
-  content: '\e94d';
+  content: "\e94d";
 }
 .icn-upload-cloud:before {
-  content: '\e94e';
+  content: "\e94e";
 }
 .icn-lock:before {
-  content: '\e94f';
+  content: "\e94f";
 }
 .icn-share-private:before {
-  content: '\e950';
+  content: "\e950";
 }
 // Basic colored icons
 .icn-stop:before {
-  content: '\e931';
+  content: "\e931";
   color: var(--text-color);
 }
 .icn-stop:after {
-  content: '\e932';
+  content: "\e932";
   margin-left: calc(-1em - 1px);
   color: var(--danger-color);
 }
@@ -211,107 +213,107 @@
   bottom: 0;
   width: 1em;
   height: 1em;
-  content: '\e90f';
+  content: "\e90f";
   color: transparent;
-  background: url('../icon/python.svg') no-repeat center;
+  background: url("../icon/python.svg") no-repeat center;
   background-size: contain;
 }
 
 // Specific Icons
 .icn-dashboard-aspect:before {
-  content: '\e933';
+  content: "\e933";
 }
 .icn-data-connection:before {
-  content: '\e934';
+  content: "\e934";
 }
 .icn-datanode:before {
-  content: '\e935';
+  content: "\e935";
 }
 .icn-graph:before {
-  content: '\e936';
+  content: "\e936";
 }
 .icn-historic:before {
-  content: '\e937';
+  content: "\e937";
 }
 .icn-widget:before {
-  content: '\e938';
+  content: "\e938";
 }
 .icn-graphical-properties:before {
-  content: '\e939';
+  content: "\e939";
 }
 .icn-aspect:before {
-  content: '\e93a';
+  content: "\e93a";
 }
 .icn-libraries-pyodide:before {
-  content: '\e93b';
+  content: "\e93b";
 }
 
 // Aspects Icons
 .icn-board:before {
-  content: '\e943';
+  content: "\e943";
 }
 .icn-border:before {
-  content: '\e944';
+  content: "\e944";
 }
 .icn-grid:before {
-  content: '\e946';
+  content: "\e946";
 }
 .icn-scale:before {
-  content: '\e947';
+  content: "\e947";
 }
 .icn-stretch:before {
-  content: '\e948';
+  content: "\e948";
 }
 
 // Aside (previously glyphicons)
 .icn-object-align-bottom:before {
-  content: '\e93d';
+  content: "\e93d";
 }
 .icn-object-align-horizontal:before {
-  content: '\e93e';
+  content: "\e93e";
 }
 .icn-object-align-left:before {
-  content: '\e93f';
+  content: "\e93f";
 }
 .icn-object-align-right:before {
-  content: '\e941';
+  content: "\e941";
 }
 .icn-object-align-top:before {
-  content: '\e942';
+  content: "\e942";
 }
 .icn-object-align-vertical:before {
-  content: '\e945';
+  content: "\e945";
 }
 .icn-resize-full:before {
-  content: '\e949';
+  content: "\e949";
 }
 .icn-resize-horizontal:before {
-  content: '\e94a';
+  content: "\e94a";
 }
 .icn-resize-small:before {
-  content: '\e94b';
+  content: "\e94b";
 }
 .icn-resize-vertical:before {
-  content: '\e94c';
+  content: "\e94c";
 }
 .icn-edit-2:before {
-  content: '\e951';
+  content: "\e951";
 }
 .icn-file-import:before {
-  content: '\e952';
+  content: "\e952";
 }
 .icn-file-local-import:before {
-  content: '\e953';
+  content: "\e953";
 }
 .icn-menu-close:before {
-  content: '\e954';
+  content: "\e954";
 }
 .icn-menu-open:before {
-  content: '\e955';
+  content: "\e955";
 }
 .icn-save-2:before {
-  content: '\e956';
+  content: "\e956";
 }
 .icn-dashboard-color:before {
-  content: '\e957';
+  content: "\e957";
 }

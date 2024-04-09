@@ -1,44 +1,27 @@
 <div id="share-ctrl" ng-controller="ShareController" class="cancel__box cancel__box--lg">
-  <button ng-click="resetShareLink();" class="btn btn-icon-only" style="float: right" title="Close">
-    <i class="basic icn-close close-aside"></i>
-  </button>
-  <div class="cancel__title" style="margin: 1em 0 2em">Share HTML page link</div>
-  <div class="cancel__box__bottom" style="overflow: auto; margin: 1em 0">
-    <div class="col-md-9">
-      <input
-        id="pLink"
-        ng-model="publicHtmlLink"
-        style="padding: 0.5em; width: 100%; color: #707070"
-        type="text"
-        placeholder="http://"
-      />
+
+    <button ng-click="resetShareLink();" class="btn btn-icon-only" style="float: right;" title="Close">
+        <i class="basic icn-close close-aside"></i>
+    </button>
+    <div class="cancel__title" style="margin: 1em 0 2em;">Share HTML page link</div>
+    <div class="cancel__box__bottom" style="overflow: auto;margin: 1em 0;">
+        <div class="col-md-9">
+            <input id="pLink" ng-model="publicHtmlLink" style="padding:0.5em; width:100%; color:#707070" type="text" placeholder="http://">
+        </div>
+        <div>
+            <button style="margin:0" class="btn btn-rounded-fill primary" js-reset-toggle="" ng-click="copyURLtoClipboard()" title="Copy the shared link">
+                Copy
+            </button>
+        </div>
     </div>
-    <div>
-      <button
-        style="margin: 0"
-        class="btn btn-rounded-fill primary"
-        js-reset-toggle=""
-        ng-click="copyURLtoClipboard()"
-        title="Copy the shared link"
-      >
-        Copy
-      </button>
-    </div>
-  </div>
-  <div class="cancel__box__bottom">
-    <!-- <div class="col-md-9">
+    <div class="cancel__box__bottom">
+        <!-- <div class="col-md-9">
         </div> -->
-    <div>
-      <button
-        style="margin: 0"
-        class="btn btn-rounded-fill primary"
-        js-reset-toggle=""
-        ng-click="renewShareLink()"
-        title="Generate a new link and deactivate the previous one"
-      >
-        RenewLink
-      </button>
+        <div>
+            <button style="margin:0" class="btn btn-rounded-fill primary" js-reset-toggle="" ng-click="renewShareLink()" title="Generate a new link and deactivate the previous one">
+                RenewLink
+            </button>
+        </div>
     </div>
-  </div>
 </div>
 <div class="cancel__overlay"></div>

@@ -7,41 +7,42 @@
 // │ Original authors(s): Abir EL FEKI                                          │ \\
 // └────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules').controller('UserAvatarController', [
-  '$scope',
-  'AvatarService',
-  function ($scope, AvatarService) {
-    $scope.openUserAvatar = false;
-    $scope.userAvatar = {
-      text: '',
-    };
+angular
+    .module('modules')
+    .controller('UserAvatarController', ['$scope', 'AvatarService',
+        function($scope, AvatarService) {
 
-    /*---------- closeAvatarManager ----------------*/
-    $scope.closeAvatarManager = function () {
-      let avatarCtrl = angular.element(document.getElementById('avatar-ctrl')).scope();
-      AvatarService.closeAvatarManager(avatarCtrl);
-    };
+            $scope.openUserAvatar = false;
+            $scope.userAvatar = {
+                text: ""
+            };
 
-    /*---------- selectAvatar ----------------*/
-    $scope.selectAvatar = function () {
-      AvatarService.selectAvatar();
-    };
+            /*---------- closeAvatarManager ----------------*/
+            $scope.closeAvatarManager = function() {
+                let avatarCtrl = angular.element(document.getElementById('avatar-ctrl')).scope();
+                AvatarService.closeAvatarManager(avatarCtrl);
+            };
 
-    /*---------- updateSelectedAvatar ----------------*/
-    $scope.updateSelectedAvatar = function ($event) {
-      let avatarCtrl = angular.element(document.getElementById('avatar-ctrl')).scope();
-      AvatarService.updateSelectedAvatar($event, avatarCtrl);
-    };
+            /*---------- selectAvatar ----------------*/
+            $scope.selectAvatar = function() {
+                AvatarService.selectAvatar();
+            };
 
-    /*---------- sendAvatar ----------------*/
-    $scope.sendAvatar = function () {
-      let avatarCtrl = angular.element(document.getElementById('avatar-ctrl')).scope();
-      AvatarService.sendAvatar(avatarCtrl);
-    };
+            /*---------- updateSelectedAvatar ----------------*/
+            $scope.updateSelectedAvatar = function($event) {
+                let avatarCtrl = angular.element(document.getElementById('avatar-ctrl')).scope();
+                AvatarService.updateSelectedAvatar($event, avatarCtrl);
+            };
 
-    /*---------- deleteAvatar ----------------*/
-    $scope.deleteAvatar = function () {
-      AvatarService.deleteAvatar();
-    };
-  },
-]);
+            /*---------- sendAvatar ----------------*/
+            $scope.sendAvatar = function() {
+                let avatarCtrl = angular.element(document.getElementById('avatar-ctrl')).scope();
+                AvatarService.sendAvatar(avatarCtrl);
+            };
+
+            /*---------- deleteAvatar ----------------*/
+            $scope.deleteAvatar = function() {
+                AvatarService.deleteAvatar();
+            };
+        }
+    ]);

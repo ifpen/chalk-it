@@ -2,10 +2,10 @@
 
 An Chalk'it project may be:
 
-- previewed in full-page view
-- exported to a standalone html page on the local disk
+* previewed in full-page view
+* exported to a standalone html page on the local disk
 
-These features are available in the dashboard _view_ mode:
+These features are available in the dashboard *view* mode:
 
 ![App management](./png/app-management.png "App management")
 
@@ -13,12 +13,12 @@ As dashboard edition zone is smaller than the full window, Chalk'it provides sev
 
 ![Export settings](./png/export-settings.png "Export settings")
 
-Available _export settings_ depend on the _responsive layout_ configuration defined in the _edit_ mode:
+Available *export settings* depend on the *responsive layout* configuration defined in the *edit* mode:
 
 ![Responsive layout](./png/dashboard-layout.png "Responsive layout")
 
-- If _Row_ is set to none, the dashboard is **unconstrained**. Available scaing methods are [adjustToFullWidth](#adjusttofullwidth), [ajustToTargetWindow](#ajusttotargetwindow) and [keepOriginalWidth](#keeporiginalwidth)
-- If _Row_ is set a a numeric value (1,2...), the dashboard in edition mode is organized according to this **constrained** layout. In the target dashboard, each row is projected to the target full page. Several pagination methods are available, including: [projectToTargetWindow](#projecttotargetwindow), [rowToPage](#rowtopage), [rowToTab](#rowtotab) and [customNavigation](#customnavigation)
+- If *Row* is set to none, the dashboard is **unconstrained**. Available scaing methods are [adjustToFullWidth](#adjusttofullwidth), [ajustToTargetWindow](#ajusttotargetwindow) and [keepOriginalWidth](#keeporiginalwidth)
+- If *Row* is set a a numeric value (1,2...), the dashboard in edition mode is organized according to this **constrained** layout. In the target dashboard, each row is projected to the target full page. Several pagination methods are available, including: [projectToTargetWindow](#projecttotargetwindow), [rowToPage](#rowtopage), [rowToTab](#rowtotab) and [customNavigation](#customnavigation)
 
 ## Scaling methods for the unconstrained dashboard
 
@@ -26,14 +26,14 @@ Available _export settings_ depend on the _responsive layout_ configuration defi
 
 - The dashboard is stretched widthwise to fit the width of the target screen.
 - The height of the widgets is calculated so as to preserve their proportions (in pixels).
-- User should use this method rather than the _ajustToTargetWindow_ method if the widgets proportions must be preserved (in pixels), e.g. to avoid distortion of an image.
+- User should use this method rather than the *ajustToTargetWindow* method if the widgets proportions must be preserved (in pixels), e.g. to avoid distortion of an image.
 - Of course, a vertical overflow (with vertical scroll bar) is possible in this mode.
 
 ![adjustToFullWidth](./png/adjustToFullWidth.png "adjustToFullWidth")
 
 ### ajustToTargetWindow
 
-- Similar to the _adjustToFullWidth_ method, but the widgets proportions are not preserved.
+- Similar to the *adjustToFullWidth* method, but the widgets proportions are not preserved.
 - Dashboard viewport proportion, from the width and height dimensions, are preserved.
 - This method is useful to keep the same dashboard content heightwise.
 
@@ -50,7 +50,7 @@ Available _export settings_ depend on the _responsive layout_ configuration defi
 ### projectToTargetWindow
 
 - This method makes the whole dashboard fits the entire target screen.
-- The original dashboard (in edition mode), seen with its scroll dimensions, is "projected" into the target screen.
+- The original dashboard (in edition  mode), seen with its scroll dimensions, is "projected" into the target screen. 
 - Target screen has no overflow (no scroll bars).
 - Widgets proportions are not preserved.
 - User should use this method when rows are defined in responsive layout, as each row will be projected into the target screen (for large target screens).
@@ -67,11 +67,11 @@ Each row of the dashboard fits the entire target screen. Only one row displayed 
 
 ### rowToTab
 
-Each row of the dashboard fits the entire target screen. Only one row displayed at a time as a page tab.
+Each row of the dashboard fits the entire target screen. Only one row displayed at a time as a page tab. 
 
 ![rowToTab](./png/rowToTab.png "rowToTab")
 
-Tab names have to be be defined in the _Configuration of each row's name_ modal in the _Dashboard aspect_ main tabset:
+Tab names have to be be defined in the *Configuration of each row's name* modal in the *Dashboard aspect* main tabset:
 
 ![tab name config](./png/tab-name-config.png "tab name config")
 
@@ -80,7 +80,7 @@ Tab names have to be be defined in the _Configuration of each row's name_ modal 
 Custom navigation mode is the most flexible multi-page mode. For navigation between pages, user needs to use button widgets connected to a JavaScript Script datanode including navigation instructions:
 
 ```JavaScript
-chalkit.goToPage(2);
+xDashApi.goToPage(2);
 return true;
 ```
 
@@ -95,3 +95,4 @@ Default start page needs also to be indicated:
 When a HTML page is generated with Chalk'it, either exported, public or private, the xprjson content is inlined into the HTML page code, and might include sensitive information such as passwords, API keys, authorization information...
 
 Safely handling secrets is currenly outside Chalk'it scope.
+

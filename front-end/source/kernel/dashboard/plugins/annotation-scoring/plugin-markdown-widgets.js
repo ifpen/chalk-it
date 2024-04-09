@@ -13,135 +13,113 @@
 
 // Models
 modelsHiddenParams.annotationMarkdown = {
-  text: '',
+    "text": ""
 };
 
 // Parameters
 modelsParameters.annotationMarkdown = {
-  fontsize: 0.3,
-  backgroundColor: 'rgba(0, 0, 0, 0)',
-  textColor: 'var(--widget-color)',
-  valueFontFamily: 'var(--widget-font-family)',
-  textAlign: 'left',
-  displayBorder: false,
-  centerVertically: true,
+    "fontsize": 0.3,
+    "backgroundColor": 'rgba(0, 0, 0, 0)',
+    "textColor": "var(--widget-color)",
+    "valueFontFamily": "var(--widget-font-family)",
+    "textAlign": "left",
+    "displayBorder": false,
+    "centerVertically": true
 };
 
 // Layout (default dimensions)
-modelsLayout.annotationMarkdown = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
+modelsLayout.annotationMarkdown = { 'height': '30vh', 'width': '30vw', 'minWidth': '50px', 'minHeight': '32px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
 /*******************************************************************/
 
 function annotationMarkdownWidgetsPluginClass() {
-  this.markdownAnnotationWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
-    this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-    var self = this;
 
-    if (_.isUndefined(modelsParameters[idInstance].textAlign)) modelsHiddenParams[idInstance].textAlign = 'left'; // fix old projects
+    this.markdownAnnotationWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
+        this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
+        var self = this;
 
-    this.enable = function () {};
+        if (_.isUndefined(modelsParameters[idInstance].textAlign)) modelsHiddenParams[idInstance].textAlign = "left"; // fix old projects
 
-    this.disable = function () {};
+        this.enable = function () { };
 
-    this.rescale = function () {
-      this.render();
-    };
+        this.disable = function () { };
 
-    if (_.isUndefined(modelsParameters[idInstance].centerVertically)) {
-      modelsParameters[idInstance].centerVertically = true;
-    }
+        this.rescale = function () {
+            this.render();
+        };
 
-    this.hasScrollBar = function (element) {
-      return element.get(0).scrollHeight > element.get(0).clientHeight;
-    };
+        if (_.isUndefined(modelsParameters[idInstance].centerVertically)) {
+            modelsParameters[idInstance].centerVertically = true;
+        }
 
-    this.render = function () {
-      var widgetHtml = document.createElement('div');
-      var styleCenterVertically = '';
+        this.hasScrollBar = function (element) {
+            return element.get(0).scrollHeight > element.get(0).clientHeight;
+        }
 
-      var divContent =
-        '<div id="annotationMarkdownDiv' +
-        idWidget +
-        '" class="defaultCSS" style="overflow: auto; background-color: transparent; ' +
-        'box-shadow: none; width: inherit; height: inherit; ' +
-        'color:' +
-        modelsParameters[idInstance].textColor +
-        '; text-align: ' +
-        modelsParameters[idInstance].textAlign +
-        '; padding: 4px; resize: inherit; border-radius: 6px; ' +
-        this.fontSize() +
-        this.valueFontFamily() +
-        this.border() +
-        '">' +
-        '<div style="' +
-        styleCenterVertically +
-        '">' +
-        marked.parse(modelsHiddenParams[idInstance].text) +
-        '</div></div>';
+        this.render = function () {
+            var widgetHtml = document.createElement('div');
+            var styleCenterVertically = "";
 
-      widgetHtml.innerHTML = divContent;
-      widgetHtml.setAttribute(
-        'style',
-        'width: inherit; height: inherit; background-color:' + modelsParameters[idInstance].backgroundColor
-      );
-      $('#' + idDivContainer).html(widgetHtml);
+            var divContent = '<div id="annotationMarkdownDiv' + idWidget +
+                '" class="defaultCSS" style="overflow: auto; background-color: transparent; ' +
+                'box-shadow: none; width: inherit; height: inherit; ' +
+                'color:' + modelsParameters[idInstance].textColor +
+                '; text-align: ' + modelsParameters[idInstance].textAlign +
+                '; padding: 4px; resize: inherit; border-radius: 6px; ' +
+                this.fontSize() + this.valueFontFamily() + this.border() + '">' +
+                '<div style="' + styleCenterVertically + '">' +
+                marked.parse(modelsHiddenParams[idInstance].text) +
+                '</div></div>';
 
-      var hasScrollBar = self.hasScrollBar($('#annotationMarkdownDiv' + idWidget));
-      if (modelsParameters[idInstance].centerVertically && !hasScrollBar) {
-        styleCenterVertically =
-          ' position: relative; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%);';
-        $('#annotationMarkdownDiv' + idWidget + ' div').attr('style', styleCenterVertically);
-      }
-    };
+            widgetHtml.innerHTML = divContent;
+            widgetHtml.setAttribute("style", "width: inherit; height: inherit; background-color:" + modelsParameters[idInstance].backgroundColor);
+            $("#" + idDivContainer).html(widgetHtml);
 
-    const _TEXT_DESCRIPTOR = new WidgetActuatorDescription(
-      'text',
-      'Markdown content',
-      WidgetActuatorDescription.READ,
-      WidgetPrototypesManager.SCHEMA_STRING
-    );
-    this.getActuatorDescriptions = function () {
-      return [_TEXT_DESCRIPTOR];
-    };
+            var hasScrollBar = self.hasScrollBar($('#annotationMarkdownDiv' + idWidget));
+            if (modelsParameters[idInstance].centerVertically && !hasScrollBar) {
+                styleCenterVertically = " position: relative; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%);";
+                $('#annotationMarkdownDiv' + idWidget + ' div').attr("style", styleCenterVertically);
+            }
+        };
 
-    this.text = {
-      setValue: function (val) {
-        modelsHiddenParams[idInstance].text = val;
+        const _TEXT_DESCRIPTOR = new WidgetActuatorDescription("text", "Markdown content", WidgetActuatorDescription.READ, WidgetPrototypesManager.SCHEMA_STRING);
+        this.getActuatorDescriptions = function () {
+            return [_TEXT_DESCRIPTOR];
+        };
+
+        this.text = {
+            setValue: function (val) {
+                modelsHiddenParams[idInstance].text = val;
+                self.render();
+            },
+            getValue: function () {
+                return modelsHiddenParams[idInstance].text;
+            },
+            addValueChangedHandler: function (updateDataFromWidget) {
+                self.enable();
+            },
+            removeValueChangedHandler: function (updateDataFromWidget) {
+                self.disable();
+            }
+        };
+
         self.render();
-      },
-      getValue: function () {
-        return modelsHiddenParams[idInstance].text;
-      },
-      addValueChangedHandler: function (updateDataFromWidget) {
-        self.enable();
-      },
-      removeValueChangedHandler: function (updateDataFromWidget) {
-        self.disable();
-      },
     };
 
-    self.render();
-  };
+    // Inherit from baseWidget class
+    this.markdownAnnotationWidget.prototype = baseWidget.prototype;
 
-  // Inherit from baseWidget class
-  this.markdownAnnotationWidget.prototype = baseWidget.prototype;
+    // Plugin definition
+    this.pluginDefinition = {
+        'name': 'annotation',
+        'widgetsDefinitionList': {
+            annotationMarkdown: { factory: "markdownAnnotationWidget", title: "Markdown", icn: "markdown", help: "wdg/wdg-annotation-video/#markdown" }
+        },
+    };
 
-  // Plugin definition
-  this.pluginDefinition = {
-    name: 'annotation',
-    widgetsDefinitionList: {
-      annotationMarkdown: {
-        factory: 'markdownAnnotationWidget',
-        title: 'Markdown',
-        icn: 'markdown',
-        help: 'wdg/wdg-annotation-video/#markdown',
-      },
-    },
-  };
-
-  this.constructor();
+    this.constructor();
 }
 
 // Inherit from basePlugin class

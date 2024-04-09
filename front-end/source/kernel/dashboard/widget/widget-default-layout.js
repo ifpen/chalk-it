@@ -8,18 +8,19 @@
 // └──────────────────────────────────────────────────────────┘ \\
 
 var widgetDefaultLayoutClass = function () {
-  var _widgetDefaultLayout = {
-    left: '0vw',
-    top: '0vh',
-    height: '5vh',
-    width: '10vw',
-    minWidth: '20px',
-    minHeight: '20px',
-  };
 
-  this.get = function () {
-    return jQuery.extend(true, {}, _widgetDefaultLayout);
-  };
+    var _widgetDefaultLayout = {
+        'left': '0vw',
+        'top': '0vh',
+        'height': '5vh',
+        'width': '10vw',
+        'minWidth': '20px',
+        'minHeight': '20px'
+    };
+
+    this.get = function () {
+        return jQuery.extend(true, {}, _widgetDefaultLayout);
+    };
 };
 
 var widgetDefaultLayout = new widgetDefaultLayoutClass();

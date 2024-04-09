@@ -23,16 +23,18 @@
 }
 
 .leaflet-draw-toolbar a {
-  background-image: url('../img/leaflet/spritesheet.png');
-  background-image: linear-gradient(transparent, transparent), url('../img/leaflet/spritesheet.svg');
+  background-image: url("../img/leaflet/spritesheet.png");
+  background-image: linear-gradient(transparent, transparent),
+    url("../img/leaflet/spritesheet.svg");
   background-repeat: no-repeat;
   background-size: 300px 30px;
   background-clip: padding-box;
 }
 
 .leaflet-retina .leaflet-draw-toolbar a {
-  background-image: url('../img/leaflet/spritesheet-2x.png');
-  background-image: linear-gradient(transparent, transparent), url('../img/leaflet/spritesheet.svg');
+  background-image: url("../img/leaflet/spritesheet-2x.png");
+  background-image: linear-gradient(transparent, transparent),
+    url("../img/leaflet/spritesheet.svg");
 }
 
 .leaflet-draw a {
@@ -108,7 +110,7 @@
   background-color: #919187;
   border-left: 1px solid #aaa;
   color: #fff;
-  font: 11px/19px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font: 11px/19px "Helvetica Neue", Arial, Helvetica, sans-serif;
   line-height: 28px;
   text-decoration: none;
   padding-left: 10px;
@@ -229,7 +231,9 @@
   background-position: -242px -2px;
 }
 
-.leaflet-touch .leaflet-draw-toolbar .leaflet-draw-edit-remove.leaflet-disabled {
+.leaflet-touch
+  .leaflet-draw-toolbar
+  .leaflet-draw-edit-remove.leaflet-disabled {
   background-position: -240px -2px;
 }
 
@@ -249,7 +253,7 @@
   -webkit-border-radius: 4px;
   border-radius: 4px;
   color: #fff;
-  font: 12px/18px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font: 12px/18px "Helvetica Neue", Arial, Helvetica, sans-serif;
   margin-left: 20px;
   margin-top: -21px;
   padding: 4px 8px;
@@ -264,7 +268,7 @@
   border-right-color: rgba(0, 0, 0, 0.5);
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
-  content: '';
+  content: "";
   position: absolute;
   top: 7px;
   left: -7px;

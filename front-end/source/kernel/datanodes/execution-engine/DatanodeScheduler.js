@@ -44,7 +44,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     }
   });
 
-  var OperationsIn = datanodesDependency.getDescendants(startNodes, true); // in of exec instance
+  var OperationsIn = datanodesDependency.getDescendants(startNodes); // in of exec instance
   var OperationsOut = difference(operationsAll, OperationsIn); // out of exec instance
   var OperationsOutOK = new Set(); // out of exec instance with status OK
   var dsStatus;
@@ -64,9 +64,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       switch (callOrigin) {
         case 'triggerButton':
         case 'vignette':
-        case 'memory':
         case 'setValue':
-        case 'setVariable':
         case 'setFile':
         case 'unidentified':
         case 'edit':
@@ -85,18 +83,15 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     }
   }
 
-  // AEF: temp function, to refactor for autostart and explicit use
+  // AEF temp function, to factorize for autostart and explicit use
   function isForceAutoStart(nodeName) {
     if (_.contains(triggeredNodes, nodeName)) {
       switch (callOrigin) {
         case 'triggerButton':
         case 'vignette':
-        case 'memory':
         case 'setValue':
-        case 'setVariable':
         case 'setFile':
         case 'refresh':
-          //case 'globalFirstUpdate': //AEF
           return true;
         default:
           return false;
@@ -127,24 +122,10 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
         operationsBlacklist.add(op);
         return;
       }
-      if (datanodesManager.getDataNodeByName(op).is_specific_exec) {
-        //AEF: launch memory at start for init_value
-        if (callOrigin !== 'setVariable' && callOrigin !== 'globalFirstUpdate') {
-          console.log(op + ' is a memory and will be treated at the end of schedule.');
-          operationsToExecute.delete(op);
-          datanodesDependency.addMemorydataNodeList(op);
-          operationsNotReady.add(op);
-          datanodesManager.getDataNodeByName(op).completeExecution('NOP');
-          return;
-        }
-      }
       switch (datanodesManager.getDataNodeByName(op).statusForScheduler()) {
         case 'Ready':
           if (datanodesManager.foundDatanode(op)) {
-            let bAllPredExecuted = allPredecessorsExecuted(op);
-            if (datanodesManager.getDataNodeByName(op).is_specific_exec) {
-              bAllPredExecuted = true;
-            }
+            var bAllPredExecuted = allPredecessorsExecuted(op);
             if (bAllPredExecuted) {
               operationsToExecute.delete(op);
               operationsToWaitFor.add(op);
@@ -202,7 +183,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
               }
             }
           } else {
-            const successors = Array.from(datanodesDependency.getSuccessors(op));
+            var successors = Array.from(datanodesDependency.getSuccessors(op));
             if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
               console.log(op + " is referenced in '" + successors + "' but not defined as a datanode.");
             datanodesManager.getDataNodeByName(op).completeExecution('NOP');
@@ -227,7 +208,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
           operationsBlacklist.add(op);
           if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
             console.log('operation ' + op + ' cannot not be scheduled because it needs initialization.');
-          const dsNameDescendants = datanodesDependency.getDescendants([op]); //AEF: fix bug param of getDescendants must be an array
+          var dsNameDescendants = datanodesDependency.getDescendants([op]); //AEF: fix bug param of getDescendants must be an array
           dsNameDescendants.forEach(function (elem) {
             operationsBlacklist.add(elem);
           });
@@ -242,8 +223,8 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
 
   /*-----------------allPredecessorsExecuted-----------------*/
   function allPredecessorsExecuted(node) {
-    const pred = datanodesDependency.getPredecessorsSet(node);
-    const operationsMarked = union(operationsTerminated, OperationsOutOK);
+    var pred = datanodesDependency.getPredecessorsSet(node);
+    var operationsMarked = union(operationsTerminated, OperationsOutOK);
     if (isSuperset(operationsMarked, pred)) {
       return true;
     } else {
@@ -253,7 +234,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
 
   /*-----------------alreadyExecuted-----------------*/
   function alreadyExecuted(node) {
-    const operationsMarked = union(operationsTerminated, OperationsOutOK);
+    var operationsMarked = union(operationsTerminated, OperationsOutOK);
     if (operationsMarked.has(node)) {
       return true;
     } else {
@@ -263,45 +244,37 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
 
   /*-----------------notExecutedPredecessors-----------------*/
   function notExecutedPredecessors(node) {
-    let result = '[';
-    const pred = datanodesDependency.getPredecessorsSet(node);
-    const operationsMarked = union(operationsTerminated, OperationsOutOK);
-    const opNotExecuted = difference(pred, operationsMarked);
+    var result = '[';
+    var pred = datanodesDependency.getPredecessorsSet(node);
+    var operationsMarked = union(operationsTerminated, OperationsOutOK);
+    var opNotExecuted = difference(pred, operationsMarked);
     opNotExecuted.forEach((param) => {
       result = result + ' "' + param + '" ';
     });
     return result + ' ]';
   }
-
   /*-----------------operationCompleted-----------------*/
   // called when datanode execution completes
   // also called when datanode reports a status callback
   // is responsible of finishing graph execution instance
   function operationCompleted(dsName, status) {
-    let bSchedTermination = true;
-    let dsNameDescendants;
+    var bSchedTermination = true;
+    var dsNameDescendants;
     switch (status) {
       case 'OK': {
         operationsTerminated.add(dsName);
         operationsToWaitFor.delete(dsName);
-        if (!datanodesManager.getDataNodeByName(dsName).is_specific_exec) {
-          datanodesDependency.dependencyStructure[dsName].forEach(function (successor) {
-            if (allPredecessorsExecuted(successor)) {
-              if (!alreadyExecuted(successor)) {
-                operationsToExecute.add(successor);
-              } else {
-                if (datanodesManager.getDataNodeByName(successor).is_specific_exec) {
-                  callOrigin = 'memory';
-                  operationsToExecute.add(successor);
-                } else {
-                  if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
-                    console.log('operation ' + successor + ' not added because already executed');
-                  }
-                }
+        datanodesDependency.dependencyStructure[dsName].forEach(function (successor) {
+          if (allPredecessorsExecuted(successor)) {
+            if (!alreadyExecuted(successor)) {
+              operationsToExecute.add(successor);
+            } else {
+              if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
+                console.log('operation ' + successor + ' not added because already executed');
               }
             }
-          });
-        }
+          }
+        });
         if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) {
           console.log('operation ' + dsName + ' completed with status ' + status);
         }
@@ -403,6 +376,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     return { initiatorNode: initiatorNode, schedulingInstanceTerminated: false };
   }
 
+  //AEF
   /*-----------------stopAllOperations-----------------*/
   function stopAllOperations() {
     // clear all operations to be executed
@@ -418,10 +392,10 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       datanodesManager.getDataNodeByName(op).updateCallback(undefined, 'None');
     });
     //change schedulerStatus from Running to Stop ans store all the ajax requests that are already been sent
-    let xhrPending = new Set();
-    for (let i in datanodesManager.getAllDataNodes()) {
+    var xhrPending = new Set();
+    for (var i in datanodesManager.getAllDataNodes()) {
       datanodesManager.getAllDataNodes()[i].schedulerStatus('Stop');
-      const xhr = datanodesManager.getAllDataNodes()[i].getXHR();
+      var xhr = datanodesManager.getAllDataNodes()[i].getXHR();
       if (!_.isUndefined(xhr)) xhrPending.add(xhr);
     }
     //and abort all current ajax requests
@@ -447,7 +421,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
       datanodesManager.getDataNodeByName(op).updateCallback(undefined, 'None');
       datanodesManager.getDataNodeByName(op).schedulerStatus('Stop');
       //abort if op is an ajax request
-      const xhr = datanodesManager.getDataNodeByName(op).getXHR();
+      var xhr = datanodesManager.getDataNodeByName(op).getXHR();
       if (!_.isUndefined(xhr)) xhr.abort();
     }
   }
@@ -462,7 +436,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     return callOrigin;
   }
 
-  /*-----------------clear-----------------*/
+  /*-----------------getSchedulerCallOrigin-----------------*/
   function clear() {}
 
   // public methods
