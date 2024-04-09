@@ -33,13 +33,13 @@ modelsLayout.matplotlib = { height: '30vh', width: '30vw', minWidth: '50px', min
 /*******************************************************************/
 
 function pyodideWidgetsPluginClass() {
-  var hiddenDivDpi = document.createElement('div');
+  const hiddenDivDpi = document.createElement('div');
   hiddenDivDpi.setAttribute('style', 'height: 1in; width: 1in; left: 100%; position: fixed; top: 100%;');
   hiddenDivDpi.setAttribute('id', 'hiddenDivDpi');
   document.body.appendChild(hiddenDivDpi);
 
-  var dpi_x = document.getElementById('hiddenDivDpi').offsetWidth;
-  var dpi_y = document.getElementById('hiddenDivDpi').offsetHeight;
+  const dpi_x = document.getElementById('hiddenDivDpi').offsetWidth;
+  const dpi_y = document.getElementById('hiddenDivDpi').offsetHeight;
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                          createDiv                             | \\
@@ -60,14 +60,14 @@ function pyodideWidgetsPluginClass() {
   this.genericPlotlyPythonWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
-    var self = this;
+    const self = this;
 
     this.rescale = function () {
       //this.render();
     };
 
     this.render = async function () {
-      var idDivPlotlyPy = 'plotlyPython' + idWidget;
+      let idDivPlotlyPy = 'plotlyPython' + idWidget;
       if (bInteractive) {
         idDivPlotlyPy = idDivPlotlyPy + 'c';
       }
@@ -80,8 +80,8 @@ function pyodideWidgetsPluginClass() {
       } else {
         $('#' + idDivPlotlyPy).html('');
         $('#' + idDivPlotlyPy).html('<img id="png-export-' + idDivPlotlyPy + '"></img>');
-        var img_png = $('#png-export-' + idDivPlotlyPy);
-        var img_url;
+        const img_png = $('#png-export-' + idDivPlotlyPy);
+        let img_url;
         Plotly.newPlot(idDivPlotlyPy, plotDef.data, plotDef.layout, plotDef.config).then(function (gd) {
           Plotly.toImage(gd, {
             height: $('#' + idDivContainer).height(),
@@ -104,8 +104,7 @@ function pyodideWidgetsPluginClass() {
             }
           });
         });
-
-      };
+      }
     };
     const _FIG_DESCRIPTOR = new WidgetActuatorDescription(
       'fig',
@@ -124,18 +123,11 @@ function pyodideWidgetsPluginClass() {
       getValue: function () {
         return modelsHiddenParams[idInstance].fig;
       },
-      addValueChangedHandler: function (n) { },
-      removeValueChangedHandler: function (n) { },
+      addValueChangedHandler: function (n) {},
+      removeValueChangedHandler: function (n) {},
     };
 
-    // GHI #235
-    /*       pyodideManager.loadPyodideLibs({
-            standardLibs: [],
-            micropipLibs: ['plotly'],
-          }); */
-
     self.render();
-
   };
   // Inherit from baseWidget class
   this.genericPlotlyPythonWidget.prototype = baseWidget.prototype;
@@ -146,10 +138,10 @@ function pyodideWidgetsPluginClass() {
   this.genericMatplotlibWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
-    var self = this;
+    const self = this;
 
     this.render = async function () {
-      var idDivMatplotlib = 'innerMatplotlib' + idWidget;
+      let idDivMatplotlib = 'innerMatplotlib' + idWidget;
       if (bInteractive) {
         idDivMatplotlib = idDivMatplotlib + 'c';
       }
@@ -169,7 +161,6 @@ function pyodideWidgetsPluginClass() {
       //let gd = document.getElementById(idDivMatplotlib);
       img_bin[0].style.width = 'inherit'; //parseFloat(gd.parentNode.style.width) + 'vw';
       img_bin[0].style.height = 'inherit'; //parseFloat(gd.parentNode.style.height) + 'vh';
-
     };
 
     const _FIG_DESCRIPTOR = new WidgetActuatorDescription(
@@ -189,15 +180,9 @@ function pyodideWidgetsPluginClass() {
       getValue: function () {
         return modelsHiddenParams[idInstance].fig;
       },
-      addValueChangedHandler: function (n) { },
-      removeValueChangedHandler: function (n) { },
+      addValueChangedHandler: function (n) {},
+      removeValueChangedHandler: function (n) {},
     };
-
-    // GHI #235
-    /*     pyodideManager.loadPyodideLibs({
-          standardLibs: ['matplotlib'],
-          micropipLibs: [],
-        }); */
 
     self.render();
   };

@@ -349,15 +349,15 @@ function _isAxisLinear(layout, axis) {
 /*******************************************************************/
 
 function plotlyWidgetsPluginClass() {
-  var pId = 0;
-  var self = this;
+  let pId = 0;
+  const self = this;
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                         createPlotlyDiv                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function createPlotlyDiv(idDivContainer, pId, bInteractive) {
-    var widgetHtml = document.createElement('div');
-    var idDivPlotly = 'plotly' + pId;
+    const widgetHtml = document.createElement('div');
+    let idDivPlotly = 'plotly' + pId;
     if (bInteractive) {
       idDivPlotly = idDivPlotly + 'c';
     }
@@ -416,13 +416,13 @@ function plotlyWidgetsPluginClass() {
     if (bInteractive) {
       idDivPlotly = idDivPlotly + 'c';
     }
-    var self = this;
+    const self = this;
 
     // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
     this.getColorValueFromCSSProperty = function (value) {
-      var color = value;
+      let color = value;
       if (color.includes('var(--')) {
-        var realValue = value.substring(4, value.length - 1);
+        const realValue = value.substring(4, value.length - 1);
         color = window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
       }
       return color;
@@ -457,13 +457,11 @@ function plotlyWidgetsPluginClass() {
 
     this.render = function () {
       /* Conversion to enable HTML tags */
-      const layout = modelsParameters[idInstance].layout;
-      if (!_.isUndefined(layout) && !_.isUndefined(layout.title)) {
-        if (!_.isUndefined(layout.title.text)) {
-          layout.title.text = this.getTransformedText(layout.title.text);
-        } else {
-          layout.title = this.getTransformedText(layout.title);
-        }
+      const layout = modelsParameters[idInstance]?.layout;
+      if (layout?.title) {
+        layout.title = _.isObject(layout.title)
+          ? this.getTransformedText(layout.title.text)
+          : this.getTransformedText(layout.title);
       }
 
       /* Apply colors from modelsParameters */
@@ -516,7 +514,7 @@ function plotlyWidgetsPluginClass() {
             delete modelsHiddenParams[idInstance].layout.height;
           }
         }
-        var opts = {};
+        let opts = {};
         if (modelsParameters[idInstance].hideModeBar) {
           opts = { displayModeBar: false };
         }
@@ -527,13 +525,13 @@ function plotlyWidgetsPluginClass() {
       } else {
         $('#' + idDivPlotly).html('');
         $('#' + idDivPlotly).html('<img id="png-export-' + idDivPlotly + '"></img>');
-        var img_png = $('#png-export-' + idDivPlotly);
-        var img_url;
+        const img_png = $('#png-export-' + idDivPlotly);
+        let img_url;
         const UNSENSIBLE_TIME_INTERVAL = 6000;
         if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
           // MBG tmp optim
           img_png.attr('src', modelsTempParams[idInstance].pngCache);
-          var divContainer = document.getElementById(idDivContainer);
+          const divContainer = document.getElementById(idDivContainer);
           img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
           img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
           img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
@@ -571,24 +569,24 @@ function plotlyWidgetsPluginClass() {
     this.setSelectionActuator = function () {
       // MBG 17/02/2021
       this.bIsInteractive = bInteractive;
-      var idDivPlotly = 'plotly' + idWidget;
+      let idDivPlotly = 'plotly' + idWidget;
       if (bInteractive) {
         idDivPlotly = idDivPlotly + 'c';
-        var graphDiv = document.getElementById(idDivPlotly);
+        const graphDiv = document.getElementById(idDivPlotly);
         graphDiv.on('plotly_selected', function (eventData) {
           if (!_.isUndefined(eventData)) {
             // Create array of array [numberOfTrace][dataSelected] and [numberOfTrace][customData]
-            var dataSelected = Array(graphDiv.data.length)
+            const dataSelected = Array(graphDiv.data.length)
               .fill(null)
               .map(() => []);
-            var customSelected = Array(graphDiv.data.length)
+            const customSelected = Array(graphDiv.data.length)
               .fill(null)
               .map(() => []);
 
             eventData.points.forEach(function (point) {
               if (!_.isUndefined(point.pointNumber)) {
-                var traceNumber = point.curveNumber;
-                var index = point.pointNumber;
+                const traceNumber = point.curveNumber;
+                const index = point.pointNumber;
 
                 dataSelected[traceNumber].push(index);
 
@@ -598,7 +596,7 @@ function plotlyWidgetsPluginClass() {
               }
 
               if (!_.isUndefined(point.pointNumbers)) {
-                var traceNumber = point.pointNumbers.curveNumber;
+                const traceNumber = point.pointNumbers.curveNumber;
                 pointNumbers.forEach(function (d) {
                   dataSelected[traceNumber].push(d);
 
@@ -609,7 +607,7 @@ function plotlyWidgetsPluginClass() {
               }
             });
 
-            var selectionDescriptor = dataSelected.map(function (d, index) {
+            const selectionDescriptor = dataSelected.map(function (d, index) {
               return {
                 trace: index,
                 selection: d,
