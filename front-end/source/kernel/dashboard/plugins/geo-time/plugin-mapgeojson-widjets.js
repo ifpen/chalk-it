@@ -1290,12 +1290,36 @@ function mapGeoJsonWidgetsPluginClass() {
         }
       }
 
-      if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
+      if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) { 
+        let minMax = geoJsonTools.getMinMaxByProperty(geoJSONinLayer, styleForObject.property);
+        if (Array.isArray(minMaxAuto)) {
+          var min = minMaxAuto[0];
+          var max = minMaxAuto[1];
+        }
+        if (Array.isArray(minMax)) {
+          if (!_.isUndefined(min) && !_.isUndefined(max)) {
+            if (min < minMax[0]) min = minMax[0];
+            if (max > minMax[1]) max = minMax[1];
+          }
+        }
         leafLetLayer.eachLayer(function (layer) {
-          let layerStyle = { ...style };
-          if (styleForObject.property in layer.feature.properties) {
-            var value = layer.feature.properties[styleForObject.property];
-            layerStyle.color = self.getFillColor(geoJSONinLayer, { ...style }, value, colorScale);
+          var color = style.color;
+          var colorScale = undefined;
+          if (!_.isUndefined(color)) {
+            colorScale = self.getColorScale(color, 0, 100);
+          }
+          if (!_.isUndefined(layer.feature.properties) && styleForObject.property in layer.feature.properties) {
+            var fillColor = self.getFillColor(
+              geoJSONinLayer,
+              styleForObject,
+              layer.feature.properties[styleForObject.property],
+              colorScale
+            );
+          }
+          if (!_.isUndefined(fillColor)) {
+            styleForObject.color = fillColor;
+          } else {
+            styleForObject.color = style.color;
           }
           if (layer == self.state.selectedElement) {
             layer.setStyle({
@@ -1303,7 +1327,7 @@ function mapGeoJsonWidgetsPluginClass() {
               weight: styleForObject.weight,
             });
           } else {
-            layer.setStyle(layerStyle);
+            layer.setStyle(styleForObject);
           }
         });
         //legend
