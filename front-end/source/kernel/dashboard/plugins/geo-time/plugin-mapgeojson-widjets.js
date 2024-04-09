@@ -16,7 +16,7 @@
 // Layout (default dimensions)
 modelsLayout.mapGeoJson = { height: '5vh', width: '19vw', minWidth: '100px', minHeight: '100px' };
 
-modelsHiddenParams.mapGeoJson = { GeoJSON: undefined, GeoJSONStyle: undefined };
+modelsHiddenParams.mapGeoJson = { GeoJSON: {}, GeoJSONStyle: {} };
 
 function mapGeoJsonWidgetsPluginClass() {
   this.mapGeoJsonWidgets = function (idDivContainer, idWidget, idInstance, bInteractive) {
@@ -61,7 +61,10 @@ function mapGeoJsonWidgetsPluginClass() {
       ) {
         modelsHiddenParams[idInstance].GeoJSONStyle.style = [];
 
-        if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) {
+        if (
+          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
+          !_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)
+        ) {
           modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
             modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(item, index));
           });
@@ -129,6 +132,7 @@ function mapGeoJsonWidgetsPluginClass() {
       config = self.defaultConfig;
       if (
         !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+        !_.isEmpty(modelsHiddenParams[idInstance].GeoJSONStyle) &&
         !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config) &&
         !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter)
       ) {
@@ -145,6 +149,7 @@ function mapGeoJsonWidgetsPluginClass() {
       } else {
         if (
           !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+          !_.isEmpty(modelsHiddenParams[idInstance].GeoJSONStyle) &&
           !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config) &&
           !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image) &&
           !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image.imageBounds)
@@ -176,6 +181,7 @@ function mapGeoJsonWidgetsPluginClass() {
       //if image overlay exist
       if (
         !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+        !_.isEmpty(modelsHiddenParams[idInstance].GeoJSONStyle) &&
         !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)
       ) {
         let image = modelsHiddenParams[idInstance].GeoJSONStyle.config.image;
@@ -186,11 +192,15 @@ function mapGeoJsonWidgetsPluginClass() {
       self.layers = [];
       self.legends = [];
 
-      if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) {
+      if (
+        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
+        !_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)
+      ) {
         modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
           let name = 'layer ' + index;
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+            !_.isEmpty(modelsHiddenParams[idInstance].GeoJSONStyle) &&
             !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style) &&
             !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style.length > 0)
           ) {
@@ -1137,9 +1147,10 @@ function mapGeoJsonWidgetsPluginClass() {
       //self.map.setView([defaultCenter.longitude, defaultCenter.latitude], defaultCenter.zoom);
 
       //update style
-      modelsHiddenParams[idInstance].GeoJSONStyle.style.forEach(function (d, index) {
-        self.setStyle(index, d);
-      });
+      if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style))
+        modelsHiddenParams[idInstance].GeoJSONStyle.style.forEach(function (d, index) {
+          self.setStyle(index, d);
+        });
 
       if (self.styleChanged) {
         self.styleChanged = false;
