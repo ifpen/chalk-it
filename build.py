@@ -141,12 +141,18 @@ for file_path in file_paths:
     shutil.copy(file_path, build_path)
 
 # Copy directories to build_path with their structure
-directories_to_copy = {
-    './back_end/taipy/': 'taipy',
-    './back_end/app/': 'app',
-    './back_end/render/': 'render',
-    './documentation/Templates/': 'Templates',
-}
+if isLiteBuild:
+    directories_to_copy = {
+        './back_end/taipy/': 'taipy',
+        './back_end/app/': 'app',
+        './back_end/render/': 'render',    }
+else:
+    directories_to_copy = {
+        './back_end/taipy/': 'taipy',
+        './back_end/app/': 'app',
+        './back_end/render/': 'render',
+        './documentation/Templates/': 'Templates',
+    }
 
 for src_path, dest_name in directories_to_copy.items():
     dest_path = build_path / dest_name
