@@ -131,7 +131,7 @@ modelsLayout.anyDisplay = { height: '30vh', width: '30vw', minWidth: '50px', min
       anyDisplay: {
         factory: AnyDisplayWidget,
         title: "'any' widget",
-        icn: 'generic-html',
+        icn: 'any-widget',
         help: 'wdg/wdg-basics/#any-widget',
       },
     },
