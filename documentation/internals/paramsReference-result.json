@@ -39,7 +39,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the gauge"
+    "description": "Color of the value displayed in the gauge"
   },
   {
     "typeWidget": "scoringFullCircularGauge",
@@ -53,7 +53,7 @@
     "name": "thicknessColor",
     "type": "string",
     "defaultValue": "var(--widget-range-color)",
-    "description": "The color of the gauge thickness"
+    "description": "Color of the gauge thickness"
   },
   {
     "typeWidget": "scoringFullCircularGauge",
@@ -109,7 +109,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the gauge"
+    "description": "Color of the value displayed in the gauge"
   },
   {
     "typeWidget": "scoringSemiCircularGauge",
@@ -179,7 +179,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the gauge"
+    "description": "Color of the value displayed in the gauge"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
@@ -368,7 +368,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the kpi card"
+    "description": "Color of the value displayed in the kpi card"
   },
   {
     "typeWidget": "kpiCard",
@@ -480,7 +480,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the kpi card"
+    "description": "Color of the value displayed in the kpi card"
   },
   {
     "typeWidget": "advancedKpiCard",
@@ -711,7 +711,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "datepickerSimple",
@@ -802,7 +802,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "datepickerVisible",
@@ -879,7 +879,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "dateRangePicker",
@@ -977,7 +977,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "timepickerSimple",
@@ -1026,7 +1026,7 @@
     "name": "UndefinedValueColor",
     "type": "string",
     "defaultValue": "#F6F6F6",
-    "description": ""
+    "description": "Color of undefined value in the year calendar"
   },
   {
     "typeWidget": "flatUiSelect",
@@ -1103,7 +1103,7 @@
     "name": "selectedValueColor",
     "type": "string",
     "defaultValue": "var(--widget-select-option-highlighted-text)",
-    "description": ""
+    "description": "Color of the selected value"
   },
   {
     "typeWidget": "flatUiSelect",
@@ -1271,7 +1271,7 @@
     "name": "listValueColor",
     "type": "string",
     "defaultValue": "var(--widget-select-drop-text)",
-    "description": ""
+    "description": "Color of the displayed values in the list"
   },
   {
     "typeWidget": "flatUiList",
@@ -1285,7 +1285,7 @@
     "name": "selectValueColor",
     "type": "string",
     "defaultValue": "var(--widget-select-option-highlighted-text)",
-    "description": ""
+    "description": "Color of the selected value"
   },
   {
     "typeWidget": "flatUiList",
@@ -1341,7 +1341,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-table-value-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiTable",
@@ -1589,7 +1589,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiHereAutocompleteValue",
@@ -1792,7 +1792,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -2037,7 +2037,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2170,7 +2170,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-input-text)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2338,7 +2338,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-input-text)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiTextInput",
@@ -2485,7 +2485,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-input-text)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2625,7 +2625,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-input-text)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiValueDisplay",
