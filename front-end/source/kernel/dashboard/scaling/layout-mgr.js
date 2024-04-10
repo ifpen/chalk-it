@@ -43,7 +43,7 @@ class LayoutMgrClass {
 
     // Dashboard background color
     this.dashBgColor = '';
-    this.defaultBgColor = '#ffffff';
+    this.defaultBgColor = '';
     this.dashboardTheme = 'default';
     this.$rootScope = angular.element(document.body).scope().$root;
   }
@@ -573,7 +573,7 @@ class LayoutMgrClass {
 
   deserializeDashBgColor(deviceObj) {
     if (!_.isUndefined(deviceObj.backgroundColor)) {
-      this.dashBgColor = deviceObj.backgroundColor || this.defaultBgColor;
+      this.dashBgColor = deviceObj.backgroundColor;
       this.updateDashBgColor();
     }
   }
