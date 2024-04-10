@@ -3080,28 +3080,28 @@
     "name": "text",
     "type": "string",
     "defaultValue": "Type texte",
-    "description": ""
+    "description": "Text of the tip"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "enableActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit tooltip text from actuator variable"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "fontSize",
     "type": "string",
     "defaultValue": "medium",
-    "description": "Tooltip text font size. It could be small, medium, large, or a number as 10px"
+    "description": "Tooltip text font size. It can be small, medium, large, or a number as 10px"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "fontWeight",
     "type": "string",
     "defaultValue": "bold",
-    "description": ""
+    "description": "font weight of the tip. It can be thin, light, regular, medium, bold,..."
   },
   {
     "typeWidget": "annotationIconInfo",
@@ -3115,14 +3115,14 @@
     "name": "textColor",
     "type": "string",
     "defaultValue": "var(--widget-button-text)",
-    "description": "Text color"
+    "description": "Text color of the tip"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "textPadding",
     "type": "number",
     "defaultValue": 10,
-    "description": ""
+    "description": "Text padding in px"
   },
   {
     "typeWidget": "annotationIconInfo",
@@ -3136,70 +3136,70 @@
     "name": "tipBorderColor",
     "type": "string",
     "defaultValue": "var(--widget-button-text)",
-    "description": "Border color"
+    "description": "Border color of the tip"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "tipWidth",
     "type": "number",
     "defaultValue": 200,
-    "description": ""
+    "description": "Tip width in px"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "tipPositions",
     "type": "object",
     "defaultValue": ["right"],
-    "description": ""
+    "description": "Tip position, it can choose 1 to 4 options together ['right', 'bottom', 'left', 'top']"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "tipEventTrigger",
     "type": "string",
     "defaultValue": "hover",
-    "description": ""
+    "description": "Tip event trigger, it can be hover or click if 1 event. If 2 events (in and out) it can be ['mouseover', 'click'] or ['focus', 'blur']"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "iconColor",
     "type": "string",
     "defaultValue": "var(--widget-label-color)",
-    "description": ""
+    "description": "Icon color"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "iconSize",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Icon size"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "iconSign",
     "type": "string",
     "defaultValue": "info-circle",
-    "description": ""
+    "description": "Icon sign. It can be info-circle or question-circle or exclamation-circle [FontAwesome]"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "cornerRadius",
     "type": "number",
     "defaultValue": 10,
-    "description": ""
+    "description": "Icon corner radius"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "spikeLength",
     "type": "number",
     "defaultValue": 15,
-    "description": ""
+    "description": "Icon spike length"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "spikeGirth",
     "type": "number",
     "defaultValue": 5,
-    "description": ""
+    "description": "Icone spike girth"
   },
   {
     "typeWidget": "annotationLabel",
@@ -3276,7 +3276,7 @@
     "name": "keepRatio",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "if true, image ratio is kept intact to avoid distortion"
   },
   {
     "typeWidget": "annotationImage",
@@ -3290,7 +3290,7 @@
     "name": "enableActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit image URL from actuator variable"
   },
   {
     "typeWidget": "annotationVideo",
