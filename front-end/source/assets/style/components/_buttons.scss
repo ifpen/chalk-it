@@ -283,6 +283,8 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
 }
 
 .btn__see-more {
+  display: flex;
+  align-items: center;
   padding: 0.5em 0.75em;
   border: none;
   border-radius: br('full');
@@ -290,11 +292,6 @@ $btn-colors: 'primary', 'secondary', 'info', 'success', 'warning', 'danger';
   color: var(--primary-color-text);
   white-space: nowrap;
   transition: background-color 0.3s ease, color 0.3s ease;
-
-  > * {
-    display: inline-block;
-    vertical-align: middle;
-  }
 
   &:hover,
   &:focus {
