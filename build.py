@@ -100,9 +100,9 @@ if (BUILD_FRONT_END):
 
     # Run npm build command in front-end directory
     if isLiteBuild:
-        run_npm('npm', 'run', 'build')
-    else:
         run_npm('npm', 'run', 'build:lite')
+    else:
+        run_npm('npm', 'run', 'build')
 
 # Copy build result to ./build/taipy_designer directory
 build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
