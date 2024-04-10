@@ -1082,7 +1082,7 @@
     "name": "isNumber",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a number"
   },
   {
     "typeWidget": "flatUiSelect",
@@ -1124,7 +1124,7 @@
     "name": "isKeyValuePairs",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, the key/value format is not required"
   },
   {
     "typeWidget": "flatUiMultiSelect",
@@ -1250,7 +1250,7 @@
     "name": "isNumber",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a number"
   },
   {
     "typeWidget": "flatUiList",
@@ -2142,14 +2142,14 @@
     "name": "isNumber",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a number"
   },
   {
     "typeWidget": "flatUiValue",
     "name": "isPassword",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a obscured"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2324,7 +2324,7 @@
     "name": "isPassword",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a obscured"
   },
   {
     "typeWidget": "flatUiTextInput",
