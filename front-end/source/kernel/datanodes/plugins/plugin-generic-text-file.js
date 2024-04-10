@@ -27,7 +27,7 @@
         // **type "boolean"** : Will display a checkbox indicating a true/false setting.
         type: 'browseText',
         accept: 'text/plain',
-        required: true, //ABK
+        required: false, //ABK
       },
     ],
     expose_as_files: [
@@ -100,7 +100,10 @@
     };
 
     self.setValue = function (path, value) {
-      if (checkValue(value)) {
+      if (_.isEmpty(value)) {
+        currentSettings.content = {};
+        currentSettings.data_path = '';
+      } else if (checkValue(value)) {
         currentSettings.content = { ...value };
         currentSettings.data_path = value?.name;
       }
