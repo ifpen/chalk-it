@@ -3213,7 +3213,7 @@
     "name": "enableActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit label text from actuator variable"
   },
   {
     "typeWidget": "annotationLabel",
@@ -3283,7 +3283,7 @@
     "name": "hideImageURL",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "if true, URL image is hidden"
   },
   {
     "typeWidget": "annotationImage",
@@ -3332,7 +3332,7 @@
     "name": "buttonActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-button-active-color)",
-    "description": ""
+    "description": "Button active color"
   },
   {
     "typeWidget": "annotationVideo",
