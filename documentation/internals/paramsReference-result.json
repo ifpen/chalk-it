@@ -3390,14 +3390,14 @@
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotlyBar",
     "name": "numberOfAxis",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Number of axis"
   },
   {
     "typeWidget": "plotlyBar",
@@ -3442,7 +3442,7 @@
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotlyPie",
@@ -3474,7 +3474,7 @@
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotly3dSurface",
@@ -3511,21 +3511,21 @@
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Hide Plotly widget Modebar"
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotlyGeneric",
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Hide Plotly widget Modebar"
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotlyRealTime",
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Hide Plotly widget Modebar"
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "vegaGeneric",
