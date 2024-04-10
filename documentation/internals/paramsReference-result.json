@@ -3541,7 +3541,7 @@
     "defaultValue": {
       "numberOfLayers": 1
     },
-    "description": ""
+    "description": "Defines the number of layers with geojson"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3550,7 +3550,7 @@
     "defaultValue": {
       "numberOfLayers": 0
     },
-    "description": ""
+    "description": "Defines the number of layers with choropleth"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3570,7 +3570,7 @@
     "defaultValue": {
       "numberOfLayers": 0
     },
-    "description": ""
+    "description": "Defines the number of layers with line heatmap"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3579,7 +3579,7 @@
     "defaultValue": {
       "numberOfLayers": 0
     },
-    "description": ""
+    "description": "Defines the number of layers with images"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3588,7 +3588,7 @@
     "defaultValue": {
       "numberOfLayers": 0
     },
-    "description": ""
+    "description": "Defines the number of layers with svg images"
   },
   {
     "typeWidget": "openStreetMaps",
