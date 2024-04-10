@@ -600,6 +600,7 @@ class Main:
             "--pythonWorkers",
             dest="python_workers",
             type=int,
+            default=10,
             help="""Size of pool used to evaluate user's python scripts.""",
         )
         parser.add_argument(
