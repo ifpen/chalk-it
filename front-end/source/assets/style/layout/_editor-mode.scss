@@ -76,7 +76,7 @@
 }
 
 .dropperR.show-widget-borders:not(#DropperDroitec) .drsElement {
-  border: 1px dashed rgba(0, 0, 0, 0.5);
+  border: 1px dashed var(--primary-color);
 }
 
 .dropperR.show-grid:not(.has-device-col):not(#DropperDroitec),
@@ -141,7 +141,7 @@ div > .draggable::-webkit-scrollbar-thumb {
 
 // Dropper columns
 .device-col {
-  border: 1px dashed black;
+  border: 1px dashed var(--border-b);
   height: 100%;
   padding: 0px;
 }
@@ -156,7 +156,7 @@ div > .draggable::-webkit-scrollbar-thumb {
 .dragged-editor-selection-lasso {
   position: absolute;
   z-index: 999999;
-  border: 1px solid black;
+  border: 1px solid var(--border-b);
 }
 
 #dashboard-editor .drag-drop-move .widget-overlay {
