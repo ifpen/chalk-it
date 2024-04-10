@@ -830,14 +830,14 @@
     "name": "displayTimePicker",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, time is displayed next to the date in AM/PM format"
   },
   {
     "typeWidget": "dateRangePicker",
     "name": "displayTimePicker24Hour",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true and displayTimePicker also true, time is displayed next to the date"
   },
   {
     "typeWidget": "dateRangePicker",
@@ -1019,7 +1019,7 @@
     "name": "AllYearsVisible",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, all years are visible. If false, a signle year is displayed at a time"
   },
   {
     "typeWidget": "calendarD3",
