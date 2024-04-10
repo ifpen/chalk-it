@@ -1110,14 +1110,14 @@
     "name": "selectedItemDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-select-option-highlighted-color)",
-    "description": ""
+    "description": "Color of the selected item in the drop-down list"
   },
   {
     "typeWidget": "flatUiSelect",
     "name": "selectedItemHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-select-option-highlighted-color)",
-    "description": ""
+    "description": "Hover color of the selected item in the drop-down list"
   },
   {
     "typeWidget": "flatUiSelect",
@@ -1138,7 +1138,7 @@
     "name": "resetPastSelection",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, reset past selection"
   },
   {
     "typeWidget": "flatUiMultiSelect",
@@ -1159,28 +1159,28 @@
     "name": "checkboxWidth",
     "type": "number",
     "defaultValue": 7,
-    "description": ""
+    "description": "Width of the checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxHeight",
     "type": "number",
     "defaultValue": 1.5,
-    "description": ""
+    "description": "Height of the checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "valueDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-label-color)",
-    "description": ""
+    "description": "Color of displayed text in checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-color)",
-    "description": ""
+    "description": "Backgroud color of checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
@@ -1194,14 +1194,14 @@
     "name": "valueHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-hover-text)",
-    "description": ""
+    "description": "Hover color of displayed text in checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-hover-color)",
-    "description": ""
+    "description": "Hover color of checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
@@ -1215,14 +1215,14 @@
     "name": "valueFocusColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-checked-text)",
-    "description": ""
+    "description": "Focus color of displayed text in checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxFocusColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-checked-color)",
-    "description": ""
+    "description": "Focus color of checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
@@ -1320,7 +1320,7 @@
     "name": "headerLine",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, header line is displayed in table"
   },
   {
     "typeWidget": "flatUiTable",
@@ -1334,7 +1334,7 @@
     "name": "striped",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, display stripped lines in table"
   },
   {
     "typeWidget": "flatUiTable",
@@ -1362,14 +1362,14 @@
     "name": "bordered",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, add a table border"
   },
   {
     "typeWidget": "flatUiTable",
     "name": "noBorder",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, add table gridlines"
   },
   {
     "typeWidget": "flatUiTable",
