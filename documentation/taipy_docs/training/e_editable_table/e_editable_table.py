@@ -1,7 +1,6 @@
 from taipy.gui import Gui
 from taipy_designer import *
 
-gui = Gui()
 
 editable_table = [["Day", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], 
                   ["Paris", 0, 11, 15 ,16, 20, 18, 17], ["London", 0, 10, 14, 15, 19, 17, 16], 
@@ -22,5 +21,6 @@ def on_change(state, var, val):
         state.total = compute_total(val)
 
 page = DesignerPage("e_editable_table.xprjson", designer_mode=True)
+gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)
