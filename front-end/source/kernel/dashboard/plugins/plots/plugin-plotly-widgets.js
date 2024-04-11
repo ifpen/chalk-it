@@ -12,7 +12,7 @@
 /*************************** plugin data ***************************/
 /*******************************************************************/
 
-const USE_PLOTLY_VALIDATION = true;
+const USE_PLOTLY_VALIDATION = false;
 
 const colorway = [
   'var(--widget-color-2)',
@@ -177,6 +177,10 @@ modelsParameters.plotlyGeneric = {
   hideModeBar: false,
 };
 
+modelsParameters.plotlyPyGeneric = {
+  hideModeBar: false,
+};
+
 modelsParameters.plotlyRealTime = {
   //numberOfAxis: 1,
   hideModeBar: false,
@@ -263,11 +267,21 @@ modelsHiddenParams.plotlyGeneric = {
   selection: [{}],
 };
 
+modelsHiddenParams.plotlyPyGeneric = {
+  ...modelsParameters.plotlyPyGeneric,
+  fig: {
+    layout: {
+      ...plotlyColorParams,
+    },
+  },
+};
+
 modelsTempParams.plotlyLine = { lastEditTimeStamp: 0, pngCache: '' };
 modelsTempParams.plotlyBar = { lastEditTimeStamp: 0, pngCache: '' };
 modelsTempParams.plotlyPie = { lastEditTimeStamp: 0, pngCache: '' };
 modelsTempParams.plotly3dSurface = { lastEditTimeStamp: 0, pngCache: '' };
 modelsTempParams.plotlyGeneric = { lastEditTimeStamp: 0, pngCache: '' };
+modelsTempParams.plotlyPyGeneric = { lastEditTimeStamp: 0, pngCache: '' };
 modelsTempParams.plotlyRealTime = { lastEditTimeStamp: 0, pngCache: '' };
 
 // Layout (default dimensions)
@@ -276,6 +290,7 @@ modelsLayout.plotlyBar = { height: '30vh', width: '30vw', minWidth: '100px', min
 modelsLayout.plotlyPie = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
 modelsLayout.plotly3dSurface = { height: '30vh', width: '30vw', minWidth: '378px', minHeight: '305px' };
 modelsLayout.plotlyGeneric = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
+modelsLayout.plotlyPyGeneric = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
 modelsLayout.plotlyRealTime = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
 
 const _SCHEMA_PLOTLY_NUMERIC_DATA = {
@@ -343,7 +358,7 @@ function plotlyWidgetsPluginClass() {
     const widgetHtml = document.createElement('div');
     let idDivPlotly = 'plotly' + pId;
     if (bInteractive) {
-      idDivPlotly = idDivPlotly + 'c';
+      idDivPlotly += 'c';
     }
     widgetHtml.setAttribute('id', idDivPlotly);
     widgetHtml.setAttribute('class', 'js-plotly-plot');
@@ -371,6 +386,8 @@ function plotlyWidgetsPluginClass() {
         return new this.d3surfacePlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
       case 'plotlyGeneric':
         return new this.genericPlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
+      case 'plotlyPyGeneric':
+        return new this.genericPlotlyPythonWidget(idDivContainer, pId, idInstance, bInteractive);
       case 'plotlyRealTime':
         return new this.realTimePlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
     }
@@ -396,9 +413,9 @@ function plotlyWidgetsPluginClass() {
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function basePlotlyWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     this.bIsInteractive = bInteractive;
-    var idDivPlotly = 'plotly' + idWidget;
+    let idDivPlotly = 'plotly' + idWidget;
     if (bInteractive) {
-      idDivPlotly = idDivPlotly + 'c';
+      idDivPlotly += 'c';
     }
     const self = this;
 
@@ -449,8 +466,13 @@ function plotlyWidgetsPluginClass() {
       }
 
       /* Apply colors from modelsParameters */
-      let hiddenLayout = modelsHiddenParams[idInstance].layout;
+      let hiddenLayout = modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout;
       if (hiddenLayout) {
+        hiddenLayout = { ...plotlyColorParams, ...hiddenLayout };
+        if (hiddenLayout.template?.layout?.font?.color) {
+          hiddenLayout.template.layout.font.color = this.getColorValueFromCSSProperty(textColor);
+        }
+
         hiddenLayout = JSON.parse(JSON.stringify(hiddenLayout));
         const modelLayout = modelsParameters[idInstance].layout
           ? JSON.parse(JSON.stringify(modelsParameters[idInstance].layout))
@@ -482,6 +504,7 @@ function plotlyWidgetsPluginClass() {
 
       $('#' + idDivPlotly).html('');
 
+      const data = modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data;
       /* MBG issue bad width at runtime for Ploty widgets*/
       if (this.bIsInteractive) {
         if (hiddenLayout && hiddenLayout.autosize) {
@@ -491,7 +514,7 @@ function plotlyWidgetsPluginClass() {
 
         const opts = modelsParameters[idInstance].hideModeBar ? { displayModeBar: false } : {};
 
-        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, hiddenLayout, opts);
+        Plotly.newPlot(idDivPlotly, data, hiddenLayout, opts);
         this.setSelectionActuator();
       } else {
         $('#' + idDivPlotly).html('<img id="png-export-' + idDivPlotly + '"></img>');
@@ -509,7 +532,7 @@ function plotlyWidgetsPluginClass() {
           img_png[0].style.margin = '3px';
           return;
         }
-        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, hiddenLayout).then(function (gd) {
+        Plotly.newPlot(idDivPlotly, data, hiddenLayout).then(function (gd) {
           Plotly.toImage(gd, {
             height: $('#' + idDivContainer).height(),
             width: $('#' + idDivContainer).width(),
@@ -1092,6 +1115,38 @@ function plotlyWidgetsPluginClass() {
   this.genericPlotlyWidget.prototype = basePlotlyWidget.prototype;
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
+  // |                         Plotly Python Generic                      | \\
+  // ├────────────────────────────────────────────────────────────────────┤ \\
+  this.genericPlotlyPythonWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
+    this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
+
+    const self = this;
+
+    const _FIG_DESCRIPTOR = new WidgetActuatorDescription(
+      'fig',
+      'Plotly figure object',
+      WidgetActuatorDescription.READ
+    );
+    this.getActuatorDescriptions = function () {
+      return [_FIG_DESCRIPTOR];
+    };
+
+    this.fig = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].fig = val;
+        self.render();
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].fig;
+      },
+      addValueChangedHandler: function (n) {},
+      removeValueChangedHandler: function (n) {},
+    };
+  };
+  // Inherit from base Plotly class
+  this.genericPlotlyPythonWidget.prototype = basePlotlyWidget.prototype;
+
+  // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                        Plotly Real-time                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   this.realTimePlotlyWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
@@ -1230,6 +1285,12 @@ function plotlyWidgetsPluginClass() {
         title: 'Plotly JavaScript generic',
         icn: 'plotly-javascript-generic',
         help: 'wdg/wdg-plots/#plotly-generic',
+      },
+      plotlyPyGeneric: {
+        factory: 'genericPlotlyPythonWidget',
+        title: 'Plotly Python generic',
+        icn: 'plotly-python-generic',
+        help: 'wdg/wdg-plots/#plotly-python-generic',
       },
       plotlyRealTime: { factory: 'realTimePlotlyWidget', title: 'Plotly real-time', icn: 'plotly-real-time' },
     },
