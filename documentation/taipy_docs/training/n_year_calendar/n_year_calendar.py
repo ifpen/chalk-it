@@ -6,7 +6,6 @@ import numpy as np
 from datetime import datetime
 import random
 
-gui = Gui()
 
 # Generate date range
 start_date = "2020-06-02"  # Note: months in Python are 1-12, unlike JavaScript's 0-11
@@ -34,9 +33,9 @@ calendar_values_object = {
 }
 
 # If needed, print or use `calendar_values_object`
-
 selected_date = "2020-06-02"
 
 page = ChalkitPage("n_year_calendar.xprjson", designer_mode=True)
+gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

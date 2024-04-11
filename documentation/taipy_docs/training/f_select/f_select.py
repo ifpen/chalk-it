@@ -1,7 +1,6 @@
 from taipy.gui import Gui
 from chlkt import *
 
-gui = Gui()
 
 def print_message(select_fruit):
     message = "The selected fruit is: " + select_fruit
@@ -17,5 +16,6 @@ def on_change(state, var, val):
 
 
 page = ChalkitPage("f_select.xprjson", designer_mode=True)
+gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

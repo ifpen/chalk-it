@@ -3,8 +3,6 @@ from chlkt import *
 import plotly.express as px
 import requests
 import folium
-
-gui = Gui()
 import pandas
 
 state_geo = requests.get(
@@ -31,5 +29,6 @@ folium.Choropleth(
 folium.LayerControl().add_to(m)
 
 page = ChalkitPage("k_folium_map.xprjson", designer_mode=True)
+gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

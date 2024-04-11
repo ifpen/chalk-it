@@ -2,10 +2,8 @@ from taipy.gui import Gui
 from chlkt import *
 
 from pathlib import Path
-
 from PIL import Image, ImageOps
 
-gui = Gui()
 
 def convert_to_grayscale(image, intensity):
     """Convert an image to grayscale with a given intensity."""
@@ -29,5 +27,6 @@ def on_change(state, var, val):
         state.img_grey = convert_to_grayscale(state.image, val)
 
 page = ChalkitPage("l_pillow_image.xprjson", designer_mode=True)
+gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)
