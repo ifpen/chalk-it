@@ -2,10 +2,8 @@ from taipy.gui import Gui
 from taipy_designer import *
 import matplotlib.pyplot as plt
 import numpy as np
-
 import matplotlib.colors as colors
 
-gui = Gui()
 
 def rbf(x, y):
     return 1.0 / (1 + 5 * ((x ** 2) + (y ** 2)))
@@ -37,5 +35,6 @@ ax[1].text(-2.5, 1.5, 'linear')
 
 
 page = DesignerPage("j_matplotlib_figure.xprjson", designer_mode=True)
+gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

@@ -13,19 +13,13 @@
 /*******************************************************************/
 
 // Parameters
-modelsParameters.plotlyPyGeneric = {};
 modelsParameters.matplotlib = {};
 
-// Hidden params
-modelsHiddenParams.plotlyPyGeneric = {
-  fig: '',
-};
 modelsHiddenParams.matplotlib = {
-  fig: '',
+  fig: {},
 };
 
 // Layout (default dimensions)
-modelsLayout.plotlyPyGeneric = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
 modelsLayout.matplotlib = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
 
 /*******************************************************************/
@@ -33,19 +27,19 @@ modelsLayout.matplotlib = { height: '30vh', width: '30vw', minWidth: '50px', min
 /*******************************************************************/
 
 function pyodideWidgetsPluginClass() {
-  var hiddenDivDpi = document.createElement('div');
+  const hiddenDivDpi = document.createElement('div');
   hiddenDivDpi.setAttribute('style', 'height: 1in; width: 1in; left: 100%; position: fixed; top: 100%;');
   hiddenDivDpi.setAttribute('id', 'hiddenDivDpi');
   document.body.appendChild(hiddenDivDpi);
 
-  var dpi_x = document.getElementById('hiddenDivDpi').offsetWidth;
-  var dpi_y = document.getElementById('hiddenDivDpi').offsetHeight;
+  const dpi_x = document.getElementById('hiddenDivDpi').offsetWidth;
+  const dpi_y = document.getElementById('hiddenDivDpi').offsetHeight;
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
-  // |                          createDiv                             | \\
+  // |                          createDiv                                 | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function createDiv(idDivContainer, idDivPythonWidget) {
-    var widgetHtml = document.createElement('div');
+    const widgetHtml = document.createElement('div');
     widgetHtml.setAttribute('id', idDivPythonWidget);
     widgetHtml.setAttribute(
       'style',
@@ -55,103 +49,17 @@ function pyodideWidgetsPluginClass() {
   }
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
-  // |                      Plotly Python Generic                         | \\
-  // ├────────────────────────────────────────────────────────────────────┤ \\
-  this.genericPlotlyPythonWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
-    this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-
-    var self = this;
-
-    this.rescale = function () {
-      //this.render();
-    };
-
-    this.render = async function () {
-      var idDivPlotlyPy = 'plotlyPython' + idWidget;
-      if (bInteractive) {
-        idDivPlotlyPy = idDivPlotlyPy + 'c';
-      }
-      createDiv(idDivContainer, idDivPlotlyPy);
-
-      const output = modelsHiddenParams[idInstance].fig;
-      const plotDef = output;
-      if (bInteractive) {
-        Plotly.newPlot(idDivPlotlyPy, plotDef.data, plotDef.layout, plotDef.config);
-      } else {
-        $('#' + idDivPlotlyPy).html('');
-        $('#' + idDivPlotlyPy).html('<img id="png-export-' + idDivPlotlyPy + '"></img>');
-        var img_png = $('#png-export-' + idDivPlotlyPy);
-        var img_url;
-        Plotly.newPlot(idDivPlotlyPy, plotDef.data, plotDef.layout, plotDef.config).then(function (gd) {
-          Plotly.toImage(gd, {
-            height: $('#' + idDivContainer).height(),
-            width: $('#' + idDivContainer).width(),
-          }).then(function (url) {
-            img_url = url;
-            Plotly.purge(gd);
-            img_png.attr('src', img_url);
-
-            if (!_.isNull(gd.parentNode)) {
-              gd.style.minHeight = gd.parentNode.style.minHeight;
-              gd.style.minWidth = gd.parentNode.style.minWidth;
-              gd.style.width = gd.parentNode.style.width;
-              gd.style.height = gd.parentNode.style.height;
-
-              img_png[0].style.minHeight = parseInt(gd.parentNode.style.minHeight) + 'px';
-              img_png[0].style.minWidth = parseInt(gd.parentNode.style.minWidth) + 'px';
-              img_png[0].style.width = parseFloat(gd.parentNode.style.width) + 'vw';
-              img_png[0].style.height = parseFloat(gd.parentNode.style.height) + 'vh';
-            }
-          });
-        });
-
-      };
-    };
-    const _FIG_DESCRIPTOR = new WidgetActuatorDescription(
-      'fig',
-      'Plotly figure object',
-      WidgetActuatorDescription.READ
-    );
-    this.getActuatorDescriptions = function () {
-      return [_FIG_DESCRIPTOR];
-    };
-
-    this.fig = {
-      setValue: function (val) {
-        modelsHiddenParams[idInstance].fig = val;
-        self.render();
-      },
-      getValue: function () {
-        return modelsHiddenParams[idInstance].fig;
-      },
-      addValueChangedHandler: function (n) { },
-      removeValueChangedHandler: function (n) { },
-    };
-
-    // GHI #235
-    /*       pyodideManager.loadPyodideLibs({
-            standardLibs: [],
-            micropipLibs: ['plotly'],
-          }); */
-
-    self.render();
-
-  };
-  // Inherit from baseWidget class
-  this.genericPlotlyPythonWidget.prototype = baseWidget.prototype;
-
-  // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                         Matplotlib Generic                         | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   this.genericMatplotlibWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
-    var self = this;
+    const self = this;
 
     this.render = async function () {
-      var idDivMatplotlib = 'innerMatplotlib' + idWidget;
+      let idDivMatplotlib = 'innerMatplotlib' + idWidget;
       if (bInteractive) {
-        idDivMatplotlib = idDivMatplotlib + 'c';
+        idDivMatplotlib += 'c';
       }
 
       createDiv(idDivContainer, idDivMatplotlib);
@@ -162,14 +70,13 @@ function pyodideWidgetsPluginClass() {
       const output = modelsHiddenParams[idInstance].fig;
 
       $('#' + idDivMatplotlib).html('<img id="png-export-' + idDivMatplotlib + '"></img>');
-      var img_bin = $('#png-export-' + idDivMatplotlib);
-      var img_url = 'data:' + output.type + ';base64,' + output.content;
+      const img_bin = $('#png-export-' + idDivMatplotlib);
+      const img_url = 'data:' + output.type + ';base64,' + output.content;
       img_bin.attr('src', img_url);
 
       //let gd = document.getElementById(idDivMatplotlib);
       img_bin[0].style.width = 'inherit'; //parseFloat(gd.parentNode.style.width) + 'vw';
       img_bin[0].style.height = 'inherit'; //parseFloat(gd.parentNode.style.height) + 'vh';
-
     };
 
     const _FIG_DESCRIPTOR = new WidgetActuatorDescription(
@@ -189,15 +96,9 @@ function pyodideWidgetsPluginClass() {
       getValue: function () {
         return modelsHiddenParams[idInstance].fig;
       },
-      addValueChangedHandler: function (n) { },
-      removeValueChangedHandler: function (n) { },
+      addValueChangedHandler: function (n) {},
+      removeValueChangedHandler: function (n) {},
     };
-
-    // GHI #235
-    /*     pyodideManager.loadPyodideLibs({
-          standardLibs: ['matplotlib'],
-          micropipLibs: [],
-        }); */
 
     self.render();
   };
@@ -209,12 +110,6 @@ function pyodideWidgetsPluginClass() {
   this.pluginDefinition = {
     name: 'pyodide',
     widgetsDefinitionList: {
-      plotlyPyGeneric: {
-        factory: 'genericPlotlyPythonWidget',
-        title: 'Plotly Python generic',
-        icn: 'plotly-python-generic',
-        help: 'wdg/wdg-plots/#plotly-python-generic',
-      },
       matplotlib: {
         factory: 'genericMatplotlibWidget',
         title: 'Matplotlib generic',
