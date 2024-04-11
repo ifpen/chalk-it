@@ -133,6 +133,9 @@ shutil.copytree('./back_end/app/', './build/chlkt/app/')
 # for gunicorn rendering of pages
 shutil.copytree('./back_end/render/', './build/chlkt/render/')
 
+# copy backend runner
+shutil.copytree('./back_end/middleware/src/chalkit_python_api/', './build/chlkt/chalkit_python_api/')
+
 # Copy templates
 shutil.copytree('./documentation/Templates/', './build/chlkt/Templates/')
 
