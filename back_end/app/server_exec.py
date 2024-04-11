@@ -11,6 +11,7 @@
 
 
 import sys
+import os
 import hashlib
 import logging
 import re
@@ -21,7 +22,12 @@ from typing import Optional, Union, Dict
 from flask import Blueprint, Response
 from flask import make_response, json, request
 
-sys.path.append('./back_end/middleware/src/')
+# Path to the directory you want to add to sys.path
+middelware_path = './back_end/middleware/src/'
+
+# Check if the directory exists before adding it to sys.path for developpment mode
+if os.path.exists(middelware_path):
+    sys.path.append(middelware_path)
 
 logger = logging.getLogger(__name__)
 
