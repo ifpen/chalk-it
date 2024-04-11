@@ -34,9 +34,12 @@ const axisParams = {
     color: textColor,
   },
 };
-const plotlyColorParams = {
+const plotlyBackground = {
   paper_bgcolor: 'rgba(0,0,0,0)',
   plot_bgcolor: 'rgba(0,0,0,0)',
+};
+const plotlyColorParams = {
+  ...plotlyBackground,
   colorway: colorway,
   legend: {
     font: {
@@ -174,14 +177,17 @@ modelsParameters.plotly3dSurface = {
 };
 
 modelsParameters.plotlyGeneric = {
+  enforceBackgroundTransparency: true,
   hideModeBar: false,
 };
 
 modelsParameters.plotlyPyGeneric = {
+  enforceBackgroundTransparency: true,
   hideModeBar: false,
 };
 
 modelsParameters.plotlyRealTime = {
+  enforceBackgroundTransparency: true,
   //numberOfAxis: 1,
   hideModeBar: false,
 };
@@ -244,7 +250,6 @@ modelsHiddenParams.plotly3dSurface = {
 };
 
 modelsHiddenParams.plotlyRealTime = {
-  ...modelsParameters.plotlyRealTime,
   data: [
     {
       //'x': [],
@@ -253,25 +258,23 @@ modelsHiddenParams.plotlyRealTime = {
     },
   ],
   layout: {
-    ...plotlyColorParams,
+    ...plotlyBackground,
   },
   selection: [{}],
 };
 
 modelsHiddenParams.plotlyGeneric = {
-  ...modelsParameters.plotlyGeneric,
   data: [{}],
   layout: {
-    ...plotlyColorParams,
+    ...plotlyBackground,
   },
   selection: [{}],
 };
 
 modelsHiddenParams.plotlyPyGeneric = {
-  ...modelsParameters.plotlyPyGeneric,
   fig: {
     layout: {
-      ...plotlyColorParams,
+      ...plotlyBackground,
     },
   },
 };
@@ -468,7 +471,14 @@ function plotlyWidgetsPluginClass() {
       /* Apply colors from modelsParameters */
       let hiddenLayout = modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout;
       if (hiddenLayout) {
-        hiddenLayout = { ...plotlyColorParams, ...hiddenLayout };
+        if (modelsParameters[idInstance].enforceBackgroundTransparency) {
+          hiddenLayout = { ...plotlyBackground, ...hiddenLayout };
+        } else {
+          for (let prop of Object.keys(plotlyBackground)) {
+            delete hiddenLayout[prop];
+          }
+        }
+
         if (hiddenLayout.template?.layout?.font?.color) {
           hiddenLayout.template.layout.font.color = this.getColorValueFromCSSProperty(textColor);
         }
@@ -521,17 +531,17 @@ function plotlyWidgetsPluginClass() {
 
         const img_png = $('#png-export-' + idDivPlotly);
         const UNSENSIBLE_TIME_INTERVAL = 6000;
-        if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
-          // MBG tmp optim
-          img_png.attr('src', modelsTempParams[idInstance].pngCache);
-          const divContainer = document.getElementById(idDivContainer);
-          img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
-          img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
-          img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
-          img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + 'vh';
-          img_png[0].style.margin = '3px';
-          return;
-        }
+        // if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
+        //   // MBG tmp optim
+        //   img_png.attr('src', modelsTempParams[idInstance].pngCache);
+        //   const divContainer = document.getElementById(idDivContainer);
+        //   img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
+        //   img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
+        //   img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
+        //   img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + 'vh';
+        //   img_png[0].style.margin = '3px';
+        //   return;
+        // }
         Plotly.newPlot(idDivPlotly, data, hiddenLayout).then(function (gd) {
           Plotly.toImage(gd, {
             height: $('#' + idDivContainer).height(),
