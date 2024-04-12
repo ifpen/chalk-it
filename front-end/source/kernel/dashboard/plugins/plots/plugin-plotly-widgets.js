@@ -26,8 +26,9 @@ const colorway = [
   'var(--widget-color-12)',
   'var(--widget-color-13)',
 ];
-const textColor = 'var(--widget-color)';
 
+const textColor = 'var(--widget-color)';
+const gridColor = 'var(--widget-plotly-background-color)';
 const axisParams = {
   title: '',
   tickfont: {
@@ -44,6 +45,29 @@ const plotlyColorParams = {
   legend: {
     font: {
       color: textColor,
+    },
+  },
+};
+
+const genericPlotlyGridColor = {
+  xaxis: {
+    gridcolor: gridColor,
+  },
+  yaxis: {
+    gridcolor: gridColor,
+  },
+  zaxis: {
+    gridcolor: gridColor,
+  },
+};
+const genericPlotlyColor = {
+  template: {
+    layout: {
+      ...genericPlotlyGridColor,
+      colorway: colorway,
+      font: {
+        color: textColor,
+      },
     },
   },
 };
@@ -177,16 +201,22 @@ modelsParameters.plotly3dSurface = {
 };
 
 modelsParameters.plotlyGeneric = {
+  enforceTextColor: true,
+  textColor: textColor,
   enforceBackgroundTransparency: true,
   hideModeBar: false,
 };
 
 modelsParameters.plotlyPyGeneric = {
+  enforceTextColor: true,
+  textColor: textColor,
   enforceBackgroundTransparency: true,
   hideModeBar: false,
 };
 
 modelsParameters.plotlyRealTime = {
+  enforceTextColor: true,
+  textColor: textColor,
   enforceBackgroundTransparency: true,
   //numberOfAxis: 1,
   hideModeBar: false,
@@ -259,6 +289,7 @@ modelsHiddenParams.plotlyRealTime = {
   ],
   layout: {
     ...plotlyBackground,
+    ...genericPlotlyColor,
   },
   selection: [{}],
 };
@@ -267,6 +298,7 @@ modelsHiddenParams.plotlyGeneric = {
   data: [{}],
   layout: {
     ...plotlyBackground,
+    ...genericPlotlyColor,
   },
   selection: [{}],
 };
@@ -275,6 +307,7 @@ modelsHiddenParams.plotlyPyGeneric = {
   fig: {
     layout: {
       ...plotlyBackground,
+      ...genericPlotlyColor,
     },
   },
 };
@@ -471,16 +504,38 @@ function plotlyWidgetsPluginClass() {
       /* Apply colors from modelsParameters */
       let hiddenLayout = modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout;
       if (hiddenLayout) {
-        if (modelsParameters[idInstance].enforceBackgroundTransparency) {
-          hiddenLayout = { ...plotlyBackground, ...hiddenLayout };
-        } else {
-          for (let prop of Object.keys(plotlyBackground)) {
-            delete hiddenLayout[prop];
-          }
-        }
+        // For generic plotly
+        const plotlyParams = [
+          { key: 'enforceBackgroundTransparency', value: plotlyBackground },
+          { key: 'enforceTextColor', value: genericPlotlyColor },
+        ];
 
-        if (hiddenLayout.template?.layout?.font?.color) {
-          hiddenLayout.template.layout.font.color = this.getColorValueFromCSSProperty(textColor);
+        plotlyParams.forEach((param) => {
+          if (modelsParameters[idInstance][param.key]) {
+            hiddenLayout = _.merge({}, param.value, hiddenLayout);
+          } else {
+            _.forIn(param.value, (value, key) => {
+              if (_.has(hiddenLayout, key)) {
+                if (_.isEqual(hiddenLayout[key], value)) {
+                  _.unset(hiddenLayout, key);
+                }
+              }
+            });
+          }
+        });
+
+        // For generic plotly
+        if (hiddenLayout.template?.layout && modelsParameters[idInstance].enforceTextColor) {
+          const layout = hiddenLayout.template.layout;
+          if (layout.font?.color) {
+            const fontColor = modelsParameters[idInstance]?.textColor ?? textColor;
+            layout.font.color = this.getColorValueFromCSSProperty(fontColor);
+          }
+          ['xaxis', 'yaxis', 'zaxis'].forEach((axis) => {
+            if (layout[axis]?.gridcolor) {
+              layout[axis].gridcolor = this.getColorValueFromCSSProperty(gridColor);
+            }
+          });
         }
 
         hiddenLayout = JSON.parse(JSON.stringify(hiddenLayout));
