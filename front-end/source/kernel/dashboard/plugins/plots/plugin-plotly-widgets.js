@@ -587,17 +587,17 @@ function plotlyWidgetsPluginClass() {
 
         const img_png = $('#png-export-' + idDivPlotly);
         const UNSENSIBLE_TIME_INTERVAL = 6000;
-        // if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
-        //   // MBG tmp optim
-        //   img_png.attr('src', modelsTempParams[idInstance].pngCache);
-        //   const divContainer = document.getElementById(idDivContainer);
-        //   img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
-        //   img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
-        //   img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
-        //   img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + 'vh';
-        //   img_png[0].style.margin = '3px';
-        //   return;
-        // }
+        if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
+          // MBG tmp optim
+          img_png.attr('src', modelsTempParams[idInstance].pngCache);
+          const divContainer = document.getElementById(idDivContainer);
+          img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
+          img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
+          img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
+          img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + 'vh';
+          img_png[0].style.margin = '3px';
+          return;
+        }
         Plotly.newPlot(idDivPlotly, data, hiddenLayout).then(function (gd) {
           Plotly.toImage(gd, {
             height: $('#' + idDivContainer).height(),
