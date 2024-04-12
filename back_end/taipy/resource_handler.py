@@ -14,7 +14,7 @@ from pathlib import Path
 import typing as t
 from flask import send_from_directory
 from taipy.gui.custom import ResourceHandler
-from ..render import RenderApp
+from ..common import TemplateUtils
 
 
 class PureHTMLResourceHandler(ResourceHandler):
@@ -43,7 +43,9 @@ class PureHTMLResourceHandler(ResourceHandler):
                 return send_from_directory(root_dir, "index.html")
             xprjson_path: Path = (Path.cwd() / self.xprjson_file_name).resolve()
             if xprjson_path.is_file():
-                return RenderApp.start_runtime(root_dir, xprjson_path)
+                return TemplateUtils.render_template(
+                    root_dir, xprjson_path, "index-taipy-view"
+                )
 
         # Serve the requested file if it exists
         file_path: Path = root_dir / path
