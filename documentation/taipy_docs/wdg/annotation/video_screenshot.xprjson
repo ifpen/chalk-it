@@ -48,7 +48,8 @@
             "classType": ""
         },
         "droppers": {},
-        "backgroundColor": ""
+        "backgroundColor": "",
+        "theme": "default"
     },
     "dashboard": {
         "annotationImage6": {

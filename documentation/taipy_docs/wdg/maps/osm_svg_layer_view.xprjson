@@ -1,8 +1,8 @@
 {
 	"meta": {
-		"version": "3.000.8848",
+		"version": "3.000.8869",
 		"fileFormatVersion": "0.3",
-		"date": "Thu Mar 28 2024 17:12:25 GMT+0100 (heure normale d’Europe centrale)",
+		"date": "Fri Apr 12 2024 17:24:53 GMT+0200 (heure d’été d’Europe centrale)",
 		"name": "osm_svg_layer_view",
 		"description": "SVG overlay example displaying shapes on maps with configuration parameters",
 		"groupName": "JavaScript",
@@ -30,21 +30,21 @@
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1294,
+		"widthPx": 1274,
 		"heightPx": 590,
-		"scrollWidthPx": 1294,
+		"scrollWidthPx": 1274,
 		"scrollHeightPx": 590,
-		"widthVw": 84.68586387434554,
+		"widthVw": 83.37696335078535,
 		"heightVh": 78.66666666666667,
-		"scrollWidthVw": 84.68586387434554,
+		"scrollWidthVw": 83.37696335078535,
 		"scrollHeightVh": 78.66666666666667,
 		"scalingMethod": "scaleTwSp",
 		"media": "large",
 		"colDims": {
-			"widthPx": 1294.4,
-			"heightPx": 591.4,
-			"widthVw": 84.71204188481677,
-			"heightVh": 78.85333333333334,
+			"widthPx": 1274.4,
+			"heightPx": 583.4,
+			"widthVw": 83.40314136125656,
+			"heightVh": 77.78666666666666,
 			"rowHeightPercent": 100
 		}
 	},
@@ -58,93 +58,22 @@
 		},
 		"droppers": {
 			"dpr1": {
-				"component0": "flatUiHorizontalSliderp",
-				"component1": "flatUiCheckboxv",
-				"component2": "openStreetMapsA",
-				"component3": "flatUiSelectA"
+				"component0": "openStreetMapsA",
+				"component1": "flatUiSelectA",
+				"component2": "flatUiHorizontalSliderA",
+				"component3": "flatUiCheckboxA"
 			}
 		},
 		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {
-		"flatUiHorizontalSliderp": {
-			"layout": {
-				"top": "61.6vh",
-				"left": "19.2408vw",
-				"height": "6.53333vh",
-				"width": "33.4424vw",
-				"minHeight": "24px",
-				"minWidth": "200px",
-				"z-index": "4"
-			},
-			"container": {
-				"instanceId": "flatUiHorizontalSliderp",
-				"modelJsonId": "flatUiHorizontalSlider"
-			},
-			"modelParameters": {
-				"label": "length",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"min": 0,
-				"max": 10,
-				"step": 0.1,
-				"displayValue": true,
-				"valueFontSize": 0.5,
-				"labelWidthProportion": "20%",
-				"sliderWidthProportion": "60%",
-				"valueWidthProportion": "20%",
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Helvetica Neue",
-				"valueColor": "#34495e",
-				"valueFontFamily": "Helvetica Neue",
-				"sliderSegmentColor": "#ebedef",
-				"sliderRangeColor": "#447bdc",
-				"sliderHandleDefaultColor": "#2154ab",
-				"sliderHandleHoverColor": "#a9c3ef",
-				"sliderHandleActiveColor": "#a9c3ef",
-				"valueBorderColor": "#447bdc"
-			},
-			"modelHiddenParams": {
-				"value": 0
-			}
-		},
-		"flatUiCheckboxv": {
-			"layout": {
-				"top": "61.6vh",
-				"left": "2.09424vw",
-				"height": "6.53333vh",
-				"width": "13.678vw",
-				"minHeight": "24px",
-				"minWidth": "32px",
-				"z-index": "5"
-			},
-			"container": {
-				"instanceId": "flatUiCheckboxv",
-				"modelJsonId": "flatUiCheckbox"
-			},
-			"modelParameters": {
-				"label": "disableAutoscale",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"checkboxSize": 1,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Helvetica Neue",
-				"checkedColor": "var(--widget-input-checked-color)",
-				"uncheckedColor": "var(--widget-input-unchecked-color)"
-			},
-			"modelHiddenParams": {
-				"value": false
-			}
-		},
 		"openStreetMapsA": {
 			"layout": {
 				"top": "1.33333vh",
-				"left": "1.63613vw",
-				"height": "57.2vh",
-				"width": "73.5602vw",
+				"left": "1.50524vw",
+				"height": "56.4vh",
+				"width": "72.4476vw",
 				"minHeight": "20px",
 				"minWidth": "20px",
 				"z-index": "6"
@@ -239,10 +168,10 @@
 		},
 		"flatUiSelectA": {
 			"layout": {
-				"top": "61.6vh",
-				"left": "56.1518vw",
-				"height": "6.53333vh",
-				"width": "18.9791vw",
+				"top": "61.0667vh",
+				"left": "55.301vw",
+				"height": "5.06667vh",
+				"width": "18.7173vw",
 				"minHeight": "27px",
 				"minWidth": "40px",
 				"z-index": "7"
@@ -260,6 +189,7 @@
 				"labelFontFamily": "var(--widget-font-family)",
 				"selectWidthProportion": "70%",
 				"isNumber": false,
+				"isBoolean": false,
 				"selectValueFontFamily": "var(--widget-font-family)",
 				"selectValueFontSize": 0.5,
 				"selectedValueColor": "var(--widget-select-option-highlighted-text)",
@@ -272,30 +202,86 @@
 				"values": [],
 				"selectedValue": ""
 			}
+		},
+		"flatUiCheckboxA": {
+			"layout": {
+				"top": "61.0667vh",
+				"left": "1.50524vw",
+				"height": "5.06667vh",
+				"width": "11.7801vw",
+				"minHeight": "24px",
+				"minWidth": "32px",
+				"z-index": "8"
+			},
+			"container": {
+				"instanceId": "flatUiCheckboxA",
+				"modelJsonId": "flatUiCheckbox"
+			},
+			"modelParameters": {
+				"label": "disableAutoscale",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelPosition": "right",
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"checkboxSize": 1,
+				"checkedColor": "var(--widget-input-checked-color)",
+				"uncheckedColor": "var(--widget-input-unchecked-color)"
+			},
+			"modelHiddenParams": {
+				"value": false
+			}
+		},
+		"flatUiHorizontalSliderA": {
+			"layout": {
+				"top": "61.0667vh",
+				"left": "20.1571vw",
+				"height": "5.06667vh",
+				"width": "28.6649vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "9"
+			},
+			"container": {
+				"instanceId": "flatUiHorizontalSliderA",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "length",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"rangeActuator": false,
+				"min": 0,
+				"max": 100,
+				"step": 1,
+				"displayValue": true,
+				"validationOnFocusOut": true,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueBorderColor": "var(--widget-border-color)",
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"sliderRangeColor": "var(--widget-range-color)",
+				"sliderSegmentColor": "var(--widget-segment-color)",
+				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
+				"valueColor": "var(--widget-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
 		}
 	},
 	"connections": {
-		"flatUiHorizontalSliderp": {
-			"value": {
-				"name": "value",
-				"dataFields": [
-					"config",
-					"length"
-				],
-				"dataNode": "wind_svg_layer",
-				"dataNodeIndex": 4
-			}
-		},
-		"flatUiCheckboxv": {
-			"value": {
-				"name": "value",
-				"dataNode": "wind_svg_layer",
-				"dataFields": [
-					"config",
-					"disableAutoscale"
-				]
-			}
-		},
 		"openStreetMapsA": {
 			"svgOverlay1": {
 				"name": "svgOverlay1",
@@ -320,6 +306,26 @@
 				"dataFields": [
 					"config",
 					"marker"
+				]
+			}
+		},
+		"flatUiCheckboxA": {
+			"value": {
+				"name": "value",
+				"dataNode": "wind_svg_layer",
+				"dataFields": [
+					"config",
+					"disableAutoscale"
+				]
+			}
+		},
+		"flatUiHorizontalSliderA": {
+			"value": {
+				"name": "value",
+				"dataNode": "wind_svg_layer",
+				"dataFields": [
+					"config",
+					"length"
 				]
 			}
 		}

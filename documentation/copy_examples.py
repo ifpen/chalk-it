@@ -19,7 +19,7 @@ src_directory = "taipy_docs"
 dst_directory = "examples"
 
 # Extensions of the files to be copied and specific file names
-extensions = [".py",".xprjson", ".csv", ".ppg", ".html", ".json", ".txt"]
+extensions = [".py",".xprjson", ".csv", ".jpg", ".html", ".json", ".txt"]
 other_files_to_copy = ["example.md"]  # Example file names
 
 # Call the function

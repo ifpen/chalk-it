@@ -1,8 +1,8 @@
 {
 	"meta": {
-		"version": "3.000.8846",
+		"version": "3.000.8869",
 		"fileFormatVersion": "0.3",
-		"date": "Fri Mar 22 2024 11:22:08 GMT+0100 (heure normale d’Europe centrale)",
+		"date": "Fri Apr 12 2024 15:36:20 GMT+0200 (heure d’été d’Europe centrale)",
 		"name": "iris_demo_page",
 		"description": "",
 		"groupName": "",
@@ -17,21 +17,21 @@
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1678,
-		"heightPx": 749,
-		"scrollWidthPx": 1678,
-		"scrollHeightPx": 749,
-		"widthVw": 87.76150627615063,
-		"heightVh": 70.52730696798493,
-		"scrollWidthVw": 87.76150627615063,
-		"scrollHeightVh": 70.52730696798493,
+		"widthPx": 1274,
+		"heightPx": 590,
+		"scrollWidthPx": 1274,
+		"scrollHeightPx": 590,
+		"widthVw": 83.37696335078535,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 83.37696335078535,
+		"scrollHeightVh": 78.66666666666667,
 		"scalingMethod": "scaleTwh",
 		"media": "large",
 		"colDims": {
-			"widthPx": 1678,
-			"heightPx": 749,
-			"widthVw": 87.76150627615063,
-			"heightVh": 70.52730696798493,
+			"widthPx": 1274.4,
+			"heightPx": 590.4,
+			"widthVw": 83.40314136125656,
+			"heightVh": 78.72,
 			"rowHeightPercent": 100
 		}
 	},
@@ -45,43 +45,24 @@
 		},
 		"droppers": {
 			"dpr1": {
-				"component0": "plotlyPyGenericA",
-				"component1": "flatUiHorizontalSliderA",
-				"component2": "flatUiHorizontalSliderB",
-				"component3": "flatUiHorizontalSliderC",
-				"component4": "flatUiHorizontalSliderD",
-				"component5": "kpiCardA"
+				"component0": "flatUiHorizontalSliderA",
+				"component1": "flatUiHorizontalSliderB",
+				"component2": "flatUiHorizontalSliderC",
+				"component3": "flatUiHorizontalSliderD",
+				"component4": "kpiCardA",
+				"component5": "openStreetMapsA"
 			}
 		},
 		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {
-		"plotlyPyGenericA": {
-			"layout": {
-				"top": "0.94162vh",
-				"left": "47.4372vw",
-				"height": "42.0904vh",
-				"width": "37.0293vw",
-				"minHeight": "32px",
-				"minWidth": "50px",
-				"z-index": "1"
-			},
-			"container": {
-				"instanceId": "plotlyPyGenericA",
-				"modelJsonId": "plotlyPyGeneric"
-			},
-			"modelParameters": {},
-			"modelHiddenParams": {
-				"fig": ""
-			}
-		},
 		"flatUiHorizontalSliderA": {
 			"layout": {
-				"top": "5.83804vh",
-				"left": "8.62971vw",
-				"height": "5.36723vh",
-				"width": "21.2866vw",
+				"top": "6.51621vh",
+				"left": "8.20115vw",
+				"height": "5.99071vh",
+				"width": "20.2295vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "2"
@@ -114,7 +95,10 @@
 				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
 				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
 				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
-				"valueColor": "var(--widget-color)"
+				"valueColor": "var(--widget-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
 			},
 			"modelHiddenParams": {
 				"value": 0
@@ -122,10 +106,10 @@
 		},
 		"flatUiHorizontalSliderB": {
 			"layout": {
-				"top": "12.1469vh",
-				"left": "8.62971vw",
-				"height": "5.36723vh",
-				"width": "21.2866vw",
+				"top": "13.5579vh",
+				"left": "8.20115vw",
+				"height": "5.99071vh",
+				"width": "20.2295vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "3"
@@ -158,7 +142,10 @@
 				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
 				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
 				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
-				"valueColor": "var(--widget-color)"
+				"valueColor": "var(--widget-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
 			},
 			"modelHiddenParams": {
 				"value": 0
@@ -166,10 +153,10 @@
 		},
 		"flatUiHorizontalSliderC": {
 			"layout": {
-				"top": "18.7382vh",
-				"left": "8.62971vw",
-				"height": "5.36723vh",
-				"width": "21.2866vw",
+				"top": "20.9149vh",
+				"left": "8.20115vw",
+				"height": "5.99071vh",
+				"width": "20.2295vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "4"
@@ -202,7 +189,10 @@
 				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
 				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
 				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
-				"valueColor": "var(--widget-color)"
+				"valueColor": "var(--widget-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
 			},
 			"modelHiddenParams": {
 				"value": 0
@@ -210,10 +200,10 @@
 		},
 		"flatUiHorizontalSliderD": {
 			"layout": {
-				"top": "25.8004vh",
-				"left": "8.62971vw",
-				"height": "5.36723vh",
-				"width": "21.2866vw",
+				"top": "28.7975vh",
+				"left": "8.20115vw",
+				"height": "5.99071vh",
+				"width": "20.2295vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "5"
@@ -246,7 +236,10 @@
 				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
 				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
 				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
-				"valueColor": "var(--widget-color)"
+				"valueColor": "var(--widget-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
 			},
 			"modelHiddenParams": {
 				"value": 0
@@ -254,10 +247,10 @@
 		},
 		"kpiCardA": {
 			"layout": {
-				"top": "36.9115vh",
-				"left": "8.00209vw",
-				"height": "25.0471vh",
-				"width": "22.8033vw",
+				"top": "41.1993vh",
+				"left": "7.60469vw",
+				"height": "27.9567vh",
+				"width": "21.6709vw",
 				"minHeight": "32px",
 				"minWidth": "64px",
 				"z-index": "6"
@@ -287,16 +280,107 @@
 			"modelHiddenParams": {
 				"value": "--"
 			}
+		},
+		"openStreetMapsA": {
+			"layout": {
+				"top": "15.2vh",
+				"left": "36.2565vw",
+				"height": "53.7333vh",
+				"width": "35.0131vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "7"
+			},
+			"container": {
+				"instanceId": "openStreetMapsA",
+				"modelJsonId": "openStreetMaps"
+			},
+			"modelParameters": {
+				"geoJson": {
+					"numberOfLayers": 1
+				},
+				"choropleth": {
+					"numberOfLayers": 0
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false,
+					"densityHeatMap": false
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
+				"drawingFeatures": false,
+				"drawingFeaturesOptions": {
+					"point": true,
+					"line": true,
+					"polygone": true,
+					"rectangle": true,
+					"modal": false
+				},
+				"captureClickEvent": false,
+				"markerCluster": true
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
 		}
 	},
 	"connections": {
-		"plotlyPyGenericA": {
-			"fig": {
-				"name": "fig",
-				"dataNode": "fig",
-				"dataFields": []
-			}
-		},
 		"flatUiHorizontalSliderA": {
 			"value": {
 				"name": "value",
@@ -339,7 +423,8 @@
 				"dataNode": "prediction",
 				"dataFields": []
 			}
-		}
+		},
+		"openStreetMapsA": {}
 	},
 	"exportOptions": "projectToTargetWindow",
 	"pages": {
