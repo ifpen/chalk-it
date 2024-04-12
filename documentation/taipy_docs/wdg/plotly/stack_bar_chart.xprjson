@@ -64,7 +64,7 @@
 				"component0": "plotlyBarK"
 			}
 		},
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {

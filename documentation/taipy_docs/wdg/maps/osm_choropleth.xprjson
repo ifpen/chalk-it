@@ -57,7 +57,7 @@
 				"component2": "flatUiHorizontalSliderB"
 			}
 		},
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {

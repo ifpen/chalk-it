@@ -60,7 +60,7 @@
             "classType": ""
         },
         "droppers": {},
-        "backgroundColor": "#ffffff"
+        "backgroundColor": ""
     },
     "dashboard": {
         "plotlyLineu": {

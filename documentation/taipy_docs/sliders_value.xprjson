@@ -1,8 +1,8 @@
 {
 	"meta": {
-		"version": "3.000.8859",
+		"version": "3.000.8869",
 		"fileFormatVersion": "0.3",
-		"date": "Tue Apr 02 2024 10:27:43 GMT+0200 (heure d’été d’Europe centrale)",
+		"date": "Fri Apr 12 2024 14:45:17 GMT+0200 (heure d’été d’Europe centrale)",
 		"name": "sliders_value",
 		"description": "",
 		"groupName": "",
@@ -17,20 +17,20 @@
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1294,
+		"widthPx": 1275,
 		"heightPx": 590,
-		"scrollWidthPx": 1294,
+		"scrollWidthPx": 1275,
 		"scrollHeightPx": 590,
-		"widthVw": 84.68586387434554,
+		"widthVw": 83.44240837696336,
 		"heightVh": 78.66666666666667,
-		"scrollWidthVw": 84.68586387434554,
+		"scrollWidthVw": 83.44240837696336,
 		"scrollHeightVh": 78.66666666666667,
 		"scalingMethod": "scaleTwh",
 		"media": "large",
 		"colDims": {
-			"widthPx": 1294.4,
+			"widthPx": 1275.4,
 			"heightPx": 590.4,
-			"widthVw": 84.71204188481677,
+			"widthVw": 83.46858638743457,
 			"heightVh": 78.72,
 			"rowHeightPercent": 100
 		}
@@ -50,16 +50,16 @@
 				"component2": "kpiCardA"
 			}
 		},
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {
 		"flatUiHorizontalSliderA": {
 			"layout": {
 				"top": "9.6vh",
-				"left": "10.3403vw",
+				"left": "10.1805vw",
 				"height": "5.06667vh",
-				"width": "24.0183vw",
+				"width": "23.6472vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "1"
@@ -92,7 +92,10 @@
 				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
 				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
 				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
-				"valueColor": "var(--widget-color)"
+				"valueColor": "var(--widget-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
 			},
 			"modelHiddenParams": {
 				"value": 0
@@ -101,9 +104,9 @@
 		"flatUiHorizontalSliderB": {
 			"layout": {
 				"top": "18.1333vh",
-				"left": "10.3403vw",
+				"left": "10.1805vw",
 				"height": "5.06667vh",
-				"width": "24.0183vw",
+				"width": "23.6472vw",
 				"minHeight": "24px",
 				"minWidth": "200px",
 				"z-index": "2"
@@ -136,7 +139,10 @@
 				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
 				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
 				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
-				"valueColor": "var(--widget-color)"
+				"valueColor": "var(--widget-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5
 			},
 			"modelHiddenParams": {
 				"value": 0
@@ -145,9 +151,9 @@
 		"kpiCardA": {
 			"layout": {
 				"top": "8.16vh",
-				"left": "36.2042vw",
+				"left": "35.6448vw",
 				"height": "16vh",
-				"width": "17.9974vw",
+				"width": "17.7193vw",
 				"minHeight": "32px",
 				"minWidth": "64px",
 				"z-index": "3"

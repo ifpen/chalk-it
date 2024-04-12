@@ -64,7 +64,7 @@
 				"component3": "flatUiSelectA"
 			}
 		},
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {

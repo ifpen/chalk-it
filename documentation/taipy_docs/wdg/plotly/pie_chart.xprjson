@@ -54,7 +54,7 @@
             "classType": ""
         },
         "droppers": {},
-        "backgroundColor": "#ffffff"
+        "backgroundColor": ""
     },
     "dashboard": {
         "plotlyPieN": {

@@ -63,7 +63,7 @@
 				"component2": "openStreetMapsA"
 			}
 		},
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {
