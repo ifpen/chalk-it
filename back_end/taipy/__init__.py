@@ -27,5 +27,5 @@ __all__ = [
     "chlkt_save_file_",
     "chlkt_get_file_list_",
     "ChalkitPage",
-    "DesignerPage"
+    "DesignerPage",
 ]
