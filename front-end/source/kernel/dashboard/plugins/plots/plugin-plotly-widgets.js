@@ -310,6 +310,7 @@ modelsHiddenParams.plotlyPyGeneric = {
       ...genericPlotlyColor,
     },
   },
+  selection: [{}],
 };
 
 modelsTempParams.plotlyLine = { lastEditTimeStamp: 0, pngCache: '' };
@@ -1192,8 +1193,13 @@ function plotlyWidgetsPluginClass() {
       'Plotly figure object',
       WidgetActuatorDescription.READ
     );
+    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription(
+      'selection',
+      'Plotly selection',
+      WidgetActuatorDescription.WRITE
+    );
     this.getActuatorDescriptions = function () {
-      return [_FIG_DESCRIPTOR];
+      return [_FIG_DESCRIPTOR, _SELECTION_DESCRIPTOR];
     };
 
     this.fig = {
@@ -1206,6 +1212,19 @@ function plotlyWidgetsPluginClass() {
       },
       addValueChangedHandler: function (n) {},
       removeValueChangedHandler: function (n) {},
+    };
+
+    this.selection = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].selection = val;
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].selection;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {
+        this.updateCallback = updateDataFromWidget;
+      },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
     };
   };
   // Inherit from base Plotly class
