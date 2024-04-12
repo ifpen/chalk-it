@@ -324,6 +324,9 @@ html {
 
       // Select2 dropdowns are created as direct children of the body element
       --widget-select-drop-color: #{darken(map-get($theme, 0), 3%)};
+
+      // Plotly
+      --widget-plotly-background-color: #{darken(map-get($theme, 0), 3%)};
     } @else {
       // Global
       --widget-subtext-color: #{darken(map-get($theme, 1), 20%)};
@@ -350,6 +353,9 @@ html {
 
       // Select2 dropdowns are created as direct children of the body element
       --widget-select-drop-color: #{lighten(map-get($theme, 0), 3%)};
+
+      // Plotly
+      --widget-plotly-background-color: #{lighten(map-get($theme, 0), 3%)};
     }
 
     // Contrasted text color
