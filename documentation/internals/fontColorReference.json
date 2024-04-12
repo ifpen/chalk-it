@@ -1,0 +1,49 @@
+{
+  "--widget-font-family": "Helvetica Neue, Helvetica, Arial, sans-serif",
+  "--widget-color": "#fff",
+  "--widget-border-color": "#ff371a",
+  "--widget-label-color": "#ff5c4d",
+
+  "--widget-segment-color": "#ebedef",
+  "--widget-range-color": "#ff371a",
+  "--widget-handle-default-color": "#ff5c4d",
+  "--widget-handle-hover-color": "#c66563",
+  "--widget-handle-active-color": "#c66563",
+
+  "--widget-delete-button-default-color": "#e74c3c",
+  "--widget-delete-button-active-color": "#e74c3c",
+  "--widget-delete-button-hover-color": "#e74c3c",
+  "--widget-delete-button-icon-color": "#e74c3c",
+  "--widget-delete-button-icon-hover-color": "#e74c3c",
+
+  "--widget-table-value-color": "#fff",
+
+  "--widget-input-color": "#0b0b0e",
+  "--widget-input-unchecked-color": "#bdc3c7",
+  "--widget-input-checked-color": "#ff371a",
+  "--widget-input-text": "#fff",
+
+  "--widget-button-color": "#ff371a",
+  "--widget-button-active-color": "#ff5c4d",
+  "--widget-button-hover-color": "#c66563",
+  "--widget-button-primary-color": "#ff371a",
+
+  "--widget-select-option-highlighted-color": "#ff371a",
+  "--widget-select-drop-text": "#fff",
+
+  "--widget-multiselect-color": "#0b0b0e",
+  "--widget-multiselect-border-color": "#ff5c4d",
+  "--widget-multiselect-hover-color": "#ff371a",
+  "--widget-multiselect-hover--border-color": "#ff371a",
+  "--widget-multiselect-checked-color": "#ff5c4d",
+  "--widget-multiselect-checked-border-color": "#ff5c4d",
+
+  "--widget-subtext-color": "",
+  "--widget-table-striped-odd": "",
+  "--widget-button-text": "",
+  "--widget-button-primary-text": "",
+  "--widget-select-option-highlighted-text": "",
+  "--widget-select-drop-color": "",
+  "--widget-multiselect-hover-text": "",
+  "--widget-multiselect-checked-text": ""
+}
