@@ -310,6 +310,7 @@ modelsHiddenParams.plotlyPyGeneric = {
       ...genericPlotlyColor,
     },
   },
+  selection: [{}],
 };
 
 modelsTempParams.plotlyLine = { lastEditTimeStamp: 0, pngCache: '' };
@@ -586,17 +587,17 @@ function plotlyWidgetsPluginClass() {
 
         const img_png = $('#png-export-' + idDivPlotly);
         const UNSENSIBLE_TIME_INTERVAL = 6000;
-        if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
-          // MBG tmp optim
-          img_png.attr('src', modelsTempParams[idInstance].pngCache);
-          const divContainer = document.getElementById(idDivContainer);
-          img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
-          img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
-          img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
-          img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + 'vh';
-          img_png[0].style.margin = '3px';
-          return;
-        }
+        // if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
+        //   // MBG tmp optim
+        //   img_png.attr('src', modelsTempParams[idInstance].pngCache);
+        //   const divContainer = document.getElementById(idDivContainer);
+        //   img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
+        //   img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
+        //   img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
+        //   img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + 'vh';
+        //   img_png[0].style.margin = '3px';
+        //   return;
+        // }
         Plotly.newPlot(idDivPlotly, data, hiddenLayout).then(function (gd) {
           Plotly.toImage(gd, {
             height: $('#' + idDivContainer).height(),
@@ -1192,8 +1193,13 @@ function plotlyWidgetsPluginClass() {
       'Plotly figure object',
       WidgetActuatorDescription.READ
     );
+    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription(
+      'selection',
+      'Plotly selection',
+      WidgetActuatorDescription.WRITE
+    );
     this.getActuatorDescriptions = function () {
-      return [_FIG_DESCRIPTOR];
+      return [_FIG_DESCRIPTOR, _SELECTION_DESCRIPTOR];
     };
 
     this.fig = {
@@ -1206,6 +1212,19 @@ function plotlyWidgetsPluginClass() {
       },
       addValueChangedHandler: function (n) {},
       removeValueChangedHandler: function (n) {},
+    };
+
+    this.selection = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].selection = val;
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].selection;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {
+        this.updateCallback = updateDataFromWidget;
+      },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
     };
   };
   // Inherit from base Plotly class
