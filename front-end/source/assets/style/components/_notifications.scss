@@ -71,13 +71,6 @@
   }
 }
 
-.notification__success {
-  border-left: 10px solid var(--success-color);
-
-  .notification__top__title {
-    color: var(--success-color);
-  }
-}
 $alert-colors: 'info', 'success', 'warning', 'danger';
 
 @each $color in $alert-colors {
