@@ -59,7 +59,7 @@ body.stop-scrolling {
 }
 
 .sweet-alert p {
-  color: var(--text-color-secondary);
+  color: var(--text-color);
 }
 
 .sweet-alert textarea {
@@ -68,7 +68,7 @@ body.stop-scrolling {
   width: auto;
   margin: 0;
   padding: 0;
-  color: var(--text-color-secondary);
+  color: var(--text-color);
   line-height: normal;
 }
 
@@ -125,7 +125,6 @@ body.stop-scrolling {
   top: 29px;
   right: 26px;
   width: 20px;
-  //height: 20px;
   opacity: 0;
   -webkit-transform: scale(0.5);
   transform: scale(0.5);

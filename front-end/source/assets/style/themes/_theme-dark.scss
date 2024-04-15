@@ -55,20 +55,20 @@ $text-color: #ffffff;
   --success-color: #05c776;
   --success-hover-color: #049558;
   --success-active-color: #049558;
-  --success-color-text: #ffffff;
+  --success-color-text: var(--text-color);
   --success-color-rgb: 5 199 118; // Used for editor mode
   --info-color: #55c1f6;
   --info-hover-color: #7ddaf7;
   --info-active-color: #0f9bd7;
-  --info-color-text: #ffffff;
+  --info-color-text: var(--text-color);
   --warning-color: #fbbf24;
   --warning-hover-color: #fccc55;
   --warning-active-color: #e6a605;
-  --warning-color-text: #ffffff;
+  --warning-color-text: var(--text-color);
   --danger-color: #f87171;
   --danger-hover-color: #fba2a2;
   --danger-active-color: #f64141;
-  --danger-color-text: #ffffff;
+  --danger-color-text: var(--text-color);
   --disabled-color: #bdc3c7;
 
   // Layout custom colors
