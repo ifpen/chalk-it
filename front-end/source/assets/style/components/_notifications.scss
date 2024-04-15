@@ -90,30 +90,6 @@ $alert-colors: 'info', 'success', 'warning', 'danger';
   }
 }
 
-.notification__danger {
-  border-left: 10px solid var(--danger-color);
-
-  .notification__top__title {
-    color: var(--danger-color);
-  }
-}
-
-.notification__info {
-  border-left: 10px solid var(--info-color);
-
-  .notification__top__title {
-    color: var(--info-color);
-  }
-}
-
-.notification__warning {
-  border-left: 10px solid var(--warning-color);
-
-  .notification__top__title {
-    color: var(--warning-color);
-  }
-}
-
 .notification--clear-cta {
   padding: 0;
   border: none;
