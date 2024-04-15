@@ -105,3 +105,15 @@
     color: var(--warning-color);
   }
 }
+
+.notification--clear--cta {
+  display: flex;
+  justify-content: center;
+  background: var(--surface-c);
+  border: 1px solid var(--border-b);
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: var(--hover-color);
+  }
+}
