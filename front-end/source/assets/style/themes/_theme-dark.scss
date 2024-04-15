@@ -61,10 +61,10 @@ $text-color: #ffffff;
   --info-hover-color: #7ddaf7;
   --info-active-color: #0f9bd7;
   --info-color-text: var(--text-color);
-  --warning-color: #fbbf24;
+  --warning-color: #ffc107;
   --warning-hover-color: #fccc55;
   --warning-active-color: #e6a605;
-  --warning-color-text: var(--text-color);
+  --warning-color-text: var(--light-color-text);
   --danger-color: #f87171;
   --danger-hover-color: #fba2a2;
   --danger-active-color: #f64141;
@@ -73,7 +73,7 @@ $text-color: #ffffff;
 
   // Layout custom colors
   --header-color: var(--surface-a);
-  --header-color-text: #ffffff;
+  --header-color-text: var(--text-color);
 
   // Border colors
   --border-a: #333333;
