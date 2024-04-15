@@ -43,6 +43,11 @@
     display: block;
     font-size: fs('3xl');
   }
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--hover-color);
+  }
 }
 
 .notification__content {
@@ -66,17 +71,37 @@
 }
 
 .notification__success {
-  border: 2px solid var(--success-color);
+  border: 1px solid var(--border-a);
+  border-left: 10px solid var(--success-color);
+
+  .notification__top__title {
+    color: var(--success-color);
+  }
 }
 
 .notification__danger {
-  border: 2px solid var(--danger-color);
+  border: 1px solid var(--border-a);
+  border-left: 10px solid var(--danger-color);
+
+  .notification__top__title {
+    color: var(--danger-color);
+  }
 }
 
 .notification__info {
-  border: 2px solid var(--primary-color);
+  border: 1px solid var(--border-a);
+  border-left: 10px solid var(--info-color);
+
+  .notification__top__title {
+    color: var(--info-color);
+  }
 }
 
 .notification__warning {
-  border: 2px solid var(--warning-color);
+  border: 1px solid var(--border-a);
+  border-left: 10px solid var(--warning-color);
+
+  .notification__top__title {
+    color: var(--warning-color);
+  }
 }
