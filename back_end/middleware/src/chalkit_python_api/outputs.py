@@ -13,8 +13,9 @@
 import json
 import sys
 import traceback
-import typing
+from collections.abc import Callable
 from io import BytesIO, StringIO
+from typing import Any, Optional, Union
 
 from chalkit_python_api import PICKLE_MIME
 from chalkit_python_api.datanodes import DataNodesProxy
@@ -29,7 +30,7 @@ def bytes_to_b64(data: bytes) -> str:
     return standard_b64encode(data).decode('ascii')
 
 
-def with_io(fct: typing.Callable[[BytesIO], None]) -> bytes:
+def with_io(fct: Callable[[BytesIO], None]) -> bytes:
     buffer = BytesIO()
     fct(buffer)
     return buffer.getvalue()
@@ -48,7 +49,7 @@ class JsonAdapter(OutputAdapter):
         'numpy.ndarray',
     }
 
-    def __init__(self, value: any):
+    def __init__(self, value: Any):
         self._value = value
 
     def to_json(self):
@@ -71,7 +72,7 @@ class ImageAdapter(OutputAdapter):
         'PIL.Image.Image',
     }
 
-    def __init__(self, value: any):
+    def __init__(self, value: Any):
         self._value = value
 
     def to_json(self):
@@ -107,7 +108,7 @@ class ImageAdapter(OutputAdapter):
 
 
 class PythonAdapter(OutputAdapter):
-    def __init__(self, value: any):
+    def __init__(self, value: Any):
         self._value = value
 
     def to_json(self):
@@ -127,7 +128,7 @@ class DataAdapter(OutputAdapter):
         'builtins.bytes',
     }
 
-    def __init__(self, value: any, mime_type=None, name=None):
+    def __init__(self, value: Any, mime_type=None, name=None):
         self._mime_type = mime_type
         self._name = name
         self._value = value
@@ -168,8 +169,8 @@ class DataAdapter(OutputAdapter):
 
 
 class ChalkitState:
-    capture_io: typing.Tuple[StringIO, StringIO]
-    debug_data: typing.List[any]
+    capture_io: tuple[StringIO, StringIO]
+    debug_data: list[Any]
 
     def __init__(self, debug, capture_io):
         self._results = None
@@ -177,7 +178,7 @@ class ChalkitState:
         self.debug = debug
         self.capture_io = capture_io
 
-    def _result_as_dict(self) -> typing.Dict[str, any]:
+    def _result_as_dict(self) -> dict[str, Any]:
         if self._results:
             if isinstance(self._results, list):
                 raise RuntimeError("There are positional outputs")
@@ -187,7 +188,7 @@ class ChalkitState:
             self._results = {}
             return self._results
 
-    def _result_as_list(self) -> typing.List[any]:
+    def _result_as_list(self) -> list[Any]:
         if self._results:
             if isinstance(self._results, dict):
                 raise RuntimeError("There are keyed outputs")
@@ -197,16 +198,16 @@ class ChalkitState:
             self._results = []
             return self._results
 
-    def results(self) -> typing.Optional[typing.Union[typing.Dict[str, any], typing.List[any]]]:
+    def results(self) -> Optional[Union[dict[str, Any], list[Any]]]:
         return self._results
 
-    def add_output(self, value: typing.Any, key: typing.Optional[str] = None) -> None:
+    def add_output(self, value: Any, key: Optional[str] = None) -> None:
         if key:
             self._result_as_dict()[str(key)] = value
         else:
             self._result_as_list().append(value)
 
-    def add_debug(self, value: typing.Any) -> None:
+    def add_debug(self, value: Any) -> None:
         if self.debug:
             self.debug_data.append(value)
 
@@ -255,7 +256,7 @@ class ChalkitApi:
         return standard_b64decode(b64)
 
     @staticmethod
-    def as_json(value: typing.Any) -> OutputAdapter:
+    def as_json(value: Any) -> OutputAdapter:
         """
         This method instructs Chalk'it to convert a result to a JSON representation.
 
@@ -274,7 +275,7 @@ class ChalkitApi:
         return JsonAdapter(value)
 
     @staticmethod
-    def as_python(value: typing.Any) -> OutputAdapter:
+    def as_python(value: Any) -> OutputAdapter:
         """
         This method instructs Chalk'it to pickle a result, the main use case being moving Python objects from a
         Python datanode to another.
@@ -293,7 +294,7 @@ class ChalkitApi:
         return PythonAdapter(value)
 
     @staticmethod
-    def as_image(value: typing.Any) -> OutputAdapter:
+    def as_image(value: Any) -> OutputAdapter:
         """
         This method instructs Chalk'it to convert the result (like a plot figure) into an image.
 
@@ -307,8 +308,7 @@ class ChalkitApi:
         return ImageAdapter(value)
 
     @staticmethod
-    def as_data(value: typing.Any, mime_type: typing.Optional[str] = None,
-                name: typing.Optional[str] = None) -> OutputAdapter:
+    def as_data(value: Any, mime_type: Optional[str] = None, name: Optional[str] = None) -> OutputAdapter:
         """
         This method instructs Chalk'it to output the result as binary data using its JSON convention.
 
@@ -341,7 +341,7 @@ class ChalkitApi:
         """
         return DataAdapter(value, mime_type, name)
 
-    def output(self, value: typing.Any, key: typing.Optional[str] = None) -> None:
+    def output(self, value: Any, key: Optional[str] = None) -> None:
         """
         Provides an alternative way to return data, as opposed to the `return` statement.
 
@@ -373,7 +373,7 @@ class ChalkitApi:
         """
         self._state.add_output(value, key)
 
-    def output_json(self, value: typing.Any, key: typing.Optional[str] = None) -> None:
+    def output_json(self, value: Any, key: Optional[str] = None) -> None:
         """
         Same as `chalkit.output(chalkit.as_json(value), key)`.
 
@@ -383,7 +383,7 @@ class ChalkitApi:
         """
         self._state.add_output(self.as_json(value), key)
 
-    def output_python(self, value: typing.Any, key: typing.Optional[str] = None) -> None:
+    def output_python(self, value: Any, key: Optional[str] = None) -> None:
         """
             Same as `chalkit.output(chalkit.as_python(value), key)`.
 
@@ -393,7 +393,7 @@ class ChalkitApi:
         """
         self._state.add_output(self.as_python(value), key)
 
-    def output_image(self, value: typing.Any, key: typing.Optional[str] = None) -> None:
+    def output_image(self, value: Any, key: Optional[str] = None) -> None:
         """
         Same as `chalkit.output(chalkit.as_image(value), key)`.
 
@@ -403,7 +403,7 @@ class ChalkitApi:
         """
         self._state.add_output(self.as_image(value), key)
 
-    def output_data(self, value: typing.Any, key: typing.Optional[str] = None) -> None:
+    def output_data(self, value: Any, key: Optional[str] = None) -> None:
         """
         Same as `chalkit.output(chalkit.as_data(value), key)`.
 
@@ -413,7 +413,7 @@ class ChalkitApi:
         """
         self._state.add_output(self.as_data(value), key)
 
-    def debug(self, value: typing.Any) -> None:
+    def debug(self, value: Any) -> None:
         """
         Output debug information.
 
@@ -431,7 +431,7 @@ class ChalkitApi:
         # TODO
 
 
-def smart_adapt(value: any, is_debug: bool = False) -> typing.Optional[OutputAdapter]:
+def smart_adapt(value: Any, is_debug: bool = False) -> Optional[OutputAdapter]:
     if isinstance(value, OutputAdapter):
         return value
 
@@ -462,7 +462,7 @@ class CustomEncoder(json.JSONEncoder):
     def is_debug() -> bool:
         return False
 
-    def default(self, obj: any) -> any:
+    def default(self, obj: Any) -> Any:
         if isinstance(obj, OutputAdapter):
             return obj.to_json()
 
@@ -484,8 +484,7 @@ def process_debug_value(value):
     return processed if processed else str(value)
 
 
-def build_result(user_result: typing.Optional[any], chalkit_state: ChalkitState,
-                 error: typing.Optional[Exception]) -> any:
+def build_result(user_result: Optional[Any], chalkit_state: ChalkitState, error: Optional[Exception]) -> Any:
     output_results = chalkit_state.results()
     if user_result is not None and output_results:
         # user_result implies no error
@@ -495,7 +494,7 @@ def build_result(user_result: typing.Optional[any], chalkit_state: ChalkitState,
     else:
         output = output_results[0] if isinstance(output_results, list) and len(output_results) == 1 else output_results
 
-    result = {}
+    result: dict[str, Any] = {}
     if error:
         result["error"] = error
     else:
@@ -511,7 +510,7 @@ def build_result(user_result: typing.Optional[any], chalkit_state: ChalkitState,
     return result
 
 
-def capture(is_debug: bool = False, script_name: typing.Optional[str] = None, start_line: int = 0):
+def capture(is_debug: bool = False, script_name: Optional[str] = None, start_line: int = 0):
     def decorate(user_fct):
         def exec_user_fct(data_nodes):
             original_io = (sys.stdout, sys.stderr)

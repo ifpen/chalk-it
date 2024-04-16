@@ -12,8 +12,9 @@
 
 import json
 import pickle
+from collections.abc import Callable
 from io import BytesIO
-from typing import Callable, Optional
+from typing import Any, Optional
 
 from chalkit_python_api import PICKLE_MIME
 from chalkit_python_api.outputs import ChalkitApi, bytes_to_b64, capture
@@ -23,7 +24,9 @@ def test_base64_to_bytes_should_mirror_bytes_to_b64():
     assert ChalkitApi.base64_to_bytes(bytes_to_b64(b"deadbeef")) == b"deadbeef"
 
 
-def do_capture(function: Callable[[dict[str, any], ChalkitApi], any], data: Optional[dict[str, any]] = None, debug=False):
+def do_capture(
+    function: Callable[[dict[str, Any], ChalkitApi], Any], data: Optional[dict[str, Any]] = None, debug=False
+):
     @capture(debug)
     def script(data_nodes, chalkit):
         return function(data_nodes, chalkit)
@@ -143,7 +146,7 @@ def test_capture_should_use_proxy_to_unpickle_selectively():
     assert result["result"] == [42, 43, trap_a, trap_b]
 
 
-### Test default conversions
+# ## Test default conversions
 
 
 def test_returned_images_default_to_png():
