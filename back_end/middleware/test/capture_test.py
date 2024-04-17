@@ -17,7 +17,8 @@ from io import BytesIO
 from typing import Any, Optional
 
 from chalkit_python_api import PICKLE_MIME
-from chalkit_python_api.outputs import ChalkitApi, bytes_to_b64, capture
+from chalkit_python_api.outputs import ChalkitApi, capture
+from chalkit_python_api.utils import bytes_to_b64
 
 
 def test_base64_to_bytes_should_mirror_bytes_to_b64():
