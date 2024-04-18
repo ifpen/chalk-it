@@ -758,8 +758,6 @@
 
       // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
       self.updateNow = function (bForceAutoStart, predsList) {
-
-
         //Autostart
         if (!bForceAutoStart && currentSettings.autoStart === false) {
           return { notTobeExecuted: true };
@@ -880,6 +878,7 @@
             error(resultObject.error);
           } else {
             success(resultObject.result);
+            PythonPluginExecBase.applySideEffects(resultObject.sideEffects);
           }
         } catch (err) {
           if (err === PythonPluginExecBase.ABORT_ERROR) {
