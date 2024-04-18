@@ -208,6 +208,12 @@
         if (result.debug && result.debug.length) {
           unrollOutput(result.debug, true).forEach((_) => colResult.appendChild(_));
         }
+        if (result?.sideEffects.length) {
+          const text = result.sideEffects
+            .map((e) => `${e.name}( ${e.args.map(JSON.stringify).join(', ')} );`)
+            .join('\n');
+          colResult.appendChild(createTextSection('Side Effects', text));
+        }
         if (result.result) {
           if (needUnroll(result.result)) {
             unrollOutput(result.result).forEach((_) => colResult.appendChild(_));
