@@ -12,9 +12,10 @@
       }
     }
 
-    const DEFAULT_BACKEND = PythonPluginLocalExec.isSupported()
-      ? { name: PythonPluginLocalExec.PSEUDO_IMAGE_NAME, id: PythonPluginLocalExec.PSEUDO_IMAGE_ID }
-      : { name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME, id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID };
+    const DEFAULT_BACKEND = {
+      name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME,
+      id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID,
+    };
 
     async function dockerImageSelect(valueCell, settingDef, currentSettingsValues, newSettings) {
       const selectId = 'select-option' + settingDef.name;
