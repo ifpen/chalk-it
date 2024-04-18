@@ -1,5 +1,13 @@
 from collections.abc import Callable
 from io import BytesIO
+from typing import Any, TypeAlias
+
+# Ideal typing, but does not pass validation. Recheck when updating python version.
+# JSON: TypeAlias = dict[str, "JSON"] | list["JSON"] | str | int | float | bool | None
+
+# Inexact but usable typing. But does not play well with mkdoc and result is impossible to read.
+# JSON: TypeAlias = dict[str, Any] | list[Any] | str | int | float | bool | None
+JSON: TypeAlias = Any
 
 
 def bytes_to_b64(data: bytes) -> str:

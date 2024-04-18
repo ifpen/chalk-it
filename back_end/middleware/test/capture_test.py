@@ -339,3 +339,85 @@ def test_mixing_return_and_outputs_should_raise_an_error():
 
     result = do_capture(script)
     assert "error" in result
+
+
+class TestSideEffects:
+    @staticmethod
+    def test_side_effects_should_be_empty_by_default():
+        def script(*_):
+            pass
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == []
+
+    @staticmethod
+    def test_side_effects_should_capture__set_variable():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.set_variable("node", 42)
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [{"name": "setVariables", "args": [{"node": 42}]}]
+
+    @staticmethod
+    def test_side_effects_should_capture__set_variables():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.set_variables({"node1": 42, "node2": ["a", "b", "c"]})
+
+        sideEffects = do_capture(script, debug=False)["sideEffects"]
+        assert sideEffects == [{"name": "setVariables", "args": [{"node1": 42, "node2": ["a", "b", "c"]}]}]
+
+    @staticmethod
+    def test_side_effects_should_capture__set_variable_property():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.set_variable_property("node1", ["x", 1], False)
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [{"name": "setVariableProperty", "args": ["node1", ["x", 1], False]}]
+
+    @staticmethod
+    def test_side_effects_should_capture__execute_datanodes():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.execute_datanode("node1")
+            chalkit.dashboard.execute_datanodes(["node2", "node3"])
+
+        sideEffects = do_capture(script, debug=False)["sideEffects"]
+        assert sideEffects == [
+            {"name": "executeDataNodes", "args": [["node1"]]},
+            {"name": "executeDataNodes", "args": [["node2", "node3"]]},
+        ]
+
+    @staticmethod
+    def test_side_effects_should_capture__view_page():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.view_page("http://url.org")
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [{"name": "viewPage", "args": ["http://url.org", None, False]}]
+
+    @staticmethod
+    def test_side_effects_should_capture__view_project():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.view_project("http://url.org/dashboard", [{"dsName": "param", "dsVal": 42}], True)
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [
+            {"name": "viewProject", "args": ["http://url.org/dashboard", [{"dsName": "param", "dsVal": 42}], True]}
+        ]
+
+    @staticmethod
+    def test_side_effects_should_capture_multiple_calls():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.go_to_page(12)
+            chalkit.dashboard.enable_widget("widgetA")
+            chalkit.dashboard.disable_widget("widgetB")
+            chalkit.dashboard.show_widget("widgetC")
+            chalkit.dashboard.hide_widget("widgetD")
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [
+            {"name": "goToPage", "args": [12]},
+            {"name": "enableWidget", "args": ["widgetA"]},
+            {"name": "disableWidget", "args": ["widgetB"]},
+            {"name": "showWidget", "args": ["widgetC"]},
+            {"name": "hideWidget", "args": ["widgetD"]},
+        ]
