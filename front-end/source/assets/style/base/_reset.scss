@@ -104,7 +104,7 @@ a > * {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d3d3d3;
+  background: var(--scrollbar);
   border-radius: br('8');
 }
 
@@ -114,7 +114,7 @@ a > * {
 
 // Backdrop background color for full screen elements
 ::backdrop {
-  background-color: white;
+  background-color: var(--surface-a);
 }
 
 // Tables
