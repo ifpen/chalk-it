@@ -1,6 +1,5 @@
 this.mouseoverHandler = (self, geoJSON, leafletIndex) => {
   return function (e) {
-    if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon) {
       let style = modelsHiddenParams[self.idInstance].GeoJSONStyle.style[leafletIndex];
       if (
         _.isUndefined(style) ||
@@ -36,7 +35,6 @@ this.mouseoverHandler = (self, geoJSON, leafletIndex) => {
       if (!_.isUndefined(properties) && properties.length > 0) {
         self.map.openPopup(popup);
       }
-    }
   };
 };
 this.mouseoutHandler = (self, geoJSON, leafletIndex) => {
@@ -194,80 +192,20 @@ this.configureEvents = function (self, geoJSON, leafletLayer, leafletIndex) {
     leafletLayer.eachLayer(function (layer) {
       layer.on('mouseover', self.mouseoverHandler);
     });
-  }
-  //mouseout
-  if (!_.isUndefined(leafletIndex)) {
+    //mouseout
     self.mouseoutHandler = mouseoutHandler(self, geoJSON, leafletIndex);
     //add event handler to each layer
     leafletLayer.eachLayer(function (layer) {
       layer.on('mouseout', self.mouseoutHandler);
     });
-  }
-  //click event
-  if (!_.isUndefined(leafletIndex)) {
+    //click event
     self.clickHandler = clickHandler(self, geoJSON, leafletLayer, leafletIndex);
     //add event handler to each layer
     leafletLayer.eachLayer(function (layer) {
       layer.on('click', self.clickHandler);
     });
   }
-  if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiLineString) {
-    //add events :
-    // mouseover
-    let leafletIndex = self.getLefletIndex(leafletLayer);
-    if (!_.isUndefined(leafletIndex)) {
-      self.mouseoverHandler = (e) => {
-        let style = modelsHiddenParams[self.idInstance].GeoJSONStyle.style[leafletIndex];
-
-        if (
-          _.isUndefined(style) ||
-          _.isUndefined(style.events) ||
-          _.isUndefined(style.events.mouseover) ||
-          _.isUndefined(style.events.mouseover.enabled) ||
-          !style.events.mouseover.enabled
-        ) {
-          return;
-        }
-        //  mouseoverHandler(e)
-        let eventStyle = {};
-        if (
-          !_.isUndefined(style) &&
-          !_.isUndefined(style.events) &&
-          !_.isUndefined(style.events.mouseover) &&
-          !_.isUndefined(style.events.mouseover.style)
-        ) {
-          eventStyle = { ...style.events.mouseover.style };
-        } else {
-          return;
-        }
-
-        if (!_.isUndefined(eventStyle)) {
-          e.target.setStyle(eventStyle);
-        }
-        e.target.bringToFront();
-        //create popup
-        let popup = new L.Popup();
-        var bounds = e.target.getBounds();
-        let popupContent = '<div>';
-        let properties = style.tooltip.properties;
-        _.each(properties, (property) => {
-          popupContent =
-            popupContent + '<p> <strong>' + property + '</strong> : ' + e.target.feature.properties[property] + '</p>';
-        });
-        popupContent = popupContent + '</div>';
-        popup.setLatLng(bounds.getCenter());
-        popup.setContent(popupContent);
-        //open popup
-        if (!_.isUndefined(properties) && properties.length > 0) {
-          self.map.openPopup(popup);
-        }
-      };
-      //handle mouse event for each layer
-      leafletLayer.eachLayer(function (layer) {
-        layer.on('mouseover', self.mouseoverHandler);
-      });
-    }
-  } else if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPoint) {
+  if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPoint) {
     //add events :
     // mouseover
     if (!_.isUndefined(leafletIndex)) {
