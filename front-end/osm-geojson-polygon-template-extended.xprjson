@@ -1,0 +1,263 @@
+{
+  "meta": {
+    "version": "2.940.8855",
+    "date": "Fri Mar 29 2024 15:31:52 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": "osm-geojson-polygon-template-extended",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "Style4",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style4",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":\"layer 1\",\"name\":\"layer 1\",\"stroke\":true,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"fillColor\":\"var(--widget-color-3)\",\"fillOpacity\":1,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"var(--widget-color-1)\",\"fillOpacity\":1}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"var(--widget-color-2)\",\"fillOpacity\":1}}},\"showLegend\":true,\"legend\":{\"title\":\"Legend 1\"},\"type\":\"Multi Polygon\",\"dashArray\":[],\"property\":\"none\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{},\"allProperties\":[\"adresse\"],\"tooltip\":{\"properties\":[\"adresse\"]}}]}"
+        }
+      },
+      {
+        "name": "Style3",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style3",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.3044963333333333,\"longitude\":48.868859,\"zoom\":16},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":\"CO21\",\"name\":\"layer 1\",\"stroke\":true,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1}}},\"showLegend\":true,\"legend\":{\"title\":\"CO21\"},\"type\":\"Multi Polygon\",\"dashArray\":[],\"fillColor\":\"red\",\"property\":\"CO2\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"CO2\":[145,300]},\"allProperties\":[\"CO2\"],\"tooltip\":{\"properties\":[\"CO2\"]}}]}"
+        }
+      },
+      {
+        "name": "Style2",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style2",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.3044963333333333,\"longitude\":48.868859,\"zoom\":16},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":\"CO21\",\"name\":\"layer 1\",\"stroke\":true,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1}}},\"showLegend\":true,\"legend\":{\"title\":\"CO21\"},\"type\":\"Multi Polygon\",\"dashArray\":[],\"fillColor\":\"red\",\"property\":\"CO2\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":1,\"possibleProperties\":{\"CO2\":[145,300]},\"allProperties\":[\"CO2\"],\"tooltip\":{\"properties\":[\"CO2\"]}}]}"
+        }
+      },
+      {
+        "name": "Style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.3044963333333333,\"longitude\":48.868859,\"zoom\":16},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":\"layer 1\",\"name\":\"Polygon 1\",\"stroke\":true,\"color\":\"black\",\"weight\":10,\"opacity\":0.5,\"events\":{\"mouseover\":{\"enabled\":true,\"style\":{\"color\":\"black\",\"weight\":3}},\"click\":{\"enabled\":true,\"style\":{\"color\":\"black\",\"weight\":1}}},\"showLegend\":true,\"legend\":{\"title\":\"Legend 1\"},\"type\":\"Multi Polygon\",\"dashArray\":[],\"fillColor\":\"red\",\"property\":\"none\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"fillOpacity\":0.5,\"possibleProperties\":{},\"allProperties\":[\"adresse\"],\"tooltip\":{\"properties\":[\"adresse\"]}}]}"
+        }
+      },
+      {
+        "name": "Polygon3",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Polygon3",
+          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[2.300815,48.871943],[2.30158,48.864638],[2.310094,48.868996]]]},\"properties\":{\"CO2\":145}},{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[2.300815,48.871943],[2.30158,48.864638],[2.310094,48.868996]]]},\"properties\":{\"CO2\":300}}]}"
+        }
+      },
+      {
+        "name": "Polygon2",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Polygon2",
+          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[2.300815,48.871943],[2.30158,48.864638],[2.310094,48.868996]]]},\"properties\":{\"CO2\":145}}]}"
+        }
+      },
+      {
+        "name": "Polygon",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Polygon",
+          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[2.300815,48.871943],[2.30158,48.864638],[2.310094,48.868996]]]},\"properties\":{\"adresse\":\"Paris\"}}]}"
+        }
+      },
+      {
+        "name": "Selected",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Selected",
+          "json_var": "{}"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 572,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 572,
+    "widthVw": 84.68586387434554,
+    "heightVh": 79.88826815642459,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 79.88826815642459,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {
+    "mapGeoJsonA": {
+      "layout": {
+        "top": "2.3743vh",
+        "left": "1.17892vw",
+        "height": "69.8324vh",
+        "width": "32.3548vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "mapGeoJsonA",
+        "instanceId": "mapGeoJsonA",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {}
+    },
+    "mapGeoJsonB": {
+      "layout": {
+        "top": "2.09497vh",
+        "left": "35.6847vw",
+        "height": "69.8324vh",
+        "width": "32.3393vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "2"
+      },
+      "container": {
+        "id": "mapGeoJsonB",
+        "instanceId": "mapGeoJsonB",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonB)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {}
+    },
+    "mapGeoJsonC": {
+      "layout": {
+        "top": "76.1173vh",
+        "left": "1.4409vw",
+        "height": "69.8324vh",
+        "width": "32.3548vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "3"
+      },
+      "container": {
+        "id": "mapGeoJsonC",
+        "instanceId": "mapGeoJsonC",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonC)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {}
+    },
+    "mapGeoJsonD": {
+      "layout": {
+        "top": "77.2346vh",
+        "left": "35.5366vw",
+        "height": "69.8324vh",
+        "width": "32.3298vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "4"
+      },
+      "container": {
+        "id": "mapGeoJsonD",
+        "instanceId": "mapGeoJsonD",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonD)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "mapGeoJsonA": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "Polygon",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Style",
+        "dataFields": []
+      },
+      "Selected": {
+        "name": "Selected",
+        "dataNode": "Selected",
+        "dataFields": []
+      }
+    },
+    "mapGeoJsonB": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "Polygon2",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Style2",
+        "dataFields": []
+      },
+      "Selected": {
+        "name": "Selected",
+        "dataNode": "None",
+        "dataFields": []
+      }
+    },
+    "mapGeoJsonC": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "Polygon3",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Style3",
+        "dataFields": []
+      },
+      "Selected": {
+        "name": "Selected",
+        "dataNode": "None",
+        "dataFields": []
+      }
+    },
+    "mapGeoJsonD": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "Polygon",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Style4",
+        "dataFields": []
+      },
+      "Selected": {
+        "name": "Selected",
+        "dataNode": "Selected",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

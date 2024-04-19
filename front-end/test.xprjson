@@ -1,0 +1,153 @@
+{
+  "meta": {
+    "version": "2.940.8859",
+    "date": "Tue Apr 02 2024 23:34:50 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "name": "test",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": []
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 922,
+    "heightPx": 663,
+    "scrollWidthPx": 922,
+    "scrollHeightPx": 663,
+    "widthVw": 79.82683982683983,
+    "heightVh": 74.07821229050279,
+    "scrollWidthVw": 79.82683982683983,
+    "scrollHeightVh": 74.07821229050279,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {
+    "openStreetMapsA": {
+      "layout": {
+        "top": "9.80971vh",
+        "left": "4.58874vw",
+        "height": "35vh",
+        "width": "35vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "openStreetMapsA",
+        "instanceId": "openStreetMapsA",
+        "modelJsonId": "openStreetMaps",
+        "widgetTypeName": "Leaflet maps(openStreetMapsA)"
+      },
+      "modelParameters": {
+        "geoJson": {
+          "numberOfLayers": 1
+        },
+        "choropleth": {
+          "numberOfLayers": 0
+        },
+        "heatMap": {
+          "numberOfLayers": 0,
+          "sampledDisplay": false,
+          "densityHeatMap": false
+        },
+        "lineHeatMap": {
+          "numberOfLayers": 0
+        },
+        "imageOverlay": {
+          "numberOfLayers": 0
+        },
+        "svgOverlay": {
+          "numberOfLayers": 0
+        },
+        "defaultCenter": {
+          "latitude": 48.872063,
+          "longitude": 2.331773,
+          "zoom": 16
+        },
+        "offlineSupport": false,
+        "tileServer": "MapboxStreets",
+        "drawingFeatures": false,
+        "drawingFeaturesOptions": {
+          "point": true,
+          "line": true,
+          "polygone": true,
+          "rectangle": true,
+          "modal": false
+        },
+        "captureClickEvent": false,
+        "markerCluster": true
+      },
+      "modelHiddenParams": {
+        "geoJson": {
+          "geoJsonLayers": [],
+          "geoJsonBounds": []
+        },
+        "choropleth": {
+          "choroplethLayers": [],
+          "choroplethBounds": []
+        },
+        "lineHeatMap": {
+          "lineHeatMapLayers": [],
+          "lineHeatMapBounds": []
+        },
+        "heatMap": {
+          "heatMapData": [],
+          "heatMapBuffer": []
+        },
+        "imageOverlay": {
+          "imageData": []
+        },
+        "svgOverlay": {
+          "svgData": [],
+          "svgElements": []
+        },
+        "legends": [],
+        "colors": [
+          "#800080",
+          "#FF00FF",
+          "#000080",
+          "#0000FF",
+          "#008080",
+          "#00FFFF",
+          "#FFFF00",
+          "#800000",
+          "#6666ff",
+          "#cc6699",
+          "#66ff66",
+          "#666699",
+          "#996633",
+          "#ff0000",
+          "#669999",
+          "#ffff99"
+        ]
+      }
+    }
+  },
+  "connections": {},
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

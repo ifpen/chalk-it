@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "version": "2.940.8802",
+    "date": "Mon Feb 05 2024 10:08:19 GMT+0100 (heure normale d\u2019Europe centrale)",
+    "name": " osm-geojson-line-map",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "Map_Style",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Map_Style",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":8},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"]},\"style\":[{\"layer\":1,\"showLegend\":true,\"name\":\"layer 1\",\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"black\",\"weight\":1,\"opacity\":1,\"property\":\"none\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{},\"tooltip\":{\"properties\":[\"description\"]},\"events\":{\"mouseover\":{\"style\":{\"color\":\"black\",\"weight\":3}},\"mouseout\":{\"style\":{\"color\":\"black\",\"weight\":1}},\"click\":{\"style\":{\"color\":\"black\",\"weight\":1}}}}]}"
+        }
+      },
+      {
+        "name": "Map_Style2",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Map_Style2",
+          "json_var": "[{\"layer\":1,\"type\":\"Multi Line\",\"stroke\":true,\"dashArray\":[],\"color\":\"red\",\"weight\":4,\"opacity\":1,\"property\":\"weight\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{}}]"
+        }
+      },
+      {
+        "name": "line",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "line",
+          "json_var": "{\"type\":\"FeatureCollection\",\"name\":\"Line example\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[[2.295,48.8738],[2.321125,48.865487]]},\"properties\":{\"description\":\"<span style=\\\"color: #FF0000\\\">Champs-\u00c9lys\u00e9es</span>\"}}]}"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 2317,
+    "heightPx": 847,
+    "scrollWidthPx": 2317,
+    "scrollHeightPx": 847,
+    "widthVw": 90.86274509803921,
+    "heightVh": 67.49003984063745,
+    "scrollWidthVw": 90.86274509803921,
+    "scrollHeightVh": 67.49003984063745,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "",
+    "theme": "default"
+  },
+  "dashboard": {
+    "mapGeoJsonA": {
+      "layout": {
+        "top": "0.938665vh",
+        "left": "1.05654vw",
+        "height": "52.1898vh",
+        "width": "73.4549vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "1"
+      },
+      "container": {
+        "id": "mapGeoJsonA",
+        "instanceId": "mapGeoJsonA",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonA)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "mapGeoJsonA": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "line",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Map_Style",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}
