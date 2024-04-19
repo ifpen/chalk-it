@@ -99,10 +99,19 @@ var colorScaleManager = (function() {
 
         return colorScale.domain(minMaxReal);
     }
+    function getColorScaleFromStyle(style) { 
+        var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
+        var colorScale = undefined;
+        if (!_.isUndefined(color)) {
+          colorScale = publicGetColorScale(color, 0, 100);
+        }
+        return colorScale; 
+    };
   
 
     // Expose public functions
     return {
       getColorScale : publicGetColorScale,
+      getColorScaleFromStyle : getColorScaleFromStyle
     };
   })();

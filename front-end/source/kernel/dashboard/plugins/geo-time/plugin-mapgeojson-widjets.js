@@ -76,21 +76,7 @@ function mapGeoJsonWidgetsPluginClass() {
     this.rescale = function () {};
 
     this.getColorScale = colorScaleManager.getColorScale;
-    this.getColorScaleFromStyle = function (index) {
-      if (
-        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
-        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style) &&
-        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style.length > 0)
-      ) {
-        let style = modelsHiddenParams[idInstance].GeoJSONStyle.style[index];
-        var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
-        var colorScale = undefined;
-        if (!_.isUndefined(color)) {
-          colorScale = self.getColorScale(color, 0, 100);
-        }
-        return colorScale;
-      }
-    };
+    this.getColorScaleFromStyle = colorScaleManager.getColorScaleFromStyle
     this.addImageOverlay = function (imgStruct) {
       //securities
       if (_.isUndefined(imgStruct)) return;
@@ -377,7 +363,7 @@ function mapGeoJsonWidgetsPluginClass() {
               return;
             }
             let eventStyle = {};
-            let colorScale = self.getColorScaleFromStyle(leafletIndex);
+            let colorScale = self.getColorScaleFromStyle(style);
             if (!_.isUndefined(e.target.feature.properties) && style.property in e.target.feature.properties) {
               var fillColor = self.getFillColor(
                 geoJSON,
@@ -439,7 +425,7 @@ function mapGeoJsonWidgetsPluginClass() {
             } else {
               return;
             }
-            let colorScale = self.getColorScaleFromStyle(leafletIndex);
+            let colorScale = self.getColorScaleFromStyle(style);
             //initial style for other layers
             leafletLayer.eachLayer(function (layer) {
               let layerStyle = { ...style };
@@ -599,7 +585,7 @@ function mapGeoJsonWidgetsPluginClass() {
             }
             let eventStyle = {};
             let styleForObject = { ...style };
-            let colorScale = self.getColorScaleFromStyle(leafletIndex);
+            let colorScale = self.getColorScaleFromStyle(style);
             eventStyle.color = self.getFillColor(
               geoJSON,
               { ...styleForObject },
@@ -641,7 +627,7 @@ function mapGeoJsonWidgetsPluginClass() {
             self.Selected.setValue(e.target.feature.properties);
             self.Selected.updateCallback(self.Selected, self.Selected.getValue());
             //change style
-            let colorScale = self.getColorScaleFromStyle(leafletIndex);
+            let colorScale = self.getColorScaleFromStyle(style);
             let eventStyle = {};
             if (
               !_.isUndefined(style) &&
@@ -815,7 +801,7 @@ function mapGeoJsonWidgetsPluginClass() {
               return;
             }
             let eventStyle = {};
-            let colorScale = self.getColorScaleFromStyle(leafletIndex);
+            let colorScale = self.getColorScaleFromStyle(style);
             if (!_.isUndefined(e.target.feature.properties) && style.property in e.target.feature.properties) {
               var fillColor = self.getFillColor(
                 geoJSON,
@@ -877,7 +863,7 @@ function mapGeoJsonWidgetsPluginClass() {
             } else {
               return;
             }
-            let colorScale = self.getColorScaleFromStyle(leafletIndex);
+            let colorScale = self.getColorScaleFromStyle(style);
             //initial style for other layers
             leafletLayer.eachLayer(function (layer) {
               let layerStyle = { ...style };
