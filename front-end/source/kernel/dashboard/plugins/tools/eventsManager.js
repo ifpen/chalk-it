@@ -1,60 +1,59 @@
+this.mouseoverHandler = (self,geoJSON,leafletLayer,leafletIndex) =>{
+    return function (e){
+        if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon) {
+            let style = modelsHiddenParams[self.idInstance].GeoJSONStyle.style[leafletIndex];
+            if (
+                _.isUndefined(style) ||
+                _.isUndefined(style.events) ||
+                _.isUndefined(style.events.mouseover) ||
+                _.isUndefined(style.events.mouseover.enabled) ||
+                !style.events.mouseover.enabled
+              ) {
+                return;
+              }
+              let eventStyle = {};
+              if ( 
+                !_.isUndefined(style.events.mouseover.style)
+              ) {
+                eventStyle = { ...style.events.mouseover.style };
+              } else {
+                //TODO:  use default style
+                return;
+              }
+              e.target.setStyle(eventStyle);
+              e.target.bringToFront();
+              //create popup
+              let popup = new L.Popup();
+              var bounds = e.target.getBounds();
+              let popupContent = '<div>';
+              let properties = style.tooltip.properties;
+              _.each(properties, (property) => {
+                popupContent =
+                  popupContent +
+                  '<p> <strong>' +
+                  property +
+                  '</strong> : ' +
+                  e.target.feature.properties[property] +
+                  '</p>';
+              });
+              popupContent = popupContent + '</div>';
+              popup.setLatLng(bounds.getCenter());
+              popup.setContent(popupContent);
+              //open popup
+              if (!_.isUndefined(properties) && properties.length > 0) {
+                self.map.openPopup(popup);
+              }
+        }
+    }
+
+}
 this.configureEvents = function (self,geoJSON,leafletLayer,leafletIndex) {
     
     if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon) {
     //add events :
     // mouseover
     if (!_.isUndefined(leafletIndex)) {
-      self.mouseoverHandler = (e) => {
-        let style = modelsHiddenParams[self.idInstance].GeoJSONStyle.style[leafletIndex];
-
-        if (
-          _.isUndefined(style) ||
-          _.isUndefined(style.events) ||
-          _.isUndefined(style.events.mouseover) ||
-          _.isUndefined(style.events.mouseover.enabled) ||
-          !style.events.mouseover.enabled
-        ) {
-          return;
-        }
-        //  mouseoverHandler(e)
-        let eventStyle = {};
-        if (
-          !_.isUndefined(style) &&
-          !_.isUndefined(style.events) &&
-          !_.isUndefined(style.events.mouseover) &&
-          !_.isUndefined(style.events.mouseover.style)
-        ) {
-          eventStyle = { ...style.events.mouseover.style };
-        } else {
-          return;
-        }
-
-        if (!_.isUndefined(eventStyle)) {
-          e.target.setStyle(eventStyle);
-        }
-        e.target.bringToFront();
-        //create popup
-        let popup = new L.Popup();
-        var bounds = e.target.getBounds();
-        let popupContent = '<div>';
-        let properties = style.tooltip.properties;
-        _.each(properties, (property) => {
-          popupContent =
-            popupContent +
-            '<p> <strong>' +
-            property +
-            '</strong> : ' +
-            e.target.feature.properties[property] +
-            '</p>';
-        });
-        popupContent = popupContent + '</div>';
-        popup.setLatLng(bounds.getCenter());
-        popup.setContent(popupContent);
-        //open popup
-        if (!_.isUndefined(properties) && properties.length > 0) {
-          self.map.openPopup(popup);
-        }
-      };
+      self.mouseoverHandler = mouseoverHandler(self,geoJSON,leafletLayer,leafletIndex)
       //handle mouse event for each layer
       leafletLayer.eachLayer(function (layer) {
         layer.on('mouseover', self.mouseoverHandler);
