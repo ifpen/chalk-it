@@ -30,6 +30,16 @@ def replace_nan(obj):
     return obj
 
 
+_registered = False
+
+
+def register_json_adapter() -> None:
+    global _registered
+    if not _registered:
+        _registered = True
+        FunctionJsonAdapter().register()
+
+
 class FunctionJsonAdapter(JsonAdapter):
     def parse(self, o):
         cls = type(o)

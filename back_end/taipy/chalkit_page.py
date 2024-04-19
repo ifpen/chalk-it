@@ -12,7 +12,7 @@
 
 from taipy.gui.custom import Page
 from .resource_handler import PureHTMLResourceHandler
-from .chalkit_json_adapter import FunctionJsonAdapter
+from .chalkit_json_adapter import register_json_adapter
 
 
 class ChalkitPage(Page):
@@ -28,4 +28,4 @@ class ChalkitPage(Page):
             ),
             metadata={"xprjson_file_name": xprjson_file_name},
         )
-        FunctionJsonAdapter().register()
+        register_json_adapter()
