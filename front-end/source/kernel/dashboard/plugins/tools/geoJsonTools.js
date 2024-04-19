@@ -164,6 +164,32 @@ function getFillColor(geoJSON, style, value, colorScale) {
     return colorScaleManager.getColor(min, max, value, colorScale);
   }
 }
+function getMinMaxProperty(style,geoJSONinLayer){
+  if (
+    !_.isUndefined(style.property) &&
+    !_.isUndefined(style.possibleProperties) &&
+    style.property in style.possibleProperties
+  ) {
+    var minMaxAuto = style.possibleProperties[style.property];
+
+    if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
+      minMaxAuto[0] = style.propertyMin;
+    if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
+      minMaxAuto[1] = style.propertyMax;
+  }
+  let minMax = geoJsonTools.getMinMaxByProperty(geoJSONinLayer, style.property);
+  if (Array.isArray(minMaxAuto)) {
+    var min = minMaxAuto[0];
+    var max = minMaxAuto[1];
+  }
+  if (Array.isArray(minMax)) {
+    if (!_.isUndefined(min) && !_.isUndefined(max)) {
+      if (min < minMax[0]) min = minMax[0];
+      if (max > minMax[1]) max = minMax[1];
+    }
+  }
+  return [min,max]
+}
 var geoJsonTools = (function () {
   return {
     findPropertiesWithNumber,
@@ -173,5 +199,6 @@ var geoJsonTools = (function () {
     equivalenceTypes,
     compareSharedKeys,
     getFillColor,
+    getMinMaxProperty
   };
 })();
