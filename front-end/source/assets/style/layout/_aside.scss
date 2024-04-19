@@ -25,7 +25,6 @@ aside {
 .aside__panel {
   display: flex;
   align-items: center;
-  gap: $aside-panel-gap;
   flex-shrink: 0;
   overflow: visible;
   transition: var(--default-transition);
@@ -946,6 +945,7 @@ aside {
   border-radius: br('16');
   padding: 0.5em;
   background-color: var(--surface-b);
+  margin: 0 0.5em;
 }
 
 .aside__panel--nav::before {
