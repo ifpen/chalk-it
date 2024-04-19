@@ -76,7 +76,7 @@ function mapGeoJsonWidgetsPluginClass() {
     this.rescale = function () {};
 
     this.getColorScale = colorScaleManager.getColorScale;
-    this.getColorScaleFromStyle = colorScaleManager.getColorScaleFromStyle
+    this.getColorScaleFromStyle = colorScaleManager.getColorScaleFromStyle;
     this.addImageOverlay = function (imgStruct) {
       //securities
       if (_.isUndefined(imgStruct)) return;
@@ -199,50 +199,7 @@ function mapGeoJsonWidgetsPluginClass() {
       }
     };
 
-    this.getFillColor = function (geoJSON, style, value, colorScale) {
-      if (_.isUndefined(style) || _.isUndefined(value) || _.isUndefined(geoJSON)) {
-        return undefined;
-      }
-      if (
-        !_.isUndefined(style.property) &&
-        !_.isUndefined(style.possibleProperties) &&
-        style.property in style.possibleProperties
-      ) {
-        //create old style before mouseover
-        var minMaxAuto = style.possibleProperties[style.property];
-
-        if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
-          minMaxAuto[0] = style.propertyMin;
-        if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
-          minMaxAuto[1] = style.propertyMax;
-      }
-      let minMax = geoJsonTools.getMinMaxByProperty(geoJSON, style.property);
-      let min = 0;
-      let max = 0;
-      if (!_.isUndefined(minMax)) {
-        if (!_.isUndefined(minMaxAuto) && Array.isArray(minMaxAuto) && minMaxAuto.length > 1) {
-          min = minMaxAuto[0];
-          max = minMaxAuto[1];
-        }
-        if (min < minMax[0]) min = minMax[0];
-        if (max > minMax[1]) max = minMax[1];
-      } else {
-        if (!_.isUndefined(minMaxAuto) && Array.isArray(minMaxAuto) && minMaxAuto.length > 1) {
-          min = minMaxAuto[0];
-          max = minMaxAuto[1];
-        } else {
-          return;
-        }
-      }
-      if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon) {
-        return self.getColor(min, max, value, colorScale);
-      } else if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiLineString) {
-        if (!_.isUndefined(colorScale)) {
-          let pct = ((value - min) / (max - min)) * 100;
-          return colorScale(pct);
-        }
-      }
-    };
+    this.getFillColor = geoJsonTools.getFillColor;
 
     // Create a Layer from a GeoJSON
     // Simple function dont take into account the style
@@ -1053,21 +1010,20 @@ function mapGeoJsonWidgetsPluginClass() {
           break;
       }
     };
-    this.getColor = function (min, max, d, colorScale) {
-      var step = (max - min) / 8.0;
-
-      var stepDraw = Math.floor((d - min) / step);
-      return colorScale(stepDraw * (1.0 / 8.0) * 100);
-    };
+    this.getColor = colorScaleManager.getColor;
 
     this.createChoroplethLegend = function (min, max, featureTitle, colorScale) {
       legend = legends.createChoroplethLegend(self.getColor, min, max, featureTitle, colorScale);
-      legend.addTo(self.map);
+      if (!_.isUndefined(legend)) {
+        legend.addTo(self.map);
+      }
       return legend;
     };
     this.createLegend = function (color, length, colorStops, min, max, featureTitle) {
       legend = legends.createLegend(color, length, colorStops, min, max, featureTitle);
-      legend.addTo(self.map);
+      if (!_.isUndefined(legend)) {
+        legend.addTo(self.map);
+      }
       return legend;
     };
     // Important tag to know if style has changed during the setStyle
@@ -1287,7 +1243,7 @@ function mapGeoJsonWidgetsPluginClass() {
         }
       }
 
-      if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) { 
+      if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
         let minMax = geoJsonTools.getMinMaxByProperty(geoJSONinLayer, styleForObject.property);
         if (Array.isArray(minMaxAuto)) {
           var min = minMaxAuto[0];

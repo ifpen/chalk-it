@@ -107,11 +107,18 @@ var colorScaleManager = (function() {
         }
         return colorScale; 
     };
+    getColor = function (min, max, d, colorScale) {
+        var step = (max - min) / 8.0;
+  
+        var stepDraw = Math.floor((d - min) / step);
+        return colorScale(stepDraw * (1.0 / 8.0) * 100);
+      };
   
 
     // Expose public functions
     return {
       getColorScale : publicGetColorScale,
-      getColorScaleFromStyle : getColorScaleFromStyle
+      getColorScaleFromStyle : getColorScaleFromStyle,
+      getColor : getColor
     };
   })();
