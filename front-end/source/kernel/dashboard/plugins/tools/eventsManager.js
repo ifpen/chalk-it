@@ -100,49 +100,26 @@ this.mouseoutHandler = (self, geoJSON, leafletIndex) => {
     }
   };
 };
-this.configureEvents = function (self, geoJSON, leafletLayer, leafletIndex) {
-  if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon) {
-    //add events :
-    // mouseover
-    if (!_.isUndefined(leafletIndex)) {
-      self.mouseoverHandler = mouseoverHandler(self, geoJSON, leafletIndex);
-      //handle mouse event for each layer
-      leafletLayer.eachLayer(function (layer) {
-        layer.on('mouseover', self.mouseoverHandler);
-      });
-    }
-    //mouseout
-    if (!_.isUndefined(leafletIndex)) {
-      self.mouseoutHandler = mouseoutHandler(self, geoJSON, leafletIndex);
-      //add event handler to each layer
-      leafletLayer.eachLayer(function (layer) {
-        layer.on('mouseout', self.mouseoutHandler);
-      });
-    }
-    //click event
-    if (!_.isUndefined(leafletIndex)) {
-      self.clickHandler = (e) => {
-        let style = modelsHiddenParams[self.idInstance].GeoJSONStyle.style[leafletIndex];
 
+this.clickHandler = (self, geoJSON,leafletLayer,leafletIndex) => {
+    return function (e) {
+      if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon) { 
+        let style = modelsHiddenParams[self.idInstance].GeoJSONStyle.style[leafletIndex];
         if (
-          _.isUndefined(style) ||
-          _.isUndefined(style.events) ||
-          _.isUndefined(style.events.click) ||
-          _.isUndefined(style.events.click.enabled) ||
-          !style.events.click.enabled
-        ) {
-          return;
-        }
-        //save layer selected info
+            _.isUndefined(style) ||
+            _.isUndefined(style.events) ||
+            _.isUndefined(style.events.click) ||
+            _.isUndefined(style.events.click.enabled) ||
+            !style.events.click.enabled
+          ) {
+            return;
+          }
+          //save layer selected info
         self.Selected.setValue(e.target.feature.properties);
         self.Selected.updateCallback(self.Selected, self.Selected.getValue());
         //change style
-
         let eventStyle = {};
-        if (
-          !_.isUndefined(style) &&
-          !_.isUndefined(style.events) &&
-          !_.isUndefined(style.events.click) &&
+        if ( 
           !_.isUndefined(style.events.click.style)
         ) {
           eventStyle = { ...style.events.click.style };
@@ -199,7 +176,31 @@ this.configureEvents = function (self, geoJSON, leafletLayer, leafletIndex) {
           //set selected element
           self.state.selectedElement = e.target;
         }
-      };
+      }
+    };
+  };
+this.configureEvents = function (self, geoJSON, leafletLayer, leafletIndex) {
+  if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiPolygon) {
+    //add events :
+    // mouseover
+    if (!_.isUndefined(leafletIndex)) {
+      self.mouseoverHandler = mouseoverHandler(self, geoJSON, leafletIndex);
+      //handle mouse event for each layer
+      leafletLayer.eachLayer(function (layer) {
+        layer.on('mouseover', self.mouseoverHandler);
+      });
+    }
+    //mouseout
+    if (!_.isUndefined(leafletIndex)) {
+      self.mouseoutHandler = mouseoutHandler(self, geoJSON, leafletIndex);
+      //add event handler to each layer
+      leafletLayer.eachLayer(function (layer) {
+        layer.on('mouseout', self.mouseoutHandler);
+      });
+    }
+    //click event
+    if (!_.isUndefined(leafletIndex)) {
+      self.clickHandler = clickHandler(self, geoJSON,leafletLayer,leafletIndex);
       //add event handler to each layer
       leafletLayer.eachLayer(function (layer) {
         layer.on('click', self.clickHandler);
