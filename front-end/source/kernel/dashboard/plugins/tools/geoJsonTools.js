@@ -160,6 +160,8 @@ function getFillColor(geoJSON, style, value, colorScale) {
       let pct = ((value - min) / (max - min)) * 100;
       return colorScale(pct);
     }
+  }else {
+    return colorScaleManager.getColor(min, max, value, colorScale);
   }
 }
 var geoJsonTools = (function () {
@@ -170,6 +172,6 @@ var geoJsonTools = (function () {
     findFeatureType,
     equivalenceTypes,
     compareSharedKeys,
-    getFillColor
+    getFillColor,
   };
 })();

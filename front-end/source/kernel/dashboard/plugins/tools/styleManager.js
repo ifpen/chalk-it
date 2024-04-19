@@ -147,10 +147,12 @@ this.setStyle = function (self,layerIndex, style) {
       //check box
       self.ctrl.addOverlay(leafLetLayer, name);
     }
-
-    let colorScale = undefined;
-
     //calcul color scale
+    let colorScale = undefined;
+    var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
+    if (!_.isUndefined(color)) {
+      colorScale = self.getColorScale(color, 0, 100);
+    }
     //using specified property
     //
     if (
@@ -164,11 +166,6 @@ this.setStyle = function (self,layerIndex, style) {
         minMaxAuto[0] = style.propertyMin;
       if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
         minMaxAuto[1] = style.propertyMax;
-
-      var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
-      if (!_.isUndefined(color)) {
-        colorScale = self.getColorScale(color, 0, 100);
-      }
     }
 
     // Important
@@ -471,18 +468,9 @@ this.setStyle = function (self,layerIndex, style) {
 
           leafLetLayer.clearLayers();
           LCircles.forEach(function (layerCircle) {
-            if (!_.isUndefined(self.mouseoverHandler)) {
-              layerCircle.on('mouseover', self.mouseoverHandler);
-            }
-            if (!_.isUndefined(self.mouseoutHandler)) {
-              layerCircle.on('mouseout', self.mouseoutHandler);
-            }
-            if (!_.isUndefined(self.clickHandler)) {
-              layerCircle.on('click', self.clickHandler);
-            }
-
             leafLetLayer.addLayer(layerCircle);
           });
+          eventsManager.configureEvents(self,geoJSONinLayer,leafLetLayer,layerIndex)
           styleForObject = { ...style };
         }
         var minMaxAuto = style.possibleProperties[styleForObject.property];
@@ -500,9 +488,12 @@ this.setStyle = function (self,layerIndex, style) {
         leafLetLayer.eachLayer(function (layer) {
           if (!_.isUndefined(colorScale)) {
             let value = layer.feature.properties[styleForObject.property];
-
-            let pct = ((value - min) / (max - min)) * 100;
-            styleForObject.fillColor = colorScale(pct);
+            styleForObject.fillColor = self.getFillColor(
+              geoJSONinLayer,
+              { ...styleForObject },
+              value,
+              colorScale
+            );
           }
 
           layer.setStyle(styleForObject);
