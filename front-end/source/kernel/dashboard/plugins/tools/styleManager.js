@@ -83,45 +83,26 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
       } else {
         return { ...commonStyle, showLegend: false };
       }
-
       break;
     case geoJsonTools.equivalenceTypes.MultiPoint:
-      if (allProp.includes('html') || allProp.includes('awesomeMarker') || typeLayer == L.marker) {
-        let result = {
-          ...baseStyle,
-          name: 'layer ' + (index + 1),
-          type: 'Multi Point',
-          pointAreMarker: true,
-          clickPopup: true,
-          popupProperty: 'All',
-          PropertiesList: allProp,
-          tooltip: {
-            properties: [...allProp],
-          },
-        };
-        delete result.fillColor;
-        delete result.fillOpacity;
-        return result;
-      } else {
-        return {
-          ...baseStyle,
-          layer: index + 1,
-          name: 'layer ' + (index + 1),
-          type: 'Multi Point',
-          showLegend: false,
-          pointAreMarker: false,
-          stroke: false,
-          radius: 300,
-          property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
-          propertyMin: 'Auto',
-          propertyMax: 'Auto',
-          possibleProperties: prop,
-          allProperties: allProp,
-          tooltip: {
-            properties: [...allProp],
-          },
-        };
-      }
+      return {
+        ...baseStyle,
+        type: 'Multi Point',
+        pointAreMarker: true,
+        clickPopup: true,
+        showLegend: false,
+        stroke: false,
+        radius: 300,
+        property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
+        popupProperty: 'none',
+        propertyMin: 'Auto',
+        propertyMax: 'Auto',
+        possibleProperties: prop,
+        allProperties: allProp,
+        tooltip: {
+          properties: [...allProp],
+        },
+      };
       break;
     default:
       return {};
@@ -146,6 +127,99 @@ this.setStyle = function (self, layerIndex, style) {
     //check box
     self.ctrl.addOverlay(leafLetLayer, name);
   }
+
+  // Important
+  let styleForObject = { ...style };
+  //if the pointsAreMarker
+  if (styleForObject.pointAreMarker) {
+    LMarkers = leafLetLayer.getLayers().map(function (layer) {
+      const marker = L.marker(layer.getLatLng());
+      marker.feature = layer.feature;
+      return marker;
+    });
+
+    leafLetLayer.clearLayers();
+
+    // Add Marker TODO : Create a markerClusterGroup and the option to do so
+    LMarkers.forEach(function (layerMarker) {
+      leafLetLayer.addLayer(layerMarker);
+    });
+    // }
+
+    // TODO : in futur if first item is a markerClusterGroup do the eachLayer on the markerClusterGroup
+    //
+    leafLetLayer.eachLayer(function (layer) {
+      // Remove Popup if done
+      if (!_.isUndefined(layer.getPopup())) {
+        popup = layer.getPopup();
+        layer.unbindPopup();
+
+        // IMPORTANT
+        popup.remove();
+      }
+
+      if (layer.feature.properties.awesomeMarker) {
+        var awMarker = L.AwesomeMarkers.icon(layer.feature.properties.awesomeMarker);
+        layer.setIcon(awMarker);
+      }
+
+      // Put new Popup
+      let popupText = '';
+      if (
+        !_.isUndefined(styleForObject.popupProperty) && 
+        !_.isUndefined(layer.feature.properties[styleForObject.popupProperty])
+      ) {
+        popupText = styleForObject.popupProperty + ' : ' + layer.feature.properties[styleForObject.popupProperty];
+      }
+
+      // legacy comment and html are priotary tag
+      else if (layer.feature.properties.comment) {
+        popupText = layer.feature.properties.comment;
+      } else if (layer.feature.properties.html) {
+        popupText = layer.feature.properties.html;
+      } else {
+        popupText = '<div>';
+        let properties = style.tooltip.properties;
+        for (let i = 0; i < properties.length; i++) {
+          const prop = properties[i];
+          popupText =  popupText + '<p> <strong>' + prop + '</strong> : ' + layer.feature.properties[prop] + '</p>';
+          if(i==properties.length-1){
+            popupText = popupText + '</div>';
+          } 
+        } 
+      }
+
+      // Add The popup
+      if (style.clickPopup) {
+        // Popup on click
+        mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
+      } else {
+        // persistent popup
+        mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
+        mk.on('add', function (event) {
+          event.target.openPopup();
+        });
+        layer.openPopup();
+      }
+    });
+  } else {
+    // Transform each L.Marker in L.Circle
+    if (leafLetLayer.getLayers()[0] instanceof L.Marker) {
+      LCircles = leafLetLayer.getLayers().map(function (layer) {
+        const { lat, lng } = layer.getLatLng();
+        const circle = L.circle([lat, lng]);
+        circle.feature = layer.feature;
+        return circle;
+      });
+
+      leafLetLayer.clearLayers();
+      LCircles.forEach(function (layerCircle) {
+        leafLetLayer.addLayer(layerCircle);
+      });
+      eventsManager.configureEvents(self, geoJSONinLayer, leafLetLayer, layerIndex);
+    }
+  }
+
   //calcul color scale
   let colorScale = undefined;
   var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
@@ -155,13 +229,12 @@ this.setStyle = function (self, layerIndex, style) {
   //using specified property
   //
 
-  // Important
-  let styleForObject = { ...style };
   //get Min Max
   let minMax = geoJsonTools.getMinMaxProperty(style, geoJSONinLayer);
   let min = minMax[0],
     max = minMax[1];
   leafLetLayer.eachLayer(function (layer) {
+    //calcul fill Color according to value
     var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
     var colorScale = undefined;
     if (!_.isUndefined(color)) {
@@ -175,6 +248,7 @@ this.setStyle = function (self, layerIndex, style) {
         colorScale
       );
     }
+    //for line use color propery instead of fillColor
     if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
       if (!_.isUndefined(fillColor)) {
         styleForObject.color = fillColor;
@@ -188,6 +262,7 @@ this.setStyle = function (self, layerIndex, style) {
         styleForObject.fillColor = style.fillColor;
       }
     }
+    //for the selected item not change the fillColor
     if (layer == self.state.selectedElement) {
       layer.setStyle({
         fillOpacity: styleForObject.fillOpacity,
@@ -196,7 +271,13 @@ this.setStyle = function (self, layerIndex, style) {
     } else {
       layer.setStyle(styleForObject);
     }
+    //if the radius property exist
+    if (!_.isUndefined(styleForObject.radius)) {
+      layer.setRadius(styleForObject.radius); // LafLet bug  setRadius must be called (Radius in Style is not check by Leaflet)
+    }
   });
+
+  //legends
   var length = 100;
   var colorStops = [0, 25, 50, 75, 100];
   self.map.on('layeradd layerremove', (e) => {
@@ -274,199 +355,6 @@ this.setStyle = function (self, layerIndex, style) {
   } else {
     if (!_.isUndefined(self.legends[layerIndex])) {
       self.legends[layerIndex].remove();
-    }
-  }
-
-  if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPoint) {
-    if (styleForObject.pointAreMarker) {
-      // Change All Circle in Marker if L.Circle was transformed in L.Marker
-      // if (leafLetLayer.getLayers()[0] instanceof L.Circle) {
-      newStyle = self.createTemplateStyle(self, geoJSONinLayer, layerIndex, L.marker);
-      Object.keys(style).forEach((key) => {
-        delete style[key];
-      });
-      Object.assign(style, { ...newStyle });
-
-      self.styleChanged = true;
-
-      LMarkers = leafLetLayer.getLayers().map(function (layer) {
-        const marker = L.marker(layer.getLatLng());
-        marker.feature = layer.feature;
-        return marker;
-      });
-
-      leafLetLayer.clearLayers();
-
-      // Add Marker TODO : Create a markerClusterGroup and the option to do so
-      LMarkers.forEach(function (layerMarker) {
-        leafLetLayer.addLayer(layerMarker);
-      });
-      // }
-
-      // TODO : in futur if first item is a markerClusterGroup do the eachLayer on the markerClusterGroup
-      //
-      leafLetLayer.eachLayer(function (layer) {
-        // Remove Popup if done
-        if (!_.isUndefined(layer.getPopup())) {
-          popup = layer.getPopup();
-          layer.unbindPopup();
-
-          // IMPORTANT
-          popup.remove();
-        }
-
-        if (layer.feature.properties.awesomeMarker) {
-          var awMarker = L.AwesomeMarkers.icon(layer.feature.properties.awesomeMarker);
-          layer.setIcon(awMarker);
-        }
-
-        // Put new Popup
-        let popupText = '';
-        if (
-          !_.isUndefined(styleForObject.popupProperty) &&
-          !_.isUndefined(layer.feature.properties[styleForObject.popupProperty])
-        ) {
-          popupText = styleForObject.popupProperty + ' : ' + layer.feature.properties[styleForObject.popupProperty];
-        }
-
-        // legacy comment and html are priotary tag
-        else if (layer.feature.properties.comment) {
-          popupText = layer.feature.properties.comment;
-        } else if (layer.feature.properties.html) {
-          popupText = layer.feature.properties.html;
-        } else {
-          let popupText = '<div>';
-          let properties = style.tooltip.properties;
-          _.each(properties, (property) => {
-            popupText =
-              popupText + '<p> <strong>' + property + '</strong> : ' + layer.feature.properties[property] + '</p>';
-          });
-          popupText = popupText + '</div>';
-        }
-
-        // Add The popup
-        if (style.clickPopup) {
-          // Popup on click
-          mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
-        } else {
-          // persistent popup
-          mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
-          mk.on('add', function (event) {
-            event.target.openPopup();
-          });
-          layer.openPopup();
-        }
-      });
-    } else {
-      // Transform each L.Marker in L.Circle
-      if (leafLetLayer.getLayers()[0] instanceof L.Marker) {
-        newStyle = self.createTemplateStyle(self, geoJSONinLayer, layerIndex, L.circle);
-        Object.keys(style).forEach((key) => {
-          if (!(key in newStyle)) {
-            delete style[key];
-          }
-        });
-        Object.keys(newStyle).forEach((key) => {
-          if (!(key in style)) {
-            style[key] = newStyle[key];
-          }
-        });
-        //Object.assign(style, { ...newStyle });
-        self.styleChanged = true;
-        LCircles = leafLetLayer.getLayers().map(function (layer) {
-          const { lat, lng } = layer.getLatLng();
-          const circle = L.circle([lat, lng]);
-          circle.feature = layer.feature;
-          return circle;
-        });
-
-        leafLetLayer.clearLayers();
-        LCircles.forEach(function (layerCircle) {
-          leafLetLayer.addLayer(layerCircle);
-        });
-        eventsManager.configureEvents(self, geoJSONinLayer, leafLetLayer, layerIndex);
-        styleForObject = { ...style };
-      }
-      var minMaxAuto = style.possibleProperties[styleForObject.property];
-
-      if (!_.isUndefined(styleForObject.propertyMin) && typeof styleForObject.propertyMin === 'number')
-        minMaxAuto[0] = styleForObject.propertyMin;
-      if (!_.isUndefined(styleForObject.propertyMax) && typeof styleForObject.propertyMax === 'number')
-        minMaxAuto[1] = styleForObject.propertyMax;
-
-      let minMax = geoJsonTools.getMinMaxByProperty(geoJSONinLayer, styleForObject.property);
-      let min = minMaxAuto[0];
-      let max = minMaxAuto[1];
-      if (min < minMax[0]) min = minMax[0];
-      if (max > minMax[1]) max = minMax[1];
-      leafLetLayer.eachLayer(function (layer) {
-        if (!_.isUndefined(colorScale)) {
-          let value = layer.feature.properties[styleForObject.property];
-          styleForObject.fillColor = self.getFillColor(geoJSONinLayer, { ...styleForObject }, value, colorScale);
-        }
-
-        layer.setStyle(styleForObject);
-        if (!_.isUndefined(styleForObject.radius)) {
-          layer.setRadius(styleForObject.radius); // LafLet bug  setRadius must be called (Radius in Style is not check by Leaflet)
-        }
-      });
-
-      //legend
-      var length = 100;
-      var colorStops = [0, 25, 50, 75, 100];
-
-      self.map.on('layeradd layerremove', (e) => {
-        if (self.map.hasLayer(self.layers[layerIndex])) {
-          if (!_.isUndefined(styleForObject.showLegend)) {
-            if (!!styleForObject.showLegend) {
-              if (!_.isUndefined(self.legendHeatMap)) {
-                if (!_.isUndefined(self.legendHeatMap)) {
-                  self.legendHeatMap.remove();
-                }
-              }
-              self.legendHeatMap = self.createLegend(
-                colorScale,
-                length,
-                colorStops,
-                minMaxAuto[0],
-                minMaxAuto[1],
-                styleForObject.property
-              );
-            } else {
-              if (!_.isUndefined(self.legendHeatMap)) {
-                self.map.removeControl(self.legendHeatMap);
-              }
-            }
-          }
-        } else {
-          if (!_.isUndefined(self.legendHeatMap)) {
-            self.legendHeatMap.remove();
-          }
-        }
-      });
-      if (self.map.hasLayer(self.layers[layerIndex])) {
-        if (!_.isUndefined(styleForObject.showLegend)) {
-          if (!!styleForObject.showLegend) {
-            if (!_.isUndefined(self.legendHeatMap)) {
-              if (!_.isUndefined(self.legendHeatMap)) {
-                self.legendHeatMap.remove();
-              }
-            }
-            self.legendHeatMap = self.createLegend(
-              colorScale,
-              length,
-              colorStops,
-              minMaxAuto[0],
-              minMaxAuto[1],
-              styleForObject.property
-            );
-          } else {
-            if (!_.isUndefined(self.legendHeatMap)) {
-              self.map.removeControl(self.legendHeatMap);
-            }
-          }
-        }
-      }
     }
   }
 };
