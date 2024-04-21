@@ -208,6 +208,12 @@
         if (result.debug && result.debug.length) {
           unrollOutput(result.debug, true).forEach((_) => colResult.appendChild(_));
         }
+        if (result?.sideEffects.length) {
+          const text = result.sideEffects
+            .map((e) => `${e.name}( ${e.args.map(JSON.stringify).join(', ')} );`)
+            .join('\n');
+          colResult.appendChild(createTextSection('Side Effects', text));
+        }
         if (result.result) {
           if (needUnroll(result.result)) {
             unrollOutput(result.result).forEach((_) => colResult.appendChild(_));
@@ -758,8 +764,6 @@
 
       // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
       self.updateNow = function (bForceAutoStart, predsList) {
-
-
         //Autostart
         if (!bForceAutoStart && currentSettings.autoStart === false) {
           return { notTobeExecuted: true };
@@ -880,6 +884,7 @@
             error(resultObject.error);
           } else {
             success(resultObject.result);
+            PythonPluginExecBase.applySideEffects(resultObject.sideEffects);
           }
         } catch (err) {
           if (err === PythonPluginExecBase.ABORT_ERROR) {
