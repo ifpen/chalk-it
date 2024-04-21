@@ -36,8 +36,8 @@ var xdash = (function () {
 
     pyodideManager.reset(true, false);
 
-    layoutMgr.resetDashBgColor();
     layoutMgr.resetDashboardTheme();
+    layoutMgr.resetDashBgColor();
 
     const $scopeDash = angular.element(document.getElementById('help__wrap')).scope();
     $scopeDash.initFrame();
