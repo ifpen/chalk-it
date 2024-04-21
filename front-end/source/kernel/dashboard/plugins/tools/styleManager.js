@@ -88,6 +88,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
       return {
         ...baseStyle,
         type: 'Multi Point',
+        markerCluster: false,
         pointAreMarker: true,
         clickPopup: true,
         showLegend: false,
@@ -137,13 +138,26 @@ this.setStyle = function (self, layerIndex, style) {
       marker.feature = layer.feature;
       return marker;
     });
-
     leafLetLayer.clearLayers();
-
-    // Add Marker TODO : Create a markerClusterGroup and the option to do so
     LMarkers.forEach(function (layerMarker) {
       leafLetLayer.addLayer(layerMarker);
     });
+    // Add Marker TODO : Create a markerClusterGroup and the option to do so
+    if (styleForObject.markerCluster) {
+      var markers = L.markerClusterGroup();
+      markers.addLayer(leafLetLayer);
+      self.map.removeLayer(self.layers[layerIndex])
+      self.map.addLayer(markers)
+      self.layers[layerIndex] = markers;
+    } else {
+      //create geoJson layer 
+      let geoJson = modelsHiddenParams[self.idInstance].GeoJSON[layerIndex]
+      let geoJsonLayer = L.geoJSON(geoJson).addTo(self.map);
+      self.map.removeLayer(self.layers[layerIndex])
+      self.map.addLayer(geoJsonLayer)
+      self.layers[layerIndex] = geoJsonLayer;
+    }
+    leafLetLayer =self.layers[layerIndex]  
     // }
 
     // TODO : in futur if first item is a markerClusterGroup do the eachLayer on the markerClusterGroup

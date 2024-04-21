@@ -218,9 +218,7 @@ function mapGeoJsonWidgetsPluginClass() {
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
       let leafletIndex = self.getLefletIndex(leafletLayer);
-      eventsManager.configureEvents(self,geoJSON,leafletLayer,leafletIndex)
-      
-
+      eventsManager.configureEvents(self,geoJSON,leafletLayer,leafletIndex) 
       //add layer
       //TO DO check GeoJSON Type :
       //radio button
