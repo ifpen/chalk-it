@@ -166,7 +166,7 @@ this.setStyle = function (self, layerIndex, style) {
       // Put new Popup
       let popupText = '';
       if (
-        !_.isUndefined(styleForObject.popupProperty) && 
+        !_.isUndefined(styleForObject.popupProperty) &&
         !_.isUndefined(layer.feature.properties[styleForObject.popupProperty])
       ) {
         popupText = styleForObject.popupProperty + ' : ' + layer.feature.properties[styleForObject.popupProperty];
@@ -182,11 +182,11 @@ this.setStyle = function (self, layerIndex, style) {
         let properties = style.tooltip.properties;
         for (let i = 0; i < properties.length; i++) {
           const prop = properties[i];
-          popupText =  popupText + '<p> <strong>' + prop + '</strong> : ' + layer.feature.properties[prop] + '</p>';
-          if(i==properties.length-1){
+          popupText = popupText + '<p> <strong>' + prop + '</strong> : ' + layer.feature.properties[prop] + '</p>';
+          if (i == properties.length - 1) {
             popupText = popupText + '</div>';
-          } 
-        } 
+          }
+        }
       }
 
       // Add The popup
@@ -334,7 +334,7 @@ this.setStyle = function (self, layerIndex, style) {
               styleForObject.legend.title || '',
               colorScale
             );
-          } else if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
+          } else {
             self.legends[layerIndex] = self.createLegend(
               colorScale,
               length,
