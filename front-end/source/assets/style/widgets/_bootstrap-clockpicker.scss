@@ -38,6 +38,9 @@
   line-height: 30px;
   text-align: center;
 }
+.clockpicker-popover .popover-title .active {
+  color: var(--widget-color-2);
+}
 .clockpicker-popover .popover-title span {
   cursor: pointer;
 }
