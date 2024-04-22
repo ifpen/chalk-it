@@ -1,0 +1,35 @@
+/*
+ * Any display widgets
+ * @description: used in plugin-any-display-widgets.js
+ * 
+ */
+[id^='htmlDiv'] {
+  .css-treeview {
+    background-color: transparent;
+    color: var(--widget-color);
+
+    .vignette {
+      &.key {
+        color: var(--widget-color);
+      }
+      &.string {
+        color: var(--string-value-color);
+      }
+      &.number {
+        color: var(--number-value-color);
+      }
+      &.boolean {
+        color: var(--boolean-value-color);
+      }
+      &.hexa {
+        color: var(--hexa-value-color);
+      }
+      &.invalid {
+        color: var(--invalid-value-color);
+      }
+      &.null {
+        color: var(--null-value-color);
+      }
+    }
+  }
+}
