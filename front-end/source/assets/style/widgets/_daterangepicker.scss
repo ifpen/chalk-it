@@ -7,9 +7,9 @@
 
 .daterangepicker {
   position: absolute;
-  background: var(--surface-c);
+  background: var(--widget-date-surface-c);
   border-radius: br('4');
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--widget-color-2);
   width: 278px;
   max-width: none;
   padding: 0;
@@ -21,7 +21,7 @@
   font-family: arial;
   font-size: 15px;
   line-height: 1em;
-  color: var(--text-color);
+  color: var(--widget-color-1);
 }
 
 .daterangepicker:before,
@@ -91,8 +91,8 @@
 
 .daterangepicker .calendar-table .next span,
 .daterangepicker .calendar-table .prev span {
-  color: var(--text-color);
-  border: solid var(--text-color);
+  color: var(--widget-color-1);
+  border: solid var(--widget-color-1);
   border-width: 0 2px 2px 0;
   border-radius: 0;
   display: inline-block;
@@ -137,12 +137,12 @@
 }
 
 .daterangepicker th.available:hover {
-  background: var(--primary-hover-color);
-  color: var(--text-color);
+  background: var(--widget-color-3);
+  color: var(--widget-color-1);
 }
 
 .daterangepicker td.available:hover {
-  background-color: var(--primary-hover-color);
+  background-color: var(--widget-color-3);
   border-color: transparent;
   color: inherit;
 }
@@ -162,9 +162,9 @@
 }
 
 .daterangepicker td.in-range {
-  background: var(--primary-hover-color);
+  background: var(--widget-color-3);
   border-color: transparent;
-  color: var(--text-color);
+  color: var(--widget-color-1);
   border-radius: 0;
 }
 
@@ -184,7 +184,7 @@
 .daterangepicker td.active:hover {
   background-color: var(--active-color);
   border-color: transparent;
-  color: var(--text-color);
+  color: var(--widget-color-1);
 }
 
 .daterangepicker th.month {
@@ -207,9 +207,9 @@
   height: 30px;
   margin: 0;
   padding: 1px;
-  background: var(--surface-a);
+  background: var(--widget-date-surface-a);
   border-radius: br('1');
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--widget-color-2);
   font-size: 12px;
   line-height: 26px;
   text-indent: 0.5em;
@@ -231,8 +231,8 @@
 .daterangepicker select.ampmselect {
   width: 50px;
   margin: 0 auto;
-  background: var(--surface-a);
-  border: 1px solid var(--primary-color);
+  background: var(--widget-date-surface-a);
+  border: 1px solid var(--widget-color-2);
   padding: 2px;
   outline: 0;
   font-size: 12px;
@@ -254,7 +254,7 @@
   clear: both;
   text-align: right;
   padding: 8px;
-  border-top: 1px solid var(--border-a);
+  border-top: 1px solid var(--widget-date-border);
   display: none;
   line-height: 12px;
   vertical-align: middle;
@@ -275,19 +275,19 @@
 }
 
 .daterangepicker.show-ranges.single.rtl .drp-calendar.left {
-  border-right: 1px solid var(--border-b);
+  border-right: 1px solid var(--widget-date-border);
 }
 
 .daterangepicker.show-ranges.single.ltr .drp-calendar.left {
-  border-left: 1px solid var(--border-b);
+  border-left: 1px solid var(--widget-date-border);
 }
 
 .daterangepicker.show-ranges.rtl .drp-calendar.right {
-  border-right: 1px solid var(--border-b);
+  border-right: 1px solid var(--widget-date-border);
 }
 
 .daterangepicker.show-ranges.ltr .drp-calendar.left {
-  border-left: 1px solid var(--border-b);
+  border-left: 1px solid var(--widget-date-border);
 }
 
 .daterangepicker .ranges {
