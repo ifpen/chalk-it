@@ -62,6 +62,10 @@ function spinnerStatusWidgetsPluginClass() {
       divElement?.remove();
     };
 
+    this.rescale = function () {
+      this.render();
+    };
+
     this.render = function () {
       const widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('id', 'spinner-status-widget-html' + idWidget);
