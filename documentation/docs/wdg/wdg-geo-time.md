@@ -6,27 +6,27 @@ This category includes widgets related to location, date and time.
 
 **Leaflet maps** widget has rich and versatile features for displaying various information on maps. It also has selection and interaction features. It is based on [Leaflet](https://leafletjs.com/) library and its various plugins.
 
-When a new **Leaflet maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 5 types of display layers, according to the value of the associated parameter *numberOfLayers*. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
+When a new **Leaflet maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 5 types of display layers, according to the value of the associated parameter _numberOfLayers_. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
 
 ![leaflet-maps-graphical-properties](maps/leaflet-maps-graphical-properties.png)
 
 Depending on the parametrization, new actuators may appear in "Data connection" tab and offer :
 
-* 0 to 8 possible layers of [GeoJSON](#geojson-layers) objects. Writing GeoJSON objects is described [here](https://en.wikipedia.org/wiki/GeoJSON).
-* 0 to 8 possible layers of [heatMap](#heatmap-layers) objects
-* 0 to 8 possible layers of [lineHeatMap](#lineheatmap-layers) objects
-* 0 to 8 possible layers of [choropleth](#choropleth-layers) objects
-* 0 to 8 possible layer of [imageOverlay](#imageoverlay-layers) objects
-* 0 to 8 possible layer of [svgOverlay](#svgoverlay-layers) objects
+-   0 to 8 possible layers of [GeoJSON](#geojson-layers) objects. Writing GeoJSON objects is described [here](https://en.wikipedia.org/wiki/GeoJSON).
+-   0 to 8 possible layers of [heatMap](#heatmap-layers) objects
+-   0 to 8 possible layers of [lineHeatMap](#lineheatmap-layers) objects
+-   0 to 8 possible layers of [choropleth](#choropleth-layers) objects
+-   0 to 8 possible layer of [imageOverlay](#imageoverlay-layers) objects
+-   0 to 8 possible layer of [svgOverlay](#svgoverlay-layers) objects
 
 In addition to these pure display layers, selection controls can be activated by enabling the [drawingFeatures](#drawing-features) option. Regions of the map can thus be selected using the mouse. When this option is enabled, the **selectedGeoJson** actuator receives user selection as geoJson, and needs to be connected to a [variable](../../ds/ds-basics/#variable)-type dataNode. This features are based on the [Geoman](https://geoman.io/) plugin.
 
-Enabling the *drawingFeatures* option enables the **drawingFeaturesOptions** parameters set which manages selection options (point, line, polygone, rectangle).
+Enabling the _drawingFeatures_ option enables the **drawingFeaturesOptions** parameters set which manages selection options (point, line, polygon, rectangle).
 
 Other parameters :
 
-* **offlineSupport** : displays controls on the maps that allow to store tiles for the current displayed geographic area. Useful when using the map offline (i.e. with no Internet connection)
-* **tileServer** : currently there is support for *MapboxStreets* and *HereHybridDay*
+-   **offlineSupport** : displays controls on the maps that allow to store tiles for the current displayed geographic area. Useful when using the map offline (i.e. with no Internet connection)
+-   **tileServer** : currently there is support for _MapboxStreets_ and _HereHybridDay_
 
 ### geoJson layers
 
@@ -36,7 +36,7 @@ geoJson1 to geoJson8 inputs expect a geoJson object. Basic examples are shown be
 
 Single point on a single layer of the map
 
-``` javascript
+```javascript
 {
   "type": "FeatureCollection",
   "features": [
@@ -72,30 +72,30 @@ which will be displayed as :
 
 Properties field of each feature allows to configure it. It comprises the following items :
 
-- **html** : allows to write html call to be rendered inside the popup.
-- **awesomeMarker** : JSON configuration object for the [Leaflet.awesome-markers](https://github.com/lvoogdt/Leaflet.awesome-markers) library, allowing colorful iconic & retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. **Only Font-Awesome icons** are supported with xDash.
+-   **html** : allows to write html call to be rendered inside the popup.
+-   **awesomeMarker** : JSON configuration object for the [Leaflet.awesome-markers](https://github.com/lvoogdt/Leaflet.awesome-markers) library, allowing colorful iconic & retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. **Only Font-Awesome icons** are supported with xDash.
 
-  | Property        | Description            | Default Value | Possible  values                                     |
-  | --------------- | ---------------------- | ------------- | ---------------------------------------------------- |
-  | icon            | Name of the icon       | 'home'        | See glyphicons or font-awesome                       |
-  | prefix          | Select the icon library| 'glyphicon'   | 'fa' for font-awesome or 'glyphicon' for bootstrap 3 |
-  | markerColor     | Color of the marker    | 'blue'        | 'red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpurple', 'cadetblue' |
-  | iconColor       | Color of the icon      | 'white'       | 'white', 'black' or css code (hex, rgba etc) |
-  | spin            | Make the icon spin     | false         | true or false. Font-awesome required | 
-  | extraClasses    | Additional classes in the created <i> tag | '' | 'fa-rotate90 myclass' eller other custom configuration |
+    | Property     | Description                               | Default Value | Possible values                                                                               |
+    | ------------ | ----------------------------------------- | ------------- | --------------------------------------------------------------------------------------------- |
+    | icon         | Name of the icon                          | 'home'        | See glyphicons or font-awesome                                                                |
+    | prefix       | Select the icon library                   | 'glyphicon'   | 'fa' for font-awesome or 'glyphicon' for bootstrap 3                                          |
+    | markerColor  | Color of the marker                       | 'blue'        | 'red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpurple', 'cadetblue' |
+    | iconColor    | Color of the icon                         | 'white'       | 'white', 'black' or css code (hex, rgba etc)                                                  |
+    | spin         | Make the icon spin                        | false         | true or false. Font-awesome required                                                          |
+    | extraClasses | Additional classes in the created <i> tag | ''            | 'fa-rotate90 myclass' eller other custom configuration                                        |
 
 Examples :
 
-* Single point : [osm-geojson-point.xprjson](/wdg/maps/osm-geojson-point.xprjson)
-* Multiple points : [osm-geojson-points.xprjson](/wdg/maps/osm-geojson-points.xprjson)
-* Awesome markers : [osm-geojson-point-awesome-marker.xprjson](/wdg/maps/osm-geojson-point-awesome-marker.xprjson)
-* Disable autoscale with geoJSON point : [osm-geojson-point-disable-autoscale.xprjson](/wdg/maps/osm-geojson-point-disable-autoscale.xprjson)
+-   Single point : [osm-geojson-point.xprjson](/wdg/maps/osm-geojson-point.xprjson)
+-   Multiple points : [osm-geojson-points.xprjson](/wdg/maps/osm-geojson-points.xprjson)
+-   Awesome markers : [osm-geojson-point-awesome-marker.xprjson](/wdg/maps/osm-geojson-point-awesome-marker.xprjson)
+-   Disable autoscale with geoJSON point : [osm-geojson-point-disable-autoscale.xprjson](/wdg/maps/osm-geojson-point-disable-autoscale.xprjson)
 
 #### Line
 
 Single line on a single layer of the map
 
-``` javascript
+```javascript
 {
   "type": "FeatureCollection",
   "features": [
@@ -135,14 +135,14 @@ which will be displayed as :
 
 Examples :
 
-* Single line : [osm-geojson-line.xprjson](/wdg/maps/osm-geojson-line.xprjson)
-* Multiple lines :  [osm-geojson-lines.xprjson](/wdg/maps/osm-geojson-lines.xprjson)
+-   Single line : [osm-geojson-line.xprjson](/wdg/maps/osm-geojson-line.xprjson)
+-   Multiple lines : [osm-geojson-lines.xprjson](/wdg/maps/osm-geojson-lines.xprjson)
 
 #### Polygon
 
 A polygon on a single layer of the map
 
-``` javascript
+```javascript
 {
   "type": "FeatureCollection",
   "features": [
@@ -190,15 +190,15 @@ which will be displayed as :
 
 Example :
 
-* [osm-geojson-polygon.xprjson](/wdg/maps/osm-geojson-polygon.xprjson)
+-   [osm-geojson-polygon.xprjson](/wdg/maps/osm-geojson-polygon.xprjson)
 
 See also : [Using GeoJSON with Leaflet](https://leafletjs.com/examples/geojson/)
 
 ### heatMap layers
 
-*heatMap1* to *heatMap8* inputs expect a JSON object like the following one :
+_heatMap1_ to _heatMap8_ inputs expect a JSON object like the following one :
 
-``` javascript
+```javascript
 {
   "data" : [
     {
@@ -232,20 +232,20 @@ Example of display (for a larger data set) :
 
 Example :
 
-* [osm-heatmap-view.xprjson](/wdg/maps/osm-heatmap-view.xprjson)
+-   [osm-heatmap-view.xprjson](/wdg/maps/osm-heatmap-view.xprjson)
 
 Several parameters control the display of the heatmap, in particular :
 
-* **sampledDisplay** : allows to feed the map in real-time with instantaneous measures (single heatmap point). The config of the first point will be used. See corresponding examples: 
+-   **sampledDisplay** : allows to feed the map in real-time with instantaneous measures (single heatmap point). The config of the first point will be used. See corresponding examples:
 
-* [osm-heatmap-play-py.xprjson](/wdg/maps/osm-heatmap-play-py.xprjson)
-* [osm-heatmap-play-js.xprjson](/wdg/maps/osm-heatmap-play-js.xprjson)
+-   [osm-heatmap-play-py.xprjson](/wdg/maps/osm-heatmap-play-py.xprjson)
+-   [osm-heatmap-play-js.xprjson](/wdg/maps/osm-heatmap-play-js.xprjson)
 
 ### lineHeatMap layers
 
-*lineHeatMap1* to *lineHeatMap8* inputs expect a JSON object like the following one :
+_lineHeatMap1_ to _lineHeatMap8_ inputs expect a JSON object like the following one :
 
-``` javascript
+```javascript
 {
   "data": [
     {
@@ -282,7 +282,7 @@ Several parameters control the display of the heatmap, in particular :
     "min": 0,
     "max": 10,
     "colorScale": "interpolateSpectral",
-    "reverseColorScale": true    
+    "reverseColorScale": true
   }
 }
 ```
@@ -295,13 +295,13 @@ Example of display (for a larger data set) :
 
 Example :
 
-* [osm-lineheatmap.xprjson](/wdg/maps/osm-lineheatmap.xprjson)
+-   [osm-lineheatmap.xprjson](/wdg/maps/osm-lineheatmap.xprjson)
 
 ### Choropleth layers
 
-*choropleth1* to *choropleth8* inputs expect a JSON object like the following one :
+_choropleth1_ to _choropleth8_ inputs expect a JSON object like the following one :
 
-``` javascript
+```javascript
 {
   "data": [
     {
@@ -369,14 +369,14 @@ Example of display (for a larger data set) :
 
 Example :
 
-* [osm-choropleth-py.xprjson](/wdg/maps/osm-choropleth-py.xprjson)
-* [osm-choropleth-js.xprjson](/wdg/maps/osm-choropleth-js.xprjson)
+-   [osm-choropleth-py.xprjson](/wdg/maps/osm-choropleth-py.xprjson)
+-   [osm-choropleth-js.xprjson](/wdg/maps/osm-choropleth-js.xprjson)
 
 ### imageOverlay layers
 
-*imageOverlay1* to *imageOverlay8* inputs expect a geoJson object like the following one :
+_imageOverlay1_ to _imageOverlay8_ inputs expect a geoJson object like the following one :
 
-``` javascript
+```javascript
 {
     "imageUrl" = "http://www.fondation-tuck.fr/upload/docs/image/jpeg/2015-01/logo-ifpen.jpg";
     "imageBounds" = [
@@ -389,19 +389,19 @@ Example :
 ```
 
 As shown in the code snippet above, the **addAs** parameter may take two values:
- *overlay* which adds a checkbox control, or *baseLayer* which adds a radio button control.
+_overlay_ which adds a checkbox control, or _baseLayer_ which adds a radio button control.
 
 Example :
 
-* [osm-image-overlay.xprjson](/wdg/maps/osm-image-overlay.xprjson)
+-   [osm-image-overlay.xprjson](/wdg/maps/osm-image-overlay.xprjson)
 
 ### svgOverlay layers
 
-*svgOverlay1* to *svgOverlay8* inputs expect a JSON object like the following one :
+_svgOverlay1_ to _svgOverlay8_ inputs expect a JSON object like the following one :
 
-``` javascript
+```javascript
 {
-  "data": 
+  "data":
   [
     {
       "lat": 48.876684999999995,
@@ -431,46 +431,45 @@ Example of display (for a larger data set) :
 
 Example :
 
-* [osm-svg-layer-view-js.xprjson](/wdg/maps/osm-svg-layer-view-js.xprjson)
+-   [osm-svg-layer-view-js.xprjson](/wdg/maps/osm-svg-layer-view-js.xprjson)
 
 ### Drawing features
 
-It is possible to allow the user to manually select points, lines, rectangles or polygone regions in the map. This is possible by enable the *drawingFeatures* option.
+It is possible to allow the user to manually select points, lines, rectangles or polygon regions in the map. This is possible by enable the _drawingFeatures_ option.
 
 ![osm-drawing-features](maps/osm-drawing-features.png)
 
-Selection result will be written to the *selectedGeoJson* actuator.
+Selection result will be written to the _selectedGeoJson_ actuator.
 
 Example :
 
-* [osm-drawing-features.xprjson](/wdg/maps/osm-drawing-features.xprjson)
+-   [osm-drawing-features.xprjson](/wdg/maps/osm-drawing-features.xprjson)
 
 ## Folium Maps
 
-[Folium](https://python-visualization.github.io/folium/
-) is a Python library used for visualizing geospatial data. It leverages the power of the Leaflet.js library and provides a simple way to create interactive maps. Folium can be used to create various types of maps such as choropleth maps, bubble maps, and scatter maps, and provides an easy-to-use interface for adding markers, popups, and other interactive features to the maps.
+[Folium](https://python-visualization.github.io/folium/) is a Python library used for visualizing geospatial data. It leverages the power of the Leaflet.js library and provides a simple way to create interactive maps. Folium can be used to create various types of maps such as choropleth maps, bubble maps, and scatter maps, and provides an easy-to-use interface for adding markers, popups, and other interactive features to the maps.
 
 Folium is built on top of the Python data analysis library pandas, which makes it easy to manipulate and visualize large datasets. It also supports several tilesets such as OpenStreetMap, Mapbox, and Stamen, which can be used to customize the look and feel of the maps.
 
 Usage examples:
 
-* [folium-point.xprjson](/wdg/maps/folium-point.xprjson)
+-   [folium-point.xprjson](/wdg/maps/folium-point.xprjson)
 
 ## Address autocompletion
 
 This widget uses the [here geocoder autocomplete API](https://developer.here.com/documentation/geocoder-autocomplete/dev_guide/topics/example-location-id.html) to provide suggestion as the user types an address location.
 
-The parameter *countryIsoCodes* restricts the provided suggestions to the specifed country.
+The parameter _countryIsoCodes_ restricts the provided suggestions to the specifed country.
 
 ## Simple calendar
 
-Use the *Simple calendar* widget to select a date.
+Use the _Simple calendar_ widget to select a date.
 
 ![calendar](date-time/calendar.png)
 
 Example :
 
-* [date-picker.xprjson](/wdg/date-time/date-picker.xprjson)
+-   [date-picker.xprjson](/wdg/date-time/date-picker.xprjson)
 
 ## Date-range calendar
 
@@ -478,20 +477,20 @@ Enables the selection of a date interval.
 
 ## D3 year heatmap caldendar
 
-Allows to associate range heatmap to a yearly-based calendar. Very useful to visually identify sporadic information. Date selection is also possible. 
+Allows to associate range heatmap to a yearly-based calendar. Very useful to visually identify sporadic information. Date selection is also possible.
 
 ![D3 year heatmap caldendar](date-time/d3-year-heatmap-calendar.png)
 
 Example :
 
-* [d3-year-heatmap-calendar.xprjson](/wdg/date-time/d3-year-heatmap-calendar.xprjson)
+-   [d3-year-heatmap-calendar.xprjson](/wdg/date-time/d3-year-heatmap-calendar.xprjson)
 
 ## Simple clock
 
-Use the *Simple clock* widget to select a time.
+Use the _Simple clock_ widget to select a time.
 
 ![clock](date-time/clock.png)
 
 Example :
 
-* [time-picker.xprjson](/wdg/date-time/time-picker.xprjson)
+-   [time-picker.xprjson](/wdg/date-time/time-picker.xprjson)
