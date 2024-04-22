@@ -547,22 +547,14 @@ class LayoutMgrClass {
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                      DashboardBackgroundColor                      | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
-  expandHexColor(hex) {
-    // Ensure the color is in six-character format
-    if (hex.length === 4 && hex.startsWith('#')) {
-      return '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
-    }
-    return hex;
-  }
-
-  // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
   getColorValueFromCSSProperty(value) {
+    // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
     let color = value;
     if (color.includes('var(--')) {
       const realValue = value.substring(4, value.length - 1);
       color = window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
     }
-    return this.expandHexColor(color);
+    return color;
   }
 
   onInputDashBgColor() {
