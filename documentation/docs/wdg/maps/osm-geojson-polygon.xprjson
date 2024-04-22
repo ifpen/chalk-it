@@ -3,7 +3,7 @@
 		"version": "2.410.8418",
 		"date": "Wed Feb 08 2023 18:18:14 GMT+0100 (heure normale d’Europe centrale)",
 		"name": "osm-geojson-polygon",
-		"description": "Single polygone display with geoJSON on map",
+		"description": "Single polygon display with geoJSON on map",
 		"groupName": "Neutral",
 		"tags": [
 			{

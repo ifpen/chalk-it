@@ -434,7 +434,7 @@
 				"drawingFeaturesOptions": {
 					"point": true,
 					"line": true,
-					"polygone": true,
+					"polygon": true,
 					"rectangle": true,
 					"modal": false
 				},
