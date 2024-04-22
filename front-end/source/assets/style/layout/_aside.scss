@@ -1045,9 +1045,10 @@ aside {
 
   a {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     font-size: fs('lg');
-    padding: spacer('3') spacer('8');
+    padding: spacer('3') 0;
+    padding-left: $aside-panel-gap;
     border-radius: 0 br('full') br('full') 0;
     color: var(--primary-color-text);
     background-color: var(--primary-color);
