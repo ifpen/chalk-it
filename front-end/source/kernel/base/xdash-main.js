@@ -36,8 +36,8 @@ var xdash = (function () {
     if (!$rootScope.taipyLink) $('#projectName')[0].value = prjName;
     pyodideManager.reset(true, false);
 
-    layoutMgr.resetDashBgColor();
     layoutMgr.resetDashboardTheme();
+    layoutMgr.resetDashBgColor();
 
     const $scopeDash = angular.element(document.getElementById('help__wrap')).scope();
     $scopeDash.initFrame();
