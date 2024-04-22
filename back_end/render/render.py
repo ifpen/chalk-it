@@ -9,7 +9,9 @@
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-
+import sys
+import os
+import logging
 from flask import (
     Flask,
     Blueprint,
@@ -18,10 +20,11 @@ from flask import (
     Response,
     jsonify,
 )
-import logging
 from pathlib import Path
 from typing import Any, Dict
-from ..common import TemplateUtils
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from common import TemplateUtils
 
 
 class RenderApp:
