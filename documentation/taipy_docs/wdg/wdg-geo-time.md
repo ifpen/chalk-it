@@ -6,27 +6,27 @@ This category includes widgets related to location, date and time.
 
 **Leaflet JSON maps** widget has rich and versatile features for displaying various information on maps. It also has selection and interaction features. It is based on [Leaflet](https://leafletjs.com/) library and its various plugins.
 
-When a new **Leaflet JSON maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 6 types of display layers, according to the value of the associated parameter *numberOfLayers*. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
+When a new **Leaflet JSON maps** widget is added to the dashboard, only one actuator named **geoJSON1** is available in the "Data connection" tab. But this widget allows up to 6 types of display layers, according to the value of the associated parameter _numberOfLayers_. This parameter can be set in the "Graphical properties" tab as shown in the following picture:
 
 ![leaflet-maps-graphical-properties](maps/leaflet-maps-graphical-properties.png)
 
 Depending on the parametrization, new actuators may appear in "Data connection" tab and offer :
 
-* 0 to 8 possible layers of [GeoJSON](#geojson-layers) objects. Writing GeoJSON objects is described [here](https://en.wikipedia.org/wiki/GeoJSON).
-* 0 to 8 possible layers of [heatMap](#heatmap-layers) objects
-* 0 to 8 possible layers of [lineHeatMap](#lineheatmap-layers) objects
-* 0 to 8 possible layers of [choropleth](#choropleth-layers) objects
-* 0 to 8 possible layer of [imageOverlay](#imageoverlay-layers) objects
-* 0 to 8 possible layer of [svgOverlay](#svgoverlay-layers) objects
+-   0 to 8 possible layers of [GeoJSON](#geojson-layers) objects. Writing GeoJSON objects is described [here](https://en.wikipedia.org/wiki/GeoJSON).
+-   0 to 8 possible layers of [heatMap](#heatmap-layers) objects
+-   0 to 8 possible layers of [lineHeatMap](#lineheatmap-layers) objects
+-   0 to 8 possible layers of [choropleth](#choropleth-layers) objects
+-   0 to 8 possible layer of [imageOverlay](#imageoverlay-layers) objects
+-   0 to 8 possible layer of [svgOverlay](#svgoverlay-layers) objects
 
 In addition to these pure display layers, selection controls can be activated by enabling the [drawingFeatures](#drawing-features) option. Regions of the map can thus be selected using the mouse. When this option is enabled, the **selectedGeoJson** actuator receives user selection as geoJson, and needs to be connected to a variable. This features are based on the [Geoman](https://geoman.io/) plugin.
 
-Enabling the *drawingFeatures* option enables the **drawingFeaturesOptions** parameters set which manages selection options (point, line, polygone, rectangle).
+Enabling the _drawingFeatures_ option enables the **drawingFeaturesOptions** parameters set which manages selection options (point, line, polygon, rectangle).
 
 Other parameters :
 
-* **offlineSupport** : displays controls on the maps that allow to store tiles for the current displayed geographic area. Useful when using the map offline (i.e. with no Internet connection)
-* **tileServer** : currently there is support for *MapboxStreets* and *HereHybridDay*
+-   **offlineSupport** : displays controls on the maps that allow to store tiles for the current displayed geographic area. Useful when using the map offline (i.e. with no Internet connection)
+-   **tileServer** : currently there is support for _MapboxStreets_ and _HereHybridDay_
 
 ### geoJson layers
 
@@ -36,7 +36,7 @@ geoJson1 to geoJson8 inputs expect a geoJson object. Basic examples are shown be
 
 Single point on a single layer of the map
 
-``` python
+```python
 point = {
   "type": "FeatureCollection",
   "features": [
@@ -72,30 +72,30 @@ which will be displayed as :
 
 Properties field of each feature allows to configure it. It comprises the following items :
 
-- **html** : allows to write html call to be rendered inside the popup.
-- **awesomeMarker** : JSON configuration object for the [Leaflet.awesome-markers](https://github.com/lvoogdt/Leaflet.awesome-markers) library, allowing colorful iconic & retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. **Only Font-Awesome icons** are supported with Chalk'it.
+-   **html** : allows to write html call to be rendered inside the popup.
+-   **awesomeMarker** : JSON configuration object for the [Leaflet.awesome-markers](https://github.com/lvoogdt/Leaflet.awesome-markers) library, allowing colorful iconic & retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. **Only Font-Awesome icons** are supported with Chalk'it.
 
-  | Property        | Description            | Default Value | Possible  values                                     |
-  | --------------- | ---------------------- | ------------- | ---------------------------------------------------- |
-  | icon            | Name of the icon       | 'home'        | See glyphicons or font-awesome                       |
-  | prefix          | Select the icon library| 'glyphicon'   | 'fa' for font-awesome or 'glyphicon' for bootstrap 3 |
-  | markerColor     | Color of the marker    | 'blue'        | 'red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpurple', 'cadetblue' |
-  | iconColor       | Color of the icon      | 'white'       | 'white', 'black' or css code (hex, rgba etc) |
-  | spin            | Make the icon spin     | false         | true or false. Font-awesome required | 
-  | extraClasses    | Additional classes in the created <i> tag | '' | 'fa-rotate90 myclass' eller other custom configuration |
+    | Property     | Description                               | Default Value | Possible values                                                                               |
+    | ------------ | ----------------------------------------- | ------------- | --------------------------------------------------------------------------------------------- |
+    | icon         | Name of the icon                          | 'home'        | See glyphicons or font-awesome                                                                |
+    | prefix       | Select the icon library                   | 'glyphicon'   | 'fa' for font-awesome or 'glyphicon' for bootstrap 3                                          |
+    | markerColor  | Color of the marker                       | 'blue'        | 'red', 'darkred', 'orange', 'green', 'darkgreen', 'blue', 'purple', 'darkpurple', 'cadetblue' |
+    | iconColor    | Color of the icon                         | 'white'       | 'white', 'black' or css code (hex, rgba etc)                                                  |
+    | spin         | Make the icon spin                        | false         | true or false. Font-awesome required                                                          |
+    | extraClasses | Additional classes in the created <i> tag | ''            | 'fa-rotate90 myclass' eller other custom configuration                                        |
 
 Examples :
 
-* Single point : [osm_geojson_point.py](/wdg/maps/osm_geojson_point.py)
-* Multiple points : [osm_geojson_points.py](/wdg/maps/osm_geojson_points.py)
-* Awesome markers : [osm-geojson-point-awesome-marker.py](/wdg/maps/osm_geojson_point_awesome_marker.py)
-* Disable autoscale with geoJSON point : [osm_geojson_point_disable_autoscale.py](/wdg/maps/osm_geojson_point_disable_autoscale.py)
+-   Single point : [osm_geojson_point.py](/wdg/maps/osm_geojson_point.py)
+-   Multiple points : [osm_geojson_points.py](/wdg/maps/osm_geojson_points.py)
+-   Awesome markers : [osm-geojson-point-awesome-marker.py](/wdg/maps/osm_geojson_point_awesome_marker.py)
+-   Disable autoscale with geoJSON point : [osm_geojson_point_disable_autoscale.py](/wdg/maps/osm_geojson_point_disable_autoscale.py)
 
 #### Line
 
 Single line on a single layer of the map
 
-``` python
+```python
 line = {
   "type": "FeatureCollection",
   "features": [
@@ -135,14 +135,14 @@ which will be displayed as :
 
 Examples :
 
-* Single line : [osm_geojson_line.py](/wdg/maps/osm_geojson_line.py)
-* Multiple lines :  [osm_geojson_lines.py](/wdg/maps/osm_geojson_lines.py)
+-   Single line : [osm_geojson_line.py](/wdg/maps/osm_geojson_line.py)
+-   Multiple lines : [osm_geojson_lines.py](/wdg/maps/osm_geojson_lines.py)
 
 #### Polygon
 
 A polygon on a single layer of the map
 
-``` python
+```python
 polygon = {
   "type": "FeatureCollection",
   "features": [
@@ -190,15 +190,15 @@ which will be displayed as :
 
 Example :
 
-* [osm_geojson_polygon.py](/wdg/maps/osm_geojson_polygon.py)
+-   [osm_geojson_polygon.py](/wdg/maps/osm_geojson_polygon.py)
 
 See also : [Using GeoJSON with Leaflet](https://leafletjs.com/examples/geojson/)
 
 ### heatMap layers
 
-*heatMap1* to *heatMap8* inputs expect a JSON object like the following one :
+_heatMap1_ to _heatMap8_ inputs expect a JSON object like the following one :
 
-``` python
+```python
 heatmap = {
   "data" : [
     {
@@ -232,15 +232,15 @@ Example of display (for a larger data set) :
 
 Example :
 
-* [osm_heatmap_view.py](/wdg/maps/osm_heatmap_view.py)
+-   [osm_heatmap_view.py](/wdg/maps/osm_heatmap_view.py)
 
 Several parameters control the display of the heatmap, in particular :
 
 ### lineHeatMap layers
 
-*lineHeatMap1* to *lineHeatMap8* inputs expect a JSON object like the following one :
+_lineHeatMap1_ to _lineHeatMap8_ inputs expect a JSON object like the following one :
 
-``` python
+```python
 line_heatmap = {
   "data": [
     {
@@ -277,7 +277,7 @@ line_heatmap = {
     "min": 0,
     "max": 10,
     "colorScale": "interpolateSpectral",
-    "reverseColorScale": True    
+    "reverseColorScale": True
   }
 }
 ```
@@ -290,13 +290,13 @@ Example of display:
 
 Example :
 
-* [osm_lineheatmap.py](/wdg/maps/osm_lineheatmap.py)
+-   [osm_lineheatmap.py](/wdg/maps/osm_lineheatmap.py)
 
 ### Choropleth layers
 
-*choropleth1* to *choropleth8* inputs expect a JSON object like the following one :
+_choropleth1_ to _choropleth8_ inputs expect a JSON object like the following one :
 
-``` python
+```python
 choropleth = {
   "data": [
     {
@@ -364,13 +364,13 @@ Example of display (for a larger data set) :
 
 Example :
 
-* [osm_choropleth.py](/wdg/maps/osm_choropleth.py)
+-   [osm_choropleth.py](/wdg/maps/osm_choropleth.py)
 
 ### imageOverlay layers
 
-*imageOverlay1* to *imageOverlay8* inputs expect a geoJson object like the following one :
+_imageOverlay1_ to _imageOverlay8_ inputs expect a geoJson object like the following one :
 
-``` python
+```python
 {
     "imageUrl" = "http://www.fondation-tuck.fr/upload/docs/image/jpeg/2015-01/logo-ifpen.jpg";
     "imageBounds" = [
@@ -383,19 +383,19 @@ Example :
 ```
 
 As shown in the code snippet above, the **addAs** parameter may take two values:
- *overlay* which adds a checkbox control, or *baseLayer* which adds a radio button control.
+_overlay_ which adds a checkbox control, or _baseLayer_ which adds a radio button control.
 
 Example :
 
-* [osm_image_overlay.py](/wdg/maps/osm_image_overlay.py)
+-   [osm_image_overlay.py](/wdg/maps/osm_image_overlay.py)
 
 ### svgOverlay layers
 
-*svgOverlay1* to *svgOverlay8* inputs expect a JSON object like the following one :
+_svgOverlay1_ to _svgOverlay8_ inputs expect a JSON object like the following one :
 
-``` python
+```python
 {
-  "data": 
+  "data":
   [
     {
       "lat": 48.876684999999995,
@@ -425,46 +425,45 @@ Example of display (for a larger data set) :
 
 Example :
 
-* [osm-svg_layer_view.py](/wdg/maps/osm_svg_layer_view.py)
+-   [osm-svg_layer_view.py](/wdg/maps/osm_svg_layer_view.py)
 
 ### Drawing features
 
-It is possible to allow the user to manually select points, lines, rectangles or polygone regions in the map. This is possible by enable the *drawingFeatures* option.
+It is possible to allow the user to manually select points, lines, rectangles or polygon regions in the map. This is possible by enable the _drawingFeatures_ option.
 
 ![osm_drawing_features](maps/osm_drawing-features.png)
 
-Selection result will be written to the *selectedGeoJson* actuator.
+Selection result will be written to the _selectedGeoJson_ actuator.
 
 Example :
 
-* [osm_drawing_features.py](/wdg/maps/osm_drawing_features.py)
+-   [osm_drawing_features.py](/wdg/maps/osm_drawing_features.py)
 
 ## Folium Maps
 
-[Folium](https://python-visualization.github.io/folium/
-) is a Python library used for visualizing geospatial data. It leverages the power of the Leaflet.js library and provides a simple way to create interactive maps. Folium can be used to create various types of maps such as choropleth maps, bubble maps, and scatter maps, and provides an easy-to-use interface for adding markers, popups, and other interactive features to the maps.
+[Folium](https://python-visualization.github.io/folium/) is a Python library used for visualizing geospatial data. It leverages the power of the Leaflet.js library and provides a simple way to create interactive maps. Folium can be used to create various types of maps such as choropleth maps, bubble maps, and scatter maps, and provides an easy-to-use interface for adding markers, popups, and other interactive features to the maps.
 
 Folium is built on top of the Python data analysis library pandas, which makes it easy to manipulate and visualize large datasets. It also supports several tilesets such as OpenStreetMap, Mapbox, and Stamen, which can be used to customize the look and feel of the maps.
 
 Usage examples:
 
-* [folium-point.py](/wdg/maps/folium_point.py)
+-   [folium-point.py](/wdg/maps/folium_point.py)
 
 ## Address autocompletion
 
 This widget uses the [here geocoder autocomplete API](https://developer.here.com/documentation/geocoder-autocomplete/dev_guide/topics/example-location-id.html) to provide suggestion as the user types an address location.
 
-The parameter *countryIsoCodes* restricts the provided suggestions to the specifed country.
+The parameter _countryIsoCodes_ restricts the provided suggestions to the specifed country.
 
 ## Simple calendar
 
-Use the *Simple calendar* widget to select a date.
+Use the _Simple calendar_ widget to select a date.
 
 ![calendar](date-time/calendar.png)
 
 Example :
 
-* [date_picker.py](/wdg/date-time/date_picker.py)
+-   [date_picker.py](/wdg/date-time/date_picker.py)
 
 ## Date-range calendar
 
@@ -472,20 +471,20 @@ Enables the selection of a date interval.
 
 ## D3 year heatmap caldendar
 
-Allows to associate range heatmap to a yearly-based calendar. Very useful to visually identify sporadic information. Date selection is also possible. 
+Allows to associate range heatmap to a yearly-based calendar. Very useful to visually identify sporadic information. Date selection is also possible.
 
 ![D3 year heatmap caldendar](date-time/d3-year-heatmap-calendar.png)
 
 Example :
 
-* [d3_year_heatmap_calendar.py](/wdg/date-time/d3_year_heatmap_calendar.py)
+-   [d3_year_heatmap_calendar.py](/wdg/date-time/d3_year_heatmap_calendar.py)
 
 ## Simple clock
 
-Use the *Simple clock* widget to select a time.
+Use the _Simple clock_ widget to select a time.
 
 ![clock](date-time/clock.png)
 
 Example :
 
-* [time_picker.py](/wdg/date-time/time_picker.py)
+-   [time_picker.py](/wdg/date-time/time_picker.py)
