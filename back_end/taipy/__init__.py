@@ -18,6 +18,7 @@ from .chalkit_manager import (
     chlkt_load_file_,
     chlkt_save_file_,
     chlkt_get_file_list_,
+    notice,
 )
 
 __all__ = [
@@ -26,6 +27,7 @@ __all__ = [
     "chlkt_load_file_",
     "chlkt_save_file_",
     "chlkt_get_file_list_",
+    "notice",
     "ChalkitPage",
     "DesignerPage",
 ]
