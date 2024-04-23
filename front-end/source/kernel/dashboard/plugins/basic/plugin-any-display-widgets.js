@@ -19,7 +19,7 @@ modelsHiddenParams.anyDisplay = {
 modelsParameters.anyDisplay = {
   fontsize: 0.3,
   backgroundColor: 'rgba(0, 0, 0, 0)',
-  textColor: '#000',
+  textColor: 'var(--widget-color)',
   valueFontFamily: 'Helvetica Neue',
   textAlign: 'left',
   displayBorder: false,
@@ -76,7 +76,7 @@ modelsLayout.anyDisplay = { height: '30vh', width: '30vw', minWidth: '50px', min
       divContent.style.height = 'inherit';
       divContent.style.padding = '4px';
       divContent.style.resize = 'inherit';
-      divContent.style.color = modelsParameters[this.idInstance].textColor;
+      divContent.style.color = this.plotTextColor();
       divContent.style['background-color'] = 'transparent';
       divContent.style['box-shadow'] = 'none';
       divContent.style['text-align'] = modelsParameters[this.idInstance].textAlign;
