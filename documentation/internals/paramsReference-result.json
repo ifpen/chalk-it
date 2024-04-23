@@ -39,7 +39,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the gauge"
+    "description": "Color of the value displayed in the gauge"
   },
   {
     "typeWidget": "scoringFullCircularGauge",
@@ -53,7 +53,7 @@
     "name": "thicknessColor",
     "type": "string",
     "defaultValue": "var(--widget-range-color)",
-    "description": "The color of the gauge thickness"
+    "description": "Color of the gauge thickness"
   },
   {
     "typeWidget": "scoringFullCircularGauge",
@@ -109,7 +109,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the gauge"
+    "description": "Color of the value displayed in the gauge"
   },
   {
     "typeWidget": "scoringSemiCircularGauge",
@@ -179,7 +179,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the gauge"
+    "description": "Color of the value displayed in the gauge"
   },
   {
     "typeWidget": "scoringArchCircularGauge",
@@ -249,7 +249,7 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "annotationMarkdown",
@@ -298,7 +298,7 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "annotationHtml",
@@ -326,7 +326,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "If true, a label is displayed above or below the value"
+    "description": "If true, the label is displayed above or below the value"
   },
   {
     "typeWidget": "kpiCard",
@@ -368,7 +368,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the kpi card"
+    "description": "Color of the value displayed in the kpi card"
   },
   {
     "typeWidget": "kpiCard",
@@ -396,7 +396,7 @@
     "name": "displayUnit",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Displays the unit text next to the value"
+    "description": "If true, the unit text is displayed next to the value"
   },
   {
     "typeWidget": "kpiCard",
@@ -438,7 +438,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, the label is displayed above or below the value"
   },
   {
     "typeWidget": "advancedKpiCard",
@@ -480,7 +480,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the value displayed in the kpi card"
+    "description": "Color of the value displayed in the kpi card"
   },
   {
     "typeWidget": "advancedKpiCard",
@@ -543,7 +543,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the slider"
+    "description": "If true, the label is displayed on the left side of the slider"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
@@ -613,7 +613,7 @@
     "name": "rangeActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit min and max range values from min/max actuators"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
@@ -641,21 +641,21 @@
     "name": "sliderHandleDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-default-color)",
-    "description": "Slider handle default color"
+    "description": "Color of the slider handle"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "sliderHandleHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-hover-color)",
-    "description": "Slider handle hover color"
+    "description": "Hover color of the slider handle"
   },
   {
     "typeWidget": "flatUiDoubleSlider",
     "name": "sliderHandleActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-active-color)",
-    "description": "Slider handle active color"
+    "description": "Active color of the slider handle"
   },
   {
     "typeWidget": "datepickerSimple",
@@ -676,7 +676,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the date picker"
+    "description": "If true, the label is displayed on the left side of the date picker"
   },
   {
     "typeWidget": "datepickerSimple",
@@ -711,7 +711,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "datepickerSimple",
@@ -732,14 +732,14 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "datepickerSimple",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color of the simple calendar"
   },
   {
     "typeWidget": "datepickerSimple",
@@ -767,7 +767,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the date picker"
+    "description": "If true, the label is displayed on the left side of the date picker"
   },
   {
     "typeWidget": "datepickerVisible",
@@ -802,7 +802,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "datepickerVisible",
@@ -823,21 +823,21 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the date-range picker"
+    "description": "If true, a label is displayed on the left side of the date-range picker"
   },
   {
     "typeWidget": "dateRangePicker",
     "name": "displayTimePicker",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, time is displayed next to the date in AM/PM format"
   },
   {
     "typeWidget": "dateRangePicker",
     "name": "displayTimePicker24Hour",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true and displayTimePicker also true, time is displayed next to the date"
   },
   {
     "typeWidget": "dateRangePicker",
@@ -879,7 +879,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "dateRangePicker",
@@ -900,14 +900,14 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "dateRangePicker",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color of the date-range calendar"
   },
   {
     "typeWidget": "dateRangePicker",
@@ -935,7 +935,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the time picker"
+    "description": "If true, the label is displayed on the left side of the time picker"
   },
   {
     "typeWidget": "timepickerSimple",
@@ -977,7 +977,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "timepickerSimple",
@@ -998,14 +998,14 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "timepickerSimple",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color of the simple clock"
   },
   {
     "typeWidget": "timepickerSimple",
@@ -1019,14 +1019,14 @@
     "name": "AllYearsVisible",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, all years are visible. If false, a signle year is displayed at a time"
   },
   {
     "typeWidget": "calendarD3",
     "name": "UndefinedValueColor",
     "type": "string",
     "defaultValue": "#F6F6F6",
-    "description": ""
+    "description": "Color of undefined value in the year calendar"
   },
   {
     "typeWidget": "flatUiSelect",
@@ -1047,7 +1047,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left side of the select widget"
+    "description": "If true, the label is displayed on the left side of the select widget"
   },
   {
     "typeWidget": "flatUiSelect",
@@ -1082,7 +1082,7 @@
     "name": "isNumber",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a number"
   },
   {
     "typeWidget": "flatUiSelect",
@@ -1103,28 +1103,28 @@
     "name": "selectedValueColor",
     "type": "string",
     "defaultValue": "var(--widget-select-option-highlighted-text)",
-    "description": ""
+    "description": "Color of the selected value"
   },
   {
     "typeWidget": "flatUiSelect",
     "name": "selectedItemDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-select-option-highlighted-color)",
-    "description": ""
+    "description": "Color of the selected item in the drop-down list"
   },
   {
     "typeWidget": "flatUiSelect",
     "name": "selectedItemHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-select-option-highlighted-color)",
-    "description": ""
+    "description": "Hover color of the selected item in the drop-down list"
   },
   {
     "typeWidget": "flatUiSelect",
     "name": "isKeyValuePairs",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, the key/value format is not required"
   },
   {
     "typeWidget": "flatUiMultiSelect",
@@ -1138,7 +1138,7 @@
     "name": "resetPastSelection",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, past selection is reset"
   },
   {
     "typeWidget": "flatUiMultiSelect",
@@ -1159,98 +1159,98 @@
     "name": "checkboxWidth",
     "type": "number",
     "defaultValue": 7,
-    "description": ""
+    "description": "Width of the checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxHeight",
     "type": "number",
     "defaultValue": 1.5,
-    "description": ""
+    "description": "Height of the checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "valueDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-label-color)",
-    "description": ""
+    "description": "Color of displayed text in checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-color)",
-    "description": ""
+    "description": "Backgroud color of checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxBorderColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "valueHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-hover-text)",
-    "description": ""
+    "description": "Hover color of displayed text in checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-hover-color)",
-    "description": ""
+    "description": "Hover color of the checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxHoverBorderColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-hover-border-color)",
-    "description": ""
+    "description": "Hover border color"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "valueFocusColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-checked-text)",
-    "description": ""
+    "description": "Focus color of displayed text in checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxFocusColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-checked-color)",
-    "description": ""
+    "description": "Focus color of checkboxs"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "checkboxFocusBorderColor",
     "type": "string",
     "defaultValue": "var(--widget-multiselect-checked-border-color)",
-    "description": ""
+    "description": "Focus border color"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "flatUiMultiSelect",
     "name": "isNumber",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a number"
   },
   {
     "typeWidget": "flatUiList",
@@ -1271,7 +1271,7 @@
     "name": "listValueColor",
     "type": "string",
     "defaultValue": "var(--widget-select-drop-text)",
-    "description": ""
+    "description": "Color of the displayed values in the list"
   },
   {
     "typeWidget": "flatUiList",
@@ -1285,7 +1285,7 @@
     "name": "selectValueColor",
     "type": "string",
     "defaultValue": "var(--widget-select-option-highlighted-text)",
-    "description": ""
+    "description": "Color of the selected value"
   },
   {
     "typeWidget": "flatUiList",
@@ -1306,21 +1306,21 @@
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "flatUiList",
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "flatUiTable",
     "name": "headerLine",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, header line is displayed in table"
   },
   {
     "typeWidget": "flatUiTable",
@@ -1334,14 +1334,14 @@
     "name": "striped",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, display stripped lines in table"
   },
   {
     "typeWidget": "flatUiTable",
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-table-value-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiTable",
@@ -1362,21 +1362,21 @@
     "name": "bordered",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, add a table border"
   },
   {
     "typeWidget": "flatUiTable",
     "name": "noBorder",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, add table gridlines"
   },
   {
     "typeWidget": "flatUiTable",
     "name": "editableCols",
     "type": "string",
     "defaultValue": "[]",
-    "description": ""
+    "description": "Indicates the editable column numbers. For instance, [1] denotes that only column number 1 is editable"
   },
   {
     "typeWidget": "flatUiTable",
@@ -1407,7 +1407,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on left or right side position of the checkbox"
+    "description": "If true, the label is displayed above on left or right side position of the checkbox"
   },
   {
     "typeWidget": "flatUiCheckbox",
@@ -1442,21 +1442,21 @@
     "name": "checkboxSize",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Checkbox size"
   },
   {
     "typeWidget": "flatUiCheckbox",
     "name": "checkedColor",
     "type": "string",
     "defaultValue": "var(--widget-input-checked-color)",
-    "description": ""
+    "description": "Checkbox color"
   },
   {
     "typeWidget": "flatUiCheckbox",
     "name": "uncheckedColor",
     "type": "string",
     "defaultValue": "var(--widget-input-unchecked-color)",
-    "description": ""
+    "description": "Unchecked checkbox color"
   },
   {
     "typeWidget": "flatUiSwitch",
@@ -1477,7 +1477,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Displays a label on the left or right side of the switch"
+    "description": "If true, the label is displayed on the left or right side of the switch"
   },
   {
     "typeWidget": "flatUiSwitch",
@@ -1547,7 +1547,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, the label is displayed"
   },
   {
     "typeWidget": "flatUiHereAutocompleteValue",
@@ -1589,7 +1589,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiHereAutocompleteValue",
@@ -1603,14 +1603,14 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "flatUiHereAutocompleteValue",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "flatUiHereAutocompleteValue",
@@ -1624,7 +1624,7 @@
     "name": "countryIsoCodes",
     "type": "string",
     "defaultValue": "FRA",
-    "description": ""
+    "description": "Country ISO code (Alpha-3 code)"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -1645,7 +1645,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, the label is displayed"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -1673,7 +1673,7 @@
     "name": "rangeActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit min and max values from min/max actuators"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -1694,21 +1694,21 @@
     "name": "step",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Increment of the slider"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
     "name": "displayValue",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, display the value on the widget right side"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
     "name": "validationOnFocusOut",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, the value modification is validated upon focus-out event"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -1729,7 +1729,7 @@
     "name": "valueBorderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -1757,42 +1757,42 @@
     "name": "sliderRangeColor",
     "type": "string",
     "defaultValue": "var(--widget-range-color)",
-    "description": ""
+    "description": "Slider range color"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
     "name": "sliderSegmentColor",
     "type": "string",
     "defaultValue": "var(--widget-segment-color)",
-    "description": ""
+    "description": "Slider segment color"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
     "name": "sliderHandleDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-default-color)",
-    "description": ""
+    "description": "Color of the slider handle"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
     "name": "sliderHandleHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-hover-color)",
-    "description": ""
+    "description": "Hover color of the slider handle"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
     "name": "sliderHandleActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-active-color)",
-    "description": ""
+    "description": "Active color of the slider handle"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiHorizontalSlider",
@@ -1806,7 +1806,7 @@
     "name": "displayUnit",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Displays the unit text next to the value"
+    "description": "If true, the unit text is displayed next to the value"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
@@ -1827,7 +1827,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, the label is displayed"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
@@ -1855,7 +1855,7 @@
     "name": "rangeActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit min and max values from min/max actuators"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
@@ -1876,42 +1876,42 @@
     "name": "step",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Increment of the slider"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
     "name": "sliderRangeColor",
     "type": "string",
     "defaultValue": "var(--widget-range-color)",
-    "description": ""
+    "description": "Slider range color"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
     "name": "sliderSegmentColor",
     "type": "string",
     "defaultValue": "var(--widget-segment-color)",
-    "description": ""
+    "description": "Slider segment color"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
     "name": "sliderHandleDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-default-color)",
-    "description": ""
+    "description": "Color of the slider handle"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
     "name": "sliderHandleHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-hover-color)",
-    "description": ""
+    "description": "Hover color of the slider handle"
   },
   {
     "typeWidget": "flatUiVerticalSlider",
     "name": "sliderHandleActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-handle-active-color)",
-    "description": ""
+    "description": "Active color of the slider handle"
   },
   {
     "typeWidget": "flatUiProgressBar",
@@ -1932,7 +1932,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, the label is displayed"
   },
   {
     "typeWidget": "flatUiProgressBar",
@@ -1960,7 +1960,7 @@
     "name": "rangeActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit min and max values from min/max actuators"
   },
   {
     "typeWidget": "flatUiProgressBar",
@@ -1981,7 +1981,7 @@
     "name": "displayValue",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, display the value on the widget right side"
   },
   {
     "typeWidget": "flatUiProgressBar",
@@ -2023,21 +2023,21 @@
     "name": "progressBarRangeColor",
     "type": "string",
     "defaultValue": "var(--widget-range-color)",
-    "description": ""
+    "description": "Range color of the progress bar"
   },
   {
     "typeWidget": "flatUiProgressBar",
     "name": "progressBarSegmentColor",
     "type": "string",
     "defaultValue": "var(--widget-segment-color)",
-    "description": ""
+    "description": "Segment color of the progress bar"
   },
   {
     "typeWidget": "flatUiProgressBar",
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2058,7 +2058,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, the label is displayed"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2107,49 +2107,49 @@
     "name": "validationButton",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, the value modification is validated upon the button click event"
   },
   {
     "typeWidget": "flatUiValue",
     "name": "validationBtnDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-button-primary-color)",
-    "description": ""
+    "description": "Color of the validation button"
   },
   {
     "typeWidget": "flatUiValue",
     "name": "validationBtnActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-button-active-color)",
-    "description": ""
+    "description": "Active color of the validation button"
   },
   {
     "typeWidget": "flatUiValue",
     "name": "validationBtnHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-button-hover-color)",
-    "description": ""
+    "description": "Hover color of the validation button"
   },
   {
     "typeWidget": "flatUiValue",
     "name": "validationOnFocusOut",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, the value modification is validated upon focus-out event"
   },
   {
     "typeWidget": "flatUiValue",
     "name": "isNumber",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a number"
   },
   {
     "typeWidget": "flatUiValue",
     "name": "isPassword",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a obscured"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2170,7 +2170,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-input-text)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2191,14 +2191,14 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "flatUiValue",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2212,7 +2212,7 @@
     "name": "displayUnit",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Displays the unit text next to the value"
+    "description": "If true, the unit text is displayed next to the value"
   },
   {
     "typeWidget": "flatUiValue",
@@ -2240,7 +2240,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiTextInput",
@@ -2289,42 +2289,42 @@
     "name": "validationButton",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, the value modification is validated upon the button click event"
   },
   {
     "typeWidget": "flatUiTextInput",
     "name": "validationBtnDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-button-primary-color)",
-    "description": ""
+    "description": "Color of the validation button"
   },
   {
     "typeWidget": "flatUiTextInput",
     "name": "validationBtnActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-button-active-color)",
-    "description": ""
+    "description": "Active color of the validation button"
   },
   {
     "typeWidget": "flatUiTextInput",
     "name": "validationBtnHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-button-hover-color)",
-    "description": ""
+    "description": "Hover color of the validation button"
   },
   {
     "typeWidget": "flatUiTextInput",
     "name": "validationOnFocusOut",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, the value modification is validated upon focus-out event"
   },
   {
     "typeWidget": "flatUiTextInput",
     "name": "isPassword",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, value type is a obscured"
   },
   {
     "typeWidget": "flatUiTextInput",
@@ -2338,7 +2338,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-input-text)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiTextInput",
@@ -2359,14 +2359,14 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "flatUiTextInput",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "flatUiTextInput",
@@ -2394,7 +2394,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2443,35 +2443,35 @@
     "name": "validationButton",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, the value modification is validated upon the button click event"
   },
   {
     "typeWidget": "flatUiNumericInput",
     "name": "validationBtnDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-button-primary-color)",
-    "description": ""
+    "description": "Color of the validation button"
   },
   {
     "typeWidget": "flatUiNumericInput",
     "name": "validationBtnActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-button-active-color)",
-    "description": ""
+    "description": "Active color of the validation button"
   },
   {
     "typeWidget": "flatUiNumericInput",
     "name": "validationBtnHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-button-hover-color)",
-    "description": ""
+    "description": "Hover color of the validation button"
   },
   {
     "typeWidget": "flatUiNumericInput",
     "name": "validationOnFocusOut",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, the value modification is validated upon focus-out event"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2485,7 +2485,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-input-text)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2506,14 +2506,14 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "flatUiNumericInput",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2534,7 +2534,7 @@
     "name": "displayUnit",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Displays the unit text next to the value"
+    "description": "If true, the unit text is displayed next to the value"
   },
   {
     "typeWidget": "flatUiNumericInput",
@@ -2562,7 +2562,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "flatUiValueDisplay",
@@ -2625,7 +2625,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-input-text)",
-    "description": "The color of the displayed value"
+    "description": "Color of the displayed value"
   },
   {
     "typeWidget": "flatUiValueDisplay",
@@ -2646,14 +2646,14 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "flatUiValueDisplay",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "flatUiValueDisplay",
@@ -2674,7 +2674,7 @@
     "name": "displayUnit",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Displays the unit text next to the value"
+    "description": "If true, the unit text is displayed next to the value"
   },
   {
     "typeWidget": "flatUiValueDisplay",
@@ -2688,56 +2688,56 @@
     "name": "text",
     "type": "string",
     "defaultValue": "Push button",
-    "description": ""
+    "description": "Displayed text button"
   },
   {
     "typeWidget": "flatUiButton",
     "name": "numberOfTriggers",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Number of triggers"
   },
   {
     "typeWidget": "flatUiButton",
     "name": "fileInput",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, the widget transforms into a load file button"
   },
   {
     "typeWidget": "flatUiButton",
     "name": "binaryFileInput",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, the widget transforms into a binary load file button"
   },
   {
     "typeWidget": "flatUiButton",
     "name": "buttonFontSize",
     "type": "number",
     "defaultValue": 0.3,
-    "description": ""
+    "description": "Button font size"
   },
   {
     "typeWidget": "flatUiButton",
     "name": "displayIcon",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, it displays the icon described in fontAwsomIcon"
   },
   {
     "typeWidget": "flatUiButton",
     "name": "fontAwesomeIcon",
     "type": "string",
     "defaultValue": "",
-    "description": ""
+    "description": "FontAwesome icon. Examples can be found at https://fontawesome.com/icons"
   },
   {
     "typeWidget": "flatUiButton",
     "name": "buttonFontFamily",
     "type": "string",
     "defaultValue": "var(--widget-font-family)",
-    "description": ""
+    "description": "Button text font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
   },
   {
     "typeWidget": "flatUiButton",
@@ -2751,28 +2751,28 @@
     "name": "buttonDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-button-primary-color)",
-    "description": ""
+    "description": "Color of the button"
   },
   {
     "typeWidget": "flatUiButton",
     "name": "buttonActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-button-active-color)",
-    "description": ""
+    "description": "Active color of the button"
   },
   {
     "typeWidget": "flatUiButton",
     "name": "buttonHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-button-hover-color)",
-    "description": "Button hover color"
+    "description": "Hover color of the button"
   },
   {
     "typeWidget": "saveToFileButton",
     "name": "text",
     "type": "string",
     "defaultValue": "Save to file",
-    "description": "Text label"
+    "description": "Text label to display"
   },
   {
     "typeWidget": "saveToFileButton",
@@ -2793,7 +2793,7 @@
     "name": "buttonFontFamily",
     "type": "string",
     "defaultValue": "var(--widget-font-family)",
-    "description": ""
+    "description": "Button text font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
   },
   {
     "typeWidget": "saveToFileButton",
@@ -2807,21 +2807,21 @@
     "name": "buttonDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-button-primary-color)",
-    "description": ""
+    "description": "Color of the button"
   },
   {
     "typeWidget": "saveToFileButton",
     "name": "buttonActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-button-active-color)",
-    "description": ""
+    "description": "Active color of the button"
   },
   {
     "typeWidget": "saveToFileButton",
     "name": "buttonHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-button-hover-color)",
-    "description": "Button hover color"
+    "description": "Hover color of the button"
   },
   {
     "typeWidget": "loadFile",
@@ -2835,7 +2835,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "loadFile",
@@ -2891,21 +2891,21 @@
     "name": "binaryFileInput",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, the widget transforms into a binary load file button"
   },
   {
     "typeWidget": "loadFile",
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": true,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "loadFile",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "loadFile",
@@ -2919,7 +2919,7 @@
     "name": "displayBrowseButton",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, a browser button is displayed"
   },
   {
     "typeWidget": "loadFile",
@@ -2933,63 +2933,63 @@
     "name": "browseButtonTextColor",
     "type": "string",
     "defaultValue": "var(--widget-button-text)",
-    "description": "Button text color"
+    "description": "Text color of the browser button"
   },
   {
     "typeWidget": "loadFile",
     "name": "browseButtonDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-button-color)",
-    "description": ""
+    "description": "Color of the browse button"
   },
   {
     "typeWidget": "loadFile",
     "name": "browseButtonActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-button-active-color)",
-    "description": ""
+    "description": "Active color of the browser button"
   },
   {
     "typeWidget": "loadFile",
     "name": "browseButtonHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-button-hover-color)",
-    "description": "Browse button hover color"
+    "description": "Hover color of the browser button"
   },
   {
     "typeWidget": "loadFile",
     "name": "deleteButtonDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-delete-button-default-color)",
-    "description": ""
+    "description": "Color of the delete button"
   },
   {
     "typeWidget": "loadFile",
     "name": "deleteButtonActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-delete-button-active-color)",
-    "description": ""
+    "description": "Active color of the delete button"
   },
   {
     "typeWidget": "loadFile",
     "name": "deleteButtonHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-delete-button-hover-color)",
-    "description": "Delete button hover color"
+    "description": "Hover color of the delete button"
   },
   {
     "typeWidget": "loadFile",
     "name": "deleteButtonIconColor",
     "type": "string",
     "defaultValue": "var(--widget-delete-button-icon-color)",
-    "description": ""
+    "description": "Color of the icon delete button"
   },
   {
     "typeWidget": "loadFile",
     "name": "deleteButtonIconHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-delete-button-icon-hover-color)",
-    "description": ""
+    "description": "Hover color of the icon delete button"
   },
   {
     "typeWidget": "spinnerStatus",
@@ -3003,7 +3003,7 @@
     "name": "color",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": ""
+    "description": "Spinner color"
   },
   {
     "typeWidget": "spinnerStatus",
@@ -3031,7 +3031,7 @@
     "name": "displayLabel",
     "type": "boolean",
     "defaultValue": true,
-    "description": "When set to true, the label will be displayed"
+    "description": "If true, a label is displayed"
   },
   {
     "typeWidget": "ledStatus",
@@ -3080,28 +3080,28 @@
     "name": "text",
     "type": "string",
     "defaultValue": "Type texte",
-    "description": ""
+    "description": "Text of the tip"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "enableActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit tooltip text from value actuator"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "fontSize",
     "type": "string",
     "defaultValue": "medium",
-    "description": "Tooltip text font size. It could be small, medium, large, or a number as 10px"
+    "description": "Tooltip text font size. It can be small, medium, large, or a number as 10px"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "fontWeight",
     "type": "string",
     "defaultValue": "bold",
-    "description": ""
+    "description": "font weight of the tip. It can be thin, light, regular, medium, bold,..."
   },
   {
     "typeWidget": "annotationIconInfo",
@@ -3115,14 +3115,14 @@
     "name": "textColor",
     "type": "string",
     "defaultValue": "var(--widget-button-text)",
-    "description": "Text color"
+    "description": "Text color of the tip"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "textPadding",
     "type": "number",
     "defaultValue": 10,
-    "description": ""
+    "description": "Text padding in px"
   },
   {
     "typeWidget": "annotationIconInfo",
@@ -3136,70 +3136,70 @@
     "name": "tipBorderColor",
     "type": "string",
     "defaultValue": "var(--widget-button-text)",
-    "description": ""
+    "description": "Border color of the tip"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "tipWidth",
     "type": "number",
     "defaultValue": 200,
-    "description": ""
+    "description": "Tip width in px"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "tipPositions",
     "type": "object",
     "defaultValue": ["right"],
-    "description": ""
+    "description": "Tip position, it can choose 1 to 4 options together ['right', 'bottom', 'left', 'top']"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "tipEventTrigger",
     "type": "string",
     "defaultValue": "hover",
-    "description": ""
+    "description": "Tip event trigger, it can be hover or click if 1 event. If 2 events (in and out) it can be ['mouseover', 'click'] or ['focus', 'blur']"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "iconColor",
     "type": "string",
     "defaultValue": "var(--widget-label-color)",
-    "description": ""
+    "description": "Icon color"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "iconSize",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Icon size"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "iconSign",
     "type": "string",
     "defaultValue": "info-circle",
-    "description": ""
+    "description": "Icon sign. It can be info-circle or question-circle or exclamation-circle [FontAwesome]"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "cornerRadius",
     "type": "number",
     "defaultValue": 10,
-    "description": ""
+    "description": "Icon corner radius"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "spikeLength",
     "type": "number",
     "defaultValue": 15,
-    "description": ""
+    "description": "Icon spike length"
   },
   {
     "typeWidget": "annotationIconInfo",
     "name": "spikeGirth",
     "type": "number",
     "defaultValue": 5,
-    "description": ""
+    "description": "Icone spike girth"
   },
   {
     "typeWidget": "annotationLabel",
@@ -3213,7 +3213,7 @@
     "name": "enableActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit label text from value actuator"
   },
   {
     "typeWidget": "annotationLabel",
@@ -3255,14 +3255,14 @@
     "name": "displayBorder",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Display border around the widget"
+    "description": "If true, a border is displayed around the widget"
   },
   {
     "typeWidget": "annotationLabel",
     "name": "borderColor",
     "type": "string",
     "defaultValue": "var(--widget-border-color)",
-    "description": ""
+    "description": "Border color"
   },
   {
     "typeWidget": "annotationLabel",
@@ -3276,42 +3276,42 @@
     "name": "keepRatio",
     "type": "boolean",
     "defaultValue": true,
-    "description": ""
+    "description": "If true, image ratio is kept intact to avoid distortion"
   },
   {
     "typeWidget": "annotationImage",
     "name": "hideImageURL",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, URL image is hidden"
   },
   {
     "typeWidget": "annotationImage",
     "name": "enableActuator",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, inherit image URL from value actuator"
   },
   {
     "typeWidget": "annotationVideo",
     "name": "enforceCaptureRatio",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "Enforce the ratio of the screeshot"
   },
   {
     "typeWidget": "annotationVideo",
     "name": "captureRatio",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Ratio of the screeshot"
   },
   {
     "typeWidget": "annotationVideo",
     "name": "pauseOnCapture",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, pause after screeshot event"
   },
   {
     "typeWidget": "annotationVideo",
@@ -3325,28 +3325,28 @@
     "name": "buttonDefaultColor",
     "type": "string",
     "defaultValue": "var(--widget-button-color)",
-    "description": ""
+    "description": "Color of the buttons"
   },
   {
     "typeWidget": "annotationVideo",
     "name": "buttonActiveColor",
     "type": "string",
     "defaultValue": "var(--widget-button-active-color)",
-    "description": ""
+    "description": "Active color of the buttons"
   },
   {
     "typeWidget": "annotationVideo",
     "name": "buttonHoverColor",
     "type": "string",
     "defaultValue": "var(--widget-button-active-color)",
-    "description": "Button hover color"
+    "description": "Hover color of the buttons"
   },
   {
     "typeWidget": "plotlyLine",
     "name": "numberOfAxis",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Set the number of axis"
   },
   {
     "typeWidget": "plotlyLine",
@@ -3383,21 +3383,21 @@
         "pad": 4
       }
     },
-    "description": ""
+    "description": "Layout object description"
   },
   {
     "typeWidget": "plotlyLine",
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotlyBar",
     "name": "numberOfAxis",
     "type": "number",
     "defaultValue": 1,
-    "description": ""
+    "description": "Number of axis"
   },
   {
     "typeWidget": "plotlyBar",
@@ -3435,14 +3435,14 @@
         "pad": 4
       }
     },
-    "description": ""
+    "description": "Layout object description"
   },
   {
     "typeWidget": "plotlyBar",
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotlyPie",
@@ -3467,14 +3467,14 @@
         "pad": 4
       }
     },
-    "description": ""
+    "description": "Layout object description"
   },
   {
     "typeWidget": "plotlyPie",
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": ""
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotly3dSurface",
@@ -3504,28 +3504,28 @@
         "pad": 4
       }
     },
-    "description": ""
+    "description": "Layout object description"
   },
   {
     "typeWidget": "plotly3dSurface",
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Hide Plotly widget Modebar"
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotlyGeneric",
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Hide Plotly widget Modebar"
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "plotlyRealTime",
     "name": "hideModeBar",
     "type": "boolean",
     "defaultValue": false,
-    "description": "Hide Plotly widget Modebar"
+    "description": "If true, hide Plotly widget Modebar"
   },
   {
     "typeWidget": "vegaGeneric",
@@ -3541,7 +3541,7 @@
     "defaultValue": {
       "numberOfLayers": 1
     },
-    "description": ""
+    "description": "Defines the number of layers with geojson"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3550,7 +3550,7 @@
     "defaultValue": {
       "numberOfLayers": 0
     },
-    "description": ""
+    "description": "Defines the number of layers with choropleth"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3561,7 +3561,7 @@
       "sampledDisplay": false,
       "densityHeatMap": false
     },
-    "description": ""
+    "description": "Heatmap object description"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3570,7 +3570,7 @@
     "defaultValue": {
       "numberOfLayers": 0
     },
-    "description": ""
+    "description": "Defines the number of layers with line heatmap"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3579,7 +3579,7 @@
     "defaultValue": {
       "numberOfLayers": 0
     },
-    "description": ""
+    "description": "Defines the number of layers with images"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3588,7 +3588,7 @@
     "defaultValue": {
       "numberOfLayers": 0
     },
-    "description": ""
+    "description": "Defines the number of layers with svg images"
   },
   {
     "typeWidget": "openStreetMaps",

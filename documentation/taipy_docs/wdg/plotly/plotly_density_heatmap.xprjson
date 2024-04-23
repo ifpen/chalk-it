@@ -51,8 +51,8 @@
             "classType": ""
         },
         "droppers": {},
-        "backgroundColor": "#ffffff",
-        "theme": "default"
+		"backgroundColor": "",
+		"theme": "default"
     },
     "dashboard": {
         "plotlyPyGenericD": {

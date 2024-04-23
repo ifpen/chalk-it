@@ -76,15 +76,15 @@
 }
 
 .dropperR.show-widget-borders:not(#DropperDroitec) .drsElement {
-  border: 1px dashed rgba(0, 0, 0, 0.5);
+  border: 1px dashed var(--border-b);
 }
 
 .dropperR.show-grid:not(.has-device-col):not(#DropperDroitec),
 .dropperR.show-grid:not(#DropperDroitec) .device-col {
   background-size: 20px 20px;
   background-attachment: local;
-  background-image: linear-gradient(to right, #e6e6e6 1px, transparent 1px),
-    linear-gradient(to bottom, #e6e6e6 1px, transparent 1px);
+  background-image: linear-gradient(to right, var(--widget-dropzone-grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--widget-dropzone-grid-color) 1px, transparent 1px);
 }
 
 .overflow-type1 {
@@ -141,7 +141,7 @@ div > .draggable::-webkit-scrollbar-thumb {
 
 // Dropper columns
 .device-col {
-  border: 1px dashed black;
+  border: 1px dashed var(--border-b);
   height: 100%;
   padding: 0px;
 }
@@ -156,7 +156,7 @@ div > .draggable::-webkit-scrollbar-thumb {
 .dragged-editor-selection-lasso {
   position: absolute;
   z-index: 999999;
-  border: 1px solid black;
+  border: 1px solid var(--border-b);
 }
 
 #dashboard-editor .drag-drop-move .widget-overlay {

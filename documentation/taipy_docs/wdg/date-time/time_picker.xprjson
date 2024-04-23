@@ -56,7 +56,7 @@
 				"component1": "timepickerSimpleA"
 			}
 		},
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {

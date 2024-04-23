@@ -65,7 +65,7 @@
 				"component4": "flatUiHorizontalSliderX"
 			}
 		},
-		"backgroundColor": "#ffffff",
+		"backgroundColor": "",
 		"theme": "default"
 	},
 	"dashboard": {

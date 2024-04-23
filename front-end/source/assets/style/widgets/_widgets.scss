@@ -36,6 +36,8 @@ $themes: (
     // Accent 8
     13: #330b05,
     // Accent 9
+    14: #333333,
+    // Grid color
   ),
   'blue': (
     'hue': 'light',
@@ -67,6 +69,8 @@ $themes: (
     // Accent 8
     13: #7dd3d4,
     // Accent 9
+    14: #e6e6e6,
+    // Grid color
   ),
   'pink': (
     'hue': 'light',
@@ -98,6 +102,8 @@ $themes: (
     // Accent 8
     13: #441122,
     // Accent 9
+    14: #e6e6e6,
+    // Grid color
   ),
   'green': (
     'hue': 'light',
@@ -129,6 +135,8 @@ $themes: (
     // Accent 8
     13: #2cf31a,
     // Accent 9
+    14: #e6e6e6,
+    // Grid color
   ),
   'dark': (
     'hue': 'dark',
@@ -160,6 +168,8 @@ $themes: (
     // Accent 8
     13: #b84aae,
     // Accent 9
+    14: #555555,
+    // Grid color
   ),
 );
 
@@ -314,6 +324,9 @@ html {
 
       // Select2 dropdowns are created as direct children of the body element
       --widget-select-drop-color: #{darken(map-get($theme, 0), 3%)};
+
+      // Plotly
+      --widget-plotly-background-color: #{darken(map-get($theme, 0), 3%)};
     } @else {
       // Global
       --widget-subtext-color: #{darken(map-get($theme, 1), 20%)};
@@ -340,6 +353,9 @@ html {
 
       // Select2 dropdowns are created as direct children of the body element
       --widget-select-drop-color: #{lighten(map-get($theme, 0), 3%)};
+
+      // Plotly
+      --widget-plotly-background-color: #{lighten(map-get($theme, 0), 3%)};
     }
 
     // Contrasted text color
@@ -358,6 +374,9 @@ html {
     // Multi Select
     --widget-multiselect-hover-text: #{color-yiq(map-get($theme, 2))};
     --widget-multiselect-checked-text: #{color-yiq(map-get($theme, 3))};
+
+    // Dropzone Grid
+    --widget-dropzone-grid-color: #{map-get($theme, 14)};
   }
 }
 

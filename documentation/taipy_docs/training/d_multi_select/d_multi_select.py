@@ -1,7 +1,6 @@
 from taipy.gui import Gui
 from taipy_designer import *
 
-gui = Gui()
 
 def print_message(select_fruits):
     message = "The selected fruits are: " + ", ".join(select_fruits)
@@ -17,5 +16,6 @@ def on_change(state, var, val):
 
 
 page = DesignerPage("d_multi_select.xprjson", designer_mode=True)
+gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)
