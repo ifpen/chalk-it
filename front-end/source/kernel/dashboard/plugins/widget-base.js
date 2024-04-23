@@ -711,6 +711,17 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
   };
 
   // +--------------------------------------------------------------------¦ \\
+  // |                         Calendar D3 widgets                        | \\
+  // +--------------------------------------------------------------------¦ \\
+  this.undefinedValueColor = function () {
+    const color = this.setColorValueFromModelParameters(
+      'UndefinedValueColor',
+      'var(--widget-calendar-d3-undefined-value)'
+    );
+    return color;
+  };
+
+  // +--------------------------------------------------------------------¦ \\
   // |                          Plotly widgets                            | \\
   // +--------------------------------------------------------------------¦ \\
   this.plotTextColor = function () {
