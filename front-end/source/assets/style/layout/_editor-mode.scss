@@ -76,7 +76,7 @@
 }
 
 .dropperR.show-widget-borders:not(#DropperDroitec) .drsElement {
-  border: 1px dashed rgba(0, 0, 0, 0.5);
+  border: 1px dashed var(--border-b);
 }
 
 .dropperR.show-grid:not(.has-device-col):not(#DropperDroitec),
@@ -141,7 +141,7 @@ div > .draggable::-webkit-scrollbar-thumb {
 
 // Dropper columns
 .device-col {
-  border: 1px dashed black;
+  border: 1px dashed var(--border-b);
   height: 100%;
   padding: 0px;
 }
@@ -156,7 +156,7 @@ div > .draggable::-webkit-scrollbar-thumb {
 .dragged-editor-selection-lasso {
   position: absolute;
   z-index: 999999;
-  border: 1px solid black;
+  border: 1px solid var(--border-b);
 }
 
 #dashboard-editor .drag-drop-move .widget-overlay {
@@ -198,28 +198,11 @@ div > .draggable::-webkit-scrollbar-thumb {
 }
 
 .drop-zone-col {
-  // background-color: white;
   transition: background-color 0.3s;
-}
-
-.drop-zone-col.drop-possible {
-  // background-color: white;
-}
-
-.drop-zone-col.drop-over {
-  // background-color: white;
 }
 
 .dragged-new-widget {
   position: absolute;
   background: white;
   z-index: 999999;
-}
-
-.dropperR.drop-possible {
-  // background-color: white;
-}
-
-.dropperR.drop-over {
-  // background-color: white;
 }

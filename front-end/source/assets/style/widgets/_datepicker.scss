@@ -27,8 +27,8 @@ datepicker select:hover,
   width: 100%;
   overflow: hidden;
   background: none;
-  color: #fff;
-  background-color: #138efa;
+  color: var(--widget-color-1);
+  background: var(--widget-date-surface-c);
   border-radius: 2px;
   border: 0;
   margin-top: 5px;
@@ -53,23 +53,21 @@ datepicker,
   position: relative;
 }
 ._720kb-datepicker-calendar {
-  background: white;
-  color: #333;
+  background: var(--widget-date-surface-c);
+  border: 1px solid var(--widget-border-color);
+  color: var(--widget-color-1);
   position: absolute;
   z-index: $zindex-dropdown;
   min-width: 220px;
   margin: 0 auto;
   width: 101%;
-  -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
-  -moz-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
   visibility: hidden;
   overflow: hidden;
   margin-left: -0.5%;
   padding: 0 0 2% 0;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: br('4');
+  -moz-border-radius: br('4');
+  border-radius: br('4');
 }
 ._720kb-datepicker-calendar._720kb-datepicker-open,
 ._720kb-datepicker-calendar._720kb-datepicker-forced-to-open {
@@ -79,12 +77,15 @@ datepicker,
   text-align: center;
   font-size: 15px;
   line-height: 40px;
+  border-bottom: 1px solid var(--widget-date-border);
 }
 ._720kb-datepicker-calendar-header:nth-child(odd) {
-  background: #138efa;
+  background: var(--widget-date-surface-a);
+  color: var(--widget-color-1);
 }
 ._720kb-datepicker-calendar-header:nth-child(even) {
-  background: #7bc6fc;
+  background: var(--widget-date-surface-b);
+  color: var(--widget-color-1);
 }
 ._720kb-datepicker-calendar-header-left,
 ._720kb-datepicker-calendar-header-middle,
@@ -129,32 +130,33 @@ datepicker,
   border-radius: 1px;
 }
 ._720kb-datepicker-calendar-day:hover {
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--widget-color-3);
+  color: var(--widget-color-1);
 }
 ._720kb-datepicker-calendar-day._720kb-datepicker-active {
-  background: rgba(68, 123, 220, 0.86);
+  background: var(--widget-color-2);
+  color: var(--widget-color-1);
 }
 ._720kb-datepicker-calendar-header a,
 ._720kb-datepicker-calendar-header a:hover {
   text-decoration: none;
   padding: 3% 9% 4% 9%;
   font-size: 13.5px;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--widget-color-1);
   font-weight: bold;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: br('4');
+  -moz-border-radius: br('4');
+  border-radius: br('4');
 }
 ._720kb-datepicker-calendar-header a:hover {
-  color: rgba(0, 0, 0, 0.9);
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--widget-color-3);
+  color: var(--widget-color-1);
 }
 ._720kb-datepicker-calendar-month {
-  color: #fff;
+  color: var(--widget-color-1);
 }
 ._720kb-datepicker-calendar-month span {
   font-size: 13px;
-  color: rgba(0, 0, 0, 0.4);
 }
 ._720kb-datepicker-calendar-month a span i {
   font-style: normal;
@@ -179,22 +181,31 @@ datepicker,
   margin: 3px 1% 0 1%;
   line-height: 20px;
   display: inline-block;
+  border-radius: br('2');
+  border: 1px solid transparent;
+  background: transparent;
 }
 ._720kb-datepicker-calendar-years-pagination a._720kb-datepicker-active {
-  color: rgba(0, 0, 0, 0.9);
+  background: var(--widget-color-2);
+  color: var(--widget-color-1);
   font-weight: normal;
-  background: rgba(255, 255, 255, 0.45);
+}
+._720kb-datepicker-calendar-years-pagination a:hover {
+  border-color: var(--widget-border-color);
 }
 ._720kb-datepicker-calendar-years-pagination-pages a,
 ._720kb-datepicker-calendar-years-pagination-pages a:hover {
   padding: 5px 10px;
 }
+._720kb-datepicker-calendar-years-pagination-pages a:hover {
+  background: var(--widget-color-2);
+}
 ._720kb-datepicker-calendar-days-header {
   max-width: 100%;
   margin: 0 auto;
   padding: 0 2% 0 2%;
-  background: rgba(19, 142, 250, 0.08);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+  background: var(--widget-date-surface-a);
+  border-bottom: 1px solid var(--widget-date-border);
 }
 ._720kb-datepicker-calendar-days-header div {
   width: 14.18%;
@@ -203,7 +214,6 @@ datepicker,
   padding: 10px 0;
   float: left;
   text-align: center;
-  color: rgba(0, 0, 0, 0.7);
 }
 ._720kb-datepicker-calendar-days ._720kb-datepicker-default-button {
   font-size: 18.5px;
@@ -227,7 +237,8 @@ datepicker,
 ._720kb-datepicker-calendar-years-pagination a._720kb-datepicker-disabled:hover,
 ._720kb-datepicker-calendar-years-pagination a._720kb-datepicker-active._720kb-datepicker-disabled,
 ._720kb-datepicker-calendar-years-pagination a._720kb-datepicker-active._720kb-datepicker-disabled:hover {
-  color: rgba(0, 0, 0, 0.2);
-  background: rgba(25, 2, 0, 0.02);
+  opacity: 0.3;
   cursor: default;
+  background: transparent;
+  border-color: transparent;
 }

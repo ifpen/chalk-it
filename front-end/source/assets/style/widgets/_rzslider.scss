@@ -147,7 +147,7 @@
 }
 
 .rzslider .rz-pointer.rz-active:after {
-  background-color: #451aff;
+  background-color: var(--active-color);
 }
 
 .rzslider .rz-bubble {

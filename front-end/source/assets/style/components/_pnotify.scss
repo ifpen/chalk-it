@@ -192,7 +192,7 @@ body > .ui-pnotify-modal-overlay {
 }
 
 .ui-pnotify.dark .ui-pnotify-container {
-  color: #e9edef;
-  background-color: rgba(52, 73, 94, 0.88);
-  border-color: rgba(52, 73, 94, 0.88);
+  color: var(--text-color);
+  background-color: var(--surface-b);
+  border-color: var(--surface-b);
 }

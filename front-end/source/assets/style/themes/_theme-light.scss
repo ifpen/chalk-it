@@ -48,20 +48,20 @@ $text-color: #050038;
   --success-color: #34d399;
   --success-hover-color: #60dcaf;
   --success-active-color: #27b07d;
-  --success-color-text: #ffffff;
+  --success-color-text: var(--text-color);
   --success-color-rgb: 52 211 153; // Used for editor mode
   --info-color: #0ea5e9;
   --info-hover-color: #35b7f3;
   --info-active-color: #0b81b7;
-  --info-color-text: #ffffff;
+  --info-color-text: var(--text-color);
   --warning-color: #fbbf24;
   --warning-hover-color: #fccc55;
   --warning-active-color: #e6a605;
-  --warning-color-text: #ffffff;
+  --warning-color-text: var(--text-color);
   --danger-color: #f87171;
   --danger-hover-color: #fba2a2;
   --danger-active-color: #f64141;
-  --danger-color-text: #ffffff;
+  --danger-color-text: var(--text-color);
   --disabled-color: #bdc3c7;
 
   // Layout custom colors
@@ -109,5 +109,8 @@ $text-color: #050038;
   --null-value-color: #004ed0;
   --hexa-value-color: #5ba95b;
   --invalid-value-color: #ff0000;
+
+  // Scrollbar
+  --scrollbar: #d3d3d3;
 }
 // }
