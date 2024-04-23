@@ -10,22 +10,22 @@
 # specific language governing permissions and limitations under the License.
 
 
-import typing
+from typing import Any, Optional
 
 from chalkit_python_api import PICKLE_MIME
 
 
 class DataNodesProxy:
-    _values: typing.Dict[str, any]
-    _cache: typing.Dict[str, any]
+    _values: dict[str, Any]
+    _cache: dict[str, Any]
     _transform: bool
 
-    def __init__(self, data: typing.Dict[str, any], transform: bool = True):
+    def __init__(self, data: dict[str, Any], transform: bool = True):
         self._transform = transform
         self._values = {k: v for k, v in data.items()}
         self._cache = {}
 
-    def __getitem__(self, key: str) -> typing.Optional[any]:
+    def __getitem__(self, key: str) -> Optional[Any]:
         if key in self._cache:
             return self._cache[key]
 

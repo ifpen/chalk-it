@@ -11,6 +11,41 @@
     return true;
   }
 
+  static applySideEffects(sideEffects) {
+    if (sideEffects?.length) {
+      for (const { name, args } of sideEffects) {
+        const unknowns = [];
+        try {
+          switch (name) {
+            case 'setVariables':
+              chalkit.setVariables(Object.keys(args[0]), Object.values(args[0]));
+              break;
+
+            case 'setVariableProperty':
+            case 'viewPage':
+            case 'viewProject':
+            case 'executeDataNodes':
+            case 'goToPage':
+            case 'enableWidget':
+            case 'disableWidget':
+            case 'showWidget':
+            case 'hideWidget':
+              chalkit[name](...args);
+              break;
+
+            default:
+              unknowns.push(name);
+              break;
+          }
+        } finally {
+          if (unknowns.length) {
+            throw new Error(`Invalid side effects: ${unknowns.join(', ')}`);
+          }
+        }
+      }
+    }
+  }
+
   constructor() {}
 
   getXHR() {

@@ -9,21 +9,4 @@
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-
-from taipy.gui.custom import Page
-from .resource_handler import PureHTMLResourceHandler
-from .chalkit_json_adapter import FunctionJsonAdapter
-
-
-class ChalkitPage(Page):
-
-    def __init__(
-        self,
-        xprjson_file_name: str = "new_project.xprjson",
-        designer_mode: bool = False,
-    ):
-        super().__init__(
-            resource_handler=PureHTMLResourceHandler(xprjson_file_name, designer_mode),
-            metadata={"xprjson_file_name": xprjson_file_name},
-        )
-        FunctionJsonAdapter().register()
+from .template_utils import TemplateUtils

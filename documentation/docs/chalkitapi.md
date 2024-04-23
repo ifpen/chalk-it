@@ -156,7 +156,7 @@ Similar to view page, but applies for projects.
 chalkit.viewProject(projectUrl, inputVals, bNewTab)
 ```
 
-### hideWidget
+#### hideWidget
 
 ```JavaScript
 chalkit.hideWidget(widgetName)
@@ -166,7 +166,7 @@ Hides the display of the widget.
 
 - widgetName: the name of the widget, which can be obtained by hovering over the widget target, in the edit mode. The widget is visible by default.
 
-### showWidget
+#### showWidget
 
 ```JavaScript
 chalkit.showWidget(widgetName)
@@ -174,7 +174,7 @@ chalkit.showWidget(widgetName)
 
 Makes the display of the widget visible.
 
-### disableWidget
+#### disableWidget
 
 ```JavaScript
 chalkit.disableWidget(widgetName)
@@ -182,7 +182,7 @@ chalkit.disableWidget(widgetName)
 
 Disables the access of the widget. The widget is enabled by default.
 
-### enableWidget
+#### enableWidget
 
 ```JavaScript
 chalkit.enableWidget(widgetName)
@@ -192,13 +192,26 @@ Enables the access of the widget (interactive).
 
 ## Python
 
-The Python API mostly deals with input and outputs, but should ultimately offer parity with the JavaScript API for the other areas.
+The Python API deals with input and outputs for Python scripts and also offers a port of the JavaScript API to interact with the dashboard.
 
-### Methods
-::: chalkit_python_api.outputs.ChalkitApi
+### Input/ouputs helpers
+::: chalkit_python_api.public_api.ChalkitApi
     options:
       show_source: false
       heading_level: 4
       show_signature_annotations: true
       show_object_full_path: false
       show_root_toc_entry: false
+      separate_signature: true
+      show_signature_annotations: false
+
+### Dashboard interactions
+::: chalkit_python_api.public_api.DashboardActions
+    options:
+      show_source: false
+      heading_level: 4
+      show_signature_annotations: true
+      show_object_full_path: false
+      show_root_toc_entry: false
+      separate_signature: true
+      show_signature_annotations: false

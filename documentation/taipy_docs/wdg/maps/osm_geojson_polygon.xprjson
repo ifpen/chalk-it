@@ -4,7 +4,7 @@
 		"fileFormatVersion": "0.3",
 		"date": "Thu Mar 28 2024 13:08:04 GMT+0100 (heure normale d’Europe centrale)",
 		"name": "osm_geojson_polygon",
-		"description": "Single polygone display with geoJSON on map",
+		"description": "Single polygon display with geoJSON on map",
 		"groupName": "Neutral",
 		"tags": [
 			{
@@ -111,7 +111,7 @@
 				"drawingFeaturesOptions": {
 					"point": true,
 					"line": true,
-					"polygone": true,
+					"polygon": true,
 					"rectangle": true,
 					"modal": false
 				},

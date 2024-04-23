@@ -211,3 +211,42 @@ def chlkt_get_file_list_(state: object, action_name: str) -> None:
                 "text": f"Error while getting file list: {e}",
             },
         )
+
+
+def notice(
+    state: object, title: str, message: str, type: str = "info", delay: int = 2000
+):
+    """
+    Sends a notification of a specified type if it's either 'error' or 'info'.
+
+    This function sends a notification with a specific message and title to a state object.
+
+    Parameters:
+    - state (object): The current state object.
+    - title (str): The title of the notification. Currently unused in the notification logic.
+    - message (str): The content of the message to be sent in the notification.
+    - type (str): The type of the notification; must be 'error' or 'info'.
+    - delay (int): The delay in milliseconds before the notification is displayed, default is 2000.
+
+    Returns:
+    - None: The function does not return a value but sends a notification through the `notify`
+      function if the type is valid.
+
+    Raises:
+    - Prints an error message if the type is invalid and does not proceed with notification.
+    """
+    # Check if the type is either "error" or "info"
+    if type not in ("error", "info"):
+        print("Invalid notification type. Only 'error' and 'info' are allowed.")
+        return
+
+    notify(
+        state,
+        notification_type=type,
+        message={
+            "action_name": "notice",
+            "title": title,
+            "text": message,
+            "delay": delay,
+        },
+    )

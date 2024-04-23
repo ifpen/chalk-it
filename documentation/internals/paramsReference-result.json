@@ -3620,7 +3620,7 @@
     "name": "drawingFeatures",
     "type": "boolean",
     "defaultValue": false,
-    "description": "When set to true, it allows the user to manually select points, lines, rectangles or polygone regions in the map. The user can also delete the selected features. The selected features can be saved in a variable conntected to the selectedGeoJson actuator"
+    "description": "When set to true, it allows the user to manually select points, lines, rectangles or polygon regions in the map. The user can also delete the selected features. The selected features can be saved in a variable conntected to the selectedGeoJson actuator"
   },
   {
     "typeWidget": "openStreetMaps",
@@ -3629,7 +3629,7 @@
     "defaultValue": {
       "point": true,
       "line": true,
-      "polygone": true,
+      "polygon": true,
       "rectangle": true,
       "modal": false
     },

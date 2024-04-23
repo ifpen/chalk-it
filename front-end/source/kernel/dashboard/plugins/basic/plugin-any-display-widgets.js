@@ -109,6 +109,10 @@ modelsLayout.anyDisplay = { height: '30vh', width: '30vw', minWidth: '50px', min
       }
     }
 
+    rescale() {
+      this.render();
+    }
+
     render() {
       const content = modelsHiddenParams[this.idInstance].content;
       const container = document.getElementById(this.idDivContainer);

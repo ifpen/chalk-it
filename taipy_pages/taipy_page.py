@@ -46,6 +46,7 @@ def on_change(state, var, val):
 
 
 def run_simul(state):
+    notice(state, "Title", "message", "info", 2000)
     print("running simulation", state.path)
 
 

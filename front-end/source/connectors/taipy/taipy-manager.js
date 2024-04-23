@@ -343,16 +343,17 @@ class TaipyManager {
    */
   #onNotify(app, type, message) {
     const MESSAGE_TYPES = { INFO: 'I', ERROR: 'E' };
-    const ACTIONS = { LOAD_FILE: 'load_file', SAVE_FILE: 'save_file' };
+    const ACTIONS = { LOAD_FILE: 'load_file', SAVE_FILE: 'save_file', NOTICE: 'notice' };
     switch (message.action_name) {
-      case ACTIONS.LOAD_FILE:
+      case ACTIONS.LOAD_FILE: {
         if (type == MESSAGE_TYPES.INFO) {
           // This case is handled in the #onChange function
         } else if (type == MESSAGE_TYPES.ERROR) {
           this.#notify('Info project', message.text, 'error', 2000);
         }
         break;
-      case ACTIONS.SAVE_FILE:
+      }
+      case ACTIONS.SAVE_FILE: {
         if (type == MESSAGE_TYPES.INFO) {
           if (_.isFunction(this.endAction)) {
             this.endAction(); // Do not assign undefined value: used in Open function
@@ -362,9 +363,15 @@ class TaipyManager {
           this.#notify('Info project', message.text, 'error', 2000);
         }
         break;
-      default:
+      }
+      case ACTIONS.NOTICE: {
+        this.#notify(message.title, message.text, type, message.delay);
+        break;
+      }
+      default: {
         const notifType = type == MESSAGE_TYPES.INFO ? 'info' : 'error';
         this.#notify('Info project', message.text, notifType, 2000);
+      }
     }
   }
 

@@ -313,13 +313,13 @@ modelsHiddenParams.plotlyPyGeneric = {
   selection: [{}],
 };
 
-modelsTempParams.plotlyLine = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotlyBar = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotlyPie = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotly3dSurface = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotlyGeneric = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotlyPyGeneric = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotlyRealTime = { lastEditTimeStamp: 0, pngCache: '' };
+modelsTempParams.plotlyLine = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyBar = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyPie = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotly3dSurface = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyGeneric = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyPyGeneric = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyRealTime = { lastData: {}, lastLayout: {} };
 
 // Layout (default dimensions)
 modelsLayout.plotlyLine = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
@@ -577,49 +577,46 @@ function plotlyWidgetsPluginClass() {
           delete hiddenLayout.width;
           delete hiddenLayout.height;
         }
-
         const opts = modelsParameters[idInstance].hideModeBar ? { displayModeBar: false } : {};
-
         Plotly.newPlot(idDivPlotly, data, hiddenLayout, opts);
         this.setSelectionActuator();
       } else {
-        $('#' + idDivPlotly).html('<img id="png-export-' + idDivPlotly + '"></img>');
+        const plotlyDivSelector = `#${idDivPlotly}`;
 
-        const img_png = $('#png-export-' + idDivPlotly);
-        const UNSENSIBLE_TIME_INTERVAL = 6000;
-        if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
+        // Create the Plotly DIV
+        $(plotlyDivSelector).html();
+
+        // Function to check if data or layout has changed
+        const hasChanged = (currentData, currentLayout, idInstance) => {
+          const lastData = modelsTempParams[idInstance].lastData;
+          const lastLayout = modelsTempParams[idInstance].lastLayout;
+
+          return !(_.isEqual(currentData, lastData) && _.isEqual(currentLayout, lastLayout));
+        };
+
+        const updateStoredState = (currentData, currentLayout, idInstance) => {
+          modelsTempParams[idInstance].lastData = currentData;
+          modelsTempParams[idInstance].lastLayout = currentLayout;
+        };
+
+        // Function to check if a Plotly plot exists on the given DIV
+        const plotExists = (plotDiv) => {
+          return plotDiv && plotDiv.data !== undefined;
+        };
+
+        if (plotExists(idDivPlotly)) {
           // MBG tmp optim
-          img_png.attr('src', modelsTempParams[idInstance].pngCache);
-          const divContainer = document.getElementById(idDivContainer);
-          img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
-          img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
-          img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
-          img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + 'vh';
-          img_png[0].style.margin = '3px';
-          return;
+          if (hasChanged(data, hiddenLayout, idInstance)) {
+            // Purge existing plot before updating to prevent any lingering processes or data
+            Plotly.purge(idDivPlotly);
+            Plotly.react(idDivPlotly, data, hiddenLayout);
+          }
+        } else {
+          Plotly.newPlot(idDivPlotly, data, hiddenLayout);
         }
-        Plotly.newPlot(idDivPlotly, data, hiddenLayout).then(function (gd) {
-          Plotly.toImage(gd, {
-            height: $('#' + idDivContainer).height(),
-            width: $('#' + idDivContainer).width(),
-          }).then(function (url) {
-            const img_url = url;
-            Plotly.purge(gd);
-            img_png.attr('src', img_url);
-            gd.style.minHeight = gd.parentNode.style.minHeight;
-            gd.style.minWidth = gd.parentNode.style.minWidth;
-            gd.style.width = gd.parentNode.style.width;
-            gd.style.height = gd.parentNode.style.height;
 
-            img_png[0].style.minHeight = parseInt(gd.parentNode.style.minHeight) - 3 + 'px';
-            img_png[0].style.minWidth = parseInt(gd.parentNode.style.minWidth) - 3 + 'px';
-            img_png[0].style.width = parseFloat(gd.parentNode.style.width) - 1 + 'vw';
-            img_png[0].style.height = parseFloat(gd.parentNode.style.height) - 1 + 'vh';
-            img_png[0].style.margin = '3px';
-            modelsTempParams[idInstance].lastEditTimeStamp = Date.now(); // MBG tmp optim
-            modelsTempParams[idInstance].pngCache = img_url;
-          });
-        });
+        // Update stored state and timestamp
+        updateStoredState(data, hiddenLayout, idInstance);
       }
     };
 

@@ -42,8 +42,8 @@ class LayoutMgrClass {
     this.defaultRow = {};
 
     // Dashboard background color
+    this.defaultBgColor = 'var(--widget-color-0)';
     this.dashBgColor = '';
-    this.defaultBgColor = '';
     this.dashboardTheme = 'default';
     this.$rootScope = angular.element(document.body).scope().$root;
   }
@@ -547,6 +547,16 @@ class LayoutMgrClass {
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                      DashboardBackgroundColor                      | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
+  getColorValueFromCSSProperty(value) {
+    // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
+    let color = value;
+    if (color.includes('var(--')) {
+      const realValue = value.substring(4, value.length - 1);
+      color = window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
+    }
+    return color;
+  }
+
   onInputDashBgColor() {
     this.dashBgColor = $('#inputDashBgColor').val();
     $('.dropperR').css('background-color', this.dashBgColor);
@@ -554,14 +564,14 @@ class LayoutMgrClass {
   }
 
   updateDashBgColor() {
-    $('#inputDashBgColor').val(this.dashBgColor);
-    $('.dropperR').css('background-color', this.dashBgColor);
+    const colorValue = this.getColorValueFromCSSProperty(this.dashBgColor);
+    $('#inputDashBgColor').val(colorValue);
+    $('.dropperR').css('background-color', colorValue);
   }
 
   resetDashBgColor() {
-    this.dashBgColor = '';
-    $('#inputDashBgColor').val('');
-    $('.dropperR').css('background-color', '');
+    this.dashBgColor = this.defaultBgColor;
+    this.updateDashBgColor();
   }
 
   serializeDashBgColor() {
@@ -585,6 +595,10 @@ class LayoutMgrClass {
     this.dashboardTheme = theme;
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
+<<<<<<< HEAD
+=======
+    this.updateDashBgColor();
+>>>>>>> taipy_integration
     // TODO Open Sweet alert to ask the user if he wants to reset styles for all components
     widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
     this.$rootScope.updateFlagDirty(true);
@@ -593,6 +607,7 @@ class LayoutMgrClass {
   updateDashboardTheme() {
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
+    this.updateDashBgColor();
     widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
   }
 

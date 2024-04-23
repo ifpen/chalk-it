@@ -67,7 +67,7 @@ modelsParameters.openStreetMaps = {
   drawingFeaturesOptions: {
     point: true,
     line: true,
-    polygone: true,
+    polygon: true,
     rectangle: true,
     modal: false,
   },
@@ -738,13 +738,20 @@ function mapWidgetsPluginClass() {
       drawRectangle: true,
     };
 
+    // backwards compatibility
+    const instanceOptions = modelsParameters[idInstance].drawingFeaturesOptions;
+    if (instanceOptions.polygone !== undefined) {
+      instanceOptions.polygon = instanceOptions.polygone;
+      delete instanceOptions.polygone;
+    }
+
     if (drawingFeature) {
       drawControlConfig = {
         drawCircle: false,
         drawCircleMarker: false,
         drawMarker: modelsParameters[idInstance].drawingFeaturesOptions.point,
         drawPolyline: modelsParameters[idInstance].drawingFeaturesOptions.line,
-        drawPolygon: modelsParameters[idInstance].drawingFeaturesOptions.polygone,
+        drawPolygon: modelsParameters[idInstance].drawingFeaturesOptions.polygon,
         drawRectangle: modelsParameters[idInstance].drawingFeaturesOptions.rectangle,
       };
     }
