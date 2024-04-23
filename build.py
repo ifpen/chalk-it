@@ -156,6 +156,7 @@ directories_to_copy = {
     "./back_end/taipy/": "taipy",
     "./back_end/app/": "app",
     "./back_end/render/": "render",
+    "./back_end/common/": "common",
 }
 
 # Add additional directory if it is not a lite build
