@@ -23,8 +23,8 @@ modelsParameters.ledStatus = {
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
   labelWidthProportion: '60%',
-  onColor: '#00b700',
-  offColor: '#004d00',
+  onColor: 'var(--widget-led-light-on)',
+  offColor: 'var(--widget-led-light-off)',
 };
 
 // Layout (default dimensions)
@@ -34,23 +34,25 @@ modelsLayout.ledStatus = { height: '10vh', width: '10vw', minWidth: '40px', minH
 /*************************** plugin code ***************************/
 /*******************************************************************/
 
-function getLedSvg(state, idWidget, idInstance) {
-  var color1 = '#008400';
-  var color2 = '#00b700';
+function getLedSvg(self, state, idWidget, idInstance) {
+  let color1 = '#008400';
+  let color2 = '#00b700';
 
   switch (state) {
-    case 'off':
-      color1 = modelsParameters[idInstance].offColor;
-      var color1Obj = w3color(color1);
+    case 'off': {
+      color1 = self.offColor();
+      const color1Obj = w3color(color1);
       color1Obj.darker(5);
       color2 = color1Obj.toHexString();
       break;
-    case 'on':
-      color2 = modelsParameters[idInstance].onColor;
-      var color2Obj = w3color(color2);
+    }
+    case 'on': {
+      color2 = self.onColor();
+      const color2Obj = w3color(color2);
       color2Obj.darker(10);
       color1 = color2Obj.toHexString();
       break;
+    }
     case 'inactive':
       color1 = '#e6e6e6';
       color2 = '#a6a6a6';
@@ -58,7 +60,7 @@ function getLedSvg(state, idWidget, idInstance) {
     default:
   }
 
-  var ledSvg =
+  const ledSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" xmlns: xlink="http://www.w3.org/1999/xlink" viewBox="-1 -1 51 51"  preserveAspectRatio="xMinYMin meet" class="svg-content">' +
     '<title>LED ' +
     state +
@@ -164,7 +166,7 @@ function ledWidgetsPluginClass() {
   this.statusLedWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
-    var self = this;
+    const self = this;
 
     this.enable = function () {};
 
@@ -193,27 +195,20 @@ function ledWidgetsPluginClass() {
     };
 
     this.render = function () {
-      var widgetHtml = document.createElement('div');
+      const widgetHtml = document.createElement('div');
 
-      var state;
+      let state = 'inactive'; // Default state
       if (this.bIsInteractive) {
-        if (modelsHiddenParams[idInstance].status) {
-          state = 'on';
-        } else {
-          state = 'off';
-        }
-      } else {
-        state = 'inactive';
+        state = modelsHiddenParams[idInstance].status ? 'on' : 'off';
       }
 
-      var ledDivProportion = 1;
-
+      let ledDivProportion = 1;
       if (modelsParameters[idInstance].displayLabel) {
         ledDivProportion = (100 - Number(modelsParameters[idInstance].labelWidthProportion.replace('%', ''))) / 100;
       }
 
-      var svgDivContainerDims = 0;
-      var vPadding = 0;
+      let svgDivContainerDims = 0;
+      let vPadding = 0;
       if ($('#' + idDivContainer).width() * ledDivProportion > $('#' + idDivContainer).height()) {
         svgDivContainerDims = $('#' + idDivContainer).height() - 2;
       } else {
@@ -224,7 +219,7 @@ function ledWidgetsPluginClass() {
       widgetHtml.setAttribute('class', 'led-widget-html');
       widgetHtml.setAttribute('style', 'height: inherit');
 
-      var svgContainer = document.createElement('div');
+      const svgContainer = document.createElement('div');
       svgContainer.setAttribute('class', 'svg-container');
       svgContainer.setAttribute(
         'style',
@@ -236,7 +231,7 @@ function ledWidgetsPluginClass() {
           svgDivContainerDims +
           'px'
       );
-      var divContent = getLedSvg(state, idWidget, idInstance);
+      const divContent = getLedSvg(self, state, idWidget, idInstance);
 
       svgContainer.innerHTML = divContent;
 
@@ -317,7 +312,7 @@ function ledWidgetsPluginClass() {
 ledWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var ledWidgetsPlugin = new ledWidgetsPluginClass();
+const ledWidgetsPlugin = new ledWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

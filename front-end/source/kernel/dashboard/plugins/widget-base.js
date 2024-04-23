@@ -711,6 +711,25 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
   };
 
   // +--------------------------------------------------------------------¦ \\
+  // |                         Calendar D3 widgets                        | \\
+  // +--------------------------------------------------------------------¦ \\
+  this.undefinedValueColor = function () {
+    const color = this.setColorValueFromModelParameters(
+      'UndefinedValueColor',
+      'var(--widget-calendar-d3-undefined-value)'
+    );
+    return color;
+  };
+
+  // +--------------------------------------------------------------------¦ \\
+  // |                          Plotly widgets                            | \\
+  // +--------------------------------------------------------------------¦ \\
+  this.plotTextColor = function () {
+    const color = this.setColorValueFromModelParameters('textColor', 'var(--widget-color)');
+    return color;
+  };
+
+  // +--------------------------------------------------------------------¦ \\
   // |                     Scoring & Gauges widgets                       | \\
   // +--------------------------------------------------------------------¦ \\
   this.thicknessBackgroundColor = function () {
@@ -735,6 +754,19 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
 
   this.tipBorderColor = function () {
     const color = this.setColorValueFromModelParameters('tipBorderColor', 'var(--widget-button-text)');
+    return color;
+  };
+
+  // +--------------------------------------------------------------------¦ \\
+  // |                       Led light widgets                            | \\
+  // +--------------------------------------------------------------------¦ \\
+  this.onColor = function () {
+    const color = this.setColorValueFromModelParameters('onColor', 'var(--widget-led-light-on)');
+    return color;
+  };
+
+  this.offColor = function () {
+    const color = this.setColorValueFromModelParameters('offColor', 'var(--widget-led-light-off)');
     return color;
   };
 }
