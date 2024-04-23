@@ -23,8 +23,8 @@ modelsParameters.ledStatus = {
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
   labelWidthProportion: '60%',
-  onColor: '#00b700',
-  offColor: '#004d00',
+  onColor: 'var(--widget-led-light-on)',
+  offColor: 'var(--widget-led-light-off)',
 };
 
 // Layout (default dimensions)
@@ -40,13 +40,13 @@ function getLedSvg(state, idWidget, idInstance) {
 
   switch (state) {
     case 'off':
-      color1 = modelsParameters[idInstance].offColor;
+      color1 = this.offColor();
       var color1Obj = w3color(color1);
       color1Obj.darker(5);
       color2 = color1Obj.toHexString();
       break;
     case 'on':
-      color2 = modelsParameters[idInstance].onColor;
+      color2 = this.onColor();
       var color2Obj = w3color(color2);
       color2Obj.darker(10);
       color1 = color2Obj.toHexString();

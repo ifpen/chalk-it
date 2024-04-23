@@ -737,6 +737,19 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     const color = this.setColorValueFromModelParameters('tipBorderColor', 'var(--widget-button-text)');
     return color;
   };
+
+  // +--------------------------------------------------------------------¦ \\
+  // |                       Led light widgets                            | \\
+  // +--------------------------------------------------------------------¦ \\
+  this.onColor = function () {
+    const color = this.setColorValueFromModelParameters('onColor', 'var(--widget-led-light-on)');
+    return color;
+  };
+
+  this.offColor = function () {
+    const color = this.setColorValueFromModelParameters('offColor', 'var(--widget-led-light-off)');
+    return color;
+  };
 }
 
 /**
