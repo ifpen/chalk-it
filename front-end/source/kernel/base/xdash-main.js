@@ -38,6 +38,7 @@ var xdash = (function () {
 
     layoutMgr.resetDashboardTheme();
     layoutMgr.resetDashBgColor();
+    layoutMgr.updateButtonState();
 
     const $scopeDash = angular.element(document.getElementById('help__wrap')).scope();
     $scopeDash.initFrame();
