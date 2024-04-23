@@ -595,10 +595,7 @@ class LayoutMgrClass {
     this.dashboardTheme = theme;
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
-<<<<<<< HEAD
-=======
     this.updateDashBgColor();
->>>>>>> taipy_integration
     // TODO Open Sweet alert to ask the user if he wants to reset styles for all components
     widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
     this.$rootScope.updateFlagDirty(true);
