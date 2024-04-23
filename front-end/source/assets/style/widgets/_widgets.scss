@@ -308,6 +308,11 @@ html {
   --widget-date-surface-b: var(--widget-color-15);
   --widget-date-surface-c: linear-gradient(to right, var(--widget-color-0), var(--widget-color-15));
   --widget-date-border: var(--widget-color-16);
+  // Led light
+  --widget-led-light-on: '#00b700';
+  --widget-led-light-off: '#004d00';
+  // Calendar D3
+  --widget-calendar-d3-undefined-value: '#f6f6f6';
 }
 
 // Overrides for each theme
