@@ -84,7 +84,7 @@
 				"id": "calendarD3c",
 				"instanceId": "calendarD3c",
 				"modelJsonId": "calendarD3",
-				"widgetTypeName": "Year Calenddar(calendarD3c)"
+				"widgetTypeName": "Year Calendar(calendarD3c)"
 			},
 			"modelParameters": {
 				"AllYearsVisible": true,
