@@ -69,7 +69,7 @@
 		'<div class="popover clockpicker-popover">',
 			'<div class="arrow"></div>',
 			'<div class="popover-title">',
-				'<span class="clockpicker-span-hours text-primary"></span>',
+				'<span class="clockpicker-span-hours active"></span>',
 				' : ',
 				'<span class="clockpicker-span-minutes"></span>',
 				'<span class="clockpicker-span-am-pm"></span>',
@@ -523,8 +523,8 @@
 
 		this.currentView = view;
 
-		this.spanHours.toggleClass('text-primary', isHours);
-		this.spanMinutes.toggleClass('text-primary', ! isHours);
+		this.spanHours.toggleClass('active', isHours);
+		this.spanMinutes.toggleClass('active', ! isHours);
 
 		// Let's make transitions
 		hideView.addClass('clockpicker-dial-out');

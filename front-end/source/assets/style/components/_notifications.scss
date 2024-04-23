@@ -9,6 +9,7 @@
   background-color: var(--surface-a);
   margin-top: 0.5rem;
   padding: 1rem 1.5rem 1rem;
+  border: 1px solid var(--border-a);
   border-radius: br('4');
 }
 
@@ -43,6 +44,11 @@
     display: block;
     font-size: fs('3xl');
   }
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--hover-color);
+  }
 }
 
 .notification__content {
@@ -65,18 +71,34 @@
   }
 }
 
-.notification__success {
-  border: 2px solid var(--success-color);
+$alert-colors: 'info', 'success', 'warning', 'danger';
+
+@each $color in $alert-colors {
+  .notification__#{$color} {
+    border-left: 10px solid var(--#{$color}-color);
+
+    .notification__top__title {
+      color: var(--#{$color}-color);
+    }
+  }
 }
 
-.notification__danger {
-  border: 2px solid var(--danger-color);
-}
+.notification--clear-cta {
+  padding: 0;
+  border: none;
 
-.notification__info {
-  border: 2px solid var(--primary-color);
-}
+  a {
+    width: 100%;
+    background: var(--surface-c);
+    border: 1px solid var(--border-b);
+    border-radius: br('4');
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    padding: 1rem 1.5rem 1rem;
+    text-align: center;
 
-.notification__warning {
-  border: 2px solid var(--warning-color);
+    &:hover {
+      background: var(--hover-color);
+      border-color: var(--hover-color);
+    }
+  }
 }

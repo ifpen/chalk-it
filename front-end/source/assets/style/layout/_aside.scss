@@ -25,9 +25,9 @@ aside {
 .aside__panel {
   display: flex;
   align-items: center;
-  gap: $aside-panel-gap;
   flex-shrink: 0;
   overflow: visible;
+  gap: $aside-panel-gap;
   transition: var(--default-transition);
 
   > * {
@@ -944,6 +944,7 @@ aside {
   flex-shrink: 0;
   width: $aside-panel-nav-width;
   border-radius: br('16');
+  gap: $aside-panel-gap;
   padding: 0.5em;
   background-color: var(--surface-b);
 }
@@ -1038,13 +1039,16 @@ aside {
 
 // Button open/close menu sidebar  (for opensource version)
 .aside__panel--nav--btn-menu {
-  width: $aside-panel-nav-width;
+  width: calc($aside-panel-nav-width + $aside-panel-gap);
   margin-bottom: spacer('16');
+  margin-left: -0.5em;
 
   a {
     display: flex;
+    justify-content: center;
     font-size: fs('lg');
-    padding: spacer('3') spacer('8');
+    padding: spacer('3') 0;
+    padding-left: $aside-panel-gap;
     border-radius: 0 br('full') br('full') 0;
     color: var(--primary-color-text);
     background-color: var(--primary-color);

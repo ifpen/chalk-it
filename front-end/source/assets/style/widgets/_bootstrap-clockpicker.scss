@@ -31,18 +31,21 @@
   bottom: 6px;
 }
 .clockpicker-popover .popover-title {
-  background-color: #fff;
-  color: #999;
+  background: var(--widget-date-surface-a);
+  color: var(--widget-color-1);
   font-size: 24px;
   font-weight: bold;
   line-height: 30px;
   text-align: center;
 }
+.clockpicker-popover .popover-title .active {
+  color: var(--widget-color-2);
+}
 .clockpicker-popover .popover-title span {
   cursor: pointer;
 }
 .clockpicker-popover .popover-content {
-  background-color: #f8f8f8;
+  background: var(--widget-date-surface-c);
   padding: 12px;
 }
 .popover-content:last-child {
@@ -50,8 +53,7 @@
   border-bottom-right-radius: 5px;
 }
 .clockpicker-plate {
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: transparent;
   border-radius: 50%;
   width: 200px;
   height: 200px;
@@ -78,7 +80,7 @@
 }
 .clockpicker-tick {
   border-radius: 50%;
-  color: #666;
+  color: var(--widget-color-1);
   line-height: 26px;
   text-align: center;
   width: 26px;
@@ -88,8 +90,7 @@
 }
 .clockpicker-tick.active,
 .clockpicker-tick:hover {
-  background-color: rgb(192, 229, 247);
-  background-color: rgba(0, 149, 221, 0.25);
+  background-color: var(--widget-color-3);
 }
 .clockpicker-button {
   background-image: none;
@@ -144,20 +145,20 @@
 .clockpicker-canvas-bearing,
 .clockpicker-canvas-fg {
   stroke: none;
-  fill: rgb(0, 149, 221);
+  fill: var(--widget-color-2);
 }
 .clockpicker-canvas-bg {
   stroke: none;
-  fill: rgb(192, 229, 247);
+  fill: var(--widget-color-2);
 }
 .clockpicker-canvas-bg-trans {
-  fill: rgba(0, 149, 221, 0.25);
+  fill: var(--widget-color-2);
+  opacity: 0.4;
 }
 .clockpicker-canvas line {
-  stroke: rgb(0, 149, 221);
+  stroke: var(--widget-color-2);
   stroke-width: 1;
   stroke-linecap: round;
-  /*shape-rendering: crispEdges;*/
 }
 .clockpicker-button.am-button {
   margin: 1px;

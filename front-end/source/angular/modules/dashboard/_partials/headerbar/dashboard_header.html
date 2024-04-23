@@ -1,9 +1,5 @@
-<a
-  ng-if="xDashFullVersion"
-  ng-click="moduleOpenedFunction(false);reset()"
-  title="Back to Taipy Designer browser"
-  class="brand"
->
+<a ng-if="xDashFullVersion" ng-click="moduleOpenedFunction(false);reset()" title="Back to Taipy Designer browser"
+  class="brand">
   <span class="brand__placeholder" aria-hidden="true"></span>
   <span class="sr-only">Taipy Designer logo</span>
   <i class="basic icn-menu" aria-hidden="true"></i>
@@ -24,7 +20,8 @@
 <div ng-if="xDashFullVersion" class="tabs-container">
   <div class="tab tab--active">
     <span class="tab__name ng-binding">{{currentProject.name}}{{currentPrjDirty}}</span>
-    <a ng-click="closeProject(currentProject.name);reset()" title="Home : close project and back to Taipy Designer browser">
+    <a ng-click="closeProject(currentProject.name);reset()"
+      title="Home : close project and back to Taipy Designer browser">
       <i class="tab__close basic icn-close"></i>
     </a>
   </div>
@@ -40,12 +37,8 @@
 <div class="user__actions">
   <div ng-if="xDashFullVersion" class="user__actions--avatar available">
     <a ng-click="openAvatarManager()" title="open user avatar manager">
-      <img
-        ng-src="{{UserProfile.userAvatar}}"
-        onerror="this.src='source/assets/img/flat-icon/user-m.png'"
-        alt="User avatar"
-        class="img-circle profile_img"
-      />
+      <img ng-src="{{UserProfile.userAvatar}}" onerror="this.src='source/assets/img/flat-icon/user-m.png'"
+        alt="User avatar" class="img-circle profile_img" />
     </a>
   </div>
   <div ng-if="xDashFullVersion" class="user__actions--name--wrapper">
@@ -65,12 +58,8 @@
       <span class="user__actions--notifications__counter">{{nbNotifications}}</span>
       <i class="basic icn-notifications"></i>
     </div>
-    <div
-      ng-if="nbNotifications"
-      class="dashboard-dropdown visible user__actions--notifications__list"
-      ng-init="!isFilterOpen"
-      ng-show="isFilterOpen"
-    >
+    <div ng-if="nbNotifications" class="dashboard-dropdown visible user__actions--notifications__list"
+      ng-init="!isFilterOpen" ng-show="isFilterOpen">
       <!-- for future version  with multiple projects -->
       <!-- <div class="user__actions--notifications__list__filters">
                 <a href="#" class="user__actions--notifications__list__btn user__actions--notifications__list__btn--active">Running Project</a>
@@ -82,18 +71,13 @@
             <strong>..too many notifications! Please acquit a few to display more.</strong>
           </div>
         </li>
-        <li
-          class="notification"
+        <li class="notification"
           ng-class="[{notification__success:(notification.title == 'Success')}, {notification__danger:(notification.title=='Error')},{notification__info:(notification.title == 'Info')},{notification__warning:(notification.title == 'Warning')},{notification__open:toggle},{notification__closed:!toggle}]"
           ng-repeat="notification in listNotifications | limitTo:- shownNotificationsLength |orderBy:-$index "
-          ng-show="!notification.hide"
-        >
+          ng-show="!notification.hide">
           <button class="btn btn-icon-only notification__btn-close">
-            <i
-              ng-click="hideNotificationFromNavBar(notification)"
-              title="Click to acquit this notification"
-              class="basic icn-close tab__close close-aside"
-            ></i>
+            <i ng-click="hideNotificationFromNavBar(notification)" title="Click to acquit this notification"
+              class="basic icn-close tab__close close-aside"></i>
           </button>
           <div class="notification__top" style="width: 100%">
             <div class="notification__top__left">
@@ -111,13 +95,10 @@
       </ul>
       <br />
       <ul>
-        <li ng-if="nbNotifications" class="notification notification--open notification_info">
-          <div class="notification__content" style="text-align: center">
-            <a ng-click="clearAllNotifications()">
-              <strong>Clear All Notifications</strong>
-              <!-- <i class="fa fa-angle-right"></i> -->
-            </a>
-          </div>
+        <li ng-if="nbNotifications" class="notification notification--open notification--clear-cta">
+          <a ng-click="clearAllNotifications()">
+            <strong>Clear All Notifications</strong>
+          </a>
         </li>
       </ul>
     </div>

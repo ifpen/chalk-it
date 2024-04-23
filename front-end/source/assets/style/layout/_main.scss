@@ -495,14 +495,26 @@
       cursor: pointer;
 
       a {
-        color: var(--primary-color);
+        display: block;
+        transform: translate(30%, -30%);
+        padding: 0.375em;
+        border-radius: 999em;
+        border: 1px solid var(--border-a);
+        background: var(--surface-b);
+        color: var(--primary-color-text);
       }
 
       i {
-        opacity: 0.25;
+        font-size: 1.125em;
+        opacity: 0.5;
       }
 
       &:hover {
+        a {
+          background: var(--hover-color);
+          border-color: var(--hover-color);
+        }
+
         i {
           opacity: 1;
         }

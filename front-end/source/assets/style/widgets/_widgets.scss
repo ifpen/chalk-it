@@ -37,7 +37,11 @@ $themes: (
     13: #330b05,
     // Accent 9
     14: #333333,
-    // Grid color
+    // Grid color,
+    15: #18181b,
+    // Secondary background for gradient
+    16: #333333,
+    // Faded border
   ),
   'blue': (
     'hue': 'light',
@@ -71,6 +75,10 @@ $themes: (
     // Accent 9
     14: #e6e6e6,
     // Grid color
+    15: #fff,
+    // Secondary background for gradient
+    16: #cccccc,
+    // Faded border
   ),
   'pink': (
     'hue': 'light',
@@ -104,6 +112,10 @@ $themes: (
     // Accent 9
     14: #e6e6e6,
     // Grid color
+    15: #fff,
+    // Secondary background for gradient
+    16: #cccccc,
+    // Faded border
   ),
   'green': (
     'hue': 'light',
@@ -137,6 +149,10 @@ $themes: (
     // Accent 9
     14: #e6e6e6,
     // Grid color
+    15: #fff,
+    // Secondary background for gradient
+    16: #cccccc,
+    // Faded border
   ),
   'dark': (
     'hue': 'dark',
@@ -170,6 +186,10 @@ $themes: (
     // Accent 9
     14: #555555,
     // Grid color
+    15: #333,
+    // Secondary background for gradient
+    16: #555,
+    // Faded border
   ),
 );
 
@@ -282,6 +302,12 @@ html {
   // --widget-multiselect-checked-text: #{color-yiq(map-get($widget-default-colors, 3))}; // inside calculated colors
   --widget-multiselect-checked-color: var(--widget-color-3);
   --widget-multiselect-checked-border-color: var(--widget-color-3);
+
+  // Datepicker, date range picker and clock picker
+  --widget-date-surface-a: var(--widget-color-0);
+  --widget-date-surface-b: var(--widget-color-15);
+  --widget-date-surface-c: linear-gradient(to right, var(--widget-color-0), var(--widget-color-15));
+  --widget-date-border: var(--widget-color-16);
 }
 
 // Overrides for each theme
