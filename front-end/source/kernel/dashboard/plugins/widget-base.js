@@ -711,6 +711,14 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
   };
 
   // +--------------------------------------------------------------------¦ \\
+  // |                          Plotly widgets                            | \\
+  // +--------------------------------------------------------------------¦ \\
+  this.plotTextColor = function () {
+    const color = this.setColorValueFromModelParameters('textColor', 'var(--widget-color)');
+    return color;
+  };
+
+  // +--------------------------------------------------------------------¦ \\
   // |                     Scoring & Gauges widgets                       | \\
   // +--------------------------------------------------------------------¦ \\
   this.thicknessBackgroundColor = function () {
