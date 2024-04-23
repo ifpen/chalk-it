@@ -362,7 +362,7 @@ function calendarD3WidgetPluginClass() {
           .attr('width', cellSize - 1)
           .attr('height', cellSize - 1)
           .attr('fill', function (e, i) {
-            return !_.isUndefined(Y[e]) ? color(Y[e]) : this.undefinedValueColor();
+            return !_.isUndefined(Y[e]) ? color(Y[e]) : self.undefinedValueColor();
           })
           .on('mouseover', function (e, i) {
             if (!_.isUndefined(Y[i])) {
