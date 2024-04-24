@@ -398,7 +398,7 @@ function datePickerWidgetsPluginClass() {
     widgetsDefinitionList: {
       datepickerSimple: {
         factory: 'datePickerWidgetSemi',
-        title: 'Simple calender',
+        title: 'Simple calendar',
         icn: 'calendar',
         help: 'wdg/wdg-geo-time/#simple-calendar',
       },
