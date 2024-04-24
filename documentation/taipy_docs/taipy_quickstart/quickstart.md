@@ -123,7 +123,7 @@ fig = plot_data(df)
 
 1. Click on the pencil icon on the top-right corner of the widget to display the widget menu. Select then _Connect widget_ as shown below:
 
-2. A panel will then be displayed on the right-side of the screen. From the first connection dropdown, select the variable _fig_, then its _data_ field as it will provide the plot data needed for the widget. Repeat the process for the _layout_ actuator immediately below, but this time using the _layout_ field of the _fig_ variable. Finally, click _Save_ to validate the choices.
+2. A panel will then be displayed on the right-side of the screen. From the first connection dropdown, select the variable _fig_. Finally, click _Save_ to validate the choices.
 
 ![Connect widget to variable](png/plotly-py-widget-actuator.png)
 
@@ -157,7 +157,7 @@ clf = train_classifier(iris)
 Create a variable named **input_data** with the initial values for sepal and petal measurements:
 
 ```Python
-input_data = {"sepal_width": 5.4, "sepal_length": 2.7, "petal_length": 3, "petal_width": 0.5}
+input_data = {"sepal_length": 2.7, "sepal_width": 5.4, "petal_length": 3, "petal_width": 0.5}
 ```
 
 Next, add an horizontal slider to control the values of "sepal_width". Navigate to the _Widgets_ main tab, then select _Basic Inputs & Controls_.
