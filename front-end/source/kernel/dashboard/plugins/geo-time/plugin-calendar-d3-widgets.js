@@ -530,7 +530,7 @@ function calendarD3WidgetPluginClass() {
     widgetsDefinitionList: {
       calendarD3: {
         factory: 'calendarD3Widget',
-        title: 'Year Calendar',
+        title: 'Year calendar',
         icn: 'year-calendar',
         help: 'wdg/wdg-geo-time/#simple-clock',
       },
