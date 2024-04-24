@@ -3,12 +3,12 @@
 Plots in Taipy Designer may be made with the following widget types:
 
 * Python-based plots are available using [Plolty Python](https://plotly.com/python/) or [Matplotlib](https://matplotlib.org/)
-* Simplified usage (array actuators) is available for [Plotly line](#plotly-line), [Plotly bar](#plotly-bar) or [Plotly pie](#plotly-pie). Otherwise, use the [Plotly Python generic](#plotly-python-generic) for a complete Plotly options and configurations
+* Simplified usage (array actuators) is available for [Line chart](#line-chart), [Bar chart](#bar-chart) or [Pie chart](#pie-chart). Otherwise, use the [Plotly Python generic](#plotly-python-generic) for a complete Plotly options and configurations
 * JavaScript-based plots are available [Apache ECharts](https://echarts.apache.org/). They are usable by writing Python code with JSON-like dicts.
 
 Plotly-based widgets share common parameters, especially *hideModeBar* which allows to hide plot options toolbar at dashboard play.
 
-## Plotly line
+## Line chart
 
 Allows to quickly display line charts, when x and y axis are expressed as lists of numbers. The parameter *numberOfAxis* allows to specifiy up to 8 y-axis actuators (named **y1** to **y8**), sharing the same x-axis actuator (named **x**). Widget layout may be configured in the "Graphical properties" tab.
 
@@ -16,7 +16,7 @@ Allows to quickly display line charts, when x and y axis are expressed as lists 
 
 ![line-chart](plotly/line-chart.png)
 
-## Plotly bar
+## Bar chart
 
 Here parameter *numberOfAxis* allows to specify couples of x and y axis actuators (named **x1**, **y1** to **x8**, **y8**).
 
@@ -30,7 +30,7 @@ Some examples :
 
 ![stack-bar-chart](plotly/stack-bar-chart.png)
 
-## Plotly pie
+## Pie chart
 
 This widget has two actuators :
 
