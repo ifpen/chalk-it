@@ -1339,25 +1339,25 @@ function plotlyWidgetsPluginClass() {
     widgetsDefinitionList: {
       plotlyLine: {
         factory: 'linePlotlyWidget',
-        title: 'Plotly line',
+        title: 'Line chart',
         icn: 'plotly-line',
         help: 'wdg/wdg-plots/#plotly-line',
       },
       plotlyBar: {
         factory: 'barPlotlyWidget',
-        title: 'Plotly bar',
+        title: 'Bar chart',
         icn: 'plotly-bar',
         help: 'wdg/wdg-plots/#plotly-bar',
       },
       plotlyPie: {
         factory: 'piePlotlyWidget',
-        title: 'Plotly pie',
+        title: 'Pie chart',
         icn: 'plotly-pie',
         help: 'wdg/wdg-plots/#plotly-pie',
       },
       plotly3dSurface: {
         factory: 'd3surfacePlotlyWidget',
-        title: 'Plotly 3D surface',
+        title: '3D surface Plot',
         icn: 'plotly-3D',
         help: 'wdg/wdg-plots/#plotly-3d-surface',
       },
