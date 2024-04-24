@@ -53,9 +53,4 @@ setup(
     ],
     python_requires=">=3.6",
     include_package_data=True,
-    entry_points={
-        "console_scripts": [
-            "chalk-it=taipy_designer.main:Main.main",
-        ]
-    },
 )
