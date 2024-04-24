@@ -35,7 +35,7 @@ def make_prediction(clf, input_data):
     return iris.target_names[prediction][0]
 
 # Example input for prediction
-input_data = {"sepal_width": 5.4, "sepal_length": 2.7, "petal_length": 3, "petal_width": 0.5}
+input_data = {"sepal_length": 2.7, "sepal_width": 5.4, "petal_length": 3, "petal_width": 0.5}
 
 # Main execution
 iris = load_dataset()
