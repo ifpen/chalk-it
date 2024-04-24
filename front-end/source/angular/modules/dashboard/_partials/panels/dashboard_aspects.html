@@ -48,8 +48,9 @@
     </div>
     <div class="Cell">
       <select class="inputList" style="width: 100px" name="select-rows" id="select-rows">
-        <option selected="selected" value="0">None</option>
-        <option value="1" id="row1">1</option>
+        <option ng-if="!xDashLiteVersion" selected="selected" value="0">None</option>
+        <option ng-if="!xDashLiteVersion" value="1" id="row1">1</option>
+        <option ng-if="xDashLiteVersion" selected="selected" value="1" id="row1">1</option>
         <option value="2" id="row2">2</option>
         <option value="3" id="row3">3</option>
         <option value="4" id="row4">4</option>
@@ -66,7 +67,7 @@
         <option value="15" id="row15">15</option>
       </select>
     </div>
-    <div class="Cell" style="vertical-align: middle">
+    <div ng-if="!xDashLiteVersion" class="Cell" style="vertical-align: middle">
       <!--<a href="#" title="Configure row's height" onclick="layoutMgr.configureRowHeight()" style="display: table-cell; padding: 4px 8px;">
                 <button id="height-row-button" class="btn" style="width:30px;height:30px;color:#333;" ng-disabled=true><i class="glyphicon-resize-small glyphicon"></i></button>
             </a>-->
