@@ -93,6 +93,14 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
         //marker
         clickPopup: true,
         popupProperty: 'none',
+        awesomeMarker: {
+          enabled: false,
+          icon: {
+            icon: ' fa-asterisk',
+            prefix: 'fa',
+            markerColor: 'red',
+          },
+        },
         //pour les circles
         radius: 300,
         showLegend: false,
@@ -115,8 +123,10 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
 };
 updateLayerStyle = function (self, layer, styleForObject, geoJSONinLayer) {
   let style = { ...styleForObject };
-  if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPoint && style.pointAreMarker ) {
-     
+  if (
+    geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPoint &&
+    style.pointAreMarker
+  ) {
   } else {
     //calcul fill Color according to value
     var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
@@ -219,7 +229,14 @@ this.setStyle = function (self, layerIndex, style) {
           var awMarker = L.AwesomeMarkers.icon(layer.feature.properties.awesomeMarker);
           layer.setIcon(awMarker);
         }
-
+        if (style.awesomeMarker && style.awesomeMarker.enabled) {
+          if (style.awesomeMarker.icon) {
+            var awMarker = L.AwesomeMarkers.icon(style.awesomeMarker.icon);
+            layer.setIcon(awMarker);
+          }
+        }
+        //opacity
+        layer.setOpacity(style.opacity);
         // Put new Popup
         let popupText = '';
         if (
