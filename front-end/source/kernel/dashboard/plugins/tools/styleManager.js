@@ -113,50 +113,54 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
       break;
   }
 };
-updateLayerStyle = function(self,layer,styleForObject,geoJSONinLayer) {
-  let style = {...styleForObject}
-//calcul fill Color according to value
-var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
-var colorScale = undefined;
-if (!_.isUndefined(color)) {
-  colorScale = self.getColorScale(color, 0, 100);
-}
-if (!_.isUndefined(layer.feature.properties) && styleForObject.property in layer.feature.properties) {
-  var fillColor = self.getFillColor(
-    geoJSONinLayer,
-    styleForObject,
-    layer.feature.properties[styleForObject.property],
-    colorScale
-  );
-}
-//for line use color propery instead of fillColor
-if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
-  if (!_.isUndefined(fillColor)) {
-    style.color = fillColor;
+updateLayerStyle = function (self, layer, styleForObject, geoJSONinLayer) {
+  let style = { ...styleForObject };
+  if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPoint && style.pointAreMarker ) {
+     
   } else {
-    style.color = styleForObject.color;
+    //calcul fill Color according to value
+    var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
+    var colorScale = undefined;
+    if (!_.isUndefined(color)) {
+      colorScale = self.getColorScale(color, 0, 100);
+    }
+    if (!_.isUndefined(layer.feature.properties) && styleForObject.property in layer.feature.properties) {
+      var fillColor = self.getFillColor(
+        geoJSONinLayer,
+        styleForObject,
+        layer.feature.properties[styleForObject.property],
+        colorScale
+      );
+    }
+    //for line use color propery instead of fillColor
+    if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
+      if (!_.isUndefined(fillColor)) {
+        style.color = fillColor;
+      } else {
+        style.color = styleForObject.color;
+      }
+    } else {
+      if (!_.isUndefined(fillColor)) {
+        style.fillColor = fillColor;
+      } else {
+        style.fillColor = styleForObject.fillColor;
+      }
+    }
+    //for the selected item not change the fillColor
+    if (layer == self.state.selectedElement) {
+      layer.setStyle({
+        fillOpacity: styleForObject.fillOpacity,
+        weight: styleForObject.weight,
+      });
+    } else {
+      layer.setStyle(style);
+    }
+    //if the radius property exist
+    if (!_.isUndefined(styleForObject.radius)) {
+      layer.setRadius(styleForObject.radius); // LafLet bug  setRadius must be called (Radius in Style is not check by Leaflet)
+    }
   }
-} else {
-  if (!_.isUndefined(fillColor)) {
-    style.fillColor = fillColor;
-  } else {
-    style.fillColor = styleForObject.fillColor;
-  }
-}
-//for the selected item not change the fillColor
-if (layer == self.state.selectedElement) {
-  layer.setStyle({
-    fillOpacity: styleForObject.fillOpacity,
-    weight: styleForObject.weight,
-  });
-} else {
-  layer.setStyle(style);
-}
-//if the radius property exist
-if (!_.isUndefined(styleForObject.radius)) {
-  layer.setRadius(styleForObject.radius); // LafLet bug  setRadius must be called (Radius in Style is not check by Leaflet)
-}
-}
+};
 this.setStyle = function (self, layerIndex, style) {
   // Get GeoJSON
   var geoJSONinLayer = modelsHiddenParams[self.idInstance].GeoJSON[layerIndex];
@@ -187,20 +191,20 @@ this.setStyle = function (self, layerIndex, style) {
         return marker;
       });
       leafLetLayer.clearLayers();
-      self.ctrl.removeLayer(leafLetLayer); 
-      self.map.removeLayer(leafLetLayer)
+      self.ctrl.removeLayer(leafLetLayer);
+      self.map.removeLayer(leafLetLayer);
       if (styleForObject.markerCluster) {
         leafLetLayer = L.markerClusterGroup();
         LMarkers.forEach(function (layerMarker) {
           leafLetLayer.addLayer(layerMarker);
-        }); 
-      }else {
+        });
+      } else {
         leafLetLayer = L.geoJSON(geoJSONinLayer);
       }
-      self.map.addLayer(leafLetLayer)
-      self.layers[layerIndex]=leafLetLayer
+      self.map.addLayer(leafLetLayer);
+      self.layers[layerIndex] = leafLetLayer;
       self.ctrl.addOverlay(leafLetLayer, name);
-     
+
       leafLetLayer.eachLayer(function (layer) {
         // Remove Popup if done
         if (!_.isUndefined(layer.getPopup())) {
@@ -255,7 +259,7 @@ this.setStyle = function (self, layerIndex, style) {
           layer.openPopup();
         }
       });
-    } else { 
+    } else {
       // Transform each L.Marker in L.Circle
       LCircles = leafLetLayer.getLayers().map(function (layer) {
         const { lat, lng } = layer.getLatLng();
@@ -264,17 +268,17 @@ this.setStyle = function (self, layerIndex, style) {
         return circle;
       });
 
-      self.ctrl.removeLayer(leafLetLayer); 
-      self.map.removeLayer(leafLetLayer)
+      self.ctrl.removeLayer(leafLetLayer);
+      self.map.removeLayer(leafLetLayer);
       leafLetLayer = L.geoJSON(geoJSONinLayer);
       leafLetLayer.clearLayers();
-      self.map.addLayer(leafLetLayer)
-      self.layers[layerIndex]=leafLetLayer
+      self.map.addLayer(leafLetLayer);
+      self.layers[layerIndex] = leafLetLayer;
       self.ctrl.addOverlay(leafLetLayer, name);
       LCircles.forEach(function (layerCircle) {
         leafLetLayer.addLayer(layerCircle);
       });
-      
+
       //events
       eventsManager.configureEvents(self, geoJSONinLayer, leafLetLayer, layerIndex);
     }
@@ -293,7 +297,7 @@ this.setStyle = function (self, layerIndex, style) {
   let min = minMax[0],
     max = minMax[1];
   leafLetLayer.eachLayer(function (layer) {
-    updateLayerStyle(self,layer,styleForObject,geoJSONinLayer) 
+    updateLayerStyle(self, layer, styleForObject, geoJSONinLayer);
   });
 
   //legends
