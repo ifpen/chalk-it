@@ -1,0 +1,9 @@
+pandas==2.2.1
+plotly==5.18.0
+scikit_learn==1.4.0
+taipy==3.2.0.dev0
+taipy_config==3.0.0
+taipy_core==3.0.0
+taipy_designer==0.5.0
+taipy_rest==3.0.0
+taipy_templates==3.0.0

@@ -1,0 +1,321 @@
+{
+	"meta": {
+		"version": "3.000.8848",
+		"fileFormatVersion": "0.3",
+		"date": "Thu Mar 28 2024 12:43:22 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "osm_drawing_features",
+		"description": "draw on map demonstration based on xDash leaflet-draw integration",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Maps"
+			},
+			{
+				"text": "Geo&Time"
+			},
+			{
+				"text": "drawing-features"
+			},
+			{
+				"text": "Geoman"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1294.4,
+			"heightPx": 590.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "annotationLabele",
+				"component1": "openStreetMapsA",
+				"component2": "openStreetMapsB"
+			}
+		},
+		"backgroundColor": "",
+		"theme": "default"
+	},
+	"dashboard": {
+		"annotationLabele": {
+			"layout": {
+				"top": "2.93333vh",
+				"left": "1.04712vw",
+				"height": "5.05809vh",
+				"width": "73.316vw",
+				"minHeight": "5px",
+				"minWidth": "5px",
+				"z-index": "4"
+			},
+			"container": {
+				"instanceId": "annotationLabele",
+				"modelJsonId": "annotationLabel"
+			},
+			"modelParameters": {
+				"text": "Selected zones on the left will be displayed on the rigth",
+				"fontsize": 0.5,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#2154ab",
+				"textAlign": "left",
+				"centerVertically": true,
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {}
+		},
+		"openStreetMapsA": {
+			"layout": {
+				"top": "11.8667vh",
+				"left": "1.04712vw",
+				"height": "58.1333vh",
+				"width": "35.144vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "5"
+			},
+			"container": {
+				"instanceId": "openStreetMapsA",
+				"modelJsonId": "openStreetMaps"
+			},
+			"modelParameters": {
+				"geoJson": {
+					"numberOfLayers": 0
+				},
+				"choropleth": {
+					"numberOfLayers": 0
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false,
+					"densityHeatMap": false
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
+				"drawingFeatures": true,
+				"drawingFeaturesOptions": {
+					"point": true,
+					"line": true,
+					"polygon": true,
+					"rectangle": true,
+					"modal": false
+				},
+				"captureClickEvent": false,
+				"markerCluster": true
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
+		},
+		"openStreetMapsB": {
+			"layout": {
+				"top": "11.8667vh",
+				"left": "39.2016vw",
+				"height": "58.1333vh",
+				"width": "35.144vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "6"
+			},
+			"container": {
+				"instanceId": "openStreetMapsB",
+				"modelJsonId": "openStreetMaps"
+			},
+			"modelParameters": {
+				"geoJson": {
+					"numberOfLayers": 1
+				},
+				"choropleth": {
+					"numberOfLayers": 0
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false,
+					"densityHeatMap": false
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"svgOverlay": {
+					"numberOfLayers": 0
+				},
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
+				"drawingFeatures": false,
+				"drawingFeaturesOptions": {
+					"point": true,
+					"line": true,
+					"polygon": true,
+					"rectangle": true,
+					"modal": false
+				},
+				"captureClickEvent": false,
+				"markerCluster": true
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
+		}
+	},
+	"connections": {
+		"annotationLabele": {},
+		"openStreetMapsA": {
+			"selectedGeoJson": {
+				"name": "selectedGeoJson",
+				"dataNode": "selected",
+				"dataFields": []
+			}
+		},
+		"openStreetMapsB": {
+			"geoJson1": {
+				"name": "geoJson1",
+				"dataNode": "selected",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
