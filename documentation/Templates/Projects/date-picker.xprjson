@@ -74,7 +74,7 @@
 				"id": "datepickerSimple8",
 				"instanceId": "datepickerSimple8",
 				"modelJsonId": "datepickerSimple",
-				"widgetTypeName": "Simple calender(datepickerSimple8)"
+				"widgetTypeName": "Simple calendar(datepickerSimple8)"
 			},
 			"modelParameters": {
 				"label": "selected",

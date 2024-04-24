@@ -124,7 +124,7 @@ function datePickerWidgetsPluginClass() {
       );
       widgetHtml.setAttribute('id', 'div-for-ng-datepicker' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
-      var heightCalender = $('#div-for-ng-datepicker' + idWidget).height();
+      var heightcalendar = $('#div-for-ng-datepicker' + idWidget).height();
 
       var modelObj = 'datepickerValues.val' + idInstance;
 
@@ -194,7 +194,7 @@ function datePickerWidgetsPluginClass() {
 
       var border = this.border();
 
-      var idCalender = 'calender-input' + idWidget;
+      var idcalendar = 'calendar-input' + idWidget;
       var divDatapicker =
         '<datepicker id="ng-datepicker' +
         idWidget +
@@ -203,12 +203,12 @@ function datePickerWidgetsPluginClass() {
         '" selector="form-control">' +
         '<div style="cursor: inherit">' +
         '<input  id="' +
-        idCalender +
+        idcalendar +
         '" class="value-input form-control " ' +
         'style="' +
         cursorIcon +
         ' height: ' +
-        heightCalender +
+        heightcalendar +
         'px; border-radius: 6px; ' +
         display +
         border +
@@ -235,7 +235,7 @@ function datePickerWidgetsPluginClass() {
         'padding-right: ' +
         valueFontSize +
         '; height: ' +
-        heightCalender +
+        heightcalendar +
         'px;' +
         '"><i class="fa fa-lg fa-calendar" style="display: table-cell; vertical-align: middle;' +
         ' font-size:' +
@@ -398,7 +398,7 @@ function datePickerWidgetsPluginClass() {
     widgetsDefinitionList: {
       datepickerSimple: {
         factory: 'datePickerWidgetSemi',
-        title: 'Simple calender',
+        title: 'Simple calendar',
         icn: 'calendar',
         help: 'wdg/wdg-geo-time/#simple-calendar',
       },
