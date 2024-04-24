@@ -70,7 +70,7 @@ function mapGeoJsonWidgetsPluginClass() {
             modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self,item, index));
           });
         }
-      }
+      } 
       self.GeoJSONStyle.updateCallback(self.GeoJSONStyle, self.GeoJSONStyle.getValue());
     };
 
@@ -431,7 +431,7 @@ function mapGeoJsonWidgetsPluginClass() {
       setValue: function (val) {
         modelsHiddenParams[idInstance].Selected = val;
         // self.render();
-        self.updateValue();
+        //self.updateValue();
       },
       getValue: function () {
         return modelsHiddenParams[idInstance].Selected;

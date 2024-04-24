@@ -90,16 +90,19 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
         type: 'Multi Point',
         markerCluster: false,
         pointAreMarker: true,
+        //marker
         clickPopup: true,
+        popupProperty: 'none',
+        //pour les circles
+        radius: 300,
         showLegend: false,
         stroke: false,
-        radius: 300,
         property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
-        popupProperty: 'none',
         propertyMin: 'Auto',
         propertyMax: 'Auto',
         possibleProperties: prop,
         allProperties: allProp,
+        //TODO : mettre dans baseStyle
         tooltip: {
           properties: [...allProp],
         },
@@ -110,6 +113,50 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
       break;
   }
 };
+updateLayerStyle = function(self,layer,styleForObject,geoJSONinLayer) {
+  let style = {...styleForObject}
+//calcul fill Color according to value
+var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
+var colorScale = undefined;
+if (!_.isUndefined(color)) {
+  colorScale = self.getColorScale(color, 0, 100);
+}
+if (!_.isUndefined(layer.feature.properties) && styleForObject.property in layer.feature.properties) {
+  var fillColor = self.getFillColor(
+    geoJSONinLayer,
+    styleForObject,
+    layer.feature.properties[styleForObject.property],
+    colorScale
+  );
+}
+//for line use color propery instead of fillColor
+if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
+  if (!_.isUndefined(fillColor)) {
+    style.color = fillColor;
+  } else {
+    style.color = styleForObject.color;
+  }
+} else {
+  if (!_.isUndefined(fillColor)) {
+    style.fillColor = fillColor;
+  } else {
+    style.fillColor = styleForObject.fillColor;
+  }
+}
+//for the selected item not change the fillColor
+if (layer == self.state.selectedElement) {
+  layer.setStyle({
+    fillOpacity: styleForObject.fillOpacity,
+    weight: styleForObject.weight,
+  });
+} else {
+  layer.setStyle(style);
+}
+//if the radius property exist
+if (!_.isUndefined(styleForObject.radius)) {
+  layer.setRadius(styleForObject.radius); // LafLet bug  setRadius must be called (Radius in Style is not check by Leaflet)
+}
+}
 this.setStyle = function (self, layerIndex, style) {
   // Get GeoJSON
   var geoJSONinLayer = modelsHiddenParams[self.idInstance].GeoJSON[layerIndex];
@@ -131,94 +178,85 @@ this.setStyle = function (self, layerIndex, style) {
 
   // Important
   let styleForObject = { ...style };
-  //if the pointsAreMarker
-  if (styleForObject.pointAreMarker) {
-    LMarkers = leafLetLayer.getLayers().map(function (layer) {
-      const marker = L.marker(layer.getLatLng());
-      marker.feature = layer.feature;
-      return marker;
-    });
-    leafLetLayer.clearLayers();
-    LMarkers.forEach(function (layerMarker) {
-      leafLetLayer.addLayer(layerMarker);
-    });
-    // Add Marker TODO : Create a markerClusterGroup and the option to do so
-    if (styleForObject.markerCluster) {
-      var markers = L.markerClusterGroup();
-      markers.addLayer(leafLetLayer);
-      self.map.removeLayer(self.layers[layerIndex])
-      self.map.addLayer(markers)
-      self.layers[layerIndex] = markers;
-    } else {
-      //create geoJson layer 
-      let geoJson = modelsHiddenParams[self.idInstance].GeoJSON[layerIndex]
-      let geoJsonLayer = L.geoJSON(geoJson).addTo(self.map);
-      self.map.removeLayer(self.layers[layerIndex])
-      self.map.addLayer(geoJsonLayer)
-      self.layers[layerIndex] = geoJsonLayer;
-    }
-    leafLetLayer =self.layers[layerIndex]  
-    // }
-
-    // TODO : in futur if first item is a markerClusterGroup do the eachLayer on the markerClusterGroup
-    //
-    leafLetLayer.eachLayer(function (layer) {
-      // Remove Popup if done
-      if (!_.isUndefined(layer.getPopup())) {
-        popup = layer.getPopup();
-        layer.unbindPopup();
-
-        // IMPORTANT
-        popup.remove();
+  if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPoint) {
+    //if the pointsAreMarker
+    if (styleForObject.pointAreMarker) {
+      LMarkers = leafLetLayer.getLayers().map(function (layer) {
+        const marker = L.marker(layer.getLatLng());
+        marker.feature = layer.feature;
+        return marker;
+      });
+      leafLetLayer.clearLayers();
+      self.ctrl.removeLayer(leafLetLayer); 
+      self.map.removeLayer(leafLetLayer)
+      if (styleForObject.markerCluster) {
+        leafLetLayer = L.markerClusterGroup();
+        LMarkers.forEach(function (layerMarker) {
+          leafLetLayer.addLayer(layerMarker);
+        }); 
+      }else {
+        leafLetLayer = L.geoJSON(geoJSONinLayer);
       }
+      self.map.addLayer(leafLetLayer)
+      self.layers[layerIndex]=leafLetLayer
+      self.ctrl.addOverlay(leafLetLayer, name);
+     
+      leafLetLayer.eachLayer(function (layer) {
+        // Remove Popup if done
+        if (!_.isUndefined(layer.getPopup())) {
+          popup = layer.getPopup();
+          layer.unbindPopup();
 
-      if (layer.feature.properties.awesomeMarker) {
-        var awMarker = L.AwesomeMarkers.icon(layer.feature.properties.awesomeMarker);
-        layer.setIcon(awMarker);
-      }
+          // IMPORTANT
+          popup.remove();
+        }
 
-      // Put new Popup
-      let popupText = '';
-      if (
-        !_.isUndefined(styleForObject.popupProperty) &&
-        !_.isUndefined(layer.feature.properties[styleForObject.popupProperty])
-      ) {
-        popupText = styleForObject.popupProperty + ' : ' + layer.feature.properties[styleForObject.popupProperty];
-      }
+        if (layer.feature.properties.awesomeMarker) {
+          var awMarker = L.AwesomeMarkers.icon(layer.feature.properties.awesomeMarker);
+          layer.setIcon(awMarker);
+        }
 
-      // legacy comment and html are priotary tag
-      else if (layer.feature.properties.comment) {
-        popupText = layer.feature.properties.comment;
-      } else if (layer.feature.properties.html) {
-        popupText = layer.feature.properties.html;
-      } else {
-        popupText = '<div>';
-        let properties = style.tooltip.properties;
-        for (let i = 0; i < properties.length; i++) {
-          const prop = properties[i];
-          popupText = popupText + '<p> <strong>' + prop + '</strong> : ' + layer.feature.properties[prop] + '</p>';
-          if (i == properties.length - 1) {
-            popupText = popupText + '</div>';
+        // Put new Popup
+        let popupText = '';
+        if (
+          !_.isUndefined(styleForObject.popupProperty) &&
+          !_.isUndefined(layer.feature.properties[styleForObject.popupProperty])
+        ) {
+          popupText = styleForObject.popupProperty + ' : ' + layer.feature.properties[styleForObject.popupProperty];
+        }
+
+        // legacy comment and html are priotary tag
+        else if (layer.feature.properties.comment) {
+          popupText = layer.feature.properties.comment;
+        } else if (layer.feature.properties.html) {
+          popupText = layer.feature.properties.html;
+        } else {
+          popupText = '<div>';
+          let properties = style.tooltip.properties;
+          for (let i = 0; i < properties.length; i++) {
+            const prop = properties[i];
+            popupText = popupText + '<p> <strong>' + prop + '</strong> : ' + layer.feature.properties[prop] + '</p>';
+            if (i == properties.length - 1) {
+              popupText = popupText + '</div>';
+            }
           }
         }
-      }
 
-      // Add The popup
-      if (style.clickPopup) {
-        // Popup on click
-        mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
-      } else {
-        // persistent popup
-        mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
-        mk.on('add', function (event) {
-          event.target.openPopup();
-        });
-        layer.openPopup();
-      }
-    });
-  } else {
-    // Transform each L.Marker in L.Circle
-    if (leafLetLayer.getLayers()[0] instanceof L.Marker) {
+        // Add The popup
+        if (style.clickPopup) {
+          // Popup on click
+          mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
+        } else {
+          // persistent popup
+          mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
+          mk.on('add', function (event) {
+            event.target.openPopup();
+          });
+          layer.openPopup();
+        }
+      });
+    } else { 
+      // Transform each L.Marker in L.Circle
       LCircles = leafLetLayer.getLayers().map(function (layer) {
         const { lat, lng } = layer.getLatLng();
         const circle = L.circle([lat, lng]);
@@ -226,14 +264,21 @@ this.setStyle = function (self, layerIndex, style) {
         return circle;
       });
 
+      self.ctrl.removeLayer(leafLetLayer); 
+      self.map.removeLayer(leafLetLayer)
+      leafLetLayer = L.geoJSON(geoJSONinLayer);
       leafLetLayer.clearLayers();
+      self.map.addLayer(leafLetLayer)
+      self.layers[layerIndex]=leafLetLayer
+      self.ctrl.addOverlay(leafLetLayer, name);
       LCircles.forEach(function (layerCircle) {
         leafLetLayer.addLayer(layerCircle);
       });
+      
+      //events
       eventsManager.configureEvents(self, geoJSONinLayer, leafLetLayer, layerIndex);
     }
   }
-
   //calcul color scale
   let colorScale = undefined;
   var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
@@ -248,47 +293,7 @@ this.setStyle = function (self, layerIndex, style) {
   let min = minMax[0],
     max = minMax[1];
   leafLetLayer.eachLayer(function (layer) {
-    //calcul fill Color according to value
-    var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
-    var colorScale = undefined;
-    if (!_.isUndefined(color)) {
-      colorScale = self.getColorScale(color, 0, 100);
-    }
-    if (!_.isUndefined(layer.feature.properties) && styleForObject.property in layer.feature.properties) {
-      var fillColor = self.getFillColor(
-        geoJSONinLayer,
-        styleForObject,
-        layer.feature.properties[styleForObject.property],
-        colorScale
-      );
-    }
-    //for line use color propery instead of fillColor
-    if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
-      if (!_.isUndefined(fillColor)) {
-        styleForObject.color = fillColor;
-      } else {
-        styleForObject.color = style.color;
-      }
-    } else {
-      if (!_.isUndefined(fillColor)) {
-        styleForObject.fillColor = fillColor;
-      } else {
-        styleForObject.fillColor = style.fillColor;
-      }
-    }
-    //for the selected item not change the fillColor
-    if (layer == self.state.selectedElement) {
-      layer.setStyle({
-        fillOpacity: styleForObject.fillOpacity,
-        weight: styleForObject.weight,
-      });
-    } else {
-      layer.setStyle(styleForObject);
-    }
-    //if the radius property exist
-    if (!_.isUndefined(styleForObject.radius)) {
-      layer.setRadius(styleForObject.radius); // LafLet bug  setRadius must be called (Radius in Style is not check by Leaflet)
-    }
+    updateLayerStyle(self,layer,styleForObject,geoJSONinLayer) 
   });
 
   //legends
