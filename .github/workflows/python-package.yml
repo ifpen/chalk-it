@@ -2,9 +2,9 @@ name: Build Chalk'it Python Package
 
 on:
   push:
-    branches: [ build ]
+    branches: [ build, develop ]
   pull_request:
-    branches: [ build ]
+    branches: [ build, develop ]
 
 jobs:
   build:
@@ -44,9 +44,3 @@ jobs:
         name: python-package
         path: build/dist/
     
-    # Uncomment and adjust if you have front-end artifacts to upload
-    - name: Upload Front-end Artifact
-      uses: actions/upload-artifact@v2
-      with:
-         name: front-end-build
-         path: front-end/build/
