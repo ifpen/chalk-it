@@ -64,7 +64,7 @@ class LayoutMgrClass {
       $('#select-cols').val('1');
       //$("#select-cols")[0].value = "None";
     } else {
-      $('#select-cols').attr('disabled', false);
+      $('#select-cols').attr('disabled', this.$rootScope.xdashLiteVersion);
       $('#height-row-button').attr('disabled', false);
       //$('#row-device-col')[0].style.display = "table-row";
       //$('#height-row-button')[0].style.display = "table-cell";
