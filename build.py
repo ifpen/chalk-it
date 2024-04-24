@@ -19,7 +19,7 @@ from dotenv import dotenv_values
 from datetime import datetime
 import json
 
-BUILD_FRONT_END = True
+BUILD_FRONT_END = False
 
 # Set source and destination directories
 src_dir = "assets/install"
@@ -176,6 +176,9 @@ for filename in os.listdir(src_dir):
     dst_path = os.path.join(dst_dir, filename)
     shutil.copy(src_path, dst_path)
 
+
+# Copy credits
+shutil.copy("credits.html", os.path.join(dst_dir, "taipy_designer", "credits.html"))
 
 # This function checks if various Python commands exist in the system PATH.
 def get_python_command():
