@@ -876,7 +876,7 @@
           notifText ??= statusText;
           self.errorAllTheThings(notifText, statusText);
         }
-
+        datanodesManager.setCurrentDataNode(currentSettings.name);
         try {
           const { executor, script, signature } = await setupPromise;
 
@@ -884,8 +884,8 @@
           if (resultObject.error && resultObject.error.length) {
             error(resultObject.error);
           } else {
-            success(resultObject.result);
             PythonPluginExecBase.applySideEffects(resultObject.sideEffects);
+            success(resultObject.result);
           }
         } catch (err) {
           if (err === PythonPluginExecBase.ABORT_ERROR) {
