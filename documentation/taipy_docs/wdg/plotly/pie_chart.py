@@ -1,21 +1,9 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 data = {
-  "fuel": [
-    "Gasoline",
-    "Diesel",
-    "Biofuel",
-    "LPG",
-    "NGV"
-  ],
-  "consumption": [
-    1010,
-    821,
-    69,
-    25,
-    38
-  ]
+    "fuel": ["Gasoline", "Diesel", "Biofuel", "LPG", "NGV"],
+    "consumption": [1010, 821, 69, 25, 38],
 }
 
 gui = Gui()

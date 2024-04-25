@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 
 selected_date = "2024-04-01"

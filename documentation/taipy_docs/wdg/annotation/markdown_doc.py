@@ -1,10 +1,10 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 gui = Gui()
 
 # Open the file in read mode ('r')
-with open('example.md', 'r') as file:
+with open("example.md", "r") as file:
     # Read the content of the file into a string
     markdown_content = file.read()
 

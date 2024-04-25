@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 from pathlib import Path
 from PIL import Image, ImageOps
@@ -11,8 +11,11 @@ def convert_to_grayscale(image, intensity):
         intensity = 0
     if intensity > 1:
         intensity = 1
-    img_grey = ImageOps.grayscale(image).point(lambda x: x * intensity + 255 * (1 - intensity))
+    img_grey = ImageOps.grayscale(image).point(
+        lambda x: x * intensity + 255 * (1 - intensity)
+    )
     return img_grey
+
 
 image_path = Path(__file__).parent.resolve() / "XN_Fruehjahrswiese_00.jpg"
 
@@ -22,9 +25,11 @@ img_grey = convert_to_grayscale(image, 1)
 
 greyscale_intensity = 1
 
+
 def on_change(state, var, val):
-    if (var=="greyscale_intensity"):
+    if var == "greyscale_intensity":
         state.img_grey = convert_to_grayscale(state.image, val)
+
 
 page = DesignerPage("l_pillow_image.xprjson", designer_mode=True)
 gui = Gui()

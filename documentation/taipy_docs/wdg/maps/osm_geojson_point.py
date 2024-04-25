@@ -1,26 +1,18 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 point = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          2.295,
-          48.8738
-        ]
-      },
-      "properties": {
-        "comment": "click to display the contents of the properties object"
-      }
-    }
-  ],
-  "properties": {
-    "description": "Arc de triomphe"
-  }
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [2.295, 48.8738]},
+            "properties": {
+                "comment": "click to display the contents of the properties object"
+            },
+        }
+    ],
+    "properties": {"description": "Arc de triomphe"},
 }
 
 gui = Gui()

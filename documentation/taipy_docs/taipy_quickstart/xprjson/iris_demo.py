@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 import pandas as pd
 from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier

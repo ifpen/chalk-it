@@ -1,10 +1,10 @@
 # Simple application
 
-Let this simple Taipy application. Add Taipy Designer (`taipy_designer`) import to activate it.
+Let this simple Taipy application. Add Taipy Designer (`taipy.designer`) import to activate it.
 
 ```python
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 a = 1
 b = 5
@@ -35,11 +35,11 @@ Taipy Designer is automatically started on the browser at <http://127.0.0.1:5000
 
 Let's build its GUI using drag and drop with Taipy Designer.
 
-Widgets are dropped in the *Widgets* main tabset to the dashboard edition zone.
+Widgets are dropped in the _Widgets_ main tabset to the dashboard edition zone.
 
 ![selected-widget](wdg/selected-widget.png)
 
-Add two *Horizontal sliders* to the dashboard, from *Basic inputs & controls* category. In the same way, add a *KPI dispay* widget from *Basic Displays* category.
+Add two _Horizontal sliders_ to the dashboard, from _Basic inputs & controls_ category. In the same way, add a _KPI dispay_ widget from _Basic Displays_ category.
 
 Dashboard shall look like this:
 
@@ -55,7 +55,7 @@ To make our dashboard interactive, add the following `on_change` callback as fol
 
 ```python
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 a = 1
 b = 5
@@ -74,6 +74,4 @@ gui.run(run_browser=True, use_reloader=False)
 
 Your interactive dashboard is ready. Switch to preview tab to play !
 
-
 ![connect-widget](wdg/view-simple.png)
-

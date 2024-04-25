@@ -1,10 +1,10 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 imageData = {
-  "b64":"iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk",
-  "mimeType":"image/png",
-  "imageData":"iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk"
+    "b64": "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk",
+    "mimeType": "image/png",
+    "imageData": "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk",
 }
 
 gui = Gui()
