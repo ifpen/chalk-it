@@ -1,5 +1,0 @@
-[flake8]
-exclude = .git,__pycache__,.mypy_cache,.pytest_cache,venv
-extend-ignore = Q000
-max-complexity = 10
-max-line-length = 120
