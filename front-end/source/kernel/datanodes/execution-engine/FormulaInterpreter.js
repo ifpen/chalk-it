@@ -289,11 +289,9 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               if (_.isNull(lines[i].match(patternRegex))) {
                 line = lines[i].replace(/(['"])(?:\\.|(?!\1)[^\\\n])*\1/g, ''); //remove strings
                 if (!_.isNull(line.match(/(chalkit|xDashApi)\.[^\s()]+\(/))) {
+                  //Warning for chalkit js api
                   const text = 'Syntax error in chalkit API';
-                  datanodeModel.statusCallback('Error', text);
-                  datanodeModel.notificationCallback('error', datanodeModel.name(), text);
-                  self.bCalculatedSettings = false;
-                  return;
+                  datanodeModel.notificationCallback('warning', datanodeModel.name(), text);
                 }
               }
             }
