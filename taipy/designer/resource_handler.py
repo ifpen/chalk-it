@@ -14,7 +14,7 @@ from pathlib import Path
 import typing as t
 from flask import send_from_directory
 from taipy.gui.custom import ResourceHandler
-from ..common import TemplateUtils
+from .common import TemplateUtils
 
 
 class PureHTMLResourceHandler(ResourceHandler):
