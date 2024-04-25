@@ -770,6 +770,13 @@ aside {
   margin-bottom: 10px;
 }
 
+.aspect_input-bg-color--disabled {
+  opacity: 0.7;
+  background-color: var(--disabled-color);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
 // Aspect theme selector
 .theme {
   position: relative;
