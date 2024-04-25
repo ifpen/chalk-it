@@ -209,7 +209,7 @@
     </label>
   </div>
 </div>
-<div class="aspect__row">
+<div id="divInputDashBgColor" class="aspect__row">
   <a class="aspect__col-left jsoneditor-field" title=""><i class="aspects icn-dashboard-color"></i>Background color</a>
   <div class="aspect__col-right">
     <input
@@ -220,7 +220,6 @@
     />
     <button
       type="button"
-      id="btnResetDashBgColor"
       onclick="layoutMgr.resetDashBgColor()"
       ng-click="updateFlagDirty(true)"
       title="Reset Dashboard background color"
