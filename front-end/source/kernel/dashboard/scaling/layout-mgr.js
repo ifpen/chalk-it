@@ -577,9 +577,8 @@ class LayoutMgrClass {
   }
 
   _toggleDashBgColor() {
+    $('#divInputDashBgColor').toggleClass('aspect_input-bg-color--disabled', this.inheritThemeBgColor);
     $('#checkboxBgColor').prop('checked', this.inheritThemeBgColor);
-    $('#inputDashBgColor').attr('disabled', this.inheritThemeBgColor);
-    $('#btnResetDashBgColor').attr('disabled', this.inheritThemeBgColor);
     if (this.inheritThemeBgColor) this.dashBgColor = this.defaultBgColor;
   }
 
