@@ -280,7 +280,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           let lines = script.split('\n');
           let patternRegex = /\.(goToPage|viewPage|viewProject|\w+Widget)/;
           if (settingDef.type === 'custom2') {
-            patternRegex = /\.(output|as_|goToPage|viewPage|viewProject|\w+Widget)/;
+            patternRegex = /\.(output|as_|dashboard|scheduler|goToPage|viewPage|viewProject|\w+Widget)/;
           }
           for (let i = 0; i < lines.length; i++) {
             lines[i] = lines[i].replace(/\s/g, ''); //remove white space
