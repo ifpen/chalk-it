@@ -4,7 +4,7 @@ from pathlib import Path
 from taipy.gui import Gui
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy import *
+from taipy.designer import *
 
 
 df = pd.DataFrame()

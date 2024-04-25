@@ -5,7 +5,7 @@ from pathlib import Path
 from shapely.geometry import shape
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy import *
+from taipy.designer import *
 
 # user code starts here
 eiffel_tour = {

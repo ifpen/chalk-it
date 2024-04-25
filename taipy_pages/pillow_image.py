@@ -4,7 +4,7 @@ from PIL import Image, ImageOps
 from taipy.gui import Gui
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy import *
+from taipy.designer import *
 
 
 def convert_to_grayscale(image, intensity):
