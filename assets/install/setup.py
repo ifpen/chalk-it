@@ -27,7 +27,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     url="https://github.com/ifpen/chalk-it",
-    install_requires=["flask", "pathvalidate", "watchdog", "flask-sock", "pytz"],
+    install_requires=["taipy-gui==3.1.2", "pathvalidate", "pyt"],
     author="IFP Energies nouvelles",
     author_email="chalk-it@ifpen.fr",
     license="Apache License 2.0",
