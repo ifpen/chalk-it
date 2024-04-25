@@ -44,6 +44,7 @@ class LayoutMgrClass {
     // Dashboard background color
     this.defaultBgColor = 'var(--widget-color-0)';
     this.dashBgColor = '';
+    this.inheritThemeBgColor = true;
     this.dashboardTheme = 'default';
     this.$rootScope = angular.element(document.body).scope().$root;
   }
@@ -571,19 +572,41 @@ class LayoutMgrClass {
 
   resetDashBgColor() {
     this.dashBgColor = this.defaultBgColor;
+    this._toggleDashBgColor();
     this.updateDashBgColor();
+  }
+
+  _toggleDashBgColor() {
+    $('#checkboxBgColor').prop('checked', this.inheritThemeBgColor);
+    $('#inputDashBgColor').attr('disabled', this.inheritThemeBgColor);
+    $('#btnResetDashBgColor').attr('disabled', this.inheritThemeBgColor);
+    if (this.inheritThemeBgColor) this.dashBgColor = this.defaultBgColor;
+  }
+
+  setDashBgColor() {
+    this.inheritThemeBgColor = $('#checkboxBgColor').is(':checked');
+    this._toggleDashBgColor();
+    if (this.inheritThemeBgColor) this.updateDashBgColor();
+    this.$rootScope.updateFlagDirty(true);
   }
 
   serializeDashBgColor() {
     const backgroundColor = this.dashBgColor;
+    const inheritThemeBackgroundColor = this.inheritThemeBgColor;
     return {
       backgroundColor: backgroundColor,
+      inheritThemeBackgroundColor: inheritThemeBackgroundColor,
     };
   }
 
   deserializeDashBgColor(deviceObj) {
-    if (!_.isUndefined(deviceObj.backgroundColor)) {
-      this.dashBgColor = deviceObj.backgroundColor;
+    const bgColor = deviceObj?.backgroundColor;
+    const inheritTheme = deviceObj?.inheritThemeBackgroundColor ?? false;
+
+    if (bgColor) {
+      this.dashBgColor = bgColor;
+      this.inheritThemeBgColor = inheritTheme;
+      this._toggleDashBgColor();
       this.updateDashBgColor();
     }
   }
