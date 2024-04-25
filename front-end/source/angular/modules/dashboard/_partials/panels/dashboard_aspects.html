@@ -113,28 +113,7 @@
     </div>
   </div>
 </form>
-<br />
 <h2>About the colors</h2>
-<div class="aspect__row">
-  <a class="aspect__col-left jsoneditor-field" title=""><i class="aspects icn-dashboard-color"></i>Background color</a>
-  <div class="aspect__col-right">
-    <input
-      type="color"
-      id="inputDashBgColor"
-      style="padding: 0; margin: 0px; height: 2rem; width: 4rem; border: none; background: none; box-shadow: none"
-      oninput="layoutMgr.onInputDashBgColor()"
-    />
-    <button
-      type="button"
-      onclick="layoutMgr.resetDashBgColor()"
-      ng-click="updateFlagDirty(true)"
-      title="Reset Dashboard background color"
-      class="btn btn-icon-only"
-    >
-      <i class="fa fa-undo" aria-hidden="true"></i>
-    </button>
-  </div>
-</div>
 <div class="aspect__row">
   <div class="aspect__col-left"><i class="aspects icn-dashboard-color" aria-hidden="true"></i>Theme</div>
 </div>
@@ -216,6 +195,40 @@
       <div class="theme__color-box" title="Accent color 3"></div>
     </li>
   </ul>
+</div>
+<br />
+<div class="aspect__row">
+  <a class="aspect__col-left" title="Toggle theme background color"
+    ><i class="aspects icn-dashboard-color"></i>Theme background <br />
+    color</a
+  >
+  <div class="aspect__col-right">
+    <label class="switch">
+      <input type="checkbox" id="checkboxBgColor" onclick="layoutMgr.setDashBgColor()" checked />
+      <span class="slider round"></span>
+    </label>
+  </div>
+</div>
+<div class="aspect__row">
+  <a class="aspect__col-left jsoneditor-field" title=""><i class="aspects icn-dashboard-color"></i>Background color</a>
+  <div class="aspect__col-right">
+    <input
+      type="color"
+      id="inputDashBgColor"
+      style="padding: 0; margin: 0px; height: 2rem; width: 4rem; border: none; background: none; box-shadow: none"
+      oninput="layoutMgr.onInputDashBgColor()"
+    />
+    <button
+      type="button"
+      id="btnResetDashBgColor"
+      onclick="layoutMgr.resetDashBgColor()"
+      ng-click="updateFlagDirty(true)"
+      title="Reset Dashboard background color"
+      class="btn btn-icon-only"
+    >
+      <i class="fa fa-undo" aria-hidden="true"></i>
+    </button>
+  </div>
 </div>
 <br />
 <h2>About the widgets</h2>
