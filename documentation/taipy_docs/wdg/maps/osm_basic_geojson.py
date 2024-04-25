@@ -1,90 +1,32 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 basicGeoJSON = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          102,
-          0.5
-        ]
-      },
-      "properties": {
-        "prop0": "value0"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            102,
-            0
-          ],
-          [
-            103,
-            1
-          ],
-          [
-            104,
-            0
-          ],
-          [
-            105,
-            1
-          ]
-        ]
-      },
-      "properties": {
-        "prop0": "value0",
-        "prop1": 0
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              100,
-              0
-            ],
-            [
-              101,
-              0
-            ],
-            [
-              101,
-              1
-            ],
-            [
-              100,
-              1
-            ],
-            [
-              100,
-              0
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "prop0": "value0",
-        "prop1": {
-          "this": "that"
-        }
-      }
-    }
-  ],
-  "properties": {
-    "description": "GeoJSON example"
-  }
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [102, 0.5]},
+            "properties": {"prop0": "value0"},
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [[102, 0], [103, 1], [104, 0], [105, 1]],
+            },
+            "properties": {"prop0": "value0", "prop1": 0},
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[[100, 0], [101, 0], [101, 1], [100, 1], [100, 0]]],
+            },
+            "properties": {"prop0": "value0", "prop1": {"this": "that"}},
+        },
+    ],
+    "properties": {"description": "GeoJSON example"},
 }
 
 gui = Gui()

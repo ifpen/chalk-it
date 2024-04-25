@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 import pandas as pd
 
@@ -11,14 +11,14 @@ wind_data = wind_data_df.to_dict("records")
 
 wind_svg_layer = {
     "data": wind_data,
-    "config": { 
-      "marker": "arrow",
-      "title": "Wind direction",
-      "opacity": 0.5,
-      "length": 9.3, 
-      "disableAutoscale": False,
-      "addAs": "overlay"
-    }
+    "config": {
+        "marker": "arrow",
+        "title": "Wind direction",
+        "opacity": 0.5,
+        "length": 9.3,
+        "disableAutoscale": False,
+        "addAs": "overlay",
+    },
 }
 
 gui = Gui()

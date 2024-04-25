@@ -1,14 +1,14 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 trace1 = {
-  "x": [2015, 2016, 2017],
-  "BHEVs": [247482, 409000, 652000],
+    "x": [2015, 2016, 2017],
+    "BHEVs": [247482, 409000, 652000],
 }
 
 trace2 = {
-  "x": [2015, 2016, 2017],
-  "PHEVs": [83610, 98000, 125000],
+    "x": [2015, 2016, 2017],
+    "PHEVs": [83610, 98000, 125000],
 }
 
 data = [trace1, trace2]

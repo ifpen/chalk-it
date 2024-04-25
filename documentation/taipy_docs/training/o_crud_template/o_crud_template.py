@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 import copy
 
 
@@ -23,17 +23,19 @@ fruits = [
     "Blackberry",
     "Cantaloupe",
     "Lemon",
-    "Lime"
+    "Lime",
 ]
 
 seleced_fruit = fruits[0]
 
 list_fruits = []
 
+
 def add_fruit_to_list(state):
     list_fruits = state.list_fruits
     list_fruits.append(state.seleced_fruit)
     state.list_fruits = copy.deepcopy(list_fruits)
+
 
 page = DesignerPage("o_crud_template.xprjson", designer_mode=True)
 gui = Gui()

@@ -12,5 +12,6 @@
 
 from .chalkit_page import ChalkitPage
 
+
 class DesignerPage(ChalkitPage):
     pass

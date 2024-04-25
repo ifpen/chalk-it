@@ -6,8 +6,8 @@ The Iris flower dataset is a multivariate dataset introduced by the British stat
 
 The following tutorial allows to illustrate main Taipy Designer features througth this dataset. Expected result is provided in the following project:
 
-- [iris_demo.py](/taipy_quickstart/xprjson/iris_demo.py)
-- [iris_demo_page.xprjson](/taipy_quickstart/xprjson/iris_demo_page.xprjson)
+-   [iris_demo.py](/taipy_quickstart/xprjson/iris_demo.py)
+-   [iris_demo_page.xprjson](/taipy_quickstart/xprjson/iris_demo_page.xprjson)
 
 ## 1. Installing required Python librairies
 
@@ -33,14 +33,13 @@ After defining the requirements, install them using the command:
 pip install -r requirements.txt
 ```
 
-
 ## 2. Creating an empty projet
 
 To start, create a Python script named **iris_demo.py** and insert the following code:
 
 ```python
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 page = DesignerPage("iris_demo.xprjson", designer_mode=True)
 
@@ -160,7 +159,7 @@ Create a variable named **input_data** with the initial values for sepal and pet
 input_data = {"sepal_length": 2.7, "sepal_width": 5.4, "petal_length": 3, "petal_width": 0.5}
 ```
 
-Next, add an horizontal slider to control the values of "sepal_width". Navigate to the _Widgets_ main tab, then select _Basic Inputs & Controls_.
+Next, add an horizontal slider to control the values of "sepal*width". Navigate to the \_Widgets* main tab, then select _Basic Inputs & Controls_.
 
 ![sliders](png/input-sliders.png)
 

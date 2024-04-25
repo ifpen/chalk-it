@@ -1,7 +1,8 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
 import plotly.express as px
+
 df = px.data.tips()
 
 fig = px.density_heatmap(df, x="total_bill", y="tip")

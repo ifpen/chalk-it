@@ -119,44 +119,19 @@ if BUILD_FRONT_END:
         run_npm("npm", "run", "build")
 
 # Copy build result to ./build/taipy_designer directory
-build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
-shutil.copytree(build_dir, './build/taipy_designer')
-
-# Copy .whl file to ./build/taipy_designer directory
-# Specify the source directory and pattern
-source_directory = "./front-end/"
-pattern = "chalkit_python_api-*.whl"
-
-# Use glob to find the matching file
-matching_files = glob.glob(source_directory + pattern)
-
-if matching_files:
-    # Assign the path of the first matching file
-    source_path = matching_files[0]
-    destination_directory = './build/taipy_designer/'
-
-    shutil.copy(source_path, destination_directory)
-else:
-    print("chalkit_python_api-*.whl file not found.")
+build_dir = os.path.join("./front-end/build", front_end_build_dir_name)
+shutil.copytree(build_dir, "./build/taipy_designer")
 
 # Copy main.py and associated .py files to ./build/taipy_designer directory
 cwd = os.getcwd()
-build_path = Path('./build/taipy_designer/')
+build_path = Path("./build/taipy_designer/")
 
 # Ensure the directory exists
 build_path.mkdir(parents=True, exist_ok=True)
 
-file_paths = ["./main.py", "./back_end/__init__.py"]
-
-for file_path in file_paths:
-    shutil.copy(file_path, build_path)
-
 # Copy directories to build_path with their structure
 directories_to_copy = {
-    "./back_end/taipy/": "taipy",
-    "./back_end/app/": "app",
-    "./back_end/render/": "render",
-    "./back_end/common/": "common",
+    "./taipy": "taipy",
 }
 
 # Add additional directory if it is not a lite build
@@ -176,9 +151,9 @@ for filename in os.listdir(src_dir):
     dst_path = os.path.join(dst_dir, filename)
     shutil.copy(src_path, dst_path)
 
-
 # Copy credits
 shutil.copy("credits.html", os.path.join(dst_dir, "taipy_designer", "credits.html"))
+
 
 # This function checks if various Python commands exist in the system PATH.
 def get_python_command():

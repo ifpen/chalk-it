@@ -1,6 +1,6 @@
 from taipy.gui import Gui
 import pandas as pd
-from taipy_designer import *
+from taipy.designer import *
 
 
 df = pd.DataFrame()

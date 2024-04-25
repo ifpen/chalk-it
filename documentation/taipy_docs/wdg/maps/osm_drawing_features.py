@@ -1,12 +1,7 @@
 from taipy.gui import Gui
-from taipy_designer import *
+from taipy.designer import *
 
-selected = {
-  "geoJson": {
-    "type": "FeatureCollection",
-    "features": []
-  }
-}
+selected = {"geoJson": {"type": "FeatureCollection", "features": []}}
 
 gui = Gui()
 page = DesignerPage("osm_drawing_features.xprjson", designer_mode=True)
