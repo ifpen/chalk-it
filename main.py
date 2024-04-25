@@ -16,7 +16,7 @@ try:
 except ImportError:
     try:
         # Developpe mode
-        from taipy.app.server import Main
+        from back_end.app.server import Main
     except ImportError as e:
         print("Error importing 'Main':", e)
 
