@@ -4,7 +4,7 @@ import io, base64
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from back_end import *
+from taipy import *
 
 # End user code starts here
 fig, ax = plt.subplots()

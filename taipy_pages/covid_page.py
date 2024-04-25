@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from back_end import *
+from taipy import *
 
 
 # Define URLs and dataset names
