@@ -126,13 +126,9 @@ if BUILD_FRONT_END:
     else:
         run_npm("npm", "run", "build")
 
-# Copy build result to ./build/taipy_designer directory
-build_dir = os.path.join("./front-end/build", front_end_build_dir_name)
-shutil.copytree(build_dir, "./build/taipy_designer")
-
 # Copy main.py and associated .py files to ./build/taipy_designer directory
 cwd = os.getcwd()
-build_path = Path("./build/taipy_designer/")
+build_path = Path("./build/")
 
 # Ensure the directory exists
 build_path.mkdir(parents=True, exist_ok=True)
@@ -159,8 +155,13 @@ for filename in os.listdir(src_dir):
     dst_path = os.path.join(dst_dir, filename)
     shutil.copy(src_path, dst_path)
 
+# Copy build result to ./build/taipy_designer directory
+frontend_build_path = "./build/taipy/designer/frontend_build"
+build_dir = os.path.join("./front-end/build", front_end_build_dir_name)
+shutil.copytree(build_dir, frontend_build_path)
+
 # Copy credits
-shutil.copy("credits.html", os.path.join(dst_dir, "taipy_designer", "credits.html"))
+shutil.copy("credits.html", os.path.join(frontend_build_path, "credits.html"))
 
 
 # This function checks if various Python commands exist in the system PATH.

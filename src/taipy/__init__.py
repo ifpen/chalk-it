@@ -38,4 +38,4 @@ if find_spec("taipy"):
         from taipy.designer._init import *
 
     if find_spec("taipy._run"):
-        pass
+        from taipy._run import _run as run
