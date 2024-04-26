@@ -9,7 +9,7 @@ def _init_gui_designer(Gui):
     def _new_(cls, *args, **kwargs):
         from importlib.util import find_spec
 
-        if find_spec("src.taipy.designer"):
+        if find_spec("taipy.designer"):
             from .gui import _Gui
 
             return _Gui(*args, **kwargs)

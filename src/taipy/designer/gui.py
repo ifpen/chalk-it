@@ -15,7 +15,7 @@ from taipy.gui.extension import ElementLibrary
 from taipy.gui.page import Page
 from taipy.gui._page import _Page
 
-from src.taipy.designer.config import _DesignerConfig
+from .config import _DesignerConfig
 from .json_adapter import register_json_adapter
 from .page import Page as DesignerPage
 

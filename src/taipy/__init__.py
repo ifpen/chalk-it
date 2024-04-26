@@ -34,8 +34,8 @@ if find_spec("taipy"):
     if find_spec("taipy.enterprise"):
         from taipy.enterprise._init import *
 
-    if find_spec("src.taipy.designer"):
-        from src.taipy.designer._init import *
+    if find_spec("taipy.designer"):
+        from taipy.designer._init import *
 
     if find_spec("taipy._run"):
         pass

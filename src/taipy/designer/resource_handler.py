@@ -8,7 +8,7 @@ import typing as t
 from flask import send_from_directory
 from taipy.gui.custom import ResourceHandler
 
-from src.taipy.designer.config import _DesignerConfig
+from .config import _DesignerConfig
 from .common import TemplateUtils
 
 
