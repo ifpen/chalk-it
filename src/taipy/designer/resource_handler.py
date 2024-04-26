@@ -38,7 +38,7 @@ class PureHTMLResourceHandler(ResourceHandler):
         with open(front_end_path / "build_version.txt", "r") as f:
             build_version = f.read().strip()
         return (front_end_path / "build" / build_version).resolve()
-        
+
 
     def get_resources(self, path: str, base_bundle_path: str) -> t.Any:
         """Get the resources from the specified path."""
@@ -49,7 +49,7 @@ class PureHTMLResourceHandler(ResourceHandler):
             xprjson_path: Path = (Path.cwd() / self.xprjson_file_name).resolve()
             if xprjson_path.is_file():
                 return TemplateUtils.render_template(
-                    root_dir, xprjson_path, "index-taipy-view"
+                    str(root_dir), str(xprjson_path), "index-taipy-view"
                 )
 
         # Serve the requested file if it exists
