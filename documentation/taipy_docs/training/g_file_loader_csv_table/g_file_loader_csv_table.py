@@ -12,7 +12,7 @@ def load_csv(state):
     state.df = pd.read_csv(state.csv_file_path)
     state.tab_html = state.df.to_html()
 
-page = DesignerPage("g_file_loader_csv_table.xprjson", designer_mode=True)
+page = Page("g_file_loader_csv_table.xprjson", designer_mode=True)
 gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

@@ -3,8 +3,8 @@ from taipy.designer import *
 
 gui = Gui()
 
-editable_table = [["Day", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], 
-                  ["Paris", 0, 11, 15 ,16, 20, 18, 17], ["London", 0, 10, 14, 15, 19, 17, 16], 
+editable_table = [["Day", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                  ["Paris", 0, 11, 15 ,16, 20, 18, 17], ["London", 0, 10, 14, 15, 19, 17, 16],
                   ["New York", 0, 5, 9, 10, 14, 12, 11], ["Tokyo", 0, 3, 7, 8, 12, 10, 9], ["Sydney", 0, 1, 5, 6, 10, 8, 7]]
 
 
@@ -21,6 +21,6 @@ def on_change(state, var, val):
     if var == "editable_table":
         state.total = compute_total(val)
 
-page = DesignerPage("editable_table.xprjson", designer_mode=True)
+page = Page("editable_table.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

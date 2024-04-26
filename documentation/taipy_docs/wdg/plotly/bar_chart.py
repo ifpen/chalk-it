@@ -7,6 +7,6 @@ data = {
 }
 
 gui = Gui()
-page = DesignerPage("bar_chart.xprjson", designer_mode=True)
+page = Page("bar_chart.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)

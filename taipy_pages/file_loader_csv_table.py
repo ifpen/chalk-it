@@ -21,7 +21,7 @@ def load_csv(state):
     print(state.tab_html)
 
 
-page = DesignerPage("file_loader_csv_table.xprjson", designer_mode=True)
+page = Page("file_loader_csv_table.xprjson", designer_mode=True)
 gui = Gui()
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False, upload_folder=upload_folder)

@@ -14,8 +14,8 @@ date_range = pd.date_range(start=start_date, end=end_date, freq='D')
 # Generate log-normal values
 # Adjusted to achieve a similar distribution as d3.randomLogNormal(3, 2.2)
 mu, sigma = 3, 2.2
-values = np.random.lognormal(mean=np.log(mu ** 2 / np.sqrt(sigma ** 2 + mu ** 2)), 
-                             sigma=np.sqrt(np.log(1.0 + (sigma ** 2 / mu ** 2))), 
+values = np.random.lognormal(mean=np.log(mu ** 2 / np.sqrt(sigma ** 2 + mu ** 2)),
+                             sigma=np.sqrt(np.log(1.0 + (sigma ** 2 / mu ** 2))),
                              size=len(date_range))
 
 # Format dates and combine with values
@@ -36,6 +36,6 @@ calendar_values_object = {
 selected_date = "2020-06-02"
 
 gui = Gui()
-page = DesignerPage("d3_year_heatmap_calendar.xprjson", designer_mode=True)
+page = Page("d3_year_heatmap_calendar.xprjson", designer_mode=True)
 gui.add_page("page", page)
 gui.run(run_browser=True, use_reloader=False)
