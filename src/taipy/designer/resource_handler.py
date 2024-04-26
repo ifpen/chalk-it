@@ -22,7 +22,7 @@ class DesignerResourceHandler(ResourceHandler):
     def get_root_directory(self) -> Path:
         """Dynamically set the root directory based on the existence of 'index.html'."""
         # For production mode
-        prod_root_dir: Path = (Path(__file__) / "frontend_build").resolve()
+        prod_root_dir: Path = (Path(__file__).parent).resolve() / "frontend_build"
         if (prod_root_dir / "index.html").exists():
             return prod_root_dir
         # For develop mode
