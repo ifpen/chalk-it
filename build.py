@@ -29,8 +29,11 @@ dst_dir = "build"
 if not os.path.exists(dst_dir):
     os.makedirs(dst_dir)
 
+# Path to python package version.json
+python_version_file_path = "taipy/designer/version.json"
+
 # Load Python version from version.json
-with open("version.json", "r") as fh:
+with open(python_version_file_path, "r") as fh:
     version_json = json.load(fh)
     VERSION = (
         str(version_json["major"])
@@ -41,10 +44,10 @@ with open("version.json", "r") as fh:
     )
 
 # Path to the front-end version.json file
-version_file_path = "front-end/version.json"
+frontend_version_file_path = "front-end/version.json"
 
 # Load variables from the version.json file
-f = open(version_file_path, "r")
+f = open(frontend_version_file_path, "r")
 version_vars = json.load(f)
 f.close()
 
