@@ -13,7 +13,11 @@
         autocorrect="off"
         ng-disabled="isTemplateOpen || isLiveDemo || taipyLink"
       />
-      <sapn ng-if="!isTemplateOpen && !isLiveDemo && (enableLocalServer || taipyLink)">{{currentPrjDirty}}</sapn>
+      <sapn
+        ng-if="!isTemplateOpen && !isLiveDemo && (enableLocalServer || taipyLink)"
+        class="project__top__title__dirty-flag"
+        >{{currentPrjDirty}}</sapn
+      >
     </h1>
     <a id="isNavOpen_Project" ng-click="isNavOpen = !isNavOpen" title="More options" style="float: right">
       <i class="basic icn-miniarrowbottom"></i>

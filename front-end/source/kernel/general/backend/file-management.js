@@ -341,7 +341,7 @@ var fileManager = (function () {
   }
 
   /*--------saveOnServer--------*/
-  function saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwriteArg, endActionArg) {
+  function saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwriteArg, endActionArg, autoSave) {
     const $rootScope = angular.element(document.body).scope().$root;
 
     // For the opensource version is_defaultOverwrite == true
@@ -389,6 +389,14 @@ var fileManager = (function () {
     const checkInputValue = $rootScope.xDashFullVersion ? inputValue != 'Untitled' : true;
 
     if (is_defaultOverwrite && checkInputValue) {
+      if (autoSave) {
+        taipyManager.endAction = () => {
+          $rootScope.updateFlagDirty(false);
+          $rootScope.$apply();
+        };
+        taipyManager.saveFile(xdashFileSerialized);
+        return;
+      }
       text = 'Your current ' + titleText2 + ' will be updated!';
       title = 'Save ' + titleText1;
       swal(

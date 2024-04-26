@@ -141,6 +141,17 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
       }
     );
 
+    /**
+     * Watches for changes in the `currentPrjDirty` property on the root scope
+     * and triggers local project saving when the property's value becomes ' *'.
+     */
+    $scope.$watch(
+      () => $rootScope.currentPrjDirty,
+      (value) => {
+        if (value == ' *') ManagePrjService.saveProjectToLocal(undefined, true);
+      }
+    );
+
     /**********************************************************************/
     /*******************dashboard_contentTop: Edit mode********************/
     /**********************************************************************/

@@ -562,10 +562,12 @@ angular.module('modules').service('ManagePrjService', [
      *  Saves the current project to local storage and optionally triggers the callback function.
      *  This function also handles renaming projects and provides appropriate user notifications.
      *
-     * @param {function} callback - Optional callback function to be triggered after the project is saved.
+     * @param {function} [callback=undefined] - Optional callback function to be triggered after the project is saved.
+     * @param {boolean} [autoSave=false] - If true, the project will be saved automatically;
+     *                                     otherwise, the save must be manually triggered.
      * @returns {void}
      */
-    self.saveProjectToLocal = function (callback) {
+    self.saveProjectToLocal = function (callback = undefined, autoSave = false) {
       const is_defaultOverwrite = true;
       const fileType = 'project';
       const inputProjectName = $('#projectName').val();
@@ -574,7 +576,14 @@ angular.module('modules').service('ManagePrjService', [
 
       if ($rootScope.taipyLink) {
         const fileSerialized = xdash.serialize();
-        fileManager.saveOnServer('project', currentProjectName, fileSerialized, is_defaultOverwrite, callback);
+        fileManager.saveOnServer(
+          'project',
+          currentProjectName,
+          fileSerialized,
+          is_defaultOverwrite,
+          callback,
+          autoSave
+        );
         return;
       }
 
