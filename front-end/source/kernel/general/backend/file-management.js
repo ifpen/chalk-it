@@ -286,16 +286,20 @@ var fileManager = (function () {
   function sendTextCallback(msg1, msg2, type) {
     const $rootScope = angular.element(document.body).scope().$root;
     if (type === 'success' || type === 'warning') {
-      if (type === 'warning') {
+      const createNotice = (title, text, noticeType) => {
         const notice = new PNotify({
-          title: 'Capture failed',
-          text: msg1 + '\n' + msg2,
-          type: type,
+          title: title,
+          text: text,
+          type: noticeType,
           styling: 'bootstrap3',
         });
         $('.ui-pnotify-container').on('click', function () {
           notice.remove();
         });
+      };
+
+      if (type === 'warning') {
+        createNotice('Capture failed', `${msg1}\n${msg2}`, 'warning');
       }
 
       let text = '';
@@ -315,15 +319,7 @@ var fileManager = (function () {
         default:
           text = msg1;
       }
-      const notice = new PNotify({
-        title: 'Info project',
-        text: text,
-        type: 'success',
-        styling: 'bootstrap3',
-      });
-      $('.ui-pnotify-container').on('click', function () {
-        notice.remove();
-      });
+      createNotice('Info project', text, 'success');
 
       if ($rootScope.taipyLink) {
         datanodesManager.showLoadingIndicator(false);
@@ -428,7 +424,6 @@ var fileManager = (function () {
             }
           } else {
             if (is_xDash) datanodesManager.showLoadingIndicator(false);
-
             return false; //cancel button
           }
         }
@@ -490,7 +485,7 @@ var fileManager = (function () {
     if (is_xDash) datanodesManager.showLoadingIndicator(true);
     endAction = endActionArg;
     is_defaultOverwrite = is_defaultOverwriteArg;
-    var FileMngrInst = new FileMngrFct();
+    const FileMngrInst = new FileMngrFct();
     FileMngrInst.GetFileList(fileType, writeFileCallback, false, name, data);
   }
 
