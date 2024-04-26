@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 trace1 = {
     "x": [2015, 2016, 2017],

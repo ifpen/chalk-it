@@ -1,6 +1,6 @@
 from taipy.gui import Gui
 import pandas as pd
-from taipy.designer import *
+from taipy.designer import Page
 
 
 df = pd.DataFrame()

@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 imageData = {
     "b64": "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABjElEQVR42mNk",

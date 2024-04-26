@@ -1,4 +1,4 @@
-from taipy.designer import *
+from taipy.designer import Page
 
 a = 1
 b = 5

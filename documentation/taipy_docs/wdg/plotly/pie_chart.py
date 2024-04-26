@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 data = {
     "fuel": ["Gasoline", "Diesel", "Biofuel", "LPG", "NGV"],

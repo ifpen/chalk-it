@@ -6,7 +6,7 @@ import copy
 def write_python_file(filename, datanodes):
     python_variables_code = ""
     python_variables_code += "from taipy.gui import Gui\n"
-    python_variables_code += "from taipy.designer import *\n\n"
+    python_variables_code += "from taipy.designer import Page\n\n"
 
     for node in datanodes:
         if node["type"] == "JSON_var_plugin":

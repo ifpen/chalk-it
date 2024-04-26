@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 from pathlib import Path
 from PIL import Image, ImageOps

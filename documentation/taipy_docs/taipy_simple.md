@@ -4,7 +4,7 @@ Let this simple Taipy application. Add Taipy Designer (`taipy.designer`) import 
 
 ```python
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 a = 1
 b = 5
@@ -55,7 +55,7 @@ To make our dashboard interactive, add the following `on_change` callback as fol
 
 ```python
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 a = 1
 b = 5

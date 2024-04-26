@@ -1,4 +1,4 @@
-from taipy.designer import *
+from taipy.designer import Page
 
 
 text = "this is page 2"

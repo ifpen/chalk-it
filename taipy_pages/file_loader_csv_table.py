@@ -4,7 +4,7 @@ from pathlib import Path
 from taipy.gui import Gui
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from src.taipy.designer import *
+from src.taipy.designer import Page
 
 
 df = pd.DataFrame()
