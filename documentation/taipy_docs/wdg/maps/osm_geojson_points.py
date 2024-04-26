@@ -7,6 +7,6 @@ with open("paris_parkings.json") as f:
     geoJsonParkings = json.load(f)
 
 gui = Gui()
-page = Page("osm_geojson_points.xprjson", designer_mode=True)
+page = Page("osm_geojson_points.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

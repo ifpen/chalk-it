@@ -14,6 +14,6 @@ trace2 = {
 data = [trace1, trace2]
 
 gui = Gui()
-page = Page("stack_bar_chart.xprjson", designer_mode=True)
+page = Page("stack_bar_chart.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

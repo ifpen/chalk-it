@@ -21,6 +21,6 @@ def on_change(state, var, val):
     if var == "editable_table":
         state.total = compute_total(val)
 
-page = Page("editable_table.xprjson", designer_mode=True)
+page = Page("editable_table.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

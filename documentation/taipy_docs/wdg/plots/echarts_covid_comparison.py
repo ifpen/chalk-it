@@ -127,8 +127,8 @@ option_e = echarts_option(covid_filtered, selected_countries)
 
 
 # Create a Chalk'it Page instance
-page = Page("echarts_covid_comparison.xprjson", designer_mode=True)
+page = Page("echarts_covid_comparison.xprjson")
 
 gui = Gui()
 gui.add_page("covid", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

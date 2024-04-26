@@ -12,9 +12,8 @@ class Page(CustomPage):
     def __init__(
         self,
         xprjson_file_name: str = "new_project.xprjson",
-        designer_mode: bool = False,
     ):
         super().__init__(
-            resource_handler=DesignerResourceHandler(xprjson_file_name, designer_mode),
+            resource_handler=DesignerResourceHandler(xprjson_file_name),
             metadata={"xprjson_file_name": xprjson_file_name},
         )

@@ -50,4 +50,4 @@ def run_simul(state):
     print("running simulation", state.path)
 
 
-page = Page("taipy_page.xprjson", designer_mode=True)
+page = Page("taipy_page.xprjson")

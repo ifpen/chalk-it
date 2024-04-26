@@ -68,4 +68,4 @@ def on_change(state, var, val):
         state.prediction = make_prediction(clf, val)
 
 
-page = Page("iris_demo_page.xprjson", designer_mode=False)
+page = Page("iris_demo_page.xprjson")

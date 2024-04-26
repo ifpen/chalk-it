@@ -8,4 +8,4 @@ gui = Gui()
 gui.add_page("page1", page1)
 gui.add_page("page2", page2)
 
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

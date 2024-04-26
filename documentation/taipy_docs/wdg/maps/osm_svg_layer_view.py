@@ -22,6 +22,6 @@ wind_svg_layer = {
 }
 
 gui = Gui()
-page = Page("osm_svg_layer_view.xprjson", designer_mode=True)
+page = Page("osm_svg_layer_view.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

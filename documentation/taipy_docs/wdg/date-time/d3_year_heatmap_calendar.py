@@ -36,6 +36,6 @@ calendar_values_object = {
 selected_date = "2020-06-02"
 
 gui = Gui()
-page = Page("d3_year_heatmap_calendar.xprjson", designer_mode=True)
+page = Page("d3_year_heatmap_calendar.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

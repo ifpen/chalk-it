@@ -7,16 +7,17 @@ from pathlib import Path
 import typing as t
 from flask import send_from_directory
 from taipy.gui.custom import ResourceHandler
+
+from src.taipy.designer.config import _DesignerConfig
 from .common import TemplateUtils
 
 
 class DesignerResourceHandler(ResourceHandler):
     id = "htmlresource"
 
-    def __init__(self, xprjson_file_name: str, designer_mode: bool):
+    def __init__(self, xprjson_file_name: str):
         super().__init__()
         self.xprjson_file_name = xprjson_file_name
-        self.designer_mode = designer_mode
 
     def get_root_directory(self) -> Path:
         """Dynamically set the root directory based on the existence of 'index.html'."""
@@ -37,7 +38,7 @@ class DesignerResourceHandler(ResourceHandler):
         """Get the resources from the specified path."""
         root_dir: Path = self.get_root_directory()  # Set root_dir dynamically
         if not path or path == "index.html" or "." not in path:
-            if self.designer_mode:
+            if _DesignerConfig().get_designer_mode():
                 return send_from_directory(root_dir, "index.html")
             xprjson_path: Path = (Path.cwd() / self.xprjson_file_name).resolve()
             if xprjson_path.is_file():

@@ -30,6 +30,6 @@ def on_change(state, var, val):
         state.message = print_message(state.select_fruits)
 
 
-page = Page("multi_select.xprjson", designer_mode=True)
+page = Page("multi_select.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

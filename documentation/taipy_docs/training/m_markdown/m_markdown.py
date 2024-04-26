@@ -8,7 +8,7 @@ with open('example.md', 'r') as file:
     markdown_content = file.read()
 
 
-page = Page("m_markdown.xprjson", designer_mode=True)
+page = Page("m_markdown.xprjson")
 gui = Gui()
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

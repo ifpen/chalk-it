@@ -14,6 +14,8 @@ from taipy.gui import Gui
 from taipy.gui.extension import ElementLibrary
 from taipy.gui.page import Page
 from taipy.gui._page import _Page
+
+from src.taipy.designer.config import _DesignerConfig
 from .json_adapter import register_json_adapter
 from .page import Page as DesignerPage
 
@@ -97,6 +99,7 @@ class _Gui(Gui):
         if not page._is_class_module():
             self.__var_dir.add_frame(page._frame)
 
-    def run(self, *args, **kwargs):
+    def run(self, design = True,*args, **kwargs):
         self.__frame.f_locals.update(self._designer_actions)
+        _DesignerConfig().set_designer_mode(design)
         return super().run(*args, **kwargs)

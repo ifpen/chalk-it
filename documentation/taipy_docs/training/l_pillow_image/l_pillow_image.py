@@ -31,7 +31,7 @@ def on_change(state, var, val):
         state.img_grey = convert_to_grayscale(state.image, val)
 
 
-page = Page("l_pillow_image.xprjson", designer_mode=True)
+page = Page("l_pillow_image.xprjson")
 gui = Gui()
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)
