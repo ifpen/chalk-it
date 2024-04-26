@@ -1,46 +1,55 @@
 name: Build Chalk'it Python Package
 
 on:
-  push:
-    branches: [ build, develop ]
-  pull_request:
-    branches: [ build, develop ]
+    push:
+        branches: [build, develop]
+    pull_request:
+        branches: [build, develop]
+    workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+        steps:
+            - uses: actions/checkout@v2
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.11'
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+            - name: Set up Python 3.11
+              uses: actions/setup-python@v2
+              with:
+                  python-version: "3.11"
+            - name: Install Python dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install -r requirements.txt
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20' # Specify your Node.js version here
-    - name: Install Node.js and Bower dependencies
-      run: |
-        cd front-end
-        npm install
-        npm install -g bower
-        bower install
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "20" # Specify your Node.js version here
+            - name: Install Node.js and Bower dependencies
+              run: |
+                  cd front-end
+                  npm install
+                  npm install -g bower
+                  bower install
 
-    - name: Run Python build script
-      run: python build.py
+            - name: test python
+              run: |
+                  sudo apt install -y software-properties-common
+                  sudo add-apt-repository ppa:deadsnakes/ppa
+                  sudo apt install python3.8 -y
+                  sudo apt install python3.9 -y
+                  sudo apt install python3.10 -y
+                  sudo apt install python3.11 -y
 
-    # Add any other build steps for front-end or back-end as needed
+            - name: Run Python build script
+              run: python build.py --encrypt=true
 
-    - name: Upload Python Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: python-package
-        path: build/dist/
-    
+            # Add any other build steps for front-end or back-end as needed
+
+            - name: Upload Python Artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: python-package
+                  path: build/dist/*.tar.gz
