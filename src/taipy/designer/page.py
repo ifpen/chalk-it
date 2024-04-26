@@ -5,7 +5,6 @@
 
 from taipy.gui.custom import Page as CustomPage
 from .resource_handler import DesignerResourceHandler
-from .json_adapter import register_json_adapter
 
 
 class Page(CustomPage):
@@ -19,4 +18,3 @@ class Page(CustomPage):
             resource_handler=DesignerResourceHandler(xprjson_file_name, designer_mode),
             metadata={"xprjson_file_name": xprjson_file_name},
         )
-        register_json_adapter()

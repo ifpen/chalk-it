@@ -2,7 +2,6 @@
 # Avaiga Pte Ltd’s Software License and Maintenance Agreement. Unauthorised use, reproduction and modification is
 # strictly not allowed.
 
-
 default_xrpjson = {
 	"meta": {
 		"version": "2.992.8836",
