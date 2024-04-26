@@ -68,9 +68,13 @@ class _Gui(Gui):
                 f'Page name "{name}" is invalid. It must only contain letters, digits, dash (-), underscore (_), and forward slash (/) characters.'  # noqa: E501
             )
         if name.startswith("/"):  # pragma: no cover
-            raise SyntaxError(f'Page name "{name}" cannot start with forward slash (/) character.')
+            raise SyntaxError(
+                f'Page name "{name}" cannot start with forward slash (/) character.'
+            )
         if name in self._config.routes:  # pragma: no cover
-            raise Exception(f'Page name "{name if name != Gui.__root_page_name else "/"}" is already defined.')
+            raise Exception(
+                f'Page name "{name if name != Gui.__root_page_name else "/"}" is already defined.'
+            )
         if isinstance(page, str):
             from taipy.gui._renderers import Markdown
 
@@ -91,7 +95,7 @@ class _Gui(Gui):
         if name == Gui.__root_page_name:
             self._config.root_page = new_page
         # Designer specific actions
-        if isinstance(page, DesignerPage) and (frame:=page._frame) is not None:
+        if isinstance(page, DesignerPage) and (frame := page._frame) is not None:
             frame.f_locals.update(self._designer_actions)
         # Update locals context
         self.__locals_context.add(page._get_module_name(), page._get_locals())
@@ -99,7 +103,7 @@ class _Gui(Gui):
         if not page._is_class_module():
             self.__var_dir.add_frame(page._frame)
 
-    def run(self, design = True,*args, **kwargs):
+    def run(self, design=True, *args, **kwargs):
         self.__frame.f_locals.update(self._designer_actions)
         _DesignerConfig().set_designer_mode(design)
         return super().run(*args, **kwargs)

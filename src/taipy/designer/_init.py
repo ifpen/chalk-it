@@ -17,4 +17,5 @@ def _init_gui_designer(Gui):
 
     Gui.__new__ = _new_
 
+
 _init_gui_designer(Gui)

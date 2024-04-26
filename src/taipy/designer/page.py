@@ -8,7 +8,6 @@ from .resource_handler import DesignerResourceHandler
 
 
 class Page(CustomPage):
-
     def __init__(
         self,
         xprjson_file_name: str = "new_project.xprjson",

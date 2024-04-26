@@ -1,3 +1,7 @@
+# © 2021-2024, Avaiga Pte Ltd. All Rights Reserved. The use of the Taipy software and any part thereof is governed by
+# Avaiga Pte Ltd’s Software License and Maintenance Agreement. Unauthorised use, reproduction and modification is
+# strictly not allowed.
+
 # Copyright 2021-2024 Avaiga Private Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
@@ -34,4 +38,4 @@ if find_spec("taipy"):
         from src.taipy.designer._init import *
 
     if find_spec("taipy._run"):
-        from taipy._run import _run as run
+        pass

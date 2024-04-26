@@ -1,3 +1,7 @@
+# © 2021-2024, Avaiga Pte Ltd. All Rights Reserved. The use of the Taipy software and any part thereof is governed by
+# Avaiga Pte Ltd’s Software License and Maintenance Agreement. Unauthorised use, reproduction and modification is
+# strictly not allowed.
+
 # Copyright 2023-2024 IFP Energies nouvelles
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
@@ -18,7 +22,6 @@ from pathlib import Path
 
 
 class TemplateUtils:
-
     @classmethod
     def get_version(cls, root_dir: str) -> str:
         """
@@ -63,12 +66,12 @@ class TemplateUtils:
         with open(xprjson_path, "r") as config_file:
             config_data = json.load(config_file)
 
-        index_view_path: Path = root_dir / f"{file_name}{VERSION}.html"
+        index_view_path: Path = Path(root_dir) / f"{file_name}{VERSION}.html"
 
         with open(index_view_path, "r") as template_file:
             template_data: str = template_file.read()
 
-            template_data_with_config: str = template_data.replace(
+            template_data_with_config = template_data.replace(
                 "jsonContent = {};", f"jsonContent = {json.dumps(config_data)};"
             )
 
