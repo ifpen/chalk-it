@@ -23,13 +23,18 @@ compile() {
     rm -rf taipy
 }
 
-compile python3.8 ./src/taipy-3.8.zip
-compile python3.9 ./src/taipy-3.9.zip
-compile python3.10 ./src/taipy-3.10.zip
-compile python3.11 ./src/taipy-3.11.zip
+VERSIONS=("3.8" "3.9" "3.10" "3.11")
+FOUND_VERSION=""
+
+for VERSION in "${VERSIONS[@]}"; do
+    if command -v "python$VERSION" &> /dev/null; then
+        compile "python$VERSION" "./src/taipy-$VERSION.zip"
+        FOUND_VERSION=$VERSION
+    fi
+done
 
 rm -rf taipy-temp
 
 find src -name '*.py' -delete
 
-python3.10 -m build
+$FOUND_VERSION -m build
