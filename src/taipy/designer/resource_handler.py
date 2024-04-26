@@ -27,13 +27,18 @@ class PureHTMLResourceHandler(ResourceHandler):
 
     def get_root_directory(self) -> Path:
         """Dynamically set the root directory based on the existence of 'index.html'."""
-        # For develop mode
-        prod_root_dir: Path = (Path(__file__).parent.parent).resolve()
-        if not (prod_root_dir / "index.html").exists():
-            # For develop mode
-            return (Path(__file__).parent / ".." / ".." / "front-end").resolve()
         # For production mode
-        return prod_root_dir
+        prod_root_dir: Path = (Path(__file__).parent.parent).resolve()
+        if (prod_root_dir / "index.html").exists():
+            return prod_root_dir
+        # For develop mode
+        front_end_path = (Path(__file__).parent / ".." / ".." / ".." / "front-end").resolve()
+        if not (front_end_path / "build_version.txt").exists():
+            raise RuntimeError("specific build version file 'build_version.txt' not found in front-end folder")
+        with open(front_end_path / "build_version.txt", "r") as f:
+            build_version = f.read().strip()
+        return (front_end_path / "build" / build_version).resolve()
+        
 
     def get_resources(self, path: str, base_bundle_path: str) -> t.Any:
         """Get the resources from the specified path."""

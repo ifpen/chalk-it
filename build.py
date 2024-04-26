@@ -30,7 +30,7 @@ if not os.path.exists(dst_dir):
     os.makedirs(dst_dir)
 
 # Path to python package version.json
-python_version_file_path = "taipy/designer/version.json"
+python_version_file_path = "src/taipy/designer/version.json"
 
 # Load Python version from version.json
 with open(python_version_file_path, "r") as fh:
@@ -75,6 +75,11 @@ def get_version():
 
 
 front_end_build_dir_name = "chalkit_" + a + "." + b + "." + str(get_version())
+
+# Output latest build version to frontend folder
+build_version_path = "front-end/build_version.txt"
+with open(build_version_path, "w") as f:
+    f.write(front_end_build_dir_name)
 
 # Get the list of all files and directories in the "build" directory
 file_list = os.listdir(dst_dir)
@@ -134,7 +139,7 @@ build_path.mkdir(parents=True, exist_ok=True)
 
 # Copy directories to build_path with their structure
 directories_to_copy = {
-    "./taipy": "taipy",
+    "./src/taipy": "taipy",
 }
 
 # Add additional directory if it is not a lite build

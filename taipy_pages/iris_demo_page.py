@@ -6,7 +6,7 @@ from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy.designer import *
+from src.taipy.designer import *
 
 prediction = "--"
 

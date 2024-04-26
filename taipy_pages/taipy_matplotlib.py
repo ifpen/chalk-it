@@ -4,7 +4,7 @@ import io, base64
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy.designer import *
+from src.taipy.designer import *
 
 # End user code starts here
 fig, ax = plt.subplots()

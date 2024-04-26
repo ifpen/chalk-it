@@ -13,6 +13,7 @@ pathvalidate = "*"
 watchdog = "*"
 flask-sock = "*"
 pytz = "*"
+taipy-gui = "==3.1.2"
 
 [dev-packages]
 
