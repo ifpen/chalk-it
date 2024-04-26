@@ -16,6 +16,7 @@ pytz = "*"
 taipy-gui = "==3.1.2"
 
 [dev-packages]
+build = "*"
 
 [requires]
 python_version = "3.11"

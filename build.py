@@ -10,19 +10,27 @@
 # specific language governing permissions and limitations under the License.
 
 
-import glob
 from pathlib import Path
 import subprocess
 import shutil
 import os
+import sys
 from dotenv import dotenv_values
 from datetime import datetime
 import json
+import argparse
 
+# Handle cli arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('--encrypt')
+args = parser.parse_args()
+
+# Config
 BUILD_FRONT_END = True
+ENCRYPT = args.encrypt.lower() == 'true' if args.encrypt else False
 
 # Set source and destination directories
-src_dir = "assets/install"
+src_dir = "tools/package/without_encryption/" if not ENCRYPT else "tools/package/with_encryption/"
 dst_dir = "build"
 
 # Create destination directory if it doesn't exist
@@ -128,7 +136,7 @@ if BUILD_FRONT_END:
 
 # Copy main.py and associated .py files to ./build/taipy_designer directory
 cwd = os.getcwd()
-build_path = Path("./build/")
+build_path = Path("./build/src/")
 
 # Ensure the directory exists
 build_path.mkdir(parents=True, exist_ok=True)
@@ -156,27 +164,12 @@ for filename in os.listdir(src_dir):
     shutil.copy(src_path, dst_path)
 
 # Copy build result to ./build/taipy_designer directory
-frontend_build_path = "./build/taipy/designer/frontend_build"
+frontend_build_path = "./build/src/taipy/designer/frontend_build"
 build_dir = os.path.join("./front-end/build", front_end_build_dir_name)
 shutil.copytree(build_dir, frontend_build_path)
 
 # Copy credits
 shutil.copy("credits.html", os.path.join(frontend_build_path, "credits.html"))
-
-
-# This function checks if various Python commands exist in the system PATH.
-def get_python_command():
-    # Need to keep this order
-    commands_to_check = ["python", "python3", "python2", "py"]
-
-    for cmd in commands_to_check:
-        if shutil.which(cmd):
-            # Returns the available command
-            return cmd
-
-    # If no Python command was found
-    raise SystemExit("Python not found. Please install Python.")
-
 
 def update_version_in_setup_file(file_path, new_version):
     # Define the line prefix to search for
@@ -213,9 +206,9 @@ file_path = "./build/setup.py"  # Path to your setup.py file
 new_version = VERSION  # New version number to update to
 update_version_in_setup_file(file_path, new_version)
 
-
-# Get available python command
-python_cmd = get_python_command()
+# Run Compile bash script to encrypt python files
+if ENCRYPT:
+    subprocess.run(["bash", "tools/compile_build.sh"])
 
 # Run setup.py command from ./assets directory
-subprocess.run([python_cmd, "../build/setup.py", "sdist"], cwd="./build/")
+subprocess.run([sys.executable, "-m", "build"], cwd="./build/")
