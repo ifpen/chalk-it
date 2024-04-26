@@ -28,7 +28,7 @@ FOUND_VERSION=""
 
 for VERSION in "${VERSIONS[@]}"; do
     if command -v "python$VERSION" &> /dev/null; then
-        compile "python$VERSION" "./src/taipy-$VERSION.zip"
+        compile "python$VERSION" "./src/taipy-designer-$VERSION.zip"
         FOUND_VERSION=$VERSION
     fi
 done
@@ -37,4 +37,4 @@ rm -rf taipy-temp
 
 find src -name '*.py' -delete
 
-$FOUND_VERSION -m build
+"python$FOUND_VERSION" -m build
