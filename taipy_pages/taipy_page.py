@@ -3,7 +3,7 @@ import plotly.express as px
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from src.taipy.designer import Page
+from taipy.designer import Page
 
 a = 8
 b = 10

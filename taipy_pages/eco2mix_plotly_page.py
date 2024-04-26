@@ -8,7 +8,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from src.taipy.designer import Page
+from taipy.designer import Page
 
 # Variables declaration, first date (yesterday) and sampling mode
 # Get today's date

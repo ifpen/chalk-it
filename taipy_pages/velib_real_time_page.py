@@ -8,7 +8,7 @@ from pathlib import Path
 from shapely.geometry import Point
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from src.taipy.designer import Page
+from taipy.designer import Page
 
 
 def fetch_stations_status():
