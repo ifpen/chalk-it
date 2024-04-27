@@ -80,9 +80,7 @@ this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitl
           '<div style="display:flex;flex-direction:row;justify-content:space-between;"><i style="background:' +
             getColor(min, max, from + 1, colorScale) +
             ';margin-left:0px;"></i> ' +
-            '<span>' +
-            f(from) +
-            (to ? '&ndash;' + f(to) : '+') +
+            '<span>' + d3.format("~s")(from) + (to ? '&ndash;' +  d3.format("~s")(to) : '+') + 
             '</span> </div>'
         )  ; 
     }
