@@ -1,7 +1,7 @@
 {
   "meta": {
-    "version": "2.940.8866",
-    "date": "Tue Apr 09 2024 09:49:57 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "version": "2.940.8881",
+    "date": "Thu Apr 25 2024 00:18:41 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
     "name": "osm-geojson-points-final-extended",
     "description": "",
     "groupName": "",
@@ -11,43 +11,19 @@
   "data": {
     "datanodes": [
       {
-        "name": "ONE_POINT",
+        "name": "Style_with_events_icons",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "ONE_POINT",
-          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 47 03 02 88\",\"objectid\":86,\"tmoto_1ehe\":\"1,4\",\"abmoto_1me\":\"94,5\",\"pr_1a_maxe\":\"2000\",\"adress_geo\":\"14 TER RUE DES PYRAMIDES\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1\",\"tf_2h_e\":\"8\",\"tf_12h_e\":\"36\",\"id\":52,\"abmoto_1ae\":\"954,45\",\"pr_1a_maxm\":\"700\",\"abpmr_1t_e\":\"371,5\",\"deleg\":\"SAEMES\",\"tf_11h_e\":\"36\",\"autopart\":\"NON\",\"tf_15mn_mo\":\"0,35\",\"ab_1m_e\":\"270\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2\",\"tf_24h_e\":\"36\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"0,7\",\"tf_1h_e\":\"4\",\"v_elec_ch\":\"OUI\",\"tf_9h_e\":\"36\",\"parc_amod\":\"NON\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.333264515214272,48.865102106721615]}}]}"
+          "name": "Style_with_events_icons",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"defaultZoom\":true,\"zoom\":18},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":\"objectid1\",\"name\":\"icons\",\"stroke\":false,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"fillColor\":\"#447bdc\",\"fillOpacity\":0.7,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#354a5f\",\"fillOpacity\":0.5}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#2154ab\",\"fillOpacity\":1}}},\"type\":\"Multi Point\",\"markerCluster\":false,\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"none\",\"awesomeMarker\":{\"enabled\":true,\"icon\":{\"icon\":\"coffee\",\"prefix\":\"fa\",\"markerColor\":\"green\"}},\"radius\":300,\"showLegend\":false,\"property\":\"objectid\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"objectid\":[31,89],\"id\":[6,177],\"h_parc_cm\":[185,190],\"point_x\":[652057.879,652057.879],\"point_y\":[6862433.174,6862433.174]},\"allProperties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"],\"tooltip\":{\"properties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"]}}]}"
         }
       },
       {
-        "name": "ONE_POINT_STYLE",
+        "name": "ISO_MARKER_STYLE",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "ONE_POINT_STYLE",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":18},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":\"objectid1\",\"name\":\"layer 1\",\"stroke\":true,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#354a5f\",\"fillOpacity\":0.5}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#2154ab\",\"fillOpacity\":1}}},\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\"],\"tooltip\":{\"properties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\"]}}]}"
-        }
-      },
-      {
-        "name": "Selected",
-        "type": "JSON_var_plugin",
-        "settings": {
-          "name": "Selected",
-          "json_var": "{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 40 13 00 65\",\"objectid\":88,\"tmoto_1ehe\":\"ND\",\"abmoto_1me\":\"72\",\"pr_1a_maxe\":\"ND\",\"adress_geo\":\"37 TER BOULEVARD SEBASTOPOL\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1,1\",\"tf_2h_e\":\"8,8\",\"tf_12h_e\":\"39,6\",\"id\":147,\"abmoto_1ae\":\"728\",\"pr_1a_maxm\":\"ND\",\"abpmr_1t_e\":\"ND\",\"deleg\":\"INDIGO\",\"tf_11h_e\":\"39,6\",\"autopart\":\"NON\",\"tf_15mn_mo\":\"ND\",\"ab_1m_e\":\"245\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2,2\",\"tf_24h_e\":\"39,6\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"ND\",\"tf_1h_e\":\"4,4\",\"v_elec_ch\":\"OUI\",\"tf_9h_e\":\"39,6\",\"parc_amod\":\"NON\"}"
-        }
-      },
-      {
-        "name": "Style_with_events",
-        "type": "JSON_var_plugin",
-        "settings": {
-          "name": "Style_with_events",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":18},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"stroke\":false,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"fillColor\":\"red\",\"fillOpacity\":0.7,\"events\":{\"mouseover\":{\"enabled\":true,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#354a5f\",\"fillOpacity\":0.5}},\"click\":{\"enabled\":true,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#2154ab\",\"fillOpacity\":1}}},\"type\":\"Multi Point\",\"showLegend\":false,\"pointAreMarker\":false,\"radius\":200,\"property\":\"objectid\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"objectid\":[31,89],\"id\":[6,177],\"h_parc_cm\":[185,190],\"point_x\":[652057.879,652057.879],\"point_y\":[6862433.174,6862433.174]},\"allProperties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"],\"tooltip\":{\"properties\":[\"objectid\"]}}]}"
-        }
-      },
-      {
-        "name": "ISO_CIRCLES_STYLE",
-        "type": "JSON_var_plugin",
-        "settings": {
-          "name": "ISO_CIRCLES_STYLE",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":18},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"stroke\":false,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"fillColor\":\"#447bdc\",\"fillOpacity\":0.7,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#354a5f\",\"fillOpacity\":0.5}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#2154ab\",\"fillOpacity\":1}}},\"type\":\"Multi Point\",\"showLegend\":false,\"pointAreMarker\":false,\"radius\":300,\"property\":\"objectid\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"objectid\":[31,89],\"id\":[6,177],\"h_parc_cm\":[185,190],\"point_x\":[652057.879,652057.879],\"point_y\":[6862433.174,6862433.174]},\"allProperties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"],\"tooltip\":{\"properties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"]}}]}"
+          "name": "ISO_MARKER_STYLE",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"defaultZoom\":true,\"zoom\":18},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":\"objectid1\",\"name\":\"layer 1\",\"stroke\":false,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"fillColor\":\"#447bdc\",\"fillOpacity\":0.7,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#354a5f\",\"fillOpacity\":0.5}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#2154ab\",\"fillOpacity\":1}}},\"type\":\"Multi Point\",\"markerCluster\":true,\"pointAreMarker\":false,\"clickPopup\":true,\"showLegend\":false,\"radius\":300,\"property\":\"objectid\",\"popupProperty\":\"none\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"objectid\":[31,89],\"id\":[6,177],\"h_parc_cm\":[185,190],\"point_x\":[652057.879,652057.879],\"point_y\":[6862433.174,6862433.174]},\"allProperties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"],\"tooltip\":{\"properties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"]}}]}"
         }
       },
       {
@@ -59,11 +35,43 @@
         }
       },
       {
-        "name": "ISO_MARKER_STYLE",
+        "name": "ISO_CIRCLES_STYLE",
         "type": "JSON_var_plugin",
         "settings": {
-          "name": "ISO_MARKER_STYLE",
-          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":0},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"possibleLegends\":[],\"selecedLegends\":[]},\"style\":[{\"layer\":\"objectid1\",\"name\":\"layer 1\",\"stroke\":true,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#354a5f\",\"fillOpacity\":0.5}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#2154ab\",\"fillOpacity\":1}}},\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"],\"tooltip\":{\"properties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"]}}]}"
+          "name": "ISO_CIRCLES_STYLE",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":18},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":1,\"name\":\"layer 1\",\"stroke\":false,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"fillColor\":\"#447bdc\",\"fillOpacity\":0.7,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#354a5f\",\"fillOpacity\":0.5}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#2154ab\",\"fillOpacity\":1}}},\"type\":\"Multi Point\",\"showLegend\":false,\"pointAreMarker\":false,\"radius\":300,\"property\":\"objectid\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"objectid\":[31,89],\"id\":[6,177],\"h_parc_cm\":[185,190],\"point_x\":[652057.879,652057.879],\"point_y\":[6862433.174,6862433.174]},\"allProperties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"],\"tooltip\":{\"properties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"]}}]}"
+        }
+      },
+      {
+        "name": "Style_with_events",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Style_with_events",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"defaultZoom\":true,\"zoom\":18},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":\"objectid1\",\"name\":\"layer 1\",\"stroke\":false,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"fillColor\":\"green\",\"fillOpacity\":0.7,\"events\":{\"mouseover\":{\"enabled\":true,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"red\",\"fillOpacity\":0.5}},\"click\":{\"enabled\":true,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"red\",\"fillOpacity\":1}}},\"type\":\"Multi Point\",\"markerCluster\":true,\"pointAreMarker\":true,\"clickPopup\":true,\"showLegend\":false,\"radius\":300,\"property\":\"objectid\",\"popupProperty\":\"none\",\"propertyMin\":\"Auto\",\"propertyMax\":\"Auto\",\"possibleProperties\":{\"objectid\":[31,89],\"id\":[6,177],\"h_parc_cm\":[185,190],\"point_x\":[652057.879,652057.879],\"point_y\":[6862433.174,6862433.174]},\"allProperties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\",\"point_x\",\"point_y\",\"tarif_pr\"],\"tooltip\":{\"properties\":[\"mis_a_jour\",\"tel\",\"objectid\"]}}]}"
+        }
+      },
+      {
+        "name": "Selected",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "Selected",
+          "json_var": "{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 40 13 00 65\",\"objectid\":88,\"tmoto_1ehe\":\"ND\",\"abmoto_1me\":\"72\",\"pr_1a_maxe\":\"ND\",\"adress_geo\":\"37 TER BOULEVARD SEBASTOPOL\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1,1\",\"tf_2h_e\":\"8,8\",\"tf_12h_e\":\"39,6\",\"id\":147,\"abmoto_1ae\":\"728\",\"pr_1a_maxm\":\"ND\",\"abpmr_1t_e\":\"ND\",\"deleg\":\"INDIGO\",\"tf_11h_e\":\"39,6\",\"autopart\":\"NON\",\"tf_15mn_mo\":\"ND\",\"ab_1m_e\":\"245\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2,2\",\"tf_24h_e\":\"39,6\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"ND\",\"tf_1h_e\":\"4,4\",\"v_elec_ch\":\"OUI\",\"tf_9h_e\":\"39,6\",\"parc_amod\":\"NON\"}"
+        }
+      },
+      {
+        "name": "ONE_POINT_STYLE",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "ONE_POINT_STYLE",
+          "json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"zoom\":18},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"\",\"imageBounds\":[],\"title\":\"\",\"addAs\":\"\"}},\"style\":[{\"layer\":\"objectid1\",\"name\":\"layer 1\",\"stroke\":true,\"color\":\"black\",\"weight\":1,\"opacity\":1,\"events\":{\"mouseover\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":3,\"fillColor\":\"#354a5f\",\"fillOpacity\":0.5}},\"click\":{\"enabled\":false,\"style\":{\"color\":\"black\",\"weight\":1,\"fillColor\":\"#2154ab\",\"fillOpacity\":1}}},\"type\":\"Multi Point\",\"pointAreMarker\":true,\"clickPopup\":true,\"popupProperty\":\"All\",\"PropertiesList\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\"],\"tooltip\":{\"properties\":[\"mis_a_jour\",\"tel\",\"objectid\",\"tmoto_1ehe\",\"abmoto_1me\",\"pr_1a_maxe\",\"adress_geo\",\"tf_res_1am\",\"tf_15mn_e\",\"tf_2h_e\",\"tf_12h_e\",\"id\",\"abmoto_1ae\",\"pr_1a_maxm\",\"abpmr_1t_e\",\"deleg\",\"tf_11h_e\",\"autopart\",\"tf_15mn_mo\",\"ab_1m_e\",\"tf_res_mo\",\"h_parc_cm\",\"tf_30mn_e\",\"tf_24h_e\",\"horaire_na\",\"tf_30mn_mo\",\"tf_1h_e\",\"v_elec_ch\",\"tf_9h_e\",\"parc_amod\"]}}]}"
+        }
+      },
+      {
+        "name": "ONE_POINT",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "ONE_POINT",
+          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"mis_a_jour\":\"2018-02-01\",\"tel\":\"01 47 03 02 88\",\"objectid\":86,\"tmoto_1ehe\":\"1,4\",\"abmoto_1me\":\"94,5\",\"pr_1a_maxe\":\"2000\",\"adress_geo\":\"14 TER RUE DES PYRAMIDES\",\"tf_res_1am\":\"ND\",\"tf_15mn_e\":\"1\",\"tf_2h_e\":\"8\",\"tf_12h_e\":\"36\",\"id\":52,\"abmoto_1ae\":\"954,45\",\"pr_1a_maxm\":\"700\",\"abpmr_1t_e\":\"371,5\",\"deleg\":\"SAEMES\",\"tf_11h_e\":\"36\",\"autopart\":\"NON\",\"tf_15mn_mo\":\"0,35\",\"ab_1m_e\":\"270\",\"tf_res_mo\":\"NON\",\"h_parc_cm\":190,\"tf_30mn_e\":\"2\",\"tf_24h_e\":\"36\",\"horaire_na\":\"24h / 24\",\"tf_30mn_mo\":\"0,7\",\"tf_1h_e\":\"4\",\"v_elec_ch\":\"OUI\",\"tf_9h_e\":\"36\",\"parc_amod\":\"NON\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.333264515214272,48.865102106721615]}}]}"
         }
       }
     ]
@@ -73,14 +81,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1676,
-    "heightPx": 663,
-    "scrollWidthPx": 1676,
-    "scrollHeightPx": 663,
-    "widthVw": 87.74869109947645,
-    "heightVh": 74.07821229050279,
-    "scrollWidthVw": 87.74869109947645,
-    "scrollHeightVh": 74.07821229050279,
+    "widthPx": 1294,
+    "heightPx": 572,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 572,
+    "widthVw": 84.68586387434554,
+    "heightVh": 79.88826815642459,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 79.88826815642459,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -100,10 +108,10 @@
   "dashboard": {
     "mapGeoJsonA": {
       "layout": {
-        "top": "11.3966vh",
-        "left": "0.884194vw",
-        "height": "61.1173vh",
-        "width": "27.7929vw",
+        "top": "12.2905vh",
+        "left": "0.858745vw",
+        "height": "65.9108vh",
+        "width": "26.993vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "1"
@@ -115,14 +123,17 @@
         "widgetTypeName": "Map GeoJSON(mapGeoJsonA)"
       },
       "modelParameters": {},
-      "modelHiddenParams": {}
+      "modelHiddenParams": {
+        "GeoJSON": {},
+        "GeoJSONStyle": {}
+      }
     },
     "mapGeoJsonB": {
       "layout": {
-        "top": "11.3966vh",
-        "left": "29.5504vw",
-        "height": "61.1173vh",
-        "width": "27.6977vw",
+        "top": "12.2905vh",
+        "left": "28.6999vw",
+        "height": "65.9108vh",
+        "width": "26.9006vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "2"
@@ -134,14 +145,17 @@
         "widgetTypeName": "Map GeoJSON(mapGeoJsonB)"
       },
       "modelParameters": {},
-      "modelHiddenParams": {}
+      "modelHiddenParams": {
+        "GeoJSON": {},
+        "GeoJSONStyle": {}
+      }
     },
     "annotationLabelA": {
       "layout": {
-        "top": "3.68715vh",
-        "left": "5.03341vw",
-        "height": "5.02793vh",
-        "width": "10.0232vw",
+        "top": "3.97634vh",
+        "left": "4.88854vw",
+        "height": "5.42227vh",
+        "width": "9.73473vw",
         "minHeight": "5px",
         "minWidth": "5px",
         "z-index": "3"
@@ -168,10 +182,10 @@
     },
     "annotationLabelB": {
       "layout": {
-        "top": "3.57542vh",
-        "left": "34.9714vw",
-        "height": "5.02793vh",
-        "width": "10.0232vw",
+        "top": "3.85585vh",
+        "left": "33.9649vw",
+        "height": "5.42227vh",
+        "width": "9.73473vw",
         "minHeight": "5px",
         "minWidth": "5px",
         "z-index": "4"
@@ -198,10 +212,10 @@
     },
     "mapGeoJsonC": {
       "layout": {
-        "top": "92.7374vh",
-        "left": "1.138vw",
-        "height": "61.1173vh",
-        "width": "27.7056vw",
+        "top": "100.011vh",
+        "left": "1.10525vw",
+        "height": "65.9108vh",
+        "width": "26.9081vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "5"
@@ -213,14 +227,17 @@
         "widgetTypeName": "Map GeoJSON(mapGeoJsonC)"
       },
       "modelParameters": {},
-      "modelHiddenParams": {}
+      "modelHiddenParams": {
+        "GeoJSON": {},
+        "GeoJSONStyle": {}
+      }
     },
     "annotationLabelC": {
       "layout": {
-        "top": "82.5698vh",
-        "left": "6.17141vw",
-        "height": "5.02793vh",
-        "width": "10.0232vw",
+        "top": "89.0458vh",
+        "left": "5.99379vw",
+        "height": "5.42227vh",
+        "width": "9.73473vw",
         "minHeight": "5px",
         "minWidth": "5px",
         "z-index": "6"
@@ -247,10 +264,10 @@
     },
     "mapGeoJsonD": {
       "layout": {
-        "top": "92.7374vh",
-        "left": "30.9098vw",
-        "height": "61.1173vh",
-        "width": "27.7286vw",
+        "top": "100.011vh",
+        "left": "30.0202vw",
+        "height": "65.9108vh",
+        "width": "26.9306vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "7"
@@ -262,14 +279,17 @@
         "widgetTypeName": "Map GeoJSON(mapGeoJsonD)"
       },
       "modelParameters": {},
-      "modelHiddenParams": {}
+      "modelHiddenParams": {
+        "GeoJSON": {},
+        "GeoJSONStyle": {}
+      }
     },
     "annotationLabelD": {
       "layout": {
-        "top": "81.7877vh",
-        "left": "36.1802vw",
-        "height": "5.02793vh",
-        "width": "10.0185vw",
+        "top": "88.2025vh",
+        "left": "35.1388vw",
+        "height": "5.42227vh",
+        "width": "9.73015vw",
         "minHeight": "5px",
         "minWidth": "5px",
         "z-index": "8"
@@ -282,6 +302,90 @@
       },
       "modelParameters": {
         "text": "Un seul point",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiSwitchA": {
+      "layout": {
+        "top": "101.397vh",
+        "left": "59.7975vw",
+        "height": "5.1676vh",
+        "width": "9.88984vw",
+        "minHeight": "24px",
+        "minWidth": "50px",
+        "z-index": "9"
+      },
+      "container": {
+        "id": "flatUiSwitchA",
+        "instanceId": "flatUiSwitchA",
+        "modelJsonId": "flatUiSwitch",
+        "widgetTypeName": "Switch(flatUiSwitchA)"
+      },
+      "modelParameters": {
+        "label": "markerCluster",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelPosition": "right",
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "switchWidthProportion": "30%",
+        "switchOnColor": "var(--widget-input-checked-color)",
+        "switchOffColor": "var(--widget-input-unchecked-color)"
+      },
+      "modelHiddenParams": {
+        "value": false
+      }
+    },
+    "mapGeoJsonE": {
+      "layout": {
+        "top": "174.86vh",
+        "left": "1.70157vw",
+        "height": "65.9218vh",
+        "width": "26.8979vw",
+        "minHeight": "100px",
+        "minWidth": "100px",
+        "z-index": "10"
+      },
+      "container": {
+        "id": "mapGeoJsonE",
+        "instanceId": "mapGeoJsonE",
+        "modelJsonId": "mapGeoJson",
+        "widgetTypeName": "Map GeoJSON(mapGeoJsonE)"
+      },
+      "modelParameters": {},
+      "modelHiddenParams": {
+        "GeoJSON": {},
+        "GeoJSONStyle": {}
+      }
+    },
+    "annotationLabelE": {
+      "layout": {
+        "top": "167.737vh",
+        "left": "6.80628vw",
+        "height": "5.44693vh",
+        "width": "18.3246vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "11"
+      },
+      "container": {
+        "id": "annotationLabelE",
+        "instanceId": "annotationLabelE",
+        "modelJsonId": "annotationLabel",
+        "widgetTypeName": "Label(annotationLabelE)"
+      },
+      "modelParameters": {
+        "text": "With Events with icons",
         "enableActuator": false,
         "fontsize": 0.5,
         "backgroundColor": "rgba(0, 0, 0, 0)",
@@ -367,7 +471,36 @@
         "dataFields": []
       }
     },
-    "annotationLabelD": {}
+    "annotationLabelD": {},
+    "flatUiSwitchA": {
+      "value": {
+        "name": "value",
+        "dataNode": "Style_with_events",
+        "dataFields": [
+          "style",
+          0,
+          "markerCluster"
+        ]
+      }
+    },
+    "mapGeoJsonE": {
+      "GeoJSON": {
+        "name": "GeoJSON",
+        "dataNode": "Points",
+        "dataFields": []
+      },
+      "GeoJSONStyle": {
+        "name": "GeoJSONStyle",
+        "dataNode": "Style_with_events_icons",
+        "dataFields": []
+      },
+      "Selected": {
+        "name": "Selected",
+        "dataNode": "None",
+        "dataFields": []
+      }
+    },
+    "annotationLabelE": {}
   },
   "exportOptions": "ajustToTargetWindow",
   "pages": {

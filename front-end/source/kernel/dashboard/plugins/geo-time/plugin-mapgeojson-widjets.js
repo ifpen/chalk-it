@@ -168,7 +168,7 @@ function mapGeoJsonWidgetsPluginClass() {
         }
       }
 
-      //self.map.zoomControl.setPosition('topright');
+      self.map.zoomControl.setPosition('topright');
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
