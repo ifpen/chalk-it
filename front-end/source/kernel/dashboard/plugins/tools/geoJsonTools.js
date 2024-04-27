@@ -160,11 +160,11 @@ function getFillColor(geoJSON, style, value, colorScale) {
       let pct = ((value - min) / (max - min)) * 100;
       return colorScale(pct);
     }
-  }else {
+  } else {
     return colorScaleManager.getColor(min, max, value, colorScale);
   }
 }
-function getMinMaxProperty(style,geoJSONinLayer){
+function getMinMaxProperty(style, geoJSONinLayer) {
   if (
     !_.isUndefined(style.property) &&
     !_.isUndefined(style.possibleProperties) &&
@@ -172,10 +172,8 @@ function getMinMaxProperty(style,geoJSONinLayer){
   ) {
     var minMaxAuto = style.possibleProperties[style.property];
 
-    if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number')
-      minMaxAuto[0] = style.propertyMin;
-    if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number')
-      minMaxAuto[1] = style.propertyMax;
+    if (!_.isUndefined(style.propertyMin) && typeof style.propertyMin === 'number') minMaxAuto[0] = style.propertyMin;
+    if (!_.isUndefined(style.propertyMax) && typeof style.propertyMax === 'number') minMaxAuto[1] = style.propertyMax;
   }
   let minMax = geoJsonTools.getMinMaxByProperty(geoJSONinLayer, style.property);
   if (Array.isArray(minMaxAuto)) {
@@ -188,7 +186,21 @@ function getMinMaxProperty(style,geoJSONinLayer){
       if (max > minMax[1]) max = minMax[1];
     }
   }
-  return [min,max]
+  return [min, max];
+}
+
+function geoJsonChanged(geojsonList, geojsonOldList, geojsonStyle) {
+  if(_.isUndefined(geojsonList) || _.isUndefined(geojsonOldList) || _.isUndefined(geojsonStyle) || _.isUndefined(geojsonStyle.style)  ) return true
+  if(!Array.isArray(geojsonList) || !Array.isArray(geojsonOldList) || !Array.isArray(geojsonStyle.style)) return true
+  if (geojsonList.length !=  geojsonOldList.length) return true;
+  if (geojsonList.length !=  geojsonStyle.style.length) return true;
+  for (let i = 0; i < geojsonList.length; i++) {
+    const geojson = geojsonList[i];
+    if (!_.isEqual(geojson, geojsonOldList[i])) {
+      return true;
+    }
+  }
+  return false;
 }
 var geoJsonTools = (function () {
   return {
@@ -199,6 +211,7 @@ var geoJsonTools = (function () {
     equivalenceTypes,
     compareSharedKeys,
     getFillColor,
-    getMinMaxProperty
+    getMinMaxProperty,
+    geoJsonChanged
   };
 })();

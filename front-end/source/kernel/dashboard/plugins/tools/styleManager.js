@@ -175,6 +175,9 @@ this.setStyle = function (self, layerIndex, style) {
   // Get GeoJSON
   var geoJSONinLayer = modelsHiddenParams[self.idInstance].GeoJSON[layerIndex];
   var leafLetLayer = self.layers[layerIndex];
+  if (_.isUndefined(leafLetLayer)) {
+    return;
+  }
   let name = undefined;
   if (!_.isUndefined(style)) {
     if (!_.isUndefined(style.name)) {
@@ -330,13 +333,15 @@ this.setStyle = function (self, layerIndex, style) {
           if (!_.isUndefined(min) && !_.isUndefined(max) && !_.isUndefined(colorScale)) {
             if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPolygon) {
               self.legends[layerIndex] = self.createChoroplethLegend(
+                layerIndex,
                 min,
                 max,
                 styleForObject.legend.title || '',
                 colorScale
               );
-            } else if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiLineString) {
+            } else {
               self.legends[layerIndex] = self.createLegend(
+                layerIndex,
                 colorScale,
                 length,
                 colorStops,
@@ -369,6 +374,7 @@ this.setStyle = function (self, layerIndex, style) {
         if (!_.isUndefined(min) && !_.isUndefined(max) && !_.isUndefined(colorScale)) {
           if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPolygon) {
             self.legends[layerIndex] = self.createChoroplethLegend(
+              layerIndex,
               min,
               max,
               styleForObject.legend.title || '',
@@ -376,6 +382,7 @@ this.setStyle = function (self, layerIndex, style) {
             );
           } else {
             self.legends[layerIndex] = self.createLegend(
+              layerIndex,
               colorScale,
               length,
               colorStops,

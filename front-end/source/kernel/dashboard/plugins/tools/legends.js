@@ -8,19 +8,19 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 
-this.createLegend = function (color, length, colorStops, min, max, featureTitle) {
+this.createLegend = function (idLegend,color, length, colorStops, min, max, featureTitle) {
   var legend = L.control({ position: 'topleft' });
   var min = Number(min);
   var max = Number(max);
 
   legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'scaleLegend');
-    div.setAttribute('id', 'legendHeatMap');
+    div.setAttribute('id', idLegend);
     var rects = '';
     for (var i = 0; i < length; i++) {
       rects = rects + '<rect height="10" x="' + i * 4 + '" width="4" style="fill: ' + color(i) + ';"></rect>';
     }
-    var svg = '<svg id="legend" width="450" height="50"><g class="key" transform="translate(25,16)">' + rects;
+    var svg = '<svg  width="450" height="50"><g class="key" transform="translate(25,16)">' + rects;
     var bTicksFormat = true;
     var valTick = min;
     var strTick;
@@ -53,7 +53,7 @@ this.createLegend = function (color, length, colorStops, min, max, featureTitle)
   return legend; 
 };
 
-this.createChoroplethLegend = function (getColor, min, max, featureTitle, colorScale) {
+this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitle, colorScale) {
   if(min == max) return;
   featureTitle = featureTitle ? featureTitle.charAt(0).toUpperCase() + featureTitle.toLowerCase().slice(1) : ""
   var legend = L.control({ position: 'topleft' });
@@ -63,7 +63,7 @@ this.createChoroplethLegend = function (getColor, min, max, featureTitle, colorS
   legend.onAdd = function (map) {
     var step = (max - min) / 8;
     var div = L.DomUtil.create('div', 'info legend');
-    div.setAttribute('id', 'legendChoroplet'); 
+    div.setAttribute('id', idLegend); 
     grades = [min, min + step, min + step * 2, min + step * 3, min + step * 4, min + step * 5, min + step * 6, max];
     var labels = [],
       from,
