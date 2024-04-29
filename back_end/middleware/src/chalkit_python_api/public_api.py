@@ -14,11 +14,11 @@ ParamValues = list[ParamValue]
 PropertyPath = list[Union[int, str]]
 
 
-class DashboardActions:
+class SchedulerActions:
     """
     This class provides a port of the javascript API. An instance of it is provided to user scripts as
-    `chalkit.dashboard`. It allows some interactions with the dashboard. Use with caution as these introduce side
-    effects to data nodes executions.
+    `chalkit.scheduler`. It allows some interactions with the dashboard's scheduler. Use with caution as these
+    introduce side effects to data nodes executions. Be especially mindful of not creating update cycles.
     """
 
     def __init__(self, state: ChalkitState):
@@ -44,7 +44,7 @@ class DashboardActions:
         Args:
             datanodes_values: dictionary mapping dataNode names to their new values. Values must convert to JSON.
         """
-        self._state.add_side_effect("setVariables", datanodes_values)
+        self._state.add_side_effect("scheduler.setVariables", datanodes_values)
 
     def set_variable_property(self, datanode_name: str, property_path: PropertyPath, json_value: JSON) -> None:
         """
@@ -59,7 +59,7 @@ class DashboardActions:
             json_value: the new value to insert, must convert to JSON
 
         """
-        self._state.add_side_effect("setVariableProperty", datanode_name, property_path, json_value)
+        self._state.add_side_effect("scheduler.setVariableProperty", datanode_name, property_path, json_value)
 
     def execute_datanode(self, datanode_name: str) -> None:
         """
@@ -78,7 +78,18 @@ class DashboardActions:
         Args:
             datanode_names: the names of a group of dataNodes
         """
-        self._state.add_side_effect("executeDataNodes", datanode_names)
+        self._state.add_side_effect("scheduler.executeDataNodes", datanode_names)
+
+
+class DashboardActions:
+    """
+    This class provides a port of the javascript API. An instance of it is provided to user scripts as
+    `chalkit.dashboard`. It allows some interactions with the dashboard. Use with caution as these introduce side
+    effects to data nodes executions.
+    """
+
+    def __init__(self, state: ChalkitState):
+        self._state = state
 
     def view_page(self, page_url: str, input_vals: Optional[ParamValues] = None, new_tab=False) -> None:
         """
@@ -90,7 +101,7 @@ class DashboardActions:
                         `dsName` must be a string. `dsVal` must convert to JSON.
             new_tab: open in new tab when true
         """
-        self._state.add_side_effect("viewPage", page_url, input_vals, new_tab)
+        self._state.add_side_effect("dashboard.viewPage", page_url, input_vals, new_tab)
 
     def view_project(self, project_url: str, input_vals: Optional[ParamValues] = None, new_tab=False) -> None:
         """
@@ -101,7 +112,7 @@ class DashboardActions:
             input_vals:
             new_tab: open in new tab when true
         """
-        self._state.add_side_effect("viewProject", project_url, input_vals, new_tab)
+        self._state.add_side_effect("dashboard.viewProject", project_url, input_vals, new_tab)
 
     def go_to_page(self, num_page: int) -> None:
         """
@@ -110,7 +121,7 @@ class DashboardActions:
         Args:
             num_page: the page to display
         """
-        self._state.add_side_effect("goToPage", num_page)
+        self._state.add_side_effect("dashboard.goToPage", num_page)
 
     def enable_widget(self, widget_name: str) -> None:
         """
@@ -119,7 +130,7 @@ class DashboardActions:
         Args:
             widget_name: the name of a widget (can be obtained by hovering over a widget in the edit mode)
         """
-        self._state.add_side_effect("enableWidget", widget_name)
+        self._state.add_side_effect("dashboard.enableWidget", widget_name)
 
     def disable_widget(self, widget_name: str) -> None:
         """
@@ -128,7 +139,7 @@ class DashboardActions:
         Args:
             widget_name: the name of a widget (can be obtained by hovering over a widget in the edit mode)
         """
-        self._state.add_side_effect("disableWidget", widget_name)
+        self._state.add_side_effect("dashboard.disableWidget", widget_name)
 
     def show_widget(self, widget_name: str) -> None:
         """
@@ -137,7 +148,7 @@ class DashboardActions:
         Args:
             widget_name: the name of a widget (can be obtained by hovering over a widget in the edit mode)
         """
-        self._state.add_side_effect("showWidget", widget_name)
+        self._state.add_side_effect("dashboard.showWidget", widget_name)
 
     def hide_widget(self, widget_name: str) -> None:
         """
@@ -146,7 +157,7 @@ class DashboardActions:
         Args:
             widget_name: the name of a widget (can be obtained by hovering over a widget in the edit mode)
         """
-        self._state.add_side_effect("hideWidget", widget_name)
+        self._state.add_side_effect("dashboard.hideWidget", widget_name)
 
 
 class ChalkitApi:
@@ -174,7 +185,12 @@ class ChalkitApi:
 
     def __init__(self, state: ChalkitState):
         self._state = state
+        self._scheduler = SchedulerActions(state)
         self._dashboard = DashboardActions(state)
+
+    @property
+    def scheduler(self) -> SchedulerActions:
+        return self._scheduler
 
     @property
     def dashboard(self) -> DashboardActions:
