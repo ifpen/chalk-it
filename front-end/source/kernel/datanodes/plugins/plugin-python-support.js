@@ -17,20 +17,25 @@
         const unknowns = [];
         try {
           switch (name) {
-            case 'setVariables':
-              chalkit.setVariables(Object.keys(args[0]), Object.values(args[0]));
+            case 'scheduler.setVariables':
+              chalkit.scheduler.setVariables(Object.keys(args[0]), Object.values(args[0]));
               break;
 
-            case 'setVariableProperty':
-            case 'viewPage':
-            case 'viewProject':
-            case 'executeDataNodes':
-            case 'goToPage':
-            case 'enableWidget':
-            case 'disableWidget':
-            case 'showWidget':
-            case 'hideWidget':
-              chalkit[name](...args);
+            case 'scheduler.setVariableProperty':
+            case 'scheduler.executeDataNodes':
+              const rawSchedName = name.replace('scheduler.', '');
+              chalkit.scheduler[rawSchedName](...args);
+              break;
+
+            case 'dashboard.viewPage':
+            case 'dashboard.viewProject':
+            case 'dashboard.goToPage':
+            case 'dashboard.enableWidget':
+            case 'dashboard.disableWidget':
+            case 'dashboard.showWidget':
+            case 'dashboard.hideWidget':
+              const rawDashName = name.replace('dashboard.', '');
+              chalkit.dashboard[rawDashName](...args);
               break;
 
             default:
