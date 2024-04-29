@@ -4,16 +4,16 @@ from typing import Any, Literal, Optional, TypedDict, Union
 from chalkit_python_api.utils import JSON
 
 ActionsName = Literal[
-    "setVariables",
-    "setVariableProperty",
-    "executeDataNodes",
-    "viewPage",
-    "viewProject",
-    "goToPage",
-    "enableWidget",
-    "disableWidget",
-    "showWidget",
-    "hideWidget",
+    "scheduler.setVariables",
+    "scheduler.setVariableProperty",
+    "scheduler.executeDataNodes",
+    "dashboard.viewPage",
+    "dashboard.viewProject",
+    "dashboard.goToPage",
+    "dashboard.enableWidget",
+    "dashboard.disableWidget",
+    "dashboard.showWidget",
+    "dashboard.hideWidget",
 ]
 
 
