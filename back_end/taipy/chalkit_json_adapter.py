@@ -13,9 +13,16 @@
 from taipy.gui import JsonAdapter
 from taipy.gui.utils import _MapDict
 from types import FunctionType
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.collections import QuadMesh
+import matplotlib.pyplot as plt
 import json
 import io, base64
 import math
+import io
+import numpy as np
+
 
 def replace_nan(obj):
     """
@@ -43,32 +50,26 @@ def register_json_adapter() -> None:
 class FunctionJsonAdapter(JsonAdapter):
     def parse(self, o):
         cls = type(o)
-        name = cls.__module__ + '.' + cls.__name__
+        name = cls.__module__ + "." + cls.__name__
         if isinstance(o, FunctionType):
             return o.__name__
         elif "plotly.graph_objs._figure.Figure" == name:
             return json.loads(o.to_json(validate=True, pretty=False))
         elif "pandas.core.frame.DataFrame" == name:
-            return replace_nan(json.loads(o.to_json(orient='split')))
+            return replace_nan(json.loads(o.to_json(orient="split")))
         elif "folium.folium.Map" == name:
             return o._repr_html_()
         elif "geopandas.geodataframe.GeoDataFrame" == name:
             return replace_nan(json.loads(o.to_json()))
         elif "matplotlib.figure.Figure" == name:
-            with io.BytesIO() as buf:
-                o.savefig(buf, format='svg')
-                return {
-                    "content": self._to_b64(buf.getvalue()),
-                    "type": "image/svg+xml",
-                    "isBinary": True,
-                }
+            return self._figure_to_image(o)
+        elif "matplotlib.collections.QuadMesh" == name:
+            return self._quadmesh_to_image(o)
         elif "PIL.Image.Image" == name:
             return self._image_to_base64(o)
         elif isinstance(o, _MapDict):
-            o_ = o._dict
-            o__r = replace_nan(o_)
-            return o__r
-        elif hasattr(o, '_repr_jpeg_') and callable(getattr(o, '_repr_jpeg_')):
+            return replace_nan(o._dict)
+        elif hasattr(o, "_repr_jpeg_") and callable(getattr(o, "_repr_jpeg_")):
             jpeg_bytes = o._repr_jpeg_()
             return {
                 "content": self._to_b64(jpeg_bytes),
@@ -78,13 +79,30 @@ class FunctionJsonAdapter(JsonAdapter):
         elif isinstance(o, io.BytesIO):
             return {
                 "content": self._to_b64(o.getvalue()),
-                "type": 'application/octet-stream',
+                "type": "application/octet-stream",
                 "isBinary": True,
             }
 
+    def _figure_to_image(self, fig, format="png"):
+        buf = io.BytesIO()
+        fig.savefig(buf, format=format)
+        buf.seek(0)
+        return {
+            "content": self._to_b64(buf.getvalue()),
+            "type": f"image/{format}",
+            "isBinary": True,
+        }
+
+    def _quadmesh_to_image(self, quadmesh, format="png"):
+        fig, ax = plt.subplots()
+        ax.add_collection(quadmesh)
+        ax.axis("tight")
+        ax.axis("off")
+        return self._figure_to_image(fig, format)
+
     @staticmethod
     def _to_b64(data: bytes) -> str:
-        return base64.b64encode(data).decode('ascii')
+        return base64.b64encode(data).decode("ascii")
 
     @staticmethod
     def _image_to_base64(image):
