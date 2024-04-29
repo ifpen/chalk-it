@@ -19,14 +19,16 @@ nav:
       - Additions:
           - Selection: wdg/selection/plot-selection.md
           - Themes: wdg/plot-themes.md
-  - Export: export/export.md
-  - Python:
+  - Python support:
       - Introduction: py/py-index.md
+      - Local runner: py/py-default.md
       - Pyodide: py/py-pyodide.md
-      - Local prototyping with Flask: py/py-proto-flask.md
+      - Local prototyping with Flask: py/py-proto-flask.md         
+  - Chalk'it APIs: chalkitapi.md
+  - Export: export/export.md  
   - Recipes & interfaces:
       - Recipes: recipes.md
-      - Chalk'it APIs: chalkitapi.md
+      
 theme:
   name: material
   logo: media/chalk-it-icon.ico

@@ -6,7 +6,7 @@ Chalk'it offers a set of APIs through **_chalkit_** that serve several primary p
 - Dashboard APIs: Support the developpement of multi-dashboard applications and the display of widgets.
 - Datanode IOs
 
-## JavaScript and Pyodide
+## JavaScript
 
 ### Scheduler features
 
