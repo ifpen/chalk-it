@@ -13,15 +13,9 @@
 from taipy.gui import JsonAdapter
 from taipy.gui.utils import _MapDict
 from types import FunctionType
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.collections import QuadMesh
-import matplotlib.pyplot as plt
 import json
 import io, base64
 import math
-import io
-import numpy as np
 
 
 def replace_nan(obj):
@@ -63,8 +57,6 @@ class FunctionJsonAdapter(JsonAdapter):
             return replace_nan(json.loads(o.to_json()))
         elif "matplotlib.figure.Figure" == name:
             return self._figure_to_image(o)
-        elif "matplotlib.collections.QuadMesh" == name:
-            return self._quadmesh_to_image(o)
         elif "PIL.Image.Image" == name:
             return self._image_to_base64(o)
         elif isinstance(o, _MapDict):
@@ -84,24 +76,21 @@ class FunctionJsonAdapter(JsonAdapter):
             }
 
     def _figure_to_image(self, fig, format="png"):
-        buf = io.BytesIO()
-        fig.savefig(buf, format=format)
-        buf.seek(0)
-        return {
-            "content": self._to_b64(buf.getvalue()),
-            "type": f"image/{format}",
-            "isBinary": True,
-        }
+        """Convert a matplotlib figure to an image in the specified format,
+        and encode it properly for transmission or storage."""
+        with io.BytesIO() as buf:
+            fig.savefig(buf, format=format)
+            buf.seek(0)  # Rewind the buffer to read its content
 
-    def _quadmesh_to_image(self, quadmesh, format="png"):
-        fig, ax = plt.subplots()
-        ax.add_collection(quadmesh)
-        ax.axis("tight")
-        ax.axis("off")
-        return self._figure_to_image(fig, format)
+            return {
+                "content": self._to_b64(buf.getvalue()),
+                "type": f"image/{format}",
+                "isBinary": True,
+            }
 
     @staticmethod
     def _to_b64(data: bytes) -> str:
+        """Encode binary data to base64."""
         return base64.b64encode(data).decode("ascii")
 
     @staticmethod
