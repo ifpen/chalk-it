@@ -82,6 +82,7 @@ ipch/
 /*.xprjson
 **/__pycache__
 taipy_pages/*_recovery.xprjson
+taipy_pages/
 
 # Pipfile
 Pipfile.lock
