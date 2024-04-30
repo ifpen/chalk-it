@@ -46,16 +46,23 @@ var xdash = (function () {
 
   /*--------initMeta--------*/
   function initMeta() {
+    const ISODate = new Date().toISOString();
     const meta = {
       version: version,
       [XdashDataUpdateEngine.VERSION_METADATA_KEY]: XdashDataUpdateEngine.CURRENT_VERSION,
-      date: Date(),
+      date: ISODate,
       name: '',
       description: '',
       groupName: '',
       tags: [],
       schedulerLogOff: offSchedLogUser,
     };
+    if ($rootScope.autoSave) {
+      meta.save = {
+        version: 0.1,
+        lastUpdated: ISODate,
+      };
+    }
 
     return meta;
   }

@@ -17,7 +17,6 @@ import pytz
 def _get_date_time():
     # Choose the timezone
     timezone = pytz.timezone("Europe/Paris")
-    # Get the current date and time in the specified timezone
     current_time = datetime.now(timezone)
     # Return the date and time in ISO 8601 format
     return current_time.isoformat()
@@ -32,5 +31,6 @@ def _remove_extension(filename, extension=".xprjson"):
 def update_xprjson(xprjson, name):
     xprjson["meta"]["date"] = _get_date_time()
     xprjson["meta"]["name"] = _remove_extension(name)
+    xprjson["meta"]["save"]["lastUpdated"] = _get_date_time()
 
     return xprjson

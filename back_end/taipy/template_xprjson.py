@@ -19,6 +19,10 @@ xprjson_template = {
         "groupName": "",
         "tags": [],
         "schedulerLogOff": True,
+        "save": {
+            "version": 0.1,
+            "lastUpdated": "",
+        },
     },
     "data": {"datanodes": []},
     "libraries": {"pyodideStandard": [], "pyodideMicropip": []},
