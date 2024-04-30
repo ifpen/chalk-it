@@ -1,0 +1,112 @@
+{
+	"meta": {
+		"version": "3.000.8858",
+		"fileFormatVersion": "0.3",
+		"date": "Mon Apr 01 2024 17:06:37 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "progress_bar",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1294.4,
+			"heightPx": 590.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.72,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "flatUiProgressBarA"
+			}
+		},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiProgressBarA": {
+			"layout": {
+				"top": "8.93333vh",
+				"left": "4.05759vw",
+				"height": "5.06667vh",
+				"width": "24.0183vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "1"
+			},
+			"container": {
+				"instanceId": "flatUiProgressBarA",
+				"modelJsonId": "flatUiProgressBar"
+			},
+			"modelParameters": {
+				"label": "progress",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"rangeActuator": false,
+				"min": 0,
+				"max": 100,
+				"displayValue": false,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "var(--widget-font-family)",
+				"labelWidthProportion": "20%",
+				"progressBarWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"progressBarRangeColor": "var(--widget-range-color)",
+				"progressBarSegmentColor": "var(--widget-segment-color)",
+				"valueColor": "var(--widget-color)"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		}
+	},
+	"connections": {
+		"flatUiProgressBarA": {
+			"value": {
+				"name": "value",
+				"dataNode": "progress",
+				"dataFields": []
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

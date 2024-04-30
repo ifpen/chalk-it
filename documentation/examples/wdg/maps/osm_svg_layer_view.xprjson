@@ -1,0 +1,336 @@
+{
+	"meta": {
+		"version": "3.000.8848",
+		"fileFormatVersion": "0.3",
+		"date": "Thu Mar 28 2024 17:12:25 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "osm_svg_layer_view",
+		"description": "SVG overlay example displaying shapes on maps with configuration parameters",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Maps"
+			},
+			{
+				"text": "Geo&Time"
+			},
+			{
+				"text": "SVG-overlay"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": []
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": {
+			"widthPx": 1294.4,
+			"heightPx": 591.4,
+			"widthVw": 84.71204188481677,
+			"heightVh": 78.85333333333334,
+			"rowHeightPercent": 100
+		}
+	},
+	"device": {
+		"cols": {
+			"valueRow": "1",
+			"valueCol": "1",
+			"maxCells": 1,
+			"maxCols": 1,
+			"classType": "col-md-12"
+		},
+		"droppers": {
+			"dpr1": {
+				"component0": "flatUiHorizontalSliderp",
+				"component1": "flatUiCheckboxv",
+				"component2": "openStreetMapsA",
+				"component3": "flatUiSelectA"
+			}
+		},
+		"backgroundColor": "#ffffff",
+		"theme": "default"
+	},
+	"dashboard": {
+		"flatUiHorizontalSliderp": {
+			"layout": {
+				"top": "61.6vh",
+				"left": "19.2408vw",
+				"height": "6.53333vh",
+				"width": "33.4424vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "4"
+			},
+			"container": {
+				"instanceId": "flatUiHorizontalSliderp",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "length",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"min": 0,
+				"max": 10,
+				"step": 0.1,
+				"displayValue": true,
+				"valueFontSize": 0.5,
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"sliderSegmentColor": "#ebedef",
+				"sliderRangeColor": "#447bdc",
+				"sliderHandleDefaultColor": "#2154ab",
+				"sliderHandleHoverColor": "#a9c3ef",
+				"sliderHandleActiveColor": "#a9c3ef",
+				"valueBorderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiCheckboxv": {
+			"layout": {
+				"top": "61.6vh",
+				"left": "2.09424vw",
+				"height": "6.53333vh",
+				"width": "13.678vw",
+				"minHeight": "24px",
+				"minWidth": "32px",
+				"z-index": "5"
+			},
+			"container": {
+				"instanceId": "flatUiCheckboxv",
+				"modelJsonId": "flatUiCheckbox"
+			},
+			"modelParameters": {
+				"label": "disableAutoscale",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"checkboxSize": 1,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"checkedColor": "var(--widget-input-checked-color)",
+				"uncheckedColor": "var(--widget-input-unchecked-color)"
+			},
+			"modelHiddenParams": {
+				"value": false
+			}
+		},
+		"openStreetMapsA": {
+			"layout": {
+				"top": "1.33333vh",
+				"left": "1.63613vw",
+				"height": "57.2vh",
+				"width": "73.5602vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "6"
+			},
+			"container": {
+				"instanceId": "openStreetMapsA",
+				"modelJsonId": "openStreetMaps"
+			},
+			"modelParameters": {
+				"geoJson": {
+					"numberOfLayers": 0
+				},
+				"choropleth": {
+					"numberOfLayers": 0
+				},
+				"heatMap": {
+					"numberOfLayers": 0,
+					"sampledDisplay": false,
+					"densityHeatMap": false
+				},
+				"lineHeatMap": {
+					"numberOfLayers": 0
+				},
+				"imageOverlay": {
+					"numberOfLayers": 0
+				},
+				"svgOverlay": {
+					"numberOfLayers": 1
+				},
+				"defaultCenter": {
+					"latitude": 48.872063,
+					"longitude": 2.331773,
+					"zoom": 16
+				},
+				"offlineSupport": false,
+				"tileServer": "MapboxStreets",
+				"drawingFeatures": false,
+				"drawingFeaturesOptions": {
+					"point": true,
+					"line": true,
+					"polygon": true,
+					"rectangle": true,
+					"modal": false
+				},
+				"captureClickEvent": false,
+				"markerCluster": true
+			},
+			"modelHiddenParams": {
+				"geoJson": {
+					"geoJsonLayers": [],
+					"geoJsonBounds": []
+				},
+				"choropleth": {
+					"choroplethLayers": [],
+					"choroplethBounds": []
+				},
+				"lineHeatMap": {
+					"lineHeatMapLayers": [],
+					"lineHeatMapBounds": []
+				},
+				"heatMap": {
+					"heatMapData": [],
+					"heatMapBuffer": []
+				},
+				"imageOverlay": {
+					"imageData": []
+				},
+				"svgOverlay": {
+					"svgData": [],
+					"svgElements": []
+				},
+				"legends": [],
+				"colors": [
+					"#800080",
+					"#FF00FF",
+					"#000080",
+					"#0000FF",
+					"#008080",
+					"#00FFFF",
+					"#FFFF00",
+					"#800000",
+					"#6666ff",
+					"#cc6699",
+					"#66ff66",
+					"#666699",
+					"#996633",
+					"#ff0000",
+					"#669999",
+					"#ffff99"
+				]
+			}
+		},
+		"flatUiSelectA": {
+			"layout": {
+				"top": "61.6vh",
+				"left": "56.1518vw",
+				"height": "6.53333vh",
+				"width": "18.9791vw",
+				"minHeight": "27px",
+				"minWidth": "40px",
+				"z-index": "7"
+			},
+			"container": {
+				"instanceId": "flatUiSelectA",
+				"modelJsonId": "flatUiSelect"
+			},
+			"modelParameters": {
+				"label": "marker",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"selectWidthProportion": "70%",
+				"isNumber": false,
+				"selectValueFontFamily": "var(--widget-font-family)",
+				"selectValueFontSize": 0.5,
+				"selectedValueColor": "var(--widget-select-option-highlighted-text)",
+				"selectedItemDefaultColor": "var(--widget-select-option-highlighted-color)",
+				"selectedItemHoverColor": "var(--widget-select-option-highlighted-color)",
+				"isKeyValuePairs": false
+			},
+			"modelHiddenParams": {
+				"keys": [],
+				"values": [],
+				"selectedValue": ""
+			}
+		}
+	},
+	"connections": {
+		"flatUiHorizontalSliderp": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"config",
+					"length"
+				],
+				"dataNode": "wind_svg_layer",
+				"dataNodeIndex": 4
+			}
+		},
+		"flatUiCheckboxv": {
+			"value": {
+				"name": "value",
+				"dataNode": "wind_svg_layer",
+				"dataFields": [
+					"config",
+					"disableAutoscale"
+				]
+			}
+		},
+		"openStreetMapsA": {
+			"svgOverlay1": {
+				"name": "svgOverlay1",
+				"dataNode": "wind_svg_layer",
+				"dataFields": []
+			}
+		},
+		"flatUiSelectA": {
+			"keys": {
+				"name": "keys",
+				"dataNode": "markers",
+				"dataFields": []
+			},
+			"values": {
+				"name": "values",
+				"dataNode": "markers",
+				"dataFields": []
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataNode": "wind_svg_layer",
+				"dataFields": [
+					"config",
+					"marker"
+				]
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [
+			"Page 1"
+		],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
