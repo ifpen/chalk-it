@@ -38,10 +38,10 @@ class FunctionJsonAdapter(JsonAdapter):
             return replace_nan(json.loads(o.to_json()))
         elif "matplotlib.figure.Figure" == name:
             with io.BytesIO() as buf:
-                o.savefig(buf, format="svg")
+                o.savefig(buf, format="png")
                 return {
                     "content": self._to_b64(buf.getvalue()),
-                    "type": "image/svg+xml",
+                    "type": "image/png",
                     "isBinary": True,
                 }
         elif "PIL.Image.Image" == name:
