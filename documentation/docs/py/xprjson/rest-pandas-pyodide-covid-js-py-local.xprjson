@@ -1,8 +1,9 @@
 {
 	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 14:28:22 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "rest-pandas-pyodide-covid-py-js",
+		"version": "3.000.8887",
+		"fileFormatVersion": "0.3",
+		"date": "Tue Apr 30 2024 09:16:42 GMT+0200 (heure d’été d’Europe centrale)",
+		"name": "rest-pandas-pyodide-covid-py-js-local",
 		"description": "",
 		"groupName": "Mixed",
 		"tags": [
@@ -28,22 +29,32 @@
 		"datanodes": [
 			{
 				"name": "countriesList",
-				"type": "Python_pyodide_plugin",
+				"type": "Python_plugin",
 				"settings": {
 					"name": "countriesList",
 					"autoStart": true,
 					"explicitTrig": false,
-					"content": "covid = dataNodes[\"covidDataFrame\"]\nreturn covid.index.tolist()\n"
+					"dockerImage": {
+						"name": "Default",
+						"id": ""
+					},
+					"content": "covid = dataNodes[\"covidDataFrame\"]\nreturn covid.index.tolist()\n",
+					"signature": "9397c34255060cee4f3c522ec6fca4cb22beb0051e0978d62126e98858e9d431"
 				}
 			},
 			{
 				"name": "covidDataFrame",
-				"type": "Python_pyodide_plugin",
+				"type": "Python_plugin",
 				"settings": {
 					"name": "covidDataFrame",
 					"autoStart": true,
 					"explicitTrig": false,
-					"content": "from io import StringIO\nimport pandas as pd\n\ncovid = pd.read_csv(StringIO(dataNodes[\"covidDataJohnHopkins\"][\"content\"]))\n\ncovid = covid.drop(columns=['Lat', 'Long']).groupby('Country/Region').sum()\n\nreturn chalkit.as_python(covid)"
+					"dockerImage": {
+						"name": "Default",
+						"id": ""
+					},
+					"content": "from io import StringIO\nimport pandas as pd\n\ncovid = pd.read_csv(StringIO(dataNodes[\"covidDataJohnHopkins\"][\"content\"]))\n\ncovid = covid.drop(columns=['Lat', 'Long']).groupby('Country/Region').sum()\n\nreturn chalkit.as_python(covid)",
+					"signature": "4f4df625cbfd77cb4d36ef391fb949cb3ca1a09eb5765dde1bf505a869d2b824"
 				}
 			},
 			{
@@ -67,17 +78,22 @@
 						}
 					],
 					"proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0NTU0VHSVNhbmREYXRhL0NPVklELTE5L21hc3Rlci9jc3NlX2NvdmlkXzE5X2RhdGEvY3NzZV9jb3ZpZF8xOV90aW1lX3Nlcmllcy90aW1lX3Nlcmllc19jb3ZpZDE5X2NvbmZpcm1lZF9nbG9iYWwuY3N2IiwiSG9zdCI6InhkYXNoIn0=",
-					"proxySig": "5TM10MtZYvnW/sf2ZrpNxn/fpTeOoUHXzV23CzlL95mni7uOrscQQSlcUagf1btXos2wf1ZA+eGBSZhc1/bPlk5lyaqX3oHfc4Sq0kUugOLuSZa8ZHH9jyGOBNVXZpzZLBXBrEJXDUTQjJP4Ff5kbg3nxePCRPPNVb6JmHC0QC+UgImzwqbGWkZOxL545KsxsXmCKlOkGYDu2jd6zmLHnShUZI8ODQReB+wKMAnJVWe31W4CRGL6cujvyE5t0ycX"
+					"proxySig": "5TM10MtZYvnW/sf2ZrpNxn/fpTeOoUHXzV23CzlL95mni7uOrscQQSlcUagf1btXos2wf1ZA+eGBSZhc1/bPlk5lyaqX3oHfc4Sq0kUugOLuSZa8ZHH9jyGOBNVXZpzZLBXBrEJXDUTQjJP4Ff5kbg3nxePCRPPNVb6JmHC0QC+UgImzwqbGWkZOxL545KsxsXmCKlOkGYDu2jd6zmLHnShUZI8ODQReB+wKMAnJVWfxIu2nzzvkjTEaZmYcUY5J"
 				}
 			},
 			{
 				"name": "covidFiltered",
-				"type": "Python_pyodide_plugin",
+				"type": "Python_plugin",
 				"settings": {
 					"name": "covidFiltered",
 					"autoStart": true,
 					"explicitTrig": false,
-					"content": "covid = dataNodes[\"covidDataFrame\"]\n\nsel = covid.loc[dataNodes[\"selectedCountry\"]]\n\nreturn sel.to_dict('split')\n"
+					"dockerImage": {
+						"name": "Default",
+						"id": ""
+					},
+					"content": "covid = dataNodes[\"covidDataFrame\"]\n\nsel = covid.loc[dataNodes[\"selectedCountry\"]]\n\nreturn sel.to_dict('split')\n",
+					"signature": "27bd5e03d45780d470233b6d7ff971a8d202acf9a39547278d68efaeef56d2c3"
 				}
 			},
 			{
@@ -98,16 +114,7 @@
 					"json_var": "[\"France\",\"Germany\",\"United Kingdom\"]"
 				}
 			}
-		],
-		"reIndexMap": [
-			5,
-			2,
-			1,
-			3,
-			4,
-			0
-		],
-		"noTopologicalSortAtSerialize": true
+		]
 	},
 	"libraries": {
 		"pyodideStandard": [
@@ -117,14 +124,14 @@
 		"pyodideMicropip": []
 	},
 	"scaling": {
-		"widthPx": 1256,
-		"heightPx": 575,
-		"scrollWidthPx": 1256,
-		"scrollHeightPx": 575,
-		"widthVw": 84.29530201342281,
-		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.29530201342281,
-		"scrollHeightVh": 79.6398891966759,
+		"widthPx": 1294,
+		"heightPx": 590,
+		"scrollWidthPx": 1294,
+		"scrollHeightPx": 590,
+		"widthVw": 84.68586387434554,
+		"heightVh": 78.66666666666667,
+		"scrollWidthVw": 84.68586387434554,
+		"scrollHeightVh": 78.66666666666667,
 		"scalingMethod": "scaleTwh",
 		"media": "large",
 		"colDims": null
@@ -138,35 +145,36 @@
 			"classType": ""
 		},
 		"droppers": {},
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#ffffff",
+		"inheritThemeBackgroundColor": false,
+		"theme": "default"
 	},
 	"dashboard": {
 		"flatUiListC": {
 			"layout": {
-				"top": "1.38504vh",
-				"left": "0.953908vw",
-				"height": "77.1984vh",
-				"width": "20.3333vw",
+				"top": "1.36811vh",
+				"left": "0.958328vw",
+				"height": "76.255vh",
+				"width": "20.4275vw",
 				"minHeight": "75px",
 				"minWidth": "80px",
 				"z-index": "1"
 			},
 			"container": {
-				"id": "flatUiListC",
 				"instanceId": "flatUiListC",
-				"modelJsonId": "flatUiList",
-				"widgetTypeName": "List(flatUiListC)"
+				"modelJsonId": "flatUiList"
 			},
 			"modelParameters": {
 				"addControls": false,
 				"listValueFontSize": 0.5,
 				"listValueColor": "#34495e",
-				"valueFontFamily": "Helvetica Neue",
-				"displayBorder": true,
-				"borderColor": "#447bdc",
 				"listBackgroundColor": "#ffffff",
 				"selectValueColor": "#34495e",
-				"selectValueBackgroundColor": "#cecece"
+				"selectValueBackgroundColor": "#cecece",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc",
+				"displayBorder": true,
+				"borderWidth": "2px"
 			},
 			"modelHiddenParams": {
 				"value": [],
@@ -175,23 +183,34 @@
 		},
 		"echartsGenericK": {
 			"layout": {
-				"top": "1.38504vh",
-				"left": "22.7431vw",
-				"height": "77.1984vh",
-				"width": "58.9414vw",
+				"top": "1.36811vh",
+				"left": "22.8485vw",
+				"height": "76.255vh",
+				"width": "59.2145vw",
 				"minHeight": "32px",
 				"minWidth": "50px",
 				"z-index": "2"
 			},
 			"container": {
-				"id": "echartsGenericK",
 				"instanceId": "echartsGenericK",
-				"modelJsonId": "echartsGeneric",
-				"widgetTypeName": "Echarts generic(echartsGenericK)"
+				"modelJsonId": "echartsGeneric"
 			},
 			"modelParameters": {},
 			"modelHiddenParams": {
-				"option": {},
+				"option": {
+					"color": [
+						"var(--widget-color-2)",
+						"var(--widget-color-5)",
+						"var(--widget-color-6)",
+						"var(--widget-color-7)",
+						"var(--widget-color-8)",
+						"var(--widget-color-9)",
+						"var(--widget-color-10)",
+						"var(--widget-color-11)",
+						"var(--widget-color-12)",
+						"var(--widget-color-13)"
+					]
+				},
 				"selection": {}
 			}
 		}
@@ -226,7 +245,7 @@
 			}
 		}
 	},
-	"exportOptions": "projectToTargetWindow",
+	"exportOptions": "adjustToFullWidth",
 	"pages": {
 		"pageNames": [],
 		"defaultPage": {}
