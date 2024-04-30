@@ -17,6 +17,7 @@ import json
 import io, base64
 import math
 
+
 def replace_nan(obj):
     """
     Recursively replace NaN values with None in a nested structure.
@@ -43,32 +44,24 @@ def register_json_adapter() -> None:
 class FunctionJsonAdapter(JsonAdapter):
     def parse(self, o):
         cls = type(o)
-        name = cls.__module__ + '.' + cls.__name__
+        name = cls.__module__ + "." + cls.__name__
         if isinstance(o, FunctionType):
             return o.__name__
         elif "plotly.graph_objs._figure.Figure" == name:
             return json.loads(o.to_json(validate=True, pretty=False))
         elif "pandas.core.frame.DataFrame" == name:
-            return replace_nan(json.loads(o.to_json(orient='split')))
+            return replace_nan(json.loads(o.to_json(orient="split")))
         elif "folium.folium.Map" == name:
             return o._repr_html_()
         elif "geopandas.geodataframe.GeoDataFrame" == name:
             return replace_nan(json.loads(o.to_json()))
         elif "matplotlib.figure.Figure" == name:
-            with io.BytesIO() as buf:
-                o.savefig(buf, format='svg')
-                return {
-                    "content": self._to_b64(buf.getvalue()),
-                    "type": "image/svg+xml",
-                    "isBinary": True,
-                }
+            return self._figure_to_image(o)
         elif "PIL.Image.Image" == name:
             return self._image_to_base64(o)
         elif isinstance(o, _MapDict):
-            o_ = o._dict
-            o__r = replace_nan(o_)
-            return o__r
-        elif hasattr(o, '_repr_jpeg_') and callable(getattr(o, '_repr_jpeg_')):
+            return replace_nan(o._dict)
+        elif hasattr(o, "_repr_jpeg_") and callable(getattr(o, "_repr_jpeg_")):
             jpeg_bytes = o._repr_jpeg_()
             return {
                 "content": self._to_b64(jpeg_bytes),
@@ -78,13 +71,27 @@ class FunctionJsonAdapter(JsonAdapter):
         elif isinstance(o, io.BytesIO):
             return {
                 "content": self._to_b64(o.getvalue()),
-                "type": 'application/octet-stream',
+                "type": "application/octet-stream",
+                "isBinary": True,
+            }
+
+    def _figure_to_image(self, fig, format="png"):
+        """Convert a matplotlib figure to an image in the specified format,
+        and encode it properly for transmission or storage."""
+        with io.BytesIO() as buf:
+            fig.savefig(buf, format=format)
+            buf.seek(0)  # Rewind the buffer to read its content
+
+            return {
+                "content": self._to_b64(buf.getvalue()),
+                "type": f"image/{format}",
                 "isBinary": True,
             }
 
     @staticmethod
     def _to_b64(data: bytes) -> str:
-        return base64.b64encode(data).decode('ascii')
+        """Encode binary data to base64."""
+        return base64.b64encode(data).decode("ascii")
 
     @staticmethod
     def _image_to_base64(image):
