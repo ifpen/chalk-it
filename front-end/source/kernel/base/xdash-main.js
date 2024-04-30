@@ -46,10 +46,11 @@ var xdash = (function () {
 
   /*--------initMeta--------*/
   function initMeta() {
+    let isoDate = new Date().toISOString();
     const meta = {
       version: version,
       [XdashDataUpdateEngine.VERSION_METADATA_KEY]: XdashDataUpdateEngine.CURRENT_VERSION,
-      date: Date().toISOString(),
+      date: isoDate,
       name: '',
       description: '',
       groupName: '',
