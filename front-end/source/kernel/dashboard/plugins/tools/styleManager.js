@@ -11,6 +11,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
   allProp = geoJsonTools.findAllProperties(geoJSON);
   JSONtype = geoJsonTools.findFeatureType(geoJSON);
   baseStyle = {
+    id: geoJSON.id,
     layer: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'layer ') + (index + 1),
     name: 'layer ' + (index + 1),
     stroke: true,
