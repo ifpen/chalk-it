@@ -21,8 +21,8 @@ class Page(CustomPage):
         # Ensure an xprjson file name is provided when not in designer mode
         if xprjson_file_name is None and _DesignerConfig().get_designer_mode() is False:
             raise ValueError(
-                "You must specify an xprjson file name when creating a ChalkitPage with designer_mode set to False, "
-                "e.g., ChalkitPage('your_project.xprjson')."
+                "You must specify an xprjson file name when creating a Page with design set to False, "
+                "e.g., Page('your_project.xprjson')."
             )
 
         # Initialize the parent class with the necessary resources and metadata
