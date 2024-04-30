@@ -40,6 +40,7 @@ var angularModule = angular
       $rootScope.xDashFullVersion = xDashConfig.xDashBasicVersion != 'true';
       $rootScope.xDashLiteVersion = xDashConfig.xDashLiteVersion == 'true';
       $rootScope.taipyLink = xDashConfig.taipyLink == 'true';
+      $rootScope.autoSave = xDashConfig.autoSave == 'true';
       $rootScope.enableRegistration = xDashConfig.disableRegistration != 'true';
       $rootScope.urlTerms = xDashConfig.urlWebSite + 'terms-credits/xDashTermsofUse10062020.html';
       $rootScope.urlCredits =
