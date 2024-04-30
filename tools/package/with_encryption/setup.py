@@ -40,6 +40,8 @@ elif _python_version == (3, 10):
     extract_tar_gz_package("3.10")
 elif _python_version == (3, 11):
     extract_tar_gz_package("3.11")
+elif _python_version == (3, 12):
+    extract_tar_gz_package("3.12")
 
 setup(
     name=NAME,
@@ -48,34 +50,12 @@ setup(
     packages=find_namespace_packages(where="src") + find_packages(
         include=["taipy", "taipy.designer", "taipy.designer.*"]
     ),
-    description="Rapid webapplications with Python",
+    description="Rapid web applications with Python",
     long_description=readme,
     long_description_content_type="text/markdown",
-    url="https://github.com/ifpen/chalk-it",
     install_requires=["taipy-gui==3.1.2", "pathvalidate", "pyt"],
-    author="IFP Energies nouvelles",
-    author_email="chalk-it@ifpen.fr",
-    license="Apache License 2.0",
-    classifiers=[
-        "Development Status :: 4 - Beta",
-        "Environment :: Console",
-        "Environment :: Web Environment",
-        "Intended Audience :: Developers",
-        "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Topic :: Database :: Front-Ends",
-        "Topic :: Scientific/Engineering :: Information Analysis",
-        "Topic :: Scientific/Engineering :: Visualization",
-        "Topic :: Software Development :: Libraries :: Application Frameworks",
-        "Topic :: Software Development :: Widget Sets",
-    ],
+    author="Avaiga",
+    author_email="dev@taipy.io",
     python_requires=">=3.8",
     include_package_data=True,
 )

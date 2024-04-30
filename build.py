@@ -50,6 +50,8 @@ with open(python_version_file_path, "r") as fh:
         + "."
         + str(version_json["patch"])
     )
+    if vext := version_json.get("ext"):
+        VERSION = f"{VERSION}.{vext}"
 
 # Path to the front-end version.json file
 frontend_version_file_path = "front-end/version.json"
