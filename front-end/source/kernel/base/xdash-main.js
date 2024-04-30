@@ -49,7 +49,7 @@ var xdash = (function () {
     const meta = {
       version: version,
       [XdashDataUpdateEngine.VERSION_METADATA_KEY]: XdashDataUpdateEngine.CURRENT_VERSION,
-      date: Date(),
+      date: Date().toISOString(),
       name: '',
       description: '',
       groupName: '',
