@@ -14,7 +14,7 @@ function readJsonVersion(filePath, formatVersion) {
 }
 
 const xDashJsonVersion = readJsonVersion('../version.json');
-const chalkitVersion = readJsonVersion('../../version.json', (data) => `${data.major}.${data.minor}.${data.patch}`);
+const chalkitVersion = readJsonVersion('../../src/taipy/designer/version.json', (data) => `${data.major}.${data.minor}.${data.patch}`);
 
 console.log(xDashJsonVersion); // Output the xDash version
 console.log(chalkitVersion); // Output the Chalkit version
