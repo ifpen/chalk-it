@@ -7,3 +7,5 @@
  watchdog
  flask-sock
  pytz
+ taipy-gui==3.1.2
+ build

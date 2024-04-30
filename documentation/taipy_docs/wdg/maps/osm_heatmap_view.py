@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 import pandas as pd
 
 # Read data from CSV file
@@ -21,6 +21,6 @@ CH4_heatmap = {
 }
 
 gui = Gui()
-page = DesignerPage("osm_heatmap_view.xprjson", designer_mode=True)
+page = Page("osm_heatmap_view.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

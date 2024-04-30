@@ -6,6 +6,11 @@ For Python setup, run:
 
 ```sh
 pip install -r requirements.txt
+
+# For pipenv
+pipenv install --dev
+# Activating pipenv shell
+pipenv shell
 ```
 
 See also: 

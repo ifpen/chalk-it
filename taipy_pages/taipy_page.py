@@ -3,7 +3,7 @@ import plotly.express as px
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy.designer import *
+from taipy.designer import Page
 
 a = 8
 b = 10
@@ -50,4 +50,4 @@ def run_simul(state):
     print("running simulation", state.path)
 
 
-page = DesignerPage("taipy_page.xprjson", designer_mode=True)
+page = Page("taipy_page.xprjson")

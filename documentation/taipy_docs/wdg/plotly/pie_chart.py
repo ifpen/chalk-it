@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 data = {
     "fuel": ["Gasoline", "Diesel", "Biofuel", "LPG", "NGV"],
@@ -7,6 +7,6 @@ data = {
 }
 
 gui = Gui()
-page = DesignerPage("pie_chart.xprjson", designer_mode=True)
+page = Page("pie_chart.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

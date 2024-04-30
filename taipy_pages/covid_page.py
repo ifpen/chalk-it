@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy.designer import *
+from taipy.designer import Page
 
 
 # Define URLs and dataset names
@@ -109,4 +109,4 @@ selected_countries = ["France"]  # List of countries to process
 covid_filtered = get_covid_filtered(covid_data_frame, selected_countries)
 option_e = echarts_option(covid_filtered, selected_countries)
 
-page = DesignerPage("covid_page.xprjson", designer_mode=True)
+page = Page("covid_page.xprjson")

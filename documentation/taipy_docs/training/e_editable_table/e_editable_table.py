@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 
 editable_table = [
@@ -37,7 +37,7 @@ def on_change(state, var, val):
         state.total = compute_total(val)
 
 
-page = DesignerPage("e_editable_table.xprjson", designer_mode=True)
+page = Page("e_editable_table.xprjson")
 gui = Gui()
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

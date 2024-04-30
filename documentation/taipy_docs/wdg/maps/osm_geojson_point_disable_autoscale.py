@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 disableAutoScale = False
 
@@ -36,6 +36,6 @@ def on_change(state, var, val):
 
 
 gui = Gui()
-page = DesignerPage("osm_geojson_point_disable_autoscale.xprjson", designer_mode=True)
+page = Page("osm_geojson_point_disable_autoscale.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

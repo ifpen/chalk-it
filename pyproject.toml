@@ -1,0 +1,2 @@
+[tool.ruff.lint.per-file-ignores]
+"src/taipy/__init__.py" = ["F403"]

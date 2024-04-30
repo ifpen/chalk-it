@@ -82,3 +82,9 @@ ipch/
 /*.xprjson
 **/__pycache__
 taipy_pages/*_recovery.xprjson
+
+# Pipfile
+Pipfile.lock
+
+# Demo files/folders
+demo*

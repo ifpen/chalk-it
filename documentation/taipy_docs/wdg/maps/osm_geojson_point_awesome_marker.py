@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 point = {
     "type": "FeatureCollection",
@@ -21,6 +21,6 @@ point = {
 }
 
 gui = Gui()
-page = DesignerPage("osm_geojson_point_awesome_marker.xprjson", designer_mode=True)
+page = Page("osm_geojson_point_awesome_marker.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

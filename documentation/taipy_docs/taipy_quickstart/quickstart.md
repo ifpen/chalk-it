@@ -39,13 +39,13 @@ To start, create a Python script named **iris_demo.py** and insert the following
 
 ```python
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
-page = DesignerPage("iris_demo.xprjson", designer_mode=True)
+page = Page("iris_demo.xprjson")
 
 gui = Gui()
 gui.add_page("iris", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)
 ```
 
 Next, execute the following command line:

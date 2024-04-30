@@ -1,4 +1,4 @@
-from taipy.designer import *
+from taipy.designer import Page
 from taipy.gui.custom import Page
 import pandas as pd
 
@@ -15,7 +15,7 @@ def fetch_and_prepare_covid_data(dataset_name):
     url = f"{BASE_URL}/{dataset_name}"
     df = pd.read_csv(url)
     df = df.drop(columns=['Lat', 'Long']).groupby('Country/Region').sum()
-    return df  
+    return df
 
 def get_countries_list(covid_data_frame):
     return covid_data_frame.index.tolist()
@@ -46,7 +46,7 @@ def echarts_option(covid_df, selected_countries):
             },
             "data": covid_df["data"][k]
         })
-        
+
         countries.append(selectedCountry)
 
     option = {
@@ -127,8 +127,8 @@ option_e = echarts_option(covid_filtered, selected_countries)
 
 
 # Create a Chalk'it Page instance
-page = DesignerPage("echarts_covid_comparison.xprjson", designer_mode=True)
+page = Page("echarts_covid_comparison.xprjson")
 
 gui = Gui()
 gui.add_page("covid", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

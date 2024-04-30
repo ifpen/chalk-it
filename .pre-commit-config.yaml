@@ -1,0 +1,47 @@
+repos:
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+    -   id: mypy
+        additional_dependencies: [
+                'types-Markdown',
+                'types-python-dateutil',
+                'types-pytz',
+                'types-tzlocal',
+        ]
+        args:
+        - --ignore-missing-imports
+        - --implicit-optional
+        - --no-namespace-packages
+        - --follow-imports=skip
+-   repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.10
+    hooks:
+    -   id: forbid-crlf
+    -   id: remove-crlf
+    -   id: forbid-tabs
+    -   id: remove-tabs
+    -   id: insert-license
+        files: \.py$
+        args:
+        - --license-filepath
+        - .license-header
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-merge-conflict
+    -   id: check-yaml
+        args: [--unsafe]
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.8
+    hooks:
+    -   id: ruff
+        args: [ --fix ]
+    -   id: ruff-format
+-   repo: https://github.com/codespell-project/codespell
+    rev: v2.2.6
+    hooks:
+    -   id: codespell
+        additional_dependencies: [tomli]

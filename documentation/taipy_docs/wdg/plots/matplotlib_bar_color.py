@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -22,6 +22,6 @@ ax.set_ylabel("fruit supply")
 ax.set_title("Fruit supply by kind and color")
 ax.legend(title="Fruit color")
 
-page = DesignerPage("matplotlib_bar_color.xprjson", designer_mode=True)
+page = Page("matplotlib_bar_color.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

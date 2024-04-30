@@ -4,17 +4,17 @@ Let this simple Taipy application. Add Taipy Designer (`taipy.designer`) import 
 
 ```python
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 a = 1
 b = 5
 c = a + b
 
-page = DesignerPage("sliders_value.xprjson", designer_mode=True)
+page = Page("sliders_value.xprjson")
 
 gui = Gui()
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)
 ```
 
 Let's save this code into `simple_app.py`.
@@ -55,7 +55,7 @@ To make our dashboard interactive, add the following `on_change` callback as fol
 
 ```python
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 a = 1
 b = 5
@@ -65,11 +65,11 @@ def on_change(state, var, val):
     if (var == "a" or var == "b"):
         state.c = state.a + state.b
 
-page = DesignerPage("sliders_value.xprjson", designer_mode=True)
+page = Page("sliders_value.xprjson")
 
 gui = Gui()
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)
 ```
 
 Your interactive dashboard is ready. Switch to preview tab to play !

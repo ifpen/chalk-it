@@ -8,7 +8,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy.designer import *
+from taipy.designer import Page
 
 # Variables declaration, first date (yesterday) and sampling mode
 # Get today's date
@@ -141,4 +141,4 @@ def on_change(state, var, val):
         state.fig_data, state.fig_pie = update_exec(state.df, state.date, val)
 
 
-page = DesignerPage("eco2mix_plotly_page.xprjson", designer_mode=True)
+page = Page("eco2mix_plotly_page.xprjson")

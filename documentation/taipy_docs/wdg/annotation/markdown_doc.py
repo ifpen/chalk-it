@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 gui = Gui()
 
@@ -9,6 +9,6 @@ with open("example.md", "r") as file:
     markdown_content = file.read()
 
 
-page = DesignerPage("markdown_doc.xprjson", designer_mode=True)
+page = Page("markdown_doc.xprjson")
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

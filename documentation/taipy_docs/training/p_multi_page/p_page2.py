@@ -1,7 +1,7 @@
-from taipy.designer import *
+from taipy.designer import Page
 
 
 text = "this is page 2"
 
 
-page = DesignerPage("p_page2.xprjson", designer_mode=True)
+page = Page("p_page2.xprjson")

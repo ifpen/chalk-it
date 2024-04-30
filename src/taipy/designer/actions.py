@@ -1,19 +1,6 @@
-# Copyright 2023-2024 IFP Energies nouvelles
-#
-# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
-# the License. You may obtain a copy of the License at
-#
-#        http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
-# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
-# specific language governing permissions and limitations under the License.
-
-
-"""
-This module provides functionalities for loading, saving, and selecting files
-based on user actions, specifically handling .xprjson files.
-"""
+# © 2021-2024, Avaiga Pte Ltd. All Rights Reserved. The use of the Taipy software and any part thereof is governed by
+# Avaiga Pte Ltd’s Software License and Maintenance Agreement. Unauthorised use, reproduction and modification is
+# strictly not allowed.
 
 import json
 import sys
@@ -21,8 +8,17 @@ from pathlib import Path
 from typing import Dict, List, Union
 from taipy.gui.gui_actions import notify
 
-from .template_xprjson import xprjson_template
-from .utils_xprjson import update_xprjson
+from ._default_xprjson import default_xrpjson
+from .utils import update_xprjson
+
+__all__ = [
+    "chlkt_json_data_",
+    "chlkt_file_list_",
+    "chlkt_load_file_",
+    "chlkt_save_file_",
+    "chlkt_get_file_list_",
+    "notice",
+]
 
 # Get the absolute path of the main module
 BASE_PATH: Path = Path(sys.argv[0]).resolve().parent
@@ -76,10 +72,10 @@ def chlkt_load_file_(state: object, action_name: str, payload: Dict[str, str]) -
         )
 
         if not xprjson_file_path.exists():
-            # If the file does not exist, create it with the contents of 'xprjson_template'
+            # If the file does not exist, create it with the contents of 'default_xrpjson'
             with open(xprjson_file_path, "w", encoding="utf-8") as file:
-                update_xprjson(xprjson_template, xprjson_file_name)
-                file.write(json.dumps(xprjson_template))
+                update_xprjson(default_xrpjson, xprjson_file_name)
+                file.write(json.dumps(default_xrpjson))
                 is_new_file = True
 
         if not xprjson_file_path.is_file():

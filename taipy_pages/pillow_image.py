@@ -4,7 +4,7 @@ from PIL import Image, ImageOps
 from taipy.gui import Gui
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy.designer import *
+from taipy.designer import Page
 
 
 def convert_to_grayscale(image, intensity):
@@ -30,7 +30,7 @@ def on_change(state, var, val):
         state.img_grey = convert_to_grayscale(state.image, val)
 
 
-page = DesignerPage("pillow_image.xprjson", designer_mode=True)
+page = Page("pillow_image.xprjson")
 gui = Gui()
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

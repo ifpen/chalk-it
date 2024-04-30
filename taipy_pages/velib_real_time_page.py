@@ -8,7 +8,7 @@ from pathlib import Path
 from shapely.geometry import Point
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy.designer import *
+from taipy.designer import Page
 
 
 def fetch_stations_status():
@@ -191,4 +191,4 @@ def on_change(state, var, val):
         state.echarts_option_json = generate_echarts_bar_graph(state.dfg, dockBar)
 
 
-page = DesignerPage("velib_real_time_page.xprjson", designer_mode=True)
+page = Page("velib_real_time_page.xprjson")

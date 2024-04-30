@@ -1,5 +1,5 @@
 from taipy.gui import Gui
-from taipy.designer import *
+from taipy.designer import Page
 
 import pandas as pd
 import numpy as np
@@ -39,7 +39,7 @@ calendar_values_object = {
 # If needed, print or use `calendar_values_object`
 selected_date = "2020-06-02"
 
-page = DesignerPage("n_year_calendar.xprjson", designer_mode=True)
+page = Page("n_year_calendar.xprjson")
 gui = Gui()
 gui.add_page("page", page)
-gui.run(run_browser=True, use_reloader=False)
+gui.run(design=True, run_browser=True, use_reloader=False)

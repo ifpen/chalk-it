@@ -1,4 +1,4 @@
-from taipy.designer import *
+from taipy.designer import Page
 
 a = 1
 b = 5
@@ -10,4 +10,4 @@ def on_change(state, var, val):
         state.c = state.a + state.b
 
 
-page = DesignerPage("p_page1.xprjson", designer_mode=True)
+page = Page("p_page1.xprjson")

@@ -1,0 +1,36 @@
+# Copyright 2023-2024 IFP Energies nouvelles
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+
+from setuptools import find_namespace_packages, setup, find_packages
+
+NAME = "taipy-designer"
+VERSION = "0.0.0" # Do not touch. Will be overwritten by version.json
+
+with open("README.md", "r") as fh:
+    readme = fh.read()
+
+setup(
+    name=NAME,
+    version=VERSION,
+    package_dir={"": "src"},
+    packages=find_namespace_packages(where="src") + find_packages(
+        include=["taipy", "taipy.designer", "taipy.designer.*"]
+    ),
+    description="Rapid web applications with Python",
+    long_description=readme,
+    long_description_content_type="text/markdown",
+    install_requires=["taipy-gui==3.1.2", "pathvalidate", "pyt"],
+    author="Avaiga",
+    author_email="dev@taipy.io",
+    python_requires=">=3.8",
+    include_package_data=True,
+)

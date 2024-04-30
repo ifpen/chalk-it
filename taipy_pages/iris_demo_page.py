@@ -6,7 +6,7 @@ from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy.designer import *
+from taipy.designer import Page
 
 prediction = "--"
 
@@ -68,4 +68,4 @@ def on_change(state, var, val):
         state.prediction = make_prediction(clf, val)
 
 
-page = DesignerPage("iris_demo_page.xprjson", designer_mode=False)
+page = Page("iris_demo_page.xprjson")

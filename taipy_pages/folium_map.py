@@ -5,7 +5,7 @@ from pathlib import Path
 from shapely.geometry import shape
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from taipy.designer import *
+from taipy.designer import Page
 
 # user code starts here
 eiffel_tour = {
@@ -41,4 +41,4 @@ folium.Marker(
 # String to sent to Chalk'it
 # map_html = map._repr_html_()
 
-page = DesignerPage("folium_map.xprjson", designer_mode=True)
+page = Page("folium_map.xprjson")
