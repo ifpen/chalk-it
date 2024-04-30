@@ -68,7 +68,8 @@
 			"classType": ""
 		},
 		"droppers": {},
-		"backgroundColor": "#ffffff"
+		"backgroundColor": "#ffffff",
+		"theme": "default"		
 	},
 	"dashboard": {
 		"flatUiSelect4": {
