@@ -57,12 +57,6 @@ var xdash = (function () {
       tags: [],
       schedulerLogOff: offSchedLogUser,
     };
-    if ($rootScope.autoSave) {
-      meta.save = {
-        version: 0.1,
-        lastUpdated: ISODate,
-      };
-    }
 
     return meta;
   }
