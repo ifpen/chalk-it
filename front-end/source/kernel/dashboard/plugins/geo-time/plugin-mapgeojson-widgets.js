@@ -42,7 +42,7 @@ function mapGeoJsonWidgetsPluginClass() {
     };
 
     var self = this;
-    this.idInstance = idInstance
+    this.idInstance = idInstance;
     this.legendHeatMap = undefined;
     this.legendChoroplet = undefined;
     this.enable = function () {};
@@ -67,10 +67,10 @@ function mapGeoJsonWidgetsPluginClass() {
           !_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)
         ) {
           modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
-            modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self,item, index));
+            modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self, item, index));
           });
         }
-      } 
+      }
       self.GeoJSONStyle.updateCallback(self.GeoJSONStyle, self.GeoJSONStyle.getValue());
     };
 
@@ -191,8 +191,10 @@ function mapGeoJsonWidgetsPluginClass() {
             !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style) &&
             modelsHiddenParams[idInstance].GeoJSONStyle.style.length > 0
           ) {
-            if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style[index].name)) {
-              name = modelsHiddenParams[idInstance].GeoJSONStyle.style[index].name;
+            if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style[index])) {
+              if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style[index].name)) {
+                name = modelsHiddenParams[idInstance].GeoJSONStyle.style[index].name;
+              }
             }
           }
           self.addGeoJSONlayer(item, name);
@@ -218,7 +220,7 @@ function mapGeoJsonWidgetsPluginClass() {
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
       let leafletIndex = self.getLefletIndex(leafletLayer);
-      eventsManager.configureEvents(self,geoJSON,leafletLayer,leafletIndex) 
+      eventsManager.configureEvents(self, geoJSON, leafletLayer, leafletIndex);
       //add layer
       //TO DO check GeoJSON Type :
       //radio button
@@ -229,7 +231,7 @@ function mapGeoJsonWidgetsPluginClass() {
 
     // Create the style object that will be in out JSON for a geoJSON
     // typeLayer is used for marker or circle
-    this.createTemplateStyle = styleManager.createTemplateStyle
+    this.createTemplateStyle = styleManager.createTemplateStyle;
     this.getColor = colorScaleManager.getColor;
 
     this.createChoroplethLegend = function (min, max, featureTitle, colorScale) {
@@ -311,7 +313,7 @@ function mapGeoJsonWidgetsPluginClass() {
       //update style
       if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style))
         modelsHiddenParams[idInstance].GeoJSONStyle.style.forEach(function (d, index) {
-          self.setStyle(self,index, d);
+          self.setStyle(self, index, d);
         });
 
       if (self.styleChanged) {
@@ -321,7 +323,7 @@ function mapGeoJsonWidgetsPluginClass() {
     };
 
     // Set Style on GeoJSON layer
-    this.setStyle = styleManager.setStyle 
+    this.setStyle = styleManager.setStyle;
     // GeoJSON Schema V0.7
 
     const _SCHEMA_GEOJSON_INPUT = {
