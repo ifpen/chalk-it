@@ -204,6 +204,7 @@
       "thirdparty/d3.min.js",
       "thirdparty/flat-ui.js",
       "thirdparty/jshint.js",
+      "thirdparty/luxon.min.js",
       "source/kernel/datanodes/plugins/thirdparty/papaparse.js",
       "source/kernel/datanodes/plugins/thirdparty/utils.js",
       "bower_components/codemirror/lib/codemirror.js",

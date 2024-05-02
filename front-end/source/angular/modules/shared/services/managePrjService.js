@@ -572,6 +572,7 @@ angular.module('modules').service('ManagePrjService', [
       const fileType = 'project';
       const inputProjectName = $('#projectName').val();
       const currentProjectName = $rootScope.currentProject.name;
+      $rootScope.currentProject.date = luxon.DateTime.now().setZone('Europe/Paris').toISO();
       $rootScope.oldFileName = currentProjectName;
 
       if ($rootScope.taipyLink) {

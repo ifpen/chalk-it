@@ -46,7 +46,7 @@ var xdash = (function () {
 
   /*--------initMeta--------*/
   function initMeta() {
-    const ISODate = new Date().toISOString();
+    const ISODate = luxon.DateTime.now().setZone('Europe/Paris').toISO();
     const meta = {
       version: version,
       [XdashDataUpdateEngine.VERSION_METADATA_KEY]: XdashDataUpdateEngine.CURRENT_VERSION,
@@ -73,6 +73,8 @@ var xdash = (function () {
 
     if ($rootScope.currentProject) {
       meta.description = $rootScope.currentProject.description;
+      meta.version = $rootScope.currentProject.version;
+      meta.date = $rootScope.currentProject.date;
       meta.tags = $rootScope.currentProject.tags;
       meta.groupName = $rootScope.currentProject.groupName;
     }
@@ -143,6 +145,8 @@ var xdash = (function () {
         $rootScope.currentProject.description = jsonObject.meta.description;
       if (!_.isUndefined(jsonObject.meta.tags)) $rootScope.currentProject.tags = jsonObject.meta.tags;
       if (!_.isUndefined(jsonObject.meta.groupName)) $rootScope.currentProject.groupName = jsonObject.meta.groupName;
+      if (!_.isUndefined(jsonObject.meta.version)) $rootScope.currentProject.version = jsonObject.meta.version;
+      if (!_.isUndefined(jsonObject.meta.date)) $rootScope.currentProject.date = jsonObject.meta.date;
 
       if (!_.isUndefined(jsonObject.meta.schedulerLogOff)) offSchedLogUser = jsonObject.meta.schedulerLogOff;
       else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
