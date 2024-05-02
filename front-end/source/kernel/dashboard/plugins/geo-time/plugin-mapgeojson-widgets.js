@@ -42,7 +42,7 @@ function mapGeoJsonWidgetsPluginClass() {
     };
 
     var self = this;
-    this.idInstance = idInstance;
+    this.idInstance = idInstance
     this.legendHeatMap = undefined;
     this.legendChoroplet = undefined;
     this.enable = function () {};
@@ -52,40 +52,26 @@ function mapGeoJsonWidgetsPluginClass() {
     this.updateValue = function (e) {
       // Create new TempleStyle if old has not the same size
       // TODO : Check all style compatible with all element of model
-
       if (
-        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
-        !_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)
+        (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+          !Array.isArray(modelsHiddenParams[idInstance].GeoJSONStyle.style) &&
+          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON)) ||
+        (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
+          modelsHiddenParams[idInstance].GeoJSON.length !== modelsHiddenParams[idInstance].GeoJSONStyle.style.length)
       ) {
+        modelsHiddenParams[idInstance].GeoJSONStyle.style = [];
+
         if (
-          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
-          !_.isEmpty(modelsHiddenParams[idInstance].GeoJSONStyle) &&
-          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style)
+          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
+          !_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)
         ) {
-          let styles = modelsHiddenParams[idInstance].GeoJSONStyle.style;
-          modelsHiddenParams[idInstance].GeoJSONStyle.style = [];
           modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
-            //check if the style of geojson already exist the doNothing
-            let elementExist = false;
-            let styleFounded = undefined;
-            styles.forEach((style, j) => {
-              if (style.id == item.id) {
-                elementExist = true;
-                styleFounded = style;
-              }
-            });
-            if (!elementExist) {
-              modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self, item, index));
-            } else {
-              modelsHiddenParams[idInstance].GeoJSONStyle.style.push(styleFounded);
-            }
+            modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self,item, index));
           });
         }
-      }
-      //self.GeoJSONStyle.setValue(modelsHiddenParams[idInstance].GeoJSONStyle);
+      } 
       self.GeoJSONStyle.updateCallback(self.GeoJSONStyle, self.GeoJSONStyle.getValue());
-      self.style();
-      self.render();
     };
 
     this.rescale = function () {};
@@ -126,6 +112,7 @@ function mapGeoJsonWidgetsPluginClass() {
       widgetHtml.setAttribute('style', 'width: inherit; height: inherit');
       document.addEventListener('play-tab-loaded', self.goToFirstRadioButton);
       $('#' + idDivContainer).html(widgetHtml);
+
       // Drawing the map
       // TODO : Report all map possibilites from map
 
@@ -139,11 +126,7 @@ function mapGeoJsonWidgetsPluginClass() {
         config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
       }
       self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true });
-      if (
-        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
-        !_.isEmpty(modelsHiddenParams[idInstance].GeoJSON) &&
-        modelsHiddenParams[idInstance].GeoJSON.length > 0
-      ) {
+      if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) && modelsHiddenParams[idInstance].GeoJSON.length > 0) {
         let bbox = turf.bbox(modelsHiddenParams[idInstance].GeoJSON[0]);
         let bounds = [
           [bbox[1], bbox[0]],
@@ -164,7 +147,7 @@ function mapGeoJsonWidgetsPluginClass() {
         }
       }
 
-      self.map.zoomControl.setPosition('topright');
+      //self.map.zoomControl.setPosition('topright');
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
@@ -202,10 +185,19 @@ function mapGeoJsonWidgetsPluginClass() {
       ) {
         modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
           let name = 'layer ' + index;
+          if (
+            !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+            !_.isEmpty(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+            !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style) &&
+            modelsHiddenParams[idInstance].GeoJSONStyle.style.length > 0
+          ) {
+            if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style[index].name)) {
+              name = modelsHiddenParams[idInstance].GeoJSONStyle.style[index].name;
+            }
+          }
           self.addGeoJSONlayer(item, name);
         });
       }
-      self.style();
     };
 
     this.getFillColor = geoJsonTools.getFillColor;
@@ -226,7 +218,7 @@ function mapGeoJsonWidgetsPluginClass() {
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
       let leafletIndex = self.getLefletIndex(leafletLayer);
-      eventsManager.configureEvents(self, geoJSON, leafletLayer, leafletIndex);
+      eventsManager.configureEvents(self,geoJSON,leafletLayer,leafletIndex) 
       //add layer
       //TO DO check GeoJSON Type :
       //radio button
@@ -237,18 +229,18 @@ function mapGeoJsonWidgetsPluginClass() {
 
     // Create the style object that will be in out JSON for a geoJSON
     // typeLayer is used for marker or circle
-    this.createTemplateStyle = styleManager.createTemplateStyle;
+    this.createTemplateStyle = styleManager.createTemplateStyle
     this.getColor = colorScaleManager.getColor;
 
-    this.createChoroplethLegend = function (legendId, min, max, featureTitle, colorScale) {
-      legend = legends.createChoroplethLegend(legendId, self.getColor, min, max, featureTitle, colorScale);
+    this.createChoroplethLegend = function (min, max, featureTitle, colorScale) {
+      legend = legends.createChoroplethLegend(self.getColor, min, max, featureTitle, colorScale);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }
       return legend;
     };
-    this.createLegend = function (legendId, color, length, colorStops, min, max, featureTitle) {
-      legend = legends.createLegend(legendId, color, length, colorStops, min, max, featureTitle);
+    this.createLegend = function (color, length, colorStops, min, max, featureTitle) {
+      legend = legends.createLegend(color, length, colorStops, min, max, featureTitle);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }
@@ -276,46 +268,41 @@ function mapGeoJsonWidgetsPluginClass() {
       //update view
       // setZoom
       let zoom = function () {
+        //Zoom
         if (
-          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
-          !_.isEmpty(modelsHiddenParams[idInstance].GeoJSONStyle)
+          modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom ||
+          _.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom)
         ) {
-          //Zoom
+          let bbox = undefined;
           if (
-            modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom ||
-            _.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom)
+            !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
+            modelsHiddenParams[idInstance].GeoJSON.length > 0
           ) {
-            let bbox = undefined;
-            if (
-              !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
-              modelsHiddenParams[idInstance].GeoJSON.length > 0
-            ) {
-              bbox = turf.bbox(modelsHiddenParams[idInstance].GeoJSON[0]);
-              bbox = [
-                [bbox[1], bbox[0]],
-                [bbox[3], bbox[2]],
-              ];
-            } else {
-              if (
-                !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
-                !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config) &&
-                !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image) &&
-                !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image.imageBounds)
-              ) {
-                config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
-                bbox = config.image.imageBounds;
-              }
-            }
-            // let bounds = [[bbox[1],bbox[0]],[bbox[3],bbox[2]]]
-            let height = $('#' + idInstance).height();
-            let width = $('#' + idInstance).width();
-            self.map.fitBounds(bbox);
-            let zoom = self.map.getBoundsZoom(bbox, false, [width, height]);
-            modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.zoom = zoom;
-            //self.map.setZoom(zoom);
+            bbox = turf.bbox(modelsHiddenParams[idInstance].GeoJSON[0]);
+            bbox = [
+              [bbox[1], bbox[0]],
+              [bbox[3], bbox[2]],
+            ];
           } else {
-            self.map.setZoom(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.zoom);
+            if (
+              !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
+              !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config) &&
+              !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image) &&
+              !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image.imageBounds)
+            ) {
+              config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
+              bbox = config.image.imageBounds;
+            }
           }
+          // let bounds = [[bbox[1],bbox[0]],[bbox[3],bbox[2]]]
+          let height = $('#' + idInstance).height();
+          let width = $('#' + idInstance).width();
+          self.map.fitBounds(bbox);
+          let zoom = self.map.getBoundsZoom(bbox, false, [width, height]);
+          modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.zoom = zoom;
+          //self.map.setZoom(zoom);
+        } else {
+          self.map.setZoom(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.zoom);
         }
       };
       zoom();
@@ -324,12 +311,17 @@ function mapGeoJsonWidgetsPluginClass() {
       //update style
       if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style))
         modelsHiddenParams[idInstance].GeoJSONStyle.style.forEach(function (d, index) {
-          self.setStyle(self, index, d);
+          self.setStyle(self,index, d);
         });
+
+      if (self.styleChanged) {
+        self.styleChanged = false;
+        //  self.updateValue();
+      }
     };
 
     // Set Style on GeoJSON layer
-    this.setStyle = styleManager.setStyle;
+    this.setStyle = styleManager.setStyle 
     // GeoJSON Schema V0.7
 
     const _SCHEMA_GEOJSON_INPUT = {
@@ -403,8 +395,9 @@ function mapGeoJsonWidgetsPluginClass() {
         } else {
           modelsHiddenParams[idInstance].GeoJSON = val;
         }
-        self.updateValue();
+
         self.render();
+        self.updateValue();
       },
       getValue: function () {
         return modelsHiddenParams[idInstance].GeoJSON;
@@ -459,6 +452,55 @@ function mapGeoJsonWidgetsPluginClass() {
         if (_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)) {
           modelsHiddenParams[idInstance].GeoJSONStyle.config = self.defaultConfig;
         }
+        /*
+        if (
+          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
+          modelsHiddenParams[idInstance].GeoJSON.length > 0
+        ) {
+          //calcul layer 0 center
+          const center = turf.centerOfMass(modelsHiddenParams[idInstance].GeoJSON[0]);
+          modelsHiddenParams[idInstance].GeoJSONStyle.config = {
+            ...self.defaultConfig,
+            defaultCenter: {
+              defaultZoom : true,
+              latitude: center.geometry.coordinates[0],
+              longitude: center.geometry.coordinates[1],
+              zoom: 14,
+            },
+          };
+        }
+        else if(!_.isUndefined(val.config) && !_.isUndefined(val.config.image) && !_.isUndefined(val.config.image.imageBounds)){
+          let bounds = val.config.image.imageBounds;
+          if(Array.isArray(bounds) && bounds.length == 2){
+            let p1 = bounds[0]
+            let p2 = bounds[1]
+            let longMoy = (p1[0]+p2[0])/2
+            let latMoy = (p1[1]+p2[1])/2
+            modelsHiddenParams[idInstance].GeoJSONStyle.config = {
+              ...val.config,
+              defaultCenter: {
+                defaultZoom : true,
+                latitude: latMoy,
+                longitude: longMoy,
+                zoom: 14,
+              },
+            };
+          }
+
+        }
+        else {
+          if (_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)) {
+            modelsHiddenParams[idInstance].GeoJSONStyle.config = {
+              ...self.defaultConfig,
+              defaultCenter: {
+                latitude: 2.295,
+                longitude: 48.8738,
+                zoom: 8,
+              },
+            };
+          }
+        }*/
+
         self.style();
       },
       getValue: function () {
@@ -466,11 +508,9 @@ function mapGeoJsonWidgetsPluginClass() {
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
-        self.enable();
+        self.updateValue();
       },
-      removeValueChangedHandler: function (updateDataFromWidget) {
-        self.disable();
-      },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
     };
 
     this.getActuatorDescriptions = function () {
