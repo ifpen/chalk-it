@@ -546,9 +546,9 @@ angular
         ManagePrjService.deleteFileInServer(projectName, $scope.fileType);
       };
 
-      /*----------  Infos prroject btn ----------------*/
+      /*----------  Infos project btn ----------------*/
       $scope.infoProject = function (projectName, origin) {
-        if (!_.isUndefined(origin)) $rootScope.info.origin = origin;
+        if (origin) $rootScope.info.origin = origin;
         $scope.info.pastName = projectName;
         $scope.info.openProjectInfo = true;
         $scope.info.tmp = angular.copy($rootScope.currentProject);
@@ -556,25 +556,30 @@ angular
         $rootScope.currentInfoProject = angular.copy($rootScope.currentProject);
 
         let bFound = false;
-        for (var pro = 0; pro < $scope.allFilesWithNoGrp[0].FileList.length; pro++) {
-          if (projectName === $scope.allFilesWithNoGrp[0].FileList[pro].Name) {
-            $rootScope.currentInfoProject.name = $scope.allFilesWithNoGrp[0].FileList[pro].Name;
-            $rootScope.currentInfoProject.description = $scope.allFilesWithNoGrp[0].FileList[pro].Description;
-            $rootScope.currentInfoProject.tags = $scope.allFilesWithNoGrp[0].FileList[pro].Tags;
-            $rootScope.currentInfoProject.groupName = $scope.allFilesWithNoGrp[0].FileList[pro].GroupName;
+        const fileList = $scope.allFilesWithNoGrp[0].FileList;
+        for (let i = 0; i < fileList.length; i++) {
+          if (fileList[i].Name === projectName) {
+            Object.assign($rootScope.currentInfoProject, {
+              name: fileList[i].Name,
+              description: fileList[i].Description,
+              tags: fileList[i].Tags,
+              groupName: fileList[i].GroupName,
+            });
             bFound = true;
             break;
           }
         }
         if (!bFound) {
-          //search in groupss
-          for (var grpName in $scope.grpFiles) {
-            for (var pro = 0; pro < $scope.grpFiles[grpName].length; pro++) {
-              if (projectName === $scope.grpFiles[grpName][pro].Name) {
-                $rootScope.currentInfoProject.name = $scope.grpFiles[grpName][pro].Name;
-                $rootScope.currentInfoProject.description = $scope.grpFiles[grpName][pro].Description;
-                $rootScope.currentInfoProject.tags = $scope.grpFiles[grpName][pro].Tags;
-                $rootScope.currentInfoProject.groupName = $scope.grpFiles[grpName][pro].GroupName;
+          // Search in grouped files
+          for (let groupName in $scope.grpFiles) {
+            for (let i = 0; i < $scope.grpFiles[groupName].length; i++) {
+              if ($scope.grpFiles[groupName][i].Name === projectName) {
+                Object.assign($rootScope.currentInfoProject, {
+                  name: $scope.grpFiles[groupName][i].Name,
+                  description: $scope.grpFiles[groupName][i].Description,
+                  tags: $scope.grpFiles[groupName][i].Tags,
+                  groupName: $scope.grpFiles[groupName][i].GroupName,
+                });
                 break;
               }
             }
