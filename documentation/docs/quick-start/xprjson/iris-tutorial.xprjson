@@ -34,7 +34,7 @@
 					"name": "dataset",
 					"autoStart": true,
 					"explicitTrig": false,
-					"content": "from sklearn import datasets\niris=datasets.load_iris()\nreturn iris"
+					"content": "from sklearn import datasets\niris=datasets.load_iris()\nreturn chalkit.as_python(iris)"
 				}
 			},
 			{
@@ -44,7 +44,7 @@
 					"name": "datasetDataframe",
 					"autoStart": true,
 					"explicitTrig": false,
-					"content": "import pandas as pd\n\niris=dataNodes[\"dataset\"]\n\ndf = pd.DataFrame(data=iris.data, columns=iris.feature_names)\ndf[\"target\"] = iris.target\ntarget_names = {0: \"Setosa\", 1: \"Versicolour\", 2:\"Virginica\" }\ndf['target'] =df['target'].map(target_names)\n\nreturn df"
+					"content": "import pandas as pd\n\niris=dataNodes[\"dataset\"]\n\ndf = pd.DataFrame(data=iris.data, columns=iris.feature_names)\ndf[\"target\"] = iris.target\ntarget_names = {0: \"Setosa\", 1: \"Versicolour\", 2:\"Virginica\" }\ndf['target'] =df['target'].map(target_names)\n\nreturn chalkit.as_python(df)"
 				}
 			},
 			{

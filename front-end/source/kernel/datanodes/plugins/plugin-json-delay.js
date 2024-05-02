@@ -1,5 +1,5 @@
 (function () {
-  var error = false;
+  var error = false; //ABK
   // ## A Datanode Plugin
   //
   // -------------------
@@ -31,7 +31,8 @@
         display_name: 'Input signal',
         type: 'calculated',
         description1: 'Write JavaScript formula to define JSON, array or primitive data type input to be delayed.',
-        description2: 'Browse and select a dataNode from workspace to use it in the formula.',
+        /*ABK*/
+        description2: 'Browse and select a dataNode from workspace to use it in the formula.' /*ABK*/,
       },
     ],
     // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
@@ -39,8 +40,11 @@
     // * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
     // * **updateCallback** : A callback function that you'll call if and when your datanode has an update for datanodesManager to recalculate. This function expects a single parameter which is a javascript object with the new, updated data. You should hold on to this reference and call it when needed.
     newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback) {
+      // jsonMemoryPlugin is defined below.
       newInstanceCallback(new jsonDelayPlugin(settings, updateCallback, statusCallback));
-      if (error) return false;
+      if (error)
+        //ABK
+        return false;
       else return true;
     },
   });
@@ -75,7 +79,7 @@
       } catch (err) {
         swal('JSON Parse error', err.message, 'error');
         statusCallback('Error');
-        return false;
+        return false; //ABK
       }
       return true;
     };
@@ -101,7 +105,7 @@
           swal('JSON Parse error', err.message, 'error');
           statusCallback('Error');
           updateCallback(undefined, 'Error');
-          return false;
+          return false; //ABK
         }
       }
 
@@ -117,16 +121,12 @@
       pastStatus = 'OK';
       pastSettings = currentSettings;
 
-      return true;
+      return true; //ABK
     };
     // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
     self.onDispose = function () {};
 
-    this.isSetValueValid = function () {
-      return false;
-    };
-
-    self.isSetFileValid = function () {
+    self.canSetValue = function () {
       return false;
     };
 

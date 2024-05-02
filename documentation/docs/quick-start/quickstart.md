@@ -48,8 +48,8 @@ Create a datanode named **dataset** to load the Iris dataset from **Scikit-learn
 
   ```Python
   from sklearn import datasets
-  iris=datasets.load_iris()
-  return iris
+  iris = datasets.load_iris()
+  return chalkit.as_python(iris)
   ```
 
   This step is illustrated below:
@@ -76,14 +76,14 @@ Visualize the dataset in 4 steps:
   ```Python
   import pandas as pd
 
-  iris=dataNodes["dataset"]
+  iris = dataNodes["dataset"]
 
   df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
   df["target"] = iris.target
   target_names = {0: "Setosa", 1: "Versicolour", 2: "Virginica" }
   df['target'] = df['target'].map(target_names)
 
-  return df
+  return chalkit.as_python(df)
   ```
 
   The expression **dataNodes["dataset"]** indicates Chalk'it to read the last execution output of the **dataset** datanode. It also establishes a data and execution flow dependency between **dataset** and **datasetDataframe**.
@@ -105,17 +105,16 @@ Visualize the dataset in 4 steps:
 
   ![Widgets tab](png/plots-tab.png)
 
-- To add a _Plotly Python_ widget to the dashboard editor, click on the corresponding icon or just perform a drag and drop.
+- To add a _Plotly generic_ widget to the dashboard editor, click on the corresponding icon or just perform a drag and drop.
 
-  ![Add Plotly Python widget](png/plotly-py-widget.png)
+  ![Add Plotly widget](png/plotly-py-widget.png)
 
 #### Step3: connect dataNode to widget
 
 - Click on the pencil icon on the top-right corner of the widget to display the widget menu. Select then _Connect widget_ as shown below:
 
-  ![Widget connection menu](png/connect-plotly-py-widget.png)
 
-- A panel will then be displayed on the right-side of the screen. From the connection dropdown, select the datanode _plot_, as it will provide the figure object needed for the widget. Click _Save_ to validate the choice.
+- A panel will then be displayed on the right-side of the screen. From the first connection dropdown, select the datanode _plot_, then its _data_ field as it will provide the plot data needed for the widget. Repeat the process for the _layout_ actuator immediately below, but this time using the _layout_ field of the _plot_ datanode. Finally, click _Save_ to validate the choices.
 
   ![Connect widget to datanode](png/plotly-py-widget-actuator.png)
 

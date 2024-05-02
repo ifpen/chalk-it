@@ -76,3 +76,8 @@ ipch/
 # Backup files
 *.bak
 *.Copie
+
+# Generated files
+.vscode/
+/*.xprjson
+**/__pycache__

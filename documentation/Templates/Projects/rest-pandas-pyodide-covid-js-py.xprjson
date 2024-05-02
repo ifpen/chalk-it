@@ -2,7 +2,7 @@
 	"meta": {
 		"version": "2.410.8418",
 		"date": "Wed Feb 08 2023 14:28:22 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "rest-pandas-pyodide-covid",
+		"name": "rest-pandas-pyodide-covid-py-js",
 		"description": "",
 		"groupName": "Mixed",
 		"tags": [
@@ -43,7 +43,7 @@
 					"name": "covidDataFrame",
 					"autoStart": true,
 					"explicitTrig": false,
-					"content": "from io import StringIO\nimport pandas as pd\n\ncovid = pd.read_csv(StringIO(dataNodes[\"covidDataJohnHopkins\"][\"content\"]))\n\ncovid = covid.drop(columns=['Lat', 'Long']).groupby('Country/Region').sum()\n\nreturn covid"
+					"content": "from io import StringIO\nimport pandas as pd\n\ncovid = pd.read_csv(StringIO(dataNodes[\"covidDataJohnHopkins\"][\"content\"]))\n\ncovid = covid.drop(columns=['Lat', 'Long']).groupby('Country/Region').sum()\n\nreturn chalkit.as_python(covid)"
 				}
 			},
 			{

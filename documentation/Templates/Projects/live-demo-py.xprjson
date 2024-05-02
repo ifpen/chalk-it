@@ -49,7 +49,7 @@
 					"req_data_type": "JSON",
 					"resp_data_type": "JSON",
 					"method": "GET",
-					"body": "return {\n    \"urlAppend\": \"?searchtext=\" +  datasources[\"address\"][\"location\"] \n};",
+					"body": "return {\n    \"urlAppend\": \"?searchtext=\" +  dataNodes[\"address\"][\"location\"] \n};",
 					"headers": [
 						{
 							"name": "Content-Type",
@@ -73,7 +73,7 @@
 					"req_data_type": "JSON",
 					"resp_data_type": "JSON",
 					"method": "GET",
-					"body": "var city =  datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"City\"];\nvar state =  datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"State\"];\nvar country =  datasources[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"County\"];\nreturn {\"urlAppend\": \"?q=\" + encodeURIComponent(city+', ' + state + ', ' + country) + \"&units=metric\"};",
+					"body": "var city =  dataNodes[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"City\"];\nvar state =  dataNodes[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"State\"];\nvar country =  dataNodes[\"geocode\"][\"Response\"][\"View\"][0][\"Result\"][0][\"Location\"][\"Address\"][\"County\"];\nreturn {\"urlAppend\": \"?q=\" + encodeURIComponent(city+', ' + state + ', ' + country) + \"&units=metric\"};",
 					"headers": [
 						{
 							"name": "Content-Type",
@@ -434,7 +434,7 @@
 				"drawingFeaturesOptions": {
 					"point": true,
 					"line": true,
-					"polygone": true,
+					"polygon": true,
 					"rectangle": true,
 					"modal": false
 				},

@@ -1,5 +1,5 @@
 /**
- * @author AR, AEF
+ * @author AR
  * @description
  * This Datanode is used to receive data through Web socket. It's allow Chalk'it to retrieve data
  */
@@ -141,19 +141,7 @@
     };
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-    self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      //Autostart
-      //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
-      if (!currentSettings.autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
-        return { notTobeExecuted: true };
-      }
-
-      if (bForceAutoStart) {
-        // when refresh change autostart in setting (needed because behaviour it similar to periodic datanodeS)
-        currentSettings.autoStart = true;
-      }
-      //
-
+    self.updateNow = function () {
       var init_value;
       if (bFirstTime) {
         if (wsConn.readyState === 1) {
@@ -209,13 +197,10 @@
       if (wsConn) wsConn.close();
     };
 
-    self.isSetValueValid = function () {
+    self.canSetValue = function () {
       return false;
     };
 
-    self.isSetFileValid = function () {
-      return false;
-    };
     statusForSchedulerCallback('Wait');
     bFirstTime = true;
     createWebSocket();
@@ -392,7 +377,8 @@
       {
         name: 'autoStart',
         display_name: 'AUTO START',
-        description: 'DataNode is executed automatically at start (project load, its creation/modification).',
+        description:
+          'Start websocket receive automatically after dashboard play begins or after creation or modification.',
         type: 'boolean',
         default_value: true,
       },

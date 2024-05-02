@@ -3,6 +3,7 @@
 **/.hg
 **/bower_components
 **/node_modules
+**/doc
 
 **/.tmp
 **/build

@@ -1,157 +1,160 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ customNavigationRuntime mode runtime display handling              │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                        │ \\
+// │ Copyright © 2022-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR                                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
+class CustomNavigationRuntime {
+  #grid;
+  #jsonContent;
 
-var customNavigationRuntime = (function () {
-
-    const self = this;
-    self.jsonContent = {};
-    self.grid = {
-        rows: 1,
-        cols: 1
+  constructor() {
+    this.#grid = {
+      rows: 1,
+      cols: 1,
     };
+    this.#jsonContent = {};
+  }
 
-    /**
-     * setJsonContent
-     * 
-     * @param { Object } jsonContent - project xprjson
-     */
-    function setJsonContent(jsonContent) {
-        self.jsonContent = jsonContent;
+  /**
+   * customNavigationPrepareRescale
+   *
+   * @param { Number | String } valueRow - jsonContent.device.cols.valueRow
+   * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
+   */
+  customNavigationPrepareRescale(valueRow, valueCol) {
+    const { defaultRows, defaultCols } = this.grid;
+
+    const rows = Number(valueRow) || defaultRows;
+    const cols = Number(valueCol) || defaultCols;
+
+    this.grid = { rows, cols };
+
+    if (rows > 1) {
+      $('[id^=dpr][id$=c]').show();
     }
+  }
 
-    /**
-     * _getJsonContent
-     * 
-     * @return { Object } - project xprjson
-     */
-    function _getJsonContent() {
-        return self.jsonContent;
-    }
+  /**
+   * customNavigationModeInit
+   *
+   * @param { Object } jsonContent - project xprjson
+   */
+  customNavigationModeInit(jsonContent) {
+    const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
+    const { defaultRows, defaultCols } = this.grid;
 
-    /**
-     * Retrieves the dashboard grid.
-     * 
-     * @return { Object } The grid object, which contains the number of rows and columns in the grid.
-     * @property { Number } rows - The number of rows in the grid.
-     * @property { Number } cols - The number of columns in the grid.
-     */
-    function _getGrid() {
-        return self.grid;
-    }
+    const rows = Number(valueRow) || defaultRows;
+    const cols = Number(valueCol) || defaultCols;
 
-    /**
-     * Setting the dashboard grid.
-     * 
-     * @param { Object } grid - jsonContent.device.cols
-     */
-    function _setGrid(grid) {
-        self.grid = grid;
-    }
+    this.grid = { rows, cols };
 
-    /**
-     * customNavigationPrepareRescale
-     * 
-     * @param { Number | String } valueRow - jsonContent.device.cols.valueRow
-     * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
-     */
-    function customNavigationPrepareRescale(valueRow, valueCol) {
-        let { rows, cols } = _getGrid();
-
-        rows = Number(valueRow) || 1;
-        cols = Number(valueCol) || 1;
-
-        _setGrid({ rows, cols });
-
-        if (rows > 1) {
-            $('[id^=dpr][id$=c]').show();
+    if (rows > 1) {
+      $('[id^=dpr][id$=c]').hide();
+      if (cols > 1) {
+        const nbLastRowDiv = numDefaultPage * cols;
+        const nbFirstRowDiv = nbLastRowDiv - cols + 1;
+        for (let k = nbFirstRowDiv; k <= nbLastRowDiv; k++) {
+          $('#dpr' + k + 'c').show();
         }
+      } else {
+        $('#dpr' + numDefaultPage + 'c').show();
+      }
+    }
+  }
+
+  /**
+   * customNavigationGoToPage
+   *
+   * @param { Number } numPage - target page number
+   */
+  customNavigationGoToPage(numPage) {
+    const $rootScope = angular.element(document.body).scope().$root;
+
+    // Do not run in edit mode
+    if (typeof layoutMgr !== 'undefined' && !$rootScope.bIsPlayMode) return;
+
+    // When using the "row to tab" method, the page number must be updated.
+    $rootScope.pageNumber = numPage;
+
+    const jsonContent = this.jsonContent;
+    let exportOptions = '';
+    const { defaultRows, defaultCols } = this.grid;
+    let rows, cols;
+
+    if (_.isEmpty(jsonContent)) {
+      // View mode
+      rows = layoutMgr.getRows() || defaultRows;
+      cols = layoutMgr.getCols() || defaultCols;
+      exportOptions = htmlExport.exportOptions;
+    } else {
+      // Preview mode
+      rows = Number(jsonContent.device.cols.valueRow) || defaultRows;
+      cols = Number(jsonContent.device.cols.valueCol) || defaultCols;
+      exportOptions = jsonContent.exportOptions;
     }
 
-    /**
-     * customNavigationModeInit
-     * 
-     * @param { Object } jsonContent - project xprjson
-     */
-    function customNavigationModeInit(jsonContent) {
-        const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
-        let { rows, cols } = _getGrid();
+    this.grid = { rows, cols };
 
-        rows = Number(jsonContent.device.cols.valueRow) || 1;
-        cols = Number(jsonContent.device.cols.valueCol) || 1;
-
-        _setGrid({ rows, cols });
-
-        if (rows > 1) {
-            $('[id^=dpr][id$=c]').hide();
-            if (cols > 1) {
-                const nbLastRowDiv = numDefaultPage * cols;
-                const nbFirstRowDiv = nbLastRowDiv - cols + 1;
-                for (let k = nbFirstRowDiv; k <= nbLastRowDiv; k++) {
-                    $('#dpr' + k + 'c').show();
-                }
-            } else {
-                $('#dpr' + numDefaultPage + 'c').show();
-            }
+    if (rows > 1) {
+      if (exportOptions == 'projectToTargetWindow') {
+        const numDiv = numPage * cols;
+        $('#dpr' + numDiv + 'c')[0].scrollIntoView(false);
+      } else {
+        $('[id^=dpr][id$=c]').hide();
+        if (cols > 1) {
+          const nbLastRowDiv = numPage * cols;
+          const nbFirstRowDiv = nbLastRowDiv - cols + 1;
+          for (let k = nbFirstRowDiv; k <= nbLastRowDiv; k++) {
+            $('#dpr' + k + 'c').show();
+          }
+        } else {
+          $('#dpr' + numPage + 'c').show();
         }
+      }
     }
+  }
 
-    /**
-     * customNavigationGoToPage
-     * 
-     * @param { Number } numPage - target page number
-     */
-    function customNavigationGoToPage(numPage) {
-        const $rootScope = angular.element(document.body).scope().$root;
-        $rootScope.pageNumber = numPage;
+  /**
+   * Retrieves the dashboard json content.
+   *
+   * @return { Object } - project xprjson.
+   */
+  get jsonContent() {
+    return this.#jsonContent;
+  }
 
-        const jsonContent = _getJsonContent();
-        let exportOptions = "";
-        let { rows, cols } = _getGrid();
+  /**
+   * Setting the dashboard json content.
+   *
+   * @param { Object } jsonContent - project xprjson.
+   */
+  set jsonContent(jsonContent) {
+    this.#jsonContent = jsonContent;
+  }
 
-        if (_.isEmpty(jsonContent)) {
-            // View mode
-            rows = layoutMgr.getRows() || 1;
-            cols = layoutMgr.getCols() || 1;
-            exportOptions = htmlExport.exportOptions;
-        } else { 
-            // Preview mode
-            rows = Number(jsonContent.device.cols.valueRow) || 1;
-            cols = Number(jsonContent.device.cols.valueCol) || 1;
-            exportOptions = jsonContent.exportOptions;
-        }
+  /**
+   * Retrieves the dashboard grid.
+   *
+   * @return { Object } The grid object, which contains the number of rows and columns in the grid.
+   * @property { Number } rows - The number of rows in the grid.
+   * @property { Number } cols - The number of columns in the grid.
+   */
+  get grid() {
+    return this.#grid;
+  }
 
-        _setGrid({ rows, cols });
+  /**
+   * Setting the dashboard grid.
+   *
+   * @param { Object } grid - jsonContent.device.cols
+   */
+  set grid(grid) {
+    this.#grid = grid;
+  }
+}
 
-        if (rows > 1) {
-            if (exportOptions == "projectToTargetWindow") {
-                const numDiv = numPage * cols;
-                $('#dpr' + numDiv + 'c')[0].scrollIntoView();
-            } else {
-                $('[id^=dpr][id$=c]').hide();
-                if (cols > 1) {
-                    const nbLastRowDiv = numPage * cols;
-                    const nbFirstRowDiv = nbLastRowDiv - cols + 1;
-                    for (let k = nbFirstRowDiv; k <= nbLastRowDiv; k++) {
-                        $('#dpr' + k + 'c').show();
-                    }
-                } else {
-                    $('#dpr' + numPage + 'c').show();
-                }
-            }
-        }
-    }
-
-    return {
-        customNavigationPrepareRescale,
-        customNavigationModeInit,
-        setJsonContent,
-        customNavigationGoToPage
-    };
-}());
+const customNavigationRuntime = new CustomNavigationRuntime();

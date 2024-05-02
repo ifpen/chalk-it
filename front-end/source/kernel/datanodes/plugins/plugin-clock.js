@@ -9,17 +9,7 @@
     var pastSettings = settings;
     var pastStatus = 'None';
 
-    this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      //Autostart
-      //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
-      if (!currentSettings.autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
-        return { notTobeExecuted: true };
-      }
-
-      if (bForceAutoStart && currentSettings.sampleTime > 0) {
-        // when refresh change autostart in setting (needed for periodic datanodes)
-        currentSettings.autoStart = true;
-      }
+    this.updateNow = function () {
       statusCallback('Pending');
       var date = new Date();
 
@@ -33,7 +23,7 @@
       statusCallback('OK');
       updateCallback(data);
 
-      return true;
+      return true; //ABK;
     };
 
     this.onDispose = function () {};
@@ -44,7 +34,7 @@
         pastSettings = currentSettings;
       }
       currentSettings = newSettings;
-      return true;
+      return true; //ABK
     };
 
     this.isSettingNameChanged = function (newName) {
@@ -52,16 +42,18 @@
       else return false;
     };
 
+    // AEF comment here to inhibite memory of past values
+    // self.getSavedSettings = function() {
+    //     return [pastStatus, pastSettings];
+    // };
+
+    //AEF
     this.isSettingSampleTimeChanged = function (newSampleTime) {
       if (currentSettings.sampleTime != newSampleTime) return true;
       else return false;
     };
 
-    this.isSetValueValid = function () {
-      return false;
-    };
-
-    self.isSetFileValid = function () {
+    self.canSetValue = function () {
       return false;
     };
 
@@ -86,16 +78,19 @@
         default_value: 1,
       },
       {
+        //ABK
         name: 'autoStart',
         display_name: 'AUTO START',
-        description: 'DataNode is executed automatically at start (project load, its creation/modification).',
+        description: 'Starts datanode automatically after dashboard play begins or after creation or modification.',
         type: 'boolean',
         default_value: true,
       },
     ],
     newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback) {
       newInstanceCallback(new clockDatanode(settings, updateCallback, statusCallback));
-      if (error) return false;
+      if (error)
+        //ABK
+        return false;
       else return true;
     },
   });

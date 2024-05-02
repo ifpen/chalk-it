@@ -1,822 +1,874 @@
 {
-	"meta": {
-		"version": "2.999.8310",
-		"date": "Sat Oct 01 2022 13:38:23 GMT+0200 (heure d’été d’Europe centrale)",
-		"name": "widget-fonts",
-		"description": "",
-		"groupName": "",
-		"tags": [
-			{
-				"text": "widget"
-			},
-			{
-				"text": "Font"
-			},
-			{
-				"text": "font-family"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"datanodes": [
-			{
-				"name": "message",
-				"type": "JSON_var_plugin",
-				"settings": {
-					"name": "message",
-					"json_var": "\"Hello !\""
-				}
-			}
-		],
-		"reIndexMap": [
-			0
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"libraries": {
-		"pyodideStandard": [],
-		"pyodideMicropip": []
-	},
-	"scaling": {
-		"widthPx": 1679,
-		"heightPx": 685,
-		"scrollWidthPx": 1679,
-		"scrollHeightPx": 685,
-		"widthVw": 87.49348619072434,
-		"heightVh": 73.10565635005337,
-		"scrollWidthVw": 87.49348619072434,
-		"scrollHeightVh": 73.10565635005337,
-		"scalingMethod": "scaleTwh",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {},
-		"backgroundColor": "#ffffff"
-	},
-	"dashboard": {
-		"flatUiValuex": {
-			"layout": {
-				"top": "3.6286vh",
-				"left": "1.66754vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "flatUiValuex",
-				"instanceId": "flatUiValuex",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValuex)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": false,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Brush Script MT",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Brush Script MT",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValue5": {
-			"layout": {
-				"top": "13.6606vh",
-				"left": "1.66754vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "2"
-			},
-			"container": {
-				"id": "flatUiValue5",
-				"instanceId": "flatUiValue5",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValue5)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Arial",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Arial",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValued": {
-			"layout": {
-				"top": "24.0128vh",
-				"left": "1.66754vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "3"
-			},
-			"container": {
-				"id": "flatUiValued",
-				"instanceId": "flatUiValued",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValued)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Verdana ",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Verdana ",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValueG": {
-			"layout": {
-				"top": "34.4717vh",
-				"left": "1.66754vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "4"
-			},
-			"container": {
-				"id": "flatUiValueG",
-				"instanceId": "flatUiValueG",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValueG)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Tahoma",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Tahoma",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValuea": {
-			"layout": {
-				"top": "44.397vh",
-				"left": "1.66754vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "5"
-			},
-			"container": {
-				"id": "flatUiValuea",
-				"instanceId": "flatUiValuea",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValuea)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Trebuchet MS",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Trebuchet MS",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValue2": {
-			"layout": {
-				"top": "3.6286vh",
-				"left": "28.6608vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "6"
-			},
-			"container": {
-				"id": "flatUiValue2",
-				"instanceId": "flatUiValue2",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValue2)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Times New Roman",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Times New Roman",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValueB": {
-			"layout": {
-				"top": "13.6606vh",
-				"left": "28.6608vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "7"
-			},
-			"container": {
-				"id": "flatUiValueB",
-				"instanceId": "flatUiValueB",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValueB)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Georgia",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Georgia",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValueM": {
-			"layout": {
-				"top": "24.0128vh",
-				"left": "28.6608vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "8"
-			},
-			"container": {
-				"id": "flatUiValueM",
-				"instanceId": "flatUiValueM",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValueM)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Trebuchet MS",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Trebuchet MS",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValueJ": {
-			"layout": {
-				"top": "34.4717vh",
-				"left": "28.6608vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "9"
-			},
-			"container": {
-				"id": "flatUiValueJ",
-				"instanceId": "flatUiValueJ",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValueJ)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Garamond",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Garamond",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValueu": {
-			"layout": {
-				"top": "44.397vh",
-				"left": "28.6608vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "10"
-			},
-			"container": {
-				"id": "flatUiValueu",
-				"instanceId": "flatUiValueu",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValueu)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Courier New",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Courier New",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValueR": {
-			"layout": {
-				"top": "3.6286vh",
-				"left": "54.0907vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "11"
-			},
-			"container": {
-				"id": "flatUiValueR",
-				"instanceId": "flatUiValueR",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValueR)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Montserrat",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Montserrat",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValuel": {
-			"layout": {
-				"top": "13.6606vh",
-				"left": "54.0907vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "12"
-			},
-			"container": {
-				"id": "flatUiValuel",
-				"instanceId": "flatUiValuel",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValuel)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "raleway",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "raleway",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValuez": {
-			"layout": {
-				"top": "24.0128vh",
-				"left": "54.0907vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "13"
-			},
-			"container": {
-				"id": "flatUiValuez",
-				"instanceId": "flatUiValuez",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValuez)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Lucida Grande",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Lucida Grande",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValuej": {
-			"layout": {
-				"top": "34.4717vh",
-				"left": "54.0907vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "14"
-			},
-			"container": {
-				"id": "flatUiValuej",
-				"instanceId": "flatUiValuej",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValuej)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Lato",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Lato",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValue4": {
-			"layout": {
-				"top": "44.397vh",
-				"left": "54.0907vw",
-				"height": "7.89755vh",
-				"width": "23.7103vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "15"
-			},
-			"container": {
-				"id": "flatUiValue4",
-				"instanceId": "flatUiValue4",
-				"modelJsonId": "flatUiValue",
-				"widgetTypeName": "Value(flatUiValue4)"
-			},
-			"modelParameters": {
-				"label": "message",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 2,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Menlo",
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"isPassword": false,
-				"decimalDigits": 3,
-				"valueFontSize": 2,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Menlo",
-				"valueTextAlign": "left",
-				"displayBorder": false,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		}
-	},
-	"connections": {
-		"flatUiValuex": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValue5": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValued": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValueG": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValuea": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValue2": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValueB": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValueM": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValueJ": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValueu": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValueR": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValuel": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValuez": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValuej": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValue4": {
-			"value": {
-				"name": "value",
-				"dataNode": "message",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"checkExportOptions": true,
-	"navBarNotification": false
+  "meta": {
+    "version": "2.870.8680",
+    "fileFormatVersion": "0.3",
+    "date": "Fri Oct 06 2023 11:05:06 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "name": "widget-fonts",
+    "description": "",
+    "groupName": "",
+    "tags": [
+      {
+        "text": "widget"
+      },
+      {
+        "text": "Font"
+      },
+      {
+        "text": "font-family"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "message",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "message",
+          "json_var": "\"Hello !\""
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1686,
+    "heightPx": 682,
+    "scrollWidthPx": 1686,
+    "scrollHeightPx": 682,
+    "widthVw": 87.8125,
+    "heightVh": 73.25456498388829,
+    "scrollWidthVw": 87.8125,
+    "scrollHeightVh": 73.25456498388829,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "#ffffff",
+    "theme": "default"
+  },
+  "dashboard": {
+    "flatUiTextInput0": {
+      "layout": {
+        "top": "4.29646vh",
+        "left": "2.08333vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput0",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Brush Script MT",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Brush Script MT",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInput1": {
+      "layout": {
+        "top": "15.0376vh",
+        "left": "2.08333vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "2"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput1",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Arial",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Arial",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInput2": {
+      "layout": {
+        "top": "25.7787vh",
+        "left": "2.08333vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "3"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput2",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Verdana ",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Verdana ",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInput3": {
+      "layout": {
+        "top": "36.5199vh",
+        "left": "2.08333vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "4"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput3",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Tahoma",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Tahoma",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInput4": {
+      "layout": {
+        "top": "47.261vh",
+        "left": "2.08333vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "5"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput4",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Trebuchet MS",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Trebuchet MS",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInput5": {
+      "layout": {
+        "top": "4.29646vh",
+        "left": "29.1667vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "6"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput5",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Times New Roman",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Times New Roman",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInput6": {
+      "layout": {
+        "top": "15.0376vh",
+        "left": "29.1667vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "7"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput6",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Georgia",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Georgia",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInput7": {
+      "layout": {
+        "top": "25.7787vh",
+        "left": "29.1667vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "8"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput7",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Trebuchet MS",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Trebuchet MS",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInput8": {
+      "layout": {
+        "top": "36.5199vh",
+        "left": "29.1667vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "9"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput8",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Garamond",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Garamond",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInput9": {
+      "layout": {
+        "top": "47.261vh",
+        "left": "29.1667vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "10"
+      },
+      "container": {
+        "instanceId": "flatUiTextInput9",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Courier New",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Courier New",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInputB": {
+      "layout": {
+        "top": "15.0376vh",
+        "left": "56.25vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "12"
+      },
+      "container": {
+        "instanceId": "flatUiTextInputB",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "raleway",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "raleway",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInputC": {
+      "layout": {
+        "top": "25.7787vh",
+        "left": "56.25vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "13"
+      },
+      "container": {
+        "instanceId": "flatUiTextInputC",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Lucida Grande",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Lucida Grande",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInputD": {
+      "layout": {
+        "top": "36.5199vh",
+        "left": "56.25vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "14"
+      },
+      "container": {
+        "instanceId": "flatUiTextInputD",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Lato",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Lato",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInputE": {
+      "layout": {
+        "top": "47.261vh",
+        "left": "56.25vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "15"
+      },
+      "container": {
+        "instanceId": "flatUiTextInputE",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Menlo",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Menlo",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInputF": {
+      "layout": {
+        "top": "58.0021vh",
+        "left": "2.08333vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "16"
+      },
+      "container": {
+        "instanceId": "flatUiTextInputF",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Titillium Web",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Titillium Web",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiTextInputA": {
+      "layout": {
+        "top": "4.29646vh",
+        "left": "56.25vw",
+        "height": "8.59291vh",
+        "width": "23.9583vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "17"
+      },
+      "container": {
+        "instanceId": "flatUiTextInputA",
+        "modelJsonId": "flatUiTextInput"
+      },
+      "modelParameters": {
+        "label": "message",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 2,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Montserrat",
+        "valueWidthProportion": "70%",
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isPassword": false,
+        "valueFontSize": 2,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Montserrat",
+        "valueTextAlign": "left",
+        "displayBorder": false,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "backgroundColor": "#ffffff",
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    }
+  },
+  "connections": {
+    "flatUiTextInput0": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInput1": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInput2": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInput3": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInput4": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInput5": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInput6": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInput7": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInput8": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInput9": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInputB": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInputC": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInputD": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInputE": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInputF": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    },
+    "flatUiTextInputA": {
+      "value": {
+        "name": "value",
+        "dataNode": "message",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

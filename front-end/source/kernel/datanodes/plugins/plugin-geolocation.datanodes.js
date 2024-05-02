@@ -1,5 +1,5 @@
 /**
- * @author AR, AEF
+ * @author AR
  * @description
  * This datanode is used to get the geolocation coordinate of the device
  */
@@ -61,18 +61,15 @@ if (!(xDashConfig.xDashBasicVersion == 'true')) {
       };
 
       // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-      self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-        //Autostart
-        //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
-        if (!currentSettings.autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
-          return { notTobeExecuted: true };
-        }
-
+      self.updateNow = function () {
         statusCallback('Pending');
         if (geolocationMethod == 'watchPosition') {
           statusCallback('OK');
           updateCallback(location);
         }
+        // else if (geolocationMethod == "IPlocation") {
+        //     IpGetlocation();
+        // }
       };
 
       // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
@@ -82,9 +79,17 @@ if (!(xDashConfig.xDashBasicVersion == 'true')) {
         }
       };
 
-      self.isSetValueValid = function () {
+      self.canSetValue = function () {
         return false;
       };
+
+      //AEF
+      // self.isSettingSampleTimeChanged = function(newSampleTime) {
+      //     if (currentSettings.sampleTime != newSampleTime)
+      //         return true;
+      //     else
+      //         return false;
+      // };
 
       function showLocation(pos) {
         // it is triggered every coords change
@@ -147,10 +152,19 @@ if (!(xDashConfig.xDashBasicVersion == 'true')) {
       external_scripts: [''],
       // **settings** : An array of settings that will be displayed for this plugin when the user adds it
       settings: [
+        //{
+        //         name: "sampleTime",
+        //         display_name: "Sample time",
+        //         type: "number",
+        //         required: false,
+        //         default_value: 5,
+        //         suffix: "seconds",
+        //         description: "Refresh rate for getting new location."
+        //     },
         {
           name: 'autoStart',
           display_name: 'Auto start',
-          description: 'DataNode is executed automatically at start (project load, its creation/modification).',
+          description: 'Start Geolocation automatically after dashboard play begins or after creation or modification.',
           type: 'boolean',
           default_value: true,
         },

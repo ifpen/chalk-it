@@ -1,6 +1,6 @@
 ﻿# DataNodes
 
-DataNodes are functions or variables that produce JSON or Python objects into the workspace.
+DataNodes are functions or variables that produce JSON into the workspace.
 
 Chalk'it maintains a workspace of these objects whose content corresponds to the latest dataNodes evaluation.
 

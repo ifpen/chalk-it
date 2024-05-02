@@ -11,7 +11,7 @@
 		"allow_edit": true,
 		"plugins": [],
 		"panes": [],
-		"datasources": [
+		"dataNodes": [
 			{
 				"name": "locate",
 				"type": "Geolocation-plugin",
@@ -106,7 +106,7 @@
 				"drawingFeaturesOptions": {
 					"point": true,
 					"line": true,
-					"polygone": true,
+					"polygon": true,
 					"rectangle": true,
 					"modal": false
 				},

@@ -1,10 +1,22 @@
+# Copyright 2023-2024 IFP Energies nouvelles
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+
+import glob
 from pathlib import Path
 import subprocess
 import shutil
 import os
-from dotenv import dotenv_values
 from datetime import datetime
-
+import json
 
 BUILD_FRONT_END = True
 
@@ -16,23 +28,26 @@ dst_dir = 'build'
 if not os.path.exists(dst_dir):
     os.makedirs(dst_dir)
 
-if not Path('front-end/.env.prod').exists():
-    hutil.copy('front-end/.env.sample', 'front-end/.env.prod')
-	
-# Path to the .env.prod file
-env_file_path = 'front-end/.env.prod'
+# Load Python version from version.json    
+with open("version.json", "r") as fh:
+    version_json = json.load(fh)
+    VERSION = str(version_json["major"]) + "." + str(version_json["minor"]) + "." + str(version_json["patch"])
+    	
+# Path to the front-end version.json file
+env_file_path = 'front-end/version.json'
 
-# Load variables from the .env.prod file
-env_vars = dotenv_values(env_file_path)
+# Load variables from the version.json file
+f = open(env_file_path, "r")
+env_vars = json.load(f)
+f.close()
 
 # Accessing the variables
-a = env_vars.get('VERSION_XDASH_A')
-b = env_vars.get('VERSION_XDASH_B')
-c = env_vars.get('VERSION_XDASH_C')	
+a = str(env_vars['A'])
+b = str(env_vars['B'])
+c = str(env_vars['C'])
 
 
-def getVersion():
-
+def get_version():
     if c == '0':
         date_today = datetime.now()
         date_start = datetime.strptime("01/01/2000", "%m/%d/%Y")
@@ -41,7 +56,7 @@ def getVersion():
     else:
         return c
 
-front_end_build_dir_name = 'xdash_' + a + '.' + b + '.' + str(getVersion())
+front_end_build_dir_name = 'chalkit_' + a + '.' + b + '.' + str(get_version())
 
 
 # Get the list of all files and directories in the "build" directory
@@ -84,13 +99,42 @@ if (BUILD_FRONT_END):
 build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
 shutil.copytree(build_dir, './build/chlkt')
 
-# Copy server.py and associated .py files to ./build/chlkt directory
-cwd = os.getcwd()
-shutil.copy('./front-end/server.py', './build/chlkt/')
-shutil.copy('./assets/misc/__init__.py', './build/chlkt/')
-# for gunicorn rendering of pages
-shutil.copytree('./back-end/render/', './build/chlkt/render/')
+# Copy .whl file to ./build/chlkt directory
+# Specify the source directory and pattern
+source_directory = './front-end/'
+pattern = 'chalkit_python_api-*.whl'
 
+# Use glob to find the matching file
+matching_files = glob.glob(source_directory + pattern)
+
+if matching_files:
+    # Assign the path of the first matching file
+    source_path = matching_files[0]
+    destination_directory = './build/chlkt/'
+
+    shutil.copy(source_path, destination_directory)
+else:
+    print("chalkit_python_api-*.whl file not found.")
+
+# Copy main.py and associated .py files to ./build/chlkt directory
+cwd = os.getcwd()
+build_path = './build/chlkt/'
+file_paths = [
+     './main.py', 
+     './assets/misc/__init__.py'
+    ]
+
+for file_path in file_paths:
+    shutil.copy(file_path, build_path)
+
+# Copy app server
+shutil.copytree('./back_end/app/', './build/chlkt/app/')
+
+# for gunicorn rendering of pages
+shutil.copytree('./back_end/render/', './build/chlkt/render/')
+
+# copy backend runner
+shutil.copytree('./back_end/middleware/src/chalkit_python_api/', './build/chlkt/chalkit_python_api/')
 
 # Copy templates
 shutil.copytree('./documentation/Templates/', './build/chlkt/Templates/')
@@ -113,6 +157,39 @@ def get_python_command():
 
     # If no Python command was found
     raise SystemExit("Python not found. Please install Python.")
+
+def update_version_in_setup_file(file_path, new_version):
+    # Define the line prefix to search for
+    line_prefix = 'VERSION = "'
+    line_suffix = '" # Do not touch. Will be overwritten by version.json'
+    
+    # Initialize an empty list to hold the updated lines
+    updated_lines = []
+    
+    # Open the file and read the lines
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        
+        # Loop through each line in the file
+        for line in lines:
+            # Check if the line contains the version definition
+            if line.strip().startswith(line_prefix) and line.strip().endswith(line_suffix):
+                # Replace the version number in the line
+                updated_line = f'{line_prefix}{new_version}{line_suffix}\n'
+                updated_lines.append(updated_line)
+            else:
+                # If not the version line, keep the line as is
+                updated_lines.append(line)
+    
+    # Write the updated lines back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(updated_lines)
+
+# Example usage:
+file_path = './build/setup.py'  # Path to your setup.py file
+new_version = VERSION  # New version number to update to
+update_version_in_setup_file(file_path, new_version)
+
 
 # Get available python command
 python_cmd = get_python_command()

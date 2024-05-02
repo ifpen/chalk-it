@@ -7,6 +7,7 @@ doc
 .idea
 .dccache
 .suo
+.whl
 
 # Ignore all css generated files
 source/assets/style/**/*.css
@@ -15,6 +16,9 @@ source/assets/style/**/*.css.map
 # Generated from build
 configs/config.prod.js
 configs/config.dev.js
+
+pyodide-worker-dev.js
+pyodide-worker-dev.js.map
 
 index.html
 index-view.html
@@ -27,3 +31,5 @@ __pycache__/
 
 pyodide-worker-dev.js
 pyodide-worker-dev.js.map
+
+/*.xprjson

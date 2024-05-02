@@ -139,22 +139,18 @@
     };
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-    self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      // explicit trig!
-      //if explicittrig is true, no execution when triggered by predecessor, except triggered by force
-      if (currentSettings.explicitTrig && bCalledFromOrchestrator) {
-        return { notTobeExecuted: true };
-      }
-
-      //Autostart
-      //if autostart is false, no auto execution at creat/edit/load, except if triggered by predecessor or by force
-      if (!currentSettings.autoStart && !(bForceAutoStart || bCalledFromOrchestrator)) {
-        return { notTobeExecuted: true };
-      }
-
+    self.updateNow = function (bForceAutoStart) {
       if (bForceAutoStart && currentSettings.sampleTime > 0) {
-        // when refresh change autostart in setting (needed for periodic datanodes)
-        currentSettings.autoStart = true;
+        if (currentSettings.explicitTrig) {
+          notificationCallback(
+            'warning',
+            currentSettings.name,
+            'Explicit Trigger option is turned off (False) because "' +
+              currentSettings.name +
+              '" is periodic and was triggered explicitly'
+          );
+          currentSettings.explicitTrig = false;
+        }
       }
 
       var init_value;
@@ -220,11 +216,7 @@
       if (wsConn) wsConn.close();
     };
 
-    self.isSetValueValid = function () {
-      return false;
-    };
-
-    self.isSetFileValid = function () {
+    this.canSetValue = function () {
       return false;
     };
 
@@ -266,11 +258,11 @@
     function sendData(data, bJSON = true) {
       if (!_.isUndefined(wsConn) && wsConn.readyState === 1) {
         /*
-                                if (bJSON == true)
-                                    wsConn.send(JSON.stringify(data));
-                                else
-                                    wsConn.send(data);
-                */
+                              if (bJSON == true)
+                                  wsConn.send(JSON.stringify(data));
+                              else
+                                  wsConn.send(data);
+              */
         wsConn.send(data);
       }
     }
@@ -315,7 +307,8 @@
       {
         name: 'autoStart',
         display_name: 'AUTO START',
-        description: 'DataNode is executed automatically at start (project load, its creation/modification).',
+        description:
+          'Start websocket send automatically after dashboard play begins or after creation or modification.',
         type: 'boolean',
         default_value: true,
       },
@@ -323,7 +316,7 @@
         name: 'explicitTrig',
         display_name: 'Explicit trigger',
         description:
-          'DataNode is executed only if triggered explicitly (no execution when its predecessors are updated). It is executed automatically once when AutoStart is “YES”.',
+          'Execute web-socket only if triggered explicitly : no execution when predecessor dataNodes are modified.',
         type: 'boolean',
         default_value: false,
       },
