@@ -146,7 +146,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
      * and triggers local project saving when the property's value becomes ' *'.
      */
     $scope.$watch(
-      () => $rootScope.currentPrjDirty,
+      () => $rootScope.autoSave && $rootScope.currentPrjDirty,
       (value) => {
         if (value == ' *') ManagePrjService.saveProjectToLocal(undefined, true);
       }

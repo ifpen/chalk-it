@@ -389,7 +389,7 @@ var fileManager = (function () {
     const checkInputValue = $rootScope.xDashFullVersion ? inputValue != 'Untitled' : true;
 
     if (is_defaultOverwrite && checkInputValue) {
-      if (autoSave) {
+      if ($rootScope.autoSave && autoSave) {
         taipyManager.endAction = () => {
           $rootScope.updateFlagDirty(false);
           $rootScope.$apply();
