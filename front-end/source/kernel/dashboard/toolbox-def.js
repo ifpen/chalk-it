@@ -54,7 +54,7 @@ var widgetsEditorToolboxDefinition = {
       'plotly3dSurface',
       'plotlyGeneric',
       'plotlyPyGeneric',
-      'matplotlib',      
+      'matplotlib',
       'plotlyRealTime',
       'vegaGeneric',
       'echartsGeneric',
@@ -64,6 +64,7 @@ var widgetsEditorToolboxDefinition = {
     name: 'Geo & Time',
     widgets: [
       'openStreetMaps',
+      'mapGeoJson',
       'foliumMaps',
       'flatUiHereAutocompleteValue',
       'datepickerSimple',
