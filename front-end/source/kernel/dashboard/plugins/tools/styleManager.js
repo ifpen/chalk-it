@@ -167,7 +167,7 @@ updateLayerStyle = function (self, layer, styleForObject, geoJSONinLayer) {
       layer.setStyle(style);
     }
     //if the radius property exist
-    if (!_.isUndefined(styleForObject.radius)) {
+    if (!_.isUndefined(styleForObject.radius) && !_.isUndefined(layer.setRadius)) {
       layer.setRadius(styleForObject.radius); // LafLet bug  setRadius must be called (Radius in Style is not check by Leaflet)
     }
   }
