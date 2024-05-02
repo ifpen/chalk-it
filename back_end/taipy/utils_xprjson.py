@@ -31,6 +31,5 @@ def _remove_extension(filename, extension=".xprjson"):
 def update_xprjson(xprjson, name):
     xprjson["meta"]["date"] = _get_date_time()
     xprjson["meta"]["name"] = _remove_extension(name)
-    xprjson["meta"]["save"]["lastUpdated"] = _get_date_time()
 
     return xprjson
