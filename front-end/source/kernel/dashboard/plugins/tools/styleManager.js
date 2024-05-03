@@ -11,7 +11,8 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
   allProp = geoJsonTools.findAllProperties(geoJSON);
   JSONtype = geoJsonTools.findFeatureType(geoJSON);
   baseStyle = {
-    id: geoJSON.id,
+    //id: geoJSON.id,
+    type: JSONtype,
     layer: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'layer ') + (index + 1),
     name: 'layer ' + (index + 1),
     stroke: true,
@@ -47,7 +48,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
       let result = {
         ...baseStyle,
         showLegend: false,
-        type: 'Multi Line',
+        //type: 'Multi Line',
         dashArray: [],
         property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
         propertyMin: 'Auto',
@@ -68,7 +69,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
         legend: {
           title: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'Legend ') + (index + 1),
         },
-        type: 'Multi Polygon',
+        //type: 'Multi Polygon',
         dashArray: [],
         property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
         propertyMin: 'Auto',
@@ -88,7 +89,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
     case geoJsonTools.equivalenceTypes.MultiPoint:
       return {
         ...baseStyle,
-        type: 'Multi Point',
+        //type: 'Multi Point',
         markerCluster: false,
         pointAreMarker: true,
         //marker
