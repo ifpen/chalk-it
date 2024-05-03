@@ -2,8 +2,8 @@
   "meta": {
     "version": "3.000.8889",
     "fileFormatVersion": "0.3",
-    "date": "2024-05-03T07:03:21.017Z",
-    "name": "selection-example-1",
+    "date": "2024-05-03T07:04:19.704Z",
+    "name": "selection-example-2",
     "description": "",
     "groupName": "",
     "tags": [
@@ -27,13 +27,23 @@
         }
       },
       {
-        "name": "DataCrossPlot",
+        "name": "DataCrossPlot1",
         "type": "JSON_formula_plugin",
         "settings": {
-          "name": "DataCrossPlot",
+          "name": "DataCrossPlot1",
           "autoStart": true,
           "explicitTrig": false,
           "json_var_formula": "var dataPlot1 = [];\nvar colorSelected = \"#107888\";\nvar colorUnselected = \"#72c0cc\";\n\nvar trace = {\n    \n  showlegend : false,  \n  x:  dataNodes[\"Data\"][\"Alpha\"],\n  y:  dataNodes[\"Data\"][\"Beta\"],\n    \n   name : \"Alpha vs Beta\", \n\n  marker : {\n        color : colorSelected,\n      \topacity : 1\n  },\n    \n  selected : {\n        marker : {\n        color : colorSelected,\n      \topacity : 1\n  \t\t}\n  } ,\n      \n  unselected : {\n        marker : {\n        color : colorUnselected,\n      \topacity : 0.8\n  \t\t}\n  },\n    \n    \n  mode: 'markers',\n  type: 'scatter',\n};\n\ndataPlot1.push(trace);\n\n\nreturn {\"Data\" : dataPlot1};"
+        }
+      },
+      {
+        "name": "DataCrossPlot2",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "DataCrossPlot2",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "var dataPlot1 = [];\nvar colorSelected = \"#107888\";\nvar colorUnselected = \"#72c0cc\";\n\nvar trace = {\n    \n  showlegend : false,  \n  x:  dataNodes[\"Data\"][\"Alpha\"],\n  y:  dataNodes[\"Data\"][\"Delta\"],\n    \n   name : \"Alpha vs Delta\", \n\n  marker : {\n        color : colorSelected,\n      \topacity : 1\n  },\n    \n  selected : {\n        marker : {\n        color : colorSelected,\n      \topacity : 1\n  \t\t}\n  } ,\n      \n  unselected : {\n        marker : {\n        color : colorUnselected,\n      \topacity : 0.8\n  \t\t}\n  },\n    \n    \n  mode: 'markers',\n  type: 'scatter',\n};\n\ndataPlot1.push(trace);\n\n\nreturn {\"Data\" : dataPlot1};"
         }
       },
       {
@@ -43,17 +53,27 @@
           "name": "DataHistogram",
           "autoStart": true,
           "explicitTrig": false,
-          "json_var_formula": "\nvar selection = dataNodes[\"Selection\"];\n\nvar valuesForHisto = [];\nvar delta = dataNodes[\"Data\"][\"Delta\"];\n\ncolorTrace = \"#107888\";\n\n// bin for selected element\n\nvar scale = d3.scaleLinear().domain(d3.extent(delta)).nice();\n\nvar bins = { \n        start: 10,\n    end: 60, //scale.invert(1), \n    size: 5 //(scale.invert(1)  - scale.invert(0))/20.0, \n\n  };\n\n\nif(!_.isUndefined(selection[0]) && !_.isUndefined(selection[0].selection))  {\n    \n\tselection[0].selection.forEach(function(d){ \n        \n          valuesForHisto.push(delta[d]);    \n    });\n}\n\n\nvar dataPlot = [];\n\nvar trace = {\n    x: valuesForHisto,\n\n    xbins: bins,\n    type: 'histogram',\n    marker: {\n        color : colorTrace,\n           line: {\n            color:  \"black\", \n            width: 1\n    } \n        \n    \n  },\n    \n  selected : {\n        marker : {\n        \tcolor : colorTrace\n  \t\t}\n  } ,\n      \n  unselected : {\n        marker : {\n        \tcolor : colorTrace\n  \t\t}\n  }\n};\n\ndataPlot.push(trace);\n\nreturn {\"dataPlotly\" : dataPlot};\n\n\n\n\n"
+          "json_var_formula": "\nvar selection = dataNodes[\"MultiSelectionProcess\"];\n\nvar valuesForHisto = [];\nvar delta = dataNodes[\"Data\"][\"Delta\"];\n\ncolorTrace = \"#107888\";\n\n// bin for selected element\n\nvar scale = d3.scaleLinear().domain(d3.extent(delta)).nice();\n\nvar bins = { \n        start: 10,\n    end: 60, //scale.invert(1), \n    size: 5 //(scale.invert(1)  - scale.invert(0))/20.0, \n\n  };\n\nselection.forEach(function(d){ \n        \n    valuesForHisto.push(delta[d]);    \n});\n\n\n\nvar dataPlot = [];\n\nvar trace = {\n    x: valuesForHisto,\n\n    xbins: bins,\n    type: 'histogram',\n    marker: {\n        color : colorTrace,\n           line: {\n            color:  \"black\", \n            width: 1\n    } \n        \n    \n  },\n    \n  selected : {\n        marker : {\n        \tcolor : colorTrace\n  \t\t}\n  } ,\n      \n  unselected : {\n        marker : {\n        \tcolor : colorTrace\n  \t\t}\n  }\n};\n\ndataPlot.push(trace);\n\nreturn {\"dataPlotly\" : dataPlot};\n\n\n\n\n"
         }
       },
       {
-        "name": "LayoutCrossPlot",
+        "name": "LayoutCrossPlot1",
         "type": "JSON_formula_plugin",
         "settings": {
-          "name": "LayoutCrossPlot",
+          "name": "LayoutCrossPlot2",
           "autoStart": true,
           "explicitTrig": false,
           "json_var_formula": "var LayoutCrossPlot = {\n    \n    showlegend: false,\n    paper_bgcolor : 'rgb(190, 200, 200)',\n    plot_bgcolor : 'rgb(190, 200, 200)',\n    dragmode :\"select\",\n    \n    margin: {\n            t: 20,\n        \tr: 20,\n        \tb: 40,\n            pad: 2\n   },\n       xaxis: {title: \"Alpha\"},\n       yaxis: {title: \"Beta\"}\n};\n\n\nreturn LayoutCrossPlot;"
+        }
+      },
+      {
+        "name": "LayoutCrossPlot2",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "LayoutCrossPlot2",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "var LayoutCrossPlot = {\n    \n    showlegend: false,\n    paper_bgcolor : 'rgb(190, 200, 200)',\n    plot_bgcolor : 'rgb(190, 200, 200)',\n    dragmode :\"select\",\n    \n    margin: {\n            t: 20,\n        \tr: 20,\n        \tb: 40,\n            pad: 2\n   },\n       xaxis: {title: \"Alpha\"},\n       yaxis: {title: \"Delta\"}\n};\n\n\nreturn LayoutCrossPlot;"
         }
       },
       {
@@ -67,11 +87,21 @@
         }
       },
       {
+        "name": "MultiSelectionProcess",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "MultiSelectionProcess",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "var selectionRead =  dataNodes[\"Selection\"];\nvar selection = new Set();\nconsole.log(\"multiSelect\");\nObject.values(selectionRead).forEach(function(graphSelectiton) {  \n    \n    if(Array.isArray(graphSelectiton)) {\n    \n    graphSelectiton.forEach( function (val) {\n        \n        if(!_.isUndefined(val[\"selection\"])) {\n\n\t\tval[\"selection\"].forEach(function(d)   {\n\t\t\tselection.add(d);\n\t\t\t});\n\t\t}\n        \n\n    });\n    \n    }\n                            });\n\nreturn Array.from(selection);\n\n"
+        }
+      },
+      {
         "name": "Selection",
         "type": "JSON_var_plugin",
         "settings": {
           "name": "Selection",
-          "json_var": "{\"range\":{}}"
+          "json_var": "{\"crossPlot1\":{\"range\":{}},\"crossPlot2\":{\"range\":{}}}"
         }
       }
     ]
@@ -109,10 +139,10 @@
   "dashboard": {
     "plotlyGenericA": {
       "layout": {
-        "top": "13.0667vh",
-        "left": "1.77113vw",
+        "top": "12.8vh",
+        "left": "0.655462vw",
         "height": "52.2667vh",
-        "width": "28.3379vw",
+        "width": "27.4639vw",
         "minHeight": "32px",
         "minWidth": "50px",
         "z-index": "2"
@@ -171,10 +201,10 @@
     },
     "plotlyGenericX": {
       "layout": {
-        "top": "13.0432vh",
-        "left": "31.3712vw",
-        "height": "52.1727vh",
-        "width": "28.1912vw",
+        "top": "12.8vh",
+        "left": "56.2386vw",
+        "height": "52.2667vh",
+        "width": "27.4639vw",
         "minHeight": "32px",
         "minWidth": "50px",
         "z-index": "4"
@@ -231,22 +261,84 @@
         ]
       }
     },
+    "plotlyGenericW": {
+      "layout": {
+        "top": "12.8vh",
+        "left": "28.447vw",
+        "height": "52.2667vh",
+        "width": "27.4639vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "5"
+      },
+      "container": {
+        "instanceId": "plotlyGenericW",
+        "modelJsonId": "plotlyGeneric"
+      },
+      "modelParameters": {
+        "enforceTextColor": true,
+        "textColor": "var(--widget-color)",
+        "enforceBackgroundTransparency": true,
+        "hideModeBar": false,
+        "layout": {}
+      },
+      "modelHiddenParams": {
+        "data": [
+          {}
+        ],
+        "layout": {
+          "paper_bgcolor": "rgba(0,0,0,0)",
+          "plot_bgcolor": "rgba(0,0,0,0)",
+          "template": {
+            "layout": {
+              "xaxis": {
+                "gridcolor": "var(--widget-plotly-background-color)"
+              },
+              "yaxis": {
+                "gridcolor": "var(--widget-plotly-background-color)"
+              },
+              "zaxis": {
+                "gridcolor": "var(--widget-plotly-background-color)"
+              },
+              "colorway": [
+                "var(--widget-color-2)",
+                "var(--widget-color-5)",
+                "var(--widget-color-6)",
+                "var(--widget-color-7)",
+                "var(--widget-color-8)",
+                "var(--widget-color-9)",
+                "var(--widget-color-10)",
+                "var(--widget-color-11)",
+                "var(--widget-color-12)",
+                "var(--widget-color-13)"
+              ],
+              "font": {
+                "color": "var(--widget-color)"
+              }
+            }
+          }
+        },
+        "selection": [
+          {}
+        ]
+      }
+    },
     "annotationLabelA": {
       "layout": {
-        "top": "4.4vh",
-        "left": "1.76702vw",
-        "height": "4.8vh",
-        "width": "15.3141vw",
+        "top": "3.73333vh",
+        "left": "0.78534vw",
+        "height": "5.46667vh",
+        "width": "16.2958vw",
         "minHeight": "5px",
         "minWidth": "5px",
-        "z-index": "5"
+        "z-index": "6"
       },
       "container": {
         "instanceId": "annotationLabelA",
         "modelJsonId": "annotationLabel"
       },
       "modelParameters": {
-        "text": "Selection: example 1",
+        "text": "Selection: example 2",
         "enableActuator": false,
         "fontsize": 0.5,
         "backgroundColor": "rgba(0, 0, 0, 0)",
@@ -268,23 +360,25 @@
     "plotlyGenericA": {
       "data": {
         "name": "data",
-        "dataNode": "DataCrossPlot",
+        "dataNode": "DataCrossPlot1",
         "dataFields": [
           "Data"
         ],
-        "dataNodeIndex": 1
+        "dataNodeIndex": 6
       },
       "layout": {
         "name": "layout",
-        "dataNode": "LayoutCrossPlot",
+        "dataNode": "LayoutCrossPlot1",
         "dataFields": [],
-        "dataNodeIndex": 3
+        "dataNodeIndex": 7
       },
       "selection": {
         "name": "selection",
         "dataNode": "Selection",
-        "dataFields": [],
-        "dataNodeIndex": 2
+        "dataFields": [
+          "crossPlot1"
+        ],
+        "dataNodeIndex": 8
       }
     },
     "plotlyGenericX": {
@@ -294,19 +388,43 @@
         "dataFields": [
           "dataPlotly"
         ],
-        "dataNodeIndex": 5
+        "dataNodeIndex": 2
       },
       "layout": {
         "name": "layout",
         "dataNode": "LayoutHistogram",
         "dataFields": [],
-        "dataNodeIndex": 0
+        "dataNodeIndex": 1
       },
       "selection": {
         "name": "selection",
         "dataNode": "None",
         "dataFields": [],
         "dataNodeIndex": -1
+      }
+    },
+    "plotlyGenericW": {
+      "data": {
+        "name": "data",
+        "dataNode": "DataCrossPlot2",
+        "dataFields": [
+          "Data"
+        ],
+        "dataNodeIndex": 3
+      },
+      "layout": {
+        "name": "layout",
+        "dataNode": "LayoutCrossPlot2",
+        "dataFields": [],
+        "dataNodeIndex": 0
+      },
+      "selection": {
+        "name": "selection",
+        "dataNode": "Selection",
+        "dataFields": [
+          "crossPlot2"
+        ],
+        "dataNodeIndex": 8
       }
     },
     "annotationLabelA": {}

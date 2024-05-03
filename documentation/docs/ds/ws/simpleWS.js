@@ -8,5 +8,5 @@ wss.on('connection', function connection(ws) {
     console.log('received: %s', message);
   });
 
-  ws.send('message from server to xDash');
+  ws.send("message from server to Chalk'it");
 });
