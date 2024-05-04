@@ -1,148 +1,171 @@
 {
-	"meta": {
-		"version": "0.950.7109",
-		"date": "Tue Jun 18 2019 13:25:19 GMT+0200 (heure d’été d’Europe centrale)",
-		"name": "csv-array-export-to-file",
-		"description": "",
-		"tags": []
-	},
-	"data": {
-		"version": 1,
-		"allow_edit": true,
-		"plugins": [],
-		"panes": [],
-		"dataNodes": [
-			{
-				"name": "csv",
-				"type": "CSV_file_reader_plugin",
-				"settings": {
-					"name": "csv",
-					"data_path": "CH4-short.csv",
-					"content": "\"lat\",\"lng\",\"CH4\"\r\n48.876684, 2.175765, 1.94\r\n48.876684, 2.175765, 1.95\r\n48.876684, 2.175765, 1.92\r\n48.876705, 2.175806, 1.93\r\n48.876705, 2.175806, 1.99\r\n",
-					"delimiter": "",
-					"eol": "",
-					"quote_char": "\"",
-					"head": true,
-					"skip_empty_lines": true,
-					"dynamic_typing": true,
-					"pluck": true,
-					"embedding_object": false
-				}
-			},
-			{
-				"name": "table",
-				"type": "JSON_formula_plugin",
-				"settings": {
-					"name": "table",
-					"json_var_formula": "var t= _.unzip(_.values(dataNodes[\"csv\"]),3);\nt.unshift(_.keys(dataNodes[\"csv\"]));\n\nreturn t;"
-				}
-			},
-			{
-				"name": "download",
-				"type": "JSON_formula_plugin",
-				"settings": {
-					"name": "download",
-					"json_var_formula": "function convertArrayOfObjectsToCSV(args) {  \n\tvar result, ctr, keys, columnDelimiter, lineDelimiter, data;\n\n\tdata = args.data || null;\n\tif (data === null || !data.length) {\n    \treturn null;\n    }\n\n    columnDelimiter = args.columnDelimiter || ';';\n    lineDelimiter = args.lineDelimiter || '\\n';\n\n    keys = Object.keys(data[0]);\n    \n    result = '';\n\n    data.forEach(function(item) {\n        ctr = 0;\n        keys.forEach(function(key) {\n            if (ctr > 0) result += columnDelimiter;\n            result += item[key];\n            ctr++;\n        });\n        result += lineDelimiter;\n    });\n    return result;\n}\n\nfunction downloadCSV() {\n                   \n    var csv = convertArrayOfObjectsToCSV({    \n        data: dataNodes.table        \n    });\n    \n    if (csv === null) return;\n        \n    filename = 'example.csv';\n    \n    if (!csv.match(/^data:text\\/csv/i)) {    \n        csv = 'data:text/csv;charset=utf-8,' + csv;        \n    }\n    \n    data = encodeURI(csv);    \n    link = document.createElement('a');    \n    link.setAttribute('href', data);    \n    link.setAttribute('download', filename);    \n    link.click();\n    \n    return csv;\n}\n\nreturn downloadCSV();\n\n"
-				}
-			}
-		],
-		"columns": 3,
-		"reIndexMap": [
-			0,
-			1,
-			2
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"scaling": {
-		"widthPx": 1333,
-		"heightPx": 793,
-		"scrollWidthPx": 1333,
-		"scrollHeightPx": 793,
-		"widthVw": 69.42708333333333,
-		"heightVh": 72.1565059144677,
-		"scrollWidthVw": 69.42708333333333,
-		"scrollHeightVh": 72.1565059144677,
-		"scalingMethod": "scaleTwh",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {}
-	},
-	"dashboard": {
-		"flatUiTableq": {
-			"layout": {
-				"top": "1.81984vh",
-				"left": "2.60417vw",
-				"height": "53.1034vh",
-				"width": "41.1979vw",
-				"minHeight": "",
-				"minWidth": ""
-			},
-			"container": {
-				"id": "flatUiTableq",
-				"instanceId": "flatUiTableq",
-				"modelJsonId": "flatUiTable"
-			},
-			"modelParameters": {
-				"headerLine": true,
-				"striped": true,
-				"bordered": true,
-				"noBorder": false,
-				"editableCols": "[]"
-			},
-			"modelHiddenParams": {
-				"value": null
-			}
-		},
-		"flatUiButtonv": {
-			"layout": {
-				"top": "56.8699vh",
-				"left": "30.625vw",
-				"height": "7.7343vh",
-				"width": "12.5vw",
-				"minHeight": "50px",
-				"minWidth": "55px"
-			},
-			"container": {
-				"id": "flatUiButtonv",
-				"instanceId": "flatUiButtonv",
-				"modelJsonId": "flatUiButton"
-			},
-			"modelParameters": {
-				"text": "Export to CSV file",
-				"numberOfTriggers": 1,
-				"fileInput": false
-			},
-			"modelHiddenParams": {}
-		}
-	},
-	"connections": {
-		"flatUiTableq": {
-			"value": {
-				"name": "value",
-				"dataSource": "table",
-				"dataFields": [],
-				"dataSourceIndex": 1
-			}
-		},
-		"flatUiButtonv": {
-			"trigger1": {
-				"name": "trigger1",
-				"dataSource": "download",
-				"dataFields": [],
-				"dataSourceIndex": 2
-			}
-		}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"checkExportOptions": false
+  "meta": {
+    "version": "3.000.8887",
+    "fileFormatVersion": "0.3",
+    "date": "Tue Apr 30 2024 11:07:30 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "name": "csv-array-export-to-file",
+    "description": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "csv",
+        "type": "CSV_file_reader_plugin",
+        "settings": {
+          "name": "csv",
+          "data_path": "CH4-short.csv",
+          "content": "\"lat\",\"lng\",\"CH4\"\r\n48.876684, 2.175765, 1.94\r\n48.876684, 2.175765, 1.95\r\n48.876684, 2.175765, 1.92\r\n48.876705, 2.175806, 1.93\r\n48.876705, 2.175806, 1.99\r\n",
+          "delimiter": "",
+          "eol": "",
+          "quote_char": "\"",
+          "head": true,
+          "skip_empty_lines": true,
+          "dynamic_typing": true,
+          "pluck": true,
+          "embedding_object": false,
+          "nb_meta_lines": 0,
+          "nb_subheader_lines": 0
+        }
+      },
+      {
+        "name": "download",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "download",
+          "autoStart": false,
+          "explicitTrig": true,
+          "json_var_formula": "function convertArrayOfObjectsToCSV(args) {  \n\tvar result, ctr, keys, columnDelimiter, lineDelimiter, data;\n\n\tdata = args.data || null;\n\tif (data === null || !data.length) {\n    \treturn null;\n    }\n\n    columnDelimiter = args.columnDelimiter || ';';\n    lineDelimiter = args.lineDelimiter || '\\n';\n\n    keys = Object.keys(data[0]);\n    \n    result = '';\n\n    data.forEach(function(item) {\n        ctr = 0;\n        keys.forEach(function(key) {\n            if (ctr > 0) result += columnDelimiter;\n            result += item[key];\n            ctr++;\n        });\n        result += lineDelimiter;\n    });\n    return result;\n}\n\nfunction downloadCSV() {\n                   \n    var csv = convertArrayOfObjectsToCSV({    \n        data: dataNodes.table        \n    });\n    \n    if (csv === null) return;\n        \n    filename = 'example.csv';\n    \n    if (!csv.match(/^data:text\\/csv/i)) {    \n        csv = 'data:text/csv;charset=utf-8,' + csv;        \n    }\n    \n    data = encodeURI(csv);    \n    link = document.createElement('a');    \n    link.setAttribute('href', data);    \n    link.setAttribute('download', filename);    \n    link.click();\n    \n    return csv;\n}\n\nreturn downloadCSV();\n\n"
+        }
+      },
+      {
+        "name": "table",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "table",
+          "json_var_formula": "var t= _.unzip(_.values(dataNodes[\"csv\"]),3);\nt.unshift(_.keys(dataNodes[\"csv\"]));\n\nreturn t;"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "flatUiTableA": {
+      "layout": {
+        "top": "1.84vh",
+        "left": "1.59686vw",
+        "height": "57.8667vh",
+        "width": "50.2618vw",
+        "minHeight": "79px",
+        "minWidth": "88px",
+        "z-index": "3"
+      },
+      "container": {
+        "instanceId": "flatUiTableA",
+        "modelJsonId": "flatUiTable"
+      },
+      "modelParameters": {
+        "headerLine": true,
+        "indexColumn": false,
+        "tableValueFontSize": 0.5,
+        "striped": true,
+        "valueColor": "var(--widget-table-value-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueAlign": "left",
+        "bordered": true,
+        "noBorder": false,
+        "editableCols": "[]",
+        "backgroundColor": {
+          "primary": "var(--widget-color-0)",
+          "secondary": "var(--widget-table-striped-odd)"
+        }
+      },
+      "modelHiddenParams": {
+        "value": null
+      }
+    },
+    "flatUiFileInputButtonA": {
+      "layout": {
+        "top": "63.04vh",
+        "left": "36.4529vw",
+        "height": "8.4vh",
+        "width": "15.2487vw",
+        "minHeight": "24px",
+        "minWidth": "55px",
+        "z-index": "4"
+      },
+      "container": {
+        "instanceId": "flatUiFileInputButtonA",
+        "modelJsonId": "flatUiFileInputButton"
+      },
+      "modelParameters": {
+        "text": "Export to CSV file",
+        "numberOfTriggers": 1,
+        "fileInput": false,
+        "binaryFileInput": false,
+        "buttonFontSize": 0.3,
+        "displayIcon": false,
+        "fontAwesomeIcon": "",
+        "buttonFontFamily": "var(--widget-font-family)",
+        "buttonTextColor": "var(--widget-button-primary-text)",
+        "buttonDefaultColor": "var(--widget-button-primary-color)",
+        "buttonActiveColor": "var(--widget-button-active-color)",
+        "buttonHoverColor": "var(--widget-button-hover-color)"
+      },
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "flatUiTableA": {
+      "value": {
+        "name": "value",
+        "dataNode": "table",
+        "dataFields": []
+      }
+    },
+    "flatUiFileInputButtonA": {
+      "trigger1": {
+        "name": "trigger1",
+        "dataNode": "download",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

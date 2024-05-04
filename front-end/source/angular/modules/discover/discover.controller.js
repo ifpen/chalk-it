@@ -27,10 +27,11 @@ angular
     '$stateParams',
     '$state',
     'ApisFactory',
-    function ($scope, $rootScope, $stateParams, $state, ApisFactory) {
-      var matches = document.querySelectorAll('.docsLink');
+    'ManagePrjService',
+    function ($scope, $rootScope, $stateParams, $state, ApisFactory, ManagePrjService) {
+      const matches = document.querySelectorAll('.docsLink');
       matches.forEach(function (item) {
-        item.href = xDashConfig.urlDoc + 'index.html';
+        item.href = xDashConfig.urlDoc;
       });
 
       $scope.discoverSteps = [0, 0, 0, 0, 0];
@@ -72,15 +73,28 @@ angular
             },
             function (isConfirm) {
               if (isConfirm) {
-                var endAction = function () {
+                const endAction = function () {
                   navHelper.openDemoProject(projectName, startIntroProject);
                   if ($('#inputSearchWidget').val()) {
                     $('#inputSearchWidget').val('');
-                    var clearWidgetSearch = new widgetToolboxClass();
+                    const clearWidgetSearch = new widgetToolboxClass();
                   }
                 };
-                //save current project then duplicate
-                fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
+                if ($rootScope.xDashFullVersion) {
+                  //save current project then duplicate
+                  fileManager.getFileListExtended(
+                    'project',
+                    $rootScope.currentProject.name,
+                    undefined,
+                    endAction,
+                    true
+                  );
+                } else {
+                  // Use setTimeout to wait for the swal to close
+                  setTimeout(() => {
+                    ManagePrjService.saveProjectToLocal(endAction);
+                  }, 500);
+                }
               } else {
                 //nothing
               }
@@ -90,7 +104,7 @@ angular
           navHelper.openDemoProject(projectName, startIntroProject);
           if ($('#inputSearchWidget').val()) {
             $('#inputSearchWidget').val('');
-            var clearWidgetSearch = new widgetToolboxClass();
+            const clearWidgetSearch = new widgetToolboxClass();
           }
         }
       };
@@ -120,7 +134,7 @@ angular
 
       /*---------- New project in discover view ----------------*/
       $scope.newProject = function () {
-        let vm = angular.element(document.getElementById('sidebar-ctrl')).scope();
+        const vm = angular.element(document.getElementById('sidebar-ctrl')).scope();
         vm.newProject();
       };
     },

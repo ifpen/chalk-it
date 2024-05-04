@@ -102,6 +102,7 @@ function syntaxHighlight(json) {
     return json;
 }
 
+
 function base64ArrayBuffer(arrayBuffer) {
     var base64 = ''
     var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
@@ -450,3 +451,573 @@ function str2ab(str) {
         };
     }
 })();
+
+/**
+ * Convert a data size in bytes to a string including a unit ('ko', 'Mo', etc.)
+ * @param {number} [sizeBytes] 
+ * @returns {string}
+ */
+function formatDataSize(sizeBytes) {
+    if (!sizeBytes) {
+        return "";
+    }
+
+    let unit = 1;
+    let unitStr = "o";
+    if (sizeBytes > 100_000_000) {
+        unit = 1_000_000_000;
+        unitStr = "Go"
+    } else if (sizeBytes > 1_000_000) {
+        unit = 1_000_000;
+        unitStr = "Mo"
+    } else if (sizeBytes > 1_000) {
+        unit = 1_000;
+        unitStr = "ko"
+    }
+
+    let size = sizeBytes / unit;
+    size = Math.round(size * 100) / 100;
+
+    return `${size}${unitStr}`;
+}
+
+
+DEFAULT_JSON_FORMAT = {
+    maxLines: 20_000,
+    maxChars: 2_000_000,
+    maxDepth: 12,
+    maxObjectKeys: 100,
+    maxArrayLength: 100,
+    maxStringLength: 120,
+    maxLineWidth: 120,
+    indentLength: 2,
+}
+
+// Format for small previews.
+// Aims to be fast to format, to not slow the display or use too much memory. Also avoid having a ridiculous scrollbar.
+// Also limits nested depth, array sizes, etc. to fit more of the object's general structure into the total size quota.
+PREVIEW_JSON_FORMAT = {
+    maxLines: 100,
+    maxChars: 100_000,
+    maxDepth: 8,
+    maxObjectKeys: 20,
+    maxArrayLength: 20,
+    maxStringLength: 80,
+    maxLineWidth: 100,
+    indentLength: 2,
+}
+
+// Format to fully display JSON as the main focus of the view.
+// Priorities are to have few limits, stay readable, and not have the page blow past its memory limit.
+// The display getting a bit slow is acceptable.
+VIEW_JSON_FORMAT = {
+    maxLines: 50_000,
+    maxChars: 5_000_000,
+    // Single strings (displayed on the same line) are useless past a certain length as they get impossible to read
+    maxStringLength: 50_000,
+    maxLineWidth: 120,
+    indentLength: 4,
+}
+
+/**
+ * Convert JSON data to a HTMLElement-based representation
+ * @param {*} data JSON object
+ * @param {*} options limits and formating options
+ * @returns {HTMLElement}  
+ */
+function formatJson(
+    data,
+    {
+        maxLines, // maximum number of lines displayed
+        maxChars, // maximum number of characters displayed (including indentations)
+        maxDepth, // maximum depth displayed (nested objects/arrays)
+        maxObjectKeys, // maximum number of keys displayed per object
+        maxArrayLength, // maximum number of entries displayed per array
+        maxStringLength, // maximum number of characters displayed per string (including object keys)
+        maxLineWidth, // maximum line size bellow which arrays may be inlined
+        indentLength, // indentation size
+    } = DEFAULT_JSON_FORMAT) {
+    // ** Note **
+    // To make limits optionals, the implementation makes use of the fact that 'value > maximum' is not truthy when maximum is not defined.
+    // This implies that the direction of inequalities involving 'maxYYY' matters.
+
+    const prefixIncrementLen = indentLength ?? 2;
+    const prefixIncrement = " ".repeat(prefixIncrementLen);
+
+    function appendText(element, text, classes, lines, chars) {
+        const span = document.createElement('span');
+        span.classList.add(...classes);
+        span.innerText = text;
+        element.append(span);
+        return { lines, chars: chars + text.length }
+    }
+
+    function canInlineArray(array, depth, prefixLength = 0) {
+        if (!maxLineWidth) {
+            return false;
+        }
+
+        let width = prefixLength + 2; // []
+        let len = array.length;
+        if (maxArrayLength < len) {
+            len = maxArrayLength;
+            width += 5; // ', ...'
+        }
+
+        let index = 0;
+        while (width < maxLineWidth && index < len) {
+            if (index !== 0) {
+                width += 2; // ', ';
+            }
+
+            const item = array[index];
+            if (item === null || item === undefined) {
+                width += item === null ? 4 : 9;
+            } else if (Array.isArray(item)) {
+                if (item.length === 0) {
+                    width += 2; // '[]'; 
+                } else if (depth + 1 >= maxDepth) {
+                    width += 5; // '[...]'; 
+                } else {
+                    return false;
+                }
+            } else if (typeof item === 'object') {
+                const keys = Object.keys(item);
+                if (keys.length === 0) {
+                    width += 2; // '{}'; 
+                } else if (depth + 1 >= maxDepth) {
+                    width += 5; // '{...}'; 
+                } else {
+                    return false;
+                }
+            } else if (typeof item === 'string') {
+                // Imperfect but good enough. We gloss over escape sequences.
+                if (item.length > maxStringLength) {
+                    width += maxStringLength + 5; // '"..."'; 
+                } else {
+                    width += item.length + 2; // len + quotes
+                }
+                width += item.length;
+            } else if (typeof item === 'number') {
+                width += item.toString().length;
+            } else if (typeof item === 'boolean') {
+                width += item ? 4 : 5; // true/false
+            }
+
+            index += 1;
+        }
+
+        return width <= maxLineWidth;
+    }
+
+    function appendArray(element, array, prefix, depth, lines, chars, lineStartLength) {
+        if (array.length === 0) {
+            element.appendChild(document.createTextNode('[]'));
+            return { lines, chars: chars + 2 };
+        }
+        if (depth === maxDepth) {
+            element.appendChild(document.createTextNode('[...]'));
+            return { lines, chars: chars + 5 };
+        }
+
+        const inline = canInlineArray(array, depth, lineStartLength);
+        let newLines = lines;
+        let newChars = chars;
+
+        element.appendChild(document.createTextNode('['));
+        newChars += 1;
+
+        if (!inline) {
+            element.appendChild(document.createElement('br'));
+            newLines += 1;
+        }
+
+        if (newLines >= maxLines || newChars >= maxChars) return { lines: newLines, chars: newChars };
+
+        let len = array.length;
+        const truncate = maxArrayLength < len;
+        if (truncate) {
+            len = maxArrayLength;
+        }
+
+        const newPrefix = prefix + prefixIncrement;
+        for (let index = 0; index < len; index++) {
+            const value = array[index];
+
+            if (!inline) {
+                element.appendChild(document.createTextNode(newPrefix));
+                newChars += newPrefix.length;
+            }
+            ({ lines: newLines, chars: newChars } = append(element, value, newPrefix, depth + 1, newLines, newChars, newPrefix.length));
+            if (newLines >= maxLines || newChars >= maxChars) return { lines: newLines, chars: newChars };
+
+            if (inline) {
+                if (index !== len - 1 || truncate) {
+                    element.appendChild(document.createTextNode(', '));
+                    newChars += 2;
+                }
+            } else {
+                if (index !== len - 1 || truncate) {
+                    element.appendChild(document.createTextNode(','));
+                    newChars += 1;
+                }
+                element.appendChild(document.createElement('br'));
+                newLines += 1;
+            }
+            if (newLines >= maxLines || newChars >= maxChars) return { lines: newLines, chars: newChars };
+        }
+
+        if (truncate) {
+            const txt = inline ? '...' : (newPrefix + '...');
+            element.appendChild(document.createTextNode(txt));
+            newChars += txt.length;
+
+            if (!inline) {
+                element.appendChild(document.createElement('br'));
+                newLines += 1;
+            }
+        }
+
+        if (newLines >= maxLines || newChars >= maxChars) return { lines: newLines, chars: newChars };
+
+        const txt = inline ? ']' : (prefix + ']');
+        element.appendChild(document.createTextNode(txt));
+        newChars += txt.length;
+
+        return { lines: newLines, chars: newChars };
+    }
+
+    function appendObject(element, object, prefix, depth, lines, chars) {
+        const entries = Object.entries(object);
+        if (entries.length === 0) {
+            element.appendChild(document.createTextNode('{}'));
+            return { lines, chars: chars + 2 };
+        }
+        if (depth === maxDepth) {
+            element.appendChild(document.createTextNode('{...}'));
+            return { lines, chars: chars + 5 };
+        }
+
+        let newLines = lines;
+        let newChars = chars;
+
+        element.appendChild(document.createTextNode('{'));
+        element.appendChild(document.createElement('br'));
+        newChars += 1;
+        newLines += 1;
+        if (newLines >= maxLines || newChars >= maxChars) return { lines: newLines, chars: newChars };
+
+        let len = entries.length;
+        const truncate = maxObjectKeys < len;
+        if (truncate) {
+            len = maxObjectKeys;
+        }
+
+        const newPrefix = prefix + prefixIncrement;
+        for (let index = 0; index < len; index++) {
+            const [key, value] = entries[index];
+
+            element.appendChild(document.createTextNode(newPrefix));
+            newChars += newPrefix.length;
+
+            const truncateKey = key.length > maxStringLength;
+            let keyText = JSON.stringify(truncateKey ? key.substring(0, maxStringLength) : key);
+            if (truncateKey) {
+                keyText += '...';
+            }
+            ({ lines: newLines, chars: newChars } = appendText(element, keyText, ['vignette', 'key'], newLines, newChars));
+
+            element.appendChild(document.createTextNode(': '));
+            newChars += 2;
+
+            ({ lines: newLines, chars: newChars } = append(element, value, newPrefix, depth + 1, newLines, newChars, newPrefix.length + keyText.length + 2));
+            if (newLines >= maxLines || newChars >= maxChars) return { lines: newLines, chars: newChars };
+
+            if (index !== len - 1 || truncate) {
+                element.appendChild(document.createTextNode(','));
+                newChars += 1;
+            }
+
+            element.appendChild(document.createElement('br'));
+            newLines += 1;
+
+            if (newLines >= maxLines || newChars >= maxChars) return { lines: newLines, chars: newChars };
+        }
+
+        if (truncate) {
+            element.appendChild(document.createTextNode(prefix + '...'));
+            element.appendChild(document.createElement('br'));
+            newChars += prefix.length + 3;
+            newLines += 1;
+        }
+
+        if (newLines >= maxLines || newChars >= maxChars) return { lines: newLines, chars: newChars };
+
+        element.appendChild(document.createTextNode(`${prefix}}`));
+        newChars += prefix.length + 1;
+        return { lines: newLines, chars: newChars };
+    }
+
+    function append(element, json, prefix, depth, lines, chars, lineStartLength = 0) {
+        if (lines >= maxLines || chars >= maxChars) {
+            return { lines, chars };
+        }
+
+        if (json === null || json === undefined) {
+            const text = json === null ? 'null' : 'undefined';
+            return appendText(element, text, ['key', 'null'], lines, chars);
+        } else if (Array.isArray(json)) {
+            return appendArray(element, json, prefix, depth, lines, chars, lineStartLength);
+        } else if (typeof json === 'object') {
+            return appendObject(element, json, prefix, depth, lines, chars)
+        } else if (typeof json === 'string') {
+            const truncate = json.length > maxStringLength;
+            let text = JSON.stringify(truncate ? json.substring(0, maxStringLength) : json);
+            if (truncate) {
+                text += '...';
+            }
+            return appendText(element, text, ['vignette', 'string'], lines, chars);
+        } else if (typeof json === 'number') {
+            const text = json.toString();
+            return appendText(element, text, ['vignette', 'number'], lines, chars);
+        } else if (typeof json === 'boolean') {
+            const text = json ? 'true' : 'false';
+            return appendText(element, text, ['vignette', 'boolean'], lines, chars);
+        }
+    }
+
+    const span = document.createElement('span');
+    span.style['white-space'] = 'pre';
+    const { lines, chars } = append(span, data, "", 0, 0, 0);
+    if (lines >= maxLines || chars >= maxChars) {
+        const last = span.lastChild;
+        if (!(last instanceof HTMLBRElement)) {
+            span.appendChild(document.createElement('br'));
+        }
+
+        const b = document.createElement('b');
+        b.innerText = '... [preview truncated due to excessive data size]';
+        span.appendChild(b);
+    }
+    return span;
+}
+
+/**
+ * Computes the actual size of base 64 encoded data
+ * @param {string} b64str base 64 encoded data
+ * @returns {number} data size in bytes
+ */
+function b64StrSize(b64str) {
+    const len = b64str.length;
+    let size = Math.ceil(len / 4 * 3);
+    if (b64str.endsWith('==')) {
+        size -= 2;
+    } else if (b64str.endsWith('=')) {
+        size -= 1;
+    }
+    return size;
+}
+
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode(parseInt(p1, 16));
+    }));
+}
+
+function b64DecodeUnicode(str) {
+    return decodeURIComponent(
+      Array.prototype.map
+        .call(atob(str), function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("") 
+    );
+}
+
+// MIME types of images we expect the browser to be able to display
+const BROWSER_SUPPORTED_IMAGES = [
+    'image/apng',
+    'image/avif',
+    'image/bmp',
+    'image/gif',
+    'image/ico',
+    'image/jpeg',
+    'image/png',
+    'image/svg+xml',
+    'image/webp',
+];
+
+// Displaying base64 encoded data beyond a few characters is clutter rather than usefulness
+const MAX_BINARY_DATA_DISPLAY_CHARS = 10;
+
+/**
+ * Provides a minimalistic but hopefully helpful representation of some data. Handles binary data with a MIME type.
+ * @param {*} data any JSON data
+ * @param {*} options 
+ * @returns {HTMLElement}
+ */
+function jsonDataToBasicHtmlElement(data, options = undefined) {
+    if (typeof data === 'string') {
+        const span = document.createElement('span');
+        span.innerText = data;
+        span.style['white-space'] = 'pre-wrap';
+        return span;
+    } else if (typeof data === 'number' || typeof data === 'boolean') {
+        const span = document.createElement('span');
+        span.innerText = String(data);
+        return span;
+    } else if (typeof data === 'object' && data.type && data.content) {
+        if (data.type === "application/x-python-pickle") {
+            const code = document.createElement('code');
+            code.innerText = `<class '${data.name}'> ${formatDataSize(b64StrSize(data.content))}`;
+            return code;
+        }
+        else if (['text/html', 'application/pdf'].includes(data.type)) {
+            const iframe = document.createElement('iframe');
+            iframe.src = `data:${data.type};base64,${data.isBinary ? data.content : b64EncodeUnicode(data.content)}`;
+            iframe.style.height = '100%';
+            iframe.style.width = '100%';
+            return iframe;
+        } else if (data.type.startsWith('text/')) {
+            const monospace = data.type === 'text/csv';
+            const element = document.createElement(monospace ? 'pre' : 'div');
+            element.innerText = data.isBinary ? atob(data.content) : data.content;
+            if (!monospace) {
+                element.style['white-space'] = 'pre-wrap';
+            }
+            return element;
+        } else if (data.isBinary) {
+            if (BROWSER_SUPPORTED_IMAGES.includes(data.type)) {
+                const img = document.createElement('img');
+                img.src = `data:${data.type};base64,${data.content}`;
+                img.style.height = '100%';
+                img.style.width = '100%';
+                img.style['object-fit'] = 'contain';
+                return img;
+            } else if (data.type.startsWith('video/') || data.type.startsWith('audio/')) {
+                const element = document.createElement(data.type.startsWith('video/') ? 'video' : 'audio');
+                element.src = `data:${data.type};base64,${data.content}`;
+                element.controls = true;
+                element.style.height = '100%';
+                element.style.width = '100%';
+                return element;
+            } else {
+                let dataStr = data.content;
+                if (dataStr.length > MAX_BINARY_DATA_DISPLAY_CHARS) {
+                    dataStr = dataStr.substring(0, MAX_BINARY_DATA_DISPLAY_CHARS) + '...';
+                }
+
+                const pre = document.createElement('pre');
+                const value = { ...data, content: `${dataStr} <${formatDataSize(b64StrSize(data.content))}>` };
+                pre.innerText = JSON.stringify(value, null, 2);
+                return pre;
+            }
+        }
+    }
+
+    // application/octet-stream -> hex ?
+
+    const span = document.createElement('span');
+    span.appendChild(formatJson(data, options?.jsonFormat ?? DEFAULT_JSON_FORMAT));
+    span.className = 'css-treeview';
+    return span;
+};
+
+/**
+ * Format file size in bytes to a readable string.
+ *
+ * @param {number} fileSize - The file size in bytes.
+ * @returns {string} Formatted file size.
+ */
+function formatFileSize(fileSize) {
+    if (fileSize < 1024) {
+        return `${fileSize} bytes`;
+    } else if (fileSize < 1_048_576) {
+        return `${(fileSize / 1024).toFixed(1)} KB`; // 1024 * 1024
+    } else {
+        return `${(fileSize / 1_048_576).toFixed(1)} MB`; // 1024 * 1024
+    }
+}
+
+/**
+ * Retrieves the file extension from a given file name.
+ *
+ * @function
+ * @param {string} fileName - The file name to extract the extension from.
+ * @returns {string} The file extension without the dot (e.g. "txt" for "example.txt").
+ */
+function getFileExtension(fileName) {
+    const extension = fileName.split(".").pop();
+    return extension;
+}
+
+async function zipToObject(file, textExtensions = ["txt", "json", "xprjson", "xml", "svg", "html", "css", "js", "ts", "md", "csv"]) {
+    let size = 0;
+    let data = null;
+    let name = undefined;
+    let base64 = false;
+    let type = 'application/x-zip-compressed';
+    if(file instanceof File) {
+        data = file;
+        size = file.size;
+        name = file.name;
+        type = file.type;
+    } else if (typeof file ==='string') {
+        data = file;
+        base64 = true;
+    } else {
+        type = file.type ?? type;
+        name = file.name;
+        data = file.content;
+        base64 = true;
+    }
+
+    if(base64) {
+        size = b64StrSize(data);
+    }
+
+    const fileSizeFormat = formatFileSize(size);
+
+    const zip = await JSZip.loadAsync(data, { base64 });
+    const zipEntries = [];
+    zip.forEach((relativePath, zipEntry) => zipEntries.push({relativePath, zipEntry}));
+
+    const entries = await Promise.all(
+        zipEntries
+            .filter(entry => !entry.relativePath.endsWith('/'))
+            .map(async entry => {
+                const fileExtension = getFileExtension(entry.relativePath);
+                const isBinary = !textExtensions.includes(fileExtension);
+                const content = await entry.zipEntry.async(isBinary ? 'base64' : 'text');
+                return {
+                    name: entry.relativePath, 
+                    content,
+                    isBinary,
+                };
+            })
+    );
+
+    return {
+        type,
+        size: fileSizeFormat,
+        name,
+        entries,
+    };
+}
+
+function decodeMimeType(mime) {
+    if(mime) {
+        const trimed = mime.trim();
+        if(trimed) {
+            const type = trimed.replace(/ *; *charset *=.*/i, '');
+            const charsetMatch = trimed.match(/.*; *charset *=(.*)/i);
+            const charset = charsetMatch ? charsetMatch[1] : undefined;
+            return [type, charset];
+        }
+    }
+    return [undefined, undefined];
+}
+
+function stripUndefined(object) {
+    return Object.fromEntries(Object.entries(object).filter(([, v]) => v !== undefined));
+}

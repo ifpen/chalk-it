@@ -1,56 +1,22 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ customNavigationRuntime mode runtime display handling              │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                        │ \\
+// │ Copyright © 2022-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR                                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var customNavigationRuntime = (function () {
-  const self = this;
-  self.jsonContent = {};
-  self.grid = {
-    rows: 1,
-    cols: 1,
-  };
+class CustomNavigationRuntime {
+  #grid;
+  #jsonContent;
 
-  /**
-   * setJsonContent
-   *
-   * @param { Object } jsonContent - project xprjson
-   */
-  function setJsonContent(jsonContent) {
-    self.jsonContent = jsonContent;
-  }
-
-  /**
-   * _getJsonContent
-   *
-   * @return { Object } - project xprjson
-   */
-  function _getJsonContent() {
-    return self.jsonContent;
-  }
-
-  /**
-   * Retrieves the dashboard grid.
-   *
-   * @return { Object } The grid object, which contains the number of rows and columns in the grid.
-   * @property { Number } rows - The number of rows in the grid.
-   * @property { Number } cols - The number of columns in the grid.
-   */
-  function _getGrid() {
-    return self.grid;
-  }
-
-  /**
-   * Setting the dashboard grid.
-   *
-   * @param { Object } grid - jsonContent.device.cols
-   */
-  function _setGrid(grid) {
-    self.grid = grid;
+  constructor() {
+    this.#grid = {
+      rows: 1,
+      cols: 1,
+    };
+    this.#jsonContent = {};
   }
 
   /**
@@ -59,13 +25,13 @@ var customNavigationRuntime = (function () {
    * @param { Number | String } valueRow - jsonContent.device.cols.valueRow
    * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
    */
-  function customNavigationPrepareRescale(valueRow, valueCol) {
-    let { rows, cols } = _getGrid();
+  customNavigationPrepareRescale(valueRow, valueCol) {
+    const { defaultRows, defaultCols } = this.grid;
 
-    rows = Number(valueRow) || 1;
-    cols = Number(valueCol) || 1;
+    const rows = Number(valueRow) || defaultRows;
+    const cols = Number(valueCol) || defaultCols;
 
-    _setGrid({ rows, cols });
+    this.grid = { rows, cols };
 
     if (rows > 1) {
       $('[id^=dpr][id$=c]').show();
@@ -77,14 +43,14 @@ var customNavigationRuntime = (function () {
    *
    * @param { Object } jsonContent - project xprjson
    */
-  function customNavigationModeInit(jsonContent) {
+  customNavigationModeInit(jsonContent) {
     const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
-    let { rows, cols } = _getGrid();
+    const { defaultRows, defaultCols } = this.grid;
 
-    rows = Number(jsonContent.device.cols.valueRow) || 1;
-    cols = Number(jsonContent.device.cols.valueCol) || 1;
+    const rows = Number(valueRow) || defaultRows;
+    const cols = Number(valueCol) || defaultCols;
 
-    _setGrid({ rows, cols });
+    this.grid = { rows, cols };
 
     if (rows > 1) {
       $('[id^=dpr][id$=c]').hide();
@@ -105,30 +71,33 @@ var customNavigationRuntime = (function () {
    *
    * @param { Number } numPage - target page number
    */
-  function customNavigationGoToPage(numPage) {
+  customNavigationGoToPage(numPage) {
     const $rootScope = angular.element(document.body).scope().$root;
-    $rootScope.pageNumber = numPage;
 
     // Do not run in edit mode
     if (typeof layoutMgr !== 'undefined' && !$rootScope.bIsPlayMode) return;
 
-    const jsonContent = _getJsonContent();
+    // When using the "row to tab" method, the page number must be updated.
+    $rootScope.pageNumber = numPage;
+
+    const jsonContent = this.jsonContent;
     let exportOptions = '';
-    let { rows, cols } = _getGrid();
+    const { defaultRows, defaultCols } = this.grid;
+    let rows, cols;
 
     if (_.isEmpty(jsonContent)) {
       // View mode
-      rows = layoutMgr.getRows() || 1;
-      cols = layoutMgr.getCols() || 1;
+      rows = layoutMgr.getRows() || defaultRows;
+      cols = layoutMgr.getCols() || defaultCols;
       exportOptions = htmlExport.exportOptions;
     } else {
       // Preview mode
-      rows = Number(jsonContent.device.cols.valueRow) || 1;
-      cols = Number(jsonContent.device.cols.valueCol) || 1;
+      rows = Number(jsonContent.device.cols.valueRow) || defaultRows;
+      cols = Number(jsonContent.device.cols.valueCol) || defaultCols;
       exportOptions = jsonContent.exportOptions;
     }
 
-    _setGrid({ rows, cols });
+    this.grid = { rows, cols };
 
     if (rows > 1) {
       if (exportOptions == 'projectToTargetWindow') {
@@ -149,10 +118,43 @@ var customNavigationRuntime = (function () {
     }
   }
 
-  return {
-    customNavigationPrepareRescale,
-    customNavigationModeInit,
-    setJsonContent,
-    customNavigationGoToPage,
-  };
-})();
+  /**
+   * Retrieves the dashboard json content.
+   *
+   * @return { Object } - project xprjson.
+   */
+  get jsonContent() {
+    return this.#jsonContent;
+  }
+
+  /**
+   * Setting the dashboard json content.
+   *
+   * @param { Object } jsonContent - project xprjson.
+   */
+  set jsonContent(jsonContent) {
+    this.#jsonContent = jsonContent;
+  }
+
+  /**
+   * Retrieves the dashboard grid.
+   *
+   * @return { Object } The grid object, which contains the number of rows and columns in the grid.
+   * @property { Number } rows - The number of rows in the grid.
+   * @property { Number } cols - The number of columns in the grid.
+   */
+  get grid() {
+    return this.#grid;
+  }
+
+  /**
+   * Setting the dashboard grid.
+   *
+   * @param { Object } grid - jsonContent.device.cols
+   */
+  set grid(grid) {
+    this.#grid = grid;
+  }
+}
+
+const customNavigationRuntime = new CustomNavigationRuntime();

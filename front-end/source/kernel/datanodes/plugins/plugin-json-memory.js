@@ -138,12 +138,8 @@
     // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
     self.onDispose = function () {};
 
-    this.isSetValueValid = function () {
+    this.canSetValue = function () {
       return true;
-    };
-
-    self.isSetFileValid = function () {
-      return false;
     };
 
     self.isInternetNeeded = function () {

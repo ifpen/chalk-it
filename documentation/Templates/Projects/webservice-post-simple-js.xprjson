@@ -1,134 +1,140 @@
 {
-	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 22:38:22 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "webservice-post-simple-js",
-		"description": "HTTP POST using REST API dataNode-type",
-		"groupName": "JavaScript",
-		"tags": [
-			{
-				"text": "DataNodes"
-			},
-			{
-				"text": "REST-API"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"datanodes": [
-			{
-				"name": "Surface",
-				"type": "REST_web-service_from_datasource",
-				"settings": {
-					"name": "Surface",
-					"url": "https://compute20190425045435.azurewebsites.net/ComputeService.asmx/Surface",
-					"use_xproxy": false,
-					"sampleTime": 0,
-					"autoStart": true,
-					"explicitTrig": false,
-					"req_data_type": "JSON",
-					"resp_data_type": "JSON",
-					"method": "POST",
-					"body": "{ \"X\": \"1.25\", \"Y\": \"4.0\" }",
-					"headers": [
-						{
-							"name": "Content-Type",
-							"value": "application/json"
-						}
-					]
-				}
-			}
-		],
-		"reIndexMap": [
-			0
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"libraries": {
-		"pyodideStandard": [],
-		"pyodideMicropip": []
-	},
-	"scaling": {
-		"widthPx": 1256,
-		"heightPx": 575,
-		"scrollWidthPx": 1256,
-		"scrollHeightPx": 575,
-		"widthVw": 84.29530201342281,
-		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.29530201342281,
-		"scrollHeightVh": 79.6398891966759,
-		"scalingMethod": "scaleTwh",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {},
-		"backgroundColor": "#ffffff"
-	},
-	"dashboard": {
-		"flatUiValueDisplayN": {
-			"layout": {
-				"top": "1.70085vh",
-				"left": "0.806012vw",
-				"height": "5.52277vh",
-				"width": "21.9632vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "flatUiValueDisplayN",
-				"instanceId": "flatUiValueDisplayN",
-				"modelJsonId": "flatUiValueDisplay",
-				"widgetTypeName": "Value Display(flatUiValueDisplayN)"
-			},
-			"modelParameters": {
-				"label": "Msg",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"valueFontSize": 0.5,
-				"valueColor": "#34495e",
-				"displayBorder": true,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Helvetica Neue",
-				"valueFontFamily": "Helvetica Neue",
-				"borderColor": "#447bdc"
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		}
-	},
-	"connections": {
-		"flatUiValueDisplayN": {
-			"value": {
-				"name": "value",
-				"dataFields": [
-					"Msg"
-				],
-				"dataNode": "Surface",
-				"dataNodeIndex": 0
-			}
-		}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"pages": {
-		"pageNames": [],
-		"defaultPage": {}
-	},
-	"checkExportOptions": true,
-	"navBarNotification": false
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-03T13:13:01.690Z",
+    "name": "webservice-post-simple-js",
+    "description": "HTTP POST using REST API dataNode-type",
+    "groupName": "JavaScript",
+    "tags": [
+      {
+        "text": "DataNodes"
+      },
+      {
+        "text": "REST-API"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "Surface",
+        "type": "REST_web-service_from_datasource",
+        "settings": {
+          "name": "Surface",
+          "url": "https://compute20190425045435.azurewebsites.net/ComputeService.asmx/Surface",
+          "use_xproxy": true,
+          "sampleTime": 0,
+          "autoStart": true,
+          "explicitTrig": false,
+          "req_data_type": "JSON",
+          "resp_data_type": "JSON",
+          "method": "POST",
+          "body": "{ \"X\": \"1.25\", \"Y\": \"4.0\" }",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9jb21wdXRlMjAxOTA0MjUwNDU0MzUuYXp1cmV3ZWJzaXRlcy5uZXQvQ29tcHV0ZVNlcnZpY2UuYXNteC9TdXJmYWNlIiwiSG9zdCI6InhkYXNoIn0=",
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxroEC5/u3IzDOTvHwTGaJC7Ve8mvIFTHNTSRJC01sF4++1mTDAzHz2vWI03ypu1tkethTosHJxRjcAnrj3nUMMB9B3vlYUwnXguGTw5Y8ov02GA+iiBQYwEieXa6N3SMag=="
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1295,
+    "heightPx": 590,
+    "scrollWidthPx": 1295,
+    "scrollHeightPx": 590,
+    "widthVw": 84.75130890052355,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.75130890052355,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "flatUiValueDisplayN": {
+      "layout": {
+        "top": "1.68007vh",
+        "left": "0.810372vw",
+        "height": "5.45528vh",
+        "width": "22.082vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "flatUiValueDisplayN",
+        "modelJsonId": "flatUiValueDisplay"
+      },
+      "modelParameters": {
+        "label": "Msg",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "#2154ab",
+        "labelFontFamily": "Helvetica Neue",
+        "labelTextAlign": "left",
+        "valueWidthProportion": "70%",
+        "valueFontSize": 0.5,
+        "valueColor": "#34495e",
+        "valueFontFamily": "Helvetica Neue",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "#447bdc",
+        "backgroundColor": "var(--widget-input-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isNumber": false,
+        "borderWidth": "2px"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    }
+  },
+  "connections": {
+    "flatUiValueDisplayN": {
+      "value": {
+        "name": "value",
+        "dataFields": [
+          "Msg"
+        ],
+        "dataNode": "Surface",
+        "dataNodeIndex": 0
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

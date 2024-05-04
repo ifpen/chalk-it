@@ -10,7 +10,6 @@
 
 function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager) {
   var self = this;
-  var storeData = [];
 
   this.datanodes = ko.observableArray();
   this.datasourceData = {};
@@ -50,175 +49,113 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
   });
 
   this.serialize = function () {
-    var datanodes = [];
+    const datanodes = self
+      .datanodes()
+      .map((datanode) => datanode.serialize())
+      .sort((a, b) => a.name.localeCompare(b.name));
 
-    _.each(self.datanodes(), function (datanode) {
-      datanodes.push(datanode.serialize());
-    });
-
-    var $body = angular.element(document.body);
-    var $rootScope = $body.scope().$root;
-    $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-    $rootScope.showNotifications = false;
-    $rootScope.safeApply();
-    return {
-      datanodes: datanodes,
-    };
+    return { datanodes };
   };
 
   this.deserialize = function (object, bClear, finishedCallback) {
-    var appendPosition = 0;
     if (bClear) {
       self.clear();
     }
 
-    function finishLoad() {
-      self.error = ko.observable(false);
-      storeData = [];
-      var datanodes = [];
+    self.error = ko.observable(false); // MBG 09/07/2018. error better as ko observable
 
-      if (_.isUndefined(object.datanodes)) {
-        object.datanodes = object.datasources; //compatibility
-        delete object.datasources;
+    // TODO UPDATE_CLEANUP
+    for (let i = 0; i < object.datanodes.length; i++) {
+      //compatibility
+      if (object.datanodes[i].type === 'REST_web-service_from_datasource') {
+        //object.datanodes[i].type = "REST_API";
+      } else if (object.datanodes[i].type === 'FMI_web-service_from_datasource') {
+        //object.datanodes[i].type = "FMI_API";
+      } else if (object.datanodes[i].type === 'Map_matching_from_datasource') {
+        //object.datanodes[i].type = "Map_matching";
+      } else if (object.datanodes[i].type === 'Clock_web-service') {
+        //object.datanodes[i].type = "Clock";
+      } else if (object.datanodes[i].type === 'Generic_file_reader_plugin') {
+        //object.datanodes[i].type = "Generic_text_file_reader";
+      } else if (object.datanodes[i].type === 'Geolocation-plugin') {
+        //object.datanodes[i].type = "Geolocation";
       }
-
-      datanodes = object.datanodes;
-
-      //AEF: put "Memmory plugin at the end"
-      datanodes.sort(function (a, b) {
-        if (a.type === 'Memory_plugin' && b.type !== 'Memory_plugin') {
-          return 1;
-        } else if (a.type !== 'Memory_plugin' && b.type === 'Memory_plugin') {
-          return -1;
-        }
-      });
-      _.each(datanodes, function (datanodeConfig) {
-        if (!_checkDatanodeExistance(datanodeConfig.name)) {
-          if (!_createDatanodeInstance(datanodeConfig)) {
-            return false;
-          }
-        } else {
-          storeData.push(datanodeConfig); // MBG 11/07/2018: storeData has now datanodeConfig instead of datanodes
-        }
-      });
-
-      if (storeData.length != 0) {
-        displayDuplicateDataList();
-      }
-
-      // MBG scheduler refactoring
-      if (self.datanodes().length > 0) {
-        // AEF: case of dependencyStructure has nodes not defined as datanodes
-        // this case is possible when in formula for example user define a datanodes that doesn't exist
-        // and forget to create it later
-        var bFound = false;
-        var diff = Object.keys(datanodesDependency.dependencyStructure).length - datanodes.length; // always positif
-        if (diff != 0) {
-          for (var prop in datanodesDependency.dependencyStructure) {
-            bFound = false;
-            for (var j = 0; j < datanodes.length; j++) {
-              if (prop === datanodes[j].name) {
-                bFound = true;
-                break;
-              }
-            }
-            if (!bFound) {
-              var successors = Array.from(datanodesDependency.getSuccessors(prop));
-              swal(
-                'Missed dataNodes!',
-                "'" +
-                  prop +
-                  "' is referenced in formula of '" +
-                  successors +
-                  "' but doesn't exist in list of datanodes",
-                'error'
-              );
-              diff--;
-            }
-            if (diff == 0) {
-              break; //all extra nodes are handled
-            }
-          }
-        }
-
-        var datanodes;
-        var bFoundPeriodic = false;
-        var bFoundNoPeriodic = false;
-        var indexP = 0;
-        var indexNP = 0;
-        //for compatibility with older versions
-        for (var i = 0; i < self.datanodes().length; i++) {
-          datanodes = self.datanodes()[i];
-          if (!_.isUndefined(datanodes.settings().refresh)) {
-            //older name for clk, REST WS, FMI, Weather
-            datanodes.settings().sampleTime = datanodes.settings().refresh;
-            delete datanodes.settings().refresh;
-          } else if (!_.isUndefined(datanodes.settings().refresh_time)) {
-            //csvPlayer
-            datanodes.settings().sampleTime = datanodes.settings().refresh_time;
-            delete datanodes.settings().refresh_time;
-          } else if (!_.isUndefined(datanodes.settings().refresh_rate)) {
-            //websocket send
-            datanodes.settings().sampleTime = datanodes.settings().refresh_rate;
-            delete datanodes.settings().refresh_rate;
-          } else if (!_.isUndefined(datanodes.settings().refreshRate)) {
-            //geolocalisation
-            datanodes.settings().sampleTime = datanodes.settings().refreshRate;
-            delete datanodes.settings().refreshRate;
-          }
-
-          //AEF: compatibility with versions before 2.890 ( Chalk'it v0.3.7)
-          // TO DO: to be moved for github integration branch
-          const versionStr = object.version;
-          const RegEx = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
-          const match = RegEx.exec(versionStr);
-          if (match) {
-            const major = parseInt(match[1], 10);
-            const minor = parseInt(match[2], 10);
-            const lower = major < 2 || (major === 2 && minor < 890);
-            if (lower) {
-              if (datanodes.settings().explicitTrig && datanodes.settings().autoStart) {
-                datanodes.settings().autoStart = false;
-              }
-            }
-          }
-        }
-
-        //compute graphs after loading datanodes
-        datanodesDependency.computeAllDisconnectedGraphs();
-        //launch scheduler
-        for (var i = 0; i < self.datanodes().length; i++) {
-          datanodes = self.datanodes()[i];
-          if (!_.isUndefined(datanodes.settings().sampleTime) && datanodes.settings().sampleTime != 0) {
-            bFoundPeriodic = true;
-            indexP = i;
-            datanodes.sampleTime(datanodes.settings().sampleTime);
-            timeManager.registerDatanode(datanodes.sampleTime(), datanodes.name(), 'globalFirstUpdate'); //to compute basePeriod
-          } else {
-            bFoundNoPeriodic = true;
-            indexNP = i;
-          }
-        }
-        if (bFoundPeriodic) {
-          datanodes = self.datanodes()[indexP];
-          timeManager.registerDatanode(datanodes.sampleTime(), datanodes.name()); //to launch Timer
-        }
-        if (bFoundNoPeriodic) {
-          datanodes = self.datanodes()[indexNP];
-          self.launchGlobalFirstUpdate(datanodes); //launch all datanodes P and NP (see modif AEF 23/11/20)
-        }
-      }
-
-      if (_.isFunction(finishedCallback)) {
-        finishedCallback();
-      }
-
-      return true;
     }
 
-    finishLoad();
-    if (self.error()) return false;
-    else return true;
+    const newDatanodes = object.datanodes;
+
+    //AEF: put "Memory plugin at the end"
+    newDatanodes.sort(function (a, b) {
+      if (a.type === 'Memory_plugin' && b.type !== 'Memory_plugin') {
+        return 1;
+      } else if (a.type !== 'Memory_plugin' && b.type === 'Memory_plugin') {
+        return -1;
+      }
+    });
+
+    const duplicates = [];
+
+    newDatanodes.forEach((datanodeConfig) => {
+      if (_checkDatanodeExistance(datanodeConfig.name)) {
+        duplicates.push(datanodeConfig);
+      } else if (!_createDatanodeInstance(datanodeConfig)) {
+        throw new Error(`Datanode "${datanodeConfig.name}" is invalid.`);
+      }
+    });
+
+    if (duplicates.length !== 0) {
+      displayDuplicateDataList(duplicates);
+    }
+
+    // MBG scheduler refactoring
+    // AEF: case of dependencyStructure has nodes not defined as datanodes
+    // this case is possible when in formula for example user define a datanodes that doesn't exist
+    // and forget to create it later
+    const missing = {};
+    for (const prop in datanodesDependency.dependencyStructure) {
+      if (!self.datanodes().find((node) => prop === node.name())) {
+        const successors = Array.from(datanodesDependency.getSuccessors(prop));
+        missing[prop] = successors;
+      }
+    }
+    if (Object.keys(missing).length) {
+      const text = Object.entries(missing)
+        .map(
+          ([prop, successors]) =>
+            `'${prop}' is referenced in formula of '${successors}' but doesn't exist in list of datanodes.`
+        )
+        .join('\n');
+      swal('Missing dataNodes!', text, 'error');
+    }
+
+    // compute graphs after loading datanodes
+    datanodesDependency.computeAllDisconnectedGraphs();
+
+    // launch scheduler
+    let periodicNode = null;
+    let nonPeriodicNode = null;
+    self.datanodes().forEach((datanode) => {
+      if (!_.isUndefined(datanode.settings().sampleTime) && datanode.settings().sampleTime != 0) {
+        periodicNode = datanode;
+        datanode.sampleTime(datanode.settings().sampleTime);
+        timeManager.registerDatanode(datanode.sampleTime(), datanode.name(), 'globalFirstUpdate'); //to compute basePeriod
+      } else {
+        nonPeriodicNode = datanode;
+      }
+    });
+
+    if (periodicNode) {
+      timeManager.registerDatanode(periodicNode.sampleTime(), periodicNode.name()); //to launch Timer
+    }
+    if (nonPeriodicNode) {
+      self.launchGlobalFirstUpdate(nonPeriodicNode); //launch all datanodes P and NP (see modif AEF 23/11/20)
+    }
+
+    if (finishedCallback) {
+      finishedCallback();
+    }
+
+    return !self.error();
   };
 
   function _createDatanodeInstance(datanodeConfig) {
@@ -231,36 +168,28 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
     return true;
   }
 
-  function displayDuplicateDataList() {
+  function displayDuplicateDataList(storeData) {
     var contentElement = xdsjson.getDuplicateDataList(
       storeData,
       'Please check data to be loaded after choosing rename or overwite option'
     );
 
     new DialogBoxForDuplicateData(contentElement, 'List of duplicate data name', 'Load', 'Close', function () {
-      var i = 0;
-      // MBG 11/07/2018 : first rename all
-      for (i = 0; i < storeData.length; i++) {
-        if ($('#data-checkbox-' + i).is(':checked')) {
-          storeData[i].name = $('#data-check-' + i)[0].value;
-        }
-      }
-      for (i = 0; i < storeData.length; i++) {
+      for (let i = 0; i < storeData.length; i++) {
         if ($('#data-checkbox-' + i).is(':checked')) {
           storeData[i].name = $('#data-check-' + i)[0].value;
           if ($('#data-rename-' + i).is(':checked')) {
-            //add new one
-            _createDatanodeInstance(storeData[i]); // MBG 11/07/2018
+            // add new one
+            _createDatanodeInstance(storeData[i]);
           } else {
-            //overwrite
-            for (var j = 0; j < self.datanodes().length; j++) {
-              if (self.datanodes()[j].name() == storeData[i].name) {
-                self.deleteDatanode(self.datanodes()[j]); // MBG 11/07/2018
-                self.datanodes.remove(self.datanodes()[j]); // MBG added 01/08/2018
-                _createDatanodeInstance(storeData[i]); // MBG 11/07/2018
-                break;
-              }
+            // overwrite
+            const datanodes = self.datanodes();
+            const oldNode = datanodes.find((it) => it.name() === storeData[i].name);
+            if (oldNode) {
+              self.deleteDatanode(oldNode);
+              self.datanodes.remove(oldNode);
             }
+            _createDatanodeInstance(storeData[i]);
           }
         }
       }
@@ -306,8 +235,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
         callback();
       }
 
-      if (self.error()) return false;
-      else return true;
+      return !self.error();
     });
   };
 
@@ -320,11 +248,7 @@ function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, t
         break;
       }
     }
-    if (!bFound) {
-      return false;
-    } else {
-      return true;
-    }
+    return bFound;
   }
 
   this.addDatanode = function (datanodes) {

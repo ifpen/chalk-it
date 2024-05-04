@@ -134,7 +134,7 @@ function genericHtmlWidgetPluginClass() {
     widgetsDefinitionList: {
       annotationHtml: {
         factory: 'genericHtmlWidget',
-        title: 'Generic html',
+        title: 'Generic HTML',
         icn: 'generic-html',
         help: 'wdg/wdg-annotation-video/#generic-html',
       },

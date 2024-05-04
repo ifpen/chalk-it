@@ -1,5 +1,5 @@
 /**
- * @author AR, AEF
+ * @author AR
  * @description
  * This Datanode is used to receive data through Web socket. It's allow Chalk'it to retrieve data
  */
@@ -197,13 +197,10 @@
       if (wsConn) wsConn.close();
     };
 
-    self.isSetValueValid = function () {
+    self.canSetValue = function () {
       return false;
     };
 
-    self.isSetFileValid = function () {
-      return false;
-    };
     statusForSchedulerCallback('Wait');
     bFirstTime = true;
     createWebSocket();
@@ -380,7 +377,8 @@
       {
         name: 'autoStart',
         display_name: 'AUTO START',
-        description: 'DataNode is executed automatically at start (project load, its creation/modification).',
+        description:
+          'Start websocket receive automatically after dashboard play begins or after creation or modification.',
         type: 'boolean',
         default_value: true,
       },

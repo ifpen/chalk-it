@@ -95,7 +95,7 @@ angular
 
       this.deleteImage = async (image) => {
         const url = urlPython + `images/${image.Id}`;
-        $http.delete(url, { headers: { Authorization: LoginMngr.GetSavedJwt() } });
+        $http.delete(url, { headers: getAuthorizationHeaders() });
         _purgeFileData(image.Id);
       };
 
@@ -110,7 +110,7 @@ angular
           fileData: await _loadFileData(image.Id),
           fileName: image.FileName,
         };
-        const result = await $http.post(url, body, { headers: { Authorization: LoginMngr.GetSavedJwt() } });
+        const result = await $http.post(url, body, { headers: getAuthorizationHeaders() });
         return result.data;
       };
 
@@ -124,14 +124,14 @@ angular
       // }
       this.getImageFullStatus = async (id) => {
         const url = urlPython + `images/${id}`;
-        const result = await $http.get(url, { headers: { Authorization: LoginMngr.GetSavedJwt() } });
+        const result = await $http.get(url, { headers: getAuthorizationHeaders() });
         return result.data;
       };
 
       // Sames as getImageFullStatus, but in an array with no output
       this.getImagesStatus = async (ids) => {
         const url = urlPython + 'images/list';
-        const result = await $http.post(url, ids, { headers: { Authorization: LoginMngr.GetSavedJwt() } });
+        const result = await $http.post(url, ids, { headers: getAuthorizationHeaders() });
         return result.data;
       };
 
@@ -200,16 +200,6 @@ angular
       }
 
       function _loadFileData(id) {
-        function b64DecodeUnicode(str) {
-          return decodeURIComponent(
-            Array.prototype.map
-              .call(atob(str), function (c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-              })
-              .join('')
-          );
-        }
-
         return new Promise((resolve, reject) => {
           var FileMngrInst = new FileMngrFct();
           FileMngrInst.ReadFile('pydata', id, (result, msg, type) => {
@@ -459,36 +449,10 @@ angular
         }
 
         if (fileSize && fileSize > 0) {
-          result += ' (' + _imageSizeToText(fileSize) + ')';
+          result += ' (' + formatDataSize(fileSize) + ')';
         }
 
         return result;
       }
-
-      function _imageSizeToText(imageSizeBytes) {
-        if (!imageSizeBytes) {
-          return '';
-        }
-
-        var unit = 1;
-        var unitStr = '';
-        if (imageSizeBytes > 1000000000) {
-          unit = 1000000000;
-          unitStr = 'Go';
-        } else if (imageSizeBytes > 1000000) {
-          unit = 1000000;
-          unitStr = 'Mo';
-        } else if (imageSizeBytes > 1000) {
-          unit = 1000;
-          unitStr = 'ko';
-        }
-
-        var size = imageSizeBytes / unit;
-        size = Math.round(size * 100) / 100;
-
-        return '' + size + unitStr;
-      }
-
-      this.imageSizeToText = _imageSizeToText;
     },
   ]);

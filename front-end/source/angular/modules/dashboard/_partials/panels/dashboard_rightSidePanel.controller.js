@@ -86,7 +86,7 @@ angular
          *   latestData?: any,
          *   validated: {[sliderName: string]: boolean | undefined},
          *   supportsWrites: boolean,
-         *   supportsFiles: boolean,
+         *   supportsPath: boolean,
          * }[] // Sorted by names.
          */
         dataNodes = [];
@@ -98,7 +98,6 @@ angular
          *     description?: WidgetActuatorDescription,
          *     read?: boolean,
          *     write?: boolean,
-         *     file?: boolean,
          *     trigger?: boolean,
          *     highlight?: string,
          *     dsFilter: (ds:dataNodes) => boolean,
@@ -250,10 +249,8 @@ angular
                 file,
                 trigger: description.direction === WidgetActuatorDescription.TRIGGER,
                 highlight: description.summary,
-                dsFilter: write ? (ds) => ds.supportsWrites : file ? (ds) => ds.supportsFiles : () => true, // Assumes supportsWrites and supportsFiles are exclusive
-                showFields:
-                  description.direction === undefined ||
-                  (description.direction & WidgetActuatorDescription.READ_WRITE) !== 0,
+                dsFilter: write ? (ds) => ds.supportsWrites : () => true,
+                showFields: description.direction !== WidgetActuatorDescription.TRIGGER,
               };
             }
           }
@@ -287,8 +284,8 @@ angular
               index,
               latestData: ds.latestData(),
               validated: {},
-              supportsWrites: ds.isSetValueValid(),
-              supportsFiles: ds.isSetFileValid(),
+              supportsWrites: !!ds.canSetValue(),
+              supportsPath: !!ds.canSetValue() && ds.canSetValue().acceptPath,
             }));
             this.dataNodes = _.sortBy(this.dataNodes, (ds) => ds.name.toLowerCase());
           }
@@ -337,6 +334,7 @@ angular
 
               if (ds && desc.dsFilter(ds)) {
                 slider = { ...slider, name: actuatorName };
+
                 this.selectionCombos[actuatorName] = this._createSelectionCombos(slider);
                 slider.dataFields = this.selectionCombos[actuatorName].fieldsCombos
                   .map((_) => _.selectedOpt.key)
@@ -459,7 +457,7 @@ angular
 
           const desc = this.sliderDescriptions[slider.name];
 
-          if (!desc.showFields) {
+          if (!desc.showFields || (desc.write && ds && !ds.supportsPath)) {
             const result = {
               fieldsCombos: [],
               validationErrors: undefined,

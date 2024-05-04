@@ -12,24 +12,62 @@
 /*************************** plugin data ***************************/
 /*******************************************************************/
 
-const USE_PLOTLY_VALIDATION = true;
+const USE_PLOTLY_VALIDATION = false;
 
-const colorway = ['var(--widget-color-2)', 'var(--widget-color-5)', 'var(--widget-color-6)', 'var(--widget-color-7)'];
+const colorway = [
+  'var(--widget-color-2)',
+  'var(--widget-color-5)',
+  'var(--widget-color-6)',
+  'var(--widget-color-7)',
+  'var(--widget-color-8)',
+  'var(--widget-color-9)',
+  'var(--widget-color-10)',
+  'var(--widget-color-11)',
+  'var(--widget-color-12)',
+  'var(--widget-color-13)',
+];
+
 const textColor = 'var(--widget-color)';
-
+const gridColor = 'var(--widget-plotly-background-color)';
 const axisParams = {
   title: '',
   tickfont: {
     color: textColor,
   },
 };
-const plotlyColorParams = {
+const plotlyBackground = {
   paper_bgcolor: 'rgba(0,0,0,0)',
   plot_bgcolor: 'rgba(0,0,0,0)',
+};
+const plotlyColorParams = {
+  ...plotlyBackground,
   colorway: colorway,
   legend: {
     font: {
       color: textColor,
+    },
+  },
+};
+
+const genericPlotlyGridColor = {
+  xaxis: {
+    gridcolor: gridColor,
+  },
+  yaxis: {
+    gridcolor: gridColor,
+  },
+  zaxis: {
+    gridcolor: gridColor,
+  },
+};
+const genericPlotlyColor = {
+  template: {
+    layout: {
+      ...genericPlotlyGridColor,
+      colorway: colorway,
+      font: {
+        color: textColor,
+      },
     },
   },
 };
@@ -56,6 +94,7 @@ const _SCHEMA_PLOTLY_LAYOUT = {
 modelsParameters.plotlyLine = {
   numberOfAxis: 1,
   layout: {
+    ...plotlyColorParams,
     // all "layout" attributes: #layout
     title: '', // more about "layout.title": #layout-title
     xaxis: {
@@ -71,15 +110,7 @@ modelsParameters.plotlyLine = {
         color: textColor,
       },
     },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    colorway: colorway,
-    legend: {
-      font: {
-        color: textColor,
-      },
-    },
-    showlegend: false,
+    showlegend: true,
     margin: {
       l: 50,
       r: 50,
@@ -94,6 +125,7 @@ modelsParameters.plotlyLine = {
 modelsParameters.plotlyBar = {
   numberOfAxis: 1,
   layout: {
+    ...plotlyColorParams,
     // all "layout" attributes: #layout
     title: '', // more about "layout.title": #layout-title
     barmode: 'group',
@@ -110,15 +142,7 @@ modelsParameters.plotlyBar = {
         color: textColor,
       },
     },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    colorway: colorway,
-    legend: {
-      font: {
-        color: textColor,
-      },
-    },
-    showlegend: false,
+    showlegend: true,
     margin: {
       l: 50,
       r: 50,
@@ -132,17 +156,10 @@ modelsParameters.plotlyBar = {
 
 modelsParameters.plotlyPie = {
   layout: {
+    ...plotlyColorParams,
     // all "layout" attributes: #layout
     title: '',
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    colorway: colorway,
-    legend: {
-      font: {
-        color: textColor,
-      },
-    },
-    showlegend: false,
+    showlegend: true,
     margin: {
       l: 50,
       r: 50,
@@ -156,6 +173,7 @@ modelsParameters.plotlyPie = {
 
 modelsParameters.plotly3dSurface = {
   layout: {
+    ...plotlyColorParams,
     // all "layout" attributes: #layout
     title: '', // more about "layout.title": #layout-title
     scene: {
@@ -170,9 +188,7 @@ modelsParameters.plotly3dSurface = {
         title: 'z',
       },
     },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    showlegend: false,
+    showlegend: true,
     margin: {
       l: 50,
       r: 50,
@@ -185,10 +201,23 @@ modelsParameters.plotly3dSurface = {
 };
 
 modelsParameters.plotlyGeneric = {
+  enforceTextColor: true,
+  textColor: textColor,
+  enforceBackgroundTransparency: true,
+  hideModeBar: false,
+};
+
+modelsParameters.plotlyPyGeneric = {
+  enforceTextColor: true,
+  textColor: textColor,
+  enforceBackgroundTransparency: true,
   hideModeBar: false,
 };
 
 modelsParameters.plotlyRealTime = {
+  enforceTextColor: true,
+  textColor: textColor,
+  enforceBackgroundTransparency: true,
   //numberOfAxis: 1,
   hideModeBar: false,
 };
@@ -251,7 +280,6 @@ modelsHiddenParams.plotly3dSurface = {
 };
 
 modelsHiddenParams.plotlyRealTime = {
-  ...modelsParameters.plotlyRealTime,
   data: [
     {
       //'x': [],
@@ -259,21 +287,39 @@ modelsHiddenParams.plotlyRealTime = {
       mode: 'lines',
     },
   ],
+  layout: {
+    ...plotlyBackground,
+    ...genericPlotlyColor,
+  },
   selection: [{}],
 };
 
 modelsHiddenParams.plotlyGeneric = {
   data: [{}],
-  layout: [{}],
+  layout: {
+    ...plotlyBackground,
+    ...genericPlotlyColor,
+  },
   selection: [{}],
 };
 
-modelsTempParams.plotlyLine = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotlyBar = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotlyPie = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotly3dSurface = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotlyGeneric = { lastEditTimeStamp: 0, pngCache: '' };
-modelsTempParams.plotlyRealTime = { lastEditTimeStamp: 0, pngCache: '' };
+modelsHiddenParams.plotlyPyGeneric = {
+  fig: {
+    layout: {
+      ...plotlyBackground,
+      ...genericPlotlyColor,
+    },
+  },
+  selection: [{}],
+};
+
+modelsTempParams.plotlyLine = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyBar = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyPie = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotly3dSurface = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyGeneric = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyPyGeneric = { lastData: {}, lastLayout: {} };
+modelsTempParams.plotlyRealTime = { lastData: {}, lastLayout: {} };
 
 // Layout (default dimensions)
 modelsLayout.plotlyLine = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
@@ -281,6 +327,7 @@ modelsLayout.plotlyBar = { height: '30vh', width: '30vw', minWidth: '100px', min
 modelsLayout.plotlyPie = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
 modelsLayout.plotly3dSurface = { height: '30vh', width: '30vw', minWidth: '378px', minHeight: '305px' };
 modelsLayout.plotlyGeneric = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
+modelsLayout.plotlyPyGeneric = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
 modelsLayout.plotlyRealTime = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
 
 const _SCHEMA_PLOTLY_NUMERIC_DATA = {
@@ -338,17 +385,17 @@ function _isAxisLinear(layout, axis) {
 /*******************************************************************/
 
 function plotlyWidgetsPluginClass() {
-  var pId = 0;
-  var self = this;
+  let pId = 0;
+  const self = this;
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                         createPlotlyDiv                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function createPlotlyDiv(idDivContainer, pId, bInteractive) {
-    var widgetHtml = document.createElement('div');
-    var idDivPlotly = 'plotly' + pId;
+    const widgetHtml = document.createElement('div');
+    let idDivPlotly = 'plotly' + pId;
     if (bInteractive) {
-      idDivPlotly = idDivPlotly + 'c';
+      idDivPlotly += 'c';
     }
     widgetHtml.setAttribute('id', idDivPlotly);
     widgetHtml.setAttribute('class', 'js-plotly-plot');
@@ -376,6 +423,8 @@ function plotlyWidgetsPluginClass() {
         return new this.d3surfacePlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
       case 'plotlyGeneric':
         return new this.genericPlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
+      case 'plotlyPyGeneric':
+        return new this.genericPlotlyPythonWidget(idDivContainer, pId, idInstance, bInteractive);
       case 'plotlyRealTime':
         return new this.realTimePlotlyWidget(idDivContainer, pId, idInstance, bInteractive);
     }
@@ -401,22 +450,17 @@ function plotlyWidgetsPluginClass() {
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function basePlotlyWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     this.bIsInteractive = bInteractive;
-    var idDivPlotly = 'plotly' + idWidget;
+    let idDivPlotly = 'plotly' + idWidget;
     if (bInteractive) {
-      idDivPlotly = idDivPlotly + 'c';
+      idDivPlotly += 'c';
     }
-    var self = this;
-
-    // Backward compatibility
-    if (_.isUndefined(modelsParameters[idInstance].hideModeBar)) {
-      modelsParameters[idInstance].hideModeBar = false;
-    }
+    const self = this;
 
     // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
     this.getColorValueFromCSSProperty = function (value) {
-      var color = value;
+      let color = value;
       if (color.includes('var(--')) {
-        var realValue = value.substring(4, value.length - 1);
+        const realValue = value.substring(4, value.length - 1);
         color = window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
       }
       return color;
@@ -451,138 +495,152 @@ function plotlyWidgetsPluginClass() {
 
     this.render = function () {
       /* Conversion to enable HTML tags */
-      const layout = modelsParameters[idInstance].layout;
-      if (!_.isUndefined(layout) && !_.isUndefined(layout.title)) {
-        if (!_.isUndefined(layout.title.text)) {
-          layout.title.text = this.getTransformedText(layout.title.text);
-        } else {
-          layout.title = this.getTransformedText(layout.title);
-        }
+      const layout = modelsParameters[idInstance]?.layout;
+      if (layout?.title) {
+        layout.title = _.isObject(layout.title)
+          ? this.getTransformedText(layout.title.text)
+          : this.getTransformedText(layout.title);
       }
 
       /* Apply colors from modelsParameters */
-      if (modelsHiddenParams[idInstance].layout) {
-        let modelLayout = JSON.parse(JSON.stringify(modelsHiddenParams[idInstance].layout));
-        modelsHiddenParams[idInstance].layout = modelLayout;
-        if (modelsParameters[idInstance].layout) {
-          modelLayout = JSON.parse(JSON.stringify(modelsParameters[idInstance].layout));
+      let hiddenLayout = modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout;
+      if (hiddenLayout) {
+        // For generic plotly
+        const plotlyParams = [
+          { key: 'enforceBackgroundTransparency', value: plotlyBackground },
+          { key: 'enforceTextColor', value: genericPlotlyColor },
+        ];
+
+        plotlyParams.forEach((param) => {
+          if (modelsParameters[idInstance][param.key]) {
+            hiddenLayout = _.merge({}, param.value, hiddenLayout);
+          } else {
+            _.forIn(param.value, (value, key) => {
+              if (_.has(hiddenLayout, key)) {
+                if (_.isEqual(hiddenLayout[key], value)) {
+                  _.unset(hiddenLayout, key);
+                }
+              }
+            });
+          }
+        });
+
+        // For generic plotly
+        if (hiddenLayout.template?.layout && modelsParameters[idInstance].enforceTextColor) {
+          const layout = hiddenLayout.template.layout;
+          if (layout.font?.color) {
+            const fontColor = modelsParameters[idInstance]?.textColor ?? textColor;
+            layout.font.color = this.getColorValueFromCSSProperty(fontColor);
+          }
+          ['xaxis', 'yaxis', 'zaxis'].forEach((axis) => {
+            if (layout[axis]?.gridcolor) {
+              layout[axis].gridcolor = this.getColorValueFromCSSProperty(gridColor);
+            }
+          });
         }
+
+        hiddenLayout = JSON.parse(JSON.stringify(hiddenLayout));
+        const modelLayout = modelsParameters[idInstance].layout
+          ? JSON.parse(JSON.stringify(modelsParameters[idInstance].layout))
+          : hiddenLayout;
+
         // Set colorway
         if (this.checkNested(modelLayout, 'colorway')) {
-          modelsHiddenParams[idInstance].layout.colorway = modelLayout.colorway.map((color) =>
-            this.getColorValueFromCSSProperty(color)
-          );
+          hiddenLayout.colorway = modelLayout.colorway.map((color) => this.getColorValueFromCSSProperty(color));
         }
         // Set x, y, z Axis ticks color
         ['xaxis', 'yaxis', 'zaxis'].forEach((axis) => {
           if (this.checkNested(modelLayout, axis, 'tickfont', 'color')) {
-            modelsHiddenParams[idInstance].layout[axis].tickfont.color = this.getColorValueFromCSSProperty(
-              modelLayout[axis].tickfont.color
-            );
+            hiddenLayout[axis].tickfont.color = this.getColorValueFromCSSProperty(modelLayout[axis].tickfont.color);
           }
         });
         // Set legend color
         if (this.checkNested(modelLayout, 'legend', 'font', 'color')) {
-          modelsHiddenParams[idInstance].layout.legend.font.color = this.getColorValueFromCSSProperty(
-            modelLayout.legend.font.color
-          );
+          hiddenLayout.legend.font.color = this.getColorValueFromCSSProperty(modelLayout.legend.font.color);
         }
         // Set paper_bgcolor
         if (this.checkNested(modelLayout, 'paper_bgcolor')) {
-          modelsHiddenParams[idInstance].layout.paper_bgcolor = this.getColorValueFromCSSProperty(
-            modelLayout.paper_bgcolor
-          );
+          hiddenLayout.paper_bgcolor = this.getColorValueFromCSSProperty(modelLayout.paper_bgcolor);
         }
         // Set plot_bgcolor
         if (this.checkNested(modelLayout, 'plot_bgcolor')) {
-          modelsHiddenParams[idInstance].layout.plot_bgcolor = this.getColorValueFromCSSProperty(
-            modelLayout.plot_bgcolor
-          );
+          hiddenLayout.plot_bgcolor = this.getColorValueFromCSSProperty(modelLayout.plot_bgcolor);
         }
       }
 
+      $('#' + idDivPlotly).html('');
+
+      const data = modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data;
       /* MBG issue bad width at runtime for Ploty widgets*/
       if (this.bIsInteractive) {
-        $('#' + idDivPlotly).html('');
-        if (!_.isUndefined(modelsHiddenParams[idInstance].layout) && !_.isNull(modelsHiddenParams[idInstance].layout)) {
-          if (modelsHiddenParams[idInstance].layout.autosize) {
-            delete modelsHiddenParams[idInstance].layout.width;
-            delete modelsHiddenParams[idInstance].layout.height;
-          }
+        if (hiddenLayout && hiddenLayout.autosize) {
+          delete hiddenLayout.width;
+          delete hiddenLayout.height;
         }
-        var opts = {};
-        if (modelsParameters[idInstance].hideModeBar) {
-          opts = { displayModeBar: false };
-        }
-
-        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, modelsHiddenParams[idInstance].layout, opts);
-
+        const opts = modelsParameters[idInstance].hideModeBar ? { displayModeBar: false } : {};
+        Plotly.newPlot(idDivPlotly, data, hiddenLayout, opts);
         this.setSelectionActuator();
       } else {
-        $('#' + idDivPlotly).html('');
-        $('#' + idDivPlotly).html('<img id="png-export-' + idDivPlotly + '"></img>');
-        var img_png = $('#png-export-' + idDivPlotly);
-        var img_url;
-        const UNSENSIBLE_TIME_INTERVAL = 6000;
-        if (Date.now() - modelsTempParams[idInstance].lastEditTimeStamp < UNSENSIBLE_TIME_INTERVAL) {
-          // MBG tmp optim
-          img_png.attr('src', modelsTempParams[idInstance].pngCache);
-          var divContainer = document.getElementById(idDivContainer);
-          img_png[0].style.minHeight = parseInt(divContainer.parentNode.style.minHeight) - 3 + 'px';
-          img_png[0].style.minWidth = parseInt(divContainer.parentNode.style.minWidth) - 3 + 'px';
-          img_png[0].style.width = parseFloat(divContainer.parentNode.style.width) - 1 + 'vw';
-          img_png[0].style.height = parseFloat(divContainer.parentNode.style.height) - 1 + 'vh';
-          img_png[0].style.margin = '3px';
-          return;
-        }
-        Plotly.newPlot(idDivPlotly, modelsHiddenParams[idInstance].data, modelsHiddenParams[idInstance].layout).then(
-          function (gd) {
-            Plotly.toImage(gd, {
-              height: $('#' + idDivContainer).height(),
-              width: $('#' + idDivContainer).width(),
-            }).then(function (url) {
-              img_url = url;
-              Plotly.purge(gd);
-              img_png.attr('src', img_url);
-              gd.style.minHeight = gd.parentNode.style.minHeight;
-              gd.style.minWidth = gd.parentNode.style.minWidth;
-              gd.style.width = gd.parentNode.style.width;
-              gd.style.height = gd.parentNode.style.height;
+        const plotlyDivSelector = `#${idDivPlotly}`;
 
-              img_png[0].style.minHeight = parseInt(gd.parentNode.style.minHeight) - 3 + 'px';
-              img_png[0].style.minWidth = parseInt(gd.parentNode.style.minWidth) - 3 + 'px';
-              img_png[0].style.width = parseFloat(gd.parentNode.style.width) - 1 + 'vw';
-              img_png[0].style.height = parseFloat(gd.parentNode.style.height) - 1 + 'vh';
-              img_png[0].style.margin = '3px';
-              modelsTempParams[idInstance].lastEditTimeStamp = Date.now(); // MBG tmp optim
-              modelsTempParams[idInstance].pngCache = img_url;
-            });
+        // Create the Plotly DIV
+        $(plotlyDivSelector).html();
+
+        // Function to check if data or layout has changed
+        const hasChanged = (currentData, currentLayout, idInstance) => {
+          const lastData = modelsTempParams[idInstance].lastData;
+          const lastLayout = modelsTempParams[idInstance].lastLayout;
+
+          return !(_.isEqual(currentData, lastData) && _.isEqual(currentLayout, lastLayout));
+        };
+
+        const updateStoredState = (currentData, currentLayout, idInstance) => {
+          modelsTempParams[idInstance].lastData = currentData;
+          modelsTempParams[idInstance].lastLayout = currentLayout;
+        };
+
+        // Function to check if a Plotly plot exists on the given DIV
+        const plotExists = (plotDiv) => {
+          return plotDiv && plotDiv.data !== undefined;
+        };
+
+        if (plotExists(idDivPlotly)) {
+          // MBG tmp optim
+          if (hasChanged(data, hiddenLayout, idInstance)) {
+            // Purge existing plot before updating to prevent any lingering processes or data
+            Plotly.purge(idDivPlotly);
+            Plotly.react(idDivPlotly, data, hiddenLayout);
           }
-        );
+        } else {
+          Plotly.newPlot(idDivPlotly, data, hiddenLayout);
+        }
+
+        // Update stored state and timestamp
+        updateStoredState(data, hiddenLayout, idInstance);
       }
     };
 
     this.setSelectionActuator = function () {
       // MBG 17/02/2021
       this.bIsInteractive = bInteractive;
-      var idDivPlotly = 'plotly' + idWidget;
+      let idDivPlotly = 'plotly' + idWidget;
       if (bInteractive) {
-        idDivPlotly = idDivPlotly + 'c';
-        var graphDiv = document.getElementById(idDivPlotly);
+        idDivPlotly += 'c';
+        const graphDiv = document.getElementById(idDivPlotly);
         graphDiv.on('plotly_selected', function (eventData) {
           if (!_.isUndefined(eventData)) {
             // Create array of array [numberOfTrace][dataSelected] and [numberOfTrace][customData]
-            var dataSelected = Array(graphDiv.data.length)
+            const dataSelected = Array(graphDiv.data.length)
               .fill(null)
               .map(() => []);
-            var customSelected = Array(graphDiv.data.length)
+            const customSelected = Array(graphDiv.data.length)
               .fill(null)
               .map(() => []);
 
             eventData.points.forEach(function (point) {
               if (!_.isUndefined(point.pointNumber)) {
-                var traceNumber = point.curveNumber;
-                var index = point.pointNumber;
+                const traceNumber = point.curveNumber;
+                const index = point.pointNumber;
 
                 dataSelected[traceNumber].push(index);
 
@@ -592,7 +650,7 @@ function plotlyWidgetsPluginClass() {
               }
 
               if (!_.isUndefined(point.pointNumbers)) {
-                var traceNumber = point.pointNumbers.curveNumber;
+                const traceNumber = point.pointNumbers.curveNumber;
                 pointNumbers.forEach(function (d) {
                   dataSelected[traceNumber].push(d);
 
@@ -603,7 +661,7 @@ function plotlyWidgetsPluginClass() {
               }
             });
 
-            var selectionDescriptor = dataSelected.map(function (d, index) {
+            const selectionDescriptor = dataSelected.map(function (d, index) {
               return {
                 trace: index,
                 selection: d,
@@ -1120,6 +1178,56 @@ function plotlyWidgetsPluginClass() {
   this.genericPlotlyWidget.prototype = basePlotlyWidget.prototype;
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
+  // |                         Plotly Python Generic                      | \\
+  // ├────────────────────────────────────────────────────────────────────┤ \\
+  this.genericPlotlyPythonWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
+    this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
+
+    const self = this;
+
+    const _FIG_DESCRIPTOR = new WidgetActuatorDescription(
+      'fig',
+      'Plotly figure object',
+      WidgetActuatorDescription.READ
+    );
+    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription(
+      'selection',
+      'Plotly selection',
+      WidgetActuatorDescription.WRITE
+    );
+    this.getActuatorDescriptions = function () {
+      return [_FIG_DESCRIPTOR, _SELECTION_DESCRIPTOR];
+    };
+
+    this.fig = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].fig = val;
+        self.render();
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].fig;
+      },
+      addValueChangedHandler: function (n) {},
+      removeValueChangedHandler: function (n) {},
+    };
+
+    this.selection = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].selection = val;
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].selection;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {
+        this.updateCallback = updateDataFromWidget;
+      },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+    };
+  };
+  // Inherit from base Plotly class
+  this.genericPlotlyPythonWidget.prototype = basePlotlyWidget.prototype;
+
+  // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                        Plotly Real-time                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   this.realTimePlotlyWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
@@ -1255,9 +1363,15 @@ function plotlyWidgetsPluginClass() {
       },
       plotlyGeneric: {
         factory: 'genericPlotlyWidget',
-        title: 'Plotly generic',
+        title: 'Plotly JavaScript generic',
         icn: 'plotly-javascript-generic',
         help: 'wdg/wdg-plots/#plotly-generic',
+      },
+      plotlyPyGeneric: {
+        factory: 'genericPlotlyPythonWidget',
+        title: 'Plotly Python generic',
+        icn: 'plotly-python-generic',
+        help: 'wdg/wdg-plots/#plotly-python-generic',
       },
       plotlyRealTime: { factory: 'realTimePlotlyWidget', title: 'Plotly real-time', icn: 'plotly-real-time' },
     },

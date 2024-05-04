@@ -9,20 +9,15 @@
 
 angular.module('modules.dashboard').controller('DatanodeNotifController', [
   '$scope',
-  '$rootScope',
-  'JsonDisplayService',
-  function ($scope, $rootScope, JsonDisplayService) {
+  function ($scope) {
     $scope.notificationFilerValue = 'all';
     $scope.showOneDatanodeData = {};
+
+    $scope.$watch('popup.data', (data) => ($scope.showOneDatanodeData = data));
 
     /*---------- Notification filter button ----------------*/
     $scope.notificationFilters = function (filter) {
       $scope.notificationFilerValue = filter;
-    };
-
-    /*---------- json result display ----------------*/
-    $scope.beautifulStringFromHtml = function (data) {
-      return JsonDisplayService.beautifulStringFromHtml(data);
     };
   },
 ]);

@@ -26,7 +26,8 @@
         description: 'Browse to select CSV data file.',
         // **type "boolean"** : Will display a checkbox indicating a true/false setting.
         type: 'browseText',
-        required: true,
+        accept: 'text/csv',
+        required: true, //ABK
       },
       {
         name: 'delimiter',
@@ -174,14 +175,38 @@
         default_value: false,
       },
     ],
+    expose_as_files: [
+      {
+        key: 'content',
+        nameSuffix: (settings) => settings?.content?.name ?? 'data.csv',
+        getter: (settings) => {
+          const content = settings.content;
+          if (typeof content === 'string') {
+            return b64EncodeUnicode(content);
+          } else {
+            return content.isBinary ? content.content : b64EncodeUnicode(content.content);
+          }
+        },
+        setter: (settings, value) => {
+          const content = settings.content;
+          if (typeof settings.content === 'string') {
+            settings.content = b64DecodeUnicode(value);
+          } else {
+            settings.content = { ...settings.content, content: value, isBinary: true };
+          }
+        },
+      },
+    ],
     // **newInstance(settings, newInstanceCallback, updateCallback)** (required) : A function that will be called when a new instance of this plugin is requested.
     // * **settings** : A javascript object with the initial settings set by the user. The names of the properties in the object will correspond to the setting names defined above.
     // * **newInstanceCallback** : A callback function that you'll call when the new instance of the plugin is ready. This function expects a single argument, which is the new instance of your plugin object.
     // * **updateCallback** : A callback function that you'll call if and when your datanode has an update for datanodesManager to recalculate. This function expects a single parameter which is a javascript object with the new, updated data. You should hold on to this reference and call it when needed.
-    newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback) {
+    newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback, notificationCallback) {
       // csvFilePlugin is defined below.
-      newInstanceCallback(new csvFilePlugin(settings, updateCallback, statusCallback));
-      if (error) return false;
+      newInstanceCallback(new csvFilePlugin(settings, updateCallback, statusCallback, notificationCallback));
+      if (error)
+        //ABK
+        return false;
       else return true;
     },
   });
@@ -190,81 +215,87 @@
   //
   // -------------------
   // Here we implement the actual datanode plugin. We pass in the settings and updateCallback.
-  var csvFilePlugin = function (settings, updateCallback, statusCallback) {
-    // initialize bad result value in case of error
-    var badResult = null;
-    //initialize error at new instance
-    error = false;
+  var csvFilePlugin = function (settings, updateCallback, statusCallback, notificationCallback) {
     // Always a good idea...
-    var self = this;
+    const self = this;
 
     // Good idea to create a variable to hold on to our settings, because they might change in the future. See below.
-    var currentSettings = settings;
-    // save past setting in case of cancelling modification in datanodeS
-    var pastSettings = settings;
-    var pastStatus = 'None';
+    let currentSettings = settings;
 
     // Parser results to memorize
-    var parserResults;
+    let parserResults = undefined;
 
     // **onSettingsChanged(newSettings)** (required) : A public function we must implement that will be called when a user makes a change to the settings.
     self.onSettingsChanged = function (newSettings, status) {
-      if (status === 'OK') {
-        pastStatus = status;
-        pastSettings = currentSettings;
-      }
       // Here we update our current settings with the variable that is passed in.
-      currentSettings = newSettings;
-      return self.isFileParsingSuccess();
-    };
-
-    self.isFileParsingSuccess = function () {
-      statusCallback('Pending');
-      parserResults = self.parseFileContent();
-      if (parserResults == badResult) {
-        // case of bad parse at edition
-        statusCallback('Error', 'Error in file parse');
-        return false;
-      } else {
-        pastSettings = currentSettings;
+      const newData = self.parseFile(newSettings.content);
+      if (newData) {
+        currentSettings = newSettings;
+        parserResults = newData;
         return true;
+      } else {
+        return false;
       }
     };
 
     self.isSettingNameChanged = function (newName) {
-      if (currentSettings.name != newName) return true;
-      else return false;
-    };
-
-    self.getSavedSettings = function () {
-      return [pastStatus, pastSettings];
+      return currentSettings.name !== newName;
     };
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
     self.updateNow = function () {
-      pastStatus = 'OK';
-      statusCallback('OK');
+      if (parserResults === undefined) {
+        parserResults = self.parseFile(currentSettings.content);
+      }
+
+      if (parserResults) {
+        statusCallback('OK');
+      } else {
+        statusCallback('Error', 'Error in file parse');
+      }
       updateCallback(parserResults); //AEF: always put statusCallback before updateCallback. Mandatory for scheduler.
-      return true;
     };
 
     // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
     self.onDispose = function () {};
 
-    self.isSetValueValid = function () {
-      return false;
+    self.canSetValue = function () {
+      return {
+        acceptPath: false,
+        hasPostProcess: true,
+      };
     };
 
-    self.isSetFileValid = function () {
-      return true;
+    self.setValue = function (path, value) {
+      if (value.content) {
+        const newData = self.parseFile(value.content);
+        if (newData) {
+          currentSettings.content = { ...value };
+          currentSettings.data_path = value?.name;
+          parserResults = newData;
+        }
+      }
     };
 
     self.isInternetNeeded = function () {
       return false;
     };
 
-    self.parseFileContent = function () {
-      papaSettings = {
+    self.parseFile = function (data) {
+      let content = null;
+      if (typeof data === 'string') {
+        content = data;
+      } else if (data.content) {
+        content = data.isBinary ? atob(data.content) : data.content;
+      } else {
+        notificationCallback('error', currentSettings.name, 'Invalid content');
+      }
+
+      return self.parseContent(content);
+    };
+
+    self.parseContent = function (content) {
+      const papaSettings = {
         delimiter: currentSettings.delimiter,
         newline: currentSettings.eol,
         quoteChar: currentSettings.quote_char,
@@ -273,108 +304,85 @@
         skipEmptyLines: currentSettings.skip_empty_lines,
       };
 
-      var metaObj = {};
-      var subheaderObj = {};
-      var content = currentSettings.content;
+      const metaObj = {};
+      const subheaderObj = {};
 
-      if (!_.isUndefined(content)) {
-        //
-        if (_.isUndefined(currentSettings.nb_meta_lines)) {
-          currentSettings.nb_meta_lines = 0;
-        }
-        if (_.isUndefined(currentSettings.nb_subheader_lines)) {
-          currentSettings.nb_subheader_lines = 0;
-        }
-        //
-        if (currentSettings.nb_meta_lines > 0) {
-          let lines = content.split('\n');
-          var meta = lines.splice(0, currentSettings.nb_meta_lines);
-          for (let i = 0; i < meta.length; i++) metaObj['metaLine' + i] = meta[i];
-          content = lines.join('\n');
-        }
-        if (currentSettings.nb_subheader_lines > 0) {
-          let lines = content.split('\n');
-          var subheader = lines.splice(1, currentSettings.nb_subheader_lines);
-          for (let i = 0; i < subheader.length; i++) {
-            subheaderObj['subheaderLine' + i] = subheader[i];
-            if (currentSettings.delimiter !== '')
-              subheaderObj['subheaderLine' + i] = subheaderObj['subheaderLine' + i].split(currentSettings.delimiter);
-          }
-          content = lines.join('\n');
-        }
-
-        //
-        self.parserResults = Papa.parse(content, papaSettings);
-        if (self.parserResults.errors.length == 0) {
-          var newDataRaw = self.parserResults.data;
-          var newData = {};
-          if (currentSettings.pluck) {
-            for (let i = 0; i < self.parserResults.meta.fields.length; i++) {
-              colName = self.parserResults.meta.fields[i];
-              newData[colName] = _.pluck(newDataRaw, colName);
-            }
-          } else {
-            newData = newDataRaw;
-          }
-
-          if (
-            currentSettings.embedding_object ||
-            currentSettings.nb_meta_lines > 0 ||
-            currentSettings.nb_subheader_lines > 0
-          ) {
-            //AEF
-            newData = { content: newData };
-            currentSettings.embedding_object = true;
-            if (currentSettings.nb_meta_lines > 0) {
-              newData.meta = metaObj;
-            }
-            if (currentSettings.nb_subheader_lines > 0) {
-              newData.subheader = subheaderObj;
-            }
-          }
-          return newData;
-        } else {
-          if (!_.isUndefined(self.parserResults.errors[0].row))
-            swal(
-              'Parser error : ' + self.parserResults.errors[0].type,
-              self.parserResults.errors[0].message +
-                " in line '" +
-                self.parserResults.errors[0].row +
-                "' of " +
-                currentSettings.data_path +
-                "'.",
-              'error'
-            );
-          else
-            swal(
-              'Parser error : ' + self.parserResults.errors[0].type,
-              self.parserResults.errors[0].message + " in '" + currentSettings.data_path + "'.",
-              'error'
-            );
-
-          return badResult;
-        }
-      } else return badResult;
-    };
-
-    self.setFile = function (newContent) {
-      // TODO error if not csv ?
-      currentSettings.data_path = newContent.name;
-      if (newContent.isBinary) {
-        currentSettings.content = atob(newContent.content);
-      } else {
-        currentSettings.content = newContent.content;
+      //
+      if (_.isUndefined(currentSettings.nb_meta_lines)) {
+        currentSettings.nb_meta_lines = 0;
       }
-      return self.isFileParsingSuccess();
-    };
+      if (_.isUndefined(currentSettings.nb_subheader_lines)) {
+        currentSettings.nb_subheader_lines = 0;
+      }
+      //
+      if (currentSettings.nb_meta_lines > 0) {
+        const lines = content.split('\n');
+        const meta = lines.splice(0, currentSettings.nb_meta_lines);
+        for (let i = 0; i < meta.length; i++) metaObj['metaLine' + i] = meta[i];
+        content = lines.join('\n');
+      }
+      if (currentSettings.nb_subheader_lines > 0) {
+        const lines = content.split('\n');
+        const subheader = lines.splice(1, currentSettings.nb_subheader_lines);
+        for (let i = 0; i < subheader.length; i++) {
+          subheaderObj['subheaderLine' + i] = subheader[i];
+          if (currentSettings.delimiter !== '')
+            subheaderObj['subheaderLine' + i] = subheaderObj['subheaderLine' + i].split(currentSettings.delimiter);
+        }
+        content = lines.join('\n');
+      }
 
-    // Parse file
-    parserResults = self.parseFileContent();
-    if (parserResults == badResult) {
-      // case of bad parse at creation
-      error = true;
-    } else {
-      error = false; //reset error flag
-    }
+      //
+      const parsedData = Papa.parse(content, papaSettings);
+      if (parsedData.errors.length === 0) {
+        const newDataRaw = parsedData.data;
+        let newData = {};
+        if (currentSettings.pluck) {
+          for (let i = 0; i < parsedData.meta.fields.length; i++) {
+            colName = parsedData.meta.fields[i];
+            newData[colName] = _.map(newDataRaw, colName);
+          }
+        } else {
+          newData = newDataRaw;
+        }
+
+        if (
+          currentSettings.embedding_object ||
+          currentSettings.nb_meta_lines > 0 ||
+          currentSettings.nb_subheader_lines > 0
+        ) {
+          //AEF
+          newData = { content: newData };
+          currentSettings.embedding_object = true;
+          if (currentSettings.nb_meta_lines > 0) {
+            newData.meta = metaObj;
+          }
+          if (currentSettings.nb_subheader_lines > 0) {
+            newData.subheader = subheaderObj;
+          }
+        }
+        return newData;
+      } else {
+        if (!_.isUndefined(parsedData.errors[0].row))
+          swal(
+            'Parser error : ' + parsedData.errors[0].type,
+            parsedData.errors[0].message +
+              " in line '" +
+              parsedData.errors[0].row +
+              "' of " +
+              currentSettings.data_path +
+              "'.",
+            'error'
+          );
+        else
+          swal(
+            'Parser error : ' + parsedData.errors[0].type,
+            parsedData.errors[0].message + " in '" + currentSettings.data_path + "'.",
+            'error'
+          );
+
+        return null;
+      }
+    };
   };
 })();

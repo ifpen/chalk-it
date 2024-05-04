@@ -61,7 +61,7 @@ The table below summarizes the _execution flow control parameters_ for the curre
 | Type                                                                       |     Auto Start     |    Sample Time     |  Explicit Trigger  |
 | -------------------------------------------------------------------------- | :----------------: | :----------------: | :----------------: |
 | [Variable](../../ds/ds-basics/#variable)                                   |                    |                    |                    |
-| [Python Script (Pyodide)](../../ds/ds-reference/#python-script-pyodide)    | :heavy_check_mark: |                    | :heavy_check_mark: |
+| [Python Script](../../ds/ds-reference/#python-script)    | :heavy_check_mark: |                    | :heavy_check_mark: |
 | [JavaScript Script (client-side)](../../ds/ds-reference#javascript-script) | :heavy_check_mark: |                    | :heavy_check_mark: |
 | [REST web-service](../../ds/ds-reference/#rest-web-services)               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | Generic text file reader                                                   |                    |                    |                    |
@@ -136,7 +136,7 @@ The table below summarizes currently available dataNodes in Chalk'it, as well as
 | Type                                                                    | setInput with formula | setValue from widget | setValue from file | setValue from script |
 | ----------------------------------------------------------------------- | :-------------------: | :------------------: | :----------------: | :------------------: |
 | [Variable](../../ds/ds-basics/#variable)                                |                       |  :heavy_check_mark:  | :heavy_check_mark: |                      |
-| [Python Script (Pyodide)](../../ds/ds-reference/#python-script-pyodide) |  :heavy_check_mark:   |                      |                    |  :heavy_check_mark:  |
+| [Python Script](../../ds/ds-reference/#python-script) |  :heavy_check_mark:   |                      |                    |  :heavy_check_mark:  |
 | [JavaScript Script (client-side)](../../ds/ds-basics#javascript-script) |  :heavy_check_mark:   |                      |                    |  :heavy_check_mark:  |
 | [REST web-service](../../ds/ds-basics)                                  |  :heavy_check_mark:   |                      |                    |  :heavy_check_mark:  |
 | Generic text file reader                                                |                       |                      | :heavy_check_mark: |                      |

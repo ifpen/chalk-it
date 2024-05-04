@@ -42,7 +42,9 @@ class LayoutMgrClass {
     this.defaultRow = {};
 
     // Dashboard background color
+    this.defaultBgColor = 'var(--widget-color-0)';
     this.dashBgColor = '';
+    this.inheritThemeBgColor = true;
     this.dashboardTheme = 'default';
     this.$rootScope = angular.element(document.body).scope().$root;
   }
@@ -60,7 +62,7 @@ class LayoutMgrClass {
       // $('#height-row-button')[0].style.display = "none";
       $('#select-cols').attr('disabled', true);
       $('#height-row-button').attr('disabled', true);
-      $('#select-cols')[0].value = '1';
+      $('#select-cols').val('1');
       //$("#select-cols")[0].value = "None";
     } else {
       $('#select-cols').attr('disabled', false);
@@ -71,7 +73,7 @@ class LayoutMgrClass {
 
     const canApply =
       this.rows !== newRows || this.cols !== newCols || !angular.equals(this.heightCols, this.newHeightCols);
-    $('#buttonDevice')[0].disabled = !canApply;
+    $('#buttonDevice').prop('disabled', !canApply);
   }
 
   isRowColMode() {
@@ -251,7 +253,6 @@ class LayoutMgrClass {
     const newRows = this._readRows();
     const newCols = newRows ? this._readCols() : 0;
 
-    // GHI #260
     $('#DropperDroite')[0].scrollTo({
       top: 0,
       left: 0,
@@ -325,8 +326,8 @@ class LayoutMgrClass {
     this.updateMaxTopAndLeft();
     widgetEditor.updateSnapshotDashZoneDims();
 
-    $('select[name=select-rows]')[0].value = this.rows;
-    $('select[name=select-cols]')[0].value = this.cols || 1;
+    $('select[name=select-rows]').val(this.rows);
+    $('select[name=select-cols]').val(this.cols || 1);
     this.updateButtonState();
   }
 
@@ -535,45 +536,76 @@ class LayoutMgrClass {
     this.scalingHelper.setRows(this.rows);
     this.scalingHelper.setCols(this.cols);
 
-    $('select[name=select-rows]')[0].value = this.rows;
-    $('select[name=select-cols]')[0].value = 1;
+    $('select[name="select-rows"]').val(this.rows);
+    $('select[name="select-cols"]').val(1);
     this.heightCols = [];
     this.newHeightCols = [];
-    this.rowNames = []; // GHI #245
-    this.defaultRow = {}; // GHI #245
+    this.rowNames = [];
+    this.defaultRow = {};
     this.updateMaxTopAndLeft();
   }
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                      DashboardBackgroundColor                      | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
+  getColorValueFromCSSProperty(value) {
+    // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
+    let color = value;
+    if (color.includes('var(--')) {
+      const realValue = value.substring(4, value.length - 1);
+      color = window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
+    }
+    return color;
+  }
+
   onInputDashBgColor() {
-    this.dashBgColor = $('#inputDashBgColor')[0].value;
+    this.dashBgColor = $('#inputDashBgColor').val();
     $('.dropperR').css('background-color', this.dashBgColor);
     this.$rootScope.updateFlagDirty(true);
   }
 
   updateDashBgColor() {
-    $('#inputDashBgColor').val(this.dashBgColor);
-    $('.dropperR').css('background-color', this.dashBgColor);
+    const colorValue = this.getColorValueFromCSSProperty(this.dashBgColor);
+    $('#inputDashBgColor').val(colorValue);
+    $('.dropperR').css('background-color', colorValue);
   }
 
   resetDashBgColor() {
-    this.dashBgColor = '';
-    $('#inputDashBgColor').val('');
-    $('.dropperR').css('background-color', '');
+    this.dashBgColor = this.defaultBgColor;
+    this._toggleDashBgColor();
+    this.updateDashBgColor();
+  }
+
+  _toggleDashBgColor() {
+    $('#divInputDashBgColor').toggleClass('aspect_input-bg-color--disabled', this.inheritThemeBgColor);
+    $('#checkboxBgColor').prop('checked', this.inheritThemeBgColor);
+    if (this.inheritThemeBgColor) this.dashBgColor = this.defaultBgColor;
+  }
+
+  setDashBgColor() {
+    this.inheritThemeBgColor = $('#checkboxBgColor').is(':checked');
+    this._toggleDashBgColor();
+    if (this.inheritThemeBgColor) this.updateDashBgColor();
+    this.$rootScope.updateFlagDirty(true);
   }
 
   serializeDashBgColor() {
     const backgroundColor = this.dashBgColor;
+    const inheritThemeBackgroundColor = this.inheritThemeBgColor;
     return {
       backgroundColor: backgroundColor,
+      inheritThemeBackgroundColor: inheritThemeBackgroundColor,
     };
   }
 
   deserializeDashBgColor(deviceObj) {
-    if (!_.isUndefined(deviceObj.backgroundColor)) {
-      this.dashBgColor = deviceObj.backgroundColor;
+    const bgColor = deviceObj?.backgroundColor;
+    const inheritTheme = deviceObj?.inheritThemeBackgroundColor ?? false;
+
+    if (bgColor) {
+      this.dashBgColor = bgColor;
+      this.inheritThemeBgColor = inheritTheme;
+      this._toggleDashBgColor();
       this.updateDashBgColor();
     }
   }
@@ -585,6 +617,7 @@ class LayoutMgrClass {
     this.dashboardTheme = theme;
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
+    this.updateDashBgColor();
     // TODO Open Sweet alert to ask the user if he wants to reset styles for all components
     widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
     this.$rootScope.updateFlagDirty(true);
@@ -593,6 +626,7 @@ class LayoutMgrClass {
   updateDashboardTheme() {
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
+    this.updateDashBgColor();
     widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
   }
 
@@ -611,9 +645,6 @@ class LayoutMgrClass {
   deserializeDashboardTheme(deviceObj) {
     if (!_.isUndefined(deviceObj.theme)) {
       this.dashboardTheme = deviceObj.theme;
-      this.updateDashboardTheme();
-    } else {
-      this.dashboardTheme = 'default';
       this.updateDashboardTheme();
     }
   }
@@ -786,101 +817,40 @@ class LayoutMgrClass {
 
   /*--------deserialize--------*/
   deserialize(deviceObj, scalingObj) {
-    if (!_.isUndefined(deviceObj)) {
-      this.cols = deviceObj.cols.maxCols;
-      const maxCells = deviceObj.cols.maxCells;
-      this.rows = maxCells / (this.cols ? this.cols : 1);
+    this.cols = deviceObj.cols.maxCols;
+    const maxCells = deviceObj.cols.maxCells;
+    this.rows = maxCells / (this.cols || 1);
 
-      // backward compatibility
-      if (_.isUndefined(deviceObj.cols.valueRow)) {
-        if (_.isUndefined(deviceObj.cols.value)) {
-          deviceObj.cols.valueRow = 'none';
-        } else {
-          switch (deviceObj.cols.value) {
-            case 'none':
-              deviceObj.cols.valueRow = 'none';
-              break;
-            case '1':
-            case '3':
-              deviceObj.cols.valueRow = '1';
-              break;
-            case '6':
-              deviceObj.cols.valueRow = '6';
-              break;
-            default:
-              deviceObj.cols.valueRow = 'none';
-          }
-        }
-      }
-      if (_.isUndefined(deviceObj.cols.valueCol)) {
-        if (_.isUndefined(deviceObj.cols.value)) {
-          deviceObj.cols.valueCol = '1';
-        } else {
-          switch (deviceObj.cols.value) {
-            case 'none':
-            case '1':
-              deviceObj.cols.valueCol = '1';
-              break;
-            case '3':
-            case '6':
-              deviceObj.cols.valueCol = '3';
-              break;
-            default:
-              deviceObj.cols.valueCol = '1';
-          }
-        }
-      }
-      // end of backward compatibility
+    this.scalingHelper.setRows(this.rows);
+    this.scalingHelper.setCols(this.cols);
+    $('select[name="select-rows"]').val(this.rows);
+    $('select[name="select-cols"]').val(this.cols || 1);
 
-      this.scalingHelper.setRows(this.rows);
-      this.scalingHelper.setCols(this.cols);
-      $('select[name=select-rows]')[0].value = this.rows;
-      $('select[name=select-cols]')[0].value = this.cols ? this.cols : 1;
+    this.cleanColumns();
+    const classType = this._getClassType(this.cols);
+    this._createColumn(classType);
 
-      this.cleanColumns();
-      const classType = this._getClassType(this.cols);
-      this._createColumn(classType);
+    this.updateButtonState();
 
-      this.updateButtonState();
-
-      //scaling method, with also backward compatibility
-      if (!_.isUndefined(scalingObj)) {
-        /*var scalingMethod = scalingObj.scalingMethod;
-                switch (scalingMethod) {
-                    case 'scaleTwSp':
-                        $('#stretchWidth').prop('checked', true);
-                        $('#keepProportion').prop('checked', true);
-                        break;
-                    case 'scaleTwh':
-                        $('#stretchWidth').prop('checked', true);
-                        $('#keepProportion').prop('checked', false);
-                        break;
-                    case 'scaleIdent':
-                        $('#stretchWidth').prop('checked', false);
-                        $('#keepProportion').prop('checked', false);
-                        break;
-                }*/
-        // MBG dead code 12/02/2022
-      }
-    } else {
-      this.cols = 0;
-      this.rows = 0;
-      this.heightCols = [];
-      this.newHeightCols = [];
-
-      // very old backward compatibility
-      deviceObj = {
-        cols: {
-          valueRow: 'none',
-          valueCol: '1',
-          maxCells: 0,
-          maxCols: 0,
-          classType: '',
-        },
-      };
+    //scaling method, with also backward compatibility
+    if (!_.isUndefined(scalingObj)) {
+      /*var scalingMethod = scalingObj.scalingMethod;
+            switch (scalingMethod) {
+                case 'scaleTwSp':
+                    $('#stretchWidth').prop('checked', true);
+                    $('#keepProportion').prop('checked', true);
+                    break;
+                case 'scaleTwh':
+                    $('#stretchWidth').prop('checked', true);
+                    $('#keepProportion').prop('checked', false);
+                    break;
+                case 'scaleIdent':
+                    $('#stretchWidth').prop('checked', false);
+                    $('#keepProportion').prop('checked', false);
+                    break;
+            }*/
+      // MBG dead code 12/02/2022
     }
-
-    return deviceObj;
   }
 
   /*--------updateColHeight--------*/

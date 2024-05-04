@@ -4,7 +4,7 @@
 // │ Copyright © 2016-2023 IFPEN                                                          │ \\
 // | Licensed under the Apache License, Version 2.0                                       │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                    │ \\
+// │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI, Ghiles HIDEUR                     │ \\
 // └──────────────────────────────────────────────────────────────────────────────────────┘ \\
 
 angular.module('modules.dashboard').controller('DashboardContentTopController', [
@@ -30,7 +30,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
 
     /*---------- Settings button ----------------*/
     $scope.exportSettings = function () {
-      var modalInstance = $uibModal.open({
+      const modalInstance = $uibModal.open({
         templateUrl: 'source/angular/modules/dashboard/_partials/modals/exportDownloadPage.html',
         controller: 'exportSettingDownload',
         scope: $scope,
@@ -83,7 +83,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
 
     /*---------- Infos button    ----------------*/
     $scope.infoProject = function (projectName) {
-      let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
 
       scopeDash.info.pastName = projectName;
       scopeDash.info.openProjectInfo = true;
@@ -92,6 +92,11 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
       scopeDash.info.tmp = angular.copy($rootScope.currentProject);
       scopeDash.info.showCheckbox = false;
       $rootScope.currentInfoProject = angular.copy($rootScope.currentProject);
+
+      // Need to display the current project name
+      if (!$rootScope.xDashFullVersion) {
+        $rootScope.currentInfoProject.name = $('#projectName').val();
+      }
     };
 
     /**********************************************************************/
@@ -108,52 +113,12 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
 
     /**
      * For opensource version
-     * Saves the current project to local storage and optionally triggers the openProjectCallback.
-     * This function also handles renaming projects and provides appropriate user notifications.
-     *
-     * @param {function} openProjectCallback - Optional callback function to be triggered after the project is saved.
+     * Saves current project to local storage.
+     * @name saveProjectToLocal
+     * @memberof $scope
      */
-    $scope.saveProjectToLocal = function (openProjectCallback) {
-      const is_defaultOverwrite = true;
-      const currentProjectName = $rootScope.currentProject.name;
-      const inputProjectName = $('#projectName').val();
-      const fileType = 'project';
-
-      $rootScope.oldFileName = currentProjectName;
-      const flag = false;
-      const fileName = currentProjectName;
-
-      if (inputProjectName === 'Untitled' || inputProjectName === '') {
-        $scope.renameProject(currentProjectName, flag);
-      } else if (inputProjectName !== currentProjectName && currentProjectName !== '') {
-        const endAction = function (msg1, msg2, type) {
-          const noticeConfig = {
-            title: inputProjectName,
-            type,
-            styling: 'bootstrap3',
-          };
-
-          if (type === 'success') {
-            noticeConfig.text = `'${currentProjectName}' has been successfully renamed to '${inputProjectName}'!`;
-            $('#projectName')[0].value = inputProjectName;
-            $rootScope.currentProject.name = inputProjectName;
-            $rootScope.loadingBarStop();
-            fileManager.saveOnServer('project', inputProjectName, undefined, is_defaultOverwrite, openProjectCallback);
-          } else if (type === 'error') {
-            noticeConfig.text = `Fail to rename your ${fileType} '${currentProjectName}' to '${inputProjectName}'!`;
-          }
-
-          if (noticeConfig.hasOwnProperty('text')) {
-            const notice = new PNotify(noticeConfig);
-            $('.ui-pnotify-container').on('click', function () {
-              notice.remove();
-            });
-          }
-        };
-        fileManager.renameFile(fileType, fileName, inputProjectName, endAction, flag);
-      } else {
-        fileManager.saveOnServer('project', inputProjectName, undefined, is_defaultOverwrite, openProjectCallback);
-      }
+    $scope.saveProjectToLocal = function () {
+      ManagePrjService.saveProjectToLocal();
     };
 
     /**
@@ -196,9 +161,10 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
 
     /*---------- Export button -------------------*/
     $scope.exportHTMLPage = function (projectName) {
-      let txt = htmlExport.createDashboardDocument(projectName);
-      let blob = new Blob([txt], { type: 'text/html;charset=utf-8' });
-      saveAs(blob, projectName + '.html');
+      const _projectName = $rootScope.xDashFullVersion ? projectName : $('#projectName').val() || 'Untitled';
+      const txt = htmlExport.createDashboardDocument(_projectName);
+      const blob = new Blob([txt], { type: 'text/html;charset=utf-8' });
+      saveAs(blob, _projectName + '.html');
     };
 
     /*---------- Preview button   ----------------*/
@@ -219,10 +185,10 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
 
     /*---------- Share button --> Get page link ----------------*/
     $scope.showPageLink = function (pageName) {
-      let FileMngrIn = new FileMngrFct();
+      const FileMngrIn = new FileMngrFct();
       FileMngrIn.GetPage(pageName + '.html', function (msg) {
         if (msg.Success) {
-          var encodedUri = encodeURI(msg.Msg);
+          const encodedUri = encodeURI(msg.Msg);
           swal(
             {
               title: 'HTML page link',

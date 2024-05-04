@@ -9,7 +9,7 @@ In the following, we describe the remaining dataNode types of Chalk'it.
 | Type                                                  |
 | ----------------------------------------------------- |
 | [Variable](../../ds/ds-basics/#variable)              |
-| [Python Script (Pyodide)](#python-script-pyodide)     |
+| [Python Script](#python-script)     |
 | [JavaScript Script (client-side)](#javascript-script) |
 | [REST web-service](#rest-web-services)                |
 | Generic text file reader                              |
@@ -24,9 +24,9 @@ In the following, we describe the remaining dataNode types of Chalk'it.
 | [WebSocket receive](#websocket-receive)               |
 | [WebSocket send](#websocket-send)                     |
 
-## Python script (Pyodide)
+## Python Script
 
-It allows the evaluation of a Python script in client-side using [Pyodide](https://pyodide.org/). Executed Python code may use the librairies available for installation in the _Project librairies_ main tab. For further information, please read the [Client-side execution with Pyodide](../../py/py-pyodide/)
+It allows the evaluation of a Python script in a local runner (default runner) or in client-side using [Pyodide](https://pyodide.org/). Executed Python in client-side code may use the librairies available for installation in the _Project librairies_ main tab. For further information, please read the [Client-side execution with Pyodide](../../py/py-pyodide/)
 
 Some examples:
 

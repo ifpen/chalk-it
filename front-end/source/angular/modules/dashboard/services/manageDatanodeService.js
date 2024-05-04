@@ -69,12 +69,6 @@ angular.module('modules.dashboard').service('ManageDatanodeService', [
               $rootScope.loadingBarStop();
             };
 
-            const viewModel = {};
-            const options = {
-              type: 'datanode',
-              operation: 'add',
-            };
-
             const type = data.type();
             const types = datanodesManager.getDataNodePluginTypes();
             const selectedType = types[type];
@@ -86,7 +80,7 @@ angular.module('modules.dashboard').service('ManageDatanodeService', [
               settings: settings,
             };
 
-            if (!datanodesManager.settingsSavedCallback(viewModel, options, newSettings, selectedType)) {
+            if (!datanodesManager.settingsSavedCallback(null, newSettings, selectedType)) {
               scopeDash.displayedShowIndex = 0;
               swal.close();
               $rootScope.updateFlagDirty(true);
@@ -114,25 +108,19 @@ angular.module('modules.dashboard').service('ManageDatanodeService', [
     self.saveDataNodeSettings = function (isFromJsEditor, scopeDash) {
       let types = datanodesManager.getDataNodePluginTypes();
 
-      let options = {
-        type: 'datanode',
-        operation: 'edit',
-      };
-      if (_.isEmpty($rootScope.dataNodeViewModel)) {
-        options.operation = 'add';
-      }
-      let viewModel = $rootScope.dataNodeViewModel;
+      const isNewDatanode = _.isEmpty($rootScope.dataNodeViewModel);
+      const viewModel = isNewDatanode ? null : $rootScope.dataNodeViewModel;
 
       let newSettings = datanodesManager.getDataNodeNewSettings();
 
       let selectedType = types[newSettings.type];
-      if (!datanodesManager.settingsSavedCallback(viewModel, options, newSettings, selectedType)) {
+      if (!datanodesManager.settingsSavedCallback(viewModel, newSettings, selectedType)) {
         if (!isFromJsEditor) {
           scopeDash.editorView.newDatanodePanel.view = false;
           scopeDash.editorView.newDatanodePanel.list = false;
           scopeDash.editorView.newDatanodePanel.type = false;
         }
-        if (options.operation == 'add') scopeDash.displayedShowIndex = 0;
+        if (isNewDatanode) scopeDash.displayedShowIndex = 0;
       }
       $rootScope.filtredNodes = $rootScope.alldatanodes.length;
       $rootScope.updateFlagDirty(true);
@@ -239,7 +227,7 @@ angular.module('modules.dashboard').service('ManageDatanodeService', [
 
     /*---------- updateNodesCountAndFontColor----------------*/
     self.updateNodesCountAndFontColor = function () {
-      $rootScope.filtredNodes = $rootScope.alldatanodes.filter((el) => el.hide == false).length;
+      $rootScope.filtredNodes = $rootScope.alldatanodes.filter((el) => !el.hide).length;
       if ($rootScope.filtredNodes !== $rootScope.alldatanodes.length)
         $('.datanode__wrap--info p')[0].style.setProperty('color', 'var(--danger-color)');
       else $('.datanode__wrap--info p').removeAttr('style');
