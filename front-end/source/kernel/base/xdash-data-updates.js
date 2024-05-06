@@ -274,8 +274,12 @@ var xdashUpdateEngine = new XdashDataUpdateEngine();
       //
       const data = model.data;
       if (!data.datanodes) {
-        data.datanodes = data.datasources ?? [];
-        delete data.datasources;
+        data.datanodes = data.datasources ?? data.dataNodes ?? [];
+        ['datasources', 'dataNodes'].forEach((prop) => {
+          if (data[prop] !== undefined) {
+            delete data[prop];
+          }
+        });
       }
 
       Object.values(model.connections ?? []).forEach((wdgConnections) => {
