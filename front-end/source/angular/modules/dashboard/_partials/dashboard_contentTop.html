@@ -61,6 +61,11 @@
     </ul>
   </div>
 
+  <!-- Save info -->
+  <div ng-if="autoSave" class="project__top_save-info">
+    <span>Last Updated: {{currentProject.date}}</span>
+  </div>
+
   <!-- Save button -->
   <button
     ng-if="xDashFullVersion"
