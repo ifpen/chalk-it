@@ -571,6 +571,8 @@ angular.module('modules').service('ManagePrjService', [
       const inputProjectName = $('#projectName').val();
       const currentProjectName = $rootScope.currentProject.name;
       $rootScope.currentProject.date = luxon.DateTime.now().setZone('Europe/Paris').toISO();
+      const date = new Date($rootScope.currentProject.date);
+      $rootScope.lastUpdatedDate = `${date.toLocaleDateString('en-US')} at ${date.toLocaleTimeString('en-US')}`;
       $rootScope.oldFileName = currentProjectName;
 
       if ($rootScope.taipyLink) {

@@ -146,8 +146,11 @@ var xdash = (function () {
       if (!_.isUndefined(jsonObject.meta.tags)) $rootScope.currentProject.tags = jsonObject.meta.tags;
       if (!_.isUndefined(jsonObject.meta.groupName)) $rootScope.currentProject.groupName = jsonObject.meta.groupName;
       if (!_.isUndefined(jsonObject.meta.version)) $rootScope.currentProject.version = jsonObject.meta.version;
-      if (!_.isUndefined(jsonObject.meta.date)) $rootScope.currentProject.date = jsonObject.meta.date;
-
+      if (!_.isUndefined(jsonObject.meta.date)) {
+        $rootScope.currentProject.date = jsonObject.meta.date;
+        const date = new Date($rootScope.currentProject.date);
+        $rootScope.lastUpdatedDate = `${date.toLocaleDateString('en-US')} at ${date.toLocaleTimeString('en-US')}`;
+      }
       if (!_.isUndefined(jsonObject.meta.schedulerLogOff)) offSchedLogUser = jsonObject.meta.schedulerLogOff;
       else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
