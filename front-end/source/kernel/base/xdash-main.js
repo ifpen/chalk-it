@@ -512,9 +512,10 @@ var xdash = (function () {
   }
 
   /*--------manage leave/refresh page--------*/
-  $(window).bind('beforeunload', async function () {
-    await saveAndClosePrj();
-  });
+  (() => {
+    const $rootScope = angular.element(document.body).scope().$root;
+    if (!$rootScope.autoSave) $(window).bind('beforeunload', async () => await saveAndClosePrj());
+  })();
 
   //-------------------------------------------------------------------------------------------------------------------
 
