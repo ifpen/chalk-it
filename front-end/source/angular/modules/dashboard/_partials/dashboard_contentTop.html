@@ -13,9 +13,7 @@
         autocorrect="off"
         ng-disabled="isTemplateOpen || isLiveDemo || taipyLink"
       />
-      <sapn
-        ng-if="!isTemplateOpen && !isLiveDemo && (enableLocalServer || taipyLink)"
-        class="project__top__title__dirty-flag"
+      <sapn ng-if="!autoSave && !isTemplateOpen && !isLiveDemo && (enableLocalServer || taipyLink)"
         >{{currentPrjDirty}}</sapn
       >
     </h1>
@@ -77,7 +75,7 @@
   </button>
 
   <button
-    ng-if="!xDashFullVersion"
+    ng-if="!xDashFullVersion && !autoSave"
     ng-disabled="isTemplateOpen || isLiveDemo || !(enableLocalServer || taipyLink)"
     class="btn btn__see-more"
     ng-class="{hidden:editorView.checkboxModelView}"
