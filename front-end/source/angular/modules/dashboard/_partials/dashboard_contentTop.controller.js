@@ -148,7 +148,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
     $scope.$watch(
       () => $rootScope.currentPrjDirty,
       (value) => {
-        if (value == ' *' && $rootScope.autoSave) ManagePrjService.saveProjectToLocal(undefined, true);
+        if (value == ' *' && $rootScope.autoSave) ManagePrjService.saveProjectToLocal();
       }
     );
 

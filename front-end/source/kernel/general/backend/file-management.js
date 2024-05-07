@@ -341,7 +341,7 @@ var fileManager = (function () {
   }
 
   /*--------saveOnServer--------*/
-  function saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwriteArg, endActionArg, autoSave) {
+  function saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwriteArg, endActionArg) {
     const $rootScope = angular.element(document.body).scope().$root;
 
     // For the opensource version is_defaultOverwrite == true
@@ -389,7 +389,7 @@ var fileManager = (function () {
     const checkInputValue = $rootScope.xDashFullVersion ? inputValue != 'Untitled' : true;
 
     if (is_defaultOverwrite && checkInputValue) {
-      if ($rootScope.autoSave && autoSave) {
+      if ($rootScope.autoSave) {
         taipyManager.endAction = () => {
           $rootScope.updateFlagDirty(false);
           $rootScope.$apply();
