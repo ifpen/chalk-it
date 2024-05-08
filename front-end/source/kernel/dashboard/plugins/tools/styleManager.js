@@ -95,6 +95,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
         //marker
         clickPopup: true,
         popupProperty: 'none',
+        enablePopup: true,
         awesomeMarker: {
           enabled: false,
           icon: {
@@ -242,43 +243,47 @@ this.setStyle = function (self, layerIndex, style) {
         }
         //opacity
         layer.setOpacity(style.opacity);
-        // Put new Popup
-        let popupText = '';
         if (
-          !_.isUndefined(styleForObject.popupProperty) &&
-          !_.isUndefined(layer.feature.properties[styleForObject.popupProperty])
+          _.isUndefined(styleForObject.enablePopup) ||
+          (!_.isUndefined(styleForObject.enablePopup) && styleForObject.enablePopup == true)
         ) {
-          popupText = styleForObject.popupProperty + ' : ' + layer.feature.properties[styleForObject.popupProperty];
-        }
+          // Put new Popup
+          let popupText = '';
+          if (
+            !_.isUndefined(styleForObject.popupProperty) &&
+            !_.isUndefined(layer.feature.properties[styleForObject.popupProperty])
+          ) {
+            popupText = styleForObject.popupProperty + ' : ' + layer.feature.properties[styleForObject.popupProperty];
+          }
 
-        // legacy comment and html are priotary tag
-        else if (layer.feature.properties.comment) {
-          popupText = layer.feature.properties.comment;
-        } else if (layer.feature.properties.html) {
-          popupText = layer.feature.properties.html;
-        } else {
-          popupText = '<div>';
-          let properties = style.tooltip.properties;
-          for (let i = 0; i < properties.length; i++) {
-            const prop = properties[i];
-            popupText = popupText + '<p> <strong>' + prop + '</strong> : ' + layer.feature.properties[prop] + '</p>';
-            if (i == properties.length - 1) {
-              popupText = popupText + '</div>';
+          // legacy comment and html are priotary tag
+          else if (layer.feature.properties.comment) {
+            popupText = layer.feature.properties.comment;
+          } else if (layer.feature.properties.html) {
+            popupText = layer.feature.properties.html;
+          } else {
+            popupText = '<div>';
+            let properties = style.tooltip.properties;
+            for (let i = 0; i < properties.length; i++) {
+              const prop = properties[i];
+              popupText = popupText + '<p> <strong>' + prop + '</strong> : ' + layer.feature.properties[prop] + '</p>';
+              if (i == properties.length - 1) {
+                popupText = popupText + '</div>';
+              }
             }
           }
-        }
-
-        // Add The popup
-        if (style.clickPopup) {
-          // Popup on click
-          mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
-        } else {
-          // persistent popup
-          mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
-          mk.on('add', function (event) {
-            event.target.openPopup();
-          });
-          layer.openPopup();
+          // Add The popup
+          if (style.clickPopup) {
+            // Popup on click
+            mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
+          } else {
+            // persistent popup
+            mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
+            mk.on('add', function (event) {
+              event.target.openPopup();
+            });
+            layer.openPopup();
+          }
         }
       });
     } else {
