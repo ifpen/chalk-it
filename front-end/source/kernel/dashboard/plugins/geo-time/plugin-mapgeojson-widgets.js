@@ -169,7 +169,8 @@ function mapGeoJsonWidgetsPluginClass() {
           }
         )
         .addTo(self.map);
-
+      //set zoom position
+      self.map.zoomControl.setPosition('topright');
       //if image overlay exist
       if (
         !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
