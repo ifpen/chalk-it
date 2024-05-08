@@ -28,6 +28,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
           weight: 3,
           fillColor: '#354a5f',
           fillOpacity: 0.5,
+          opacity:1
         },
       },
       click: {
@@ -37,6 +38,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
           weight: 1,
           fillColor: '#2154ab',
           fillOpacity: 1,
+          opacity:1
         },
       },
     },
@@ -78,6 +80,10 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
     case geoJsonTools.equivalenceTypes.MultiLineString:
       delete result.color;
       delete result.fillOpacity;
+      delete result.events.mouseover.style.color;
+      delete result.events.click.style.color;
+      delete result.events.mouseover.style.fillOpacity;
+      delete result.events.click.style.fillOpacity;
       return { ...result, dashArray: '', lineJoin: 'miter', lineCap: 'square' };
     case geoJsonTools.equivalenceTypes.MultiPolygon:
       return result;
