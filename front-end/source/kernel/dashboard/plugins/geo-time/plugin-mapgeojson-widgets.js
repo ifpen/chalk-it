@@ -240,15 +240,15 @@ function mapGeoJsonWidgetsPluginClass() {
     this.createTemplateStyle = styleManager.createTemplateStyle;
     this.getColor = colorScaleManager.getColor;
 
-    this.createChoroplethLegend = function (min, max, featureTitle, colorScale) {
-      legend = legends.createChoroplethLegend(self.getColor, min, max, featureTitle, colorScale);
+    this.createChoroplethLegend = function (legendId,min, max, featureTitle, colorScale) {
+      legend = legends.createChoroplethLegend(legendId,self.getColor, min, max, featureTitle, colorScale);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }
       return legend;
     };
-    this.createLegend = function (color, length, colorStops, min, max, featureTitle) {
-      legend = legends.createLegend(color, length, colorStops, min, max, featureTitle);
+    this.createLegend = function (legendId,color, length, colorStops, min, max, featureTitle) {
+      legend = legends.createLegend(legendId,color, length, colorStops, min, max, featureTitle);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }

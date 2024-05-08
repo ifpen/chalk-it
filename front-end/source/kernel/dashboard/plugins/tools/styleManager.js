@@ -11,9 +11,8 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
   allProp = geoJsonTools.findAllProperties(geoJSON);
   JSONtype = geoJsonTools.findFeatureType(geoJSON);
   baseStyle = {
-    //id: geoJSON.id,
     type: JSONtype,
-    layer: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'layer ') + (index + 1),
+    layer: 'layer ' + (index + 1),
     name: 'layer ' + (index + 1),
     stroke: true,
     color: 'black',
@@ -42,56 +41,44 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
       },
     },
   };
+  let commonStyle = {
+    ...baseStyle,
+    showLegend: true,
+    legend: {
+      title: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : '',
+    },
+    dashArray: [],
+    property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
+    propertyMin: 'Auto',
+    propertyMax: 'Auto',
+    possibleProperties: prop,
+    allProperties: allProp,
+    tooltip: {
+      properties: [...allProp],
+    },
+  };
 
+  let result = {
+    ...baseStyle,
+    ...commonStyle,
+  };
+  if (index == modelsHiddenParams[self.idInstance].GeoJSON.length - 1) {
+    result = { ...result, showLegend: true };
+  } else {
+    result = { ...result, showLegend: false };
+  }
   switch (JSONtype) {
     case geoJsonTools.equivalenceTypes.MultiLineString:
-      let result = {
-        ...baseStyle,
-        showLegend: false,
-        //type: 'Multi Line',
-        dashArray: [],
-        property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
-        propertyMin: 'Auto',
-        propertyMax: 'Auto',
-        possibleProperties: prop,
-        tooltip: {
-          properties: [...allProp],
-        },
-      };
       delete result.fillColor;
       delete result.fillOpacity;
       return result;
-      break;
     case geoJsonTools.equivalenceTypes.MultiPolygon:
-      let commonStyle = {
-        ...baseStyle,
-        showLegend: true,
-        legend: {
-          title: (Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'Legend ') + (index + 1),
-        },
-        //type: 'Multi Polygon',
-        dashArray: [],
-        property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
-        propertyMin: 'Auto',
-        propertyMax: 'Auto',
-        possibleProperties: prop,
-        allProperties: allProp,
-        tooltip: {
-          properties: [...allProp],
-        },
-      };
-      if (index == modelsHiddenParams[self.idInstance].GeoJSON.length - 1) {
-        return commonStyle;
-      } else {
-        return { ...commonStyle, showLegend: false };
-      }
-      break;
+      return result;
     case geoJsonTools.equivalenceTypes.MultiPoint:
-      return {
-        ...baseStyle,
+      let markerStyle = {
         //type: 'Multi Point',
-        markerCluster: false,
         pointAreMarker: true,
+        markerCluster: false,
         //marker
         enablePopup: true,
         clickPopup: true,
@@ -104,24 +91,17 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
             markerColor: 'red',
           },
         },
-        //pour les circles
-        radius: 300,
-        showLegend: false,
-        stroke: false,
-        property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
-        propertyMin: 'Auto',
-        propertyMax: 'Auto',
-        possibleProperties: prop,
-        allProperties: allProp,
-        //TODO : mettre dans baseStyle
-        tooltip: {
-          properties: [...allProp],
-        },
       };
-      break;
+      let circleStyle = {
+        ...result,
+        radius: 300,
+      };
+      return {
+        ...circleStyle,
+        ...markerStyle,
+      };
     default:
       return {};
-      break;
   }
 };
 updateLayerStyle = function (self, layer, styleForObject, geoJSONinLayer) {
@@ -309,108 +289,16 @@ this.setStyle = function (self, layerIndex, style) {
       //events
       eventsManager.configureEvents(self, geoJSONinLayer, leafLetLayer, layerIndex);
     }
-  }
-  //calcul color scale
-  let colorScale = undefined;
-  var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
-  if (!_.isUndefined(color)) {
-    colorScale = self.getColorScale(color, 0, 100);
-  }
-  //using specified property
-  //
-
-  //get Min Max
-  let minMax = geoJsonTools.getMinMaxProperty(style, geoJSONinLayer);
-  let min = minMax[0],
-    max = minMax[1];
+  } 
   leafLetLayer.eachLayer(function (layer) {
     updateLayerStyle(self, layer, styleForObject, geoJSONinLayer);
   });
-
-  //legends
-  var length = 100;
-  var colorStops = [0, 25, 50, 75, 100];
+  //legends 
   self.map.on('layeradd layerremove', (e) => {
-    if (self.map.hasLayer(self.layers[layerIndex])) {
-      if (!_.isUndefined(styleForObject.showLegend)) {
-        if (!!styleForObject.showLegend) {
-          if (!_.isUndefined(self.legends[layerIndex])) {
-            self.legends[layerIndex].remove();
-          }
-          if (!_.isUndefined(min) && !_.isUndefined(max) && !_.isUndefined(colorScale)) {
-            if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPolygon) {
-              self.legends[layerIndex] = self.createChoroplethLegend(
-                layerIndex,
-                min,
-                max,
-                styleForObject.legend.title || '',
-                colorScale
-              );
-            } else {
-              self.legends[layerIndex] = self.createLegend(
-                layerIndex,
-                colorScale,
-                length,
-                colorStops,
-                min,
-                max,
-                styleForObject.property
-              );
-            }
-          }
-        } else {
-          if (!_.isUndefined(self.legends[layerIndex])) {
-            self.map.removeControl(self.legends[layerIndex]);
-          }
-        }
-      }
-    } else {
-      if (!_.isUndefined(self.legends[layerIndex])) {
-        self.legends[layerIndex].remove();
-      }
-    }
+    legends.toggleLegend(self,layerIndex, styleForObject,geoJSONinLayer);
   });
-  //toggle legend
-  if (self.map.hasLayer(self.layers[layerIndex])) {
-    if (!_.isUndefined(styleForObject.showLegend)) {
-      if (!!styleForObject.showLegend) {
-        if (!_.isUndefined(self.legends[layerIndex])) {
-          self.legends[layerIndex].remove();
-          self.legends[layerIndex] = undefined;
-        }
-        if (!_.isUndefined(min) && !_.isUndefined(max) && !_.isUndefined(colorScale)) {
-          if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPolygon) {
-            self.legends[layerIndex] = self.createChoroplethLegend(
-              layerIndex,
-              min,
-              max,
-              styleForObject.legend.title || '',
-              colorScale
-            );
-          } else {
-            self.legends[layerIndex] = self.createLegend(
-              layerIndex,
-              colorScale,
-              length,
-              colorStops,
-              min,
-              max,
-              styleForObject.property
-            );
-          }
-        }
-      } else {
-        if (!_.isUndefined(self.legends[layerIndex])) {
-          self.map.removeControl(self.legends[layerIndex]);
-          self.legends[layerIndex] = undefined;
-        }
-      }
-    }
-  } else {
-    if (!_.isUndefined(self.legends[layerIndex])) {
-      self.legends[layerIndex].remove();
-    }
-  }
+  //toggle legend 
+  legends.toggleLegend(self,layerIndex , styleForObject,geoJSONinLayer);
 };
 
 var styleManager = (function styleManager() {

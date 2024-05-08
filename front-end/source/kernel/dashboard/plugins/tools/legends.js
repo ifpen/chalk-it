@@ -12,6 +12,10 @@ this.createLegend = function (idLegend,color, length, colorStops, min, max, feat
   var legend = L.control({ position: 'topleft' });
   var min = Number(min);
   var max = Number(max);
+  if(min == max) return;
+  if(_.isUndefined(featureTitle) || featureTitle == "none") return;
+
+  featureTitle = featureTitle ? featureTitle.charAt(0).toUpperCase() + featureTitle.toLowerCase().slice(1) : ""
 
   legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'scaleLegend');
@@ -55,6 +59,8 @@ this.createLegend = function (idLegend,color, length, colorStops, min, max, feat
 
 this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitle, colorScale) {
   if(min == max) return;
+  if(_.isUndefined(featureTitle) || featureTitle == "none") return;
+
   featureTitle = featureTitle ? featureTitle.charAt(0).toUpperCase() + featureTitle.toLowerCase().slice(1) : ""
   var legend = L.control({ position: 'topleft' });
   var min = Number(min);
@@ -92,9 +98,63 @@ this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitl
   return legend;
 };
 
+this.toggleLegend = function(self, layerIndex, styleForObject, geoJSONinLayer){
+  //calcul color scale
+  let colorScale = undefined;
+  var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
+  if (!_.isUndefined(color)) {
+    colorScale = self.getColorScale(color, 0, 100);
+  }
+  //get Min Max
+  let minMax = geoJsonTools.getMinMaxProperty(styleForObject, geoJSONinLayer);
+  let min = minMax[0],
+    max = minMax[1];
+  var length = 100;
+  var colorStops = [0, 25, 50, 75, 100];
+  if (self.map.hasLayer(self.layers[layerIndex])) {
+    if (!_.isUndefined(styleForObject.showLegend)) {
+      if (!!styleForObject.showLegend) {
+        if (!_.isUndefined(self.legends[layerIndex])) {
+          self.legends[layerIndex].remove();
+        }
+        if (!_.isUndefined(min) && !_.isUndefined(max) && !_.isUndefined(colorScale)) {
+          if (geoJsonTools.findFeatureType(geoJSONinLayer) == geoJsonTools.equivalenceTypes.MultiPolygon) {
+            self.legends[layerIndex] = self.createChoroplethLegend(
+              layerIndex,
+              min,
+              max,
+              styleForObject.legend.title || styleForObject.property,
+              colorScale
+            );
+          } else {
+            self.legends[layerIndex] = self.createLegend(
+              layerIndex,
+              colorScale,
+              length,
+              colorStops,
+              min,
+              max,
+              styleForObject.legend.title || styleForObject.property
+            );
+          }
+        }
+      } else {
+        if (!_.isUndefined(self.legends[layerIndex])) {
+          self.map.removeControl(self.legends[layerIndex]);
+        }
+      }
+    }
+  } else {
+    if (!_.isUndefined(self.legends[layerIndex])) {
+      self.legends[layerIndex].remove();
+    }
+  }
+}
+
 var legends = (function legends () {
   return {
     createLegend: createLegend,
     createChoroplethLegend: createChoroplethLegend,
+    toggleLegend
   };
 })();
