@@ -43,7 +43,6 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
   };
   let commonStyle = {
     ...baseStyle,
-    dashArray: [],
     property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
     propertyMin: 'Auto',
     propertyMax: 'Auto',
@@ -79,7 +78,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
     case geoJsonTools.equivalenceTypes.MultiLineString:
       delete result.color;
       delete result.fillOpacity;
-      return result;
+      return { ...result, dashArray: '', lineJoin: 'miter', lineCap: 'square' };
     case geoJsonTools.equivalenceTypes.MultiPolygon:
       return result;
     case geoJsonTools.equivalenceTypes.MultiPoint:
