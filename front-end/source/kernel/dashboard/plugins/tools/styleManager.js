@@ -69,7 +69,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
   }
   switch (JSONtype) {
     case geoJsonTools.equivalenceTypes.MultiLineString:
-      delete result.fillColor;
+      delete result.color;
       delete result.fillOpacity;
       return result;
     case geoJsonTools.equivalenceTypes.MultiPolygon:
@@ -130,7 +130,7 @@ updateLayerStyle = function (self, layer, styleForObject, geoJSONinLayer) {
       if (!_.isUndefined(fillColor)) {
         style.color = fillColor;
       } else {
-        style.color = styleForObject.color;
+        style.color = styleForObject.fillColor;
       }
     } else {
       if (!_.isUndefined(fillColor)) {

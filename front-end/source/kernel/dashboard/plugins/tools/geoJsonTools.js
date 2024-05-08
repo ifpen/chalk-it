@@ -153,6 +153,7 @@ function getFillColor(geoJSON, style, value, colorScale) {
       return;
     }
   }
+  if(min == max) return style.fillColor
   if (findFeatureType(geoJSON) == equivalenceTypes.MultiPolygon) {
     return colorScaleManager.getColor(min, max, value, colorScale);
   } else if (findFeatureType(geoJSON) == equivalenceTypes.MultiLineString) {

@@ -17,6 +17,9 @@ this.mouseoverHandler = (self, geoJSON, leafletIndex) => {
       //TODO:  use default style
       return;
     }
+    if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiLineString) {
+      eventStyle.color = eventStyle.fillColor;
+    }
     e.target.setStyle(eventStyle);
     e.target.bringToFront();
     //create popup
@@ -55,6 +58,9 @@ this.mouseoutHandler = (self, geoJSON, leafletIndex) => {
       let eventStyle = {};
       if (!_.isUndefined(style.events.click.style)) {
         eventStyle = { ...style.events.click.style };
+        if (geoJsonTools.findFeatureType(geoJSON) == geoJsonTools.equivalenceTypes.MultiLineString) {
+          eventStyle.color = eventStyle.fillColor;
+        }
       } else {
         return;
       }
@@ -165,6 +171,7 @@ this.clickHandler = (self, geoJSON, leafletLayer, leafletIndex) => {
           layer.setStyle(layerStyle);
         } else {
           //select event
+          eventStyle.color = eventStyle.fillColor;
           e.target.setStyle(eventStyle);
         }
       }
