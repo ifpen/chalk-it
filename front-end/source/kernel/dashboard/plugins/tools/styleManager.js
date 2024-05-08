@@ -93,9 +93,9 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
         markerCluster: false,
         pointAreMarker: true,
         //marker
-        clickPopup: true,
-        popupProperty: 'none',
         enablePopup: true,
+        clickPopup: true,
+        popupProperty: 'default_tooltip',
         awesomeMarker: {
           enabled: false,
           icon: {
