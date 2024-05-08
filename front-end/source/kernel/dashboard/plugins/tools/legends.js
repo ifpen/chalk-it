@@ -112,8 +112,8 @@ this.toggleLegend = function(self, layerIndex, styleForObject, geoJSONinLayer){
   var length = 100;
   var colorStops = [0, 25, 50, 75, 100];
   if (self.map.hasLayer(self.layers[layerIndex])) {
-    if (!_.isUndefined(styleForObject.showLegend)) {
-      if (!!styleForObject.showLegend && !_.isUndefined(styleForObject.property) && styleForObject.property in styleForObject.possibleProperties) {
+    if (!_.isUndefined(styleForObject.legend) && !_.isUndefined(styleForObject.legend.showLegend)) {
+      if (!!styleForObject.legend.showLegend && !_.isUndefined(styleForObject.property) && styleForObject.property in styleForObject.possibleProperties) {
         if (!_.isUndefined(self.legends[layerIndex])) {
           self.legends[layerIndex].remove();
         }

@@ -43,10 +43,6 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
   };
   let commonStyle = {
     ...baseStyle,
-    showLegend: true,
-    legend: {
-      title: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : '',
-    },
     dashArray: [],
     property: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : 'none',
     propertyMin: 'Auto',
@@ -62,10 +58,22 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
     ...baseStyle,
     ...commonStyle,
   };
-  if (index == modelsHiddenParams[self.idInstance].GeoJSON.length - 1) {
-    result = { ...result, showLegend: true };
+  if (index == 0) {
+    result = {
+      ...result,
+      legend: {
+        showLegend: true,
+        title: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : '',
+      },
+    };
   } else {
-    result = { ...result, showLegend: false };
+    result = {
+      ...result,
+      legend: {
+        showLegend: false,
+        title: Object.keys(prop).length > 0 ? Object.keys(prop)[0] : '',
+      },
+    };
   }
   switch (JSONtype) {
     case geoJsonTools.equivalenceTypes.MultiLineString:
@@ -289,16 +297,16 @@ this.setStyle = function (self, layerIndex, style) {
       //events
       eventsManager.configureEvents(self, geoJSONinLayer, leafLetLayer, layerIndex);
     }
-  } 
+  }
   leafLetLayer.eachLayer(function (layer) {
     updateLayerStyle(self, layer, styleForObject, geoJSONinLayer);
   });
-  //legends 
+  //legends
   self.map.on('layeradd layerremove', (e) => {
-    legends.toggleLegend(self,layerIndex, styleForObject,geoJSONinLayer);
+    legends.toggleLegend(self, layerIndex, styleForObject, geoJSONinLayer);
   });
-  //toggle legend 
-  legends.toggleLegend(self,layerIndex , styleForObject,geoJSONinLayer);
+  //toggle legend
+  legends.toggleLegend(self, layerIndex, styleForObject, geoJSONinLayer);
 };
 
 var styleManager = (function styleManager() {
