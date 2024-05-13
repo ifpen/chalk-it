@@ -31,7 +31,13 @@ class TaipyManager {
     // Variables that will be ignored (do not create a dataNode)
     this.#ignoredVariables = new Set(['chlkt_json_data_', 'chlkt_file_list_', 'TaipyOnInit']);
     // Functions that will be ignored
-    this.#ignoredFunctions = new Set(['on_change', 'chlkt_load_file_', 'chlkt_save_file_', 'chlkt_get_file_list_']);
+    this.#ignoredFunctions = new Set([
+      'on_change',
+      'chlkt_load_file_',
+      'chlkt_save_file_',
+      'chlkt_get_file_list_',
+      'notice',
+    ]);
   }
 
   /**
