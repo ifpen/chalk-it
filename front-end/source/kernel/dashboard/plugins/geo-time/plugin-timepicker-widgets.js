@@ -163,7 +163,7 @@ function timePickerWidgetsPluginClass() {
         'px; ' +
         'display:table; margin-top: 0; top:0; padding-right: ' +
         valueFontSize +
-        '"><i class="fa fa-lg fa-clock-o" ' +
+        '"><i class="fa fa-lg fa-clock" ' +
         'style="display: table-cell; vertical-align: middle;' +
         cursorIcon +
         'font-size: ' +
