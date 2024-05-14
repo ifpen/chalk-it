@@ -158,6 +158,64 @@ var chalkit = (function () {
     }
   }
 
+  scheduler = (function () {
+    function setVariable(dataNodeName, varJsonValue) {
+      chalkit.setVariable(dataNodeName, varJsonValue);
+    }
+    function setVariables(dataNodeNames, varJsonValues) {
+      chalkit.setVariables(dataNodeNames, varJsonValues);
+    }
+    function setVariableProperty(dataNodeName, propertyPath, varJsonValue) {
+      chalkit.setVariableProperty(dataNodeName, propertyPath, varJsonValue);
+    }
+    function executeDataNode(dataNodeName) {
+      chalkit.executeDataNode(dataNodeName);
+    }
+    function executeDataNodes(dataNodeNames) {
+      chalkit.executeDataNodes(dataNodeNames);
+    }
+    return {
+      setVariable,
+      setVariables,
+      setVariableProperty,
+      executeDataNode,
+      executeDataNodes,
+    };
+  })();
+
+  dashboard = (function () {
+    function viewPage(pageUrl, inputVals, bNewTab) {
+      chalkit.viewPage(pageUrl, inputVals, bNewTab);
+    }
+    function viewProject(projectUrl, inputVals, bNewTab) {
+      chalkit.viewProject(projectUrl, inputVals, bNewTab);
+    }
+    function goToPage(numPage) {
+      chalkit.goToPage(numPage);
+    }
+    function enableWidget(widgetName) {
+      chalkit.enableWidget(widgetName);
+    }
+    function disableWidget(widgetName) {
+      chalkit.disableWidget(widgetName);
+    }
+    function showWidget(widgetName) {
+      chalkit.showWidget(widgetName);
+    }
+    function hideWidget(widgetName) {
+      chalkit.hideWidget(widgetName);
+    }
+    return {
+      viewPage,
+      viewProject,
+      goToPage,
+      enableWidget,
+      disableWidget,
+      showWidget,
+      hideWidget,
+    };
+  })();
+
   return {
     setVariable,
     setVariables,
@@ -171,5 +229,7 @@ var chalkit = (function () {
     disableWidget,
     showWidget,
     hideWidget,
+    scheduler,
+    dashboard,
   };
 })();

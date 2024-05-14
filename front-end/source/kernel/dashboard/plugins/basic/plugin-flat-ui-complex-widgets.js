@@ -13,9 +13,10 @@
 /*******************************************************************/
 
 // Models
-modelsHiddenParams.flatUiSelect = { keys: [], values: [], value: [], selectedValue: '' };
+modelsHiddenParams.flatUiSelect = { keys: [], values: [], selectedValue: '' };
 modelsHiddenParams.flatUiMultiSelect = { value: [], selectedValue: '' };
 modelsHiddenParams.flatUiList = { value: [], selectedValue: '' };
+modelsHiddenParams.flatUiEditableTable = { value: null };
 modelsHiddenParams.flatUiTable = { value: null };
 
 // Parameters
@@ -70,6 +71,7 @@ modelsParameters.flatUiList = {
 };
 modelsParameters.flatUiTable = {
   headerLine: false,
+  indexColumn: false,
   tableValueFontSize: 0.5,
   striped: true,
   valueColor: 'var(--widget-table-value-color)',
@@ -83,11 +85,28 @@ modelsParameters.flatUiTable = {
     secondary: 'var(--widget-table-striped-odd)',
   },
 };
+modelsParameters.flatUiEditableTable = {
+  headerLine: false,
+  indexColumn: false,
+  tableValueFontSize: 0.5,
+  striped: true,
+  valueColor: 'var(--widget-table-value-color)',
+  valueFontFamily: 'var(--widget-font-family)',
+  valueAlign: 'left',
+  bordered: true,
+  noBorder: false,
+  editableCols: '*',
+  backgroundColor: {
+    primary: 'var(--widget-color-0)',
+    secondary: 'var(--widget-table-striped-odd)',
+  },
+};
 
 // Layout (default dimensions)
 modelsLayout.flatUiSelect = { height: '5vh', width: '19vw', minWidth: '40px', minHeight: '27px' };
 modelsLayout.flatUiMultiSelect = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
 modelsLayout.flatUiList = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
+modelsLayout.flatUiEditableTable = { height: '10vh', width: '11vw', minWidth: '88px', minHeight: '79px' };
 modelsLayout.flatUiTable = { height: '10vh', width: '11vw', minWidth: '88px', minHeight: '79px' };
 
 /*******************************************************************/
@@ -101,15 +120,14 @@ function flatUiComplexWidgetsPluginClass() {
   this.selectFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
-    this.bFirstExec = true;
-    this.tmpSelectedValue = '';
 
     this.enable = function () {
       $('#select' + idWidget)
         .off('click')
         .on('click', function (e, ui) {
-          modelsHiddenParams[idInstance].selectedValue = self.selectedValue.getValue();
-          self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+          const val = self.selectedValue.getValue();
+          modelsHiddenParams[idInstance].selectedValue = val;
+          self.selectedValue.updateCallback(self.selectedValue, val);
         });
       $('#select' + idWidget).prop('disabled', false);
 
@@ -173,39 +191,20 @@ function flatUiComplexWidgetsPluginClass() {
             '</span>';
       }
 
-      let selectOptions = [];
-
-      // MBG backward compatibility at exported dashboard
-      if (_.isUndefined(modelsParameters[idInstance].isKeyValuePairs)) {
-        //AEF: modif for issue#61
-        modelsParameters[idInstance].isKeyValuePairs = true;
-      }
-
-      //AEF
-      if (!_.isUndefined(modelsHiddenParams[idInstance].value)) {
-        // MBG backward compatibility at exported dashboard
-        if (modelsHiddenParams[idInstance].value.length != 0) {
-          selectOptions = modelsHiddenParams[idInstance].value;
-        } else if (modelsHiddenParams[idInstance].values.length != 0) {
-          for (let i = 0; i < modelsHiddenParams[idInstance].values.length; i++) {
-            selectOptions[i] = {};
-            selectOptions[i].value = modelsHiddenParams[idInstance].values[i];
-          }
-          for (let i = 0; i < modelsHiddenParams[idInstance].keys.length; i++) {
-            selectOptions[i].key = modelsHiddenParams[idInstance].keys[i];
-          }
-        }
-      }
+      const keys = modelsHiddenParams[idInstance].keys;
+      const values = modelsHiddenParams[idInstance].values;
+      const nbOptions = Math.min(values.length, keys.length);
+      const styleDef = 'style="display: table; height: ' + valueHeightPx + 'px; "';
 
       divContent +=
         '<select data-toggle="select" id="select' +
         idWidget +
-        '" class="select-div form-control select select-primary select-block mbl" style="height: ' +
-        valueHeightPx +
-        'px;">';
+        '" class="select-div form-control select select-primary select-block mbl" ' +
+        styleDef +
+        '>';
 
-      for (let i = 0; i < selectOptions.length; i++) {
-        divContent += '<option value="' + selectOptions[i].value + '">' + selectOptions[i].key + '</option>';
+      for (let i = 0; i < nbOptions; i++) {
+        divContent += `<option value="${values[i]}">${keys[i]}</option>`;
       }
       divContent += '</select>';
 
@@ -245,38 +244,9 @@ function flatUiComplexWidgetsPluginClass() {
       // Start observing changes in the DOM
       observer.observe(document.body, { childList: true, subtree: true });
 
-      if (modelsHiddenParams[idInstance].selectedValue != '') {
-        $('#select' + idWidget)[0].value = modelsHiddenParams[idInstance].selectedValue;
-      }
+      $('#select' + idWidget)[0].value = String(modelsHiddenParams[idInstance].selectedValue);
 
-      if (this.findInSelect(this.tmpSelectedValue)) {
-        $('#select' + idWidget)[0].value = this.tmpSelectedValue;
-      }
       $('#select' + idWidget).select2();
-      self.bFirstExec = false;
-
-      //old code: modif is made now directly in flat-ui.js
-      //AEF: make fontsize, in dynamic combobox part, able to be changed
-      // for (let i = 0; i < $(".select2-chosen").length; i++) {
-      //     if ($(".select2-chosen")[i].parentNode.parentNode.parentNode.id == "select-div-container" + idWidget) {
-      //         var selectChosenId = $(".select2-chosen")[i].id;
-      //         $("#" + selectChosenId)[0].style.fontSize = 'calc(7px + ' +
-      //             modelsParameters[idInstance].labelFontSize * getFontFactor() + 'vw + 0.4vh)';
-      //     }
-      // }
-    };
-
-    this.findInSelect = function (val) {
-      let obj = {};
-      if (!_.isUndefined(self.values)) {
-        obj = self.values;
-      } else if (!_.isUndefined(self.keyValuePairs)) {
-        obj = self.keyValuePairs;
-      }
-      bFind = _.find(obj.selectionValues, function found(num) {
-        return num == val;
-      });
-      return bFind;
     };
 
     // selectedValue
@@ -426,21 +396,17 @@ function flatUiComplexWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (val) {
         //AEF: modif for issue#61
-        self.tmpSelectedValue = val;
-        const bFind = self.findInSelect(val);
-        if (bFind) {
-          $('#select' + idWidget)[0].value = val;
-          modelsHiddenParams[idInstance].selectedValue = val;
-          self.render();
-        }
+        modelsHiddenParams[idInstance].selectedValue = val;
+        self.render();
       },
       getValue: function () {
+        const val = $('#select' + idWidget)[0].value;
         if (modelsParameters[idInstance].isNumber) {
-          return Number($('#select' + idWidget)[0].value);
+          return Number(val);
         } else if (modelsParameters[idInstance].isBoolean) {
-          return $('#select' + idWidget)[0].value === 'false' ? false : Boolean($('#select' + idWidget)[0].value);
+          return val === 'false' ? false : Boolean(val);
         } else {
-          return $('#select' + idWidget)[0].value;
+          return val;
         }
       },
       addValueChangedHandler: function (updateDataFromWidget) {
@@ -471,38 +437,22 @@ function flatUiComplexWidgetsPluginClass() {
       //AEF: new created widget and newer loaded project
       this.keys = {
         //AEF: in this slider put array of keys (madatory)
-        selectionValues: [],
         setValue: function (val) {
-          if (val === '') {
-            //ABK
-            selectionValues = [];
-            modelsHiddenParams[idInstance].value = val;
-            //modelsHiddenParams[idInstance].keys = []; // MBG & ABK meeting 26/11/2020 : à faire (à décider) ???
-            self.render();
-          } else {
-            const msg1 = '"keys" must be an array (in widget' + idInstance + ')';
-            const msg2 = 'Example: ["choice1","choice2"]';
-            if (!Array.isArray(val)) {
-              swal(msg1, msg2, 'info');
-              return;
-            }
-            if (typeof val[0] === 'object') {
-              //AEF: prevetn old format here [{},{}]
-              swal(msg1, msg2, 'info');
-              return;
-            }
-
-            for (let i = 0; i < val.length; i++) {
-              this.selectionValues[i] = val[i];
-            }
-            modelsHiddenParams[idInstance].value = [];
-            modelsHiddenParams[idInstance].keys = val;
-            self.render();
+          const msg1 = '"keys" must be an array (in widget' + idInstance + ')';
+          const msg2 = 'Example: ["choice1","choice2"]';
+          if (!Array.isArray(val)) {
+            swal(msg1, msg2, 'info');
+            return;
           }
+          if (val.length && typeof val[0] === 'object') {
+            //AEF: prevent old format here [{},{}]
+            swal(msg1, msg2, 'info');
+            return;
+          }
+          modelsHiddenParams[idInstance].keys = val;
+          self.render();
         },
-        getValue: function () {
-          return modelsHiddenParams[idInstance].value;
-        },
+        getValue: function () {},
         addValueChangedHandler: function (updateDataFromWidget) {
           self.enable();
         },
@@ -513,41 +463,25 @@ function flatUiComplexWidgetsPluginClass() {
 
       this.values = {
         //AEF: in this slider put array of values (optional)
-        selectionValues: [],
         setValue: function (val) {
-          if (val === '') {
-            //ABK
-            selectionValues = [];
-            modelsHiddenParams[idInstance].value = val;
-            //modelsHiddenParams[idInstance].values = []; // MBG & ABK meeting 26/11/2020 : à faire (à décider) ???
-            self.render();
-          } else {
-            const msg1 = '"value" must be an array (in widget' + idInstance + ')';
-            const msg2 = 'Example: [1, 2]';
-            if (_.isNull(val)) {
-              val = modelsHiddenParams[idInstance].keys; //AEF: values are optional, take keys if not provided
-            }
-            if (!Array.isArray(val)) {
-              swal(msg1, msg2, 'info');
-              return;
-            }
-            if (typeof val[0] === 'object') {
-              //AEF: prevetn old format here [{},{}]
-              swal(msg1, msg2, 'info');
-              return;
-            }
-
-            for (let i = 0; i < val.length; i++) {
-              this.selectionValues[i] = val[i];
-            }
-            modelsHiddenParams[idInstance].value = [];
-            modelsHiddenParams[idInstance].values = val;
-            self.render();
+          const msg1 = '"value" must be an array (in widget' + idInstance + ')';
+          const msg2 = 'Example: [1, 2]';
+          if (val === null || val === undefined) {
+            val = modelsHiddenParams[idInstance].keys; //AEF: values are optional, take keys if not provided
           }
+          if (!Array.isArray(val)) {
+            swal(msg1, msg2, 'info');
+            return;
+          }
+          if (val.length && typeof val[0] === 'object') {
+            //AEF: prevent old format here [{},{}]
+            swal(msg1, msg2, 'info');
+            return;
+          }
+          modelsHiddenParams[idInstance].values = val;
+          self.render();
         },
-        getValue: function () {
-          return modelsHiddenParams[idInstance].value;
-        },
+        getValue: function () {},
         addValueChangedHandler: function (updateDataFromWidget) {
           self.enable();
         },
@@ -557,46 +491,32 @@ function flatUiComplexWidgetsPluginClass() {
       };
     } else {
       //AEF: older project (before issue#61)
-
       this.keyValuePairs = {
         //AEF: in this slider put array of key or array of key/value pairs
-        selectionValues: [],
         setValue: function (val) {
-          if (val == '') {
-            //ABK
-            selectionValues = [];
-            modelsHiddenParams[idInstance].value = val;
-            self.render();
-          } else {
-            const msg1 =
-              '"keyValuePairs" must be an array of key or an array of key/value pairs (in widget' + idInstance + ')';
-            const msg2 =
-              'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
-            if (!Array.isArray(val)) {
-              swal(msg1, msg2, 'info'); //ABK
-              //swal({ title: msg1, text: msg2, type: "info", timer: 2000 });//ABK autoclose2s
+          modelsHiddenParams[idInstance].keys = [];
+          modelsHiddenParams[idInstance].values = [];
+          const msg1 =
+            '"keyValuePairs" must be an array of key or an array of key/value pairs (in widget' + idInstance + ')';
+          const msg2 =
+            'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
+          if (!Array.isArray(val)) {
+            swal(msg1, msg2, 'info');
+            return;
+          }
+          for (const item of val) {
+            if (_.isUndefined(item.key)) {
+              //AEF: key is mandatory
+              swal(msg1, msg2, 'info');
               return;
             }
-            for (let i = 0; i < val.length; i++) {
-              if (_.isUndefined(val[i].key)) {
-                //AEF: key is mandatory
-                swal(msg1, msg2, 'info');
-                return;
-              }
-              if (_.isUndefined(val[i].value)) {
-                //AEF: value is optional
-                //AEF: modif for issue#61: accept key table without value
-                val[i].value = val[i].key;
-              }
-              this.selectionValues[i] = val[i].value;
-            }
-            modelsHiddenParams[idInstance].value = val;
-            self.render();
+
+            modelsHiddenParams[idInstance].keys.push(item.key);
+            modelsHiddenParams[idInstance].values.push(item.value ?? item.key); //AEF: value is optional
           }
+          self.render();
         },
-        getValue: function () {
-          return modelsHiddenParams[idInstance].value;
-        },
+        getValue: function () {},
         addValueChangedHandler: function (updateDataFromWidget) {
           self.enable();
         },
@@ -1134,7 +1054,12 @@ function flatUiComplexWidgetsPluginClass() {
             for (let j = 0; j < val[i].length; j++) {
               let ParsedEditableCols = [];
               try {
-                ParsedEditableCols = JSON.parse(modelsParameters[idInstance].editableCols);
+                if (modelsParameters[idInstance].editableCols == '*') {
+                  if (!modelsParameters[idInstance].indexColumn) ParsedEditableCols = _.range(val[i].length);
+                  else ParsedEditableCols = _.range(1, val[i].length);
+                } else {
+                  ParsedEditableCols = JSON.parse(modelsParameters[idInstance].editableCols);
+                }
               } catch (e) {}
 
               let cursorEditable = '';
@@ -1202,29 +1127,13 @@ function flatUiComplexWidgetsPluginClass() {
       const displayStyle =
         'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto';
       widgetHtml.setAttribute('style', displayStyle);
-      let divContent =
-        '<table style="margin: 0; height: 100%; ' + this.tableBackgroundColor('primary') + '" class="table';
-
-      // Instead, the primary and secondary background colour is used.
-      // if (modelsParameters[idInstance].striped) {
-      //   divContent = divContent + ' table-striped ';
-      // }
-
-      if (modelsParameters[idInstance].bordered) {
-        divContent += ' table-bordered ';
-      }
-      if (!_.isUndefined(modelsParameters[idInstance].noBorder)) {
-        // backward compatibiliy
-        if (modelsParameters[idInstance].noBorder) {
-          divContent += ' no-border ';
-        }
-      } else {
-        modelsParameters[idInstance].noBorder = false; // update
-      }
+      let divContent = `<table style="margin: 0; height: 100%; ${this.tableBackgroundColor('primary')}" class="table`;
+      if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
+      if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
       divContent += ' table-responsive" id="table' + idWidget + '" >';
       const val = modelsHiddenParams[idInstance].value;
       let insideTable = self.buildTable(val);
-      if (insideTable == '') {
+      if (insideTable === '') {
         insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
       }
       divContent += insideTable + '</table>';
@@ -1317,7 +1226,18 @@ function flatUiComplexWidgetsPluginClass() {
         help: 'wdg/wdg-basics/#multi-select',
       },
       flatUiList: { factory: 'listFlatUiWidget', title: 'List', icn: 'list', help: 'wdg/wdg-basics/#list' },
-      flatUiTable: { factory: 'tableFlatUiWidget', title: 'Table', icn: 'board', help: 'wdg/wdg-basics/#table' },
+      flatUiTable: {
+        factory: 'tableFlatUiWidget',
+        title: 'Table',
+        icn: 'board',
+        help: 'wdg/wdg-basics/#editable-table',
+      },
+      flatUiEditableTable: {
+        factory: 'tableFlatUiWidget',
+        title: 'Editable table',
+        icn: 'board',
+        help: 'wdg/wdg-basics/#table',
+      },
     },
   };
 

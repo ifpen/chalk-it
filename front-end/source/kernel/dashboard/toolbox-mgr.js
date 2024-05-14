@@ -34,7 +34,7 @@ function widgetToolboxClass() {
     var filter = searchParams.length > 0;
     //DOM Ready
     var wdgtGroupId = !filter ? _.keys(widgetsEditorToolboxDefinition) : ['collapse-search_results'];
-    var wdgtGroupName = !filter ? _.pluck(widgetsEditorToolboxDefinition, 'name') : ['Search Results'];
+    var wdgtGroupName = !filter ? _.map(widgetsEditorToolboxDefinition, 'name') : ['Search Results'];
 
     var htmlLib = '';
     var widgetName = [];

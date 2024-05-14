@@ -134,8 +134,8 @@ angular
         $scope.projectVue = 'gallery';
       }
 
-      /*---------- _getConfigHelp ----------------*/
-      _getConfigHelp = async function () {
+      /*---------- getConfigHelp ----------------*/
+      (async () => {
         const settings = await ApisFactory.getSettings();
         if (!settings.help) {
           $scope.helpDisplay.checkboxModel = false;
@@ -143,9 +143,7 @@ angular
           $scope.helpDisplay.checkboxModel = settings.help.displayHelp;
           $scope.helpDisplay.isOpen = !$scope.helpDisplay.checkboxModel;
         }
-      };
-
-      _getConfigHelp();
+      })();
 
       /*---------- saveConfigHelp ----------------*/
       $scope.saveConfigHelp = async function () {
@@ -313,7 +311,7 @@ angular
       $scope.switchFile = function (selected) {
         if (selected === 'My projects') $scope.findFilesByFilters('xprjson');
         else if (selected === 'My pages') $scope.findFilesByFilters('html');
-        else if (selected === 'My  dataNodes') $scope.findFilesByFilters('xdsjson');
+        else if (selected === 'My dataNodes') $scope.findFilesByFilters('xdsjson');
       };
 
       /*---------- Filters btn: resetFilters ----------------*/

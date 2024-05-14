@@ -1,0 +1,131 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "chalkit_python_api"
+version = "0.0.5"
+authors = [
+    { name = "Tristan BARTEMENT", email = "tristan.bartement@tech-advantage.com" },
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+]
+
+[project.optional-dependencies]
+Numpy = [
+    "numpy",
+]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.idea",
+    "/.gitlab-ci.yml",
+    "/.mypy_cache",
+    "/.pytest_cache",
+]
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/chalkit_python_api/_version.py"
+
+[tool.hatch.envs.default]
+dependencies = []
+
+[tool.hatch.envs.test]
+dependencies = [
+    "coverage[toml]>=6.2",
+    "pytest>=7.1.0",
+    "pytest-cov>=3.0.0",
+
+    "numpy",
+    "pillow",
+    "matplotlib",
+    "plotly",
+    "pandas",
+]
+
+[tool.hatch.envs.lint]
+skip-install = true
+dependencies = [
+    "flake8==5.0.4",
+    "flake8-bugbear>=22.3.23",
+    "flake8-quotes>=3.3.1",
+    "black>=22.3.0",
+    "isort>=5.10.1",
+    "mypy>=0.971",
+]
+
+[tool.hatch.envs.test.scripts]
+run-coverage = "pytest --junitxml=build/report.xml --cov-report=term-missing --cov-report xml:build/coverage.xml --cov-config=pyproject.toml --cov=src/chalkit_python_api --cov=test"
+run = "run-coverage --no-cov"
+
+[tool.hatch.envs.lint.scripts]
+typing = "mypy src test"
+style = [
+    "flake8 .",
+    "black --check --diff .",
+    "isort --check-only --diff .",
+]
+fmt = [
+    "isort .",
+    "black .",
+    "style",
+]
+all = [
+    "style",
+    "typing",
+]
+
+
+[tool.black]
+include = '\.pyi?$'
+line-length = 120
+skip-string-normalization = true
+target-version = ["py39"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+    "src/chalkit_python_api/_version.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+]
+
+[tool.isort]
+default_section = "THIRDPARTY"
+force_grid_wrap = 0
+include_trailing_comma = true
+known_first_party = ["chalkit_python_api"]
+line_length = 120
+multi_line_output = 3
+use_parentheses = true
+
+[tool.mypy]
+disallow_untyped_defs = false
+follow_imports = "normal"
+ignore_missing_imports = true
+pretty = true
+show_column_numbers = true
+warn_no_return = false
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+minversion = "7.1"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = ["error"]
+log_cli_level = "info"
+testpaths = ["test"]
+

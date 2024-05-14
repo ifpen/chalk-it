@@ -210,12 +210,12 @@
     </button>
 
     <ul class="dashboard-dropdown" ng-class="{visible:isDataListNavOpen}">
-      <li ng-if="xDashFullVersion">
+      <li>
         <a title="Load dataNodes from xdjson file" ng-click="openFileData('local');isDataListNavOpen=false;">
           <i class="basic icn-upload"></i>Load dataNodes from xdjson
         </a>
       </li>
-      <li ng-if="xDashFullVersion">
+      <li>
         <a title="Save dataNodes to xdjson file" ng-click="saveJson();isDataListNavOpen=false;">
           <i class="basic icn-download"></i> Save dataNodes to xdjson
         </a>
@@ -318,11 +318,6 @@
                 <i class="basic icn-notifications"></i>Notification
               </a>
             </li>
-            <!-- <li>
-                            <a title="See JSON result" ng-click="getDataNodeDetail(data)">
-                                <i class="basic icn-eye"></i>See
-                            </a>
-                        </li> -->
           </ul>
         </li>
       </ul>
@@ -331,8 +326,13 @@
   <div class="datanode__card--content">
     <div class="datanode__card--content__graph">
       <div class="css-treeview" style="background-color: #f8f8f8; user-select: text">
-        <div ng-bind-html="beautifulStringFromHtml(data)"></div>
+        <xdash-data-node-preview
+          ng-if="$index === displayedShowIndex"
+          data="data.latestData()"
+        ></xdash-data-node-preview>
       </div>
     </div>
   </div>
 </div>
+
+<xdash-data-node-info name="nodeInfo.name" data="nodeInfo.data" show="nodeInfo.show"></xdash-data-node-info>

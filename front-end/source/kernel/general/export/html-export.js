@@ -163,9 +163,11 @@ var htmlExport = (function () {
 
   /*--------preview dashboard--------*/
   function previewDashboard(xprjson, projectName, bNoExportModal) {
-    var param;
-    if (!_.isUndefined(xprjson) && !_.isUndefined(projectName)) {
-      param = [xprjson, projectName];
+    const $rootScope = angular.element(document.body).scope().$root;
+    const _projectName = $rootScope.xDashFullVersion ? projectName : $('#projectName').val() || 'Untitled';
+    let param;
+    if (!_.isUndefined(xprjson) && !_.isUndefined(_projectName)) {
+      param = [xprjson, _projectName];
     }
     if (htmlExport.checkExportOptions || bNoExportModal) previewDashboardCallback(param);
   }

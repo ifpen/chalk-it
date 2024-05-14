@@ -1,3 +1,16 @@
+# Copyright 2023-2024 IFP Energies nouvelles
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+
+import glob
 from pathlib import Path
 import subprocess
 import shutil
@@ -33,8 +46,8 @@ a = str(env_vars['A'])
 b = str(env_vars['B'])
 c = str(env_vars['C'])
 
-def getVersion():
 
+def get_version():
     if c == '0':
         date_today = datetime.now()
         date_start = datetime.strptime("01/01/2000", "%m/%d/%Y")
@@ -43,7 +56,8 @@ def getVersion():
     else:
         return c
 
-front_end_build_dir_name = 'xdash_' + a + '.' + b + '.' + str(getVersion())
+front_end_build_dir_name = 'chalkit_' + a + '.' + b + '.' + str(get_version())
+
 
 # Get the list of all files and directories in the "build" directory
 file_list = os.listdir(dst_dir)
@@ -85,12 +99,42 @@ if (BUILD_FRONT_END):
 build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
 shutil.copytree(build_dir, './build/chlkt')
 
-# Copy server.py and associated .py files to ./build/chlkt directory
+# Copy .whl file to ./build/chlkt directory
+# Specify the source directory and pattern
+source_directory = './front-end/'
+pattern = 'chalkit_python_api-*.whl'
+
+# Use glob to find the matching file
+matching_files = glob.glob(source_directory + pattern)
+
+if matching_files:
+    # Assign the path of the first matching file
+    source_path = matching_files[0]
+    destination_directory = './build/chlkt/'
+
+    shutil.copy(source_path, destination_directory)
+else:
+    print("chalkit_python_api-*.whl file not found.")
+
+# Copy main.py and associated .py files to ./build/chlkt directory
 cwd = os.getcwd()
-shutil.copy('./front-end/server.py', './build/chlkt/')
-shutil.copy('./assets/misc/__init__.py', './build/chlkt/')
+build_path = './build/chlkt/'
+file_paths = [
+     './main.py', 
+     './assets/misc/__init__.py'
+    ]
+
+for file_path in file_paths:
+    shutil.copy(file_path, build_path)
+
+# Copy app server
+shutil.copytree('./back_end/app/', './build/chlkt/app/')
+
 # for gunicorn rendering of pages
-shutil.copytree('./back-end/render/', './build/chlkt/render/')
+shutil.copytree('./back_end/render/', './build/chlkt/render/')
+
+# copy backend runner
+shutil.copytree('./back_end/middleware/src/chalkit_python_api/', './build/chlkt/chalkit_python_api/')
 
 # Copy templates
 shutil.copytree('./documentation/Templates/', './build/chlkt/Templates/')
@@ -150,5 +194,5 @@ update_version_in_setup_file(file_path, new_version)
 # Get available python command
 python_cmd = get_python_command()
 
-# Run setup.py command from ./build directory
+# Run setup.py command from ./assets directory
 subprocess.run([python_cmd, '../build/setup.py', 'sdist'], cwd='./build/')

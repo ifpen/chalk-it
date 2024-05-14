@@ -1,228 +1,235 @@
 {
-	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 15:58:46 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "list-js",
-		"description": "list widget with list display and selection",
-		"groupName": "JavaScript",
-		"tags": [
-			{
-				"text": "Widgets"
-			},
-			{
-				"text": "Basic"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"datanodes": [
-			{
-				"name": "list",
-				"type": "JSON_formula_plugin",
-				"settings": {
-					"name": "list",
-					"autoStart": true,
-					"explicitTrig": false,
-					"json_var_formula": "return [\"one\",\"two\",\"three\"];"
-				}
-			},
-			{
-				"name": "selected",
-				"type": "JSON_var_plugin",
-				"settings": {
-					"name": "selected",
-					"json_var": "[\"two\",\"three\"]"
-				}
-			}
-		],
-		"reIndexMap": [
-			0,
-			1
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"libraries": {
-		"pyodideStandard": [],
-		"pyodideMicropip": []
-	},
-	"scaling": {
-		"widthPx": 1639,
-		"heightPx": 685,
-		"scrollWidthPx": 1639,
-		"scrollHeightPx": 685,
-		"widthVw": 87.50667378537106,
-		"heightVh": 73.10565635005337,
-		"scrollWidthVw": 87.50667378537106,
-		"scrollHeightVh": 73.10565635005337,
-		"scalingMethod": "scaleTwSp",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {},
-		"backgroundColor": "#ffffff"
-	},
-	"dashboard": {
-		"flatUiListS": {
-			"layout": {
-				"top": "11.3543vh",
-				"left": "1.12532vw",
-				"height": "27.4216vh",
-				"width": "22.6671vw",
-				"minHeight": "75px",
-				"minWidth": "80px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "flatUiListS",
-				"instanceId": "flatUiListS",
-				"modelJsonId": "flatUiList",
-				"widgetTypeName": "List(flatUiListS)"
-			},
-			"modelParameters": {
-				"addControls": false,
-				"listValueFontSize": 0.5,
-				"listValueColor": "#34495e",
-				"displayBorder": true,
-				"valueFontFamily": "Helvetica Neue",
-				"borderColor": "#447bdc",
-				"listBackgroundColor": "#ffffff",
-				"selectValueColor": "#34495e",
-				"selectValueBackgroundColor": "#cecece"
-			},
-			"modelHiddenParams": {
-				"value": [],
-				"selectedValue": ""
-			}
-		},
-		"flatUiTablea": {
-			"layout": {
-				"top": "47.238vh",
-				"left": "1.12532vw",
-				"height": "10.0689vh",
-				"width": "11.0388vw",
-				"minHeight": "79px",
-				"minWidth": "88px",
-				"z-index": "2"
-			},
-			"container": {
-				"id": "flatUiTablea",
-				"instanceId": "flatUiTablea",
-				"modelJsonId": "flatUiTable",
-				"widgetTypeName": "Table(flatUiTablea)"
-			},
-			"modelParameters": {
-				"headerLine": false,
-				"tableValueFontSize": 0.5,
-				"striped": true,
-				"valueColor": "#2154ab",
-				"valueFontFamily": "Helvetica Neue",
-				"bordered": true,
-				"noBorder": false,
-				"editableCols": "[]"
-			},
-			"modelHiddenParams": {
-				"value": null
-			}
-		},
-		"annotationLabelS": {
-			"layout": {
-				"top": "4.71309vh",
-				"left": "1.12532vw",
-				"height": "5.03444vh",
-				"width": "12.0569vw",
-				"minHeight": "20px",
-				"minWidth": "20px",
-				"z-index": "3"
-			},
-			"container": {
-				"id": "annotationLabelS",
-				"instanceId": "annotationLabelS",
-				"modelJsonId": "annotationLabel",
-				"widgetTypeName": "Label(annotationLabelS)"
-			},
-			"modelParameters": {
-				"text": "options :",
-				"enableActuator": false,
-				"fontsize": 0.5,
-				"backgroundColor": "rgba(0, 0, 0, 0)",
-				"textColor": "#2154ab",
-				"valueFontFamily": "Helvetica Neue",
-				"textAlign": "left",
-				"displayBorder": false,
-				"centerVertically": true
-			},
-			"modelHiddenParams": {}
-		},
-		"annotationLabelt": {
-			"layout": {
-				"top": "41.2396vh",
-				"left": "1.12532vw",
-				"height": "5.03444vh",
-				"width": "12.0569vw",
-				"minHeight": "20px",
-				"minWidth": "20px",
-				"z-index": "4"
-			},
-			"container": {
-				"id": "annotationLabelt",
-				"instanceId": "annotationLabelt",
-				"modelJsonId": "annotationLabel",
-				"widgetTypeName": "Label(annotationLabelt)"
-			},
-			"modelParameters": {
-				"text": "selection :",
-				"enableActuator": false,
-				"fontsize": 0.5,
-				"backgroundColor": "rgba(0, 0, 0, 0)",
-				"textColor": "#2154ab",
-				"valueFontFamily": "Helvetica Neue",
-				"textAlign": "left",
-				"displayBorder": false,
-				"centerVertically": true
-			},
-			"modelHiddenParams": {}
-		}
-	},
-	"connections": {
-		"flatUiListS": {
-			"value": {
-				"name": "value",
-				"dataFields": [],
-				"dataNode": "list",
-				"dataNodeIndex": 0
-			},
-			"selectedValue": {
-				"name": "selectedValue",
-				"dataFields": [],
-				"dataNode": "selected",
-				"dataNodeIndex": 1
-			}
-		},
-		"flatUiTablea": {
-			"value": {
-				"name": "value",
-				"dataNode": "selected",
-				"dataFields": [],
-				"dataNodeIndex": 1
-			}
-		},
-		"annotationLabelS": {},
-		"annotationLabelt": {}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"pages": {
-		"pageNames": [],
-		"defaultPage": {}
-	},
-	"checkExportOptions": true,
-	"navBarNotification": false
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-02T09:01:06.665Z",
+    "name": "list-js",
+    "description": "list widget with list display and selection",
+    "groupName": "JavaScript",
+    "tags": [
+      {
+        "text": "Widgets"
+      },
+      {
+        "text": "Basic"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "list",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "list",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "return [\"one\",\"two\",\"three\"];"
+        }
+      },
+      {
+        "name": "selected",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "selected",
+          "json_var": "[\"two\",\"three\"]"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [
+      "numpy",
+      "pandas"
+    ],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwSp",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "annotationLabelA": {
+      "layout": {
+        "top": "2.8vh",
+        "left": "0.981675vw",
+        "height": "5.06667vh",
+        "width": "11.9764vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "5"
+      },
+      "container": {
+        "instanceId": "annotationLabelA",
+        "modelJsonId": "annotationLabel"
+      },
+      "modelParameters": {
+        "text": "options:",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "textBold": false,
+        "textUnderline": false,
+        "textItalic": false,
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "borderWidth": "2px",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "annotationLabelB": {
+      "layout": {
+        "top": "36.2667vh",
+        "left": "0.981675vw",
+        "height": "5.06667vh",
+        "width": "11.9764vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "6"
+      },
+      "container": {
+        "instanceId": "annotationLabelB",
+        "modelJsonId": "annotationLabel"
+      },
+      "modelParameters": {
+        "text": "selection:",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "textBold": false,
+        "textUnderline": false,
+        "textItalic": false,
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "borderWidth": "2px",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiListA": {
+      "layout": {
+        "top": "9.86667vh",
+        "left": "0.981675vw",
+        "height": "18.6667vh",
+        "width": "18.9791vw",
+        "minHeight": "75px",
+        "minWidth": "80px",
+        "z-index": "7"
+      },
+      "container": {
+        "instanceId": "flatUiListA",
+        "modelJsonId": "flatUiList"
+      },
+      "modelParameters": {
+        "addControls": false,
+        "listValueFontSize": 0.5,
+        "listValueColor": "var(--widget-select-drop-text)",
+        "listBackgroundColor": "var(--widget-select-drop-color)",
+        "selectValueColor": "var(--widget-select-option-highlighted-text)",
+        "selectValueBackgroundColor": "var(--widget-select-option-highlighted-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "borderColor": "var(--widget-border-color)",
+        "displayBorder": true,
+        "borderWidth": "2px"
+      },
+      "modelHiddenParams": {
+        "value": [],
+        "selectedValue": ""
+      }
+    },
+    "flatUiTableA": {
+      "layout": {
+        "top": "43.2vh",
+        "left": "0.981675vw",
+        "height": "10.5333vh",
+        "width": "18.9791vw",
+        "minHeight": "79px",
+        "minWidth": "88px",
+        "z-index": "8"
+      },
+      "container": {
+        "instanceId": "flatUiTableA",
+        "modelJsonId": "flatUiTable"
+      },
+      "modelParameters": {
+        "headerLine": false,
+        "indexColumn": false,
+        "tableValueFontSize": 0.5,
+        "striped": true,
+        "valueColor": "var(--widget-table-value-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueAlign": "left",
+        "bordered": true,
+        "noBorder": false,
+        "editableCols": "[]",
+        "backgroundColor": {
+          "primary": "var(--widget-color-0)",
+          "secondary": "var(--widget-table-striped-odd)"
+        }
+      },
+      "modelHiddenParams": {
+        "value": null
+      }
+    }
+  },
+  "connections": {
+    "annotationLabelA": {},
+    "annotationLabelB": {},
+    "flatUiListA": {
+      "value": {
+        "name": "value",
+        "dataNode": "list",
+        "dataFields": []
+      },
+      "selectedValue": {
+        "name": "selectedValue",
+        "dataNode": "selected",
+        "dataFields": []
+      }
+    },
+    "flatUiTableA": {
+      "value": {
+        "name": "value",
+        "dataNode": "selected",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

@@ -1,109 +1,112 @@
 {
-	"meta": {
-		"version": "2.990.8812",
-		"date": "Thu Feb 15 2024 19:05:10 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "generic-html-py",
-		"description": "",
-		"groupName": "Python",
-		"tags": [
-			{
-				"text": "widget"
-			},
-			{
-				"text": "annotation&video"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"datanodes": [
-			{
-				"name": "htmlStr",
-				"type": "Python_pyodide_plugin",
-				"settings": {
-					"name": "htmlStr",
-					"autoStart": true,
-					"explicitTrig": false,
-					"content": "return \"\"\"\n <h1>This is heading 1</h1>\n<h2>This is heading 2</h2>\n<h3>This is heading 3</h3>\n<h4>This is heading 4</h4>\n<h5>This is heading 5</h5>\n<h6>This is heading 6</h6>\n    <section>\n      <h2>A Simple HTML5 Page</h2>\n      <p>\n        This is an example of a simple HTML5 webpage using some of it's basic elements.\n        </p>\n      </section>\n    \n    <section>\n      <h2> CSS3 for Styling</h2>\n      <p>\n        To make this webpage visually appealing we'll use some of the basic CSS3 code in another example. CSS Makes styling of the page more easy and convinient.\n        </p>\n      </section>\n    \n    <section>\n      <h2> Progress bar </h2>\n       <p>\n        Progress you'll make<br>\n        When you undertand HTML5 code<progress max=\"100\" value=50></progress><br>\n        When you understand CSS3 Code <progress max=\"100\" value=50></progress><br>\n        When you understand HTML5+CSS3 Code<progress max=100 value=100></progress>\n      </p>\n    </section>\n  \n  <section>\n    <mark> For more understandibility how css works this page doesn't inlude any CSS3 code.</mark>\n  </section>\n    \n    \n    <footer>\n      <p>\n        This is the modified example of the code taught by Colleen van Lent in her Introduction to CSS3 course on coursera.</p>\n    </footer>\n\"\"\"\n"
-				}
-			}
-		]
-	},
-	"libraries": {
-		"pyodideStandard": [],
-		"pyodideMicropip": []
-	},
-	"scaling": {
-		"widthPx": 1294,
-		"heightPx": 590,
-		"scrollWidthPx": 1294,
-		"scrollHeightPx": 590,
-		"widthVw": 84.68586387434554,
-		"heightVh": 78.66666666666667,
-		"scrollWidthVw": 84.68586387434554,
-		"scrollHeightVh": 78.66666666666667,
-		"scalingMethod": "scaleTwh",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {},
-		"backgroundColor": "#ffffff",
-		"theme": "default"
-	},
-	"dashboard": {
-		"annotationHtmlc": {
-			"layout": {
-				"top": "1.33333vh",
-				"left": "0.65445vw",
-				"height": "72.8vh",
-				"width": "81.6754vw",
-				"minHeight": "32px",
-				"minWidth": "50px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "annotationHtmlc",
-				"instanceId": "annotationHtmlc",
-				"modelJsonId": "annotationHtml",
-				"widgetTypeName": "Generic html(annotationHtmlc)"
-			},
-			"modelParameters": {
-				"fontsize": 0.3,
-				"backgroundColor": "rgba(0, 0, 0, 0)",
-				"textColor": "#000",
-				"valueFontFamily": "Helvetica Neue",
-				"textAlign": "left",
-				"displayBorder": false,
-				"centerVertically": true
-			},
-			"modelHiddenParams": {
-				"html": ""
-			}
-		}
-	},
-	"connections": {
-		"annotationHtmlc": {
-			"html": {
-				"name": "html",
-				"dataNode": "htmlStr",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		}
-	},
-	"exportOptions": "adjustToFullWidth",
-	"pages": {
-		"pageNames": [],
-		"defaultPage": {}
-	},
-	"checkExportOptions": true,
-	"navBarNotification": false
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-02T08:16:44.574Z",
+    "name": "generic-html-py",
+    "description": "",
+    "groupName": "Python",
+    "tags": [
+      {
+        "text": "widget"
+      },
+      {
+        "text": "annotation&video"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "htmlStr",
+        "type": "Python_plugin",
+        "settings": {
+          "name": "htmlStr",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "return \"\"\"\n <h1>This is heading 1</h1>\n<h2>This is heading 2</h2>\n<h3>This is heading 3</h3>\n<h4>This is heading 4</h4>\n<h5>This is heading 5</h5>\n<h6>This is heading 6</h6>\n    <section>\n      <h2>A Simple HTML5 Page</h2>\n      <p>\n        This is an example of a simple HTML5 webpage using some of it's basic elements.\n        </p>\n      </section>\n    \n    <section>\n      <h2> CSS3 for Styling</h2>\n      <p>\n        To make this webpage visually appealing we'll use some of the basic CSS3 code in another example. CSS Makes styling of the page more easy and convinient.\n        </p>\n      </section>\n    \n    <section>\n      <h2> Progress bar </h2>\n       <p>\n        Progress you'll make<br>\n        When you undertand HTML5 code<progress max=\"100\" value=50></progress><br>\n        When you understand CSS3 Code <progress max=\"100\" value=50></progress><br>\n        When you understand HTML5+CSS3 Code<progress max=100 value=100></progress>\n      </p>\n    </section>\n  \n  <section>\n    <mark> For more understandibility how css works this page doesn't inlude any CSS3 code.</mark>\n  </section>\n    \n    \n    <footer>\n      <p>\n        This is the modified example of the code taught by Colleen van Lent in her Introduction to CSS3 course on coursera.</p>\n    </footer>\n\"\"\"\n",
+          "dockerImage": {
+            "name": "Pyodide",
+            "id": "__PYODIDE__"
+          }
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "annotationHtmlA": {
+      "layout": {
+        "top": "4.93333vh",
+        "left": "2.09424vw",
+        "height": "68.9333vh",
+        "width": "59.1623vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "annotationHtmlA",
+        "modelJsonId": "annotationHtml"
+      },
+      "modelParameters": {
+        "fontsize": 0.3,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "centerVertically": true
+      },
+      "modelHiddenParams": {
+        "html": ""
+      }
+    }
+  },
+  "connections": {
+    "annotationHtmlA": {
+      "html": {
+        "name": "html",
+        "dataNode": "htmlStr",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

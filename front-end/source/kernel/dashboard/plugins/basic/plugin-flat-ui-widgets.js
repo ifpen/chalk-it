@@ -21,7 +21,6 @@ String.prototype.repeat = function (num) {
 modelsHiddenParams.flatUiHorizontalSlider = { value: 0 };
 modelsHiddenParams.flatUiVerticalSlider = { value: 0 };
 modelsHiddenParams.flatUiProgressBar = { value: 0 };
-modelsHiddenParams.flatUiValue = { value: '' };
 modelsHiddenParams.flatUiTextInput = { value: '' };
 modelsHiddenParams.flatUiNumericInput = { value: '' };
 modelsHiddenParams.flatUiValueDisplay = { value: '' };
@@ -93,34 +92,6 @@ modelsParameters.flatUiProgressBar = {
   progressBarSegmentColor: 'var(--widget-segment-color)',
   valueColor: 'var(--widget-color)',
 };
-modelsParameters.flatUiValue = {
-  label: 'labelText',
-  inheritLabelFromData: true,
-  displayLabel: true,
-  labelFontSize: 0.5,
-  labelColor: 'var(--widget-label-color)',
-  labelFontFamily: 'var(--widget-font-family)',
-  labelTextAlign: 'left',
-  labelTextPosition: 'left',
-  valueWidthProportion: '70%',
-  validationButton: false,
-  validationBtnDefaultColor: 'var(--widget-button-primary-color)',
-  validationBtnActiveColor: 'var(--widget-button-active-color)',
-  validationBtnHoverColor: 'var(--widget-button-hover-color)',
-  validationOnFocusOut: true,
-  isNumber: false,
-  isPassword: false,
-  decimalDigits: 3,
-  valueFontSize: 0.5,
-  valueColor: 'var(--widget-input-text)',
-  valueFontFamily: 'var(--widget-font-family)',
-  valueTextAlign: 'left',
-  displayBorder: true,
-  borderColor: 'var(--widget-border-color)',
-  unit: 'unitText',
-  displayUnit: false,
-  unitFontSize: 0.5,
-};
 modelsParameters.flatUiTextInput = {
   label: 'labelText',
   inheritLabelFromData: true,
@@ -180,7 +151,6 @@ modelsParameters.flatUiValueDisplay = {
   labelFontFamily: 'var(--widget-font-family)',
   labelTextAlign: 'left',
   valueWidthProportion: '70%',
-  decimalDigits: 3,
   valueFontSize: 0.5,
   valueColor: 'var(--widget-input-text)',
   valueFontFamily: 'var(--widget-font-family)',
@@ -206,16 +176,30 @@ modelsParameters.flatUiButton = {
   buttonActiveColor: 'var(--widget-button-active-color)',
   buttonHoverColor: 'var(--widget-button-hover-color)',
 };
+modelsParameters.flatUiFileInputButton = {
+  text: 'File load button',
+  numberOfTriggers: 1,
+  fileInput: true,
+  binaryFileInput: false,
+  buttonFontSize: 0.3,
+  displayIcon: false,
+  fontAwesomeIcon: '',
+  buttonFontFamily: 'var(--widget-font-family)',
+  buttonTextColor: 'var(--widget-button-primary-text)',
+  buttonDefaultColor: 'var(--widget-button-primary-color)',
+  buttonActiveColor: 'var(--widget-button-active-color)',
+  buttonHoverColor: 'var(--widget-button-hover-color)',
+};
 
 // Layout (default dimensions)
 modelsLayout.flatUiHorizontalSlider = { height: '5vh', width: '24vw', minWidth: '200px', minHeight: '24px' };
 modelsLayout.flatUiVerticalSlider = { height: '20vh', width: '5vw', minWidth: '32px', minHeight: '50px' };
 modelsLayout.flatUiProgressBar = { height: '5vh', width: '24vw', minWidth: '200px', minHeight: '24px' };
-modelsLayout.flatUiValue = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
 modelsLayout.flatUiTextInput = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
 modelsLayout.flatUiNumericInput = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
 modelsLayout.flatUiValueDisplay = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
-modelsLayout.flatUiButton = { height: '6vh', width: '8vw', minWidth: '55px', minHeight: '24px' };
+modelsLayout.flatUiButton = { height: '7vh', width: '9vw', minWidth: '55px', minHeight: '24px' };
+modelsLayout.flatUiFileInputButton = { height: '7vh', width: '9vw', minWidth: '55px', minHeight: '24px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -299,7 +283,8 @@ function flatUiWidgetsPluginClass() {
             result.content = data;
             result.isBinary = false;
           }
-          updateDataNodeFileFromWidget(idInstance, result);
+
+          self.notifyNewValue(result);
         });
 
         if (modelsParameters[idInstance].binaryFileInput) {
@@ -312,6 +297,14 @@ function flatUiWidgetsPluginClass() {
         e.preventDefault();
         input.trigger('click');
       });
+    };
+
+    this.notifyNewValue = function (value) {
+      this.fileContent = value;
+      for (let i = 1; i <= this.numberOfTriggers; i++) {
+        const act = this[`trigger${i}`];
+        act.updateCallback(act);
+      }
     };
 
     this.rescale = function () {
@@ -395,7 +388,7 @@ function flatUiWidgetsPluginClass() {
         for (let i = 1; i <= data.numberOfTriggers; i++) {
           const name = 'trigger' + i;
           if (isFile) {
-            result.push(new WidgetActuatorDescription(name, 'File content', WidgetActuatorDescription.FILE));
+            result.push(new WidgetActuatorDescription(name, 'File content', WidgetActuatorDescription.WRITE));
           } else {
             result.push(
               new WidgetActuatorDescription(
@@ -414,6 +407,11 @@ function flatUiWidgetsPluginClass() {
     for (let i = 1; i <= this.numberOfTriggers; i++) {
       const triggerName = 'trigger' + i;
       this[triggerName] = {
+        setValue: function (val) {},
+        getValue: function () {
+          return self.fileContent;
+        },
+
         updateCallback: function () {},
         addValueChangedHandler: function (updateDataFromWidget) {
           this.updateCallback = updateDataFromWidget;
@@ -1254,27 +1252,25 @@ function flatUiWidgetsPluginClass() {
     };
 
     self.enable = function () {
-      $('#' + nameWidget + idWidget).prop('disabled', false);
-      if (modelsParameters[idInstance].validationButton) {
-        $('#' + nameWidget + '-valid-btn' + idWidget).prop('disabled', false);
-      }
-      $('#' + nameWidget + idWidget).on('keypress', function (e, ui) {
-        if (e.which == 13) {
+      const $widget = $(`#${nameWidget}${idWidget}`);
+      $widget.prop('disabled', false);
+
+      $widget.off('keypress').on('keypress', function (e) {
+        if (e.which === 13) {
           self.updateValue(e);
         }
       });
+
+      $widget.off('focusout');
       if (modelsParameters[idInstance].validationOnFocusOut) {
-        $('#' + nameWidget + idWidget).on('focusout', function (e, ui) {
-          self.updateValue(e);
-        });
-      } else {
-        $('#' + nameWidget + idWidget).on('focusout', function (e, ui) {}); // nothing to do
+        $widget.on('focusout', (e) => self.updateValue(e));
       }
-      $('#' + nameWidget + '-valid-btn' + idWidget)
-        .off('click')
-        .on('click', function (e, ui) {
-          self.updateValue(e);
-        });
+
+      if (modelsParameters[idInstance].validationButton) {
+        const $widgetBtn = $(`#${nameWidget}-valid-btn${idWidget}`);
+        $widgetBtn.prop('disabled', false);
+        $widgetBtn.off('click').on('click', (e) => self.updateValue(e));
+      }
     };
     self.disable = function () {
       //$("#" + nameWidget + idWidget).prop("disabled", true);
@@ -1351,7 +1347,6 @@ function flatUiWidgetsPluginClass() {
       //}
       let typeInput;
       switch (nameWidget) {
-        case 'value':
         case 'text-input':
           if (modelsParameters[idInstance].isPassword) {
             typeInput = 'password';
@@ -1477,7 +1472,7 @@ function flatUiWidgetsPluginClass() {
       }
 
       $('#' + idDivContainer).html(widgetHtml);
-      $('#' + nameWidget + idWidget)[0].value = self.valueFormat(modelsHiddenParams[idInstance].value);
+      $('#' + nameWidget + idWidget)[0].value = modelsHiddenParams[idInstance].value;
 
       if (this.bIsInteractive) {
         self.enable();
@@ -1490,11 +1485,10 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (val) {
         modelsHiddenParams[idInstance].value = val;
-        $('#' + nameWidget + idWidget)[0].value = self.valueFormat(val);
+        $('#' + nameWidget + idWidget)[0].value = val;
       },
       getValue: function () {
         switch (nameWidget) {
-          case 'value':
           case 'value-display':
             if (modelsParameters[idInstance].isNumber) {
               return Number(modelsHiddenParams[idInstance].value);
@@ -1530,34 +1524,6 @@ function flatUiWidgetsPluginClass() {
 
     self.render();
   };
-
-  // +--------------------------------------------------------------------¦ \\
-  // |                              Value                                 | \\
-  // +--------------------------------------------------------------------¦ \\
-  this.valueFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
-    this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-    self.valueFlatUiWidgetModel(idDivContainer, idWidget, idInstance, bInteractive, this, 'value');
-
-    const _NUMBER_DESCRIPTOR = new WidgetActuatorDescription(
-      'value',
-      'Current number',
-      WidgetActuatorDescription.READ_WRITE,
-      WidgetPrototypesManager.SCHEMA_NUMBER
-    );
-    const _STRING_DESCRIPTOR = new WidgetActuatorDescription(
-      'value',
-      'Current string',
-      WidgetActuatorDescription.READ_WRITE,
-      WidgetPrototypesManager.SCHEMA_STRING
-    );
-    this.getActuatorDescriptions = function (params = undefined) {
-      params = params || modelsParameters[idInstance];
-      return [params && params.isNumber ? _NUMBER_DESCRIPTOR : _STRING_DESCRIPTOR];
-    };
-  };
-
-  // Inherit from baseWidget class
-  this.valueFlatUiWidget.prototype = baseWidget.prototype;
 
   // +--------------------------------------------------------------------¦ \\
   // |                              Text Input                            | \\
@@ -1638,7 +1604,6 @@ function flatUiWidgetsPluginClass() {
         icn: 'progress-bar',
         help: 'wdg-basics/#progress-bar',
       },
-      flatUiValue: { factory: 'valueFlatUiWidget', title: 'Value', icn: 'value', help: 'wdg/wdg-basics/#value' },
       flatUiTextInput: {
         factory: 'textInputFlatUiWidget',
         title: 'Text Input',
@@ -1659,7 +1624,13 @@ function flatUiWidgetsPluginClass() {
       },
       flatUiButton: {
         factory: 'buttonFlatUiWidget',
-        title: 'Push button',
+        title: 'Trigger button',
+        icn: 'trigger',
+        help: 'wdg/wdg-basics/#push-button',
+      },
+      flatUiFileInputButton: {
+        factory: 'buttonFlatUiWidget',
+        title: 'Load file button',
         icn: 'button',
         help: 'wdg/wdg-basics/#push-button',
       },

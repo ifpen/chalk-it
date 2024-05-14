@@ -1,3 +1,26 @@
+let getAuthToken = () => undefined;
+if (xDashConfig.xDashBasicVersion != 'true') {
+  getAuthToken = () => LoginMngr.GetSavedJwt();
+}
+
+function setXHRAuthorizationHeader(xhr) {
+  // Add authorization header
+  const token = getAuthToken();
+  if (token) {
+    xhr.setRequestHeader('Authorization', token);
+  }
+}
+
+function getAuthorizationHeaders() {
+  // Add authorization header
+  const token = getAuthToken();
+  if (token) {
+    return { Authorization: token };
+  } else {
+    return {};
+  }
+}
+
 angular.module('xCLOUD').service('ApisFactory', [
   '$http',
   '$rootScope',
@@ -33,39 +56,38 @@ angular.module('xCLOUD').service('ApisFactory', [
       );
     };
 
-    this.getSettings = function () {
-      return new Promise(function (resolve, reject) {
-        var FileMngrInst = new FileMngrFct();
-        FileMngrInst.ReadFile('settings', '', resolve);
-      }).then(
-        function (data) {
-          if (data == 'File does not exist') {
-            console.log('settings.usr file does not exist on server. Creating new one with default settings');
-            return $rootScope.DefaultSettings;
-          }
-          var dataToReturn = {};
-          try {
-            dataToReturn = JSON.parse(data);
-          } catch (exc) {
-            if ($rootScope.xDashFullVersion) {
-              swal('Unexpected error', 'unable to load settings.usr\n\n' + data, 'error');
-            } else {
-              swal('Please check and restart the command line', 'the Flask server is not responding', 'error');
-            }
+    this.getSettings = async function () {
+      try {
+        const FileMngrInst = new FileMngrFct();
+        const data = await new Promise((resolve, reject) => FileMngrInst.ReadFile('settings', '', resolve));
 
-            return $rootScope.DefaultSettings;
-          }
-          return dataToReturn;
-        },
-        function (result) {
-          console.log('getSettings error' + result);
-          return {
-            error: true,
-            status: 401,
-            message: result,
-          };
+        if (data === 'File does not exist') {
+          console.log('settings.usr file does not exist on server. Creating new one with default settings');
+          return $rootScope.DefaultSettings;
         }
-      );
+
+        let dataToReturn = {};
+        try {
+          dataToReturn = JSON.parse(data);
+        } catch (exc) {
+          if ($rootScope.xDashFullVersion) {
+            swal('Unexpected error', 'unable to load settings.usr\n\n' + data, 'error');
+          } else {
+            swal('Please check and restart the command line', 'unable to load "~/.chalk-it/settings.json"', 'error');
+          }
+
+          return $rootScope.DefaultSettings;
+        }
+
+        return dataToReturn;
+      } catch (error) {
+        console.log('getSettings error' + error);
+        return {
+          error: true,
+          status: 401,
+          message: error,
+        };
+      }
     };
 
     this.postRequest = function (apiMethod, data) {

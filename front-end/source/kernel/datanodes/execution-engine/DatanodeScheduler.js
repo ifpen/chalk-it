@@ -59,7 +59,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
   // Discussion with AEF : inform user when update cannot be executed because one predecessor has error (with notification)
 
   function isCalledFromOrchestrator(nodeName) {
-    if (_.contains(triggeredNodes, nodeName)) {
+    if (_.includes(triggeredNodes, nodeName)) {
       // MBG 10/05/2019 : more general condition
       switch (callOrigin) {
         case 'triggerButton':
@@ -87,7 +87,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
 
   // AEF: temp function, to refactor for autostart and explicit use
   function isForceAutoStart(nodeName) {
-    if (_.contains(triggeredNodes, nodeName)) {
+    if (_.includes(triggeredNodes, nodeName)) {
       switch (callOrigin) {
         case 'triggerButton':
         case 'vignette':
@@ -105,7 +105,7 @@ function DatanodeScheduler(datanodesDependency, startNodes, triggeredNodes, init
     }
   }
   function _launchMemoryNow(nodeName) {
-    if (_.contains(triggeredNodes, nodeName)) {
+    if (_.includes(triggeredNodes, nodeName)) {
       switch (callOrigin) {
         case 'unidentified':
         case 'edit':

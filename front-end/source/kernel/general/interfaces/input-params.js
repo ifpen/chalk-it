@@ -18,9 +18,6 @@ var inputHandler = (function () {
   /*--------patchVariableDataNode--------*/
   function patchVariableDataNode(jsonContent, dsName, dsVal) {
     let bFound = false;
-    if (_.isUndefined(jsonContent.data.datanodes))
-      //compatibility
-      jsonContent.data.datanodes = jsonContent.data.datasources;
 
     for (var i = 0; i < jsonContent.data.datanodes.length; i++) {
       if (jsonContent.data.datanodes[i].name == dsName) {
