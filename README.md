@@ -4,11 +4,11 @@ Welcome to Chalk'it. Chalk'it ambition is to allow technicians, scientists or en
 
 ![live demo](./assets/home/live-demo.gif)
 
-Currently, Chalk'it allows to export and share standalone HTML apps with Python and/or JavaScript code, thanks to Pyodide.
+Currently, Chalk'it allows to export and share standalone HTML apps with Python and/or JavaScript code, thanks to Pyodide. Since version 0.5.0, Chalk'it is able to run standard Python code and host related dashboard as Docker images.
 
 See the [demos gallery](https://ifpen.github.io/chalk-it/index.html#porfolio) and [templates gallery](https://ifpen.github.io/chalk-it/templates-gallery/) for examples with code.
 
-For more details, you can browse the online [documentation](https://ifpen.github.io/chalk-it/hosted/doc/)
+For more details, you can browse the online [documentation](https://ifpen.github.io/chalk-it/hosted/doc/).
 
 ## Usage
 
@@ -50,13 +50,7 @@ Your can also use the [online hosted version](https://ifpen.github.io/chalk-it/h
 
 ## Roadmap
 
-- Working with your favorite code editor !
-- Local Python code execution (no Browser or Pyodide limitations)
-- More widgets
-- Enriched framework (adding state, cache …)
-- Dashboard themes
 - 3 clicks dashboard cloud sharing
-- Mixing Pyodide and classic Python execution
 - Command line interface (project open, render ...)
 - PyDeck support
 

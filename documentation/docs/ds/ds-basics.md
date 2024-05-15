@@ -18,12 +18,12 @@ Simple example :
 
 Script-type dataNode is used to write specific Python or JavaScript code that will be executed on the client side. It may use the output of the other dataNodes (referenced using keyword `dataNodes`). Currently, there types of Script dataNodes exist in Chalk'it :
 
-- [Python Script (Pyodide)](../../ds/ds-reference/#python-script-pyodide)
+- [Python Script](../../ds/ds-reference/#python-script)
 - [JavaScript Script (client-side)](../../ds/ds-reference/#javascript-script)
 
-Below is a screenshot of a Python Script (Pyodide) edition panel :
+Below is a screenshot of a Python Script edition panel :
 
-![Python Script (Pyodide)](img/py-script.png "Python Script (Pyodide)")
+![Python Script](img/py-script.png "Python Script")
 
 In this example, dataNode `multiply` references the dataNode `input`, specifically its property named `value`. This is specified using the keywords `dataNodes["input"]["value"]`.
 
@@ -33,6 +33,10 @@ Complete example :
 [py-script.xprjson](/ds/xprjson/py-script.xprjson)
 
 The code is executed according to [Chalk'it runtime rules](../../ds/ds-execution-engine/).
+
+Two run mode are available for Python scripts
+- Using the *Default* runner that executes locally the Python code into a worker
+- Using the *Pyodide* runner that executes the Python code into a webworker runner in the browser
 
 ## Sequencing
 

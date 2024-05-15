@@ -6,7 +6,7 @@ Chalk'it offers a set of APIs through **_chalkit_** that serve several primary p
 - Dashboard APIs: Support the developpement of multi-dashboard applications and the display of widgets.
 - Datanode IOs
 
-## JavaScript and Pyodide
+## JavaScript
 
 ### Scheduler features
 
@@ -192,7 +192,7 @@ Enables the access of the widget (interactive).
 
 ## Python
 
-The Python API deals with input and outputs for Python scripts and also offers a port of the JavaScript API to interact with the dashboard.
+The Python API deals with input and outputs for Python scripts and also offers a port of the JavaScript API to interact with the scheduler and the dashboard.
 
 ### Input/ouputs helpers
 ::: chalkit_python_api.public_api.ChalkitApi
@@ -204,6 +204,18 @@ The Python API deals with input and outputs for Python scripts and also offers a
       show_root_toc_entry: false
       separate_signature: true
       show_signature_annotations: false
+
+### Scheduler interactions
+::: chalkit_python_api.public_api.SchedulerActions
+    options:
+      show_source: false
+      heading_level: 4
+      show_signature_annotations: true
+      show_object_full_path: false
+      show_root_toc_entry: false
+      separate_signature: true
+      show_signature_annotations: false
+
 
 ### Dashboard interactions
 ::: chalkit_python_api.public_api.DashboardActions

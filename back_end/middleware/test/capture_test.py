@@ -353,37 +353,37 @@ class TestSideEffects:
     @staticmethod
     def test_side_effects_should_capture__set_variable():
         def script(_, chalkit: ChalkitApi):
-            chalkit.dashboard.set_variable("node", 42)
+            chalkit.scheduler.set_variable("node", 42)
 
         sideEffects = do_capture(script, debug=True)["sideEffects"]
-        assert sideEffects == [{"name": "setVariables", "args": [{"node": 42}]}]
+        assert sideEffects == [{"name": "scheduler.setVariables", "args": [{"node": 42}]}]
 
     @staticmethod
     def test_side_effects_should_capture__set_variables():
         def script(_, chalkit: ChalkitApi):
-            chalkit.dashboard.set_variables({"node1": 42, "node2": ["a", "b", "c"]})
+            chalkit.scheduler.set_variables({"node1": 42, "node2": ["a", "b", "c"]})
 
         sideEffects = do_capture(script, debug=False)["sideEffects"]
-        assert sideEffects == [{"name": "setVariables", "args": [{"node1": 42, "node2": ["a", "b", "c"]}]}]
+        assert sideEffects == [{"name": "scheduler.setVariables", "args": [{"node1": 42, "node2": ["a", "b", "c"]}]}]
 
     @staticmethod
     def test_side_effects_should_capture__set_variable_property():
         def script(_, chalkit: ChalkitApi):
-            chalkit.dashboard.set_variable_property("node1", ["x", 1], False)
+            chalkit.scheduler.set_variable_property("node1", ["x", 1], False)
 
         sideEffects = do_capture(script, debug=True)["sideEffects"]
-        assert sideEffects == [{"name": "setVariableProperty", "args": ["node1", ["x", 1], False]}]
+        assert sideEffects == [{"name": "scheduler.setVariableProperty", "args": ["node1", ["x", 1], False]}]
 
     @staticmethod
     def test_side_effects_should_capture__execute_datanodes():
         def script(_, chalkit: ChalkitApi):
-            chalkit.dashboard.execute_datanode("node1")
-            chalkit.dashboard.execute_datanodes(["node2", "node3"])
+            chalkit.scheduler.execute_datanode("node1")
+            chalkit.scheduler.execute_datanodes(["node2", "node3"])
 
         sideEffects = do_capture(script, debug=False)["sideEffects"]
         assert sideEffects == [
-            {"name": "executeDataNodes", "args": [["node1"]]},
-            {"name": "executeDataNodes", "args": [["node2", "node3"]]},
+            {"name": "scheduler.executeDataNodes", "args": [["node1"]]},
+            {"name": "scheduler.executeDataNodes", "args": [["node2", "node3"]]},
         ]
 
     @staticmethod
@@ -392,7 +392,7 @@ class TestSideEffects:
             chalkit.dashboard.view_page("http://url.org")
 
         sideEffects = do_capture(script, debug=True)["sideEffects"]
-        assert sideEffects == [{"name": "viewPage", "args": ["http://url.org", None, False]}]
+        assert sideEffects == [{"name": "dashboard.viewPage", "args": ["http://url.org", None, False]}]
 
     @staticmethod
     def test_side_effects_should_capture__view_project():
@@ -401,7 +401,10 @@ class TestSideEffects:
 
         sideEffects = do_capture(script, debug=True)["sideEffects"]
         assert sideEffects == [
-            {"name": "viewProject", "args": ["http://url.org/dashboard", [{"dsName": "param", "dsVal": 42}], True]}
+            {
+                "name": "dashboard.viewProject",
+                "args": ["http://url.org/dashboard", [{"dsName": "param", "dsVal": 42}], True],
+            }
         ]
 
     @staticmethod
@@ -415,9 +418,9 @@ class TestSideEffects:
 
         sideEffects = do_capture(script, debug=True)["sideEffects"]
         assert sideEffects == [
-            {"name": "goToPage", "args": [12]},
-            {"name": "enableWidget", "args": ["widgetA"]},
-            {"name": "disableWidget", "args": ["widgetB"]},
-            {"name": "showWidget", "args": ["widgetC"]},
-            {"name": "hideWidget", "args": ["widgetD"]},
+            {"name": "dashboard.goToPage", "args": [12]},
+            {"name": "dashboard.enableWidget", "args": ["widgetA"]},
+            {"name": "dashboard.disableWidget", "args": ["widgetB"]},
+            {"name": "dashboard.showWidget", "args": ["widgetC"]},
+            {"name": "dashboard.hideWidget", "args": ["widgetD"]},
         ]

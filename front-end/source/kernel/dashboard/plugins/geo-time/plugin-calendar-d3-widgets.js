@@ -20,7 +20,7 @@ modelsHiddenParams.calendarD3 = {
 // Parameters
 modelsParameters.calendarD3 = {
   AllYearsVisible: true,
-  UndefinedValueColor: '#F6F6F6',
+  UndefinedValueColor: 'var(--widget-calendar-d3-undefined-value)',
 };
 
 // Layout (default dimensions)
@@ -362,7 +362,7 @@ function calendarD3WidgetPluginClass() {
           .attr('width', cellSize - 1)
           .attr('height', cellSize - 1)
           .attr('fill', function (e, i) {
-            return !_.isUndefined(Y[e]) ? color(Y[e]) : modelsParameters[idInstance].UndefinedValueColor;
+            return !_.isUndefined(Y[e]) ? color(Y[e]) : self.undefinedValueColor();
           })
           .on('mouseover', function (e, i) {
             if (!_.isUndefined(Y[i])) {
