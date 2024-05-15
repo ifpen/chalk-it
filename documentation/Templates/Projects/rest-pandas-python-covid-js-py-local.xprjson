@@ -3,7 +3,7 @@
     "version": "3.000.8889",
     "fileFormatVersion": "0.3",
     "date": "2024-05-04T10:26:03.887Z",
-    "name": "rest-pandas-pyodide-covid-js-py-local",
+    "name": "rest-pandas-python-covid-js-py-local",
     "description": "",
     "groupName": "Mixed",
     "tags": [

@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
+    "version": "3.000.8901",
     "fileFormatVersion": "0.3",
-    "date": "2024-05-03T21:09:11.205Z",
+    "date": "2024-05-15T09:04:43.062Z",
     "name": "buttons-py",
     "description": "Demonstration of buttons widgets : for execution trigger or file upload",
     "groupName": "Python",
@@ -38,7 +38,7 @@
             "name": "Pyodide",
             "id": "__PYODIDE__"
           },
-          "content": "if (dataNodes[\"file\"] is None or dataNodes[\"file\"]==\"\"):\n  return ''\nreturn '<code>' + str(dataNodes[\"file\"][\"content\"]) + '</code>';\n"
+          "content": "if (dataNodes[\"file\"] is None or dataNodes[\"file\"]==\"\" or dataNodes[\"file\"]=={}):\n  return ''\nreturn '<code>' + str(dataNodes[\"file\"][\"content\"]) + '</code>';\n"
         }
       },
       {
@@ -47,7 +47,13 @@
         "settings": {
           "name": "file",
           "data_path": "empty.txt",
-          "content": ""
+          "content": {
+            "type": "text/plain",
+            "size": "1 bytes",
+            "name": "empty.txt",
+            "content": " ",
+            "isBinary": false
+          }
         }
       },
       {
@@ -79,7 +85,7 @@
             }
           ],
           "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9jb21wdXRlMjAxOTA0MjUwNDU0MzUuYXp1cmV3ZWJzaXRlcy5uZXQvQ29tcHV0ZVNlcnZpY2UuYXNteC9TdXJmYWNlIiwiSG9zdCI6InhkYXNoIn0=",
-          "proxySig": "5TM10MtZYvnW/sf2ZrpNxroEC5/u3IzDOTvHwTGaJC7Ve8mvIFTHNTSRJC01sF4++1mTDAzHz2vWI03ypu1tkethTosHJxRjcAnrj3nUMMB9B3vlYUwnXguGTw5Y8ov0GHEE/Y/kWtz/DF8d4YatJg=="
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxroEC5/u3IzDOTvHwTGaJC7Ve8mvIFTHNTSRJC01sF4++1mTDAzHz2vWI03ypu1tkethTosHJxRjcAnrj3nUMMB9B3vlYUwnXguGTw5Y8ov0G1pelWCQNYxShZXlVsDVTg=="
         }
       }
     ]
@@ -91,13 +97,13 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1294,
+    "widthPx": 1295,
     "heightPx": 590,
-    "scrollWidthPx": 1294,
+    "scrollWidthPx": 1295,
     "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
+    "widthVw": 84.75130890052355,
     "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
+    "scrollWidthVw": 84.75130890052355,
     "scrollHeightVh": 78.66666666666667,
     "scalingMethod": "scaleTwh",
     "media": "large",
@@ -250,36 +256,6 @@
       },
       "modelHiddenParams": {}
     },
-    "flatUiButtonA": {
-      "layout": {
-        "top": "6.8vh",
-        "left": "4.90838vw",
-        "height": "10vh",
-        "width": "9.62042vw",
-        "minHeight": "24px",
-        "minWidth": "55px",
-        "z-index": "9"
-      },
-      "container": {
-        "instanceId": "flatUiButtonA",
-        "modelJsonId": "flatUiButton"
-      },
-      "modelParameters": {
-        "text": "Run web-service",
-        "numberOfTriggers": 1,
-        "fileInput": false,
-        "binaryFileInput": false,
-        "buttonFontSize": 0.3,
-        "displayIcon": false,
-        "fontAwesomeIcon": "",
-        "buttonFontFamily": "var(--widget-font-family)",
-        "buttonTextColor": "var(--widget-button-primary-text)",
-        "buttonDefaultColor": "var(--widget-button-primary-color)",
-        "buttonActiveColor": "var(--widget-button-active-color)",
-        "buttonHoverColor": "var(--widget-button-hover-color)"
-      },
-      "modelHiddenParams": {}
-    },
     "flatUiFileInputButtonA": {
       "layout": {
         "top": "34.9333vh",
@@ -376,6 +352,36 @@
       "modelHiddenParams": {
         "value": ""
       }
+    },
+    "flatUiButtonB": {
+      "layout": {
+        "top": "7.06667vh",
+        "left": "2.68325vw",
+        "height": "10vh",
+        "width": "9.35864vw",
+        "minHeight": "24px",
+        "minWidth": "55px",
+        "z-index": "13"
+      },
+      "container": {
+        "instanceId": "flatUiButtonB",
+        "modelJsonId": "flatUiButton"
+      },
+      "modelParameters": {
+        "text": "Run web-service",
+        "numberOfTriggers": 1,
+        "fileInput": false,
+        "binaryFileInput": false,
+        "buttonFontSize": 0.3,
+        "displayIcon": false,
+        "fontAwesomeIcon": "",
+        "buttonFontFamily": "var(--widget-font-family)",
+        "buttonTextColor": "var(--widget-button-primary-text)",
+        "buttonDefaultColor": "var(--widget-button-primary-color)",
+        "buttonActiveColor": "var(--widget-button-active-color)",
+        "buttonHoverColor": "var(--widget-button-hover-color)"
+      },
+      "modelHiddenParams": {}
     }
   },
   "connections": {
@@ -411,13 +417,6 @@
         "dataNodeIndex": 1
       }
     },
-    "flatUiButtonA": {
-      "trigger1": {
-        "name": "trigger1",
-        "dataNode": "Surface",
-        "dataFields": []
-      }
-    },
     "flatUiFileInputButtonA": {
       "trigger1": {
         "name": "trigger1",
@@ -425,7 +424,15 @@
         "dataFields": []
       }
     },
-    "saveToFileButtonA": {},
+    "saveToFileButtonA": {
+      "value": {
+        "name": "value",
+        "dataNode": "file",
+        "dataFields": [
+          "content"
+        ]
+      }
+    },
     "flatUiValueDisplayA": {
       "value": {
         "name": "value",
@@ -433,6 +440,13 @@
         "dataFields": [
           "Msg"
         ]
+      }
+    },
+    "flatUiButtonB": {
+      "trigger1": {
+        "name": "trigger1",
+        "dataNode": "Surface",
+        "dataFields": []
       }
     }
   },
