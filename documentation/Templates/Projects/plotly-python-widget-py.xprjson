@@ -1,9 +1,9 @@
 {
   "meta": {
-    "version": "3.000.8887",
+    "version": "3.000.8889",
     "fileFormatVersion": "0.3",
-    "date": "Tue Apr 30 2024 09:11:36 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
-    "name": "plotly-python-widget-local",
+    "date": "2024-05-04T10:24:20.825Z",
+    "name": "plotly-python-widget-py",
     "description": "",
     "groupName": "Python",
     "tags": [
@@ -34,19 +34,23 @@
           "name": "px",
           "autoStart": true,
           "explicitTrig": false,
-          "dockerImage": {
-            "name": "Default",
-            "id": ""
-          },
           "content": "import plotly.express as px\n\ndf = px.data.gapminder().query(\"country=='Canada'\")\nfig = px.line(df, x=\"year\", y=\"lifeExp\", title='Life expectancy in Canada')\n\nreturn fig",
-          "signature": "b5282a8860aad7fc329536d40c764f57be8a54ddb38d3eb5bf22554d9b5f40a7"
+          "dockerImage": {
+            "name": "Pyodide",
+            "id": "__PYODIDE__"
+          }
         }
       }
     ]
   },
   "libraries": {
-    "pyodideStandard": [],
-    "pyodideMicropip": []
+    "pyodideStandard": [
+      "numpy",
+      "pandas"
+    ],
+    "pyodideMicropip": [
+      "plotly"
+    ]
   },
   "scaling": {
     "widthPx": 1294,
@@ -70,17 +74,17 @@
       "classType": ""
     },
     "droppers": {},
-    "backgroundColor": "#ffffff",
-    "inheritThemeBackgroundColor": false,
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
     "theme": "default"
   },
   "dashboard": {
     "plotlyGeneric0": {
       "layout": {
         "top": "5.28272vh",
-        "left": "2.27344vw",
+        "left": "2.2752vw",
         "height": "59.2584vh",
-        "width": "50.8941vw",
+        "width": "50.9334vw",
         "minHeight": "32px",
         "minWidth": "50px",
         "z-index": "1"

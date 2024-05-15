@@ -2,8 +2,8 @@
   "meta": {
     "version": "3.000.8889",
     "fileFormatVersion": "0.3",
-    "date": "2024-05-03T09:36:44.243Z",
-    "name": "real-time-kpi-plotly",
+    "date": "2024-05-04T10:16:30.869Z",
+    "name": "real-time-kpi-plotly-js",
     "description": "KPI with trend and Plolty real-time widget example",
     "groupName": "JavaScript",
     "tags": [
@@ -105,9 +105,9 @@
     "plotlyRealTimek": {
       "layout": {
         "top": "7.38782vh",
-        "left": "27.3392vw",
+        "left": "27.3181vw",
         "height": "64.1646vh",
-        "width": "53.2462vw",
+        "width": "53.2051vw",
         "minHeight": "100px",
         "minWidth": "100px",
         "z-index": "2"
@@ -169,10 +169,10 @@
     },
     "advancedKpiCardA": {
       "layout": {
-        "top": "16vh",
-        "left": "6.47906vw",
-        "height": "47.0667vh",
-        "width": "15.7068vw",
+        "top": "13.6267vh",
+        "left": "5.96859vw",
+        "height": "33.0667vh",
+        "width": "14.0052vw",
         "minHeight": "32px",
         "minWidth": "64px",
         "z-index": "3"

@@ -3,7 +3,7 @@
     "version": "3.000.8887",
     "fileFormatVersion": "0.3",
     "date": "Tue Apr 30 2024 09:11:36 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
-    "name": "plotly-python-widget-local",
+    "name": "plotly-python-widget-py-local",
     "description": "",
     "groupName": "Python",
     "tags": [

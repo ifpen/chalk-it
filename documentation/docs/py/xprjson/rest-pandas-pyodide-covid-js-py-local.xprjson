@@ -3,7 +3,7 @@
 		"version": "3.000.8887",
 		"fileFormatVersion": "0.3",
 		"date": "Tue Apr 30 2024 09:16:42 GMT+0200 (heure d’été d’Europe centrale)",
-		"name": "rest-pandas-pyodide-covid-py-js-local",
+		"name": "rest-pandas-pyodide-covid-js-py-local",
 		"description": "",
 		"groupName": "Mixed",
 		"tags": [
