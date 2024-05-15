@@ -48,6 +48,7 @@
   "dependencies": {
     "browser-sync": "^2.28.3",
     "cors": "^2.8.5",
+    "deck.gl": "^9.0.10",
     "dotenv": "^5.0.1",
     "jshint": "^2.13.6",
     "jsoneditor": "^9.5.7",

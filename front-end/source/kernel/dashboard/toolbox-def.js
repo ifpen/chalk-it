@@ -69,6 +69,7 @@ var widgetsEditorToolboxDefinition = {
       'datepickerSimple',
       'dateRangePicker',
       'calendarD3',
+      'map3D',
       'timepickerSimple',
     ],
   },
