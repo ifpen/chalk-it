@@ -47,8 +47,8 @@ class CustomNavigationRuntime {
     const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
     const { defaultRows, defaultCols } = this.grid;
 
-    const rows = Number(valueRow) || defaultRows;
-    const cols = Number(valueCol) || defaultCols;
+    const rows = Number(jsonContent.device.cols.valueRow) || defaultRows;
+    const cols = Number(jsonContent.device.cols.valueRow) || defaultCols;
 
     this.grid = { rows, cols };
 
