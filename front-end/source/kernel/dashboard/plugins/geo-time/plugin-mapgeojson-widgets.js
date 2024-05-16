@@ -52,30 +52,38 @@ function mapGeoJsonWidgetsPluginClass() {
     this.updateValue = function (e) {
       // Create new TempleStyle if old has not the same size
       // TODO : Check all style compatible with all element of model
-      if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle)) {
-        if (
-          !Array.isArray(modelsHiddenParams[idInstance].GeoJSONStyle.style) ||
-          modelsHiddenParams[idInstance].GeoJSON.length < modelsHiddenParams[idInstance].GeoJSONStyle.style.length
-        ) {
-          modelsHiddenParams[idInstance].GeoJSONStyle.style = []; // reset when geojson has less item
-        }
+      if (
+        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
+        !_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)
+      ) {
+        if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle)) {
+          if (
+            !Array.isArray(modelsHiddenParams[idInstance].GeoJSONStyle.style) ||
+            modelsHiddenParams[idInstance].GeoJSON.length < modelsHiddenParams[idInstance].GeoJSONStyle.style.length
+          ) {
+            modelsHiddenParams[idInstance].GeoJSONStyle.style = []; // reset when geojson has less item
+          }
 
-        if (modelsHiddenParams[idInstance].GeoJSONStyle.style.length) {
+          if (modelsHiddenParams[idInstance].GeoJSONStyle.style.length) {
+            modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
+              if (index < modelsHiddenParams[idInstance].GeoJSONStyle.style.length) {
+                if (
+                  geoJsonTools.findFeatureType(item) !== modelsHiddenParams[idInstance].GeoJSONStyle.style[index].type
+                )
+                  modelsHiddenParams[idInstance].GeoJSONStyle.style = []; // reset when old/previous geojson changed type
+              }
+            });
+          }
+
+          //  if (!_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)) {
           modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
-            if (index < modelsHiddenParams[idInstance].GeoJSONStyle.style.length) {
-              if (geoJsonTools.findFeatureType(item) !== modelsHiddenParams[idInstance].GeoJSONStyle.style[index].type)
-                modelsHiddenParams[idInstance].GeoJSONStyle.style = []; // reset when old/previous geojson changed type
-            }
+            if (index >= modelsHiddenParams[idInstance].GeoJSONStyle.style.length)
+              modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self, item, index)); //add new geojson style
           });
+          //  }
         }
-
-        //  if (!_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)) {
-        modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
-          if (index >= modelsHiddenParams[idInstance].GeoJSONStyle.style.length)
-            modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self, item, index)); //add new geojson style
-        });
-        //  }
       }
+
       self.GeoJSONStyle.updateCallback(self.GeoJSONStyle, self.GeoJSONStyle.getValue());
     };
 
