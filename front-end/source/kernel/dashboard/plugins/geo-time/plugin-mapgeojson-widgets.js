@@ -148,7 +148,18 @@ function mapGeoJsonWidgetsPluginClass() {
         ) {
           config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
           let bbox = config.image.imageBounds;
-          self.map.fitBounds(bbox);
+          //validate bounds :
+          if (
+            !_.isUndefined(bbox) &&
+            Array.isArray(bbox) &&
+            bbox.length == 2 &&
+            Array.isArray(bbox[0]) &&
+            Array.isArray(bbox[1]) &&
+            bbox[0].length == 2 &&
+            bbox[1].length == 2
+          ) {
+            self.map.fitBounds(bbox);
+          }
         }
       }
 
@@ -240,15 +251,15 @@ function mapGeoJsonWidgetsPluginClass() {
     this.createTemplateStyle = styleManager.createTemplateStyle;
     this.getColor = colorScaleManager.getColor;
 
-    this.createChoroplethLegend = function (legendId,min, max, featureTitle, colorScale) {
-      legend = legends.createChoroplethLegend(legendId,self.getColor, min, max, featureTitle, colorScale);
+    this.createChoroplethLegend = function (legendId, min, max, featureTitle, colorScale) {
+      legend = legends.createChoroplethLegend(legendId, self.getColor, min, max, featureTitle, colorScale);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }
       return legend;
     };
-    this.createLegend = function (legendId,color, length, colorStops, min, max, featureTitle) {
-      legend = legends.createLegend(legendId,color, length, colorStops, min, max, featureTitle);
+    this.createLegend = function (legendId, color, length, colorStops, min, max, featureTitle) {
+      legend = legends.createLegend(legendId, color, length, colorStops, min, max, featureTitle);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }
