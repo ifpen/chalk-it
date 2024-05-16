@@ -91,7 +91,7 @@ this.createTemplateStyle = function (self, geoJSON, index, typeLayer = undefined
       let markerStyle = {
         //type: 'Multi Point',
         pointAreMarker: true,
-        markerCluster: false,
+        markerCluster: true,
         //marker
         enablePopup: true,
         clickPopup: true,
