@@ -99,6 +99,7 @@ this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitl
 };
 
 this.toggleLegend = function(self, layerIndex, styleForObject, geoJSONinLayer){
+  if(!_.isUndefined(styleForObject.pointAreMarker) && styleForObject.pointAreMarker==true  ) return;
   //calcul color scale
   let colorScale = undefined;
   var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
