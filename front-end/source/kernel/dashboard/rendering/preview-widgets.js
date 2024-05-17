@@ -20,6 +20,8 @@ import { editorSingletons } from 'kernel/editor-singletons';
 import { reconstructFoundations } from 'kernel/dashboard/rendering/reconstruct-foundations';
 import { rescaleWidget } from 'kernel/base/main-common';
 import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
+import { rowToTabRuntime } from 'kernel/runtime/row-to-tab-runtime';
+import { rowToPageRuntime } from 'kernel/runtime/row-to-page-runtime';
 
 export const widgetPreview = (function () {
   var widget = [];

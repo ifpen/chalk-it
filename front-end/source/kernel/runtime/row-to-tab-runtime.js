@@ -138,4 +138,4 @@ class RowToTabRuntime {
   }
 }
 
-const rowToTabRuntime = new RowToTabRuntime();
+export const rowToTabRuntime = new RowToTabRuntime();

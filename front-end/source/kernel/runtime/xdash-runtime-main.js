@@ -15,6 +15,8 @@ import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { pyodideLib } from 'kernel/base/pyodide-project';
 import { reconstructFoundations } from 'kernel/dashboard/rendering/reconstruct-foundations';
 import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
+import { rowToTabRuntime } from 'kernel/runtime/row-to-tab-runtime';
+import { rowToPageRuntime } from 'kernel/runtime/row-to-page-runtime';
 import { inputHandler } from 'kernel/general/interfaces/input-params';
 
 export const DASHBOARD_URL_PARAMETER = 'projectUrl';
