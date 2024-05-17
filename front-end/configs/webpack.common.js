@@ -12,7 +12,6 @@ require('dotenv').config({ path: devMode ? '.env.dev' : '.env.prod'});
 
 const config = require('./config');
 const confDic = Object.fromEntries(Object.entries(config.config).map(([k, v]) => [`__CONFIG_DIC__.${k}`, JSON.stringify(v)]));
-console.log(confDic);
 
 const PLUGINS = ['./source/kernel/dashboard/plugins/plugins.js', './source/kernel/datanodes/plugins/plugins.js'];
 
