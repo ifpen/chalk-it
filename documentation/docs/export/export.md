@@ -1,9 +1,10 @@
-# Application export, deployment and sharing
+# Application export
 
 An Chalk'it project may be:
 
 - previewed in full-page view
-- exported to a standalone html page on the local disk
+- exported to a standalone html page on the local disk. Running this page from disk have many limitations, due to security restrictions of the browser. Pyodide workers are disabled. Some fonts are also blocked. Use this mode for JavaScript-only dashboards, for local tests.
+- deployed as Docker images. See [Docker deployment](#docker-deployment) section for more information.
 
 These features are available in the dashboard _view_ mode:
 
@@ -95,3 +96,5 @@ Default start page needs also to be indicated:
 When a HTML page is generated with Chalk'it, either exported, public or private, the xprjson content is inlined into the HTML page code, and might include sensitive information such as passwords, API keys, authorization information...
 
 Safely handling secrets is currenly outside Chalk'it scope.
+
+## Docker deployment
