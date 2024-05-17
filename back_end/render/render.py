@@ -10,7 +10,6 @@
 # specific language governing permissions and limitations under the License.
 
 import sys
-import os
 import logging
 from flask import (
     Flask,
@@ -24,7 +23,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from common import TemplateUtils
+from ..common import TemplateUtils
 
 
 class RenderApp:
