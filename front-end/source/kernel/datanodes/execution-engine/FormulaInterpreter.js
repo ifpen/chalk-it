@@ -14,10 +14,12 @@ import * as d3 from 'd3';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { offSchedLogUser } from 'kernel/base/main-common';
+import { chalkit } from 'kernel/general/interfaces/chalkit-api';
+import { xDashApi } from 'kernel/general/interfaces/xdash-api';
 
 // Libraries provided to user scripts as arguments
-const libs = [Papa, _, d3];
-const libNames = ['Papa', '_', 'd3'];
+const libs = [Papa, _, d3, chalkit, xDashApi];
+const libNames = ['Papa', '_', 'd3', 'chalkit', 'xDashApi'];
 
 function createScriptFunction(body) {
   return new Function(['dataNodes', ...libNames], body);
