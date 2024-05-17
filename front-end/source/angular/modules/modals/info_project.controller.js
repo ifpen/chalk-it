@@ -6,7 +6,7 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { modalsModule } from './modals';
 import { fileManager } from 'kernel/general/backend/file-management';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';

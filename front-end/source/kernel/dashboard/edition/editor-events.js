@@ -6,7 +6,7 @@
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { editorSingletons } from 'kernel/editor-singletons';
 
 window.addEventListener('click', (event) => {

@@ -6,7 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI & Mongi BEN GAID                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsTempParams, models } from 'kernel/base/widgets-states';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
@@ -22,6 +22,8 @@ function widgetInstanceClass() {
     // Create instance
     if (_.isUndefined(modelsParameters[instanceId])) {
       modelsParameters[instanceId] = jQuery.extend(true, {}, modelsParameters[modelJsonIdStr]);
+    } else {
+      modelsParameters[instanceId] = { ...modelsParameters[modelJsonIdStr], ...modelsParameters[instanceId] };
     }
     if (_.isUndefined(models[instanceId])) {
       models[instanceId] = jQuery.extend(true, {}, models[modelJsonIdStr]);

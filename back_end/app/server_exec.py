@@ -1,4 +1,17 @@
+# Copyright 2023-2024 IFP Energies nouvelles
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+
 import sys
+import os
 import hashlib
 import logging
 import re
@@ -9,8 +22,16 @@ from typing import Optional, Union, Dict
 from flask import Blueprint, Response
 from flask import make_response, json, request
 
-sys.path.append('./back_end/middleware/src/')
+# Path to the directory you want to add to sys.path
+middelware_path = './back_end/middleware/src/'
 
+# Check if the directory exists before adding it to sys.path for developpment mode
+if os.path.exists(middelware_path):
+    sys.path.append(middelware_path)
+else:
+    # production mode
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    
 logger = logging.getLogger(__name__)
 
 REQUEST_ID_KEY = "x-request-id"
@@ -62,12 +83,12 @@ def _evaluate(script: str, data_nodes: str, is_debug: bool) -> str:
     """
 
     script = f"""
-from xdash_python_api.outputs import capture
+from chalkit_python_api.outputs import capture
 import json
 import base64
 
 @capture(is_debug={is_debug}, script_name='<string>', start_line=7)
-def script(dataNodes, xdash):
+def script(dataNodes, chalkit):
 {_shift(script)}
 
 result = script(data_nodes)
@@ -114,8 +135,8 @@ def create_python_exec_blueprint(executor: Optional[Executor] = None) -> Bluepri
             return Response(result_json, mimetype='application/json')
 
         except ModuleNotFoundError:
-            logger.exception("_evaluate failed; xdash_python_api probably missing")
-            error_msg = f"EvalError: Missing import (check xdash_python_api)\n\n{traceback.format_exc()}"
+            logger.exception("_evaluate failed; chalkit_python_api probably missing")
+            error_msg = f"EvalError: Missing import (check chalkit_python_api)\n\n{traceback.format_exc()}"
         except SyntaxError as ex:
             logger.exception("_evaluate failed; Probably an invalid script")
             if executor and ex.__cause__:
@@ -123,7 +144,7 @@ def create_python_exec_blueprint(executor: Optional[Executor] = None) -> Bluepri
             msg = "".join(traceback.format_exception(ex))
             error_msg = f"EvalError: Syntax error\n\n{msg}"
         except Exception as ex:
-            logger.exception("_evaluate failed; Possibly a xdash_python_api version missmatch ?")
+            logger.exception("_evaluate failed; Possibly a chalkit_python_api version missmatch ?")
             error_msg = f"EvalError: {traceback.format_exc()}"
         return {
             "error": error_msg

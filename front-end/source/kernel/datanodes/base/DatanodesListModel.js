@@ -7,7 +7,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import ko from 'knockout';
 import { DialogBoxForDuplicateData } from 'kernel/datanodes/gui/DialogBox';
 import { xdsjson } from 'kernel/datanodes/export/xdsjson';
@@ -213,6 +213,7 @@ export function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDepend
     datanodesDependency.clearExtraStartNodesList();
     datanodesDependency.clearSetvarList();
     datanodesDependency.clearProcessedSetvarList();
+    datanodesDependency.clearCurrentGraphList();
 
     _.each(self.datanodes(), function (datanode) {
       self.deleteDatanode(datanode);

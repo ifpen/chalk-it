@@ -7,7 +7,7 @@
 // │ Original authors(s):  Tristan BARTEMENT, Mongi BEN GAID, Abir EL FEKI,      │ \\
 // │                       Guillaume CORBELIN                                    │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import 'jquery.bt';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
@@ -29,7 +29,12 @@ import {
 // Models
 modelsHiddenParams.annotationIconInfo = {};
 modelsHiddenParams.annotationLabel = {};
+modelsHiddenParams.annotationRectangle = {};
 modelsHiddenParams.annotationImage = {
+  fileContentBase64: '',
+  mimeType: '',
+};
+modelsHiddenParams.annotationImageConnected = {
   fileContentBase64: '',
   mimeType: '',
 };
@@ -70,6 +75,22 @@ modelsParameters.annotationLabel = {
   textColor: 'var(--widget-label-color)',
   valueFontFamily: 'var(--widget-font-family)',
   textAlign: 'left',
+  textBold: false,
+  textUnderline: false,
+  textItalic: false,
+  displayBorder: false,
+  borderColor: 'var(--widget-border-color)',
+  borderWidth: '2px',
+  centerVertically: true,
+};
+modelsParameters.annotationRectangle = {
+  text: '',
+  enableActuator: false,
+  fontsize: 0.5,
+  backgroundColor: 'rgba(228, 228, 228, 1)',
+  textColor: 'var(--widget-label-color)',
+  valueFontFamily: 'var(--widget-font-family)',
+  textAlign: 'left',
   displayBorder: false,
   borderColor: 'var(--widget-border-color)',
   centerVertically: true,
@@ -78,6 +99,11 @@ modelsParameters.annotationImage = {
   keepRatio: true,
   hideImageURL: false,
   enableActuator: false,
+};
+modelsParameters.annotationImageConnected = {
+  keepRatio: true,
+  hideImageURL: true,
+  enableActuator: true,
 };
 modelsParameters.annotationVideo = {
   enforceCaptureRatio: false,
@@ -92,7 +118,9 @@ modelsParameters.annotationVideo = {
 // Layout (default dimensions)
 modelsLayout.annotationIconInfo = { height: '4vh', width: '2vw' };
 modelsLayout.annotationLabel = { height: '5vh', width: '12vw', minWidth: '5px', minHeight: '5px' };
+modelsLayout.annotationRectangle = { height: '5vh', width: '12vw', minWidth: '5px', minHeight: '5px' };
 modelsLayout.annotationImage = { height: '20vh', width: '17vw' };
+modelsLayout.annotationImageConnected = { height: '20vh', width: '17vw' };
 modelsLayout.annotationVideo = { height: '30vh', width: '20vw' };
 
 /*******************************************************************/
@@ -268,6 +296,13 @@ function annotationWidgetsPluginClass() {
       //AEF: modif to allow multilines
       //AEF: adapt height depending if text is in simple line or multilines
       //MBG : fix for Mozilla Firefox. No distinction between single line and multline. To check.
+      let textBold = 'font-weight: normal;';
+      let textUnderline = 'text-decoration: none;';
+      let textItalic = 'font-style: normal;';
+      if (modelsParameters[idInstance].textBold) textBold = 'font-weight: bold;';
+      if (modelsParameters[idInstance].textUnderline) textUnderline = 'text-decoration: underline;';
+      if (modelsParameters[idInstance].textBold) textItalic = 'font-style: italic;';
+
       var divContent =
         '<div id="annotationLabelTextArea' +
         idWidget +
@@ -278,6 +313,10 @@ function annotationWidgetsPluginClass() {
         modelsParameters[idInstance].textColor +
         '; text-align: ' +
         modelsParameters[idInstance].textAlign +
+        ';' +
+        textBold +
+        textUnderline +
+        textItalic +
         '; background-color: ' +
         modelsParameters[idInstance].backgroundColor +
         '; padding: 4px; resize: inherit; margin: auto; vertical-align: middle ; border-radius: 6px; ' +
@@ -996,9 +1035,21 @@ function annotationWidgetsPluginClass() {
         icn: 'label',
         help: 'wdg/wdg-annotation-video/#label',
       },
+      annotationRectangle: {
+        factory: 'labelAnnotationWidget',
+        title: 'Form',
+        icn: 'label',
+        help: 'wdg/wdg-annotation-video/#label',
+      },
       annotationImage: {
         factory: 'imageAnnotationWidget',
-        title: 'Image',
+        title: 'Import Image',
+        icn: 'image',
+        help: 'wdg/wdg-annotation-video/#image',
+      },
+      annotationImageConnected: {
+        factory: 'imageAnnotationWidget',
+        title: 'Connect Image',
         icn: 'image',
         help: 'wdg/wdg-annotation-video/#image',
       },

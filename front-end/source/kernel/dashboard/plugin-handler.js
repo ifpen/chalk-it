@@ -5,7 +5,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 
 function widgetsPluginsHandlerClass() {
   var pluginNames = [];
@@ -28,7 +28,7 @@ function widgetsPluginsHandlerClass() {
   function getHandlingPlugin(modelJsonIdStr) {
     for (var plg in pluginObjects) {
       var pluginWidgetsList = _.keys(pluginObjects[plg].pluginDefinition.widgetsDefinitionList);
-      if (_.contains(pluginWidgetsList, modelJsonIdStr)) {
+      if (_.includes(pluginWidgetsList, modelJsonIdStr)) {
         return pluginObjects[plg];
       }
     }

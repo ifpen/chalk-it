@@ -7,7 +7,7 @@
 // │ Original authors(s): Ameur HAMDOUNI, Mongi BEN GAID,               │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
@@ -376,7 +376,9 @@ function datePickerWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };

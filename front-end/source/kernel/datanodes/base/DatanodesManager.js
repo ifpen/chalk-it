@@ -13,7 +13,7 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 import { xDashConfig } from 'config.js';
-import _ from 'underscore';
+import _ from 'lodash';
 import ko from 'knockout';
 import angular from 'angular';
 import FreeboardUI from 'kernel/base/gui/FreeboardUI';
@@ -63,6 +63,8 @@ export const datanodesManager = (function () {
       },
     ]);
   }
+
+  var currentDataNode;
 
   // deleteDn: delete a datanode
   function deleteDn(viewModel) {
@@ -242,25 +244,73 @@ export const datanodesManager = (function () {
         swal(`A dataNode with name '${newName}' adready exists.`, 'Please specify a different name', 'error');
         return true;
       }
-      if (datanodesDependency.hasSuccessors(oldName)) {
-        const successors = Array.from(datanodesDependency.getSuccessors(oldName));
-        // warning the user to set modification in formula for example
-        swal(
-          'Renaming dataNode side effects',
-          'Old name "' +
-            oldName +
-            '" is used in dataNode(s) "' +
-            successors +
-            '" and should be changed by the new one "' +
-            newName +
-            '".',
-          'warning'
+
+      // handle dependencies
+      if (datanodesDependency.hasSuccessors(viewModel.name())) {
+        var successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
+        xdashNotifications.manageNotification(
+          'info',
+          viewModel.name(),
+          'Update new name "' + newSettings.settings.name + '" in script of "' + successors + '"'
         );
-        //remove dependencies with former name of datanode, new dependency will be added after, when edit datanode
-        //to avoid error alert on datanode that doesn't exist anymore
-        //in the mean time user can add a new datanode with the older name OR can change the formula
-        datanodesDependency.addNode(voldName);
+        for (let prop in successors) {
+          const oldName = viewModel.name();
+          const newName = newSettings.settings.name;
+          let script = '';
+          if (
+            datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_plugin' ||
+            datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_pyodide_plugin'
+          ) {
+            script = datanodesManager.getDataNodeByName(successors[prop]).settings().content;
+          } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
+            script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula;
+          } else if (
+            datanodesManager.getDataNodeByName(successors[prop]).type() === 'REST_web-service_from_datasource'
+          ) {
+            script = datanodesManager.getDataNodeByName(successors[prop]).settings().body;
+          } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_delay_plugin') {
+            script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_input;
+          }
+          replacedScript = script
+            .replace(new RegExp('dataNodes\\["' + oldName + '"\\]', 'g'), 'dataNodes["' + newName + '"]')
+            .replace(new RegExp('dataNodes\\.' + oldName, 'g'), 'dataNodes.' + newName);
+
+          if (
+            datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_plugin' ||
+            datanodesManager.getDataNodeByName(successors[prop]).type() === 'Python_pyodide_plugin'
+          ) {
+            datanodesManager.getDataNodeByName(successors[prop]).settings().content = replacedScript;
+          } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_formula_plugin') {
+            datanodesManager.getDataNodeByName(successors[prop]).settings().json_var_formula = replacedScript;
+          } else if (
+            datanodesManager.getDataNodeByName(successors[prop]).type() === 'REST_web-service_from_datasource'
+          ) {
+            datanodesManager.getDataNodeByName(successors[prop]).settings().body = replacedScript;
+          } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_delay_plugin') {
+            datanodesManager.getDataNodeByName(successors[prop]).settings().json_input = replacedScript;
+          }
+        }
       }
+
+      // handle widget connection
+      [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
+      if (bFoundConnection) {
+        let wdList = [];
+        for (let prop in widgetConnector.widgetsConnection) {
+          for (let i in widgetConnector.widgetsConnection[prop].sliders) {
+            if (viewModel.name() === widgetConnector.widgetsConnection[prop].sliders[i].dataNode) {
+              wdList.push(widgetConnector.widgetsConnection[prop].instanceId);
+              widgetConnector.widgetsConnection[prop].sliders[i].dataNode = newSettings.settings.name;
+            }
+          }
+        }
+        xdashNotifications.manageNotification(
+          'info',
+          viewModel.name(),
+          'Update new name "' + newSettings.settings.name + '" in connected widgets "' + wdList.join('\n') + '"'
+        );
+      }
+
       //AEF: before renaming datanode, must stop its scheduling before it disappears
       if (viewModel.execInstance() != null) {
         // scheduling is in progress
@@ -398,7 +448,7 @@ export const datanodesManager = (function () {
 
       var matches = document.querySelectorAll('.docsLink');
       matches.forEach(function (item) {
-        item.href = xDashConfig.urlDoc + 'index.html';
+        item.href = xDashConfig.urlDoc;
       });
       urlQueryEntry.process(isHtmlLoad);
     },
@@ -450,7 +500,7 @@ export const datanodesManager = (function () {
       } else {
         plugin.settings.unshift({
           name: 'name',
-          display_name: 'Generated memory name',
+          display_name: 'Generated memory name', //do not change
           type: 'text',
           disabled: true,
         });
@@ -574,6 +624,7 @@ export const datanodesManager = (function () {
       datanodesDependency.clearExtraStartNodesList();
       datanodesDependency.clearSetvarList();
       datanodesDependency.clearProcessedSetvarList();
+      datanodesDependency.clearCurrentGraphList();
 
       //stop all current operations
       for (var index in datanodes) {
@@ -621,6 +672,17 @@ export const datanodesManager = (function () {
     },
     getJsonEditor: function () {
       return jsonEdContainer;
+    },
+    datanodesDependency: function () {
+      //need this for chalkit api
+      return datanodesDependency;
+    },
+    setCurrentDataNode: function (datanodeName) {
+      currentDataNode = datanodeName;
+    },
+    getCurrentDataNode: function () {
+      //need this for chalkit api
+      return currentDataNode;
     },
   };
 })();

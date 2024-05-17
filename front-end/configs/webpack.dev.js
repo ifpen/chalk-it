@@ -5,11 +5,6 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
-  resolve: {
-    alias: {
-      'config.js$': path.resolve(__dirname, '../configs/config.dev.js'),
-    },
-  },
   mode: 'development',
   optimization: {
     splitChunks: {

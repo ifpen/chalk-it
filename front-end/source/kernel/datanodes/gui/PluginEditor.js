@@ -1,4 +1,4 @@
-// +--------------------------------------------------------------------+ \\
+﻿// +--------------------------------------------------------------------+ \\
 // ¦ PluginEditor                                                       ¦ \\
 // +--------------------------------------------------------------------¦ \\
 // │ Copyright © 2013 Jim Heising (https://github.com/jheising)         │ \\
@@ -11,7 +11,7 @@
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
@@ -117,9 +117,8 @@ export function PluginEditor(jsEditor) {
 
   function saveSettings(selectedType, settings, settingsSavedCallback) {
     $('.validation--error').remove();
-    if (newSettings.type === '') {
-      newSettings = settings;
-    }
+
+    newSettings = settings;
 
     // Loop through each setting and validate it
     for (var index = 0; index < selectedType.settings.length; index++) {
@@ -554,8 +553,11 @@ export function PluginEditor(jsEditor) {
               .appendTo($('<div class="styled-select"></div>').appendTo(valueCell))
               .change(function () {
                 newSettings.settings[settingDef.name] = $(this).val();
-                newSettings.settings['name'] = 'pastValue_' + $(this).val();
-                $('#value-dn_name')[0].value = 'pastValue_' + $(this).val();
+                if (!_.isUndefined($('#value-dn_name')[0])) {
+                  newSettings.settings['name'] = 'pastValue_' + $(this).val();
+                  $('#value-dn_name')[0].value = 'pastValue_' + $(this).val();
+                }
+
                 if (
                   (settingDef.name === 'FMI_webservice' && newSettings.settings.bodyPrefill) ||
                   settingDef.name === 'req_data_type'
@@ -578,8 +580,10 @@ export function PluginEditor(jsEditor) {
                   }
                   $('<option></option>').text(optionName).attr('value', optionValue).appendTo(input);
                 });
-                newSettings.settings['name'] = 'pastValue_' + defaultValue;
-                $('#value-dn_name')[0].value = 'pastValue_' + defaultValue;
+                if (!_.isUndefined($('#value-dn_name')[0])) {
+                  newSettings.settings['name'] = 'pastValue_' + defaultValue;
+                  $('#value-dn_name')[0].value = 'pastValue_' + defaultValue;
+                }
               }
             } else {
               _.each(settingDef.options, function (option) {
@@ -649,7 +653,7 @@ export function PluginEditor(jsEditor) {
               }
             } else {
               let content = '';
-              if (settingDef.disabled) {
+              if (settingDef.disabled && settingDef.display_name === 'Generated memory name') {
                 content =
                   '<input type="text" id="value-dn_name" title="' +
                   settingDef.display_name +

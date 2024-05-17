@@ -25,7 +25,7 @@ generalizing the "called from orchestrator" boolean introduced
 */
 
 import { xDashConfig } from 'config.js';
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { isSuperset, union, difference } from 'kernel/datanodes/plugins/thirdparty/utils';
@@ -66,7 +66,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
   // Discussion with AEF : inform user when update cannot be executed because one predecessor has error (with notification)
 
   function isCalledFromOrchestrator(nodeName) {
-    if (_.contains(triggeredNodes, nodeName)) {
+    if (_.includes(triggeredNodes, nodeName)) {
       // MBG 10/05/2019 : more general condition
       switch (callOrigin) {
         case 'triggerButton':
@@ -94,7 +94,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
 
   // AEF: temp function, to refactor for autostart and explicit use
   function isForceAutoStart(nodeName) {
-    if (_.contains(triggeredNodes, nodeName)) {
+    if (_.includes(triggeredNodes, nodeName)) {
       switch (callOrigin) {
         case 'triggerButton':
         case 'vignette':
@@ -111,7 +111,21 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
       return false;
     }
   }
-
+  function _launchMemoryNow(nodeName) {
+    if (_.includes(triggeredNodes, nodeName)) {
+      switch (callOrigin) {
+        case 'unidentified':
+        case 'edit':
+        case 'setVariable':
+        case 'globalFirstUpdate':
+          return true;
+        default:
+          return false;
+      }
+    } else {
+      return false;
+    }
+  }
   function launchSchedule() {
     runSchedule();
   }
@@ -135,7 +149,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
       }
       if (datanodesManager.getDataNodeByName(op).is_specific_exec) {
         //AEF: launch memory at start for init_value
-        if (callOrigin !== 'setVariable' && callOrigin !== 'globalFirstUpdate') {
+        if (!_launchMemoryNow(op)) {
           console.log(op + ' is a memory and will be treated at the end of schedule.');
           operationsToExecute.delete(op);
           datanodesDependency.addMemorydataNodeList(op);
@@ -165,7 +179,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
               bForceAutoStart = isForceAutoStart(op); // temp use
               datanodesManager
                 .getDataNodeByName(op)
-                .updateNow(bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted);
+                .updateNow(bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted, callOrigin);
             } else {
               operationsToExecute.delete(op);
               operationsNotReady.add(op);
@@ -197,7 +211,7 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
 
                   datanodesManager
                     .getDataNodeByName(op)
-                    .updateNow(bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted);
+                    .updateNow(bCalledFromOrchestrator, bForceAutoStart, bAllPredExecuted, callOrigin);
                 } else {
                   if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
                     console.log('operation ' + op + ' is ready but cannot be executed because of its predecessors.');
@@ -264,6 +278,14 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
       return false;
     }
   }
+  /*-----------------alreadyExecuted-----------------*/
+  function alreadyTerminated(node) {
+    if (operationsTerminated.has(node)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   /*-----------------notExecutedPredecessors-----------------*/
   function notExecutedPredecessors(node) {
@@ -295,8 +317,9 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
                 operationsToExecute.add(successor);
               } else {
                 if (datanodesManager.getDataNodeByName(successor).is_specific_exec) {
-                  callOrigin = 'memory';
-                  operationsToExecute.add(successor);
+                  if (!alreadyTerminated(successor)) {
+                    operationsToExecute.add(successor);
+                  }
                 } else {
                   if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
                     console.log('operation ' + successor + ' not added because already executed');

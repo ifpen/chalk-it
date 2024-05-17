@@ -5,7 +5,7 @@
 // ├───────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                            │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { UndoableAction, UndoManager } from './editor.undo-manager';
@@ -559,6 +559,22 @@ angular.module('modules.editor').controller('EditorController', [
           target,
           elementIds.filter((it) => it !== target)
         );
+        undoManagerService.execute(action);
+      }
+    };
+
+    vm.spreadVertical = function _spreadVertical() {
+      const elementIds = _getSelection();
+      if (elementIds && elementIds.length > 1) {
+        const action = editorActionFactory.createVerticalSpreadAction(elementIds);
+        undoManagerService.execute(action);
+      }
+    };
+
+    vm.spreadHorizontal = function _spreadRight() {
+      const elementIds = _getSelection();
+      if (elementIds && elementIds.length > 1) {
+        const action = editorActionFactory.createHorizontalSpreadAction(elementIds);
         undoManagerService.execute(action);
       }
     };

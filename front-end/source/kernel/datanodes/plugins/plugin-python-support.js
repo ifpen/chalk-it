@@ -1,7 +1,8 @@
-﻿import _ from 'underscore';
+﻿import _ from 'lodash';
 import 'json_parseMore';
 import { xDashConfig, urlPython } from 'config.js';
 import { pyodideManager } from 'kernel/base/pyodide-loader';
+import { chalkit } from 'kernel/general/interfaces/chalkit-api';
 import { getAuthorizationHeaders } from 'angular/modules/components/auth-utils';
 
 export class PythonPluginExecBase {
@@ -15,6 +16,46 @@ export class PythonPluginExecBase {
       return injector.invoke(['$rootScope', ($rootScope) => !$rootScope.UserProfile]);
     }
     return true;
+  }
+
+  static applySideEffects(sideEffects) {
+    if (sideEffects?.length) {
+      for (const { name, args } of sideEffects) {
+        const unknowns = [];
+        try {
+          switch (name) {
+            case 'scheduler.setVariables':
+              chalkit.scheduler.setVariables(Object.keys(args[0]), Object.values(args[0]));
+              break;
+
+            case 'scheduler.setVariableProperty':
+            case 'scheduler.executeDataNodes':
+              const rawSchedName = name.replace('scheduler.', '');
+              chalkit.scheduler[rawSchedName](...args);
+              break;
+
+            case 'dashboard.viewPage':
+            case 'dashboard.viewProject':
+            case 'dashboard.goToPage':
+            case 'dashboard.enableWidget':
+            case 'dashboard.disableWidget':
+            case 'dashboard.showWidget':
+            case 'dashboard.hideWidget':
+              const rawDashName = name.replace('dashboard.', '');
+              chalkit.dashboard[rawDashName](...args);
+              break;
+
+            default:
+              unknowns.push(name);
+              break;
+          }
+        } finally {
+          if (unknowns.length) {
+            throw new Error(`Invalid side effects: ${unknowns.join(', ')}`);
+          }
+        }
+      }
+    }
   }
 
   constructor() {}
@@ -51,10 +92,10 @@ export class PythonPluginLocalExec extends PythonPluginExecBase {
 
   static writePython(script, debug) {
     return `
-from xdash_python_api.outputs import capture 
+from chalkit_python_api.outputs import capture 
 
 @capture(is_debug=${debug ? 'True' : 'False'}, script_name='<exec>', start_line=5)
-def script(dataNodes, xdash):
+def script(dataNodes, chalkit):
 ${PythonPluginLocalExec.shift(script)}
 
 script(dataNodes)

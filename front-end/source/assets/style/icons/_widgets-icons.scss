@@ -34,6 +34,10 @@
     @include icon-background('button.svg', 'widget');
   }
 
+  &.icn-trigger {
+    @include icon-background('execute-datanode.svg', 'widget');
+  }
+
   &.icn-calendar {
     @include icon-background('calendar.svg', 'widget');
   }

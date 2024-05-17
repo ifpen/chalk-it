@@ -6,7 +6,7 @@
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Benoit LEHMAN, Tristan BARTEMENT, Guillaume CORBELIN   │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
@@ -27,7 +27,7 @@ modelsHiddenParams.calendarD3 = {
 // Parameters
 modelsParameters.calendarD3 = {
   AllYearsVisible: true,
-  UndefinedValueColor: '#F6F6F6',
+  UndefinedValueColor: 'var(--widget-calendar-d3-undefined-value)',
 };
 
 // Layout (default dimensions)
@@ -71,14 +71,7 @@ function calendarD3WidgetPluginClass() {
       const formatOut = d3.timeFormat('%Y-%m-%d');
       const parserLocal = d3.timeParse('%Y-%m-%d');
       const calendarValues = modelsHiddenParams[idInstance].CalendarValues;
-      //const dateValues = calendarValues?.values || ""; // MBG for gulp-uglify-es
-      var dateValues;
-      if (calendarValues && 'values' in calendarValues) {
-        dateValues = calendarValues.values;
-      } else {
-        dateValues = '';
-      }
-      // End MBG for gulp-uglify-es
+      const dateValues = calendarValues?.values || '';
       let tableForCalendar;
 
       // Create Data
@@ -376,7 +369,7 @@ function calendarD3WidgetPluginClass() {
           .attr('width', cellSize - 1)
           .attr('height', cellSize - 1)
           .attr('fill', function (e, i) {
-            return !_.isUndefined(Y[e]) ? color(Y[e]) : modelsParameters[idInstance].UndefinedValueColor;
+            return !_.isUndefined(Y[e]) ? color(Y[e]) : self.undefinedValueColor();
           })
           .on('mouseover', function (e, i) {
             if (!_.isUndefined(Y[i])) {

@@ -3,8 +3,8 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "xdash_python_api"
-version = "0.0.2"
+name = "chalkit_python_api"
+version = "0.0.5"
 authors = [
     { name = "Tristan BARTEMENT", email = "tristan.bartement@tech-advantage.com" },
 ]
@@ -33,7 +33,7 @@ exclude = [
 ]
 
 [tool.hatch.build.hooks.vcs]
-version-file = "src/xdash_python_api/_version.py"
+version-file = "src/chalkit_python_api/_version.py"
 
 [tool.hatch.envs.default]
 dependencies = []
@@ -63,7 +63,7 @@ dependencies = [
 ]
 
 [tool.hatch.envs.test.scripts]
-run-coverage = "pytest --junitxml=build/report.xml --cov-report=term-missing --cov-report xml:build/coverage.xml --cov-config=pyproject.toml --cov=src/xdash_python_api --cov=test"
+run-coverage = "pytest --junitxml=build/report.xml --cov-report=term-missing --cov-report xml:build/coverage.xml --cov-config=pyproject.toml --cov=src/chalkit_python_api --cov=test"
 run = "run-coverage --no-cov"
 
 [tool.hatch.envs.lint.scripts]
@@ -94,7 +94,7 @@ target-version = ["py39"]
 branch = true
 parallel = true
 omit = [
-    "src/xdash_python_api/_version.py",
+    "src/chalkit_python_api/_version.py",
 ]
 
 [tool.coverage.report]
@@ -107,7 +107,7 @@ exclude_lines = [
 default_section = "THIRDPARTY"
 force_grid_wrap = 0
 include_trailing_comma = true
-known_first_party = ["xdash_python_api"]
+known_first_party = ["chalkit_python_api"]
 line_length = 120
 multi_line_output = 3
 use_parentheses = true

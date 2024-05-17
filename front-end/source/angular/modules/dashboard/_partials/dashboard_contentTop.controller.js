@@ -7,7 +7,7 @@
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI, Ghiles HIDEUR                     │ \\
 // └──────────────────────────────────────────────────────────────────────────────────────┘ \\
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
-import _ from 'underscore';
+import _ from 'lodash';
 import template from 'angular/modules/dashboard/_partials/modals/exportDownloadPage.html';
 import { fileManager } from 'kernel/general/backend/file-management';
 import { htmlExport } from 'kernel/general/export/html-export';

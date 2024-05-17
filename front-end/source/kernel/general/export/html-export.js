@@ -7,7 +7,7 @@
 // +--------------------------------------------------------------------+ \\
 
 import { xDashConfig } from 'config.js';
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { runtimeSingletons } from 'kernel/runtime-singletons';
 import {

@@ -13,7 +13,6 @@ let browsersync = require('browser-sync').create(),
   del = require('del'),
   rename = require('gulp-rename'),
   templateCache = require('gulp-angular-templatecache'),
-  uglify = require('gulp-uglify-es').default,
   concat = require('gulp-concat'),
   replace = require('gulp-replace'),
   argv = require('yargs').argv,
@@ -28,7 +27,7 @@ let browsersync = require('browser-sync').create(),
   connect = require('gulp-connect'),
   fs = require('fs'),
   exec = require('child_process').exec,
-  Env = 'dev',
+  Env = argv.env || 'dev',
   addVersion = true,
   GlobalConfig = [],
   filesName = configuration.filesName,
@@ -42,7 +41,15 @@ let browsersync = require('browser-sync').create(),
   xdashEditorJs = filesName.xdash_editor.js,
   xdashRuntimeCss = filesName.xdash_runtime.css,
   xdashRuntimeJs = filesName.xdash_runtime.js,
-  ListTasksBeforeInject = 'createConfigurationFile';
+  buildFilePath,
+  buildDirPath,
+  VERSION,
+  getXdashWorkerPyodideFile = () =>
+    `${filesName.workers.pyodide}${
+      addVersion && Env === 'prod' ? GlobalConfig.config.xDashConfig.version.fullVersion : Env
+    }.js`;
+
+ListTasksBeforeInject = 'createConfigurationFile';
 
 const nodeVersion = pkg.engines.node;
 // Compare installed NodeJs version with required NodeJs version.
@@ -94,29 +101,32 @@ task('sass', () => {
 });
 
 task('init', (cb) => {
-  Env = argv.env ? argv.env : 'dev';
-  console.log('EV ENV :', Env);
-
   if (Env === 'prod') {
-    ListTasksBeforeInject = ('createConfigurationFile', 'nomin:xdash_editor');
+    ListTasksBeforeInject =
+      ('createConfigurationFile', 'usemin:xdash_editor:js', 'usemin:xdash_editor:css');
   } else {
     ListTasksBeforeInject = 'createConfigurationFile';
   }
   GlobalConfig = require('./index').config(Env);
 
+  VERSION = GlobalConfig.config.xDashConfig.version.fullVersion;
+  prefixName = GlobalConfig.config.xDashConfig.xDashBasicVersion ? '/chalkit_' : '/xdash_';
+  buildFilePath = prefixName + VERSION;
+  buildDirPath = '../' + configuration.paths.buildDirectory + buildFilePath;
+
   if (addVersion) {
-    filesName.xdash_editor.css = xdashEditorCss + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_editor.js = xdashEditorJs + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_runtime.css = xdashRuntimeCss + GlobalConfig.config.xDashConfig.version.fullVersion;
-    filesName.xdash_runtime.js = xdashRuntimeJs + GlobalConfig.config.xDashConfig.version.fullVersion;
+    filesName.xdash_editor.css = xdashEditorCss + VERSION;
+    filesName.xdash_editor.js = xdashEditorJs + VERSION;
+    filesName.xdash_runtime.css = xdashRuntimeCss + VERSION;
+    filesName.xdash_runtime.js = xdashRuntimeJs + VERSION;
   }
 
-  // On insère la configuration en haut
+  // Insert the configuration at the top
   GlobalConfig.allFiles.xDashStudio.js.unshift('configs/config.' + Env + '.js');
   GlobalConfig.allFiles.xDashRuntime.js.unshift('configs/config.' + Env + '.js');
 
-  // En production, les html sont inlinées dans le fichier templates.js
-  // Pas en développement sinon problème de reload après modif
+  // In production, html is inlined in templates.js
+  // Not in development, otherwise reload problem after modification
   if (Env === 'prod') {
     GlobalConfig.allFiles.xDashStudio.js.push('.tmp/templates.js');
   }
@@ -140,7 +150,7 @@ task(
   'logs',
   series('clear:cache', 'init', (cb) => {
     console.log('\n                         -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*');
-    console.log('                              xDash Vesion : ' + GlobalConfig.config.xDashConfig.version.fullVersion);
+    console.log('                              xDash Vesion : ' + VERSION);
     console.log('                         -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*');
     console.log('                                    EV ENV :', Env);
     console.log('                                       --------- \n');
@@ -153,7 +163,7 @@ task(
 
 task(
   'createConfigurationFile',
-  series('init', 'template', () => {
+  series('init', 'template', (cb) => {
     Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
 
@@ -165,9 +175,9 @@ task(
       '}}.config.js files \n' +
       ' */\n\n\n';
 
-    let nameFile = 'config.' + Env + '.js';
+    const nameFile = 'config.' + Env + '.js';
 
-    for (var prop in GlobalConfig.config) {
+    for (const prop in GlobalConfig.config) {
       if (GlobalConfig.config.hasOwnProperty(prop)) {
         if (prop == 'here_app_id' || prop == 'here_app_code') {
           jsFile += 'var ' + prop + ' = ' + JSON.stringify(GlobalConfig.config[prop]) + ' ;\n';
@@ -176,10 +186,12 @@ task(
         }
       }
     }
-    var dirConfig = '../configs';
+    const dirConfig = '../configs';
+    const allFiles = GlobalConfig.allFiles;
+
     if (Env === 'prod') {
       generatedPageJsList = [filesName.xdash_runtime.js + '.min.js'];
-      generatedPageCssList = [filesName.xdash_runtime.css + '.min.css'];
+      generatedPageCssList = ['assets/' + filesName.xdash_runtime.css + '.min.css'];
 
       xdashEditorJsList = [filesName.xdash_editor.js + '.min.js'];
       xdashEditorCssList = [filesName.xdash_editor.css + '.min.css'];
@@ -187,14 +199,14 @@ task(
       xdashRuntimeJsList = [filesName.xdash_runtime.js + '.min.js'];
       xdashRuntimeCssList = [filesName.xdash_runtime.css + '.min.css'];
     } else {
-      generatedPageJsList = GlobalConfig.allFiles.xDashRuntime.js;
-      generatedPageCssList = GlobalConfig.allFiles.xDashRuntime.css;
+      generatedPageJsList = allFiles.xDashRuntime.js;
+      generatedPageCssList = allFiles.xDashRuntime.css;
 
-      xdashEditorJsList = GlobalConfig.allFiles.xDashStudio.js;
-      xdashEditorCssList = GlobalConfig.allFiles.xDashStudio.css;
+      xdashEditorJsList = allFiles.xDashStudio.js;
+      xdashEditorCssList = allFiles.xDashStudio.css;
 
-      xdashRuntimeJsList = GlobalConfig.allFiles.xDashRuntime.js;
-      xdashRuntimeCssList = GlobalConfig.allFiles.xDashRuntime.css;
+      xdashRuntimeJsList = allFiles.xDashRuntime.js;
+      xdashRuntimeCssList = allFiles.xDashRuntime.css;
     }
 
     jsFile +=
@@ -209,7 +221,11 @@ task(
       JSON.stringify(xdashEditorJsList) +
       ';\n';
 
-    return newfile(nameFile, jsFile, { src: true }).pipe(dest(dirConfig));
+    newfile(nameFile, jsFile).pipe(dest(dirConfig));
+
+    setTimeout(function () {
+      return cb();
+    }, 3000);
   })
 );
 
@@ -222,169 +238,7 @@ let fixPath = function (List, basePath) {
 };
 
 task(
-  'nomin:xdash_editor:header',
-  series('createConfigurationFile', () => {
-    return (
-      src(fixPath(GlobalConfig.allFiles.xDashStudio.header))
-        .on('error', () => {
-          /* Ignore compiler errors */
-        })
-        // .pipe(
-        //     uglify().on('error', function(e) {
-        //         console.log(e);
-        //         return this.end();
-        //     })
-        // )
-        .pipe(concat(filesName.xdash_editor.header + '.min.js'))
-        .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
-    );
-  })
-);
-
-task(
-  'nomin:xdash_editor:body',
-  series('createConfigurationFile', () => {
-    return (
-      src(fixPath(GlobalConfig.allFiles.xDashStudio.body))
-        .on('error', () => {
-          /* Ignore compiler errors */
-        })
-        // .pipe(
-        //     uglify().on('error', function(e) {
-        //         console.log(e);
-        //         return this.end();
-        //     })
-        // )
-        .pipe(concat(filesName.xdash_editor.body + '.min.js'))
-        .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
-    );
-  })
-);
-
-task(
-  'nomin:xdash_editor:css',
-  series('init', () => {
-    return src(fixPath(GlobalConfig.allFiles.xDashStudio.css))
-      .pipe(cleanCSS({ compatibility: 'ie8' }))
-      .pipe(concat(filesName.xdash_editor.css + '.min.css'))
-      .pipe(replace('../fonts/', './fonts/'))
-      .pipe(replace('../img/', './img/'))
-      .pipe(replace('../icon/', './icon/'))
-      .pipe(
-        dest(
-          '../' +
-            configuration.paths.buildDirectory +
-            '/xdash_' +
-            GlobalConfig.config.xDashConfig.version.fullVersion +
-            '/assets'
-        )
-      );
-  })
-);
-
-task('nomin:xdash_editor', series('nomin:xdash_editor:header', 'nomin:xdash_editor:body', 'nomin:xdash_editor:css'));
-
-task(
-  'inject:files:prod',
-  series('nomin:xdash_editor', () => {
-    Env = argv.env ? argv.env : 'dev';
-    console.log('EV ENV :', Env);
-
-    let baseFileJs = '';
-    let baseFileCss = '';
-    let destination = '../';
-    if (Env === 'prod') {
-      destination =
-        '../' +
-        configuration.paths.buildDirectory +
-        '/xdash_' +
-        GlobalConfig.config.xDashConfig.version.fullVersion +
-        '/';
-      baseFileJs = destination;
-      baseFileCss = baseFileJs + 'assets/';
-    }
-    let js = src(fixPath(xdashEditorJsList, baseFileJs), {
-      read: false,
-    });
-
-    let css = src(fixPath(xdashEditorCssList, baseFileCss), {
-      read: false,
-      addRootSlash: true,
-    });
-
-    if (Env === 'prod') {
-      return (
-        src('../index_tmp.html')
-          .pipe(
-            inject(js, {
-              ignorePath: destination,
-              name: 'inject',
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(
-            inject(css, {
-              ignorePath: destination,
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(debug())
-          .pipe(rename('index.html'))
-          .pipe(replace('source/assets', 'assets'))
-          .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
-          // .pipe(usemin({
-          //     html: [function() {
-          //         return htmlmin({ collapseWhitespace: true });
-          //     }],
-          // }))
-          .pipe(dest(destination))
-      );
-    } else {
-      return (
-        src('../index_tmp.html')
-          .pipe(
-            inject(js, {
-              ignorePath: destination,
-              name: 'inject',
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(
-            inject(css, {
-              ignorePath: destination,
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(debug())
-          .pipe(rename('index.html'))
-          .pipe(replace('source/assets', 'assets'))
-          // .pipe(usemin({
-          //     html: [function() {
-          //         return htmlmin({ collapseWhitespace: true });
-          //     }],
-          // }))
-          .pipe(dest(destination))
-      );
-    }
-  })
-);
-
-task(
-  'nomin:xdash_runtime:header',
+  'usemin:xdash_runtime:js',
   series('createConfigurationFile', () => {
     return (
       src(fixPath(GlobalConfig.allFiles.xDashRuntime.js))
@@ -392,49 +246,58 @@ task(
           /* Ignore compiler errors */
         })
         // .pipe(
-        //     uglify().on('error', function(e) {
-        //         console.log(e);
-        //         return this.end();
-        //     })
+        //   terser().on('error', function (e) {
+        //     console.log(e);
+        //     this.emit('end');
+        //   })
         // )
         .pipe(concat(filesName.xdash_runtime.js + '.min.js'))
+        .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
         .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
+        .pipe(dest(buildDirPath))
     );
   })
 );
 
 task(
-  'nomin:xdash_runtime:body',
+  'usemin:xdash_editor:js',
   series('createConfigurationFile', () => {
     return (
-      src(fixPath(GlobalConfig.allFiles.xDashRuntime.body))
+      src(fixPath(GlobalConfig.allFiles.xDashStudio.js))
         .on('error', () => {
           /* Ignore compiler errors */
         })
         // .pipe(
-        //     uglify().on('error', function(e) {
-        //         console.log(e);
-        //         return this.end();
-        //     })
+        //   terser().on('error', function (e) {
+        //     console.log(e);
+        //     return this.end();
+        //   })
         // )
-        .pipe(concat(filesName.xdash_runtime.body + '.min.js'))
+        .pipe(concat(filesName.xdash_editor.js + '.min.js'))
+        .pipe(replace(`${filesName.workers.pyodide}dev.js`, getXdashWorkerPyodideFile()))
         .pipe(replace('source/assets/', 'assets/'))
-        .pipe(
-          dest(
-            '../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion
-          )
-        )
+        .pipe(dest(buildDirPath))
     );
   })
 );
 
+task('usemin:xdash_editor', series('usemin:xdash_editor:js'));
+
 task(
-  'nomin:xdash_runtime:css',
+  'usemin:xdash_editor:css',
+  series('init', () => {
+    return src(fixPath(GlobalConfig.allFiles.xDashStudio.css))
+      .pipe(cleanCSS({ compatibility: 'ie8' }))
+      .pipe(concat(filesName.xdash_editor.css + '.min.css'))
+      .pipe(replace('../fonts/', './fonts/'))
+      .pipe(replace('../img/', './img/'))
+      .pipe(replace('../icon/', './icon/'))
+      .pipe(dest(buildDirPath + '/assets'));
+  })
+);
+
+task(
+  'usemin:xdash_runtime:css',
   series('init', () => {
     return src(fixPath(GlobalConfig.allFiles.xDashRuntime.css))
       .pipe(cleanCSS({ compatibility: 'ie8' }))
@@ -442,286 +305,219 @@ task(
       .pipe(replace('../fonts/', './fonts/'))
       .pipe(replace('../img/', './img/'))
       .pipe(replace('../icon/', './icon/'))
-      .pipe(
-        dest(
-          '../' +
-            configuration.paths.buildDirectory +
-            '/xdash_' +
-            GlobalConfig.config.xDashConfig.version.fullVersion +
-            '/assets'
-        )
-      );
+      .pipe(dest(buildDirPath + '/assets'));
   })
 );
 
 task(
-  'nomin:xdash_runtime',
-  series('nomin:xdash_runtime:header', 'nomin:xdash_runtime:body', 'nomin:xdash_runtime:css')
+  'inject:files:pyodide_worker',
+  series('init', () => {
+    const isProd = Env === 'prod';
+    const destination = !isProd ? '../' : buildDirPath + '/';
+    const configFile = '../configs/config.' + Env + '.js';
+    const dependenciesFiles = ['../thirdparty/pyodide.js', '../thirdparty/json_parseMore.js'];
+    const workerFile = '../source/kernel/base/pyodide-worker.js';
+
+    let pipe = src([configFile, ...dependenciesFiles, workerFile])
+      .pipe(debug())
+      .pipe(sourcemaps.init())
+      .pipe(concat(getXdashWorkerPyodideFile()));
+
+    if (isProd) {
+      // pipe = pipe.pipe(
+      //   terser().on('error', function (e) {
+      //     console.log(e);
+      //     return this.end();
+      //   })
+      // );
+    }
+    pipe = pipe.pipe(sourcemaps.write('.')).pipe(dest(destination));
+
+    if (!isProd) {
+      pipe = pipe.pipe(connect.reload());
+    }
+
+    return pipe;
+  })
+);
+
+task(
+  'inject:files:prod',
+  series('usemin:xdash_editor:js', 'usemin:xdash_editor:css', () => {
+    console.log('EV ENV :', Env);
+
+    const destination = `${buildDirPath}/`;
+    const baseFileJs = destination;
+    const baseFileCss = `${baseFileJs}assets/`;
+
+    const js = src(fixPath(xdashEditorJsList, baseFileJs), { read: false });
+    const css = src(fixPath(xdashEditorCssJsList, baseFileCss), { read: false, addRootSlash: true });
+
+    const injectOptions = { ignorePath: destination, empty: true, addRootSlash: false };
+
+    return src('../index_tmp.html')
+      .pipe(inject(js, { ...injectOptions, name: 'third' }))
+      .pipe(inject(css, { ...injectOptions }))
+      .pipe(debug())
+      .pipe(rename('index.html'))
+      .pipe(replace('source/assets', 'assets'))
+      .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
+      .pipe(
+        usemin({
+          html: [() => htmlmin({ collapseWhitespace: true })],
+        })
+      )
+      .pipe(dest(destination));
+  })
 );
 
 task(
   'inject:files',
   series(ListTasksBeforeInject, () => {
-    Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
 
-    let baseFileJs = '';
-    let baseFileCss = '';
-    let destination = '../';
-    if (Env === 'prod') {
-      destination =
-        '../' +
-        configuration.paths.buildDirectory +
-        '/xdash_' +
-        GlobalConfig.config.xDashConfig.version.fullVersion +
-        '/';
-      baseFileJs = destination;
-      baseFileCss = baseFileJs + 'assets/';
-    }
-    let js = src(fixPath(xdashEditorJsList, baseFileJs), {
-      read: false,
-    });
+    const isProd = Env === 'prod';
+    const destination = isProd ? `${buildDirPath}/` : '../';
+    const baseFileJs = isProd ? destination : '';
+    const baseFileCss = isProd ? `${baseFileJs}assets/` : '';
 
-    let css = src(fixPath(xdashEditorCssList, baseFileCss), {
-      read: false,
-      addRootSlash: true,
-    });
+    const injectOptions = {
+      ignorePath: destination,
+      empty: true,
+      addRootSlash: false,
+    };
 
-    if (Env === 'prod') {
-      return (
-        src('../index_tmp.html')
-          .pipe(
-            inject(js, {
-              ignorePath: destination,
-              name: 'body-js',
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(
-            inject(css, {
-              ignorePath: destination,
-              empty: true,
-              addRootSlash: false,
-            })
-          )
-          .pipe(debug())
-          .pipe(replace('source/assets', 'assets'))
-          .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
-          .pipe(rename('index.html'))
-          // .pipe(usemin({
-          //     html: [function() {
-          //         return htmlmin({ collapseWhitespace: true });
-          //     }],
-          // }))
-          .pipe(dest(destination))
-      );
+    const js = src(fixPath(xdashEditorJsList, baseFileJs), { read: false });
+    const css = src(fixPath(xdashEditorCssJsList, baseFileCss), { read: false, addRootSlash: true });
+
+    let stream = src('../index_tmp.html')
+      .pipe(inject(js, { ...injectOptions, name: 'third' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(debug())
+      .pipe(rename('index.html'));
+
+    if (isProd) {
+      stream = stream
+        .pipe(replace('source/assets', 'assets'))
+        .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
+        .pipe(
+          usemin({
+            html: [() => htmlmin({ collapseWhitespace: true })],
+          })
+        )
+        .pipe(dest(destination));
     } else {
-      return src('../index_tmp.html')
-        .pipe(
-          inject(js, {
-            ignorePath: destination,
-            name: 'body-js',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index.html'))
-        .pipe(dest(destination))
-        .pipe(connect.reload());
+      stream = stream.pipe(dest(destination)).pipe(connect.reload());
     }
+
+    return stream;
   })
 );
 
 task(
   'inject:files:view:dev',
   series('createConfigurationFile', () => {
-    Env = argv.env ? argv.env : 'dev';
     console.log('EV ENV :', Env);
 
-    let baseFileJs = '';
-    let baseFileCss = '';
-    let destination = '../';
-    if (Env === 'prod') {
-      destination =
-        '../' +
-        configuration.paths.buildDirectory +
-        '/xdash_' +
-        GlobalConfig.config.xDashConfig.version.fullVersion +
-        '/';
-      baseFileJs = destination;
-      baseFileCss = baseFileJs + 'assets/';
-    }
-    let js = src(fixPath(xdashRuntimeJsList, baseFileJs), {
-      read: false,
-    });
+    const isProd = Env === 'prod';
+    const destination = isProd ? `${buildDirPath}/` : '../';
+    const baseFileJs = isProd ? destination : '';
+    const baseFileCss = isProd ? `${baseFileJs}assets/` : '';
 
-    let css = src(fixPath(xdashRuntimeCssList, baseFileCss), {
-      read: false,
-      addRootSlash: true,
-    });
+    const injectOptions = {
+      ignorePath: destination,
+      empty: true,
+      addRootSlash: false,
+      selfClosingTag: true,
+    };
 
-    if (Env === 'prod') {
-      return src('../xprjson-view_tmp.html')
-        .pipe(
-          inject(js, {
-            ignorePath: destination,
-            name: 'body-js',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-            selfClosingTag: true,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index-view-' + GlobalConfig.config.xDashConfig.version.fullVersion + '.html'))
-        .pipe(dest(destination));
-    } else {
-      return src('../xprjson-view_tmp.html')
-        .pipe(
-          inject(js, {
-            ignorePath: destination,
-            name: 'body-js',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-            selfClosingTag: true,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index-view.html'))
-        .pipe(dest(destination))
-        .pipe(connect.reload());
+    const injectFiles = (fileList, basePath, options = {}) =>
+      src(fixPath(fileList, basePath), {
+        read: false,
+        ...options,
+      });
+
+    const js = injectFiles(xdashRuntimeJsList, baseFileJs);
+    const css = injectFiles(xdashRuntimeCssJsList, baseFileCss, { addRootSlash: true });
+
+    const fileName = isProd ? `index-view-${VERSION}.html` : 'index-view.html';
+
+    let fileStream = src('../xprjson-view_tmp.html')
+      .pipe(inject(js, { ...injectOptions, name: 'js' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(debug())
+      .pipe(rename(fileName))
+      .pipe(dest(destination));
+
+    // Apply live reload for development environment
+    if (!isProd) {
+      fileStream = fileStream.pipe(connect.reload());
     }
+
+    return fileStream;
   })
 );
 
 task(
   'inject:files:view',
-  series('nomin:xdash_runtime', () => {
-    Env = argv.env ? argv.env : 'dev';
+  series('usemin:xdash_runtime:js', 'usemin:xdash_runtime:css', () => {
     console.log('EV ENV :', Env);
-    let baseFileJs = '';
-    let baseFileCss = '';
-    let destination = '../';
-    if (Env === 'prod') {
-      destination =
-        '../' +
-        configuration.paths.buildDirectory +
-        '/xdash_' +
-        GlobalConfig.config.xDashConfig.version.fullVersion +
-        '/';
-      baseFileJs = destination;
-      baseFileCss = baseFileJs + 'assets/';
-    }
-    let js = src(fixPath(xdashRuntimeJsList, baseFileJs), {
-      read: false,
-    });
 
-    let css = src(fixPath(xdashRuntimeCssList, baseFileCss), {
-      read: false,
-      addRootSlash: true,
-    });
+    const isProd = Env === 'prod';
+    const destination = isProd ? `${buildDirPath}/` : '../';
+    const baseFileJs = isProd ? destination : '';
+    const baseFileCss = isProd ? `${baseFileJs}assets/` : '';
 
-    if (Env === 'prod') {
-      return src('../xprjson-view_tmp.html')
-        .pipe(
-          inject(js, {
-            ignorePath: destination,
-            name: 'body-js',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-            selfClosingTag: true,
-          })
-        )
-        .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
-        .pipe(debug())
-        .pipe(rename('index-view-' + GlobalConfig.config.xDashConfig.version.fullVersion + '.html'))
-        .pipe(dest(destination));
-    } else {
-      return src('../xprjson-view_tmp.html')
-        .pipe(
-          inject(js, {
-            ignorePath: destination,
-            name: 'body-js',
-            empty: true,
-            addRootSlash: false,
-          })
-        )
-        .pipe(
-          inject(css, {
-            ignorePath: destination,
-            empty: true,
-            addRootSlash: false,
-            selfClosingTag: true,
-          })
-        )
-        .pipe(debug())
-        .pipe(rename('index-view.html'))
-        .pipe(dest(destination));
-    }
+    const injectOptions = {
+      ignorePath: destination,
+      empty: true,
+      addRootSlash: false,
+      selfClosingTag: true,
+    };
+
+    const injectFiles = (fileList, basePath, options = {}) =>
+      src(fixPath(fileList, basePath), {
+        read: false,
+        ...options,
+      });
+
+    const js = injectFiles(xdashRuntimeJsList, baseFileJs);
+    const css = injectFiles(xdashRuntimeCssJsList, baseFileCss, { addRootSlash: true });
+
+    const fileName = isProd ? `index-view-${VERSION}.html` : 'index-view.html';
+
+    return src('../xprjson-view_tmp.html')
+      .pipe(inject(js, { ...injectOptions, name: 'js' }))
+      .pipe(inject(css, injectOptions))
+      .pipe(replace('source/starter-browser-compatibility.js', 'starter-browser-compatibility.js'))
+      .pipe(debug())
+      .pipe(rename(fileName))
+      .pipe(dest(destination));
   })
 );
-
-/***********************************************************/
 
 task(
   'images',
   series('clear:cache', 'clear:build', () => {
-    return (
-      src([
-        '../source/assets/**/*.png',
-        '../source/assets/**/*.gif',
-        '../source/assets/**/*.jpg',
-        '../source/assets/**/*.svg',
-        '../source/assets/**/*.woff2',
-        '../source/assets/**/*.woff',
-        '../source/assets/**/*.ttf',
-        '../source/assets/**/*.ico',
-        '../source/assets/**/*.eot',
-      ])
-        // .pipe(imagemin({
-        //     progressive: false,
-        //     svgoPlugins: [{ removeViewBox: true }],
-        //     use: [pngquant()]
-        // }))
-        .pipe(
-          dest(
-            '../' +
-              configuration.paths.buildDirectory +
-              '/xdash_' +
-              GlobalConfig.config.xDashConfig.version.fullVersion +
-              '/assets'
-          )
-        )
-    );
+    return src([
+      '../source/assets/**/*.png',
+      '../source/assets/**/*.gif',
+      '../source/assets/**/*.jpg',
+      '../source/assets/**/*.svg',
+      '../source/assets/**/*.woff2',
+      '../source/assets/**/*.woff',
+      '../source/assets/**/*.ttf',
+      '../source/assets/**/*.ico',
+      '../source/assets/**/*.eot',
+    ])
+      .pipe(
+        imagemin({
+          progressive: false,
+          svgoPlugins: [{ removeViewBox: true }],
+          use: [pngquant()],
+        })
+      )
+      .pipe(dest(buildDirPath + '/assets'));
   })
 );
 
@@ -730,13 +526,7 @@ task('copy', () => {
   GlobalConfig = require('./index').config(Env);
   DocDirectory = '../doc';
   if (Env === 'prod') {
-    DocDirectory =
-      '../' +
-      configuration.paths.buildDirectory +
-      '/xdash_' +
-      GlobalConfig.config.xDashConfig.version.fullVersion +
-      '/' +
-      configuration.paths.docName;
+    DocDirectory = buildDirPath + '/' + configuration.paths.docName;
   }
   console.log('DocDirectory', DocDirectory);
   console.log('EV ENV :', Env);
@@ -746,11 +536,13 @@ task('copy', () => {
       '../../documentation/docs/node_modules/prismjs/components/**/*.*',
       '!../../documentation/docs/node_modules/**',
     ])
-      // .pipe(imagemin({
+      // .pipe(
+      //   imagemin({
       //     progressive: false,
       //     svgoPlugins: [{ removeViewBox: true }],
-      //     use: [pngquant()]
-      // }))
+      //     use: [pngquant()],
+      //   })
+      // )
       .pipe(dest(DocDirectory))
   );
 });
@@ -768,23 +560,19 @@ task('copymk', () => {
   GlobalConfig = require('./index').config(Env);
   DocDirectory = '../doc';
   if (Env === 'prod') {
-    DocDirectory =
-      '../' +
-      configuration.paths.buildDirectory +
-      '/xdash_' +
-      GlobalConfig.config.xDashConfig.version.fullVersion +
-      '/' +
-      configuration.paths.docName;
+    DocDirectory = buildDirPath + '/' + configuration.paths.docName;
   }
   console.log('DocDirectory', DocDirectory);
   console.log('EV ENV :', Env);
   return (
     src(['../../documentation/site/**/*.*'])
-      // .pipe(imagemin({
+      // .pipe(
+      //   imagemin({
       //     progressive: false,
       //     svgoPlugins: [{ removeViewBox: true }],
-      //     use: [pngquant()]
-      // }))
+      //     use: [pngquant()],
+      //   })
+      // )
       .pipe(dest(DocDirectory))
   );
 });
@@ -857,9 +645,7 @@ task('docsify', series('copy', 'inject:after'));
 task('docs', series('init', 'docsify'));
 
 task('copy-starter', function () {
-  return src(['../source/starter-browser-compatibility.js']).pipe(
-    dest('../' + configuration.paths.buildDirectory + '/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion)
-  );
+  return src(['../source/starter-browser-compatibility.js']).pipe(dest(buildDirPath));
 });
 
 task(
@@ -873,13 +659,12 @@ task(
     'template',
     'copy-starter',
     //'createConfigurationFile',
-    //'nomin:xdash_editor:header',
-    //'nomin:xdash_editor:body',
-    //'nomin:xdash_editor:css',
+    //'usemin:xdash_editor:js',
+    //'usemin:xdash_editor:css',
     'inject:files:prod',
-    //'nomin:_runtime:header',
-    //'nomin:_runtime:body',
-    //'nomin:_runtime:css',
+    'inject:files:pyodide_worker',
+    //'usemin:_runtime:js',
+    //'usemin:_runtime:css',
     'inject:files:view',
     'images' //,
     //'test:lint'
@@ -891,7 +676,19 @@ task(
   series('clear:cache', 'clear:build', 'sass', 'init', 'template', 'copy-starter', 'inject:files:view', 'images')
 );
 
-task('start', series('clear:cache', 'sass', 'init', 'template', 'inject:files', 'inject:files:view:dev', 'mkdocs'));
+task(
+  'start',
+  series(
+    'clear:cache',
+    'sass',
+    'init',
+    'template',
+    'inject:files',
+    'inject:files:pyodide_worker',
+    'inject:files:view:dev',
+    'mkdocs'
+  )
+);
 
 // Synchronization during development only
 /*--------------------------------------------*/
@@ -899,7 +696,7 @@ task('start', series('clear:cache', 'sass', 'init', 'template', 'inject:files', 
 function browserSync(done) {
   let dest = '../';
   if (Env === 'prod') {
-    dest = '../build/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion + '/';
+    dest = '../build' + buildFilePath + '/';
   }
   browsersync.init({
     server: {
@@ -935,10 +732,10 @@ task('watch_', parallel(watchSassFiles, watchFiles, browserSync));
 /*--------------------------------------------*/
 task(
   'serve',
-  series('clear:cache', 'sass', 'init', 'inject:files', 'watch_', (cb) => {
+  series('clear:cache', 'sass', 'init', 'inject:files:pyodide_worker', 'inject:files', 'watch_', (cb) => {
     let src = '../';
     if (Env === 'prod') {
-      src = '../build/xdash_' + GlobalConfig.config.xDashConfig.version.fullVersion + '/';
+      src = '../build' + buildFilePath + '/';
     }
     connect.server({
       root: src,

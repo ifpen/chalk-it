@@ -6,7 +6,7 @@
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Tristan BARTEMENT, Guillaume CORBELIN  │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import * as echarts from 'echarts';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
@@ -190,7 +190,7 @@ function echartsWidgetsPluginClass() {
     widgetsDefinitionList: {
       echartsGeneric: {
         factory: 'genericEchartsWidget',
-        title: 'Echarts generic',
+        title: 'Echarts JavaScript generic',
         icn: 'echarts-generic-javascript',
         help: 'wdg/wdg-plots/#echarts',
       },

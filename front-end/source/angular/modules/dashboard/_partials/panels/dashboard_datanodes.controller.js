@@ -6,7 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ameur HAMDOUNI              │ \\
 // └────────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import {
   PREVIEW_JSON_FORMAT,

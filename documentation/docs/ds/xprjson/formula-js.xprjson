@@ -1,239 +1,238 @@
 {
-	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 22:51:50 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "formula-js",
-		"description": "JavaScript formula simple example",
-		"groupName": "JavaScript",
-		"tags": [
-			{
-				"text": "DataNodes"
-			},
-			{
-				"text": "JavaScript"
-			},
-			{
-				"text": "Formula"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"datanodes": [
-			{
-				"name": "input",
-				"type": "JSON_var_plugin",
-				"settings": {
-					"name": "input",
-					"json_var": "{\"length\":30,\"width\":65}"
-				}
-			},
-			{
-				"name": "multiply",
-				"type": "JSON_formula_plugin",
-				"settings": {
-					"name": "multiply",
-					"json_var_formula": "return datasources.input.length * datasources.input.width;"
-				}
-			}
-		],
-		"reIndexMap": [
-			0,
-			1
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"libraries": {
-		"pyodideStandard": [],
-		"pyodideMicropip": []
-	},
-	"scaling": {
-		"widthPx": 1256,
-		"heightPx": 575,
-		"scrollWidthPx": 1256,
-		"scrollHeightPx": 575,
-		"widthVw": 84.29530201342281,
-		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.29530201342281,
-		"scrollHeightVh": 79.6398891966759,
-		"scalingMethod": "scaleTwSp",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {},
-		"backgroundColor": "#ffffff"
-	},
-	"dashboard": {
-		"flatUiHorizontalSlider0": {
-			"layout": {
-				"top": "1.66469vh",
-				"left": "0.806654vw",
-				"height": "6.83907vh",
-				"width": "27.777vw",
-				"minHeight": "24px",
-				"minWidth": "200px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "flatUiHorizontalSlider0",
-				"instanceId": "flatUiHorizontalSlider0",
-				"modelJsonId": "flatUiHorizontalSlider",
-				"widgetTypeName": "Horizontal slider(flatUiHorizontalSlider0)"
-			},
-			"modelParameters": {
-				"label": "length",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"min": 0,
-				"max": 100,
-				"step": 1,
-				"displayValue": true,
-				"valueFontSize": 0.5,
-				"labelWidthProportion": "20%",
-				"sliderWidthProportion": "60%",
-				"valueWidthProportion": "20%",
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Helvetica Neue",
-				"valueColor": "#34495e",
-				"valueFontFamily": "Helvetica Neue",
-				"sliderSegmentColor": "#ebedef",
-				"sliderRangeColor": "#447bdc",
-				"sliderHandleDefaultColor": "#2154ab",
-				"sliderHandleHoverColor": "#a9c3ef",
-				"sliderHandleActiveColor": "#a9c3ef",
-				"valueBorderColor": "#447bdc"
-			},
-			"modelHiddenParams": {
-				"value": 0
-			}
-		},
-		"flatUiHorizontalSliderZ": {
-			"layout": {
-				"top": "10.6938vh",
-				"left": "0.806654vw",
-				"height": "6.83907vh",
-				"width": "27.777vw",
-				"minHeight": "24px",
-				"minWidth": "200px",
-				"z-index": "2"
-			},
-			"container": {
-				"id": "flatUiHorizontalSliderZ",
-				"instanceId": "flatUiHorizontalSliderZ",
-				"modelJsonId": "flatUiHorizontalSlider",
-				"widgetTypeName": "Horizontal slider(flatUiHorizontalSliderZ)"
-			},
-			"modelParameters": {
-				"label": "width",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"min": 0,
-				"max": 100,
-				"step": 1,
-				"displayValue": true,
-				"valueFontSize": 0.5,
-				"labelWidthProportion": "20%",
-				"sliderWidthProportion": "60%",
-				"valueWidthProportion": "20%",
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Helvetica Neue",
-				"valueColor": "#34495e",
-				"valueFontFamily": "Helvetica Neue",
-				"sliderSegmentColor": "#ebedef",
-				"sliderRangeColor": "#447bdc",
-				"sliderHandleDefaultColor": "#2154ab",
-				"sliderHandleHoverColor": "#a9c3ef",
-				"sliderHandleActiveColor": "#a9c3ef",
-				"valueBorderColor": "#447bdc"
-			},
-			"modelHiddenParams": {
-				"value": 0
-			}
-		},
-		"flatUiValueDisplayn": {
-			"layout": {
-				"top": "22.5067vh",
-				"left": "6.02539vw",
-				"height": "6.86396vh",
-				"width": "21.9807vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "3"
-			},
-			"container": {
-				"id": "flatUiValueDisplayn",
-				"instanceId": "flatUiValueDisplayn",
-				"modelJsonId": "flatUiValueDisplay",
-				"widgetTypeName": "Value Display(flatUiValueDisplayn)"
-			},
-			"modelParameters": {
-				"label": "multiply",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"valueFontSize": 0.5,
-				"valueColor": "#34495e",
-				"valueTextAlign": "center",
-				"displayBorder": true,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Helvetica Neue",
-				"valueFontFamily": "Helvetica Neue",
-				"borderColor": "#447bdc"
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		}
-	},
-	"connections": {
-		"flatUiHorizontalSlider0": {
-			"value": {
-				"name": "value",
-				"dataFields": [
-					"length"
-				],
-				"dataNode": "input",
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiHorizontalSliderZ": {
-			"value": {
-				"name": "value",
-				"dataFields": [
-					"width"
-				],
-				"dataNode": "input",
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValueDisplayn": {
-			"value": {
-				"name": "value",
-				"dataFields": [],
-				"dataNode": "multiply",
-				"dataNodeIndex": 1
-			}
-		}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"pages": {
-		"pageNames": [],
-		"defaultPage": {}
-	},
-	"checkExportOptions": true,
-	"navBarNotification": false
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-03T12:26:12.355Z",
+    "name": "formula-js",
+    "description": "JavaScript formula simple example",
+    "groupName": "JavaScript",
+    "tags": [
+      {
+        "text": "DataNodes"
+      },
+      {
+        "text": "JavaScript"
+      },
+      {
+        "text": "Formula"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "input",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "input",
+          "json_var": "{\"length\":30,\"width\":65}"
+        }
+      },
+      {
+        "name": "multiply",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "multiply",
+          "json_var_formula": "return dataNodes.input.length * dataNodes.input.width;"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwSp",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "flatUiHorizontalSliderA": {
+      "layout": {
+        "top": "4.26667vh",
+        "left": "4.45026vw",
+        "height": "5.06667vh",
+        "width": "24.0183vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "flatUiHorizontalSliderA",
+        "modelJsonId": "flatUiHorizontalSlider"
+      },
+      "modelParameters": {
+        "label": "length",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "layout": {
+        "top": "14.4vh",
+        "left": "4.45026vw",
+        "height": "5.06667vh",
+        "width": "24.0183vw",
+        "minHeight": "24px",
+        "minWidth": "200px",
+        "z-index": "2"
+      },
+      "container": {
+        "instanceId": "flatUiHorizontalSliderB",
+        "modelJsonId": "flatUiHorizontalSlider"
+      },
+      "modelParameters": {
+        "label": "width",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "rangeActuator": false,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "displayValue": true,
+        "validationOnFocusOut": true,
+        "valueFontSize": 0.5,
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueBorderColor": "var(--widget-border-color)",
+        "labelWidthProportion": "20%",
+        "sliderWidthProportion": "60%",
+        "valueWidthProportion": "20%",
+        "sliderRangeColor": "var(--widget-range-color)",
+        "sliderSegmentColor": "var(--widget-segment-color)",
+        "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+        "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+        "sliderHandleActiveColor": "var(--widget-handle-active-color)",
+        "valueColor": "var(--widget-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5
+      },
+      "modelHiddenParams": {
+        "value": 0
+      }
+    },
+    "kpiCardA": {
+      "layout": {
+        "top": "24.5333vh",
+        "left": "4.45026vw",
+        "height": "16vh",
+        "width": "17.9974vw",
+        "minHeight": "32px",
+        "minWidth": "64px",
+        "z-index": "3"
+      },
+      "container": {
+        "instanceId": "kpiCardA",
+        "modelJsonId": "kpiCard"
+      },
+      "modelParameters": {
+        "label": "multiply",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "valuePosition": "bottom",
+        "valueFontSize": 2,
+        "valueColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "decimalDigits": 3,
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "unitColor": "var(--widget-label-color)",
+        "borderShadow": false
+      },
+      "modelHiddenParams": {
+        "value": "--"
+      }
+    }
+  },
+  "connections": {
+    "flatUiHorizontalSliderA": {
+      "value": {
+        "name": "value",
+        "dataNode": "input",
+        "dataFields": [
+          "length"
+        ]
+      }
+    },
+    "flatUiHorizontalSliderB": {
+      "value": {
+        "name": "value",
+        "dataNode": "input",
+        "dataFields": [
+          "width"
+        ]
+      }
+    },
+    "kpiCardA": {
+      "value": {
+        "name": "value",
+        "dataNode": "multiply",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

@@ -6,7 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Ghiles HIDEUR, Guillaume CORBELIN, Tristan BARTEMENT │ \\
 // └────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import marked from 'marked';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
@@ -66,7 +66,7 @@ function annotationMarkdownWidgetsPluginClass() {
 
     this.render = function () {
       const widgetHtml = document.createElement('div');
-      const text = modelsHiddenParams[idInstance].text;
+      const text = modelsHiddenParams[idInstance].text || '';
 
       const divContent =
         '<div id="annotationMarkdownDiv' +

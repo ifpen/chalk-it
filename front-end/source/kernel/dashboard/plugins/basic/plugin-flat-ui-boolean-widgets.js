@@ -7,7 +7,7 @@
 // │ Original authors(s): Mongi BEN GAID, Abir El FEKI, Tristan BARTEMENT, │ \\
 // │                      Guillaume CORBELIN                               │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
@@ -126,7 +126,7 @@ function flatUiBooleanWidgetsPluginClass() {
       // Dynamically set the direction property to 'ltr' or 'rtl'
       document.styleSheets[0].addRule('#checkbox-widget-html' + idWidget, 'direction: ' + widgetDirection);
 
-      if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+      if (modelsParameters[idInstance].displayLabel) {
         //ABK
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
@@ -236,7 +236,9 @@ function flatUiBooleanWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };
@@ -351,7 +353,7 @@ function flatUiBooleanWidgetsPluginClass() {
       divContent += '</div>';
       divContent += '</label>';
       divContent += '</div>';
-      if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+      if (modelsParameters[idInstance].displayLabel) {
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
 
@@ -435,7 +437,9 @@ function flatUiBooleanWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };

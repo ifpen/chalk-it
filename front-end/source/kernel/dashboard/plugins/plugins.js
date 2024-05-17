@@ -12,6 +12,7 @@ import './basic/plugin-kpi-advanced-widgets';
 import './basic/plugin-kpi-widgets';
 import './basic/plugin-load-file-widgets';
 import './basic/plugin-save-to-file-widgets';
+import './basic/plugin-spinner-status-widgets';
 
 import './gauges/plugin-led-light';
 
@@ -24,8 +25,8 @@ import './geo-time/plugin-map-widgets';
 import './geo-time/plugin-timepicker-widgets';
 
 import './plots/plugin-echarts-widgets';
-import './plots/plugin-plotly-widgets';
-import './plots/plugin-pyodide-widgets';
+import './plots/plugin-plotly-widgets'
+import './plots/plugin-python-widgets';
 
 // TODO tobe removed
 // import './plots/plugin-vega-widgets';

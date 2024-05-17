@@ -17,7 +17,7 @@ import '@geoman-io/leaflet-geoman-free';
 import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 
-import _ from 'underscore';
+import _ from 'lodash';
 import { xDashConfig } from 'config.js';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
@@ -90,7 +90,7 @@ modelsParameters.openStreetMaps = {
   drawingFeaturesOptions: {
     point: true,
     line: true,
-    polygone: true,
+    polygon: true,
     rectangle: true,
     modal: false,
   },
@@ -761,13 +761,20 @@ function mapWidgetsPluginClass() {
       drawRectangle: true,
     };
 
+    // backwards compatibility
+    const instanceOptions = modelsParameters[idInstance].drawingFeaturesOptions;
+    if (instanceOptions.polygone !== undefined) {
+      instanceOptions.polygon = instanceOptions.polygone;
+      delete instanceOptions.polygone;
+    }
+
     if (drawingFeature) {
       drawControlConfig = {
         drawCircle: false,
         drawCircleMarker: false,
         drawMarker: modelsParameters[idInstance].drawingFeaturesOptions.point,
         drawPolyline: modelsParameters[idInstance].drawingFeaturesOptions.line,
-        drawPolygon: modelsParameters[idInstance].drawingFeaturesOptions.polygone,
+        drawPolygon: modelsParameters[idInstance].drawingFeaturesOptions.polygon,
         drawRectangle: modelsParameters[idInstance].drawingFeaturesOptions.rectangle,
       };
     }
@@ -1136,10 +1143,7 @@ function mapWidgetsPluginClass() {
         },
         removeValueChangedHandler: function (updateDataFromWidget) {},
         setCaption: function (caption) {},
-        clearCaption: function () {
-          modelsParameters[idInstance].label = '';
-          self.render();
-        },
+        clearCaption: function () {},
       };
     }
 
@@ -1160,10 +1164,7 @@ function mapWidgetsPluginClass() {
         },
         removeValueChangedHandler: function (updateDataFromWidget) {},
         setCaption: function (caption) {},
-        clearCaption: function () {
-          modelsParameters[idInstance].label = '';
-          self.render();
-        },
+        clearCaption: function () {},
       };
     }
 
@@ -1494,7 +1495,7 @@ function mapWidgetsPluginClass() {
 
       var ts = 'MapboxStreets';
       if (!_.isUndefined(modelsParameters[idInstance].tileServer)) {
-        if (_.contains(_.keys(tileServers), modelsParameters[idInstance].tileServer)) {
+        if (_.includes(_.keys(tileServers), modelsParameters[idInstance].tileServer)) {
           ts = modelsParameters[idInstance].tileServer;
         } else {
           /* TODO : good error message at edit mode to send */
@@ -1884,8 +1885,8 @@ function mapWidgetsPluginClass() {
         }
       }
 
-      var maxValue = _.max(_.pluck(choroplethData.data, featureTitle));
-      var minValue = _.min(_.pluck(choroplethData.data, featureTitle));
+      var maxValue = _.max(_.map(choroplethData.data, featureTitle));
+      var minValue = _.min(_.map(choroplethData.data, featureTitle));
       var weight = 4;
       var opacity = 0.7;
       let colorScale;
@@ -2100,8 +2101,8 @@ function mapWidgetsPluginClass() {
         opacity: 1,
       };
 
-      var maxValue = _.max(_.pluck(lineHeatMap.data, featureTitle));
-      var minValue = _.min(_.pluck(lineHeatMap.data, featureTitle));
+      var maxValue = _.max(_.map(lineHeatMap.data, featureTitle));
+      var minValue = _.min(_.map(lineHeatMap.data, featureTitle));
 
       try {
         if (!_.isUndefined(lineHeatMap.config.max)) maxValue = lineHeatMap.config.max;
@@ -2177,12 +2178,17 @@ function mapWidgetsPluginClass() {
       const featureTitle = imgStruct.title;
       const addAs = imgStruct.addAs;
 
+      //add options :
+      const options = imgStruct.options;
+
       if (!_.isEmpty(self.mapLayers.imageOverlay.imageLayers[layerIndex - 1])) {
         self.ctrl.removeLayer(self.mapLayers.imageOverlay.imageLayers[layerIndex - 1]);
         self.map.removeLayer(self.mapLayers.imageOverlay.imageLayers[layerIndex - 1]);
       }
 
-      self.mapLayers.imageOverlay.imageLayers[layerIndex - 1] = L.imageOverlay(imageUrl, imageBounds).addTo(self.map);
+      self.mapLayers.imageOverlay.imageLayers[layerIndex - 1] = L.imageOverlay(imageUrl, imageBounds, options).addTo(
+        self.map
+      );
 
       if (addAs == 'overlay')
         self.ctrl.addOverlay(self.mapLayers.imageOverlay.imageLayers[layerIndex - 1], featureTitle);
@@ -3286,7 +3292,7 @@ function mapWidgetsPluginClass() {
     widgetsDefinitionList: {
       openStreetMaps: {
         factory: 'openStreetMapsWidget',
-        title: 'Leaflet maps',
+        title: 'Leaflet JSON maps',
         icn: 'map',
         help: 'wdg/wdg-geo-time/#leaflet-maps',
       },

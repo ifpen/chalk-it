@@ -6,7 +6,7 @@
 // ├───────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR, Tristan BARTEMENT, Guillaume CORBELIN │ \\
 // └───────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
@@ -271,10 +271,7 @@ function dateRangePickerWidgetsPluginClass() {
       },
       removeValueChangedHandler: function (updateDataFromWidget) {},
       setCaption: function (caption, bCaptionManuallyChanged) {},
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      clearCaption: function () {},
     };
 
     this.endDateValue = {
@@ -295,10 +292,7 @@ function dateRangePickerWidgetsPluginClass() {
       },
       removeValueChangedHandler: function (updateDataFromWidget) {},
       setCaption: function (caption, bCaptionManuallyChanged) {},
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      clearCaption: function () {},
     };
     self.render();
   };

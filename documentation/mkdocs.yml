@@ -1,46 +1,53 @@
 site_name: Chalk'it Documentation
 nav:
-    - Welcome: index.md
-    - Quickstart: quick-start/quickstart.md
-    - Basics: basics.md
-    - DataNodes:
-        - Introduction: ds/ds.md
-        - Basics: ./ds/ds-basics.md
-        - Execution engine: ds/ds-execution-engine.md
-        - Reference: ds/ds-reference.md
-    - Widgets:
-        - Introduction: wdg/wdg.md
-        - Common concepts: wdg/wdg-common-concept.md
-        - Basic inputs: wdg/wdg-basic-inputs.md
-        - Basic displays: wdg/wdg-basic-displays.md
-        - Plots: wdg/wdg-plots.md
-        - Geo & Time: wdg/wdg-geo-time.md
-        - Annotation & Video: wdg/wdg-annotation-video.md
-        - Additions:
-            - Selection: wdg/selection/plot-selection.md
-            - Themes: wdg/plot-themes.md
-    - Export: export/export.md
-    - Python:
-        - Introduction: py/py-index.md
-        - Pyodide: py/py-pyodide.md
-        - Local prototyping with Flask: py/py-proto-flask.md
-    - Recipes & interfaces:
-        - Recipes: recipes.md
-        - xDashApi: xdashapi.md
-theme: 
+  - Welcome: index.md
+  - Quickstart: quick-start/quickstart.md
+  - Basics: basics.md
+  - DataNodes:
+      - Introduction: ds/ds.md
+      - Basics: ./ds/ds-basics.md
+      - Execution engine: ds/ds-execution-engine.md
+      - Reference: ds/ds-reference.md
+  - Widgets:
+      - Introduction: wdg/wdg.md
+      - Common concepts: wdg/wdg-common-concept.md
+      - Basic inputs: wdg/wdg-basic-inputs.md
+      - Basic displays: wdg/wdg-basic-displays.md
+      - Plots: wdg/wdg-plots.md
+      - Geo & Time: wdg/wdg-geo-time.md
+      - Annotation & Video: wdg/wdg-annotation-video.md
+      - Additions:
+          - Selection: wdg/selection/plot-selection.md
+          - Themes: wdg/plot-themes.md
+  - Python support:
+      - Introduction: py/py-index.md
+      - Local runner: py/py-default.md
+      - Pyodide: py/py-pyodide.md
+      - Local prototyping with Flask: py/py-proto-flask.md         
+  - Chalk'it APIs: chalkitapi.md
+  - Export: export/export.md  
+  - Recipes & interfaces:
+      - Recipes: recipes.md
+      
+theme:
   name: material
   logo: media/chalk-it-icon.ico
   font: false
 use_directory_urls: true
 markdown_extensions:
-    - toc:
-        permalink: true
-    - pymdownx.emoji:
-        emoji_index: !!python/name:materialx.emoji.twemoji
-        emoji_generator: !!python/name:materialx.emoji.to_svg   
-    - pymdownx.highlight
-    - pymdownx.superfences        
+  - toc:
+      permalink: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.superfences
 plugins:
-    - search
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: ["../back_end/middleware/src"]
 extra_javascript:
-    - mkdocs-open-xprjson.js
+  - mkdocs-open-xprjson.js

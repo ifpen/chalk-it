@@ -1,20 +1,36 @@
+# Copyright 2023-2024 IFP Energies nouvelles
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+
 import json
 import pickle
+from collections.abc import Callable
 from io import BytesIO
-from typing import Callable, Optional
+from typing import Any, Optional
 
-from xdash_python_api import PICKLE_MIME
-from xdash_python_api.outputs import XDashApi, bytes_to_b64, capture
+from chalkit_python_api import PICKLE_MIME
+from chalkit_python_api.outputs import ChalkitApi, capture
+from chalkit_python_api.utils import bytes_to_b64
 
 
 def test_base64_to_bytes_should_mirror_bytes_to_b64():
-    assert XDashApi.base64_to_bytes(bytes_to_b64(b"deadbeef")) == b"deadbeef"
+    assert ChalkitApi.base64_to_bytes(bytes_to_b64(b"deadbeef")) == b"deadbeef"
 
 
-def do_capture(function: Callable[[dict[str, any], XDashApi], any], data: Optional[dict[str, any]] = None, debug=False):
+def do_capture(
+    function: Callable[[dict[str, Any], ChalkitApi], Any], data: Optional[dict[str, Any]] = None, debug=False
+):
     @capture(debug)
-    def script(data_nodes, xdash):
-        return function(data_nodes, xdash)
+    def script(data_nodes, chalkit):
+        return function(data_nodes, chalkit)
 
     result_json = script(data or {})
     return json.loads(result_json)
@@ -66,17 +82,17 @@ def test_capture_should_not_contain_stderr_when_not_debugging():
 
 
 def test_capture_should_contain_debug_output_when_debugging():
-    def script(_, xdash):
-        xdash.debug("msg")
-        xdash.debug(42)
+    def script(_, chalkit):
+        chalkit.debug("msg")
+        chalkit.debug(42)
 
     result = do_capture(script, debug=True)
     assert result["debug"] == ["msg", "42"]
 
 
 def test_capture_should_not_contain_debug_output_when_not_debugging():
-    def script(_, xdash):
-        xdash.debug("msg")
+    def script(_, chalkit):
+        chalkit.debug("msg")
 
     result = do_capture(script, debug=False)
     assert "debug" not in result
@@ -131,7 +147,7 @@ def test_capture_should_use_proxy_to_unpickle_selectively():
     assert result["result"] == [42, 43, trap_a, trap_b]
 
 
-### Test default conversions
+# ## Test default conversions
 
 
 def test_returned_images_default_to_png():
@@ -152,8 +168,8 @@ def test_any_data_can_be_forcibly_pickled():
         "isBinary": True,
     }
 
-    def script(_, xdash):
-        return xdash.as_python(42)
+    def script(_, chalkit):
+        return chalkit.as_python(42)
 
     result = do_capture(script)["result"]
     assert result == pickled_42
@@ -238,10 +254,10 @@ def test_returned_pandas_serie_should_default_to_json():
 
 
 def test_as_data_should_save_numpy_arrays():
-    def script(_, xdash):
+    def script(_, chalkit):
         import numpy as np
 
-        return xdash.as_data(np.array([1, 2, 3]))
+        return chalkit.as_data(np.array([1, 2, 3]))
 
     result = do_capture(script)["result"]
     assert result["isBinary"] and result["type"] == "application/octet-stream" and "content" in result
@@ -258,18 +274,18 @@ def test_returned_pandas_dataframe_should_default_to_json():
 
 
 def test_pandas_dataframes_should_debug_as_html():
-    def script(_, xdash):
+    def script(_, chalkit):
         import pandas as pd
 
-        xdash.debug(pd.DataFrame({"A": [1, 2, 3]}))
+        chalkit.debug(pd.DataFrame({"A": [1, 2, 3]}))
 
     result = do_capture(script, debug=True)["debug"][0]
     assert not result["isBinary"] and result["type"] == "text/html"
 
 
 def test_as_data_should_pass_mime_and_name_along():
-    def script(_, xdash):
-        return xdash.as_data(b'aaa', mime_type="application/magic", name="file.file")
+    def script(_, chalkit):
+        return chalkit.as_data(b'aaa', mime_type="application/magic", name="file.file")
 
     result = do_capture(script)["result"]
     assert (
@@ -281,45 +297,130 @@ def test_as_data_should_pass_mime_and_name_along():
 
 
 def test_single_output_return_the_value():
-    def script(_, xdash):
-        xdash.output(1)
+    def script(_, chalkit):
+        chalkit.output(1)
 
     result = do_capture(script)["result"]
     assert result == 1
 
 
 def test_multiple_outputs_return_an_array():
-    def script(_, xdash):
-        xdash.output(1)
-        xdash.output("2")
-        xdash.output(3)
+    def script(_, chalkit):
+        chalkit.output(1)
+        chalkit.output("2")
+        chalkit.output(3)
 
     result = do_capture(script)["result"]
     assert result == [1, "2", 3]
 
 
 def test_named_outputs_return_an_object():
-    def script(_, xdash):
-        xdash.output(1, "a")
-        xdash.output("2", "b")
+    def script(_, chalkit):
+        chalkit.output(1, "a")
+        chalkit.output("2", "b")
 
     result = do_capture(script)["result"]
     assert result == {"a": 1, "b": "2"}
 
 
 def test_mixing_named_and_unnammed_outputs_should_raise_an_error():
-    def script(_, xdash):
-        xdash.output(1)
-        xdash.output(2, "b")
+    def script(_, chalkit):
+        chalkit.output(1)
+        chalkit.output(2, "b")
 
     result = do_capture(script)
     assert "error" in result
 
 
 def test_mixing_return_and_outputs_should_raise_an_error():
-    def script(_, xdash):
-        xdash.output(1)
+    def script(_, chalkit):
+        chalkit.output(1)
         return 2
 
     result = do_capture(script)
     assert "error" in result
+
+
+class TestSideEffects:
+    @staticmethod
+    def test_side_effects_should_be_empty_by_default():
+        def script(*_):
+            pass
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == []
+
+    @staticmethod
+    def test_side_effects_should_capture__set_variable():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.scheduler.set_variable("node", 42)
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [{"name": "scheduler.setVariables", "args": [{"node": 42}]}]
+
+    @staticmethod
+    def test_side_effects_should_capture__set_variables():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.scheduler.set_variables({"node1": 42, "node2": ["a", "b", "c"]})
+
+        sideEffects = do_capture(script, debug=False)["sideEffects"]
+        assert sideEffects == [{"name": "scheduler.setVariables", "args": [{"node1": 42, "node2": ["a", "b", "c"]}]}]
+
+    @staticmethod
+    def test_side_effects_should_capture__set_variable_property():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.scheduler.set_variable_property("node1", ["x", 1], False)
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [{"name": "scheduler.setVariableProperty", "args": ["node1", ["x", 1], False]}]
+
+    @staticmethod
+    def test_side_effects_should_capture__execute_datanodes():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.scheduler.execute_datanode("node1")
+            chalkit.scheduler.execute_datanodes(["node2", "node3"])
+
+        sideEffects = do_capture(script, debug=False)["sideEffects"]
+        assert sideEffects == [
+            {"name": "scheduler.executeDataNodes", "args": [["node1"]]},
+            {"name": "scheduler.executeDataNodes", "args": [["node2", "node3"]]},
+        ]
+
+    @staticmethod
+    def test_side_effects_should_capture__view_page():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.view_page("http://url.org")
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [{"name": "dashboard.viewPage", "args": ["http://url.org", None, False]}]
+
+    @staticmethod
+    def test_side_effects_should_capture__view_project():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.view_project("http://url.org/dashboard", [{"dsName": "param", "dsVal": 42}], True)
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [
+            {
+                "name": "dashboard.viewProject",
+                "args": ["http://url.org/dashboard", [{"dsName": "param", "dsVal": 42}], True],
+            }
+        ]
+
+    @staticmethod
+    def test_side_effects_should_capture_multiple_calls():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.dashboard.go_to_page(12)
+            chalkit.dashboard.enable_widget("widgetA")
+            chalkit.dashboard.disable_widget("widgetB")
+            chalkit.dashboard.show_widget("widgetC")
+            chalkit.dashboard.hide_widget("widgetD")
+
+        sideEffects = do_capture(script, debug=True)["sideEffects"]
+        assert sideEffects == [
+            {"name": "dashboard.goToPage", "args": [12]},
+            {"name": "dashboard.enableWidget", "args": ["widgetA"]},
+            {"name": "dashboard.disableWidget", "args": ["widgetB"]},
+            {"name": "dashboard.showWidget", "args": ["widgetC"]},
+            {"name": "dashboard.hideWidget", "args": ["widgetD"]},
+        ]

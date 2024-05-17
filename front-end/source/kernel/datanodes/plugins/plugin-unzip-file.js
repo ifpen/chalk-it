@@ -29,7 +29,7 @@ import { zipToObject } from 'kernel/datanodes/plugins/thirdparty/utils';
         description: 'Browse to select zipped file.',
         type: 'browseBinary',
         accept: 'application/x-zip-compressed',
-        required: true,
+        required: false,
       },
     ],
     expose_as_files: [
@@ -111,7 +111,11 @@ import { zipToObject } from 'kernel/datanodes/plugins/thirdparty/utils';
     };
 
     self.setValue = function (path, value) {
-      if (value?.content && value?.isBinary) {
+      if (_.isEmpty(value)) {
+        currentSettings.content = {};
+        currentSettings.data_path = '';
+        fileStruct = undefined;
+      } else if (value?.content && value?.isBinary) {
         currentSettings.content = { ...value };
         currentSettings.data_path = value?.name;
         fileStruct = undefined;

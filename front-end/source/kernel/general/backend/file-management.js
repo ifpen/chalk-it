@@ -6,7 +6,7 @@
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import PNotify from 'pnotify';
 import { saveAs } from 'file-saver';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
@@ -291,16 +291,19 @@ export const fileManager = (function () {
   /*--------sendTextCallback--------*/
   function sendTextCallback(msg1, msg2, type) {
     const $rootScope = angular.element(document.body).scope().$root;
-    let text = msg1;
     if (type === 'success' || type === 'warning') {
-      if (type === 'warning')
-        new PNotify({
+      if (type === 'warning') {
+        const notice = new PNotify({
           title: 'Capture failed',
           text: msg1 + '\n' + msg2,
           type: type,
           styling: 'bootstrap3',
         });
-
+        $('.ui-pnotify-container').on('click', function () {
+          notice.remove();
+        });
+      }
+      let text = '';
       switch ($rootScope.origin) {
         case 'importProject':
           text = 'Your project has been successfully imported!';
@@ -330,7 +333,6 @@ export const fileManager = (function () {
         endAction();
         endAction = undefined;
       }
-      ///////
       const fileType = msg2;
       const FileMngrInst = new FileMngrFct();
       FileMngrInst.GetFileList(fileType, updateFileListCallback, false, null, null);

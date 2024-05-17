@@ -14,7 +14,7 @@ import 'angularjs-datepicker';
 
 import { urlBase } from 'config.js';
 
-import { pythonImagesModule } from 'angular/modules/python/python-images.module.js';
+import { pythonImagesModule } from 'angular/modules/python/python-images.module';
 import { initXdashRuntime } from 'kernel/runtime-singletons';
 import { onAngularReady } from 'kernel/runtime/xdash-runtime-main';
 import { dashState } from 'angular/modules/dashboard/dashboard';

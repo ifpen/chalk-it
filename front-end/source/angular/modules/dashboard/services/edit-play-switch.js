@@ -1,4 +1,4 @@
-﻿import _ from 'underscore';
+﻿import _ from 'lodash';
 
 import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { dashState } from 'angular/modules/dashboard/dashboard';

@@ -8,7 +8,7 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 import { xDashConfig } from 'config.js';
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { offSchedLogUser } from 'kernel/base/main-common';

@@ -8,7 +8,7 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 import angular from 'angular';
 
-import _ from 'underscore';
+import _ from 'lodash';
 
 // TODO shared module
 import 'angular-ui-router';
@@ -65,8 +65,7 @@ angular
       else $rootScope.urlCredits = xDashConfig.urlWebSite + '/blob/main/credits.html';
 
       $rootScope.enableLocalServer = !(xDashConfig.disableLocalServer == 'true');
-      $rootScope.enablePython = !_.isUndefined(urlPython);
-      $rootScope.enablePythonManagement = !_.isUndefined(urlPython) && $rootScope.xDashFullVersion;
+      $rootScope.disableSchedulerProfiling = xDashConfig.disableSchedulerProfiling == 'true';
 
       if ($rootScope.xDashFullVersion) {
         document.title = "Chalk'it - SaaS version";

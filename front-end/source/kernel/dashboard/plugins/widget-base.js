@@ -6,7 +6,7 @@
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Ghiles HIDEUR, Tristan BARTEMENT │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
 import { modelsParameters } from 'kernel/base/widgets-states';
 
@@ -113,7 +113,8 @@ export function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     let border = 'border: none; ';
     if (modelsParameters[idInstance].displayBorder) {
       const borderColor = this.setColorValueFromModelParameters('borderColor', 'var(--widget-border-color)');
-      border = 'border: 2px solid ' + borderColor + '; ';
+      const borderWidth = this.setColorValueFromModelParameters('borderWidth', '2px');
+      border = 'border: ' + borderWidth + ' solid ' + borderColor + '; ';
     } else {
       border += +'-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
       border += '-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);';
@@ -713,6 +714,25 @@ export function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
   };
 
   // +--------------------------------------------------------------------¦ \\
+  // |                         Calendar D3 widgets                        | \\
+  // +--------------------------------------------------------------------¦ \\
+  this.undefinedValueColor = function () {
+    const color = this.setColorValueFromModelParameters(
+      'UndefinedValueColor',
+      'var(--widget-calendar-d3-undefined-value)'
+    );
+    return color;
+  };
+
+  // +--------------------------------------------------------------------¦ \\
+  // |                          Plotly widgets                            | \\
+  // +--------------------------------------------------------------------¦ \\
+  this.plotTextColor = function () {
+    const color = this.setColorValueFromModelParameters('textColor', 'var(--widget-color)');
+    return color;
+  };
+
+  // +--------------------------------------------------------------------¦ \\
   // |                     Scoring & Gauges widgets                       | \\
   // +--------------------------------------------------------------------¦ \\
   this.thicknessBackgroundColor = function () {
@@ -737,6 +757,19 @@ export function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
 
   this.tipBorderColor = function () {
     const color = this.setColorValueFromModelParameters('tipBorderColor', 'var(--widget-button-text)');
+    return color;
+  };
+
+  // +--------------------------------------------------------------------¦ \\
+  // |                       Led light widgets                            | \\
+  // +--------------------------------------------------------------------¦ \\
+  this.onColor = function () {
+    const color = this.setColorValueFromModelParameters('onColor', 'var(--widget-led-light-on)');
+    return color;
+  };
+
+  this.offColor = function () {
+    const color = this.setColorValueFromModelParameters('offColor', 'var(--widget-led-light-off)');
     return color;
   };
 }

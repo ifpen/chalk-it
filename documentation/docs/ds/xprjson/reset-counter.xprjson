@@ -1,0 +1,287 @@
+{
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-03T12:47:50.955Z",
+    "name": "reset-counter",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": false
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "counter",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "counter",
+          "autoStart": true,
+          "explicitTrig": true,
+          "json_var_formula": "return dataNodes[\"pastValue_counter\"]+1;\n"
+        }
+      },
+      {
+        "name": "pastValue_counter",
+        "type": "Memory_plugin",
+        "settings": {
+          "name": "pastValue_counter",
+          "value_init": "0",
+          "datanode_origin": "counter"
+        }
+      },
+      {
+        "name": "reset",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "reset",
+          "autoStart": false,
+          "explicitTrig": true,
+          "json_var_formula": "chalkit.setVariable(\"pastValue_counter\",0);\nchalkit.executeDataNode(\"counter\");\nreturn true;"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "flatUiValueDisplayA": {
+      "layout": {
+        "top": "14.2002vh",
+        "left": "7.25879vw",
+        "height": "5.15229vh",
+        "width": "18.9644vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "2"
+      },
+      "container": {
+        "instanceId": "flatUiValueDisplayA",
+        "modelJsonId": "flatUiValueDisplay"
+      },
+      "modelParameters": {
+        "label": "counter",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "labelTextAlign": "left",
+        "valueWidthProportion": "70%",
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-input-text)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "decimalDigits": 3,
+        "borderWidth": "2px"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiButtonA": {
+      "layout": {
+        "top": "14.0745vh",
+        "left": "31.324vw",
+        "height": "6.15762vh",
+        "width": "7.97812vw",
+        "minHeight": "24px",
+        "minWidth": "55px",
+        "z-index": "3"
+      },
+      "container": {
+        "instanceId": "flatUiButtonA",
+        "modelJsonId": "flatUiButton"
+      },
+      "modelParameters": {
+        "text": "Add",
+        "numberOfTriggers": 1,
+        "fileInput": false,
+        "binaryFileInput": false,
+        "buttonFontSize": 0.3,
+        "displayIcon": false,
+        "fontAwesomeIcon": "",
+        "buttonFontFamily": "var(--widget-font-family)",
+        "buttonTextColor": "var(--widget-button-primary-text)",
+        "buttonDefaultColor": "var(--widget-button-primary-color)",
+        "buttonActiveColor": "var(--widget-button-active-color)",
+        "buttonHoverColor": "var(--widget-button-hover-color)"
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiValueDisplayB": {
+      "layout": {
+        "top": "3.26731vh",
+        "left": "7.0626vw",
+        "height": "5.15229vh",
+        "width": "18.9644vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "4"
+      },
+      "container": {
+        "instanceId": "flatUiValueDisplayB",
+        "modelJsonId": "flatUiValueDisplay"
+      },
+      "modelParameters": {
+        "label": "pastValue_counter",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "labelTextAlign": "left",
+        "valueWidthProportion": "70%",
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-input-text)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "decimalDigits": 3,
+        "borderWidth": "2px"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiButtonB": {
+      "layout": {
+        "top": "3.26731vh",
+        "left": "31.5445vw",
+        "height": "6.15762vh",
+        "width": "7.98429vw",
+        "minHeight": "24px",
+        "minWidth": "55px",
+        "z-index": "5"
+      },
+      "container": {
+        "instanceId": "flatUiButtonB",
+        "modelJsonId": "flatUiButton"
+      },
+      "modelParameters": {
+        "text": "Reset",
+        "numberOfTriggers": 1,
+        "fileInput": false,
+        "binaryFileInput": false,
+        "buttonFontSize": 0.3,
+        "displayIcon": false,
+        "fontAwesomeIcon": "",
+        "buttonFontFamily": "var(--widget-font-family)",
+        "buttonTextColor": "var(--widget-button-primary-text)",
+        "buttonDefaultColor": "var(--widget-button-primary-color)",
+        "buttonActiveColor": "var(--widget-button-active-color)",
+        "buttonHoverColor": "var(--widget-button-hover-color)"
+      },
+      "modelHiddenParams": {}
+    },
+    "annotationLabelA": {
+      "layout": {
+        "top": "8.21853vh",
+        "left": "14.0838vw",
+        "height": "5.15229vh",
+        "width": "11.9764vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "6"
+      },
+      "container": {
+        "instanceId": "annotationLabelA",
+        "modelJsonId": "annotationLabel"
+      },
+      "modelParameters": {
+        "text": "init_value == 0",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "#07fcea",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "textBold": false,
+        "textUnderline": false,
+        "textItalic": false,
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "borderWidth": "2px",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "flatUiValueDisplayA": {
+      "value": {
+        "name": "value",
+        "dataNode": "counter",
+        "dataFields": []
+      }
+    },
+    "flatUiButtonA": {
+      "trigger1": {
+        "name": "trigger1",
+        "dataNode": "counter",
+        "dataFields": []
+      }
+    },
+    "flatUiValueDisplayB": {
+      "value": {
+        "name": "value",
+        "dataNode": "pastValue_counter",
+        "dataFields": []
+      }
+    },
+    "flatUiButtonB": {
+      "trigger1": {
+        "name": "trigger1",
+        "dataNode": "reset",
+        "dataFields": []
+      }
+    },
+    "annotationLabelA": {}
+  },
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

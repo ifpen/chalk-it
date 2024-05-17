@@ -11,14 +11,7 @@
     var pastSettings = settings;
     var pastStatus = 'None';
 
-    this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      if (!bForceAutoStart && currentSettings.autoStart === false) {
-        return { notTobeExecuted: true };
-      }
-      if (bForceAutoStart && currentSettings.sampleTime > 0) {
-        // when refresh change autostart in setting (needed for periodic datanodes)
-        currentSettings.autoStart = true;
-      }
+    this.updateNow = function () {
       statusCallback('Pending');
       var date = new Date();
 

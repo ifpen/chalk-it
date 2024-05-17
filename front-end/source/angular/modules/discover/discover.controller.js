@@ -4,7 +4,7 @@ import templateBasic from './discover-basic.html';
 import template from './discover.html';
 
 import { xDashConfig } from 'config.js';
-import _ from 'underscore';
+import _ from 'lodash';
 import { fileManager } from 'kernel/general/backend/file-management';
 import { navHelper } from 'angular/modules/navigation-helper';
 import { startIntroProject } from 'angular/modules/guided-tour';
@@ -38,7 +38,7 @@ angular
     function ($scope, $rootScope, $stateParams, $state, ApisFactory, ManagePrjService) {
       const matches = document.querySelectorAll('.docsLink');
       matches.forEach(function (item) {
-        item.href = xDashConfig.urlDoc + 'index.html';
+        item.href = xDashConfig.urlDoc;
       });
 
       $scope.discoverSteps = [0, 0, 0, 0, 0];

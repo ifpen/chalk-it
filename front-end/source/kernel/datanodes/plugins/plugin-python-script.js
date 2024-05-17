@@ -1,4 +1,4 @@
-﻿import _ from 'underscore';
+﻿import _ from 'lodash';
 import { urlPython } from 'config.js';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
@@ -25,9 +25,10 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
       }
     }
 
-    const DEFAULT_BACKEND = PythonPluginLocalExec.isSupported()
-      ? { name: PythonPluginLocalExec.PSEUDO_IMAGE_NAME, id: PythonPluginLocalExec.PSEUDO_IMAGE_ID }
-      : { name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME, id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID };
+    const DEFAULT_BACKEND = {
+      name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME,
+      id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID,
+    };
 
     async function dockerImageSelect(valueCell, settingDef, currentSettingsValues, newSettings) {
       const selectId = 'select-option' + settingDef.name;
@@ -220,6 +221,12 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
         }
         if (result.debug && result.debug.length) {
           unrollOutput(result.debug, true).forEach((_) => colResult.appendChild(_));
+        }
+        if (result?.sideEffects?.length) {
+          const text = result.sideEffects
+            .map((e) => `${e.name}( ${e.args.map(JSON.stringify).join(', ')} );`)
+            .join('\n');
+          colResult.appendChild(createTextSection('Side Effects', text));
         }
         if (result.result) {
           if (needUnroll(result.result)) {
@@ -638,6 +645,7 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
           display_name: 'Python backend / image',
           type: 'custom1',
           default_value: DEFAULT_BACKEND,
+          description: 'Select execution backend for Python script. Default is local execution for pip installed Chalk\'it. Pyodide is executed in the browser.',
           implementation: dockerImageSelect,
         },
         {
@@ -755,16 +763,7 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
       };
 
       // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-      self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart, predsList) {
-        // explicit trig!
-        if (!_.isUndefined(bCalledFromOrchestrator)) {
-          if (!_.isUndefined(currentSettings.explicitTrig)) {
-            if (currentSettings.explicitTrig) {
-              if (bCalledFromOrchestrator == true) return { notTobeExecuted: true };
-            }
-          }
-        }
-
+      self.updateNow = function (bForceAutoStart, predsList) {
         //Autostart
         if (!bForceAutoStart && currentSettings.autoStart === false) {
           return { notTobeExecuted: true };
@@ -872,7 +871,7 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
           notifText ??= statusText;
           self.errorAllTheThings(notifText, statusText);
         }
-
+        datanodesManager.setCurrentDataNode(currentSettings.name);
         try {
           const { executor, script, signature } = await setupPromise;
 
@@ -880,6 +879,7 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
           if (resultObject.error && resultObject.error.length) {
             error(resultObject.error);
           } else {
+            PythonPluginExecBase.applySideEffects(resultObject.sideEffects);
             success(resultObject.result);
           }
         } catch (err) {

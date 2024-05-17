@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "2.870.8680",
+    "version": "3.000.8889",
     "fileFormatVersion": "0.3",
-    "date": "Fri Oct 06 2023 11:05:06 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "date": "2024-05-04T10:28:56.414Z",
     "name": "widget-fonts",
     "description": "",
     "groupName": "",
@@ -36,14 +36,14 @@
     "pyodideMicropip": []
   },
   "scaling": {
-    "widthPx": 1686,
-    "heightPx": 682,
-    "scrollWidthPx": 1686,
-    "scrollHeightPx": 682,
-    "widthVw": 87.8125,
-    "heightVh": 73.25456498388829,
-    "scrollWidthVw": 87.8125,
-    "scrollHeightVh": 73.25456498388829,
+    "widthPx": 1295,
+    "heightPx": 590,
+    "scrollWidthPx": 1295,
+    "scrollHeightPx": 590,
+    "widthVw": 84.75130890052355,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.75130890052355,
+    "scrollHeightVh": 78.66666666666667,
     "scalingMethod": "scaleTwh",
     "media": "large",
     "colDims": null
@@ -57,16 +57,17 @@
       "classType": ""
     },
     "droppers": {},
-    "backgroundColor": "#ffffff",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
     "theme": "default"
   },
   "dashboard": {
     "flatUiTextInput0": {
       "layout": {
-        "top": "4.29646vh",
-        "left": "2.08333vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "4.61389vh",
+        "left": "2.00915vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "1"
@@ -82,8 +83,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Brush Script MT",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -91,13 +97,11 @@
         "valueFontFamily": "Brush Script MT",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -105,10 +109,10 @@
     },
     "flatUiTextInput1": {
       "layout": {
-        "top": "15.0376vh",
-        "left": "2.08333vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "16.1486vh",
+        "left": "2.00915vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "2"
@@ -124,8 +128,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Arial",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -133,13 +142,11 @@
         "valueFontFamily": "Arial",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -147,10 +154,10 @@
     },
     "flatUiTextInput2": {
       "layout": {
-        "top": "25.7787vh",
-        "left": "2.08333vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "27.6832vh",
+        "left": "2.00915vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "3"
@@ -166,8 +173,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Verdana ",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -175,13 +187,11 @@
         "valueFontFamily": "Verdana ",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -189,10 +199,10 @@
     },
     "flatUiTextInput3": {
       "layout": {
-        "top": "36.5199vh",
-        "left": "2.08333vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "39.218vh",
+        "left": "2.00915vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "4"
@@ -208,8 +218,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Tahoma",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -217,13 +232,11 @@
         "valueFontFamily": "Tahoma",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -231,10 +244,10 @@
     },
     "flatUiTextInput4": {
       "layout": {
-        "top": "47.261vh",
-        "left": "2.08333vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "50.7527vh",
+        "left": "2.00915vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "5"
@@ -250,8 +263,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Trebuchet MS",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -259,13 +277,11 @@
         "valueFontFamily": "Trebuchet MS",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -273,10 +289,10 @@
     },
     "flatUiTextInput5": {
       "layout": {
-        "top": "4.29646vh",
-        "left": "29.1667vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "4.61389vh",
+        "left": "28.1282vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "6"
@@ -292,8 +308,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Times New Roman",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -301,13 +322,11 @@
         "valueFontFamily": "Times New Roman",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -315,10 +334,10 @@
     },
     "flatUiTextInput6": {
       "layout": {
-        "top": "15.0376vh",
-        "left": "29.1667vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "16.1486vh",
+        "left": "28.1282vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "7"
@@ -334,8 +353,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Georgia",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -343,13 +367,11 @@
         "valueFontFamily": "Georgia",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -357,10 +379,10 @@
     },
     "flatUiTextInput7": {
       "layout": {
-        "top": "25.7787vh",
-        "left": "29.1667vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "27.6832vh",
+        "left": "28.1282vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "8"
@@ -376,8 +398,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Trebuchet MS",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -385,13 +412,11 @@
         "valueFontFamily": "Trebuchet MS",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -399,10 +424,10 @@
     },
     "flatUiTextInput8": {
       "layout": {
-        "top": "36.5199vh",
-        "left": "29.1667vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "39.218vh",
+        "left": "28.1282vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "9"
@@ -418,8 +443,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Garamond",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -427,13 +457,11 @@
         "valueFontFamily": "Garamond",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -441,10 +469,10 @@
     },
     "flatUiTextInput9": {
       "layout": {
-        "top": "47.261vh",
-        "left": "29.1667vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "50.7527vh",
+        "left": "28.1282vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "10"
@@ -460,8 +488,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Courier New",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -469,13 +502,11 @@
         "valueFontFamily": "Courier New",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -483,10 +514,10 @@
     },
     "flatUiTextInputB": {
       "layout": {
-        "top": "15.0376vh",
-        "left": "56.25vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "16.1486vh",
+        "left": "54.2472vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "12"
@@ -502,8 +533,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "raleway",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -511,13 +547,11 @@
         "valueFontFamily": "raleway",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -525,10 +559,10 @@
     },
     "flatUiTextInputC": {
       "layout": {
-        "top": "25.7787vh",
-        "left": "56.25vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "27.6832vh",
+        "left": "54.2472vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "13"
@@ -544,8 +578,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Lucida Grande",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -553,13 +592,11 @@
         "valueFontFamily": "Lucida Grande",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -567,10 +604,10 @@
     },
     "flatUiTextInputD": {
       "layout": {
-        "top": "36.5199vh",
-        "left": "56.25vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "39.218vh",
+        "left": "54.2472vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "14"
@@ -586,8 +623,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Lato",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -595,13 +637,11 @@
         "valueFontFamily": "Lato",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -609,10 +649,10 @@
     },
     "flatUiTextInputE": {
       "layout": {
-        "top": "47.261vh",
-        "left": "56.25vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "50.7527vh",
+        "left": "54.2472vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "15"
@@ -628,8 +668,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Menlo",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -637,13 +682,11 @@
         "valueFontFamily": "Menlo",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -651,10 +694,10 @@
     },
     "flatUiTextInputF": {
       "layout": {
-        "top": "58.0021vh",
-        "left": "2.08333vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "62.2873vh",
+        "left": "2.00915vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "16"
@@ -670,8 +713,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Titillium Web",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -679,13 +727,11 @@
         "valueFontFamily": "Titillium Web",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""
@@ -693,10 +739,10 @@
     },
     "flatUiTextInputA": {
       "layout": {
-        "top": "4.29646vh",
-        "left": "56.25vw",
-        "height": "8.59291vh",
-        "width": "23.9583vw",
+        "top": "4.61389vh",
+        "left": "54.2472vw",
+        "height": "9.22776vh",
+        "width": "23.1052vw",
         "minHeight": "24px",
         "minWidth": "150px",
         "z-index": "17"
@@ -712,8 +758,13 @@
         "labelFontSize": 2,
         "labelColor": "#2154ab",
         "labelFontFamily": "Montserrat",
+        "labelTextAlign": "left",
+        "labelTextPosition": "left",
         "valueWidthProportion": "70%",
         "validationButton": false,
+        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
+        "validationBtnActiveColor": "var(--widget-button-active-color)",
+        "validationBtnHoverColor": "var(--widget-button-hover-color)",
         "validationOnFocusOut": true,
         "isPassword": false,
         "valueFontSize": 2,
@@ -721,13 +772,11 @@
         "valueFontFamily": "Montserrat",
         "valueTextAlign": "left",
         "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5,
-        "backgroundColor": "#ffffff",
-        "validationBtnDefaultColor": "var(--widget-button-primary-color)",
-        "validationBtnHoverColor": "var(--widget-button-hover-color)",
-        "validationBtnActiveColor": "var(--widget-button-active-color)"
+        "unitFontSize": 0.5
       },
       "modelHiddenParams": {
         "value": ""

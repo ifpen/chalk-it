@@ -7,7 +7,7 @@
 // │ Original authors(s): Abir EL FEKI, Mounir MECHERGHUI, Mongi BEN GAID,       │ \\
 // │                      Ameur HAMDOUNI                                         │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { widgetDefaultLayout } from 'kernel/dashboard/widget/widget-default-layout';
 import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { minLeftCst, minTopCst } from 'kernel/dashboard/scaling/layout-mgr';

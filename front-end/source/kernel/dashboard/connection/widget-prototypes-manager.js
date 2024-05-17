@@ -7,7 +7,7 @@
 // │ Original authors(s): Tristan BARTEMENT                                │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
-import _ from 'underscore';
+import _ from 'lodash';
 import Ajv from 'ajv';
 import { WidgetActuatorValidationError } from 'kernel/dashboard/plugins/widget-base';
 
@@ -44,6 +44,12 @@ export class WidgetPrototypesManager {
     $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:number_array',
     type: 'array',
     items: { type: 'number' },
+  };
+  static SCHEMA_BOOLEAN_ARRAY = {
+    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:boolean_array',
+    type: 'array',
+    items: { type: 'boolean' },
   };
 
   static SCHEMA_NUMBER_ARRAY_2D = {

@@ -3,7 +3,7 @@
 // +--------------------------------------------------------------------+ \\
 import { xDashConfig, xServConfig } from 'config.js';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
-import _ from 'underscore';
+import _ from 'lodash';
 import 'json_parseMore';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datanodes/plugins/thirdparty/utils';
@@ -26,23 +26,18 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
     var jqXHR_hash; //AEF
     var jbody = {};
 
-    this.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      // explicit trig!
-      if (!_.isUndefined(bCalledFromOrchestrator)) {
-        if (!_.isUndefined(currentSettings.explicitTrig)) {
-          if (currentSettings.explicitTrig) {
-            if (bCalledFromOrchestrator == true) return { notTobeExecuted: true };
-          }
-        }
-      }
-
-      //Autostart
-      if (!bForceAutoStart && currentSettings.autoStart === false) {
-        return { notTobeExecuted: true };
-      }
+    this.updateNow = function (bForceAutoStart) {
       if (bForceAutoStart && currentSettings.sampleTime > 0) {
-        // when refresh change autostart in setting (needed for periodic datanodes)
-        currentSettings.autoStart = true;
+        if (currentSettings.explicitTrig) {
+          notificationCallback(
+            'warning',
+            currentSettings.name,
+            'Explicit Trigger option is turned off (False) because "' +
+              currentSettings.name +
+              '" is periodic and was triggered explicitly'
+          );
+          currentSettings.explicitTrig = false;
+        }
       }
 
       statusCallback('Pending');
@@ -126,6 +121,21 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
               headers[param] = jbody.headersFromDataNodeWS[param];
             }
           }
+          if (Array.isArray(jbody)) {
+            for (let i = 0; i < jbody.length; i++) {
+              //for compatibility
+              if (!_.isUndefined(jbody[i].headersFromDatasourceWS)) {
+                jbody[i].headersFromDataNodeWS = jbody[i].headersFromDatasourceWS;
+                delete jbody[i].headersFromDatasourceWS;
+              }
+              //
+              if (!_.isUndefined(jbody[i].headersFromDataNodeWS)) {
+                for (var param in jbody[i].headersFromDataNodeWS) {
+                  headers[param] = jbody[i].headersFromDataNodeWS[param];
+                }
+              }
+            }
+          }
         }
         //
 
@@ -135,6 +145,18 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
           if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
             if (!_.isUndefined(tpbody.headersFromDataNodeWS)) {
               delete tpbody.headersFromDataNodeWS;
+            }
+            if (Array.isArray(tpbody)) {
+              for (let i = 0; i < tpbody.length; i++) {
+                //for compatibility
+                if (!_.isUndefined(tpbody[i].headersFromDatasourceWS)) {
+                  delete tpbody[i].headersFromDatasourceWS;
+                }
+                //
+                if (!_.isUndefined(tpbody[i].headersFromDataNodeWS)) {
+                  delete tpbody[i].headersFromDataNodeWS;
+                }
+              }
             }
           }
           if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
@@ -159,6 +181,18 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
             if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
               if (!_.isUndefined(tpbody.headersFromDataNodeWS)) {
                 delete tpbody.headersFromDataNodeWS;
+              }
+              if (Array.isArray(tpbody)) {
+                for (let i = 0; i < tpbody.length; i++) {
+                  //for compatibility
+                  if (!_.isUndefined(tpbody[i].headersFromDatasourceWS)) {
+                    delete tpbody[i].headersFromDatasourceWS;
+                  }
+                  //
+                  if (!_.isUndefined(tpbody[i].headersFromDataNodeWS)) {
+                    delete tpbody[i].headersFromDataNodeWS;
+                  }
+                }
               }
             }
             if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
@@ -281,6 +315,21 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
                 if (!_.isUndefined(jbody.headersFromDataNodeWS)) {
                   for (var param in jbody.headersFromDataNodeWS) {
                     xhr.setRequestHeader(param, jbody.headersFromDataNodeWS[param]);
+                  }
+                }
+                if (Array.isArray(jbody)) {
+                  for (let i = 0; i < jbody.length; i++) {
+                    //for compatibility
+                    if (!_.isUndefined(jbody[i].headersFromDatasourceWS)) {
+                      jbody[i].headersFromDataNodeWS = jbody[i].headersFromDatasourceWS;
+                      delete jbody[i].headersFromDatasourceWS;
+                    }
+                    //
+                    if (!_.isUndefined(jbody[i].headersFromDataNodeWS)) {
+                      for (var param in jbody[i].headersFromDataNodeWS) {
+                        xhr.setRequestHeader(param, jbody[i].headersFromDataNodeWS[param]);
+                      }
+                    }
                   }
                 }
               }

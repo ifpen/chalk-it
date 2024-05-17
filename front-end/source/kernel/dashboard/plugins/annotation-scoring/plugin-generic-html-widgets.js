@@ -6,7 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Ghiles HIDEUR, Guillaume CORBELIN, Tristan BARTEMENT │ \\
 // └────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
@@ -140,7 +140,7 @@ function genericHtmlWidgetPluginClass() {
     widgetsDefinitionList: {
       annotationHtml: {
         factory: 'genericHtmlWidget',
-        title: 'Generic html',
+        title: 'Generic HTML',
         icn: 'generic-html',
         help: 'wdg/wdg-annotation-video/#generic-html',
       },

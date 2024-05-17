@@ -8,7 +8,7 @@
 $themes: (
   'default': (
     'hue': 'light',
-    0: #fff,
+    0: #ffffff,
     // Background color
     1: #354a5f,
     // Main text
@@ -39,7 +39,7 @@ $themes: (
   ),
   'pink': (
     'hue': 'light',
-    0: #fff,
+    0: #ffffff,
     // Background color
     1: #3a0ca3,
     // Main text
@@ -70,7 +70,7 @@ $themes: (
   ),
   'green': (
     'hue': 'light',
-    0: #fff,
+    0: #ffffff,
     // Background color
     1: #081c15,
     // Main text
@@ -103,7 +103,7 @@ $themes: (
     'hue': 'dark',
     0: #333333,
     // Background color
-    1: #fff,
+    1: #ffffff,
     // Main text
     2: #ea7e53,
     // Main color
@@ -241,6 +241,13 @@ html {
   // --widget-multiselect-checked-text: #{color-yiq(map-get($widget-default-colors, 3))}; // inside calculated colors
   --widget-multiselect-checked-color: var(--widget-color-3);
   --widget-multiselect-checked-border-color: var(--widget-color-3);
+
+  // Led light
+  --widget-led-light-on: '#00b700';
+  --widget-led-light-off: '#004d00';
+
+  // Calendar D3
+  --widget-calendar-d3-undefined-value: '#f6f6f6';
 }
 
 // Overrides for each theme
@@ -283,6 +290,9 @@ html {
 
       // Select2 dropdowns are created as direct children of the body element
       --widget-select-drop-color: #{darken(map-get($theme, 0), 3%)};
+
+      // Plotly
+      --widget-plotly-background-color: #{darken(map-get($theme, 0), 3%)};
     } @else {
       // Global
       --widget-subtext-color: #{darken(map-get($theme, 1), 20%)};
@@ -309,6 +319,9 @@ html {
 
       // Select2 dropdowns are created as direct children of the body element
       --widget-select-drop-color: #{lighten(map-get($theme, 0), 3%)};
+
+      // Plotly
+      --widget-plotly-background-color: #{lighten(map-get($theme, 0), 3%)};
     }
 
     // Contrasted text color

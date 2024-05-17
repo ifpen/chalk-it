@@ -181,7 +181,7 @@ function vegaWidgetsPluginClass() {
     widgetsDefinitionList: {
       vegaGeneric: {
         factory: 'genericVegaWidget',
-        title: 'Vega generic',
+        title: 'Vega JavaScript generic',
         icn: 'vega-generic-javascript',
         help: 'wdg/wdg-plots/#vega',
       },

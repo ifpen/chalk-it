@@ -1,4 +1,4 @@
-﻿import _ from 'underscore';
+﻿import _ from 'lodash';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 (function () {
@@ -94,21 +94,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
     };
 
     // **updateNow()** (required) : A public function we must implement that will be called when the user wants to manually refresh the datanode
-    self.updateNow = function (bCalledFromOrchestrator, bForceAutoStart) {
-      // explicit trig!
-      if (!_.isUndefined(bCalledFromOrchestrator)) {
-        if (!_.isUndefined(currentSettings.explicitTrig)) {
-          if (currentSettings.explicitTrig) {
-            if (bCalledFromOrchestrator == true) return { notTobeExecuted: true };
-          }
-        }
-      }
-
-      //Autostart
-      if (!bForceAutoStart && currentSettings.autoStart === false) {
-        return { notTobeExecuted: true };
-      }
-
+    self.updateNow = function () {
       statusCallback('Pending');
 
       if (!_.isNull(calculatedValue) && !_.isUndefined(calculatedValue)) {

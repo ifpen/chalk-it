@@ -6,7 +6,7 @@
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Mongi BEN GAID; Abir EL FEKI                  ¦ \\
 // +--------------------------------------------------------------------+ \\
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { fileManager } from 'kernel/general/backend/file-management';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';

@@ -7,7 +7,7 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { modelsHiddenParams, modelsParameters, modelsTempParams } from 'kernel/base/widgets-states';
@@ -119,7 +119,7 @@ function getDashboardConfig() {
 function initContainers(jsonContent, exportOptions) {
   const scalingSrc = jQuery.extend(true, {}, jsonContent.scaling); // MBG fix load order
 
-  var navMenuHeightPx = 0;
+    let navMenuHeightPx = 0;
 
   if ($('#nav-menu')[0]) {
     navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);
@@ -165,14 +165,14 @@ function initContainers(jsonContent, exportOptions) {
 
   const cols = jsonContent.device.cols.maxCols;
   const maxCells = jsonContent.device.cols.maxCells;
-  const rows = maxCells / (cols ? cols : 1);
+  const rows = maxCells / (cols || 1);
 
-  var projectedScalingObj = jQuery.extend(true, {}, scalingSrc);
-  var projectedPreviewDimensions = widgetPreview.getCurrentDashZoneDims();
+  let projectedScalingObj = jQuery.extend(true, {}, scalingSrc);
+  let projectedPreviewDimensions = widgetPreview.getCurrentDashZoneDims();
   widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, cols);
   widgetPreview.resizeDashboardCols();
 
-  var mediaChangeProj = widgetPreview.mediaChangeProjection(projectedScalingObj, projectedPreviewDimensions, rows);
+  const mediaChangeProj = widgetPreview.mediaChangeProjection(projectedScalingObj, projectedPreviewDimensions, rows);
 
   projectedScalingObj = mediaChangeProj.referenceFrame;
   projectedPreviewDimensions = mediaChangeProj.targetFrame;
@@ -182,14 +182,23 @@ function initContainers(jsonContent, exportOptions) {
   widgetPreview.resizeDashboard(projectedPreviewDimensions);
 }
 
-export async function loadDashboard(jsonContent, exportOptions) {
-  await pyodideLib.deserialize(jsonContent); // GHI issue #193
-
-  datanodesManager.load(jsonContent.data, true); //ABK
-
+export function loadDashboard(jsonContent, exportOptions) {
+  // FIXME
+  let decodedData = JSON.stringify(jsonContent.data); // fix bug in properly handling characters for JSON parsing
+  decodedData = decodedData.replace(/[\u007F-\uFFFF]/g, function (chr) {
+    return '\\u' + ('0000' + chr.charCodeAt(0).toString(16)).substr(-4);
+  });
+  let data_json = '';
+  try {
+    data_json = JSON.parse(decodedData);
+  } catch (err) {
+    swal('JSON Parse error', err.message, 'error');
+    return;
+  }
+  pyodideLib.deserialize(jsonContent);
+  datanodesManager.load(data_json, true); //ABK
   initContainers(jsonContent, exportOptions);
-
-  for (var key in jsonContent.dashboard) {
+  for (const key in jsonContent.dashboard) {
     if (!_.isEmpty(jsonContent.dashboard[key].modelParameters)) {
       modelsParameters[key] = jsonContent.dashboard[key].modelParameters;
     }
@@ -197,10 +206,14 @@ export async function loadDashboard(jsonContent, exportOptions) {
       modelsHiddenParams[key] = jsonContent.dashboard[key].modelHiddenParams;
     }
     if (_.isUndefined(modelsTempParams[key])) {
-      var modelJsonIdStr = key.substring(0, key.length - 1);
+      const modelJsonIdStr = key.substring(0, key.length - 1);
       modelsTempParams[key] = jQuery.extend(true, {}, modelsTempParams[modelJsonIdStr]);
     }
   }
+
+  //AEF: issue#304
+  // FIXME
+  const offSchedLogUser = jsonContent.meta?.schedulerLogOff ?? true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
   // Add theme attribute before loading widgets
   $('html').attr('data-theme', jsonContent.device.theme);
@@ -221,7 +234,7 @@ export async function loadDashboard(jsonContent, exportOptions) {
       customNavigationRuntime.customNavigationModeInit(jsonContent);
       break;
     case 'projectToTargetWindow':
-      customNavigationRuntime.setJsonContent(jsonContent);
+      customNavigationRuntime.jsonContent = jsonContent;
       break;
   }
 

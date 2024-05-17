@@ -8,7 +8,7 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 import { xDashConfig } from 'config.js';
-import _ from 'underscore';
+import _ from 'lodash';
 import Papa from 'papaparse';
 import * as d3 from 'd3';
 
@@ -29,7 +29,9 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
 
   /*--------callValueFunction--------*/
   this.callValueFunction = function (theFunction) {
-    // MBG question : datanodesListModel.datasourceData : why is this in datanodesListModel??
+    //keep info of the current dataNode
+    datanodesManager.setCurrentDataNode(datanodeModel.name());
+
     return theFunction.call(null, datanodesListModel.datasourceData, ...libs);
   };
 
@@ -152,10 +154,8 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
     // Check for any calculated settings
     var settingsDefs = datanodePlugins[datanodeModel.type()].settings;
     var datanodeRegex = new RegExp('dataNodes.([\\w_-]+)|dataNodes\\[[\'"]([^\'"]+)', 'g');
-
     const setVarRegex =
-      /(setVariables?\((\[.*?\]),\s*(\[.*?\])\))|(setVariable\(("([^"]*)"),\s*([^)]*)\))|(executeDataNode\(("([^"]*)")\))|(executeDataNodes\((\[.*?\])\))|(setVariableProperty\(("([^"]*)"),\s*(\[.*?\])\s*,\s*([^)]*)\))/g;
-
+      /(setVariables\((\[.+?\]),(\[.*?\])\))|(setVariable\((.+?)),((.*?)[^,])\)|(executeDataNode\(((.*?)[^,])\))|(.executeDataNodes\((\[.+?\])\))|(.setVariableProperty\((.+?),(\[.*?\]),(.*?)[^,]\))/g;
     const regexPython = /(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')|(#.*$)/gm;
     var currentSettings = datanodeModel.settings();
     var bOK = true;
@@ -276,7 +276,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
                 datanodeModel.name() +
                 '"';
               datanodeModel.statusCallback('Error');
-              swal('Cycle detection', text, 'error'); //AEF considered as error because it is not possible for scheduler
+              swal('Cycle detection', text, 'error'); //considered as error because it is not possible for scheduler
               self.bCalculatedSettings = false;
               bOK = false;
               return;
@@ -295,42 +295,25 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
           }
 
           let lines = script.split('\n');
+          let patternRegex = /\.(goToPage|viewPage|viewProject|\w+Widget)/;
+          if (settingDef.type === 'custom2') {
+            patternRegex = /\.(output|as_|dashboard|scheduler|goToPage|viewPage|viewProject|\w+Widget)/;
+          }
           for (let i = 0; i < lines.length; i++) {
-            while ((matches = setVarRegex.exec(lines[i]))) {
-              let dsName = [];
-              if (!_.isUndefined(matches)) {
-                if (!_.isUndefined(matches[6])) {
-                  // For setVariable
-                  dsName[0] = matches[6];
-                } else if (!_.isUndefined(matches[2])) {
-                  // For setVariables array elements
-                  const variableArray = JSON.parse(matches[2]);
-                  dsName = variableArray;
-                } else if (!_.isUndefined(matches[10])) {
-                  // For executeDataNode
-                  dsName[0] = matches[10];
-                } else if (!_.isUndefined(matches[12])) {
-                  // For executeDataNodes
-                  const variableArray = JSON.parse(matches[12]);
-                  dsName = variableArray;
-                } else if (!_.isUndefined(matches[15])) {
-                  // For setVariableProperty
-                  dsName[0] = matches[15];
-                }
-              }
-
-              if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
-                if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
-                  console.log("init: don't add parsed set var");
-                }
-              } else {
-                for (const name of dsName) {
-                  datanodesDependency.addSetvarList(name, datanodeModel.name());
+            lines[i] = lines[i].replace(/\s/g, ''); //remove white space
+            setVarRegex.lastIndex = 0;
+            if (_.isNull(setVarRegex.exec(lines[i]))) {
+              if (_.isNull(lines[i].match(patternRegex))) {
+                const line = lines[i].replace(/(['"])(?:\\.|(?!\1)[^\\\n])*\1/g, ''); //remove strings
+                if (!_.isNull(line.match(/(chalkit|xDashApi)\.[^\s()]+\(/))) {
+                  //Warning for chalkit js api
+                  const text = 'Syntax error in chalkit API';
+                  datanodeModel.notificationCallback('warning', datanodeModel.name(), text);
                 }
               }
             }
           }
-          //AEF: fix bug (clean up data that doesn't exist anymore in formula for example)
+          //AEF: clean up data that doesn't exist anymore in formula for example
           datanodesDependency.removeMissedDependantDatanodes(allDsNames, datanodeModel.name());
 
           if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
@@ -339,6 +322,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
             }
             return;
           }
+
           // MBG moved
           if (settingDef.type != 'custom2') {
             datanodeModel.calculatedSettingScripts[settingDef.name] = valueFunction;
@@ -379,7 +363,6 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
           datanodesDependency.addNode(datanodeModel.name());
         }
         //AEF: remove edges from datanode to its pastValue
-        let add_edge = true;
         let match = datanodeModel.name().match(/pastValue_(.+)/);
         if (match) {
           let orig_name = match[1];

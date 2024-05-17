@@ -6,7 +6,7 @@
 // ├─────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                               │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import PNotify from 'pnotify';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';

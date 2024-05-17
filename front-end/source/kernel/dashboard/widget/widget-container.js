@@ -7,7 +7,7 @@
 // ├────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Tristan BARTEMENT, Mongi BEN GAID   │ \\
 // └────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { widgetFactory } from 'kernel/dashboard/widget/widget-factory';

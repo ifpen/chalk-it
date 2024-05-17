@@ -9,7 +9,7 @@
 
 import { xDashConfig, urlPython } from 'config.js';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
-import _ from 'underscore';
+import _ from 'lodash';
 import { DialogBox } from 'kernel/datanodes/gui/DialogBox';
 import { b64DecodeUnicode, formatDataSize } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { getAuthorizationHeaders } from 'angular/modules/components/auth-utils';

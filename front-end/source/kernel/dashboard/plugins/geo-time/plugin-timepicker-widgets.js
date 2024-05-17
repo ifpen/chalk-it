@@ -7,7 +7,7 @@
 // │ Original authors(s): Ameur HAMDOUNI, Mongi BEN GAID                │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import 'clockpicker/dist/jquery-clockpicker';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
@@ -171,7 +171,7 @@ function timePickerWidgetsPluginClass() {
         'px; ' +
         'display:table; margin-top: 0; top:0; padding-right: ' +
         valueFontSize +
-        '"><i class="fa fa-lg fa-clock-o" ' +
+        '"><i class="fa fa-lg fa-clock" ' +
         'style="display: table-cell; vertical-align: middle;' +
         cursorIcon +
         'font-size: ' +
@@ -256,7 +256,9 @@ function timePickerWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };

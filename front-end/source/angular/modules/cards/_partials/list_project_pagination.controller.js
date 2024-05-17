@@ -6,7 +6,7 @@
 // ├───────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                         │ \\
 // └───────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 
 angular.module('modules.cards').controller('ListProjectPaginationController', [
   '$scope',

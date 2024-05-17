@@ -6,7 +6,7 @@
 // ├──────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Ghiles HIDEUR, Tristan BARTEMENT, Guillaume CORBELIN   │ \\
 // └──────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import PNotify from 'pnotify';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
@@ -436,16 +436,8 @@ function loadFileWidgetsPluginClass() {
       removeValueChangedHandler: function (updateDataFromWidget) {
         self.disable();
       },
-      setCaption: function (caption, bCaptionManuallyChanged) {
-        if (modelsParameters[idInstance].inheritLabelFromData) {
-          self.captionHelper(caption, self.bIsInteractive, bCaptionManuallyChanged);
-          self.render();
-        }
-      },
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      setCaption: function (caption, bCaptionManuallyChanged) {},
+      clearCaption: function () {},
     };
 
     self.render();
@@ -460,7 +452,7 @@ function loadFileWidgetsPluginClass() {
     widgetsDefinitionList: {
       loadFile: {
         factory: 'loadFileWidget',
-        title: 'Load file',
+        title: 'Load file control',
         icn: 'load-file',
         help: 'wdg/wdg-basics/#load-file',
       },

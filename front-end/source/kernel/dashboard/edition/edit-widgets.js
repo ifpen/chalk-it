@@ -8,7 +8,7 @@
 // │                      Ameur HAMDOUNI                                                        │ \\
 // └────────────────────────────────────────────────────────────────────────────────────────────┘ \\
 import interact from 'interactjs';
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { panelDash } from './panel-dashboard';
 import { rescaleHelper } from 'kernel/dashboard/scaling/rescale-helper';
@@ -1329,8 +1329,8 @@ export function initEditWidget() {
       });
     }
 
-    var openGraphFromWidget = document.getElementById('openGraphFromWidget');
-    openGraphFromWidget.setAttribute('name', JSON.stringify(connectedDataNodes));
+    const openGraphFromWidget = document.getElementById('openGraphFromWidget');
+    openGraphFromWidget?.setAttribute('name', JSON.stringify(connectedDataNodes));
 
     const idList = 'menuWidget';
 

@@ -31,3 +31,6 @@ __pycache__/
 
 pyodide-worker-dev.js
 pyodide-worker-dev.js.map
+
+/*.xprjson
+build_version.txt

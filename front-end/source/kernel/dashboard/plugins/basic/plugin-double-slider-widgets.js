@@ -7,7 +7,7 @@
 // │ Original authors(s): Ameur HAMDOUNI, Mongi BEN GAID, Tristan BARTEMENT,     │ \\
 // │                      Guillaume CORBELIN                                     │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
@@ -304,10 +304,7 @@ function doubleSliderWidgetsPluginClass() {
         self.disable();
       },
       setCaption: function (caption, bCaptionManuallyChanged) {},
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      clearCaption: function () {},
     };
 
     this.maxValue = {
@@ -352,10 +349,7 @@ function doubleSliderWidgetsPluginClass() {
         self.disable();
       },
       setCaption: function (caption, bCaptionManuallyChanged) {},
-      clearCaption: function () {
-        modelsParameters[idInstance].label = '';
-        self.render();
-      },
+      clearCaption: function () {},
     };
 
     self.maxRange = {
@@ -380,7 +374,6 @@ function doubleSliderWidgetsPluginClass() {
         if (modelsParameters[idInstance].forceValuesToMinAndMax) {
           self.maxValue.setValue(modelsParameters[idInstance].maxRange);
           self.updateMaxValue();
-          //widgetPreview.updateDataFromWidget(self.maxValue, modelsParameters[idInstance].maxRange); // MBG : dirty but only solution right now
         }
       },
       getValue: function () {
@@ -428,7 +421,6 @@ function doubleSliderWidgetsPluginClass() {
         if (modelsParameters[idInstance].forceValuesToMinAndMax) {
           self.minValue.setValue(modelsParameters[idInstance].minRange);
           self.updateMinValue();
-          //widgetPreview.updateDataFromWidget(self.minValue, modelsParameters[idInstance].minRange); // MBG : dirty but only solution right now
         }
       },
       getValue: function () {

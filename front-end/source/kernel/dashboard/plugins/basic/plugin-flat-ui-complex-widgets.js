@@ -7,7 +7,7 @@
 // │ Original authors(s): Mongi BEN GAID, Abir El FEKI, Ghiles HIDEUR   │ \\
 // │ Tristan BARTEMENT, Guillaume CORBELIN                              │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import 'flat-ui.alt';
 import 'mindmup-editabletable';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
@@ -25,6 +25,7 @@ import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
 modelsHiddenParams.flatUiSelect = { keys: [], values: [], selectedValue: '' };
 modelsHiddenParams.flatUiMultiSelect = { value: [], selectedValue: '' };
 modelsHiddenParams.flatUiList = { value: [], selectedValue: '' };
+modelsHiddenParams.flatUiEditableTable = { value: null };
 modelsHiddenParams.flatUiTable = { value: null };
 
 // Parameters
@@ -37,6 +38,7 @@ modelsParameters.flatUiSelect = {
   labelFontFamily: 'var(--widget-font-family)',
   selectWidthProportion: '70%',
   isNumber: false,
+  isBoolean: false,
   selectValueFontFamily: 'var(--widget-font-family)',
   selectValueFontSize: 0.5,
   selectedValueColor: 'var(--widget-select-option-highlighted-text)',
@@ -63,6 +65,7 @@ modelsParameters.flatUiMultiSelect = {
   displayBorder: true,
   borderColor: 'var(--widget-border-color)',
   isNumber: false,
+  isBoolean: false,
 };
 modelsParameters.flatUiList = {
   addControls: false,
@@ -77,6 +80,7 @@ modelsParameters.flatUiList = {
 };
 modelsParameters.flatUiTable = {
   headerLine: false,
+  indexColumn: false,
   tableValueFontSize: 0.5,
   striped: true,
   valueColor: 'var(--widget-table-value-color)',
@@ -90,11 +94,28 @@ modelsParameters.flatUiTable = {
     secondary: 'var(--widget-table-striped-odd)',
   },
 };
+modelsParameters.flatUiEditableTable = {
+  headerLine: false,
+  indexColumn: false,
+  tableValueFontSize: 0.5,
+  striped: true,
+  valueColor: 'var(--widget-table-value-color)',
+  valueFontFamily: 'var(--widget-font-family)',
+  valueAlign: 'left',
+  bordered: true,
+  noBorder: false,
+  editableCols: '*',
+  backgroundColor: {
+    primary: 'var(--widget-color-0)',
+    secondary: 'var(--widget-table-striped-odd)',
+  },
+};
 
 // Layout (default dimensions)
 modelsLayout.flatUiSelect = { height: '5vh', width: '19vw', minWidth: '40px', minHeight: '27px' };
 modelsLayout.flatUiMultiSelect = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
 modelsLayout.flatUiList = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
+modelsLayout.flatUiEditableTable = { height: '10vh', width: '11vw', minWidth: '88px', minHeight: '79px' };
 modelsLayout.flatUiTable = { height: '10vh', width: '11vw', minWidth: '88px', minHeight: '79px' };
 
 /*******************************************************************/
@@ -147,7 +168,7 @@ function flatUiComplexWidgetsPluginClass() {
       widgetHtml.setAttribute('class', 'select-widget-html');
       let valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
       let divContent = '';
-      if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+      if (modelsParameters[idInstance].displayLabel) {
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
 
@@ -250,6 +271,12 @@ function flatUiComplexWidgetsPluginClass() {
       WidgetActuatorDescription.READ_WRITE,
       WidgetPrototypesManager.SCHEMA_STRING
     );
+    const _VALUE_BOOLEAN_DESCRIPTOR = new WidgetActuatorDescription(
+      'selectedValue',
+      'Selected value',
+      WidgetActuatorDescription.READ_WRITE,
+      WidgetPrototypesManager.SCHEMA_BOOLEAN
+    );
     const _VALUE_DESCRIPTOR = new WidgetActuatorDescription(
       'selectedValue',
       'Selected value',
@@ -275,6 +302,12 @@ function flatUiComplexWidgetsPluginClass() {
       "Selectable values. Must match 'keys'.",
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_NUMBER_ARRAY
+    );
+    const _VALUES_BOOLEAN_DESCRIPTOR = new WidgetActuatorDescription(
+      'values',
+      "Selectable values. Must match 'keys'.",
+      WidgetActuatorDescription.READ,
+      WidgetPrototypesManager.SCHEMA_BOOLEAN_ARRAY
     );
 
     // isKeyValuePairs
@@ -314,21 +347,54 @@ function flatUiComplexWidgetsPluginClass() {
         },
       }
     );
-
+    const _KEYVALUE_BOOLEAN_DESCRIPTOR = new WidgetActuatorDescription(
+      'keyValuePairs',
+      'Array of selectable key-value objects; Key being the displayed label',
+      WidgetActuatorDescription.READ,
+      {
+        $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+        $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:selectFlatUiWidget_keyValuePairs',
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            key: { type: ['string', 'number', 'boolean'] },
+            value: { type: 'boolean' },
+          },
+          required: ['key'],
+        },
+      }
+    );
     this.getActuatorDescriptions = function (model = null) {
       const data = model || modelsParameters[idInstance];
       const result = [];
 
       if (data && data.isKeyValuePairs) {
-        result.push(data.isNumber ? _KEYVALUE_NUMBER_DESCRIPTOR : _KEYVALUE_STRING_DESCRIPTOR);
+        result.push(
+          data.isNumber
+            ? _KEYVALUE_NUMBER_DESCRIPTOR
+            : data.isBoolean
+            ? _KEYVALUE_BOOLEAN_DESCRIPTOR
+            : _KEYVALUE_STRING_DESCRIPTOR
+        );
       } else {
         result.push(_KEYS_DESCRIPTOR);
-        result.push(data && data.isNumber ? _VALUES_NUMBER_DESCRIPTOR : _VALUES_STRING_DESCRIPTOR);
+        result.push(
+          data && data.isNumber
+            ? _VALUES_NUMBER_DESCRIPTOR
+            : data.isBoolean
+            ? _VALUES_BOOLEAN_DESCRIPTOR
+            : _VALUES_STRING_DESCRIPTOR
+        );
       }
 
       let selectedValue = _VALUE_DESCRIPTOR;
       if (data) {
-        selectedValue = data.isNumber ? _VALUE_NUMBER_DESCRIPTOR : _VALUE_STRING_DESCRIPTOR;
+        selectedValue = data.isNumber
+          ? _VALUE_NUMBER_DESCRIPTOR
+          : data.isBoolean
+          ? _VALUE_BOOLEAN_DESCRIPTOR
+          : _VALUE_STRING_DESCRIPTOR;
       }
       result.push(selectedValue);
 
@@ -346,6 +412,8 @@ function flatUiComplexWidgetsPluginClass() {
         const val = $('#select' + idWidget)[0].value;
         if (modelsParameters[idInstance].isNumber) {
           return Number(val);
+        } else if (modelsParameters[idInstance].isBoolean) {
+          return val === 'false' ? false : Boolean(val);
         } else {
           return val;
         }
@@ -367,7 +435,9 @@ function flatUiComplexWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };
@@ -626,6 +696,10 @@ function flatUiComplexWidgetsPluginClass() {
       getValue: function () {
         if (modelsParameters[idInstance].isNumber) {
           return Number(modelsHiddenParams[idInstance].value);
+        } else if (modelsParameters[idInstance].isBoolean) {
+          return modelsHiddenParams[idInstance].value === 'false'
+            ? false
+            : Boolean(modelsHiddenParams[idInstance].value);
         } else {
           return modelsHiddenParams[idInstance].value;
         }
@@ -655,6 +729,9 @@ function flatUiComplexWidgetsPluginClass() {
         $('#multi-select' + idWidget + " > label > input[type='checkbox']:checked").each(function () {
           if (modelsParameters[idInstance].isNumber) {
             selectedVal.push(Number($(this).val()));
+          } else if (modelsParameters[idInstance].isBoolean) {
+            const sval = $(this).val() === 'false' ? false : Boolean($(this).val());
+            selectedVal.push(sval);
           } else {
             selectedVal.push($(this).val());
           }
@@ -834,10 +911,17 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.value = {
       updateCallback: function () {},
-      setValue: function (val, isSameSelectedValue) {
+      setValue: function (val) {
+        pastSelect = JSON.stringify(modelsHiddenParams[idInstance].selectedValue);
+
         modelsHiddenParams[idInstance].value = val;
         self.render();
-        if (!isSameSelectedValue) self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+
+        selected = JSON.stringify(self.selectedValue.getValue());
+        if (selected !== pastSelect) {
+          //add a test to avoid loop
+          self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+        }
       },
       getValue: function () {
         return modelsHiddenParams[idInstance].value;
@@ -979,7 +1063,12 @@ function flatUiComplexWidgetsPluginClass() {
             for (let j = 0; j < val[i].length; j++) {
               let ParsedEditableCols = [];
               try {
-                ParsedEditableCols = JSON.parse(modelsParameters[idInstance].editableCols);
+                if (modelsParameters[idInstance].editableCols == '*') {
+                  if (!modelsParameters[idInstance].indexColumn) ParsedEditableCols = _.range(val[i].length);
+                  else ParsedEditableCols = _.range(1, val[i].length);
+                } else {
+                  ParsedEditableCols = JSON.parse(modelsParameters[idInstance].editableCols);
+                }
               } catch (e) {}
 
               let cursorEditable = '';
@@ -1146,7 +1235,18 @@ function flatUiComplexWidgetsPluginClass() {
         help: 'wdg/wdg-basics/#multi-select',
       },
       flatUiList: { factory: 'listFlatUiWidget', title: 'List', icn: 'list', help: 'wdg/wdg-basics/#list' },
-      flatUiTable: { factory: 'tableFlatUiWidget', title: 'Table', icn: 'board', help: 'wdg/wdg-basics/#table' },
+      flatUiTable: {
+        factory: 'tableFlatUiWidget',
+        title: 'Table',
+        icn: 'board',
+        help: 'wdg/wdg-basics/#editable-table',
+      },
+      flatUiEditableTable: {
+        factory: 'tableFlatUiWidget',
+        title: 'Editable table',
+        icn: 'board',
+        help: 'wdg/wdg-basics/#table',
+      },
     },
   };
 

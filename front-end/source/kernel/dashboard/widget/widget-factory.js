@@ -7,7 +7,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import PNotify from 'pnotify';
 
 import { widgetContainer } from 'kernel/dashboard/widget/widget-container';

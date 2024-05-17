@@ -6,7 +6,7 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import template from 'angular/modules/python/python-images.html';
 import { formatDataSize } from 'kernel/datanodes/plugins/thirdparty/utils';
 

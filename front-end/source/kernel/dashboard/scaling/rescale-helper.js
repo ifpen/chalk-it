@@ -6,7 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { editorSingletons } from 'kernel/editor-singletons';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';

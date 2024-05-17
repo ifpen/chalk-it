@@ -6,7 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { rescaleHelper } from 'kernel/dashboard/scaling/rescale-helper';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
@@ -398,7 +398,7 @@ export const widgetPreview = (function () {
           }
           if (!_.isUndefined(actuator.setValue)) {
             try {
-              actuator.setValue(varInter, true);
+              actuator.setValue(varInter);
             } catch (e) {
               console.log("setValue got exception with data '" + slider.dataNode + "'. " + e);
             }
@@ -494,8 +494,8 @@ export const widgetPreview = (function () {
    */
   function resizeDashboard(target) {
     // Prepare rescale for rowToPage mode
-    if (typeof execOutisdeEditor != 'undefined') {
-      if (execOutisdeEditor) {
+    if (typeof execOutsideEditor != 'undefined') {
+      if (execOutsideEditor) {
         var navMenuHeightPx = 0;
 
         if ($('#nav-menu')[0]) {

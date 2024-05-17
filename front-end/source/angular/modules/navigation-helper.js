@@ -7,7 +7,7 @@
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-import _ from 'underscore';
+import _ from 'lodash';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
 
@@ -42,10 +42,10 @@ function navigationHelperClass() {
 
     var fileTypeServer = 'template';
 
-    FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + 'xprjson', async function (msg1, msg2, type) {
+    FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + 'xprjson', function (msg1, msg2, type) {
       //AEF: fix bug add params and test on it
       if (type === 'success') {
-        await runtimeSingletons.xdash.openProjectManager(msg1);
+        runtimeSingletons.xdash.openProjectManager(msg1);
         $rootScope.loadingBarStop();
         $rootScope.currentProject.name = projectName;
         if (_.isFunction(callback)) callback();

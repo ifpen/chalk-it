@@ -9,7 +9,7 @@
 
 import { xDashConfig } from 'config.js';
 
-import _ from 'underscore';
+import _ from 'lodash';
 import PNotify from 'pnotify';
 
 import { fileManager } from 'kernel/general/backend/file-management';
@@ -53,16 +53,15 @@ export const Xdash = function () {
     editorSingletons.widgetEditor.clear();
     runtimeSingletons.xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 
+    $rootScope.updateFlagDirty(false);
     $('#projectName')[0].value = prjName;
-    $('.tab--active').removeClass('changed');
-
-    $rootScope.currentPrjDirty = '';
 
     pyodideManager.reset(true, false);
 
     const layoutMgr = editorSingletons.layoutMgr;
-    layoutMgr.resetDashBgColor(); // GHI for issue #228
     layoutMgr.resetDashboardTheme();
+    layoutMgr.resetDashBgColor();
+    layoutMgr.updateButtonState();
 
     const $scopeDash = angular.element(document.getElementById('help__wrap')).scope();
     $scopeDash.initFrame();
@@ -70,10 +69,11 @@ export const Xdash = function () {
 
   /*--------initMeta--------*/
   function initMeta() {
+    let isoDate = new Date().toISOString();
     const meta = {
       version: version,
       [XdashDataUpdateEngine.VERSION_METADATA_KEY]: XdashDataUpdateEngine.CURRENT_VERSION,
-      date: Date(),
+      date: isoDate,
       name: '',
       description: '',
       groupName: '',
@@ -458,7 +458,7 @@ export const Xdash = function () {
   //-------------------------------------------------------------------------------------------------------------------
 
   /*--------openProjectManager--------*/
-  async function openProjectManager(data) {
+  function openProjectManager(data) {
     let jsonObject;
     try {
       jsonObject = JSON.parse(data);
@@ -469,10 +469,11 @@ export const Xdash = function () {
 
     initRootScopeCurrentProjectObject(jsonObject);
     let bOk = false;
-    let loadFn = async function (e) {
+    let loadFn = function (e) {
       const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       scopeDash.reset();
-      bOk = await deserialize(jsonObject);
+      clear(); // MBG 01/08/2018 : important to do
+      bOk = deserialize(jsonObject);
       datanodesManager.showLoadingIndicator(false);
       document.removeEventListener('widgets-tab-loaded', loadFn);
       jsonObject = undefined; //ABK in case of  missed synchronization a second loadFn cannot be made
@@ -484,7 +485,7 @@ export const Xdash = function () {
     };
     document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
     if (dashState.tabActive == 'widgets') {
-      await loadFn();
+      loadFn();
     }
   }
 
@@ -494,39 +495,41 @@ export const Xdash = function () {
   //-------------------------------------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------------------------------
 
-  function saveAndClosePrj() {
-    let $body = angular.element(document.body);
-    let $rootScope = $body.scope().$root;
-    let forceClose = true;
-    if ($rootScope.currentProject.name !== '') {
-      // project is open
-      let headerbarCtrl = angular.element(document.getElementById('headerbar-ctrl')).scope();
+  async function saveAndClosePrj() {
+    const $rootScope = angular.element(document.body).scope().$root;
+    const forceClose = true;
+    if ($rootScope.xDashFullVersion) {
+      if ($rootScope.currentProject.name !== '') {
+        // project is open
+        const headerbarCtrl = angular.element(document.getElementById('headerbar-ctrl')).scope();
 
-      if ($('.tab--active').hasClass('changed')) {
-        //project is dirty
-        var endAction = function () {
-          headerbarCtrl.closeProject($rootScope.currentProject.name, forceClose);
-          console.log('Your project is saved before closing');
-        };
-        fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
-
-        // swal('Auto closing project', 'Your project is saved before closing.', 'info');
-      } else {
-        headerbarCtrl.closeProject($rootScope.currentProject.name);
-        console.log('Your project was closed');
-        // swal('Thanks for staying!', 'Your project was closed.', 'info');
+        if ($rootScope.currentPrjDirty == ' *') {
+          //project is dirty
+          const endAction = function () {
+            headerbarCtrl.closeProject($rootScope.currentProject.name, forceClose);
+            console.log('Your project is saved before closing');
+          };
+          fileManager.getFileListExtended('project', $rootScope.currentProject.name, undefined, endAction, true);
+        } else {
+          headerbarCtrl.closeProject($rootScope.currentProject.name);
+          console.log('Your project was closed');
+        }
       }
+    } else if ($rootScope.currentPrjDirty == ' *') {
+      const inputName = document.getElementById('projectName').value;
+      const fileName = (inputName || 'untitled') + '-recovery';
+      const temp = runtimeSingletons.xdash.serialize();
+      temp.meta.name = fileName;
+      const xdashFile = JSON.stringify(temp, null, '\t');
 
-      // setTimeout(function() {
-      //     //swal('Thanks for staying!', 'Your project was closed.', 'info');
-      // }, 10000);
+      const FileMngrInst = new FileMngrFct();
+      FileMngrInst.SendText('project', fileName + '.xprjson', xdashFile, undefined);
     }
   }
 
   /*--------manage leave/refresh page--------*/
-  $(window).bind('beforeunload', function () {
-    saveAndClosePrj();
-    return 'Are you sure you want to leave the page ?';
+  $(window).bind('beforeunload', async function () {
+    await saveAndClosePrj();
   });
 
   //-------------------------------------------------------------------------------------------------------------------

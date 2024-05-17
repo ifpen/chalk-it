@@ -5,6 +5,7 @@ import './services/depGraphService';
 import './services/editPlaySwitchService';
 import './services/jsonDisplayDirective';
 import './services/manageDatanodeService';
+import './services/profGraphService';
 import './services/uiNotificationService';
 
 import './_partials/dashboard_contentTop.controller';

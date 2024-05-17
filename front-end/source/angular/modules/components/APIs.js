@@ -54,7 +54,7 @@ xcloudModule.service('ApisFactory', [
           if ($rootScope.xDashFullVersion) {
             swal('Unexpected error', 'unable to load settings.usr\n\n' + data, 'error');
           } else {
-            swal('Please check and restart the command line', 'unable to load settings.usr', 'error');
+            swal('Please check and restart the command line', 'unable to load "~/.chalk-it/settings.json"', 'error');
           }
 
           return $rootScope.DefaultSettings;

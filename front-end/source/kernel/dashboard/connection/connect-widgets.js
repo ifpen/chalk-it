@@ -6,7 +6,7 @@
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Tristan BARTEMENT  │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';

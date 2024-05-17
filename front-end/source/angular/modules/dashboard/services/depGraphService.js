@@ -7,7 +7,7 @@
 // │ Original authors(s): Abir EL FEKI, Mondher AJIMI                                     │ \\
 // └──────────────────────────────────────────────────────────────────────────────────────┘ \\
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import _ from 'underscore';
+import _ from 'lodash';
 
 angular.module('modules.dashboard').service('DepGraphService', [
   '$rootScope',

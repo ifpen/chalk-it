@@ -14,11 +14,6 @@ module.exports = merge(common, {
       },
     },
   },
-  resolve: {
-    alias: {
-      'config.js$': path.resolve(__dirname, '../configs/config.prod.js'),
-    },
-  },
   mode: 'production',
   output: {
     filename: '[name].[contenthash].js',

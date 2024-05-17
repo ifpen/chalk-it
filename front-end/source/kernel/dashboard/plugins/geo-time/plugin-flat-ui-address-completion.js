@@ -6,7 +6,7 @@
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'underscore';
+import _ from 'lodash';
 import 'flat-ui.alt';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
@@ -57,7 +57,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
 
     this.updateValue = function (e) {
       var escapeKeys = [9, 16, 17, 18, 20, 33, 34, 35, 36, 37, 38, 39, 40];
-      if (_.contains(escapeKeys, e.which)) return;
+      if (_.includes(escapeKeys, e.which)) return;
 
       if (e.which == 10 || e.which == 13 || e.which == 27) {
         var val = $('#ac-value' + idWidget)[0].value;
@@ -190,7 +190,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
       widgetHtml.setAttribute('id', 'ac-value-widget-html' + idWidget);
       widgetHtml.setAttribute('class', 'ac-value-widget-html');
       let divContent = '';
-      if (modelsParameters[idInstance].label != '' && modelsParameters[idInstance].displayLabel) {
+      if (modelsParameters[idInstance].displayLabel) {
         let widthStyle = '';
         valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
         if (!_.isUndefined(modelsParameters[idInstance].valueWidthProportion)) {
@@ -285,7 +285,9 @@ function flatUiAddressCompletionWidgetsPluginClass() {
         }
       },
       clearCaption: function () {
-        modelsParameters[idInstance].label = '';
+        if (modelsParameters[idInstance].inheritLabelFromData) {
+          modelsParameters[idInstance].label = '';
+        }
         self.render();
       },
     };

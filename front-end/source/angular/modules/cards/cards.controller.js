@@ -9,7 +9,7 @@
 
 import { xDashConfig } from 'config.js';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
-import _ from 'underscore';
+import _ from 'lodash';
 import template from 'angular/modules/cards/cards.html';
 import PNotify from 'pnotify';
 
