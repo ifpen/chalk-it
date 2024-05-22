@@ -89,10 +89,7 @@ const RuntimeDashboard = (function () {
   }
 
   function loadDashboard(jsonContent, exportOptions) {
-    let decodedData = JSON.stringify(jsonContent.data); // fix bug in properly handling characters for JSON parsing
-    decodedData = decodedData.replace(/[\u007F-\uFFFF]/g, function (chr) {
-      return '\\u' + ('0000' + chr.charCodeAt(0).toString(16)).substr(-4);
-    });
+    let decodedData = $('<textarea />').html(JSON.stringify(jsonContent.data)).text();
     let data_json = '';
     try {
       data_json = JSON.parse(decodedData);
