@@ -1,6 +1,7 @@
 import { xServConfig } from 'config.js';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { xcloudModule } from 'kernel/base/xdash-load';
+import { urlxDashNodeServer } from 'config.js';
 
 xcloudModule.service('ApisFactory', [
   '$http',
@@ -63,7 +64,7 @@ xcloudModule.service('ApisFactory', [
         return dataToReturn;
       } catch (error) {
         console.log('getSettings error' + error);
-        console.error(error)
+        console.error(error);
         return {
           error: true,
           status: 401,

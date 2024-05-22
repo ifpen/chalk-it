@@ -724,7 +724,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
     });
     datanodesDependency.addCurrentGraphList(list.disconSourceNodes, 0);
     return list;
-  };
+  }
 
   function _updateSourceNodes(sourceNodes, callOriginArg) {
     let startNodes = new Set(sourceNodes);

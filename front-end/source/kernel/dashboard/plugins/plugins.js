@@ -25,7 +25,7 @@ import './geo-time/plugin-map-widgets';
 import './geo-time/plugin-timepicker-widgets';
 
 import './plots/plugin-echarts-widgets';
-import './plots/plugin-plotly-widgets'
+import './plots/plugin-plotly-widgets';
 import './plots/plugin-python-widgets';
 
 // TODO tobe removed

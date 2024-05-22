@@ -1,5 +1,4 @@
+import { discoverModule as _discoverModule } from './discover';
+import './discover.controller';
 
-import {discoverModule as _discoverModule} from "./discover"
-import "./discover.controller"
-
-export const discoverModule = _discoverModule
+export const discoverModule = _discoverModule;
