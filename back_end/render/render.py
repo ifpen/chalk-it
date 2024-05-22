@@ -27,13 +27,11 @@ from ..common import TemplateUtils
 
 
 class RenderApp:
-    XPRJSON_PATH = "path/dashboard.xprjson"
+    XPRJSON_PATH = "dashboard.xprjson"
     DEBUG = False
     # Determine the base directory for HTML templates
     BASE_DIR = (
-        (Path(__file__).parent / ".." / ".." / "front-end").resolve()
-        if not DEBUG
-        else (Path(__file__).parent.parent).resolve()
+        (Path(__file__).parent.parent).resolve()
     )
 
     def __init__(self) -> None:
@@ -76,7 +74,7 @@ class RenderApp:
     def run(self, port: int = 8000) -> None:
         self.app.run(port=port)
 
+app = RenderApp().app
 
 if __name__ == "__main__":
-    my_flask_app = RenderApp()
-    my_flask_app.run()
+    app.run(port=8)
