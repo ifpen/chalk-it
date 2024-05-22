@@ -13,7 +13,7 @@ import _ from 'lodash';
 import PNotify from 'pnotify';
 
 import { fileManager } from 'kernel/general/backend/file-management';
-import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { FileMngr, FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { pyodideManager } from 'kernel/base/pyodide-loader';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';

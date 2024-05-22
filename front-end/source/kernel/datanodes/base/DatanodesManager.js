@@ -32,6 +32,11 @@ import { xdsjson } from 'kernel/datanodes/export/xdsjson';
 import { offSchedLogUser } from 'kernel/base/main-common';
 import { schedulerProfiling } from 'kernel/datanodes/execution-engine/DatanodeScheduler';
 import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
+import {
+  EVENTS_EDITOR_DATANODE_CREATED,
+  EVENTS_EDITOR_DATANODE_DELETED,
+  EVENTS_EDITOR_DATANODE_UPDATED,
+} from 'angular/modules/editor/editor.events';
 
 export const datanodesManager = (function () {
   var datanodePlugins = {};
@@ -248,7 +253,7 @@ export const datanodesManager = (function () {
       // handle dependencies
       if (datanodesDependency.hasSuccessors(viewModel.name())) {
         var successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
-        xdashNotifications.manageNotification(
+        runtimeSingletons.xdashNotifications.manageNotification(
           'info',
           viewModel.name(),
           'Update new name "' + newSettings.settings.name + '" in script of "' + successors + '"'
@@ -304,7 +309,7 @@ export const datanodesManager = (function () {
             }
           }
         }
-        xdashNotifications.manageNotification(
+        runtimeSingletons.xdashNotifications.manageNotification(
           'info',
           viewModel.name(),
           'Update new name "' + newSettings.settings.name + '" in connected widgets "' + wdList.join('\n') + '"'

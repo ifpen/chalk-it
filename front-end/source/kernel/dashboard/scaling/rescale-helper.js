@@ -34,7 +34,7 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
     //console.log("rescale-helper : getCurrentDashZoneDims");
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getCurrentDashZoneDims();
+        return editorSingletons.widgetEditor.getCurrentDashZoneDims();
       case 'preview':
         return widgetPreview.getCurrentDashZoneDims();
     }
@@ -74,7 +74,7 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
   function getRelativeWidgetsWidth() {
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getWidgetsRelativeDims().width;
+        return editorSingletons.widgetEditor.getWidgetsRelativeDims().width;
       case 'preview':
         return widgetPreview.getWidgetsRelativeDims().width;
     }
@@ -84,7 +84,7 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
   function getRelativeWidgetsHeight() {
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getWidgetsRelativeDims().height;
+        return editorSingletons.widgetEditor.getWidgetsRelativeDims().height;
       case 'preview':
         return widgetPreview.getWidgetsRelativeDims().height;
     }
@@ -94,7 +94,7 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
   function getRelativeWidgetsLeft() {
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getWidgetsRelativeDims().left;
+        return editorSingletons.widgetEditor.getWidgetsRelativeDims().left;
       case 'preview':
         return widgetPreview.getWidgetsRelativeDims().left;
     }
@@ -104,7 +104,7 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
   function getRelativeWidgetsTop() {
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getWidgetsRelativeDims().top;
+        return editorSingletons.widgetEditor.getWidgetsRelativeDims().top;
       case 'preview':
         return widgetPreview.getWidgetsRelativeDims().top;
     }
