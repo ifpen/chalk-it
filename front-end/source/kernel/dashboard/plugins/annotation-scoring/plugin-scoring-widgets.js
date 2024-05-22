@@ -186,7 +186,7 @@ function scoringWidgetsPluginClass() {
     this.value = {
       updateCallback: function () {},
       setValue: function (val) {
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsHiddenParams[idInstance].value = val;

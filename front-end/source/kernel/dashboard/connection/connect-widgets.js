@@ -44,7 +44,7 @@ export const widgetConnector = (function () {
     // Create missing connections
     for (const [key, widget] of widgetEditor.widgetContainers) {
       if (widgetsConnection[key]) {
-        if (!!widgetEditor.widgetObject[key]) {
+        if (widgetEditor.widgetObject[key]) {
           if (!_.isNull(widgetsConnection[key].widgetObjEdit) && !_.isNull(widgetEditor.widgetObject[key])) {
             let len =
               widgetsConnection[key].widgetObjEdit.numberOfTriggers - widgetEditor.widgetObject[key].numberOfTriggers;

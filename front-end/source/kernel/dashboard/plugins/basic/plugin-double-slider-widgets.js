@@ -266,7 +266,7 @@ function doubleSliderWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         var val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsHiddenParams[idInstance].minValue = val;
@@ -311,7 +311,7 @@ function doubleSliderWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         var val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsHiddenParams[idInstance].maxValue = val;
@@ -356,7 +356,7 @@ function doubleSliderWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         var val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsParameters[idInstance].maxRange = val;
@@ -403,7 +403,7 @@ function doubleSliderWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         var val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsParameters[idInstance].minRange = val;

@@ -336,7 +336,7 @@ function flatUiWidgetsPluginClass() {
       };
       this.enableButton = function () {
         aElement.classList.remove('disabled');
-        if (!!iElement) {
+        if (iElement) {
           iElement.remove();
         }
       };
@@ -796,7 +796,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsParameters[idInstance].max = val;
@@ -818,7 +818,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsParameters[idInstance].min = val;
