@@ -190,6 +190,7 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
       switch (self.mode) {
         case 'edit':
           editorSingletons.layoutMgr.updateMaxTopAndLeft();
+          break;
         case 'preview':
           break;
       }
