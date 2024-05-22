@@ -112,9 +112,6 @@ var widgetPreview = (function () {
     let xprjson = preparePreviewModeContainer();
     renderDashboardWidgets(xprjson, false);
 
-    // in case different of size between edit and play
-    //resizeDashboard(); // MBG 14/06/2021 No need right now
-
     // assign change value handlers
     if (datanodesManager.getAllDataNodes().length != 0) {
       assignValueChangeHandlers();

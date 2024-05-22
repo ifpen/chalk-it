@@ -8,7 +8,7 @@ Currently, Chalk'it allows to export and share standalone HTML apps with Python 
 
 See the [demos gallery](https://ifpen.github.io/chalk-it/index.html#porfolio) and [templates gallery](https://ifpen.github.io/chalk-it/templates-gallery/) for examples with code.
 
-For more details, you can browse the online [documentation](https://ifpen.github.io/chalk-it/hosted/doc/)
+For more details, you can browse the online [documentation](https://ifpen.github.io/chalk-it/hosted/doc/).
 
 ## Usage
 

@@ -45,7 +45,7 @@ class RowToTabRuntime {
   rowToTabFinishRescale(valueRow, valueCol) {
     const $rootScope = angular.element(document.body).scope().$root;
     const currentPage = $rootScope.pageNumber;
-    const { defaultRows, defaultCols } = this.grid;
+    const { defaultRows, defaultCols } = this.grid || { rows: 1, cols: 1 };
 
     const rows = Number(valueRow) || defaultRows;
     const cols = Number(valueCol) || defaultCols;

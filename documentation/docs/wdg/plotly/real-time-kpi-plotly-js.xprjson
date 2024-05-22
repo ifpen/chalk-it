@@ -3,7 +3,7 @@
     "version": "3.000.8889",
     "fileFormatVersion": "0.3",
     "date": "2024-05-03T09:36:44.243Z",
-    "name": "real-time-kpi-plotly",
+    "name": "real-time-kpi-plotly-js",
     "description": "KPI with trend and Plolty real-time widget example",
     "groupName": "JavaScript",
     "tags": [

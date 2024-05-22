@@ -1,182 +1,189 @@
 <div style="/*background:-webkit-linear-gradient(#f2f2f2, #999)*/">
-    <div class="modal-header" style="/*padding-bottom:0*/">
-        <h2>Export settings</h2>
-    </div>
-    <h5 class="pull-left" style="padding-left: 10px; margin:10px 0">
-        <a>
-            Please choose the export setting before saving your
-            dashboard
-        </a>
-    </h5>
-    <form name="form.userForm" ng-submit="submitForm()" novalidate class="dashboard-form">
-
-        <div class="modal-body">
-            <table>
-                <tr style="">
-                    <td style="width: 40%;padding-top: 5px;padding-left: 10px;">Show notifications</td>
-                    <td style="padding-top: 5px;">
-                        <div>
-                            <i class="fa fa-toggle-on active"
-                                style="font-size:36px ; color: var(--checked-switch-background-color)"
-                                ng-if="status == true" ng-click="changeStatus('false');"></i>
-                            <i class="fa fa-toggle-on fa-rotate-180 inactive"
-                                style="font-size:36px; color: var(--switch-wrapper-background-color)"
-                                ng-if="status == false" ng-click="changeStatus('true');"></i>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 40%;padding-top: 5px;padding-left: 10px;">Scaling Method</td>
-                    <td style="padding-top: 5px">
-                        <div>
-                            <select class="inputList" style="width:240px; height:auto;" ng-model="scalingMethod"
-                                name="select-export-settings" id="select-export-settings">
-                                <option value="projectToTargetWindow" id="row0" ng-if="nbRows >= 1">projectToTargetWindow</option>
-                                <option value="adjustToFullWidth" id="row1" ng-if="nbRows === 0">adjustToFullWidth</option>
-                                <option value="ajustToTargetWindow" id="row2" ng-if="nbRows === 0">ajustToTargetWindow</option>
-                                <option value="keepOriginalWidth" id="row3" ng-if="nbRows === 0">keepOriginalWidth</option>
-                                <option value="rowToPage" id="row4" ng-if="nbRows >= 1">rowToPage</option>
-                                <option value="rowToTab" id="row5" ng-if="nbRows >= 1">rowToTab</option>
-                                <option value="customNavigation" id="row6" ng-if="nbRows >= 1">customNavigation</option>
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr ng-if="scalingMethod == 'customNavigation'">
-                    <td style="width: 40%;padding-top: 5px;padding-left: 10px;">Default page</td>
-                    <td style="padding-top: 5px">
-                        <div>
-                            <select class="inputList" style="width:240px; height:auto;" ng-model="defaultPageID"
-                                name="select-default-page" id="select-default-page">
-                                <option ng-repeat="page in pageNamesObj" value="{{page.id}}">{{page.name}}</option>
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+  <div class="modal-header" style="/*padding-bottom:0*/">
+    <h2>Export settings</h2>
+  </div>
+  <h5 class="pull-left" style="padding-left: 10px; margin: 10px 0">
+    <a> Please choose the export setting before saving your dashboard </a>
+  </h5>
+  <form name="form.userForm" ng-submit="submitForm()" novalidate class="dashboard-form">
+    <div class="modal-body">
+      <table>
+        <tr style="">
+          <td style="width: 40%; padding-top: 5px; padding-left: 10px">Show notifications</td>
+          <td style="padding-top: 5px">
             <div>
-                <!-- end of user messages -->
-                <ul class="messages" style="padding-top: 10px;margin:0">
-                    <li style="border-bottom: aliceblue;" ng-if="scalingMethod=='projectToTargetWindow'">
-                        <div class="message_wrapper">
-                            <i class="scaling-method icn-project-to-target-window"></i>
-                        </div>
-                        <div class="message_wrapper">
-                            <h4 class="heading">
-                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i class="fa fa-paperclip"></i> projectToTargetWindow </a>
-                            </h4>
-                            <blockquote class="message" style="font-size:14px">
-                                The whole dashboard fits the entire target screen. The original dashboard (in edition
-                                mode), seen with its scroll dimensions, is projected into the target screen. Target
-                                screen has no overflow (no scroll bars).
-                            </blockquote>
-                            <br>
-                        </div>
-                    </li>
-                    <li style="border-bottom: aliceblue;" ng-if="scalingMethod=='adjustToFullWidth'">
-                        <div class="message_wrapper">
-                            <i class="scaling-method icn-adjust-to-full-width"></i>
-                        </div>
-                        <div class="message_wrapper">
-                            <h4 class="heading">
-                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i class="fa fa-paperclip"></i> adjustToFullWidth </a>
-                            </h4>
-                            <blockquote class="message">
-                                The dashboard is stretched in the width direction, to fit the width of the target
-                                screen. Height of widgets is computed such a way that they conserve their proportions
-                                (in pixels).
-                            </blockquote>
-                            <br>
-
-                        </div>
-                    </li>
-                    <li style="border-bottom: aliceblue;" ng-if="scalingMethod=='ajustToTargetWindow'">
-                        <div class="message_wrapper">
-                            <i class="scaling-method icn-ajust-to-target-window"></i>
-                        </div>
-                        <div class="message_wrapper">
-                            <h4 class="heading">
-                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i class="fa fa-paperclip"></i> ajustToTargetWindow </a>
-                            </h4>
-                            <blockquote class="message">
-                                Similar to adjustToFullWidth, but widgets proportions are not conserved. Dashboard
-                                viewport proportion, from the width and height dimensions, are conserved. Useful to have
-                                the same dashboard content in the height direction.
-                            </blockquote>
-                            <br>
-
-                        </div>
-                    </li>
-                    <li style="border-bottom: aliceblue;" ng-if="scalingMethod=='keepOriginalWidth'">
-                        <div class="message_wrapper">
-                            <i class="scaling-method icn-keep-original-width"></i>
-                        </div>
-                        <div class="message_wrapper">
-                            <h4 class="heading">
-                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i class="fa fa-paperclip"></i> keepOriginalWidth </a>
-                            </h4>
-                            <blockquote class="message">
-                                Original viewport dimensions of the dashboard are kept. Dashboard is centered.
-                            </blockquote>
-                            <br>
-                        </div>
-                    </li>
-                    <li style="border-bottom: aliceblue;" ng-if="scalingMethod=='rowToPage'">
-                        <div class="message_wrapper">
-                            <i class="scaling-method icn-row-to-page"></i>
-                        </div>
-                        <div class="message_wrapper">
-                            <h4 class="heading">
-                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i class="fa fa-paperclip"></i> rowToPage </a>
-                            </h4>
-                            <blockquote class="message">
-                                Each row of the dashboard fits the entire target screen. Only one row displayed at a
-                                time. A pagination system is included.
-                            </blockquote>
-                            <br>
-                        </div>
-                    </li>
-                    <li style="border-bottom: aliceblue;" ng-if="scalingMethod=='rowToTab'">
-                        <div class="message_wrapper">
-                            <i class="scaling-method icn-row-to-tab"></i>
-                        </div>
-                        <div class="message_wrapper">
-                            <h4 class="heading">
-                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i class="fa fa-paperclip"></i> rowToTab </a>
-                            </h4>
-                            <blockquote class="message">
-                                Each row of the dashboard fits the entire target screen. Only one row displayed at a
-                                time as a page tab.
-                            </blockquote>
-                            <br>
-                        </div>
-                    </li>
-                    <li style="border-bottom: aliceblue;" ng-if="scalingMethod=='customNavigation'">
-                        <div class="message_wrapper">
-                            <i class="scaling-method icn-custom-navigation"></i>
-                        </div>
-                        <div class="message_wrapper">
-                            <h4 class="heading">
-                                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                <a href="#"><i class="fa fa-paperclip"></i> customNavigation </a>
-                            </h4>
-                            <blockquote class="message">
-                                Each row of the dashboard fits the entire target screen. Only one row displayed at a
-                                time. Use xDashApi.goToPage(page) function with trigger buttons to custom inter-pages
-                                navigation
-                            </blockquote>
-                            <br>
-                        </div>
-                    </li>
-                </ul>
+              <i
+                class="fa fa-toggle-on active"
+                style="font-size: 36px; color: var(--checked-switch-background-color)"
+                ng-if="status == true"
+                ng-click="changeStatus('false');"
+              ></i>
+              <i
+                class="fa fa-toggle-on fa-rotate-180 inactive"
+                style="font-size: 36px; color: var(--switch-wrapper-background-color)"
+                ng-if="status == false"
+                ng-click="changeStatus('true');"
+              ></i>
             </div>
-            <!--<div class="row">
+          </td>
+        </tr>
+        <tr>
+          <td style="width: 40%; padding-top: 5px; padding-left: 10px">Scaling Method</td>
+          <td style="padding-top: 5px">
+            <div>
+              <select
+                class="inputList"
+                style="width: 240px; height: auto"
+                ng-model="scalingMethod"
+                name="select-export-settings"
+                id="select-export-settings"
+              >
+                <option value="projectToTargetWindow" id="row0" ng-if="nbRows >= 1">projectToTargetWindow</option>
+                <option value="adjustToFullWidth" id="row1" ng-if="nbRows === 0">adjustToFullWidth</option>
+                <option value="ajustToTargetWindow" id="row2" ng-if="nbRows === 0">ajustToTargetWindow</option>
+                <option value="keepOriginalWidth" id="row3" ng-if="nbRows === 0">keepOriginalWidth</option>
+                <option value="rowToPage" id="row4" ng-if="nbRows >= 1">rowToPage</option>
+                <option value="rowToTab" id="row5" ng-if="nbRows >= 1">rowToTab</option>
+                <option value="customNavigation" id="row6" ng-if="nbRows >= 1">customNavigation</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr ng-if="scalingMethod == 'customNavigation'">
+          <td style="width: 40%; padding-top: 5px; padding-left: 10px">Default page</td>
+          <td style="padding-top: 5px">
+            <div>
+              <select
+                class="inputList"
+                style="width: 240px; height: auto"
+                ng-model="defaultPageID"
+                name="select-default-page"
+                id="select-default-page"
+              >
+                <option ng-repeat="page in pageNamesObj" value="{{page.id}}">{{page.name}}</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div>
+        <!-- end of user messages -->
+        <ul class="messages" style="padding-top: 10px; margin: 0">
+          <li style="border-bottom: aliceblue" ng-if="scalingMethod=='projectToTargetWindow'">
+            <div class="message_wrapper">
+              <i class="scaling-method icn-project-to-target-window"></i>
+            </div>
+            <div class="message_wrapper">
+              <h4 class="heading">
+                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                <a href="#"><i class="fa fa-paperclip"></i> projectToTargetWindow </a>
+              </h4>
+              <blockquote class="message" style="font-size: 14px">
+                The whole dashboard fits the entire target screen. The original dashboard (in edition mode), seen with
+                its scroll dimensions, is projected into the target screen. Target screen has no overflow (no scroll
+                bars).
+              </blockquote>
+              <br />
+            </div>
+          </li>
+          <li style="border-bottom: aliceblue" ng-if="scalingMethod=='adjustToFullWidth'">
+            <div class="message_wrapper">
+              <i class="scaling-method icn-adjust-to-full-width"></i>
+            </div>
+            <div class="message_wrapper">
+              <h4 class="heading">
+                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                <a href="#"><i class="fa fa-paperclip"></i> adjustToFullWidth </a>
+              </h4>
+              <blockquote class="message">
+                The dashboard is stretched in the width direction, to fit the width of the target screen. Height of
+                widgets is computed such a way that they conserve their proportions (in pixels).
+              </blockquote>
+              <br />
+            </div>
+          </li>
+          <li style="border-bottom: aliceblue" ng-if="scalingMethod=='ajustToTargetWindow'">
+            <div class="message_wrapper">
+              <i class="scaling-method icn-ajust-to-target-window"></i>
+            </div>
+            <div class="message_wrapper">
+              <h4 class="heading">
+                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                <a href="#"><i class="fa fa-paperclip"></i> ajustToTargetWindow </a>
+              </h4>
+              <blockquote class="message">
+                Similar to adjustToFullWidth, but widgets proportions are not conserved. Dashboard viewport proportion,
+                from the width and height dimensions, are conserved. Useful to have the same dashboard content in the
+                height direction.
+              </blockquote>
+              <br />
+            </div>
+          </li>
+          <li style="border-bottom: aliceblue" ng-if="scalingMethod=='keepOriginalWidth'">
+            <div class="message_wrapper">
+              <i class="scaling-method icn-keep-original-width"></i>
+            </div>
+            <div class="message_wrapper">
+              <h4 class="heading">
+                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                <a href="#"><i class="fa fa-paperclip"></i> keepOriginalWidth </a>
+              </h4>
+              <blockquote class="message">
+                Original viewport dimensions of the dashboard are kept. Dashboard is centered.
+              </blockquote>
+              <br />
+            </div>
+          </li>
+          <li style="border-bottom: aliceblue" ng-if="scalingMethod=='rowToPage'">
+            <div class="message_wrapper">
+              <i class="scaling-method icn-row-to-page"></i>
+            </div>
+            <div class="message_wrapper">
+              <h4 class="heading">
+                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                <a href="#"><i class="fa fa-paperclip"></i> rowToPage </a>
+              </h4>
+              <blockquote class="message">
+                Each row of the dashboard fits the entire target screen. Only one row displayed at a time. A pagination
+                system is included.
+              </blockquote>
+              <br />
+            </div>
+          </li>
+          <li style="border-bottom: aliceblue" ng-if="scalingMethod=='rowToTab'">
+            <div class="message_wrapper">
+              <i class="scaling-method icn-row-to-tab"></i>
+            </div>
+            <div class="message_wrapper">
+              <h4 class="heading">
+                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                <a href="#"><i class="fa fa-paperclip"></i> rowToTab </a>
+              </h4>
+              <blockquote class="message">
+                Each row of the dashboard fits the entire target screen. Only one row displayed at a time as a page tab.
+              </blockquote>
+              <br />
+            </div>
+          </li>
+          <li style="border-bottom: aliceblue" ng-if="scalingMethod=='customNavigation'">
+            <div class="message_wrapper">
+              <i class="scaling-method icn-custom-navigation"></i>
+            </div>
+            <div class="message_wrapper">
+              <h4 class="heading">
+                <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                <a href="#"><i class="fa fa-paperclip"></i> customNavigation </a>
+              </h4>
+              <blockquote class="message">
+                Each row of the dashboard fits the entire target screen. Only one row displayed at a time. Use
+                Chalk'it API functions with trigger buttons to custom inter-pages navigation
+              </blockquote>
+              <br />
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!--<div class="row">
                 <div class="checkbox">
                     <table class="pull-right" style="margin-right: 15px;">
                         <tbody>
@@ -191,13 +198,12 @@
                     </table>
                 </div>
             </div>-->
-        </div>
-        <div class="modal-footer">
-            <div>
-                <button id="dialog-cancel" ng-click="cancel()" class="btn btn-rounded-fill cancel"
-                    type="button">Cancel</button>
-                <button id="dialog-ok" type="submit" class="btn btn-rounded-fill primary">Save</button>
-            </div>
-        </div>
-    </form>
+    </div>
+    <div class="modal-footer">
+      <div>
+        <button id="dialog-cancel" ng-click="cancel()" class="btn btn-rounded-fill cancel" type="button">Cancel</button>
+        <button id="dialog-ok" type="submit" class="btn btn-rounded-fill primary">Save</button>
+      </div>
+    </div>
+  </form>
 </div>

@@ -2,8 +2,8 @@
   "meta": {
     "version": "3.000.8889",
     "fileFormatVersion": "0.3",
-    "date": "2024-05-04T11:24:14.242Z",
-    "name": "rest-pandas-pyodide-covid-js-py",
+    "date": "2024-05-04T10:26:03.887Z",
+    "name": "rest-pandas-python-covid-js-py-local",
     "description": "",
     "groupName": "Mixed",
     "tags": [
@@ -34,11 +34,12 @@
           "name": "countriesList",
           "autoStart": true,
           "explicitTrig": false,
-          "content": "covid = dataNodes[\"covidDataFrame\"]\nreturn covid.index.tolist()\n",
           "dockerImage": {
-            "name": "Pyodide",
-            "id": "__PYODIDE__"
-          }
+            "name": "Default",
+            "id": ""
+          },
+          "content": "covid = dataNodes[\"covidDataFrame\"]\nreturn covid.index.tolist()\n",
+          "signature": "9397c34255060cee4f3c522ec6fca4cb22beb0051e0978d62126e98858e9d431"
         }
       },
       {
@@ -49,10 +50,11 @@
           "autoStart": true,
           "explicitTrig": false,
           "dockerImage": {
-            "name": "Pyodide",
-            "id": "__PYODIDE__"
+            "name": "Default",
+            "id": ""
           },
-          "content": "from io import StringIO\nimport pandas as pd\n\ncovid = pd.read_csv(StringIO(dataNodes[\"covidDataJohnHopkins\"][\"content\"]))\n\ncovid = covid.drop(columns=['Lat', 'Long']).groupby('Country/Region').sum()\n\nreturn chalkit.as_python(covid)"
+          "content": "from io import StringIO\nimport pandas as pd\n\ncovid = pd.read_csv(StringIO(dataNodes[\"covidDataJohnHopkins\"][\"content\"]))\n\ncovid = covid.drop(columns=['Lat', 'Long']).groupby('Country/Region').sum()\n\nreturn chalkit.as_python(covid)",
+          "signature": "4f4df625cbfd77cb4d36ef391fb949cb3ca1a09eb5765dde1bf505a869d2b824"
         }
       },
       {
@@ -76,7 +78,7 @@
             }
           ],
           "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0NTU0VHSVNhbmREYXRhL0NPVklELTE5L21hc3Rlci9jc3NlX2NvdmlkXzE5X2RhdGEvY3NzZV9jb3ZpZF8xOV90aW1lX3Nlcmllcy90aW1lX3Nlcmllc19jb3ZpZDE5X2NvbmZpcm1lZF9nbG9iYWwuY3N2IiwiSG9zdCI6InhkYXNoIn0=",
-          "proxySig": "5TM10MtZYvnW/sf2ZrpNxn/fpTeOoUHXzV23CzlL95mni7uOrscQQSlcUagf1btXos2wf1ZA+eGBSZhc1/bPlk5lyaqX3oHfc4Sq0kUugOLuSZa8ZHH9jyGOBNVXZpzZLBXBrEJXDUTQjJP4Ff5kbg3nxePCRPPNVb6JmHC0QC+UgImzwqbGWkZOxL545KsxsXmCKlOkGYDu2jd6zmLHnShUZI8ODQReB+wKMAnJVWcfEZIzwNWoWRKJcUdr5oK8"
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxn/fpTeOoUHXzV23CzlL95mni7uOrscQQSlcUagf1btXos2wf1ZA+eGBSZhc1/bPlk5lyaqX3oHfc4Sq0kUugOLuSZa8ZHH9jyGOBNVXZpzZLBXBrEJXDUTQjJP4Ff5kbg3nxePCRPPNVb6JmHC0QC+UgImzwqbGWkZOxL545KsxsXmCKlOkGYDu2jd6zmLHnShUZI8ODQReB+wKMAnJVWcPAPi1MsytgLBxX+Qv/uWV"
         }
       },
       {
@@ -86,11 +88,12 @@
           "name": "covidFiltered",
           "autoStart": true,
           "explicitTrig": false,
-          "content": "covid = dataNodes[\"covidDataFrame\"]\n\nsel = covid.loc[dataNodes[\"selectedCountry\"]]\n\nreturn sel.to_dict('split')\n",
           "dockerImage": {
-            "name": "Pyodide",
-            "id": "__PYODIDE__"
-          }
+            "name": "Default",
+            "id": ""
+          },
+          "content": "covid = dataNodes[\"covidDataFrame\"]\n\nsel = covid.loc[dataNodes[\"selectedCountry\"]]\n\nreturn sel.to_dict('split')\n",
+          "signature": "27bd5e03d45780d470233b6d7ff971a8d202acf9a39547278d68efaeef56d2c3"
         }
       },
       {
@@ -114,10 +117,7 @@
     ]
   },
   "libraries": {
-    "pyodideStandard": [
-      "numpy",
-      "pandas"
-    ],
+    "pyodideStandard": [],
     "pyodideMicropip": []
   },
   "scaling": {
@@ -151,7 +151,7 @@
       "layout": {
         "top": "1.33333vh",
         "left": "22.8403vw",
-        "height": "76.2667vh",
+        "height": "73.8667vh",
         "width": "59.2277vw",
         "minHeight": "32px",
         "minWidth": "50px",
@@ -184,8 +184,8 @@
       "layout": {
         "top": "1.33333vh",
         "left": "0.65445vw",
-        "height": "75.7333vh",
-        "width": "20.6806vw",
+        "height": "73.8667vh",
+        "width": "20.8115vw",
         "minHeight": "75px",
         "minWidth": "80px",
         "z-index": "3"

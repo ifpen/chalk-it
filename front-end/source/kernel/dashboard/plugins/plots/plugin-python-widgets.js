@@ -16,7 +16,10 @@
 modelsParameters.matplotlib = {};
 
 modelsHiddenParams.matplotlib = {
-  fig: {},
+  fig: {
+    type : "png", 
+    content: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+  }
 };
 
 // Layout (default dimensions)

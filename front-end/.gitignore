@@ -22,6 +22,7 @@ pyodide-worker-dev.js.map
 
 index.html
 index-view.html
+index-taipy-view.html
 test/jshint/*
 
 doc/
