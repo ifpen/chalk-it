@@ -232,11 +232,6 @@ export const Xdash = function () {
 
   /*--------openFile--------*/
   function openFile(fileType, target) {
-    if (fileType == 'project') {
-      fileText = 'project';
-    } else if (fileType == 'datanode') {
-      fileText = 'xdsjson';
-    }
     if (target === 'local') openFromLocal(fileType);
     else if (target === 'server') openFromServer(fileType, true);
   }

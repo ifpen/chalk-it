@@ -1953,7 +1953,6 @@ function mapWidgetsPluginClass() {
         fts = data.map((d, k) => ({
           type: 'Feature',
           id: k,
-          properties: {},
           geometry: d['geometry'],
           properties: {
             density: d[tgKey],
@@ -2633,7 +2632,6 @@ function mapWidgetsPluginClass() {
         }
         circles.push(
           L.circle([lats[k], lngs[k]], {
-            stroke: false,
             color: currentColor,
             fillColor: currentColor,
             fillOpacity: circleFillOpacity,

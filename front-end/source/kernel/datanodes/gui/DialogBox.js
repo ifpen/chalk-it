@@ -32,8 +32,7 @@ export function DialogBox(contentElement, title, okTitle, cancelTitle, okCallbac
     if (e.keyCode === 27) {
       // ESC
 
-      if (cancelTitle) {
-      } else {
+      if (!cancelTitle) {
         okFunction();
       }
     }

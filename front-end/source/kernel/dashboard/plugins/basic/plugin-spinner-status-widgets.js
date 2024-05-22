@@ -96,7 +96,6 @@ function spinnerStatusWidgetsPluginClass() {
     };
 
     this.trigger = {
-      updateCallback: function () {},
       setValue: function (val) {
         const dnName = widgetConnector.widgetsConnection[idInstance].sliders['trigger'].dataNode;
         const dataNode = datanodesManager.getDataNodeByName(dnName);

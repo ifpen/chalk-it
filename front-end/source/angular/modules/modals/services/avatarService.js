@@ -117,7 +117,6 @@ modalsModule.service('AvatarService', [
                 });
               }
             };
-            readSettingsData = '';
             var FileMngrInst = new FileMngrFct();
             FileMngrInst.DeleteFile('avatar', null, endAction, 'img');
           } else swal.close();

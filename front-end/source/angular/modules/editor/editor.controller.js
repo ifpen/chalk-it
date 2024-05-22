@@ -52,8 +52,6 @@ angular.module('modules.editor').controller('EditorController', [
 
     var copiedWidget;
 
-    var copiedWidget;
-
     vm.selection = [];
     vm.widgetExists = false;
     vm.connectionsExists = false;

@@ -252,7 +252,6 @@ angular.module('modules').service('ManagePrjService', [
         switch (fType) {
           case 'xprjson':
             fileTypeServer = 'DeleteProject';
-            itemName = 'ProjectName';
             dataMsg = {
               ProjectName: projectName,
             };

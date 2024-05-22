@@ -1132,7 +1132,7 @@ export function initEditWidget() {
     plotlyWidgetsPlugin.clear(); // FIXME
     mapWidgetsPlugin.clear(); // FIXME
 
-    for (const [key, val] of widgetContainers) {
+    for (const key in widgetContainers) {
       if (!_.isUndefined(models[key])) {
         delete models[key];
       }
