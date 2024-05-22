@@ -282,12 +282,12 @@ function annotationWidgetsPluginClass() {
     this.render = function () {
       var widgetHtml = document.createElement('div');
 
-      var displayDiv1 = 'table';
-      var displayDiv2 = 'table-cell';
+      let displayDiv1 = 'table';
+      let displayDiv2 = 'table-cell';
 
       if (!modelsParameters[idInstance].centerVertically) {
-        var displayDiv1 = 'flex';
-        var displayDiv2 = 'table';
+        displayDiv1 = 'flex';
+        displayDiv2 = 'table';
       }
 
       // conversion to enable HTML tags
