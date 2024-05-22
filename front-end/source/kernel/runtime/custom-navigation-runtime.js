@@ -48,7 +48,7 @@ class CustomNavigationRuntime {
     const { defaultRows, defaultCols } = this.grid;
 
     const rows = Number(jsonContent.device.cols.valueRow) || defaultRows;
-    const cols = Number(jsonContent.device.cols.valueRow) || defaultCols;
+    const cols = Number(jsonContent.device.cols.valueCol) || defaultCols;
 
     this.grid = { rows, cols };
 
