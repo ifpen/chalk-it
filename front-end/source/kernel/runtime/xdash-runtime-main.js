@@ -121,7 +121,7 @@ function getDashboardConfig() {
 function initContainers(jsonContent, exportOptions) {
   const scalingSrc = jQuery.extend(true, {}, jsonContent.scaling); // MBG fix load order
 
-    let navMenuHeightPx = 0;
+  let navMenuHeightPx = 0;
 
   if ($('#nav-menu')[0]) {
     navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);

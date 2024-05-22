@@ -1,4 +1,3 @@
-
 export class XdashDataUpdateInformation {
   constructor(fromVersion, toVersion, messages) {
     this.fromVersion = fromVersion;

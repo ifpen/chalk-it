@@ -240,7 +240,8 @@ export function DatanodeScheduler(datanodesDependency, startNodes, triggeredNode
           datanodesManager.getDataNodeByName(op).completeExecution('NOP');
           break;
         case 'NotReady': //error in init
-        case 'Stop': { // init is stopped, e.g. close a websocket without error
+        case 'Stop': {
+          // init is stopped, e.g. close a websocket without error
           operationsToExecute.delete(op);
           operationsBlacklist.add(op);
           if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)

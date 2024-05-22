@@ -75,10 +75,7 @@ function foliumWidgetPluginClass() {
           console.log(ex);
         }
       }
-      foliumDiv.setAttribute(
-        'style',
-        'width: inherit; height: inherit; background-color: rgba(0, 0, 0, 0)'
-      );
+      foliumDiv.setAttribute('style', 'width: inherit; height: inherit; background-color: rgba(0, 0, 0, 0)');
       $('#' + idDivContainer).html(foliumDiv);
     };
 

@@ -645,7 +645,8 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
           display_name: 'Python backend / image',
           type: 'custom1',
           default_value: DEFAULT_BACKEND,
-          description: 'Select execution backend for Python script. Default is local execution for pip installed Chalk\'it. Pyodide is executed in the browser.',
+          description:
+            "Select execution backend for Python script. Default is local execution for pip installed Chalk'it. Pyodide is executed in the browser.",
           implementation: dockerImageSelect,
         },
         {

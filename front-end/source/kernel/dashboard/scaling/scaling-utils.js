@@ -12,7 +12,6 @@ import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { dashState } from 'angular/modules/dashboard/dashboard';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 
-
 /*--------convert px to vw--------*/
 export function unitW(value) {
   var vwFl = value * (100.0 / document.documentElement.clientWidth);
