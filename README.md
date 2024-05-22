@@ -4,7 +4,7 @@ Welcome to Chalk'it. Chalk'it ambition is to allow technicians, scientists or en
 
 ![live demo](./assets/home/live-demo.gif)
 
-Currently, Chalk'it allows to export and share standalone HTML apps with Python and/or JavaScript code, thanks to Pyodide. Since version 0.5.0, Chalk'it is able to run standard Python code and host related dashboard as Docker images.
+Currently, Chalk'it allows to export and share standalone HTML apps with Python and/or JavaScript code, thanks to Pyodide. Since version 0.5.0, Chalk'it is able to run standard Python code and host related dashboard as [Docker images](#deploy).
 
 See the [demos gallery](https://ifpen.github.io/chalk-it/index.html#porfolio) and [templates gallery](https://ifpen.github.io/chalk-it/templates-gallery/) for examples with code.
 
@@ -47,6 +47,33 @@ Your can also use the [online hosted version](https://ifpen.github.io/chalk-it/h
 ### Export and share in one click
 
 ![Export](./assets/home/export.gif)
+
+### Deploy
+
+Rename your dashboard file to `dashboard.xprjson` and deploy it using Docker
+
+```Dockerfile
+FROM python:3.11
+
+# assume your application is named application.xprjson
+COPY application.xprjson application.xprjson
+
+# install py-chalk-it and gunicorn
+RUN pip install py-chalk-it gunicorn
+
+# this configuration is needed for your app to work, do not change it
+ENTRYPOINT ["gunicorn", "chlkt.render:app", "run", "--bind", "0.0.0.0:80"]
+```
+
+```sh
+# build the docker image
+docker build . -t application
+
+# run it
+docker run -p 5000:80 application
+```
+
+Your dashboard will be displayed on port 5000.
 
 ## Roadmap
 
