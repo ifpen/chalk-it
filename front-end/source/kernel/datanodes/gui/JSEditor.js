@@ -292,7 +292,7 @@ export function JSEditor() {
         callback(newValue);
         // MBG 25/03/2021
         if ($('#dialog-widget').text() == 'Hide widget') {
-          instanceId = prop[0];
+          const instanceId = prop[0];
           if (widgetConnector.widgetsConnection[instanceId] != null) {
             widgetConnector.widgetsConnection[instanceId].widgetObjEdit = null;
             widgetConnector.widgetsConnection[instanceId].widgetObjConnect = null;

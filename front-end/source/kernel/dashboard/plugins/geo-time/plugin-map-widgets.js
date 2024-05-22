@@ -1783,7 +1783,7 @@ function mapWidgetsPluginClass() {
             } else {
               if (feature.properties.html) {
                 if (feature.properties.openPopup) {
-                  mk = layer.bindPopup(feature.properties.html, { autoClose: false, autoPan: false });
+                  const mk = layer.bindPopup(feature.properties.html, { autoClose: false, autoPan: false });
                   mk.on('add', function (event) {
                     event.target.openPopup();
                   });
@@ -1794,7 +1794,7 @@ function mapWidgetsPluginClass() {
                 var jsonDisplay = jQuery.extend(true, {}, feature.properties);
                 if (jsonDisplay.awesomeMarker) delete jsonDisplay.awesomeMarker;
                 if (feature.properties.openPopup) {
-                  mk = layer.bindPopup(syntaxHighlight(JSON.stringify(jsonDisplay)), {
+                  const mk = layer.bindPopup(syntaxHighlight(JSON.stringify(jsonDisplay)), {
                     autoClose: false,
                     autoPan: false,
                   });

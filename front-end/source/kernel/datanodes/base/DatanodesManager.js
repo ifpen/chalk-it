@@ -156,7 +156,7 @@ export const datanodesManager = (function () {
             let $body = angular.element(document.body);
             let $rootScope = $body.scope().$root;
             if ($rootScope.bIsPlayMode) {
-              for (key in widgetConnector.widgetsConnection) {
+              for (const key in widgetConnector.widgetsConnection) {
                 widgetPreview.plotConstantData(key, false);
               }
             }
@@ -271,7 +271,7 @@ export const datanodesManager = (function () {
           } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_delay_plugin') {
             script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_input;
           }
-          replacedScript = script
+          const replacedScript = script
             .replace(new RegExp('dataNodes\\["' + oldName + '"\\]', 'g'), 'dataNodes["' + newName + '"]')
             .replace(new RegExp('dataNodes\\.' + oldName, 'g'), 'dataNodes.' + newName);
 
@@ -293,7 +293,7 @@ export const datanodesManager = (function () {
       }
 
       // handle widget connection
-      [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
+      let [bFoundConnection, prop_] = isConnectedWithWidgt(viewModel.name());
       if (bFoundConnection) {
         let wdList = [];
         for (let prop in widgetConnector.widgetsConnection) {

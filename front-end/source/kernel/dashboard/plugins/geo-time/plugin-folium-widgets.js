@@ -58,14 +58,14 @@ function foliumWidgetPluginClass() {
 
         try {
           // Cleaning folium wrappers originally for Jupyter notebooks
-          div1 = foliumDiv.firstElementChild;
+          const div1 = foliumDiv.firstElementChild;
           if (div1.tagName == 'DIV') {
             div1.style.height = '100%';
-            div2 = div1.firstElementChild;
+            const div2 = div1.firstElementChild;
             if (div2.tagName == 'DIV') {
               div2.style.height = '100%';
               div2.style['padding-bottom'] = null;
-              div3 = div2.firstElementChild;
+              const div3 = div2.firstElementChild;
               if (div3.tagName == 'DIV') {
                 div3.style.height = '100%';
               }

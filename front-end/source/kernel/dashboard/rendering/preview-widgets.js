@@ -294,8 +294,8 @@ export const widgetPreview = (function () {
       var divId = widgetConnector.widgetsConnection[instanceId].instanceId + 'c';
       if (!_.isUndefined($('#' + divId)[0])) {
         if ($('#' + divId)[0].style.border != '3px groove #e40000') {
-          w = parseFloat($('#' + divId)[0].style.width) + 1;
-          h = parseFloat($('#' + divId)[0].style.height) + 1;
+          const w = parseFloat($('#' + divId)[0].style.width) + 1;
+          const h = parseFloat($('#' + divId)[0].style.height) + 1;
           $('#' + divId)[0].style.width = w + 'vw';
           $('#' + divId)[0].style.height = h + 'vh';
           $('#' + divId)[0].style.border = '3px groove #e40000';
@@ -323,8 +323,8 @@ export const widgetPreview = (function () {
     if (!_.isUndefined($('#' + divId)[0])) {
       if ($('#' + divId)[0].style.border != '1px solid rgba(255, 255, 255, 0)') {
         //AEF: fix border
-        w = parseFloat($('#' + divId)[0].style.width) - 1;
-        h = parseFloat($('#' + divId)[0].style.height) - 1;
+        const w = parseFloat($('#' + divId)[0].style.width) - 1;
+        const h = parseFloat($('#' + divId)[0].style.height) - 1;
         $('#' + divId)[0].style.width = w + 'vw';
         $('#' + divId)[0].style.height = h + 'vh';
         $('#' + divId)[0].style.border = '1px solid rgba(255, 255, 255, 0)'; //AEF: fix border

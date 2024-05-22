@@ -912,12 +912,12 @@ function flatUiComplexWidgetsPluginClass() {
     this.value = {
       updateCallback: function () {},
       setValue: function (val) {
-        pastSelect = JSON.stringify(modelsHiddenParams[idInstance].selectedValue);
+        const pastSelect = JSON.stringify(modelsHiddenParams[idInstance].selectedValue);
 
         modelsHiddenParams[idInstance].value = val;
         self.render();
 
-        selected = JSON.stringify(self.selectedValue.getValue());
+        const selected = JSON.stringify(self.selectedValue.getValue());
         if (selected !== pastSelect) {
           //add a test to avoid loop
           self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());

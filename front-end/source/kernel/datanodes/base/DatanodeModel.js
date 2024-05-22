@@ -330,7 +330,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
                   datanodesManager.getDataNodeByName(name).schedulerStatus('Running');
                 }
               } else {
-                text = "Datanode '" + name + "' does not exist but referenced in another datanode";
+                const text = "Datanode '" + name + "' does not exist but referenced in another datanode";
                 if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log(text);
                 return;
               }
@@ -389,7 +389,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
         }
       } else {
         if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
-          text = "Datanode '" + source[0] + "' does not exist but referenced in another datanode";
+          const text = "Datanode '" + source[0] + "' does not exist but referenced in another datanode";
           //self.notificationCallback("error", self.name(), text, "Bad datanode reference");
           console.log(text);
         }
@@ -425,7 +425,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
             }
           } else {
             if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
-              text = "Datanode '" + name + "' does not exist but referenced in another datanode";
+              const text = "Datanode '" + name + "' does not exist but referenced in another datanode";
               //self.notificationCallback("error", self.name(), text, "Bad datanode reference");
               console.log(text);
             }
@@ -651,9 +651,9 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
     const dnName = self.name();
     self.setValue(propertyName, val);
 
-    newData = JSON.parse(self.settings()['json_var']);
-    var now = new Date();
-    var formatRet = self.dataPreviewFormat.format(newData);
+    let newData = JSON.parse(self.settings()['json_var']);
+    const now = new Date();
+    const formatRet = self.dataPreviewFormat.format(newData);
     newData = formatRet.newData;
     self.beautifulString(formatRet.previewData);
     datanodesListModel.processDatanodeUpdate(dnName, newData);

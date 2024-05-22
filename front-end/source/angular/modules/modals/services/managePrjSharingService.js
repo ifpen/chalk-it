@@ -69,14 +69,14 @@ modalsModule.service('ManagePrjSharingService', [
           });
         } else if (type == 'success') {
           try {
-            ReceivedList = JSON.parse(msg1.Msg);
-            for (var i in ReceivedList.List) {
+            const receivedList = JSON.parse(msg1.Msg);
+            for (var i in receivedList.List) {
               $rootScope.sharedEmails.push({
                 id: parseInt(i) + 1,
-                name: ReceivedList.List[i],
+                name: receivedList.List[i],
               });
             }
-            $rootScope.ownerEmail = ReceivedList.Owner;
+            $rootScope.ownerEmail = receivedList.Owner;
             if (!callback) {
               $rootScope.sharedUserEmail.selected = undefined; //$rootScope.sharedEmails.length > 0 ? $rootScope.sharedEmails[0] : undefined,
               $rootScope.sharedUserEmail.typed = ''; //$rootScope.sharedEmails.length > 0 ? $rootScope.sharedEmails[0].name : '',

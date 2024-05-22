@@ -186,7 +186,7 @@ angular
           //when no project exist
           for (let i = 0; i < $scope.allFilesWithNoGrp[0].FileList.length; i++) {
             //group only for [0] ==> project
-            grpName = $scope.allFilesFiltred[0].FileList[i].GroupName;
+            const grpName = $scope.allFilesFiltred[0].FileList[i].GroupName;
             if (grpName !== '' && !_.isUndefined(grpName) && !_.isNull(grpName)) {
               indexes.push(i);
               if (_.isUndefined($scope.grpFiles[grpName])) {

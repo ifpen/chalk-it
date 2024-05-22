@@ -302,7 +302,7 @@ export const Xdash = function () {
         fileTypeText = 'xdsjson';
       }
 
-      contentElement = getFileList(data, 'Please select a ' + fileType + ': ');
+      const contentElement = getFileList(data, 'Please select a ' + fileType + ': ');
 
       new DialogBox(
         contentElement,
