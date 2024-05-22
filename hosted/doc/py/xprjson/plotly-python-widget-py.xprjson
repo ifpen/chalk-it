@@ -2,7 +2,7 @@
 	"meta": {
 		"version": "2.410.8418",
 		"date": "Wed Feb 08 2023 14:14:45 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "plotly-python-widget",
+		"name": "plotly-python-widget-py",
 		"description": "",
 		"groupName": "Python",
 		"tags": [

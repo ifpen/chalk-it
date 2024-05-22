@@ -29,6 +29,8 @@
       
     
     
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
     <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -500,39 +502,24 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../export/export/" class="md-nav__link">
-        Export
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
-          Python
+        <label class="md-nav__link" for="__nav_6">
+          Python support
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Python" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+      <nav class="md-nav" aria-label="Python support" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
           <span class="md-nav__icon md-icon"></span>
-          Python
+          Python support
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -544,6 +531,20 @@
     <li class="md-nav__item">
       <a href="../py/py-index/" class="md-nav__link">
         Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../py/py-default/" class="md-nav__link">
+        Local runner
       </a>
     </li>
   
@@ -591,22 +592,52 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../chalkitapi/" class="md-nav__link">
+        Chalk'it APIs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../export/export/" class="md-nav__link">
+        Export
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_9">
           Recipes & interfaces
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Recipes & interfaces" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           Recipes & interfaces
         </label>
@@ -620,20 +651,6 @@
     <li class="md-nav__item">
       <a href="../recipes/" class="md-nav__link">
         Recipes
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../chalkitapi/" class="md-nav__link">
-        Chalk'it APIs
       </a>
     </li>
   
@@ -682,7 +699,7 @@
 <p>The development of a web-application with Chalk'it is based on the following concepts:</p>
 <ul>
 <li>Workspace: Concept analogous to the workspace of Matlab or IPython. It contains JSON or Python objects that have a given state and are accessible to other tool entities.</li>
-<li>DataNode: Concept analogous to a cell of a Notebook Jupyter. It can be seen as a function which should produce a JSON result or a Python object (only for the Pyodide dataNode). DataNodes can also have an execution period.</li>
+<li>DataNode: Concept analogous to a cell of a Notebook Jupyter. It can be seen as a function which should produce a JSON result. DataNodes can also have an execution period.</li>
 <li>“dataNodes” keyword: Concept for creating a dataflow between dataNodes (aka nodes). It is used inside a script-like DataNode to express a data and execution dependency with a predecessor node.</li>
 <li>Execution graph: Dependency relationships defined by the “dataNodes” keyword that organize the application logic. User actions on widgets trigger the execution of the concerned dataflow.</li>
 <li>Widget: Graphic object defined by a rectangle in the HTML page for User interface. It interacts with the workspace via connection points called actuators. Actions are as diverse as clicking a button, entering text or numeric values, scrolling cursors, selecting items from drop-down lists. Widgets allow complex visualizations thanks to the integrated libraries, such as Plotly.js, Charts, Vega (JavaScript) or Plotly and Matplotlib (both Python). Methods for visualizing data on maps based on Leaflet.js are also added.</li>

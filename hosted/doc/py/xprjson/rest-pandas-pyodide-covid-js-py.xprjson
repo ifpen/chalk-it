@@ -2,7 +2,7 @@
 	"meta": {
 		"version": "2.410.8418",
 		"date": "Wed Feb 08 2023 14:28:22 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "rest-pandas-pyodide-covid",
+		"name": "rest-pandas-pyodide-covid-js-py",
 		"description": "",
 		"groupName": "Mixed",
 		"tags": [

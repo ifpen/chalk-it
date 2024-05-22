@@ -29,6 +29,8 @@
       
     
     
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
     <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -554,39 +556,24 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../export/export/" class="md-nav__link">
-        Export
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
-          Python
+        <label class="md-nav__link" for="__nav_6">
+          Python support
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Python" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+      <nav class="md-nav" aria-label="Python support" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
           <span class="md-nav__icon md-icon"></span>
-          Python
+          Python support
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -598,6 +585,20 @@
     <li class="md-nav__item">
       <a href="../../py/py-index/" class="md-nav__link">
         Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../py/py-default/" class="md-nav__link">
+        Local runner
       </a>
     </li>
   
@@ -645,22 +646,52 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../chalkitapi/" class="md-nav__link">
+        Chalk'it APIs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../export/export/" class="md-nav__link">
+        Export
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_9">
           Recipes & interfaces
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Recipes & interfaces" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           Recipes & interfaces
         </label>
@@ -674,20 +705,6 @@
     <li class="md-nav__item">
       <a href="../../recipes/" class="md-nav__link">
         Recipes
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../chalkitapi/" class="md-nav__link">
-        Chalk'it APIs
       </a>
     </li>
   
@@ -772,16 +789,19 @@
 <h2 id="scripts">Scripts<a class="headerlink" href="#scripts" title="Permanent link">&para;</a></h2>
 <p>Script-type dataNode is used to write specific Python or JavaScript code that will be executed on the client side. It may use the output of the other dataNodes (referenced using keyword <code>dataNodes</code>). Currently, there types of Script dataNodes exist in Chalk'it :</p>
 <ul>
-<li><a href="../../ds/ds-reference/#python-script-pyodide">Python Script (Pyodide)</a></li>
+<li><a href="../../ds/ds-reference/#python-script">Python Script</a></li>
 <li><a href="../../ds/ds-reference/#javascript-script">JavaScript Script (client-side)</a></li>
 </ul>
-<p>Below is a screenshot of a Python Script (Pyodide) edition panel :</p>
-<p><img alt="Python Script (Pyodide)" src="../img/py-script.png" title="Python Script (Pyodide)" /></p>
+<p>Below is a screenshot of a Python Script edition panel :</p>
+<p><img alt="Python Script" src="../img/py-script.png" title="Python Script" /></p>
 <p>In this example, dataNode <code>multiply</code> references the dataNode <code>input</code>, specifically its property named <code>value</code>. This is specified using the keywords <code>dataNodes["input"]["value"]</code>.</p>
 <p>A final <code>return</code> statement is required to return the result of the Script evaluation to Chalk'it workspace.</p>
 <p>Complete example :
 <a href="/ds/xprjson/py-script.xprjson">py-script.xprjson</a></p>
 <p>The code is executed according to <a href="../../ds/ds-execution-engine/">Chalk'it runtime rules</a>.</p>
+<p>Two run mode are available for Python scripts
+- Using the <em>Default</em> runner that executes locally the Python code into a worker
+- Using the <em>Pyodide</em> runner that executes the Python code into a webworker runner in the browser</p>
 <h2 id="sequencing">Sequencing<a class="headerlink" href="#sequencing" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Chalk'it keeps track of a global dependency graph (a Direct Acyclic Graph). This graph specifies both data and execution dependencies between dataNodes.</li>

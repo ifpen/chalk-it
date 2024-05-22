@@ -29,6 +29,8 @@
       
     
     
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
     <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -627,39 +629,24 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../export/export/" class="md-nav__link">
-        Export
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
-          Python
+        <label class="md-nav__link" for="__nav_6">
+          Python support
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Python" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+      <nav class="md-nav" aria-label="Python support" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
           <span class="md-nav__icon md-icon"></span>
-          Python
+          Python support
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -671,6 +658,20 @@
     <li class="md-nav__item">
       <a href="../../py/py-index/" class="md-nav__link">
         Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../py/py-default/" class="md-nav__link">
+        Local runner
       </a>
     </li>
   
@@ -718,22 +719,52 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../chalkitapi/" class="md-nav__link">
+        Chalk'it APIs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../export/export/" class="md-nav__link">
+        Export
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_9">
           Recipes & interfaces
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Recipes & interfaces" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           Recipes & interfaces
         </label>
@@ -747,20 +778,6 @@
     <li class="md-nav__item">
       <a href="../../recipes/" class="md-nav__link">
         Recipes
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../chalkitapi/" class="md-nav__link">
-        Chalk'it APIs
       </a>
     </li>
   
@@ -942,8 +959,8 @@
 <li>Enter <strong>dataset</strong> in the <em>NAME</em> field and copy the following code into the <em>PYTHON SCRIPT</em> field:</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
-<span class="n">iris</span><span class="o">=</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
-<span class="k">return</span> <span class="n">iris</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
+<span class="k">return</span> <span class="n">chalkit</span><span class="o">.</span><span class="n">as_python</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
 </code></pre></div>
 <p>This step is illustrated below:</p>
 <p><img alt="Import dataset" src="../png/dataset-dn.png" /></p>
@@ -966,14 +983,14 @@
 </ul>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">iris</span><span class="o">=</span><span class="n">dataNodes</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">dataNodes</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
 <span class="n">target_names</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Setosa&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Versicolour&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Virginica&quot;</span> <span class="p">}</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">target_names</span><span class="p">)</span>
 
-<span class="k">return</span> <span class="n">df</span>
+<span class="k">return</span> <span class="n">chalkit</span><span class="o">.</span><span class="n">as_python</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </code></pre></div>
 <p>The expression <strong>dataNodes["dataset"]</strong> indicates Chalk'it to read the last execution output of the <strong>dataset</strong> datanode. It also establishes a data and execution flow dependency between <strong>dataset</strong> and <strong>datasetDataframe</strong>.</p>
 <ul>
@@ -992,16 +1009,17 @@
 </ul>
 <p><img alt="Widgets tab" src="../png/plots-tab.png" /></p>
 <ul>
-<li>To add a <em>Plotly Python</em> widget to the dashboard editor, click on the corresponding icon or just perform a drag and drop.</li>
+<li>To add a <em>Plotly generic</em> widget to the dashboard editor, click on the corresponding icon or just perform a drag and drop.</li>
 </ul>
-<p><img alt="Add Plotly Python widget" src="../png/plotly-py-widget.png" /></p>
+<p><img alt="Add Plotly widget" src="../png/plotly-py-widget.png" /></p>
 <h4 id="step3-connect-datanode-to-widget">Step3: connect dataNode to widget<a class="headerlink" href="#step3-connect-datanode-to-widget" title="Permanent link">&para;</a></h4>
 <ul>
-<li>Click on the pencil icon on the top-right corner of the widget to display the widget menu. Select then <em>Connect widget</em> as shown below:</li>
-</ul>
-<p><img alt="Widget connection menu" src="../png/connect-plotly-py-widget.png" /></p>
-<ul>
-<li>A panel will then be displayed on the right-side of the screen. From the connection dropdown, select the datanode <em>plot</em>, as it will provide the figure object needed for the widget. Click <em>Save</em> to validate the choice.</li>
+<li>
+<p>Click on the pencil icon on the top-right corner of the widget to display the widget menu. Select then <em>Connect widget</em> as shown below:</p>
+</li>
+<li>
+<p>A panel will then be displayed on the right-side of the screen. From the first connection dropdown, select the datanode <em>plot</em>, then its <em>data</em> field as it will provide the plot data needed for the widget. Repeat the process for the <em>layout</em> actuator immediately below, but this time using the <em>layout</em> field of the <em>plot</em> datanode. Finally, click <em>Save</em> to validate the choices.</p>
+</li>
 </ul>
 <p><img alt="Connect widget to datanode" src="../png/plotly-py-widget-actuator.png" /></p>
 <h4 id="step4-preview-the-dashboard">Step4: Preview the dashboard<a class="headerlink" href="#step4-preview-the-dashboard" title="Permanent link">&para;</a></h4>

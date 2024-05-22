@@ -1,226 +1,245 @@
 {
-	"meta": {
-		"version": "1.410.7831",
-		"date": "Wed Jun 09 2021 09:59:05 GMT+0200 (heure d’été d’Europe centrale)",
-		"name": "osm-geojson-point-disable-autoscale",
-		"schedulerLogOff": true
-	},
-	"data": {
-		"version": 1,
-		"allow_edit": true,
-		"plugins": [],
-		"panes": [],
-		"dataNodes": [
-			{
-				"name": "point",
-				"type": "JSON_var_plugin",
-				"settings": {
-					"name": "point",
-					"json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"comment\":\"click to display the contents of the properties object\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.295,48.8738]}}],\"properties\":{\"description\":\"Arc de triomphe\",\"disableAutoscale\":false}}"
-				}
-			}
-		],
-		"reIndexMap": [
-			0
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"scaling": {
-		"widthPx": 1045,
-		"heightPx": 562,
-		"scrollWidthPx": 1045,
-		"scrollHeightPx": 562,
-		"widthVw": 68.03385416666667,
-		"heightVh": 80.74712643678161,
-		"scrollWidthVw": 68.03385416666667,
-		"scrollHeightVh": 80.74712643678161,
-		"scalingMethod": "scaleTwh",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {}
-	},
-	"dashboard": {
-		"openStreetMapsm": {
-			"layout": {
-				"top": "11.4221vh",
-				"left": "0.911458vw",
-				"height": "56.0175vh",
-				"width": "57.6823vw",
-				"minHeight": "20px",
-				"minWidth": "20px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "openStreetMapsm",
-				"instanceId": "openStreetMapsm",
-				"modelJsonId": "openStreetMaps",
-				"widgetTypeName": "Leaflet maps(openStreetMapsm)"
-			},
-			"modelParameters": {
-				"defaultCenter": {
-					"latitude": 48.872063,
-					"longitude": 2.331773,
-					"zoom": 16
-				},
-				"geoJson": {
-					"numberOfLayers": 1
-				},
-				"heatMap": {
-					"numberOfLayers": 0,
-					"sampledDisplay": false,
-					"densityHeatMap": true
-				},
-				"offlineSupport": false,
-				"tileServer": "MapboxStreets",
-				"imageOverlay": {
-					"numberOfLayers": 0
-				},
-				"svgOverlay": {
-					"numberOfLayers": 0
-				},
-				"lineHeatMap": {
-					"numberOfLayers": 0
-				}
-			},
-			"modelHiddenParams": {
-				"geoJson": {
-					"geoJsonLayers": [],
-					"geoJsonBounds": []
-				},
-				"lineHeatMap": {
-					"lineHeatMapLayers": [],
-					"lineHeatMapBounds": []
-				},
-				"heatMap": {
-					"heatMapData": [],
-					"heatMapBuffer": []
-				},
-				"imageOverlay": {
-					"imageData": []
-				},
-				"svgOverlay": {
-					"svgData": [],
-					"svgElements": []
-				},
-				"legends": [],
-				"colors": [
-					"#800080",
-					"#FF00FF",
-					"#000080",
-					"#0000FF",
-					"#008080",
-					"#00FFFF",
-					"#FFFF00",
-					"#800000",
-					"#6666ff",
-					"#cc6699",
-					"#66ff66",
-					"#666699",
-					"#996633",
-					"#ff0000",
-					"#669999",
-					"#ffff99"
-				]
-			}
-		},
-		"flatUiSwitchj": {
-			"layout": {
-				"top": "2.01149vh",
-				"left": "0.846354vw",
-				"height": "5.17241vh",
-				"width": "16.9271vw",
-				"minHeight": "32px",
-				"minWidth": "50px",
-				"z-index": "2"
-			},
-			"container": {
-				"id": "flatUiSwitchj",
-				"instanceId": "flatUiSwitchj",
-				"modelJsonId": "flatUiSwitch",
-				"widgetTypeName": "Switch(flatUiSwitchj)"
-			},
-			"modelParameters": {
-				"label": "disableAutoscale",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"switchWidthProportion": "30%",
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Helvetica Neue"
-			},
-			"modelHiddenParams": {
-				"value": false
-			}
-		},
-		"flatUiButtond": {
-			"layout": {
-				"top": "1.43678vh",
-				"left": "21.5885vw",
-				"height": "7.18391vh",
-				"width": "7.94271vw",
-				"minHeight": "50px",
-				"minWidth": "55px",
-				"z-index": "3"
-			},
-			"container": {
-				"id": "flatUiButtond",
-				"instanceId": "flatUiButtond",
-				"modelJsonId": "flatUiButton",
-				"widgetTypeName": "Push button(flatUiButtond)"
-			},
-			"modelParameters": {
-				"text": "Test",
-				"numberOfTriggers": 1,
-				"fileInput": false,
-				"binaryFileInput": false,
-				"buttonFontSize": 0.5,
-				"buttonFontFamily": "Helvetica Neue",
-				"buttonTextColor": "#ffffff",
-				"buttonDefaultColor": "#447bdc",
-				"buttonActiveColor": "#2154ab",
-				"buttonHoverColor": "#a9c3ef"
-			},
-			"modelHiddenParams": {}
-		}
-	},
-	"connections": {
-		"openStreetMapsm": {
-			"geoJson1": {
-				"name": "geoJson1",
-				"dataSource": "point",
-				"dataFields": [],
-				"dataSourceIndex": 0
-			}
-		},
-		"flatUiSwitchj": {
-			"value": {
-				"name": "value",
-				"dataSource": "point",
-				"dataFields": [
-					"properties",
-					"disableAutoscale"
-				],
-				"dataSourceIndex": 0
-			}
-		},
-		"flatUiButtond": {
-			"trigger1": {
-				"name": "trigger1",
-				"dataSource": "point",
-				"dataFields": [],
-				"dataSourceIndex": 0
-			}
-		}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"checkExportOptions": false
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-03T10:21:33.114Z",
+    "name": "osm-geojson-point-disable-autoscale",
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "point",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "point",
+          "json_var": "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"comment\":\"click to display the contents of the properties object\"},\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.295,48.8738]}}],\"properties\":{\"description\":\"Arc de triomphe\",\"disableAutoscale\":false}}"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "openStreetMapsm": {
+      "layout": {
+        "top": "11.1278vh",
+        "left": "1.13455vw",
+        "height": "54.5742vh",
+        "width": "71.8007vw",
+        "minHeight": "20px",
+        "minWidth": "20px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "openStreetMapsm",
+        "modelJsonId": "openStreetMaps"
+      },
+      "modelParameters": {
+        "geoJson": {
+          "numberOfLayers": 1
+        },
+        "choropleth": {
+          "numberOfLayers": 0
+        },
+        "heatMap": {
+          "numberOfLayers": 0,
+          "sampledDisplay": false,
+          "densityHeatMap": true
+        },
+        "lineHeatMap": {
+          "numberOfLayers": 0
+        },
+        "imageOverlay": {
+          "numberOfLayers": 0
+        },
+        "svgOverlay": {
+          "numberOfLayers": 0
+        },
+        "defaultCenter": {
+          "latitude": 48.872063,
+          "longitude": 2.331773,
+          "zoom": 16
+        },
+        "offlineSupport": false,
+        "tileServer": "MapboxStreets",
+        "drawingFeatures": false,
+        "drawingFeaturesOptions": {
+          "point": true,
+          "line": true,
+          "polygon": true,
+          "rectangle": true,
+          "modal": false
+        },
+        "captureClickEvent": false,
+        "markerCluster": true
+      },
+      "modelHiddenParams": {
+        "geoJson": {
+          "geoJsonLayers": [],
+          "geoJsonBounds": []
+        },
+        "choropleth": {
+          "choroplethLayers": [],
+          "choroplethBounds": []
+        },
+        "lineHeatMap": {
+          "lineHeatMapLayers": [],
+          "lineHeatMapBounds": []
+        },
+        "heatMap": {
+          "heatMapData": [],
+          "heatMapBuffer": []
+        },
+        "imageOverlay": {
+          "imageData": []
+        },
+        "svgOverlay": {
+          "svgData": [],
+          "svgElements": []
+        },
+        "legends": [],
+        "colors": [
+          "#800080",
+          "#FF00FF",
+          "#000080",
+          "#0000FF",
+          "#008080",
+          "#00FFFF",
+          "#FFFF00",
+          "#800000",
+          "#6666ff",
+          "#cc6699",
+          "#66ff66",
+          "#666699",
+          "#996633",
+          "#ff0000",
+          "#669999",
+          "#ffff99"
+        ]
+      }
+    },
+    "flatUiSwitchA": {
+      "layout": {
+        "top": "1.33333vh",
+        "left": "1.83246vw",
+        "height": "6.26667vh",
+        "width": "17.9974vw",
+        "minHeight": "24px",
+        "minWidth": "50px",
+        "z-index": "4"
+      },
+      "container": {
+        "instanceId": "flatUiSwitchA",
+        "modelJsonId": "flatUiSwitch"
+      },
+      "modelParameters": {
+        "label": "disableAutoscale",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelPosition": "right",
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "switchWidthProportion": "30%",
+        "switchOnColor": "var(--widget-input-checked-color)",
+        "switchOffColor": "var(--widget-input-unchecked-color)"
+      },
+      "modelHiddenParams": {
+        "value": false
+      }
+    },
+    "flatUiButtonA": {
+      "layout": {
+        "top": "1.33333vh",
+        "left": "21.466vw",
+        "height": "6.26667vh",
+        "width": "9.03141vw",
+        "minHeight": "24px",
+        "minWidth": "55px",
+        "z-index": "5"
+      },
+      "container": {
+        "instanceId": "flatUiButtonA",
+        "modelJsonId": "flatUiButton"
+      },
+      "modelParameters": {
+        "text": "Test",
+        "numberOfTriggers": 1,
+        "fileInput": false,
+        "binaryFileInput": false,
+        "buttonFontSize": 0.3,
+        "displayIcon": false,
+        "fontAwesomeIcon": "",
+        "buttonFontFamily": "var(--widget-font-family)",
+        "buttonTextColor": "var(--widget-button-primary-text)",
+        "buttonDefaultColor": "var(--widget-button-primary-color)",
+        "buttonActiveColor": "var(--widget-button-active-color)",
+        "buttonHoverColor": "var(--widget-button-hover-color)"
+      },
+      "modelHiddenParams": {}
+    }
+  },
+  "connections": {
+    "openStreetMapsm": {
+      "geoJson1": {
+        "name": "geoJson1",
+        "dataFields": [],
+        "dataSourceIndex": 0,
+        "dataNode": "point"
+      }
+    },
+    "flatUiSwitchA": {
+      "value": {
+        "name": "value",
+        "dataNode": "point",
+        "dataFields": [
+          "properties",
+          "disableAutoscale"
+        ]
+      }
+    },
+    "flatUiButtonA": {
+      "trigger1": {
+        "name": "trigger1",
+        "dataNode": "point",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

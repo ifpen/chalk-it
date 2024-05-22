@@ -29,6 +29,8 @@
       
     
     
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
     <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -664,39 +666,24 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../export/export/" class="md-nav__link">
-        Export
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
-          Python
+        <label class="md-nav__link" for="__nav_6">
+          Python support
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Python" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+      <nav class="md-nav" aria-label="Python support" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
           <span class="md-nav__icon md-icon"></span>
-          Python
+          Python support
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -708,6 +695,20 @@
     <li class="md-nav__item">
       <a href="../../py/py-index/" class="md-nav__link">
         Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../py/py-default/" class="md-nav__link">
+        Local runner
       </a>
     </li>
   
@@ -755,22 +756,52 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../chalkitapi/" class="md-nav__link">
+        Chalk'it APIs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../export/export/" class="md-nav__link">
+        Export
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_9">
           Recipes & interfaces
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Recipes & interfaces" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           Recipes & interfaces
         </label>
@@ -784,20 +815,6 @@
     <li class="md-nav__item">
       <a href="../../recipes/" class="md-nav__link">
         Recipes
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../chalkitapi/" class="md-nav__link">
-        Chalk'it APIs
       </a>
     </li>
   
@@ -997,7 +1014,7 @@
 <li>0 to 8 possible layer of <a href="#svgoverlay-layers">svgOverlay</a> objects</li>
 </ul>
 <p>In addition to these pure display layers, selection controls can be activated by enabling the <a href="#drawing-features">drawingFeatures</a> option. Regions of the map can thus be selected using the mouse. When this option is enabled, the <strong>selectedGeoJson</strong> actuator receives user selection as geoJson, and needs to be connected to a <a href="../../ds/ds-basics/#variable">variable</a>-type dataNode. This features are based on the <a href="https://geoman.io/">Geoman</a> plugin.</p>
-<p>Enabling the <em>drawingFeatures</em> option enables the <strong>drawingFeaturesOptions</strong> parameters set which manages selection options (point, line, polygone, rectangle).</p>
+<p>Enabling the <em>drawingFeatures</em> option enables the <strong>drawingFeaturesOptions</strong> parameters set which manages selection options (point, line, polygon, rectangle).</p>
 <p>Other parameters :</p>
 <ul>
 <li><strong>offlineSupport</strong> : displays controls on the maps that allow to store tiles for the current displayed geographic area. Useful when using the map offline (i.e. with no Internet connection)</li>
@@ -1040,15 +1057,15 @@
 <p>Properties field of each feature allows to configure it. It comprises the following items :</p>
 <ul>
 <li><strong>html</strong> : allows to write html call to be rendered inside the popup.</li>
-<li><strong>awesomeMarker</strong> : JSON configuration object for the <a href="https://github.com/lvoogdt/Leaflet.awesome-markers">Leaflet.awesome-markers</a> library, allowing colorful iconic &amp; retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. <strong>Only Font-Awesome icons</strong> are supported with xDash.</li>
-</ul>
+<li>
+<p><strong>awesomeMarker</strong> : JSON configuration object for the <a href="https://github.com/lvoogdt/Leaflet.awesome-markers">Leaflet.awesome-markers</a> library, allowing colorful iconic &amp; retina-proof markers for Leaflet, based on the Glyphicons / Font-Awesome icons. <strong>Only Font-Awesome icons</strong> are supported with xDash.</p>
 <table>
 <thead>
 <tr>
 <th>Property</th>
 <th>Description</th>
 <th>Default Value</th>
-<th>Possible  values</th>
+<th>Possible values</th>
 </tr>
 </thead>
 <tbody>
@@ -1090,6 +1107,8 @@
 </tr>
 </tbody>
 </table>
+</li>
+</ul>
 <p>Examples :</p>
 <ul>
 <li>Single point : <a href="/wdg/maps/osm-geojson-point.xprjson">osm-geojson-point.xprjson</a></li>
@@ -1136,7 +1155,7 @@
 <p>Examples :</p>
 <ul>
 <li>Single line : <a href="/wdg/maps/osm-geojson-line.xprjson">osm-geojson-line.xprjson</a></li>
-<li>Multiple lines :  <a href="/wdg/maps/osm-geojson-lines.xprjson">osm-geojson-lines.xprjson</a></li>
+<li>Multiple lines : <a href="/wdg/maps/osm-geojson-lines.xprjson">osm-geojson-lines.xprjson</a></li>
 </ul>
 <h4 id="polygon">Polygon<a class="headerlink" href="#polygon" title="Permanent link">&para;</a></h4>
 <p>A polygon on a single layer of the map</p>
@@ -1223,7 +1242,7 @@
 <p>Several parameters control the display of the heatmap, in particular :</p>
 <ul>
 <li>
-<p><strong>sampledDisplay</strong> : allows to feed the map in real-time with instantaneous measures (single heatmap point). The config of the first point will be used. See corresponding examples: </p>
+<p><strong>sampledDisplay</strong> : allows to feed the map in real-time with instantaneous measures (single heatmap point). The config of the first point will be used. See corresponding examples:</p>
 </li>
 <li>
 <p><a href="/wdg/maps/osm-heatmap-play-py.xprjson">osm-heatmap-play-py.xprjson</a></p>
@@ -1268,7 +1287,7 @@
 <span class="w">    </span><span class="s2">&quot;min&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;max&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;colorScale&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;interpolateSpectral&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;reverseColorScale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w">    </span>
+<span class="w">    </span><span class="s2">&quot;reverseColorScale&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -1360,7 +1379,7 @@
 <span class="p">}</span>
 </code></pre></div>
 <p>As shown in the code snippet above, the <strong>addAs</strong> parameter may take two values:
- <em>overlay</em> which adds a checkbox control, or <em>baseLayer</em> which adds a radio button control.</p>
+<em>overlay</em> which adds a checkbox control, or <em>baseLayer</em> which adds a radio button control.</p>
 <p>Example :</p>
 <ul>
 <li><a href="/wdg/maps/osm-image-overlay.xprjson">osm-image-overlay.xprjson</a></li>
@@ -1368,7 +1387,7 @@
 <h3 id="svgoverlay-layers">svgOverlay layers<a class="headerlink" href="#svgoverlay-layers" title="Permanent link">&para;</a></h3>
 <p><em>svgOverlay1</em> to <em>svgOverlay8</em> inputs expect a JSON object like the following one :</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="s2">&quot;data&quot;</span><span class="o">:</span><span class="w"> </span>
+<span class="w">  </span><span class="s2">&quot;data&quot;</span><span class="o">:</span>
 <span class="w">  </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">      </span><span class="s2">&quot;lat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">48.876684999999995</span><span class="p">,</span>
@@ -1398,7 +1417,7 @@
 <li><a href="/wdg/maps/osm-svg-layer-view-js.xprjson">osm-svg-layer-view-js.xprjson</a></li>
 </ul>
 <h3 id="drawing-features">Drawing features<a class="headerlink" href="#drawing-features" title="Permanent link">&para;</a></h3>
-<p>It is possible to allow the user to manually select points, lines, rectangles or polygone regions in the map. This is possible by enable the <em>drawingFeatures</em> option.</p>
+<p>It is possible to allow the user to manually select points, lines, rectangles or polygon regions in the map. This is possible by enable the <em>drawingFeatures</em> option.</p>
 <p><img alt="osm-drawing-features" src="../maps/osm-drawing-features.png" /></p>
 <p>Selection result will be written to the <em>selectedGeoJson</em> actuator.</p>
 <p>Example :</p>
@@ -1425,7 +1444,7 @@
 <h2 id="date-range-calendar">Date-range calendar<a class="headerlink" href="#date-range-calendar" title="Permanent link">&para;</a></h2>
 <p>Enables the selection of a date interval.</p>
 <h2 id="d3-year-heatmap-caldendar">D3 year heatmap caldendar<a class="headerlink" href="#d3-year-heatmap-caldendar" title="Permanent link">&para;</a></h2>
-<p>Allows to associate range heatmap to a yearly-based calendar. Very useful to visually identify sporadic information. Date selection is also possible. </p>
+<p>Allows to associate range heatmap to a yearly-based calendar. Very useful to visually identify sporadic information. Date selection is also possible.</p>
 <p><img alt="D3 year heatmap caldendar" src="../date-time/d3-year-heatmap-calendar.png" /></p>
 <p>Example :</p>
 <ul>
