@@ -227,9 +227,8 @@ function flatUiWidgetsPluginClass() {
           amount = (option.max - option.min) / option.step,
           orientation = option.orientation;
         if ('vertical' === orientation) {
-          var output = '',
-            i;
-          for (var i = 1; i <= amount - 1; i++) {
+          let output = ''
+          for (let i = 1; i <= amount - 1; i++) {
             output += '<div class="ui-slider-segment" style="top:' + (100 / amount) * i + '%;"></div>';
           }
           $this.prepend(output);

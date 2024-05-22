@@ -85,7 +85,7 @@ export function JSEditor() {
 
     function updateHints() {
       editor.operation(function () {
-        for (var i = 0; i < widgets.length; ++i) {
+        for (let i = 0; i < widgets.length; ++i) {
           editor.removeLineWidget(widgets[i]);
         }
         widgets.length = 0;
@@ -97,7 +97,7 @@ export function JSEditor() {
         var value = '/*jshint esversion:' + es + '*/\n' + editor.getValue(); // MBG 17/01/2020 restore old feeling
         JSHINT(value);
 
-        for (var i = 0; i < JSHINT.errors.length; ++i) {
+        for (let i = 0; i < JSHINT.errors.length; ++i) {
           var err = JSHINT.errors[i];
           if (!err) continue;
           var msg = document.createElement('div');
@@ -337,7 +337,7 @@ export function JSEditor() {
 
     function updateHints() {
       editor.operation(function () {
-        for (var i = 0; i < widgets.length; ++i) {
+        for (let i = 0; i < widgets.length; ++i) {
           editor.removeLineWidget(widgets[i]);
         }
         widgets.length = 0;
@@ -349,7 +349,7 @@ export function JSEditor() {
         var value = '/*jshint esversion:' + es + '*/\n' + editor.getValue(); // MBG 17/01/2020 restore old feeling
         JSHINT(value);
 
-        for (var i = 0; i < JSHINT.errors.length; ++i) {
+        for (let i = 0; i < JSHINT.errors.length; ++i) {
           var err = JSHINT.errors[i];
           if (!err) continue;
           var msg = document.createElement('div');

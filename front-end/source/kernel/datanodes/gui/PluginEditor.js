@@ -495,7 +495,7 @@ export function PluginEditor(jsEditor) {
             newSettings.settings[settingDef.name] = currentSettingsValues[settingDef.name];
             newSettings.settings['content'] = currentSettingsValues['content'];
             if (_.isUndefined($('#var-body')[0])) {
-              var input = $(
+              let input = $(
                 '<input type="text" title="' +
                   settingDef.display_name +
                   '" class="input__wrapper--text" id="var-body" autocorrect="off" autocomplete="off" spellcheck="false" />'
@@ -549,7 +549,7 @@ export function PluginEditor(jsEditor) {
           case 'option': {
             var defaultValue = currentSettingsValues[settingDef.name];
             var selectId = 'select-option-' + settingDef.name;
-            var input = $('<select id="' + selectId + '"></select>')
+            let input = $('<select id="' + selectId + '"></select>')
               .appendTo($('<div class="styled-select"></div>').appendTo(valueCell))
               .change(function () {
                 newSettings.settings[settingDef.name] = $(this).val();
@@ -623,7 +623,7 @@ export function PluginEditor(jsEditor) {
             break;
           }
           default: {
-            var input;
+            let input;
             newSettings.settings[settingDef.name] = currentSettingsValues[settingDef.name];
 
             if (settingDef.type == 'calculated') {
@@ -671,10 +671,9 @@ export function PluginEditor(jsEditor) {
                   if (settingDef.type == 'number') {
                     newSettings.settings[settingDef.name] = Number($(this).val());
                   } else {
-                    var bFoundConnection = false;
-                    var prop = '';
-                    for (var prop in widgetConnector.widgetsConnection) {
-                      for (var i in widgetConnector.widgetsConnection[prop].sliders) {
+                    let bFoundConnection = false;
+                    for (const prop in widgetConnector.widgetsConnection) {
+                      for (const i in widgetConnector.widgetsConnection[prop].sliders) {
                         if (widgetConnector.widgetsConnection[prop].sliders[i].name != 'None') {
                           if (!_.isUndefined(widgetConnector.widgetsConnection[prop].sliders[i].connectedDataNodeS)) {
                             // MBG security

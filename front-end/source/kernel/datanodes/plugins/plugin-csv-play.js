@@ -264,7 +264,7 @@ import { b64EncodeUnicode, b64DecodeUnicode } from 'kernel/datanodes/plugins/thi
 
     /* This is some function where I'll get my data from somewhere */
     function nextData() {
-      const newData = {};
+      let newData = {};
       for (const col of Object.keys(parserResults.content)) {
         newData[col] = parserResults.content[col][nextRow];
       }

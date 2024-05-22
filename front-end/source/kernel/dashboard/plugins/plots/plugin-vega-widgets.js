@@ -116,7 +116,7 @@ function vegaWidgetsPluginClass() {
       }
 
       if (bInteractive) {
-        var view = new vega.View(vega.parse(specif), {
+        const view = new vega.View(vega.parse(specif), {
           renderer: 'canvas', // renderer (canvas or svg)
           container: '#vega' + idWidget + 'c', // parent DOM container
           hover: true, // enable hover processing
@@ -128,7 +128,7 @@ function vegaWidgetsPluginClass() {
                 );*/
       } else {
         // create a new view instance for a given Vega JSON spec
-        var view = new vega.View(vega.parse(specif), { renderer: 'none' });
+        const view = new vega.View(vega.parse(specif), { renderer: 'none' });
 
         // generate a static PNG image
         view

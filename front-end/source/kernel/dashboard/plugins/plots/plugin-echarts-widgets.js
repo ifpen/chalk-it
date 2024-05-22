@@ -110,7 +110,7 @@ function echartsWidgetsPluginClass() {
 
       // use configuration item and data specified to show chart
       if (bInteractive) {
-        var myChart = echarts.init(document.getElementById('echarts' + idWidget + 'c'));
+        const myChart = echarts.init(document.getElementById('echarts' + idWidget + 'c'));
         try {
           myChart.setOption(opt);
         } catch (e) {
@@ -123,7 +123,7 @@ function echartsWidgetsPluginClass() {
           });
         });
       } else {
-        var myChart = echarts.init(document.getElementById('echarts' + idWidget));
+        const myChart = echarts.init(document.getElementById('echarts' + idWidget));
         try {
           myChart.setOption(opt);
         } catch (e) {

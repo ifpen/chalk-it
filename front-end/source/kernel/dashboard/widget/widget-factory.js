@@ -116,7 +116,7 @@ function widgetFactoryClass() {
    */
   function createNewDiv(modelJsonId, targetDiv, wLayout) {
     var cln = document.createElement('div'); // mainDiv
-    var targetDiv = widgetContainer.putAndGetTargetDiv(cln, targetDiv);
+    targetDiv = widgetContainer.putAndGetTargetDiv(cln, targetDiv);
     var layoutViewport = computeMainDivLayout(wLayout, modelJsonId);
 
     // Default zIndex : can be overloaded later

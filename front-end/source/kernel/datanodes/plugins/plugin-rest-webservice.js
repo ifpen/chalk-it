@@ -117,7 +117,7 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
         //AEF: to add headers from datanodes; e.g for token
         if (!_.isUndefined(jbody) && !_.isNull(jbody)) {
           if (!_.isUndefined(jbody.headersFromDataNodeWS)) {
-            for (var param in jbody.headersFromDataNodeWS) {
+            for (const param in jbody.headersFromDataNodeWS) {
               headers[param] = jbody.headersFromDataNodeWS[param];
             }
           }
@@ -130,7 +130,7 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
               }
               //
               if (!_.isUndefined(jbody[i].headersFromDataNodeWS)) {
-                for (var param in jbody[i].headersFromDataNodeWS) {
+                for (const param in jbody[i].headersFromDataNodeWS) {
                   headers[param] = jbody[i].headersFromDataNodeWS[param];
                 }
               }
@@ -313,7 +313,7 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
               //AEF: to add headers from datanodes; e.g for token
               if (!_.isUndefined(jbody) && !_.isNull(jbody)) {
                 if (!_.isUndefined(jbody.headersFromDataNodeWS)) {
-                  for (var param in jbody.headersFromDataNodeWS) {
+                  for (const param in jbody.headersFromDataNodeWS) {
                     xhr.setRequestHeader(param, jbody.headersFromDataNodeWS[param]);
                   }
                 }
@@ -326,7 +326,7 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
                     }
                     //
                     if (!_.isUndefined(jbody[i].headersFromDataNodeWS)) {
-                      for (var param in jbody[i].headersFromDataNodeWS) {
+                      for (const param in jbody[i].headersFromDataNodeWS) {
                         xhr.setRequestHeader(param, jbody[i].headersFromDataNodeWS[param]);
                       }
                     }

@@ -120,7 +120,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
       var sep;
       var first;
       if (table.length < 1) return ''; // AEF: return empty string instead of indefined to replace old suggested words
-      for (var i = 0; i < table.length; i++) {
+      for (let i = 0; i < table.length; i++) {
         suggestionStrings[i] = '';
         first = true;
         for (var j = 0; j <= 6; j++) {
@@ -136,7 +136,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
 
       var words = [];
       if (_.isArray(suggestionStrings)) {
-        for (var i = 0; i < suggestionStrings.length; i++) {
+        for (let i = 0; i < suggestionStrings.length; i++) {
           words[i] = { word: suggestionStrings[i] };
         }
       }

@@ -994,19 +994,19 @@ function mapWidgetsPluginClass() {
         (typeLayers.geometry.type === 'polygon' || typeLayers.geometry.type === 'Polygon') &&
         typeLayers.geometry.isCut
       ) {
-        var my_latlngs = Points._latlngs ? Points._latlngs : Points.pm._layers[0]._latlngs;
+        const my_latlngs = Points._latlngs ? Points._latlngs : Points.pm._layers[0]._latlngs;
 
         my_latlngs.forEach(function (point) {
-          var _val = [];
-          for (var i = 0; i < point.length; i++) {
+          const _val = [];
+          for (let i = 0; i < point.length; i++) {
             _val.push([point[i].lng, point[i].lat]);
           }
           ListPositions.push(_val);
         });
         return ListPositions;
       } else if (typeLayers.geometry.type === 'LineString' || typeLayers.geometry.type === 'lineString') {
-        for (var leng = 0; leng < Points._latlngs.length; leng++) {
-          var _val = Points._latlngs[leng];
+        for (let leng = 0; leng < Points._latlngs.length; leng++) {
+          const _val = Points._latlngs[leng];
           ListPositions.push([_val.lng, _val.lat]);
         }
         return ListPositions;
@@ -1014,9 +1014,9 @@ function mapWidgetsPluginClass() {
         (typeLayers.geometry.type === 'polygon' || typeLayers.geometry.type === 'Polygon') &&
         !typeLayers.geometry.isCut
       ) {
-        var my_latlngs = Points._latlngs ? Points._latlngs[0] : Points.pm._layers[0]._latlngs[0];
-        for (var leng = 0; leng < my_latlngs.length; leng++) {
-          var _val = my_latlngs[leng];
+        const my_latlngs = Points._latlngs ? Points._latlngs[0] : Points.pm._layers[0]._latlngs[0];
+        for (let leng = 0; leng < my_latlngs.length; leng++) {
+          const _val = my_latlngs[leng];
           ListPositions.push([_val.lng, _val.lat]);
         }
         return [ListPositions];
@@ -1323,8 +1323,8 @@ function mapWidgetsPluginClass() {
           var ListPositions = [];
           if (modelsHiddenParams[idInstance].selectedGeoJson) {
             if (e.shape == 'Polygon') {
-              for (var leng = 0; leng < e.layer._latlngs[0].length; leng++) {
-                var _val = e.layer._latlngs[0][leng];
+              for (let leng = 0; leng < e.layer._latlngs[0].length; leng++) {
+                const _val = e.layer._latlngs[0][leng];
                 ListPositions.push([_val.lng, _val.lat]);
               }
               self.updateValue({
@@ -1338,8 +1338,8 @@ function mapWidgetsPluginClass() {
                 properties: { layerId: e.layer._leaflet_id },
               });
             } else if (e.shape == 'Line') {
-              for (var leng = 0; leng < e.layer._latlngs.length; leng++) {
-                var _val = e.layer._latlngs[leng];
+              for (let leng = 0; leng < e.layer._latlngs.length; leng++) {
+                const _val = e.layer._latlngs[leng];
                 ListPositions.push([_val.lng, _val.lat]);
               }
               self.updateValue({
@@ -1351,8 +1351,8 @@ function mapWidgetsPluginClass() {
                 properties: { layerId: e.layer._leaflet_id },
               });
             } else if (e.shape == 'Rectangle') {
-              for (var leng = 0; leng < e.layer._latlngs[0].length; leng++) {
-                var _val = e.layer._latlngs[0][leng];
+              for (let leng = 0; leng < e.layer._latlngs[0].length; leng++) {
+                const _val = e.layer._latlngs[0][leng];
                 ListPositions.push([_val.lng, _val.lat]);
               }
               self.updateValue({
@@ -1635,7 +1635,7 @@ function mapWidgetsPluginClass() {
       }
 
       try {
-        for (var i = 0; i < self.numberOfGeoJsonLayers; i++) {
+        for (let i = 0; i < self.numberOfGeoJsonLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i])
@@ -1644,7 +1644,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfChoroplethLayers; i++) {
+        for (let i = 0; i < self.numberOfChoroplethLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i])
@@ -1653,7 +1653,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfLineHeatMapLayers; i++) {
+        for (let i = 0; i < self.numberOfLineHeatMapLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i])
@@ -1662,7 +1662,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfHeatMapLayers; i++) {
+        for (let i = 0; i < self.numberOfHeatMapLayers; i++) {
           modelsHiddenParams[idInstance].heatMap.heatMapBuffer[i] = []; // clear heatmap buffer
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].heatMap.heatMapData[i]) &&
@@ -1672,7 +1672,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfImageLayers; i++) {
+        for (let i = 0; i < self.numberOfImageLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].imageOverlay.imageData[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].imageOverlay.imageData[i])
@@ -1681,7 +1681,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfSvgLayers; i++) {
+        for (let i = 0; i < self.numberOfSvgLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].svgOverlay.svgData[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].svgOverlay.svgData[i])
@@ -1791,7 +1791,7 @@ function mapWidgetsPluginClass() {
                   layer.bindPopup(feature.properties.html);
                 }
               } else {
-                var jsonDisplay = jQuery.extend(true, {}, feature.properties);
+                const jsonDisplay = jQuery.extend(true, {}, feature.properties);
                 if (jsonDisplay.awesomeMarker) delete jsonDisplay.awesomeMarker;
                 if (feature.properties.openPopup) {
                   const mk = layer.bindPopup(syntaxHighlight(JSON.stringify(jsonDisplay)), {
@@ -2542,7 +2542,7 @@ function mapWidgetsPluginClass() {
 
       const heatMapData = heatMapObject.data;
       if (_.isEmpty(heatMapData) || heatMapData.length == 0) {
-        var circlesLayerGroup = L.layerGroup([]);
+        const circlesLayerGroup = L.layerGroup([]);
         self.mapLayers.heatMap.heatMapLayers[layerIndex - 1] = circlesLayerGroup.addTo(self.map);
         self.ctrl.addBaseLayer(self.mapLayers.heatMap.heatMapLayers[layerIndex - 1], 'none');
         if (!_.isUndefined($("input[name='leaflet-base-layers']")[self.numberOfHeatMapLayers - 1]))
@@ -2660,16 +2660,16 @@ function mapWidgetsPluginClass() {
         maxValue: maxValue,
       };
 
-      var circlesLayerGroup = L.layerGroup(circles);
+      const circlesLayerGroup = L.layerGroup(circles);
 
       self.mapLayers.heatMap.heatMapLayers[layerIndex - 1] = circlesLayerGroup.addTo(self.map);
 
       self.ctrl.addBaseLayer(self.mapLayers.heatMap.heatMapLayers[layerIndex - 1], featureTitle);
 
       if (!disableAutoscale) {
-        var corner1 = L.latLng(_.max(lats), _.max(lngs));
-        var corner2 = L.latLng(_.min(lats), _.min(lngs));
-        var bounds = L.latLngBounds(corner1, corner2);
+        const corner1 = L.latLng(_.max(lats), _.max(lngs));
+        const corner2 = L.latLng(_.min(lats), _.min(lngs));
+        const bounds = L.latLngBounds(corner1, corner2);
         // Display for the bounding box
         self.map.fitBounds(bounds);
       }
@@ -2685,8 +2685,8 @@ function mapWidgetsPluginClass() {
     };
 
     this.createLegend = function (color, length, colorStops, min, max, featureTitle) {
-      var min = Number(min);
-      var max = Number(max);
+      min = Number(min);
+      max = Number(max);
       if (!_.isUndefined(modelsHiddenParams[idInstance].legends[featureTitle])) {
         self.map.removeControl(modelsHiddenParams[idInstance].legends[featureTitle]); // MBG 18/09/2018
       }

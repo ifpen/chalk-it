@@ -576,21 +576,21 @@ export const widgetPreview = (function () {
 
   /*--------reset--------*/
   function reset() {
-    for (var property in widget) {
+    for (const property in widget) {
       delete widget[property];
     }
     $('#dashboard-zone').html('');
 
-    for (var property in widthRatioModels) {
+    for (const property in widthRatioModels) {
       delete widthRatioModels[property];
     }
-    for (var property in heightRatioModels) {
+    for (const property in heightRatioModels) {
       delete heightRatioModels[property];
     }
-    for (var property in leftRatioModels) {
+    for (const property in leftRatioModels) {
       delete leftRatioModels[property];
     }
-    for (var property in topRatioModels) {
+    for (const property in topRatioModels) {
       delete topRatioModels[property];
     }
     lastMediaInPreview = '';
