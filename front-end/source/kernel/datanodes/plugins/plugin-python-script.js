@@ -12,10 +12,17 @@
       }
     }
 
-    const DEFAULT_BACKEND = {
-      name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME,
-      id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID,
+    var DEFAULT_BACKEND = {
+      name: "Pyodide",
+      id: "__PYODIDE__",
     };
+
+    if (!xDashConfig["disableLocalServer"]) {
+      var DEFAULT_BACKEND = {
+        name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME,
+        id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID,
+      };
+    }
 
     async function dockerImageSelect(valueCell, settingDef, currentSettingsValues, newSettings) {
       const selectId = 'select-option' + settingDef.name;
