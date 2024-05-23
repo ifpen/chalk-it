@@ -17,7 +17,7 @@
       id: "__PYODIDE__",
     };
 
-    if (!xDashConfig["disableLocalServer"]) {
+    if (xDashConfig["disableLocalServer"]=="false") {
       var DEFAULT_BACKEND = {
         name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME,
         id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID,
