@@ -99,6 +99,15 @@
   }
 }
 
+.project__top_save-info {
+  position: absolute;
+  transform: translateY(20%);
+  bottom: 0;
+  font-size: fs('xs');
+  font-weight: fw('medium');
+  color: var(--disabled-color);
+}
+
 .undo-redo {
   display: flex;
   align-items: center;

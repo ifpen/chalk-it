@@ -24,6 +24,26 @@
         <div class="text-danger">invalid Name</div>
       </div>
       <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+        <label class="dashboard-form__label" for="projectVersion">Version</label>
+        <input
+          ng-model="currentInfoProject.version"
+          name="projectVersion"
+          class="ng-pristine ng-untouched ng-not-empty"
+          type="text"
+          ng-disabled="true"
+        />
+      </div>
+      <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
+        <label class="dashboard-form__label" for="projectDate">Last updated</label>
+        <input
+          ng-model="currentInfoProject.date"
+          name="projectDate"
+          class="ng-pristine ng-untouched ng-not-empty"
+          type="text"
+          ng-disabled="true"
+        />
+      </div>
+      <div class="dashboard-form__group dashboard-form__group--inline align-items-center">
         <label class="dashboard-form__label" for="projectDescription">Description</label>
         <input
           ng-model="currentInfoProject.description"

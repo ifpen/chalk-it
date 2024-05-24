@@ -562,14 +562,17 @@ angular.module('modules').service('ManagePrjService', [
      *  Saves the current project to local storage and optionally triggers the callback function.
      *  This function also handles renaming projects and provides appropriate user notifications.
      *
-     * @param {function} callback - Optional callback function to be triggered after the project is saved.
+     * @param {function} [callback=undefined] - Optional callback function to be triggered after the project is saved.
      * @returns {void}
      */
-    self.saveProjectToLocal = function (callback) {
+    self.saveProjectToLocal = function (callback = undefined) {
       const is_defaultOverwrite = true;
       const fileType = 'project';
       const inputProjectName = $('#projectName').val();
       const currentProjectName = $rootScope.currentProject.name;
+      $rootScope.currentProject.date = luxon.DateTime.now().setZone('Europe/Paris').toISO();
+      const date = new Date($rootScope.currentProject.date);
+      $rootScope.lastUpdatedDate = `${date.toLocaleDateString('en-US')} at ${date.toLocaleTimeString('en-US')}`;
       $rootScope.oldFileName = currentProjectName;
 
       if ($rootScope.taipyLink) {
@@ -586,18 +589,18 @@ angular.module('modules').service('ManagePrjService', [
         const renameProjectCallback = function () {
           const FileMngrInst = new FileMngrFct();
           FileMngrInst.RenameFile(fileType, currentProjectName, inputProjectName, function (msg1, msg2, type) {
-            renameLocalPrjCallBack(currentProjectName, inputProjectName, is_defaultOverwrite, type, callback);
+            _renameLocalPrjCallBack(currentProjectName, inputProjectName, is_defaultOverwrite, type, callback);
           });
         };
-        self.checkProjectName(inputProjectName, renameProjectCallback);
+        self._checkProjectName(inputProjectName, renameProjectCallback);
       };
 
       if (inputProjectName === '') {
-        self.renameLocalProject(currentProjectName, is_defaultOverwrite, callback);
+        self._renameLocalProject(currentProjectName, is_defaultOverwrite, callback);
       } else if (currentProjectName === '') {
         // if the project has never been saved
         // Check the project name if it does not already exist and save
-        self.checkProjectName(inputProjectName, function () {
+        self._checkProjectName(inputProjectName, function () {
           saveProjectOnServer(inputProjectName);
         });
       } else if (inputProjectName === currentProjectName) {
@@ -609,8 +612,9 @@ angular.module('modules').service('ManagePrjService', [
     };
 
     /**
-     * @name checkProjectName
+     * @name _checkProjectName
      * @function
+     * @private
      * @description
      *  For opensource version
      *  Checks the availability of a project name.
@@ -619,7 +623,7 @@ angular.module('modules').service('ManagePrjService', [
      * @param {function} callback - A callback function to be executed after the check.
      * @returns {void}
      */
-    self.checkProjectName = function (projectName, callback) {
+    self._checkProjectName = function (projectName, callback) {
       datanodesManager.showLoadingIndicator(true);
       const FileMngrInst = new FileMngrFct();
       FileMngrInst.CheckNewProjectName('', projectName, 'project', '', function (msg1, msg2, type) {
@@ -649,8 +653,9 @@ angular.module('modules').service('ManagePrjService', [
     };
 
     /**
-     * @name renameLocalProject
+     * @name _renameLocalProject
      * @function
+     * @private
      * @description
      *  For opensource version
      *  Renames a local project after confirming with the user.
@@ -661,7 +666,7 @@ angular.module('modules').service('ManagePrjService', [
      * @param {function} callback - Optional callback function to be triggered after the project is saved.
      * @returns {void}
      */
-    self.renameLocalProject = function (currentProjectName, is_defaultOverwrite, callback) {
+    self._renameLocalProject = function (currentProjectName, is_defaultOverwrite, callback) {
       swal(
         {
           title: 'Project name',
@@ -695,14 +700,14 @@ angular.module('modules').service('ManagePrjService', [
           const renameProjectCallback = function () {
             const FileMngrInst = new FileMngrFct();
             FileMngrInst.RenameFile('project', currentProjectName, inputValue, function (msg1, msg2, type) {
-              renameLocalPrjCallBack(currentProjectName, inputValue, is_defaultOverwrite, type, callback);
+              _renameLocalPrjCallBack(currentProjectName, inputValue, is_defaultOverwrite, type, callback);
             });
           };
 
           if (currentProjectName === '') {
             // If the project is not yet saved
             // Check the project name if it does not already exist and save
-            self.checkProjectName(inputValue, function () {
+            self._checkProjectName(inputValue, function () {
               saveProjectOnServer(inputValue);
             });
           } else if (inputValue === currentProjectName) {
@@ -710,15 +715,16 @@ angular.module('modules').service('ManagePrjService', [
             saveProjectOnServer(inputValue);
           } else {
             // Rename and save the project
-            self.checkProjectName(inputValue, renameProjectCallback);
+            self._checkProjectName(inputValue, renameProjectCallback);
           }
         }
       );
     };
 
     /**
-     * @name renameLocalPrjCallBack
+     * @name _renameLocalPrjCallBack
      * @function
+     * @private
      * @description
      *  For opensource version
      *  Renames a project and shows a notification based on the rename status.
@@ -730,7 +736,7 @@ angular.module('modules').service('ManagePrjService', [
      * @param {function} callback - Optional callback function to be triggered after the project is saved.
      * @returns {void}
      */
-    function renameLocalPrjCallBack(currentProjectName, inputProjectName, is_defaultOverwrite, type, callback) {
+    function _renameLocalPrjCallBack(currentProjectName, inputProjectName, is_defaultOverwrite, type, callback) {
       const noticeConfig = {
         title: inputProjectName,
         type: type,
@@ -766,11 +772,11 @@ angular.module('modules').service('ManagePrjService', [
      *                                            the file will be loaded from the template directory;
      *                                            otherwise, it will be loaded from the current working directory (cwd).
      *                                            Defaults to false.
-     * @param {Function} callback - A callback function that is called after the project file has been successfully
+     * @param {Function} [callback=undefined] - A callback function that is called after the project file has been successfully
      * opened and processed.
      * @returns {void} This method does not return a value.
      */
-    self.openTaipyPage = function (fileName, isTemplateFile = false, callback) {
+    self.openTaipyPage = function (fileName, isTemplateFile = false, callback = undefined) {
       const currentPrjDirty = $rootScope.currentPrjDirty || '';
       $rootScope.origin = 'projectEdition';
       const commonActions = () => {
