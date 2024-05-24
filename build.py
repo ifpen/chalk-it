@@ -19,6 +19,7 @@ from datetime import datetime
 import json
 
 BUILD_FRONT_END = True
+BUILD_TYPE = "pip"
 
 # Set source and destination directories
 src_dir = 'assets/install'
@@ -57,6 +58,38 @@ def get_version():
         return c
 
 front_end_build_dir_name = 'chalkit_' + a + '.' + b + '.' + str(get_version())
+suffix_version = a + '.' + b
+
+if (BUILD_TYPE == "pip"):
+
+    # Define the path to the front-end directory
+    directory = 'front-end'
+    input_file_path = os.path.join(directory, '.env.prod.pip')
+    output_file_path = os.path.join(directory, '.env.prod')
+
+    # Version suffix to add
+    version_suffix = suffix_version + '/' # You can change this to any version you need
+
+    # Read the input file
+    with open(input_file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Modify the content
+    modified_lines = []
+    for line in lines:
+        if line.startswith('URL_BASE_FOR_EXPORT'):
+            # Split the line at '=' and strip spaces, then add the version suffix
+            key, value = line.strip().split('=', 1)
+            modified_line = f"{key}={value.strip()}{version_suffix}\n"
+            modified_lines.append(modified_line)
+        else:
+            modified_lines.append(line)
+
+    # Write the modified content to the new file
+    with open(output_file_path, 'w') as file:
+        file.writelines(modified_lines)
+
+    print(f"File saved as: {output_file_path}")
 
 
 # Get the list of all files and directories in the "build" directory
