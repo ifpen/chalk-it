@@ -161,7 +161,7 @@ export class LayoutMgrClass {
         }
 
         let placeholderValue = this.newHeightCols.find((it) => !!it) || defaultValue; // Missing values are replaced with the first valid one, or 100%/rows.
-        for (let i = 0; i < nbValues; i++) {
+        for (let i = 0; i < this.newHeightCols.length; i++) {
           // i <= nbRows for original general version
           if (_.isUndefined(this.newHeightCols[i])) {
             this.newHeightCols[i] = placeholderValue;
