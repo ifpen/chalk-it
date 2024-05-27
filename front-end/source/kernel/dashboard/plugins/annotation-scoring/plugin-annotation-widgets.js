@@ -287,7 +287,7 @@ function annotationWidgetsPluginClass() {
       let textItalic = 'font-style: normal;';
       if (modelsParameters[idInstance].textBold) textBold = 'font-weight: bold;';
       if (modelsParameters[idInstance].textUnderline) textUnderline = 'text-decoration: underline;';
-      if (modelsParameters[idInstance].textBold) textItalic = 'font-style: italic;';
+      if (modelsParameters[idInstance].textItalic) textItalic = 'font-style: italic;';
 
       var divContent =
         '<div id="annotationLabelTextArea' +
