@@ -26,13 +26,7 @@ class CustomNavigationRuntime {
    * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
    */
   customNavigationPrepareRescale(valueRow, valueCol) {
-    const { defaultRows, defaultCols } = this.grid;
-
-    const rows = Number(valueRow) || defaultRows;
-    const cols = Number(valueCol) || defaultCols;
-
-    this.grid = { rows, cols };
-
+    const rows = Number(valueRow);
     if (rows > 1) {
       $('[id^=dpr][id$=c]').show();
     }
@@ -45,11 +39,10 @@ class CustomNavigationRuntime {
    */
   customNavigationModeInit(jsonContent) {
     const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
-    const { defaultRows, defaultCols } = this.grid;
+    const rows = Number(jsonContent.device.cols.valueRow);
+    const cols = Number(jsonContent.device.cols.valueCol);
 
-    const rows = Number(jsonContent.device.cols.valueRow) || defaultRows;
-    const cols = Number(jsonContent.device.cols.valueCol) || defaultCols;
-
+    this.jsonContent = jsonContent;
     this.grid = { rows, cols };
 
     if (rows > 1) {
@@ -82,18 +75,17 @@ class CustomNavigationRuntime {
 
     const jsonContent = this.jsonContent;
     let exportOptions = '';
-    const { defaultRows, defaultCols } = this.grid;
     let rows, cols;
 
     if (_.isEmpty(jsonContent)) {
-      // View mode
-      rows = layoutMgr.getRows() || defaultRows;
-      cols = layoutMgr.getCols() || defaultCols;
+      // Studio mode
+      rows = layoutMgr.getRows();
+      cols = layoutMgr.getCols();
       exportOptions = htmlExport.exportOptions;
     } else {
-      // Preview mode
-      rows = Number(jsonContent.device.cols.valueRow) || defaultRows;
-      cols = Number(jsonContent.device.cols.valueCol) || defaultCols;
+      // Runtime mode
+      rows = Number(jsonContent.device.cols.valueRow);
+      cols = Number(jsonContent.device.cols.valueCol);
       exportOptions = jsonContent.exportOptions;
     }
 
