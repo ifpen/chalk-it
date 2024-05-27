@@ -98,3 +98,34 @@ When a HTML page is generated with Chalk'it, either exported, public or private,
 Safely handling secrets is currenly outside Chalk'it scope.
 
 ## Docker deployment
+
+Rename your dashboard file to `dashboard.xprjson` and deploy it using Docker.
+
+Use this Dockerfile:
+
+```Dockerfile
+FROM python:3.11
+
+# assume your application is named application.xprjson
+COPY application.xprjson application.xprjson
+
+# install py-chalk-it and gunicorn
+RUN pip install py-chalk-it gunicorn
+
+# this configuration is needed for your app to work, do not change it
+ENTRYPOINT ["gunicorn", "chlkt.render:app", "run", "--bind", "0.0.0.0:80"]
+```
+
+Build the docker image:
+
+```sh
+docker build . -t application
+```
+
+Run it:
+
+```sh
+docker run -p 5000:80 application
+```
+
+Your dashboard will be displayed on port 5000.

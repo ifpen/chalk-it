@@ -50,7 +50,9 @@ Your can also use the [online hosted version](https://ifpen.github.io/chalk-it/h
 
 ### Deploy
 
-Rename your dashboard file to `dashboard.xprjson` and deploy it using Docker
+Rename your dashboard file to `dashboard.xprjson` and deploy it using Docker.
+
+Use this Dockerfile:
 
 ```Dockerfile
 FROM python:3.11
@@ -65,11 +67,15 @@ RUN pip install py-chalk-it gunicorn
 ENTRYPOINT ["gunicorn", "chlkt.render:app", "run", "--bind", "0.0.0.0:80"]
 ```
 
-```sh
-# build the docker image
-docker build . -t application
+Build the docker image:
 
-# run it
+```sh
+docker build . -t application
+```
+
+Run it:
+
+```sh
 docker run -p 5000:80 application
 ```
 
