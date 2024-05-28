@@ -168,6 +168,18 @@ function annotationWidgetsPluginClass() {
       widgetHtml.setAttribute('class', 'btn');
       widgetHtml.setAttribute('id', 'annotationiconInfo' + idWidget);
       //widgetHtml.setAttribute("title", modelsParameters[idInstance].text);
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       widgetHtml.setAttribute(
         'style',
         'width: ' +
@@ -180,8 +192,11 @@ function annotationWidgetsPluginClass() {
           lineHeight +
           'px;padding-top: ' +
           divMarginTop +
-          'px; '
+          'px; ' +
+          displayStyle +
+          enableStyle
       );
+
       $('#' + idDivContainer).html(widgetHtml);
 
       // conversion to enable HTML tags
@@ -316,9 +331,25 @@ function annotationWidgetsPluginClass() {
         '</textarea>';
 
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       widgetHtml.setAttribute(
         'style',
-        'width: inherit; height: inherit; display: ' + displayDiv1 + '; justify-content: center;'
+        'width: inherit; height: inherit; display: ' +
+          displayDiv1 +
+          '; justify-content: center;' +
+          displayStyle +
+          enableStyle
       );
       $('#' + idDivContainer).html(widgetHtml);
     };
@@ -387,7 +418,23 @@ function annotationWidgetsPluginClass() {
 
     this.render = function () {
       var widgetHtml = document.createElement('div');
-      widgetHtml.setAttribute('style', 'width: inherit; height: inherit; margin: auto; top: 0; left: 0'); // MBG 09/10/2019 : margin auto for centering
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+
+      widgetHtml.setAttribute(
+        'style',
+        'width: inherit; height: inherit; margin: auto; top: 0; left: 0' + displayStyle + enableStyle
+      ); // MBG 09/10/2019 : margin auto for centering
       widgetHtml.setAttribute('id', 'imgContainer' + idWidget);
       var divContent = '';
       if (modelsHiddenParams[idInstance].fileContentBase64 != '') {
@@ -405,8 +452,6 @@ function annotationWidgetsPluginClass() {
         divContainer.height(inheritWcHeightFromIdInst(idInstance));
         divContainer.css('left', 0 + 'px');
         divContainer.css('top', 0 + 'px');
-
-        widgetHtml.setAttribute('style', 'width: inherit; height: inherit; margin: auto;');
 
         if (!self.bIsInteractive) {
           divContent = divContent + ' opacity: 0.75';
@@ -853,7 +898,22 @@ function annotationWidgetsPluginClass() {
       divContent = divContent + '</div></div></div></div>';
 
       widgetHtml.innerHTML = divContent;
-      widgetHtml.setAttribute('style', 'width: inherit; height: inherit; text-align:center; align: center');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute(
+        'style',
+        'width: inherit; height: inherit; text-align:center; align: center;' + displayStyle + enableStyle
+      );
       $('#' + idDivContainer).html(widgetHtml);
 
       this.setButtonColorStyle();

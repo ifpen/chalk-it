@@ -73,9 +73,21 @@ function vegaWidgetsPluginClass() {
       idDivVega = idDivVega + 'c';
     }
     widgetHtml.setAttribute('id', idDivVega);
+    //
+    const showWidget = this.showWidget();
+    let displayStyle = 'display: inherit;';
+    if (!showWidget) {
+      displayStyle = 'display: none;';
+    }
+    const enableWidget = this.enableWidget();
+    let enableStyle = 'pointer-events: initial; opacity:initial;';
+    if (!enableWidget) {
+      enableStyle = 'pointer-events: none; opacity:0.5;';
+    }
+    //
     widgetHtml.setAttribute(
       'style',
-      'text-align:center; height: inherit; width: inherit; background-color: transparent'
+      'text-align:center; height: inherit; width: inherit; background-color: transparent;' + displayStyle + enableStyle
     );
     $('#' + idDivContainer).html(widgetHtml);
   }

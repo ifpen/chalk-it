@@ -210,10 +210,30 @@ function flatUiComplexWidgetsPluginClass() {
 
       widgetHtml.innerHTML = divContent;
       widgetHtml.setAttribute('id', 'select-div-container' + idWidget);
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       widgetHtml.setAttribute(
         'style',
-        'height: ' + valueHeightPx + 'px; ' + this.selectFontSize() + this.selectValueFontFamily()
+        'height: ' +
+          valueHeightPx +
+          'px; ' +
+          this.selectFontSize() +
+          this.selectValueFontFamily() +
+          ';' +
+          displayStyle +
+          enableStyle
       );
+
       $('#' + idDivContainer).html(widgetHtml);
 
       if (this.bIsInteractive) {
@@ -606,6 +626,20 @@ function flatUiComplexWidgetsPluginClass() {
       }
       divContent += '</div>';
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: initial;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
+
       $('#' + idDivContainer).html(widgetHtml);
 
       const hasScrollBar = self.hasScrollBar($('#multi-select' + idWidget));
@@ -848,6 +882,19 @@ function flatUiComplexWidgetsPluginClass() {
       }
       divContent += '</select>';
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: initial;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
       //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
       const isMobileOrTablet = window.mobileAndTabletCheck();
@@ -1125,8 +1172,7 @@ function flatUiComplexWidgetsPluginClass() {
     this.render = function () {
       const widgetHtml = document.createElement('div');
       const displayStyle =
-        'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto';
-      widgetHtml.setAttribute('style', displayStyle);
+        'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto;';
       let divContent = `<table style="margin: 0; height: 100%; ${this.tableBackgroundColor('primary')}" class="table`;
       if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
       if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
@@ -1138,6 +1184,21 @@ function flatUiComplexWidgetsPluginClass() {
       }
       divContent += insideTable + '</table>';
       widgetHtml.innerHTML = divContent;
+
+      //
+      const showWidget = this.showWidget();
+      let displayStyle2 = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle2 = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + displayStyle2 + enableStyle);
+
       $('#' + idDivContainer).html(widgetHtml);
 
       if (this.bIsInteractive) {
