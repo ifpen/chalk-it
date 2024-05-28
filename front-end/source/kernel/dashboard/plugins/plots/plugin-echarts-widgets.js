@@ -51,22 +51,6 @@ function echartsWidgetsPluginClass() {
       idDivEcharts = idDivEcharts + 'c';
     }
     widgetHtml.setAttribute('id', idDivEcharts);
-    //
-    const showWidget = this.showWidget();
-    let displayStyle = 'display: inherit;';
-    if (!showWidget) {
-      displayStyle = 'display: none;';
-    }
-    const enableWidget = this.enableWidget();
-    let enableStyle = 'pointer-events: initial; opacity:initial;';
-    if (!enableWidget) {
-      enableStyle = 'pointer-events: none; opacity:0.5;';
-    }
-    //
-    widgetHtml.setAttribute(
-      'style',
-      'text-align:center; height: inherit; width: inherit; background-color: transparent;' + displayStyle + enableStyle
-    );
     $('#' + idDivContainer).html(widgetHtml);
   }
 
@@ -112,6 +96,29 @@ function echartsWidgetsPluginClass() {
       opt.color = opt.color.map((color) => this.getColorValueFromCSSProperty(color));
 
       createEchartsDiv(idDivContainer, idWidget, bInteractive);
+
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+
+      let elem = $('#echarts' + idWidget)[0];
+      if (bInteractive) {
+        elem = $('#echarts' + idWidget + 'c')[0];
+      }
+      elem.setAttribute(
+        'style',
+        'text-align:center; height: inherit; width: inherit; background-color: transparent;' +
+          displayStyle +
+          enableStyle
+      );
 
       // use configuration item and data specified to show chart
       if (bInteractive) {

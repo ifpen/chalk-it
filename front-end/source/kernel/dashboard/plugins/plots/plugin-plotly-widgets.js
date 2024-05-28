@@ -392,6 +392,7 @@ function plotlyWidgetsPluginClass() {
   // |                         createPlotlyDiv                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function createPlotlyDiv(idDivContainer, pId, bInteractive) {
+    const self = this;
     const widgetHtml = document.createElement('div');
     let idDivPlotly = 'plotly' + pId;
     if (bInteractive) {
@@ -399,23 +400,6 @@ function plotlyWidgetsPluginClass() {
     }
     widgetHtml.setAttribute('id', idDivPlotly);
     widgetHtml.setAttribute('class', 'js-plotly-plot');
-    //
-    const showWidget = this.showWidget();
-    let displayStyle = 'display: inherit;';
-    if (!showWidget) {
-      displayStyle = 'display: none;';
-    }
-    const enableWidget = this.enableWidget();
-    let enableStyle = 'pointer-events: initial; opacity:initial;';
-    if (!enableWidget) {
-      enableStyle = 'pointer-events: none; opacity:0.5;';
-    }
-    //
-    widgetHtml.setAttribute(
-      'style',
-      'text-align:center; height: inherit; width: inherit; background-color: transparent;' + displayStyle + enableStyle
-    );
-
     $('#' + idDivContainer).html(widgetHtml);
   }
 
@@ -469,6 +453,27 @@ function plotlyWidgetsPluginClass() {
     }
     const self = this;
 
+    this.enableWidget = function () {
+      if (_.isUndefined(modelsParameters[idInstance].enableWidget)) {
+        modelsParameters[idInstance].enableWidget = true;
+      }
+      if (bInteractive) {
+        return modelsParameters[idInstance].enableWidget;
+      } else {
+        return true;
+      }
+    };
+
+    this.showWidget = function () {
+      if (_.isUndefined(modelsParameters[idInstance].showWidget)) {
+        modelsParameters[idInstance].showWidget = true;
+      }
+      if (bInteractive) {
+        return modelsParameters[idInstance].showWidget;
+      } else {
+        return true;
+      }
+    };
     // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
     this.getColorValueFromCSSProperty = function (value) {
       let color = value;
@@ -580,6 +585,29 @@ function plotlyWidgetsPluginClass() {
           hiddenLayout.plot_bgcolor = this.getColorValueFromCSSProperty(modelLayout.plot_bgcolor);
         }
       }
+
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      let elem = $('#plotly' + idWidget)[0];
+      if (bInteractive) {
+        elem = $('#plotly' + idWidget + 'c')[0];
+      }
+      elem.setAttribute(
+        'style',
+        'text-align:center; height: inherit; width: inherit; background-color: transparent;' +
+          displayStyle +
+          enableStyle
+      );
 
       $('#' + idDivPlotly).html('');
 
