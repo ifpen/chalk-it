@@ -93,13 +93,15 @@ function widgetContainerClass() {
    */
   /*--------Replace current Widget--------*/
   this.replaceWidget = function (element) {
-    var wcId;
-    for (var ch = element.childNodes.length - 1; ch >= 0; ch--) {
-      if (element.childNodes[ch].id.match('WidgetContainer')) {
+    let wcId;
+    for (let ch = element.childNodes.length - 1; ch >= 0; ch--) {
+      const child = element.childNodes[ch];
+      const childId = child.id;
+      if (childId.startsWith('WidgetContainer')) {
         // MBG temp : to move to widget object
-        wcId = element.childNodes[ch].id;
-        element.removeChild(element.childNodes[ch]);
-        break; // true because only one container exist
+        wcId = childId;
+        element.removeChild(child);
+        break; // There should be exactly one "WidgetContainer"
       }
     }
 
@@ -111,19 +113,19 @@ function widgetContainerClass() {
     element.setAttribute('item-width', element.offsetWidth);
     element.setAttribute('item-height', element.offsetHeight);
 
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.style.height = unitH(element.offsetHeight - 2);
     div.style.width = unitW(element.offsetWidth - 2);
     div.style.minWidth = parseFloat(element.style.minWidth) - 5 + 'px';
     div.style.minHeight = parseFloat(element.style.minHeight) - 5 + 'px';
+    div.id = wcId;
 
     element.appendChild(div);
-    div.id = wcId;
-    var modelJsonIdStr = element.id.substring(0, element.id.length - 1);
+    const modelJsonIdStr = element.id.substring(0, element.id.length - 1);
 
-    var instanceId = element.id;
+    const instanceId = element.id;
     const widgetEditor = editorSingletons.widgetEditor;
-    var widgetTitle = widgetEditor.widgetContainers.get(instanceId).widgetTitle; //AEF
+    const widgetTitle = widgetEditor.widgetContainers.get(instanceId).widgetTitle; //AEF
     widgetEditor.widgetObject[instanceId] = widgetsPluginsHandler.copyWidget(
       wcId,
       modelJsonIdStr,
