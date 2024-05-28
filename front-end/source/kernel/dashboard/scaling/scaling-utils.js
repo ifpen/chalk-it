@@ -7,7 +7,7 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { editorSingletons } from 'kernel/editor-singletons';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { dashState } from 'angular/modules/dashboard/dashboard';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
@@ -118,7 +118,7 @@ export function getFontFactor() {
     }
   } else if (dashState.tabActive == 'widgets') {
     if (!window.matchMedia('(min-width: 768px)').matches) {
-      return runtimeSingletons.layoutMgr.getCols() || 1;
+      return editorSingletons.layoutMgr.getCols() || 1;
     } else {
       return 1;
     }

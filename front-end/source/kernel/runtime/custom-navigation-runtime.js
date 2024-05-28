@@ -10,7 +10,6 @@ import _ from 'lodash';
 
 import { htmlExport } from 'kernel/general/export/html-export';
 import { editorSingletons } from 'kernel/editor-singletons';
-const layoutMgr = editorSingletons.layoutMgr;
 
 class CustomNavigationRuntime {
   #grid;
@@ -79,6 +78,7 @@ class CustomNavigationRuntime {
   customNavigationGoToPage(numPage) {
     const $rootScope = angular.element(document.body).scope().$root;
 
+    const layoutMgr = editorSingletons.layoutMgr;
     // Do not run in edit mode
     if (typeof layoutMgr !== 'undefined' && !$rootScope.bIsPlayMode) return;
 
