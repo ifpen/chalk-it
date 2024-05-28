@@ -65,27 +65,25 @@ export const widgetPreview = (function () {
   /**
    * Rebuilds Widget in Preview Mode
    * Uses widgets pluging's "copy" method instead of create
-   * @param {any} instanceId
+   * @param {str} instanceId
    */
   function rebuildWidgetInPreviewMode(instanceId) {
-    let elementId = instanceId + 'c';
-    var element = document.getElementById(elementId);
-    var modelJsonIdStr = element.id.substring(0, element.id.length - 2);
-    var instanceId = element.id.substring(0, element.id.length - 1);
-    var widgetContainer = element.firstElementChild;
-    //
-    for (var ch = element.childNodes.length - 1; ch >= 0; ch--) element.removeChild(element.childNodes[ch]);
+    const elementId = instanceId + 'c';
+    const element = document.getElementById(elementId);
+    const modelJsonIdStr = elementId.substring(0, elementId.length - 2);
+    const widgetContainer = element.firstElementChild;
+    const wcId = widgetContainer.id;
 
-    var div = document.createElement('div');
+    for (let ch = element.childNodes.length - 1; ch >= 0; ch--) element.removeChild(element.childNodes[ch]);
+
+    const div = document.createElement('div');
     div.style.height = unitH(element.offsetHeight - 2);
     div.style.width = unitW(element.offsetWidth - 2);
     div.style.minWidth = parseFloat(element.style.minWidth) - 5 + 'px';
     div.style.minHeight = parseFloat(element.style.minHeight) - 5 + 'px';
-
+    div.id = wcId;
     element.appendChild(div);
-    div.id = widgetContainer.id; //wcId
-    //
-    var wcId = widgetContainer.id;
+
     widget[instanceId] = widgetsPluginsHandler.copyWidget(wcId, modelJsonIdStr, widget[instanceId], instanceId, true);
     widgetsErrorState[instanceId] = false;
     return instanceId;
