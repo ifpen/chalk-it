@@ -127,35 +127,21 @@ var chalkit = (function () {
   }
 
   function enableWidget(widgetName) {
+    modelsParameters[widgetName].enableWidget = true;
+    widgetPreview.widget[widgetName].render();
     //let divElement = document.querySelector('#' + widgetName + 'c');
-    let divElement = $('#' + widgetName + 'c')[0];
-    if (!_.isUndefined(divElement)) {
-      divElement.style.pointerEvents = '';
-      divElement.style.opacity = '';
-    }
   }
 
   function disableWidget(widgetName) {
+    modelsParameters[widgetName].enableWidget = false;
+    widgetPreview.widget[widgetName].render();
     //let divElement = document.querySelector('#' + widgetName + 'c');
-    let divElement = $('#' + widgetName + 'c')[0];
-    if (!_.isUndefined(divElement)) {
-      divElement.style.pointerEvents = 'none';
-      divElement.style.opacity = '0.5';
-    }
   }
 
   function showWidget(widgetName) {
-    let divElement = $('#' + widgetName + 'c');
-    if (!_.isUndefined(divElement)) {
-      divElement.show();
-    }
   }
 
   function hideWidget(widgetName) {
-    let divElement = $('#' + widgetName + 'c');
-    if (!_.isUndefined(divElement)) {
-      divElement.hide();
-    }
   }
 
   scheduler = (function () {
