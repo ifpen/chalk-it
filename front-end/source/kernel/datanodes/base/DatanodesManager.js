@@ -19,6 +19,7 @@ import angular from 'angular';
 import FreeboardUI from 'kernel/base/gui/FreeboardUI';
 import { DatanodesListModel } from './DatanodesListModel';
 import { DatanodeDependency } from '../execution-engine/DatanodeDependency';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 import { JSONEdit } from 'kernel/datanodes/gui/json-edit';
 import { JSEditor } from 'kernel/datanodes/gui/JSEditor';
 import { PluginEditor } from 'kernel/datanodes/gui/PluginEditor';
