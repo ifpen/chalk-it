@@ -29,3 +29,6 @@ __pycache__/
 
 pyodide-worker-dev.js
 pyodide-worker-dev.js.map
+
+/.env.prod
+/build_version.txt

@@ -982,6 +982,26 @@
 <p>When a HTML page is generated with Chalk'it, either exported, public or private, the xprjson content is inlined into the HTML page code, and might include sensitive information such as passwords, API keys, authorization information...</p>
 <p>Safely handling secrets is currenly outside Chalk'it scope.</p>
 <h2 id="docker-deployment">Docker deployment<a class="headerlink" href="#docker-deployment" title="Permanent link">&para;</a></h2>
+<p>Rename your dashboard file to <code>dashboard.xprjson</code> and deploy it using Docker.</p>
+<p>Use this Dockerfile:</p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11</span>
+
+<span class="c"># assume your application is named application.xprjson</span>
+<span class="k">COPY</span><span class="w"> </span>application.xprjson<span class="w"> </span>application.xprjson
+
+<span class="c"># install py-chalk-it and gunicorn</span>
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>py-chalk-it<span class="w"> </span>gunicorn
+
+<span class="c"># this configuration is needed for your app to work, do not change it</span>
+<span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;gunicorn&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;chlkt.render:app&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--bind&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;0.0.0.0:80&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>Build the docker image:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>.<span class="w"> </span>-t<span class="w"> </span>application
+</code></pre></div>
+<p>Run it:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">5000</span>:80<span class="w"> </span>application
+</code></pre></div>
+<p>Your dashboard will be displayed on port 5000.</p>
 
               
             </article>
