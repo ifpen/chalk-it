@@ -1060,25 +1060,13 @@ export function initEditWidget() {
   function resizeOnMediaChange() {
     scalingHelper.resizeDashboardCols();
 
-    var divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
+    const divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
 
-    for (var i = 0; i < divsDropZone.length; i++) {
-      // TODO
-      if ($('#' + divsDropZone[i].id).hasClass('drsElement') && divsDropZone[i].id.substring(0, 6) != 'Widget') {
-        var element = divsDropZone[i];
-        var instanceId = element.id;
-
-        /*-------------------------------------------------------------*/
+    for (let i = 0; i < divsDropZone.length; i++) {
+      const element = divsDropZone[i];
+      if ($(element).hasClass('drsElement') && !element.id.startsWith('Widget')) {
+        const instanceId = element.id;
         scalingHelper.resizeWidgetOnMediaChange(instanceId, instanceId);
-        /*-------------------------------------------------------------*/
-
-        // To better recode in widgetObject structure
-        for (var ch = element.childNodes.length - 1; ch >= 0; ch--) {
-          if (element.childNodes[ch].id.match('WidgetContainer')) {
-            wcId = element.childNodes[ch].id;
-            break;
-          }
-        }
         widgetContainer.replaceWidget(element);
       }
     }
@@ -1088,26 +1076,25 @@ export function initEditWidget() {
   function rescale() {
     editorSingletons.layoutMgr.updateMaxTopAndLeft();
 
-    var divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
+    const divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
 
     editorDimensionsSnapshot = getCurrentDashZoneDims();
     scalingHelper.setDimensions(editorDimensionsSnapshot);
     scalingHelper.setScalingMethod(editorScalingMethod);
 
-    var bChanged = false;
-    var mediaChangeObj = isMediaChanged(lastMediaInEdit);
-    bChanged = mediaChangeObj.bChanged;
+    const mediaChangeObj = isMediaChanged(lastMediaInEdit);
+    const bChanged = mediaChangeObj.bChanged;
     lastMediaInEdit = mediaChangeObj.lastMedia;
 
     if (bChanged) {
       resizeOnMediaChange();
     } else {
-      for (var i = 0; i < divsDropZone.length; i++) {
-        if (divsDropZone[i].id) {
-          // TODO
-          if ($('#' + divsDropZone[i].id).hasClass('drsElement') && divsDropZone[i].id.substring(0, 6) != 'Widget') {
-            var element = divsDropZone[i];
-            var instanceId = element.id;
+      for (let i = 0; i < divsDropZone.length; i++) {
+        const zoneId = divsDropZone[i].id;
+        if (zoneId) {
+          if ($(divsDropZone[i]).hasClass('drsElement') && !zoneId.startsWith('Widget')) {
+            const element = divsDropZone[i];
+            const instanceId = element.id;
             rescaleWidget(widgetObject, instanceId);
             widgetContainers.get(instanceId).widgetObj = widgetObject[instanceId];
           }
