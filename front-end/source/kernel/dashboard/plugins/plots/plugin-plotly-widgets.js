@@ -656,8 +656,8 @@ function plotlyWidgetsPluginClass() {
               }
 
               if (!_.isUndefined(point.pointNumbers)) {
-                const traceNumber = point.pointNumbers.curveNumber;
-                pointNumbers.forEach(function (d) {
+                const traceNumber = point.curveNumber;
+                point.pointNumbers.forEach(function (d) {
                   dataSelected[traceNumber].push(d);
 
                   if (!_.isUndefined(graphDiv.data[traceNumber].customdata)) {
