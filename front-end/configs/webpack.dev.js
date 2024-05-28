@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
-module.exports = merge(common, {
+module.exports = (env) => merge(common(env), {
   mode: 'development',
   optimization: {
     splitChunks: {

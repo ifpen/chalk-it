@@ -4,6 +4,8 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
+
 const devMode = process.env.NODE_ENV !== 'production';
 
 console.log(`production build: ${!devMode}`);
@@ -17,7 +19,7 @@ const confDic = Object.fromEntries(
 
 const PLUGINS = ['./source/kernel/dashboard/plugins/plugins.js', './source/kernel/datanodes/plugins/plugins.js'];
 
-module.exports = {
+module.exports = (env) => ({
   entry: {
     editor: ['kernel/utils/editor-asserts.js', ...PLUGINS, './source/main-studio.js'],
     dashboard: ['kernel/utils/runtime-asserts.js', ...PLUGINS, './source/main-dashboard.js'],
@@ -104,6 +106,7 @@ module.exports = {
             filename: '[name].[contenthash].css',
           }),
         ]),
+    ...(env.enableEslintPlugin ? [new ESLintPlugin({})] : []),
     new webpack.DefinePlugin({
       ...confDic,
     }),
@@ -137,4 +140,4 @@ module.exports = {
       },
     ]),
   ],
-};
+});
