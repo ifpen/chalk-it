@@ -433,7 +433,7 @@ function annotationWidgetsPluginClass() {
 
       widgetHtml.setAttribute(
         'style',
-        'width: inherit; height: inherit; margin: auto; top: 0; left: 0' + displayStyle + enableStyle
+        'width: inherit; height: inherit; margin: auto; top: 0; left: 0;' + displayStyle + enableStyle
       ); // MBG 09/10/2019 : margin auto for centering
       widgetHtml.setAttribute('id', 'imgContainer' + idWidget);
       var divContent = '';
