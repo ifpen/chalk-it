@@ -18,7 +18,7 @@ module.exports = (env) =>
     mode: 'production',
     output: {
       filename: '[name].[contenthash].js',
-      path: path.resolve(__dirname, '../dist'),
+      path: path.resolve(__dirname, '../build'),
     },
     plugins: [
       new webpack.optimize.LimitChunkCountPlugin({
