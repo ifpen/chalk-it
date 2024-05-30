@@ -128,22 +128,22 @@ var chalkit = (function () {
 
   function enableWidget(widgetName) {
     modelsParameters[widgetName].enableWidget = true;
-    widgetPreview.widget[widgetName].render();
+    widgetPreview.widget[widgetName].render(true);
   }
 
   function disableWidget(widgetName) {
     modelsParameters[widgetName].enableWidget = false;
-    widgetPreview.widget[widgetName].render();
+    widgetPreview.widget[widgetName].render(true);
   }
 
   function showWidget(widgetName) {
     modelsParameters[widgetName].showWidget = true;
-    widgetPreview.widget[widgetName].render();
+    widgetPreview.widget[widgetName].render(true);
   }
 
   function hideWidget(widgetName) {
     modelsParameters[widgetName].showWidget = false;
-    widgetPreview.widget[widgetName].render();
+    widgetPreview.widget[widgetName].render(true);
   }
 
   scheduler = (function () {

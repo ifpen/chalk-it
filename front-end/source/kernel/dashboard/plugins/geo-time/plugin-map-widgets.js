@@ -1364,7 +1364,7 @@ function mapWidgetsPluginClass() {
       }
     };
 
-    this.render = function () {
+    this.render = function (fromApi) {
       var widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('id', 'openStreetMap' + idWidget);
       //
@@ -1374,12 +1374,17 @@ function mapWidgetsPluginClass() {
         displayStyle = 'display: none;';
       }
       const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      let enableStyle = 'pointer-events: inherit; opacity:initial;';
       if (!enableWidget) {
         enableStyle = 'pointer-events: none; opacity:0.5;';
       }
       //
-      widgetHtml.setAttribute('style', 'width: inherit; height: inherit;' + displayStyle + enableStyle);
+      elem = $('#' + idDivContainer)[0];
+      elem.setAttribute('style', 'width: inherit; height: inherit;' + displayStyle + enableStyle);
+      widgetHtml.setAttribute('style', 'width: inherit; height: inherit;');
+      if (fromApi) {
+        return;
+      }
       document.addEventListener('play-tab-loaded', self.goToFirstRadioButton);
       $('#' + idDivContainer).html(widgetHtml);
 
