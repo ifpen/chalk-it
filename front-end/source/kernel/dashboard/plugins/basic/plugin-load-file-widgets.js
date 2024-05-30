@@ -306,7 +306,7 @@ function loadFileWidgetsPluginClass() {
       widgetHtml.innerHTML = divContent;
       //
       const showWidget = this.showWidget();
-      let displayStyle = 'display: inherit;';
+      let displayStyle = 'display: flex;';
       if (!showWidget) {
         displayStyle = 'display: none;';
       }
