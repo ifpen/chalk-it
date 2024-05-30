@@ -129,19 +129,21 @@ var chalkit = (function () {
   function enableWidget(widgetName) {
     modelsParameters[widgetName].enableWidget = true;
     widgetPreview.widget[widgetName].render();
-    //let divElement = document.querySelector('#' + widgetName + 'c');
   }
 
   function disableWidget(widgetName) {
     modelsParameters[widgetName].enableWidget = false;
     widgetPreview.widget[widgetName].render();
-    //let divElement = document.querySelector('#' + widgetName + 'c');
   }
 
   function showWidget(widgetName) {
+    modelsParameters[widgetName].showWidget = true;
+    widgetPreview.widget[widgetName].render();
   }
 
   function hideWidget(widgetName) {
+    modelsParameters[widgetName].showWidget = false;
+    widgetPreview.widget[widgetName].render();
   }
 
   scheduler = (function () {
