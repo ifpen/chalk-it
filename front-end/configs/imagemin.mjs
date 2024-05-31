@@ -5,7 +5,7 @@ import imageminSvgo from 'imagemin-svgo';
 
 const DETAIL_LOG = false;
 
-const files = await imagemin(['build/assets/*.{jpg,jpeg,png,svg}'], {
+const files = await imagemin(['build/assets/*.{jpg,jpeg,png,svg}', 'build/doc/**/*.{jpg,jpeg,png,svg}'], {
   plugins: [
     imageminMozjpeg({}),
     imageminPngquant({}),
