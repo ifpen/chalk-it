@@ -3,6 +3,18 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
+const proxyEntry = {};
+if (process.env.PROXY_TO) {
+  const proxyDict = {};
+
+  // TODO extend as needed
+  proxyDict['/FileSyncURI'] = { target: process.env.PROXY_TO };
+  proxyDict['/ReadSettings'] = { target: process.env.PROXY_TO };
+  proxyDict['/exec'] = { target: process.env.PROXY_TO };
+
+  proxyEntry['proxy'] = proxyDict;
+}
+
 module.exports = (env) =>
   merge(common(env), {
     mode: 'development',
@@ -14,7 +26,7 @@ module.exports = (env) =>
       },
     },
     devServer: {
-      //port: 9001,
+      port: process.env.PORT || 7854,
       client: {
         overlay: {
           errors: true,
@@ -22,15 +34,7 @@ module.exports = (env) =>
           runtimeErrors: true,
         },
       },
-      proxy: {
-        // TODO extend
-        '/FileSyncURI': {
-          target: 'http://127.0.0.1:7854',
-        },
-        '/exec': {
-          target: 'http://127.0.0.1:7854',
-        },
-      },
+      ...proxyEntry,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
@@ -38,6 +42,6 @@ module.exports = (env) =>
       },
     },
     devtool: 'source-map',
-    //devtool: 'cheap-module-eval-source-map',
+    // devtool: 'cheap-module-eval-source-map',
     plugins: [new webpack.HotModuleReplacementPlugin()],
   });
