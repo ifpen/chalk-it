@@ -138,11 +138,15 @@ module.exports = (env) => ({
         to: 'assets/',
         flatten: true,
       },
-      ...(env.includeDocumentation ? [{
-        context: '../documentation/site/',
-        from: '**/*.*',
-        to: 'doc/',
-      }] : []),
+      ...(env.includeDocumentation
+        ? [
+            {
+              context: '../documentation/site/',
+              from: '**/*.*',
+              to: 'doc/',
+            },
+          ]
+        : []),
     ]),
   ],
 });
