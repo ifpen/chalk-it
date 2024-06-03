@@ -9,23 +9,13 @@ You might need to configure npm proxy before start.
 
 Now you should be able to install any package!
 
-### Saas
-
-```sh
-npm install -g sass
-```
-
 ## Installation
-
-```sh
-npm install -g gulp-cli
-```
 
 ```sh
 npm install
 ```
 
-This will install necessary Node.js packages needed by the app, and also dependencies for Gulp tasks.
+This will install necessary Node.js packages needed by the app.
 
 ## Configuration
 
@@ -35,19 +25,19 @@ There is a `.env.sample` file that you can copy to `.env.dev` (for development) 
 
 ## Building
 
-To create your development environment, run:
+To start the webpack server, run:
 
 ```sh
 npm run start
 ```
 
-To create distribution bundles for this app, run:
+To create distribution bundles for this app (this requires a working python environement for mkdoc), run:
 
 ```sh
 npm run build
 ```
 
-A new directory named `build` by default (or you can set up the name in the .env file) containing build package is created.
+The build result goes into `build`.
 
 To run the server ,run :<br>
 
@@ -57,8 +47,8 @@ To run the server ,run :<br>
 python server.py --dev
 ```
 
-clear the cache
+Clear all build artefacts
 
 ```sh
-npm run clean:cache
+npm run build:clean
 ```
