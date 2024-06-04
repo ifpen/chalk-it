@@ -39,7 +39,7 @@ const RuntimeDashboard = (function () {
         break;
       case 'adjustToFullWidth':
         $('#dashboard-zone')[0].style.width = '100%';
-        $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx + 'px';
+        $('#dashboard-zone')[0].style.height = scalingSrc.scrollHeightPx + navMenuHeightPx + 'px';
         scalingSrc.scalingMethod = 'scaleTwSpWS';
         break;
       case 'ajustToTargetWindow':

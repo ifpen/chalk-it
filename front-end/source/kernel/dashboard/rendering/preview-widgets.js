@@ -479,7 +479,8 @@ var widgetPreview = (function () {
     // Prepare rescale for rowToPage mode
     if (typeof execOutsideEditor != 'undefined') {
       if (execOutsideEditor) {
-        var navMenuHeightPx = 0;
+        let navMenuHeightPx = 0;
+        const scalingSrc = jQuery.extend(true, {}, jsonContent.scaling);
 
         if ($('#nav-menu')[0]) {
           navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);
@@ -496,9 +497,29 @@ var widgetPreview = (function () {
           case 'customNavigation':
             customNavigationRuntime.customNavigationPrepareRescale(targetRows, targetCols);
             break;
-          case 'keepOriginalWidth':
-            $('#dashboard-zone')[0].style.height = scalingSrc.scrollHeightPx + navMenuHeightPx + 'px';
+          case 'keepOriginalWidth': {
+            const $dashboardZone = $('#dashboard-zone');
+            const bodyHeight = document.body.clientHeight;
+            const bodyWidth = document.body.clientWidth;
+            $dashboardZone.css({
+              top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
+              left: bodyWidth / 2 - $dashboardZone.outerWidth() / 2 + 'px',
+              position: 'absolute',
+              height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
+              width: scalingSrc.scrollWidthPx + 'px',
+            });
             break;
+          }
+          case 'adjustToFullWidth': {
+            const $dashboardZone = $('#dashboard-zone');
+            const bodyHeight = document.body.clientHeight;
+            $dashboardZone.css({
+              top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
+              position: 'absolute',
+              height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
+            });
+            break;
+          }
           default:
             $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx + 'px';
             break;
