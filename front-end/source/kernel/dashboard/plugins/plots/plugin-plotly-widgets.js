@@ -719,8 +719,7 @@ function plotlyWidgetsPluginClass() {
   this.linePlotlyWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
-    var self = this;
-
+    const self = this;
     this.numberOfAxis = modelsParameters[idInstance].numberOfAxis;
 
     /* Theme backward compatibility */
@@ -777,7 +776,6 @@ function plotlyWidgetsPluginClass() {
         }
         //
         modelsHiddenParams[idInstance].data[0].x = val;
-        modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
         self.render();
       },
       getValue: function () {
@@ -787,7 +785,6 @@ function plotlyWidgetsPluginClass() {
       removeValueChangedHandler: function (n) {},
       setCaption: function (caption, bCaptionManuallyChanged) {
         modelsParameters[idInstance].layout.xaxis.title = caption;
-        modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
       },
     };
 
@@ -822,7 +819,6 @@ function plotlyWidgetsPluginClass() {
           //
           modelsHiddenParams[idInstance].data[this.index].y = val;
           modelsHiddenParams[idInstance].data[this.index].x = modelsHiddenParams[idInstance].data[0].x; // same x axis
-          modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
           self.render();
         },
         getValue: function () {
@@ -833,11 +829,9 @@ function plotlyWidgetsPluginClass() {
         setCaption: function (caption, bCaptionManuallyChanged) {
           if (modelsParameters[idInstance].numberOfAxis == 1) {
             modelsParameters[idInstance].layout.yaxis.title = caption;
-            modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
           } else {
             modelsHiddenParams[idInstance].data[this.index].name = caption;
             modelsParameters[idInstance].layout.yaxis.title = '';
-            modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
           }
         },
       };
@@ -853,7 +847,6 @@ function plotlyWidgetsPluginClass() {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
     const self = this;
-
     this.numberOfAxis = modelsParameters[idInstance].numberOfAxis;
 
     /* Theme backward compatibility */
@@ -909,7 +902,6 @@ function plotlyWidgetsPluginClass() {
           strAxis: strAxis,
           setValue: function (val) {
             modelsHiddenParams[idInstance].data[this.index][this.strAxis] = val;
-            modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
             self.render();
           },
           getValue: function () {
@@ -920,7 +912,6 @@ function plotlyWidgetsPluginClass() {
           setCaption: function (caption, bCaptionManuallyChanged) {
             if (modelsParameters[idInstance].numberOfAxis == 1) {
               modelsParameters[idInstance].layout[this.strAxis + 'axis'].title = caption;
-              modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
             } else {
               modelsHiddenParams[idInstance].data[this.index].name = caption;
               //modelsParameters[idInstance].layout[this.strAxis + 'axis'].title = ''; // MBG 03/08/2017
@@ -939,7 +930,7 @@ function plotlyWidgetsPluginClass() {
   this.piePlotlyWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
-    var self = this;
+    const self = this;
 
     /* Theme backward compatibility */
     if (!_.isUndefined(modelsParameters[idInstance].layout)) {
@@ -971,7 +962,6 @@ function plotlyWidgetsPluginClass() {
     this.labels = {
       setValue: function (val) {
         modelsHiddenParams[idInstance].data[0].labels = val;
-        modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
         self.render();
       },
       getValue: function () {
@@ -984,7 +974,6 @@ function plotlyWidgetsPluginClass() {
     this.values = {
       setValue: function (val) {
         modelsHiddenParams[idInstance].data[0].values = val;
-        modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
         self.render();
       },
       getValue: function () {
@@ -998,7 +987,6 @@ function plotlyWidgetsPluginClass() {
     //   setValue: function (val) {
     //     if (Array.isArray(val) && !_.isUndefined(val) && val != []) {
     //       modelsHiddenParams[idInstance].data[0].marker.colors = val;
-    //       modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
     //       self.render();
     //     }
     //   },
@@ -1052,7 +1040,6 @@ function plotlyWidgetsPluginClass() {
     this.x = {
       setValue: function (val) {
         modelsHiddenParams[idInstance].data[0].x = val;
-        modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
         self.render();
       },
       getValue: function () {
@@ -1062,14 +1049,12 @@ function plotlyWidgetsPluginClass() {
       removeValueChangedHandler: function (n) {},
       setCaption: function (caption, bCaptionManuallyChanged) {
         modelsParameters[idInstance].layout.scene.xaxis.title = caption;
-        modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
       },
     };
 
     this.y = {
       setValue: function (val) {
         modelsHiddenParams[idInstance].data[0].y = val;
-        modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
         self.render();
       },
       getValue: function () {
@@ -1079,7 +1064,6 @@ function plotlyWidgetsPluginClass() {
       removeValueChangedHandler: function (n) {},
       setCaption: function (caption, bCaptionManuallyChanged) {
         modelsParameters[idInstance].layout.scene.yaxis.title = caption;
-        modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
       },
     };
 
@@ -1095,7 +1079,6 @@ function plotlyWidgetsPluginClass() {
       removeValueChangedHandler: function (n) {},
       setCaption: function (caption, bCaptionManuallyChanged) {
         modelsParameters[idInstance].layout.scene.zaxis.title = caption;
-        modelsHiddenParams[idInstance].layout = modelsParameters[idInstance].layout;
       },
     };
   };
@@ -1231,7 +1214,7 @@ function plotlyWidgetsPluginClass() {
   // |                        Plotly Real-time                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   this.realTimePlotlyWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
-    var self = this;
+    const self = this;
 
     this.numberOfAxis = 1; //modelsParameters[idInstance].numberOfAxis;
 
@@ -1253,12 +1236,11 @@ function plotlyWidgetsPluginClass() {
     this.getActuatorDescriptions = function () {
       // const data = model || modelsParameters[idInstance];
       const result = [];
-
-      /*if (data && data.numberOfAxis) {
-                for (let i = 1; i <= data.numberOfAxis; i++) {
-                    result.push('y' + i);
-                }
-            }*/
+      // if (data && data.numberOfAxis) {
+      //   for (let i = 1; i <= data.numberOfAxis; i++) {
+      //     result.push('y' + i);
+      //   }
+      // }
       result.push(_VALUE_DESCRIPTOR);
       result.push(_LAYOUT_DESCRIPTOR);
 
@@ -1282,11 +1264,11 @@ function plotlyWidgetsPluginClass() {
         index: i - 1,
 
         setValue: function (val) {
-          var time = new Date();
+          const time = new Date();
           //console.log('this.index=' + this.index);
           //modelsHiddenParams[idInstance].data[this.index].x = [time];
           //modelsHiddenParams[idInstance].data[this.index].y = [val];
-          var idDivPlotly = 'plotly' + idWidget;
+          let idDivPlotly = 'plotly' + idWidget;
           if (bInteractive) {
             idDivPlotly = idDivPlotly + 'c';
           }
@@ -1305,13 +1287,12 @@ function plotlyWidgetsPluginClass() {
         addValueChangedHandler: function (n) {},
         removeValueChangedHandler: function (n) {},
         setCaption: function (caption, bCaptionManuallyChanged) {
-          /*
-                    if (modelsParameters[idInstance].numberOfAxis == 1) {
-                        modelsParameters[idInstance].layout.yaxis.title = caption;
-                    } else {
-                        modelsHiddenParams[idInstance].data[this.index].name = caption;
-                        modelsParameters[idInstance].layout.yaxis.title = '';
-                    }*/
+          // if (modelsParameters[idInstance].numberOfAxis == 1) {
+          //   modelsParameters[idInstance].layout.yaxis.title = caption;
+          // } else {
+          //   modelsHiddenParams[idInstance].data[this.index].name = caption;
+          //   modelsParameters[idInstance].layout.yaxis.title = '';
+          // }
         },
       };
     }
@@ -1378,7 +1359,7 @@ function plotlyWidgetsPluginClass() {
   };
 }
 
-var plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
+const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/
