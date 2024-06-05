@@ -227,11 +227,23 @@ function flatUiAddressCompletionWidgetsPluginClass() {
       divContent += '</div>';
 
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
 
       if (this.bIsInteractive) {
-        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; cursor: text;');
+        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; cursor: text;' + displayStyle + enableStyle);
       } else {
-        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;');
+        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
       }
 
       $('#' + idDivContainer).html(widgetHtml);

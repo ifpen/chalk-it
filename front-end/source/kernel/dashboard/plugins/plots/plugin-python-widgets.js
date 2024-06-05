@@ -17,9 +17,9 @@ modelsParameters.matplotlib = {};
 
 modelsHiddenParams.matplotlib = {
   fig: {
-    type : "png", 
-    content: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-  }
+    type: 'png',
+    content: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+  },
 };
 
 // Layout (default dimensions)
@@ -44,10 +44,6 @@ function pyodideWidgetsPluginClass() {
   function createDiv(idDivContainer, idDivPythonWidget) {
     const widgetHtml = document.createElement('div');
     widgetHtml.setAttribute('id', idDivPythonWidget);
-    widgetHtml.setAttribute(
-      'style',
-      'text-align:center; height: inherit; width: inherit; background-color: transparent'
-    );
     $('#' + idDivContainer).html(widgetHtml);
   }
 
@@ -66,6 +62,29 @@ function pyodideWidgetsPluginClass() {
       }
 
       createDiv(idDivContainer, idDivMatplotlib);
+
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      let elem = $('#' + idWidget)[0];
+      if (bInteractive) {
+        elem = $('#' + idWidget + 'c')[0];
+      }
+      elem.setAttribute(
+        'style',
+        'text-align:center; height: inherit; width: inherit; background-color: transparent;' +
+          displayStyle +
+          enableStyle
+      );
 
       let size_x = $('#' + idDivMatplotlib).width() / dpi_x;
       let size_y = $('#' + idDivMatplotlib).height() / dpi_y;
