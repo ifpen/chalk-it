@@ -66,16 +66,20 @@ class CustomNavigationRuntime {
    */
   customNavigationGoToPage(numPage) {
     const $rootScope = angular.element(document.body).scope().$root;
-
-    // Do not run in edit mode
-    if (typeof layoutMgr !== 'undefined' && !$rootScope.bIsPlayMode) return;
-
-    // When using the "row to tab" method, the page number must be updated.
-    $rootScope.pageNumber = numPage;
-
     const jsonContent = this.jsonContent;
     let exportOptions = '';
     let rows, cols;
+
+    // Do not run in edit mode
+    // Do not run in runtime mode if jsonContent is empty
+    if (
+      (typeof layoutMgr !== 'undefined' && !$rootScope.bIsPlayMode) ||
+      (typeof layoutMgr == 'undefined' && _.isEmpty(jsonContent))
+    )
+      return;
+
+    // When using the "row to tab" method, the page number must be updated.
+    $rootScope.pageNumber = numPage;
 
     if (_.isEmpty(jsonContent)) {
       // Studio mode
