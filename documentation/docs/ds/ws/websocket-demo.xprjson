@@ -1,123 +1,132 @@
 {
-	"meta": {
-		"version": "1.012.7387",
-		"date": "Sun Mar 22 2020 13:35:29 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "websocket-demo",
-		"description": "",
-		"tags": []
-	},
-	"data": {
-		"version": 1,
-		"allow_edit": true,
-		"plugins": [],
-		"panes": [],
-		"dataNodes": [
-			{
-				"name": "receive",
-				"type": "WS-receive-plugin",
-				"settings": {
-					"name": "receive",
-					"host": "localhost",
-					"port": 8080,
-					"autoStart": true,
-					"init_value": "none",
-					"decoding_options": "Text"
-				}
-			},
-			{
-				"name": "send",
-				"type": "WS-send-plugin",
-				"settings": {
-					"name": "send",
-					"host": "localhost",
-					"port": 8080,
-					"sampleTime": 0,
-					"autoStart": true,
-					"explicitTrig": false,
-					"init_value": "none",
-					"json_input": "return \"xDash is sending something\";"
-				}
-			}
-		],
-		"columns": 3,
-		"reIndexMap": [
-			1,
-			0
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"scaling": {
-		"widthPx": 867,
-		"heightPx": 505,
-		"scrollWidthPx": 867,
-		"scrollHeightPx": 505,
-		"widthVw": 67.734375,
-		"heightVh": 82.78688524590164,
-		"scrollWidthVw": 67.734375,
-		"scrollHeightVh": 82.78688524590164,
-		"scalingMethod": "scaleTwh",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {}
-	},
-	"dashboard": {
-		"flatUiValue9": {
-			"layout": {
-				"top": "2.13115vh",
-				"left": "2.1875vw",
-				"height": "5.08197vh",
-				"width": "60.7031vw",
-				"minHeight": "",
-				"minWidth": "",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "flatUiValue9",
-				"instanceId": "flatUiValue9",
-				"modelJsonId": "flatUiValue"
-			},
-			"modelParameters": {
-				"label": "receive",
-				"inheritLabelFromData": true,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"valueWidthProportion": "80%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"decimalDigits": 3,
-				"valueFontSize": 0.5,
-				"valueColor": "#34495e",
-				"valueTextAlign": "left",
-				"displayBorder": true,
-				"unit": "unitText",
-				"displayUnit": false,
-				"unitFontSize": 0.5
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		}
-	},
-	"connections": {
-		"flatUiValue9": {
-			"value": {
-				"name": "value",
-				"dataSource": "receive",
-				"dataFields": [],
-				"dataSourceIndex": 0
-			}
-		}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"checkExportOptions": false
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-03T13:30:08.004Z",
+    "name": "websocket-demo",
+    "description": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "receive",
+        "type": "WS-receive-plugin",
+        "settings": {
+          "name": "receive",
+          "host": "localhost",
+          "port": 8080,
+          "autoStart": true,
+          "init_value": "none",
+          "decoding_options": "Text"
+        }
+      },
+      {
+        "name": "send",
+        "type": "WS-send-plugin",
+        "settings": {
+          "name": "send",
+          "host": "localhost",
+          "port": 8080,
+          "sampleTime": 0,
+          "autoStart": true,
+          "explicitTrig": false,
+          "init_value": "none",
+          "json_input": "return \"Chalk'it is sending something\";"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "flatUiValueDisplay0": {
+      "layout": {
+        "top": "2.02508vh",
+        "left": "2.73495vw",
+        "height": "4.82905vh",
+        "width": "75.8949vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "flatUiValueDisplay0",
+        "modelJsonId": "flatUiValueDisplay"
+      },
+      "modelParameters": {
+        "label": "receive",
+        "inheritLabelFromData": true,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "labelTextAlign": "left",
+        "valueWidthProportion": "80%",
+        "valueFontSize": 0.5,
+        "valueColor": "#34495e",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "validationButton": false,
+        "validationOnFocusOut": true,
+        "isNumber": false,
+        "borderWidth": "2px"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    }
+  },
+  "connections": {
+    "flatUiValueDisplay0": {
+      "value": {
+        "name": "value",
+        "dataFields": [],
+        "dataSourceIndex": 0,
+        "dataNode": "receive"
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

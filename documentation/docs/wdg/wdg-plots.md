@@ -43,18 +43,6 @@ Example :
 
 * [pie-chart.xprjson](/wdg/plotly/pie-chart.xprjson)
 
-## Plotly 3D surface
-
-This widget has three actuators :
-
-* **x**: 1-D numeric array of size *N*
-* **y**: 1-D numeric array of size *M*
-* **z**: 2-D numeric array (an *M*-size array of *N*-size arrays)
-
-![3d-surface](plotly/3d-surface.png)
-
-Example : [3d-surface.xprjson](/wdg/plotly/3d-surface.xprjson)
-
 ## Plotly Real-time
 
 The widget provides a real-time graph for displaying numeric-based dataNode inputs, having a given sample-time.

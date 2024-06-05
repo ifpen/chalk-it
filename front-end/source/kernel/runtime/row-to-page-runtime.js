@@ -24,12 +24,7 @@ class RowToPageRuntime {
    * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
    */
   rowToPagePrepareRescale(valueRow, valueCol) {
-    const { defaultRows, defaultCols } = this.grid;
-    const rows = Number(valueRow) || defaultRows;
-    const cols = Number(valueCol) || defaultCols;
-
-    this.grid = { rows, cols };
-
+    const rows = Number(valueRow);
     if (rows > 1) {
       $('[id^=dpr][id$=c]').show();
     }
@@ -44,9 +39,8 @@ class RowToPageRuntime {
   rowToPageFinishRescale(valueRow, valueCol) {
     const $rootScope = angular.element(document.body).scope().$root;
     const currentPage = $rootScope.pageNumber;
-    const { defaultRows, defaultCols } = this.grid;
-    const rows = Number(valueRow) || defaultRows;
-    const cols = Number(valueCol) || defaultCols;
+    const rows = Number(valueRow);
+    const cols = Number(valueCol);
 
     this.grid = { rows, cols };
 
@@ -71,10 +65,10 @@ class RowToPageRuntime {
    */
   rowToPageModeInit(jsonContent) {
     const $rootScope = angular.element(document.body).scope().$root;
-    const { defaultRows, defaultCols } = this.grid;
-    const rows = Number(jsonContent.device.cols.valueRow) || defaultRows;
-    const cols = Number(jsonContent.device.cols.valueCol) || defaultCols;
+    const rows = Number(jsonContent.device.cols.valueRow);
+    const cols = Number(jsonContent.device.cols.valueCol);
 
+    customNavigationRuntime.jsonContent = jsonContent;
     this.grid = { rows, cols };
 
     $rootScope.pageNumber = 1;

@@ -360,7 +360,19 @@ function flatUiWidgetsPluginClass() {
         self.disable();
       }
       widgetHtml.innerHTML = divContent;
-      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
 
       if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
@@ -612,6 +624,20 @@ function flatUiWidgetsPluginClass() {
         widgetHtml.appendChild(widgetUnit);
       }
 
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
+
       $('#' + idDivContainer).html(widgetHtml);
       var $slider = $('#slider' + idWidget);
       if ($slider.length > 0) {
@@ -823,6 +849,20 @@ function flatUiWidgetsPluginClass() {
         widgetCore.setAttribute('style', 'height: 80%;');
         this.insertLabel(widgetHtml);
       }
+
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
       var $verticalSlider = $('#vertical-slider' + idWidget);
@@ -1112,6 +1152,20 @@ function flatUiWidgetsPluginClass() {
       if (modelsParameters[idInstance].displayValue) {
         this.insertValue(widgetHtml);
       }
+
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
       $('#progress-bar' + idWidget).addClass('progress-bar-div-div');
 
@@ -1469,10 +1523,22 @@ function flatUiWidgetsPluginClass() {
         );
       }
 
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       if (this.bIsInteractive) {
-        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; cursor: auto;');
+        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; cursor: auto;' + displayStyle + enableStyle);
       } else {
-        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;');
+        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
       }
 
       $('#' + idDivContainer).html(widgetHtml);

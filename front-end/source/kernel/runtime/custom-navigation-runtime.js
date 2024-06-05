@@ -26,13 +26,7 @@ class CustomNavigationRuntime {
    * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
    */
   customNavigationPrepareRescale(valueRow, valueCol) {
-    const { defaultRows, defaultCols } = this.grid;
-
-    const rows = Number(valueRow) || defaultRows;
-    const cols = Number(valueCol) || defaultCols;
-
-    this.grid = { rows, cols };
-
+    const rows = Number(valueRow);
     if (rows > 1) {
       $('[id^=dpr][id$=c]').show();
     }
@@ -45,11 +39,10 @@ class CustomNavigationRuntime {
    */
   customNavigationModeInit(jsonContent) {
     const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
-    const { defaultRows, defaultCols } = this.grid;
+    const rows = Number(jsonContent.device.cols.valueRow);
+    const cols = Number(jsonContent.device.cols.valueCol);
 
-    const rows = Number(valueRow) || defaultRows;
-    const cols = Number(valueCol) || defaultCols;
-
+    this.jsonContent = jsonContent;
     this.grid = { rows, cols };
 
     if (rows > 1) {
@@ -73,27 +66,30 @@ class CustomNavigationRuntime {
    */
   customNavigationGoToPage(numPage) {
     const $rootScope = angular.element(document.body).scope().$root;
+    const jsonContent = this.jsonContent;
+    let exportOptions = '';
+    let rows, cols;
 
     // Do not run in edit mode
-    if (typeof layoutMgr !== 'undefined' && !$rootScope.bIsPlayMode) return;
+    // Do not run in runtime mode if jsonContent is empty
+    if (
+      (typeof layoutMgr !== 'undefined' && !$rootScope.bIsPlayMode) ||
+      (typeof layoutMgr == 'undefined' && _.isEmpty(jsonContent))
+    )
+      return;
 
     // When using the "row to tab" method, the page number must be updated.
     $rootScope.pageNumber = numPage;
 
-    const jsonContent = this.jsonContent;
-    let exportOptions = '';
-    const { defaultRows, defaultCols } = this.grid;
-    let rows, cols;
-
     if (_.isEmpty(jsonContent)) {
-      // View mode
-      rows = layoutMgr.getRows() || defaultRows;
-      cols = layoutMgr.getCols() || defaultCols;
+      // Studio mode
+      rows = layoutMgr.getRows();
+      cols = layoutMgr.getCols();
       exportOptions = htmlExport.exportOptions;
     } else {
-      // Preview mode
-      rows = Number(jsonContent.device.cols.valueRow) || defaultRows;
-      cols = Number(jsonContent.device.cols.valueCol) || defaultCols;
+      // Runtime mode
+      rows = Number(jsonContent.device.cols.valueRow);
+      cols = Number(jsonContent.device.cols.valueCol);
       exportOptions = jsonContent.exportOptions;
     }
 

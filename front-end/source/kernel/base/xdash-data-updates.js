@@ -1,3 +1,12 @@
+// ┌────────────────────────────────────────────────────────────────────┐ \\
+// │ xdash-load                                                         │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright © 2018-2023 IFPEN                                        │ \\
+// | Licensed under the Apache License, Version 2.0                     │ \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// │ Original authors(s): Tristan BARTEMENT, Abir EL FEKI               │ \\
+// └────────────────────────────────────────────────────────────────────┘ \\
+
 class XdashDataUpdateInformation {
   constructor(fromVersion, toVersion, messages) {
     this.fromVersion = fromVersion;
@@ -274,8 +283,12 @@ var xdashUpdateEngine = new XdashDataUpdateEngine();
       //
       const data = model.data;
       if (!data.datanodes) {
-        data.datanodes = data.datasources ?? [];
-        delete data.datasources;
+        data.datanodes = data.datasources ?? data.dataNodes ?? [];
+        ['datasources', 'dataNodes'].forEach((prop) => {
+          if (data[prop] !== undefined) {
+            delete data[prop];
+          }
+        });
       }
 
       Object.values(model.connections ?? []).forEach((wdgConnections) => {
@@ -422,7 +435,8 @@ var xdashUpdateEngine = new XdashDataUpdateEngine();
         }
       });
 
-      if (full) {
+      //if (full) {
+      if (false) { // MBG not needed for fixing issue #309
         const idMap = new Map();
         const currentIds = collectWidgetIds(model);
 

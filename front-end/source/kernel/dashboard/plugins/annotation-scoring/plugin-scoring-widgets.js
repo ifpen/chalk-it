@@ -108,7 +108,23 @@ function scoringWidgetsPluginClass() {
 
     this.render = function () {
       var widgetHtml = document.createElement('div');
-      widgetHtml.setAttribute('style', 'text-align: center; height: inherit; width: inherit; cursor: inherit');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute(
+        'style',
+        'text-align: center; height: inherit; width: inherit; cursor: inherit;' + displayStyle + enableStyle
+      );
+
       widgetHtml.setAttribute('id', 'div-for-ng-gauge' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
       var gaugeSize = Math.min($('#div-for-ng-gauge' + idWidget).width(), $('#div-for-ng-gauge' + idWidget).height());

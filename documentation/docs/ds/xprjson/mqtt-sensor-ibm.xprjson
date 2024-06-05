@@ -2,14 +2,14 @@
 	"meta": {
 		"version": "0.709.6561",
 		"date": "Tue Dec 19 2017 13:53:05 GMT+0100 (Paris, Madrid)",
-		"name": "MQTT-IBM-Sensor"
+		"name": "mqtt-sensor-ibm"
 	},
 	"data": {
 		"version": 1,
 		"allow_edit": true,
 		"plugins": [],
 		"panes": [],
-		"dataNodes": [
+		"datanodes": [
 			{
 				"name": "demo",
 				"type": "mqtt",
@@ -46,12 +46,15 @@
 	},
 	"device": {
 		"cols": {
-			"value": "none",
+			"valueRow": "none",
+			"valueCol": "1",
 			"maxCells": 0,
 			"maxCols": 0,
 			"classType": ""
 		},
-		"droppers": {}
+		"droppers": {},
+		"backgroundColor": "",
+		"theme": "default"
 	},
 	"dashboard": {},
 	"connections": {}

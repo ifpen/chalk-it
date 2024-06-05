@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8887",
+    "version": "3.000.8889",
     "fileFormatVersion": "0.3",
-    "date": "Tue Apr 30 2024 11:35:42 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "date": "2024-05-03T12:22:27.721Z",
     "name": "csv-array",
     "description": "CSV dataNode example with array oriented JSON conversion",
     "groupName": "Neutral",
@@ -65,8 +65,8 @@
       "classType": ""
     },
     "droppers": {},
-    "backgroundColor": "#ffffff",
-    "inheritThemeBackgroundColor": false,
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
     "theme": "default"
   },
   "dashboard": {},

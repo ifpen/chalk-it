@@ -82,9 +82,25 @@ function genericHtmlWidgetPluginClass() {
         '</div></div>';
 
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       widgetHtml.setAttribute(
         'style',
-        'width: inherit; height: inherit; background-color:' + modelsParameters[idInstance].backgroundColor
+        'width: inherit; height: inherit; background-color:' +
+          modelsParameters[idInstance].backgroundColor +
+          ';' +
+          displayStyle +
+          enableStyle
       );
       $('#' + idDivContainer).html(widgetHtml);
 

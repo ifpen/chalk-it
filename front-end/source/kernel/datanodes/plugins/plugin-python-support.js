@@ -57,6 +57,10 @@
     return null;
   }
 
+  needSignature() {
+    return false;
+  }
+
   async signCode(code) {
     return undefined;
   }
@@ -225,6 +229,10 @@ class PythonPluginRemoteExec extends PythonPluginExecBase {
         this.abort();
       }
     }, 1000);
+  }
+
+  needSignature() {
+    return true;
   }
 
   async signCode(code) {

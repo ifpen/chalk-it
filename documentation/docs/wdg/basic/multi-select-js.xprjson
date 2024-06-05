@@ -1,218 +1,219 @@
 {
-	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 16:44:00 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "multi-select-js",
-		"description": "",
-		"groupName": "JavaScript",
-		"tags": [
-			{
-				"text": "widgets"
-			},
-			{
-				"text": "basic"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"datanodes": [
-			{
-				"name": "selectedTable",
-				"type": "JSON_formula_plugin",
-				"settings": {
-					"name": "selectedTable",
-					"autoStart": true,
-					"explicitTrig": false,
-					"json_var_formula": "return [dataNodes[\"selected\"]];"
-				}
-			},
-			{
-				"name": "countries",
-				"type": "JSON_formula_plugin",
-				"settings": {
-					"name": "countries",
-					"autoStart": true,
-					"explicitTrig": false,
-					"json_var_formula": "return ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czechia', 'Denmark',\n   'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland',\n   'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands',\n   'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden'];"
-				}
-			},
-			{
-				"name": "selected",
-				"type": "JSON_var_plugin",
-				"settings": {
-					"name": "selected",
-					"json_var": "[\"Belgium\",\"Bulgaria\",\"Greece\",\"Luxembourg\",\"Poland\"]"
-				}
-			}
-		],
-		"reIndexMap": [
-			2,
-			0,
-			1
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"libraries": {
-		"pyodideStandard": [],
-		"pyodideMicropip": []
-	},
-	"scaling": {
-		"widthPx": 1639,
-		"heightPx": 685,
-		"scrollWidthPx": 1639,
-		"scrollHeightPx": 685,
-		"widthVw": 87.50667378537106,
-		"heightVh": 73.10565635005337,
-		"scrollWidthVw": 87.50667378537106,
-		"scrollHeightVh": 73.10565635005337,
-		"scalingMethod": "scaleTwh",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {},
-		"backgroundColor": "#ffffff"
-	},
-	"dashboard": {
-		"flatUiMultiSelectd": {
-			"layout": {
-				"top": "1.06724vh",
-				"left": "1.04237vw",
-				"height": "46.5315vh",
-				"width": "22.2024vw",
-				"minHeight": "75px",
-				"minWidth": "80px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "flatUiMultiSelectd",
-				"instanceId": "flatUiMultiSelectd",
-				"modelJsonId": "flatUiMultiSelect",
-				"widgetTypeName": "Multi-select(flatUiMultiSelectd)"
-			},
-			"modelParameters": {
-				"addControls": false,
-				"listValueFontSize": 0.4,
-				"listValueColor": "#666666",
-				"valueFontFamily": "Helvetica Neue",
-				"valueWidth": 7,
-				"valueHeight": 1.5,
-				"displayBorder": true,
-				"valueDefaultColor": "#666666",
-				"borderColor": "#447bdc",
-				"valueFontSize": 0.4,
-				"valueHoverColor": "#000000",
-				"valueFocusColor": "#666666",
-				"checkboxDefaultColor": "#ffffff",
-				"checkboxHoverColor": "#ffffff",
-				"checkboxFocusColor": "#bdd7ee",
-				"checkboxWidth": 7,
-				"checkboxHeight": 1.5,
-				"checkboxBorderColor": "#171819"
-			},
-			"modelHiddenParams": {
-				"value": [],
-				"selectedValue": ""
-			}
-		},
-		"flatUiTablei": {
-			"layout": {
-				"top": "10.5656vh",
-				"left": "26.007vw",
-				"height": "11.4194vh",
-				"width": "22.8799vw",
-				"minHeight": "79px",
-				"minWidth": "88px",
-				"z-index": "2"
-			},
-			"container": {
-				"id": "flatUiTablei",
-				"instanceId": "flatUiTablei",
-				"modelJsonId": "flatUiTable",
-				"widgetTypeName": "Table(flatUiTablei)"
-			},
-			"modelParameters": {
-				"headerLine": false,
-				"tableValueFontSize": 0.5,
-				"striped": true,
-				"valueColor": "#2154ab",
-				"valueFontFamily": "Helvetica Neue",
-				"bordered": true,
-				"noBorder": false,
-				"editableCols": "[]"
-			},
-			"modelHiddenParams": {
-				"value": null
-			}
-		},
-		"annotationLabel3": {
-			"layout": {
-				"top": "2.34792vh",
-				"left": "25.9445vw",
-				"height": "5.01601vh",
-				"width": "12.4318vw",
-				"minHeight": "20px",
-				"minWidth": "20px",
-				"z-index": "3"
-			},
-			"container": {
-				"id": "annotationLabel3",
-				"instanceId": "annotationLabel3",
-				"modelJsonId": "annotationLabel",
-				"widgetTypeName": "Label(annotationLabel3)"
-			},
-			"modelParameters": {
-				"text": "Selected in list :",
-				"enableActuator": false,
-				"fontsize": 0.5,
-				"backgroundColor": "rgba(0, 0, 0, 0)",
-				"textColor": "#2154ab",
-				"valueFontFamily": "Helvetica Neue",
-				"textAlign": "left",
-				"displayBorder": false,
-				"centerVertically": true
-			},
-			"modelHiddenParams": {}
-		}
-	},
-	"connections": {
-		"flatUiMultiSelectd": {
-			"value": {
-				"name": "value",
-				"dataNode": "countries",
-				"dataFields": [],
-				"dataNodeIndex": 1
-			},
-			"selectedValue": {
-				"name": "selectedValue",
-				"dataNode": "selected",
-				"dataFields": [],
-				"dataNodeIndex": 2
-			}
-		},
-		"flatUiTablei": {
-			"value": {
-				"name": "value",
-				"dataNode": "selectedTable",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		},
-		"annotationLabel3": {}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"pages": {
-		"pageNames": [],
-		"defaultPage": {}
-	},
-	"checkExportOptions": true,
-	"navBarNotification": false
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-02T09:11:33.425Z",
+    "name": "multi-select-js",
+    "description": "",
+    "groupName": "JavaScript",
+    "tags": [
+      {
+        "text": "widgets"
+      },
+      {
+        "text": "basic"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "countries",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "countries",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "return ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czechia', 'Denmark',\n   'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland',\n   'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands',\n   'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden'];"
+        }
+      },
+      {
+        "name": "selected",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "selected",
+          "json_var": "[\"Belgium\",\"Greece\",\"Luxembourg\",\"Poland\"]"
+        }
+      },
+      {
+        "name": "selectedTable",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "selectedTable",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "return [dataNodes[\"selected\"]];"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "flatUiTableA": {
+      "layout": {
+        "top": "61.2vh",
+        "left": "0.65445vw",
+        "height": "12.8vh",
+        "width": "82.1335vw",
+        "minHeight": "79px",
+        "minWidth": "88px",
+        "z-index": "5"
+      },
+      "container": {
+        "instanceId": "flatUiTableA",
+        "modelJsonId": "flatUiTable"
+      },
+      "modelParameters": {
+        "headerLine": false,
+        "indexColumn": false,
+        "tableValueFontSize": 0.5,
+        "striped": true,
+        "valueColor": "var(--widget-table-value-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueAlign": "left",
+        "bordered": true,
+        "noBorder": false,
+        "editableCols": "[]",
+        "backgroundColor": {
+          "primary": "var(--widget-color-0)",
+          "secondary": "var(--widget-table-striped-odd)"
+        }
+      },
+      "modelHiddenParams": {
+        "value": null
+      }
+    },
+    "annotationLabelA": {
+      "layout": {
+        "top": "53.8vh",
+        "left": "0.65445vw",
+        "height": "5.46667vh",
+        "width": "12.0419vw",
+        "minHeight": "5px",
+        "minWidth": "5px",
+        "z-index": "6"
+      },
+      "container": {
+        "instanceId": "annotationLabelA",
+        "modelJsonId": "annotationLabel"
+      },
+      "modelParameters": {
+        "text": "selected in list:",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "textBold": false,
+        "textUnderline": false,
+        "textItalic": false,
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "borderWidth": "2px",
+        "centerVertically": true
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiMultiSelectA": {
+      "layout": {
+        "top": "1.73333vh",
+        "left": "0.65445vw",
+        "height": "50.1333vh",
+        "width": "21.5314vw",
+        "minHeight": "75px",
+        "minWidth": "80px",
+        "z-index": "4"
+      },
+      "container": {
+        "instanceId": "flatUiMultiSelectA",
+        "modelJsonId": "flatUiMultiSelect"
+      },
+      "modelParameters": {
+        "addControls": false,
+        "resetPastSelection": false,
+        "valueFontSize": 0.4,
+        "valueFontFamily": "var(--widget-font-family)",
+        "checkboxWidth": 7,
+        "checkboxHeight": 1.5,
+        "valueDefaultColor": "var(--widget-label-color)",
+        "checkboxDefaultColor": "var(--widget-multiselect-color)",
+        "checkboxBorderColor": "var(--widget-multiselect-border-color)",
+        "valueHoverColor": "var(--widget-multiselect-hover-text)",
+        "checkboxHoverColor": "var(--widget-multiselect-hover-color)",
+        "checkboxHoverBorderColor": "var(--widget-multiselect-hover-border-color)",
+        "valueFocusColor": "var(--widget-multiselect-checked-text)",
+        "checkboxFocusColor": "var(--widget-multiselect-checked-color)",
+        "checkboxFocusBorderColor": "var(--widget-multiselect-checked-border-color)",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "isNumber": false,
+        "isBoolean": false,
+        "borderWidth": "2px"
+      },
+      "modelHiddenParams": {
+        "value": [],
+        "selectedValue": ""
+      }
+    }
+  },
+  "connections": {
+    "flatUiTableA": {
+      "value": {
+        "name": "value",
+        "dataNode": "selectedTable",
+        "dataFields": []
+      }
+    },
+    "annotationLabelA": {},
+    "flatUiMultiSelectA": {
+      "value": {
+        "name": "value",
+        "dataNode": "countries",
+        "dataFields": []
+      },
+      "selectedValue": {
+        "name": "selectedValue",
+        "dataNode": "selected",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

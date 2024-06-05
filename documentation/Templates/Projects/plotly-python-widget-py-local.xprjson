@@ -1,9 +1,9 @@
 {
   "meta": {
-    "version": "3.000.8887",
+    "version": "3.000.8901",
     "fileFormatVersion": "0.3",
-    "date": "Tue Apr 30 2024 09:11:36 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
-    "name": "plotly-python-widget-local",
+    "date": "2024-05-15T09:07:17.261Z",
+    "name": "plotly-python-widget-py-local",
     "description": "",
     "groupName": "Python",
     "tags": [
@@ -75,19 +75,19 @@
     "theme": "default"
   },
   "dashboard": {
-    "plotlyGeneric0": {
+    "plotlyPyGenericA": {
       "layout": {
-        "top": "5.28272vh",
-        "left": "2.27344vw",
-        "height": "59.2584vh",
-        "width": "50.8941vw",
+        "top": "6.58667vh",
+        "left": "3.35079vw",
+        "height": "56.6667vh",
+        "width": "66.8848vw",
         "minHeight": "32px",
         "minWidth": "50px",
         "z-index": "1"
       },
       "container": {
-        "instanceId": "plotlyGeneric0",
-        "modelJsonId": "plotlyGeneric"
+        "instanceId": "plotlyPyGenericA",
+        "modelJsonId": "plotlyPyGeneric"
       },
       "modelParameters": {
         "enforceTextColor": true,
@@ -96,37 +96,36 @@
         "hideModeBar": false
       },
       "modelHiddenParams": {
-        "data": [
-          {}
-        ],
-        "layout": {
-          "paper_bgcolor": "rgba(0,0,0,0)",
-          "plot_bgcolor": "rgba(0,0,0,0)",
-          "template": {
-            "layout": {
-              "xaxis": {
-                "gridcolor": "var(--widget-plotly-background-color)"
-              },
-              "yaxis": {
-                "gridcolor": "var(--widget-plotly-background-color)"
-              },
-              "zaxis": {
-                "gridcolor": "var(--widget-plotly-background-color)"
-              },
-              "colorway": [
-                "var(--widget-color-2)",
-                "var(--widget-color-5)",
-                "var(--widget-color-6)",
-                "var(--widget-color-7)",
-                "var(--widget-color-8)",
-                "var(--widget-color-9)",
-                "var(--widget-color-10)",
-                "var(--widget-color-11)",
-                "var(--widget-color-12)",
-                "var(--widget-color-13)"
-              ],
-              "font": {
-                "color": "var(--widget-color)"
+        "fig": {
+          "layout": {
+            "paper_bgcolor": "rgba(0,0,0,0)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
+            "template": {
+              "layout": {
+                "xaxis": {
+                  "gridcolor": "var(--widget-plotly-background-color)"
+                },
+                "yaxis": {
+                  "gridcolor": "var(--widget-plotly-background-color)"
+                },
+                "zaxis": {
+                  "gridcolor": "var(--widget-plotly-background-color)"
+                },
+                "colorway": [
+                  "var(--widget-color-2)",
+                  "var(--widget-color-5)",
+                  "var(--widget-color-6)",
+                  "var(--widget-color-7)",
+                  "var(--widget-color-8)",
+                  "var(--widget-color-9)",
+                  "var(--widget-color-10)",
+                  "var(--widget-color-11)",
+                  "var(--widget-color-12)",
+                  "var(--widget-color-13)"
+                ],
+                "font": {
+                  "color": "var(--widget-color)"
+                }
               }
             }
           }
@@ -138,22 +137,16 @@
     }
   },
   "connections": {
-    "plotlyGeneric0": {
-      "data": {
-        "name": "data",
+    "plotlyPyGenericA": {
+      "fig": {
+        "name": "fig",
         "dataNode": "px",
-        "dataFields": [
-          "data"
-        ],
-        "dataNodeIndex": 0
+        "dataFields": []
       },
-      "layout": {
-        "name": "layout",
-        "dataNode": "px",
-        "dataFields": [
-          "layout"
-        ],
-        "dataNodeIndex": 0
+      "selection": {
+        "name": "selection",
+        "dataNode": "None",
+        "dataFields": []
       }
     }
   },

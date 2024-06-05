@@ -12,10 +12,17 @@
       }
     }
 
-    const DEFAULT_BACKEND = {
-      name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME,
-      id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID,
+    var DEFAULT_BACKEND = {
+      name: "Pyodide",
+      id: "__PYODIDE__",
     };
+
+    if (xDashConfig["disableLocalServer"]=="false") {
+      var DEFAULT_BACKEND = {
+        name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME,
+        id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID,
+      };
+    }
 
     async function dockerImageSelect(valueCell, settingDef, currentSettingsValues, newSettings) {
       const selectId = 'select-option' + settingDef.name;
@@ -632,7 +639,8 @@
           display_name: 'Python backend / image',
           type: 'custom1',
           default_value: DEFAULT_BACKEND,
-          description: 'Select execution backend for Python script. Default is local execution for pip installed Chalk\'it. Pyodide is executed in the browser.',
+          description:
+            "Select execution backend for Python script. Default is local execution for pip installed Chalk'it. Pyodide is executed in the browser.",
           implementation: dockerImageSelect,
         },
         {
@@ -824,28 +832,30 @@
         executor ??= createPythonExec(imageId, clientId);
 
         let signature = currentSettings.signature;
-        if (isEmbedded) {
-          if (!currentSettings.signature) {
-            error = true;
-            const msg = 'Script was not signed before exporting the dashboard.';
-            swal('Script error', msg, 'error');
-            throw new Error(msg);
-          }
-        } else if (!signature) {
-          try {
-            currentSettings.signature = await executor.signCode(script);
-          } catch (err) {
-            if (err.status && err.statusText) {
-              self.errorAllTheThings(`Response status ${err.status} : ${err.statusText}`);
+        if (executor.needSignature()) {
+          if (isEmbedded) {
+            if (!currentSettings.signature) {
+              error = true;
+              const msg = 'Script was not signed before exporting the dashboard.';
+              swal('Script error', msg, 'error');
+              throw new Error(msg);
             }
-            if (err.message) {
-              self.errorAllTheThings(err.message);
-            } else {
-              self.errorAllTheThings(String(err), 'Could not sign script');
+          } else if (!signature) {
+            try {
+              currentSettings.signature = await executor.signCode(script);
+            } catch (err) {
+              if (err.status && err.statusText) {
+                self.errorAllTheThings(`Response status ${err.status} : ${err.statusText}`);
+              }
+              if (err.message) {
+                self.errorAllTheThings(err.message);
+              } else {
+                self.errorAllTheThings(String(err), 'Could not sign script');
+              }
+              throw err;
             }
-            throw err;
+            signature = currentSettings.signature;
           }
-          signature = currentSettings.signature;
         }
 
         return {

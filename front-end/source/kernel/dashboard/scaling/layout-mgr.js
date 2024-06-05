@@ -787,7 +787,7 @@ class LayoutMgrClass {
   getDefaultRowID() {
     const defaultRow = this._getDefaultRow();
     const nbRows = this.getRows();
-    return defaultRow.id < nbRows ? defaultRow.id : '1';
+    return defaultRow.id <= nbRows ? defaultRow.id : '1';
   }
 
   /*--------setDefaultRow--------*/

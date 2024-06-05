@@ -1,118 +1,171 @@
 {
-	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 14:14:45 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "plotly-python-widget",
-		"description": "",
-		"groupName": "Python",
-		"tags": [
-			{
-				"text": "widget"
-			},
-			{
-				"text": "Plots"
-			},
-			{
-				"text": "Plotly"
-			},
-			{
-				"text": "pyodide"
-			},
-			{
-				"text": "Python"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"datanodes": [
-			{
-				"name": "px",
-				"type": "Python_pyodide_plugin",
-				"settings": {
-					"name": "px",
-					"autoStart": true,
-					"explicitTrig": false,
-					"content": "import plotly.express as px\n\ndf = px.data.gapminder().query(\"country=='Canada'\")\nfig = px.line(df, x=\"year\", y=\"lifeExp\", title='Life expectancy in Canada')\n\nreturn fig"
-				}
-			}
-		],
-		"reIndexMap": [
-			0
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"libraries": {
-		"pyodideStandard": [
-			"numpy",
-			"pandas"
-		],
-		"pyodideMicropip": [
-			"plotly"
-		]
-	},
-	"scaling": {
-		"widthPx": 1256,
-		"heightPx": 575,
-		"scrollWidthPx": 1256,
-		"scrollHeightPx": 575,
-		"widthVw": 84.29530201342281,
-		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.29530201342281,
-		"scrollHeightVh": 79.6398891966759,
-		"scalingMethod": "scaleTwh",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {},
-		"backgroundColor": "#ffffff"
-	},
-	"dashboard": {
-		"plotlyPyGenerica": {
-			"layout": {
-				"top": "5.34807vh",
-				"left": "2.26296vw",
-				"height": "59.9915vh",
-				"width": "50.6594vw",
-				"minHeight": "32px",
-				"minWidth": "50px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "plotlyPyGenerica",
-				"instanceId": "plotlyPyGenerica",
-				"modelJsonId": "plotlyPyGeneric",
-				"widgetTypeName": "Plotly Python generic(plotlyPyGenerica)"
-			},
-			"modelParameters": {},
-			"modelHiddenParams": {
-				"fig": ""
-			}
-		}
-	},
-	"connections": {
-		"plotlyPyGenerica": {
-			"fig": {
-				"name": "fig",
-				"dataNode": "px",
-				"dataFields": [],
-				"dataNodeIndex": 0
-			}
-		}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"pages": {
-		"pageNames": [],
-		"defaultPage": {}
-	},
-	"checkExportOptions": true,
-	"navBarNotification": false
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-04T10:24:20.825Z",
+    "name": "plotly-python-widget-py",
+    "description": "",
+    "groupName": "Python",
+    "tags": [
+      {
+        "text": "widget"
+      },
+      {
+        "text": "Plots"
+      },
+      {
+        "text": "Plotly"
+      },
+      {
+        "text": "pyodide"
+      },
+      {
+        "text": "Python"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "px",
+        "type": "Python_plugin",
+        "settings": {
+          "name": "px",
+          "autoStart": true,
+          "explicitTrig": false,
+          "content": "import plotly.express as px\n\ndf = px.data.gapminder().query(\"country=='Canada'\")\nfig = px.line(df, x=\"year\", y=\"lifeExp\", title='Life expectancy in Canada')\n\nreturn fig",
+          "dockerImage": {
+            "name": "Pyodide",
+            "id": "__PYODIDE__"
+          }
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [
+      "numpy",
+      "pandas"
+    ],
+    "pyodideMicropip": [
+      "plotly"
+    ]
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "plotlyGeneric0": {
+      "layout": {
+        "top": "5.28272vh",
+        "left": "2.2752vw",
+        "height": "59.2584vh",
+        "width": "50.9334vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "plotlyGeneric0",
+        "modelJsonId": "plotlyGeneric"
+      },
+      "modelParameters": {
+        "enforceTextColor": true,
+        "textColor": "var(--widget-color)",
+        "enforceBackgroundTransparency": true,
+        "hideModeBar": false
+      },
+      "modelHiddenParams": {
+        "data": [
+          {}
+        ],
+        "layout": {
+          "paper_bgcolor": "rgba(0,0,0,0)",
+          "plot_bgcolor": "rgba(0,0,0,0)",
+          "template": {
+            "layout": {
+              "xaxis": {
+                "gridcolor": "var(--widget-plotly-background-color)"
+              },
+              "yaxis": {
+                "gridcolor": "var(--widget-plotly-background-color)"
+              },
+              "zaxis": {
+                "gridcolor": "var(--widget-plotly-background-color)"
+              },
+              "colorway": [
+                "var(--widget-color-2)",
+                "var(--widget-color-5)",
+                "var(--widget-color-6)",
+                "var(--widget-color-7)",
+                "var(--widget-color-8)",
+                "var(--widget-color-9)",
+                "var(--widget-color-10)",
+                "var(--widget-color-11)",
+                "var(--widget-color-12)",
+                "var(--widget-color-13)"
+              ],
+              "font": {
+                "color": "var(--widget-color)"
+              }
+            }
+          }
+        },
+        "selection": [
+          {}
+        ]
+      }
+    }
+  },
+  "connections": {
+    "plotlyGeneric0": {
+      "data": {
+        "name": "data",
+        "dataNode": "px",
+        "dataFields": [
+          "data"
+        ],
+        "dataNodeIndex": 0
+      },
+      "layout": {
+        "name": "layout",
+        "dataNode": "px",
+        "dataFields": [
+          "layout"
+        ],
+        "dataNodeIndex": 0
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

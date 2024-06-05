@@ -55,7 +55,7 @@ var htmlExport = (function () {
     dashDiv.setAttribute('class', 'panel-body');
     dashDiv.setAttribute('style', 'padding: 0px');
     dashDiv.innerHTML =
-      '<div id="DropperDroitec" class="dropperR" style="position:relative;z-index:0;border-radius:10px" ng-app="xCLOUD"></div>';
+      '<div id="DropperDroitec" class="dropperR" ng-app="xCLOUD"></div>';
     return dashDiv;
   }
 
@@ -89,7 +89,6 @@ var htmlExport = (function () {
     var bodyText2 = [];
     var bodyText3 = [];
     var bodyText4 = [];
-    var bodyText5 = [];
 
     let navBarNotification = htmlExport.navBarNotification;
     let showNavBar;
@@ -199,7 +198,7 @@ var htmlExport = (function () {
     var txt = createDashboardDocument(dashboardName, xprjson);
     tab.document.write(txt);
     tab.document.close();
-    tab.focus();
+    tab.focus();        
   }
 
   /*--------save Dashboard Callback--------*/

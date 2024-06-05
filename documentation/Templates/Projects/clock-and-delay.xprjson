@@ -1,181 +1,181 @@
 {
-	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 13:49:22 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "clock-and-delay",
-		"description": "",
-		"groupName": "Neutral",
-		"tags": [
-			{
-				"text": "real-time"
-			},
-			{
-				"text": "clock"
-			},
-			{
-				"text": "delay"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"datanodes": [
-			{
-				"name": "clock",
-				"type": "Clock_web-service",
-				"settings": {
-					"name": "clock",
-					"autoStart": true,
-					"sampleTime": 1
-				}
-			},
-			{
-				"name": "delayed-clock",
-				"type": "JSON_delay_plugin",
-				"settings": {
-					"name": "delayed-clock",
-					"json_init": "{}",
-					"json_input": "dataNodes[\"clock\"]"
-				}
-			}
-		],
-		"reIndexMap": [
-			0,
-			1
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"libraries": {
-		"pyodideStandard": [],
-		"pyodideMicropip": []
-	},
-	"scaling": {
-		"widthPx": 1256,
-		"heightPx": 575,
-		"scrollWidthPx": 1256,
-		"scrollHeightPx": 575,
-		"widthVw": 84.29530201342281,
-		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.29530201342281,
-		"scrollHeightVh": 79.6398891966759,
-		"scalingMethod": "scaleTwSp",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {},
-		"backgroundColor": "#ffffff"
-	},
-	"dashboard": {
-		"flatUiValueDisplay0": {
-			"layout": {
-				"top": "1.38504vh",
-				"left": "0.671141vw",
-				"height": "6.91669vh",
-				"width": "30.3539vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "flatUiValueDisplay0",
-				"instanceId": "flatUiValueDisplay0",
-				"modelJsonId": "flatUiValueDisplay",
-				"widgetTypeName": "Value Display(flatUiValueDisplay0)"
-			},
-			"modelParameters": {
-				"label": "ref clock",
-				"inheritLabelFromData": false,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"valueFontSize": 0.5,
-				"valueColor": "#34495e",
-				"valueTextAlign": "center",
-				"displayBorder": false,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Helvetica Neue",
-				"valueFontFamily": "Helvetica Neue"
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		},
-		"flatUiValueDisplayc": {
-			"layout": {
-				"top": "10.4403vh",
-				"left": "0.671141vw",
-				"height": "6.91669vh",
-				"width": "30.3539vw",
-				"minHeight": "24px",
-				"minWidth": "150px",
-				"z-index": "2"
-			},
-			"container": {
-				"id": "flatUiValueDisplayc",
-				"instanceId": "flatUiValueDisplayc",
-				"modelJsonId": "flatUiValueDisplay",
-				"widgetTypeName": "Value Display(flatUiValueDisplayc)"
-			},
-			"modelParameters": {
-				"label": "delayed clock",
-				"inheritLabelFromData": false,
-				"displayLabel": true,
-				"labelFontSize": 0.5,
-				"valueWidthProportion": "70%",
-				"validationButton": false,
-				"validationOnFocusOut": true,
-				"isNumber": false,
-				"valueFontSize": 0.5,
-				"valueColor": "#34495e",
-				"valueTextAlign": "center",
-				"displayBorder": false,
-				"labelColor": "#2154ab",
-				"labelFontFamily": "Helvetica Neue",
-				"valueFontFamily": "Helvetica Neue"
-			},
-			"modelHiddenParams": {
-				"value": ""
-			}
-		}
-	},
-	"connections": {
-		"flatUiValueDisplay0": {
-			"value": {
-				"name": "value",
-				"dataFields": [
-					"time_string_value"
-				],
-				"dataNode": "clock",
-				"dataNodeIndex": 0
-			}
-		},
-		"flatUiValueDisplayc": {
-			"value": {
-				"name": "value",
-				"dataFields": [
-					"time_string_value"
-				],
-				"dataNode": "delayed-clock",
-				"dataNodeIndex": 1
-			}
-		}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"pages": {
-		"pageNames": [],
-		"defaultPage": {}
-	},
-	"checkExportOptions": true,
-	"navBarNotification": false
+  "meta": {
+    "version": "3.000.8887",
+    "fileFormatVersion": "0.3",
+    "date": "Tue Apr 30 2024 10:55:56 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "name": "clock-and-delay",
+    "description": "",
+    "groupName": "Neutral",
+    "tags": [
+      {
+        "text": "real-time"
+      },
+      {
+        "text": "clock"
+      },
+      {
+        "text": "delay"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "clock",
+        "type": "Clock_web-service",
+        "settings": {
+          "name": "clock",
+          "autoStart": true,
+          "sampleTime": 1
+        }
+      },
+      {
+        "name": "delayed-clock",
+        "type": "JSON_delay_plugin",
+        "settings": {
+          "name": "delayed-clock",
+          "json_init": "{}",
+          "json_input": "dataNodes[\"clock\"]"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwSp",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "#ffffff",
+    "inheritThemeBackgroundColor": false,
+    "theme": "default"
+  },
+  "dashboard": {
+    "flatUiValueDisplayA": {
+      "layout": {
+        "top": "4.26667vh",
+        "left": "1.37435vw",
+        "height": "6.8vh",
+        "width": "30.4974vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "3"
+      },
+      "container": {
+        "instanceId": "flatUiValueDisplayA",
+        "modelJsonId": "flatUiValueDisplay"
+      },
+      "modelParameters": {
+        "label": "ref clock",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "labelTextAlign": "left",
+        "valueWidthProportion": "70%",
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-input-text)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "center",
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "borderWidth": "2px"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiValueDisplayB": {
+      "layout": {
+        "top": "13.7333vh",
+        "left": "1.37435vw",
+        "height": "6.8vh",
+        "width": "30.4974vw",
+        "minHeight": "24px",
+        "minWidth": "150px",
+        "z-index": "4"
+      },
+      "container": {
+        "instanceId": "flatUiValueDisplayB",
+        "modelJsonId": "flatUiValueDisplay"
+      },
+      "modelParameters": {
+        "label": "delayed clock",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "labelTextAlign": "left",
+        "valueWidthProportion": "70%",
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-input-text)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "center",
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "borderWidth": "2px"
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    }
+  },
+  "connections": {
+    "flatUiValueDisplayA": {
+      "value": {
+        "name": "value",
+        "dataNode": "clock",
+        "dataFields": [
+          "time_string_value"
+        ]
+      }
+    },
+    "flatUiValueDisplayB": {
+      "value": {
+        "name": "value",
+        "dataNode": "delayed-clock",
+        "dataFields": [
+          "time_string_value"
+        ]
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

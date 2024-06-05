@@ -118,9 +118,24 @@ function datePickerWidgetsPluginClass() {
         display = 'display: none; ';
         displayTable = '';
       }
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       widgetHtml.setAttribute(
         'style',
-        displayTable + 'text-align: left; height: inherit; width: inherit; cursor: inherit'
+        displayTable +
+          'text-align: left; height: inherit; width: inherit; cursor: inherit;' +
+          displayStyle +
+          enableStyle
       );
       widgetHtml.setAttribute('id', 'div-for-ng-datepicker' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);

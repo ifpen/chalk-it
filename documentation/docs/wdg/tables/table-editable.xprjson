@@ -1,118 +1,121 @@
 {
-	"meta": {
-		"version": "2.410.8418",
-		"date": "Wed Feb 08 2023 23:34:56 GMT+0100 (heure normale d’Europe centrale)",
-		"name": "table-editable",
-		"description": "basic editable table connected to variable",
-		"groupName": "Neutral",
-		"tags": [
-			{
-				"text": "Widgets"
-			},
-			{
-				"text": "basic"
-			},
-			{
-				"text": "editable"
-			},
-			{
-				"text": "table"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"datanodes": [
-			{
-				"name": "paris",
-				"type": "JSON_var_plugin",
-				"settings": {
-					"name": "paris",
-					"json_var": "{\"average temperature [°C]\":[[\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\",\"Jul\",\"Aug\",\"Sep\",\"Oct\",\"Nov\",\"Dec\"],[5,6,9,11,15,16,20,20,16,12,7,5]]}"
-				}
-			}
-		],
-		"reIndexMap": [
-			0
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"libraries": {
-		"pyodideStandard": [],
-		"pyodideMicropip": []
-	},
-	"scaling": {
-		"widthPx": 1256,
-		"heightPx": 575,
-		"scrollWidthPx": 1256,
-		"scrollHeightPx": 575,
-		"widthVw": 84.29530201342281,
-		"heightVh": 79.6398891966759,
-		"scrollWidthVw": 84.29530201342281,
-		"scrollHeightVh": 79.6398891966759,
-		"scalingMethod": "scaleTwSp",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {},
-		"backgroundColor": "#ffffff"
-	},
-	"dashboard": {
-		"flatUiTableg": {
-			"layout": {
-				"top": "2.23823vh",
-				"left": "1.86787vw",
-				"height": "15.9164vh",
-				"width": "79.475vw",
-				"minHeight": "79px",
-				"minWidth": "88px",
-				"z-index": "1"
-			},
-			"container": {
-				"id": "flatUiTableg",
-				"instanceId": "flatUiTableg",
-				"modelJsonId": "flatUiTable",
-				"widgetTypeName": "Table(flatUiTableg)"
-			},
-			"modelParameters": {
-				"headerLine": true,
-				"striped": true,
-				"bordered": true,
-				"editableCols": "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]",
-				"noBorder": false,
-				"valueColor": "#34495e",
-				"valueFontFamily": "Helvetica Neue"
-			},
-			"modelHiddenParams": {
-				"value": null
-			}
-		}
-	},
-	"connections": {
-		"flatUiTableg": {
-			"value": {
-				"name": "value",
-				"dataFields": [
-					"average temperature [°C]"
-				],
-				"dataNode": "paris",
-				"dataNodeIndex": 0
-			}
-		}
-	},
-	"exportOptions": "projectToTargetWindow",
-	"pages": {
-		"pageNames": [],
-		"defaultPage": {}
-	},
-	"checkExportOptions": true,
-	"navBarNotification": false
+  "meta": {
+    "version": "3.000.8889",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-02T09:41:10.755Z",
+    "name": "table-editable",
+    "description": "basic editable table connected to variable",
+    "groupName": "Neutral",
+    "tags": [
+      {
+        "text": "Widgets"
+      },
+      {
+        "text": "basic"
+      },
+      {
+        "text": "editable"
+      },
+      {
+        "text": "table"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "paris",
+        "type": "JSON_var_plugin",
+        "settings": {
+          "name": "paris",
+          "json_var": "{\"average temperature [\u00b0C]\":[[\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\",\"Jul\",\"Aug\",\"Sep\",\"Oct\",\"Nov\",\"Dec\"],[5,6,9,11,15,16,20,20,16,12,7,5]]}"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwSp",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {
+    "flatUiEditableTableA": {
+      "layout": {
+        "top": "6.4vh",
+        "left": "1.37435vw",
+        "height": "17.6vh",
+        "width": "75.6545vw",
+        "minHeight": "79px",
+        "minWidth": "88px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "flatUiEditableTableA",
+        "modelJsonId": "flatUiEditableTable"
+      },
+      "modelParameters": {
+        "headerLine": true,
+        "indexColumn": false,
+        "tableValueFontSize": 0.5,
+        "striped": true,
+        "valueColor": "var(--widget-table-value-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueAlign": "left",
+        "bordered": true,
+        "noBorder": false,
+        "editableCols": "*",
+        "backgroundColor": {
+          "primary": "var(--widget-color-0)",
+          "secondary": "var(--widget-table-striped-odd)"
+        }
+      },
+      "modelHiddenParams": {
+        "value": null
+      }
+    }
+  },
+  "connections": {
+    "flatUiEditableTableA": {
+      "value": {
+        "name": "value",
+        "dataNode": "paris",
+        "dataFields": [
+          "average temperature [\u00b0C]"
+        ]
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

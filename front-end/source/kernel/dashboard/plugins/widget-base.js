@@ -43,6 +43,28 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     return colorHex;
   };
 
+  this.enableWidget = function () {
+    if (_.isUndefined(modelsParameters[idInstance].enableWidget)) {
+      modelsParameters[idInstance].enableWidget = true;
+    }
+    if (bInteractive) {
+      return modelsParameters[idInstance].enableWidget;
+    } else {
+      return true;
+    }
+  };
+
+  this.showWidget = function () {
+    if (_.isUndefined(modelsParameters[idInstance].showWidget)) {
+      modelsParameters[idInstance].showWidget = true;
+    }
+    if (bInteractive) {
+      return modelsParameters[idInstance].showWidget;
+    } else {
+      return true;
+    }
+  };
+
   // +--------------------------------------------------------------------¦ \\
   // |                          Global functions                          | \\
   // +--------------------------------------------------------------------¦ \\
