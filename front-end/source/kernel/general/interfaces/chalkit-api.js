@@ -127,35 +127,23 @@ var chalkit = (function () {
   }
 
   function enableWidget(widgetName) {
-    //let divElement = document.querySelector('#' + widgetName + 'c');
-    let divElement = $('#' + widgetName + 'c')[0];
-    if (!_.isUndefined(divElement)) {
-      divElement.style.pointerEvents = '';
-      divElement.style.opacity = '';
-    }
+    modelsParameters[widgetName].enableWidget = true;
+    widgetPreview.widget[widgetName].render(true);
   }
 
   function disableWidget(widgetName) {
-    //let divElement = document.querySelector('#' + widgetName + 'c');
-    let divElement = $('#' + widgetName + 'c')[0];
-    if (!_.isUndefined(divElement)) {
-      divElement.style.pointerEvents = 'none';
-      divElement.style.opacity = '0.5';
-    }
+    modelsParameters[widgetName].enableWidget = false;
+    widgetPreview.widget[widgetName].render(true);
   }
 
   function showWidget(widgetName) {
-    let divElement = $('#' + widgetName + 'c');
-    if (!_.isUndefined(divElement)) {
-      divElement.show();
-    }
+    modelsParameters[widgetName].showWidget = true;
+    widgetPreview.widget[widgetName].render(true);
   }
 
   function hideWidget(widgetName) {
-    let divElement = $('#' + widgetName + 'c');
-    if (!_.isUndefined(divElement)) {
-      divElement.hide();
-    }
+    modelsParameters[widgetName].showWidget = false;
+    widgetPreview.widget[widgetName].render(true);
   }
 
   scheduler = (function () {
