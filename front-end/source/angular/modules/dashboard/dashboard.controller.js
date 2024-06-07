@@ -200,7 +200,10 @@ angular
       /*---------- closeRightSidePanel ----------------*/
       $scope.closeRightSidePanel = function () {
         $scope.editorView.rightSidePanel.view = false;
-        editorStatus = 'full';
+        // Handle transition duration 0.25 sec, with margin
+        setTimeout(() => {
+          editorStatus = 'full';
+        }, 1000);        
       };
 
       /*---------- resetPanelStateR ----------------*/
