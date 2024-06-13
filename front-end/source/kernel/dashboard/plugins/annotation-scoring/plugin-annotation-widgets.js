@@ -475,7 +475,7 @@ function annotationWidgetsPluginClass() {
           divContent +
           '<div id="image_drop_zone_new' +
           idWidget +
-          '" style="; cursor: pointer; display: table-cell; vertical-align: middle"><a><center id="image_import_handle' +
+          '" style="; cursor: pointer; display: table-cell; vertical-align: middle"><a style="color: var(--widget-label-color)"><center id="image_import_handle' +
           idWidget +
           '">Click here to import your image file</center></a></div>';
 
