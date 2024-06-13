@@ -126,6 +126,7 @@ angular
 
       /*---------- setRightContent ----------------*/
       $scope.setRightContent = function (name, vm) {
+        editorStatus = 'partial';
         $scope.resetPanelStateL();
         let opendedPanel = false;
         if ($scope.editorView.rightSidePanel.target == name || !$scope.editorView.rightSidePanel.view) {
@@ -202,7 +203,10 @@ angular
       /*---------- closeRightSidePanel ----------------*/
       $scope.closeRightSidePanel = function () {
         $scope.editorView.rightSidePanel.view = false;
-        editorStatus = 'full';
+        // Handle transition duration 0.25 sec, with margin
+        setTimeout(() => {
+          editorStatus = 'full';
+        }, 1000);        
       };
 
       /*---------- resetPanelStateR ----------------*/
