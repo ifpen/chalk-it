@@ -68,20 +68,18 @@ function pyodideWidgetsPluginClass() {
       let displayStyle = 'display: inherit;';
       if (!showWidget) {
         displayStyle = 'display: none;';
-      }
+      } 
       const enableWidget = this.enableWidget();
       let enableStyle = 'pointer-events: initial; opacity:initial;';
       if (!enableWidget) {
         enableStyle = 'pointer-events: none; opacity:0.5;';
       }
       //
-      let elem = $('#' + idWidget)[0];
-      if (bInteractive) {
-        elem = $('#' + idWidget + 'c')[0];
-      }
-      elem.setAttribute(
+      let elem = $('#' + idDivMatplotlib);
+
+      elem.attr(
         'style',
-        'text-align:center; height: inherit; width: inherit; background-color: transparent;' +
+        'text-align:center; height: inherit; width: inherit; background-color: transparent; margin: auto; object-fit: contain; ' +
           displayStyle +
           enableStyle
       );
@@ -96,9 +94,10 @@ function pyodideWidgetsPluginClass() {
       const img_url = 'data:' + output.type + ';base64,' + output.content;
       img_bin.attr('src', img_url);
 
-      //let gd = document.getElementById(idDivMatplotlib);
-      img_bin[0].style.width = 'inherit'; //parseFloat(gd.parentNode.style.width) + 'vw';
-      img_bin[0].style.height = 'inherit'; //parseFloat(gd.parentNode.style.height) + 'vh';
+      img_bin[0].style.width = 'inherit'; 
+      img_bin[0].style.height = 'inherit';
+      img_bin[0].style["object-fit"] = 'contain';
+
     };
 
     const _FIG_DESCRIPTOR = new WidgetActuatorDescription(
