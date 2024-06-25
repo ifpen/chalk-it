@@ -1105,9 +1105,8 @@ export function initEditWidget() {
 
   /*--------resizeDashboard--------*/
   function resizeDashboard() {
-    editorDimensionsSnapshot = getCurrentDashZoneDims();
-    scalingHelper.setDimensions(editorDimensionsSnapshot);
     scalingHelper.setScalingMethod(editorScalingMethod);
+    scalingHelper.setDimensions(editorDimensionsSnapshot)
     scalingHelper.resizeDashboard();
 
     rescale();

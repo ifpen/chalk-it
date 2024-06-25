@@ -13,6 +13,7 @@ import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { editorSingletons } from 'kernel/editor-singletons';
 
 angular.module('modules.sidebar').controller('SidebarController', [
   '$scope',
@@ -71,7 +72,11 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     function _newPrj() {
       const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      $state.go('modules', {});
+      $state.go('modules', {}).then(() => {
+        setTimeout(()=> {
+          editorSingletons.widgetEditor.updateSnapshotDashZoneDims();
+        }, 0);
+      });
       ManagePrjService.clearForNewProject();
       $rootScope.currentInfoProject = angular.copy($rootScope.currentProject);
       scopeDash.info.tmp = angular.copy($rootScope.currentProject);
