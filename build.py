@@ -23,7 +23,7 @@ import argparse
 parser = argparse.ArgumentParser(description="Process the build type.")
 
 # Add the build_type optional argument
-parser.add_argument("--buildtype", choices=['pip', 'hosted'], default='pip',
+parser.add_argument("--buildtype", choices=['pip', 'hosted', 'local'], default='pip',
                     help="Specify the type of build: 'pip' or 'hosted'.")
 
 # Parse the arguments
@@ -148,7 +148,7 @@ if (BUILD_FRONT_END):
     # Run npm build command in front-end directory
     run_npm('npm', 'run', 'build')
 
-if (BUILD_TYPE=="pip"):
+if (BUILD_TYPE=="pip" or BUILD_TYPE=="local"):
 
     # Copy build result to ./build/chlkt directory
     build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
