@@ -88,6 +88,7 @@ modelsParameters.flatUiProgressBar = {
   labelWidthProportion: '20%',
   progressBarWidthProportion: '60%',
   valueWidthProportion: '20%',
+  progressBarAnimation: true,
   progressBarRangeColor: 'var(--widget-range-color)',
   progressBarSegmentColor: 'var(--widget-segment-color)',
   valueColor: 'var(--widget-color)',
@@ -1099,6 +1100,7 @@ function flatUiWidgetsPluginClass() {
         }
 
         progressBarDiv.css('width', percentWidth + '%');
+        if (!modelsParameters[idInstance].progressBarAnimation) progressBarDiv.css('transition', 'none');
       }
     };
 
