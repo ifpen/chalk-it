@@ -1324,6 +1324,7 @@ function flatUiWidgetsPluginClass() {
       if (modelsParameters[idInstance].validationOnFocusOut) {
         $widget.on('focusout', (e) => self.updateValue(e));
       }
+      $widget.off('click').on('click', (e) => self.updateValue(e));
 
       if (modelsParameters[idInstance].validationButton) {
         const $widgetBtn = $(`#${nameWidget}-valid-btn${idWidget}`);
