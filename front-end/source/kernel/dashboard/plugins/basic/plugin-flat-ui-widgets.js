@@ -1324,6 +1324,11 @@ function flatUiWidgetsPluginClass() {
       if (modelsParameters[idInstance].validationOnFocusOut) {
         $widget.on('focusout', (e) => self.updateValue(e));
       }
+      $widget.off('keyup').on('keyup', function (e) {
+        if (e.which === 38 || e.which === 40) {
+          self.updateValue(e);
+        }
+      });
       $widget.off('click').on('click', (e) => self.updateValue(e));
 
       if (modelsParameters[idInstance].validationButton) {
