@@ -253,8 +253,8 @@ var widgetPreview = (function () {
                 const msg = 'Invalid connection with data';
                 displayErrorOnWidget(instanceId, actuatorName, msg);
               }
-            } else if ($('#collapse-matching-box').hasClass('collapse in')) {
-              widgetPreview.clearDataFromWidget(instanceId, i, actuator, true);
+            } else {
+              widgetPreview.clearDataFromWidget(instanceId, actuatorName, actuator, true);
             }
           }
         }
@@ -328,11 +328,11 @@ var widgetPreview = (function () {
    * @param {any} status
    * @param {any} last_updated
    */
-  function setDataOnWidget(instanceId, i, actuator, newData, status, last_updated, bCaptionManuallyChanged) {
+  function setDataOnWidget(instanceId, actuatorName, actuator, newData, status, last_updated, bCaptionManuallyChanged) {
     if ((_.isUndefined(newData) && last_updated != 'never') || status == 'Error') {
       // MBG
       msg = 'Invalid data';
-      displayErrorOnWidget(instanceId, i, msg);
+      displayErrorOnWidget(instanceId, actuatorName, msg);
       return; // MBG : security. To invalidate widgets instead
     }
 
@@ -340,7 +340,7 @@ var widgetPreview = (function () {
 
     if (!(_.isUndefined(newData) || _.isNull(newData))) {
       // ABK: fix bug after MBG modif of &&(status!="None") // MBG 30/10/2018 add check on isNull following test "Gecoair UserTripso no JWT (6).html"
-      const slider = widgetConnector.widgetsConnection[instanceId].sliders[i];
+      const slider = widgetConnector.widgetsConnection[instanceId].sliders[actuatorName];
 
       let varInter = newData;
       let varName = slider.dataNode;
@@ -362,7 +362,7 @@ var widgetPreview = (function () {
       if (varInter === null) {
         // data parsing has changed
         // MBG TODO : invalidate widget
-        widgetPreview.clearDataFromWidget(instanceId, i, actuator, true);
+        widgetPreview.clearDataFromWidget(instanceId, actuatorName, actuator, true);
       } else {
         if (slider.name.substring(0, 1) === 'D') {
           //for Digits
@@ -398,8 +398,8 @@ var widgetPreview = (function () {
    * @param {any} actuator
    * @param {any} bCaption : clear caption (true or false)
    */
-  function clearDataFromWidget(instanceId, i, actuator, bCaption) {
-    if (widgetConnector.widgetsConnection[instanceId].sliders[i].name.substring(0, 1) === 'D') {
+  function clearDataFromWidget(instanceId, actuatorName, actuator, bCaption) {
+    if (widgetConnector.widgetsConnection[instanceId].sliders[actuatorName].name.substring(0, 1) === 'D') {
       //for Digits
       actuator.setText('');
     } else {
