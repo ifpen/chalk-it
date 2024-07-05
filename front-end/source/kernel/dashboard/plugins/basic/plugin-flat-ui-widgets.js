@@ -124,8 +124,8 @@ modelsParameters.flatUiNumericInput = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
-  min: 0,
-  max: 100,
+  //min: 0,
+  //max: 100,
   step: 1,
   labelTextAlign: 'left',
   labelTextPosition: 'left',
@@ -1477,12 +1477,12 @@ function flatUiWidgetsPluginClass() {
         idWidget +
         '" type=' +
         typeInput +
-        ' min="' +
-        modelsParameters[idInstance].min +
-        '" ' +
-        ' max="' +
-        modelsParameters[idInstance].max +
-        '" ' +
+        // ' min="' +
+        //  modelsParameters[idInstance].min +
+        //  '" ' +
+        // ' max="' +
+        // modelsParameters[idInstance].max +
+        // '" ' +
         ' step="' +
         modelsParameters[idInstance].step +
         '" ' +
