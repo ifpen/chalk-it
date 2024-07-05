@@ -88,7 +88,7 @@ modelsParameters.flatUiProgressBar = {
   labelWidthProportion: '20%',
   progressBarWidthProportion: '60%',
   valueWidthProportion: '20%',
-  progressBarAnimation: true,
+  progressBarAnimation: false,
   progressBarRangeColor: 'var(--widget-range-color)',
   progressBarSegmentColor: 'var(--widget-segment-color)',
   valueColor: 'var(--widget-color)',
