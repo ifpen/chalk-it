@@ -88,6 +88,7 @@ modelsParameters.flatUiProgressBar = {
   labelWidthProportion: '20%',
   progressBarWidthProportion: '60%',
   valueWidthProportion: '20%',
+  progressBarAnimation: false,
   progressBarRangeColor: 'var(--widget-range-color)',
   progressBarSegmentColor: 'var(--widget-segment-color)',
   valueColor: 'var(--widget-color)',
@@ -123,6 +124,9 @@ modelsParameters.flatUiNumericInput = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
+  //min: 0,
+  //max: 100,
+  step: 1,
   labelTextAlign: 'left',
   labelTextPosition: 'left',
   valueWidthProportion: '70%',
@@ -1099,6 +1103,7 @@ function flatUiWidgetsPluginClass() {
         }
 
         progressBarDiv.css('width', percentWidth + '%');
+        if (!modelsParameters[idInstance].progressBarAnimation) progressBarDiv.css('transition', 'none');
       }
     };
 
@@ -1320,6 +1325,15 @@ function flatUiWidgetsPluginClass() {
         $widget.on('focusout', (e) => self.updateValue(e));
       }
 
+      if (!modelsParameters[idInstance].validationButton) {
+        $widget.off('keyup').on('keyup', function (e) {
+          if (e.which === 38 || e.which === 40) {
+            self.updateValue(e);
+          }
+        });
+        $widget.off('click').on('click', (e) => self.updateValue(e));
+      }
+
       if (modelsParameters[idInstance].validationButton) {
         const $widgetBtn = $(`#${nameWidget}-valid-btn${idWidget}`);
         $widgetBtn.prop('disabled', false);
@@ -1463,6 +1477,15 @@ function flatUiWidgetsPluginClass() {
         idWidget +
         '" type=' +
         typeInput +
+        // ' min="' +
+        //  modelsParameters[idInstance].min +
+        //  '" ' +
+        // ' max="' +
+        // modelsParameters[idInstance].max +
+        // '" ' +
+        ' step="' +
+        modelsParameters[idInstance].step +
+        '" ' +
         ' placeholder="" class="value-input form-control" ' +
         'style="height: ' +
         valueHeightPx +
