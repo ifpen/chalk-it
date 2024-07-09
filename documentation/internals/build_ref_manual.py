@@ -47,7 +47,7 @@ def build_and_save_markdown_tables(params_ref, category_definitions, name_type_f
         key = widget["typeWidget"]
         grouped_widgets.setdefault(key, []).append(widget)
     
-    for details in category_definitions.items():
+    for categories, details in category_definitions.items():
         category_name = details["name"]
         category_path = os.path.join(build_dir, category_name)
         try:
