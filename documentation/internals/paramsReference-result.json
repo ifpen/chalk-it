@@ -3668,47 +3668,6 @@
         }
       },
       "title": "",
-      "showlegend": true,
-      "margin": {
-        "l": 50,
-        "r": 50,
-        "b": 100,
-        "t": 100,
-        "pad": 4
-      }
-    }
-  },
-  {
-    "typeWidget": "plotlyPie",
-    "name": "hideModeBar",
-    "type": "boolean",
-    "defaultValue": false
-  },
-  {
-    "typeWidget": "plotly3dSurface",
-    "name": "layout",
-    "type": "object",
-    "defaultValue": {
-      "paper_bgcolor": "rgba(0,0,0,0)",
-      "plot_bgcolor": "rgba(0,0,0,0)",
-      "colorway": [
-        "var(--widget-color-2)",
-        "var(--widget-color-5)",
-        "var(--widget-color-6)",
-        "var(--widget-color-7)",
-        "var(--widget-color-8)",
-        "var(--widget-color-9)",
-        "var(--widget-color-10)",
-        "var(--widget-color-11)",
-        "var(--widget-color-12)",
-        "var(--widget-color-13)"
-      ],
-      "legend": {
-        "font": {
-          "color": "var(--widget-color)"
-        }
-      },
-      "title": "",
       "scene": {
         "xaxis": {
           "title": "x"
