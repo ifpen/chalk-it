@@ -8,8 +8,16 @@ def load_category_definitions(filename):
     except Exception as e:
         print(f"Error reading category definitions: {e}")
         return {}
+    
+def load_type_name_map(filename):
+    try:
+        with open(filename, 'r') as file:
+            return json.load(file)
+    except Exception as e:
+        print(f"Error reading category definitions: {e}")
+        return {}
 
-def build_and_save_markdown_tables(widgets_filename, category_definitions_filename):
+def build_and_save_markdown_tables(widgets_filename, category_definitions_filename, name_type_filename):
     build_dir = "build"
     os.makedirs(build_dir, exist_ok=True)  # Create the build directory if it doesn't exist
 
@@ -27,6 +35,9 @@ def build_and_save_markdown_tables(widgets_filename, category_definitions_filena
         return
 
     grouped_widgets = {}
+    
+    type_name = load_type_name_map(name_type_filename)
+    
     for widget in widgets:
         key = widget["typeWidget"]
         grouped_widgets.setdefault(key, []).append(widget)
@@ -43,7 +54,7 @@ def build_and_save_markdown_tables(widgets_filename, category_definitions_filena
         for type_widget in details["widgets"]:
             if type_widget in grouped_widgets:
                 items = grouped_widgets[type_widget]
-                markdown_output = f"### {type_widget}\n\n"
+                markdown_output = f"### {type_name[type_widget]}\n\n"
                 markdown_output += "| Name | Type | Default Value | Description |\n"
                 markdown_output += "|------|------|---------------|-------------|\n"
                 for item in items:
@@ -58,4 +69,4 @@ def build_and_save_markdown_tables(widgets_filename, category_definitions_filena
                     print(f"Error writing to file {filename}: {e}")
 
 # Usage
-build_and_save_markdown_tables('paramsReference-result.json', 'widgetsEditorToolboxDefinition.json')
+build_and_save_markdown_tables('paramsReference-result.json', 'widgetsEditorToolboxDefinition.json', 'widgetNames-result.json')
