@@ -308,6 +308,55 @@
     "description": "Ensure vertical centering of the text"
   },
   {
+    "typeWidget": "anyDisplay",
+    "name": "fontsize",
+    "type": "number",
+    "defaultValue": 0.3,
+    "description": "Font-size"
+  },
+  {
+    "typeWidget": "anyDisplay",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "rgba(0, 0, 0, 0)",
+    "description": "Background color"
+  },
+  {
+    "typeWidget": "anyDisplay",
+    "name": "textColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "Text color"
+  },
+  {
+    "typeWidget": "anyDisplay",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "Helvetica Neue",
+    "description": "Font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "anyDisplay",
+    "name": "textAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "anyDisplay",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "If true, a border is displayed around the widget"
+  },
+  {
+    "typeWidget": "anyDisplay",
+    "name": "centerVertically",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Ensure vertical centering of the text"
+  },
+  {
     "typeWidget": "kpiCard",
     "name": "label",
     "type": "string",
@@ -480,7 +529,7 @@
     "name": "valueColor",
     "type": "string",
     "defaultValue": "var(--widget-color)",
-    "description": "Color of the value displayed in the kpi card"
+    "description": "Color of the value displayed in the KPI card"
   },
   {
     "typeWidget": "advancedKpiCard",
@@ -3272,6 +3321,76 @@
     "description": "Ensure vertical centering of the text"
   },
   {
+    "typeWidget": "annotationRectangle",
+    "name": "text",
+    "type": "string",
+    "defaultValue": "",
+    "description": "The label text"
+  },
+  {
+    "typeWidget": "annotationRectangle",
+    "name": "enableActuator",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "If true, inherit tooltip text from value actuator"
+  },
+  {
+    "typeWidget": "annotationRectangle",
+    "name": "fontsize",
+    "type": "number",
+    "defaultValue": 0.5,
+    "description": "Font-size"
+  },
+  {
+    "typeWidget": "annotationRectangle",
+    "name": "backgroundColor",
+    "type": "string",
+    "defaultValue": "rgba(228, 228, 228, 1)",
+    "description": "Background color"
+  },
+  {
+    "typeWidget": "annotationRectangle",
+    "name": "textColor",
+    "type": "string",
+    "defaultValue": "var(--widget-label-color)",
+    "description": "Text color"
+  },
+  {
+    "typeWidget": "annotationRectangle",
+    "name": "valueFontFamily",
+    "type": "string",
+    "defaultValue": "var(--widget-font-family)",
+    "description": "Value font-family. Possible values: Arial, Verdana, Tahoma, Trebuchet MS, Times New Roman, Georgia, Garamond, Courier New, Brush Script MT, Montserrat, ralway, Lucida Grande, Lato, Menlo"
+  },
+  {
+    "typeWidget": "annotationRectangle",
+    "name": "textAlign",
+    "type": "string",
+    "defaultValue": "left",
+    "description": "Text horizontal alignment. Possible values: left, center, right"
+  },
+  {
+    "typeWidget": "annotationRectangle",
+    "name": "displayBorder",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "If true, a border is displayed around the widget"
+  },
+  {
+    "typeWidget": "annotationRectangle",
+    "name": "borderColor",
+    "type": "string",
+    "defaultValue": "var(--widget-border-color)",
+    "description": "Border color of the form"
+  },
+  {
+    "typeWidget": "annotationRectangle",
+    "name": "centerVertically",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Ensure vertical centering of the text"
+  },
+  {
     "typeWidget": "annotationImage",
     "name": "keepRatio",
     "type": "boolean",
@@ -3283,7 +3402,7 @@
     "name": "hideImageURL",
     "type": "boolean",
     "defaultValue": false,
-    "description": "If true, URL image is hidden"
+    "description": "If true, URL image is hidden. URL image allows user to manually load image at edition mode"
   },
   {
     "typeWidget": "annotationImage",
@@ -3291,6 +3410,27 @@
     "type": "boolean",
     "defaultValue": false,
     "description": "If true, inherit image URL from value actuator"
+  },
+  {
+    "typeWidget": "annotationImageConnected",
+    "name": "keepRatio",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "If true, image ratio is kept intact to avoid distortion"
+  },
+  {
+    "typeWidget": "annotationImageConnected",
+    "name": "hideImageURL",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "If true, URL image is hidden. URL image allows user to manually load image at edition mode"
+  },
+  {
+    "typeWidget": "annotationImageConnected",
+    "name": "enableActuator",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "If true, inherit image data from value actuator"
   },
   {
     "typeWidget": "annotationVideo",
@@ -3353,6 +3493,25 @@
     "name": "layout",
     "type": "object",
     "defaultValue": {
+      "paper_bgcolor": "rgba(0,0,0,0)",
+      "plot_bgcolor": "rgba(0,0,0,0)",
+      "colorway": [
+        "var(--widget-color-2)",
+        "var(--widget-color-5)",
+        "var(--widget-color-6)",
+        "var(--widget-color-7)",
+        "var(--widget-color-8)",
+        "var(--widget-color-9)",
+        "var(--widget-color-10)",
+        "var(--widget-color-11)",
+        "var(--widget-color-12)",
+        "var(--widget-color-13)"
+      ],
+      "legend": {
+        "font": {
+          "color": "var(--widget-color)"
+        }
+      },
       "title": "",
       "xaxis": {
         "title": "x",
@@ -3366,15 +3525,7 @@
           "color": "var(--widget-color)"
         }
       },
-      "paper_bgcolor": "rgba(0,0,0,0)",
-      "plot_bgcolor": "rgba(0,0,0,0)",
-      "colorway": ["var(--widget-color-2)", "var(--widget-color-5)", "var(--widget-color-6)", "var(--widget-color-7)"],
-      "legend": {
-        "font": {
-          "color": "var(--widget-color)"
-        }
-      },
-      "showlegend": false,
+      "showlegend": true,
       "margin": {
         "l": 50,
         "r": 50,
@@ -3404,6 +3555,25 @@
     "name": "layout",
     "type": "object",
     "defaultValue": {
+      "paper_bgcolor": "rgba(0,0,0,0)",
+      "plot_bgcolor": "rgba(0,0,0,0)",
+      "colorway": [
+        "var(--widget-color-2)",
+        "var(--widget-color-5)",
+        "var(--widget-color-6)",
+        "var(--widget-color-7)",
+        "var(--widget-color-8)",
+        "var(--widget-color-9)",
+        "var(--widget-color-10)",
+        "var(--widget-color-11)",
+        "var(--widget-color-12)",
+        "var(--widget-color-13)"
+      ],
+      "legend": {
+        "font": {
+          "color": "var(--widget-color)"
+        }
+      },
       "title": "",
       "barmode": "group",
       "xaxis": {
@@ -3418,15 +3588,7 @@
           "color": "var(--widget-color)"
         }
       },
-      "paper_bgcolor": "rgba(0,0,0,0)",
-      "plot_bgcolor": "rgba(0,0,0,0)",
-      "colorway": ["var(--widget-color-2)", "var(--widget-color-5)", "var(--widget-color-6)", "var(--widget-color-7)"],
-      "legend": {
-        "font": {
-          "color": "var(--widget-color)"
-        }
-      },
-      "showlegend": false,
+      "showlegend": true,
       "margin": {
         "l": 50,
         "r": 50,
@@ -3452,7 +3614,12 @@
       "title": "",
       "paper_bgcolor": "rgba(0,0,0,0)",
       "plot_bgcolor": "rgba(0,0,0,0)",
-      "colorway": ["var(--widget-color-2)", "var(--widget-color-5)", "var(--widget-color-6)", "var(--widget-color-7)"],
+      "colorway": [
+        "var(--widget-color-2)",
+        "var(--widget-color-5)",
+        "var(--widget-color-6)",
+        "var(--widget-color-7)"
+      ],
       "legend": {
         "font": {
           "color": "var(--widget-color)"
@@ -3481,6 +3648,66 @@
     "name": "layout",
     "type": "object",
     "defaultValue": {
+      "paper_bgcolor": "rgba(0,0,0,0)",
+      "plot_bgcolor": "rgba(0,0,0,0)",
+      "colorway": [
+        "var(--widget-color-2)",
+        "var(--widget-color-5)",
+        "var(--widget-color-6)",
+        "var(--widget-color-7)",
+        "var(--widget-color-8)",
+        "var(--widget-color-9)",
+        "var(--widget-color-10)",
+        "var(--widget-color-11)",
+        "var(--widget-color-12)",
+        "var(--widget-color-13)"
+      ],
+      "legend": {
+        "font": {
+          "color": "var(--widget-color)"
+        }
+      },
+      "title": "",
+      "showlegend": true,
+      "margin": {
+        "l": 50,
+        "r": 50,
+        "b": 100,
+        "t": 100,
+        "pad": 4
+      }
+    }
+  },
+  {
+    "typeWidget": "plotlyPie",
+    "name": "hideModeBar",
+    "type": "boolean",
+    "defaultValue": false
+  },
+  {
+    "typeWidget": "plotly3dSurface",
+    "name": "layout",
+    "type": "object",
+    "defaultValue": {
+      "paper_bgcolor": "rgba(0,0,0,0)",
+      "plot_bgcolor": "rgba(0,0,0,0)",
+      "colorway": [
+        "var(--widget-color-2)",
+        "var(--widget-color-5)",
+        "var(--widget-color-6)",
+        "var(--widget-color-7)",
+        "var(--widget-color-8)",
+        "var(--widget-color-9)",
+        "var(--widget-color-10)",
+        "var(--widget-color-11)",
+        "var(--widget-color-12)",
+        "var(--widget-color-13)"
+      ],
+      "legend": {
+        "font": {
+          "color": "var(--widget-color)"
+        }
+      },
       "title": "",
       "scene": {
         "xaxis": {
@@ -3493,9 +3720,7 @@
           "title": "z"
         }
       },
-      "paper_bgcolor": "rgba(0,0,0,0)",
-      "plot_bgcolor": "rgba(0,0,0,0)",
-      "showlegend": false,
+      "showlegend": true,
       "margin": {
         "l": 50,
         "r": 50,
@@ -3519,6 +3744,55 @@
     "type": "boolean",
     "defaultValue": false,
     "description": "If true, hide Plotly widget Modebar"
+  },
+  {
+    "typeWidget": "plotlyPyGeneric",
+    "name": "enforceTextColor",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Enforces theme or user based text color. Disable this property if it overrides your Plotly preferences"
+  },
+  {
+    "typeWidget": "plotlyPyGeneric",
+    "name": "textColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "Text color in case enforceTextColor is true"
+  },
+  {
+    "typeWidget": "plotlyPyGeneric",
+    "name": "enforceBackgroundTransparency",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Enforces plot background transparency. Disable this property if it overrides your Plotly preferences"
+  },
+  {
+    "typeWidget": "plotlyPyGeneric",
+    "name": "hideModeBar",
+    "type": "boolean",
+    "defaultValue": false,
+    "description": "If true, hide Plotly widget Modebar"
+  },
+  {
+    "typeWidget": "plotlyRealTime",
+    "name": "enforceTextColor",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Enforces theme or user based text color. Disable this property if it overrides your Plotly preferences"
+  },
+  {
+    "typeWidget": "plotlyRealTime",
+    "name": "textColor",
+    "type": "string",
+    "defaultValue": "var(--widget-color)",
+    "description": "Text color in case enforceTextColor is true"
+  },
+  {
+    "typeWidget": "plotlyRealTime",
+    "name": "enforceBackgroundTransparency",
+    "type": "boolean",
+    "defaultValue": true,
+    "description": "Enforces plot background transparency. Disable this property if it overrides your Plotly preferences"
   },
   {
     "typeWidget": "plotlyRealTime",
@@ -3629,7 +3903,7 @@
     "defaultValue": {
       "point": true,
       "line": true,
-      "polygone": true,
+      "polygon": true,
       "rectangle": true,
       "modal": false
     },
@@ -3650,3 +3924,4 @@
     "description": "Enables the clustering of point markers"
   }
 ]
+
