@@ -83,3 +83,5 @@ ipch/
 **/__pycache__
 taipy_pages/*_recovery.xprjson
 taipy_pages/
+front-end-adapter/
+src/

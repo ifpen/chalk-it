@@ -146,6 +146,20 @@ var chalkit = (function () {
     widgetPreview.widget[widgetName].render(true);
   }
 
+  function notify(dataNodeName, msg, type) {
+    let name = dataNodeName;
+    let dN = datanodesManager.getDataNodeByName(name);
+    if (_.isUndefined(dN)) {
+      name = datanodesManager.getCurrentDataNode();
+      dN = datanodesManager.getDataNodeByName(name);
+    }
+    dN.notificationCallback(type, name, msg);
+  }
+
+  function swalert(title, msg, type) {
+    swal(title, msg, type);
+  }
+
   scheduler = (function () {
     function setVariable(dataNodeName, varJsonValue) {
       chalkit.setVariable(dataNodeName, varJsonValue);
@@ -204,6 +218,20 @@ var chalkit = (function () {
     };
   })();
 
+  notification = (function () {
+    function notify(dataNodeName, msg, type) {
+      chalkit.notify(dataNodeName, msg, type);
+    }
+
+    function swalert(title, msg, type) {
+      chalkit.swalert(title, msg, type);
+    }
+    return {
+      notify,
+      swalert,
+    };
+  })();
+
   return {
     setVariable,
     setVariables,
@@ -217,7 +245,10 @@ var chalkit = (function () {
     disableWidget,
     showWidget,
     hideWidget,
+    notify,
+    swalert,
     scheduler,
     dashboard,
+    notification,
   };
 })();

@@ -160,6 +160,38 @@ class DashboardActions:
         self._state.add_side_effect("dashboard.hideWidget", widget_name)
 
 
+class NotificationActions:
+    """
+    This class provides a port of the javascript API. An instance of it is provided to user scripts as
+    `chalkit.notification`. It allows some interactions with the notifications. 
+    """
+
+    def __init__(self, state: ChalkitState):
+        self._state = state
+
+
+    def notify(self, datanode_name: str, message: str, type: str) -> None:
+        """
+        add a notification.
+
+        Args:
+            datanode_name: the name of the dataNode
+            message: the content of the message
+            type: the type of the message (error, success, warning, info)
+        """
+        self._state.add_side_effect("notification.notify", datanode_name, message, type)
+
+    def swalert(self, title: str,message: str,type: str) -> None:
+        """
+        Use sweet alert.
+
+        Args:
+            title: the title of the notification
+            message: the content of the message
+            type: the type of the message (error, success, warning, info)
+        """
+        self._state.add_side_effect("notification.swalert", title, message, type)
+
 class ChalkitApi:
     """An instance of `ChalkitApi` is provided to user scripts as `chalkit`. It can be used by scripts to interact
      with Chalk'it.
@@ -187,6 +219,7 @@ class ChalkitApi:
         self._state = state
         self._scheduler = SchedulerActions(state)
         self._dashboard = DashboardActions(state)
+        self._notification = NotificationActions(state)
 
     @property
     def scheduler(self) -> SchedulerActions:
@@ -196,6 +229,10 @@ class ChalkitApi:
     def dashboard(self) -> DashboardActions:
         return self._dashboard
 
+    @property
+    def notification(self) -> NotificationActions:
+        return self._notification
+    
     @staticmethod
     def base64_to_bytes(b64: str) -> bytes:
         """Reverts data encoded as a string using base 64 to raw `bytes`.

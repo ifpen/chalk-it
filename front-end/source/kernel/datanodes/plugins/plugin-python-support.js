@@ -37,6 +37,11 @@
               const rawDashName = name.replace('dashboard.', '');
               chalkit.dashboard[rawDashName](...args);
               break;
+            case 'notification.notify':
+            case 'notification.swalert':
+              const rawNotifName = name.replace('notification.', '');
+              chalkit.notification[rawNotifName](...args);
+              break;
 
             default:
               unknowns.push(name);

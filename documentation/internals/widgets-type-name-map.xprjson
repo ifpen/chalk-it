@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "version": "3.002.8914",
+    "fileFormatVersion": "0.3",
+    "date": "2024-07-09T08:07:52.663Z",
+    "name": "widgets-type-name-map",
+    "description": "",
+    "groupName": "",
+    "tags": [],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "widgetNames",
+        "type": "JSON_formula_plugin",
+        "settings": {
+          "name": "widgetNames",
+          "autoStart": true,
+          "explicitTrig": false,
+          "json_var_formula": "    let widgetName = [];\n    let widgetTitle = [];\n    let allWidget = {};\n    let wdgtGroupId = _.keys(widgetsEditorToolboxDefinition);\n\n    for (let i = 0; i < wdgtGroupId.length; i++) {\n      widgetTitle = [];\n      widgetName = widgetsEditorToolboxDefinition[wdgtGroupId[i]].widgets;\n      _.each(widgetName, (wn) => {\n        widgetTitle.push(widgetsPluginsHandler.widgetToolbarDefinitions[wn].title);\n      });\n      for (let j = 0; j < widgetName.length; j++) {\n        allWidget[widgetName[j]] = widgetTitle[j];\n      }\n    }\n    return allWidget;\n"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1295,
+    "heightPx": 590,
+    "scrollWidthPx": 1295,
+    "scrollHeightPx": 590,
+    "widthVw": 84.75130890052355,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.75130890052355,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {},
+  "connections": {},
+  "exportOptions": "ajustToTargetWindow",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

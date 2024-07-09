@@ -14,6 +14,8 @@ ActionsName = Literal[
     "dashboard.disableWidget",
     "dashboard.showWidget",
     "dashboard.hideWidget",
+    "notification.notify",
+    "notification.swalert",
 ]
 
 

@@ -127,7 +127,7 @@
         </a>
         <span class="tooltip">Graph</span>
       </li>
-      <li
+      <li ng-if="enablePyodide"
         id="li_editor-project-libraries"
         ng-if="!xDashLiteVersion"
         ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Libraries' && editorView.leftSidePanel.view)}"
