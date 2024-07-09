@@ -424,3 +424,22 @@ class TestSideEffects:
             {"name": "dashboard.showWidget", "args": ["widgetC"]},
             {"name": "dashboard.hideWidget", "args": ["widgetD"]},
         ]
+
+    @staticmethod
+    def test_side_effects_should_capture__notify():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.notification.notify("node1","message","success")
+
+        sideEffects = do_capture(script, debug=False)["sideEffects"]
+        assert sideEffects == [
+            {"name": "notification.notify", "args": ["node1","message","success"]}
+        ]
+    @staticmethod
+    def test_side_effects_should_capture__swalert():
+        def script(_, chalkit: ChalkitApi):
+            chalkit.notification.swalert("title","message","success")
+
+        sideEffects = do_capture(script, debug=False)["sideEffects"]
+        assert sideEffects == [
+            {"name": "notification.swalert", "args": ["title","message","success"]}
+        ]    
