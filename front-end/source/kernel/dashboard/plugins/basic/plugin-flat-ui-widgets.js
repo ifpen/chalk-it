@@ -324,17 +324,14 @@ function flatUiWidgetsPluginClass() {
       if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
         fontSize = modelsParameters[idInstance].buttonFontSize;
       }
-      const styleDef =
-        'style="height: inherit; font-size: calc(7px + ' +
-        fontSize * getFontFactor() +
-        'vw + 0.4vh); ' +
-        this.buttonFontFamily() +
-        '" class="btn btn-table-cell btn-lg ' +
-        idInstance +
-        'widgetCustomColor';
+
+      const styleDef = `style="height: inherit; font-size: calc(7px + ${
+        fontSize * getFontFactor()
+      }vw + 0.4vh); ${this.buttonFontFamily()}" class="btn btn-table-cell btn-lg ${idInstance}widgetCustomColor ${
+        !this.bIsInteractive ? ' /*disabled*/' : ''
+      }"`;
 
       this.setButtonColorStyle();
-      let divContent = '';
 
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
@@ -346,34 +343,20 @@ function flatUiWidgetsPluginClass() {
         content = icon + ' ' + text;
       }
 
+      let divContent = '';
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
-          const fileInput =
-            '<input onclick="displaySpinnerOnInputFileButton(\'' +
-            idWidget +
-            '\')" type="file" style="display : none;" id="button' +
-            idWidget +
-            '_select_file"></input>';
-          divContent += '<a ' + styleDef + '" id="button' + idWidget + '">' + content + fileInput + '</a>';
+          const fileInput = `<input onclick="displayLoadSpinner('${idWidget}')" type="file" style="display: none;" id="button${idWidget}_select_file"></input>`;
+          divContent += `<a ${styleDef} id="button${idWidget}">${content}${fileInput}</a>`;
         } else {
-          divContent +=
-            '<a onclick="updateDataNodeFromWidgetwithspinButton( \'' +
-            idInstance +
-            "', '" +
-            idWidget +
-            '\')" ' +
-            styleDef +
-            '" id="button' +
-            idWidget +
-            '">' +
-            content +
-            '</a>';
+          divContent += `<a onclick="updateWidgetDataNode('${idInstance}', '${idWidget}')" ${styleDef} id="button${idWidget}">${content}</a>`;
         }
         self.enable();
       } else {
-        divContent += '<a ' + styleDef + ' /*disabled*/" id="button' + idWidget + '">' + content + '</a>';
+        divContent += `<a ${styleDef} id="button${idWidget}">${content}</a>`;
         self.disable();
       }
+
       widgetHtml.innerHTML = divContent;
       //
       const showWidget = this.showWidget();
