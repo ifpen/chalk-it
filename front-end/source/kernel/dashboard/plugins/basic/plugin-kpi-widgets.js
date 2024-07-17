@@ -120,7 +120,7 @@ function kpiWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       $('#card-value-' + idWidget)[0].innerText = self.valueFormat(modelsHiddenParams[idInstance].value);
 
       unitContent =

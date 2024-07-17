@@ -90,7 +90,7 @@ function dateRangePickerWidgetsPluginClass() {
       );
       widgetHtml.setAttribute('id', 'div-for-daterangepicker' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       let labelProportion = '0%';
       let labelText = 'labelText';
       let widthInput = $('#div-for-daterangepicker' + idWidget).width();

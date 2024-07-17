@@ -110,6 +110,7 @@ function doubleSliderWidgetsPluginClass() {
       widgetHtml.setAttribute('id', 'div-for-ng-slider' + idWidget);
 
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var sliderSize = Math.min(
         $('#div-for-ng-slider' + idWidget).width(),
         $('#div-for-ng-slider' + idWidget).height()

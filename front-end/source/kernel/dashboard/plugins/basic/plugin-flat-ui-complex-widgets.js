@@ -235,7 +235,7 @@ function flatUiComplexWidgetsPluginClass() {
       );
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (this.bIsInteractive) {
         self.enable();
       } else {
@@ -641,7 +641,7 @@ function flatUiComplexWidgetsPluginClass() {
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       const hasScrollBar = self.hasScrollBar($('#multi-select' + idWidget));
       if (!hasScrollBar) {
         $('#multi-select' + idWidget + '.multi-select-div').css('align-content', 'center');
@@ -896,6 +896,7 @@ function flatUiComplexWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
       const isMobileOrTablet = window.mobileAndTabletCheck();
       const touchDevice = 'ontouchstart' in document.documentElement; // Only mobiles
@@ -1200,7 +1201,7 @@ function flatUiComplexWidgetsPluginClass() {
       widgetHtml.setAttribute('style', displayStyle + displayStyle2 + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (this.bIsInteractive) {
         self.enable();
       } else {

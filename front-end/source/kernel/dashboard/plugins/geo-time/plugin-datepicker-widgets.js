@@ -139,6 +139,7 @@ function datePickerWidgetsPluginClass() {
       );
       widgetHtml.setAttribute('id', 'div-for-ng-datepicker' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var heightCalender = $('#div-for-ng-datepicker' + idWidget).height();
 
       var modelObj = 'datepickerValues.val' + idInstance;

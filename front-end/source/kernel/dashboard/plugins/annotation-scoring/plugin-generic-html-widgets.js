@@ -103,7 +103,7 @@ function genericHtmlWidgetPluginClass() {
           enableStyle
       );
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       var hasScrollBar = self.hasScrollBar($('#htmlDiv' + idWidget));
       if (modelsParameters[idInstance].centerVertically && !hasScrollBar) {
         styleCenterVertically =

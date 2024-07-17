@@ -389,7 +389,7 @@ function flatUiWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
         self.readFileEvt();
       }
@@ -639,6 +639,7 @@ function flatUiWidgetsPluginClass() {
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var $slider = $('#slider' + idWidget);
       if ($slider.length > 0) {
         $slider
@@ -865,6 +866,7 @@ function flatUiWidgetsPluginClass() {
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var $verticalSlider = $('#vertical-slider' + idWidget);
       if ($verticalSlider.length > 0) {
         $verticalSlider
@@ -1168,6 +1170,7 @@ function flatUiWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       $('#progress-bar' + idWidget).addClass('progress-bar-div-div');
 
       document.styleSheets[0].addRule('#progress-bar' + idWidget, this.progressBarSegmentColor());
@@ -1561,6 +1564,7 @@ function flatUiWidgetsPluginClass() {
       }
 
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       $('#' + nameWidget + idWidget)[0].value = modelsHiddenParams[idInstance].value;
 
       if (this.bIsInteractive) {

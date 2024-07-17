@@ -318,7 +318,7 @@ function loadFileWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       document.styleSheets[0].addRule(
         '#drag-area' + idWidget,
         ' background-color: ' + modelsParameters[idInstance].backgroundColor

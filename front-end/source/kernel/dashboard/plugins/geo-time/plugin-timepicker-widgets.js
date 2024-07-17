@@ -82,6 +82,7 @@ function timePickerWidgetsPluginClass() {
       );
       widgetHtml.setAttribute('id', 'div-for-ng-timepicker' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var inputClass = '';
       if (this.bIsInteractive) {
         inputClass = 'clockpicker ';

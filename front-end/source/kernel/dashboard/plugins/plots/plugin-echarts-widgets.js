@@ -119,7 +119,7 @@ function echartsWidgetsPluginClass() {
           displayStyle +
           enableStyle
       );
-
+      this.applyDisplayOnWidget();
       // use configuration item and data specified to show chart
       if (bInteractive) {
         var myChart = echarts.init(document.getElementById('echarts' + idWidget + 'c'));

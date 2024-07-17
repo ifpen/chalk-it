@@ -127,6 +127,7 @@ function scoringWidgetsPluginClass() {
 
       widgetHtml.setAttribute('id', 'div-for-ng-gauge' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var gaugeSize = Math.min($('#div-for-ng-gauge' + idWidget).width(), $('#div-for-ng-gauge' + idWidget).height());
       var modelObj = 'gaugeValues.val' + idWidget;
       var divContent = angular.element(

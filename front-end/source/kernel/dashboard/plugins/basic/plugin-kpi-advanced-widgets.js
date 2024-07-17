@@ -283,7 +283,7 @@ function advancedKpiWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       /**************************label*********************/
       if (modelsParameters[idInstance].displayLabel) {
         // conversion to enable HTML tags

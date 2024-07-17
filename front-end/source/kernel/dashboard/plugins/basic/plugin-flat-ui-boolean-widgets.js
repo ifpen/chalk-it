@@ -189,7 +189,7 @@ function flatUiBooleanWidgetsPluginClass() {
         'width: inherit;cursor: inherit;justify-content: center;' + displayStyle + enableStyle
       );
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       $('[data-toggle="checkbox"]').radiocheck();
       $('[data-toggle="radio"]').radiocheck();
 

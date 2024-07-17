@@ -84,7 +84,7 @@ function spinnerStatusWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (!bInteractive) {
         self.addSpinner();
       }

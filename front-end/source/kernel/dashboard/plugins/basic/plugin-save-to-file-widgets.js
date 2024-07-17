@@ -105,7 +105,7 @@ function saveToFileButtonWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       $('#button-save-to-file' + idWidget).on('click', function () {
         self.saveFile();
       });

@@ -247,6 +247,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
       }
 
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       $('#ac-value' + idWidget)[0].value = modelsHiddenParams[idInstance].value;
 
       if (this.bIsInteractive) {
