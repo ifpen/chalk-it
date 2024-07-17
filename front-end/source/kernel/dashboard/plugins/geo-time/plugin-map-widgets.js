@@ -1387,7 +1387,7 @@ function mapWidgetsPluginClass() {
       }
       document.addEventListener('play-tab-loaded', self.goToFirstRadioButton);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       self.map = L.map('openStreetMap' + idWidget, { preferCanvas: true }).setView(
         [modelsParameters[idInstance].defaultCenter.latitude, modelsParameters[idInstance].defaultCenter.longitude],
         modelsParameters[idInstance].defaultCenter.zoom

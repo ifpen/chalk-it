@@ -65,6 +65,18 @@ function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     }
   };
 
+  this.applyDisplayOnWidget = function () {
+    if (bInteractive) {
+      const widgetObj = $('#' + idInstance + 'c');
+      if (!_.isUndefined(widgetObj)) {
+        if (!modelsParameters[idInstance].showWidget) {
+          widgetObj.hide();
+        } else {
+          widgetObj.show();
+        }
+      }
+    }
+  };
   // +--------------------------------------------------------------------¦ \\
   // |                          Global functions                          | \\
   // +--------------------------------------------------------------------¦ \\

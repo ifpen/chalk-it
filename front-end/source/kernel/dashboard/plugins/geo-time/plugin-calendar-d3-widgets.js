@@ -69,7 +69,7 @@ function calendarD3WidgetPluginClass() {
       );
       widgetHtml.setAttribute('id', 'div-for-calendarD3' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       const bbox = widgetHtml.getBoundingClientRect();
       const width = bbox.width;
       const heightDiv = bbox.height;

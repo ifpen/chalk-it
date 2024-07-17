@@ -474,6 +474,18 @@ function plotlyWidgetsPluginClass() {
         return true;
       }
     };
+    this.applyDisplayOnWidget = function () {
+      if (bInteractive) {
+        const widgetObj = $('#' + idInstance + 'c');
+        if (!_.isUndefined(widgetObj)) {
+          if (!modelsParameters[idInstance].showWidget) {
+            widgetObj.hide();
+          } else {
+            widgetObj.show();
+          }
+        }
+      }
+    };
     // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
     this.getColorValueFromCSSProperty = function (value) {
       let color = value;
@@ -610,7 +622,7 @@ function plotlyWidgetsPluginClass() {
       );
 
       $('#' + idDivPlotly).html('');
-
+      this.applyDisplayOnWidget();
       const data = modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data;
       /* MBG issue bad width at runtime for Ploty widgets*/
       if (this.bIsInteractive) {

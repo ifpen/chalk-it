@@ -198,7 +198,7 @@ function annotationWidgetsPluginClass() {
       );
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
 
@@ -352,6 +352,7 @@ function annotationWidgetsPluginClass() {
           enableStyle
       );
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
     };
 
     const _VALUE_DESCRIPTOR = new WidgetActuatorDescription(
@@ -490,7 +491,7 @@ function annotationWidgetsPluginClass() {
 
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (!self.bIsInteractive && !modelsParameters[idInstance].hideImageURL) {
         var inputElt = document.getElementById('image_import_handle' + idWidget);
 
@@ -915,7 +916,7 @@ function annotationWidgetsPluginClass() {
         'width: inherit; height: inherit; text-align:center; align: center;' + displayStyle + enableStyle
       );
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       this.setButtonColorStyle();
 
       if (this.bIsInteractive) {

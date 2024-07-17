@@ -104,7 +104,7 @@ function annotationMarkdownWidgetsPluginClass() {
       );
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       var hasScrollBar = self.hasScrollBar($('#annotationMarkdownDiv' + idWidget));
       if (modelsParameters[idInstance].centerVertically && !hasScrollBar) {
         styleCenterVertically =

@@ -77,9 +77,9 @@ var chalkit = (function () {
 
   function executeDataNodes(dataNodeNames) {
     const currentDN = datanodesManager.getCurrentDataNode();
-    for (let i = 0; i < dataNodeNames.length; i++) {
-      if (datanodesManager.foundDatanode(dataNodeNames[i])) {
-        datanodesManager.datanodesDependency().addSetvarList(dataNodeNames[i], currentDN);
+    for (const element of dataNodeNames) {
+      if (datanodesManager.foundDatanode(element)) {
+        datanodesManager.datanodesDependency().addSetvarList(element, currentDN);
       } else {
         const dN = datanodesManager.getDataNodeByName(currentDN);
         dN.notificationCallback(

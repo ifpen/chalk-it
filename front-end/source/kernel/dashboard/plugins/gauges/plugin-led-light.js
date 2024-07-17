@@ -254,7 +254,7 @@ function ledWidgetsPluginClass() {
       widgetHtml.setAttribute('style', 'height: inherit;' + displayStyle + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (this.bIsInteractive) {
         self.enable();
       } else {

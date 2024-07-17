@@ -117,7 +117,7 @@ function vegaWidgetsPluginClass() {
           displayStyle +
           enableStyle
       );
-
+      this.applyDisplayOnWidget();
       if (modelsParameters[idInstance].inheritWidthAndHeight) {
         if (bInteractive) {
           specif.width = $('#vega' + idWidget + 'c').width();
