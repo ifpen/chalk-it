@@ -1295,6 +1295,12 @@ function flatUiWidgetsPluginClass() {
       self.value.updateCallback(self.value, self.value.getValue());
       e.preventDefault();
     };
+    self.isValueChanged = function(e) {
+      const val = $('#' + nameWidget + idWidget)[0].value;
+      const oldVal = modelsHiddenParams[idInstance].value;
+      const oldValStr = oldVal.toString();
+      return !(val==oldValStr);
+    }
 
     self.enable = function () {
       const $widget = $(`#${nameWidget}${idWidget}`);
@@ -1317,13 +1323,22 @@ function flatUiWidgetsPluginClass() {
             self.updateValue(e);
           }
         });
-        $widget.off('click').on('click', (e) => self.updateValue(e));
+        $widget.off('click').on('click', (e) => { 
+          if (self.isValueChanged()) {
+            self.updateValue(e) 
+          }
+        }
+        );
       }
 
       if (modelsParameters[idInstance].validationButton) {
         const $widgetBtn = $(`#${nameWidget}-valid-btn${idWidget}`);
         $widgetBtn.prop('disabled', false);
-        $widgetBtn.off('click').on('click', (e) => self.updateValue(e));
+        $widgetBtn.off('click').on('click', (e) => { 
+          if (self.isValueChanged()) {
+            self.updateValue(e) 
+          }
+        });
       }
     };
     self.disable = function () {
