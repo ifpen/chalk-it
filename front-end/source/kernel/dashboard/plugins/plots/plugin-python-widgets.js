@@ -16,7 +16,10 @@
 modelsParameters.matplotlib = {};
 
 modelsHiddenParams.matplotlib = {
-  fig: {},
+  fig: {
+    type: 'png',
+    content: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+  },
 };
 
 // Layout (default dimensions)
@@ -41,10 +44,6 @@ function pyodideWidgetsPluginClass() {
   function createDiv(idDivContainer, idDivPythonWidget) {
     const widgetHtml = document.createElement('div');
     widgetHtml.setAttribute('id', idDivPythonWidget);
-    widgetHtml.setAttribute(
-      'style',
-      'text-align:center; height: inherit; width: inherit; background-color: transparent'
-    );
     $('#' + idDivContainer).html(widgetHtml);
   }
 
@@ -64,6 +63,27 @@ function pyodideWidgetsPluginClass() {
 
       createDiv(idDivContainer, idDivMatplotlib);
 
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      let elem = $('#' + idDivMatplotlib);
+
+      elem.attr(
+        'style',
+        'text-align:center; height: inherit; width: inherit; background-color: transparent; margin: auto; object-fit: contain; ' +
+          displayStyle +
+          enableStyle
+      );
+      this.applyDisplayOnWidget();
       let size_x = $('#' + idDivMatplotlib).width() / dpi_x;
       let size_y = $('#' + idDivMatplotlib).height() / dpi_y;
 
@@ -74,9 +94,9 @@ function pyodideWidgetsPluginClass() {
       const img_url = 'data:' + output.type + ';base64,' + output.content;
       img_bin.attr('src', img_url);
 
-      //let gd = document.getElementById(idDivMatplotlib);
-      img_bin[0].style.width = 'inherit'; //parseFloat(gd.parentNode.style.width) + 'vw';
-      img_bin[0].style.height = 'inherit'; //parseFloat(gd.parentNode.style.height) + 'vh';
+      img_bin[0].style.width = 'inherit';
+      img_bin[0].style.height = 'inherit';
+      img_bin[0].style['object-fit'] = 'contain';
     };
 
     const _FIG_DESCRIPTOR = new WidgetActuatorDescription(

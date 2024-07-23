@@ -91,9 +91,26 @@ function doubleSliderWidgetsPluginClass() {
 
     this.render = function () {
       var widgetHtml = document.createElement('div');
-      widgetHtml.setAttribute('style', 'display: table; height: inherit; width: inherit; cursor: inherit');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute(
+        'style',
+        'height: inherit; width: inherit; cursor: inherit;' + displayStyle + enableStyle
+      );
       widgetHtml.setAttribute('id', 'div-for-ng-slider' + idWidget);
+
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var sliderSize = Math.min(
         $('#div-for-ng-slider' + idWidget).width(),
         $('#div-for-ng-slider' + idWidget).height()

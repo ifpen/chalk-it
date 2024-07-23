@@ -77,9 +77,9 @@ var chalkit = (function () {
 
   function executeDataNodes(dataNodeNames) {
     const currentDN = datanodesManager.getCurrentDataNode();
-    for (let i = 0; i < dataNodeNames.length; i++) {
-      if (datanodesManager.foundDatanode(dataNodeNames[i])) {
-        datanodesManager.datanodesDependency().addSetvarList(dataNodeNames[i], currentDN);
+    for (const element of dataNodeNames) {
+      if (datanodesManager.foundDatanode(element)) {
+        datanodesManager.datanodesDependency().addSetvarList(element, currentDN);
       } else {
         const dN = datanodesManager.getDataNodeByName(currentDN);
         dN.notificationCallback(
@@ -127,35 +127,37 @@ var chalkit = (function () {
   }
 
   function enableWidget(widgetName) {
-    //let divElement = document.querySelector('#' + widgetName + 'c');
-    let divElement = $('#' + widgetName + 'c')[0];
-    if (!_.isUndefined(divElement)) {
-      divElement.style.pointerEvents = '';
-      divElement.style.opacity = '';
-    }
+    modelsParameters[widgetName].enableWidget = true;
+    widgetPreview.widget[widgetName].render(true);
   }
 
   function disableWidget(widgetName) {
-    //let divElement = document.querySelector('#' + widgetName + 'c');
-    let divElement = $('#' + widgetName + 'c')[0];
-    if (!_.isUndefined(divElement)) {
-      divElement.style.pointerEvents = 'none';
-      divElement.style.opacity = '0.5';
-    }
+    modelsParameters[widgetName].enableWidget = false;
+    widgetPreview.widget[widgetName].render(true);
   }
 
   function showWidget(widgetName) {
-    let divElement = $('#' + widgetName + 'c');
-    if (!_.isUndefined(divElement)) {
-      divElement.show();
-    }
+    modelsParameters[widgetName].showWidget = true;
+    widgetPreview.widget[widgetName].render(true);
   }
 
   function hideWidget(widgetName) {
-    let divElement = $('#' + widgetName + 'c');
-    if (!_.isUndefined(divElement)) {
-      divElement.hide();
+    modelsParameters[widgetName].showWidget = false;
+    widgetPreview.widget[widgetName].render(true);
+  }
+
+  function notify(dataNodeName, msg, type) {
+    let name = dataNodeName;
+    let dN = datanodesManager.getDataNodeByName(name);
+    if (_.isUndefined(dN)) {
+      name = datanodesManager.getCurrentDataNode();
+      dN = datanodesManager.getDataNodeByName(name);
     }
+    dN.notificationCallback(type, name, msg);
+  }
+
+  function swalert(title, msg, type) {
+    swal(title, msg, type);
   }
 
   scheduler = (function () {
@@ -216,6 +218,20 @@ var chalkit = (function () {
     };
   })();
 
+  notification = (function () {
+    function notify(dataNodeName, msg, type) {
+      chalkit.notify(dataNodeName, msg, type);
+    }
+
+    function swalert(title, msg, type) {
+      chalkit.swalert(title, msg, type);
+    }
+    return {
+      notify,
+      swalert,
+    };
+  })();
+
   return {
     setVariable,
     setVariables,
@@ -229,7 +245,10 @@ var chalkit = (function () {
     disableWidget,
     showWidget,
     hideWidget,
+    notify,
+    swalert,
     scheduler,
     dashboard,
+    notification,
   };
 })();

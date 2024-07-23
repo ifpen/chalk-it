@@ -89,18 +89,18 @@ function flatUiAddressCompletionWidgetsPluginClass() {
 
       if (_.isUndefined(data)) return table;
       if (_.isEmpty(data)) return table;
-      if (_.isUndefined(data.suggestions)) return table;
-      if (_.isEmpty(data.suggestions)) return table;
+      if (_.isUndefined(data.items)) return table;
+      if (_.isEmpty(data.items)) return table;
 
-      for (var i = 0; i < data.suggestions.length; i++) {
+      for (var i = 0; i < data.items.length; i++) {
         table[i] = [];
-        table[i][0] = data.suggestions[i].address.houseNumber;
-        table[i][1] = data.suggestions[i].address.street;
-        table[i][2] = data.suggestions[i].address.postalCode;
-        table[i][3] = data.suggestions[i].address.city;
-        table[i][4] = data.suggestions[i].address.county;
-        table[i][5] = data.suggestions[i].address.state;
-        table[i][6] = data.suggestions[i].address.country;
+        table[i][0] = data.items[i].address.houseNumber;
+        table[i][1] = data.items[i].address.street;
+        table[i][2] = data.items[i].address.postalCode;
+        table[i][3] = data.items[i].address.city;
+        table[i][4] = data.items[i].address.county;
+        table[i][5] = data.items[i].address.state;
+        table[i][6] = data.items[i].address.countryName;
       }
 
       return table;
@@ -227,14 +227,27 @@ function flatUiAddressCompletionWidgetsPluginClass() {
       divContent += '</div>';
 
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
 
       if (this.bIsInteractive) {
-        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; cursor: text;');
+        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; cursor: text;' + displayStyle + enableStyle);
       } else {
-        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;');
+        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
       }
 
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       $('#ac-value' + idWidget)[0].value = modelsHiddenParams[idInstance].value;
 
       if (this.bIsInteractive) {

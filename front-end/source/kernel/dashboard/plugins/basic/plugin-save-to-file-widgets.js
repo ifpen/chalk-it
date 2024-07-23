@@ -91,9 +91,21 @@ function saveToFileButtonWidgetsPluginClass() {
       divContent = '<a ' + styleDef + '" id="button-save-to-file' + idWidget + '">' + '  ' + text + '  ' + '</a>';
 
       widgetHtml.innerHTML = divContent;
-      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       $('#button-save-to-file' + idWidget).on('click', function () {
         self.saveFile();
       });

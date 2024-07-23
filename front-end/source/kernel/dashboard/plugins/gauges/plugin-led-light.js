@@ -217,7 +217,6 @@ function ledWidgetsPluginClass() {
       }
 
       widgetHtml.setAttribute('class', 'led-widget-html');
-      widgetHtml.setAttribute('style', 'height: inherit');
 
       const svgContainer = document.createElement('div');
       svgContainer.setAttribute('class', 'svg-container');
@@ -240,9 +239,22 @@ function ledWidgetsPluginClass() {
       if (modelsParameters[idInstance].displayLabel) {
         this.insertLabel(widgetHtml);
       }
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', 'height: inherit;' + displayStyle + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (this.bIsInteractive) {
         self.enable();
       } else {

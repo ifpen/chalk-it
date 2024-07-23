@@ -64,12 +64,25 @@ function timePickerWidgetsPluginClass() {
 
     this.render = function () {
       var widgetHtml = document.createElement('div');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       widgetHtml.setAttribute(
         'style',
-        'display: table;text-align: left; height: inherit; width: inherit; cursor: inherit'
+        'text-align: left; height: inherit; width: inherit; cursor: inherit;' + displayStyle + enableStyle
       );
       widgetHtml.setAttribute('id', 'div-for-ng-timepicker' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var inputClass = '';
       if (this.bIsInteractive) {
         inputClass = 'clockpicker ';

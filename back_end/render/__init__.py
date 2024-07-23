@@ -10,4 +10,4 @@
 # specific language governing permissions and limitations under the License.
 
 
-from .render import RenderApp
+from .render import app

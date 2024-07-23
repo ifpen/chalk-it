@@ -51,13 +51,25 @@ function calendarD3WidgetPluginClass() {
 
     this.render = function () {
       const widgetHtml = document.createElement('div');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       widgetHtml.setAttribute(
         'style',
-        'display: table;text-align: left; height: inherit; width: inherit; cursor: inherit'
+        'text-align: left; height: inherit; width: inherit; cursor: inherit;' + displayStyle + enableStyle
       );
       widgetHtml.setAttribute('id', 'div-for-calendarD3' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       const bbox = widgetHtml.getBoundingClientRect();
       const width = bbox.width;
       const heightDiv = bbox.height;
@@ -323,6 +335,8 @@ function calendarD3WidgetPluginClass() {
       function drawCalendar() {
         const year = svg.selectAll('g').data(years).join('g');
 
+        const mainTextColor = getComputedStyle(document.documentElement).getPropertyValue('--widget-color');
+
         year
           .attr('class', 'year')
           .attr(
@@ -339,6 +353,7 @@ function calendarD3WidgetPluginClass() {
           .attr('font-weight', 'bold')
           .attr('text-anchor', 'end')
           .text(([key]) => key)
+          .attr('fill', mainTextColor)
           .style('opacity', 1);
 
         year
@@ -352,6 +367,7 @@ function calendarD3WidgetPluginClass() {
           .attr('y', (i) => (countDay(i) + 0.5) * cellSize)
           .attr('dy', '0.31em')
           .text(formatDay)
+          .attr('fill', mainTextColor)
           .style('opacity', 1);
 
         year
@@ -426,6 +442,7 @@ function calendarD3WidgetPluginClass() {
           .style('opacity', 1)
           .attr('x', (d) => timeWeek.count(d3.timeYear(d), timeWeek.ceil(d)) * cellSize + 3)
           .attr('y', -5)
+          .attr('fill', mainTextColor)
           .style('opacity', 1);
       }
       function pathMonth(t) {

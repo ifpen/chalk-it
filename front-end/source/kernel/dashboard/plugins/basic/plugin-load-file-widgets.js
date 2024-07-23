@@ -304,8 +304,21 @@ function loadFileWidgetsPluginClass() {
       }
 
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: flex;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       document.styleSheets[0].addRule(
         '#drag-area' + idWidget,
         ' background-color: ' + modelsParameters[idInstance].backgroundColor

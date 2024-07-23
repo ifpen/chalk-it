@@ -88,6 +88,7 @@ modelsParameters.flatUiProgressBar = {
   labelWidthProportion: '20%',
   progressBarWidthProportion: '60%',
   valueWidthProportion: '20%',
+  progressBarAnimation: false,
   progressBarRangeColor: 'var(--widget-range-color)',
   progressBarSegmentColor: 'var(--widget-segment-color)',
   valueColor: 'var(--widget-color)',
@@ -123,6 +124,9 @@ modelsParameters.flatUiNumericInput = {
   labelFontSize: 0.5,
   labelColor: 'var(--widget-label-color)',
   labelFontFamily: 'var(--widget-font-family)',
+  //min: 0,
+  //max: 100,
+  step: 1,
   labelTextAlign: 'left',
   labelTextPosition: 'left',
   valueWidthProportion: '70%',
@@ -320,17 +324,14 @@ function flatUiWidgetsPluginClass() {
       if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
         fontSize = modelsParameters[idInstance].buttonFontSize;
       }
-      const styleDef =
-        'style="height: inherit; font-size: calc(7px + ' +
-        fontSize * getFontFactor() +
-        'vw + 0.4vh); ' +
-        this.buttonFontFamily() +
-        '" class="btn btn-table-cell btn-lg ' +
-        idInstance +
-        'widgetCustomColor';
+
+      const styleDef = `style="height: inherit; font-size: calc(7px + ${
+        fontSize * getFontFactor()
+      }vw + 0.4vh); ${this.buttonFontFamily()}" class="btn btn-table-cell btn-lg ${idInstance}widgetCustomColor ${
+        !this.bIsInteractive ? ' /*disabled*/' : ''
+      }"`;
 
       this.setButtonColorStyle();
-      let divContent = '';
 
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
@@ -342,38 +343,36 @@ function flatUiWidgetsPluginClass() {
         content = icon + ' ' + text;
       }
 
+      let divContent = '';
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
-          const fileInput =
-            '<input onclick="displaySpinnerOnInputFileButton(\'' +
-            idWidget +
-            '\')" type="file" style="display : none;" id="button' +
-            idWidget +
-            '_select_file"></input>';
-          divContent += '<a ' + styleDef + '" id="button' + idWidget + '">' + content + fileInput + '</a>';
+          const fileInput = `<input onclick="displayLoadSpinner('${idWidget}')" type="file" style="display: none;" id="button${idWidget}_select_file"></input>`;
+          divContent += `<a ${styleDef} id="button${idWidget}">${content}${fileInput}</a>`;
         } else {
-          divContent +=
-            '<a onclick="updateDataNodeFromWidgetwithspinButton( \'' +
-            idInstance +
-            "', '" +
-            idWidget +
-            '\')" ' +
-            styleDef +
-            '" id="button' +
-            idWidget +
-            '">' +
-            content +
-            '</a>';
+          divContent += `<a onclick="updateWidgetDataNode('${idInstance}', '${idWidget}')" ${styleDef} id="button${idWidget}">${content}</a>`;
         }
         self.enable();
       } else {
-        divContent += '<a ' + styleDef + ' /*disabled*/" id="button' + idWidget + '">' + content + '</a>';
+        divContent += `<a ${styleDef} id="button${idWidget}">${content}</a>`;
         self.disable();
       }
-      widgetHtml.innerHTML = divContent;
-      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;');
-      $('#' + idDivContainer).html(widgetHtml);
 
+      widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
+      $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
         self.readFileEvt();
       }
@@ -608,7 +607,22 @@ function flatUiWidgetsPluginClass() {
         widgetHtml.appendChild(widgetUnit);
       }
 
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
+
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var $slider = $('#slider' + idWidget);
       if ($slider.length > 0) {
         $slider
@@ -820,7 +834,22 @@ function flatUiWidgetsPluginClass() {
         this.insertLabel(widgetHtml);
       }
 
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
+
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var $verticalSlider = $('#vertical-slider' + idWidget);
       if ($verticalSlider.length > 0) {
         $verticalSlider
@@ -1059,6 +1088,7 @@ function flatUiWidgetsPluginClass() {
         }
 
         progressBarDiv.css('width', percentWidth + '%');
+        if (!modelsParameters[idInstance].progressBarAnimation) progressBarDiv.css('transition', 'none');
       }
     };
 
@@ -1108,7 +1138,22 @@ function flatUiWidgetsPluginClass() {
       if (modelsParameters[idInstance].displayValue) {
         this.insertValue(widgetHtml);
       }
+
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       $('#progress-bar' + idWidget).addClass('progress-bar-div-div');
 
       document.styleSheets[0].addRule('#progress-bar' + idWidget, this.progressBarSegmentColor());
@@ -1250,6 +1295,12 @@ function flatUiWidgetsPluginClass() {
       self.value.updateCallback(self.value, self.value.getValue());
       e.preventDefault();
     };
+    self.isValueChanged = function(e) {
+      const val = $('#' + nameWidget + idWidget)[0].value;
+      const oldVal = modelsHiddenParams[idInstance].value;
+      const oldValStr = oldVal.toString();
+      return !(val==oldValStr);
+    }
 
     self.enable = function () {
       const $widget = $(`#${nameWidget}${idWidget}`);
@@ -1266,10 +1317,28 @@ function flatUiWidgetsPluginClass() {
         $widget.on('focusout', (e) => self.updateValue(e));
       }
 
+      if (!modelsParameters[idInstance].validationButton) {
+        $widget.off('keyup').on('keyup', function (e) {
+          if (e.which === 38 || e.which === 40) {
+            self.updateValue(e);
+          }
+        });
+        $widget.off('click').on('click', (e) => { 
+          if (self.isValueChanged()) {
+            self.updateValue(e) 
+          }
+        }
+        );
+      }
+
       if (modelsParameters[idInstance].validationButton) {
         const $widgetBtn = $(`#${nameWidget}-valid-btn${idWidget}`);
         $widgetBtn.prop('disabled', false);
-        $widgetBtn.off('click').on('click', (e) => self.updateValue(e));
+        $widgetBtn.off('click').on('click', (e) => { 
+          if (self.isValueChanged()) {
+            self.updateValue(e) 
+          }
+        });
       }
     };
     self.disable = function () {
@@ -1409,6 +1478,15 @@ function flatUiWidgetsPluginClass() {
         idWidget +
         '" type=' +
         typeInput +
+        // ' min="' +
+        //  modelsParameters[idInstance].min +
+        //  '" ' +
+        // ' max="' +
+        // modelsParameters[idInstance].max +
+        // '" ' +
+        ' step="' +
+        modelsParameters[idInstance].step +
+        '" ' +
         ' placeholder="" class="value-input form-control" ' +
         'style="height: ' +
         valueHeightPx +
@@ -1465,13 +1543,26 @@ function flatUiWidgetsPluginClass() {
         );
       }
 
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       if (this.bIsInteractive) {
-        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; cursor: auto;');
+        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px; cursor: auto;' + displayStyle + enableStyle);
       } else {
-        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;');
+        widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
       }
 
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       $('#' + nameWidget + idWidget)[0].value = modelsHiddenParams[idInstance].value;
 
       if (this.bIsInteractive) {

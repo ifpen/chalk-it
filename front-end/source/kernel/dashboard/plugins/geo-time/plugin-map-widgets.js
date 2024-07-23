@@ -1364,13 +1364,30 @@ function mapWidgetsPluginClass() {
       }
     };
 
-    this.render = function () {
+    this.render = function (fromApi) {
       var widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('id', 'openStreetMap' + idWidget);
-      widgetHtml.setAttribute('style', 'width: inherit; height: inherit');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: inherit; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      elem = $('#' + idDivContainer)[0];
+      elem.setAttribute('style', 'width: inherit; height: inherit;' + displayStyle + enableStyle);
+      widgetHtml.setAttribute('style', 'width: inherit; height: inherit;');
+      if (fromApi) {
+        return;
+      }
       document.addEventListener('play-tab-loaded', self.goToFirstRadioButton);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       self.map = L.map('openStreetMap' + idWidget, { preferCanvas: true }).setView(
         [modelsParameters[idInstance].defaultCenter.latitude, modelsParameters[idInstance].defaultCenter.longitude],
         modelsParameters[idInstance].defaultCenter.zoom

@@ -168,6 +168,18 @@ function annotationWidgetsPluginClass() {
       widgetHtml.setAttribute('class', 'btn');
       widgetHtml.setAttribute('id', 'annotationiconInfo' + idWidget);
       //widgetHtml.setAttribute("title", modelsParameters[idInstance].text);
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       widgetHtml.setAttribute(
         'style',
         'width: ' +
@@ -180,10 +192,13 @@ function annotationWidgetsPluginClass() {
           lineHeight +
           'px;padding-top: ' +
           divMarginTop +
-          'px; '
+          'px; ' +
+          displayStyle +
+          enableStyle
       );
-      $('#' + idDivContainer).html(widgetHtml);
 
+      $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
 
@@ -287,7 +302,7 @@ function annotationWidgetsPluginClass() {
       let textItalic = 'font-style: normal;';
       if (modelsParameters[idInstance].textBold) textBold = 'font-weight: bold;';
       if (modelsParameters[idInstance].textUnderline) textUnderline = 'text-decoration: underline;';
-      if (modelsParameters[idInstance].textBold) textItalic = 'font-style: italic;';
+      if (modelsParameters[idInstance].textItalic) textItalic = 'font-style: italic;';
 
       var divContent =
         '<div id="annotationLabelTextArea' +
@@ -316,11 +331,28 @@ function annotationWidgetsPluginClass() {
         '</textarea>';
 
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
       widgetHtml.setAttribute(
         'style',
-        'width: inherit; height: inherit; display: ' + displayDiv1 + '; justify-content: center;'
+        'width: inherit; height: inherit; display: ' +
+          displayDiv1 +
+          '; justify-content: center;' +
+          displayStyle +
+          enableStyle
       );
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
     };
 
     const _VALUE_DESCRIPTOR = new WidgetActuatorDescription(
@@ -387,7 +419,23 @@ function annotationWidgetsPluginClass() {
 
     this.render = function () {
       var widgetHtml = document.createElement('div');
-      widgetHtml.setAttribute('style', 'width: inherit; height: inherit; margin: auto; top: 0; left: 0'); // MBG 09/10/2019 : margin auto for centering
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+
+      widgetHtml.setAttribute(
+        'style',
+        'width: inherit; height: inherit; margin: auto; top: 0; left: 0;' + displayStyle + enableStyle
+      ); // MBG 09/10/2019 : margin auto for centering
       widgetHtml.setAttribute('id', 'imgContainer' + idWidget);
       var divContent = '';
       if (modelsHiddenParams[idInstance].fileContentBase64 != '') {
@@ -405,8 +453,6 @@ function annotationWidgetsPluginClass() {
         divContainer.height(inheritWcHeightFromIdInst(idInstance));
         divContainer.css('left', 0 + 'px');
         divContainer.css('top', 0 + 'px');
-
-        widgetHtml.setAttribute('style', 'width: inherit; height: inherit; margin: auto;');
 
         if (!self.bIsInteractive) {
           divContent = divContent + ' opacity: 0.75';
@@ -430,7 +476,7 @@ function annotationWidgetsPluginClass() {
           divContent +
           '<div id="image_drop_zone_new' +
           idWidget +
-          '" style="; cursor: pointer; display: table-cell; vertical-align: middle"><a><center id="image_import_handle' +
+          '" style="; cursor: pointer; display: table-cell; vertical-align: middle"><a style="color: var(--widget-label-color)"><center id="image_import_handle' +
           idWidget +
           '">Click here to import your image file</center></a></div>';
 
@@ -445,7 +491,7 @@ function annotationWidgetsPluginClass() {
 
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (!self.bIsInteractive && !modelsParameters[idInstance].hideImageURL) {
         var inputElt = document.getElementById('image_import_handle' + idWidget);
 
@@ -853,9 +899,24 @@ function annotationWidgetsPluginClass() {
       divContent = divContent + '</div></div></div></div>';
 
       widgetHtml.innerHTML = divContent;
-      widgetHtml.setAttribute('style', 'width: inherit; height: inherit; text-align:center; align: center');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute(
+        'style',
+        'width: inherit; height: inherit; text-align:center; align: center;' + displayStyle + enableStyle
+      );
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       this.setButtonColorStyle();
 
       if (this.bIsInteractive) {

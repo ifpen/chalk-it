@@ -73,10 +73,6 @@ function vegaWidgetsPluginClass() {
       idDivVega = idDivVega + 'c';
     }
     widgetHtml.setAttribute('id', idDivVega);
-    widgetHtml.setAttribute(
-      'style',
-      'text-align:center; height: inherit; width: inherit; background-color: transparent'
-    );
     $('#' + idDivContainer).html(widgetHtml);
   }
 
@@ -99,6 +95,29 @@ function vegaWidgetsPluginClass() {
 
       createVegaDiv(idDivContainer, idWidget, bInteractive);
 
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      let elem = $('#vega' + idWidget)[0];
+      if (bInteractive) {
+        elem = $('#vega' + idWidget + 'c')[0];
+      }
+      elem.setAttribute(
+        'style',
+        'text-align:center; height: inherit; width: inherit; background-color: transparent;' +
+          displayStyle +
+          enableStyle
+      );
+      this.applyDisplayOnWidget();
       if (modelsParameters[idInstance].inheritWidthAndHeight) {
         if (bInteractive) {
           specif.width = $('#vega' + idWidget + 'c').width();

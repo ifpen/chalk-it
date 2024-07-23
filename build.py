@@ -17,8 +17,22 @@ import shutil
 import os
 from datetime import datetime
 import json
+import argparse
+
+# Create the parser
+parser = argparse.ArgumentParser(description="Process the build type.")
+
+# Add the build_type optional argument
+parser.add_argument("--buildtype", choices=['pip', 'hosted'], default='pip',
+                    help="Specify the type of build: 'pip' or 'hosted'.")
+
+# Parse the arguments
+args = parser.parse_args()
 
 BUILD_FRONT_END = True
+BUILD_TYPE = args.buildtype
+
+print ("building for target: ", BUILD_TYPE) 
 
 # Set source and destination directories
 src_dir = 'assets/install'
@@ -57,7 +71,46 @@ def get_version():
         return c
 
 front_end_build_dir_name = 'chalkit_' + a + '.' + b + '.' + str(get_version())
+suffix_version = a + '.' + b
 
+if (BUILD_TYPE == "pip"):
+
+    # Define the path to the front-end directory
+    directory = 'front-end'
+    input_file_path = os.path.join(directory, '.env.prod.pip')
+    output_file_path = os.path.join(directory, '.env.prod')
+
+    # Version suffix to add
+    version_suffix = suffix_version + '/' # You can change this to any version you need
+
+    # Read the input file
+    with open(input_file_path, 'r') as file:
+        lines = file.readlines()
+
+    # Modify the content
+    modified_lines = []
+    for line in lines:
+        if line.startswith('URL_BASE_FOR_EXPORT'):
+            # Split the line at '=' and strip spaces, then add the version suffix
+            key, value = line.strip().split('=', 1)
+            modified_line = f"{key}={value.strip()}{version_suffix}\n"
+            modified_lines.append(modified_line)
+        else:
+            modified_lines.append(line)
+
+    # Write the modified content to the new file
+    with open(output_file_path, 'w') as file:
+        file.writelines(modified_lines)
+
+    print(f"File saved as: {output_file_path}")
+    
+elif (BUILD_TYPE == "hosted"):
+    # Define the path to the front-end directory
+    directory = 'front-end'
+    input_file_path = os.path.join(directory, '.env.prod.hosted')
+    output_file_path = os.path.join(directory, '.env.prod')
+    
+    shutil.copy(input_file_path, output_file_path)
 
 # Get the list of all files and directories in the "build" directory
 file_list = os.listdir(dst_dir)
@@ -95,104 +148,109 @@ if (BUILD_FRONT_END):
     # Run npm build command in front-end directory
     run_npm('npm', 'run', 'build')
 
-# Copy build result to ./build/chlkt directory
-build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
-shutil.copytree(build_dir, './build/chlkt')
+if (BUILD_TYPE=="pip"):
 
-# Copy .whl file to ./build/chlkt directory
-# Specify the source directory and pattern
-source_directory = './front-end/'
-pattern = 'chalkit_python_api-*.whl'
+    # Copy build result to ./build/chlkt directory
+    build_dir = os.path.join('./front-end/build', front_end_build_dir_name)
+    shutil.copytree(build_dir, './build/chlkt')
 
-# Use glob to find the matching file
-matching_files = glob.glob(source_directory + pattern)
+    # Copy .whl file to ./build/chlkt directory
+    # Specify the source directory and pattern
+    source_directory = './front-end/'
+    pattern = 'chalkit_python_api-*.whl'
 
-if matching_files:
-    # Assign the path of the first matching file
-    source_path = matching_files[0]
-    destination_directory = './build/chlkt/'
+    # Use glob to find the matching file
+    matching_files = glob.glob(source_directory + pattern)
 
-    shutil.copy(source_path, destination_directory)
-else:
-    print("chalkit_python_api-*.whl file not found.")
+    if matching_files:
+        # Assign the path of the first matching file
+        source_path = matching_files[0]
+        destination_directory = './build/chlkt/'
 
-# Copy main.py and associated .py files to ./build/chlkt directory
-cwd = os.getcwd()
-build_path = './build/chlkt/'
-file_paths = [
-     './main.py', 
-     './assets/misc/__init__.py'
-    ]
+        shutil.copy(source_path, destination_directory)
+    else:
+        print("chalkit_python_api-*.whl file not found.")
 
-for file_path in file_paths:
-    shutil.copy(file_path, build_path)
+    # Copy main.py and associated .py files to ./build/chlkt directory
+    cwd = os.getcwd()
+    build_path = './build/chlkt/'
+    file_paths = [
+        './main.py', 
+        './assets/misc/__init__.py'
+        ]
 
-# Copy app server
-shutil.copytree('./back_end/app/', './build/chlkt/app/')
+    for file_path in file_paths:
+        shutil.copy(file_path, build_path)
 
-# for gunicorn rendering of pages
-shutil.copytree('./back_end/render/', './build/chlkt/render/')
+    # Copy app server
+    shutil.copytree('./back_end/app/', './build/chlkt/app/')
 
-# copy backend runner
-shutil.copytree('./back_end/middleware/src/chalkit_python_api/', './build/chlkt/chalkit_python_api/')
+    # for gunicorn rendering of pages
+    shutil.copytree('./back_end/render/', './build/chlkt/render/')
 
-# Copy templates
-shutil.copytree('./documentation/Templates/', './build/chlkt/Templates/')
+    # for gunicorn rendering of pages
+    shutil.copytree('./back_end/common/', './build/chlkt/common/')
 
-# Copy all files from source directory to destination directory
-for filename in os.listdir(src_dir):
-    src_path = os.path.join(src_dir, filename)
-    dst_path = os.path.join(dst_dir, filename)
-    shutil.copy(src_path, dst_path)
+    # copy backend runner
+    shutil.copytree('./back_end/middleware/src/chalkit_python_api/', './build/chlkt/chalkit_python_api/')
 
-# This function checks if various Python commands exist in the system PATH.
-def get_python_command():
-    # Need to keep this order
-    commands_to_check = ['python', 'python3', 'python2', 'py']
+    # Copy templates
+    shutil.copytree('./documentation/Templates/', './build/chlkt/Templates/')
 
-    for cmd in commands_to_check:
-        if shutil.which(cmd):
-            # Returns the available command
-            return cmd
+    # Copy all files from source directory to destination directory
+    for filename in os.listdir(src_dir):
+        src_path = os.path.join(src_dir, filename)
+        dst_path = os.path.join(dst_dir, filename)
+        shutil.copy(src_path, dst_path)
 
-    # If no Python command was found
-    raise SystemExit("Python not found. Please install Python.")
+    # This function checks if various Python commands exist in the system PATH.
+    def get_python_command():
+        # Need to keep this order
+        commands_to_check = ['python', 'python3', 'python2', 'py']
 
-def update_version_in_setup_file(file_path, new_version):
-    # Define the line prefix to search for
-    line_prefix = 'VERSION = "'
-    line_suffix = '" # Do not touch. Will be overwritten by version.json'
-    
-    # Initialize an empty list to hold the updated lines
-    updated_lines = []
-    
-    # Open the file and read the lines
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
+        for cmd in commands_to_check:
+            if shutil.which(cmd):
+                # Returns the available command
+                return cmd
+
+        # If no Python command was found
+        raise SystemExit("Python not found. Please install Python.")
+
+    def update_version_in_setup_file(file_path, new_version):
+        # Define the line prefix to search for
+        line_prefix = 'VERSION = "'
+        line_suffix = '" # Do not touch. Will be overwritten by version.json'
         
-        # Loop through each line in the file
-        for line in lines:
-            # Check if the line contains the version definition
-            if line.strip().startswith(line_prefix) and line.strip().endswith(line_suffix):
-                # Replace the version number in the line
-                updated_line = f'{line_prefix}{new_version}{line_suffix}\n'
-                updated_lines.append(updated_line)
-            else:
-                # If not the version line, keep the line as is
-                updated_lines.append(line)
-    
-    # Write the updated lines back to the file
-    with open(file_path, 'w') as file:
-        file.writelines(updated_lines)
+        # Initialize an empty list to hold the updated lines
+        updated_lines = []
+        
+        # Open the file and read the lines
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+            
+            # Loop through each line in the file
+            for line in lines:
+                # Check if the line contains the version definition
+                if line.strip().startswith(line_prefix) and line.strip().endswith(line_suffix):
+                    # Replace the version number in the line
+                    updated_line = f'{line_prefix}{new_version}{line_suffix}\n'
+                    updated_lines.append(updated_line)
+                else:
+                    # If not the version line, keep the line as is
+                    updated_lines.append(line)
+        
+        # Write the updated lines back to the file
+        with open(file_path, 'w') as file:
+            file.writelines(updated_lines)
 
-# Example usage:
-file_path = './build/setup.py'  # Path to your setup.py file
-new_version = VERSION  # New version number to update to
-update_version_in_setup_file(file_path, new_version)
+    # Example usage:
+    file_path = './build/setup.py'  # Path to your setup.py file
+    new_version = VERSION  # New version number to update to
+    update_version_in_setup_file(file_path, new_version)
 
 
-# Get available python command
-python_cmd = get_python_command()
+    # Get available python command
+    python_cmd = get_python_command()
 
-# Run setup.py command from ./assets directory
-subprocess.run([python_cmd, '../build/setup.py', 'sdist'], cwd='./build/')
+    # Run setup.py command from ./assets directory
+    subprocess.run([python_cmd, '../build/setup.py', 'sdist'], cwd='./build/')

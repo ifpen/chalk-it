@@ -39,7 +39,7 @@ const RuntimeDashboard = (function () {
         break;
       case 'adjustToFullWidth':
         $('#dashboard-zone')[0].style.width = '100%';
-        $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx + 'px';
+        $('#dashboard-zone')[0].style.height = scalingSrc.scrollHeightPx + navMenuHeightPx + 'px';
         scalingSrc.scalingMethod = 'scaleTwSpWS';
         break;
       case 'ajustToTargetWindow':
@@ -89,10 +89,23 @@ const RuntimeDashboard = (function () {
   }
 
   function loadDashboard(jsonContent, exportOptions) {
-    let decodedData = JSON.stringify(jsonContent.data); // fix bug in properly handling characters for JSON parsing
-    decodedData = decodedData.replace(/[\u007F-\uFFFF]/g, function (chr) {
-      return '\\u' + ('0000' + chr.charCodeAt(0).toString(16)).substr(-4);
-    });
+    function decodeHtmlEntities(str) {
+      var txt = document.createElement('textarea');
+      txt.innerHTML = str;
+      return txt.value;
+    }
+    function escapeSpecialCharacters(jsonString) {
+      return jsonString.replace(/[\u007F-\uFFFF]/g, function (chr) {
+        return '\\u' + ('0000' + chr.charCodeAt(0).toString(16)).substr(-4);
+      });
+    }
+
+    let encodedData = JSON.stringify(jsonContent.data);
+    // Escape special characters in the JSON string
+    encodedData = escapeSpecialCharacters(encodedData);
+    let parsedData = JSON.parse(encodedData);
+    let decodedData = decodeHtmlEntities(JSON.stringify(parsedData));
+
     let data_json = '';
     try {
       data_json = JSON.parse(decodedData);
@@ -100,6 +113,7 @@ const RuntimeDashboard = (function () {
       swal('JSON Parse error', err.message, 'error');
       return;
     }
+
     pyodideLib.deserialize(jsonContent);
     datanodesManager.load(data_json, true); //ABK
     initContainers(jsonContent, exportOptions);
