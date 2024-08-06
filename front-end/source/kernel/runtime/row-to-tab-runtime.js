@@ -6,6 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR                                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
 
 class RowToTabRuntime {
   #grid;

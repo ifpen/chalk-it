@@ -6,6 +6,7 @@ import template from './discover.html';
 import { xDashConfig } from 'config.js';
 import _ from 'lodash';
 import { fileManager } from 'kernel/general/backend/file-management';
+import { widgetToolboxClass } from 'kernel/dashboard/toolbox-mgr';
 import { navHelper } from 'angular/modules/navigation-helper';
 import { startIntroProject } from 'angular/modules/guided-tour';
 

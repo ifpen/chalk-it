@@ -1,5 +1,5 @@
 ﻿import _ from 'lodash';
-import { urlPython } from 'config.js';
+import { urlPython, xDashConfig } from 'config.js';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
@@ -26,11 +26,11 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
     }
 
     var DEFAULT_BACKEND = {
-      name: "Pyodide",
-      id: "__PYODIDE__",
+      name: 'Pyodide',
+      id: '__PYODIDE__',
     };
 
-    if (xDashConfig["disableLocalServer"]=="false") {
+    if (xDashConfig['disableLocalServer'] == 'false') {
       var DEFAULT_BACKEND = {
         name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME,
         id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID,

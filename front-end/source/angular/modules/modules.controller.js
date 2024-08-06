@@ -156,8 +156,6 @@ angular.module('modules').controller('ModulesController', [
     $rootScope.loadedTemplate = function () {
       setTimeout(() => {
         initXdashEditor();
-
-        // End fix by Ghiles
         $rootScope.availableTags = $rootScope.listAvailablesTags;
         datanodesManager.initialize(false);
         $rootScope.currentProject = runtimeSingletons.xdash.initMeta();

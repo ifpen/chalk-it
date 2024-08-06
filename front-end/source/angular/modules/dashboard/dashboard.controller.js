@@ -6,9 +6,7 @@
 // ├───────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                 │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
-
 import { xDashConfig } from 'config.js';
-
 import { dashState, dashboardModule } from 'angular/modules/dashboard/dashboard';
 
 dashboardModule
