@@ -68,7 +68,7 @@ export const widgetsEditorToolboxDefinition = {
       'datepickerSimple',
       'dateRangePicker',
       'calendarD3',
-      // 'map3D',
+      'map3D',
       'timepickerSimple',
     ],
   },

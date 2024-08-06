@@ -76,9 +76,11 @@
     var(--danger-color-text)
   );
 
-  padding: 1rem;
-  border: 1px solid var(--primary-color-text);
-  border-bottom: none;
+  & {
+    padding: 1rem;
+    border: 1px solid var(--primary-color-text);
+    border-bottom: none;
+  }
 }
 
 @mixin tab-name-styles($color: var(--text-color), $cursor: default) {
