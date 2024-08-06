@@ -1,3 +1,14 @@
+import angular from 'angular';
+
+import templateBasic from './discover-basic.html';
+import template from './discover.html';
+
+import { xDashConfig } from 'config.js';
+import _ from 'lodash';
+import { fileManager } from 'kernel/general/backend/file-management';
+import { navHelper } from 'angular/modules/navigation-helper';
+import { startIntroProject } from 'angular/modules/guided-tour';
+
 angular
   .module('modules.discover')
   .config([
@@ -8,11 +19,7 @@ angular
         userAuthenticated: false,
         url: '/',
         resolve: {},
-        templateUrl: function () {
-          return xDashConfig.xDashBasicVersion == 'true'
-            ? 'source/angular/modules/discover/discover-basic.html'
-            : 'source/angular/modules/discover/discover.html';
-        },
+        template: xDashConfig.xDashBasicVersion == 'true' ? templateBasic : template,
         controller: 'DiscoverController',
         params: {
           action: null,

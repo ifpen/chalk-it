@@ -7,6 +7,15 @@
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
+import { xDashConfig } from 'config.js';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'lodash';
+import template from 'angular/modules/cards/cards.html';
+import PNotify from 'pnotify';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { htmlExport } from 'kernel/general/export/html-export';
+
 angular
   .module('modules.cards')
   .config([
@@ -16,7 +25,7 @@ angular
         userNotAuthenticated: true,
         userAuthenticated: false,
         url: '/',
-        templateUrl: 'source/angular/modules/cards/cards.html',
+        template,
         controller: 'CardsController',
         params: {
           action: null,
@@ -134,8 +143,8 @@ angular
         $scope.projectVue = 'gallery';
       }
 
-      /*---------- getConfigHelp ----------------*/
-      (async () => {
+      /*---------- _getConfigHelp ----------------*/
+      async function _getConfigHelp() {
         const settings = await ApisFactory.getSettings();
         if (!settings.help) {
           $scope.helpDisplay.checkboxModel = false;
@@ -143,7 +152,9 @@ angular
           $scope.helpDisplay.checkboxModel = settings.help.displayHelp;
           $scope.helpDisplay.isOpen = !$scope.helpDisplay.checkboxModel;
         }
-      })();
+      }
+
+      _getConfigHelp();
 
       /*---------- saveConfigHelp ----------------*/
       $scope.saveConfigHelp = async function () {
@@ -175,7 +186,7 @@ angular
           //when no project exist
           for (let i = 0; i < $scope.allFilesWithNoGrp[0].FileList.length; i++) {
             //group only for [0] ==> project
-            grpName = $scope.allFilesFiltred[0].FileList[i].GroupName;
+            const grpName = $scope.allFilesFiltred[0].FileList[i].GroupName;
             if (grpName !== '' && !_.isUndefined(grpName) && !_.isNull(grpName)) {
               indexes.push(i);
               if (_.isUndefined($scope.grpFiles[grpName])) {
@@ -418,7 +429,7 @@ angular
         }
 
         if ($scope.fileType === 'xprjson') {
-          var FileMngrInst = new FileMngrFct();
+          const FileMngrInst = new FileMngrFct();
           FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + $scope.fileType, function (msg1, msg2, type) {
             //AEF: fix bug add params and test on it
             if (type === 'success') {
@@ -449,7 +460,7 @@ angular
             }
           });
         } else if ($scope.fileType === 'html') {
-          var FileMngrInst = new FileMngrFct();
+          const FileMngrInst = new FileMngrFct();
           FileMngrInst.GetPage(projectName + '.' + $scope.fileType, function (data) {
             let notice;
             if (data.Success) {
@@ -506,7 +517,7 @@ angular
       $scope.showPageLink = function (pageName) {
         $scope.showShareLink = true;
         $scope.pageName = pageName;
-        var FileMngrInst = new FileMngrFct();
+        const FileMngrInst = new FileMngrFct();
         FileMngrInst.GetThumbnailURL(
           'page',
           pageName + '.html',
@@ -556,7 +567,7 @@ angular
         $rootScope.currentInfoProject = angular.copy($rootScope.currentProject);
 
         let bFound = false;
-        for (var pro = 0; pro < $scope.allFilesWithNoGrp[0].FileList.length; pro++) {
+        for (let pro = 0; pro < $scope.allFilesWithNoGrp[0].FileList.length; pro++) {
           if (projectName === $scope.allFilesWithNoGrp[0].FileList[pro].Name) {
             $rootScope.currentInfoProject.name = $scope.allFilesWithNoGrp[0].FileList[pro].Name;
             $rootScope.currentInfoProject.description = $scope.allFilesWithNoGrp[0].FileList[pro].Description;
@@ -568,8 +579,8 @@ angular
         }
         if (!bFound) {
           //search in groupss
-          for (var grpName in $scope.grpFiles) {
-            for (var pro = 0; pro < $scope.grpFiles[grpName].length; pro++) {
+          for (const grpName in $scope.grpFiles) {
+            for (let pro = 0; pro < $scope.grpFiles[grpName].length; pro++) {
               if (projectName === $scope.grpFiles[grpName][pro].Name) {
                 $rootScope.currentInfoProject.name = $scope.grpFiles[grpName][pro].Name;
                 $rootScope.currentInfoProject.description = $scope.grpFiles[grpName][pro].Description;

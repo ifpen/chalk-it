@@ -7,20 +7,35 @@
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI, Mongi BEN GAID  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var angularModule = angular.module('xCLOUD', [
+import 'angular-ui-router';
+import 'angularjs-gauge';
+import 'angularjs-slider';
+import 'angularjs-datepicker';
+
+import { urlBase } from 'config.js';
+
+import { pythonImagesModule } from 'angular/modules/python/python-images.module';
+import { initXdashRuntime } from 'kernel/runtime-singletons';
+import { onAngularReady } from 'kernel/runtime/xdash-runtime-main';
+import { dashState } from 'angular/modules/dashboard/dashboard';
+
+// TODO contant
+dashState.modeActive = 'play-dashboard';
+
+export const angularModule = angular.module('xCLOUD', [
   'angularjs-gauge',
   'rzSlider',
   '720kb.datepicker',
-  'ui.router.state',
-  'modules.python-images',
+  'ui.router.state', // TODO only needed for pythonImagesModule
+  pythonImagesModule.name,
 ]);
 
 angularModule.run([
   '$rootScope',
   function ($rootScope) {
-    $rootScope.urlBase = urlBase;
-    $rootScope.navBarNotification = navBarNotification === 'true'; //AEF: visible if show notifications is checked
-    $rootScope.showNavBar = showNavBar === 'true'; // MBG 03/05/2021 : for rowToPage and rowToTab modes
+    $rootScope.urlBase = urlBase; // TODO
+    $rootScope.navBarNotification = window.navBarNotification === 'true'; //AEF: visible if show notifications is checked // TODO
+    $rootScope.showNavBar = window.showNavBar === 'true'; // MBG 03/05/2021 : for rowToPage and rowToTab modes // TODO
     $rootScope.loadingBarStart = function (fn) {};
     $rootScope.loadingBarStop = function (fn) {};
     $rootScope.notificationFilterDataValue = '';
@@ -47,3 +62,12 @@ angularModule.run([
     };
   },
 ]);
+
+class DashboardController {
+  constructor() {
+    initXdashRuntime();
+    onAngularReady();
+  }
+}
+
+angularModule.controller('DashboardController', [DashboardController]);

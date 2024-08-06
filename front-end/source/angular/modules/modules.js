@@ -7,16 +7,29 @@
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular
-  .module('modules', [
-    'modules.cards',
-    'modules.python-images',
-    'modules.headerbar',
-    'modules.editor',
-    'modules.sidebar',
+import angular from 'angular';
+import { pythonImagesModule } from './python/python-images.module.js';
+import { discoverModule } from './discover/discover.module.js';
+import { headerbarModule } from './headerbar/headerbar.module.js';
+import { cardsModule } from './cards/cards.module.js';
+import { sidebarModule } from './sidebar/sidebar.module.js';
+import { trainingModule } from './training/training.module.js';
+import { editorModule } from './editor/editor.module.js';
+import { modalsModule } from './modals/modals.module.js';
 
-    'modules.discover',
-    'modules.training',
+import defaultLayoutTemplate from '../templates/layout/default.html';
+import footerBarTemplate from '../templates/partials/footerBar.html';
+
+export const modulesModule = angular
+  .module('modules', [
+    cardsModule.name,
+    pythonImagesModule.name,
+    headerbarModule.name,
+    editorModule.name,
+    modalsModule.name,
+    sidebarModule.name,
+    discoverModule.name,
+    trainingModule.name,
   ])
   .config([
     '$stateProvider',
@@ -44,7 +57,7 @@ angular
           ],
         },
         url: '?project',
-        templateUrl: 'source/angular/templates/layout/default.html',
+        template: defaultLayoutTemplate,
         controller: 'ModulesController',
       });
     },
@@ -90,3 +103,9 @@ angular
       },
     };
   });
+
+modulesModule.directive('footerBarTemplate', function () {
+  return {
+    template: footerBarTemplate,
+  };
+});

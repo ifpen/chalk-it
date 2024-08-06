@@ -7,7 +7,7 @@
 // │ Original authors(s): Abir EL FEKI                                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules.headerbar', []).config([
+export const headerbarModule = angular.module('modules.headerbar', []).config([
   '$stateProvider',
   function ($stateProvider) {
     $stateProvider.state('modules.headerbar', {
@@ -15,7 +15,7 @@ angular.module('modules.headerbar', []).config([
       userAuthenticated: false,
       abstract: true,
       url: '/headerbar',
-      templateUrl: '',
+      template: '',
     });
   },
 ]);

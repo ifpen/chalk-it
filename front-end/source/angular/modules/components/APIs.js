@@ -1,27 +1,9 @@
-let getAuthToken = () => undefined;
-if (xDashConfig.xDashBasicVersion != 'true') {
-  getAuthToken = () => LoginMngr.GetSavedJwt();
-}
+import { xServConfig } from 'config.js';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { xcloudModule } from 'kernel/base/xdash-load';
+import { urlxDashNodeServer } from 'config.js';
 
-function setXHRAuthorizationHeader(xhr) {
-  // Add authorization header
-  const token = getAuthToken();
-  if (token) {
-    xhr.setRequestHeader('Authorization', token);
-  }
-}
-
-function getAuthorizationHeaders() {
-  // Add authorization header
-  const token = getAuthToken();
-  if (token) {
-    return { Authorization: token };
-  } else {
-    return {};
-  }
-}
-
-angular.module('xCLOUD').service('ApisFactory', [
+xcloudModule.service('ApisFactory', [
   '$http',
   '$rootScope',
   function ($http, $rootScope) {
@@ -82,6 +64,7 @@ angular.module('xCLOUD').service('ApisFactory', [
         return dataToReturn;
       } catch (error) {
         console.log('getSettings error' + error);
+        console.error(error);
         return {
           error: true,
           status: 401,

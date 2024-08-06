@@ -7,6 +7,14 @@
 // │ Original authors(s): Ameur HAMDOUNI, Mongi BEN GAID                │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import 'clockpicker/dist/jquery-clockpicker';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -193,9 +201,6 @@ function timePickerWidgetsPluginClass() {
           // donetext: 'Done',
           autoclose: true,
           default: '12:00',
-          init: function () {
-            this.value = modelsHiddenParams[idInstance].timeValue;
-          },
           beforeShow: function () {},
           afterShow: function () {},
           beforeHide: function () {},

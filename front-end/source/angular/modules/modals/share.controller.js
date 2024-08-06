@@ -5,8 +5,10 @@
 // ├───────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI                                             │ \\
 // └───────────────────────────────────────────────────────────────────────────────┘ \\
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { modalsModule } from './modals';
 
-angular.module('modules').controller('ShareController', [
+modalsModule.controller('ShareController', [
   '$scope',
   '$rootScope',
   function ($scope, $rootScope) {

@@ -6,7 +6,7 @@
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var inputHandler = (function () {
+export const inputHandler = (function () {
   /*--------patchInputVariables--------*/
   function patchInputVariables(jsonContent, projectQueryParams) {
     _.each(projectQueryParams, (parVal) => {

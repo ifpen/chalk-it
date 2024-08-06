@@ -6,157 +6,100 @@
 // ¦ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  ¦ \\
 // +--------------------------------------------------------------------+ \\
 
-var htmlExport = (function () {
+import { xDashConfig } from 'config.js';
+import _ from 'lodash';
+
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import {
+  DASHBOARD_DATA_ID,
+  DASHBOARD_DATA_TYPE,
+  DASHBOARD_CONFIG_ID,
+  DASHBOARD_CONFIG_TYPE,
+} from 'kernel/runtime/xdash-runtime-main';
+
+export const htmlExport = (function () {
   var exportOptions = 'ajustToTargetWindow';
   var checkExportOptions = true;
   var navBarNotification = false;
-  var is_xDash = true;
-  /*--------create html doc--------*/
-  var createHtmlDoc = function (headText, bodyText, doc_impl, dashboardName) {
-    var dt = doc_impl.createDocumentType('html', null, null),
-      doc = doc_impl.createDocument(null, 'html', dt),
-      doc_el = doc.documentElement,
-      head = doc_el.appendChild(doc.createElement('head')),
-      title = head.appendChild(doc.createElement('title')),
-      charset_meta = head.appendChild(doc.createElement('meta')),
-      body = doc_el.appendChild(doc.createElement('body'));
-    body.setAttribute('ng-app', 'xCLOUD');
 
-    doc_el.setAttribute('lang', 'en');
-
-    title.appendChild(doc.createTextNode(dashboardName));
-    charset_meta.setAttribute('charset', window.document.characterSet);
-    charset_meta.setAttribute('name', 'viewport');
-    charset_meta.setAttribute('content', 'width=device-width, initial-scale=1');
-
-    var headNext = window.document.createElement('head');
-    headNext.innerHTML = headText;
-    var bodyNext = window.document.createElement('body');
-    bodyNext.innerHTML = bodyText;
-
-    for (var j = 0; j < headNext.childNodes.length; j++) {
-      head.appendChild(doc.importNode(headNext.childNodes.item(j), true));
+  async function createHtmlDoc() {
+    const resp = await fetch('index-view.html');
+    if (!resp.ok) {
+      console.log(resp);
+      throw new Error(`${resp.status} - ${resp.statusText}`);
     }
-    for (var i = 0; i < bodyNext.childNodes.length; i++) {
-      body.appendChild(doc.importNode(bodyNext.childNodes.item(i), true));
-    }
+    const text = await resp.text();
 
-    var cleanedHTML = emptyDashboardDiv();
-    body.appendChild(doc.importNode(cleanedHTML, true));
+    const parser = new DOMParser();
+    const document = parser.parseFromString(text, 'text/html');
 
-    return doc;
-  };
-
-  /*--------emptyDashboardDiv--------*/
-  function emptyDashboardDiv() {
-    var dashDiv = document.createElement('div');
-    dashDiv.setAttribute('id', 'dashboard-zone');
-    dashDiv.setAttribute('class', 'panel-body');
-    dashDiv.setAttribute('style', 'padding: 0px');
-    dashDiv.innerHTML =
-      '<div id="DropperDroitec" class="dropperR" ng-app="xCLOUD"></div>';
-    return dashDiv;
+    return document;
   }
 
-  /*--------copy Head Content--------*/
-  function copyHeadContent() {
-    var scriptHeaderList = [];
-    for (var t = 0; t < exportHeaderCss.length; t++) {
-      var _urlBaseForExport = xDashConfig.urlBaseForExport;
-      //AEF: fix bug in url css. commented for now to see what was it used for
-      // if (exportHeaderCss.length < 2) {
-      //     _urlBaseForExport = xDashConfig.urlBaseForExport + "assets/";
-      // }
-      scriptHeaderList.push(
-        '<link rel="stylesheet" href="' + _urlBaseForExport + '' + exportHeaderCss[t] + '"></link>'
-      );
-    }
-    for (t = 0; t < exportHeaderJs.length; t++) {
-      scriptHeaderList.push(
-        '<script charset="UTF-8" src="' + xDashConfig.urlBaseForExport + exportHeaderJs[t] + '"></script>'
-      );
-    }
+  function insertContent(doc, name, xdashPrj) {
+    const config = {
+      tabActive: 'play', // TODO
+      execOutsideEditor: true, // TODO
+      urlBase: xDashConfig.urlBaseForExport,
+      navBarNotification,
+      showNavBar,
+    };
 
-    return scriptHeaderList.join('\n');
-  }
+    if (xDashConfig.urlBaseForExport) {
+      const baseUrl = xDashConfig.urlBaseForExport;
 
-  /*--------copy Body Content--------*/
-  function copyBodyContent(xdashPrj) {
-    var bodyText = '';
-    var bodyText0 = [];
-    var bodyText1 = [];
-    var bodyText2 = [];
-    var bodyText3 = [];
-    var bodyText4 = [];
+      for (const lnk of doc.getElementsByTagName('link')) {
+        if (lnk.getAttribute('rel') === 'stylesheet' && lnk.hasAttribute('src')) {
+          const target = lnk.getAttribute('src');
+          lnk.setAttribute('src', baseUrl + (baseUrl.endsWith('/') || target.startsWith('/') ? '' : '/') + target);
+        }
+      }
 
-    let navBarNotification = htmlExport.navBarNotification;
-    let showNavBar;
-
-    if (!_.isUndefined(xdashPrj.navBarNotification)) {
-      navBarNotification = xdashPrj.navBarNotification;
+      for (const script of doc.getElementsByTagName('script')) {
+        if (script.hasAttribute('src')) {
+          const target = script.getAttribute('src');
+          script.setAttribute('src', baseUrl + (baseUrl.endsWith('/') || target.startsWith('/') ? '' : '/') + target);
+        }
+      }
     }
 
-    for (var t = 0; t < exportBodyJs.length; t++) {
-      bodyText0.push('<script src="' + xDashConfig.urlBaseForExport + exportBodyJs[t] + '"></script>');
-    }
+    const [head] = doc.getElementsByTagName('head');
+    const [title] = head.getElementsByTagName('title');
+    const [body] = doc.getElementsByTagName('body');
 
-    var jsonContent = 'jsonContent = ' + JSON.stringify(xdashPrj, null, '  ');
+    title.textContent = name;
 
-    if (xdashPrj.exportOptions == 'rowToPage' || xdashPrj.exportOptions == 'rowToTab') {
-      showNavBar = true;
-    } else {
-      showNavBar = navBarNotification;
-    }
+    const dataScript = doc.createElement('script');
+    dataScript.setAttribute('id', DASHBOARD_DATA_ID);
+    dataScript.setAttribute('type', DASHBOARD_DATA_TYPE);
+    dataScript.textContent = JSON.stringify(xdashPrj, null, '  ');
+    body.appendChild(dataScript);
 
-    bodyText1.push(
-      '',
-      '<script>',
-      '',
-      'tabActive = "play";',
-      'execOutsideEditor = true;',
-      'urlBase = "' + xDashConfig.urlBaseForExport + '";',
-      'navBarNotification = "' + navBarNotification + '" ;',
-      'showNavBar = "' + showNavBar + '" ;',
-      '$(function()',
-      '{',
-      ''
-    );
-    var bodyTextJson = '' + jsonContent + ';';
-    bodyText2.push('');
+    const paramsScript = doc.createElement('script');
+    paramsScript.setAttribute('id', DASHBOARD_CONFIG_ID);
+    paramsScript.setAttribute('type', DASHBOARD_CONFIG_TYPE);
+    paramsScript.textContent = JSON.stringify(config, null, '  ');
+    body.appendChild(paramsScript);
 
-    bodyText3.push('reconstructFoundations.loadXprjson(jsonContent);', '});', '</script>', '');
+    const navBarNotification = xdashPrj.navBarNotification ?? htmlExport.navBarNotification;
+    const showNavBar =
+      xdashPrj.exportOptions === 'rowToPage' || xdashPrj.exportOptions === 'rowToTab' || navBarNotification;
 
-    if (showNavBar) {
-      bodyText4.push(...runtimeToolbar.toolbar);
-    }
-
-    bodyText =
-      bodyText0.join('\n') +
-      bodyText1.join('\n') +
-      bodyTextJson +
-      bodyText2.join('\n') +
-      bodyText3.join('\n') +
-      bodyText4.join('\n');
-
-    return bodyText;
+    // FIXME
+    // if (showNavBar) {
+    //   bodyText4.push(...runtimeToolbar.toolbar);
+    // }
   }
 
   /*--------create dashboard document--------*/
-  function createDashboardDocument(name, xprjson) {
-    var view = window;
-    var docmt1 = view.document;
-    var doc_impl = docmt1.implementation;
-    var headText = copyHeadContent();
-    var xdashPrj;
-    if (_.isUndefined(xprjson)) {
-      xdashPrj = xdash.serialize();
-    } else {
-      xdashPrj = xprjson;
-    }
-    var bodyText = copyBodyContent(xdashPrj);
-    var doc = createHtmlDoc(headText, bodyText, doc_impl, name);
-    var xml_serializer = new XMLSerializer();
-    var txt = xml_serializer.serializeToString(doc);
+  async function createDashboardDocument(name, xprjson) {
+    const xdashPrj = xprjson ?? runtimeSingletons.xdash.serialize();
+
+    const doc = await createHtmlDoc();
+    insertContent(doc, name, xdashPrj);
+
+    const xml_serializer = new XMLSerializer();
+    const txt = xml_serializer.serializeToString(doc);
     return txt;
   }
 
@@ -177,7 +120,7 @@ var htmlExport = (function () {
   }
 
   /*--------preview dashboard Callback--------*/
-  function previewDashboardCallback(param) {
+  async function previewDashboardCallback(param) {
     var dashboardName;
 
     var xprjson;
@@ -195,11 +138,11 @@ var htmlExport = (function () {
     if (_.isUndefined(projectName)) dashboardName = $('#projectName')[0].value;
     else dashboardName = projectName;
 
-    var tab = window.open('about:blank', '_blank');
-    var txt = createDashboardDocument(dashboardName, xprjson);
+    const tab = window.open('about:blank', '_blank');
+    const txt = await createDashboardDocument(dashboardName, xprjson);
     tab.document.write(txt);
     tab.document.close();
-    tab.focus();        
+    tab.focus();
   }
 
   /*--------save Dashboard Callback--------*/
@@ -236,45 +179,6 @@ var htmlExport = (function () {
     };
 
     //$rootScope.infoPage.isManagePageOpen = true;
-  }
-
-  /*--------select Dashboard Name Settings--------*/
-  function selectDashboardNameOld(dashboardName) {
-    swal.close();
-    var fileType = 'page';
-    setTimeout(function () {
-      swal(
-        {
-          title: 'HTML File name',
-          text: 'Save as',
-          type: 'input',
-          showConfirmButton: false,
-          showConfirmButton1: true,
-          showCancelButton: true,
-          closeOnConfirm: false,
-          closeOnConfirm1: false,
-          confirmButtonText: 'Save',
-          inputPlaceholder: 'please write file name here ...',
-          inputValue: dashboardName,
-        },
-        function (inputValue) {
-          if (inputValue === false) {
-            return false; //cancel button
-          }
-          if (inputValue === '') {
-            //empty input then ok button
-            swal.showInputError('File name is required!');
-            return false;
-          }
-          //here when input is not empty then ok button
-          if (inputValue != null) {
-            var txt = createDashboardDocument(dashboardName);
-            if (is_xDash) datanodesManager.showLoadingIndicator(true);
-            fileManager.getFileListExtended(fileType, inputValue, txt);
-          }
-        }
-      );
-    }, 200);
   }
 
   return {

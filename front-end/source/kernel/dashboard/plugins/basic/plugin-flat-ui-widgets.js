@@ -7,6 +7,16 @@
 // │ Original authors(s): Mongi BEN GAID, Abir El FEKI, Ghiles HIDEUR   │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import 'flat-ui.alt';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 // Needed for Flat-Ui
 String.prototype.repeat = function (num) {
@@ -221,9 +231,8 @@ function flatUiWidgetsPluginClass() {
           amount = (option.max - option.min) / option.step,
           orientation = option.orientation;
         if ('vertical' === orientation) {
-          var output = '',
-            i;
-          for (var i = 1; i <= amount - 1; i++) {
+          let output = '';
+          for (let i = 1; i <= amount - 1; i++) {
             output += '<div class="ui-slider-segment" style="top:' + (100 / amount) * i + '%;"></div>';
           }
           $this.prepend(output);
@@ -324,12 +333,10 @@ function flatUiWidgetsPluginClass() {
       if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
         fontSize = modelsParameters[idInstance].buttonFontSize;
       }
-
-      const styleDef = `style="height: inherit; font-size: calc(7px + ${
+      const styles = `height: inherit; font-size: calc(7px + ${
         fontSize * getFontFactor()
-      }vw + 0.4vh); ${this.buttonFontFamily()}" class="btn btn-table-cell btn-lg ${idInstance}widgetCustomColor ${
-        !this.bIsInteractive ? ' /*disabled*/' : ''
-      }"`;
+      }vw + 0.4vh); ${this.buttonFontFamily()}`;
+      const classes = `btn btn-table-cell btn-lg ${idInstance}widgetCustomColor`;
 
       this.setButtonColorStyle();
 
@@ -343,21 +350,28 @@ function flatUiWidgetsPluginClass() {
         content = icon + ' ' + text;
       }
 
-      let divContent = '';
+      const divContent = document.createElement('a');
+      divContent.innerHTML = content;
+      divContent.id = 'button' + idWidget;
+      divContent.style = styles;
+      divContent.classList = classes;
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
-          const fileInput = `<input onclick="displayLoadSpinner('${idWidget}')" type="file" style="display: none;" id="button${idWidget}_select_file"></input>`;
-          divContent += `<a ${styleDef} id="button${idWidget}">${content}${fileInput}</a>`;
+          const fileInput = document.createElement('input');
+          fileInput.id = `button${idWidget}_select_file`;
+          fileInput.type = 'file';
+          fileInput.style = 'display : none;';
+          fileInput.onclick = () => displayLoadSpinner.bind(this)(idWidget);
+          divContent.appendChild(fileInput);
         } else {
-          divContent += `<a onclick="updateWidgetDataNode('${idInstance}', '${idWidget}')" ${styleDef} id="button${idWidget}">${content}</a>`;
+          divContent.onclick = () => updateWidgetDataNode(idInstance, idWidget);
         }
         self.enable();
       } else {
-        divContent += `<a ${styleDef} id="button${idWidget}">${content}</a>`;
         self.disable();
       }
 
-      widgetHtml.innerHTML = divContent;
+      widgetHtml.replaceChildren(divContent);
       //
       const showWidget = this.showWidget();
       let displayStyle = 'display: table;';
@@ -733,7 +747,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsParameters[idInstance].max = val;
@@ -755,7 +769,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsParameters[idInstance].min = val;
@@ -1295,12 +1309,12 @@ function flatUiWidgetsPluginClass() {
       self.value.updateCallback(self.value, self.value.getValue());
       e.preventDefault();
     };
-    self.isValueChanged = function(e) {
+    self.isValueChanged = function (e) {
       const val = $('#' + nameWidget + idWidget)[0].value;
       const oldVal = modelsHiddenParams[idInstance].value;
       const oldValStr = oldVal.toString();
-      return !(val==oldValStr);
-    }
+      return !(val == oldValStr);
+    };
 
     self.enable = function () {
       const $widget = $(`#${nameWidget}${idWidget}`);
@@ -1323,20 +1337,19 @@ function flatUiWidgetsPluginClass() {
             self.updateValue(e);
           }
         });
-        $widget.off('click').on('click', (e) => { 
+        $widget.off('click').on('click', (e) => {
           if (self.isValueChanged()) {
-            self.updateValue(e) 
+            self.updateValue(e);
           }
-        }
-        );
+        });
       }
 
       if (modelsParameters[idInstance].validationButton) {
         const $widgetBtn = $(`#${nameWidget}-valid-btn${idWidget}`);
         $widgetBtn.prop('disabled', false);
-        $widgetBtn.off('click').on('click', (e) => { 
+        $widgetBtn.off('click').on('click', (e) => {
           if (self.isValueChanged()) {
-            self.updateValue(e) 
+            self.updateValue(e);
           }
         });
       }
@@ -1469,7 +1482,7 @@ function flatUiWidgetsPluginClass() {
       if (!_.isUndefined(modelsParameters[idInstance].valueTextAlign))
         valueTextAlign = modelsParameters[idInstance].valueTextAlign;
 
-      inputContent =
+      let inputContent =
         '<input ' +
         valuedisabled +
         readOnlyValue +
@@ -1735,7 +1748,7 @@ function flatUiWidgetsPluginClass() {
 flatUiWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var flatUiWidgetsPlugin = new flatUiWidgetsPluginClass();
+export const flatUiWidgetsPlugin = new flatUiWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

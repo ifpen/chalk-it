@@ -6,30 +6,23 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { editorSingletons } from 'kernel/editor-singletons';
+import { dashState } from 'angular/modules/dashboard/dashboard';
+import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { showEditMode, bRescaleNeededForModeSwitch } from 'angular/modules/dashboard/services/edit-play-switch';
 
 // AEF: issue#304
 // disableSchedulerLog is defined in env to disable scheduler log in public xdash. true by default
 // offSchedLogUser is defined in xprjson to disable/enable scheduler log. To be used by developer and intern user expert.
 // Only active when disableSchedulerLog is false
-var offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
+
+export const offSchedLogUser = { value: true }; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
 var ratioScroll = 0;
-// Models
-var models = {};
-// Hidden parameters
-modelsHiddenParams = {};
-// Temporary parameters not to be serialized
-modelsTempParams = {};
-// Default parameters
-modelsParameters = {};
-// Default dimensions
-modelsLayout = {};
 
-try {
-  // MBG for IE11
-  var tabWidgetsLoadedEvt = new Event('widgets-tab-loaded');
-  var tabPlayLoadedEvt = new Event('play-tab-loaded');
-} catch (exc) {}
+export const tabWidgetsLoadedEvt = new Event('widgets-tab-loaded');
+export const tabPlayLoadedEvt = new Event('play-tab-loaded');
 
 /* MBG refactored from xdash-main.js because needed by runtime */
 // For todays date;
@@ -61,60 +54,56 @@ Date.prototype.timeNow = function () {
   );
 };
 
-var bFirstExec = true;
+export const bFirstExec = { value: true };
 
 // MBG detecting Android for handling issue #93
-var ua = navigator.userAgent.toLowerCase();
-var isAndroid = ua.indexOf('android') > -1; //&& ua.indexOf("mobile");
+const ua = navigator.userAgent.toLowerCase();
+export const isAndroid = ua.indexOf('android') > -1; //&& ua.indexOf("mobile");
 
-function isTouchDevice() {
+function _isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 }
 
-var isTouchDevice = isTouchDevice();
+export const isTouchDevice = _isTouchDevice();
 
 function activeTab() {
-  tabActive = 'widgets';
+  dashState.tabActive = 'widgets';
   setEditPlaySwitchDisableStatus(false);
-  if (modeActive == 'no-dashboard') {
-    bRescaleNeededForModeSwitch = true;
+  if (dashState.modeActive == 'no-dashboard') {
+    bRescaleNeededForModeSwitch.value = true;
     showEditMode(true, function () {});
   } else {
-    console.log('tabActive=' + tabActive + '. modeActive=' + modeActive);
+    console.log('tabActive=' + dashState.tabActive + '. modeActive=' + dashState.modeActive);
   }
 }
 
-/*--------On resize event--------*/
-$(function () {
-  $(window).on('resize', function () {
-    var $body = angular.element(document.body);
-    var $rootScope = $body.scope().$root;
-    if (tabActive == 'play') {
-      if (!(isAndroid || isTouchDevice)) {
+export function onResize() {
+  var $body = angular.element(document.body);
+  var $rootScope = $body.scope().$root;
+  if (dashState.tabActive == 'play') {
+    if (!(isAndroid || isTouchDevice)) {
+      widgetPreview.resizeDashboard();
+    }
+  } else if (!$rootScope.moduleOpened) {
+    if (dashState.tabActive == 'widgets') {
+      if (dashState.modeActive == 'edit-dashboard') {
+        editorSingletons.widgetEditor.resizeDashboard();
+        gridMgr.updateGrid();
+      } else if (dashState.modeActive == 'play-dashboard') {
         widgetPreview.resizeDashboard();
-      }
-    } else if (!$rootScope.moduleOpened) {
-      if (tabActive == 'widgets') {
-        if (modeActive == 'edit-dashboard') {
-          widgetEditor.resizeDashboard();
-          gridMgr.updateGrid();
-        } else if (modeActive == 'play-dashboard') {
-          widgetPreview.resizeDashboard();
-        }
       }
     }
-  });
-  if (!(isAndroid || isTouchDevice)) {
-    $(window).on('orientationchange', function () {
-      if (tabActive == 'play') {
-        widgetPreview.resizeDashboard();
-      }
-    });
   }
-});
+}
+
+export function onOrientationChange() {
+  if (dashState.tabActive == 'play') {
+    widgetPreview.resizeDashboard();
+  }
+}
 
 /*--------Rescale Widget--------*/
-function rescaleWidget(widget, instanceId) {
+export function rescaleWidget(widget, instanceId) {
   widget[instanceId].rescale();
 }
 
@@ -122,7 +111,7 @@ function rescaleWidget(widget, instanceId) {
  * Sets the dirty flag in context when call can be from editor or runtime
  * Dirty flag only applies in runtime context
  * */
-function setDirtyFlagSafe(bDirty) {
+export function setDirtyFlagSafe(bDirty) {
   try {
     if (typeof execOutsideEditor != 'undefined') {
       if (!execOutsideEditor) {
@@ -137,6 +126,7 @@ function setDirtyFlagSafe(bDirty) {
     }
   } catch (ex) {
     // handling very old pages
+    // FIXME
   }
 }
 

@@ -6,6 +6,29 @@
 // │ Original authors(s): Mongi BEN GAID, Ameur HAMDOUNI                │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import 'leaflet';
+
+// !! Order matters, a lot !!
+import 'simpleheat';
+import 'leaflet-modal';
+import 'idb';
+import 'leaflet.offline';
+import '@geoman-io/leaflet-geoman-free';
+import 'leaflet.markercluster';
+import 'leaflet.awesome-markers';
+
+import _ from 'lodash';
+import { xDashConfig } from 'config.js';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { nFormatter, syntaxHighlight } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { dashState } from 'angular/modules/dashboard/dashboard';
+import bbox from '@mapbox/geojson-extent';
+import * as d3 from 'd3';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -929,7 +952,7 @@ function mapWidgetsPluginClass() {
     };
 
     this.goToFirstRadioButton = function () {
-      if (tabActive == 'play') {
+      if (dashState.tabActive == 'play') {
         if (self.numberOfHeatMapLayers > 0) {
           var nbRadioShadow = 0;
           if (!_.isUndefined($("input[name='leaflet-base-layers']"))) {
@@ -971,19 +994,19 @@ function mapWidgetsPluginClass() {
         (typeLayers.geometry.type === 'polygon' || typeLayers.geometry.type === 'Polygon') &&
         typeLayers.geometry.isCut
       ) {
-        var my_latlngs = Points._latlngs ? Points._latlngs : Points.pm._layers[0]._latlngs;
+        const my_latlngs = Points._latlngs ? Points._latlngs : Points.pm._layers[0]._latlngs;
 
         my_latlngs.forEach(function (point) {
-          var _val = [];
-          for (var i = 0; i < point.length; i++) {
+          const _val = [];
+          for (let i = 0; i < point.length; i++) {
             _val.push([point[i].lng, point[i].lat]);
           }
           ListPositions.push(_val);
         });
         return ListPositions;
       } else if (typeLayers.geometry.type === 'LineString' || typeLayers.geometry.type === 'lineString') {
-        for (var leng = 0; leng < Points._latlngs.length; leng++) {
-          var _val = Points._latlngs[leng];
+        for (let leng = 0; leng < Points._latlngs.length; leng++) {
+          const _val = Points._latlngs[leng];
           ListPositions.push([_val.lng, _val.lat]);
         }
         return ListPositions;
@@ -991,9 +1014,9 @@ function mapWidgetsPluginClass() {
         (typeLayers.geometry.type === 'polygon' || typeLayers.geometry.type === 'Polygon') &&
         !typeLayers.geometry.isCut
       ) {
-        var my_latlngs = Points._latlngs ? Points._latlngs[0] : Points.pm._layers[0]._latlngs[0];
-        for (var leng = 0; leng < my_latlngs.length; leng++) {
-          var _val = my_latlngs[leng];
+        const my_latlngs = Points._latlngs ? Points._latlngs[0] : Points.pm._layers[0]._latlngs[0];
+        for (let leng = 0; leng < my_latlngs.length; leng++) {
+          const _val = my_latlngs[leng];
           ListPositions.push([_val.lng, _val.lat]);
         }
         return [ListPositions];
@@ -1300,8 +1323,8 @@ function mapWidgetsPluginClass() {
           var ListPositions = [];
           if (modelsHiddenParams[idInstance].selectedGeoJson) {
             if (e.shape == 'Polygon') {
-              for (var leng = 0; leng < e.layer._latlngs[0].length; leng++) {
-                var _val = e.layer._latlngs[0][leng];
+              for (let leng = 0; leng < e.layer._latlngs[0].length; leng++) {
+                const _val = e.layer._latlngs[0][leng];
                 ListPositions.push([_val.lng, _val.lat]);
               }
               self.updateValue({
@@ -1315,8 +1338,8 @@ function mapWidgetsPluginClass() {
                 properties: { layerId: e.layer._leaflet_id },
               });
             } else if (e.shape == 'Line') {
-              for (var leng = 0; leng < e.layer._latlngs.length; leng++) {
-                var _val = e.layer._latlngs[leng];
+              for (let leng = 0; leng < e.layer._latlngs.length; leng++) {
+                const _val = e.layer._latlngs[leng];
                 ListPositions.push([_val.lng, _val.lat]);
               }
               self.updateValue({
@@ -1328,8 +1351,8 @@ function mapWidgetsPluginClass() {
                 properties: { layerId: e.layer._leaflet_id },
               });
             } else if (e.shape == 'Rectangle') {
-              for (var leng = 0; leng < e.layer._latlngs[0].length; leng++) {
-                var _val = e.layer._latlngs[0][leng];
+              for (let leng = 0; leng < e.layer._latlngs[0].length; leng++) {
+                const _val = e.layer._latlngs[0][leng];
                 ListPositions.push([_val.lng, _val.lat]);
               }
               self.updateValue({
@@ -1629,7 +1652,7 @@ function mapWidgetsPluginClass() {
       }
 
       try {
-        for (var i = 0; i < self.numberOfGeoJsonLayers; i++) {
+        for (let i = 0; i < self.numberOfGeoJsonLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i])
@@ -1638,7 +1661,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfChoroplethLayers; i++) {
+        for (let i = 0; i < self.numberOfChoroplethLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i])
@@ -1647,7 +1670,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfLineHeatMapLayers; i++) {
+        for (let i = 0; i < self.numberOfLineHeatMapLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i])
@@ -1656,7 +1679,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfHeatMapLayers; i++) {
+        for (let i = 0; i < self.numberOfHeatMapLayers; i++) {
           modelsHiddenParams[idInstance].heatMap.heatMapBuffer[i] = []; // clear heatmap buffer
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].heatMap.heatMapData[i]) &&
@@ -1666,7 +1689,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfImageLayers; i++) {
+        for (let i = 0; i < self.numberOfImageLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].imageOverlay.imageData[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].imageOverlay.imageData[i])
@@ -1675,7 +1698,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        for (var i = 0; i < self.numberOfSvgLayers; i++) {
+        for (let i = 0; i < self.numberOfSvgLayers; i++) {
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].svgOverlay.svgData[i]) &&
             !_.isUndefined(modelsHiddenParams[idInstance].svgOverlay.svgData[i])
@@ -1777,7 +1800,7 @@ function mapWidgetsPluginClass() {
             } else {
               if (feature.properties.html) {
                 if (feature.properties.openPopup) {
-                  mk = layer.bindPopup(feature.properties.html, { autoClose: false, autoPan: false });
+                  const mk = layer.bindPopup(feature.properties.html, { autoClose: false, autoPan: false });
                   mk.on('add', function (event) {
                     event.target.openPopup();
                   });
@@ -1785,10 +1808,10 @@ function mapWidgetsPluginClass() {
                   layer.bindPopup(feature.properties.html);
                 }
               } else {
-                var jsonDisplay = jQuery.extend(true, {}, feature.properties);
+                const jsonDisplay = jQuery.extend(true, {}, feature.properties);
                 if (jsonDisplay.awesomeMarker) delete jsonDisplay.awesomeMarker;
                 if (feature.properties.openPopup) {
-                  mk = layer.bindPopup(syntaxHighlight(JSON.stringify(jsonDisplay)), {
+                  const mk = layer.bindPopup(syntaxHighlight(JSON.stringify(jsonDisplay)), {
                     autoClose: false,
                     autoPan: false,
                   });
@@ -1829,7 +1852,7 @@ function mapWidgetsPluginClass() {
 
       try {
         // Calculate a bounding box in west, south, east, north order.
-        var rawBounds = geojsonExtent(geoJsonStruct);
+        var rawBounds = bbox(geoJsonStruct);
         var corner1 = L.latLng(rawBounds[1], rawBounds[0]);
         var corner2 = L.latLng(rawBounds[3], rawBounds[2]);
         var bounds = L.latLngBounds(corner1, corner2);
@@ -1925,7 +1948,7 @@ function mapWidgetsPluginClass() {
       try {
         if (!disableAutoscale) {
           // Calculate a bounding box in west, south, east, north order.
-          var rawBounds = geojsonExtent(choroplethStruct);
+          var rawBounds = bbox(choroplethStruct);
           var corner1 = L.latLng(rawBounds[1], rawBounds[0]);
           var corner2 = L.latLng(rawBounds[3], rawBounds[2]);
           var bounds = L.latLngBounds(corner1, corner2);
@@ -1947,7 +1970,6 @@ function mapWidgetsPluginClass() {
         fts = data.map((d, k) => ({
           type: 'Feature',
           id: k,
-          properties: {},
           geometry: d['geometry'],
           properties: {
             density: d[tgKey],
@@ -2146,7 +2168,7 @@ function mapWidgetsPluginClass() {
       if (!disableAutoscale) {
         try {
           // Calculate a bounding box in west, south, east, north order.
-          var rawBounds = geojsonExtent(lineHeatMapStruct);
+          var rawBounds = bbox(lineHeatMapStruct);
           var corner1 = L.latLng(rawBounds[1], rawBounds[0]);
           var corner2 = L.latLng(rawBounds[3], rawBounds[2]);
           var bounds = L.latLngBounds(corner1, corner2);
@@ -2534,9 +2556,9 @@ function mapWidgetsPluginClass() {
       if (_.isEmpty(heatMapObject)) return;
       if (_.isUndefined(heatMapObject.data)) return;
 
-      heatMapData = heatMapObject.data;
+      const heatMapData = heatMapObject.data;
       if (_.isEmpty(heatMapData) || heatMapData.length == 0) {
-        var circlesLayerGroup = L.layerGroup([]);
+        const circlesLayerGroup = L.layerGroup([]);
         self.mapLayers.heatMap.heatMapLayers[layerIndex - 1] = circlesLayerGroup.addTo(self.map);
         self.ctrl.addBaseLayer(self.mapLayers.heatMap.heatMapLayers[layerIndex - 1], 'none');
         if (!_.isUndefined($("input[name='leaflet-base-layers']")[self.numberOfHeatMapLayers - 1]))
@@ -2552,8 +2574,8 @@ function mapWidgetsPluginClass() {
       let addTextLabel = false;
       let colorScale;
 
-      try {
-        heatMapConfig = heatMapObject.config;
+      const heatMapConfig = heatMapObject.config;
+      if (heatMapConfig) {
         circleFillOpacity = heatMapConfig.opacity || circleFillOpacity;
         circleRadius = heatMapConfig.radius || circleRadius;
         maxValue = heatMapConfig.max;
@@ -2562,7 +2584,7 @@ function mapWidgetsPluginClass() {
         addTextLabel = heatMapConfig.addTextLabel;
 
         colorScale = self.getColorScale(heatMapConfig.colorScale, heatMapConfig.reverseColorScale, 0, 100);
-      } catch (exc) {}
+      }
 
       const formattedHeatMap = [];
       let computedMax = -Number.MAX_VALUE; // MBG & KBS on car le 27/09/2019
@@ -2627,7 +2649,6 @@ function mapWidgetsPluginClass() {
         }
         circles.push(
           L.circle([lats[k], lngs[k]], {
-            stroke: false,
             color: currentColor,
             fillColor: currentColor,
             fillOpacity: circleFillOpacity,
@@ -2654,16 +2675,16 @@ function mapWidgetsPluginClass() {
         maxValue: maxValue,
       };
 
-      var circlesLayerGroup = L.layerGroup(circles);
+      const circlesLayerGroup = L.layerGroup(circles);
 
       self.mapLayers.heatMap.heatMapLayers[layerIndex - 1] = circlesLayerGroup.addTo(self.map);
 
       self.ctrl.addBaseLayer(self.mapLayers.heatMap.heatMapLayers[layerIndex - 1], featureTitle);
 
       if (!disableAutoscale) {
-        var corner1 = L.latLng(_.max(lats), _.max(lngs));
-        var corner2 = L.latLng(_.min(lats), _.min(lngs));
-        var bounds = L.latLngBounds(corner1, corner2);
+        const corner1 = L.latLng(_.max(lats), _.max(lngs));
+        const corner2 = L.latLng(_.min(lats), _.min(lngs));
+        const bounds = L.latLngBounds(corner1, corner2);
         // Display for the bounding box
         self.map.fitBounds(bounds);
       }
@@ -2679,8 +2700,8 @@ function mapWidgetsPluginClass() {
     };
 
     this.createLegend = function (color, length, colorStops, min, max, featureTitle) {
-      var min = Number(min);
-      var max = Number(max);
+      min = Number(min);
+      max = Number(max);
       if (!_.isUndefined(modelsHiddenParams[idInstance].legends[featureTitle])) {
         self.map.removeControl(modelsHiddenParams[idInstance].legends[featureTitle]); // MBG 18/09/2018
       }
@@ -2736,7 +2757,7 @@ function mapWidgetsPluginClass() {
       if (_.isEmpty(heatMapObject)) return;
       if (_.isUndefined(heatMapObject.data)) return;
 
-      heatMapData = heatMapObject.data;
+      const heatMapData = heatMapObject.data;
       if (_.isUndefined(heatMapData.length)) return;
 
       var formattedHeatMap = [];
@@ -2766,10 +2787,8 @@ function mapWidgetsPluginClass() {
       var colorScale;
 
       // no problem if no config
-
-      try {
-        heatMapConfig = heatMapObject.config;
-
+      const heatMapConfig = heatMapObject.config;
+      if (heatMapConfig) {
         layerMinOpacity = heatMapConfig.minOpacity;
         layerMaxZomm = heatMapConfig.maxZoom;
         layerRadius = heatMapConfig.radius;
@@ -2779,8 +2798,6 @@ function mapWidgetsPluginClass() {
         formattedGradient = new Object();
         colorScale = self.getColorScale(heatMapConfig.colorScale, heatMapConfig.reverseColorScale, 0, 1);
         d3.range(11).forEach((d) => (formattedGradient[d * 0.1] = colorScale(d * 0.1)));
-      } catch (e) {
-        formattedGradient = null;
       }
 
       self.mapLayers.heatMap.heatMapLayers[layerIndex - 1] = L.meanLayer(formattedHeatMap, {
@@ -3304,7 +3321,7 @@ function mapWidgetsPluginClass() {
 mapWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var mapWidgetsPlugin = new mapWidgetsPluginClass();
+export const mapWidgetsPlugin = new mapWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

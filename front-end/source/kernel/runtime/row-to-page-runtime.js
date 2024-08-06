@@ -145,4 +145,4 @@ class RowToPageRuntime {
   }
 }
 
-const rowToPageRuntime = new RowToPageRuntime();
+export const rowToPageRuntime = new RowToPageRuntime();

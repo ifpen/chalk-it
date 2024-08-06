@@ -6,6 +6,13 @@
 // ├─────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI, Ghiles HIDEUR                │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import PNotify from 'pnotify';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { fileManager } from 'kernel/general/backend/file-management';
 
 angular.module('modules').service('ManagePrjService', [
   '$rootScope',
@@ -81,7 +88,7 @@ angular.module('modules').service('ManagePrjService', [
             if ($rootScope.xDashFullVersion && !_.isUndefined(callback)) {
               callback(projectName);
             }
-            xdash.openProjectManager(msg1);
+            runtimeSingletons.xdash.openProjectManager(msg1);
             const notice = new PNotify({
               title: projectName,
               text: "Your project '" + projectName + "' is ready!",
@@ -198,7 +205,7 @@ angular.module('modules').service('ManagePrjService', [
         groupName: '',
       };
       $rootScope.alldatanodes = [];
-      xdash.clear();
+      runtimeSingletons.xdash.clear();
       $rootScope.safeApply();
     };
 
@@ -245,7 +252,6 @@ angular.module('modules').service('ManagePrjService', [
         switch (fType) {
           case 'xprjson':
             fileTypeServer = 'DeleteProject';
-            itemName = 'ProjectName';
             dataMsg = {
               ProjectName: projectName,
             };

@@ -7,6 +7,9 @@
 // │ Original authors(s): Ghiles HIDEUR                                                   │ \\
 // └──────────────────────────────────────────────────────────────────────────────────────┘ \\
 
+import * as echarts from 'echarts';
+import { schedulerProfiling } from 'kernel/datanodes/execution-engine/DatanodeScheduler';
+
 angular.module('modules.dashboard').service('ProfGraphService', [
   '$rootScope',
   function ($rootScope) {

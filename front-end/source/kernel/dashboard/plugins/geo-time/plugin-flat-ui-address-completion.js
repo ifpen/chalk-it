@@ -6,6 +6,14 @@
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import 'flat-ui.alt';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -112,7 +120,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
       var sep;
       var first;
       if (table.length < 1) return ''; // AEF: return empty string instead of indefined to replace old suggested words
-      for (var i = 0; i < table.length; i++) {
+      for (let i = 0; i < table.length; i++) {
         suggestionStrings[i] = '';
         first = true;
         for (var j = 0; j <= 6; j++) {
@@ -128,7 +136,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
 
       var words = [];
       if (_.isArray(suggestionStrings)) {
-        for (var i = 0; i < suggestionStrings.length; i++) {
+        for (let i = 0; i < suggestionStrings.length; i++) {
           words[i] = { word: suggestionStrings[i] };
         }
       }

@@ -7,8 +7,13 @@
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var urlQueryEntry = (function () {
+import { findGetParameter } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+
+export const urlQueryEntry = (function () {
   function process(isHtmlLoad) {
+    const xdash = runtimeSingletons.xdash;
+
     if (!isHtmlLoad) {
       if (xdash.pageLoad) {
         xdash.pageLoad = false;

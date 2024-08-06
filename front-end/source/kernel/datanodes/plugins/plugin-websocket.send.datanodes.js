@@ -3,6 +3,11 @@
  * @description
  * This Datanode is used to send dat through Web socket. It's allow Chalk'it to send data
  */
+
+import _ from 'lodash';
+import ReconnectingWebSocket from './thirdparty/reconnecting-websocket';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
 // ### Datanode Definition
 //
 // -------------------
@@ -279,7 +284,7 @@
     // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
     description: "Websocket client to send data to Chalk'it",
     // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.
-    external_scripts: [''],
+    external_scripts: [],
     // **settings** : An array of settings that will be displayed for this plugin when the user adds it
     settings: [
       {

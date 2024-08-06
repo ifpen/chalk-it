@@ -7,6 +7,12 @@
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI, Benoît LEHMAN,  │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
+import { WidgetActuatorDescription, WidgetActuatorValidationError } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import Plotly from 'plotly.js/dist/plotly';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -392,7 +398,6 @@ function plotlyWidgetsPluginClass() {
   // |                         createPlotlyDiv                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function createPlotlyDiv(idDivContainer, pId, bInteractive) {
-    const self = this;
     const widgetHtml = document.createElement('div');
     let idDivPlotly = 'plotly' + pId;
     if (bInteractive) {
@@ -703,8 +708,8 @@ function plotlyWidgetsPluginClass() {
               }
 
               if (!_.isUndefined(point.pointNumbers)) {
-                const traceNumber = point.pointNumbers.curveNumber;
-                pointNumbers.forEach(function (d) {
+                const traceNumber = point.curveNumber;
+                point.pointNumbers.forEach(function (d) {
                   dataSelected[traceNumber].push(d);
 
                   if (!_.isUndefined(graphDiv.data[traceNumber].customdata)) {
@@ -1412,7 +1417,7 @@ function plotlyWidgetsPluginClass() {
   };
 }
 
-const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
+export const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

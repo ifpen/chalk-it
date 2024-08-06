@@ -6,8 +6,11 @@
 // ├───────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI                                                 │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import PNotify from 'pnotify';
+import { modalsModule } from '../modals';
 
-angular.module('modules').service('AvatarService', [
+modalsModule.service('AvatarService', [
   '$rootScope',
   function ($rootScope) {
     const self = this;
@@ -114,7 +117,6 @@ angular.module('modules').service('AvatarService', [
                 });
               }
             };
-            readSettingsData = '';
             var FileMngrInst = new FileMngrFct();
             FileMngrInst.DeleteFile('avatar', null, endAction, 'img');
           } else swal.close();

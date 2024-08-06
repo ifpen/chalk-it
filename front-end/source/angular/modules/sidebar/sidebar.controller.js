@@ -6,6 +6,13 @@
 // ├──────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ghiles HIDEUR     │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+
+import { fileManager } from 'kernel/general/backend/file-management';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 angular.module('modules.sidebar').controller('SidebarController', [
   '$scope',
@@ -161,7 +168,7 @@ angular.module('modules.sidebar').controller('SidebarController', [
       $rootScope.origin = 'openProject';
       $rootScope.toggleMenuOptionDisplay('none');
       $state.go('modules', {});
-      xdash.openFile('project', 'local');
+      runtimeSingletons.xdash.openFile('project', 'local');
     };
   },
 ]);

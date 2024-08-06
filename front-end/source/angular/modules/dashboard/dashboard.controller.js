@@ -7,14 +7,13 @@
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                 │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
 
-let tabActive = 'widgets';
-let modeActive = 'edit-dashboard';
-let editorStatus = 'full';
+import { xDashConfig } from 'config.js';
 
-angular
-  .module('modules.dashboard')
-  .value('DashboardActiveTabGetter', () => tabActive)
-  .value('DashboardActiveModeGetter', () => modeActive)
+import { dashState, dashboardModule } from 'angular/modules/dashboard/dashboard';
+
+dashboardModule
+  .value('DashboardActiveTabGetter', () => dashState.tabActive)
+  .value('DashboardActiveModeGetter', () => dashState.modeActive)
   .controller('DashboardController', [
     '$scope',
     '$rootScope',
@@ -97,7 +96,8 @@ angular
         $rootScope.filtredList = [];
         $rootScope.filtredNodes = $rootScope.alldatanodes.length;
 
-        let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
+        const ctrlElement = document.getElementById('dash-datanode-ctrl');
+        const scopeDashDn = angular.element(ctrlElement).scope();
         scopeDashDn.searchDatanodeByName = '';
         scopeDashDn.applyDatanodeFilter('');
       };
@@ -106,7 +106,7 @@ angular
       $scope.closeLeftSidePanel = function () {
         $scope.editorView.newDatanodePanel.view = false;
         $scope.editorView.leftSidePanel.view = false;
-        editorStatus = 'full';
+        dashState.editorStatus = 'full';
       };
 
       /*---------- dataConnectionPanel ----------------*/
@@ -202,8 +202,8 @@ angular
         $scope.editorView.rightSidePanel.view = false;
         // Handle transition duration 0.25 sec, with margin
         setTimeout(() => {
-          editorStatus = 'full';
-        }, 1000);        
+          dashState.editorStatus = 'full';
+        }, 1000);
       };
 
       /*---------- resetPanelStateR ----------------*/
