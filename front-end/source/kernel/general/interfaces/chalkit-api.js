@@ -221,7 +221,7 @@ export const chalkit = (function () {
     };
   })();
 
-  notification = (function () {
+  const notification = (function () {
     function notify(dataNodeName, msg, type) {
       chalkit.notify(dataNodeName, msg, type);
     }
