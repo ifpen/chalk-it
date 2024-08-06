@@ -83,6 +83,7 @@
     "leaflet.markercluster": "^1.5.3",
     "leaflet.offline": "2.0.1",
     "lodash": "^4.17.21",
+    "mapbox-gl": "^3.5.2",
     "marked": "^4.1.0",
     "mime-types": "^2.1.30",
     "moment": "^2.18.1",
