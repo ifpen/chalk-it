@@ -16,6 +16,7 @@ import {
 } from './editor.events';
 import { keyShift, minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
 import { getWidgetLayoutPx, getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
+import { editorSingletons } from 'kernel/editor-singletons';
 
 angular.module('modules.editor').controller('EditorController', [
   '$scope',
@@ -603,7 +604,7 @@ angular.module('modules.editor').controller('EditorController', [
       const elementIds = _getSelection();
       if (elementIds && elementIds.length > 1) {
         const targetId = elementIds[0];
-        const target = widgetEditor.widgetContainers.get(targetId).divModel;
+        const target = editorSingletons.widgetEditor.widgetContainers.get(targetId).divModel;
         const targetPos = getElementLayoutPx(target);
         if (param == 'HeightWidth') {
           const action1 = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width, false);
@@ -683,7 +684,7 @@ angular.module('modules.editor').controller('EditorController', [
       //put list at dropperD level (for zindex issues). However selection is lost, so we need to put it back
       const id = 'menuWidget';
       const name = $('#' + id)[0].getAttribute('name');
-      widgetEditor.selectWidget($('#' + name)[0]);
+      editorSingletons.widgetEditor.selectWidget($('#' + name)[0]);
     }
 
     function _clickOnDataConnection(check) {
