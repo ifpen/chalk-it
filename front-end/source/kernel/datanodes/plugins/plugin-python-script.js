@@ -25,13 +25,13 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
       }
     }
 
-    var DEFAULT_BACKEND = {
+    let DEFAULT_BACKEND = {
       name: 'Pyodide',
       id: '__PYODIDE__',
     };
 
     if (xDashConfig['disableLocalServer'] == 'false') {
-      var DEFAULT_BACKEND = {
+      DEFAULT_BACKEND = {
         name: PythonPluginRemoteExec.DEFAULT_IMAGE_NAME,
         id: PythonPluginRemoteExec.DEFAULT_IMAGE_ID,
       };
@@ -330,7 +330,7 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
         const [, widgetIds] = datanodesManager.isConnectedWithWidgt(dsName);
 
         if (widgetIds?.length) {
-          function createOutputRadio(widgetId) {
+          const createOutputRadio = (widgetId) => {
             const divRadio = document.createElement('div');
             divRadio.style.display = 'inline-block';
             divRadio.style.padding = '0rem 1rem 0rem 0rem';
@@ -349,7 +349,7 @@ if (PythonPluginRemoteExec.isSupported() || PythonPluginLocalExec.isSupported())
             divRadio.appendChild(label);
 
             return divRadio;
-          }
+          };
 
           const divOutputSel = document.createElement('div');
           divOutputSel.style['margin-bottom'] = '1rem';

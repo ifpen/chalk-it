@@ -14,10 +14,6 @@ export const JSONEdit = function () {
   let jsonEd;
   let currentMode = 'code';
 
-  function setAssetRoot(_assetRoot) {
-    assetRoot = _assetRoot;
-  }
-
   function loadJSON() {
     jsonEd = datanodesManager.getJsonEditor();
     // Check for the various File API support.
