@@ -1,4 +1,5 @@
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { datanodeModel } from 'kernel/datanodes/base/DatanodeModel';
 
 (function () {
   var error = false;

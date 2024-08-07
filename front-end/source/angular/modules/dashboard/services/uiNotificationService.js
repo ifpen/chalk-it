@@ -41,7 +41,7 @@ export class UiNotifications {
    * @param {boolean} dismissable if true, message can be dismissed with a click
    */
   notify(notification, dismissable = true) {
-    new PNotify({
+    const notice = new PNotify({
       type: DEFAULT_TYPE,
       delay: DEFAULT_DELAY,
       styling: 'bootstrap3',
