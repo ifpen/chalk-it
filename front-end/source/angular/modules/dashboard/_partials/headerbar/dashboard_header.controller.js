@@ -6,6 +6,7 @@
 // ├─────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ameur HAMDOUNI, Ghiles HIDEUR    │ \\
 // └─────────────────────────────────────────────────────────────────────────────────────┘ \\
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 angular.module('modules.headerbar').controller('DashboardHeaderController', [
   '$scope',

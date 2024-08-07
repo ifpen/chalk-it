@@ -6,6 +6,16 @@
 // ├────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ameur HAMDOUNI              │ \\
 // └────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import {
+  PREVIEW_JSON_FORMAT,
+  VIEW_JSON_FORMAT,
+  BROWSER_SUPPORTED_IMAGES,
+} from 'kernel/datanodes/plugins/thirdparty/utils';
+import { xdsjson } from 'kernel/datanodes/export/xdsjson';
+import { UiNotifications } from 'angular/modules/dashboard/services/uiNotificationService';
+import { saveAs } from 'file-saver';
 
 angular
   .module('modules.dashboard')

@@ -1,3 +1,9 @@
+import _ from 'lodash';
+import Papa from 'papaparse';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { b64EncodeUnicode, b64DecodeUnicode } from 'kernel/datanodes/plugins/thirdparty/utils';
+
 (function () {
   var error = false; //ABK
   // ## A Datanode Plugin
@@ -258,7 +264,7 @@
 
     /* This is some function where I'll get my data from somewhere */
     function nextData() {
-      const newData = {};
+      let newData = {};
       for (const col of Object.keys(parserResults.content)) {
         newData[col] = parserResults.content[col][nextRow];
       }

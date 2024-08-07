@@ -10,7 +10,7 @@
 // +--------------------------------------------------------------------¦ \\
 // |                           Plugin base                              | \\
 // +--------------------------------------------------------------------¦ \\
-function basePlugin(pluginDefinition = undefined) {
+export function basePlugin(pluginDefinition = undefined) {
   if (pluginDefinition) {
     this.pluginDefinition = pluginDefinition;
     // The alternative is legacy behavior and relies on the subclass having defined pluginDefinition before calling the parent constructor.

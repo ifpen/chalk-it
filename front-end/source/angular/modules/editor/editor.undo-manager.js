@@ -10,7 +10,7 @@
 /**
  * Interface of actions for the UndoManager
  */
-class UndoableAction {
+export class UndoableAction {
   constructor() {}
 
   /**
@@ -66,7 +66,7 @@ class UndoableAction {
   dispose() {}
 }
 
-class UndoManager {
+export class UndoManager {
   static UNDO_STACK_CHANGE_EVENT = 'UndoStackChange';
 
   /**

@@ -203,7 +203,7 @@
         	var evt = document.createEvent("CustomEvent");
         	evt.initCustomEvent(s, false, false, args);
         	return evt;
-        };
+        }
 
         this.open = function (reconnectAttempt) {
             ws = new WebSocket(self.url, protocols || []);
@@ -287,7 +287,7 @@
                 }
                 eventTarget.dispatchEvent(generateEvent('error'));
             };
-        }
+        };
 
         // Whether or not to create a websocket upon instantiation
         if (this.automaticOpen == true) {

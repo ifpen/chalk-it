@@ -6,6 +6,7 @@
 // ├───────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                 │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 angular.module('modules.headerbar').service('NotificationService', [
   '$rootScope',

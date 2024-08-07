@@ -1,8 +1,12 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ DatanodeModel : fork from freeboard                                │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
+import _ from 'lodash';
 
-function DialogBox(contentElement, title, okTitle, cancelTitle, okCallback, cancelCallback) {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { htmlExport } from 'kernel/general/export/html-export';
+
+export function DialogBox(contentElement, title, okTitle, cancelTitle, okCallback, cancelCallback) {
   var param;
   var OkClbkParam;
   // Initialize our modal overlay
@@ -28,8 +32,7 @@ function DialogBox(contentElement, title, okTitle, cancelTitle, okCallback, canc
     if (e.keyCode === 27) {
       // ESC
 
-      if (cancelTitle) {
-      } else {
+      if (!cancelTitle) {
         okFunction();
       }
     }
@@ -97,11 +100,11 @@ function DialogBox(contentElement, title, okTitle, cancelTitle, okCallback, canc
   overlay.fadeIn(200);
 }
 
-function DialogBoxForToolboxEdit(contentElement, title, okTitle, cancelTitle, okCallback) {
+export function DialogBoxForToolboxEdit(contentElement, title, okTitle, cancelTitle, okCallback) {
   DialogBox(contentElement, title, okTitle, cancelTitle, okCallback);
 }
 
-function DialogBoxForData(contentElement, title, okTitle, cancelTitle, okCallback) {
+export function DialogBoxForData(contentElement, title, okTitle, cancelTitle, okCallback) {
   DialogBox(contentElement, title, okTitle, cancelTitle, okCallback);
 
   if (!_.isUndefined($('#check-all'))) {
@@ -132,7 +135,7 @@ function DialogBoxForData(contentElement, title, okTitle, cancelTitle, okCallbac
   }
 }
 
-function DialogBoxForDuplicateData(contentElement, title, okTitle, cancelTitle, okCallback) {
+export function DialogBoxForDuplicateData(contentElement, title, okTitle, cancelTitle, okCallback) {
   DialogBoxForData(contentElement, title, okTitle, cancelTitle, okCallback);
 
   if (!_.isUndefined($('.data-check-input')[0])) {

@@ -6,6 +6,10 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR                                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+
+import { htmlExport } from 'kernel/general/export/html-export';
+import { editorSingletons } from 'kernel/editor-singletons';
 
 class CustomNavigationRuntime {
   #grid;
@@ -35,7 +39,7 @@ class CustomNavigationRuntime {
   /**
    * customNavigationModeInit
    *
-   * @param { Object } jsonContent - project xprjson
+   * @param { Object } _jsonContent - project xprjson
    */
   customNavigationModeInit(jsonContent) {
     const numDefaultPage = Number(jsonContent.pages.defaultPage.id);
@@ -70,6 +74,7 @@ class CustomNavigationRuntime {
     let exportOptions = '';
     let rows, cols;
 
+    const layoutMgr = editorSingletons.layoutMgr;
     // Do not run in edit mode
     // Do not run in runtime mode if jsonContent is empty
     if (
@@ -153,4 +158,4 @@ class CustomNavigationRuntime {
   }
 }
 
-const customNavigationRuntime = new CustomNavigationRuntime();
+export const customNavigationRuntime = new CustomNavigationRuntime();

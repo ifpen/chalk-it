@@ -7,6 +7,10 @@
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
+import _ from 'lodash';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+
 function navigationHelperClass() {
   this.gotoMyProjects = function () {
     const $body = angular.element(document.body); // 1
@@ -52,7 +56,7 @@ function navigationHelperClass() {
     FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + 'xprjson', function (msg1, msg2, type) {
       //AEF: fix bug add params and test on it
       if (type === 'success') {
-        xdash.openProjectManager(msg1);
+        runtimeSingletons.xdash.openProjectManager(msg1);
         $rootScope.loadingBarStop();
         $rootScope.currentProject.name = projectName;
         if (_.isFunction(callback)) callback();
@@ -64,4 +68,4 @@ function navigationHelperClass() {
   };
 }
 
-var navHelper = new navigationHelperClass();
+export const navHelper = new navigationHelperClass();

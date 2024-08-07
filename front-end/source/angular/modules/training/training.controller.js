@@ -1,3 +1,6 @@
+import { xDashConfig } from 'config.js';
+import template from 'angular/modules/training/training.html';
+
 angular
   .module('modules.training')
   .config([
@@ -7,7 +10,7 @@ angular
         userNotAuthenticated: true,
         userAuthenticated: false,
         url: '/',
-        templateUrl: 'source/angular/modules/training/training.html',
+        template,
         controller: 'TrainingController',
       });
     },

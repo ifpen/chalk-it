@@ -1,6 +1,6 @@
-require('./JSEditorCompletion.js');
+import { JSEditorCompletion } from './JSEditorCompletion';
 
-var assert = require('assert');
+import assert from 'assert';
 
 describe('JSEditorCompletion', function () {
   function _pseudoDs(name, data) {

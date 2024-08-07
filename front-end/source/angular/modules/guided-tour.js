@@ -6,7 +6,11 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Mondher AJIMI, Ghiles HIDEUR  │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import { navHelper } from 'angular/modules/navigation-helper';
+import introJs from 'intro.js';
+import { xDashConfig } from 'config.js';
 
+// TODO unused ?
 function startIntroGallery() {
   const intro = introJs();
 
@@ -46,7 +50,7 @@ function startIntroGallery() {
 }
 
 /*--------startIntro --------*/
-function startIntroProject() {
+export function startIntroProject() {
   const isTaipyLink = xDashConfig.taipyLink === 'true';
   const intro = introJs();
   const commonSteps = [

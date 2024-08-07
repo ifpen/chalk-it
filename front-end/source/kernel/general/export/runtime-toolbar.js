@@ -1,4 +1,6 @@
-﻿var runtimeToolbar = (function () {
+﻿import { xDashConfig } from 'config.js';
+
+var runtimeToolbar = (function () {
   var toolbar = [
     '<div class="top-nav" ng-if="showNavBar">',
     '   <nav class="top-nav__menu" id="nav-menu">',

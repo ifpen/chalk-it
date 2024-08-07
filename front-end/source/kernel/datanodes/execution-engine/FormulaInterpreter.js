@@ -7,7 +7,25 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, datanodesDependency) {
+import { xDashConfig } from 'config.js';
+import _ from 'lodash';
+import Papa from 'papaparse';
+import * as d3 from 'd3';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { offSchedLogUser } from 'kernel/base/main-common';
+import { chalkit } from 'kernel/general/interfaces/chalkit-api';
+import { xDashApi } from 'kernel/general/interfaces/xdash-api';
+
+// Libraries provided to user scripts as arguments
+const libs = [Papa, _, d3, chalkit, xDashApi];
+const libNames = ['Papa', '_', 'd3', 'chalkit', 'xDashApi'];
+
+function createScriptFunction(body) {
+  return new Function(['dataNodes', ...libNames], body);
+}
+
+export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, datanodesDependency) {
   var self = this;
   self.bCalculatedSettings = true;
 
@@ -16,7 +34,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
     //keep info of the current dataNode
     datanodesManager.setCurrentDataNode(datanodeModel.name());
 
-    return theFunction.call(undefined, datanodesListModel.datasourceData);
+    return theFunction.call(null, datanodesListModel.datasourceData, ...libs);
   };
 
   /*--------processCalculatedSetting--------*/
@@ -29,6 +47,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
         'dataNodes.([\\w\\-]{1,}\\.{0,}[\\w\\-]{0,})|dataNodes\\[[\'"]([\\w\\\\\\-]{1,})[\'"]\\]((\\[[\'"]([\\w\\W]){1,}[\'"](?=\\])\\])){0,1}',
         'g'
       );
+      let matches;
       while ((matches = datanodeRegex.exec(lines[i]))) {
         // find all datanodes in line i
         let dsName;
@@ -58,7 +77,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
         }
 
         try {
-          let valueFct = new Function('dataNodes', dsEval);
+          const valueFct = createScriptFunction(dsEval);
           self.callValueFunction(valueFct);
         } catch (e) {
           datanodeModel.statusCallback('Error', e.message);
@@ -185,7 +204,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
 
           if (settingDef.type != 'custom2') {
             try {
-              valueFunction = new Function('dataNodes', script);
+              valueFunction = createScriptFunction(script);
             } catch (e) {
               const text = e + '.\n Formula interpreted as literal text';
               datanodeModel.notificationCallback(
@@ -199,7 +218,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               // return; // MBG to uncomment if no parse error tolerance is required
               const literalText = currentSettings[settingDef.name].replace(/"/g, '\\"').replace(/[\r\n]/g, ' \\\n');
               // If the value function cannot be created, then go ahead and treat it as literal text
-              valueFunction = new Function('dataNodes', 'return "' + literalText + '";');
+              valueFunction = createScriptFunction('return "' + literalText + '";');
             }
           }
 
@@ -287,7 +306,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
             setVarRegex.lastIndex = 0;
             if (_.isNull(setVarRegex.exec(lines[i]))) {
               if (_.isNull(lines[i].match(patternRegex))) {
-                line = lines[i].replace(/(['"])(?:\\.|(?!\1)[^\\\n])*\1/g, ''); //remove strings
+                const line = lines[i].replace(/(['"])(?:\\.|(?!\1)[^\\\n])*\1/g, ''); //remove strings
                 if (!_.isNull(line.match(/(chalkit|xDashApi)\.[^\s()]+\(/))) {
                   //Warning for chalkit js api
                   const text = 'Syntax error in chalkit API';
@@ -300,7 +319,9 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           datanodesDependency.removeMissedDependantDatanodes(allDsNames, datanodeModel.name());
 
           if (!bForceAutoStart && !datanodeModel.settings().autoStart && datanodeModel.settings().explicitTrig) {
-            if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log("init: don't process calculate");
+            if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) {
+              console.log("init: don't process calculate");
+            }
             return;
           }
 

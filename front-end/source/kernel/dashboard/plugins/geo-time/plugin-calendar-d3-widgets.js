@@ -6,6 +6,13 @@
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Benoit LEHMAN, Tristan BARTEMENT, Guillaume CORBELIN   │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import * as d3 from 'd3';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -69,7 +76,7 @@ function calendarD3WidgetPluginClass() {
       );
       widgetHtml.setAttribute('id', 'div-for-calendarD3' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       const bbox = widgetHtml.getBoundingClientRect();
       const width = bbox.width;
       const heightDiv = bbox.height;
@@ -222,7 +229,7 @@ function calendarD3WidgetPluginClass() {
         // Compute titles.
         formatDate = d3.timeFormat('%B %-d, %Y');
         formatValue = color.tickFormat(100, yFormat);
-        title = (i) => `${formatDate(X[i])}\n${formatValue(Y[i])}`;
+        const title = (i) => `${formatDate(X[i])}\n${formatValue(Y[i])}`;
       }
 
       function pathMonth(t) {

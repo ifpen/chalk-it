@@ -1,9 +1,8 @@
 
 var xdashAddr = "";
 var xdashDocAddr = "";
-var connectString = "";
 var bIsBasicVersion = false;
-// please don't remove this line because it used by gulp to inject the new value of the above declarations **
+// ** Insert configuration here ** // Do not remove
 
 xdashAddr = xdashAddr + "index.html";
 

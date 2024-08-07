@@ -6,8 +6,24 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 
-var widgetPreview = (function () {
+import { rescaleHelper } from 'kernel/dashboard/scaling/rescale-helper';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { getMedia, isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { htmlExport } from 'kernel/general/export/html-export';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { editorSingletons } from 'kernel/editor-singletons';
+
+import { reconstructFoundations } from 'kernel/dashboard/rendering/reconstruct-foundations';
+import { rescaleWidget } from 'kernel/base/main-common';
+import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
+import { rowToTabRuntime } from 'kernel/runtime/row-to-tab-runtime';
+import { rowToPageRuntime } from 'kernel/runtime/row-to-page-runtime';
+
+export const widgetPreview = (function () {
   var widget = [];
   var previewDimensionsSnapshot;
   var targetScalingMethod = 'scaleTwh';
@@ -49,27 +65,25 @@ var widgetPreview = (function () {
   /**
    * Rebuilds Widget in Preview Mode
    * Uses widgets pluging's "copy" method instead of create
-   * @param {any} instanceId
+   * @param {str} instanceId
    */
   function rebuildWidgetInPreviewMode(instanceId) {
-    let elementId = instanceId + 'c';
-    var element = document.getElementById(elementId);
-    var modelJsonIdStr = element.id.substring(0, element.id.length - 2);
-    var instanceId = element.id.substring(0, element.id.length - 1);
-    var widgetContainer = element.firstElementChild;
-    //
-    for (var ch = element.childNodes.length - 1; ch >= 0; ch--) element.removeChild(element.childNodes[ch]);
+    const elementId = instanceId + 'c';
+    const element = document.getElementById(elementId);
+    const modelJsonIdStr = elementId.substring(0, elementId.length - 2);
+    const widgetContainer = element.firstElementChild;
+    const wcId = widgetContainer.id;
 
-    var div = document.createElement('div');
+    for (let ch = element.childNodes.length - 1; ch >= 0; ch--) element.removeChild(element.childNodes[ch]);
+
+    const div = document.createElement('div');
     div.style.height = unitH(element.offsetHeight - 2);
     div.style.width = unitW(element.offsetWidth - 2);
     div.style.minWidth = parseFloat(element.style.minWidth) - 5 + 'px';
     div.style.minHeight = parseFloat(element.style.minHeight) - 5 + 'px';
-
+    div.id = wcId;
     element.appendChild(div);
-    div.id = widgetContainer.id; //wcId
-    //
-    var wcId = widgetContainer.id;
+
     widget[instanceId] = widgetsPluginsHandler.copyWidget(wcId, modelJsonIdStr, widget[instanceId], instanceId, true);
     widgetsErrorState[instanceId] = false;
     return instanceId;
@@ -79,8 +93,8 @@ var widgetPreview = (function () {
    * Prepares preview mode containers 'dashboard-zone' & 'DropperDroitec'
    * */
   function preparePreviewModeContainer() {
-    var xprjson = xdash.serialize();
-    xprjson.scaling = widgetEditor.getSnapshotDashZoneDims(); // patch
+    var xprjson = runtimeSingletons.xdash.serialize();
+    xprjson.scaling = editorSingletons.widgetEditor.getSnapshotDashZoneDims(); // patch
     var divDest = document.getElementById('dashboard-zone');
     var dprDc = document.createElement('div');
     dprDc.id = 'DropperDroitec';
@@ -100,7 +114,7 @@ var widgetPreview = (function () {
     // cleanup : here make a reset not a clear
     reset();
     // get preview dimensions for scaling
-    previewDimensionsSnapshot = widgetEditor.getSnapshotDashZoneDims();
+    previewDimensionsSnapshot = editorSingletons.widgetEditor.getSnapshotDashZoneDims();
 
     // set scaling information
     scalingHelper.setDimensions(previewDimensionsSnapshot);
@@ -128,7 +142,7 @@ var widgetPreview = (function () {
         if (widget[propName] != null) {
           if (widget[propName].getByName(sliderName) != null) {
             //getting slider object
-            slider = widget[propName].getByName(sliderName);
+            const slider = widget[propName].getByName(sliderName);
             slider.addValueChangedHandler(updateDataFromWidget);
           }
         }
@@ -275,8 +289,8 @@ var widgetPreview = (function () {
       var divId = widgetConnector.widgetsConnection[instanceId].instanceId + 'c';
       if (!_.isUndefined($('#' + divId)[0])) {
         if ($('#' + divId)[0].style.border != '3px groove #e40000') {
-          w = parseFloat($('#' + divId)[0].style.width) + 1;
-          h = parseFloat($('#' + divId)[0].style.height) + 1;
+          const w = parseFloat($('#' + divId)[0].style.width) + 1;
+          const h = parseFloat($('#' + divId)[0].style.height) + 1;
           $('#' + divId)[0].style.width = w + 'vw';
           $('#' + divId)[0].style.height = h + 'vh';
           $('#' + divId)[0].style.border = '3px groove #e40000';
@@ -304,8 +318,8 @@ var widgetPreview = (function () {
     if (!_.isUndefined($('#' + divId)[0])) {
       if ($('#' + divId)[0].style.border != '1px solid rgba(255, 255, 255, 0)') {
         //AEF: fix border
-        w = parseFloat($('#' + divId)[0].style.width) - 1;
-        h = parseFloat($('#' + divId)[0].style.height) - 1;
+        const w = parseFloat($('#' + divId)[0].style.width) - 1;
+        const h = parseFloat($('#' + divId)[0].style.height) - 1;
         $('#' + divId)[0].style.width = w + 'vw';
         $('#' + divId)[0].style.height = h + 'vh';
         $('#' + divId)[0].style.border = '1px solid rgba(255, 255, 255, 0)'; //AEF: fix border
@@ -331,7 +345,7 @@ var widgetPreview = (function () {
   function setDataOnWidget(instanceId, actuatorName, actuator, newData, status, last_updated, bCaptionManuallyChanged) {
     if ((_.isUndefined(newData) && last_updated != 'never') || status == 'Error') {
       // MBG
-      msg = 'Invalid data';
+      const msg = 'Invalid data';
       displayErrorOnWidget(instanceId, actuatorName, msg);
       return; // MBG : security. To invalidate widgets instead
     }
@@ -578,21 +592,21 @@ var widgetPreview = (function () {
 
   /*--------reset--------*/
   function reset() {
-    for (var property in widget) {
+    for (const property in widget) {
       delete widget[property];
     }
     $('#dashboard-zone').html('');
 
-    for (var property in widthRatioModels) {
+    for (const property in widthRatioModels) {
       delete widthRatioModels[property];
     }
-    for (var property in heightRatioModels) {
+    for (const property in heightRatioModels) {
       delete heightRatioModels[property];
     }
-    for (var property in leftRatioModels) {
+    for (const property in leftRatioModels) {
       delete leftRatioModels[property];
     }
-    for (var property in topRatioModels) {
+    for (const property in topRatioModels) {
       delete topRatioModels[property];
     }
     lastMediaInPreview = '';

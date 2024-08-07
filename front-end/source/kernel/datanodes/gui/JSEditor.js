@@ -1,4 +1,24 @@
-JSEditor = function () {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { checkES6, checkES7, checkES8, checkES9, checkES10 } from 'kernel/datanodes/plugins/thirdparty/utils';
+
+// FIXME
+// import { assertEditorOnly } from 'kernel/utils/asserts';
+// assertEditorOnly();
+
+// TODO
+import 'codemirror/addon/comment/comment';
+import 'codemirror/addon/comment/continuecomment';
+import 'codemirror/addon/edit/matchbrackets';
+import 'codemirror/addon/hint/show-hint';
+import 'codemirror/mode/javascript/javascript';
+import CodeMirror from 'codemirror';
+import { JSHINT } from 'jshint';
+import { JSEditorCompletion } from './JSEditorCompletion';
+import './JSEditorFormatting';
+
+export function JSEditor() {
   var assetRoot = '';
 
   function setAssetRoot(_assetRoot) {
@@ -65,7 +85,7 @@ JSEditor = function () {
 
     function updateHints() {
       editor.operation(function () {
-        for (var i = 0; i < widgets.length; ++i) {
+        for (let i = 0; i < widgets.length; ++i) {
           editor.removeLineWidget(widgets[i]);
         }
         widgets.length = 0;
@@ -77,7 +97,7 @@ JSEditor = function () {
         var value = '/*jshint esversion:' + es + '*/\n' + editor.getValue(); // MBG 17/01/2020 restore old feeling
         JSHINT(value);
 
-        for (var i = 0; i < JSHINT.errors.length; ++i) {
+        for (let i = 0; i < JSHINT.errors.length; ++i) {
           var err = JSHINT.errors[i];
           if (!err) continue;
           var msg = document.createElement('div');
@@ -156,7 +176,7 @@ JSEditor = function () {
     //
     // MBG 24/03/2021
 
-    [bFoundConnection, prop] = datanodesManager.isConnectedWithWidgt(dsName);
+    const [bFoundConnection, prop] = datanodesManager.isConnectedWithWidgt(dsName);
     if (bFoundConnection) {
       var widgetSelect =
         '<div style="display: table-cell; padding: 10px">' + '<span>Connected widget(s): </span>' + '</div>';
@@ -272,7 +292,7 @@ JSEditor = function () {
         callback(newValue);
         // MBG 25/03/2021
         if ($('#dialog-widget').text() == 'Hide widget') {
-          instanceId = prop[0];
+          const instanceId = prop[0];
           if (widgetConnector.widgetsConnection[instanceId] != null) {
             widgetConnector.widgetsConnection[instanceId].widgetObjEdit = null;
             widgetConnector.widgetsConnection[instanceId].widgetObjConnect = null;
@@ -317,7 +337,7 @@ JSEditor = function () {
 
     function updateHints() {
       editor.operation(function () {
-        for (var i = 0; i < widgets.length; ++i) {
+        for (let i = 0; i < widgets.length; ++i) {
           editor.removeLineWidget(widgets[i]);
         }
         widgets.length = 0;
@@ -329,7 +349,7 @@ JSEditor = function () {
         var value = '/*jshint esversion:' + es + '*/\n' + editor.getValue(); // MBG 17/01/2020 restore old feeling
         JSHINT(value);
 
-        for (var i = 0; i < JSHINT.errors.length; ++i) {
+        for (let i = 0; i < JSHINT.errors.length; ++i) {
           var err = JSHINT.errors[i];
           if (!err) continue;
           var msg = document.createElement('div');
@@ -433,4 +453,4 @@ JSEditor = function () {
       setAssetRoot(assetRoot);
     },
   };
-};
+}

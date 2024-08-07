@@ -7,6 +7,10 @@
 // │ Original authors(s): Mongi BEN GAID, Ghiles HIDEUR                 │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -68,7 +72,7 @@ function pyodideWidgetsPluginClass() {
       let displayStyle = 'display: inherit;';
       if (!showWidget) {
         displayStyle = 'display: none;';
-      } 
+      }
       const enableWidget = this.enableWidget();
       let enableStyle = 'pointer-events: initial; opacity:initial;';
       if (!enableWidget) {
@@ -83,7 +87,7 @@ function pyodideWidgetsPluginClass() {
           displayStyle +
           enableStyle
       );
-
+      this.applyDisplayOnWidget();
       let size_x = $('#' + idDivMatplotlib).width() / dpi_x;
       let size_y = $('#' + idDivMatplotlib).height() / dpi_y;
 
@@ -94,10 +98,9 @@ function pyodideWidgetsPluginClass() {
       const img_url = 'data:' + output.type + ';base64,' + output.content;
       img_bin.attr('src', img_url);
 
-      img_bin[0].style.width = 'inherit'; 
+      img_bin[0].style.width = 'inherit';
       img_bin[0].style.height = 'inherit';
-      img_bin[0].style["object-fit"] = 'contain';
-
+      img_bin[0].style['object-fit'] = 'contain';
     };
 
     const _FIG_DESCRIPTOR = new WidgetActuatorDescription(

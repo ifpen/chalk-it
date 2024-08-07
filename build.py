@@ -18,8 +18,26 @@ import os
 from dotenv import dotenv_values
 from datetime import datetime
 import json
+import argparse
+
+# Create the parser
+parser = argparse.ArgumentParser(description="Process the build type.")
+
+# Add the build_type optional argument
+parser.add_argument(
+    "--buildtype",
+    choices=["pip", "hosted"],
+    default="pip",
+    help="Specify the type of build: 'pip' or 'hosted'.",
+)
+
+# Parse the arguments
+args = parser.parse_args()
 
 BUILD_FRONT_END = True
+BUILD_TYPE = args.buildtype
+
+print("building for target: ", BUILD_TYPE)
 
 # Set source and destination directories
 src_dir = "assets/install"
@@ -105,12 +123,6 @@ if BUILD_FRONT_END:
         and os.path.isdir("./front-end/node_modules")
     ):
         run_npm("npm", "install")
-
-    if not (
-        os.path.exists("./front-end/bower_components")
-        and os.path.isdir("./front-end/bower_components")
-    ):
-        run_npm("bower", "install")
 
     # Run npm build command in front-end directory
     if isLiteBuild:

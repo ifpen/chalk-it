@@ -1,4 +1,11 @@
-﻿class PythonPluginExecBase {
+﻿import _ from 'lodash';
+import 'json_parseMore';
+import { xDashConfig, urlPython } from 'config.js';
+import { pyodideManager } from 'kernel/base/pyodide-loader';
+import { chalkit } from 'kernel/general/interfaces/chalkit-api';
+import { getAuthorizationHeaders } from 'angular/modules/components/auth-utils';
+
+export class PythonPluginExecBase {
   static ABORT_ERROR = 'ABORT';
   static DISCONNECTED_ERROR = 'DISCONNECTED';
   static SIGNATURE_ERROR = 'SIGNATURE INVALID';
@@ -75,7 +82,7 @@
   dispose() {}
 }
 
-class PythonPluginLocalExec extends PythonPluginExecBase {
+export class PythonPluginLocalExec extends PythonPluginExecBase {
   static PSEUDO_IMAGE_NAME = 'Pyodide';
   static PSEUDO_IMAGE_ID = '__PYODIDE__';
 
@@ -110,7 +117,7 @@ script(dataNodes)
   }
 }
 
-class PythonPluginRemoteExec extends PythonPluginExecBase {
+export class PythonPluginRemoteExec extends PythonPluginExecBase {
   static DEFAULT_IMAGE_NAME = 'Default';
   static DEFAULT_IMAGE_ID = '';
 

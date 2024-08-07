@@ -7,6 +7,12 @@
 // │ Original authors(s): Ameur HAMDOUNI, Mongi BEN GAID, Tristan BARTEMENT,     │ \\
 // │                      Guillaume CORBELIN                                     │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -110,6 +116,7 @@ function doubleSliderWidgetsPluginClass() {
       widgetHtml.setAttribute('id', 'div-for-ng-slider' + idWidget);
 
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var sliderSize = Math.min(
         $('#div-for-ng-slider' + idWidget).width(),
         $('#div-for-ng-slider' + idWidget).height()
@@ -276,7 +283,7 @@ function doubleSliderWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         var val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsHiddenParams[idInstance].minValue = val;
@@ -321,7 +328,7 @@ function doubleSliderWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         var val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsHiddenParams[idInstance].maxValue = val;
@@ -366,7 +373,7 @@ function doubleSliderWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         var val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsParameters[idInstance].maxRange = val;
@@ -413,7 +420,7 @@ function doubleSliderWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         var val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val !== 'number') {
           return;
         }
         modelsParameters[idInstance].minRange = val;

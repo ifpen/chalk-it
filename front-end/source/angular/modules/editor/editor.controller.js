@@ -5,6 +5,17 @@
 // ├───────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                            │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { UndoableAction, UndoManager } from './editor.undo-manager';
+import {
+  EVENTS_EDITOR_SELECTION_CHANGED,
+  EVENTS_EDITOR_ADD_REMOVE_WIDGET,
+  EVENTS_EDITOR_CONNECTIONS_CHANGED,
+} from './editor.events';
+import { keyShift, minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
+import { getWidgetLayoutPx, getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
 
 angular.module('modules.editor').controller('EditorController', [
   '$scope',
@@ -38,8 +49,6 @@ angular.module('modules.editor').controller('EditorController', [
     const selection_event = EVENTS_EDITOR_SELECTION_CHANGED;
     const add_remove_widget_event = EVENTS_EDITOR_ADD_REMOVE_WIDGET;
     const connnection_update_event = EVENTS_EDITOR_CONNECTIONS_CHANGED;
-
-    var copiedWidget;
 
     var copiedWidget;
 
@@ -400,9 +409,9 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     function _hasConnection() {
-      for (connections of Object.values(widgetConnector.widgetsConnection)) {
+      for (const connections of Object.values(widgetConnector.widgetsConnection)) {
         if (connections.sliders) {
-          for (slider of Object.values(connections.sliders)) {
+          for (const slider of Object.values(connections.sliders)) {
             if (slider.dataNode !== 'None' || slider.dataFields.length) {
               return true;
             }
@@ -471,6 +480,28 @@ angular.module('modules.editor').controller('EditorController', [
       }
     };
 
+    function _getWidgName() {
+      const elementIds = _getSelection();
+      if (elementIds && elementIds.length) {
+        const textToCopy = elementIds[0];
+        navigator.clipboard
+          .writeText(textToCopy)
+          .then(() => {
+            const notice = new PNotify({
+              title: 'Copy widget name',
+              text: 'Widget name ' + textToCopy + ' copied to clipboard!',
+              type: 'success',
+              styling: 'bootstrap3',
+            });
+            $('.ui-pnotify-container').on('click', function () {
+              notice.remove();
+            });
+          })
+          .catch((err) => {
+            console.error('Failed to copy widget name: ', err);
+          });
+      }
+    }
     vm.backgroundWidg = function _backgroundWidg() {
       const elementIds = _getSelection();
       if (elementIds && elementIds.length) {
@@ -718,6 +749,12 @@ angular.module('modules.editor').controller('EditorController', [
       _hideWidgMenu();
       let scope = angular.element(document.getElementById('panel--right')).scope();
       $scope.setRightContent('Graphical Properties', scope.vmd);
+    };
+
+    vm.getWidgetName = function _getWidgetName() {
+      _reselectWidg();
+      _hideWidgMenu();
+      _getWidgName();
     };
 
     vm.foregroundWidget = function _foregroundWidget() {
@@ -1027,5 +1064,7 @@ angular.module('modules.editor').controller('EditorController', [
         document.removeEventListener('keydown', _onkeydown);
       }
     });
+
+    $rootScope.loadedTemplate();
   },
 ]);

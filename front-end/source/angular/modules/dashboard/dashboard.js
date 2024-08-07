@@ -7,7 +7,13 @@
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                     │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
-angular.module('modules.dashboard', []).config([
+export const dashState = {
+  tabActive: 'widgets',
+  modeActive: 'edit-dashboard',
+  editorStatus: 'full',
+};
+
+export const dashboardModule = angular.module('modules.dashboard', []).config([
   '$stateProvider',
   function ($stateProvider) {
     $stateProvider.state('modules.dashboard', {
@@ -15,7 +21,7 @@ angular.module('modules.dashboard', []).config([
       userAuthenticated: false,
       abstract: true,
       url: '/dashboard',
-      templateUrl: '',
+      template: '',
     });
   },
 ]);

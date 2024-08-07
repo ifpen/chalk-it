@@ -7,6 +7,12 @@
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI, Benoît LEHMAN,  │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
+import { WidgetActuatorDescription, WidgetActuatorValidationError } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import Plotly from 'plotly.js/dist/plotly';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -392,7 +398,6 @@ function plotlyWidgetsPluginClass() {
   // |                         createPlotlyDiv                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function createPlotlyDiv(idDivContainer, pId, bInteractive) {
-    const self = this;
     const widgetHtml = document.createElement('div');
     let idDivPlotly = 'plotly' + pId;
     if (bInteractive) {
@@ -472,6 +477,18 @@ function plotlyWidgetsPluginClass() {
         return modelsParameters[idInstance].showWidget;
       } else {
         return true;
+      }
+    };
+    this.applyDisplayOnWidget = function () {
+      if (bInteractive) {
+        const widgetObj = $('#' + idInstance + 'c');
+        if (!_.isUndefined(widgetObj)) {
+          if (!modelsParameters[idInstance].showWidget) {
+            widgetObj.hide();
+          } else {
+            widgetObj.show();
+          }
+        }
       }
     };
     // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
@@ -610,7 +627,7 @@ function plotlyWidgetsPluginClass() {
       );
 
       $('#' + idDivPlotly).html('');
-
+      this.applyDisplayOnWidget();
       const data = modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data;
       /* MBG issue bad width at runtime for Ploty widgets*/
       if (this.bIsInteractive) {
@@ -691,8 +708,8 @@ function plotlyWidgetsPluginClass() {
               }
 
               if (!_.isUndefined(point.pointNumbers)) {
-                const traceNumber = point.pointNumbers.curveNumber;
-                pointNumbers.forEach(function (d) {
+                const traceNumber = point.curveNumber;
+                point.pointNumbers.forEach(function (d) {
                   dataSelected[traceNumber].push(d);
 
                   if (!_.isUndefined(graphDiv.data[traceNumber].customdata)) {
@@ -1400,7 +1417,7 @@ function plotlyWidgetsPluginClass() {
   };
 }
 
-const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
+export const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

@@ -6,14 +6,35 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import angular from 'angular';
+import { xDashConfig } from 'config.js';
+import { pythonImagesModule } from './python/python-images.module.js';
+import { discoverModule } from './discover/discover.module.js';
+import { headerbarModule } from './headerbar/headerbar.module.js';
+import { cardsModule } from './cards/cards.module.js';
+import { sidebarModule } from './sidebar/sidebar.module.js';
+import { trainingModule } from './training/training.module.js';
+import { editorModule } from './editor/editor.module.js';
+import { modalsModule } from './modals/modals.module.js';
+
+import defaultLayoutTemplate from '../templates/layout/default.html';
+import footerBarTemplate from '../templates/partials/footerBar.html';
+
 const xDashLiteVersion = xDashConfig.xDashLiteVersion == 'true';
-const moduleDependencies = ['modules.headerbar', 'modules.editor', 'modules.sidebar', 'modules.discover', 'modules.training'];
+const moduleDependencies = [
+  headerbarModule.name,
+  editorModule.name,
+  modalsModule.name,
+  sidebarModule.name,
+  discoverModule.name,
+  trainingModule.name
+];
 
 if (!xDashLiteVersion) {
-  moduleDependencies.push('modules.cards', 'modules.python-images');
+  moduleDependencies.push(cardsModule.name, pythonImagesModule.name);
 }
 
-angular
+export const modulesModule = angular
   .module('modules', moduleDependencies)
   .config([
     '$stateProvider',
@@ -41,7 +62,7 @@ angular
           ],
         },
         url: '?project',
-        templateUrl: 'source/angular/templates/layout/default.html',
+        template: defaultLayoutTemplate,
         controller: 'ModulesController',
       });
     },
@@ -87,3 +108,9 @@ angular
       },
     };
   });
+
+modulesModule.directive('footerBarTemplate', function () {
+  return {
+    template: footerBarTemplate,
+  };
+});

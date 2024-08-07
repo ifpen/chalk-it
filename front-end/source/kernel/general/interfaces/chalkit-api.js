@@ -6,8 +6,11 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { xDashConfig } from 'config.js';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
 
-var chalkit = (function () {
+export const chalkit = (function () {
   function setVariable(dataNodeName, varJsonValue) {
     const val = JSON.parse(JSON.stringify(varJsonValue));
     const currentDN = datanodesManager.getCurrentDataNode();
@@ -77,9 +80,9 @@ var chalkit = (function () {
 
   function executeDataNodes(dataNodeNames) {
     const currentDN = datanodesManager.getCurrentDataNode();
-    for (let i = 0; i < dataNodeNames.length; i++) {
-      if (datanodesManager.foundDatanode(dataNodeNames[i])) {
-        datanodesManager.datanodesDependency().addSetvarList(dataNodeNames[i], currentDN);
+    for (const element of dataNodeNames) {
+      if (datanodesManager.foundDatanode(element)) {
+        datanodesManager.datanodesDependency().addSetvarList(element, currentDN);
       } else {
         const dN = datanodesManager.getDataNodeByName(currentDN);
         dN.notificationCallback(
@@ -160,7 +163,7 @@ var chalkit = (function () {
     swal(title, msg, type);
   }
 
-  scheduler = (function () {
+  const scheduler = (function () {
     function setVariable(dataNodeName, varJsonValue) {
       chalkit.setVariable(dataNodeName, varJsonValue);
     }
@@ -185,7 +188,7 @@ var chalkit = (function () {
     };
   })();
 
-  dashboard = (function () {
+  const dashboard = (function () {
     function viewPage(pageUrl, inputVals, bNewTab) {
       chalkit.viewPage(pageUrl, inputVals, bNewTab);
     }
@@ -218,7 +221,7 @@ var chalkit = (function () {
     };
   })();
 
-  notification = (function () {
+  const notification = (function () {
     function notify(dataNodeName, msg, type) {
       chalkit.notify(dataNodeName, msg, type);
     }

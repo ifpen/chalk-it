@@ -6,6 +6,13 @@
 // ├──────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Ghiles HIDEUR                                          │ \\
 // └──────────────────────────────────────────────────────────────────────────────┘ \\
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -84,7 +91,7 @@ function spinnerStatusWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (!bInteractive) {
         self.addSpinner();
       }
@@ -102,7 +109,6 @@ function spinnerStatusWidgetsPluginClass() {
     };
 
     this.trigger = {
-      updateCallback: function () {},
       setValue: function (val) {
         const dnName = widgetConnector.widgetsConnection[idInstance].sliders['trigger'].dataNode;
         const dataNode = datanodesManager.getDataNodeByName(dnName);

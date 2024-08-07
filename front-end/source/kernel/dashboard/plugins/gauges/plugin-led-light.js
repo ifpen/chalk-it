@@ -6,6 +6,13 @@
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Tristan BARTEMENT, Guillaume CORBELIN  │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import 'w3color';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -254,7 +261,7 @@ function ledWidgetsPluginClass() {
       widgetHtml.setAttribute('style', 'height: inherit;' + displayStyle + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (this.bIsInteractive) {
         self.enable();
       } else {
