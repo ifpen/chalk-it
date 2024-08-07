@@ -33,6 +33,7 @@ import { xdsjson } from 'kernel/datanodes/export/xdsjson';
 import { offSchedLogUser } from 'kernel/base/main-common';
 import { schedulerProfiling } from 'kernel/datanodes/execution-engine/DatanodeScheduler';
 import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 import {
   EVENTS_EDITOR_DATANODE_CREATED,
   EVENTS_EDITOR_DATANODE_DELETED,
@@ -136,17 +137,15 @@ export const datanodesManager = (function () {
   function deleteTaipyDataNode(viewModel, dnName) {
     const $rootScope = angular.element(document.body).scope().$root;
     const [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
+    deleteDn(viewModel);
     if (bFoundConnection) {
       const wdList = prop.map((p) => widgetConnector.widgetsConnection[p].instanceId);
-      deleteDn(viewModel);
       if ($rootScope.bIsPlayMode) {
-        for (const key in widgetConnector.widgetsConnection) {
-          widgetPreview.plotConstantData(key, false);
+        for (const widget in widgetConnector.widgetsConnection) {
+          widgetPreview.plotConstantData(widget, false);
         }
       }
       taipyManager.deletedDnConnections.add({ dnName, wdList });
-    } else {
-      deleteDn(viewModel);
     }
   }
 

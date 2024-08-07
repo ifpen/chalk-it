@@ -9,6 +9,7 @@
 import _ from 'lodash';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                         displayLoadSpinner                         | \\
@@ -20,14 +21,14 @@ export function displayLoadSpinner(idWidget) {
   const iElement = document.createElement('i');
   let timeoutId;
 
-  this.disableButton = () => {
+  this.disableButton = function () {
     // disable until request finished
     aElement.classList.add('disabled');
     iElement.setAttribute('id', 'icon' + idWidget);
     iElement.setAttribute('class', 'fa fa-spinner fa-spin');
     aElement.append(iElement);
   };
-  this.enableButton = () => {
+  this.enableButton = function () {
     aElement.classList.remove('disabled');
     if (iElement) {
       iElement.remove();
@@ -35,12 +36,12 @@ export function displayLoadSpinner(idWidget) {
   };
 
   this.disableButton();
-  inputElement.onchange = () => {
+  inputElement.onchange = function () {
     clearTimeout(timeoutId);
     document.body.focus();
     self.enableButton();
   };
-  document.body.onfocus = () => {
+  document.body.onfocus = function () {
     timeoutId = setTimeout(() => {
       self.enableButton();
       document.body.onfocus = null;
@@ -128,13 +129,23 @@ export function uploadFileToTaipy(event, idInstance, idWidget) {
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                          triggerTaipyFunction                      | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-export function triggerTaipyFunction(idInstance) {
+export function triggerTaipyFunction(idInstance, idWidget) {
   const sliders = _.get(widgetConnector, `widgetsConnection[${idInstance}].sliders`);
   const dnNames = Object.entries(sliders)
     .filter(([key, _]) => key !== 'file_path') // Ignore file_path, keep only triggers
     .map(([_, slider]) => slider.dataNode)
     .filter((dnName) => dnName !== 'None');
   if (_.isEmpty(dnNames)) return;
+
+  taipyManager.widgetSpinner = {
+    display: true,
+    add: () => {
+      _addSpinner(idWidget);
+    },
+    remove: () => {
+      _removeSpinner(idInstance, idWidget);
+    },
+  };
   dnNames.forEach((funName) => {
     taipyManager.functionTrigger(funName);
   });

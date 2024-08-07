@@ -285,9 +285,6 @@ angular
         _updateContent(newConnections) {
           this.dataNodes = [];
           if (datanodesManager) {
-            // Check if there are any changes in dataTree
-            const $rootScope = angular.element(document.body).scope().$root;
-            if ($rootScope.taipyLink) taipyManager.processVariableData();
             // Probably not initialized before angular. TODO should be a service
             this.dataNodes = datanodesManager.getAllDataNodes().map((ds, index) => ({
               name: ds.name(),

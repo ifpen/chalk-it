@@ -28,6 +28,7 @@ import { xdsjson } from 'kernel/datanodes/export/xdsjson';
 import { htmlExport } from 'kernel/general/export/html-export';
 import { pyodideLib } from 'kernel/base/pyodide-project';
 import { xdashUpdateEngine } from 'kernel/base/xdash-data-updates';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 export const Xdash = function () {
   const version = xDashConfig.version.fullVersion;

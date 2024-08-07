@@ -12,6 +12,7 @@ import { saveAs } from 'file-saver';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
@@ -170,8 +171,8 @@ export const fileManager = (function () {
                   else saveFileManager(fileType, inputValue);
                 } else {
                   if (!_.isUndefined(xdashFileSerialized))
-                    saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwrite, openProjectCallback);
-                  else saveOnServer(fileType, inputValue, undefined, is_defaultOverwrite, openProjectCallback);
+                    saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwrite, undefined);
+                  else saveOnServer(fileType, inputValue, undefined, is_defaultOverwrite, undefined);
                 }
               }
             );
@@ -396,10 +397,6 @@ export const fileManager = (function () {
 
     if (is_defaultOverwrite && checkInputValue) {
       if ($rootScope.autoSave) {
-        taipyManager.endAction = () => {
-          $rootScope.updateFlagDirty(false);
-          $rootScope.$apply();
-        };
         taipyManager.saveFile(xdashFileSerialized);
         return;
       }
@@ -429,9 +426,6 @@ export const fileManager = (function () {
             }
             if ($rootScope.taipyLink) {
               datanodesManager.showLoadingIndicator(true);
-              taipyManager.endAction = () => {
-                sendTextCallback('', '', 'success');
-              };
               taipyManager.saveFile(xdashFileSerialized);
             } else {
               getFileListExtended(fileType, inputValue, xdashFileParam, endAction, is_defaultOverwrite);

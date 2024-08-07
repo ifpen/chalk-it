@@ -19,6 +19,7 @@ import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtim
 import { rowToTabRuntime } from 'kernel/runtime/row-to-tab-runtime';
 import { rowToPageRuntime } from 'kernel/runtime/row-to-page-runtime';
 import { inputHandler } from 'kernel/general/interfaces/input-params';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 export const DASHBOARD_URL_PARAMETER = 'projectUrl';
 export const DASHBOARD_DATA_ID = 'dashboard_data';

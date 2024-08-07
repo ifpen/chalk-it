@@ -16,6 +16,7 @@ import {
   DASHBOARD_CONFIG_ID,
   DASHBOARD_CONFIG_TYPE,
 } from 'kernel/runtime/xdash-runtime-main';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 export const htmlExport = (function () {
   var exportOptions = 'ajustToTargetWindow';
@@ -121,22 +122,32 @@ export const htmlExport = (function () {
 
   /*--------preview dashboard Callback--------*/
   async function previewDashboardCallback(param) {
-    var dashboardName;
+    let dashboardName;
+    let xprjson;
+    let projectName;
 
-    var xprjson;
-    var projectName;
-    if (!_.isUndefined(param)) {
-      xprjson = param[0];
-      projectName = param[1];
+    // Check whether the 'tprh' cookie exists, and set the cookie if it doesn't
+    if (!taipyManager.checkCookie('tprh')) {
+      const domain = new URL(xDashConfig?.urlBase).hostname;
+      const { name, value } = taipyManager.taipyCookie;
+      document.cookie = `${name}=${value}; path=/; domain=${domain}; Secure; SameSite=Strict`;
     }
-    if (!_.isUndefined($('#select-export-settings')[0])) {
-      htmlExport.exportOptions = $('#select-export-settings')[0].value;
+
+    if (param !== undefined) {
+      [xprjson, projectName] = param;
     }
-    if (!_.isUndefined($('#check-scale-export')[0])) {
-      htmlExport.checkExportOptions = $('#check-scale-export')[0].checked;
+
+    const selectExportSettings = document.getElementById('select-export-settings');
+    if (selectExportSettings) {
+      htmlExport.exportOptions = selectExportSettings.value;
     }
-    if (_.isUndefined(projectName)) dashboardName = $('#projectName')[0].value;
-    else dashboardName = projectName;
+
+    const checkScaleExport = document.getElementById('check-scale-export');
+    if (checkScaleExport) {
+      htmlExport.checkExportOptions = checkScaleExport.checked;
+    }
+
+    dashboardName = projectName || document.getElementById('projectName').value;
 
     const tab = window.open('about:blank', '_blank');
     const txt = await createDashboardDocument(dashboardName, xprjson);

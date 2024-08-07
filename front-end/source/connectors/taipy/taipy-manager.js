@@ -1,3 +1,12 @@
+import _ from 'lodash';
+import PNotify from 'pnotify';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { chalkit } from 'kernel/general/interfaces/chalkit-api';
+import 'shared.taipy-gui-base';
+import 'taipy-gui-base';
+import TaipyDesignerAdapter from 'designer-adapter';
+
 /**
  * Manages the interaction between Chalk-it and Taipy.
  * It primarily handles the creation, updating, and deletion of dataNodes and sending updated values to Taipy.
@@ -637,7 +646,7 @@ class TaipyManager {
           },
         ]);
       const jsonObject = JSON.parse(pageData);
-      xdash.deserialize(jsonObject);
+      runtimeSingletons.xdash.deserialize(jsonObject);
       this.processVariableData();
     }
   }

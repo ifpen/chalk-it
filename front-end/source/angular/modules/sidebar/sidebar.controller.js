@@ -13,6 +13,7 @@ import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 angular.module('modules.sidebar').controller('SidebarController', [
   '$scope',
@@ -186,12 +187,13 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     /*---------- start Taipy project ----------------*/
     $scope.startTaipyProject = function () {
+      // Ghiles
       ManagePrjService.clearForNewProject();
       $rootScope.origin = 'newProject';
       taipyManager.endAction = () => {
         ManagePrjService.openTaipyPage(taipyManager.xprjsonFileName);
       };
-      taipyManager.initTaipyApp();
+      taipyManager.initTaipyApp('studio');
     };
   },
 ]);

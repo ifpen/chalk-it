@@ -13,6 +13,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { fileManager } from 'kernel/general/backend/file-management';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 angular.module('modules').service('ManagePrjService', [
   '$rootScope',
@@ -842,7 +843,7 @@ angular.module('modules').service('ManagePrjService', [
       $state.go('modules', {});
       runtimeSingletons.xdash.openProjectManager(xprjson);
       taipyManager.processVariableData();
-      const projectName = fileName.replace('.xprjson', '');
+      const projectName = fileName.replace(/\\/g, '/').split('/').pop().replace('.xprjson', '');
       const notice = new PNotify({
         title: projectName,
         text: "Your project '" + projectName + "' is ready!",

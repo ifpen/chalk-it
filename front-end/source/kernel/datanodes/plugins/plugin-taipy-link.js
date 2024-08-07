@@ -1,3 +1,6 @@
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
+
 (function () {
   var error = false; //ABK
   // ## A Datanode Plugin
