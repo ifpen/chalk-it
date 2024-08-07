@@ -452,17 +452,6 @@ function calendarD3WidgetPluginClass() {
           .attr('fill', mainTextColor)
           .style('opacity', 1);
       }
-      function pathMonth(t) {
-        const d = Math.max(0, Math.min(weekDays, countDay(t.getDay())));
-        const w = timeWeek.count(d3.timeYear(t), t);
-        return `${
-          d === 0
-            ? `M${w * cellSize},0`
-            : d === weekDays
-            ? `M${(w + 1) * cellSize},0`
-            : `M${(w + 1) * cellSize},0V${d * cellSize}H${w * cellSize}`
-        }V${weekDays * cellSize}`;
-      }
     };
 
     // Schema Actuator

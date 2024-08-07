@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { b64EncodeUnicode, b64DecodeUnicode } from 'kernel/datanodes/plugins/thirdparty/utils';
 

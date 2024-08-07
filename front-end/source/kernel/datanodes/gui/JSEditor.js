@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';

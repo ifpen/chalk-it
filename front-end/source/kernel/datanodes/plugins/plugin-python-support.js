@@ -289,7 +289,7 @@ export class PythonPluginRemoteExec extends PythonPluginExecBase {
 
     if (this.started) {
       const url = urlPython + 'end';
-      jqXHR = $.ajax({
+      const jqXHR = $.ajax({
         url: url,
         type: 'POST',
         headers: { 'X-Request-ID': PythonPluginRemoteExec.createId() },

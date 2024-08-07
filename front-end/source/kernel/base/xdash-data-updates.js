@@ -246,7 +246,7 @@ export const xdashUpdateEngine = new XdashDataUpdateEngine();
         // Old projects
         const device = model.device;
         if (!device.cols.valueRow) {
-          switch (deviceObj.cols.value ?? 'none') {
+          switch (device.cols.value ?? 'none') {
             case 'none':
               device.cols.valueRow = 'none';
               break;

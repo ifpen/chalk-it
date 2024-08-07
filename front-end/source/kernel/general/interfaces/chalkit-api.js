@@ -6,9 +6,13 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 import { xDashConfig } from 'config.js';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
+import { inputHandler } from 'kernel/general/interfaces/input-params';
+import { modelsParameters } from 'kernel/base/widgets-states';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 
 export const chalkit = (function () {
   function setVariable(dataNodeName, varJsonValue) {

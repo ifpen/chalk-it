@@ -35,11 +35,11 @@ export function GraphVisu(datanodesDependency) {
   function buildGraphHtml() {
     var graph = new Graph();
     var ds;
-    for (ds in dependencyStructure) {
+    for (const ds in datanodesDependency.dependencyStructure) {
       var node = ds;
       // var edges = Array.from(dependencyMatrix[ds]); // MBG remove EC6
       var edges = [];
-      dependencyStructure[ds].forEach(function (value) {
+      datanodesDependency.dependencyStructure[ds].forEach(function (value) {
         edges.push(value);
       });
       //

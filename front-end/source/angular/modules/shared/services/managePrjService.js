@@ -248,6 +248,7 @@ angular.module('modules').service('ManagePrjService', [
       let bCloseProject = false;
       let fileTypeServer = 'DeleteProject';
       let fileType = 'project';
+      let dataMsg = {};
       self.checkProjectStatus(projectName, 'deleted', function () {
         switch (fType) {
           case 'xprjson':
