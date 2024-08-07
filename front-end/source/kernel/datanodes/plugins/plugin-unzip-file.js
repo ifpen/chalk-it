@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { zipToObject } from 'kernel/datanodes/plugins/thirdparty/utils';
 

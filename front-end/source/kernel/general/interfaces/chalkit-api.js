@@ -6,6 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 import { xDashConfig } from 'config.js';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
