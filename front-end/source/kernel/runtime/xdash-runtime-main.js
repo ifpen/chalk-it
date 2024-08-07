@@ -9,6 +9,7 @@
 
 import _ from 'lodash';
 
+import { xDashConfig } from 'config.js';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { modelsHiddenParams, modelsParameters, modelsTempParams } from 'kernel/base/widgets-states';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
