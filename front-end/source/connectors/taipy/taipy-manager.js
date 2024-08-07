@@ -6,6 +6,7 @@
  */
 class TaipyManager {
   #app;
+  #taipyDesignerAdapter;
   #runMode;
   #currentContext;
   #xprjsonFileName;
@@ -14,6 +15,8 @@ class TaipyManager {
   #endAction;
   #ignoredVariables;
   #ignoredFunctions;
+  #widgetSpinner;
+  #taipyCookie;
 
   /**
    * Constructs a new TaipyManager instance.
@@ -22,6 +25,7 @@ class TaipyManager {
    */
   constructor() {
     this.#app = {};
+    this.#taipyDesignerAdapter = {};
     this.#runMode = '';
     this.#currentContext = '';
     this.#xprjsonFileName = '';
@@ -38,6 +42,15 @@ class TaipyManager {
       'chlkt_get_file_list_',
       'notice',
     ]);
+    this.#widgetSpinner = {
+      display: false,
+      remove: () => {},
+      add: () => {},
+    };
+    this.taipyCookie = {
+      name: 'tprh',
+      value: '',
+    };
   }
 
   /**
@@ -59,6 +72,23 @@ class TaipyManager {
       this.app = TaipyGuiBase.createApp(this.#onInit.bind(this));
       this.app.onChange = this.#onChange.bind(this);
       this.app.onNotify = this.#onNotify.bind(this);
+      this.app.onReload = this.#onReload.bind(this);
+      this.app.onWsStatusUpdate = this.#onWsStatusUpdate.bind(this);
+      this.app.onWsMessage = this.#onWsMessage.bind(this);
+      // Init Taipy Designer Adapter
+      // Safely check if TaipyDesignerAdapter is defined
+      if (typeof TaipyDesignerAdapter !== 'undefined') {
+        this.taipyDesignerAdapter = TaipyDesignerAdapter.getDesignerWsAdapter(
+          this.app,
+          this.#onEditStatusChange.bind(this),
+          this.#onEditRequest.bind(this),
+          this.#onResetEditRequest.bind(this),
+          this.#onPageDataChange.bind(this),
+          this.#onUpdatePageDataRequest.bind(this),
+          this.#onNavigateRequest.bind(this)
+        );
+        this.app.registerWsAdapter(this.taipyDesignerAdapter);
+      }
     } catch (error) {
       this.#handleError('Failed to initialize Taipy App', error);
     }
@@ -149,7 +179,7 @@ class TaipyManager {
    */
   saveFile(xprjson, actionName) {
     try {
-      const action_name = actionName ?? 'first_action';
+      const action_name = actionName ?? 'save_file';
       this.app.trigger('chlkt_save_file_', action_name, {
         data: JSON.stringify(xprjson, null, '\t'),
         xprjson_file_name: this.xprjsonFileName,
@@ -175,7 +205,7 @@ class TaipyManager {
    */
   loadFile(fileName, isTemplateFile = false) {
     try {
-      this.app.trigger('chlkt_load_file_', 'first_action', {
+      this.app.trigger('chlkt_load_file_', 'load_file', {
         xprjson_file_name: fileName,
         is_template_file: isTemplateFile,
       });
@@ -202,7 +232,7 @@ class TaipyManager {
    */
   getFileList() {
     try {
-      this.app.trigger('chlkt_get_file_list_', 'first_action');
+      this.app.trigger('chlkt_get_file_list_', 'get_file_list');
     } catch (error) {
       this.#handleError('Error getting file list', error);
     }
@@ -219,7 +249,7 @@ class TaipyManager {
    */
   functionTrigger(functionName, fileData) {
     try {
-      this.app.trigger(functionName, 'first_action', { file_data: fileData });
+      this.app.trigger(functionName, 'action_name', { file_data: fileData });
     } catch (error) {
       this.#handleError(`Error triggering function ${functionName}`, error);
     }
@@ -254,7 +284,6 @@ class TaipyManager {
         notice.update({
           text: `[${progress.toFixed(1)}% completed]`,
         });
-        // console.log(progress.toFixed(2));
       };
       const result = await this.app.upload(encodedVarName, files, printProgressUpload);
       displaySpinner('remove');
@@ -269,27 +298,93 @@ class TaipyManager {
   }
 
   /**
+   * Checks if the current page is open based on the application's routes.
+   * If the page is already open in another tab or if the current page is not found in the routes,
+   * it must reload and redirect the user to the origin URL before proceeding.
+   *
+   * @method #checkIfPageIsOpen
+   * @private
+   * @returns {void} This method does not return a value.
+   */
+  #checkIfPageIsOpen() {
+    const currentRoutes = this.app.getRoutes();
+    let pageName = window.location.pathname.slice(1);
+
+    // If there is no pageName, set it to Taipy special root page name so the route can be verified
+    if (pageName === '') {
+      pageName = 'TaiPy_root_page';
+    }
+    // Check if the current routes contain the page name
+    const isPageAvailable = currentRoutes?.some((sublist) => sublist[0] === pageName && sublist[1] === 'TaipyDesigner');
+
+    // Page is available, no need to perform any routing
+    if (isPageAvailable) {
+      return;
+    }
+
+    // If the page is not available, redirect to the first origin that is TaipyDesigner type
+    const defaultPage = currentRoutes?.find((sublist) => sublist[1] === 'TaipyDesigner');
+    if (!isPageAvailable && defaultPage) {
+      window.location.href = defaultPage[0];
+      return;
+    }
+
+    // force reload so taipy-gui will handle the routing
+    window.location.reload();
+  }
+
+  /**
    * Callback function executed upon initialization of the Taipy app.
    *
-   * @method onInit
+   * @method #onInit
    * @private
    * @param {Object} app - The initialized Taipy application instance.
    * @returns {void} This method does not return a value.
    */
   #onInit(app) {
+    this.#checkIfPageIsOpen();
+    this.#saveTaipyCookie();
     this.currentContext = app.getContext();
+    // For design = False, verify if the resource handler is correct
+    if (window.rh_id && window.rh_id !== app.getPageMetadata()['rh_id']) {
+      window.location.reload();
+    }
     this.xprjsonFileName = app.getPageMetadata()['xprjson_file_name'];
-    if (this.#runMode == 'runtime') this.processVariableData();
-    if (_.isFunction(this.endAction)) {
-      // To load the xprjsonFileName if it exists
-      this.endAction();
+    if (this.#runMode == 'runtime') {
+      this.processVariableData();
+    } else {
+      // Studio mode
+      try {
+        if (typeof this.taipyDesignerAdapter == 'undefined' && this.taipyDesignerAdapter == null) {
+          throw new Error('Taipy Designer Adapter is not initialized');
+        }
+        // Request edit if taipyDesignerAdapter is initialized
+        this.taipyDesignerAdapter.requestEdit();
+      } catch (error) {
+        this.#handleError('Failed to initialize Taipy App', error);
+      }
+    }
+  }
+
+  /**
+   * Callback function executed upon reload of the Taipy app.
+   *
+   * @method #onReload
+   * @private
+   * @param {Object} app - The Taipy application instance.
+   * @param {boolean} removeChanges - A flag indicating whether to remove changes.
+   */
+  #onReload(app, removeChanges) {
+    this.processVariableData();
+    if (this.taipyDesignerAdapter && typeof this.taipyDesignerAdapter.getEditStatus === 'function') {
+      this.taipyDesignerAdapter.getEditStatus();
     }
   }
 
   /**
    * Callback function handles changes to variables within the application.
    *
-   * @method onChange
+   * @method #onChange
    * @private
    * @param {Object} app - The application instance.
    * @param {string} encodedName - The encoded name of the variable.
@@ -309,8 +404,21 @@ class TaipyManager {
       // loadFile
       if (encodedName.includes('chlkt_json_data_')) {
         if (_.isFunction(this.endAction)) {
+          // For load file
+          // The endAction callback corresponds to "_openTaipyPageEndAction"
           this.endAction(newValue); // newValue contains xprjson data
           this.endAction = undefined;
+        } else {
+          // For save file
+          try {
+            if (typeof this.taipyDesignerAdapter == 'undefined' && this.taipyDesignerAdapter == null) {
+              throw new Error('Taipy Designer Adapter is not initialized');
+            }
+            // Update open page in other tabs or browsers.
+            this.taipyDesignerAdapter.requestUpdatePageData(newValue);
+          } catch (error) {
+            this.#handleError('Error updating page', error);
+          }
         }
       }
 
@@ -336,7 +444,7 @@ class TaipyManager {
    * handling specific actions such as loading and saving files, with distinct behaviors for info
    * and error message types.
    *
-   * @method onNotify
+   * @method #onNotify
    * @private
    * @param {Object} app - The application instance.
    * @param {string} type - The type of message received, expected to be one of the predefined MESSAGE_TYPES.
@@ -348,7 +456,7 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   #onNotify(app, type, message) {
-    const MESSAGE_TYPES = { INFO: 'I', ERROR: 'E' };
+    const MESSAGE_TYPES = { INFO: 'I', ERROR: 'E', SUCCESS: 'S', WARNING: 'W' };
     const ACTIONS = { LOAD_FILE: 'load_file', SAVE_FILE: 'save_file', NOTICE: 'notice' };
     switch (message.action_name) {
       case ACTIONS.LOAD_FILE: {
@@ -362,8 +470,24 @@ class TaipyManager {
       case ACTIONS.SAVE_FILE: {
         if (type == MESSAGE_TYPES.INFO) {
           if (_.isFunction(this.endAction)) {
-            this.endAction(); // Do not assign undefined value: used in Open function
+            /**
+             * If the project is "open" from the dashboard and you wish to save the current project :
+             *    The endAction callback corresponds to "openTaipyPage" => "commonActions".
+             *    The "commonActions" callback will call "loadFile" and "_openTaipyPageEndAction".
+             *    PS: ! Do not assign an indefinite value: used in the Open function
+             *
+             * Otherwise:
+             *    The "endAction" callback is used only to remove the dirty flag (and display notice).
+             */
+            this.endAction(); // Not yet assigned
           }
+          const $rootScope = this.#getRootScope();
+          if (!$rootScope.autoSave) {
+            this.#notify('Info project', message.text, 'success', 2000);
+          }
+          datanodesManager.showLoadingIndicator(false);
+          $rootScope.updateFlagDirty(false);
+          $rootScope.$apply();
         } else if (type == MESSAGE_TYPES.ERROR) {
           datanodesManager.showLoadingIndicator(false);
           this.#notify('Info project', message.text, 'error', 2000);
@@ -371,14 +495,318 @@ class TaipyManager {
         break;
       }
       case ACTIONS.NOTICE: {
-        this.#notify(message.title, message.text, type, message.delay);
+        if (message.blocking) {
+          this.#swalNotify(message.title, message.text, type);
+        } else {
+          this.#userNotify(message.title, message.text, type);
+        }
         break;
       }
       default: {
-        const notifType = type == MESSAGE_TYPES.INFO ? 'info' : 'error';
-        this.#notify('Info project', message.text, notifType, 2000);
+        this.#notify('', message, type, 3000);
       }
     }
+  }
+
+  /**
+   * Handles the status change of the edit mode.
+   *
+   * @method #onEditStatusChange
+   * @private
+   * @param {Object} app - The Taipy application instance.
+   * @param {boolean} editable - Indicates if the application is in editable mode.
+   */
+  #onEditStatusChange(app, editable) {
+    // Check if the 'tprh' cookie exists, and reload the page if it does not
+    if (!this.checkCookie('tprh')) {
+      window.location.reload();
+    }
+
+    const $rootScope = this.#getRootScope();
+    $rootScope.isEditableDash = editable;
+    $rootScope.$apply();
+    if (!editable) {
+      swal({
+        title: 'This page is currently being edited in another browser tab',
+        text: 'Please use the already open tab to avoid edition inconsistencies',
+        icon: 'error',
+        button: 'OK',
+      });
+    }
+  }
+
+  /**
+   * Handles edit requests and performs actions based on the success or failure of the request.
+   *
+   * @method #onEditRequest
+   * @private
+   * @param {Object} app - The Taipy application instance.
+   * @param {boolean} success - Indicates if the edit request was successful.
+   * @param {string} message - The message indicating the result of the edit request.
+   */
+  #onEditRequest(app, success, message) {
+    const openProjectCallback = () => {
+      if (_.isFunction(this.endAction)) {
+        // To load the xprjsonFileName if it exists
+        this.endAction();
+      }
+    };
+    if (success) {
+      openProjectCallback();
+    } else {
+      const swalCallback = (title, text) =>
+        swal({
+          title,
+          text,
+          icon: 'error',
+          button: 'OK',
+        });
+      switch (message) {
+        case 'page_not_found':
+          swalCallback('Internal Error', 'Page not found!');
+          break;
+        case 'app_instance_id_not_found':
+          swalCallback('Internal Error', 'App instance ID not found!');
+          break;
+        case 'page_occupied': {
+          const $rootScope = this.#getRootScope();
+          $rootScope.isEditableDash = false;
+          swalCallback(
+            'This page is currently being edited in another browser tab',
+            'Please use the already open tab to avoid edition inconsistencies'
+          );
+          openProjectCallback();
+          break;
+        }
+      }
+    }
+  }
+
+  /**
+   * Handles reset edit requests and performs actions based on the success or failure of the request.
+   *
+   * @method #onResetEditRequest
+   * @private
+   * @param {Object} app - The Taipy application instance.
+   * @param {boolean} success - Indicates if the reset edit request was successful.
+   * @param {string} message - The message indicating the result of the reset edit request.
+   */
+  #onResetEditRequest(app, success, message) {
+    if (success) {
+      // TODO
+    } else {
+      const swalCallback = (title, text) =>
+        swal({
+          title,
+          text,
+          icon: 'error',
+          button: 'OK',
+        });
+      switch (message) {
+        case 'page_not_found':
+          swalCallback('Internal Error', 'Page not found!');
+          break;
+        case 'app_instance_id_not_found':
+          swalCallback('Internal Error', 'App instance ID not found!');
+          break;
+        case 'not_authorized':
+          swalCallback('Access Denied', 'Not authorized to reset page edit');
+          break;
+      }
+    }
+  }
+
+  /**
+   * Handles page data changes and updates the application state accordingly.
+   *
+   * @method #onPageDataChange
+   * @private
+   * @param {Object} app - The Taipy application instance.
+   * @param {boolean} editable - Indicates if the page data is editable.
+   * @param {string} pageData - The JSON string representing the page data.
+   */
+  #onPageDataChange(app, editable, pageData) {
+    if (!editable) {
+      angular
+        .element(document.body)
+        .injector()
+        .invoke([
+          'ManagePrjService',
+          (ManagePrjService) => {
+            ManagePrjService.clearForNewProject();
+          },
+        ]);
+      const jsonObject = JSON.parse(pageData);
+      xdash.deserialize(jsonObject);
+      this.processVariableData();
+    }
+  }
+
+  /**
+   * Handles update page data requests and performs actions based on the success or failure of the request.
+   *
+   * @method #onUpdatePageDataRequest
+   * @private
+   * @param {Object} app - The Taipy application instance.
+   * @param {boolean} success - Indicates if the update page data request was successful.
+   * @param {string} message - The message indicating the result of the update page data request.
+   */
+  #onUpdatePageDataRequest(app, success, message) {
+    if (success) {
+      // TODO
+    } else {
+      const swalCallback = (title, text) =>
+        swal({
+          title,
+          text,
+          icon: 'error',
+          button: 'OK',
+        });
+      switch (message) {
+        case 'page_not_found':
+          swalCallback('Internal Error', 'Page not found!');
+          break;
+        case 'app_instance_id_not_found':
+          swalCallback('Internal Error', 'App instance ID not found!');
+          break;
+      }
+    }
+  }
+
+  /**
+   * Handles navigation to a page.
+   *
+   * @method onNavigateRequest
+   * @private
+   * @param {Object} app - The Taipy application instance.
+   * @param {string} to - The name of the page to navigate to.
+   *                      This can be a page identifier (as created by `Gui.add_page()^` with no leading '/') or an URL.
+   *                      If omitted, the application navigates to the root page.
+   * @param {Object} params - A dictionary of query parameters.
+   * @param {string} tab - When navigating to a page that is not a known page, the page is opened in a tab identified by
+   *                       **tab** (as in [window.open](https://developer.mozilla.org/en-US/docs/Web/API/Window/open)).<br/>
+   *                       The default value creates a new tab for the page (which is equivalent to setting *tab* to "_blank").
+   * @param {boolean} force - When navigating to a known page, the content is refreshed even it the page is already shown.
+   * @returns {void} This method does not return a value.
+   */
+  #onNavigateRequest(app, to, params, tab, force) {
+    if (!to || typeof to !== 'string') {
+      return;
+    }
+
+    // Check if the given input is a full URL
+    const isFullUrl = (url) => {
+      try {
+        new URL(url);
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    // Construct a full URL from the base URL and the input path
+    const constructFullUrl = (baseUrl, path) => `${baseUrl}/${path.replace(/^\//, '')}`;
+
+    // Construct query string from params
+    const constructQueryString = (params) =>
+      Object.keys(params)
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+        .join('&');
+
+    const currentRoutes = this.app.getRoutes();
+    const queryString = constructQueryString(params);
+    const baseUrl = window.location.origin;
+    let isPageAvailable = false;
+    let url = '';
+
+    if (isFullUrl(to)) {
+      url = to;
+    } else if (to === '/') {
+      url = baseUrl;
+      isPageAvailable = true;
+    } else {
+      url = constructFullUrl(baseUrl, to);
+      // Check if the current routes contain the page name
+      isPageAvailable = currentRoutes?.some((sublist) => sublist[0] === to);
+    }
+
+    if (queryString) {
+      url += `?${queryString}`;
+    }
+
+    if (isPageAvailable) {
+      window.location.href = url;
+    } else {
+      window.open(url, tab || '_blank')?.focus();
+    }
+  }
+
+  /**
+   * Handles the WebSocket status updates and manages the display of a spinner widget.
+   *
+   * @method #onWsStatusUpdate
+   * @private
+   * @param {Object} app - The Taipy application instance.
+   * @param {string} messageQueue - The queue of messages received via WebSocket.
+   * @returns {void} This method does not return a value.
+   */
+  #onWsStatusUpdate(app, messageQueue) {
+    if (this.widgetSpinner?.display) {
+      if (messageQueue.length) {
+        this.widgetSpinner.add();
+      } else {
+        this.widgetSpinner.remove();
+        this.widgetSpinner = {
+          display: false,
+          add: () => {},
+          remove: () => {},
+        };
+      }
+    }
+  }
+
+  /**
+   * Handles WebSocket events : connect, reconnect, connect_error, disconnect.
+   *
+   * @method #onWsMessage
+   * @private
+   * @param {Object} app - The Taipy application instance.
+   * @param {string} event - The WebSocket event type.
+   * @param {Object} payload - The payload of the WebSocket event.
+   * @param {Object} [payload.err] - The error object, if any (only for 'connect_error' event).
+   * @param {string} [payload.reason] - The reason for disconnection (only for 'disconnect' event).
+   * @param {Object} [payload.details] - Additional details for disconnection (only for 'disconnect'
+   * @returns {void} This method does not return a value.
+   */
+  #onWsMessage(app, event, payload) {
+    const $rootScope = this.#getRootScope();
+    if (!$rootScope) return;
+
+    switch (event) {
+      case 'connect': {
+        // console.info('WebSocket connected');
+        $rootScope.websocketConnected = true;
+        break;
+      }
+      case 'reconnect': {
+        // console.info('WebSocket reconnected');
+        $rootScope.websocketConnected = true;
+        break;
+      }
+      case 'connect_error': {
+        const { err } = payload;
+        // this.#handleError('Error connecting WebSocket', err);
+        $rootScope.websocketConnected = false;
+        break;
+      }
+      case 'disconnect': {
+        const { reason, details } = payload;
+        // console.info('WebSocket disconnected due to: ', reason, details);
+        $rootScope.websocketConnected = false;
+        break;
+      }
+    }
+    $rootScope.$apply();
   }
 
   /**
@@ -387,7 +815,7 @@ class TaipyManager {
    * This method iterates through the list of function names retrieved from the application,
    * and for each function name that is not in the set of excluded file management functions
    *
-   * @method initFunctionList
+   * @method #initFunctionList
    * @private
    * @returns {void} This method does not return a value.
    */
@@ -407,7 +835,7 @@ class TaipyManager {
    * Processes a Taipy variable by managing its corresponding data node. It either creates a new data node if one does not exist
    * for the given Taipy variable or deletes the data node if the Taipy variable is undefined.
    *
-   * @method processDataNode
+   * @method #processDataNode
    * @private
    * @param {string} varName - The name of the Taipy variable to process.
    * @param {*} variable - The value of the Taipy variable. If undefined, indicates that the variable is deleted.
@@ -427,7 +855,7 @@ class TaipyManager {
   /**
    * Creates a new dataNode.
    *
-   * @method createDataNode
+   * @method #createDataNode
    * @private
    * @param {string} dnName - The dataNode name.
    * @param {*} value - The value of the dataNode.
@@ -453,7 +881,7 @@ class TaipyManager {
   /**
    * Updates an existing dataNode.
    *
-   * @method updateDataNode
+   * @method #updateDataNode
    * @private
    * @param {string} dnName - The dataNode name.
    * @param {*} value - The new value of the dataNode.
@@ -475,7 +903,7 @@ class TaipyManager {
   /**
    * Deletes an existing dataNode.
    *
-   * @method deleteDataNode
+   * @method #deleteDataNode
    * @private
    * @param {string} dnName - The dataNode name.
    * @returns {void} This method does not return a value.
@@ -488,20 +916,20 @@ class TaipyManager {
   /**
    * Displays a SweetAlert modal with details of deleted dataNode connections.
    *
-   * @method showDeletedDataNodeAlert
+   * @method #showDeletedDataNodeAlert
    * @private
    * @param {Set<Object>} deletedDnConnections - Set of deleted dataNode connection objects.
    * @returns {void} This method does not return a value.
    */
   #showDeletedDataNodeAlert(deletedDnConnections) {
     if (deletedDnConnections.size !== 0) {
-      let text = 'The following dataNode(s) and connection(s) with widget(s) is/are deleted !';
+      let text = 'The following variable(s) and connection(s) with widget(s) is/are deleted !';
       for (const dnConnection of deletedDnConnections) {
         text += `<br><br>- "${dnConnection.dnName}":<br>${dnConnection.wdList.join('<br>')}`;
       }
       const content = `<div style="max-height: 150px; overflow-y: auto;">${text}</div>`;
       swal({
-        title: 'Deleted datanode(s)',
+        title: 'Deleted variable(s)',
         type: 'warning',
         html: true,
         text: content,
@@ -519,7 +947,7 @@ class TaipyManager {
    * This function uses Lodash's _.cloneDeep, which handles complex objects including nested structures,
    * circular references, and maintains function references.
    *
-   * @method deepClone
+   * @method #deepClone
    * @private
    * @param {*} value - The value to check and deeply clone.
    * @returns {*} Deep clone of the input object, or the original value.
@@ -531,7 +959,7 @@ class TaipyManager {
   /**
    * Handles errors by displaying an alert to the user and logging the error to the console.
    *
-   * @method handleError
+   * @method #handleError
    * @private
    * @param {string} message - The user-friendly error message to display in the alert.
    * @param {Error} error - The error object with details about the error. This is logged to the console.
@@ -547,7 +975,7 @@ class TaipyManager {
    * This method allows for automatic closing of the notification after a specified delay
    * and gives users the option to manually close the notification by clicking on it.
    *
-   * @method notify
+   * @method #notify
    * @private
    * @param {string} title - The title of the notification to be displayed.
    * @param {string} text - The text content of the notification.
@@ -559,10 +987,85 @@ class TaipyManager {
    */
   #notify(title, text, type, delay, hide = true) {
     const notice = new PNotify({ title, text, type, delay, hide, styling: 'bootstrap3' });
-    $('.ui-pnotify-container').on('click', function () {
-      notice.remove();
-    });
+    $('.ui-pnotify-container').on('click', () => notice.remove());
     return notice;
+  }
+
+  /**
+   * Sends a notification using the Chalkit notification system.
+   *
+   * @method #userNotify
+   * @private
+   * @param {string} varName - The variable name associated with the notification.
+   * @param {string} text - The text content of the notification.
+   * @param {string} type - The type of the notification (e.g., 'success', 'error', 'info', 'warning').
+   * @returns {PNotify} Returns the PNotify instance created for the notification.
+   */
+  #userNotify(varName, text, type) {
+    return chalkit.notification.notify(varName, text, type);
+  }
+
+  /**
+   * Sends a notification using the Swal (SweetAlert) notification system.
+   *
+   * @method #swalNotify
+   * @private
+   * @param {string} title - The title of the SweetAlert notification.
+   * @param {string} text - The text content of the SweetAlert notification.
+   * @param {string} type - The type of the SweetAlert notification (e.g., 'success', 'error', 'info', 'warning')..
+   * @returns {Swal} Returns the swal instance created for the notification.
+   */
+  #swalNotify(title, text, type) {
+    return chalkit.notification.swalert(title, text, type);
+  }
+
+  /**
+   * Retrieves the current root scope of the Angular application.
+   *
+   * @method #getRootScope
+   * @private
+   * @returns {angular.IScope|null} The current rootScope instance or null if it can't be found.
+   */
+  #getRootScope() {
+    return angular.element(document.body).scope()?.$root || {};
+  }
+
+  /**
+   * Checks if a specific cookie is available in the current document.
+   *
+   * @method checkCookie
+   * @public
+   * @param {string} cookieName - The name of the cookie to check for.
+   * @returns {boolean} - Returns `true` if the cookie is found, otherwise `false`.
+   */
+  checkCookie(cookieName) {
+    // Get all cookies as a string
+    const allCookies = document.cookie;
+    if (!allCookies) {
+      return false;
+    }
+    const cookiesArray = allCookies.split(';');
+    return cookiesArray.some((cookie) => {
+      // Trim any leading whitespace and split the cookie into name and value
+      const [name, value] = cookie.trim().split('=');
+      // Check if the cookie name matches the one we're looking for
+      return name === cookieName;
+    });
+  }
+
+  /**
+   * This method retrieves the value of the "tprh" cookie and saves it to the `taipyCookie` property of the instance.
+   *
+   * @method #saveTaipyCookie
+   * @private
+   * @returns {void} This method does not return a value.
+   */
+  #saveTaipyCookie() {
+    // Find the value of the "tprh" cookie
+    this.taipyCookie.value = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith(`${this.taipyCookie.name}=`))
+      .split('=')[1];
   }
 
   /**
@@ -589,7 +1092,30 @@ class TaipyManager {
   }
 
   /**
-   * Gets the current context from the application instance.
+   * Retrieves the current taipy designer adapter instance.
+   *
+   * @method taipyDesignerAdapter
+   * @public
+   * @returns {Object} The current taipy designer adapter instance.
+   */
+  get taipyDesignerAdapter() {
+    return this.#taipyDesignerAdapter;
+  }
+
+  /**
+   * Sets the taipy designer adapter instance.
+   *
+   * @method newTaipyDesignerAdapter
+   * @public
+   * @param {Object} newTaipyDesignerAdapter - The new taipy designer adapter instance to be set.
+   * @returns {void} This method does not return a value.
+   */
+  set taipyDesignerAdapter(newTaipyDesignerAdapter) {
+    this.#taipyDesignerAdapter = newTaipyDesignerAdapter;
+  }
+
+  /**
+   * Retrieves the current context from the application instance.
    *
    * @method currentContext
    * @public
@@ -612,7 +1138,7 @@ class TaipyManager {
   }
 
   /**
-   * Gets the file name from the application instance.
+   * Retrieves the file name from the application instance.
    *
    * @method xprjsonFileName
    * @public
@@ -632,16 +1158,39 @@ class TaipyManager {
    * @returns {void} This method does not return a value.
    */
   set xprjsonFileName(newFileName) {
-    const $rootScope = angular.element(document.body).scope()?.$root;
+    const $rootScope = this.#getRootScope();
     if ($rootScope.currentProject) {
-      const projectName = newFileName.replace('.xprjson', '');
+      const projectName = newFileName.replace(/\\/g, '/').split('/').pop().replace('.xprjson', '');
       $rootScope.currentProject.name = projectName;
     }
     this.#xprjsonFileName = newFileName;
   }
 
   /**
-   * Gets the current variable data.
+   * Retrieves the current taipy cookie.
+   *
+   * @method taipyCookie
+   * @public
+   * @returns {Object} The current taipy cookie.
+   */
+  get taipyCookie() {
+    return this.#taipyCookie;
+  }
+
+  /**
+   * Sets new taipy cookie, updating the internal state.
+   *
+   * @method taipyCookie
+   * @public
+   * @param {Object} newTaipyCookie - The new taipy cookie.
+   * @returns {void} This method does not return a value.
+   */
+  set taipyCookie(newTaipyCookie) {
+    this.#taipyCookie = newTaipyCookie;
+  }
+
+  /**
+   * Retrieves the current variable data.
    *
    * @method variableData
    * @public
@@ -690,6 +1239,29 @@ class TaipyManager {
   }
 
   /**
+   * Retrieves the current widgetSpinner instance.
+   *
+   * @method widgetSpinner
+   * @public
+   * @returns {Object} The current endAction function.
+   */
+  get widgetSpinner() {
+    return this.#widgetSpinner;
+  }
+
+  /**
+   * Updates the widgetSpinner instance.
+   *
+   * @method widgetSpinner
+   * @public
+   * @param {Object} newWidgetSpinner - The new widgetSpinner instance to be set.
+   * @returns {void} This method does not return a value.
+   */
+  set widgetSpinner(newWidgetSpinner) {
+    this.#widgetSpinner = newWidgetSpinner;
+  }
+
+  /**
    * Gets the end action function.
    *
    * @method endAction
@@ -717,4 +1289,4 @@ class TaipyManager {
   }
 }
 
-const taipyManager = new TaipyManager();
+export const taipyManager = new TaipyManager();
