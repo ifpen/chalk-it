@@ -13,6 +13,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { findGetParameter } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { loadDashboard } from 'kernel/runtime/xdash-runtime-main';
+import { inputHandler } from 'kernel/general/interfaces/input-params';
 
 export const reconstructFoundations = (function () {
   // base functions

@@ -113,15 +113,8 @@ export function rescaleWidget(widget, instanceId) {
  * */
 export function setDirtyFlagSafe(bDirty) {
   try {
-    if (typeof execOutsideEditor != 'undefined') {
-      if (!execOutsideEditor) {
-        var $body = angular.element(document.body); // 1
-        var $rootScope = $body.scope().$root;
-        $rootScope.updateFlagDirty(bDirty);
-      }
-    } else {
-      var $body = angular.element(document.body); // 1
-      var $rootScope = $body.scope().$root;
+    const $rootScope = angular.element(document.body).scope().$root;
+    if (typeof execOutsideEditor === 'undefined' || !execOutsideEditor) {
       $rootScope.updateFlagDirty(bDirty);
     }
   } catch (ex) {

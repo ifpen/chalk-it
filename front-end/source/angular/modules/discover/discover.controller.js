@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { fileManager } from 'kernel/general/backend/file-management';
 import { navHelper } from 'angular/modules/navigation-helper';
 import { startIntroProject } from 'angular/modules/guided-tour';
+import { widgetToolboxClass } from 'kernel/dashboard/toolbox-mgr';
 
 angular
   .module('modules.discover')
