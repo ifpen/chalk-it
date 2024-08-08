@@ -408,18 +408,13 @@ function _isAxisLinear(layout, axis) {
 
 function plotlyWidgetsPluginClass() {
   let pId = 0;
-  const self = this;
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                         createPlotlyDiv                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function createPlotlyDiv(idDivContainer, pId, bInteractive) {
-    const self = this;
     const widgetHtml = document.createElement('div');
-    let idDivPlotly = 'plotly' + pId;
-    if (bInteractive) {
-      idDivPlotly += 'c';
-    }
+    const idDivPlotly = `plotly${pId}${bInteractive ? 'c' : ''}`;
     widgetHtml.setAttribute('id', idDivPlotly);
     widgetHtml.setAttribute('class', 'js-plotly-plot');
     $('#' + idDivContainer).html(widgetHtml);
@@ -468,18 +463,15 @@ function plotlyWidgetsPluginClass() {
   // |                           Plotly base                              | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function basePlotlyWidget(idDivContainer, idWidget, idInstance, bInteractive) {
-    this.bIsInteractive = bInteractive;
-    let idDivPlotly = 'plotly' + idWidget;
-    if (bInteractive) {
-      idDivPlotly += 'c';
-    }
     const self = this;
+    this.bIsInteractive = bInteractive;
+    this.idDivPlotly = `plotly${idWidget}${this.bIsInteractive ? 'c' : ''}`;
 
     this.enableWidget = function () {
       if (_.isUndefined(modelsParameters[idInstance].enableWidget)) {
         modelsParameters[idInstance].enableWidget = true;
       }
-      if (bInteractive) {
+      if (this.bIsInteractive) {
         return modelsParameters[idInstance].enableWidget;
       } else {
         return true;
@@ -490,14 +482,14 @@ function plotlyWidgetsPluginClass() {
       if (_.isUndefined(modelsParameters[idInstance].showWidget)) {
         modelsParameters[idInstance].showWidget = true;
       }
-      if (bInteractive) {
+      if (this.bIsInteractive) {
         return modelsParameters[idInstance].showWidget;
       } else {
         return true;
       }
     };
     this.applyDisplayOnWidget = function () {
-      if (bInteractive) {
+      if (this.bIsInteractive) {
         const widgetObj = $('#' + idInstance + 'c');
         if (!_.isUndefined(widgetObj)) {
           if (!modelsParameters[idInstance].showWidget) {
@@ -624,7 +616,7 @@ function plotlyWidgetsPluginClass() {
       const showWidget = this.showWidget();
       const enableWidget = this.enableWidget();
 
-      const elem = $(`#plotly${idWidget}${bInteractive ? 'c' : ''}`)[0];
+      const elem = $(`#${this.idDivPlotly}`)[0];
       elem.setAttribute(
         'style',
         `
@@ -637,15 +629,15 @@ function plotlyWidgetsPluginClass() {
         opacity: ${enableWidget ? 'initial' : '0.5'};
       `
       );
-      $(`#${idDivPlotly}`).html('');
+      $(`#${this.idDivPlotly}`).html('');
 
-      if (this.bInteractive) {
+      if (this.bIsInteractive) {
         if (hiddenLayout?.autosize) {
           delete hiddenLayout.width;
           delete hiddenLayout.height;
         }
         const opts = modelsParameters[idInstance].hideModeBar ? { displayModeBar: false } : {};
-        Plotly.newPlot(idDivPlotly, hiddenData, hiddenLayout, opts);
+        Plotly.newPlot(this.idDivPlotly, hiddenData, hiddenLayout, opts);
         this.setSelectionActuator();
       } else {
         // Function to check if data or layout has changed
@@ -666,14 +658,14 @@ function plotlyWidgetsPluginClass() {
           return plotDiv && plotDiv.data !== undefined;
         };
 
-        if (plotExists(idDivPlotly)) {
+        if (plotExists(this.idDivPlotly)) {
           if (hasChanged(hiddenData, hiddenLayout, idInstance)) {
             // Purge existing plot before updating to prevent any lingering processes or data
-            Plotly.purge(idDivPlotly);
-            Plotly.react(idDivPlotly, hiddenData, hiddenLayout);
+            Plotly.purge(this.idDivPlotly);
+            Plotly.react(this.idDivPlotly, hiddenData, hiddenLayout);
           }
         } else {
-          Plotly.newPlot(idDivPlotly, hiddenData, hiddenLayout);
+          Plotly.newPlot(this.idDivPlotly, hiddenData, hiddenLayout);
         }
 
         // Update stored state and timestamp
@@ -682,14 +674,9 @@ function plotlyWidgetsPluginClass() {
     };
 
     this.setSelectionActuator = function () {
-      // MBG 17/02/2021
-      this.bIsInteractive = bInteractive;
-      let idDivPlotly = 'plotly' + idWidget;
+      const graphDiv = document.getElementById(this.idDivPlotly);
 
-      if (bInteractive) {
-        idDivPlotly += 'c';
-        const graphDiv = document.getElementById(idDivPlotly);
-
+      if (this.bIsInteractive) {
         const handlePlotlySelected = (eventData) => {
           if (!_.isUndefined(eventData)) {
             // Create array of array [numberOfTrace][dataSelected] and [numberOfTrace][customData]
@@ -765,7 +752,7 @@ function plotlyWidgetsPluginClass() {
 
     this.rescale = function () {
       if (this.bIsInteractive) {
-        Plotly.Plots.resize($('#' + idDivPlotly)[0]);
+        Plotly.Plots.resize($('#' + this.idDivPlotly)[0]);
       } else {
         this.render(); // to optimize here
       }
@@ -1380,10 +1367,7 @@ function plotlyWidgetsPluginClass() {
           //console.log('this.index=' + this.index);
           //modelsHiddenParams[idInstance].data[this.index].x = [time];
           //modelsHiddenParams[idInstance].data[this.index].y = [val];
-          let idDivPlotly = 'plotly' + idWidget;
-          if (bInteractive) {
-            idDivPlotly = idDivPlotly + 'c';
-          }
+          const idDivPlotly = `plotly${idWidget}${bInteractive ? 'c' : ''}`;
           Plotly.extendTraces(
             idDivPlotly,
             {
