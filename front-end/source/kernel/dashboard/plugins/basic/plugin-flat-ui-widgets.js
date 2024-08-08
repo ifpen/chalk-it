@@ -528,48 +528,24 @@ function flatUiWidgetsPluginClass() {
     this.insertLabel = function (widgetHtml) {
       // conversion to enable HTML tags
       const labelText = this.getTransformedText('label');
+      const labelWidthProportion = modelsParameters[idInstance].labelWidthProportion ?? '20%';
+      const labelStyle = `width: ${labelWidthProportion}; ${this.labelFontSize()} ${this.labelColor()} ${this.labelFontFamily()}`;
       const widgetLabel = document.createElement('span');
+
       widgetLabel.setAttribute('class', 'label-h-slider');
       widgetLabel.setAttribute('id', 'h-slider-span');
-      if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
-        widgetLabel.setAttribute(
-          'style',
-          'width:' +
-            modelsParameters[idInstance].labelWidthProportion +
-            '; ' +
-            this.labelFontSize() +
-            this.labelColor() +
-            this.labelFontFamily()
-        );
-      } else {
-        widgetLabel.setAttribute(
-          'style',
-          'width: 20%; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily()
-        );
-      }
+      widgetLabel.setAttribute('style', labelStyle.trim());
       widgetLabel.innerHTML = labelText;
       widgetHtml.appendChild(widgetLabel);
     };
 
     this.insertValue = function (widgetHtml) {
-      let valueHeightPx;
-      if (modelsParameters[idInstance].displayLabel)
-        valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 6); // keepRatio
-      else valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 8); // keepRatio
-      const valueHtml = document.createElement('div');
-      valueHtml.setAttribute('class', 'h-slider-value-div');
-      valueHtml.setAttribute('id', 'div-for-hslider-value' + idWidget);
-      if (!_.isUndefined(modelsParameters[idInstance].valueWidthProportion)) {
-        valueHtml.setAttribute('style', 'width:' + modelsParameters[idInstance].valueWidthProportion + ';');
-      } else {
-        valueHtml.setAttribute('style', 'width:30%;');
-      }
-      let hsliderValueCursor = '';
-      if (this.bIsInteractive) {
-        hsliderValueCursor = 'cursor: text;';
-      } else {
-        hsliderValueCursor = 'cursor: inherit;';
-      }
+      const containerHeight = $('#' + idDivContainer).height();
+      const containerWidth = $('#' + idDivContainer).width();
+      const ratio = modelsParameters[idInstance].displayLabel ? 6 : 8;
+      const valueHeightPx = Math.min(containerHeight, containerWidth / ratio); // keepRatio
+      const width = modelsParameters[idInstance]?.valueWidthProportion ?? '30%';
+      const hsliderValueCursor = this.bIsInteractive ? 'cursor: text;' : 'cursor: inherit;';
       const valueContent =
         '<input id="hslider-value' +
         idWidget +
@@ -582,6 +558,10 @@ function flatUiWidgetsPluginClass() {
         hsliderValueCursor +
         '" disabled></input>';
 
+      const valueHtml = document.createElement('div');
+      valueHtml.setAttribute('class', 'h-slider-value-div');
+      valueHtml.setAttribute('id', 'div-for-hslider-value' + idWidget);
+      valueHtml.setAttribute('style', 'width:' + width + ';');
       valueHtml.innerHTML = valueContent;
       widgetHtml.appendChild(valueHtml);
     };
@@ -617,13 +597,11 @@ function flatUiWidgetsPluginClass() {
       widgetHtml.setAttribute('class', 'sliderInput');
       widgetHtml.setAttribute('style', 'display: table');
 
+      const sliderWidthProportion = modelsParameters[idInstance].sliderWidthProportion ?? '50%';
       const widgetDiv = document.createElement('div');
       widgetDiv.setAttribute('id', 'h-slider-div');
-      if (!_.isUndefined(modelsParameters[idInstance].sliderWidthProportion)) {
-        widgetDiv.setAttribute('style', 'width:' + modelsParameters[idInstance].sliderWidthProportion + ';');
-      } else {
-        widgetDiv.setAttribute('style', 'width:50%;');
-      }
+      widgetDiv.setAttribute('style', `width: ${sliderWidthProportion};`);
+
       const widgetCore = document.createElement('div');
       widgetCore.setAttribute('id', 'slider' + idWidget);
       widgetDiv.appendChild(widgetCore);
@@ -653,7 +631,7 @@ function flatUiWidgetsPluginClass() {
 
       //
       const showWidget = this.showWidget();
-      let displayStyle = 'display: inherit;';
+      let displayStyle = 'display: table;';
       if (!showWidget) {
         displayStyle = 'display: none;';
       }
@@ -777,7 +755,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (typeof val !== 'number') {
+        if (typeof val != 'number') {
           return;
         }
         modelsParameters[idInstance].max = val;
@@ -799,7 +777,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (typeof val !== 'number') {
+        if (typeof val != 'number') {
           return;
         }
         modelsParameters[idInstance].min = val;
