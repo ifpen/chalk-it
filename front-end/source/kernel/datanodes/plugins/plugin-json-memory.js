@@ -1,5 +1,5 @@
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import { datanodeModel } from 'kernel/datanodes/base/DatanodeModel';
+import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
 
 (function () {
   var error = false;
@@ -117,8 +117,8 @@ import { datanodeModel } from 'kernel/datanodes/base/DatanodeModel';
       let origin_name = currentSettings['datanode_origin'];
       if (!datanodesManager.foundDatanode(origin_name)) {
         const text = "DataNode '" + origin_name + "' does not exist in dataNodes list";
-        datanodeModel.statusCallback('Error', text);
-        datanodeModel.notificationCallback('error', datanodeModel.name(), text);
+        statusCallback('Error', text);
+        DatanodeModel.notificationCallback('error', DatanodeModel.name(), text);
         return false;
       }
 
