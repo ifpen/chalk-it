@@ -803,7 +803,8 @@ function plotlyWidgetsPluginClass() {
       setValue: function (val) {
         //AEF
         if (_.isUndefined(val)) {
-          swal('Invalid data value', 'value in x axis is undefined !', 'error');
+          //swal('Invalid data value', 'value in x axis is undefined !', 'error');
+          console.log('Invalid data value: value in x axis is undefined !');
           return;
         }
         if (!Array.isArray(val)) {
@@ -812,7 +813,8 @@ function plotlyWidgetsPluginClass() {
             console.log('value in x axis is converted to an array.');
             //swal("Invalid data type", "value in x axis is converted to an array.", "warning");
           } else {
-            swal('Invalid data type', 'x axis must be an array !', 'error');
+            //swal('Invalid data type', 'x axis must be an array !', 'error');
+            console.log('Invalid data type: x axis must be an array !');
             return;
           }
         }
@@ -845,7 +847,8 @@ function plotlyWidgetsPluginClass() {
           //AEF
           const i = this.index + 1;
           if (_.isUndefined(val)) {
-            swal('Invalid data value', 'value in ' + 'y' + i + ' axis is undefined !', 'error');
+            //swal('Invalid data value', 'value in ' + 'y' + i + ' axis is undefined !', 'error');
+            console.log('Invalid data value: value in ' + 'y' + i + ' axis is undefined !');
             return;
           }
           if (!Array.isArray(val)) {
@@ -854,7 +857,8 @@ function plotlyWidgetsPluginClass() {
               console.log('value in ' + 'y' + i + ' axis is converted to an array.');
               //swal("Invalid data type", "value in " + "y" + i + " axis is converted to an array.", "warning");
             } else {
-              swal('Invalid data type', 'y' + i + ' axis must be an array !', 'error');
+              //swal('Invalid data type', 'y' + i + ' axis must be an array !', 'error');
+              console.log('Invalid data type: y' + i + ' axis must be an array !');
               return;
             }
           }
