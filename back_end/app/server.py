@@ -42,7 +42,7 @@ class AppConfig:
         # Extract arguments and set default values
         self.DEBUG = args.dev
         self.xprjson = args.xprjson_file
-        self.run_port = args.app_port or 7854
+        self.run_port = args.app_port or 5000
         self.app_ip = args.app_ip or "127.0.0.1"
         self.server_url = f"http://{self.app_ip}:{self.run_port}"
 
@@ -342,7 +342,7 @@ class FileManager:
             "/",
             view_func=RootManager.handle_errors(self.static_files),
             methods=["GET"],
-            defaults={"path": "index.html"},
+            defaults={"path": "./build/index.html"},
             endpoint="static_file_root",
         )
 
@@ -406,9 +406,7 @@ class FileManager:
             config_data = json.load(config_file)
 
         # Read the HTML template
-        index_view_path = os.path.join(
-            self.config.base_dir, "index-view-2.930.8710.html"
-        )
+        index_view_path = os.path.join(self.config.base_dir, "/build/index-view.html")
         with open(index_view_path, "r") as template_file:
             template_data = template_file.read()
 
@@ -448,7 +446,7 @@ class DocManager:
         self.blueprint.add_url_rule(
             "/doc/",
             view_func=RootManager.handle_errors(self.serve_doc),
-            defaults={"path": "index.html"},
+            defaults={"path": "./build/doc/index.html"},
             methods=["GET"],
             endpoint="serve_doc_root",
         )
@@ -456,7 +454,7 @@ class DocManager:
     def serve_doc(self, path: str) -> Response:
         # Adjust 'doc_path' if your docs are in a specific subdirectory
         static_file_directory = Path(self.blueprint.static_folder)
-        doc_path = static_file_directory / "doc"
+        doc_path = static_file_directory / "build" / "doc"
         full_path = doc_path / path
 
         # Safety check to prevent directory traversal

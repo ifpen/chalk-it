@@ -1,9 +1,12 @@
 import fs from 'fs';
-import { config } from './config.js';
+import { config as configEnv } from 'dotenv';
+configEnv({ path: '.env.prod' });
+
+const { config } = await import('./config.js');
 
 const xDashConfig = config.xDashConfig;
 const xdashAddr = xDashConfig.urlBase || xDashConfig.urlBaseForExport;
-const xdashDocAddr = xDashConfig.urlDoc || '/doc/';
+const xdashDocAddr = xDashConfig.urlDoc;
 
 const insert_txt = `
 xdashAddr = "${xdashAddr}";
