@@ -1,17 +1,16 @@
-﻿// ┌───────────────────────────────────────────────────────────────────────┐ \\
-// │ widget-datanode-update                                                │ \\
-// ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                           │ \\
-// | Licensed under the Apache License, Version 2.0                        │ \\
-// ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY| \\
-// |                      Ghiles HDIEUR                                    │ \\
-// └───────────────────────────────────────────────────────────────────────┘ \\
+﻿// ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐ \\
+// │ widget-datanode-update                                                                                      │ \\
+// ├─────────────────────────────────────────────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright © 2016-2024 IFPEN                                                                                 │ \\
+// | Licensed under the Apache License, Version 2.0                                                              │ \\
+// ├─────────────────────────────────────────────────────────────────────────────────────────────────────────────┤ \\
+// │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY, Ghiles HDIEUR                       | \\
+// └─────────────────────────────────────────────────────────────────────────────────────────────────────────────┘ \\
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// |                     displaySpinnerOnInputFileButton                | \\
+// |                         displayLoadSpinner                         | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function displaySpinnerOnInputFileButton(idWidget) {
+function displayLoadSpinner(idWidget) {
   const self = this;
   const aElement = document.getElementById('button' + idWidget);
   const inputElement = document.getElementById('button' + idWidget + '_select_file');
@@ -47,66 +46,64 @@ function displaySpinnerOnInputFileButton(idWidget) {
 }
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// |                     updateDataSourceFromWidget                     | \\
+// |                             addSpinner                             | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function updateDataSourceFromWidget(idInstance, e) {
-  if (_.isUndefined(widgetConnector.widgetsConnection[idInstance])) return;
-  const sliders = widgetConnector.widgetsConnection[idInstance].sliders;
-  const dnNames = [];
-  if (!_.isUndefined(sliders)) {
-    for (const trigger in sliders) {
-      const dataNodeName = sliders[trigger].dataNode;
-      if (dataNodeName !== 'None') {
-        dnNames.push(datanodesManager.getDataNodeByName(dataNodeName).name());
-      }
-    }
+function _addSpinner(idWidget) {
+  const widgetButton = document.getElementById('button' + idWidget);
+  const iElement = document.getElementById('icon' + idWidget) || document.createElement('i');
+  iElement.setAttribute('id', 'icon' + idWidget);
 
-    if (dnNames.length > 0) {
-      datanodesManager.getDataNodeByName(dnNames[0]).schedulerStart(dnNames, dnNames[0], 'triggerButton');
-    }
+  widgetButton.classList.add('btn', 'btn-table-cell', 'btn-lg', 'disabled'); // disable until request finished
+  if (!iElement.classList.contains('fa', 'fa-spinner', 'fa-spin')) {
+    iElement.classList.add('fa', 'fa-spinner', 'fa-spin');
+  }
+  if (!widgetButton.contains(iElement)) {
+    widgetButton.append(iElement);
   }
 }
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// |               updateDataNodeFromWidgetwithspinButton               | \\
+// |                            removeSpinner                           | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
-  if (_.isUndefined(widgetConnector.widgetsConnection[idInstance])) return;
-  const sliders = widgetConnector.widgetsConnection[idInstance].sliders;
+function _removeSpinner(idInstance, idWidget) {
+  const iElement = document.getElementById('icon' + idWidget);
+  const widgetButton = document.getElementById('button' + idWidget);
+
+  if (iElement) {
+    iElement.remove();
+  }
+  widgetButton.className = `btn btn-table-cell btn-lg ${idInstance}widgetCustomColor`;
+}
+
+// ├────────────────────────────────────────────────────────────────────┤ \\
+// |                        updateWidgetDataNode                        | \\
+// ├────────────────────────────────────────────────────────────────────┤ \\
+function updateWidgetDataNode(idInstance, idWidget) {
+  const widgetConnection = widgetConnector.widgetsConnection[idInstance];
+  if (!widgetConnection) return;
+
+  const sliders = widgetConnection.sliders;
   const dnNames = [];
-  if (!_.isUndefined(sliders)) {
-    for (let trigger in sliders) {
+
+  if (sliders) {
+    for (const trigger in sliders) {
       const dataNodeName = sliders[trigger].dataNode;
       if (dataNodeName != 'None') {
-        dnNames.push(datanodesManager.getDataNodeByName(dataNodeName).name());
+        const dataNode = datanodesManager.getDataNodeByName(dataNodeName);
+        dnNames.push(dataNode.name());
       }
     }
 
-    if (dnNames.length > 0) {
-      const widgetElement = document.getElementById('button' + idWidget);
-      const iElement = document.createElement('i');
-      iElement.setAttribute('id', 'icon' + idWidget);
+    if (dnNames.length) {
       datanodesManager.getDataNodeByName(dnNames[0]).schedulerStart(dnNames, dnNames[0], 'triggerButton');
+
       const intervalId = setInterval(function () {
-        const pendings = [];
-        dnNames.forEach((element) => {
-          if (datanodesManager.getDataNodeByName(element).status() == 'Pending') {
-            // check if datanode is in Pending state
-            $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg disabled'); // disable until request finished
-            pendings.push(true);
-            // Just do it if one datanode has "Pending" status. And do it only once
-            if (!$(iElement).hasClass('fa fa-spinner fa-spin')) {
-              iElement.setAttribute('class', 'fa fa-spinner fa-spin');
-            }
-            if (!widgetElement.contains(iElement)) {
-              widgetElement.append(iElement);
-            }
-          }
-        });
-        if (pendings.length == 0) {
-          $('#button' + idWidget).attr('class', 'btn btn-table-cell btn-lg ' + idInstance + 'widgetCustomColor ');
-          if (!_.isUndefined($('#icon' + idWidget)[0])) $('#icon' + idWidget)[0].remove();
-          iElement.remove();
+        const pendings = dnNames.some((name) => datanodesManager.getDataNodeByName(name).status() === 'Pending');
+
+        if (pendings) {
+          _addSpinner(idWidget);
+        } else {
+          _removeSpinner(idInstance, idWidget);
           clearInterval(intervalId);
         }
       }, 100);
@@ -115,19 +112,23 @@ function updateDataNodeFromWidgetwithspinButton(idInstance, idWidget) {
 }
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// |                   updateDataNodeFileFromWidget                     | \\
+// |                         setFileUploadSpinner                       | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function updateDataNodeFileFromWidget(idInstance, fileContent) {
-  if (_.isUndefined(widgetConnector.widgetsConnection[idInstance])) return;
-  var sliders = widgetConnector.widgetsConnection[idInstance].sliders;
-  if (!_.isUndefined(sliders)) {
-    for (var trigger in sliders) {
-      let dataNodeName = sliders[trigger].dataNode;
-      if (dataNodeName != 'None') {
-        if (datanodesManager.getDataNodeByName(dataNodeName).isSetFileValid()) {
-          datanodesManager.getDataNodeByName(dataNodeName).setFile(fileContent);
-        }
-      }
+function setFileUploadSpinner(idWidget, status) {
+  const buttonElement = document.getElementById('button' + idWidget);
+  const existingSpinner = document.getElementById('icon' + idWidget);
+
+  if (status == 'remove') {
+    buttonElement.classList.remove('disabled');
+    if (existingSpinner) existingSpinner.remove();
+  } else if (status == 'add') {
+    // disable until request finished
+    buttonElement.classList.add('disabled');
+    if (!existingSpinner) {
+      const spinnerElement = document.createElement('i');
+      spinnerElement.setAttribute('id', 'icon' + idWidget);
+      spinnerElement.setAttribute('class', 'fa fa-spinner fa-spin');
+      buttonElement.appendChild(spinnerElement);
     }
   }
 }

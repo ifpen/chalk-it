@@ -278,9 +278,9 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           }
 
           let lines = script.split('\n');
-          let patternRegex = /\.(goToPage|viewPage|viewProject|\w+Widget)/;
+          let patternRegex = /\.(goToPage|viewPage|viewProject|\w+Widget|notify|swalert)/;
           if (settingDef.type === 'custom2') {
-            patternRegex = /\.(output|as_|goToPage|viewPage|viewProject|\w+Widget)/;
+            patternRegex = /\.(output|as_|dashboard|scheduler|notification)/;
           }
           for (let i = 0; i < lines.length; i++) {
             lines[i] = lines[i].replace(/\s/g, ''); //remove white space
@@ -289,11 +289,9 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
               if (_.isNull(lines[i].match(patternRegex))) {
                 line = lines[i].replace(/(['"])(?:\\.|(?!\1)[^\\\n])*\1/g, ''); //remove strings
                 if (!_.isNull(line.match(/(chalkit|xDashApi)\.[^\s()]+\(/))) {
+                  //Warning for chalkit js api
                   const text = 'Syntax error in chalkit API';
-                  datanodeModel.statusCallback('Error', text);
-                  datanodeModel.notificationCallback('error', datanodeModel.name(), text);
-                  self.bCalculatedSettings = false;
-                  return;
+                  datanodeModel.notificationCallback('warning', datanodeModel.name(), text);
                 }
               }
             }
@@ -331,6 +329,7 @@ function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePlugins, 
           self.bCalculatedSettings = false;
           return;
         }
+
         if (datanodeModel.name() === origin_name) {
           //AEF: loop detected before adding the datanode (at creation)
           const text = 'DataNode "' + origin_name + '": Please select another datanode target.';

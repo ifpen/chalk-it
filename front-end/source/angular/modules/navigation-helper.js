@@ -22,7 +22,6 @@ function navigationHelperClass() {
     var $body = angular.element(document.body); // 1
     var $rootScope = $body.scope().$root;
     var $state = $body.scope().$state; //AEF
-    $rootScope.showNotifications = false;
     $rootScope.origin = 'openProject';
     $rootScope.loadingBarStart();
     $rootScope.toggleMenuOptionDisplay('none');
@@ -39,10 +38,10 @@ function navigationHelperClass() {
 
     var fileTypeServer = 'template';
 
-    FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + 'xprjson', async function (msg1, msg2, type) {
+    FileMngrInst.ReadFile(fileTypeServer, projectName + '.' + 'xprjson', function (msg1, msg2, type) {
       //AEF: fix bug add params and test on it
       if (type === 'success') {
-        await xdash.openProjectManager(msg1);
+        xdash.openProjectManager(msg1);
         $rootScope.loadingBarStop();
         $rootScope.currentProject.name = projectName;
         if (_.isFunction(callback)) callback();

@@ -216,11 +216,7 @@
       if (wsConn) wsConn.close();
     };
 
-    self.isSetValueValid = function () {
-      return false;
-    };
-
-    self.isSetFileValid = function () {
+    this.canSetValue = function () {
       return false;
     };
 
@@ -262,11 +258,11 @@
     function sendData(data, bJSON = true) {
       if (!_.isUndefined(wsConn) && wsConn.readyState === 1) {
         /*
-                                if (bJSON == true)
-                                    wsConn.send(JSON.stringify(data));
-                                else
-                                    wsConn.send(data);
-                */
+                              if (bJSON == true)
+                                  wsConn.send(JSON.stringify(data));
+                              else
+                                  wsConn.send(data);
+              */
         wsConn.send(data);
       }
     }
@@ -311,7 +307,8 @@
       {
         name: 'autoStart',
         display_name: 'AUTO START',
-        description: 'DataNode is executed automatically at start (project load, its creation/modification).',
+        description:
+          'Start websocket send automatically after dashboard play begins or after creation or modification.',
         type: 'boolean',
         default_value: true,
       },
@@ -319,7 +316,7 @@
         name: 'explicitTrig',
         display_name: 'Explicit trigger',
         description:
-          'DataNode is executed only if triggered explicitly (no execution when its predecessors are updated). It is executed automatically once when AutoStart is “YES”.',
+          'Execute web-socket only if triggered explicitly : no execution when predecessor dataNodes are modified.',
         type: 'boolean',
         default_value: false,
       },

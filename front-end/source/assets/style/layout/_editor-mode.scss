@@ -5,7 +5,7 @@
  * 
  */
 
-// Used for beautifulStringFromHtml
+// Used for formatJson
 .css-treeview {
   position: relative;
   width: 100%;
@@ -214,8 +214,15 @@ div > .draggable::-webkit-scrollbar-thumb {
   position: absolute;
   background: white;
   z-index: 999999;
+  pointer-events: none;
 }
-
+.drag-drop-new {
+  cursor: grab;
+  display: inline-block;
+}
+.drag-drop-new * {
+  pointer-events: none; /* Ensure that child elements don't interfere */
+}
 .dropperR.drop-possible {
   // background-color: white;
 }

@@ -197,7 +197,11 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
     resizeDashboardCols();
 
     var htmlTargetDims = getCurrentDashZoneDims(self.mode);
-    if (!_.isUndefined(target)) htmlTargetDims = target; // used at dashboard load
+    if (!_.isUndefined(target)) {
+      if (target.widthVw > 0 && target.widthPx > 0) {
+        htmlTargetDims = target; // used at dashboard load
+      }
+    }
 
     var hmtlScaling = new scalingManager(self.dashboardDimensions, htmlTargetDims, self.scalingMethod);
     self.dashboardDimensions = htmlTargetDims;

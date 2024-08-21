@@ -19,13 +19,13 @@
   };
 })(jQuery);
 
-var RuntimeDashboard = (function () {
-  var scalingSrc;
+const RuntimeDashboard = (function () {
+  let scalingSrc;
 
   function initContainers(jsonContent, exportOptions) {
     scalingSrc = jQuery.extend(true, {}, jsonContent.scaling); // MBG fix load order
 
-    var navMenuHeightPx = 0;
+    let navMenuHeightPx = 0;
 
     if ($('#nav-menu')[0]) {
       navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);
@@ -39,7 +39,7 @@ var RuntimeDashboard = (function () {
         break;
       case 'adjustToFullWidth':
         $('#dashboard-zone')[0].style.width = '100%';
-        $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx + 'px';
+        $('#dashboard-zone')[0].style.height = scalingSrc.scrollHeightPx + navMenuHeightPx + 'px';
         scalingSrc.scalingMethod = 'scaleTwSpWS';
         break;
       case 'ajustToTargetWindow':
@@ -69,70 +69,16 @@ var RuntimeDashboard = (function () {
 
     $('#DropperDroitec')[0].style['overflow-y'] = 'auto';
 
-    if (!_.isUndefined(jsonContent.device)) {
-      // backward compatibility // to refactor (copied from toolbox-editor.js)
-      if (_.isUndefined(jsonContent.device.cols.valueRow)) {
-        if (_.isUndefined(jsonContent.device.cols.value)) {
-          jsonContent.device.cols.valueRow = 'none';
-        } else {
-          switch (jsonContent.device.cols.value) {
-            case 'none':
-              jsonContent.device.cols.valueRow = 'none';
-              break;
-            case '1':
-            case '3':
-              jsonContent.device.cols.valueRow = '1';
-              break;
-            case '6':
-              jsonContent.device.cols.valueRow = '6';
-              break;
-            default:
-              jsonContent.device.cols.valueRow = 'none';
-          }
-        }
-      }
-      if (_.isUndefined(jsonContent.device.cols.valueCol)) {
-        if (_.isUndefined(jsonContent.device.cols.value)) {
-          jsonContent.device.cols.valueCol = '1';
-        } else {
-          switch (jsonContent.device.cols.value) {
-            case 'none':
-            case '1':
-              jsonContent.device.cols.valueCol = '1';
-              break;
-            case '3':
-            case '6':
-              jsonContent.device.cols.valueCol = '3';
-              break;
-            default:
-              jsonContent.device.cols.valueCol = '1';
-          }
-        }
-      }
-      // end of backward compatibility
-    } else {
-      // very old backward compatibility
-      jsonContent.device = {
-        cols: {
-          valueRow: 'none',
-          valueCol: '1',
-          maxCells: 0,
-          maxCols: 0,
-          classType: '',
-        },
-      };
-    }
-
     const cols = jsonContent.device.cols.maxCols;
     const maxCells = jsonContent.device.cols.maxCells;
-    const rows = maxCells / (cols ? cols : 1);
+    const rows = maxCells / (cols || 1);
 
-    var projectedScalingObj = jQuery.extend(true, {}, scalingSrc);
-    var projectedPreviewDimensions = widgetPreview.getCurrentDashZoneDims();
+    let projectedScalingObj = jQuery.extend(true, {}, scalingSrc);
+    let projectedPreviewDimensions = widgetPreview.getCurrentDashZoneDims();
     widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, cols);
     widgetPreview.resizeDashboardCols();
 
-    var mediaChangeProj = widgetPreview.mediaChangeProjection(projectedScalingObj, projectedPreviewDimensions, rows);
+    const mediaChangeProj = widgetPreview.mediaChangeProjection(projectedScalingObj, projectedPreviewDimensions, rows);
 
     projectedScalingObj = mediaChangeProj.referenceFrame;
     projectedPreviewDimensions = mediaChangeProj.targetFrame;
@@ -142,22 +88,36 @@ var RuntimeDashboard = (function () {
     widgetPreview.resizeDashboard(projectedPreviewDimensions);
   }
 
-  async function loadDashboard(jsonContent, exportOptions) {
-    var decodedData = $('<textarea />').html(JSON.stringify(jsonContent.data)).text(); // MBG : find a better method
-    var data_json = '';
+  function loadDashboard(jsonContent, exportOptions) {
+    function decodeHtmlEntities(str) {
+      var txt = document.createElement('textarea');
+      txt.innerHTML = str;
+      return txt.value;
+    }
+    function escapeSpecialCharacters(jsonString) {
+      return jsonString.replace(/[\u007F-\uFFFF]/g, function (chr) {
+        return '\\u' + ('0000' + chr.charCodeAt(0).toString(16)).substr(-4);
+      });
+    }
+
+    let encodedData = JSON.stringify(jsonContent.data);
+    // Escape special characters in the JSON string
+    encodedData = escapeSpecialCharacters(encodedData);
+    let parsedData = JSON.parse(encodedData);
+    let decodedData = decodeHtmlEntities(JSON.stringify(parsedData));
+
+    let data_json = '';
     try {
       data_json = JSON.parse(decodedData);
     } catch (err) {
       swal('JSON Parse error', err.message, 'error');
       return;
     }
-    await pyodideLib.deserialize(jsonContent); // GHI issue #193
 
+    pyodideLib.deserialize(jsonContent);
     datanodesManager.load(data_json, true); //ABK
-
     initContainers(jsonContent, exportOptions);
-
-    for (var key in jsonContent.dashboard) {
+    for (const key in jsonContent.dashboard) {
       if (!_.isEmpty(jsonContent.dashboard[key].modelParameters)) {
         modelsParameters[key] = jsonContent.dashboard[key].modelParameters;
       }
@@ -165,16 +125,13 @@ var RuntimeDashboard = (function () {
         modelsHiddenParams[key] = jsonContent.dashboard[key].modelHiddenParams;
       }
       if (_.isUndefined(modelsTempParams[key])) {
-        var modelJsonIdStr = key.substring(0, key.length - 1);
+        const modelJsonIdStr = key.substring(0, key.length - 1);
         modelsTempParams[key] = jQuery.extend(true, {}, modelsTempParams[modelJsonIdStr]);
       }
     }
 
     //AEF: issue#304
-    var offSchedLogUser;
-    if (!_.isUndefined(jsonContent.meta.schedulerLogOff)) offSchedLogUser = jsonContent.meta.schedulerLogOff;
-    else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
-    //
+    const offSchedLogUser = jsonContent.meta?.schedulerLogOff ?? true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
     // Add theme attribute before loading widgets
     $('html').attr('data-theme', jsonContent.device.theme);
@@ -195,7 +152,7 @@ var RuntimeDashboard = (function () {
         customNavigationRuntime.customNavigationModeInit(jsonContent);
         break;
       case 'projectToTargetWindow':
-        customNavigationRuntime.setJsonContent(jsonContent);
+        customNavigationRuntime.jsonContent = jsonContent;
         break;
     }
 

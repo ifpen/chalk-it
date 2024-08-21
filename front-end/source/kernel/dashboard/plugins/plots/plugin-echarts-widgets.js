@@ -19,6 +19,12 @@ const echartsDefaultColors = [
   'var(--widget-color-5)',
   'var(--widget-color-6)',
   'var(--widget-color-7)',
+  'var(--widget-color-8)',
+  'var(--widget-color-9)',
+  'var(--widget-color-10)',
+  'var(--widget-color-11)',
+  'var(--widget-color-12)',
+  'var(--widget-color-13)',
 ];
 modelsHiddenParams.echartsGeneric = {
   option: {
@@ -45,10 +51,6 @@ function echartsWidgetsPluginClass() {
       idDivEcharts = idDivEcharts + 'c';
     }
     widgetHtml.setAttribute('id', idDivEcharts);
-    widgetHtml.setAttribute(
-      'style',
-      'text-align:center; height: inherit; width: inherit; background-color: transparent'
-    );
     $('#' + idDivContainer).html(widgetHtml);
   }
 
@@ -95,6 +97,29 @@ function echartsWidgetsPluginClass() {
 
       createEchartsDiv(idDivContainer, idWidget, bInteractive);
 
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+
+      let elem = $('#echarts' + idWidget)[0];
+      if (bInteractive) {
+        elem = $('#echarts' + idWidget + 'c')[0];
+      }
+      elem.setAttribute(
+        'style',
+        'text-align:center; height: inherit; width: inherit; background-color: transparent;' +
+          displayStyle +
+          enableStyle
+      );
+      this.applyDisplayOnWidget();
       // use configuration item and data specified to show chart
       if (bInteractive) {
         var myChart = echarts.init(document.getElementById('echarts' + idWidget + 'c'));
@@ -177,7 +202,7 @@ function echartsWidgetsPluginClass() {
     widgetsDefinitionList: {
       echartsGeneric: {
         factory: 'genericEchartsWidget',
-        title: 'Echarts generic',
+        title: 'Echarts JavaScript generic',
         icn: 'echarts-generic-javascript',
         help: 'wdg/wdg-plots/#echarts',
       },

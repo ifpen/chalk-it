@@ -54,7 +54,7 @@ var htmlExport = (function () {
     dashDiv.setAttribute('class', 'panel-body');
     dashDiv.setAttribute('style', 'padding: 0px');
     dashDiv.innerHTML =
-      '<div id="DropperDroitec" class="dropperR" style="position:relative;z-index:0;border-radius:10px" ng-app="xCLOUD"></div>';
+      '<div id="DropperDroitec" class="dropperR" ng-app="xCLOUD"></div>';
     return dashDiv;
   }
 
@@ -88,7 +88,6 @@ var htmlExport = (function () {
     var bodyText2 = [];
     var bodyText3 = [];
     var bodyText4 = [];
-    var bodyText5 = [];
 
     let navBarNotification = htmlExport.navBarNotification;
     let showNavBar;
@@ -163,9 +162,11 @@ var htmlExport = (function () {
 
   /*--------preview dashboard--------*/
   function previewDashboard(xprjson, projectName, bNoExportModal) {
-    var param;
-    if (!_.isUndefined(xprjson) && !_.isUndefined(projectName)) {
-      param = [xprjson, projectName];
+    const $rootScope = angular.element(document.body).scope().$root;
+    const _projectName = $rootScope.xDashFullVersion ? projectName : $('#projectName').val() || 'Untitled';
+    let param;
+    if (!_.isUndefined(xprjson) && !_.isUndefined(_projectName)) {
+      param = [xprjson, _projectName];
     }
     if (htmlExport.checkExportOptions || bNoExportModal) previewDashboardCallback(param);
   }
@@ -198,7 +199,7 @@ var htmlExport = (function () {
     var txt = createDashboardDocument(dashboardName, xprjson);
     tab.document.write(txt);
     tab.document.close();
-    tab.focus();
+    tab.focus();        
   }
 
   /*--------save Dashboard Callback--------*/

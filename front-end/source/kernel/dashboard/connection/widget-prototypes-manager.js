@@ -91,6 +91,20 @@ class WidgetPrototypesManager {
     type: 'object',
   };
 
+  static SCHEMA_FILE_LIKE = {
+    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:file',
+    type: 'object',
+    properties: {
+      content: { type: 'string' },
+      name: { type: 'string' },
+      type: { type: 'string' },
+      charset: { type: 'string' },
+      isBinary: { type: 'boolean' },
+    },
+    required: ['content'],
+  };
+
   static SCHEMA_NUMBER_OR_STRING = {
     $schema: WidgetPrototypesManager.SCHEMA_VERSION,
     $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:number_or_string',

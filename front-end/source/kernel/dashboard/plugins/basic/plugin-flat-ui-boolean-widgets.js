@@ -171,8 +171,25 @@ function flatUiBooleanWidgetsPluginClass() {
       }
 
       widgetHtml.innerHTML = divContent;
-      $('#' + idDivContainer).html(widgetHtml);
 
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: flex;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute(
+        'style',
+        'width: inherit;cursor: inherit;justify-content: center;' + displayStyle + enableStyle
+      );
+      $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       $('[data-toggle="checkbox"]').radiocheck();
       $('[data-toggle="radio"]').radiocheck();
 
@@ -365,6 +382,19 @@ function flatUiBooleanWidgetsPluginClass() {
           '</span>';
       }
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
 
       document.styleSheets[0].addRule('input + #slide' + idWidget, this.switchOffColor());

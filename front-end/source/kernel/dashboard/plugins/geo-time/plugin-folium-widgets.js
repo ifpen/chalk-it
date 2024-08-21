@@ -16,9 +16,7 @@ modelsHiddenParams.foliumMaps = {
 };
 
 // Parameters
-modelsParameters.foliumMaps = {
-  backgroundColor: 'rgba(0, 0, 0, 0)',
-};
+modelsParameters.foliumMaps = {};
 
 // Layout (default dimensions)
 modelsLayout.foliumMaps = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
@@ -74,7 +72,7 @@ function foliumWidgetPluginClass() {
       }
       foliumDiv.setAttribute(
         'style',
-        'width: inherit; height: inherit; background-color:' + modelsParameters[idInstance].backgroundColor
+        'width: inherit; height: inherit; background-color: rgba(0, 0, 0, 0)'
       );
       $('#' + idDivContainer).html(foliumDiv);
     };
@@ -115,7 +113,7 @@ function foliumWidgetPluginClass() {
   this.pluginDefinition = {
     name: 'Maps',
     widgetsDefinitionList: {
-      foliumMaps: { factory: 'foliumMapWidget', title: 'Folium Map', icn: 'folium', help: '' },
+      foliumMaps: { factory: 'foliumMapWidget', title: 'Folium maps', icn: 'folium', help: '' },
     },
   };
 

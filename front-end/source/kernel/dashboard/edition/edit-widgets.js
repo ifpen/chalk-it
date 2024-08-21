@@ -871,12 +871,9 @@ function initEditWidget() {
 
   /*--------serialize--------*/
   function serialize() {
-    var key, val, wcLayout, resParam;
-    wcLayout = {};
-    var dashJson = {};
-    var container = {};
-    for ([key, val] of widgetContainers) {
-      wcLayout = {
+    const dashJson = {};
+    for (const [key, val] of widgetContainers) {
+      const wcLayout = {
         top: $('#' + val.id)[0].style.top,
         left: $('#' + val.id)[0].style.left,
         height: $('#' + val.id)[0].style.height,
@@ -885,11 +882,9 @@ function initEditWidget() {
         minWidth: $('#' + val.id)[0].style.minWidth,
         'z-index': $('#' + val.id)[0].style['z-index'],
       };
-      container = {
-        id: val.id,
+      const container = {
         instanceId: val.instanceId,
         modelJsonId: val.modelJsonId,
-        widgetTypeName: val.widgetTitle,
       };
       // TODO : gérer de façon abstraite
       if (bNoteBookMode || val.modelJsonId == 'annotationLabel' || val.modelJsonId == 'annotationImage') {
@@ -901,19 +896,6 @@ function initEditWidget() {
         };
       } else {
         emptyModelsHiddenParams = jQuery.extend(true, {}, modelsHiddenParams[val.modelJsonId]);
-        if (
-          val.modelJsonId == 'perfectWidgetsSimpleMeter' ||
-          val.modelJsonId == 'perfectWidgetsTachometer' ||
-          val.modelJsonId == 'perfectWidgetsMultiSwitch' ||
-          val.modelJsonId == 'perfectWidgetsSimpleCompass' ||
-          val.modelJsonId == 'perfectWidgetsSimpleCircleWind'
-        ) {
-          Object.keys(modelsParameters[key]).forEach((param) => {
-            resParam = param.replace('.', '_');
-            modelsParameters[key][resParam] = modelsParameters[key][param];
-            delete modelsParameters[key][param];
-          });
-        }
         dashJson[key] = {
           layout: wcLayout,
           container: container,
@@ -945,7 +927,7 @@ function initEditWidget() {
     scalingHelper.setScalingMethod(editorScalingMethod);
 
     // columns rescale
-    deviceObj = layoutMgr.deserialize(deviceObj, scalingObj); // get new version with backward compatibility
+    layoutMgr.deserialize(deviceObj, scalingObj);
     scalingHelper.deserialize(scalingObj);
     layoutMgr.updateColHeight(scalingObj);
     scalingHelper.resizeDashboardCols();
@@ -974,31 +956,11 @@ function initEditWidget() {
 
     var edScalingMgr = new scalingManager(projectedScalingObj, projectedEditorDimensions, editorScalingMethod);
 
-    var key;
-    var widgetTitle = ''; // AEF
-
     var wdgDrprMap = layoutMgr.deserializeCols(dashObj, deviceObj);
-    var resParam;
 
-    for (key in dashObj) {
-      if (!_.isEmpty(dashObj[key].modelParameters)) {
-        let modelJsonIdValue = dashObj[key].container.modelJsonId;
-        let modelParametersValue = dashObj[key].modelParameters;
-        if (
-          modelJsonIdValue == 'perfectWidgetsSimpleMeter' ||
-          modelJsonIdValue == 'perfectWidgetsTachometer' ||
-          modelJsonIdValue == 'perfectWidgetsMultiSwitch' ||
-          modelJsonIdValue == 'perfectWidgetsSimpleCompass' ||
-          modelJsonIdValue == 'perfectWidgetsSimpleCircleWind'
-        ) {
-          Object.keys(modelParametersValue).forEach((param) => {
-            resParam = param.replace('_', '.');
-            modelParametersValue[resParam] = modelParametersValue[param];
-            delete modelParametersValue[param];
-          });
-        }
-        modelsParameters[key] = modelParametersValue;
-      }
+    for (const key in dashObj) {
+      modelsParameters[key] = dashObj[key].modelParameters;
+
       if (
         bNoteBookMode ||
         dashObj[key].container.modelJsonId == 'annotationLabel' ||
@@ -1028,29 +990,20 @@ function initEditWidget() {
         width: w2Layout.widthVw + 'vw',
         height: w2Layout.heightVh + 'vh',
       };
-      //AEF: add widgetTitle to identify widgetObject type
-      if (!_.isUndefined(dashObj[key].container.widgetTypeName)) {
-        widgetTitle = dashObj[key].container.widgetTypeName;
-      } else {
-        // former xprjson
-        widgetTitle = dashObj[key].container.modelJsonId;
-      }
 
       var targetDiv = document.getElementById(wdgDrprMap[key]);
 
-      // TODO widgetTitle is not used !
       widgetEditor.addWidget(
         dashObj[key].container.modelJsonId,
         targetDiv,
         dashObj[key].container.instanceId,
         wLayout,
-        dashObj[key].layout['z-index'],
-        widgetTitle
+        dashObj[key].layout['z-index']
       );
       i = i + 1;
     }
 
-    for (key in dashObj) {
+    for (const key in dashObj) {
       computeWidgetsRatio(dashObj[key].container.instanceId);
     }
 
@@ -1351,8 +1304,8 @@ function initEditWidget() {
       });
     }
 
-    var openGraphFromWidget = document.getElementById('openGraphFromWidget');
-    openGraphFromWidget.setAttribute('name', JSON.stringify(connectedDataNodes));
+    const openGraphFromWidget = document.getElementById('openGraphFromWidget');
+    openGraphFromWidget?.setAttribute('name', JSON.stringify(connectedDataNodes));
 
     const idList = 'menuWidget';
 

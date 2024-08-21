@@ -20,7 +20,7 @@ modelsHiddenParams.saveToFileButton = {
 modelsParameters.saveToFileButton = {
   text: 'Save to file',
   fileName: 'export.txt',
-  buttonFontSize: 0.5,
+  buttonFontSize: 0.3,
   buttonFontFamily: 'var(--widget-font-family)',
   buttonTextColor: 'var(--widget-button-primary-text)',
   buttonDefaultColor: 'var(--widget-button-primary-color)',
@@ -29,7 +29,7 @@ modelsParameters.saveToFileButton = {
 };
 
 // Layout (default dimensions)
-modelsLayout.saveToFileButton = { height: '5vh', width: '8vw', minWidth: '55px', minHeight: '50px' };
+modelsLayout.saveToFileButton = { height: '6vh', width: '8vw', minWidth: '55px', minHeight: '24px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -91,9 +91,21 @@ function saveToFileButtonWidgetsPluginClass() {
       divContent = '<a ' + styleDef + '" id="button-save-to-file' + idWidget + '">' + '  ' + text + '  ' + '</a>';
 
       widgetHtml.innerHTML = divContent;
-      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       $('#button-save-to-file' + idWidget).on('click', function () {
         self.saveFile();
       });

@@ -73,6 +73,7 @@ body.stop-scrolling {
 }
 
 .sweet-alert textarea:read-only {
+  display: none; // For basic version
   background: none;
 }
 

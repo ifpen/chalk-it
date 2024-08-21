@@ -1,83 +1,89 @@
 {
-	"meta": {
-		"version": "1.440.7868",
-		"date": "Wed Jul 21 2021 17:05:32 GMT+0200 (heure d’été d’Europe centrale)",
-		"name": "python-webservice",
-		"description": "Using Flask via REST API dataNode-type to call Python code",
-		"tags": [
-			{
-				"text": "DataNodes"
-			},		
-			{
-				"text": "Python"
-			},
-			{
-				"text": "Flask"
-			},
-			{
-				"text": "REST-API"
-			}
-		],
-		"schedulerLogOff": true
-	},
-	"data": {
-		"version": 1,
-		"allow_edit": true,
-		"plugins": [],
-		"panes": [],
-		"dataNodes": [
-			{
-				"name": "vectorFunctions",
-				"type": "REST_web-service_from_datasource",
-				"settings": {
-					"name": "vectorFunctions",
-					"url": "http://127.0.0.1:5000/basicVect",
-					"use_xproxy": false,
-					"resp_data_type": "JSON",
-					"autoStart": false,
-					"explicitTrig": false,
-					"method": "POST",
-					"body": "{\n\"A\": [0, 1, 2, 3],\n\"B\": [10, 11, 12, 13] \n}",
-					"headers": [
-						{
-							"name": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"sampleTime": 0
-				}
-			}
-		],
-		"reIndexMap": [
-			0
-		],
-		"noTopologicalSortAtSerialize": true
-	},
-	"scaling": {
-		"widthPx": 1045,
-		"heightPx": 605,
-		"scrollWidthPx": 1045,
-		"scrollHeightPx": 605,
-		"widthVw": 68.03385416666667,
-		"heightVh": 80.23872679045093,
-		"scrollWidthVw": 68.03385416666667,
-		"scrollHeightVh": 80.23872679045093,
-		"scalingMethod": "scaleTwSp",
-		"media": "large",
-		"colDims": null
-	},
-	"device": {
-		"cols": {
-			"valueRow": "none",
-			"valueCol": "1",
-			"maxCells": 0,
-			"maxCols": 0,
-			"classType": ""
-		},
-		"droppers": {}
-	},
-	"dashboard": {},
-	"connections": {},
-	"exportOptions": "projectToTargetWindow",
-	"checkExportOptions": false
+  "meta": {
+    "version": "3.000.8901",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-15T08:34:37.215Z",
+    "name": "python-webservice",
+    "description": "Using Flask via REST API dataNode-type to call Python code",
+    "tags": [
+      {
+        "text": "DataNodes"
+      },
+      {
+        "text": "Python"
+      },
+      {
+        "text": "Flask"
+      },
+      {
+        "text": "REST-API"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "vectorFunctions",
+        "type": "REST_web-service_from_datasource",
+        "settings": {
+          "name": "vectorFunctions",
+          "url": "http://127.0.0.1:5000/basicVect",
+          "use_xproxy": false,
+          "sampleTime": 0,
+          "autoStart": false,
+          "explicitTrig": false,
+          "req_data_type": "none",
+          "resp_data_type": "JSON",
+          "method": "POST",
+          "body": "{\n\"A\": [0, 1, 2, 3],\n\"B\": [10, 11, 12, 13] \n}",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwSp",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "theme": "default"
+  },
+  "dashboard": {},
+  "connections": {},
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
 }

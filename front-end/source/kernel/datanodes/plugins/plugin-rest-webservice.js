@@ -16,14 +16,10 @@
     var reqDataType = 'JSON';
     var body = '';
     var requestURL = '';
-    var RestResponseData = '';
-    var jqXHR;
-    var jqXHR_hash;
+    var jqXHR; //AEF
+    var jqXHR_hash; //AEF
     var jbody = {};
 
-    this.getRestResponseData = function () {
-      return RestResponseData;
-    };
     this.updateNow = function (bForceAutoStart) {
       if (bForceAutoStart && currentSettings.sampleTime > 0) {
         if (currentSettings.explicitTrig) {
@@ -40,7 +36,7 @@
 
       statusCallback('Pending');
       webserviceRequest(requestURL, reqDataType, body);
-      return true;
+      return true; //ABK;
     };
 
     function WebserviceRequestSettings() {
@@ -57,24 +53,6 @@
         case 'text':
           reqDataType = 'text';
           break;
-      }
-
-      // Backward compatibility
-      if (!_.isUndefined(currentSettings.use_jsonp)) {
-        currentSettings.use_jsonp = false;
-      }
-
-      if (currentSettings.use_jsonp) {
-        reqDataType = 'JSONP';
-      }
-
-      // Backward compatibility
-      if (!_.isUndefined(currentSettings.use_thingproxy)) {
-        if (currentSettings.use_thingproxy) {
-          currentSettings.use_xproxy = true;
-        } else {
-          currentSettings.use_xproxy = false;
-        }
       }
 
       if (currentSettings.use_xproxy) {
@@ -119,6 +97,7 @@
             }
           }
       }
+      //}
 
       // format body
       if (currentSettings.use_xproxy) {
@@ -131,12 +110,6 @@
 
         //AEF: to add headers from datanodes; e.g for token
         if (!_.isUndefined(jbody) && !_.isNull(jbody)) {
-          //for compatibility
-          if (!_.isUndefined(jbody.headersFromDatasourceWS)) {
-            jbody.headersFromDataNodeWS = jbody.headersFromDatasourceWS;
-            delete jbody.headersFromDatasourceWS;
-          }
-          //
           if (!_.isUndefined(jbody.headersFromDataNodeWS)) {
             for (var param in jbody.headersFromDataNodeWS) {
               headers[param] = jbody.headersFromDataNodeWS[param];
@@ -164,11 +137,6 @@
         if (body) {
           let tpbody = JSON.parse(body);
           if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
-            //for compatibility
-            if (!_.isUndefined(tpbody.headersFromDatasourceWS)) {
-              delete tpbody.headersFromDatasourceWS;
-            }
-            //
             if (!_.isUndefined(tpbody.headersFromDataNodeWS)) {
               delete tpbody.headersFromDataNodeWS;
             }
@@ -205,11 +173,6 @@
           try {
             let tpbody = JSON.parse(body);
             if (!_.isUndefined(tpbody) && !_.isNull(tpbody)) {
-              //for compatibility
-              if (!_.isUndefined(tpbody.headersFromDatasourceWS)) {
-                delete tpbody.headersFromDatasourceWS;
-              }
-              //
               if (!_.isUndefined(tpbody.headersFromDataNodeWS)) {
                 delete tpbody.headersFromDataNodeWS;
               }
@@ -242,7 +205,7 @@
 
       // with xProxy we ask for JSON return, to get xProxy status and response headers (issue #154)
       if (currentSettings.use_xproxy) {
-        reqDataType = 'JSON';
+        reqDataType = 'json';
       }
       //-------------------------------------------------------
       //AEF:  secured xproxy
@@ -259,6 +222,7 @@
         if (_.isUndefined(currentSettings.proxySig)) currentSettings.proxySig = '';
 
         let FileMngrInst = new FileMngrFct();
+        // let bodyObj = JSON.parse(body);
         proxyHashTemp = FileMngrInst.Hash4Proxy(targetURL, 'xdash');
 
         if (currentSettings.proxyHash === '' || !currentSettings.proxyHash.localeCompare(proxyHashTemp)) {
@@ -300,6 +264,7 @@
     }
 
     function webserviceRequest(requestURL, reqDataType, data) {
+      //AEF
       if (jqXHR && jqXHR.readyState != 4) {
         jqXHR.abort();
       }
@@ -318,12 +283,8 @@
     }
 
     function callWebservice(requestURL, reqDataType, body) {
-      var interval = null; //AEF
-      var text = '';
-      var useMethod = currentSettings.method;
-      if (currentSettings.use_xproxy) {
-        useMethod = 'POST';
-      }
+      let interval = null; //AEF
+      const useMethod = currentSettings.use_xproxy ? 'POST' : currentSettings.method;
       jqXHR = $.ajax({
         url: requestURL,
         //headers: { "Content-Type": "application/json", "ProxyCode-Hash": proxyHash, "ProxyCode-Sig": proxySig },
@@ -345,12 +306,6 @@
               });
               //AEF: to add headers from datanodes; e.g for token
               if (!_.isUndefined(jbody) && !_.isNull(jbody)) {
-                //for compatibility
-                if (!_.isUndefined(jbody.headersFromDatasourceWS)) {
-                  jbody.headersFromDataNodeWS = jbody.headersFromDatasourceWS;
-                  delete jbody.headersFromDatasourceWS;
-                }
-                //
                 if (!_.isUndefined(jbody.headersFromDataNodeWS)) {
                   for (var param in jbody.headersFromDataNodeWS) {
                     xhr.setRequestHeader(param, jbody.headersFromDataNodeWS[param]);
@@ -391,51 +346,40 @@
             notificationCallback('info', currentSettings.name, 'Response status 0 : abort');
             return false;
           }
-          jqXHR = undefined;
-          var respType = xhr.getResponseHeader('Content-Type');
-          //var respHdr = xhr.getAllResponseHeaders();
+          jqXHR = undefined; //AEF
+          const respType = xhr.getResponseHeader('Content-Type');
           // handling asp.net servers
-          if (_.isNull(respType)) {
-            // case of DELETE
-            statusCallback('OK');
-            updateCallback(null);
-            pastStatus = 'OK';
-            return true;
-          } else if (respType.match('application/json')) {
-            RestResponseData = data;
-            var names = [];
-            var i = 0;
-            for (var prop in data) {
-              names[i] = prop;
-              i++;
-            }
-            if (names.length == 1 && names[0] == 'd') {
-              // data = data.d; // TODO MBG : infinite loop in matching box to solve
-              try {
-                data = JSON.parseMore(data.d);
-              } catch (err) {
-                statusCallback('Error', 'Data parse error');
-                pastStatus = 'Error';
-                notificationCallback('error', currentSettings.name, 'Data parse error : ' + err.message);
-                bFinishTick = true;
-                return;
-              }
-
+          if (reqDataType === 'json') {
+            if (currentSettings.use_xproxy) {
               // xProxy handling
-              if (currentSettings.use_xproxy) {
+              const names = Object.keys(data);
+              if (names.length === 1 && names[0] === 'd') {
+                // data = data.d; // TODO MBG : infinite loop in matching box to solve
+                try {
+                  data = JSON.parseMore(data.d);
+                } catch (err) {
+                  statusCallback('Error', 'Data parse error');
+                  pastStatus = 'Error';
+                  notificationCallback('error', currentSettings.name, 'Data parse error : ' + err.message);
+                  bFinishTick = true;
+                  return;
+                }
+
                 if (data.Success) {
                   if (!_.isUndefined(data.Body)) {
                     // safety.  MBG : is it really needed ?
                     if (_.isUndefined(data.Headers['Content-Type'])) {
                       if (_.isNull(data.Body)) {
-                        statusCallback('OK');
+                        statusCallback('OK'); // MBG for scheduler
                         updateCallback(null);
                         notificationCallback('success', currentSettings.name, data.Message);
                         pastStatus = 'OK';
                         return true;
                       }
                     } else {
-                      var wsrespType = data.Headers['Content-Type'];
+                      const wsrespType = data.Headers['Content-Type'];
+                      const [type, charset] = decodeMimeType(wsrespType);
+                      const mime = stripUndefined({ type, charset });
                       if (wsrespType.match('application/json')) {
                         try {
                           data = JSON.parseMore(data.Body);
@@ -446,15 +390,13 @@
                           bFinishTick = true;
                           return;
                         }
-                      } else if (wsrespType.match('text')) {
-                        data = { content: data.Body, type: wsrespType };
-                      } else if (wsrespType.match('image')) {
-                        var b64 = data.Body;
-                        data = 'base64ImageDetected' + b64;
+                      } else if (wsrespType.startsWith('text')) {
+                        data = { content: data.Body, ...mime };
                       } else {
-                        data = { content: data.Body, type: wsrespType };
+                        const content = data.Body; // Already base 64
+                        data = { content, isBinary: true, ...mime };
                       }
-                      text = 'Response status ' + xhr.status + ' : ' + xhr.statusText;
+                      const text = `Response status ${xhr.status}: ${xhr.statusText}`;
                       notificationCallback('success', currentSettings.name, text);
                     }
                   }
@@ -466,41 +408,41 @@
                   } else {
                     ErrorMessage = 'xProxy returned error at dataNode "' + currentSettings.name + '"';
                   }
-                  text = 'Response status ' + xhr.status + ' :' + ErrorMessage;
+                  //AEF
+                  const text = 'Response status ' + xhr.status + ' :' + ErrorMessage;
                   notificationCallback('error', currentSettings.name, text);
+                  //
                   pastStatus = 'Error';
                   statusCallback('Error', text);
                   return false;
                 }
               } else {
-                text = 'Response status ' + xhr.status + ' : ' + xhr.statusText;
+                const text = `Response status ${xhr.status}: ${xhr.statusText}`;
                 notificationCallback('success', currentSettings.name, text);
               }
             } else {
-              text = 'Response status ' + xhr.status + ' : ' + xhr.statusText;
+              const text = `Response status ${xhr.status}: ${xhr.statusText}`;
               notificationCallback('success', currentSettings.name, text);
             }
-          } else if (respType.match('image')) {
-            var b64 = base64ArrayBuffer(data);
-            data = 'base64ImageDetected' + b64;
-            text = 'Response status ' + xhr.status + ' : ' + xhr.statusText;
-            notificationCallback('success', currentSettings.name, text);
-          } else if (respType.match('text')) {
-            data = { content: data, type: respType };
-            text = 'Response status ' + xhr.status + ' : ' + xhr.statusText;
-            notificationCallback('success', currentSettings.name, text);
           } else {
-            var b64 = base64ArrayBuffer(data);
-            data = { content: b64, type: respType };
-            text = 'Response status ' + xhr.status + ' : ' + xhr.statusText;
+            // reqDataType is either 'text' or 'binary'
+            const isBinary = reqDataType !== 'text';
+
+            const [type, charset] = decodeMimeType(respType);
+            const mime = stripUndefined({ type, charset });
+            const content = isBinary ? base64ArrayBuffer(data) : data;
+            data = { content, isBinary, ...mime };
+
+            const text = `Response status ${xhr.status}: ${xhr.statusText}`;
             notificationCallback('success', currentSettings.name, text);
           }
-          statusCallback('OK');
+          statusCallback('OK'); // MBG for scheduler
           updateCallback(data);
           pastStatus = 'OK';
           return true;
         },
         error: function (xhr, status, err) {
+          //AEF
           var notifType = 'error';
           var statusType = 'Error';
           jqXHR = undefined;
@@ -509,9 +451,8 @@
             notifType = 'info';
             statusType = 'None';
           }
-
-          text = 'Response status ' + xhr.status + ' : ' + xhr.statusText;
-          text = text + '. Ajax status: ' + status;
+          //
+          const text = `Response status ${xhr.status}: ${xhr.statusText}. Ajax status: ${status}.`;
           pastStatus = 'Error';
           if (!_.isUndefined(xhr.responseText)) {
             var errorMessage = '';
@@ -530,6 +471,8 @@
           //
         },
         complete: function (xhr, status) {
+          //AEF
+          //To clear the interval on Complete
           clearInterval(interval);
         },
       });
@@ -570,7 +513,7 @@
 
       var bool = WebserviceRequestSettings();
       if (bool) pastSettings = currentSettings;
-      return bool;
+      return bool; //ABK
     };
 
     this.isSettingNameChanged = function (newName) {
@@ -578,20 +521,23 @@
       else return false;
     };
 
+    // AEF comment here to inhibite memory of past values
+    // self.getSavedSettings = function() {
+    //     return [pastStatus, pastSettings];
+    // };
+
+    //AEF
     this.isSettingSampleTimeChanged = function (newSampleTime) {
       if (currentSettings.sampleTime != newSampleTime) return true;
       else return false;
     };
 
+    //AEF
     this.getXHR = function () {
       return jqXHR;
     };
 
-    this.isSetValueValid = function () {
-      return false;
-    };
-
-    self.isSetFileValid = function () {
+    this.canSetValue = function () {
       return false;
     };
 
@@ -604,7 +550,7 @@
 
     if (bodyType == 'calculated') {
       self.onCalculatedValueChanged = function (propertyName, val) {
-        body = JSON.stringify(val);
+        body = JSON.stringify(val); // MBG temporary
         WebserviceRequestSettings();
       };
     }
@@ -612,6 +558,7 @@
 
   function preFillHeaders() {
     if (!_.isUndefined($('input#table-row-value-headers0')[0])) {
+      //FMI_web-service_from_JSON_editor
       var Objname = $('input#table-row-value-headers0');
       var Objval = $('input#table-row-value-headers1');
 
@@ -646,7 +593,7 @@
         name: 'url',
         display_name: 'URL',
         type: 'text',
-        required: true,
+        required: true, //ABK
       },
       {
         name: 'use_xproxy',
@@ -666,7 +613,7 @@
       {
         name: 'autoStart',
         display_name: 'AUTO START',
-        description: 'DataNode is executed automatically at start (project load, its creation/modification).',
+        description: 'Start web-service automatically after dashboard play begins or after creation or modification.',
         type: 'boolean',
         default_value: true,
       },
@@ -674,7 +621,7 @@
         name: 'explicitTrig',
         display_name: 'Explicit trigger',
         description:
-          'DataNode is executed only if triggered explicitly (no execution when its predecessors are updated). It is executed automatically once when AutoStart is “YES”.',
+          'Execute web-service only if triggered explicitly : no execution when predecessor dataNodes are modified.',
         type: 'boolean',
         default_value: false,
       },
@@ -741,6 +688,7 @@
         name: 'body',
         display_name: 'Body',
         type: 'calculated',
+        //description: "The body of the request. Normally only used if method is POST"
         description1:
           'Insert the body of the request. Normally only used if method is POST. If the method is GET, the content of urlAppend object will be appended to the URL. The content of headersFromDataNodeWS will be injected to headers',
         description2: 'Browse and select a dataNode from workspace to use it in the body.',
@@ -769,7 +717,9 @@
       newInstanceCallback(
         new jsonDatanode(settings, updateCallback, statusCallback, 'calculated', notificationCallback)
       );
-      if (error) return false;
+      if (error)
+        //ABK
+        return false;
       else return true;
     },
     preFillBody: function preFillBody() {
@@ -789,7 +739,7 @@
           name: 'url',
           display_name: 'URL',
           type: 'text',
-          required: true,
+          required: true, //ABK
         },
         {
           name: 'use_xproxy',
@@ -809,7 +759,7 @@
         {
           name: 'autoStart',
           display_name: 'AUTO START',
-          description: 'DataNode is executed automatically at start (project load, its creation/modification).',
+          description: 'Start web-service automatically after dashboard play begins or after creation or modification.',
           type: 'boolean',
           default_value: true,
         },
@@ -902,7 +852,9 @@
       ],
       newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback, notificationCallback) {
         newInstanceCallback(new jsonDatanode(settings, updateCallback, statusCallback, 'JSON', notificationCallback));
-        if (error) return false;
+        if (error)
+          //ABK
+          return false;
         else return true;
       },
       preFillBody: function preFillBody() {

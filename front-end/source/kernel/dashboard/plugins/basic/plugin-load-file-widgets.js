@@ -11,9 +11,6 @@
 /*************************** plugin data ***************************/
 /*******************************************************************/
 
-// Models
-modelsHiddenParams.loadFile = { outputFile: '' };
-
 // Parameters
 modelsParameters.loadFile = {
   label: 'Choose a file',
@@ -65,180 +62,170 @@ function loadFileWidgetsPluginClass() {
     this.updateValue = function (e) {};
 
     /**
-     * Format file size in bytes to a readable string.
+     * Handles errors when reading a file.
      *
-     * @param {number} fileSize - The file size in bytes.
-     * @returns {string} Formatted file size.
-     */
-    function _getFileSize(fileSize) {
-      if (fileSize < 1024) {
-        return `${fileSize} bytes`;
-      } else if (fileSize < 1_048_576) {
-        return `${(fileSize / 1024).toFixed(1)} KB`; // 1024 * 1024
-      } else {
-        return `${(fileSize / 1_048_576).toFixed(1)} MB`; // 1024 * 1024
-      }
-    }
-
-    /**
-     * Retrieves the file extension from a given file name.
-     *
-     * @function
-     * @param {string} fileName - The file name to extract the extension from.
-     * @returns {string} The file extension without the dot (e.g. "txt" for "example.txt").
-     */
-    function _getFileExtension(fileName) {
-      const extension = fileName.split('.').pop();
-      return extension;
-    }
-
-    /**
-     * Processes text file data based on its extension.
-     *
-     * @param {string} fileExtension - The extension of the file.
-     * @param {string} fileData - The data of the file.
-     * @returns {string|object} - The processed data of the file.
-     */
-    function _processTextFile(fileExtension, fileData) {
-      const extensions = ['json', 'xprjson'];
-      return extensions.includes(fileExtension)
-        ? JSON.parse(JSON.stringify(eval('(' + fileData + ')')), null, 2)
-        : fileData;
-    }
-
-    /**
-     * Processes binary file data and returns it as a base64 string.
-     *
-     * @param {Uint8Array} fileData - The data of the file.
-     * @returns {string} - The base64 string of the file data.
-     */
-    function _processBinaryFile(fileData) {
-      return btoa([].reduce.call(new Uint8Array(fileData), (p, c) => p + String.fromCharCode(c), ''));
-    }
-
-    /**
-     * Checks the size of a file and returns -1 if it exceeds the maximum size.
-     *
-     * @param {number} size - The size of the file in bytes.
-     * @returns {number} - Either the size of the file or -1 if the size exceeds the maximum size.
-     */
-    function _checkFileSize(size) {
-      if (size > 104_857_600) {
-        // 104_857_600 bytes = 100 MB
-        throw new Error('Unable to load file due to large size over 100MB');
-      }
-    }
-
-    /**
-     * Handles errors when reading a zip file.
-     *
-     * @param {object} file - The file
-     * @returns {function} - A function that handles the error when reading the zip file.
+     * @param {File} file - The file
+     * @param {string} error - Error message
      */
     function _handleFileError(file, error) {
+      const text = 'Error reading ' + file.name + ': ' + error;
       const notice = new PNotify({
-        title: 'Unzip file',
-        text: 'Error reading ' + file.name + ': ' + error,
+        title: 'Loading file',
+        text,
         type: 'error',
         styling: 'bootstrap3',
       });
       $('.ui-pnotify-container').on('click', () => notice.remove());
-      console.error('Error reading ' + file.name + ': ' + error);
-      return -1;
+      console.error(text);
     }
 
-    /**
-     *
-     * @param {*} file
-     */
-    this.readFile = async function (file) {
-      try {
-        _checkFileSize(file.size);
-      } catch (error) {
-        return _handleFileError(file, error.message);
+    this.readFile = function (file) {
+      if (file.size > 104_857_600) {
+        // 104_857_600 bytes = 100 MB
+        _handleFileError(file, 'Unable to load file due to large size over 100MB');
+        return;
       }
 
       const result = {
         type: file.type,
-        size: _getFileSize(file.size),
+        size: file.size,
         name: file.name,
         content: '',
       };
-      const fileExtension = _getFileExtension(file.name);
-      const extensionsText = ['txt', 'json', 'xprjson', 'xml', 'svg', 'html', 'css', 'js', 'ts', 'md', 'csv'];
-      const extensionsBinary = ['xls', 'xlsx', 'jpg', 'jpeg', 'png', 'tiff', 'gif'];
-      const fileTypes = ['', 'application/json'];
-      const zipContent = [];
 
-      if (fileExtension && fileTypes.includes(result.type)) {
-        result.type = fileExtension;
-      }
-
-      if (fileExtension === 'zip') {
-        try {
-          const zip = await JSZip.loadAsync(file);
-          for (const relativePath in zip.files) {
-            const zipEntry = zip.files[relativePath];
-            const isDir = zipEntry.dir;
-            if (isDir) {
-              continue;
-            }
-            const fileExtension = _getFileExtension(relativePath);
-            const fileSize = zipEntry._data.uncompressedSize; // Get the compressed size of the zipEntry
-
-            // do not increase this value otherwise the browser will crash
-            // The crash is caused by the updateDataNodeFileFromWidget() function
-            if (fileSize > 73_400_320) {
-              // 73_400_320 bytes == 70 MB
-              continue;
-            }
-
-            if (fileExtension && extensionsText.includes(fileExtension)) {
-              const fileData = await zipEntry.async('string');
-              zipContent.push({
-                name: relativePath,
-                content: _processTextFile(fileExtension, fileData),
-              });
-            } else {
-              const fileData = await zipEntry.async('uint8array');
-              zipContent.push({
-                name: relativePath,
-                content: _processBinaryFile(fileData),
-              });
-            }
-          }
-          result.content = zipContent;
-          modelsHiddenParams[idInstance].outputFile = result;
-          updateDataNodeFileFromWidget(idInstance, result);
-        } catch (error) {
-          return _handleFileError(file, error);
-        }
-      } else {
-        const reader = new FileReader();
-        reader.addEventListener('load', function (event) {
-          const data = event.target.result;
-          if (data instanceof ArrayBuffer) {
-            result.content = _processBinaryFile(data);
-            result.isBinary = true;
-          } else {
-            const content = _processTextFile(fileExtension, data);
-            result.content = content;
-            result.isBinary = false;
-          }
-          modelsHiddenParams[idInstance].outputFile = result;
-          updateDataNodeFileFromWidget(idInstance, result);
-        });
-
-        if (modelsParameters[idInstance].binaryFileInput) {
-          reader.readAsArrayBuffer(file);
+      const reader = new FileReader();
+      reader.addEventListener('error', function (event) {
+        self.removeSpinner();
+        reader.abort();
+        _handleFileError(file, event.error);
+      });
+      reader.addEventListener('load', function (event) {
+        self.removeSpinner();
+        const data = event.target.result;
+        if (data instanceof ArrayBuffer) {
+          result.content = base64ArrayBuffer(data);
+          result.isBinary = true;
         } else {
-          reader.readAsText(file);
+          result.content = data;
+          result.isBinary = false;
         }
+        self.notifyNewValue(result);
+      });
+
+      this.addSpinner();
+      if (modelsParameters[idInstance].binaryFileInput) {
+        reader.readAsArrayBuffer(file);
+      } else {
+        reader.readAsText(file);
       }
+    };
+
+    this.notifyNewValue = function (value) {
+      modelsTempParams[idInstance].outputFile = value;
+      self.outputFile.updateCallback(self.outputFile);
+      self.updateFileDisplay();
     };
 
     this.rescale = function () {
       this.render();
+    };
+
+    this.updateFileDisplay = function () {
+      const file = modelsTempParams[idInstance].outputFile;
+      if (file && file.content && typeof file.content === 'string') {
+        const name = file.name ?? '';
+        const sizeBytes = file.isBinary ? b64StrSize(file.content) : file.content.length;
+        const sizeTxt = formatFileSize(sizeBytes);
+
+        if ($('#file-content' + idWidget).length) {
+          $('#file-name-' + idWidget).text(name);
+          $('#file-size-' + idWidget).text(sizeTxt);
+        } else {
+          self.addFileDiv(name, sizeTxt);
+        }
+      }
+    };
+
+    this.addFileDiv = function (name, size) {
+      // Check if the div file already exists
+      if ($('#loaded-file' + idWidget).length) return;
+
+      let divFile = '<div id="loaded-file' + idWidget + '" class="loaded-file">';
+
+      divFile += '<div class="loaded-file__icon-wrapper">';
+      divFile += '<i class="fa fa-file" aria-hidden="true"></i>';
+      divFile += '</div>';
+
+      divFile += '<div class="loaded-file__info-file-wrapper">';
+      divFile +=
+        '<span id="file-name-' +
+        idWidget +
+        '" title="' +
+        name +
+        '" class="loaded-file__info-file-wrapper__name" style="' +
+        this.labelFontFamily() +
+        this.textSize() +
+        this.textColor() +
+        '">' +
+        name +
+        '</span>';
+      divFile +=
+        '<span id="file-size-' +
+        idWidget +
+        '" title="' +
+        size +
+        '" class="loaded-file__info-file-wrapper__size" style="' +
+        this.labelFontFamily() +
+        this.textSize() +
+        this.subTextColor() +
+        '">' +
+        size +
+        '</span>';
+      divFile += '</div>';
+
+      divFile += '<div id="close-file-btn' + idWidget + '" class="loaded-file__close-btn-wrapper">';
+      divFile += '<i class="fa fa-times" aria-hidden="true"></i>';
+      divFile += '</div>';
+
+      divFile += '</div>';
+
+      $('#load-file-widget-html' + idWidget).append(divFile);
+
+      document.styleSheets[0].addRule('#close-file-btn' + idWidget + ' > i', this.deleteButtonDefaultColor());
+      document.styleSheets[0].addRule('#close-file-btn' + idWidget + ' > i:hover', this.deleteButtonHoverColor());
+      document.styleSheets[0].addRule('#close-file-btn' + idWidget + ' > i:active', this.deleteButtonActiveColor());
+
+      document.styleSheets[0].addRule(
+        '#close-file-btn' + idWidget + ' > i',
+        'color: ' + modelsParameters[idInstance].deleteButtonIconColor
+      );
+      document.styleSheets[0].addRule(
+        '#close-file-btn' + idWidget + ' > i:hover',
+        'color: ' + modelsParameters[idInstance].deleteButtonIconHoverColor
+      );
+
+      $('#close-file-btn' + idWidget).on('click', function () {
+        self.outputFile.setValue({});
+        self.outputFile.updateCallback(self.outputFile);
+      });
+    };
+
+    this.addSpinner = function () {
+      const widgetContainer = document.getElementById('load-file-widget-html' + idWidget);
+      const divElement = document.createElement('div');
+      const iElement = document.createElement('i');
+
+      divElement.setAttribute('id', 'icon-wrapper' + idWidget);
+      divElement.setAttribute('class', 'load-spinner-wrapper');
+      iElement.setAttribute('class', 'fa fa-spinner fa-spin load-spinner-wrapper__icon');
+
+      divElement.append(iElement);
+      widgetContainer.append(divElement);
+    };
+
+    this.removeSpinner = function () {
+      const divElement = document.getElementById('icon-wrapper' + idWidget);
+      divElement.remove();
     };
 
     this.render = function () {
@@ -317,8 +304,21 @@ function loadFileWidgetsPluginClass() {
       }
 
       widgetHtml.innerHTML = divContent;
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: flex;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       document.styleSheets[0].addRule(
         '#drag-area' + idWidget,
         ' background-color: ' + modelsParameters[idInstance].backgroundColor
@@ -335,173 +335,47 @@ function loadFileWidgetsPluginClass() {
       document.styleSheets[0].addRule('#browse-btn-label' + idWidget + ':hover', this.browseButtonHoverColor());
       document.styleSheets[0].addRule('#browse-btn-label' + idWidget + ':active', this.browseButtonActiveColor());
 
-      this.addFileDiv = function (name, size) {
-        let divFile = '<div id="loaded-file' + idWidget + '" class="loaded-file">';
+      modelsTempParams[idInstance].counter = 0;
 
-        divFile += '<div class="loaded-file__icon-wrapper">';
-        divFile += '<i class="fa fa-file" aria-hidden="true"></i>';
-        divFile += '</div>';
+      $('#drag-area' + idWidget).on('dragenter', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        modelsTempParams[idInstance].counter++;
+        // set opacity to 50%
+        $('#drag-area' + idWidget).css({ opacity: '.5' });
+      });
 
-        divFile += '<div class="loaded-file__info-file-wrapper">';
-        divFile +=
-          '<span id="file-name-' +
-          idWidget +
-          '" title="' +
-          name +
-          '" class="loaded-file__info-file-wrapper__name" style="' +
-          this.labelFontFamily() +
-          this.textSize() +
-          this.textColor() +
-          '">' +
-          name +
-          '</span>';
-        divFile +=
-          '<span id="file-size-' +
-          idWidget +
-          '" title="' +
-          size +
-          '" class="loaded-file__info-file-wrapper__size" style="' +
-          this.labelFontFamily() +
-          this.textSize() +
-          this.subTextColor() +
-          '">' +
-          size +
-          '</span>';
-        divFile += '</div>';
+      $('#drag-area' + idWidget).on('dragover', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      });
 
-        divFile += '<div id="close-file-btn' + idWidget + '" class="loaded-file__close-btn-wrapper">';
-        divFile += '<i class="fa fa-times" aria-hidden="true"></i>';
-        divFile += '</div>';
-
-        divFile += '</div>';
-
-        $('#load-file-widget-html' + idWidget).append(divFile);
-
-        document.styleSheets[0].addRule('#close-file-btn' + idWidget + ' > i', this.deleteButtonDefaultColor());
-        document.styleSheets[0].addRule('#close-file-btn' + idWidget + ' > i:hover', this.deleteButtonHoverColor());
-        document.styleSheets[0].addRule('#close-file-btn' + idWidget + ' > i:active', this.deleteButtonActiveColor());
-
-        document.styleSheets[0].addRule(
-          '#close-file-btn' + idWidget + ' > i',
-          'color: ' + modelsParameters[idInstance].deleteButtonIconColor
-        );
-        document.styleSheets[0].addRule(
-          '#close-file-btn' + idWidget + ' > i:hover',
-          'color: ' + modelsParameters[idInstance].deleteButtonIconHoverColor
-        );
-
-        $('#close-file-btn' + idWidget).on('click', function () {
-          $('#browse-btn-input' + idWidget + '_select_file').val('');
-          $('#loaded-file' + idWidget).remove();
-          delete modelsTempParams[idInstance].fileName;
-          delete modelsTempParams[idInstance].fileSize;
-          modelsHiddenParams[idInstance].outputFile = {};
-          updateDataNodeFileFromWidget(idInstance, {});
-          self.render();
-        });
-      };
-
-      if (!_.isUndefined(modelsHiddenParams[idInstance].outputFile)) {
-        if (_.isEmpty(modelsHiddenParams[idInstance].outputFile)) {
-          updateDataNodeFileFromWidget(idInstance, {});
-          delete modelsTempParams[idInstance].fileName;
-          delete modelsTempParams[idInstance].fileSize;
-        } else {
-          updateDataNodeFileFromWidget(idInstance, modelsHiddenParams[idInstance].outputFile);
-        }
-      }
-
-      if (
-        !_.isUndefined(modelsTempParams[idInstance].fileName) &&
-        !_.isUndefined(modelsTempParams[idInstance].fileSize)
-      ) {
-        const name = modelsTempParams[idInstance].fileName;
-        const size = modelsTempParams[idInstance].fileSize;
-        self.addFileDiv(name, size);
-      }
-
-      this.addSpinner = function () {
-        const widgetContainer = document.getElementById('load-file-widget-html' + idWidget);
-        const divElement = document.createElement('div');
-        const iElement = document.createElement('i');
-
-        divElement.setAttribute('id', 'icon-wrapper' + idWidget);
-        divElement.setAttribute('class', 'load-spinner-wrapper');
-        iElement.setAttribute('class', 'fa fa-spinner fa-spin load-spinner-wrapper__icon');
-
-        divElement.append(iElement);
-        widgetContainer.append(divElement);
-      };
-
-      this.removeSpinner = function () {
-        const divElement = document.getElementById('icon-wrapper' + idWidget);
-        divElement.remove();
-      };
-
-      this.readFileEvent = async function (event) {
-        this.addSpinner();
-        let file = {};
-        if (event.type == 'change') {
-          file = event.target.files[0];
-        } else if (event.type == 'drop') {
-          file = event.originalEvent.dataTransfer.files[0];
-        }
-        const readFile = await self.readFile(file);
-        if (readFile != -1) {
-          const name = file.name;
-          const size = _getFileSize(file.size);
-          modelsTempParams[idInstance].fileName = name;
-          modelsTempParams[idInstance].fileSize = size;
-
-          if ($('#loaded-file' + idWidget).length) {
-            $('#file-name-' + idWidget).text(name);
-            $('#file-size-' + idWidget).text(size);
-          } else {
-            self.addFileDiv(name, size);
-          }
-        }
-        this.removeSpinner();
-      };
-
-      this.displayFile = (function () {
-        modelsTempParams[idInstance].counter = 0;
-
-        $('#drag-area' + idWidget).on('dragenter', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-          modelsTempParams[idInstance].counter++;
-          // set opacity to 50%
-          $('#drag-area' + idWidget).css({ opacity: '.5' });
-        });
-
-        $('#drag-area' + idWidget).on('dragover', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        });
-
-        $('#drag-area' + idWidget).on('dragleave', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-          // reset opacity
-          modelsTempParams[idInstance].counter--;
-          if (modelsTempParams[idInstance].counter === 0) {
-            $('#drag-area' + idWidget).css({ opacity: '' });
-          }
-        });
-
-        $('#drag-area' + idWidget).on('drop', function (event) {
+      $('#drag-area' + idWidget).on('dragleave', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        // reset opacity
+        modelsTempParams[idInstance].counter--;
+        if (modelsTempParams[idInstance].counter === 0) {
           $('#drag-area' + idWidget).css({ opacity: '' });
-          if (event.originalEvent.dataTransfer && event.originalEvent.dataTransfer.files.length) {
-            event.preventDefault();
-            event.stopPropagation();
-            self.readFileEvent(event);
-          }
-        });
+        }
+      });
 
-        $('#browse-btn-input' + idWidget + '_select_file').on('change', function (event) {
-          self.readFileEvent(event);
-        });
-      })();
+      $('#drag-area' + idWidget).on('drop', function (event) {
+        $('#drag-area' + idWidget).css({ opacity: '' });
+        if (event.originalEvent.dataTransfer && event.originalEvent.dataTransfer.files.length) {
+          event.preventDefault();
+          event.stopPropagation();
+          self.readFile(event.originalEvent.dataTransfer.files[0]);
+        }
+      });
+
+      $('#browse-btn-input' + idWidget + '_select_file').on('change', function (event) {
+        self.readFile(event.target.files[0]);
+      });
+
+      if (!_.isUndefined(modelsTempParams[idInstance].outputFile)) {
+        this.updateFileDisplay();
+      }
 
       /**
        * Updates the content and layout of the widget based on the current widget width.
@@ -544,7 +418,8 @@ function loadFileWidgetsPluginClass() {
     const _OUTPUT_DESCRIPTOR = new WidgetActuatorDescription(
       'outputFile',
       'File content',
-      WidgetActuatorDescription.FILE
+      WidgetActuatorDescription.READ_WRITE,
+      WidgetPrototypesManager.SCHEMA_FILE_LIKE
     );
     this.getActuatorDescriptions = function () {
       return [_OUTPUT_DESCRIPTOR];
@@ -552,9 +427,12 @@ function loadFileWidgetsPluginClass() {
 
     this.outputFile = {
       updateCallback: function () {},
-      setValue: function (val) {},
+      setValue: function (val) {
+        modelsTempParams[idInstance].outputFile = val;
+        self.render();
+      },
       getValue: function () {
-        return modelsHiddenParams[idInstance].outputFile;
+        return modelsTempParams[idInstance].outputFile;
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
@@ -579,7 +457,7 @@ function loadFileWidgetsPluginClass() {
     widgetsDefinitionList: {
       loadFile: {
         factory: 'loadFileWidget',
-        title: 'Load file',
+        title: 'Load file control',
         icn: 'load-file',
         help: 'wdg/wdg-basics/#load-file',
       },

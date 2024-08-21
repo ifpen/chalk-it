@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "version": "3.000.8901",
+    "fileFormatVersion": "0.3",
+    "date": "2024-05-15T09:07:17.261Z",
+    "name": "plotly-python-widget-py-local",
+    "description": "",
+    "groupName": "Python",
+    "tags": [
+      {
+        "text": "widget"
+      },
+      {
+        "text": "Plots"
+      },
+      {
+        "text": "Plotly"
+      },
+      {
+        "text": "pyodide"
+      },
+      {
+        "text": "Python"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "px",
+        "type": "Python_plugin",
+        "settings": {
+          "name": "px",
+          "autoStart": true,
+          "explicitTrig": false,
+          "dockerImage": {
+            "name": "Default",
+            "id": ""
+          },
+          "content": "import plotly.express as px\n\ndf = px.data.gapminder().query(\"country=='Canada'\")\nfig = px.line(df, x=\"year\", y=\"lifeExp\", title='Life expectancy in Canada')\n\nreturn fig",
+          "signature": "b5282a8860aad7fc329536d40c764f57be8a54ddb38d3eb5bf22554d9b5f40a7"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "scaling": {
+    "widthPx": 1294,
+    "heightPx": 590,
+    "scrollWidthPx": 1294,
+    "scrollHeightPx": 590,
+    "widthVw": 84.68586387434554,
+    "heightVh": 78.66666666666667,
+    "scrollWidthVw": 84.68586387434554,
+    "scrollHeightVh": 78.66666666666667,
+    "scalingMethod": "scaleTwh",
+    "media": "large",
+    "colDims": null
+  },
+  "device": {
+    "cols": {
+      "valueRow": "none",
+      "valueCol": "1",
+      "maxCells": 0,
+      "maxCols": 0,
+      "classType": ""
+    },
+    "droppers": {},
+    "backgroundColor": "#ffffff",
+    "inheritThemeBackgroundColor": false,
+    "theme": "default"
+  },
+  "dashboard": {
+    "plotlyPyGenericA": {
+      "layout": {
+        "top": "6.58667vh",
+        "left": "3.35079vw",
+        "height": "56.6667vh",
+        "width": "66.8848vw",
+        "minHeight": "32px",
+        "minWidth": "50px",
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "plotlyPyGenericA",
+        "modelJsonId": "plotlyPyGeneric"
+      },
+      "modelParameters": {
+        "enforceTextColor": true,
+        "textColor": "var(--widget-color)",
+        "enforceBackgroundTransparency": true,
+        "hideModeBar": false
+      },
+      "modelHiddenParams": {
+        "fig": {
+          "layout": {
+            "paper_bgcolor": "rgba(0,0,0,0)",
+            "plot_bgcolor": "rgba(0,0,0,0)",
+            "template": {
+              "layout": {
+                "xaxis": {
+                  "gridcolor": "var(--widget-plotly-background-color)"
+                },
+                "yaxis": {
+                  "gridcolor": "var(--widget-plotly-background-color)"
+                },
+                "zaxis": {
+                  "gridcolor": "var(--widget-plotly-background-color)"
+                },
+                "colorway": [
+                  "var(--widget-color-2)",
+                  "var(--widget-color-5)",
+                  "var(--widget-color-6)",
+                  "var(--widget-color-7)",
+                  "var(--widget-color-8)",
+                  "var(--widget-color-9)",
+                  "var(--widget-color-10)",
+                  "var(--widget-color-11)",
+                  "var(--widget-color-12)",
+                  "var(--widget-color-13)"
+                ],
+                "font": {
+                  "color": "var(--widget-color)"
+                }
+              }
+            }
+          }
+        },
+        "selection": [
+          {}
+        ]
+      }
+    }
+  },
+  "connections": {
+    "plotlyPyGenericA": {
+      "fig": {
+        "name": "fig",
+        "dataNode": "px",
+        "dataFields": []
+      },
+      "selection": {
+        "name": "selection",
+        "dataNode": "None",
+        "dataFields": []
+      }
+    }
+  },
+  "exportOptions": "adjustToFullWidth",
+  "pages": {
+    "pageNames": [],
+    "defaultPage": {}
+  },
+  "checkExportOptions": true,
+  "navBarNotification": false
+}

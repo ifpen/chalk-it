@@ -1,6 +1,6 @@
 {
   "name": "xdash",
-  "version": "2.89.0",
+  "version": "3.0",
   "description": "xDash front-end build tools",
   "author": "Chalk'it Team",
   "updater": "AR (migration to gulp v4 && use node >= 12.x.x)",

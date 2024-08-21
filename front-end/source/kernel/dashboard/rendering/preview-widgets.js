@@ -112,9 +112,6 @@ var widgetPreview = (function () {
     let xprjson = preparePreviewModeContainer();
     renderDashboardWidgets(xprjson, false);
 
-    // in case different of size between edit and play
-    //resizeDashboard(); // MBG 14/06/2021 No need right now
-
     // assign change value handlers
     if (datanodesManager.getAllDataNodes().length != 0) {
       assignValueChangeHandlers();
@@ -205,11 +202,6 @@ var widgetPreview = (function () {
     let key;
     for (key in widgetConnector.widgetsConnection) {
       for (var actuator in connectObj[key]) {
-        if (_.isUndefined(connectObj[key][actuator].dataNode)) {
-          //compatibility
-          connectObj[key][actuator].dataNode = connectObj[key][actuator].dataSource;
-          delete connectObj[key][actuator].dataSource;
-        }
         widgetConnector.widgetsConnection[key].sliders[actuator] = connectObj[key][actuator];
       }
     }
@@ -228,52 +220,48 @@ var widgetPreview = (function () {
    * @param {string} instanceId : widget's instanceId
    */
   function plotConstantData(instanceId, bCaptionManuallyChanged) {
-    var actuator = null;
-    if (!_.isUndefined(widgetConnector.widgetsConnection[instanceId])) {
-      for (var i in widgetConnector.widgetsConnection[instanceId].sliders) {
-        removeDisplayErrorOnWidget(instanceId);
-        if (widgetConnector.widgetsConnection[instanceId].sliders[i].name != 'None') {
-          actuator = null;
-          if (widgetConnector.widgetsConnection[instanceId].widgetObjEdit != null) {
-            actuator = widgetConnector.widgetsConnection[instanceId].widgetObjEdit.getByName(
-              widgetConnector.widgetsConnection[instanceId].sliders[i].name
-            );
-          } else if (widgetConnector.widgetsConnection[instanceId].widgetObjConnect != null) {
-            actuator = widgetConnector.widgetsConnection[instanceId].widgetObjConnect.getByName(
-              widgetConnector.widgetsConnection[instanceId].sliders[i].name
-            );
+    const widgetConnection = widgetConnector.widgetsConnection[instanceId];
+    if (!_.isUndefined(widgetConnection)) {
+      for (const actuatorName in widgetConnection.sliders) {
+        const slider = widgetConnection.sliders[actuatorName];
+        if (slider.name !== 'None') {
+          let actuator = null;
+          if (widgetConnection.widgetObjEdit != null) {
+            actuator = widgetConnection.widgetObjEdit.getByName(slider.name);
+          } else if (widgetConnection.widgetObjConnect != null) {
+            actuator = widgetConnection.widgetObjConnect.getByName(slider.name);
           }
 
           if (actuator != null) {
-            if (widgetConnector.widgetsConnection[instanceId].sliders[i].dataNode != 'None') {
-              let dataNodeName = widgetConnector.widgetsConnection[instanceId].sliders[i].dataNode;
-              if (dataNodeName != 'None') {
-                if (!_.isUndefined(datanodesManager.getDataNodeByName(dataNodeName))) {
-                  let newData = datanodesManager.getDataNodeByName(dataNodeName).latestData();
-                  let dnName = datanodesManager.getDataNodeByName(dataNodeName).name();
-                  let status = datanodesManager.getDataNodeByName(dataNodeName).status();
-                  let last_updated = datanodesManager.getDataNodeByName(dataNodeName).last_updated();
-                  if (datanodesManager.getDataNodeByName(dnName).type() == 'Python_pyodide_plugin' && i == 'fig') {
-                    setDataOnWidget(instanceId, i, actuator, dnName, status, last_updated, bCaptionManuallyChanged);
-                  } else {
-                    setDataOnWidget(instanceId, i, actuator, newData, status, last_updated, bCaptionManuallyChanged);
-                  }
-                } else {
-                  msg = 'Invalid connection with data';
-                  displayErrorOnWidget(instanceId, i, msg);
-                }
+            const dataNodeName = slider.dataNode;
+            if (dataNodeName !== 'None') {
+              const dataNode = datanodesManager.getDataNodeByName(dataNodeName);
+              if (dataNode) {
+                const newData = dataNode.latestData();
+                const status = dataNode.status();
+                const last_updated = dataNode.last_updated();
+                setDataOnWidget(
+                  instanceId,
+                  actuatorName,
+                  actuator,
+                  newData,
+                  status,
+                  last_updated,
+                  bCaptionManuallyChanged
+                );
               } else {
-                msg = 'Invalid connection with data';
-                displayErrorOnWidget(instanceId, i, msg);
+                const msg = 'Invalid connection with data';
+                displayErrorOnWidget(instanceId, actuatorName, msg);
               }
             } else {
-              if ($('#collapse-matching-box').hasClass('collapse in'))
-                widgetPreview.clearDataFromWidget(instanceId, i, actuator, true);
+              widgetPreview.clearDataFromWidget(instanceId, actuatorName, actuator, true);
             }
           }
         }
       }
-    } else console.log('connection of ' + instanceId + ' is undefned');
+    } else {
+      console.log('connection of ' + instanceId + ' is undefined');
+    }
   }
 
   /**
@@ -340,11 +328,11 @@ var widgetPreview = (function () {
    * @param {any} status
    * @param {any} last_updated
    */
-  function setDataOnWidget(instanceId, i, actuator, newData, status, last_updated, bCaptionManuallyChanged) {
+  function setDataOnWidget(instanceId, actuatorName, actuator, newData, status, last_updated, bCaptionManuallyChanged) {
     if ((_.isUndefined(newData) && last_updated != 'never') || status == 'Error') {
       // MBG
       msg = 'Invalid data';
-      displayErrorOnWidget(instanceId, i, msg);
+      displayErrorOnWidget(instanceId, actuatorName, msg);
       return; // MBG : security. To invalidate widgets instead
     }
 
@@ -352,7 +340,7 @@ var widgetPreview = (function () {
 
     if (!(_.isUndefined(newData) || _.isNull(newData))) {
       // ABK: fix bug after MBG modif of &&(status!="None") // MBG 30/10/2018 add check on isNull following test "Gecoair UserTripso no JWT (6).html"
-      const slider = widgetConnector.widgetsConnection[instanceId].sliders[i];
+      const slider = widgetConnector.widgetsConnection[instanceId].sliders[actuatorName];
 
       let varInter = newData;
       let varName = slider.dataNode;
@@ -363,20 +351,18 @@ var widgetPreview = (function () {
         if (!isRange) {
           // pass through ranges
           varName = field;
-          if (typeof varInter === 'object') {
-            if (_.isNull(varInter) || _.isUndefined(varInter)) {
-              // TODO ???
-              varInter = newData[varName];
-            } else {
-              varInter = varInter[varName];
-            }
+          if (_.isNull(varInter) || _.isUndefined(varInter)) {
+            // TODO ???
+            varInter = newData[varName];
+          } else {
+            varInter = varInter[varName];
           }
         }
       }
       if (varInter === null) {
         // data parsing has changed
         // MBG TODO : invalidate widget
-        widgetPreview.clearDataFromWidget(instanceId, i, actuator, true);
+        widgetPreview.clearDataFromWidget(instanceId, actuatorName, actuator, true);
       } else {
         if (slider.name.substring(0, 1) === 'D') {
           //for Digits
@@ -412,8 +398,8 @@ var widgetPreview = (function () {
    * @param {any} actuator
    * @param {any} bCaption : clear caption (true or false)
    */
-  function clearDataFromWidget(instanceId, i, actuator, bCaption) {
-    if (widgetConnector.widgetsConnection[instanceId].sliders[i].name.substring(0, 1) === 'D') {
+  function clearDataFromWidget(instanceId, actuatorName, actuator, bCaption) {
+    if (widgetConnector.widgetsConnection[instanceId].sliders[actuatorName].name.substring(0, 1) === 'D') {
       //for Digits
       actuator.setText('');
     } else {
@@ -427,54 +413,49 @@ var widgetPreview = (function () {
   }
 
   /**
+   * Finds a slider/binding from an actuator instance
+   * @param {*} actuator
+   * @returns
+   */
+  function findBindingFromActuator(actuator) {
+    for (let widgetId in widgetConnector.widgetsConnection) {
+      const widgetConnections = widgetConnector.widgetsConnection[widgetId];
+      if (widgetConnections.widgetObjConnect) {
+        const slider = Object.values(widgetConnections.sliders).find(
+          (slider) => widgetConnections.widgetObjConnect.getByName(slider.name) === actuator
+        );
+        if (slider) {
+          return slider;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Update data from widget
    * @param {any} sender
    * @param {any} e
    */
   function updateDataFromWidget(sender, e) {
-    var actuator = null;
-    if (datanodesManager.getAllDataNodes().length == 0) {
-    } else {
-      var bFound = false;
-      for (var elm in widgetConnector.widgetsConnection) {
-        for (var i in widgetConnector.widgetsConnection[elm].sliders) {
-          if (widgetConnector.widgetsConnection[elm].widgetObjConnect != null) {
-            if (
-              widgetConnector.widgetsConnection[elm].widgetObjConnect.getByName(
-                widgetConnector.widgetsConnection[elm].sliders[i].name
-              ) != null
-            ) {
-              if (
-                sender ==
-                widgetConnector.widgetsConnection[elm].widgetObjConnect.getByName(
-                  widgetConnector.widgetsConnection[elm].sliders[i].name
-                )
-              ) {
-                bFound = true; // found the slider i  and the widget elm
-                actuator = widgetConnector.widgetsConnection[elm].sliders[i];
-                break;
-              }
-            }
-          }
-        }
-      }
-      if (bFound) {
-        if (actuator.dataNode != 'None') {
-          let dn = datanodesManager.getDataNodeByName(actuator.dataNode);
-          if (!_.isUndefined(dn)) {
-            if (dn.isSetValueValid() && !_.isUndefined(sender.getValue)) {
-              // MBG 12/05/2017
-              try {
-                dn.setValue(actuator.dataFields, sender.getValue());
-              } catch (exc) {
-                console.log('setValue got exception with data: ' + dn.name() + '. ' + exc.message);
-              }
-            } else {
-              console.log('setValue is not possible with data: ' + dn.name());
+    let binding = findBindingFromActuator(sender);
+    if (binding) {
+      if (binding.dataNode !== 'None') {
+        const dataNode = datanodesManager.getDataNodeByName(binding.dataNode);
+        if (!_.isUndefined(dataNode)) {
+          if (dataNode.canSetValue() && !_.isUndefined(sender.getValue)) {
+            // MBG 12/05/2017
+            try {
+              dataNode.setValue(binding.dataFields, sender.getValue());
+            } catch (exc) {
+              console.log('setValue got exception with data: ' + dataNode.name() + '. ' + exc.message);
             }
           } else {
-            console.log('data was removed or data index was modified!');
+            console.log('setValue is not possible with data: ' + dataNode.name());
           }
+        } else {
+          console.log('data was removed or data index was modified!');
         }
       }
     }
@@ -496,9 +477,10 @@ var widgetPreview = (function () {
    */
   function resizeDashboard(target) {
     // Prepare rescale for rowToPage mode
-    if (typeof execOutisdeEditor != 'undefined') {
-      if (execOutisdeEditor) {
-        var navMenuHeightPx = 0;
+    if (typeof execOutsideEditor != 'undefined') {
+      if (execOutsideEditor) {
+        let navMenuHeightPx = 0;
+        const scalingSrc = jQuery.extend(true, {}, jsonContent.scaling);
 
         if ($('#nav-menu')[0]) {
           navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);
@@ -515,9 +497,29 @@ var widgetPreview = (function () {
           case 'customNavigation':
             customNavigationRuntime.customNavigationPrepareRescale(targetRows, targetCols);
             break;
-          case 'keepOriginalWidth':
-            $('#dashboard-zone')[0].style.height = scalingSrc.scrollHeightPx + navMenuHeightPx + 'px';
+          case 'keepOriginalWidth': {
+            const $dashboardZone = $('#dashboard-zone');
+            const bodyHeight = document.body.clientHeight;
+            const bodyWidth = document.body.clientWidth;
+            $dashboardZone.css({
+              top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
+              left: bodyWidth / 2 - $dashboardZone.outerWidth() / 2 + 'px',
+              position: 'absolute',
+              height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
+              width: scalingSrc.scrollWidthPx + 'px',
+            });
             break;
+          }
+          case 'adjustToFullWidth': {
+            const $dashboardZone = $('#dashboard-zone');
+            const bodyHeight = document.body.clientHeight;
+            $dashboardZone.css({
+              top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
+              position: 'absolute',
+              height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
+            });
+            break;
+          }
           default:
             $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx + 'px';
             break;

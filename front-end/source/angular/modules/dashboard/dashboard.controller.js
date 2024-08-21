@@ -49,8 +49,9 @@ angular
       };
 
       $scope.popup = {
-        datanodeInfo: false,
         datanodeNotif: false,
+        title: '',
+        data: null,
       };
 
       $scope.modalDiagNotif = false;
@@ -76,45 +77,6 @@ angular
         },
         showGraphPanel: false,
         sortValue: 'typeA',
-      };
-
-      /*---------- copyContent ----------------*/
-      $scope.copyContentValue = '';
-      $scope.copyContent = function (content) {
-        let contentSize = new Blob([content]).size; // size: bytes
-        var notice;
-        if (contentSize <= 10_485_760) {
-          // 10_485_760 bytes = 10 MB
-          navigator.clipboard.writeText(content).then(
-            function () {
-              notice = new PNotify({
-                title: 'Copy content',
-                text: 'Copying to clipboard was successful!',
-                type: 'success',
-                styling: 'bootstrap3',
-              });
-            },
-            function (err) {
-              notice = new PNotify({
-                title: 'Copy content',
-                text: 'Could not copy content: ' + err,
-                type: 'error',
-                styling: 'bootstrap3',
-              });
-            }
-          );
-          $scope.copyContentValue = '';
-        } else {
-          notice = new PNotify({
-            title: 'Copy content',
-            text: 'Could not copy content due to data big size',
-            type: 'error',
-            styling: 'bootstrap3',
-          });
-        }
-        $('.ui-pnotify-container').on('click', function () {
-          notice.remove();
-        });
       };
 
       /***********************************************************************************/
@@ -161,6 +123,7 @@ angular
 
       /*---------- setRightContent ----------------*/
       $scope.setRightContent = function (name, vm) {
+        editorStatus = 'partial';
         $scope.resetPanelStateL();
         let opendedPanel = false;
         if ($scope.editorView.rightSidePanel.target == name || !$scope.editorView.rightSidePanel.view) {
@@ -237,7 +200,10 @@ angular
       /*---------- closeRightSidePanel ----------------*/
       $scope.closeRightSidePanel = function () {
         $scope.editorView.rightSidePanel.view = false;
-        editorStatus = 'full';
+        // Handle transition duration 0.25 sec, with margin
+        setTimeout(() => {
+          editorStatus = 'full';
+        }, 1000);        
       };
 
       /*---------- resetPanelStateR ----------------*/

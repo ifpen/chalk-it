@@ -235,11 +235,7 @@
       client = {};
     };
 
-    self.isSetValueValid = function () {
-      return false;
-    };
-
-    self.isSetFileValid = function () {
+    self.canSetValue = function () {
       return false;
     };
 

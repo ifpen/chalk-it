@@ -1044,6 +1044,7 @@
 
   // Custom Group labels
   .switch-span,
+  .checkbox-span,
   .select-span,
   .ac-value-span,
   .value-span {
@@ -1099,7 +1100,7 @@
 
   #value-no-input-group,
   #ac-value-no-input-group {
-    width: 100%;
+    width: inherit;
     display: table-cell;
   }
 }

@@ -8,7 +8,7 @@
 $themes: (
   'default': (
     'hue': 'light',
-    0: #fff,
+    0: #ffffff,
     // Background color
     1: #354a5f,
     // Main text
@@ -18,16 +18,28 @@ $themes: (
     // Active color
     4: #a9c3ef,
     // Light color
-    5: #9a7fd1,
+    5: #ae86ff,
     // Accent 1
-    6: #ffb980,
+    6: #ffea62,
     // Accent 2
     7: #07a2a4,
     // Accent 3
+    8: #846c5b,
+    // Accent 4
+    9: #df3939,
+    // Accent 5
+    10: #44f54d,
+    // Accent 6
+    11: #d356cd,
+    // Accent 7
+    12: #ff9829,
+    // Accent 8
+    13: #7dd3d4,
+    // Accent 9
   ),
   'pink': (
     'hue': 'light',
-    0: #fff,
+    0: #ffffff,
     // Background color
     1: #3a0ca3,
     // Main text
@@ -39,14 +51,26 @@ $themes: (
     // Light color
     5: #8fd3e8,
     // Accent 1
-    6: #71669e,
+    6: #b67fcc,
     // Accent 2
-    7: #cc70af,
+    7: #bc25f7,
     // Accent 3
+    8: #1eb810,
+    // Accent 4
+    9: #ccda11,
+    // Accent 5
+    10: #6e9fdf,
+    // Accent 6
+    11: #e70c2d,
+    // Accent 7
+    12: #4d24d6,
+    // Accent 8
+    13: #441122,
+    // Accent 9
   ),
   'green': (
     'hue': 'light',
-    0: #fff,
+    0: #ffffff,
     // Background color
     1: #081c15,
     // Main text
@@ -58,16 +82,28 @@ $themes: (
     // Light color
     5: #e69d87,
     // Accent 1
-    6: #dd6b66,
+    6: #e62e24,
     // Accent 2
-    7: #7289ab,
+    7: #5591ec,
     // Accent 3
+    8: #43d3d3,
+    // Accent 4
+    9: #8d4613,
+    // Accent 5
+    10: #faa70e,
+    // Accent 6
+    11: #e42ada,
+    // Accent 7
+    12: #e09cdd,
+    // Accent 8
+    13: #2cf31a,
+    // Accent 9
   ),
   'dark': (
     'hue': 'dark',
     0: #333333,
     // Background color
-    1: #fff,
+    1: #ffffff,
     // Main text
     2: #ea7e53,
     // Main color
@@ -77,10 +113,22 @@ $themes: (
     // Light color
     5: #8dc1a9,
     // Accent 1
-    6: #7289ab,
+    6: #acb7c9,
     // Accent 2
-    7: #eedd78,
+    7: #3f3f3c,
     // Accent 3
+    8: #ec9d34,
+    // Accent 4
+    9: #7e4110,
+    // Accent 5
+    10: #215f0e,
+    // Accent 6
+    11: #60d0df,
+    // Accent 7
+    12: #6e66dd,
+    // Accent 8
+    13: #b84aae,
+    // Accent 9
   ),
 );
 
@@ -193,6 +241,13 @@ html {
   // --widget-multiselect-checked-text: #{color-yiq(map-get($widget-default-colors, 3))}; // inside calculated colors
   --widget-multiselect-checked-color: var(--widget-color-3);
   --widget-multiselect-checked-border-color: var(--widget-color-3);
+
+  // Led light
+  --widget-led-light-on: #00b700;
+  --widget-led-light-off: #004d00;
+
+  // Calendar D3
+  --widget-calendar-d3-undefined-value: #f6f6f6;
 }
 
 // Overrides for each theme
@@ -235,6 +290,9 @@ html {
 
       // Select2 dropdowns are created as direct children of the body element
       --widget-select-drop-color: #{darken(map-get($theme, 0), 3%)};
+
+      // Plotly
+      --widget-plotly-background-color: #{darken(map-get($theme, 0), 3%)};
     } @else {
       // Global
       --widget-subtext-color: #{darken(map-get($theme, 1), 20%)};
@@ -261,6 +319,9 @@ html {
 
       // Select2 dropdowns are created as direct children of the body element
       --widget-select-drop-color: #{lighten(map-get($theme, 0), 3%)};
+
+      // Plotly
+      --widget-plotly-background-color: #{lighten(map-get($theme, 0), 3%)};
     }
 
     // Contrasted text color

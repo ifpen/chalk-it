@@ -173,15 +173,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       crossDomain: true,
       url: GetSendFct(),
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != 'true') {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader('Authorization', token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -380,13 +372,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       crossDomain: true,
       url: fct,
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader('Authorization', token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -445,15 +431,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       data: jsonData,
       url: fct,
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != 'true') {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader('Authorization', token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -476,7 +454,7 @@ var FileMngrFct = function () {
             l_callback
           );
         } else {
-          const err = 'the Flask server is not responding';
+          const err = txtErr || 'the Flask server is not responding';
           datanodesManager.showLoadingIndicator(false);
           EndOfOperation('Please check and restart the command line', textStatus + ' :\n' + err, 'error', l_callback);
         }
@@ -496,13 +474,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       data: cmd,
       url: GetFilesFct(),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader('Authorization', token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -586,15 +558,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       crossDomain: true,
       url: fct,
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != 'true') {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader('Authorization', token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var $body = angular.element(document.body); // 1
         var $rootScope = $body.scope().$root;
@@ -804,15 +768,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       crossDomain: true,
       url: fct,
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != 'true') {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader('Authorization', token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -872,13 +828,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       crossDomain: true,
       url: GetDeleteFct(),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader('Authorization', token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -945,15 +895,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       crossDomain: true,
       url: GetRenameFct(),
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != 'true') {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader('Authorization', token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -1028,13 +970,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       crossDomain: true,
       url: url,
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader('Authorization', token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (obj) {
@@ -1110,13 +1046,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       url: url,
       data: cmd,
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader('Authorization', token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = jQuery.parseJSON(msg.d);
         if (callback != null) callback(obj, Name);
@@ -1215,13 +1145,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({ FileName: name }),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader('Authorization', token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, name);
@@ -1297,13 +1221,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({ FileName: name, Email: email, Shared: isShared }),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader('Authorization', token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, name, isShared);
@@ -1347,13 +1265,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       url: AdminMngr.GetFileServer() + 'SetPageAccess',
       data: JSON.stringify({ FileName: name, Secured: securedLink }),
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader('Authorization', token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, name);
@@ -1408,15 +1320,7 @@ var FileMngrFct = function () {
         NewFileName: newName,
         Email: email,
       }),
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != 'true') {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader('Authorization', token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, newName);
@@ -1471,15 +1375,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       url: AdminMngr.GetFileServer() + fct,
       data: JSON.stringify({ FileName: name }),
-      beforeSend: function (xhr) {
-        if (xDashConfig.xDashBasicVersion != 'true') {
-          // Add authorization header
-          var token = LoginMngr.GetSavedJwt();
-          if (token) {
-            xhr.setRequestHeader('Authorization', token);
-          }
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj, name);
@@ -1523,13 +1419,7 @@ var FileMngrFct = function () {
       dataType: 'json',
       url: AdminMngr.GetFileServer() + 'GetInfoMessage',
       data: '',
-      beforeSend: function (xhr) {
-        // Add authorization header
-        var token = LoginMngr.GetSavedJwt();
-        if (token) {
-          xhr.setRequestHeader('Authorization', token);
-        }
-      },
+      beforeSend: setXHRAuthorizationHeader,
       success: function (msg) {
         var obj = JSON.parse(msg.d);
         if (callback != null) callback(obj);
@@ -1923,31 +1813,6 @@ var FileMngrFct = function () {
       } else l_callback(msg1, msg2, localType);
     }
   } // Fin de EndOfOperation
-  //=============================================================================================
-  //  b64EncodeUnicode
-  //=============================================================================================
-
-  function b64EncodeUnicode(str) {
-    return btoa(
-      encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
-        return String.fromCharCode(parseInt(p1, 16));
-      })
-    );
-  } // Fin de b64EncodeUnicode
-
-  //=============================================================================================
-  //  b64DecodeUnicode
-  //=============================================================================================
-
-  function b64DecodeUnicode(str) {
-    return decodeURIComponent(
-      Array.prototype.map
-        .call(atob(str), function (c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join('')
-    );
-  } // Fin de b64DecodeUnicode
 
   //=============================================================================================
   // RemoveFileExtension

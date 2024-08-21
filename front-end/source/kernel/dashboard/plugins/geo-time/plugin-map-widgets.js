@@ -3,9 +3,8 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Copyright © 2017-2023 IFPEN                                        │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Original authors(s): Mongi BEN GAID, Ameur HAMDOUNI                        │ \\
+// │ Original authors(s): Mongi BEN GAID, Ameur HAMDOUNI                │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
-
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 /*******************************************************************/
@@ -68,7 +67,7 @@ modelsParameters.openStreetMaps = {
   drawingFeaturesOptions: {
     point: true,
     line: true,
-    polygone: true,
+    polygon: true,
     rectangle: true,
     modal: false,
   },
@@ -739,13 +738,20 @@ function mapWidgetsPluginClass() {
       drawRectangle: true,
     };
 
+    // backwards compatibility
+    const instanceOptions = modelsParameters[idInstance].drawingFeaturesOptions;
+    if (instanceOptions.polygone !== undefined) {
+      instanceOptions.polygon = instanceOptions.polygone;
+      delete instanceOptions.polygone;
+    }
+
     if (drawingFeature) {
       drawControlConfig = {
         drawCircle: false,
         drawCircleMarker: false,
         drawMarker: modelsParameters[idInstance].drawingFeaturesOptions.point,
         drawPolyline: modelsParameters[idInstance].drawingFeaturesOptions.line,
-        drawPolygon: modelsParameters[idInstance].drawingFeaturesOptions.polygone,
+        drawPolygon: modelsParameters[idInstance].drawingFeaturesOptions.polygon,
         drawRectangle: modelsParameters[idInstance].drawingFeaturesOptions.rectangle,
       };
     }
@@ -1358,13 +1364,30 @@ function mapWidgetsPluginClass() {
       }
     };
 
-    this.render = function () {
+    this.render = function (fromApi) {
       var widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('id', 'openStreetMap' + idWidget);
-      widgetHtml.setAttribute('style', 'width: inherit; height: inherit');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: table;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: inherit; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      elem = $('#' + idDivContainer)[0];
+      elem.setAttribute('style', 'width: inherit; height: inherit;' + displayStyle + enableStyle);
+      widgetHtml.setAttribute('style', 'width: inherit; height: inherit;');
+      if (fromApi) {
+        return;
+      }
       document.addEventListener('play-tab-loaded', self.goToFirstRadioButton);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       self.map = L.map('openStreetMap' + idWidget, { preferCanvas: true }).setView(
         [modelsParameters[idInstance].defaultCenter.latitude, modelsParameters[idInstance].defaultCenter.longitude],
         modelsParameters[idInstance].defaultCenter.zoom
@@ -1466,7 +1489,7 @@ function mapWidgetsPluginClass() {
 
       var ts = 'MapboxStreets';
       if (!_.isUndefined(modelsParameters[idInstance].tileServer)) {
-        if (_.contains(_.keys(tileServers), modelsParameters[idInstance].tileServer)) {
+        if (_.includes(_.keys(tileServers), modelsParameters[idInstance].tileServer)) {
           ts = modelsParameters[idInstance].tileServer;
         } else {
           /* TODO : good error message at edit mode to send */
@@ -1856,8 +1879,8 @@ function mapWidgetsPluginClass() {
         }
       }
 
-      var maxValue = _.max(_.pluck(choroplethData.data, featureTitle));
-      var minValue = _.min(_.pluck(choroplethData.data, featureTitle));
+      var maxValue = _.max(_.map(choroplethData.data, featureTitle));
+      var minValue = _.min(_.map(choroplethData.data, featureTitle));
       var weight = 4;
       var opacity = 0.7;
       let colorScale;
@@ -2072,8 +2095,8 @@ function mapWidgetsPluginClass() {
         opacity: 1,
       };
 
-      var maxValue = _.max(_.pluck(lineHeatMap.data, featureTitle));
-      var minValue = _.min(_.pluck(lineHeatMap.data, featureTitle));
+      var maxValue = _.max(_.map(lineHeatMap.data, featureTitle));
+      var minValue = _.min(_.map(lineHeatMap.data, featureTitle));
 
       try {
         if (!_.isUndefined(lineHeatMap.config.max)) maxValue = lineHeatMap.config.max;
@@ -3267,7 +3290,7 @@ function mapWidgetsPluginClass() {
     widgetsDefinitionList: {
       openStreetMaps: {
         factory: 'openStreetMapsWidget',
-        title: 'Leaflet maps',
+        title: 'Leaflet JSON maps',
         icn: 'map',
         help: 'wdg/wdg-geo-time/#leaflet-maps',
       },

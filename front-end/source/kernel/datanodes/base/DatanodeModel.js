@@ -15,7 +15,6 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
 
   this.formulaInterpreter = new FormulaInterpreter(datanodesListModel, self, datanodePlugins, datanodesDependency);
   this.execInstance = ko.observable(null);
-  this.dataPreviewFormat = new DataPreviewFormat();
 
   function disposeDatanodeInstance() {
     if (!_.isUndefined(self.datanodeInstance)) {
@@ -30,7 +29,6 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   this.is_specific_exec = false;
   this.name = ko.observable();
   this.latestData = ko.observable();
-  this.beautifulString = ko.observable();
   this.status = ko.observable('None');
   this.last_updated = ko.observable('never');
   this.last_error = ko.observable();
@@ -146,22 +144,19 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
   };
 
   this.updateCallback = function (newData, status) {
-    let dnName = self.name();
+    const dnName = self.name();
     const now = new Date();
-    var formatRet = self.dataPreviewFormat.format(newData);
-    newData = formatRet.newData;
 
-    self.beautifulString(formatRet.previewData);
     datanodesListModel.processDatanodeUpdate(dnName, newData);
     self.latestData(newData);
     self.last_updated(now.toLocaleTimeString());
     if (status !== 'Error' && status !== 'None' && status !== 'Running') self.completeExecution();
 
     // question to Ameur : why this code?
-    let $body = angular.element(document.body);
-    let $rootScope = $body.scope().$root;
+    const $body = angular.element(document.body);
+    const $rootScope = $body.scope().$root;
     $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-    $rootScope.safeApply();
+    $rootScope.safeApply(); // TODO ?
 
     widgetConnector.refreshDatanodeConsumers(newData, self.name(), self.status(), self.last_updated());
   };
@@ -443,6 +438,7 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
 
       // Memory update
       const memorydataNodeList = datanodesDependency.getMemorydataNodeList();
+      // SetVariables
       const setvarList = datanodesDependency.getSetvarList();
       const processedSetvarList = datanodesDependency.getProcessedSetvarList();
       const filteredSetvarList = new Map(Array.from(setvarList).filter(([key]) => !processedSetvarList.has(key)));
@@ -626,12 +622,8 @@ DatanodeModel = function (datanodesListModel, datanodePlugins, datanodesDependen
     disposeDatanodeInstance();
   };
 
-  this.isSetValueValid = function () {
-    return self.datanodeInstance.isSetValueValid();
-  };
-
-  this.isSetFileValid = function () {
-    return self.datanodeInstance.isSetFileValid();
+  this.canSetValue = function () {
+    return self.datanodeInstance.canSetValue();
   };
 
   this.setValue = function (propertyName, val, fromApi) {

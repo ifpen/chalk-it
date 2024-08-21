@@ -16,7 +16,7 @@ angular.module('modules').controller('InfoProjectController', [
 
     /*---------- load Tags List ----------------*/
     $scope.loadTagsList = function (query) {
-      var list = [];
+      const list = [];
       $rootScope.userList.every(isIncluded);
 
       function isIncluded(el) {
@@ -44,8 +44,8 @@ angular.module('modules').controller('InfoProjectController', [
     function _saveInfoProjectAtCreation(name) {
       let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
 
-      var later = false;
-      var is_defaultOverwrite = false;
+      let later = false;
+      let is_defaultOverwrite = false;
       scopeDash.projectFormSubmitted = true;
       if ($scope.form.projectForm2.$valid) {
         scopeDash.projectFormSubmitted = false;
@@ -78,9 +78,9 @@ angular.module('modules').controller('InfoProjectController', [
     }
 
     function _saveInfoProjectEditor() {
-      let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
 
-      if (scopeDash.info.pastName != $rootScope.currentInfoProject.name) {
+      if ($rootScope.xDashFullVersion && scopeDash.info.pastName != $rootScope.currentInfoProject.name) {
         //name is disabled so security no needed anymore
         alert('name changed ' + scopeDash.info.pastName + ' <--' + $rootScope.currentInfoProject.name);
         $rootScope.currentInfoProject.name = scopeDash.info.pastName;
@@ -129,7 +129,7 @@ angular.module('modules').controller('InfoProjectController', [
               },
               function (isConfirm) {
                 if (isConfirm) {
-                  var endAction = function () {
+                  const endAction = function () {
                     getDataProject(name, scopeCards.fileType, _updateMetaProject);
                   };
                   //save current project
@@ -150,13 +150,13 @@ angular.module('modules').controller('InfoProjectController', [
       }
     }
 
-    _updateMetaProject = function (name, msg) {
-      var endAction = function () {
+    function _updateMetaProject(name, msg) {
+      const endAction = function () {
         if ($rootScope.currentProject.name === name) {
           $rootScope.currentProject = angular.copy($rootScope.currentInfoProject);
         } else {
           //close project after meta update and only if not already opened in edition
-          var FileMngrInst = new FileMngrFct();
+          const FileMngrInst = new FileMngrFct();
           FileMngrInst.Close('project', $rootScope.currentInfoProject.name, function (msg1, msg2, type) {
             if (type == 'error') {
               swal(msg1, msg2, type);
@@ -178,7 +178,7 @@ angular.module('modules').controller('InfoProjectController', [
       let newData = JSON.stringify(data);
       let is_defaultOverwrite = true;
       fileManager.getFileListExtended('project', name, newData, endAction, is_defaultOverwrite);
-    };
+    }
 
     /*---------- Cancel info project ----------------*/
     $scope.cancelInfoProject = function () {

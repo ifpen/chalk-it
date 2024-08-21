@@ -36,10 +36,10 @@ var angularModule = angular
       };
 
       // 20/11/2019 : AH & MBG for modularization. MBG moved here on 09/03/2020
-      $rootScope.enablePython = !_.isUndefined(urlPython);
       $rootScope.enableServer = !_.isUndefined(xServConfig.urlApi) && !_.isNull(xServConfig.urlApi);
       $rootScope.xDashFullVersion = !(xDashConfig.xDashBasicVersion == 'true');
       $rootScope.enableRegistration = !(xDashConfig.disableRegistration == 'true');
+      $rootScope.enablePyodide = xDashConfig['pyodide'].pyodide_index!='';
       $rootScope.urlTerms = xDashConfig.urlWebSite + 'terms-credits/xDashTermsofUse10062020.html';
       if ($rootScope.xDashFullVersion) $rootScope.urlCredits = xDashConfig.urlWebSite + 'terms-credits/Credits.html';
       else $rootScope.urlCredits = xDashConfig.urlWebSite + '/blob/main/credits.html';

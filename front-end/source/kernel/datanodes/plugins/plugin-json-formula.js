@@ -12,7 +12,7 @@
     // **type_name** (required) : A unique name for this plugin. This name should be as unique as possible to avoid collisions with other plugins, and should follow naming conventions for javascript variable and function declarations.
     type_name: 'JSON_formula_plugin',
     // **display_name** : The pretty name that will be used for display purposes for this plugin. If the name is not defined, type_name will be used instead.
-    display_name: 'Script (client-side)',
+    display_name: 'JavaScript',
     // **icon_type** : icon of the datanode type displayed in data list
     icon_type: 'json-formula.svg',
     // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
@@ -123,11 +123,7 @@
     // **onDispose()** (required) : A public function we must implement that will be called when this instance of this plugin is no longer needed. Do anything you need to cleanup after yourself here.
     self.onDispose = function () {};
 
-    this.isSetValueValid = function () {
-      return false;
-    };
-
-    self.isSetFileValid = function () {
+    self.canSetValue = function () {
       return false;
     };
 

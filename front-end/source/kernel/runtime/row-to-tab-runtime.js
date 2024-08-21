@@ -1,37 +1,20 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ rowToTab mode runtime display handling                             │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                        │ \\
+// │ Copyright © 2022-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR                                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var rowToTabRuntime = (function () {
-  const self = this;
-  self.grid = {
-    rows: 1,
-    cols: 1,
-  };
+class RowToTabRuntime {
+  #grid;
 
-  /**
-   * Retrieves the dashboard grid.
-   *
-   * @return { Object } The grid object, which contains the number of rows and columns in the grid.
-   * @property { Number } rows - The number of rows in the grid.
-   * @property { Number } cols - The number of columns in the grid.
-   */
-  function _getGrid() {
-    return self.grid;
-  }
-
-  /**
-   * Setting the dashboard grid.
-   *
-   * @param { Object } grid - jsonContent.device.cols
-   */
-  function _setGrid(grid) {
-    self.grid = grid;
+  constructor() {
+    this.#grid = {
+      rows: 1,
+      cols: 1,
+    };
   }
 
   /**
@@ -40,14 +23,8 @@ var rowToTabRuntime = (function () {
    * @param { Number | String } valueRow - jsonContent.device.cols.valueRow
    * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
    */
-  function rowToTabPrepareRescale(valueRow, valueCol) {
-    let { rows, cols } = _getGrid();
-
-    rows = Number(valueRow) || 1;
-    cols = Number(valueCol) || 1;
-
-    _setGrid({ rows, cols });
-
+  rowToTabPrepareRescale(valueRow, valueCol) {
+    const rows = Number(valueRow);
     if (rows > 1) {
       $('[id^=dpr][id$=c]').show();
     }
@@ -59,15 +36,13 @@ var rowToTabRuntime = (function () {
    * @param { Number | String } valueRow - jsonContent.device.cols.valueRow
    * @param { Number | String } valueCol - jsonContent.device.cols.valueCol
    */
-  function rowToTabFinishRescale(valueRow, valueCol) {
+  rowToTabFinishRescale(valueRow, valueCol) {
     const $rootScope = angular.element(document.body).scope().$root;
     const currentPage = $rootScope.pageNumber;
-    let { rows, cols } = _getGrid();
+    const rows = Number(valueRow);
+    const cols = Number(valueCol);
 
-    rows = Number(valueRow) || 1;
-    cols = Number(valueCol) || 1;
-
-    _setGrid({ rows, cols });
+    this.grid = { rows, cols };
 
     $('#page-' + currentPage)
       .removeClass('cancel')
@@ -92,14 +67,13 @@ var rowToTabRuntime = (function () {
    *
    * @param { Object } jsonContent - project xprjson
    */
-  function rowToTabModeInit(jsonContent) {
+  rowToTabModeInit(jsonContent) {
     const $rootScope = angular.element(document.body).scope().$root;
-    let { rows, cols } = _getGrid();
+    const rows = Number(jsonContent.device.cols.valueRow);
+    const cols = Number(jsonContent.device.cols.valueCol);
 
-    rows = Number(jsonContent.device.cols.valueRow) || 1;
-    cols = Number(jsonContent.device.cols.valueCol) || 1;
-
-    _setGrid({ rows, cols });
+    customNavigationRuntime.jsonContent = jsonContent;
+    this.grid = { rows, cols };
 
     $rootScope.pageNumber = 1;
     $rootScope.pageNames = jsonContent.pages.pageNames;
@@ -134,9 +108,25 @@ var rowToTabRuntime = (function () {
     };
   }
 
-  return {
-    rowToTabPrepareRescale,
-    rowToTabFinishRescale,
-    rowToTabModeInit,
-  };
-})();
+  /**
+   * Retrieves the dashboard grid.
+   *
+   * @return { Object } The grid object, which contains the number of rows and columns in the grid.
+   * @property { Number } rows - The number of rows in the grid.
+   * @property { Number } cols - The number of columns in the grid.
+   */
+  get grid() {
+    return this.#grid;
+  }
+
+  /**
+   * Setting the dashboard grid.
+   *
+   * @param { Object } grid - jsonContent.device.cols
+   */
+  set grid(grid) {
+    this.#grid = grid;
+  }
+}
+
+const rowToTabRuntime = new RowToTabRuntime();

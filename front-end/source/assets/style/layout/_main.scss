@@ -140,6 +140,9 @@
   gap: 2em;
 }
 
+.main__layout--content__wrapper {
+  height: 100%;
+}
 // Projects lists (recent, my projects, gallery, python)
 .main__layout--content__grid {
   display: grid;
@@ -147,6 +150,8 @@
   grid-gap: 2em;
   margin-top: 2em;
   margin-bottom: 2em;
+  overflow-y: auto;
+  height: 100%;
 }
 
 .main__layout--content__grid--card {

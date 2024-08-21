@@ -69,6 +69,7 @@ module.exports.config = {
       standard_pyodide_packages: env.STANDARD_PYODIDE_PACKAGES || '',
       micropip_pyodide_packages: env.MICROPIP_PYODIDE_PACKAGES || '',
       pyodide_index: env.PYODIDE_INDEX || '',
+      xdash_lib_url: env.XDASH_LIB_URL || '',
     },
     disablePythonSlim: env.DISABLE_PYTHON_SLIM,
     copyright: '\u00A9 2016-' + new Date().getFullYear() + ' IFP Energies nouvelles',

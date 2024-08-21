@@ -62,12 +62,29 @@ function spinnerStatusWidgetsPluginClass() {
       divElement?.remove();
     };
 
+    this.rescale = function () {
+      this.render();
+    };
+
     this.render = function () {
       const widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('id', 'spinner-status-widget-html' + idWidget);
       widgetHtml.setAttribute('class', 'spinner-status-widget-html');
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: inherit;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (!bInteractive) {
         self.addSpinner();
       }
