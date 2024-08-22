@@ -7,8 +7,8 @@ export const config = {
 
   browsers: process.env.BROWSER_LIST?.split(',') ?? [Browser.CHROME, Browser.EDGE],
   headless: (process.env.HEADLESS ?? 'true') === 'true',
-  width: parseInt(process.env.WIDTH ?? '1920', 10),
-  height: parseInt(process.env.HEIGHT ?? '1080', 10),
+  width: parseInt(process.env.WIDTH ?? '1600', 10),
+  height: parseInt(process.env.HEIGHT ?? '900', 10),
 
   outputsDir: process.env.OUTPUT_DIR ?? 'outputs',
 };
