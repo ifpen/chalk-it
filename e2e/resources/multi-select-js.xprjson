@@ -1,0 +1,218 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 16:44:00 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "multi-select-js",
+		"description": "",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "widgets"
+			},
+			{
+				"text": "basic"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "selectedTable",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "selectedTable",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "return [dataNodes[\"selected\"]];"
+				}
+			},
+			{
+				"name": "countries",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "countries",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "return ['Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czechia', 'Denmark',\n   'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Ireland',\n   'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands',\n   'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden'];"
+				}
+			},
+			{
+				"name": "selected",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "selected",
+					"json_var": "[\"Belgium\",\"Bulgaria\",\"Greece\",\"Luxembourg\",\"Poland\"]"
+				}
+			}
+		],
+		"reIndexMap": [
+			2,
+			0,
+			1
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1639,
+		"heightPx": 685,
+		"scrollWidthPx": 1639,
+		"scrollHeightPx": 685,
+		"widthVw": 87.50667378537106,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.50667378537106,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiMultiSelectd": {
+			"layout": {
+				"top": "1.06724vh",
+				"left": "1.04237vw",
+				"height": "46.5315vh",
+				"width": "22.2024vw",
+				"minHeight": "75px",
+				"minWidth": "80px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiMultiSelectd",
+				"instanceId": "flatUiMultiSelectd",
+				"modelJsonId": "flatUiMultiSelect",
+				"widgetTypeName": "Multi-select(flatUiMultiSelectd)"
+			},
+			"modelParameters": {
+				"addControls": false,
+				"listValueFontSize": 0.4,
+				"listValueColor": "#666666",
+				"valueFontFamily": "Helvetica Neue",
+				"valueWidth": 7,
+				"valueHeight": 1.5,
+				"displayBorder": true,
+				"valueDefaultColor": "#666666",
+				"borderColor": "#447bdc",
+				"valueFontSize": 0.4,
+				"valueHoverColor": "#000000",
+				"valueFocusColor": "#666666",
+				"checkboxDefaultColor": "#ffffff",
+				"checkboxHoverColor": "#ffffff",
+				"checkboxFocusColor": "#bdd7ee",
+				"checkboxWidth": 7,
+				"checkboxHeight": 1.5,
+				"checkboxBorderColor": "#171819"
+			},
+			"modelHiddenParams": {
+				"value": [],
+				"selectedValue": ""
+			}
+		},
+		"flatUiTablei": {
+			"layout": {
+				"top": "10.5656vh",
+				"left": "26.007vw",
+				"height": "11.4194vh",
+				"width": "22.8799vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "flatUiTablei",
+				"instanceId": "flatUiTablei",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTablei)"
+			},
+			"modelParameters": {
+				"headerLine": false,
+				"tableValueFontSize": 0.5,
+				"striped": true,
+				"valueColor": "#2154ab",
+				"valueFontFamily": "Helvetica Neue",
+				"bordered": true,
+				"noBorder": false,
+				"editableCols": "[]"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		},
+		"annotationLabel3": {
+			"layout": {
+				"top": "2.34792vh",
+				"left": "25.9445vw",
+				"height": "5.01601vh",
+				"width": "12.4318vw",
+				"minHeight": "20px",
+				"minWidth": "20px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "annotationLabel3",
+				"instanceId": "annotationLabel3",
+				"modelJsonId": "annotationLabel",
+				"widgetTypeName": "Label(annotationLabel3)"
+			},
+			"modelParameters": {
+				"text": "Selected in list :",
+				"enableActuator": false,
+				"fontsize": 0.5,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#2154ab",
+				"valueFontFamily": "Helvetica Neue",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {}
+		}
+	},
+	"connections": {
+		"flatUiMultiSelectd": {
+			"value": {
+				"name": "value",
+				"dataNode": "countries",
+				"dataFields": [],
+				"dataNodeIndex": 1
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataNode": "selected",
+				"dataFields": [],
+				"dataNodeIndex": 2
+			}
+		},
+		"flatUiTablei": {
+			"value": {
+				"name": "value",
+				"dataNode": "selectedTable",
+				"dataFields": [],
+				"dataNodeIndex": 0
+			}
+		},
+		"annotationLabel3": {}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

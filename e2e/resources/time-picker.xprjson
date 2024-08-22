@@ -1,0 +1,168 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Thu Feb 09 2023 21:12:19 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "time-picker",
+		"description": "Time picker (clock) with selection and display",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Geo&Time"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "time",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "time",
+					"json_var": "{\"selected\":\"13:10\"}"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"timepickerSimpleG": {
+			"layout": {
+				"top": "1.39474vh",
+				"left": "0.970026vw",
+				"height": "5.46548vh",
+				"width": "22.8122vw",
+				"minHeight": "32px",
+				"minWidth": "150px",
+				"z-index": "4"
+			},
+			"container": {
+				"id": "timepickerSimpleG",
+				"instanceId": "timepickerSimpleG",
+				"modelJsonId": "timepickerSimple",
+				"widgetTypeName": "Simple clock(timepickerSimpleG)"
+			},
+			"modelParameters": {
+				"label": "selected",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelWidthProportion": "30%",
+				"valueFontSize": 0.5,
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"timeValue": ""
+			}
+		},
+		"flatUiTextInputv": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "25.9732vw",
+				"height": "5.40166vh",
+				"width": "22.8188vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "5"
+			},
+			"container": {
+				"id": "flatUiTextInputv",
+				"instanceId": "flatUiTextInputv",
+				"modelJsonId": "flatUiTextInput",
+				"widgetTypeName": "Text Input(flatUiTextInputv)"
+			},
+			"modelParameters": {
+				"label": "selected",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "70%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc",
+				"validationBtnDefaultColor": "#2154ab",
+				"validationBtnHoverColor": "#a9c3ef",
+				"validationBtnActiveColor": "#2154ab"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"timepickerSimpleG": {
+			"timeValue": {
+				"name": "timeValue",
+				"dataFields": [
+					"selected"
+				],
+				"dataNode": "time",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiTextInputv": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"selected"
+				],
+				"dataNode": "time",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
