@@ -67,6 +67,8 @@ jobs:
         run: |
           echo CHALKIT_DIR="$CHALKIT_DIR"
           echo BROWSER_LIST="chrome"
+          echo WIDTH=1600
+          echo HEIGHT=900
           npm run test
 
 

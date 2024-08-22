@@ -31,5 +31,8 @@
     "selenium-webdriver": "^4.17.0",
     "typescript": "^5.4.2",
     "winston": "^3.12.0"
+  },
+  "dependencies": {
+    "sharp": "^0.33.5"
   }
 }

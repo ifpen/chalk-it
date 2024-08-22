@@ -100,6 +100,8 @@ describeWithServer('Visual Tests', function (server: ChalkitServer) {
         // If not reliable, add small safety wait.
         await dashboardEditor.waitNotLoading();
 
+        await driver.manage().window().setRect({ width: config.width, height: config.height });
+
         const encodedString = await driver.takeScreenshot();
 
         if (config.outputsDir) {
