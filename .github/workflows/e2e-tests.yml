@@ -64,6 +64,8 @@ jobs:
           BROWSER_LIST: chrome
           LOG_LEVEL: info
           CHALKIT_DIR: ${{ steps.build.outputs.BUILD_DIR }}
+          WIDTH: 1600
+          HEIGHT: 900
         run: |
           echo CHALKIT_DIR="$CHALKIT_DIR"
           echo BROWSER_LIST="chrome"
