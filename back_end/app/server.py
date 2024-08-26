@@ -42,11 +42,11 @@ class AppConfig:
         # Extract arguments and set default values
         self.DEBUG = args.dev
         self.xprjson = args.xprjson_file
-        self.run_port = args.app_port or 7854
+        self.run_port = args.app_port or 5000
         self.app_ip = args.app_ip or "127.0.0.1"
         self.server_url = f"http://{self.app_ip}:{self.run_port}"
 
-        # Set up directories
+        # Define directory and file access paths
         self.home_dir = Path.home()
         self.settings_dir = self.home_dir / ".chalk-it"
         self.settings_file = self.settings_dir / "settings.json"
@@ -65,6 +65,13 @@ class AppConfig:
                 self.base_dir / ".." / ".." / "documentation" / "Templates" / "Images"
             ).resolve()
             self.static_folder = (self.base_dir / ".." / ".." / "front-end").resolve()
+            self.documentation_dir = (self.static_folder / "build" / "doc").resolve()
+            self.index_file_path = (
+                self.static_folder / "build" / "index.html"
+            ).resolve()
+            self.index_view_file_path = (
+                self.static_folder / "build" / "index-view.html"
+            ).resolve()
         else:
             # Production mode paths
             self.templates_dir = (
@@ -72,6 +79,11 @@ class AppConfig:
             ).resolve()
             self.images_dir = (self.base_dir / ".." / "Templates" / "Images").resolve()
             self.static_folder = (self.base_dir / "..").resolve()
+            self.documentation_dir = (self.static_folder / "doc").resolve()
+            self.index_file_path = (self.static_folder / "index.html").resolve()
+            self.index_view_file_path = (
+                self.static_folder / "index-view.html"
+            ).resolve()
 
 
 class RootManager:
@@ -105,8 +117,9 @@ class RootManager:
         @self.app.after_request
         def after_request(response: Response) -> Response:
             response.headers.add("Access-Control-Allow-Origin", "*")
-            response.headers.add("Access-Control-Allow-Headers", "Content-Type")
-            response.headers.add("Access-Control-Allow-Methods", "GET, POST")
+            response.headers.add("Access-Control-Allow-Credentials", "true")
+            response.headers.add("Access-Control-Allow-Headers", "*")
+            response.headers.add("Access-Control-Allow-Methods", "*")
             return response
 
     @staticmethod
@@ -342,7 +355,7 @@ class FileManager:
             "/",
             view_func=RootManager.handle_errors(self.static_files),
             methods=["GET"],
-            defaults={"path": "index.html"},
+            defaults={"path": config.index_file_path},
             endpoint="static_file_root",
         )
 
@@ -401,23 +414,24 @@ class FileManager:
         return "Invalid path", 404
 
     def dashboard(self, xprjson: str) -> str:
-        # Load configuration from json file
-        with open(xprjson, "r") as config_file:
-            config_data = json.load(config_file)
+        # Load configuration from JSON file
+        try:
+            with open(xprjson, "r") as config_file:
+                config_data = json.load(config_file)
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            raise ValueError(f"Error loading configuration: {e}")
 
         # Read the HTML template
-        index_view_path = os.path.join(
-            self.config.base_dir, "index-view-2.930.8710.html"
-        )
-        with open(index_view_path, "r") as template_file:
-            template_data = template_file.read()
+        try:
+            with open(self.config.index_view_file_path, "r") as template_file:
+                template_data = template_file.read()
+        except FileNotFoundError as e:
+            raise ValueError(f"Error loading HTML template: {e}")
 
-        # Inject the JSON data into the template
         template_data_with_config = template_data.replace(
             "jsonContent = {};", f"var jsonContent = {json.dumps(config_data)};"
         )
 
-        # Render the HTML with the configuration inlined
         return render_template_string(template_data_with_config)
 
     def get_python_data_list(self) -> Response:
@@ -436,37 +450,39 @@ class FileManager:
 class DocManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
-        self.blueprint = Blueprint("doc", __name__, static_folder=config.static_folder)
+        self.blueprint = Blueprint(
+            "doc", __name__, static_folder=config.documentation_dir
+        )
 
         # Document serving routes
+        self.blueprint.add_url_rule(
+            "/doc/",
+            view_func=RootManager.handle_errors(self.serve_doc),
+            defaults={"path": ""},
+            methods=["GET"],
+            endpoint="serve_doc_root",
+        )
         self.blueprint.add_url_rule(
             "/doc/<path:path>",
             view_func=RootManager.handle_errors(self.serve_doc),
             methods=["GET"],
             endpoint="serve_doc_path",
         )
-        self.blueprint.add_url_rule(
-            "/doc/",
-            view_func=RootManager.handle_errors(self.serve_doc),
-            defaults={"path": "index.html"},
-            methods=["GET"],
-            endpoint="serve_doc_root",
+
+    def serve_doc(self, path: Optional[str]) -> Response:
+        doc_directory = Path(self.blueprint.static_folder)
+        doc_file_path = (doc_directory / path).resolve()
+
+        # If the path is a directory, serve the index.html file within that directory
+        if doc_file_path.is_dir():
+            doc_file_path = doc_file_path / "index.html"
+
+        if not doc_file_path.exists():
+            return "File not found", 404
+
+        return send_from_directory(
+            doc_directory, doc_file_path.relative_to(doc_directory)
         )
-
-    def serve_doc(self, path: str) -> Response:
-        # Adjust 'doc_path' if your docs are in a specific subdirectory
-        static_file_directory = Path(self.blueprint.static_folder)
-        doc_path = static_file_directory / "doc"
-        full_path = doc_path / path
-
-        # Safety check to prevent directory traversal
-        if not full_path.resolve().is_relative_to(doc_path):
-            return "Invalid path", 404
-
-        if full_path.is_dir():
-            path = path.rstrip("/") + "/index.html"
-
-        return send_from_directory(doc_path, path)
 
 
 class TemplateManager:
