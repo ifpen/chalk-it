@@ -28,7 +28,10 @@ function handleXprjson(doc) {
 	const anchors = doc.getElementsByTagName("a");
 
 	Array.from(anchors).forEach((anchor) => {
+		// Ensure no double slashes when concatenating
 		let href = anchor.href.replace(location.origin, xdashDocAddr);
+		// Remove any double slashes in the URL, except for the 'http://' or 'https://' part
+		href = href.replace(/([^:]\/)\/+/g, "$1");
 
 		if (href.includes(".full.xprjson") && bIsBasicVersion == "true") {
 			anchor.removeAttribute("href");
