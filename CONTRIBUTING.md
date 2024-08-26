@@ -8,15 +8,16 @@ For Python setup, run:
 pip install -r requirements.txt
 ```
 
-See also: 
+See also:
 
-- [front-end setup](./front-end/README.md)
-- [front-end contributor guide](./front-end/CONTRIBUTING.md)
+-   [front-end setup](./front-end/README.md)
+-   [front-end contributor guide](./front-end/CONTRIBUTING.md)
 
 ## Debug
 
 ```sh
 cd front-end
+npm run build
 npm start
 python server.py
 ```
@@ -27,6 +28,4 @@ python server.py
 python build.py
 ```
 
-tar.gz build result will be placed on the *./build/dist* directory.
-
-
+tar.gz build result will be placed on the _./build/dist_ directory.
