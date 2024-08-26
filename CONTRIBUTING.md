@@ -10,9 +10,9 @@ pip install -r requirements.txt
 
 Front-end build setup procedure have to be done following [front-end setup](./front-end/README.md)
 
-See also: 
+See also:
 
-- [front-end contributor guide](./front-end/CONTRIBUTING.md)
+-   [front-end contributor guide](./front-end/CONTRIBUTING.md)
 
 ## Debug
 
@@ -29,22 +29,18 @@ python main.py --dev
 
 Chalk'it may be build either as a pip package or as a full front-end statically hosted web-application.
 
-- Build a Python package
+-   Build a Python package
 
     ```sh
     python build.py --buildtype pip
     ```
 
-    tar.gz build result will be placed on the *./build/dist* directory.
+    tar.gz build result will be placed on the _./build/dist_ directory.
 
-- Build a full front-end statically hosted web-application
+-   Build a full front-end statically hosted web-application
 
     ```sh
     python build.py --buildtype hosted
     ```
 
-    static files build result will be placed on the *./front-end/build* directory.
-
-
-
-
+    static files build result will be placed on the _./front-end/build_ directory.
