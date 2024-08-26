@@ -17,7 +17,6 @@ See also:
 
 ```sh
 cd front-end
-npm run build
 npm start
 python server.py
 ```
