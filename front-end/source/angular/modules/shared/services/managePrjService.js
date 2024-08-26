@@ -191,20 +191,23 @@ angular.module('modules').service('ManagePrjService', [
 
     /*---------- clearForNewProject ----------------*/
     self.clearForNewProject = function () {
-      $rootScope.isLiveDemo = false;
-
       const scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
-      if (!_.isUndefined(scopeDashDn)) {
-        scopeDashDn.searchDatanodeByName = '';
-        scopeDashDn.applyDatanodeFilter();
-      }
+
+      $rootScope.isLiveDemo = false;
+      $rootScope.alldatanodes = [];
+      $rootScope.filtredList = [];
       $rootScope.currentProject = {
         name: '',
         description: '',
         tags: [],
         groupName: '',
       };
-      $rootScope.alldatanodes = [];
+
+      if (!_.isUndefined(scopeDashDn)) {
+        scopeDashDn.searchDatanodeByName = '';
+        scopeDashDn.applyDatanodeFilter();
+      }
+
       runtimeSingletons.xdash.clear();
       $rootScope.safeApply();
     };
