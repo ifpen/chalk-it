@@ -450,37 +450,39 @@ class FileManager:
 class DocManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
-        self.blueprint = Blueprint("doc", __name__, static_folder=config.static_folder)
+        self.blueprint = Blueprint(
+            "doc", __name__, static_folder=config.documentation_dir
+        )
 
         # Document serving routes
+        self.blueprint.add_url_rule(
+            "/doc/",
+            view_func=RootManager.handle_errors(self.serve_doc),
+            defaults={"path": ""},
+            methods=["GET"],
+            endpoint="serve_doc_root",
+        )
         self.blueprint.add_url_rule(
             "/doc/<path:path>",
             view_func=RootManager.handle_errors(self.serve_doc),
             methods=["GET"],
             endpoint="serve_doc_path",
         )
-        self.blueprint.add_url_rule(
-            "/doc/",
-            view_func=RootManager.handle_errors(self.serve_doc),
-            defaults={"path": "./build/doc/index.html"},
-            methods=["GET"],
-            endpoint="serve_doc_root",
+
+    def serve_doc(self, path: Optional[str]) -> Response:
+        doc_directory = Path(self.blueprint.static_folder)
+        doc_file_path = (doc_directory / path).resolve()
+
+        # If the path is a directory, serve the index.html file within that directory
+        if doc_file_path.is_dir():
+            doc_file_path = doc_file_path / "index.html"
+
+        if not doc_file_path.exists():
+            return "File not found", 404
+
+        return send_from_directory(
+            doc_directory, doc_file_path.relative_to(doc_directory)
         )
-
-    def serve_doc(self, path: str) -> Response:
-        # Adjust 'doc_path' if your docs are in a specific subdirectory
-        static_file_directory = Path(self.blueprint.static_folder)
-        doc_path = static_file_directory / "build" / "doc"
-        full_path = doc_path / path
-
-        # Safety check to prevent directory traversal
-        if not full_path.resolve().is_relative_to(doc_path):
-            return "Invalid path", 404
-
-        if full_path.is_dir():
-            path = path.rstrip("/") + "/index.html"
-
-        return send_from_directory(doc_path, path)
 
 
 class TemplateManager:
