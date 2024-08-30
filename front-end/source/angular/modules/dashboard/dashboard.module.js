@@ -93,15 +93,21 @@ import dashboardTemplate from './dashboard.html';
 import datanodeNotifTemplate from './_partials/modals/datanode_notif.html';
 import dashboardDepGraphTemplate from './_partials/panels/dashboard_depGraph.html';
 
-dashboardModule.run(function ($templateCache) {
-  $templateCache.put(
-    'angular/modules/dashboard/_partials/panels/dashboard_rightSidePanel.html',
-    dashboardRightSidePanelTemplate
-  );
-  $templateCache.put('angular/modules/dashboard/dashboard.html', dashboardTemplate);
-  $templateCache.put('angular/modules/dashboard/_partials/panels/dashboard_datanodes.html', dashboardDatanodesTemplate);
-  $templateCache.put('angular/modules/dashboard/_partials/headerbar/dashboard_header.html', dashboardHeaderTemplate);
-  $templateCache.put('angular/modules/dashboard/_partials/dashboard_contentTop.html', dashboardContentTopTemplate);
-  $templateCache.put('angular/modules/dashboard/_partials/modals/datanode_notif.html', datanodeNotifTemplate);
-  $templateCache.put('angular/modules/dashboard/_partials/panels/dashboard_depGraph.html', dashboardDepGraphTemplate);
-});
+dashboardModule.run([
+  '$templateCache',
+  function ($templateCache) {
+    $templateCache.put(
+      'angular/modules/dashboard/_partials/panels/dashboard_rightSidePanel.html',
+      dashboardRightSidePanelTemplate
+    );
+    $templateCache.put('angular/modules/dashboard/dashboard.html', dashboardTemplate);
+    $templateCache.put(
+      'angular/modules/dashboard/_partials/panels/dashboard_datanodes.html',
+      dashboardDatanodesTemplate
+    );
+    $templateCache.put('angular/modules/dashboard/_partials/headerbar/dashboard_header.html', dashboardHeaderTemplate);
+    $templateCache.put('angular/modules/dashboard/_partials/dashboard_contentTop.html', dashboardContentTopTemplate);
+    $templateCache.put('angular/modules/dashboard/_partials/modals/datanode_notif.html', datanodeNotifTemplate);
+    $templateCache.put('angular/modules/dashboard/_partials/panels/dashboard_depGraph.html', dashboardDepGraphTemplate);
+  },
+]);

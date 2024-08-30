@@ -32,6 +32,9 @@ export const modalsModule = angular
       template: shareTemplate,
     };
   })
-  .run(function ($templateCache) {
-    $templateCache.put('angular/modules/modals/userAvatar.html', userAvatarTemplate);
-  });
+  .run([
+    '$templateCache',
+    function ($templateCache) {
+      $templateCache.put('angular/modules/modals/userAvatar.html', userAvatarTemplate);
+    },
+  ]);
