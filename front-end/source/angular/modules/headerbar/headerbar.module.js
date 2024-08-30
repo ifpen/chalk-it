@@ -7,6 +7,9 @@ import headerbarTemplate from 'angular/modules/headerbar/headerbar.html';
 
 export const headerbarModule = _headerbarModule;
 
-headerbarModule.run(function ($templateCache) {
-  $templateCache.put('angular/modules/headerbar/headerbar.html', headerbarTemplate);
-});
+headerbarModule.run([
+  '$templateCache',
+  function ($templateCache) {
+    $templateCache.put('angular/modules/headerbar/headerbar.html', headerbarTemplate);
+  },
+]);

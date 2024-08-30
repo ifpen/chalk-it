@@ -7,7 +7,10 @@ import sidebarBasicTemplate from './sidebar-basic.html';
 
 export const sidebarModule = _sidebarModule;
 
-sidebarModule.run(function ($templateCache) {
-  $templateCache.put('angular/modules/sidebar/sidebar.html', sidebarTemplate);
-  $templateCache.put('angular/modules/sidebar/sidebar-basic.html', sidebarBasicTemplate);
-});
+sidebarModule.run([
+  '$templateCache',
+  function ($templateCache) {
+    $templateCache.put('angular/modules/sidebar/sidebar.html', sidebarTemplate);
+    $templateCache.put('angular/modules/sidebar/sidebar-basic.html', sidebarBasicTemplate);
+  },
+]);
