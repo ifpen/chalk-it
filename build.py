@@ -70,18 +70,6 @@ a = str(env_vars["A"])
 b = str(env_vars["B"])
 c = str(env_vars["C"])
 
-
-def get_version():
-    if c == "0":
-        date_today = datetime.now()
-        date_start = datetime.strptime("01/01/2000", "%m/%d/%Y")
-        result = abs((date_start - date_today).days)
-        return result
-    else:
-        return c
-
-
-front_end_build_dir_name = "chalkit_" + a + "." + b + "." + str(get_version())
 suffix_version = a + "." + b
 
 if BUILD_TYPE == "pip":
@@ -162,8 +150,7 @@ if BUILD_FRONT_END:
 if BUILD_TYPE == "pip":
 
     # Copy build result to ./build/chlkt directory
-    build_dir = os.path.join("./front-end/build", front_end_build_dir_name)
-    shutil.copytree(build_dir, "./build/chlkt")
+    shutil.copytree("./front-end/build", "./build/chlkt")
 
     # Copy .whl file to ./build/chlkt directory
     # Specify the source directory and pattern
