@@ -1402,7 +1402,7 @@ function mapWidgetsPluginClass() {
         enableStyle = 'pointer-events: none; opacity:0.5;';
       }
       //
-      elem = $('#' + idDivContainer)[0];
+      const elem = $('#' + idDivContainer)[0];
       elem.setAttribute('style', 'width: inherit; height: inherit;' + displayStyle + enableStyle);
       widgetHtml.setAttribute('style', 'width: inherit; height: inherit;');
       if (fromApi) {

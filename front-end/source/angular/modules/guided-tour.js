@@ -78,7 +78,7 @@ export function startIntroProject() {
 
   const taipyLinkSteps = [
     {
-      element: '#li_flatUiHorizontalSliderj',
+      element: '#li_annotationLabelT',
       intro: 'This is widget connection and configuration menu',
     },
     {
@@ -102,7 +102,7 @@ export function startIntroProject() {
       intro: 'DataNodes are added, configured, listed and controlled here',
     },
     {
-      element: '#li_flatUiHorizontalSliderj',
+      element: '#li_annotationLabelT',
       intro: 'This is widget connection and configuration menu',
     },
     {
@@ -162,33 +162,34 @@ export function startIntroProject() {
         }
         break;
       case 'editor-datanodes-list':
-        if (this._direction == 'forward') document.getElementById('editor-datanodes-list').click();
+        if (this._direction == 'forward') {
+          document.getElementById('editor-datanodes-list').click();
+        }
         break;
       case 'editor-left-side-panel':
         if (this._direction == 'backward') {
           document.getElementById('showHideWidgetMenu').click();
         }
         break;
-      case 'li_flatUiHorizontalSliderj':
-        if (this._direction == 'forward') {
-          if (isTaipyLink) document.getElementById('editor-widget-toolbox').click();
-          document.getElementById('showHideWidgetMenu').click();
-        }
+      case 'li_annotationLabelT':
+        if (this._direction == 'forward') document.getElementById('showHideWidgetMenu').click();
         break;
       case 'datanodes-widget-connect':
         if (this._direction == 'backward') {
-          document.getElementById('open-datanodes-widget-connect').click();
-          if (!isTaipyLink) document.getElementById('editor-datanodes-list').click();
+          document.getElementById('editor-datanodes-list').click();
           document.getElementById('showHideWidgetMenu').click();
         }
         break;
       case 'panel--right':
-        if (this._direction == 'forward') document.getElementById('open-datanodes-widget-connect').click();
+        if (this._direction == 'forward') {
+          document.getElementById('open-datanodes-widget-connect').click();
+          document.getElementById('showHideWidgetMenu').click();
+        }
         break;
     }
   });
 
-  intro.onafterchange(async function (targetElement) {
+  intro.onafterchange(function (targetElement) {
     const el0 = document.querySelectorAll('.introjs-helperLayer')[0];
     const el1 = document.querySelectorAll('.introjs-tooltipReferenceLayer')[0];
     setTimeout(() => {

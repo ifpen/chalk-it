@@ -20,6 +20,24 @@ import Plotly from 'plotly.js/dist/plotly';
 
 const USE_PLOTLY_VALIDATION = false;
 
+// Very minimalistic plotly validation
+const _SCHEMA_PLOTLY_DATA = {
+  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:plotly_data',
+  type: 'array',
+  items: {
+    type: 'object',
+    properties: { type: { type: 'string' } },
+    required: ['type'],
+  },
+};
+
+const _SCHEMA_PLOTLY_LAYOUT = {
+  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:plotly_layout',
+  type: 'object',
+};
+
 const colorway = [
   'var(--widget-color-2)',
   'var(--widget-color-5)',
@@ -35,18 +53,15 @@ const colorway = [
 
 const textColor = 'var(--widget-color)';
 const gridColor = 'var(--widget-plotly-background-color)';
-const axisParams = {
-  title: '',
-  tickfont: {
-    color: textColor,
-  },
-};
 const plotlyBackground = {
   paper_bgcolor: 'rgba(0,0,0,0)',
   plot_bgcolor: 'rgba(0,0,0,0)',
 };
 const plotlyColorParams = {
   ...plotlyBackground,
+  font: {
+    color: textColor,
+  },
   colorway: colorway,
   legend: {
     font: {
@@ -78,24 +93,6 @@ const genericPlotlyColor = {
   },
 };
 
-// Very minimalistic plotly validation
-const _SCHEMA_PLOTLY_DATA = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:plotly_data',
-  type: 'array',
-  items: {
-    type: 'object',
-    properties: { type: { type: 'string' } },
-    required: ['type'],
-  },
-};
-
-const _SCHEMA_PLOTLY_LAYOUT = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:plotly_layout',
-  type: 'object',
-};
-
 // Parameters
 modelsParameters.plotlyLine = {
   numberOfAxis: 1,
@@ -106,17 +103,19 @@ modelsParameters.plotlyLine = {
     xaxis: {
       // all "layout.xaxis" attributes: #layout-xaxis
       title: 'x', // more about "layout.xaxis.title": #layout-xaxis-title
+      color: textColor,
       tickfont: {
         color: textColor,
       },
     },
     yaxis: {
       title: 'y',
+      color: textColor,
       tickfont: {
         color: textColor,
       },
     },
-    showlegend: true,
+    showlegend: false,
     margin: {
       l: 50,
       r: 50,
@@ -138,17 +137,19 @@ modelsParameters.plotlyBar = {
     xaxis: {
       // all "layout.xaxis" attributes: #layout-xaxis
       title: 'x', // more about "layout.xaxis.title": #layout-xaxis-title
+      color: textColor,
       tickfont: {
         color: textColor,
       },
     },
     yaxis: {
       title: 'y',
+      color: textColor,
       tickfont: {
         color: textColor,
       },
     },
-    showlegend: true,
+    showlegend: false,
     margin: {
       l: 50,
       r: 50,
@@ -165,7 +166,7 @@ modelsParameters.plotlyPie = {
     ...plotlyColorParams,
     // all "layout" attributes: #layout
     title: '',
-    showlegend: true,
+    showlegend: false,
     margin: {
       l: 50,
       r: 50,
@@ -186,15 +187,18 @@ modelsParameters.plotly3dSurface = {
       xaxis: {
         // all "layout.xaxis" attributes: #layout-xaxis
         title: 'x', // more about "layout.xaxis.title": #layout-xaxis-title
+        color: textColor,
       },
       yaxis: {
         title: 'y',
+        color: textColor,
       },
       zaxis: {
         title: 'z',
+        color: textColor,
       },
     },
-    showlegend: true,
+    showlegend: false,
     margin: {
       l: 50,
       r: 50,
@@ -262,6 +266,9 @@ modelsHiddenParams.plotlyPie = {
       labels: ['half1', 'half2'],
       values: [0.5, 0.5],
       // marker: { colors: [] },
+      textfont: {
+        color: textColor,
+      },
       sort: false,
     },
   ],
@@ -301,7 +308,14 @@ modelsHiddenParams.plotlyRealTime = {
 };
 
 modelsHiddenParams.plotlyGeneric = {
-  data: [{}],
+  data: [
+    // Data must be added to add the selection to the mode bar.
+    {
+      type: 'bar',
+      x: [],
+      y: [],
+    },
+  ],
   layout: {
     ...plotlyBackground,
     ...genericPlotlyColor,
@@ -311,6 +325,14 @@ modelsHiddenParams.plotlyGeneric = {
 
 modelsHiddenParams.plotlyPyGeneric = {
   fig: {
+    data: [
+      // Data must be added to add the selection to the mode bar.
+      {
+        type: 'bar',
+        x: [],
+        y: [],
+      },
+    ],
     layout: {
       ...plotlyBackground,
       ...genericPlotlyColor,
@@ -392,17 +414,13 @@ function _isAxisLinear(layout, axis) {
 
 function plotlyWidgetsPluginClass() {
   let pId = 0;
-  const self = this;
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                         createPlotlyDiv                            | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function createPlotlyDiv(idDivContainer, pId, bInteractive) {
     const widgetHtml = document.createElement('div');
-    let idDivPlotly = 'plotly' + pId;
-    if (bInteractive) {
-      idDivPlotly += 'c';
-    }
+    const idDivPlotly = `plotly${pId}${bInteractive ? 'c' : ''}`;
     widgetHtml.setAttribute('id', idDivPlotly);
     widgetHtml.setAttribute('class', 'js-plotly-plot');
     $('#' + idDivContainer).html(widgetHtml);
@@ -451,18 +469,15 @@ function plotlyWidgetsPluginClass() {
   // |                           Plotly base                              | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function basePlotlyWidget(idDivContainer, idWidget, idInstance, bInteractive) {
-    this.bIsInteractive = bInteractive;
-    let idDivPlotly = 'plotly' + idWidget;
-    if (bInteractive) {
-      idDivPlotly += 'c';
-    }
     const self = this;
+    this.bIsInteractive = bInteractive;
+    this.idDivPlotly = `plotly${idWidget}${this.bIsInteractive ? 'c' : ''}`;
 
     this.enableWidget = function () {
       if (_.isUndefined(modelsParameters[idInstance].enableWidget)) {
         modelsParameters[idInstance].enableWidget = true;
       }
-      if (bInteractive) {
+      if (this.bIsInteractive) {
         return modelsParameters[idInstance].enableWidget;
       } else {
         return true;
@@ -473,14 +488,14 @@ function plotlyWidgetsPluginClass() {
       if (_.isUndefined(modelsParameters[idInstance].showWidget)) {
         modelsParameters[idInstance].showWidget = true;
       }
-      if (bInteractive) {
+      if (this.bIsInteractive) {
         return modelsParameters[idInstance].showWidget;
       } else {
         return true;
       }
     };
     this.applyDisplayOnWidget = function () {
-      if (bInteractive) {
+      if (this.bIsInteractive) {
         const widgetObj = $('#' + idInstance + 'c');
         if (!_.isUndefined(widgetObj)) {
           if (!modelsParameters[idInstance].showWidget) {
@@ -493,19 +508,22 @@ function plotlyWidgetsPluginClass() {
     };
     // Convert CSS Custom Properties (ie: var(--widget-color)) to hexa codes
     this.getColorValueFromCSSProperty = function (value) {
-      let color = value;
-      if (color.includes('var(--')) {
+      if (value.includes('var(--')) {
         const realValue = value.substring(4, value.length - 1);
-        color = window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
+        return window.getComputedStyle(document.documentElement).getPropertyValue(realValue);
       }
-      return color;
+      return value;
     };
 
     // Check if a key exists in a deeply nested object
-    this.checkNested = function (obj, level, ...rest) {
-      if (obj === undefined) return false;
-      if (rest.length == 0 && obj.hasOwnProperty(level)) return true;
-      return this.checkNested(obj[level], ...rest);
+    this.checkNested = function (obj, ...keys) {
+      for (let key of keys) {
+        if (obj == undefined || !obj.hasOwnProperty(key)) {
+          return false;
+        }
+        obj = obj[key];
+      }
+      return true;
     };
 
     /**
@@ -516,29 +534,28 @@ function plotlyWidgetsPluginClass() {
      * @returns {string} The transformed text without HTML tags.
      */
     this.getTransformedText = function (text) {
-      if (text) {
-        // Check if the text has HTML tags
-        const hasHtmlTags = $('<div>').html(text).children().length > 0;
-        if (!hasHtmlTags) {
-          // If the text does not have HTML tags, parse it as HTML
-          const parser = new DOMParser();
-          text = parser.parseFromString('<!doctype html><body>' + text, 'text/html').body.textContent;
-        }
+      if (text && !$('<div>').html(text).children().length) {
+        const parser = new DOMParser();
+        text = parser.parseFromString(`<!doctype html><body>${text}`, 'text/html').body.textContent;
       }
       return text;
     };
 
     this.render = function () {
-      /* Conversion to enable HTML tags */
-      const layout = modelsParameters[idInstance]?.layout;
-      if (layout?.title) {
-        layout.title = _.isObject(layout.title)
-          ? this.getTransformedText(layout.title.text)
-          : this.getTransformedText(layout.title);
+      const hiddenData = modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data;
+      let hiddenLayout = modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout;
+      const modelLayout = modelsParameters[idInstance]?.layout ?? hiddenLayout;
+
+      if (hiddenData && this.checkNested(hiddenData, 'textfont', 'color')) {
+        hiddenData.textfont.color = this.getColorValueFromCSSProperty(hiddenData.textfont.color);
       }
 
-      /* Apply colors from modelsParameters */
-      let hiddenLayout = modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout;
+      /* Conversion to enable HTML tags */
+      if (modelLayout?.title) {
+        const title = _.isObject(modelLayout.title) ? modelLayout.title.text : modelLayout.title;
+        modelLayout.title = this.getTransformedText(title);
+      }
+
       if (hiddenLayout) {
         // For generic plotly
         const plotlyParams = [
@@ -551,10 +568,8 @@ function plotlyWidgetsPluginClass() {
             hiddenLayout = _.merge({}, param.value, hiddenLayout);
           } else {
             _.forIn(param.value, (value, key) => {
-              if (_.has(hiddenLayout, key)) {
-                if (_.isEqual(hiddenLayout[key], value)) {
-                  _.unset(hiddenLayout, key);
-                }
+              if (_.has(hiddenLayout, key) && _.isEqual(hiddenLayout[key], value)) {
+                _.unset(hiddenLayout, key);
               }
             });
           }
@@ -562,88 +577,75 @@ function plotlyWidgetsPluginClass() {
 
         // For generic plotly
         if (hiddenLayout.template?.layout && modelsParameters[idInstance].enforceTextColor) {
-          const layout = hiddenLayout.template.layout;
-          if (layout.font?.color) {
-            const fontColor = modelsParameters[idInstance]?.textColor ?? textColor;
-            layout.font.color = this.getColorValueFromCSSProperty(fontColor);
+          const layoutTemplate = hiddenLayout.template.layout;
+          if (layoutTemplate.font?.color) {
+            layoutTemplate.font.color = this.getColorValueFromCSSProperty(
+              modelsParameters[idInstance].textColor ?? textColor
+            );
           }
           ['xaxis', 'yaxis', 'zaxis'].forEach((axis) => {
-            if (layout[axis]?.gridcolor) {
-              layout[axis].gridcolor = this.getColorValueFromCSSProperty(gridColor);
+            if (layoutTemplate[axis]?.gridcolor) {
+              layoutTemplate[axis].gridcolor = this.getColorValueFromCSSProperty(gridColor);
             }
           });
         }
 
         hiddenLayout = JSON.parse(JSON.stringify(hiddenLayout));
-        const modelLayout = modelsParameters[idInstance].layout
-          ? JSON.parse(JSON.stringify(modelsParameters[idInstance].layout))
-          : hiddenLayout;
 
-        // Set colorway
-        if (this.checkNested(modelLayout, 'colorway')) {
-          hiddenLayout.colorway = modelLayout.colorway.map((color) => this.getColorValueFromCSSProperty(color));
-        }
-        // Set x, y, z Axis ticks color
-        ['xaxis', 'yaxis', 'zaxis'].forEach((axis) => {
-          if (this.checkNested(modelLayout, axis, 'tickfont', 'color')) {
-            hiddenLayout[axis].tickfont.color = this.getColorValueFromCSSProperty(modelLayout[axis].tickfont.color);
+        const updateHiddenLayout = (path, value, isColor = false) => {
+          if (this.checkNested(modelLayout, ...path)) {
+            const finalValue = isColor ? this.getColorValueFromCSSProperty(value) : value;
+            _.set(hiddenLayout, path, finalValue);
           }
+        };
+
+        updateHiddenLayout(
+          ['colorway'],
+          modelLayout.colorway?.map((color) => this.getColorValueFromCSSProperty(color)),
+          true
+        );
+        updateHiddenLayout(['title'], modelLayout.title);
+        updateHiddenLayout(['font', 'color'], modelLayout.font?.color, true);
+
+        ['xaxis', 'yaxis', 'zaxis'].forEach((axis) => {
+          updateHiddenLayout([axis, 'title'], modelLayout[axis]?.title);
+          updateHiddenLayout([axis, 'color'], modelLayout[axis]?.color, true);
+          updateHiddenLayout([axis, 'tickfont', 'color'], modelLayout[axis]?.tickfont?.color, true);
         });
-        // Set legend color
-        if (this.checkNested(modelLayout, 'legend', 'font', 'color')) {
-          hiddenLayout.legend.font.color = this.getColorValueFromCSSProperty(modelLayout.legend.font.color);
-        }
-        // Set paper_bgcolor
-        if (this.checkNested(modelLayout, 'paper_bgcolor')) {
-          hiddenLayout.paper_bgcolor = this.getColorValueFromCSSProperty(modelLayout.paper_bgcolor);
-        }
-        // Set plot_bgcolor
-        if (this.checkNested(modelLayout, 'plot_bgcolor')) {
-          hiddenLayout.plot_bgcolor = this.getColorValueFromCSSProperty(modelLayout.plot_bgcolor);
-        }
+
+        updateHiddenLayout(['legend', 'font', 'color'], modelLayout.legend?.font?.color, true);
+        updateHiddenLayout(['paper_bgcolor'], modelLayout.paper_bgcolor, true);
+        updateHiddenLayout(['plot_bgcolor'], modelLayout.plot_bgcolor, true);
+        updateHiddenLayout(['showlegend'], modelLayout.showlegend);
       }
 
-      //
       const showWidget = this.showWidget();
-      let displayStyle = 'display: inherit;';
-      if (!showWidget) {
-        displayStyle = 'display: none;';
-      }
       const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      let elem = $('#plotly' + idWidget)[0];
-      if (bInteractive) {
-        elem = $('#plotly' + idWidget + 'c')[0];
-      }
+
+      const elem = $(`#${this.idDivPlotly}`)[0];
       elem.setAttribute(
         'style',
-        'text-align:center; height: inherit; width: inherit; background-color: transparent;' +
-          displayStyle +
-          enableStyle
+        `
+        text-align: center;
+        height: inherit;
+        width: inherit;
+        background-color: transparent;
+        display: ${showWidget ? 'inherit' : 'none'};
+        pointer-events: ${enableWidget ? 'initial' : 'none'};
+        opacity: ${enableWidget ? 'initial' : '0.5'};
+      `
       );
+      $(`#${this.idDivPlotly}`).html('');
 
-      $('#' + idDivPlotly).html('');
-      this.applyDisplayOnWidget();
-      const data = modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data;
-      /* MBG issue bad width at runtime for Ploty widgets*/
       if (this.bIsInteractive) {
-        if (hiddenLayout && hiddenLayout.autosize) {
+        if (hiddenLayout?.autosize) {
           delete hiddenLayout.width;
           delete hiddenLayout.height;
         }
         const opts = modelsParameters[idInstance].hideModeBar ? { displayModeBar: false } : {};
-        Plotly.newPlot(idDivPlotly, data, hiddenLayout, opts);
+        Plotly.newPlot(this.idDivPlotly, hiddenData, hiddenLayout, opts);
         this.setSelectionActuator();
       } else {
-        const plotlyDivSelector = `#${idDivPlotly}`;
-
-        // Create the Plotly DIV
-        $(plotlyDivSelector).html();
-
         // Function to check if data or layout has changed
         const hasChanged = (currentData, currentLayout, idInstance) => {
           const lastData = modelsTempParams[idInstance].lastData;
@@ -662,54 +664,44 @@ function plotlyWidgetsPluginClass() {
           return plotDiv && plotDiv.data !== undefined;
         };
 
-        if (plotExists(idDivPlotly)) {
-          // MBG tmp optim
-          if (hasChanged(data, hiddenLayout, idInstance)) {
+        if (plotExists(this.idDivPlotly)) {
+          if (hasChanged(hiddenData, hiddenLayout, idInstance)) {
             // Purge existing plot before updating to prevent any lingering processes or data
-            Plotly.purge(idDivPlotly);
-            Plotly.react(idDivPlotly, data, hiddenLayout);
+            Plotly.purge(this.idDivPlotly);
+            Plotly.react(this.idDivPlotly, hiddenData, hiddenLayout);
           }
         } else {
-          Plotly.newPlot(idDivPlotly, data, hiddenLayout);
+          Plotly.newPlot(this.idDivPlotly, hiddenData, hiddenLayout);
         }
 
         // Update stored state and timestamp
-        updateStoredState(data, hiddenLayout, idInstance);
+        updateStoredState(hiddenData, hiddenLayout, idInstance);
       }
     };
 
     this.setSelectionActuator = function () {
-      // MBG 17/02/2021
-      this.bIsInteractive = bInteractive;
-      let idDivPlotly = 'plotly' + idWidget;
-      if (bInteractive) {
-        idDivPlotly += 'c';
-        const graphDiv = document.getElementById(idDivPlotly);
-        graphDiv.on('plotly_selected', function (eventData) {
+      const graphDiv = document.getElementById(this.idDivPlotly);
+
+      if (this.bIsInteractive) {
+        const handlePlotlySelected = (eventData) => {
           if (!_.isUndefined(eventData)) {
             // Create array of array [numberOfTrace][dataSelected] and [numberOfTrace][customData]
-            const dataSelected = Array(graphDiv.data.length)
-              .fill(null)
-              .map(() => []);
-            const customSelected = Array(graphDiv.data.length)
-              .fill(null)
-              .map(() => []);
+            const dataSelected = Array.from({ length: graphDiv.data.length }, () => []);
+            const customSelected = Array.from({ length: graphDiv.data.length }, () => []);
 
-            eventData.points.forEach(function (point) {
+            eventData.points.forEach((point) => {
+              const traceNumber = point?.curveNumber;
+
               if (!_.isUndefined(point.pointNumber)) {
-                const traceNumber = point.curveNumber;
-                const index = point.pointNumber;
-
-                dataSelected[traceNumber].push(index);
+                dataSelected[traceNumber].push(point.pointNumber);
 
                 if (!_.isUndefined(graphDiv.data[traceNumber].customdata)) {
-                  customSelected[traceNumber].push(graphDiv.data[traceNumber].customdata[index]);
+                  customSelected[traceNumber].push(graphDiv.data[traceNumber].customdata[point.pointNumber]);
                 }
               }
 
               if (!_.isUndefined(point.pointNumbers)) {
-                const traceNumber = point.curveNumber;
-                point.pointNumbers.forEach(function (d) {
+                point.pointNumbers.forEach((d) => {
                   dataSelected[traceNumber].push(d);
 
                   if (!_.isUndefined(graphDiv.data[traceNumber].customdata)) {
@@ -719,27 +711,29 @@ function plotlyWidgetsPluginClass() {
               }
             });
 
-            const selectionDescriptor = dataSelected.map(function (d, index) {
-              return {
-                trace: index,
-                selection: d,
-                customdata: customSelected[index],
-              };
-            });
+            const selectionDescriptor = dataSelected.map((selection, index) => ({
+              trace: index,
+              selection: selection,
+              customdata: customSelected[index],
+            }));
 
             self.selection.setValue(selectionDescriptor);
             self.selection.updateCallback(self.selection, self.selection.getValue());
           } else {
-            //      graphDiv.emit('plotly_deselect', null)
-            //  self.selection.setValue({ "range": {} });
-            //self.selection.updateCallback(self.selection, self.selection.getValue());
+            // graphDiv.emit('plotly_deselect', null)
+            // self.selection.setValue({ "range": {} });
+            // self.selection.updateCallback(self.selection, self.selection.getValue());
           }
-        });
-        graphDiv.on('plotly_deselect', function () {
-          //     Plotly.restyle(graphDiv, { selectedpoints: [null] });
+        };
+
+        const handlePlotlyDeselect = () => {
+          // Plotly.restyle(graphDiv, { selectedpoints: [null] });
           self.selection.setValue({ range: {} });
           self.selection.updateCallback(self.selection, self.selection.getValue());
-        });
+        };
+
+        graphDiv.on('plotly_selected', handlePlotlySelected);
+        graphDiv.on('plotly_deselect', handlePlotlyDeselect);
       }
     };
 
@@ -764,7 +758,7 @@ function plotlyWidgetsPluginClass() {
 
     this.rescale = function () {
       if (this.bIsInteractive) {
-        Plotly.Plots.resize($('#' + idDivPlotly)[0]);
+        Plotly.Plots.resize($('#' + this.idDivPlotly)[0]);
       } else {
         this.render(); // to optimize here
       }
@@ -780,21 +774,16 @@ function plotlyWidgetsPluginClass() {
     const self = this;
     this.numberOfAxis = modelsParameters[idInstance].numberOfAxis;
 
-    /* Theme backward compatibility */
-    if (!_.isUndefined(modelsParameters[idInstance].layout)) {
-      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };
-      // Set axis ticks color
-      ['xaxis', 'yaxis'].forEach((axis) => {
-        if (!_.isUndefined(modelsParameters[idInstance].layout[axis])) {
-          modelsParameters[idInstance].layout[axis] = { ...axisParams, ...modelsParameters[idInstance].layout[axis] };
-        }
-      });
-    }
-
     // cleanup first
     if (modelsHiddenParams[idInstance].data.length > this.numberOfAxis) {
       modelsHiddenParams[idInstance].data.splice(this.numberOfAxis, modelsHiddenParams[idInstance].data.length);
     }
+
+    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription(
+      'selection',
+      'Plotly selection',
+      WidgetActuatorDescription.WRITE
+    );
 
     this.getActuatorDescriptions = function (model = null) {
       const data = model || modelsParameters[idInstance];
@@ -811,6 +800,7 @@ function plotlyWidgetsPluginClass() {
           result.push(yLinear ? _createPlotlyNumericDataDescriptor(name) : _createPlotlyAnyDataDescriptor(name));
         }
       }
+      result.push(_SELECTION_DESCRIPTOR);
 
       return result;
     };
@@ -819,7 +809,8 @@ function plotlyWidgetsPluginClass() {
       setValue: function (val) {
         //AEF
         if (_.isUndefined(val)) {
-          swal('Invalid data value', 'value in x axis is undefined !', 'error');
+          //swal('Invalid data value', 'value in x axis is undefined !', 'error');
+          console.log('Invalid data value: value in x axis is undefined !');
           return;
         }
         if (!Array.isArray(val)) {
@@ -828,7 +819,8 @@ function plotlyWidgetsPluginClass() {
             console.log('value in x axis is converted to an array.');
             //swal("Invalid data type", "value in x axis is converted to an array.", "warning");
           } else {
-            swal('Invalid data type', 'x axis must be an array !', 'error');
+            //swal('Invalid data type', 'x axis must be an array !', 'error');
+            console.log('Invalid data type: x axis must be an array !');
             return;
           }
         }
@@ -861,7 +853,8 @@ function plotlyWidgetsPluginClass() {
           //AEF
           const i = this.index + 1;
           if (_.isUndefined(val)) {
-            swal('Invalid data value', 'value in ' + 'y' + i + ' axis is undefined !', 'error');
+            //swal('Invalid data value', 'value in ' + 'y' + i + ' axis is undefined !', 'error');
+            console.log('Invalid data value: value in ' + 'y' + i + ' axis is undefined !');
             return;
           }
           if (!Array.isArray(val)) {
@@ -870,7 +863,8 @@ function plotlyWidgetsPluginClass() {
               console.log('value in ' + 'y' + i + ' axis is converted to an array.');
               //swal("Invalid data type", "value in " + "y" + i + " axis is converted to an array.", "warning");
             } else {
-              swal('Invalid data type', 'y' + i + ' axis must be an array !', 'error');
+              //swal('Invalid data type', 'y' + i + ' axis must be an array !', 'error');
+              console.log('Invalid data type: y' + i + ' axis must be an array !');
               return;
             }
           }
@@ -894,6 +888,19 @@ function plotlyWidgetsPluginClass() {
         },
       };
     }
+
+    this.selection = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].selection = val;
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].selection;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {
+        this.updateCallback = updateDataFromWidget;
+      },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+    };
   };
   // Inherit from base Plotly class
   this.linePlotlyWidget.prototype = basePlotlyWidget.prototype;
@@ -907,16 +914,11 @@ function plotlyWidgetsPluginClass() {
     const self = this;
     this.numberOfAxis = modelsParameters[idInstance].numberOfAxis;
 
-    /* Theme backward compatibility */
-    if (!_.isUndefined(modelsParameters[idInstance].layout)) {
-      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };
-      // Set axis ticks color
-      ['xaxis', 'yaxis'].forEach((axis) => {
-        if (!_.isUndefined(modelsParameters[idInstance].layout[axis])) {
-          modelsParameters[idInstance].layout[axis] = { ...axisParams, ...modelsParameters[idInstance].layout[axis] };
-        }
-      });
-    }
+    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription(
+      'selection',
+      'Plotly selection',
+      WidgetActuatorDescription.WRITE
+    );
 
     this.getActuatorDescriptions = function (model = null) {
       const data = model || modelsParameters[idInstance];
@@ -930,6 +932,7 @@ function plotlyWidgetsPluginClass() {
           result.push(yLinear ? _createPlotlyNumericDataDescriptor('y' + i) : _createPlotlyAnyDataDescriptor('y' + i));
         }
       }
+      result.push(_SELECTION_DESCRIPTOR);
 
       return result;
     };
@@ -978,6 +981,19 @@ function plotlyWidgetsPluginClass() {
         };
       }
     }
+
+    this.selection = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].selection = val;
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].selection;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {
+        this.updateCallback = updateDataFromWidget;
+      },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+    };
   };
   // Inherit from base Plotly class
   this.barPlotlyWidget.prototype = basePlotlyWidget.prototype;
@@ -989,11 +1005,6 @@ function plotlyWidgetsPluginClass() {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
     const self = this;
-
-    /* Theme backward compatibility */
-    if (!_.isUndefined(modelsParameters[idInstance].layout)) {
-      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };
-    }
 
     const _LABELS_DESCRIPTOR = new WidgetActuatorDescription(
       'labels',
@@ -1013,8 +1024,14 @@ function plotlyWidgetsPluginClass() {
     //   WidgetActuatorDescription.READ,
     //   WidgetPrototypesManager.SCHEMA_STRING_ARRAY
     // );
+    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription(
+      'selection',
+      'Plotly selection',
+      WidgetActuatorDescription.WRITE
+    );
+
     this.getActuatorDescriptions = function () {
-      return [_LABELS_DESCRIPTOR, _VALUES_DESCRIPTOR /* _COLORS_DESCRIPTOR */];
+      return [_LABELS_DESCRIPTOR, _VALUES_DESCRIPTOR /* _COLORS_DESCRIPTOR */, _SELECTION_DESCRIPTOR];
     };
 
     this.labels = {
@@ -1054,6 +1071,19 @@ function plotlyWidgetsPluginClass() {
     //   addValueChangedHandler: function (n) {},
     //   removeValueChangedHandler: function (n) {},
     // };
+
+    this.selection = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].selection = val;
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].selection;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {
+        this.updateCallback = updateDataFromWidget;
+      },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+    };
   };
   // Inherit from base Plotly class
   this.piePlotlyWidget.prototype = basePlotlyWidget.prototype;
@@ -1065,13 +1095,6 @@ function plotlyWidgetsPluginClass() {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
 
     const self = this;
-
-    /* Theme backward compatibility */
-    if (!_.isUndefined(modelsParameters[idInstance].layout)) {
-      modelsParameters[idInstance].layout = { ...plotlyColorParams, ...modelsParameters[idInstance].layout };
-      delete modelsParameters[idInstance].layout.colorway;
-      delete modelsParameters[idInstance].layout.legend;
-    }
 
     const _X_DESCRIPTOR = new WidgetActuatorDescription(
       'x',
@@ -1091,8 +1114,14 @@ function plotlyWidgetsPluginClass() {
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_NUMBER_ARRAY_2D
     );
+    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription(
+      'selection',
+      'Plotly selection',
+      WidgetActuatorDescription.WRITE
+    );
+
     this.getActuatorDescriptions = function () {
-      return [_X_DESCRIPTOR, _Y_DESCRIPTOR, _Z_DESCRIPTOR];
+      return [_X_DESCRIPTOR, _Y_DESCRIPTOR, _Z_DESCRIPTOR, _SELECTION_DESCRIPTOR];
     };
 
     this.x = {
@@ -1139,6 +1168,19 @@ function plotlyWidgetsPluginClass() {
         modelsParameters[idInstance].layout.scene.zaxis.title = caption;
       },
     };
+
+    this.selection = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].selection = val;
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].selection;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {
+        this.updateCallback = updateDataFromWidget;
+      },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+    };
   };
   // Inherit from base Plotly class
   this.d3surfacePlotlyWidget.prototype = basePlotlyWidget.prototype;
@@ -1174,6 +1216,7 @@ function plotlyWidgetsPluginClass() {
       'Plotly selection',
       WidgetActuatorDescription.WRITE
     );
+
     this.getActuatorDescriptions = function () {
       return [_DATA_DESCRIPTOR, _LAYOUT_DESCRIPTOR, _SELECTION_DESCRIPTOR];
     };
@@ -1236,6 +1279,7 @@ function plotlyWidgetsPluginClass() {
       'Plotly selection',
       WidgetActuatorDescription.WRITE
     );
+
     this.getActuatorDescriptions = function () {
       return [_FIG_DESCRIPTOR, _SELECTION_DESCRIPTOR];
     };
@@ -1291,6 +1335,12 @@ function plotlyWidgetsPluginClass() {
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_NUMBER
     );
+    const _SELECTION_DESCRIPTOR = new WidgetActuatorDescription(
+      'selection',
+      'Plotly selection',
+      WidgetActuatorDescription.WRITE
+    );
+
     this.getActuatorDescriptions = function () {
       // const data = model || modelsParameters[idInstance];
       const result = [];
@@ -1301,6 +1351,7 @@ function plotlyWidgetsPluginClass() {
       // }
       result.push(_VALUE_DESCRIPTOR);
       result.push(_LAYOUT_DESCRIPTOR);
+      result.push(_SELECTION_DESCRIPTOR);
 
       return result;
     };
@@ -1326,10 +1377,7 @@ function plotlyWidgetsPluginClass() {
           //console.log('this.index=' + this.index);
           //modelsHiddenParams[idInstance].data[this.index].x = [time];
           //modelsHiddenParams[idInstance].data[this.index].y = [val];
-          let idDivPlotly = 'plotly' + idWidget;
-          if (bInteractive) {
-            idDivPlotly = idDivPlotly + 'c';
-          }
+          const idDivPlotly = `plotly${idWidget}${bInteractive ? 'c' : ''}`;
           Plotly.extendTraces(
             idDivPlotly,
             {
@@ -1365,6 +1413,19 @@ function plotlyWidgetsPluginClass() {
       },
       addValueChangedHandler: function (n) {},
       removeValueChangedHandler: function (n) {},
+    };
+
+    this.selection = {
+      setValue: function (val) {
+        modelsHiddenParams[idInstance].selection = val;
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].selection;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {
+        this.updateCallback = updateDataFromWidget;
+      },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
     };
 
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);

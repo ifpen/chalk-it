@@ -470,12 +470,14 @@ function flatUiComplexWidgetsPluginClass() {
           const msg1 = '"keys" must be an array (in widget' + idInstance + ')';
           const msg2 = 'Example: ["choice1","choice2"]';
           if (!Array.isArray(val)) {
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           if (val.length && typeof val[0] === 'object') {
             //AEF: prevent old format here [{},{}]
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           modelsHiddenParams[idInstance].keys = val;
@@ -499,12 +501,14 @@ function flatUiComplexWidgetsPluginClass() {
             val = modelsHiddenParams[idInstance].keys; //AEF: values are optional, take keys if not provided
           }
           if (!Array.isArray(val)) {
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           if (val.length && typeof val[0] === 'object') {
             //AEF: prevent old format here [{},{}]
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           modelsHiddenParams[idInstance].values = val;
@@ -530,13 +534,15 @@ function flatUiComplexWidgetsPluginClass() {
           const msg2 =
             'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
           if (!Array.isArray(val)) {
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           for (const item of val) {
             if (_.isUndefined(item.key)) {
               //AEF: key is mandatory
-              swal(msg1, msg2, 'info');
+              //swal(msg1, msg2, 'info');
+              console.log(msg1 + '. ' + msg2);
               return;
             }
 
