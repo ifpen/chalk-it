@@ -288,7 +288,7 @@ function timePickerWidgetsPluginClass() {
       timepickerSimple: {
         factory: 'timepickerWidget',
         title: 'Simple clock',
-        icn: 'clock',
+        icn: 'simple-clock',
         help: 'wdg/wdg-geo-time/#simple-clock',
       },
     },
