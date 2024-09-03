@@ -1,7 +1,7 @@
 // Monkey-patch to get around https://github.com/webpack/webpack/issues/13572
-const crypto = require("crypto");
+const crypto = require('crypto');
 const crypto_orig_createHash = crypto.createHash;
-crypto.createHash = algorithm => crypto_orig_createHash(algorithm == "md4" ? "sha256" : algorithm);
+crypto.createHash = (algorithm) => crypto_orig_createHash(algorithm == 'md4' ? 'sha256' : algorithm);
 
 const path = require('path');
 const webpack = require('webpack');
@@ -36,7 +36,7 @@ module.exports = (env) => ({
   output: {
     filename: '[name]-bundle.js',
     path: path.resolve(__dirname, '../build'),
-    publicPath: '/',
+    publicPath: '',
     pathinfo: false,
   },
   module: {
