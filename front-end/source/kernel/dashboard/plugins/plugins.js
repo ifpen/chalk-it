@@ -22,7 +22,6 @@ import './geo-time/plugin-daterangepicker-widgets';
 import './geo-time/plugin-flat-ui-address-completion';
 import './geo-time/plugin-folium-widgets';
 import './geo-time/plugin-map-widgets';
-import './geo-time/plugin-map3D-widgets';
 import './geo-time/plugin-timepicker-widgets';
 
 import './plots/plugin-echarts-widgets';
