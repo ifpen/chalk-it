@@ -11,6 +11,7 @@ import { dashState } from 'angular/modules/dashboard/dashboard';
 import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { showEditMode, bRescaleNeededForModeSwitch } from 'angular/modules/dashboard/services/edit-play-switch';
+import { htmlExport } from 'kernel/general/export/html-export';
 
 // AEF: issue#304
 // disableSchedulerLog is defined in env to disable scheduler log in public xdash. true by default
@@ -78,8 +79,7 @@ function activeTab() {
 }
 
 export function onResize() {
-  var $body = angular.element(document.body);
-  var $rootScope = $body.scope().$root;
+  const $rootScope = angular.element(document.body).scope().$root;
   if (dashState.tabActive == 'play') {
     if (!(isAndroid || isTouchDevice)) {
       widgetPreview.resizeDashboard();
@@ -114,7 +114,7 @@ export function rescaleWidget(widget, instanceId) {
 export function setDirtyFlagSafe(bDirty) {
   try {
     const $rootScope = angular.element(document.body).scope().$root;
-    if (typeof execOutsideEditor === 'undefined' || !execOutsideEditor) {
+    if (!window.dashboardConfig?.execOutsideEditor) {
       $rootScope.updateFlagDirty(bDirty);
     }
   } catch (ex) {

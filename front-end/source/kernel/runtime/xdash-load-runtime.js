@@ -34,30 +34,35 @@ angularModule.run([
   '$rootScope',
   function ($rootScope) {
     $rootScope.urlBase = urlBase; // TODO
-    $rootScope.navBarNotification = window.navBarNotification === 'true'; //AEF: visible if show notifications is checked // TODO
-    $rootScope.showNavBar = window.showNavBar === 'true'; // MBG 03/05/2021 : for rowToPage and rowToTab modes // TODO
-    $rootScope.loadingBarStart = function (fn) {};
-    $rootScope.loadingBarStop = function (fn) {};
+    $rootScope.navBarNotification = window.dashboardConfig?.navBarNotification === 'true'; //AEF: visible if show notifications is checked // TODO
     $rootScope.notificationFilterDataValue = '';
     $rootScope.listNotifications = [];
     $rootScope.nbNotifications = 0;
-    $rootScope.pageNumber = 1; // MBG pagination mode
-    $rootScope.totalPages = 1; // MBG pagination mode
-    $rootScope.pageNames = []; // GHI #245
+    $rootScope.pageNumber = 1;
+    $rootScope.totalPages = 1;
+    $rootScope.pageNames = [];
+
+    $rootScope.loadingBarStart = (fn = () => {}) => fn(); // Arrow function with default param
+    $rootScope.loadingBarStop = (fn = () => {}) => fn();
 
     $rootScope.clearAllNotifications = function (filter) {
       $rootScope.listNotifications = [];
       $rootScope.nbNotifications = 0;
-      for (let i = 0; i < $rootScope.alldatanodes.length; i++) {
-        $rootScope.alldatanodes[i].__notifications = undefined;
+
+      if ($rootScope.alldatanodes?.length) {
+        for (const node of $rootScope.alldatanodes) {
+          node.__notifications = undefined;
+        }
       }
     };
 
     $rootScope.safeApply = function (fn) {
-      var scopePhase = $rootScope.$root.$$phase;
-      if (scopePhase == '$apply' || scopePhase == '$digest') {
+      const phase = $rootScope?.$$phase;
+
+      if (phase === '$apply' || phase === '$digest') {
+        fn?.();
       } else {
-        $rootScope.$apply();
+        $rootScope.$apply(fn); // Safely apply the function in the Angular digest cycle
       }
     };
   },

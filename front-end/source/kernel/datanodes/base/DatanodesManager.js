@@ -45,7 +45,7 @@ export const datanodesManager = (function () {
   var datanodesDependency = new DatanodeDependency(); // new instance from DatanodeDependency
 
   var graphVisu;
-  if (!(typeof execOutsideEditor !== 'undefined' && execOutsideEditor)) {
+  if (!window.dashboardConfig?.execOutsideEditor) {
     // FIXME really should not be here
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }

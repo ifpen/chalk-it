@@ -491,53 +491,51 @@ export const widgetPreview = (function () {
    */
   function resizeDashboard(target) {
     // Prepare rescale for rowToPage mode
-    if (typeof execOutsideEditor != 'undefined') {
-      if (execOutsideEditor) {
-        let navMenuHeightPx = 0;
-        const scalingSrc = jQuery.extend(true, {}, jsonContent.scaling);
+    if (window.dashboardConfig?.execOutsideEditor) {
+      const scalingSrc = window.scaling;
+      let navMenuHeightPx = 0;
 
-        if ($('#nav-menu')[0]) {
-          navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);
-          if (isNaN(navMenuHeightPx)) navMenuHeightPx = 0; // MBG 18/05/2021 : piste pour pb NG ??
-        }
+      if ($('#nav-menu')[0]) {
+        navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);
+        if (isNaN(navMenuHeightPx)) navMenuHeightPx = 0; // MBG 18/05/2021 : piste pour pb NG ??
+      }
 
-        switch (jsonContent.exportOptions) {
-          case 'rowToPage':
-            rowToPageRuntime.rowToPagePrepareRescale(targetRows, targetCols);
-            break;
-          case 'rowToTab':
-            rowToTabRuntime.rowToTabPrepareRescale(targetRows, targetCols);
-            break;
-          case 'customNavigation':
-            customNavigationRuntime.customNavigationPrepareRescale(targetRows, targetCols);
-            break;
-          case 'keepOriginalWidth': {
-            const $dashboardZone = $('#dashboard-zone');
-            const bodyHeight = document.body.clientHeight;
-            const bodyWidth = document.body.clientWidth;
-            $dashboardZone.css({
-              top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
-              left: bodyWidth / 2 - $dashboardZone.outerWidth() / 2 + 'px',
-              position: 'absolute',
-              height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
-              width: scalingSrc.scrollWidthPx + 'px',
-            });
-            break;
-          }
-          case 'adjustToFullWidth': {
-            const $dashboardZone = $('#dashboard-zone');
-            const bodyHeight = document.body.clientHeight;
-            $dashboardZone.css({
-              top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
-              position: 'absolute',
-              height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
-            });
-            break;
-          }
-          default:
-            $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx + 'px';
-            break;
+      switch (window.exportOptions) {
+        case 'rowToPage':
+          rowToPageRuntime.rowToPagePrepareRescale(targetRows, targetCols);
+          break;
+        case 'rowToTab':
+          rowToTabRuntime.rowToTabPrepareRescale(targetRows, targetCols);
+          break;
+        case 'customNavigation':
+          customNavigationRuntime.customNavigationPrepareRescale(targetRows, targetCols);
+          break;
+        case 'keepOriginalWidth': {
+          const $dashboardZone = $('#dashboard-zone');
+          const bodyHeight = document.body.clientHeight;
+          const bodyWidth = document.body.clientWidth;
+          $dashboardZone.css({
+            top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
+            left: bodyWidth / 2 - $dashboardZone.outerWidth() / 2 + 'px',
+            position: 'absolute',
+            height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
+            width: scalingSrc.scrollWidthPx + 'px',
+          });
+          break;
         }
+        case 'adjustToFullWidth': {
+          const $dashboardZone = $('#dashboard-zone');
+          const bodyHeight = document.body.clientHeight;
+          $dashboardZone.css({
+            top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
+            position: 'absolute',
+            height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
+          });
+          break;
+        }
+        default:
+          $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx + 'px';
+          break;
       }
     }
 
@@ -549,11 +547,9 @@ export const widgetPreview = (function () {
     rescale();
 
     // Finish rescale for rowToPage
-    if (typeof execOutsideEditor != 'undefined') {
-      if (execOutsideEditor) {
-        if (jsonContent.exportOptions == 'rowToPage')
-          setTimeout(rowToPageRuntime.rowToPageFinishRescale, 500, targetRows, targetCols); // MBG temp hack
-      }
+    if (window.dashboardConfig?.execOutsideEditor) {
+      if (window.exportOptions == 'rowToPage')
+        setTimeout(rowToPageRuntime.rowToPageFinishRescale, 500, targetRows, targetCols); // MBG temp hack
     }
   }
 
