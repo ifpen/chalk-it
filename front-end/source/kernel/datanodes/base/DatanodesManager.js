@@ -33,6 +33,7 @@ import { xdsjson } from 'kernel/datanodes/export/xdsjson';
 import { offSchedLogUser } from 'kernel/base/main-common';
 import { schedulerProfiling } from 'kernel/datanodes/execution-engine/DatanodeScheduler';
 import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
+import { htmlExport } from 'kernel/general/export/html-export';
 import {
   EVENTS_EDITOR_DATANODE_CREATED,
   EVENTS_EDITOR_DATANODE_DELETED,
@@ -44,7 +45,7 @@ export const datanodesManager = (function () {
   var datanodesDependency = new DatanodeDependency(); // new instance from DatanodeDependency
 
   var graphVisu;
-  if (!(typeof execOutsideEditor !== 'undefined' && execOutsideEditor)) {
+  if (!window.dashboardConfig?.execOutsideEditor) {
     // FIXME really should not be here
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }

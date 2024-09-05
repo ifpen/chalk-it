@@ -10,6 +10,7 @@ import { xDashConfig } from 'config.js';
 import _ from 'lodash';
 
 import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { runtimeToolbar } from 'kernel/general/export/runtime-toolbar';
 import {
   DASHBOARD_DATA_ID,
   DASHBOARD_DATA_TYPE,
@@ -17,160 +18,233 @@ import {
   DASHBOARD_CONFIG_TYPE,
 } from 'kernel/runtime/xdash-runtime-main';
 
-export const htmlExport = (function () {
-  var exportOptions = 'ajustToTargetWindow';
-  var checkExportOptions = true;
-  var navBarNotification = false;
+class HtmlExport {
+  #exportOptions;
+  #navBarNotification;
+  #checkExportOptions;
 
-  async function createHtmlDoc() {
-    const resp = await fetch('index-view.html');
-    if (!resp.ok) {
-      console.log(resp);
-      throw new Error(`${resp.status} - ${resp.statusText}`);
-    }
-    const text = await resp.text();
-
-    const parser = new DOMParser();
-    const document = parser.parseFromString(text, 'text/html');
-
-    return document;
+  constructor() {
+    this.#exportOptions = 'ajustToTargetWindow';
+    this.#navBarNotification = false;
+    this.#checkExportOptions = true;
   }
 
-  function insertContent(doc, name, xdashPrj) {
-    const config = {
-      tabActive: 'play', // TODO
-      execOutsideEditor: true, // TODO
-      urlBase: xDashConfig.urlBaseForExport,
-      navBarNotification,
-      showNavBar,
-    };
-
-    if (xDashConfig.urlBaseForExport) {
-      const baseUrl = xDashConfig.urlBaseForExport;
-
-      for (const lnk of doc.getElementsByTagName('link')) {
-        if (lnk.getAttribute('rel') === 'stylesheet' && lnk.hasAttribute('src')) {
-          const target = lnk.getAttribute('src');
-          lnk.setAttribute('src', baseUrl + (baseUrl.endsWith('/') || target.startsWith('/') ? '' : '/') + target);
-        }
-      }
-
-      for (const script of doc.getElementsByTagName('script')) {
-        if (script.hasAttribute('src')) {
-          const target = script.getAttribute('src');
-          script.setAttribute('src', baseUrl + (baseUrl.endsWith('/') || target.startsWith('/') ? '' : '/') + target);
-        }
-      }
-    }
-
-    const [head] = doc.getElementsByTagName('head');
-    const [title] = head.getElementsByTagName('title');
-    const [body] = doc.getElementsByTagName('body');
-
-    title.textContent = name;
-
-    const dataScript = doc.createElement('script');
-    dataScript.setAttribute('id', DASHBOARD_DATA_ID);
-    dataScript.setAttribute('type', DASHBOARD_DATA_TYPE);
-    dataScript.textContent = JSON.stringify(xdashPrj, null, '  ');
-    body.appendChild(dataScript);
-
-    const paramsScript = doc.createElement('script');
-    paramsScript.setAttribute('id', DASHBOARD_CONFIG_ID);
-    paramsScript.setAttribute('type', DASHBOARD_CONFIG_TYPE);
-    paramsScript.textContent = JSON.stringify(config, null, '  ');
-    body.appendChild(paramsScript);
-
-    const navBarNotification = xdashPrj.navBarNotification ?? htmlExport.navBarNotification;
-    const showNavBar =
-      xdashPrj.exportOptions === 'rowToPage' || xdashPrj.exportOptions === 'rowToTab' || navBarNotification;
-
-    // FIXME
-    // if (showNavBar) {
-    //   bodyText4.push(...runtimeToolbar.toolbar);
-    // }
-  }
-
-  /*--------create dashboard document--------*/
-  async function createDashboardDocument(name, xprjson) {
-    const xdashPrj = xprjson ?? runtimeSingletons.xdash.serialize();
-
-    const doc = await createHtmlDoc();
-    insertContent(doc, name, xdashPrj);
-
-    const xml_serializer = new XMLSerializer();
-    const txt = xml_serializer.serializeToString(doc);
-    return txt;
-  }
-
-  /*--------preview dashboard--------*/
-  function previewDashboard(xprjson, projectName, bNoExportModal) {
+  /**
+   * Previews the dashboard with the given JSON and project name.
+   *
+   * @param {Object} xprjson - JSON data for the dashboard.
+   * @param {string} projectName - Name of the project.
+   * @param {boolean} bNoExportModal - Flag to bypass the export modal.
+   */
+  previewDashboard(xprjson, projectName, bNoExportModal) {
     const $rootScope = angular.element(document.body).scope().$root;
     const _projectName = $rootScope.xDashFullVersion ? projectName : $('#projectName').val() || 'Untitled';
-    let param;
-    if (!_.isUndefined(xprjson) && !_.isUndefined(_projectName)) {
-      param = [xprjson, _projectName];
+    const param = xprjson && _projectName ? [xprjson, _projectName] : null;
+
+    if (this.checkExportOptions || bNoExportModal) {
+      this.previewDashboardCallback(param);
     }
-    if (htmlExport.checkExportOptions || bNoExportModal) previewDashboardCallback(param);
   }
 
-  /*--------save dashboard--------*/
-  function saveDashboard() {
-    saveDashboardCallback();
-  }
+  /**
+   * Callback for previewing the dashboard.
+   *
+   * @param {Array} param - Array containing the JSON data and project name.
+   */
+  async previewDashboardCallback(param) {
+    const dashboardName = param?.[1] || $('#projectName').val();
+    const xprjson = param?.[0];
 
-  /*--------preview dashboard Callback--------*/
-  async function previewDashboardCallback(param) {
-    var dashboardName;
+    if ($('#select-export-settings')[0]) {
+      this.exportOptions = $('#select-export-settings')[0].value;
+    }
 
-    var xprjson;
-    var projectName;
-    if (!_.isUndefined(param)) {
-      xprjson = param[0];
-      projectName = param[1];
+    if ($('#check-scale-export')[0]) {
+      this.checkExportOptions = $('#check-scale-export')[0].checked;
     }
-    if (!_.isUndefined($('#select-export-settings')[0])) {
-      htmlExport.exportOptions = $('#select-export-settings')[0].value;
-    }
-    if (!_.isUndefined($('#check-scale-export')[0])) {
-      htmlExport.checkExportOptions = $('#check-scale-export')[0].checked;
-    }
-    if (_.isUndefined(projectName)) dashboardName = $('#projectName')[0].value;
-    else dashboardName = projectName;
 
     const tab = window.open('about:blank', '_blank');
-    const txt = await createDashboardDocument(dashboardName, xprjson);
+    const txt = await this.createDashboardDocument(dashboardName, xprjson);
     tab.document.write(txt);
     tab.document.close();
     tab.focus();
   }
 
-  /*--------save Dashboard Callback--------*/
-  function saveDashboardCallback() {
-    //AEF: only for server
-    var dashboardName = $('#projectName')[0].value;
-    if (!_.isUndefined($('#select-export-settings')[0])) {
-      htmlExport.exportOptions = $('#select-export-settings')[0].value;
-    }
-    if (!_.isUndefined($('#check-scale-export')[0])) {
-      htmlExport.checkExportOptions = $('#check-scale-export')[0].checked;
-    }
-
-    selectDashboardName(dashboardName);
+  /**
+   * Creates the HTML document for the dashboard.
+   *
+   * @param {string} name - Name of the dashboard.
+   * @param {Object} xprjson - JSON data for the dashboard.
+   * @returns {Promise<string>} Serialized HTML document as a string.
+   */
+  async createDashboardDocument(name, xprjson) {
+    const xdashPrj = xprjson || runtimeSingletons.xdash.serialize();
+    const doc = await this.#createHtmlDoc();
+    this.#insertContent(doc, name, xdashPrj);
+    return new XMLSerializer().serializeToString(doc);
   }
 
-  /*--------select Dashboard Name Settings--------*/
-  function selectDashboardName(dashboardName) {
-    var $body = angular.element(document.body);
-    var $rootScope = $body.scope().$root;
+  /**
+   * Saves the dashboard.
+   */
+  saveDashboard() {
+    const dashboardName = $('#projectName').val();
+
+    if ($('#select-export-settings')[0]) {
+      this.exportOptions = $('#select-export-settings')[0].value;
+    }
+
+    if ($('#check-scale-export')[0]) {
+      this.checkExportOptions = $('#check-scale-export')[0].checked;
+    }
+
+    this.#selectDashboardName(dashboardName);
+  }
+
+  /**
+   * Creates the HTML document from a template.
+   *
+   * @returns {Promise<Document>} Parsed HTML document.
+   * @private
+   */
+  async #createHtmlDoc() {
+    try {
+      const resp = await fetch('index-view.html');
+      if (!resp.ok) {
+        throw new Error(`${resp.status} - ${resp.statusText}`);
+      }
+      const text = await resp.text();
+      const parser = new DOMParser();
+      const document = parser.parseFromString(text, 'text/html');
+      return document;
+    } catch (error) {
+      console.error('Error fetching HTML document:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Updates the resource paths in the document.
+   *
+   * @param {Document} doc - HTML document.
+   * @param {string} baseUrl - Base URL to use for updating paths.
+   * @private
+   */
+  #updateResourcePaths(doc, baseUrl) {
+    const adjustUrl = (target) => baseUrl + (baseUrl.endsWith('/') || target.startsWith('/') ? '' : '/') + target;
+
+    Array.from(doc.getElementsByTagName('link')).forEach((lnk) => {
+      if (lnk.getAttribute('rel') === 'stylesheet' && lnk.hasAttribute('src')) {
+        lnk.setAttribute('src', adjustUrl(lnk.getAttribute('src')));
+      }
+    });
+
+    Array.from(doc.getElementsByTagName('script')).forEach((script) => {
+      if (script.hasAttribute('src')) {
+        script.setAttribute('src', adjustUrl(script.getAttribute('src')));
+      }
+    });
+  }
+
+  /**
+   * Inserts content into the HTML document.
+   *
+   * @param {Document} doc - HTML document.
+   * @param {string} name - Name of the dashboard.
+   * @param {Object} xdashPrj - Serialized dashboard project data.
+   * @private
+   */
+  #insertContent(doc, name, xdashPrj) {
+    const showNavBar = this.#shouldShowNavBar(xdashPrj);
+
+    const config = {
+      tabActive: 'play', // TODO
+      execOutsideEditor: true,
+      urlBase: xDashConfig.urlBaseForExport,
+      navBarNotification: this.navBarNotification,
+      showNavBar,
+    };
+
+    if (xDashConfig.urlBaseForExport) {
+      this.#updateResourcePaths(doc, xDashConfig.urlBaseForExport);
+    }
+
+    doc.title = name;
+    this.#insertScripts(doc, xdashPrj, config);
+    this.#insertNavBar(doc, showNavBar);
+  }
+
+  /**
+   * Determines if the navbar should be shown based on export options.
+   *
+   * @param {Object} xdashPrj - Serialized dashboard project data.
+   * @returns {boolean} Whether the navbar should be shown.
+   * @private
+   */
+  #shouldShowNavBar(xdashPrj) {
+    const { exportOptions, navBarNotification = this.navBarNotification } = xdashPrj;
+    const validExportOptions = ['rowToPage', 'rowToTab'];
+
+    return validExportOptions.includes(exportOptions) || navBarNotification;
+  }
+
+  /**
+   * Inserts the necessary scripts into the document.
+   *
+   * @param {Document} doc - HTML document.
+   * @param {Object} xdashPrj - Serialized dashboard project data.
+   * @param {Object} config - Configuration for the dashboard.
+   * @private
+   */
+  #insertScripts(doc, xdashPrj, config) {
+    const body = doc.body;
+
+    const createScript = (id, type, content) => {
+      const script = doc.createElement('script');
+      script.setAttribute('id', id);
+      script.setAttribute('type', type);
+      script.textContent = JSON.stringify(content, null, '  ');
+      return script;
+    };
+
+    body.appendChild(createScript(DASHBOARD_DATA_ID, DASHBOARD_DATA_TYPE, xdashPrj));
+    body.appendChild(createScript(DASHBOARD_CONFIG_ID, DASHBOARD_CONFIG_TYPE, config));
+  }
+
+  /**
+   * Inserts the navbar into the document if it should be shown.
+   *
+   * @param {Document} doc - HTML document.
+   * @param {boolean} showNavBar - Whether to show the navbar.
+   * @private
+   */
+  #insertNavBar(doc, showNavBar) {
+    const navBar = doc.getElementById('nav_bar');
+
+    if (showNavBar) {
+      navBar.style.display = 'none';
+      navBar.innerHTML = runtimeToolbar.toolbarTemplate;
+    }
+  }
+
+  /**
+   * Selects and sets the dashboard name.
+   *
+   * @param {string} dashboardName - Name of the dashboard.
+   * @private
+   */
+  #selectDashboardName(dashboardName) {
+    const $rootScope = angular.element(document.body).scope().$root;
+
     // $rootScope.infoPage.exportPage = true;
     // $rootScope.infoPage.name = dashboardName;
     // $rootScope.infoPage.title = "HTML page export";
     // $rootScope.infoPage.btnTxt = "Save";
     // $rootScope.infoPage.isPrivatePage = $rootScope.securedLink ? "True" : "False";
     // $rootScope.infoPage.isManagePageOpen = true;
+
     $rootScope.infoPage = {
-      isPrivatePage: $rootScope.securedLink === 'True' ? true : false,
+      isPrivatePage: $rootScope.securedLink === 'True',
       name: dashboardName,
       title: 'HTML page export',
       btnTxt: 'Save',
@@ -181,13 +255,30 @@ export const htmlExport = (function () {
     //$rootScope.infoPage.isManagePageOpen = true;
   }
 
-  return {
-    previewDashboardCallback: previewDashboardCallback,
-    previewDashboard: previewDashboard,
-    saveDashboard: saveDashboard,
-    exportOptions: exportOptions,
-    checkExportOptions: checkExportOptions,
-    navBarNotification: navBarNotification,
-    createDashboardDocument: createDashboardDocument,
-  };
-})();
+  get exportOptions() {
+    return this.#exportOptions;
+  }
+
+  set exportOptions(value) {
+    this.#exportOptions = value;
+  }
+
+  get navBarNotification() {
+    return this.#navBarNotification;
+  }
+
+  set navBarNotification(value) {
+    this.#navBarNotification = value;
+  }
+
+  get checkExportOptions() {
+    return this.#checkExportOptions;
+  }
+
+  set checkExportOptions(value) {
+    this.#checkExportOptions = value;
+  }
+}
+
+// Export an instance of HtmlExport as a singleton
+export const htmlExport = new HtmlExport();
