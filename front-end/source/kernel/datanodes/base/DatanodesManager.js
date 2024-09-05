@@ -33,7 +33,6 @@ import { xdsjson } from 'kernel/datanodes/export/xdsjson';
 import { offSchedLogUser } from 'kernel/base/main-common';
 import { schedulerProfiling } from 'kernel/datanodes/execution-engine/DatanodeScheduler';
 import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
-import { htmlExport } from 'kernel/general/export/html-export';
 import {
   EVENTS_EDITOR_DATANODE_CREATED,
   EVENTS_EDITOR_DATANODE_DELETED,
