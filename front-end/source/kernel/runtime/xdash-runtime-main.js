@@ -121,57 +121,75 @@ function getDashboardConfig() {
 function initContainers(jsonContent, exportOptions) {
   const scalingSrc = jQuery.extend(true, {}, jsonContent.scaling); // MBG fix load order
 
-  let navMenuHeightPx = 0;
+  // Cache the selectors and initialize heights
+  const $navMenu = $('#nav-menu').get(0);
+  const $dashboardZone = $('#dashboard-zone').get(0);
+  const $dropperDroitec = $('#DropperDroitec').get(0);
 
-  if ($('#nav-menu')[0]) {
-    navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);
-    if (isNaN(navMenuHeightPx)) navMenuHeightPx = 0; // MBG 18/05/2021 : piste pour pb NG ??
+  let navMenuHeightPx = 0;
+  // Get nav menu height if it exists
+  if ($navMenu) {
+    const height = parseInt($navMenu.style.height, 10);
+    navMenuHeightPx = isNaN(height) ? 0 : height;
   }
+
+  // Set dashboard zone dimensions based on export options
+  const updateDashboardDimensions = (width, height, method) => {
+    $dashboardZone.style.width = width;
+    $dashboardZone.style.height = height;
+    scalingSrc.scalingMethod = method;
+  };
+
   switch (exportOptions) {
     case 'keepOriginalWidth':
-      $('#dashboard-zone')[0].style.width = scalingSrc.scrollWidthPx + 'px';
-      $('#dashboard-zone')[0].style.height = scalingSrc.scrollHeightPx + navMenuHeightPx + 'px';
-      scalingSrc.scalingMethod = 'scaleTwSp';
+      updateDashboardDimensions(
+        scalingSrc.scrollWidthPx + 'px',
+        scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
+        'scaleTwSp'
+      );
       break;
     case 'adjustToFullWidth':
-      $('#dashboard-zone')[0].style.width = '100%';
-      $('#dashboard-zone')[0].style.height = scalingSrc.scrollHeightPx - navMenuHeightPx + 'px';
-      scalingSrc.scalingMethod = 'scaleTwSpWS';
+      updateDashboardDimensions('100%', scalingSrc.scrollHeightPx - navMenuHeightPx + 'px', 'scaleTwSpWS');
       break;
     case 'ajustToTargetWindow':
-      $('#dashboard-zone')[0].style.width = '100%';
-      $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx + 'px';
-      scalingSrc.scalingMethod = 'scaleTwh';
+      updateDashboardDimensions('100%', document.body.clientHeight - navMenuHeightPx + 'px', 'scaleTwh');
       break;
     case 'projectToTargetWindow':
     case 'customNavigation':
     case 'rowToTab':
     case 'rowToPage':
-      $('#dashboard-zone')[0].style.width = '100%';
-      $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx - 1 + 'px';
-      scalingSrc.scalingMethod = 'scaleTwhS';
+      updateDashboardDimensions('100%', document.body.clientHeight - navMenuHeightPx - 1 + 'px', 'scaleTwhS');
       break;
     default:
-      $('#dashboard-zone')[0].style.width = '100%';
-      $('#dashboard-zone')[0].style.height = '100%';
+      updateDashboardDimensions('100%', '100%');
   }
 
-  $('#dashboard-zone')[0].style.margin = 'auto';
-  $('#dashboard-zone')[0].style['overflow-x'] = 'hidden';
-  $('#dashboard-zone')[0].style['overflow-y'] = 'hidden';
+  // Common dashboard zone styles
+  Object.assign($dashboardZone.style, {
+    margin: 'auto',
+    'overflow-x': 'hidden',
+    'overflow-y': 'hidden',
+  });
 
-  $('#DropperDroitec')[0].style.height = '100%';
-  $('#DropperDroitec')[0].style.width = '100%';
+  // Set DropperDroitec styles
+  Object.assign($dropperDroitec.style, {
+    height: '100%',
+    width: '100%',
+    'overflow-y': 'auto',
+  });
 
-  $('#DropperDroitec')[0].style['overflow-y'] = 'auto';
+  // Calculate rows based on max cells and columns
+  const {
+    cols: { maxCols },
+    cols: { maxCells },
+  } = jsonContent.device;
+  const rows = maxCells / (maxCols || 1);
 
-  const cols = jsonContent.device.cols.maxCols;
-  const maxCells = jsonContent.device.cols.maxCells;
-  const rows = maxCells / (cols || 1);
-
+  // Scaling and preview updates
   let projectedScalingObj = jQuery.extend(true, {}, scalingSrc);
   let projectedPreviewDimensions = widgetPreview.getCurrentDashZoneDims();
-  widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, cols);
+
+  widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, maxCols);
   widgetPreview.resizeDashboardCols();
 
   const mediaChangeProj = widgetPreview.mediaChangeProjection(projectedScalingObj, projectedPreviewDimensions, rows);
@@ -179,83 +197,126 @@ function initContainers(jsonContent, exportOptions) {
   projectedScalingObj = mediaChangeProj.referenceFrame;
   projectedPreviewDimensions = mediaChangeProj.targetFrame;
 
-  widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, cols);
-
+  widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, maxCols);
   widgetPreview.resizeDashboard(projectedPreviewDimensions);
 }
 
 export function loadDashboard(jsonContent, exportOptions) {
-  function decodeHtmlEntities(str) {
-    var txt = document.createElement('textarea');
+  const decodeHtmlEntities = (str) => {
+    const txt = document.createElement('textarea');
     txt.innerHTML = str;
     return txt.value;
-  }
-  function escapeSpecialCharacters(jsonString) {
-    return jsonString.replace(/[\u007F-\uFFFF]/g, function (chr) {
+  };
+
+  const escapeSpecialCharacters = (jsonString) => {
+    return jsonString.replace(/[\u007F-\uFFFF]/g, (chr) => {
       return '\\u' + ('0000' + chr.charCodeAt(0).toString(16)).substr(-4);
     });
-  }
+  };
 
-  let encodedData = JSON.stringify(jsonContent.data);
-  // Escape special characters in the JSON string
-  encodedData = escapeSpecialCharacters(encodedData);
-  let parsedData = JSON.parse(encodedData);
-  let decodedData = decodeHtmlEntities(JSON.stringify(parsedData));
+  // Function to process the JSON content
+  const processJsonContent = (jsonContent) => {
+    try {
+      // Escape special characters in the JSON string and decode the data safely
+      const encodedData = escapeSpecialCharacters(JSON.stringify(jsonContent.data));
+      const parsedData = JSON.parse(encodedData);
+      const decodedData = decodeHtmlEntities(JSON.stringify(parsedData));
 
-  let data_json = '';
+      return JSON.parse(decodedData);
+    } catch (err) {
+      swal('JSON Parse error', err.message, 'error');
+      throw err;
+    }
+  };
+
+  // Function to retrieve the dashboard configuration
+  const getDashboardConfig = () => {
+    const scriptTag = document.getElementById(DASHBOARD_CONFIG_ID);
+
+    return scriptTag ? JSON.parse(scriptTag.textContent) : {};
+  };
+
+  // Handles the visibility or removal of the navbar based on the dashboard configuration.
+  const handleNavBarVisibility = () => {
+    const navBar = document.getElementById('nav_bar');
+
+    if (navBar) {
+      if (window.dashboardConfig.showNavBar) {
+        navBar.style.display = 'block';
+      } else {
+        navBar.remove();
+      }
+    }
+  };
+
+  // Deserialize and load data
+  const loadDataNodesAndWidgets = (jsonContent, dataJson) => {
+    pyodideLib.deserialize(jsonContent);
+    datanodesManager.load(dataJson, true); // ABK
+
+    // Load model parameters
+    Object.keys(jsonContent.dashboard).forEach((key) => {
+      const dashboardItem = jsonContent.dashboard[key];
+
+      if (!_.isEmpty(dashboardItem.modelParameters)) {
+        modelsParameters[key] = dashboardItem.modelParameters;
+      }
+      if (!_.isEmpty(dashboardItem.modelHiddenParams)) {
+        modelsHiddenParams[key] = dashboardItem.modelHiddenParams;
+      }
+      if (_.isUndefined(modelsTempParams[key])) {
+        const modelJsonIdStr = key.slice(0, -1); // Remove last character
+        modelsTempParams[key] = jQuery.extend(true, {}, modelsTempParams[modelJsonIdStr]);
+      }
+    });
+
+    // Set the theme
+    $('html').attr('data-theme', jsonContent.device.theme);
+
+    widgetPreview.deserialize(jsonContent.connections);
+    widgetPreview.renderDashboardWidgets(jsonContent, true);
+
+    // Set background color
+    $('.dropperR').css('background-color', jsonContent.device.backgroundColor);
+  };
+
+  // Initialize the export option modes
+  const initializeExportOptions = (jsonContent) => {
+    switch (jsonContent.exportOptions) {
+      case 'rowToPage':
+        rowToPageRuntime.rowToPageModeInit(jsonContent);
+        break;
+      case 'rowToTab':
+        rowToTabRuntime.rowToTabModeInit(jsonContent);
+        break;
+      case 'customNavigation':
+        customNavigationRuntime.customNavigationModeInit(jsonContent);
+        break;
+      case 'projectToTargetWindow':
+        customNavigationRuntime.jsonContent = jsonContent;
+        break;
+    }
+  };
+
+  // Main logic begins here
   try {
-    data_json = JSON.parse(decodedData);
-  } catch (err) {
-    swal('JSON Parse error', err.message, 'error');
-    return;
+    const dataJson = processJsonContent(jsonContent);
+    window.dashboardConfig = getDashboardConfig();
+    window.exportOptions = exportOptions;
+    window.scaling = { ...jsonContent.scaling };
+
+    handleNavBarVisibility();
+    loadDataNodesAndWidgets(jsonContent, dataJson);
+    initContainers(jsonContent, exportOptions);
+    initializeExportOptions(jsonContent);
+
+    // Assign widget value change handlers after some delay
+    setTimeout(() => {
+      widgetPreview.assignValueChangeHandlers();
+    }, 2000);
+  } catch (error) {
+    console.error('Error loading dashboard:', error);
   }
-
-  pyodideLib.deserialize(jsonContent);
-  datanodesManager.load(data_json, true); //ABK
-  initContainers(jsonContent, exportOptions);
-  for (const key in jsonContent.dashboard) {
-    if (!_.isEmpty(jsonContent.dashboard[key].modelParameters)) {
-      modelsParameters[key] = jsonContent.dashboard[key].modelParameters;
-    }
-    if (!_.isEmpty(jsonContent.dashboard[key].modelHiddenParams)) {
-      modelsHiddenParams[key] = jsonContent.dashboard[key].modelHiddenParams;
-    }
-    if (_.isUndefined(modelsTempParams[key])) {
-      const modelJsonIdStr = key.substring(0, key.length - 1);
-      modelsTempParams[key] = jQuery.extend(true, {}, modelsTempParams[modelJsonIdStr]);
-    }
-  }
-
-  //AEF: issue#304
-  // FIXME
-  const offSchedLogUser = jsonContent.meta?.schedulerLogOff ?? true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
-
-  // Add theme attribute before loading widgets
-  $('html').attr('data-theme', jsonContent.device.theme);
-
-  widgetPreview.deserialize(jsonContent.connections);
-  widgetPreview.renderDashboardWidgets(jsonContent, true);
-
-  $('.dropperR').css('background-color', jsonContent.device.backgroundColor);
-
-  switch (jsonContent.exportOptions) {
-    case 'rowToPage':
-      rowToPageRuntime.rowToPageModeInit(jsonContent);
-      break;
-    case 'rowToTab':
-      rowToTabRuntime.rowToTabModeInit(jsonContent);
-      break;
-    case 'customNavigation':
-      customNavigationRuntime.customNavigationModeInit(jsonContent);
-      break;
-    case 'projectToTargetWindow':
-      customNavigationRuntime.jsonContent = jsonContent;
-      break;
-  }
-
-  setTimeout(() => {
-    widgetPreview.assignValueChangeHandlers();
-  }, 2000);
 }
 
 // chalkitLoadDashboard
