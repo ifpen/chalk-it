@@ -62,7 +62,7 @@ module.exports = (env) => ({
       },
       {
         test: /\.css$/,
-        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+        use: [devMode ? 'style-loader' : MiniCssExtractPlugin.loader, { loader: 'css-loader' }],
       },
       {
         test: /\.s[ac]ss$/i,
@@ -78,8 +78,9 @@ module.exports = (env) => ({
           {
             loader: 'file-loader',
             options: {
-              name: 'assets/[name].[ext]',
-              emitFile: false,
+              name: 'assets/[path][name].[ext]',
+              context: 'source/assets/',
+              publicPath: '',
             },
           },
         ],
@@ -90,13 +91,13 @@ module.exports = (env) => ({
           {
             loader: 'file-loader',
             options: {
-              name: 'assets/[name].[ext]',
-              emitFile: false,
+              name: 'assets/[path][name].[ext]',
+              context: 'source/assets/',
+              publicPath: '',
             },
           },
         ],
       },
-
       {
         test: /\.html$/,
         use: [{ loader: 'html-loader' }],
@@ -141,7 +142,7 @@ module.exports = (env) => ({
         context: 'source/assets/',
         from: '**/*.{jpeg,jpg,gif,png,ico,eot,svg,ttf,woff,woff2}',
         to: 'assets/',
-        flatten: true,
+        flatten: false, // Ensure folder structure is preserved
       },
       ...(env.includeDocumentation
         ? [
