@@ -433,10 +433,10 @@ function flatUiWidgetsPluginClass() {
   // +--------------------------------------------------------------------¦ \\
   this.horizontalSliderFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-    var self = this;
+    const self = this;
 
     self.updateValue = function (e) {
-      var val = Number($('#hslider-value' + idWidget)[0].value);
+      const val = Number($('#hslider-value' + idWidget)[0].value);
       $('#slider' + idWidget).slider({ value: val });
       // TODO : type check at assignement. Highlight error and type mismatch
       modelsHiddenParams[idInstance].value = val;
@@ -484,49 +484,24 @@ function flatUiWidgetsPluginClass() {
     this.insertLabel = function (widgetHtml) {
       // conversion to enable HTML tags
       const labelText = this.getTransformedText('label');
+      const labelWidthProportion = modelsParameters[idInstance].labelWidthProportion ?? '20%';
+      const labelStyle = `width: ${labelWidthProportion}; ${this.labelFontSize()} ${this.labelColor()} ${this.labelFontFamily()}`;
       const widgetLabel = document.createElement('span');
       widgetLabel.setAttribute('class', 'label-h-slider');
       widgetLabel.setAttribute('id', 'h-slider-span');
-      if (!_.isUndefined(modelsParameters[idInstance].labelWidthProportion)) {
-        widgetLabel.setAttribute(
-          'style',
-          'width:' +
-            modelsParameters[idInstance].labelWidthProportion +
-            '; ' +
-            this.labelFontSize() +
-            this.labelColor() +
-            this.labelFontFamily()
-        );
-      } else {
-        widgetLabel.setAttribute(
-          'style',
-          'width: 20%; ' + this.labelFontSize() + this.labelColor() + this.labelFontFamily()
-        );
-      }
+      widgetLabel.setAttribute('style', labelStyle.trim());
       widgetLabel.innerHTML = labelText;
       widgetHtml.appendChild(widgetLabel);
     };
 
     this.insertValue = function (widgetHtml) {
-      var valueHeightPx;
-      if (modelsParameters[idInstance].displayLabel)
-        valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 6); // keepRatio
-      else valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 8); // keepRatio
-      var valueHtml = document.createElement('div');
-      valueHtml.setAttribute('class', 'h-slider-value-div');
-      valueHtml.setAttribute('id', 'div-for-hslider-value' + idWidget);
-      if (!_.isUndefined(modelsParameters[idInstance].valueWidthProportion)) {
-        valueHtml.setAttribute('style', 'width:' + modelsParameters[idInstance].valueWidthProportion + ';');
-      } else {
-        valueHtml.setAttribute('style', 'width:30%;');
-      }
-      var hsliderValueCursor = '';
-      if (this.bIsInteractive) {
-        hsliderValueCursor = 'cursor: text;';
-      } else {
-        hsliderValueCursor = 'cursor: inherit;';
-      }
-      var valueContent =
+      const containerHeight = $('#' + idDivContainer).height();
+      const containerWidth = $('#' + idDivContainer).width();
+      const ratio = modelsParameters[idInstance].displayLabel ? 6 : 8;
+      const valueHeightPx = Math.min(containerHeight, containerWidth / ratio); // keepRatio
+      const width = modelsParameters[idInstance]?.valueWidthProportion ?? '30%';
+      const hsliderValueCursor = this.bIsInteractive ? 'cursor: text;' : 'cursor: inherit;';
+      const valueContent =
         '<input id="hslider-value' +
         idWidget +
         '" type="text" placeholder="" class="hslider-input form-control" style="height: ' +
@@ -538,6 +513,10 @@ function flatUiWidgetsPluginClass() {
         hsliderValueCursor +
         '" disabled></input>';
 
+      const valueHtml = document.createElement('div');
+      valueHtml.setAttribute('class', 'h-slider-value-div');
+      valueHtml.setAttribute('id', 'div-for-hslider-value' + idWidget);
+      valueHtml.setAttribute('style', 'width:' + width + ';');
       valueHtml.innerHTML = valueContent;
       widgetHtml.appendChild(valueHtml);
     };
@@ -569,18 +548,16 @@ function flatUiWidgetsPluginClass() {
 
     this.render = function () {
       //self.computeDimensions();
-      var widgetHtml = document.createElement('div');
+      const widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('class', 'sliderInput');
       widgetHtml.setAttribute('style', 'display: table');
 
-      var widgetDiv = document.createElement('div');
+      const sliderWidthProportion = modelsParameters[idInstance].sliderWidthProportion ?? '50%';
+      const widgetDiv = document.createElement('div');
       widgetDiv.setAttribute('id', 'h-slider-div');
-      if (!_.isUndefined(modelsParameters[idInstance].sliderWidthProportion)) {
-        widgetDiv.setAttribute('style', 'width:' + modelsParameters[idInstance].sliderWidthProportion + ';');
-      } else {
-        widgetDiv.setAttribute('style', 'width:50%;');
-      }
-      var widgetCore = document.createElement('div');
+      widgetDiv.setAttribute('style', `width: ${sliderWidthProportion};`);
+
+      const widgetCore = document.createElement('div');
       widgetCore.setAttribute('id', 'slider' + idWidget);
       widgetDiv.appendChild(widgetCore);
 
@@ -609,7 +586,7 @@ function flatUiWidgetsPluginClass() {
 
       //
       const showWidget = this.showWidget();
-      let displayStyle = 'display: inherit;';
+      let displayStyle = 'display: table;';
       if (!showWidget) {
         displayStyle = 'display: none;';
       }
@@ -623,7 +600,7 @@ function flatUiWidgetsPluginClass() {
 
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
-      var $slider = $('#slider' + idWidget);
+      const $slider = $('#slider' + idWidget);
       if ($slider.length > 0) {
         $slider
           .slider({
@@ -733,7 +710,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val != 'number') {
           return;
         }
         modelsParameters[idInstance].max = val;
@@ -755,7 +732,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val != 'number') {
           return;
         }
         modelsParameters[idInstance].min = val;
@@ -1300,7 +1277,7 @@ function flatUiWidgetsPluginClass() {
       const oldVal = modelsHiddenParams[idInstance].value;
       const oldValStr = oldVal.toString();
       return !(val==oldValStr);
-    }
+    };
 
     self.enable = function () {
       const $widget = $(`#${nameWidget}${idWidget}`);
@@ -1325,10 +1302,9 @@ function flatUiWidgetsPluginClass() {
         });
         $widget.off('click').on('click', (e) => { 
           if (self.isValueChanged()) {
-            self.updateValue(e) 
+            self.updateValue(e);
           }
-        }
-        );
+        });
       }
 
       if (modelsParameters[idInstance].validationButton) {
@@ -1336,7 +1312,7 @@ function flatUiWidgetsPluginClass() {
         $widgetBtn.prop('disabled', false);
         $widgetBtn.off('click').on('click', (e) => { 
           if (self.isValueChanged()) {
-            self.updateValue(e) 
+            self.updateValue(e);
           }
         });
       }
