@@ -1,9 +1,8 @@
 let xdashAddr = "";
 let xdashDocAddr = "";
 let bIsBasicVersion = "false";
-// ** Insert configuration here ** // Do not remove
 
-xdashAddr += "index.html";
+// ** Insert configuration here ** // Do not remove
 
 // Ensure protocol consistency to avoid browser security blocking
 const currentProtocol = location.protocol;

@@ -10,7 +10,6 @@ if (process.env.PROXY_TO) {
     '/FileSyncURI': { target: process.env.PROXY_TO },
     '/ReadSettings': { target: process.env.PROXY_TO },
     '/exec': { target: process.env.PROXY_TO },
-    '/doc': { target: process.env.PROXY_TO },
   };
 
   proxyEntry['proxy'] = proxyDict;

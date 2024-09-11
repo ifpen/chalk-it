@@ -279,7 +279,7 @@ dashboardModule
       /*---------- help button ----------------*/
       $scope.initFrame = function () {
         const iframe = document.getElementById('helpFrame');
-        iframe.src = xDashConfig.urlDoc + 'index.html';
+        iframe.src = xDashConfig.urlDoc;
       };
 
       /**************************************************************/
