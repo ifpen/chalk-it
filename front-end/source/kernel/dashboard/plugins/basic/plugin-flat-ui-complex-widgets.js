@@ -1033,6 +1033,82 @@ function flatUiComplexWidgetsPluginClass() {
   this.tableFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
+    function sortTable(cell, columnIndex, isAscending) {
+      const tbody = cell.parent().parent().parents()[0].tBodies[0];
+      const rows = Array.from(tbody.getElementsByTagName('tr'));
+      const headerRow = modelsHiddenParams[idInstance].value[0];
+      const dataRows = modelsHiddenParams[idInstance].value.slice(1);
+
+      const sortedData = dataRows.sort((a, b) => {
+        let valueA = a[columnIndex];
+        let valueB = b[columnIndex];
+
+        // Remove <b> tags if present
+        if (typeof valueA === 'string' && valueA.includes('<b>')) {
+          valueA = valueA.replace(/<\/?[^>]+(>|$)/g, '');
+        }
+
+        if (typeof valueB === 'string' && valueB.includes('<b>')) {
+          valueB = valueB.replace(/<\/?[^>]+(>|$)/g, '');
+        }
+
+        const compareA = isNaN(valueA) ? valueA.toLowerCase() : parseFloat(valueA);
+        const compareB = isNaN(valueB) ? valueB.toLowerCase() : parseFloat(valueB);
+
+        if (compareA < compareB) return isAscending ? -1 : 1;
+        if (compareA > compareB) return isAscending ? 1 : -1;
+        return 0;
+      });
+      modelsHiddenParams[idInstance].value = [headerRow, ...sortedData];
+      while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+      }
+      sortedData.forEach((sortedRow) => {
+        const tr = document.createElement('tr');
+        sortedRow.forEach((cellValue, cellIndex) => {
+          const td = document.createElement('td');
+          td.style.textAlign = 'left';
+          if (cellIndex === 0) {
+            td.innerHTML = `<b>${cellValue}</b>`;
+          } else {
+            td.innerHTML = `<span>${cellValue}</span>`;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateSortArrows(cell, activeHeader, isAscending) {
+      const headers = $('#table' + idWidget)[0].querySelectorAll("th[data-sortable='true']");
+      headers.forEach((header) => {
+        //header.removeAttribute('data-sort');
+        header.setAttribute('data-sort', '');
+      });
+      cell[0].setAttribute('data-sort', isAscending ? 'asc' : 'desc');
+    }
+
+    function updateTable() {
+      let totalRows = _.isNull(modelsHiddenParams[idInstance].value) ? 0 : modelsHiddenParams[idInstance].value.length;
+      if (modelsParameters[idInstance].headerLine && totalRows != 0) {
+        totalRows--;
+      }
+      const rowsPerPage = $('#rows-per-page' + idWidget).val();
+      const totalPages = Math.ceil(totalRows / rowsPerPage);
+      $('#table' + idWidget + ' tbody')
+        .find('tr')
+        .hide();
+      $('#table' + idWidget + ' tbody')
+        .find('tr')
+        .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
+        .show();
+
+      $('#page-info' + idWidget).text('Page ' + currentPage + ' of ' + totalPages);
+      $('#first-page' + idWidget).prop('disabled', currentPage === 1);
+      $('#prev-page' + idWidget).prop('disabled', currentPage === 1);
+      $('#next-page' + idWidget).prop('disabled', currentPage === totalPages);
+      $('#last-page' + idWidget).prop('disabled', currentPage === totalPages);
+    }
 
     this.enable = function () {
       $('#table' + idWidget).editableTableWidget();
@@ -1064,6 +1140,17 @@ function flatUiComplexWidgetsPluginClass() {
         );
         self.value.updateCallback(self.value, self.value.getValue());
       });
+
+      $('#table' + idWidget + ' th').on('click', function () {
+        const cell = $(this);
+        const columnIndex = cell.index();
+        const isAscending = cell[0].getAttribute('data-sort') !== 'asc';
+
+        sortTable(cell, columnIndex, isAscending);
+        updateSortArrows(cell, columnIndex, isAscending);
+        self.value.updateCallback(self.value, self.value.getValue());
+        updateTable();
+      });
     };
 
     this.disable = function () {
@@ -1086,22 +1173,32 @@ function flatUiComplexWidgetsPluginClass() {
           if (modelsParameters[idInstance].headerLine) {
             startIndex = 1;
             tableContent += '<thead><tr>';
+            const thElements = $('#table' + idWidget + ' th');
             for (const element of val[0]) {
+              let dSort = thElements.length ? thElements[val[0].indexOf(element)].getAttribute('data-sort') : '';
               tableContent +=
-                '<th style="' +
+                '<th data-sortable="true" data-sort="' +
+                dSort +
+                '" style="' +
                 this.valueAlign() +
                 '"><span style="' +
                 this.valueColor() +
                 this.valueFontFamily() +
                 ' font-size: calc(7px + ' +
                 fontSize * getFontFactor() +
-                'vw);"><b>' +
+                'vw);padding-right:15px"><b>' +
                 element +
-                '</b></span></th>';
+                '</b></span><span class="sort-arrow"></span></th>';
             }
             tableContent += '</tr></thead>';
           }
-          tableContent += '<tbody>';
+          const sortAsc = _.isUndefined($('#table' + idWidget)[0])
+            ? 'true'
+            : $('#table' + idWidget + ' tbody')[0].getAttribute('data-sort-asc');
+          const sortCol = _.isUndefined($('#table' + idWidget)[0])
+            ? '0'
+            : $('#table' + idWidget + ' tbody')[0].getAttribute('data-sort-column');
+          tableContent += '<tbody data-sort-asc="' + sortAsc + '" data-sort-column="' + sortCol + '">';
           for (let i = startIndex; i < val.length; i++) {
             if (modelsParameters[idInstance].striped) {
               if (i % 2 !== 0) {
