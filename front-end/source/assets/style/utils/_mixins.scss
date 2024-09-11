@@ -182,24 +182,24 @@
 // Background image mixin - For widget & datanode icons
 $icon-urls: (
   widget: (
-    light: '../icon/widgets/light-mode/',
-    // Change it to '../icon/widgets/dark-mode/' to use the dark icons
-    dark: '../icon/widgets/light-mode/',
+    light: 'icon/widgets/light-mode/',
+    // Change it to 'icon/widgets/dark-mode/' to use the dark icons
+    dark: 'icon/widgets/light-mode/',
   ),
   datanode: (
-    light: '../icon/datanodes/light-mode/',
-    dark: '../icon/datanodes/dark-mode/',
+    light: 'icon/datanodes/light-mode/',
+    dark: 'icon/datanodes/dark-mode/',
   ),
 );
 
 @mixin icon-background($icon-name, $type) {
   @media (prefers-color-scheme: light) {
     $icon-url: map-get(map-get($icon-urls, $type), 'light');
-    background-image: url('#{$icon-url}#{$icon-name}');
+    background-image: url('/assets/#{$icon-url}#{$icon-name}');
   }
 
   @media (prefers-color-scheme: dark) {
     $icon-url: map-get(map-get($icon-urls, $type), 'dark');
-    background-image: url('#{$icon-url}#{$icon-name}');
+    background-image: url('/assets/#{$icon-url}#{$icon-name}');
   }
 }

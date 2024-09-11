@@ -24,7 +24,7 @@ angular
     'SessionUser',
     function ($scope, $rootScope, $state, $http, SessionUser) {
       const iframe = document.getElementById('trainingFrame');
-      iframe.src = `${xDashConfig.urlDoc}quick-start/quickstart/index.html`;
+      iframe.src = `${xDashConfig.urlDoc}quick-start/quickstart/`;
 
       // Helper function to hide elements by class name
       const hideElementByClassName = (className) => {

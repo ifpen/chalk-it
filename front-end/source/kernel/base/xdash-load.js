@@ -63,7 +63,7 @@ angular
       $rootScope.taipyLink = xDashConfig.taipyLink == 'true';
       $rootScope.autoSave = xDashConfig.autoSave == 'true';
       $rootScope.enableRegistration = xDashConfig.disableRegistration != 'true';
-      $rootScope.enablePyodide = xDashConfig['pyodide'].pyodide_index!='';
+      $rootScope.enablePyodide = xDashConfig['pyodide'].pyodide_index != '';
 
       $rootScope.urlTerms = xDashConfig.urlWebSite + 'terms-credits/xDashTermsofUse10062020.html';
       $rootScope.urlCredits =
