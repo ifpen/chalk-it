@@ -144,15 +144,11 @@ module.exports = (env) => ({
         to: 'assets/',
         flatten: false, // Ensure folder structure is preserved
       },
-      ...(env.includeDocumentation
-        ? [
-            {
-              context: '../documentation/site/',
-              from: '**/*.*',
-              to: 'doc/',
-            },
-          ]
-        : []),
+      {
+        context: path.resolve(__dirname, '../../documentation/site/'),
+        from: '**/*.*',
+        to: 'doc/',
+      },
     ]),
   ],
 });

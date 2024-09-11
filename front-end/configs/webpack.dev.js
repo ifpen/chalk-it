@@ -5,12 +5,13 @@ const common = require('./webpack.common.js');
 
 const proxyEntry = {};
 if (process.env.PROXY_TO) {
-  const proxyDict = {};
-
   // TODO extend as needed
-  proxyDict['/FileSyncURI'] = { target: process.env.PROXY_TO };
-  proxyDict['/ReadSettings'] = { target: process.env.PROXY_TO };
-  proxyDict['/exec'] = { target: process.env.PROXY_TO };
+  const proxyDict = {
+    '/FileSyncURI': { target: process.env.PROXY_TO },
+    '/ReadSettings': { target: process.env.PROXY_TO },
+    '/exec': { target: process.env.PROXY_TO },
+    '/doc': { target: process.env.PROXY_TO },
+  };
 
   proxyEntry['proxy'] = proxyDict;
 }
@@ -34,12 +35,13 @@ module.exports = (env) =>
           runtimeErrors: true,
         },
       },
-      ...proxyEntry,
+      proxy: proxyEntry.proxy || {},
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
         'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
       },
+      open: true, // Automatically opens the browser when the server starts
     },
     devtool: 'source-map',
     // devtool: 'cheap-module-eval-source-map',

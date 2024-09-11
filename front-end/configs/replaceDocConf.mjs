@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { config as configEnv } from 'dotenv';
+
 configEnv({ path: '.env.prod' });
 
 const { config } = await import('./config.js');
@@ -15,7 +16,7 @@ bIsBasicVersion = "${xDashConfig.xDashBasicVersion}";
 `;
 
 const INSERTION_MARKER = '// ** Insert configuration here ** // Do not remove';
-const CONF_FILE = 'build/doc/mkdocs-open-xprjson.js';
+const CONF_FILE = '../documentation/site/mkdocs-open-xprjson.js';
 fs.readFile(CONF_FILE, 'utf8', function (err, data) {
   if (err) throw err;
 
