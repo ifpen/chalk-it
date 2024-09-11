@@ -19,10 +19,9 @@ from flask import (
     jsonify,
     make_response,
     request,
-    redirect,
     send_from_directory,
     render_template_string,
-    url_for,
+    current_app,
 )
 from base64 import b64decode, b64encode
 from concurrent.futures import Executor, ProcessPoolExecutor
@@ -65,7 +64,9 @@ class AppConfig:
                 self.base_dir / ".." / ".." / "documentation" / "Templates" / "Images"
             ).resolve()
             self.static_folder = (self.base_dir / ".." / ".." / "front-end").resolve()
-            self.documentation_dir = (self.static_folder / "build" / "doc").resolve()
+            self.documentation_dir = (
+                ""  # In develop mode, the doc is served by the webpack dev server
+            )
             self.index_file_path = "./build/index.html"
             self.index_view_file_path = "./build/index-view.html"
         else:
@@ -341,10 +342,11 @@ class FileManager:
         )
         self.blueprint.route("/heartbeat")(RootManager.handle_errors(self.heartbeat))
         self.blueprint.add_url_rule(
-            "/<path:path>",
+            "/<path:path>/",
             view_func=RootManager.handle_errors(self.static_files),
             methods=["GET"],
             endpoint="static_file_with_path",
+            strict_slashes=False,
         )
         self.blueprint.add_url_rule(
             "/",
@@ -441,11 +443,11 @@ class FileManager:
 class DocManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
+        # Do not add static_url_path & static_folder, as this will cause conflicts.
         self.blueprint = Blueprint(
-            "doc", __name__, static_folder=config.documentation_dir
+            "doc",
+            __name__,
         )
-
-        # Document serving routes
         self.blueprint.add_url_rule(
             "/doc/",
             view_func=RootManager.handle_errors(self.serve_doc),
@@ -453,27 +455,40 @@ class DocManager:
             methods=["GET"],
             endpoint="serve_doc_root",
         )
+        # If static_folder is not defined, serve_doc will be executed.
         self.blueprint.add_url_rule(
-            "/doc/<path:path>",
+            "/doc/<path:path>/",
             view_func=RootManager.handle_errors(self.serve_doc),
             methods=["GET"],
-            endpoint="serve_doc_path",
+            strict_slashes=False,
         )
 
+    # Serve index.html for directories automatically
     def serve_doc(self, path: Optional[str]) -> Response:
-        doc_directory = Path(self.blueprint.static_folder)
-        doc_file_path = (doc_directory / path).resolve()
+        doc_directory = Path(self.config.documentation_dir)
 
-        # If the path is a directory, serve the index.html file within that directory
-        if doc_file_path.is_dir():
-            doc_file_path = doc_file_path / "index.html"
+        # If no path is specified, serve the index.html from the root directory
+        if not path:
+            doc_file_path = doc_directory / "index.html"
+        else:
+            doc_file_path = (doc_directory / path).resolve()
 
-        if not doc_file_path.exists():
-            return "File not found", 404
+        try:
+            # Ensure the path is within the documentation directory for security
+            if not str(doc_file_path).startswith(str(doc_directory)):
+                return "Invalid path", 404
 
-        return send_from_directory(
-            doc_directory, doc_file_path.relative_to(doc_directory)
-        )
+            # If the path is a directory, serve the index.html file within that directory
+            if doc_file_path.is_dir():
+                doc_file_path = doc_file_path / "index.html"
+
+            if not doc_file_path.exists() or not doc_file_path.is_file():
+                return "File not found", 404
+
+            return send_from_directory(doc_file_path.parent, doc_file_path.name)
+        except Exception as e:
+            current_app.logger.error(f"Error serving document: {e}")
+            return "An internal error occurred", 500
 
 
 class TemplateManager:
