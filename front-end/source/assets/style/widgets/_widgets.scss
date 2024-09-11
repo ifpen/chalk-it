@@ -271,7 +271,7 @@ html {
   html[data-theme='#{$key}'] {
     @if (map-get($theme, 'hue') == 'light') {
       // Global
-      --widget-subtext-color: #;{darken(map-get($theme, 1), 20%)};
+      --widget-subtext-color: #{darken(map-get($theme, 1), 20%)};
 
       // Dropzone
       --widget-dropzone-background-color: #{darken(map-get($theme, 0), 6%)};
