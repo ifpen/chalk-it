@@ -84,6 +84,9 @@ modelsParameters.flatUiTable = {
     primary: 'var(--widget-color-0)',
     secondary: 'var(--widget-table-striped-odd)',
   },
+  paginationMinNbr: 5,
+  paginationOptions: '[2, 5, 10, 50, 100, 500]',
+  paginationDefaultValue: 10,
 };
 modelsParameters.flatUiEditableTable = {
   headerLine: false,
@@ -100,6 +103,9 @@ modelsParameters.flatUiEditableTable = {
     primary: 'var(--widget-color-0)',
     secondary: 'var(--widget-table-striped-odd)',
   },
+  paginationMinNbr: 5,
+  paginationOptions: '[2, 5, 10, 50, 100, 500]',
+  paginationDefaultValue: 10,
 };
 
 // Layout (default dimensions)
