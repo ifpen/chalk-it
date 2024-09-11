@@ -1033,6 +1033,12 @@ function flatUiComplexWidgetsPluginClass() {
   this.tableFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
+    const nbminPerPagination = modelsParameters[idInstance].paginationMinNbr;
+    const options = JSON.parse(modelsParameters[idInstance].paginationOptions);
+    let defaultValue = modelsParameters[idInstance].paginationDefaultValue;
+    if (!options.includes(defaultValue)) defaultValue = options[0];
+
+    let currentPage = 1;
     function sortTable(cell, columnIndex, isAscending) {
       const tbody = cell.parent().parent().parents()[0].tBodies[0];
       const rows = Array.from(tbody.getElementsByTagName('tr'));
@@ -1149,6 +1155,41 @@ function flatUiComplexWidgetsPluginClass() {
         sortTable(cell, columnIndex, isAscending);
         updateSortArrows(cell, columnIndex, isAscending);
         self.value.updateCallback(self.value, self.value.getValue());
+        updateTable();
+      });
+
+      $('#rows-per-page' + idWidget).on('click', function () {
+        currentPage = 1;
+        updateTable();
+      });
+
+      $('#first-page' + idWidget).on('click', function () {
+        currentPage = 1;
+        updateTable();
+      });
+
+      $('#prev-page' + idWidget).on('click', function () {
+        if (currentPage > 1) {
+          currentPage--;
+          updateTable();
+        }
+      });
+
+      $('#next-page' + idWidget).on('click', function () {
+        const totalRows = modelsHiddenParams[idInstance].value.length;
+        const rowsPerPage = $('#rows-per-page' + idWidget).val();
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          updateTable();
+        }
+      });
+
+      $('#last-page' + idWidget).on('click', function () {
+        const totalRows = modelsHiddenParams[idInstance].value.length;
+        const rowsPerPage = $('#rows-per-page' + idWidget).val();
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+        currentPage = totalPages;
         updateTable();
       });
     };
@@ -1279,25 +1320,97 @@ function flatUiComplexWidgetsPluginClass() {
       this.render();
     };
 
+    this.buildPagination = function () {
+      let fontSize = 0.5;
+      if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
+        fontSize = modelsParameters[idInstance].tableValueFontSize;
+      }
+      let strFontSize = 'font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)';
+
+      defaultValue = _.isUndefined($('#rows-per-page' + idWidget)[0])
+        ? defaultValue
+        : parseInt($('#rows-per-page' + idWidget).val());
+
+      let optionsHTML = '';
+      options.forEach((value) => {
+        optionsHTML += `<option value="${value}"${value === defaultValue ? ' selected' : ''}>${value}</option>`;
+      });
+      const divPagination =
+        '<div id="pagination-controls" >' +
+        '  <label for="rows-per-page" style="' +
+        this.valueColor() +
+        this.valueFontFamily() +
+        strFontSize +
+        '">Rows per page:</label>' +
+        ' <div class="custom-select-wrapper">' +
+        '  <select name="rows-per-page" id="rows-per-page' +
+        idWidget +
+        '" style="' +
+        strFontSize +
+        '">' +
+        optionsHTML +
+        '  </select>' +
+        ' </div>' +
+        ' <button id="first-page' +
+        idWidget +
+        '" disabled>|&lt;</button>' +
+        '  <button id="prev-page' +
+        idWidget +
+        '" disabled>&lt;</button>' +
+        '  <span id="page-info' +
+        idWidget +
+        '" style="' +
+        this.valueColor() +
+        this.valueFontFamily() +
+        strFontSize +
+        '">Page 1 of 1</span>' +
+        '  <button id="next-page' +
+        idWidget +
+        '">&gt;</button>' +
+        '<button id="last-page' +
+        idWidget +
+        '">&gt;|</button>' +
+        '</div>';
+      return divPagination;
+    };
+
     this.render = function () {
+      const val = modelsHiddenParams[idInstance].value;
+      let length = 0;
+      if (!_.isNull(modelsHiddenParams[idInstance].value)) length = modelsHiddenParams[idInstance].value.length;
+      let insideTable = self.buildTable(val);
+      let isTableEmpty = false;
+      let tableWidth = '75%';
+      if (insideTable === '') {
+        insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
+        isTableEmpty = true;
+        tableWidth = '100%';
+      }
+      if (length < nbminPerPagination) {
+        tableWidth = '100%';
+      }
+
       const widgetHtml = document.createElement('div');
       const displayStyle =
         'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto;';
-      let divContent = `<table style="margin: 0; height: 100%; ${this.tableBackgroundColor('primary')}" class="table`;
+      let divContent =
+        `<table style="margin: 0; height: ` + tableWidth + `; ${this.tableBackgroundColor('primary')}" class="table`;
       if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
       if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
       divContent += ' table-responsive" id="table' + idWidget + '" >';
-      const val = modelsHiddenParams[idInstance].value;
-      let insideTable = self.buildTable(val);
-      if (insideTable === '') {
-        insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
-      }
+
       divContent += insideTable + '</table>';
+      //pagination
+      if (!isTableEmpty && length >= nbminPerPagination) {
+        divContent += self.buildPagination();
+      }
+      //divContent += '</div>';
+      //end pagination
       widgetHtml.innerHTML = divContent;
 
       //
       const showWidget = this.showWidget();
-      let displayStyle2 = 'display: inherit;';
+      let displayStyle2 = 'display: block;';
       if (!showWidget) {
         displayStyle2 = 'display: none;';
       }
@@ -1313,6 +1426,10 @@ function flatUiComplexWidgetsPluginClass() {
       this.applyDisplayOnWidget();
       if (this.bIsInteractive) {
         self.enable();
+        if (length >= nbminPerPagination) {
+          currentPage = 1;
+          updateTable();
+        }
       } else {
         self.disable();
       }
