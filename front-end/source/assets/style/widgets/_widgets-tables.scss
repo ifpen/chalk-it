@@ -166,4 +166,39 @@
       border-bottom: 0;
     }
   }
+  .sort-arrow {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    font-size: 0.75em;
+    color: #354a5f;
+  }
+
+  th:hover .sort-arrow {
+    opacity: 0.5;
+  }
+
+  th[data-sort='asc'] .sort-arrow {
+    opacity: 1;
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  th[data-sort='desc'] .sort-arrow {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+
+  .sort-arrow::before {
+    content: '';
+    border: solid var(--widget-table-pagination-arrow-color);
+    border-width: 0 4px 4px 0;
+    display: inline-block;
+    padding: 4px;
+    transform: rotate(45deg);
+    vertical-align: middle;
+  }
+
 }
