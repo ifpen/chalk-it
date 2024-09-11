@@ -54,10 +54,10 @@ class AppConfig:
         self._setup_paths()
 
     def _setup_paths(self) -> None:
-        self.project_dir = Path.cwd()
         self.base_dir = Path(__file__).parent.resolve()
         if self.DEBUG:
             # Development mode paths
+            self.project_dir = (Path.cwd() / "..").resolve()
             self.templates_dir = (
                 self.base_dir / ".." / ".." / "documentation" / "Templates" / "Projects"
             ).resolve()
@@ -70,6 +70,7 @@ class AppConfig:
             self.index_view_file_path = "./build/index-view.html"
         else:
             # Production mode paths
+            self.project_dir = Path.cwd()
             self.templates_dir = (
                 self.base_dir / ".." / "Templates" / "Projects"
             ).resolve()
