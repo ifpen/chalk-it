@@ -19,10 +19,9 @@ from flask import (
     jsonify,
     make_response,
     request,
-    redirect,
     send_from_directory,
     render_template_string,
-    url_for,
+    current_app,
 )
 from base64 import b64decode, b64encode
 from concurrent.futures import Executor, ProcessPoolExecutor
@@ -46,7 +45,7 @@ class AppConfig:
         self.app_ip = args.app_ip or "127.0.0.1"
         self.server_url = f"http://{self.app_ip}:{self.run_port}"
 
-        # Set up directories
+        # Define directory and file access paths
         self.home_dir = Path.home()
         self.settings_dir = self.home_dir / ".chalk-it"
         self.settings_file = self.settings_dir / "settings.json"
@@ -54,10 +53,10 @@ class AppConfig:
         self._setup_paths()
 
     def _setup_paths(self) -> None:
-        self.project_dir = Path.cwd()
         self.base_dir = Path(__file__).parent.resolve()
         if self.DEBUG:
             # Development mode paths
+            self.project_dir = (Path.cwd() / "..").resolve()
             self.templates_dir = (
                 self.base_dir / ".." / ".." / "documentation" / "Templates" / "Projects"
             ).resolve()
@@ -65,13 +64,22 @@ class AppConfig:
                 self.base_dir / ".." / ".." / "documentation" / "Templates" / "Images"
             ).resolve()
             self.static_folder = (self.base_dir / ".." / ".." / "front-end").resolve()
+            self.documentation_dir = (
+                ""  # In develop mode, the doc is served by the webpack dev server
+            )
+            self.index_file_path = "./build/index.html"
+            self.index_view_file_path = "./build/index-view.html"
         else:
             # Production mode paths
+            self.project_dir = Path.cwd()
             self.templates_dir = (
                 self.base_dir / ".." / "Templates" / "Projects"
             ).resolve()
             self.images_dir = (self.base_dir / ".." / "Templates" / "Images").resolve()
             self.static_folder = (self.base_dir / "..").resolve()
+            self.documentation_dir = (self.static_folder / "doc").resolve()
+            self.index_file_path = "index.html"
+            self.index_view_file_path = "index-view.html"
 
 
 class RootManager:
@@ -105,8 +113,9 @@ class RootManager:
         @self.app.after_request
         def after_request(response: Response) -> Response:
             response.headers.add("Access-Control-Allow-Origin", "*")
-            response.headers.add("Access-Control-Allow-Headers", "Content-Type")
-            response.headers.add("Access-Control-Allow-Methods", "GET, POST")
+            response.headers.add("Access-Control-Allow-Credentials", "true")
+            response.headers.add("Access-Control-Allow-Headers", "*")
+            response.headers.add("Access-Control-Allow-Methods", "*")
             return response
 
     @staticmethod
@@ -333,16 +342,17 @@ class FileManager:
         )
         self.blueprint.route("/heartbeat")(RootManager.handle_errors(self.heartbeat))
         self.blueprint.add_url_rule(
-            "/<path:path>",
+            "/<path:path>/",
             view_func=RootManager.handle_errors(self.static_files),
             methods=["GET"],
             endpoint="static_file_with_path",
+            strict_slashes=False,
         )
         self.blueprint.add_url_rule(
             "/",
             view_func=RootManager.handle_errors(self.static_files),
             methods=["GET"],
-            defaults={"path": "index.html"},
+            defaults={"path": config.index_file_path},
             endpoint="static_file_root",
         )
 
@@ -388,10 +398,6 @@ class FileManager:
         static_file_directory = Path(self.blueprint.static_folder)
         full_path = (static_file_directory / path).resolve()
 
-        # Safety check: Ensure the resolved path is within the static directory
-        if not str(full_path).startswith(str(static_file_directory)):
-            return "Invalid path", 404
-
         if full_path.is_file():
             return send_from_directory(static_file_directory, path)
 
@@ -401,23 +407,24 @@ class FileManager:
         return "Invalid path", 404
 
     def dashboard(self, xprjson: str) -> str:
-        # Load configuration from json file
-        with open(xprjson, "r") as config_file:
-            config_data = json.load(config_file)
+        # Load configuration from JSON file
+        try:
+            with open(xprjson, "r") as config_file:
+                config_data = json.load(config_file)
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            raise ValueError(f"Error loading configuration: {e}")
 
         # Read the HTML template
-        index_view_path = os.path.join(
-            self.config.base_dir, "index-view-2.930.8710.html"
-        )
-        with open(index_view_path, "r") as template_file:
-            template_data = template_file.read()
+        try:
+            with open(self.config.index_view_file_path, "r") as template_file:
+                template_data = template_file.read()
+        except FileNotFoundError as e:
+            raise ValueError(f"Error loading HTML template: {e}")
 
-        # Inject the JSON data into the template
         template_data_with_config = template_data.replace(
             "jsonContent = {};", f"var jsonContent = {json.dumps(config_data)};"
         )
 
-        # Render the HTML with the configuration inlined
         return render_template_string(template_data_with_config)
 
     def get_python_data_list(self) -> Response:
@@ -436,37 +443,52 @@ class FileManager:
 class DocManager:
     def __init__(self, config: AppConfig) -> None:
         self.config = config
-        self.blueprint = Blueprint("doc", __name__, static_folder=config.static_folder)
-
-        # Document serving routes
-        self.blueprint.add_url_rule(
-            "/doc/<path:path>",
-            view_func=RootManager.handle_errors(self.serve_doc),
-            methods=["GET"],
-            endpoint="serve_doc_path",
+        # Do not add static_url_path & static_folder, as this will cause conflicts.
+        self.blueprint = Blueprint(
+            "doc",
+            __name__,
         )
         self.blueprint.add_url_rule(
             "/doc/",
             view_func=RootManager.handle_errors(self.serve_doc),
-            defaults={"path": "index.html"},
+            defaults={"path": ""},
             methods=["GET"],
             endpoint="serve_doc_root",
         )
+        # If static_folder is not defined, serve_doc will be executed.
+        self.blueprint.add_url_rule(
+            "/doc/<path:path>/",
+            view_func=RootManager.handle_errors(self.serve_doc),
+            methods=["GET"],
+            strict_slashes=False,
+        )
 
-    def serve_doc(self, path: str) -> Response:
-        # Adjust 'doc_path' if your docs are in a specific subdirectory
-        static_file_directory = Path(self.blueprint.static_folder)
-        doc_path = static_file_directory / "doc"
-        full_path = doc_path / path
+    # Serve index.html for directories automatically
+    def serve_doc(self, path: Optional[str]) -> Response:
+        doc_directory = Path(self.config.documentation_dir)
 
-        # Safety check to prevent directory traversal
-        if not full_path.resolve().is_relative_to(doc_path):
-            return "Invalid path", 404
+        # If no path is specified, serve the index.html from the root directory
+        if not path:
+            doc_file_path = doc_directory / "index.html"
+        else:
+            doc_file_path = (doc_directory / path).resolve()
 
-        if full_path.is_dir():
-            path = path.rstrip("/") + "/index.html"
+        try:
+            # Ensure the path is within the documentation directory for security
+            if not str(doc_file_path).startswith(str(doc_directory)):
+                return "Invalid path", 404
 
-        return send_from_directory(doc_path, path)
+            # If the path is a directory, serve the index.html file within that directory
+            if doc_file_path.is_dir():
+                doc_file_path = doc_file_path / "index.html"
+
+            if not doc_file_path.exists() or not doc_file_path.is_file():
+                return "File not found", 404
+
+            return send_from_directory(doc_file_path.parent, doc_file_path.name)
+        except Exception as e:
+            current_app.logger.error(f"Error serving document: {e}")
+            return "An internal error occurred", 500
 
 
 class TemplateManager:

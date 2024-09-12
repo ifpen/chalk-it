@@ -6,8 +6,15 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 
-var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg) {
+import { editorSingletons } from 'kernel/editor-singletons';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { scalingManager } from 'kernel/dashboard/scaling/scaling-manager';
+
+export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg) {
   var self = this;
 
   self.dashboardDimensions = dashboardDimensionsArg; // memory
@@ -27,7 +34,7 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
     //console.log("rescale-helper : getCurrentDashZoneDims");
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getCurrentDashZoneDims();
+        return editorSingletons.widgetEditor.getCurrentDashZoneDims();
       case 'preview':
         return widgetPreview.getCurrentDashZoneDims();
     }
@@ -67,7 +74,7 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
   function getRelativeWidgetsWidth() {
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getWidgetsRelativeDims().width;
+        return editorSingletons.widgetEditor.getWidgetsRelativeDims().width;
       case 'preview':
         return widgetPreview.getWidgetsRelativeDims().width;
     }
@@ -77,7 +84,7 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
   function getRelativeWidgetsHeight() {
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getWidgetsRelativeDims().height;
+        return editorSingletons.widgetEditor.getWidgetsRelativeDims().height;
       case 'preview':
         return widgetPreview.getWidgetsRelativeDims().height;
     }
@@ -87,7 +94,7 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
   function getRelativeWidgetsLeft() {
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getWidgetsRelativeDims().left;
+        return editorSingletons.widgetEditor.getWidgetsRelativeDims().left;
       case 'preview':
         return widgetPreview.getWidgetsRelativeDims().left;
     }
@@ -97,7 +104,7 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
   function getRelativeWidgetsTop() {
     switch (self.mode) {
       case 'edit':
-        return widgetEditor.getWidgetsRelativeDims().top;
+        return editorSingletons.widgetEditor.getWidgetsRelativeDims().top;
       case 'preview':
         return widgetPreview.getWidgetsRelativeDims().top;
     }
@@ -182,7 +189,8 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
 
       switch (self.mode) {
         case 'edit':
-          layoutMgr.updateMaxTopAndLeft();
+          editorSingletons.layoutMgr.updateMaxTopAndLeft();
+          break;
         case 'preview':
           break;
       }
@@ -329,9 +337,9 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
           widthVw: (100 * (cell.width() + 2)) / document.documentElement.clientWidth,
           heightVh: (100 * (cell.height() + 2)) / document.documentElement.clientHeight,
         };
-        if (typeof layoutMgr !== 'undefined') {
+        if (editorSingletons.layoutMgr) {
           // TODO
-          const heights = layoutMgr.getHeightCols();
+          const heights = editorSingletons.layoutMgr.getHeightCols();
           curDrpZone['rowHeightPercent'] = heights.length ? heights[0] : 100;
         }
         break;
@@ -342,9 +350,9 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
           widthVw: (100 * (cell.width() + 16)) / document.documentElement.clientWidth,
           heightVh: (100 * (cell.height() + 2)) / document.documentElement.clientHeight,
         };
-        if (typeof layoutMgr !== 'undefined') {
+        if (editorSingletons.layoutMgr) {
           // TODO
-          const heights = layoutMgr.getHeightCols();
+          const heights = editorSingletons.layoutMgr.getHeightCols();
           curDrpZone['rowHeightPercent'] = heights.length ? heights[0] : 100;
         }
     }
@@ -444,4 +452,4 @@ var rescaleHelper = function (dashboardDimensionsArg, scalingMethodArg, modeArg)
     computeRelativeColHeigth: computeRelativeColHeigth,
     deserialize: deserialize,
   };
-};
+}

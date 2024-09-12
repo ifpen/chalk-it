@@ -6,11 +6,14 @@
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Ghiles HIDEUR, Tristan BARTEMENT │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
+import { modelsParameters } from 'kernel/base/widgets-states';
 
 // +--------------------------------------------------------------------¦ \\
 // |                           Widget base                              | \\
 // +--------------------------------------------------------------------¦ \\
-function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
+export function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
   this.idDivContainer = idDivContainer;
   this.idWidget = idWidget;
   this.idInstance = idInstance;
@@ -845,7 +848,7 @@ baseWidget.prototype.render = function () {};
 /**
  * Not used (a least for now). Only meant to document the expected interface of actuators.
  */
-class WidgetActuator {
+export class WidgetActuator {
   /**
    * Sets a new value into the widget for this actuator
    * @param {*} value
@@ -898,7 +901,7 @@ class WidgetActuator {
 }
 
 /** Base implementation providing a refecence to the widget and an updateCallback */
-class WidgetActuatorBase extends WidgetActuator {
+export class WidgetActuatorBase extends WidgetActuator {
   static NOOP_CALLBACK = function (actuator, value, doubleTrig = undefined) {};
 
   constructor(widget) {
@@ -923,7 +926,7 @@ class WidgetActuatorBase extends WidgetActuator {
 /**
  * Provides information on a actuator for user feedback (description, validation, filtering of datanodes)
  */
-class WidgetActuatorDescription {
+export class WidgetActuatorDescription {
   // Directions
   static TRIGGER = 0;
   static READ = 1;
@@ -990,7 +993,7 @@ class WidgetActuatorDescription {
  *
  * Composite used to nest errors to structure causes, etc.
  */
-class WidgetActuatorValidationError {
+export class WidgetActuatorValidationError {
   constructor(msg, nested = undefined) {
     this._msg = msg;
     this._nested = nested || [];

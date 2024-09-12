@@ -18,26 +18,6 @@ from pathlib import Path
 
 
 class TemplateUtils:
-
-    @classmethod
-    def get_version(cls, root_dir: str) -> str:
-        """
-        Search for a file with a pattern 'index-view-<version>.html' in the specified directory
-        and extract the version number.
-
-        Parameters:
-        - root_dir (Path): The root directory path where the index HTML file is located. This
-                path is also set as the base directory for the application.
-
-        :return: The version number as a string if found, else None
-        """
-        VERSION_PATTERN = re.compile(r"index-view-(\d+\.\d+\.\d+)\.html")
-        for file in os.listdir(str(root_dir)):
-            match = VERSION_PATTERN.match(file)
-            if match:
-                return "-" + match.group(1)
-        return ""  # debug mode
-
     @classmethod
     def render_template(cls, root_dir: str, xprjson_path: str, file_name: str) -> str:
         """
@@ -57,13 +37,12 @@ class TemplateUtils:
         Returns:
         - str: The dashboard HTML content with the configuration data injected.
         """
-        VERSION: str = cls.get_version(root_dir)
         template_data_with_config: str = ""
         config_data: object = {}
         with open(xprjson_path, "r") as config_file:
             config_data = json.load(config_file)
 
-        index_view_path: Path = root_dir / f"{file_name}{VERSION}.html"
+        index_view_path: Path = root_dir / f"{file_name}.html"
 
         with open(index_view_path, "r") as template_file:
             template_data: str = template_file.read()

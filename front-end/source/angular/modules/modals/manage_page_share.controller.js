@@ -6,8 +6,9 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI                                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import { modalsModule } from './modals';
 
-angular.module('modules').controller('ManagePageShareController', [
+modalsModule.controller('ManagePageShareController', [
   '$scope',
   '$rootScope',
   'ManagePageSharingService',

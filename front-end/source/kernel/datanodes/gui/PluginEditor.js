@@ -1,4 +1,4 @@
-// +--------------------------------------------------------------------+ \\
+﻿// +--------------------------------------------------------------------+ \\
 // ¦ PluginEditor                                                       ¦ \\
 // +--------------------------------------------------------------------¦ \\
 // │ Copyright © 2013 Jim Heising (https://github.com/jheising)         │ \\
@@ -11,8 +11,13 @@
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
+import _ from 'lodash';
 
-PluginEditor = function (jsEditor) {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { Path2FileName } from 'kernel/datanodes/plugins/thirdparty/utils';
+
+export function PluginEditor(jsEditor) {
   function _displayValidationError(settingName, errorMessage) {
     var errorElement = $('<div class="validation--error"></div>').html(errorMessage);
     var node;
@@ -490,7 +495,7 @@ PluginEditor = function (jsEditor) {
             newSettings.settings[settingDef.name] = currentSettingsValues[settingDef.name];
             newSettings.settings['content'] = currentSettingsValues['content'];
             if (_.isUndefined($('#var-body')[0])) {
-              var input = $(
+              let input = $(
                 '<input type="text" title="' +
                   settingDef.display_name +
                   '" class="input__wrapper--text" id="var-body" autocorrect="off" autocomplete="off" spellcheck="false" />'
@@ -544,7 +549,7 @@ PluginEditor = function (jsEditor) {
           case 'option': {
             var defaultValue = currentSettingsValues[settingDef.name];
             var selectId = 'select-option-' + settingDef.name;
-            var input = $('<select id="' + selectId + '"></select>')
+            let input = $('<select id="' + selectId + '"></select>')
               .appendTo($('<div class="styled-select"></div>').appendTo(valueCell))
               .change(function () {
                 newSettings.settings[settingDef.name] = $(this).val();
@@ -618,7 +623,7 @@ PluginEditor = function (jsEditor) {
             break;
           }
           default: {
-            var input;
+            let input;
             newSettings.settings[settingDef.name] = currentSettingsValues[settingDef.name];
 
             if (settingDef.type == 'calculated') {
@@ -666,10 +671,9 @@ PluginEditor = function (jsEditor) {
                   if (settingDef.type == 'number') {
                     newSettings.settings[settingDef.name] = Number($(this).val());
                   } else {
-                    var bFoundConnection = false;
-                    var prop = '';
-                    for (var prop in widgetConnector.widgetsConnection) {
-                      for (var i in widgetConnector.widgetsConnection[prop].sliders) {
+                    let bFoundConnection = false;
+                    for (const prop in widgetConnector.widgetsConnection) {
+                      for (const i in widgetConnector.widgetsConnection[prop].sliders) {
                         if (widgetConnector.widgetsConnection[prop].sliders[i].name != 'None') {
                           if (!_.isUndefined(widgetConnector.widgetsConnection[prop].sliders[i].connectedDataNodeS)) {
                             // MBG security
@@ -809,7 +813,8 @@ PluginEditor = function (jsEditor) {
     });
 
     //AEF: new display
-    if ($('#datanode-list').children().length == 0) {
+    if ($('#datanode-list')[0].childNodes.length == 0) {
+      // FIXME
       //add plugin once
       $('#datanode-list')[0].innerHTML = '';
       $(
@@ -817,12 +822,12 @@ PluginEditor = function (jsEditor) {
       ).appendTo($('#datanode-list'));
       for (let i = 0; i < labels.length; i++) {
         if (typeOptGp[labels[i].name].length > 0) {
-          var datanodeWrap = $('<div class="add__new__datanode--list--wrap"></div>').appendTo($('#datanode-list'));
+          const datanodeWrap = $('<div class="add__new__datanode--list--wrap"></div>').appendTo($('#datanode-list'));
           $('<span>' + labels[i].name + '</span>').appendTo(datanodeWrap);
-          let ul = $('<ul></ul>').appendTo(datanodeWrap);
+          const ul = $('<ul></ul>').appendTo(datanodeWrap);
 
           for (let j = 0; j < typeOptGp[labels[i].name].length; j++) {
-            a = $(
+            const a = $(
               '<a title="Open ' +
                 labels[i].name +
                 ' : ' +
@@ -836,9 +841,15 @@ PluginEditor = function (jsEditor) {
           }
         }
       }
-      let $body = angular.element(document.body);
-      let $rootScope = $body.scope().$root;
-      $rootScope.myDataNodeHTML = $('#datanode-list').html();
+
+      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+      const element = document.getElementById('datanode-list');
+      const content = element.innerHTML;
+      const injector = angular.element(document.body).injector();
+      injector.invoke([
+        '$compile',
+        ($compile) => angular.element(element).empty().append($compile(content)(scopeDash)),
+      ]);
     }
   }
 
@@ -854,4 +865,4 @@ PluginEditor = function (jsEditor) {
       return saveSettings(selectedType, settings, settingsSavedCallback);
     },
   };
-};
+}

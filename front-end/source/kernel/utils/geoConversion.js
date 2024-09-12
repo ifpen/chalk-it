@@ -6,6 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Francis PRADEL                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 
 var geoJsonColors = ['#800080', '#FF00FF', '#000080', '#0000FF', '#008080', '#00FFFF', '#FFFF00', '#800000'];
 
@@ -18,12 +19,12 @@ var geoConversion = (function () {
 
     var dqJson = { longitude: [], latitude: [] };
 
-    for (i = 0; i < geoJsonTrace.features.length; i++) {
+    for (let i = 0; i < geoJsonTrace.features.length; i++) {
       if (geoJsonTrace.features[i].geometry.type != 'LineString') break;
-      var coordinates = geoJsonTrace.features[i].geometry.coordinates;
-      for (k = 0; k < coordinates.length; k++) {
-        curLat = Number(coordinates[k][1]);
-        curLng = Number(coordinates[k][0]);
+      const coordinates = geoJsonTrace.features[i].geometry.coordinates;
+      for (let k = 0; k < coordinates.length; k++) {
+        const curLat = Number(coordinates[k][1]);
+        const curLng = Number(coordinates[k][0]);
         dqJson['latitude'].push(curLat);
         dqJson['longitude'].push(curLng);
       }
@@ -65,10 +66,10 @@ var geoConversion = (function () {
   // |                           dqTrip2geoJson                           | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function dqTrip2geoJson(dqJson, fileName, indexColor) {
-    var //mydate = dqJson['date'],
-      mylong = dqJson['longitude'],
-      mylat = dqJson['latitude']; //,
-    //myacc = dqJson['gpsAccuracy'];
+    // let mydate = dqJson['date'];
+    let mylong = dqJson['longitude'];
+    let mylat = dqJson['latitude'];
+    // let myacc = dqJson['gpsAccuracy'];
 
     var legend = fileName + '_gpsTrace';
     var gj = null; //ABK
@@ -85,7 +86,7 @@ var geoConversion = (function () {
   // ├────────────────────────────────────────────────────────────────────┤ \\
   function dqTrip2Csv(dqJson) {
     var csvContent = 'latitude,longitude\n';
-    for (var k = 0; k < dqJson.longitude.length; k++) {
+    for (let k = 0; k < dqJson.longitude.length; k++) {
       csvContent = csvContent + dqJson.latitude[k] + ',' + dqJson.longitude[k] + '\n';
     }
     return csvContent;
@@ -220,7 +221,7 @@ function Points(value) {
     return top;
   }
 
-  upper = upperLeft(value);
+  const upper = upperLeft(value);
 
   // A custom sort function that sorts p1 and p2 based on their slope
   // that is formed from the upper most point from the array of points.

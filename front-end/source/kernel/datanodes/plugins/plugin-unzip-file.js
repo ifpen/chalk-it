@@ -1,3 +1,7 @@
+import _ from 'lodash';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { zipToObject } from 'kernel/datanodes/plugins/thirdparty/utils';
+
 (function () {
   var error = false;
   // ## A Datanode Plugin
@@ -17,7 +21,7 @@
     // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
     description: 'unzip files',
     // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.
-    external_scripts: [''],
+    external_scripts: [],
     // **settings** : An array of settings that will be displayed for this plugin when the user adds it.
     settings: [
       {
@@ -82,6 +86,7 @@
         try {
           await self.parseFile();
         } catch (error) {
+          console.error(error);
           notificationCallback('error', currentSettings.name, error.message);
           fileStruct = null; // setting null will prevent unzipping bad data until we have a new value
         }

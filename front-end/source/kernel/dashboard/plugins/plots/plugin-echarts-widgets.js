@@ -6,6 +6,13 @@
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Tristan BARTEMENT, Guillaume CORBELIN  │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import * as echarts from 'echarts';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -122,7 +129,7 @@ function echartsWidgetsPluginClass() {
       this.applyDisplayOnWidget();
       // use configuration item and data specified to show chart
       if (bInteractive) {
-        var myChart = echarts.init(document.getElementById('echarts' + idWidget + 'c'));
+        const myChart = echarts.init(document.getElementById('echarts' + idWidget + 'c'));
         try {
           myChart.setOption(opt);
         } catch (e) {
@@ -135,7 +142,7 @@ function echartsWidgetsPluginClass() {
           });
         });
       } else {
-        var myChart = echarts.init(document.getElementById('echarts' + idWidget));
+        const myChart = echarts.init(document.getElementById('echarts' + idWidget));
         try {
           myChart.setOption(opt);
         } catch (e) {

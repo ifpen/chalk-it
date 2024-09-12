@@ -9,7 +9,7 @@
 
 // Define here how widgets are associated to callpses for display in editor toolbox
 
-var widgetsEditorToolboxDefinition = {
+export const widgetsEditorToolboxDefinition = {
   'collapse-basic': {
     name: 'Basic inputs & controls',
     widgets: [
@@ -54,9 +54,8 @@ var widgetsEditorToolboxDefinition = {
       'plotly3dSurface',
       'plotlyGeneric',
       'plotlyPyGeneric',
-      'matplotlib',      
+      'matplotlib',
       'plotlyRealTime',
-      'vegaGeneric',
       'echartsGeneric',
     ],
   },

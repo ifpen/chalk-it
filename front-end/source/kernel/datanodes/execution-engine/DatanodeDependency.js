@@ -7,7 +7,17 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-function DatanodeDependency() {
+import { xDashConfig } from 'config.js';
+import _ from 'lodash';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { union } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { offSchedLogUser } from 'kernel/base/main-common';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import GraphDS from 'graph-data-structure'; // FIXME 2 type of graphs ?
+import Graph from 'tarjan-graph';
+
+export function DatanodeDependency() {
   /*
 
        Main idea : make current dependencyStructure data structure here. 
@@ -109,9 +119,9 @@ function DatanodeDependency() {
     if (withoutMem) [graph, loop] = buildGraphWithoutMemory();
     else [graph, loop] = buildGraph();
     //startNodesDesc = new Set(startNodes); //AEF descendants should not include the start node
-    startNodesDesc = new Set();
+    let startNodesDesc = new Set();
     startNodes.forEach(function (elem) {
-      elemDesc = new Set(graph.getDescendants(elem));
+      const elemDesc = new Set(graph.getDescendants(elem));
       startNodesDesc = union(startNodesDesc, elemDesc);
     });
     return startNodesDesc;
@@ -183,7 +193,7 @@ function DatanodeDependency() {
     let graph;
     disconnectedGraphs.some(function (disconGraph) {
       if (disconGraph.has(node)) {
-        if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+        if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
           console.log('node ', node, ' is found in disconnected graph: ', disconGraph);
         graph = disconGraph;
       }
@@ -197,7 +207,7 @@ function DatanodeDependency() {
     const allSourceNodes = getSourceNodesWithMemory();
     let disconnectedGraphs = [];
     allDisconnectedGraphs = getDisconnectedGraphs(allSourceNodes, disconnectedGraphs);
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs: ', allDisconnectedGraphs);
     computeAllsingletonNodes();
   }
@@ -255,7 +265,8 @@ function DatanodeDependency() {
 
   /*-----------------getAllsingletonNodes-----------------*/
   function getAllsingletonNodes() {
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log('SingletonNodeList: ', SingletonNodeList);
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
+      console.log('SingletonNodeList: ', SingletonNodeList);
     return SingletonNodeList;
   }
   /*-----------------isSingletonNode-----------------*/
@@ -302,7 +313,7 @@ function DatanodeDependency() {
   // add the extra start node came from user refresh, setvalue, setfile, edit and add
   function addExtraStartNodesList(dsName, callOrigin) {
     if (extraStartNodesList.has(dsName)) {
-      xdashNotifications.manageNotification(
+      runtimeSingletons.xdashNotifications.manageNotification(
         'info',
         dsName,
         dsName + ' is called many consecutif times while scheduler is in progress'
@@ -326,7 +337,7 @@ function DatanodeDependency() {
   function addSetvarList(dsName, callOrigin) {
     if (setvarList.has(dsName)) {
       if (setvarList.get(dsName) !== callOrigin)
-        xdashNotifications.manageNotification(
+        runtimeSingletons.xdashNotifications.manageNotification(
           'warning',
           dsName,
           'Possible undeterminism: setVariable of "' +

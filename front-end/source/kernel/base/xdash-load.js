@@ -6,14 +6,35 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import angular from 'angular';
 
-var userCode = null;
+import _ from 'lodash';
 
-var angularModule = angular
+// TODO shared module
+import 'angular-ui-router';
+import 'angular-route';
+import 'angular-loading-bar';
+import 'angular-ui-bootstrap';
+
+import 'angularjs-gauge';
+import 'angularjs-slider';
+import 'angularjs-datepicker';
+
+import 'ng-tags-input';
+import 'angular-sanitize';
+
+import 'angular/modules/modules';
+
+import { xServConfig, urlPython, xDashConfig } from 'config.js';
+import { findGetParameter } from '../datanodes/plugins/thirdparty/utils';
+
+var userCode = null; // FIXME
+
+angular
   .module('xCLOUD', [
     'ui.router',
-    'angularjs-gauge',
     'ui.bootstrap',
+    'angularjs-gauge',
     'angular-loading-bar',
     'modules',
     'ngTagsInput',
@@ -39,7 +60,7 @@ var angularModule = angular
       $rootScope.enableServer = !_.isUndefined(xServConfig.urlApi) && !_.isNull(xServConfig.urlApi);
       $rootScope.xDashFullVersion = !(xDashConfig.xDashBasicVersion == 'true');
       $rootScope.enableRegistration = !(xDashConfig.disableRegistration == 'true');
-      $rootScope.enablePyodide = xDashConfig['pyodide'].pyodide_index!='';
+      $rootScope.enablePyodide = xDashConfig['pyodide'].pyodide_index != '';
       $rootScope.urlTerms = xDashConfig.urlWebSite + 'terms-credits/xDashTermsofUse10062020.html';
       if ($rootScope.xDashFullVersion) $rootScope.urlCredits = xDashConfig.urlWebSite + 'terms-credits/Credits.html';
       else $rootScope.urlCredits = xDashConfig.urlWebSite + '/blob/main/credits.html';
@@ -54,6 +75,7 @@ var angularModule = angular
       }
 
       $rootScope.listAvailablesTags = [
+        // TODO rm
         { name: 'tags 1', value: 'tag1' },
         { name: 'tags 2', value: 'tag2' },
         { name: 'tags 3', value: 'tag3' },
@@ -169,7 +191,7 @@ var angularModule = angular
       $rootScope.loadingBarStart = function () {
         cfpLoadingBar.start();
         $rootScope.isLoading = true;
-        timer = setTimeout(function () {
+        setTimeout(function () {
           cfpLoadingBar.complete();
           $rootScope.isLoading = false;
         }, 10000);
@@ -318,3 +340,5 @@ var angularModule = angular
       });
     },
   ]);
+
+export const xcloudModule = angular.module('xCLOUD');

@@ -5,8 +5,9 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 
-var inputHandler = (function () {
+export const inputHandler = (function () {
   /*--------patchInputVariables--------*/
   function patchInputVariables(jsonContent, projectQueryParams) {
     _.each(projectQueryParams, (parVal) => {

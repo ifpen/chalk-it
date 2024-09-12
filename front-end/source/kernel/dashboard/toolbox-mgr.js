@@ -6,8 +6,12 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Mondher AJIMI   │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 
-function widgetToolboxClass() {
+import { widgetsEditorToolboxDefinition } from './toolbox-def';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+
+export function widgetToolboxClass() {
   var searchParams = [];
   var allWidgets = getAllWidgetsNames();
 
@@ -68,7 +72,7 @@ function widgetToolboxClass() {
     var $body = angular.element(document.body); // 1
     var $rootScope = $body.scope().$root;
     let scopeWdgt = angular.element(document.getElementById('widget__wrap')).scope();
-    scopeWdgt.myWidgetHTML = $('#widgetGroups').html();
+    scopeWdgt.myWidgetHTML = $('#widgetGroups').html(); // FIXME
 
     if (filter) document.getElementById('widget__groups--wrapper--icons').style.overflow = 'visible';
     if (filter && scopeWdgt.displayedWdgtIndex != 0) scopeWdgt.toggleWidgetLibDisplay(0);
@@ -147,5 +151,3 @@ function widgetToolboxClass() {
     }
   });
 }
-
-var WTBC = new widgetToolboxClass();

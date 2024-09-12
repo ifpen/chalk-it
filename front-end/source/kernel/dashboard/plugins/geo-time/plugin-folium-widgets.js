@@ -5,6 +5,11 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Author(s) :  Mongi BEN GAID                                        │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -53,14 +58,14 @@ function foliumWidgetPluginClass() {
 
         try {
           // Cleaning folium wrappers originally for Jupyter notebooks
-          div1 = foliumDiv.firstElementChild;
+          const div1 = foliumDiv.firstElementChild;
           if (div1.tagName == 'DIV') {
             div1.style.height = '100%';
-            div2 = div1.firstElementChild;
+            const div2 = div1.firstElementChild;
             if (div2.tagName == 'DIV') {
               div2.style.height = '100%';
               div2.style['padding-bottom'] = null;
-              div3 = div2.firstElementChild;
+              const div3 = div2.firstElementChild;
               if (div3.tagName == 'DIV') {
                 div3.style.height = '100%';
               }
@@ -70,10 +75,7 @@ function foliumWidgetPluginClass() {
           console.log(ex);
         }
       }
-      foliumDiv.setAttribute(
-        'style',
-        'width: inherit; height: inherit; background-color: rgba(0, 0, 0, 0)'
-      );
+      foliumDiv.setAttribute('style', 'width: inherit; height: inherit; background-color: rgba(0, 0, 0, 0)');
       $('#' + idDivContainer).html(foliumDiv);
     };
 
