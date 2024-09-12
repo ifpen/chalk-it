@@ -19,7 +19,7 @@ Depending on the parametrization, new actuators may appear in "Data connection" 
 -   0 to 8 possible layer of [imageOverlay](#imageoverlay-layers) objects
 -   0 to 8 possible layer of [svgOverlay](#svgoverlay-layers) objects
 
-In addition to these pure display layers, selection controls can be activated by enabling the [drawingFeatures](#drawing-features) option. Regions of the map can thus be selected using the mouse. When this option is enabled, the **selectedGeoJson** actuator receives user selection as geoJson, and needs to be connected to a [variable](../../ds/ds-basics/#variable)-type dataNode. This features are based on the [Geoman](https://geoman.io/) plugin.
+In addition to these pure display layers, selection controls can be activated by enabling the [drawingFeatures](#drawing-features) option. Regions of the map can thus be selected using the mouse. When this option is enabled, the **selectedGeoJson** actuator receives user selection as geoJson, and needs to be connected to a [variable](../ds/ds-basics.md#variable)-type dataNode. This features are based on the [Geoman](https://geoman.io/) plugin.
 
 Enabling the _drawingFeatures_ option enables the **drawingFeaturesOptions** parameters set which manages selection options (point, line, polygon, rectangle).
 
@@ -86,10 +86,10 @@ Properties field of each feature allows to configure it. It comprises the follow
 
 Examples :
 
--   Single point : [osm-geojson-point.xprjson](/wdg/maps/osm-geojson-point.xprjson)
--   Multiple points : [osm-geojson-points.xprjson](/wdg/maps/osm-geojson-points.xprjson)
--   Awesome markers : [osm-geojson-point-awesome-marker.xprjson](/wdg/maps/osm-geojson-point-awesome-marker.xprjson)
--   Disable autoscale with geoJSON point : [osm-geojson-point-disable-autoscale.xprjson](/wdg/maps/osm-geojson-point-disable-autoscale.xprjson)
+-   Single point : [osm-geojson-point.xprjson](maps/osm-geojson-point.xprjson)
+-   Multiple points : [osm-geojson-points.xprjson](maps/osm-geojson-points.xprjson)
+-   Awesome markers : [osm-geojson-point-awesome-marker.xprjson](maps/osm-geojson-point-awesome-marker.xprjson)
+-   Disable autoscale with geoJSON point : [osm-geojson-point-disable-autoscale.xprjson](maps/osm-geojson-point-disable-autoscale.xprjson)
 
 #### Line
 
@@ -135,8 +135,8 @@ which will be displayed as :
 
 Examples :
 
--   Single line : [osm-geojson-line.xprjson](/wdg/maps/osm-geojson-line.xprjson)
--   Multiple lines : [osm-geojson-lines.xprjson](/wdg/maps/osm-geojson-lines.xprjson)
+-   Single line : [osm-geojson-line.xprjson](maps/osm-geojson-line.xprjson)
+-   Multiple lines : [osm-geojson-lines.xprjson](maps/osm-geojson-lines.xprjson)
 
 #### Polygon
 
@@ -190,7 +190,7 @@ which will be displayed as :
 
 Example :
 
--   [osm-geojson-polygon.xprjson](/wdg/maps/osm-geojson-polygon.xprjson)
+-   [osm-geojson-polygon.xprjson](maps/osm-geojson-polygon.xprjson)
 
 See also : [Using GeoJSON with Leaflet](https://leafletjs.com/examples/geojson/)
 
@@ -232,14 +232,14 @@ Example of display (for a larger data set) :
 
 Example :
 
--   [osm-heatmap-view.xprjson](/wdg/maps/osm-heatmap-view.xprjson)
+-   [osm-heatmap-view.xprjson](maps/osm-heatmap-view.xprjson)
 
 Several parameters control the display of the heatmap, in particular :
 
 -   **sampledDisplay** : allows to feed the map in real-time with instantaneous measures (single heatmap point). The config of the first point will be used. See corresponding examples:
 
--   [osm-heatmap-play-py.xprjson](/wdg/maps/osm-heatmap-play-py.xprjson)
--   [osm-heatmap-play-js.xprjson](/wdg/maps/osm-heatmap-play-js.xprjson)
+-   [osm-heatmap-play-py.xprjson](maps/osm-heatmap-play-py.xprjson)
+-   [osm-heatmap-play-js.xprjson](maps/osm-heatmap-play-js.xprjson)
 
 ### lineHeatMap layers
 
@@ -295,7 +295,7 @@ Example of display (for a larger data set) :
 
 Example :
 
--   [osm-lineheatmap.xprjson](/wdg/maps/osm-lineheatmap.xprjson)
+-   [osm-lineheatmap.xprjson](maps/osm-lineheatmap.xprjson)
 
 ### Choropleth layers
 
@@ -369,8 +369,8 @@ Example of display (for a larger data set) :
 
 Example :
 
--   [osm-choropleth-py.xprjson](/wdg/maps/osm-choropleth-py.xprjson)
--   [osm-choropleth-js.xprjson](/wdg/maps/osm-choropleth-js.xprjson)
+-   [osm-choropleth-py.xprjson](maps/osm-choropleth-py.xprjson)
+-   [osm-choropleth-js.xprjson](maps/osm-choropleth-js.xprjson)
 
 ### imageOverlay layers
 
@@ -393,7 +393,7 @@ _overlay_ which adds a checkbox control, or _baseLayer_ which adds a radio butto
 
 Example :
 
--   [osm-image-overlay.xprjson](/wdg/maps/osm-image-overlay.xprjson)
+-   [osm-image-overlay.xprjson](maps/osm-image-overlay.xprjson)
 
 ### svgOverlay layers
 
@@ -431,7 +431,7 @@ Example of display (for a larger data set) :
 
 Example :
 
--   [osm-svg-layer-view-js.xprjson](/wdg/maps/osm-svg-layer-view-js.xprjson)
+-   [osm-svg-layer-view-js.xprjson](maps/osm-svg-layer-view-js.xprjson)
 
 ### Drawing features
 
@@ -443,7 +443,7 @@ Selection result will be written to the _selectedGeoJson_ actuator.
 
 Example :
 
--   [osm-drawing-features.xprjson](/wdg/maps/osm-drawing-features.xprjson)
+-   [osm-drawing-features.xprjson](maps/osm-drawing-features.xprjson)
 
 ## Folium Maps
 
@@ -453,7 +453,7 @@ Folium is built on top of the Python data analysis library pandas, which makes i
 
 Usage examples:
 
--   [folium-point.xprjson](/wdg/maps/folium-point.xprjson)
+-   [folium-point.xprjson](maps/folium-point.xprjson)
 
 ## Address autocompletion
 
@@ -469,7 +469,7 @@ Use the _Simple calendar_ widget to select a date.
 
 Example :
 
--   [date-picker.xprjson](/wdg/date-time/date-picker.xprjson)
+-   [date-picker.xprjson](date-time/date-picker.xprjson)
 
 ## Date-range calendar
 
@@ -483,7 +483,7 @@ Allows to associate range heatmap to a yearly-based calendar. Very useful to vis
 
 Example :
 
--   [d3-year-heatmap-calendar.xprjson](/wdg/date-time/d3-year-heatmap-calendar.xprjson)
+-   [d3-year-heatmap-calendar.xprjson](date-time/d3-year-heatmap-calendar.xprjson)
 
 ## Simple clock
 
@@ -493,4 +493,4 @@ Use the _Simple clock_ widget to select a time.
 
 Example :
 
--   [time-picker.xprjson](/wdg/date-time/time-picker.xprjson)
+-   [time-picker.xprjson](date-time/time-picker.xprjson)

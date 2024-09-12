@@ -26,4 +26,9 @@ Reference xprjson are in the docs directory. Run the following code to build the
 python copy_templates.py
 ```
 
+## Serve when writing
 
+
+```sh
+mkdocs serve
+```

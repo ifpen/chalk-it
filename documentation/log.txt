@@ -1,0 +1,141 @@
+ Doc file 'recipes.md' contains an absolute link '/recipes/json-to-table-linewise-js.xprjson', it was left as is. Did you mean 'recipes/json-to-table-linewise-js.xprjson'?
+INFO    -  Doc file 'recipes.md' contains an absolute link '/recipes/json-to-table-columnwise-js.xprjson', it was left as is. Did you mean 'recipes/json-to-table-columnwise-js.xprjson'?
+INFO    -  Doc file 'recipes.md' contains an absolute link '/recipes/csv-read-write-js.xprjson', it was left as is. Did you mean 'recipes/csv-read-write-js.xprjson'?
+INFO    -  Doc file 'recipes.md' contains an absolute link '/recipes/plotly-with-date-time-js.xprjson', it was left as is. Did you mean 'recipes/plotly-with-date-time-js.xprjson'?
+INFO    -  Doc file 'recipes.md' contains an absolute link '/recipes/xls-from-url-to-json-js.xprjson', it was left as is. Did you mean 'recipes/xls-from-url-to-json-js.xprjson'?
+INFO    -  Doc file 'ds/ds-basics.md' contains an absolute link '/ds/xprjson/simple-json.xprjson', it was left as is. Did you mean 'xprjson/simple-json.xprjson'?
+INFO    -  Doc file 'ds/ds-basics.md' contains an absolute link '/ds/xprjson/py-script.xprjson', it was left as is.
+INFO    -  Doc file 'ds/ds-execution-engine.md' contains an absolute link '/ds/xprjson/reset-counter.xprjson', it was left as is. Did you mean 'xprjson/reset-counter.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/formula-py.xprjson', it was left as is. Did you mean 'xprjson/formula-py.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/py/xprjson/rest-pandas-pyodide-covid-js-py.xprjson', it was left as is. Did you mean '../py/xprjson/rest-pandas-pyodide-covid-js-py.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/py/xprjson/plotly-python-widget-py.xprjson', it was left as is. Did you mean '../py/xprjson/plotly-python-widget-py.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/formula-js.xprjson', it was left as is. Did you mean 'xprjson/formula-js.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/webservice-get.xprjson', it was left as is. Did you mean 'xprjson/webservice-get.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/webservice-post-simple-js.xprjson', it was left as is. Did you mean 'xprjson/webservice-post-simple-js.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/webservice-get-args-js.xprjson', it was left as is. Did you mean 'xprjson/webservice-get-args-js.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/webservice-get-input-py.xprjson', it was left as is. Did you mean 'xprjson/webservice-get-input-py.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/webservice-get-input-js.xprjson', it was left as is. Did you mean 'xprjson/webservice-get-input-js.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/recipes/xls-from-url-to-json-py.xprjson', it was left as is. Did you mean '../recipes/xls-from-url-to-json-py.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/webservice-post-input-py.xprjson', it was left as is. Did you mean 'xprjson/webservice-post-input-py.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/webservice-post-input-js.xprjson', it was left as is. Did you mean 'xprjson/webservice-post-input-js.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/webservice-post-input-triggered-py.xprjson', it was left as is. Did you mean 'xprjson/webservice-post-input-triggered-py.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/webservice-post-input-triggered-js.xprjson', it was left as is. Did you mean 'xprjson/webservice-post-input-triggered-js.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an unrecognized relative link 'ds-execution-engine#explicit-trig', it was left as is. Did you mean 'ds-execution-engine.md#explicit-trig'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/csv-array.xprjson', it was left as is. Did you mean 'xprjson/csv-array.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/csv-json.xprjson', it was left as is. Did you mean 'xprjson/csv-json.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/apps/xprjson/csv-array-table-display.xprjson', it was left as is. Did you mean '../apps/xprjson/csv-array-table-display.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/csv-player.xprjson', it was left as is. Did you mean 'xprjson/csv-player.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/apps/xprjson/clock-and-delay.xprjson', it was left as is. Did you mean '../apps/xprjson/clock-and-delay.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/xprjson/memory.xprjson', it was left as is. Did you mean 'xprjson/memory.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/apps/xprjson/clock-and-delay.xprjson', it was left as is. Did you mean '../apps/xprjson/clock-and-delay.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an unrecognized relative link '../../wdg/wdg-geo-time/#leaflet-maps', it was left as is. Did you mean '../wdg/wdg-geo-time.md#leaflet-maps'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/apps/xprjson/osm-geojson-geolocation.full.xprjson', it was left as is. Did you mean '../apps/xprjson/osm-geojson-geolocation.full.xprjson'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/ws/simpleWS.js', it was left as is. Did you mean 'ws/simpleWS.js'?
+INFO    -  Doc file 'ds/ds-reference.md' contains an absolute link '/ds/ws/websocket-demo.xprjson', it was left as is. Did you mean 'ws/websocket-demo.xprjson'?
+INFO    -  Doc file 'ds/ds.md' contains an unrecognized relative link '../../ds/ds-basics/', it was left as is. Did you mean 'ds-basics.md'?
+INFO    -  Doc file 'ds/ds.md' contains an unrecognized relative link '../../ds/ds-execution-engine/', it was left as is. Did you mean 'ds-execution-engine.md'?
+INFO    -  Doc file 'ds/ds.md' contains an unrecognized relative link '../../ds/ds-reference/', it was left as is. Did you mean 'ds-reference.md'?
+INFO    -  Doc file 'py/py-default.md' contains an absolute link '/py/xprjson/plotly-python-widget-py-local.xprjson', it was left as is. Did you mean 'xprjson/plotly-python-widget-py-local.xprjson'?
+INFO    -  Doc file 'py/py-default.md' contains an absolute link '/py/xprjson/rest-pandas-pyodide-covid-js-py-local.xprjson', it was left as is. Did you mean 'xprjson/rest-pandas-pyodide-covid-js-py-local.xprjson'?
+INFO    -  Doc file 'py/py-index.md' contains an unrecognized relative link '../py-default', it was left as is. Did you mean 'py-default.md'?
+INFO    -  Doc file 'py/py-index.md' contains an unrecognized relative link '../py-pyodide/', it was left as is. Did you mean 'py-pyodide.md'?
+INFO    -  Doc file 'py/py-index.md' contains an unrecognized relative link '../py-proto-flask/#local-prototyping-with-flask', it was left as is. Did you mean 'py-proto-flask.md#local-prototyping-with-flask'?
+INFO    -  Doc file 'py/py-index.md' contains an unrecognized relative link '../py-default/', it was left as is. Did you mean 'py-default.md'?
+INFO    -  Doc file 'py/py-index.md' contains an unrecognized relative link '../py-pyodide/', it was left as is. Did you mean 'py-pyodide.md'?
+INFO    -  Doc file 'py/py-index.md' contains an unrecognized relative link '../py-proto-flask/', it was left as is. Did you mean 'py-proto-flask.md'?
+INFO    -  Doc file 'py/py-proto-flask.md' contains an absolute link '/py/template-python-ws.py', it was left as is. Did you mean 'template-python-ws.py'?
+INFO    -  Doc file 'py/py-proto-flask.md' contains an absolute link '/py/xprjson/python-webservice.xprjson', it was left as is. Did you mean 'xprjson/python-webservice.xprjson'?
+INFO    -  Doc file 'quick-start/quickstart.md' contains an absolute link '/quick-start/xprjson/iris-tutorial.xprjson', it was left as is. Did you mean 'xprjson/iris-tutorial.xprjson'?
+INFO    -  Doc file 'wdg/wdg-annotation-video.md' contains an absolute link '/wdg/annotation/base64-image-py.xprjson', it was left as is. Did you mean 'annotation/base64-image-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-annotation-video.md' contains an absolute link '/wdg/annotation/base64-image-js.xprjson', it was left as is. Did you mean 'annotation/base64-image-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-annotation-video.md' contains an absolute link '/wdg/annotation/markdown-py.xprjson', it was left as is. Did you mean 'annotation/markdown-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-annotation-video.md' contains an absolute link '/wdg/annotation/markdown-js.xprjson', it was left as is. Did you mean 'annotation/markdown-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-annotation-video.md' contains an absolute link '/wdg/annotation/generic-html-py.xprjson', it was left as is. Did you mean 'annotation/generic-html-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-annotation-video.md' contains an absolute link '/wdg/annotation/generic-html-js.xprjson', it was left as is. Did you mean 'annotation/generic-html-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-annotation-video.md' contains an unrecognized relative link '../../ds/ds-basics/#variable', it was left as is. Did you mean '../ds/ds-basics.md#variable'?
+INFO    -  Doc file 'wdg/wdg-annotation-video.md' contains an absolute link '/wdg/annotation/video-screenshot.xprjson', it was left as is. Did you mean 'annotation/video-screenshot.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-displays.md' contains an absolute link '/wdg/basic/advanced-kpi-py.xprjson', it was left as is. Did you mean 'basic/advanced-kpi-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-displays.md' contains an absolute link '/wdg/basic/advanced-kpi-js.xprjson', it was left as is. Did you mean 'basic/advanced-kpi-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-displays.md' contains an absolute link '/wdg/basic/progress-bar.xprjson', it was left as is. Did you mean 'basic/progress-bar.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-displays.md' contains an unrecognized relative link '../../wdg/wdg-annotation-video#label', it was left as is. Did you mean 'wdg-annotation-video.md#label'?
+INFO    -  Doc file 'wdg/wdg-basic-displays.md' contains an unrecognized relative link '../../wdg/wdg-annotation-video#markdown', it was left as is. Did you mean 'wdg-annotation-video.md#markdown'?
+INFO    -  Doc file 'wdg/wdg-basic-displays.md' contains an unrecognized relative link '../../wdg/wdg-annotation-video#html', it was left as is. Did you mean 'wdg-annotation-video.md#html'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an unrecognized relative link '../../ds/ds-execution-engine/#setvalue-from-widget', it was left as is. Did you mean '../ds/ds-execution-engine.md#setvalue-from-widget'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an unrecognized relative link '../../ds/ds-execution-engine/#setvalue-from-file', it was left as is. Did you mean '../ds/ds-execution-engine.md#setvalue-from-file'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an unrecognized relative link '../../ds/ds-basics/#variable', it was left as is. Did you mean '../ds/ds-basics.md#variable'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an unrecognized relative link '../../ds/ds-reference/#csv-file-reader', it was left as is. Did you mean '../ds/ds-reference.md#csv-file-reader'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an unrecognized relative link '../../ds/ds-reference/#csv-file-player', it was left as is. Did you mean '../ds/ds-reference.md#csv-file-player'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/basic/buttons.xprjson', it was left as is. Did you mean 'basic/buttons.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/basic/combo-box-py.xprjson', it was left as is. Did you mean 'basic/combo-box-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/basic/combo-box-js.xprjson', it was left as is. Did you mean 'basic/combo-box-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/basic/list-py.xprjson', it was left as is. Did you mean 'basic/list-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/basic/list-js.xprjson', it was left as is. Did you mean 'basic/list-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/basic/multi-select-py.xprjson', it was left as is. Did you mean 'basic/multi-select-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/basic/multi-select-js.xprjson', it was left as is. Did you mean 'basic/multi-select-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/tables/table.xprjson', it was left as is. Did you mean 'tables/table.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an unrecognized relative link '../../ds/ds-basics/#variable', it was left as is. Did you mean '../ds/ds-basics.md#variable'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an unrecognized relative link '../../ds/ds-basics/#variable', it was left as is. Did you mean '../ds/ds-basics.md#variable'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/tables/table-editable.xprjson', it was left as is. Did you mean 'tables/table-editable.xprjson'?
+INFO    -  Doc file 'wdg/wdg-basic-inputs.md' contains an absolute link '/wdg/tables/editable-table-2D.xprjson', it was left as is. Did you mean 'tables/editable-table-2D.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an unrecognized relative link '../../ds/ds-basics/#variable', it was left as is. Did you mean '../ds/ds-basics.md#variable'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-geojson-point.xprjson', it was left as is. Did you mean 'maps/osm-geojson-point.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-geojson-points.xprjson', it was left as is. Did you mean 'maps/osm-geojson-points.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-geojson-point-awesome-marker.xprjson', it was left as is. Did you mean 'maps/osm-geojson-point-awesome-marker.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-geojson-point-disable-autoscale.xprjson', it was left as is. Did you mean 'maps/osm-geojson-point-disable-autoscale.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-geojson-line.xprjson', it was left as is. Did you mean 'maps/osm-geojson-line.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-geojson-lines.xprjson', it was left as is. Did you mean 'maps/osm-geojson-lines.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-geojson-polygon.xprjson', it was left as is. Did you mean 'maps/osm-geojson-polygon.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-heatmap-view.xprjson', it was left as is. Did you mean 'maps/osm-heatmap-view.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-heatmap-play-py.xprjson', it was left as is. Did you mean 'maps/osm-heatmap-play-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-heatmap-play-js.xprjson', it was left as is. Did you mean 'maps/osm-heatmap-play-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-lineheatmap.xprjson', it was left as is. Did you mean 'maps/osm-lineheatmap.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-choropleth-py.xprjson', it was left as is. Did you mean 'maps/osm-choropleth-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-choropleth-js.xprjson', it was left as is. Did you mean 'maps/osm-choropleth-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-image-overlay.xprjson', it was left as is. Did you mean 'maps/osm-image-overlay.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-svg-layer-view-js.xprjson', it was left as is. Did you mean 'maps/osm-svg-layer-view-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/osm-drawing-features.xprjson', it was left as is. Did you mean 'maps/osm-drawing-features.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/maps/folium-point.xprjson', it was left as is. Did you mean 'maps/folium-point.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/date-time/date-picker.xprjson', it was left as is. Did you mean 'date-time/date-picker.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/date-time/d3-year-heatmap-calendar.xprjson', it was left as is. Did you mean 'date-time/d3-year-heatmap-calendar.xprjson'?
+INFO    -  Doc file 'wdg/wdg-geo-time.md' contains an absolute link '/wdg/date-time/time-picker.xprjson', it was left as is. Did you mean 'date-time/time-picker.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plotly/line-chart.xprjson', it was left as is. Did you mean 'plotly/line-chart.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plotly/bar-chart.xprjson', it was left as is. Did you mean 'plotly/bar-chart.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plotly/stack-bar-chart-js.xprjson', it was left as is. Did you mean 'plotly/stack-bar-chart-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plotly/pie-chart.xprjson', it was left as is. Did you mean 'plotly/pie-chart.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plotly/real-time-kpi-plotly-js.xprjson', it was left as is. Did you mean 'plotly/real-time-kpi-plotly-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plotly/bubble-chart-js.xprjson', it was left as is. Did you mean 'plotly/bubble-chart-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plotly/plotly-stat-box-js.xprjson', it was left as is. Did you mean 'plotly/plotly-stat-box-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plotly/plotly-density-heatmap-py.xprjson', it was left as is. Did you mean 'plotly/plotly-density-heatmap-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plots/matplotlib-bar-color-py.xprjson', it was left as is. Did you mean 'plots/matplotlib-bar-color-py.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an unrecognized relative link '../../ds/ds-reference/#javascript-script', it was left as is. Did you mean '../ds/ds-reference.md#javascript-script'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plots/vega-les-miserables-js.xprjson', it was left as is. Did you mean 'plots/vega-les-miserables-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg-plots.md' contains an absolute link '/wdg/plots/echarts-covid-comparison-js.xprjson', it was left as is. Did you mean 'plots/echarts-covid-comparison-js.xprjson'?
+INFO    -  Doc file 'wdg/wdg.md' contains an unrecognized relative link '../../wdg/wdg-common-concept/', it was left as is. Did you mean 'wdg-common-concept.md'?
+INFO    -  Doc file 'wdg/wdg.md' contains an unrecognized relative link '../../wdg/wdg-basic-inputs/', it was left as is. Did you mean 'wdg-basic-inputs.md'?
+INFO    -  Doc file 'wdg/wdg.md' contains an unrecognized relative link '../../wdg/wdg-plots/', it was left as is. Did you mean 'wdg-plots.md'?
+INFO    -  Doc file 'wdg/wdg.md' contains an unrecognized relative link '../../wdg/wdg-geo-time/', it was left as is. Did you mean 'wdg-geo-time.md'?
+INFO    -  Doc file 'wdg/wdg.md' contains an unrecognized relative link '../../wdg/wdg-annotation-video/', it was left as is. Did you mean 'wdg-annotation-video.md'?
+INFO    -  Doc file 'wdg/selection/plot-selection.md' contains an absolute link '/wdg/selection/selection-example-1.xprjson', it was left as is. Did you mean 'selection-example-1.xprjson'?
+INFO    -  Doc file 'wdg/selection/plot-selection.md' contains an absolute link '/wdg/selection/selection-example-2.xprjson', it was left as is. Did you mean 'selection-example-2.xprjson'?
+INFO    -  Doc file 'wdg/selection/plot-selection.md' contains an absolute link '/wdg/selection/selection-example-3.xprjson', it was left as is. Did you mean 'selection-example-3.xprjson'?
+INFO    -  Doc file 'wdg/selection/plot-selection.md' contains an absolute link '/wdg/selection/selection-example-4.xprjson', it was left as is. Did you mean 'selection-example-4.xprjson'?
+INFO    -  Doc file 'wdg/selection/plot-selection.md' contains an absolute link '/wdg/selection/selection-example-5.xprjson', it was left as is. Did you mean 'selection-example-5.xprjson'?
+WARNING -  mkdocs_autorefs: wdg\selection\plot-selection.md: Could not find cross-reference target ' 1 : {Data : [1, 10, 120, 123'
+WARNING -  mkdocs_autorefs: wdg\selection\plot-selection.md: Could not find cross-reference target 'marker'
+INFO    -  Doc file 'chalkitapi.md' contains a link 'ds/ds-execution-engine.md/#Explicit-Trigger', but the doc 'ds/ds-execution-engine.md' does not contain an anchor '#Explicit-Trigger'.
+INFO    -  Doc file 'ds/ds-execution-engine.md' contains a link '#Sample-Time', but there is no such anchor on this page.
+INFO    -  Doc file 'ds/ds-execution-engine.md' contains a link '../chalkitapi.md/#executeDataNode', but the doc 'chalkitapi.md' does not contain an anchor '#executeDataNode'.
+INFO    -  Doc file 'ds/ds-execution-engine.md' contains a link '../chalkitapi.md/#setVariable', but the doc 'chalkitapi.md' does not contain an anchor '#setVariable'.
+INFO    -  Doc file 'ds/ds-execution-engine.md' contains a link '../chalkitapi.md/#setVariableProperty', but the doc 'chalkitapi.md' does not contain an anchor '#setVariableProperty'.
+INFO    -  Doc file 'ds/ds-execution-engine.md' contains a link '../chalkitapi.md/#setVariables', but the doc 'chalkitapi.md' does not contain an anchor '#setVariables'.
+INFO    -  Doc file 'ds/ds-execution-engine.md' contains a link '../wdg/wdg-basic-inputs.md/#value', but the doc 'wdg/wdg-basic-inputs.md' does not contain an anchor '#value'.
+INFO    -  Doc file 'ds/ds-execution-engine.md' contains a link 'ds-basics.md/#memory', but the doc 'ds/ds-basics.md' does not contain an anchor '#memory'.
+INFO    -  Doc file 'ds/ds-execution-engine.md' contains a link 'ds-basics.md#javascript-script', but the doc 'ds/ds-basics.md' does not contain an anchor '#javascript-script'.
+INFO    -  Doc file 'ds/ds-reference.md' contains a link '#variable', but there is no such anchor on this page.
+INFO    -  Doc file 'ds/ds-reference.md' contains a link 'ds-basics.md#formula', but the doc 'ds/ds-basics.md' does not contain an anchor '#formula'.
+INFO    -  Doc file 'wdg/wdg-plots.md' contains a link '#plotly-3d-surface', but there is no such anchor on this page.
+INFO    -  Doc file 'wdg/wdg-plots.md' contains a link '../ds/ds-reference.md#python-script-pyodide', but the doc 'ds/ds-reference.md' does not contain an anchor '#python-script-pyodide'.
+INFO    -  Documentation built in 2.06 seconds
+INFO    -  [21:21:20] Watching paths for changes: 'docs', 'mkdocs.yml'
+INFO    -  [21:21:20] Serving on http://127.0.0.1:8000/
+INFO    -  Shutting down...
