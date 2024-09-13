@@ -79,13 +79,13 @@ jobs:
           BROWSER_LIST: chrome
           LOG_LEVEL: info
           CHALKIT_DIR: ${{ steps.build.outputs.BUILD_DIR }}
-          WIDTH: 768
-          HEIGHT: 432
+          WIDTH: 1600
+          HEIGHT: 900
         run: |
           echo CHALKIT_DIR="$CHALKIT_DIR"
           echo BROWSER_LIST="chrome"
-          echo WIDTH=768
-          echo HEIGHT=432
+          echo WIDTH=1600
+          echo HEIGHT=900
           npm run test:run
 
       - name: Upload test outputs
