@@ -1,7 +1,7 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ widgetsEditorToolboxDefinition                                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2019-2023 IFPEN                                        │ \\
+// │ Copyright © 2019-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ghiles HIDEUR   │ \\
