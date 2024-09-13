@@ -24,13 +24,9 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.11.6'
           cache: 'pip'
       - run: pip install -r requirements.txt
-
-      - run: npm install -g bower
-      - run: bower install
-        working-directory: ./front-end
 
       - name: Install build dependencies
         run: npm ci
@@ -47,10 +43,9 @@ jobs:
         id: build
         working-directory: ./front-end/build
         run: |
-           cd `ls | head`
-           BUILD_DIR="`pwd`"
-           echo BUILD_DIR="$BUILD_DIR" >> $GITHUB_OUTPUT
-
+            cd "$(ls | head -n 1)"
+            BUILD_DIR="$(pwd)"
+            echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_OUTPUT
 
       - uses: browser-actions/setup-chrome@v1
 
