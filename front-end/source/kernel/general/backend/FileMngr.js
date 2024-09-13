@@ -1,7 +1,7 @@
 ﻿// +--------------------------------------------------------------------+ \\
 // ¦ FileMngr.js : Scripts de gestion des fichiers sur le serveur       ¦ \\
 // +--------------------------------------------------------------------¦ \\
-// ¦ Copyright © 2017-2023 IFPEN                                        ¦ \\
+// ¦ Copyright © 2017-2024 IFPEN                                        ¦ \\
 // ¦ Licensed under the Apache License, Version 2.0                     ¦ \\
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Bruno LETY                                    ¦ \\
