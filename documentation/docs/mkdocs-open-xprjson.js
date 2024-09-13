@@ -19,7 +19,7 @@ xdashDocAddr = ensureProtocolCoherency(xdashDocAddr);
 xdashAddr = ensureProtocolCoherency(xdashAddr);
 
 function openXprjsonInNewTab(resource) {
-	const addr = `${xdashAddr}?projectUrl=${encodeURIComponent(resource)}`;
+	const addr = `${xdashAddr}?projectUrl=${encodeURI(resource)}`;
 	window.open(addr, "_blank");
 }
 
@@ -27,11 +27,7 @@ function handleXprjson(doc) {
 	const anchors = doc.getElementsByTagName("a");
 
 	Array.from(anchors).forEach((anchor) => {
-		// Ensure no double slashes when concatenating
-		let href = anchor.href.replace(location.origin, xdashDocAddr);
-		// Remove any double slashes in the URL, except for the 'http://' or 'https://' part
-		href = href.replace(/([^:]\/)\/+/g, "$1");
-
+		let href = anchor.href;
 		if (href.includes(".full.xprjson") && bIsBasicVersion == "true") {
 			anchor.removeAttribute("href");
 			anchor.style.color = "#7f8c8d";
