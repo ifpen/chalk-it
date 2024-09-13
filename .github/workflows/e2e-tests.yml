@@ -43,7 +43,6 @@ jobs:
         id: build
         working-directory: ./front-end/build
         run: |
-            cd "$(ls | head -n 1)"
             BUILD_DIR="$(pwd)"
             echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_OUTPUT
 
