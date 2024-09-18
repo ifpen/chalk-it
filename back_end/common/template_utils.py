@@ -38,17 +38,27 @@ class TemplateUtils:
         - str: The dashboard HTML content with the configuration data injected.
         """
         template_data_with_config: str = ""
+        template_data: str = ""
         config_data: object = {}
         with open(xprjson_path, "r") as config_file:
             config_data = json.load(config_file)
 
-        index_view_path: Path = root_dir / f"{file_name}.html"
+        index_view_path: Path = root_dir / f"{file_name}"
 
         with open(index_view_path, "r") as template_file:
-            template_data: str = template_file.read()
+            template_data = template_file.read()
 
-            template_data_with_config: str = template_data.replace(
-                "jsonContent = {};", f"jsonContent = {json.dumps(config_data)};"
-            )
+        # Prepare the script with dynamic JSON data
+        script = f"""
+        <script type="text/javascript">
+            try {{               
+                window.chalkitLoadDashboard({json.dumps(config_data)});
+            }} catch (error) {{
+                console.error('Error loading dashboard:', error);
+            }}
+        </script>
+        """
+
+        template_data_with_config = template_data.replace("</body>", script + "</body>")
 
         return render_template_string(template_data_with_config)
