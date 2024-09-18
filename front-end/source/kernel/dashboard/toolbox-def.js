@@ -64,6 +64,7 @@ export const widgetsEditorToolboxDefinition = {
     widgets: [
       'openStreetMaps',
       'foliumMaps',
+      'map3D',
       'flatUiHereAutocompleteValue',
       'datepickerSimple',
       'dateRangePicker',
