@@ -1,5 +1,4 @@
 const webpack = require('webpack');
-
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
@@ -31,7 +30,6 @@ module.exports = (env) =>
         overlay: {
           errors: true,
           warnings: false,
-          runtimeErrors: true,
         },
       },
       proxy: proxyEntry.proxy || {},
@@ -42,7 +40,7 @@ module.exports = (env) =>
       },
       open: true, // Automatically opens the browser when the server starts
     },
-    devtool: 'source-map',
+    devtool: 'eval-source-map',
     // devtool: 'cheap-module-eval-source-map',
     plugins: [new webpack.HotModuleReplacementPlugin()],
   });
