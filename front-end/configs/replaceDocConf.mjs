@@ -7,11 +7,9 @@ const { config } = await import('./config.js');
 
 const xDashConfig = config.xDashConfig;
 const xdashAddr = xDashConfig.urlBase || xDashConfig.urlBaseForExport;
-const xdashDocAddr = xDashConfig.urlDoc;
 
 const insert_txt = `
 xdashAddr = "${xdashAddr}";
-xdashDocAddr = "${xdashDocAddr}";
 bIsBasicVersion = "${xDashConfig.xDashBasicVersion}";
 `;
 
