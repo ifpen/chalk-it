@@ -1,15 +1,13 @@
-﻿3. Play
+﻿# Reference
 
-# Reference
-
-DataNodes of type [Variable](../../ds/ds-basics/#variable) was described in the basics section.
+DataNodes of type [Variable](ds-basics.md#variable) was described in the basics section.
 
 In the following, we describe the remaining dataNode types of Chalk'it.
 
 | Type                                                  |
 | ----------------------------------------------------- |
-| [Variable](../../ds/ds-basics/#variable)              |
-| [Python Script](#python-script)     |
+| [Variable](ds-basics.md#variable)                     |
+| [Python Script](#python-script)                       |
 | [JavaScript Script (client-side)](#javascript-script) |
 | [REST web-service](#rest-web-services)                |
 | Generic text file reader                              |
@@ -26,13 +24,13 @@ In the following, we describe the remaining dataNode types of Chalk'it.
 
 ## Python Script
 
-It allows the evaluation of a Python script in a local runner (default runner) or in client-side using [Pyodide](https://pyodide.org/). Executed Python in client-side code may use the librairies available for installation in the _Project librairies_ main tab. For further information, please read the [Client-side execution with Pyodide](../../py/py-pyodide/)
+It allows the evaluation of a Python script in a local runner (default runner) or in client-side using [Pyodide](https://pyodide.org/). Executed Python in client-side code may use the librairies available for installation in the _Project librairies_ main tab. For further information, please read the [Client-side execution with Pyodide](../py/py-pyodide.md)
 
 Some examples:
 
-- [formula-py.xprjson](/ds/xprjson/formula-py.xprjson)
-- [rest-pandas-pyodide-covid.xprjson](/py/xprjson/rest-pandas-pyodide-covid-js-py.xprjson)
-- [plotly-python-widget-py.xprjson](/py/xprjson/plotly-python-widget-py.xprjson)
+- [formula-py.xprjson](xprjson/formula-py.xprjson)
+- [rest-pandas-pyodide-covid.xprjson](../py/xprjson/rest-pandas-pyodide-covid-js-py.xprjson)
+- [plotly-python-widget-py.xprjson](../py/xprjson/plotly-python-widget-py.xprjson)
 
 ## JavaScript Script
 
@@ -40,21 +38,9 @@ Similar to Python Script-type dataNodes, it is possible to write JavaScript code
 
 ![JSON formula](img/json-script.png "JSON formula")
 
-All JavaScript librairies loaded by Chalk'it are available for use. The following ones are particularly of interest:
-
-- Underscore.js
-- Turf.js
-- d3.js
-- geoConversion
-- gpx.js
-- jQuery
-- leaflet
-- PapaParse
-- SweetAlert
-
 Simple example :
 
-- [formula-js.xprjson](/ds/xprjson/formula-js.xprjson)
+- [formula-js.xprjson](xprjson/formula-js.xprjson)
 
 ## REST web-services
 
@@ -82,31 +68,31 @@ Please disable xProxy if you call a localhost or private network webservice.
 
 #### Simple GET
 
-- [webservice-get.xprjson](/ds/xprjson/webservice-get.xprjson) : this is a simple GET example with no input arguments.
+- [webservice-get.xprjson](xprjson/webservice-get.xprjson) : this is a simple GET example with no input arguments.
 
 #### Simple POST
 
-- [webservice-post-simple-js.xprjson](/ds/xprjson/webservice-post-simple-js.xprjson): this is a simple POST example with _body_ as a JSON.
+- [webservice-post-simple-js.xprjson](xprjson/webservice-post-simple-js.xprjson): this is a simple POST example with _body_ as a JSON.
 
 #### GET with arguments
 
-- [webservice-get-args-js.xprjson](/ds/xprjson/webservice-get-args-js.xprjson): this example illustrates a GET call where arguments (custom path and query arguments) are defined using the _urlAppend_ object in the _body_ field.
+- [webservice-get-args-js.xprjson](xprjson/webservice-get-args-js.xprjson): this example illustrates a GET call where arguments (custom path and query arguments) are defined using the _urlAppend_ object in the _body_ field.
 
 #### GET with arguments from another dataNode
 
-- [webservice-get-input-py.xprjson](/ds/xprjson/webservice-get-input-py.xprjson) and [webservice-get-input-js.xprjson](/ds/xprjson/webservice-get-input-js.xprjson): in this example, two variables defined in a [variable](#variable) dataNode are used as inputs to the GET web-service call.
+- [webservice-get-input-py.xprjson](xprjson/webservice-get-input-py.xprjson) and [webservice-get-input-js.xprjson](xprjson/webservice-get-input-js.xprjson): in this example, two variables defined in a [variable](ds-basics.md#variable) dataNode are used as inputs to the GET web-service call.
 
 #### GET of a binary file
 
-- [xls-from-url-to-json-py.xprjson](/recipes/xls-from-url-to-json-py.xprjson) : an excel file is read from a remote URL and its content displayed.
+- [xls-from-url-to-json-py.xprjson](../recipes/xls-from-url-to-json-py.xprjson) : an excel file is read from a remote URL and its content displayed.
 
 #### POST with arguments from another dataNode
 
-- [webservice-post-input-py.xprjson](/ds/xprjson/webservice-post-input-py.xprjson) and [webservice-post-input-js.xprjson](/ds/xprjson/webservice-post-input-js.xprjson): in this example, two variables defined in a [variable](#variable) dataNode are used as inputs to the POST web-service call.
+- [webservice-post-input-py.xprjson](xprjson/webservice-post-input-py.xprjson) and [webservice-post-input-js.xprjson](xprjson/webservice-post-input-js.xprjson): in this example, two variables defined in a [variable](ds-basics.md#variable) dataNode are used as inputs to the POST web-service call.
 
 #### Triggered POST
 
-- [webservice-post-input-triggered-py.xprjson](/ds/xprjson/webservice-post-input-triggered-py.xprjson) and [webservice-post-input-triggered-js.xprjson](/ds/xprjson/webservice-post-input-triggered-js.xprjson): if the [explicit trigger](../../ds/ds-execution-engine/#explicit-trig) option is checked, the dataNode is only executed when an explicit click is performed (using a connected [push button](../../wdg/wdg-basic-inputs/#push-button) widget or the update button). When predecessors change, the dataNode execution is no longer triggered. This feature is useful for building form-like interfaces. See also [Execution flow control parameters](../../ds/ds-execution-engine/#execution-flow-control-parameters)
+- [webservice-post-input-triggered-py.xprjson](xprjson/webservice-post-input-triggered-py.xprjson) and [webservice-post-input-triggered-js.xprjson](xprjson/webservice-post-input-triggered-js.xprjson): if the [explicit trigger](ds-execution-engine.md#explicit-trigger) option is checked, the dataNode is only executed when an explicit click is performed (using a connected [push button](../wdg/wdg-basic-inputs.md#push-button) widget or the update button). When predecessors change, the dataNode execution is no longer triggered. This feature is useful for building form-like interfaces. See also [Execution flow control parameters](ds-execution-engine.md#execution-flow-control-parameters)
 
 ![Triggered POST Example](img/rest-explicit-trig.png "Triggered POST example")
 
@@ -116,11 +102,11 @@ Reads a CSV file and translates its content to JSON, according to the value of _
 
 - If set to _true_, each row of the CSV file will be placed into a JavaScript Array.
 
-  See example: [csv-array.xprjson](/ds/xprjson/csv-array.xprjson)
+  See example: [csv-array.xprjson](xprjson/csv-array.xprjson)
 
 - Otherwise, if set to _false_, content is parsed as an array of JSON objects.
 
-  See example: [csv-json.xprjson](/ds/xprjson/csv-json.xprjson)
+  See example: [csv-json.xprjson](xprjson/csv-json.xprjson)
 
 The following CSV:
 
@@ -193,9 +179,9 @@ otherwise, it is translated to:
 ];
 ```
 
-An example of table display of this CSV file is given here: [csv-array-table-display.xprjson](/apps/xprjson/csv-array-table-display.xprjson).
+An example of table display of this CSV file is given here: [csv-array-table-display.xprjson](../apps/xprjson/csv-array-table-display.xprjson).
 
-It combines a [CSV file reader](#csv-file-reader) as well as a [formula](../../ds/ds-basics/#formula) using the [underscore.js library](https://underscorejs.org/).
+It combines a [CSV file reader](#csv-file-reader) as well as a [JavaScript Script](#javascript-script) using the [Lodash library](https://lodash.com/).
 
 ![csv-array-table-display](../apps/png/csv-array-table-display.png)
 
@@ -203,7 +189,7 @@ It combines a [CSV file reader](#csv-file-reader) as well as a [formula](../../d
 
 Acts as a player of CSV file. Its behaviour depends on the _TIME INCLUDED_ parameter:
 
-- If set to _false_, play starts from the first row. On each _SAMPLING TIME_, the current row is output in JSON format and the pointer moves to the next row. See example [csv-player.xprjson](/ds/xprjson/csv-player.xprjson).
+- If set to _false_, play starts from the first row. On each _SAMPLING TIME_, the current row is output in JSON format and the pointer moves to the next row. See example [csv-player.xprjson](xprjson/csv-player.xprjson).
 
 - Otherwise (i.e. _TIME INCLUDED_), the first row is considered as a time vector.
 
@@ -213,7 +199,7 @@ Applies a one-step delay to its input defined in the **INPUT SIGNAL** field.
 
 On the first execution, its output is set to the JSON value defined in the **INIT VALUE** field.
 
-Example with [Clock](#clock) and [Delay](#delay) : [clock-and-delay.xprjson](/apps/xprjson/clock-and-delay.xprjson).
+Example with [Clock](#clock) and [Delay](#delay) : [clock-and-delay.xprjson](../apps/xprjson/clock-and-delay.xprjson).
 
 ## Memory
 
@@ -225,7 +211,7 @@ This special dataNode exhibits a distinct behavior compared to other dataNodes, 
 
 With Memory dataNode, user can create counters for example, without adding real cycles in the graph.
 
-See example: [memory.xprjson](/ds/xprjson/memory.xprjson).
+See example: [memory.xprjson](xprjson/memory.xprjson).
 
 In this example, the cycle between "_counter_" and "_pastValue_counter_" is a non-algebraic cycle, because of the special memory type.
 
@@ -245,7 +231,7 @@ Gets the value of the JavaScript clock from the web-browser which is running the
 }
 ```
 
-Example with [Clock](#clock) and [Delay](#delay) : [clock-and-delay.xprjson](/apps/xprjson/clock-and-delay.xprjson).
+Example with [Clock](#clock) and [Delay](#delay) : [clock-and-delay.xprjson](../apps/xprjson/clock-and-delay.xprjson).
 
 ## Geolocation
 
@@ -261,7 +247,7 @@ DataNode produces the following output.
 
 Its output value is updated automatically according to the device position and movement.
 
-Example with **Geolocation** dataNode and [Leaflet Maps](../../wdg/wdg-geo-time/#leaflet-maps) widget which displays your location : [osm-geojson-geolocation.xprjson](/apps/xprjson/osm-geojson-geolocation.full.xprjson) .
+Example with **Geolocation** dataNode and [Leaflet Maps](../wdg/wdg-geo-time.md#leaflet-maps) widget which displays your location : [osm-geojson-geolocation.xprjson](../apps/xprjson/osm-geojson-geolocation.full.xprjson) .
 
 ## WebSocket
 
@@ -307,7 +293,7 @@ Acts as a WebSocket client sender for Chalk'it.
 Follow instructions below to first build a WebSockets test server.
 
 - Install Node.js from <https://nodejs.org/>
-- Download Node.js server example [simpleWS.js](/ds/ws/simpleWS.js)
+- Download Node.js server example [simpleWS.js](ws/simpleWS.js)
 - Install _ws_ library used in _simpleWS.js_ server
 
   ```sh
@@ -324,7 +310,7 @@ Follow instructions below to first build a WebSockets test server.
 
 ![server listening](ws/server-listening.png)
 
-- Open the [websocket-demo.xprjson](/ds/ws/websocket-demo.xprjson) example with Chalk'it.
+- Open the [websocket-demo.xprjson](ws/websocket-demo.xprjson) example with Chalk'it.
 
 - Switch to **View** mode.
 - Test the communication with the server.

@@ -1,13 +1,17 @@
 // ┌──────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ info_project.controller                                                          │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                      │ \\
+// │ Copyright © 2016-2024 IFPEN                                                      │ \\
 // | Licensed under the Apache License, Version 2.0                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { modalsModule } from './modals';
+import { fileManager } from 'kernel/general/backend/file-management';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 
-angular.module('modules').controller('InfoProjectController', [
+modalsModule.controller('InfoProjectController', [
   '$scope',
   '$rootScope',
   '$state',

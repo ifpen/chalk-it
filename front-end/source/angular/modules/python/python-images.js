@@ -1,13 +1,20 @@
 ﻿// ┌──────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ PythonImagesManager                                                              │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                      │ \\
+// │ Copyright © 2016-2024 IFPEN                                                      │ \\
 // | Licensed under the Apache License, Version 2.0                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
 
-angular
+import { xDashConfig, urlPython } from 'config.js';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'lodash';
+import { DialogBox } from 'kernel/datanodes/gui/DialogBox';
+import { b64DecodeUnicode, formatDataSize } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { getAuthorizationHeaders } from 'angular/modules/components/auth-utils';
+
+export const pythonImagesModule = angular
   .module('modules.python-images', [])
   .config([
     '$stateProvider',
@@ -17,15 +24,13 @@ angular
         userAuthenticated: false,
         abstract: true,
         url: '/python-images',
-        templateUrl: '',
+        template: '<div ui-view></div>',
       });
     },
   ])
   .service('PythonImagesManager', [
     '$http',
-    '$rootScope',
-    'ApisFactory',
-    function ($http, $rootScope, ApisFactory) {
+    function ($http) {
       const self = this;
 
       this.getImages = async () => {

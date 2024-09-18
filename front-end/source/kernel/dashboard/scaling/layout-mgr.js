@@ -1,23 +1,31 @@
 // ┌──────────────────────────────────────────────────────────────────────┐ \\
 // │ layoutMgr                                                            │ \\
 // ├──────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                          │ \\
+// │ Copyright © 2016-2024 IFPEN                                          │ \\
 // | Licensed under the Apache License, Version 2.0                       │ \\
 // ├──────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Tristan BARTEMENT │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { panelDash } from '../edition/panel-dashboard';
+import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
+import { editorSingletons } from 'kernel/editor-singletons';
+import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
+import { getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
+import { htmlExport } from 'kernel/general/export/html-export';
 
 /*constants*/
-const keyShift = 5; // cst; size in px of keyboard shift using arrows, can be modified
-const minLeftCst = 10; // cst; min left of the dashboard
-const minTopCst = 10; // cst; min top of the dashboard
-const minHeightCst = 10; // cst; min height of a widget, can be modified
-const minWidthCst = 10; // cst; min width of a widget, can be modified
+export const keyShift = 5; // cst; size in px of keyboard shift using arrows, can be modified
+export const minLeftCst = 10; // cst; min left of the dashboard
+export const minTopCst = 10; // cst; min top of the dashboard
+export const minHeightCst = 10; // cst; min height of a widget, can be modified
+export const minWidthCst = 10; // cst; min width of a widget, can be modified
 
 // Toggles entering one height per row; not quite functionnal yet
 const MULTIPLE_HEIGHT = false;
 
-class LayoutMgrClass {
+export class LayoutMgrClass {
   constructor() {
     // Alias
     this.drprD = $('#DropperDroite')[0];
@@ -153,7 +161,7 @@ class LayoutMgrClass {
         }
 
         let placeholderValue = this.newHeightCols.find((it) => !!it) || defaultValue; // Missing values are replaced with the first valid one, or 100%/rows.
-        for (let i = 0; i < nbValues; i++) {
+        for (let i = 0; i < this.newHeightCols.length; i++) {
           // i <= nbRows for original general version
           if (_.isUndefined(this.newHeightCols[i])) {
             this.newHeightCols[i] = placeholderValue;
@@ -296,7 +304,7 @@ class LayoutMgrClass {
       this._createColumn(classType);
 
       if (this.rows !== 0) {
-        _.each(widgetEditor.modelsId, (instanceId) => {
+        _.each(editorSingletons.widgetEditor.modelsId, (instanceId) => {
           const element = document.getElementById(instanceId);
           this.putWidgetInTheRightCol(element, 10, 10); // minLeftCst=10, minTopCst=10 // to coordinate
         });
@@ -324,7 +332,7 @@ class LayoutMgrClass {
     }
 
     this.updateMaxTopAndLeft();
-    widgetEditor.updateSnapshotDashZoneDims();
+    editorSingletons.widgetEditor.updateSnapshotDashZoneDims();
 
     $('select[name=select-rows]').val(this.rows);
     $('select[name=select-cols]').val(this.cols || 1);
@@ -619,7 +627,7 @@ class LayoutMgrClass {
     $('#current-theme').attr('data-theme', this.dashboardTheme);
     this.updateDashBgColor();
     // TODO Open Sweet alert to ask the user if he wants to reset styles for all components
-    widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
+    editorSingletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
     this.$rootScope.updateFlagDirty(true);
   }
 
@@ -627,7 +635,7 @@ class LayoutMgrClass {
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
     this.updateDashBgColor();
-    widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
+    editorSingletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
   }
 
   resetDashboardTheme() {
@@ -643,9 +651,11 @@ class LayoutMgrClass {
   }
 
   deserializeDashboardTheme(deviceObj) {
-    if (!_.isUndefined(deviceObj.theme)) {
+    if (deviceObj.theme) {
       this.dashboardTheme = deviceObj.theme;
       this.updateDashboardTheme();
+    } else {
+      this.resetDashboardTheme();
     }
   }
 
@@ -934,38 +944,3 @@ class LayoutMgrClass {
     return widgetsDroppersMap;
   }
 }
-
-var layoutMgr = new LayoutMgrClass();
-
-/*--------event on device rows--------*/
-$('select[name=select-rows]').on('change', function (e) {
-  layoutMgr.updateButtonState();
-});
-
-/*--------event on device columns--------*/
-$('select[name=select-cols]').on('change', function (e) {
-  layoutMgr.updateButtonState();
-});
-
-/*--------event on device columns--------*/
-/*$("#rescale-opts,#stretchWidth,#keepProportion").on('change', function(e) {
-    const stretchWidth = $('#stretchWidth').prop('checked');
-    const keepProportion = $('#keepProportion').prop('checked');
-
-    let scalingMethod;
-    if (stretchWidth) {
-        if (keepProportion) {
-            scalingMethod = 'scaleTwSp';
-        } else {
-            scalingMethod = 'scaleTwh';
-        }
-    } else {
-        if (keepProportion) {
-            scalingMethod = 'scaleIdent'; // MBG : to be improved
-        } else {
-            scalingMethod = 'scaleIdent';
-        }
-    }
-
-    widgetEditor.setScalingMethod(scalingMethod);
-});*/ // MBG 12/02/2022 dead code

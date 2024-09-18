@@ -1,10 +1,23 @@
 ﻿// ┌───────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ editor.controller                                                                 │ \\
 // ├───────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2021-2023 IFPEN                                                       │ \\
+// │ Copyright © 2021-2024 IFPEN                                                       │ \\
 // ├───────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                            │ \\
 // └───────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import PNotify from 'pnotify';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { UndoableAction, UndoManager } from './editor.undo-manager';
+import {
+  EVENTS_EDITOR_SELECTION_CHANGED,
+  EVENTS_EDITOR_ADD_REMOVE_WIDGET,
+  EVENTS_EDITOR_CONNECTIONS_CHANGED,
+} from './editor.events';
+import { keyShift, minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
+import { getWidgetLayoutPx, getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
+import { editorSingletons } from 'kernel/editor-singletons';
 
 angular.module('modules.editor').controller('EditorController', [
   '$scope',
@@ -38,8 +51,6 @@ angular.module('modules.editor').controller('EditorController', [
     const selection_event = EVENTS_EDITOR_SELECTION_CHANGED;
     const add_remove_widget_event = EVENTS_EDITOR_ADD_REMOVE_WIDGET;
     const connnection_update_event = EVENTS_EDITOR_CONNECTIONS_CHANGED;
-
-    var copiedWidget;
 
     var copiedWidget;
 
@@ -400,9 +411,9 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     function _hasConnection() {
-      for (connections of Object.values(widgetConnector.widgetsConnection)) {
+      for (const connections of Object.values(widgetConnector.widgetsConnection)) {
         if (connections.sliders) {
-          for (slider of Object.values(connections.sliders)) {
+          for (const slider of Object.values(connections.sliders)) {
             if (slider.dataNode !== 'None' || slider.dataFields.length) {
               return true;
             }
@@ -594,7 +605,7 @@ angular.module('modules.editor').controller('EditorController', [
       const elementIds = _getSelection();
       if (elementIds && elementIds.length > 1) {
         const targetId = elementIds[0];
-        const target = widgetEditor.widgetContainers.get(targetId).divModel;
+        const target = editorSingletons.widgetEditor.widgetContainers.get(targetId).divModel;
         const targetPos = getElementLayoutPx(target);
         if (param == 'HeightWidth') {
           const action1 = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width, false);
@@ -674,7 +685,7 @@ angular.module('modules.editor').controller('EditorController', [
       //put list at dropperD level (for zindex issues). However selection is lost, so we need to put it back
       const id = 'menuWidget';
       const name = $('#' + id)[0].getAttribute('name');
-      widgetEditor.selectWidget($('#' + name)[0]);
+      editorSingletons.widgetEditor.selectWidget($('#' + name)[0]);
     }
 
     function _clickOnDataConnection(check) {
@@ -1055,5 +1066,7 @@ angular.module('modules.editor').controller('EditorController', [
         document.removeEventListener('keydown', _onkeydown);
       }
     });
+
+    $rootScope.loadedTemplate();
   },
 ]);

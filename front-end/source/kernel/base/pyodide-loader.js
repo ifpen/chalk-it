@@ -3,11 +3,15 @@
 // ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ pyodideManager                                                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                        │ \\
+// │ Copyright © 2022-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR, Mongi BEN GAID                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import PNotify from 'pnotify';
+import { xDashConfig } from 'config.js';
+
+import PyodideWorker from './pyodide-worker.js';
 
 // TODO decide on handling of notifications
 // TODO decide on UI block ?
@@ -37,7 +41,7 @@ function notifyError(text, error) {
   $('.ui-pnotify-container').on('click', () => notice.remove());
 }
 
-class PyodideManager {
+export class PyodideManager {
   static PYODIDE_STATE_NONE = 'NONE';
   static PYODIDE_STATE_LOADING = 'LOADING';
   static PYODIDE_STATE_READY = 'READY';
@@ -169,7 +173,7 @@ class PyodideManager {
 
     const pyodideNotice = notifyInfo('Starting Pyodide...');
     try {
-      this.pyodideWorker = new Worker(WORKER_URL);
+      this.pyodideWorker = new PyodideWorker();
 
       this.callbacks = {};
 
@@ -242,4 +246,4 @@ class PyodideManager {
   }
 }
 
-var pyodideManager = new PyodideManager();
+export const pyodideManager = new PyodideManager();

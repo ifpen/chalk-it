@@ -1,12 +1,17 @@
 ﻿// ┌─────────────────────────────────────────────────────────────────────────────┐ \\
 // │ widget placement functions                                                  │ \\
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                 │ \\
+// │ Copyright © 2016-2024 IFPEN                                                 │ \\
 // | Licensed under the Apache License, Version 2.0                              │ \\
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mounir MECHERGHUI, Mongi BEN GAID,       │ \\
 // │                      Ameur HAMDOUNI                                         │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { widgetDefaultLayout } from 'kernel/dashboard/widget/widget-default-layout';
+import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { minLeftCst, minTopCst } from 'kernel/dashboard/scaling/layout-mgr';
+import { modelsLayout } from 'kernel/base/widgets-states';
 
 /**
  * @description Enforces that widget layout respects container constraints in terms of:
@@ -15,7 +20,7 @@
  * @param {any} widgetLayoutPx
  * @param {any} containerLayoutPx (with no margins)
  */
-function enforceConstraints(widgetLayoutPx, containerLayoutPx) {
+export function enforceConstraints(widgetLayoutPx, containerLayoutPx) {
   // Simplified notation
   var w_t = widgetLayoutPx.top,
     w_l = widgetLayoutPx.left,
@@ -27,10 +32,10 @@ function enforceConstraints(widgetLayoutPx, containerLayoutPx) {
     c_w = containerLayoutPx.width - 2 * minLeftCst;
 
   // Deduced variables
-  w_b = w_t + w_h;
-  w_r = w_l + w_w;
-  c_b = c_t + c_h;
-  c_r = c_l + c_w;
+  let w_b = w_t + w_h;
+  let w_r = w_l + w_w;
+  let c_b = c_t + c_h;
+  let c_r = c_l + c_w;
 
   // Dimension rules
   if (w_h > c_h) {
@@ -71,7 +76,7 @@ function enforceConstraints(widgetLayoutPx, containerLayoutPx) {
  * @param {any} widgetLayoutPx
  * @param {any} containerLayoutPx
  */
-function computeMaxWidthPx(widgetLayoutPx, containerLayoutPx) {
+export function computeMaxWidthPx(widgetLayoutPx, containerLayoutPx) {
   var w_l = widgetLayoutPx.left,
     c_w = containerLayoutPx.width - 2 * minLeftCst,
     c_l = containerLayoutPx.left + minLeftCst,
@@ -86,7 +91,7 @@ function computeMaxWidthPx(widgetLayoutPx, containerLayoutPx) {
  * @param {any} widgetLayoutPx
  * @param {any} containerLayoutPx
  */
-function computeMaxHeightPx(widgetLayoutPx, containerLayoutPx) {
+export function computeMaxHeightPx(widgetLayoutPx, containerLayoutPx) {
   var w_t = widgetLayoutPx.top,
     c_h = containerLayoutPx.height - 2 * minTopCst,
     c_t = containerLayoutPx.top + minTopCst,
@@ -100,7 +105,7 @@ function computeMaxHeightPx(widgetLayoutPx, containerLayoutPx) {
  * @description Computes normalized container layout in px
  * @param {any} containerLayoutPx
  */
-function computeContainerRelativeLayout(containerLayoutPx, bIncludeMargin) {
+export function computeContainerRelativeLayout(containerLayoutPx, bIncludeMargin) {
   // Simplified notation
   var c_h = containerLayoutPx.height,
     c_w = containerLayoutPx.width;
@@ -148,7 +153,7 @@ function computeRelativePxLayout(widgetLayoutPx, containerLayoutPx) {
  * @description Converts a layout in px to a layout in viewport coordinates
  * @param {any} widgetLayoutPx
  */
-function pxToViewPort(widgetLayoutPx) {
+export function pxToViewPort(widgetLayoutPx) {
   var widgetLayoutViewPort = {};
   widgetLayoutViewPort.topVh = unitH(widgetLayoutPx.top);
   widgetLayoutViewPort.leftVw = unitW(widgetLayoutPx.left);
@@ -162,7 +167,7 @@ function pxToViewPort(widgetLayoutPx) {
  * @description Given a DOM element, gets its layout in px
  * @param {any} element
  */
-function getElementLayoutPx(element) {
+export function getElementLayoutPx(element) {
   var elementLayoutPx = {
     top: element.offsetTop,
     left: element.offsetLeft,
@@ -191,7 +196,7 @@ function getElementLayoutWithMarginPx(elementLayoutPx) {
  * TODO : handle relative and absolute
  * @param {any} element
  */
-function getWidgetLayoutPx(element) {
+export function getWidgetLayoutPx(element) {
   var elementLayoutPx = {
     top: element.offsetTop - minTopCst,
     left: element.offsetLeft - minLeftCst,
@@ -221,7 +226,7 @@ function applyLayoutStyleFromPx(element, widgetLayoutPx) {
  * @param {any} wLayout
  * @param {any} modelJsonId
  */
-function computeMainDivLayout(wLayout, modelJsonId) {
+export function computeMainDivLayout(wLayout, modelJsonId) {
   var layout = widgetDefaultLayout.get(); // default global layout
 
   if (_.isUndefined(wLayout) || _.isUndefined(wLayout.left) || _.isUndefined(wLayout.top)) {
@@ -312,7 +317,7 @@ function computeMainDivLayout(wLayout, modelJsonId) {
  * @param {any} element
  * @param {any} layout
  */
-function applyLayout(element, layout) {
+export function applyLayout(element, layout) {
   element.style.left = layout.leftVw;
   element.style.top = layout.topVh;
   element.style.width = layout.widthVw;
@@ -329,7 +334,7 @@ function applyLayout(element, layout) {
  * @description Ensures minWidth and minHeight are consistent (less or equal) with width and heigth
  * @param {any} layoutPx
  */
-function enforceMinConsistency(layoutPx) {
+export function enforceMinConsistency(layoutPx) {
   if (layoutPx.minWidth > layoutPx.width) {
     layoutPx.minWidth = layoutPx.width;
   }

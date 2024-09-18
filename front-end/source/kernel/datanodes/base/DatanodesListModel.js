@@ -2,13 +2,18 @@
 // │ DatanodesListModel : fork from freeboard                           │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// │ Copyright © 2016-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import ko from 'knockout';
+import { DialogBoxForDuplicateData } from 'kernel/datanodes/gui/DialogBox';
+import { xdsjson } from 'kernel/datanodes/export/xdsjson';
+import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
 
-function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager) {
+export function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDependency, timeManager) {
   var self = this;
 
   this.datanodes = ko.observableArray();

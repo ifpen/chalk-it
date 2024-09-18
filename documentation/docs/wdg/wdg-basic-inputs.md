@@ -2,7 +2,7 @@
 
 **Basic inputs and controls** widgets allow the dashboard end-user to set numeric values (such as [Horizontal slider](#horizontal-slider) or [Numeric input](#numeric-input) widgets), binary values (such as [Checkbox](#checkbox) or [Switch](#switch) widgets) or text values (such as [Text input](#text-input) widget). More complex ones operate on lists or arrays (like [select](#select) or [list](#list)). Some examples are illustrated below. 
 
-All these widgets can only be connected to a dataNode-types with [setValue from widget](../../ds/ds-execution-engine/#setvalue-from-widget) or [setValue from file](../../ds/ds-execution-engine/#setvalue-from-file) capabilities.
+All these widgets can only be connected to a dataNode-types with [setValue from widget](../ds/ds-execution-engine.md#setvalue-from-widget) or [setValue from file](../ds/ds-execution-engine.md#setvalue-from-file) capabilities.
 
 ## Numeric input
 
@@ -55,9 +55,9 @@ Allows to set discrete values.
 
 * If *fileInput* is false, the button works as a trigger for connected dataNode (i.e. when the user clicks the button, dataNode execution is forced)
 * If *fileInput* is true, the button works as file reader. When the user selects a file, its content is copied to:
-  * [Variable](../../ds/ds-basics/#variable)
-  * [CSV file reader](../../ds/ds-reference/#csv-file-reader)
-  * [CSV file player](../../ds/ds-reference/#csv-file-player)
+  * [Variable](../ds/ds-basics.md#variable)
+  * [CSV file reader](../ds/ds-reference.md#csv-file-reader)
+  * [CSV file player](../ds/ds-reference.md#csv-file-player)
   * Generic file reader
 
 Examples :
@@ -71,7 +71,7 @@ Examples :
 }
 ```
 
-Then run [buttons.xprjson](/wdg/basic/buttons.xprjson)
+Then run [buttons.xprjson](basic/buttons.xprjson)
 
 ## Select
 
@@ -96,8 +96,8 @@ and an (optional) array of **values** that the widget will output to the **selec
 If **values** actuator is not specifed, the **selectedValue** will contain the value of the item selected in the **keys** array.
 Otherwise, the **selectedValue** will contain the item from the **values** array corresponding to the selected key.
 
-* [combo-box-py.xprjson](/wdg/basic/combo-box-py.xprjson)
-* [combo-box-js.xprjson](/wdg/basic/combo-box-js.xprjson)
+* [combo-box-py.xprjson](basic/combo-box-py.xprjson)
+* [combo-box-js.xprjson](basic/combo-box-js.xprjson)
 
 ![combo-box](basic/combo-box.png)
 
@@ -115,15 +115,15 @@ Otherwise, the **selectedValue** will contain the item from the **values** array
 
 Example :
 
-* [list-py.xprjson](/wdg/basic/list-py.xprjson)
-* [list-js.xprjson](/wdg/basic/list-js.xprjson)
+* [list-py.xprjson](basic/list-py.xprjson)
+* [list-js.xprjson](basic/list-js.xprjson)
 
 ## Multi-select
 
 Example :
 
-* [multi-select-py.xprjson](/wdg/basic/multi-select-py.xprjson)
-* [multi-select-js.xprjson](/wdg/basic/multi-select-js.xprjson)
+* [multi-select-py.xprjson](basic/multi-select-py.xprjson)
+* [multi-select-js.xprjson](basic/multi-select-js.xprjson)
 
 ## Table
 
@@ -140,9 +140,9 @@ This array will be displayed as :
 
 ![table](tables/table.png)
 
-Example : [table.xprjson](/wdg/tables/table.xprjson)
+Example : [table.xprjson](tables/table.xprjson)
 
-Table may be editable if it is connected to a [variable](../../ds/ds-basics/#variable)-type dataNode. *Editable* property can be set in a column-basis using the parameter *editableCols*. For example, if editableCols equals [0,1,2], columns 0, 1 and 2 are editable (i.e. cells in these columns, excluding headers, can be modified). The modifications will be assigned to the connected [variable](../../ds/ds-basics/#variable)-type dataNode.
+Table may be editable if it is connected to a [variable](../ds/ds-basics.md#variable)-type dataNode. *Editable* property can be set in a column-basis using the parameter *editableCols*. For example, if editableCols equals [0,1,2], columns 0, 1 and 2 are editable (i.e. cells in these columns, excluding headers, can be modified). The modifications will be assigned to the connected [variable](../ds/ds-basics.md#variable)-type dataNode.
 
 Tables and editable tables may also be two dimentional.
 
@@ -150,6 +150,6 @@ Tables and editable tables may also be two dimentional.
 
 Examples : 
 
-* [table-editable.xprjson](/wdg/tables/table-editable.xprjson)
-* [editable-table-2D.xprjson](/wdg/tables/editable-table-2D.xprjson)
+* [table-editable.xprjson](tables/table-editable.xprjson)
+* [editable-table-2D.xprjson](tables/editable-table-2D.xprjson)
 

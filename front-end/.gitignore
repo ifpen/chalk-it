@@ -36,4 +36,4 @@ pyodide-worker-dev.js.map
 /*.xprjson
 build_version.txt
 
-/.env.prod
+.env.prod

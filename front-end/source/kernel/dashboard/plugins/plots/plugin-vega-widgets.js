@@ -1,11 +1,17 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                    │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2017-2023 IFPEN                                        │ \\
+// │ Copyright © 2017-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Tristan BARTEMENT             │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+// import * as vega from 'vega';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -129,7 +135,7 @@ function vegaWidgetsPluginClass() {
       }
 
       if (bInteractive) {
-        var view = new vega.View(vega.parse(specif), {
+        const view = new vega.View(vega.parse(specif), {
           renderer: 'canvas', // renderer (canvas or svg)
           container: '#vega' + idWidget + 'c', // parent DOM container
           hover: true, // enable hover processing
@@ -141,7 +147,7 @@ function vegaWidgetsPluginClass() {
                 );*/
       } else {
         // create a new view instance for a given Vega JSON spec
-        var view = new vega.View(vega.parse(specif), { renderer: 'none' });
+        const view = new vega.View(vega.parse(specif), { renderer: 'none' });
 
         // generate a static PNG image
         view

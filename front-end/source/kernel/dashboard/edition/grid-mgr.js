@@ -1,11 +1,12 @@
 ﻿// ┌───────────────────────────────────────────────────────────────────────┐ \\
 // │ editor-events                                                         │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                           │ \\
+// │ Copyright © 2016-2024 IFPEN                                           │ \\
 // | Licensed under the Apache License, Version 2.0                        │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Tristan BARTEMENT                  │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
+import { editorSingletons } from 'kernel/editor-singletons';
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                         Grid functions                             | \\
@@ -38,8 +39,8 @@ function gridMgrClass() {
   /*--------updateGridSizes--------*/
   function _updateGridSizes() {
     // TODO : handle media type
-    widgetEditor.updateSnapshotDashZoneDims(); //GHI #239
-    const snapshotDashZoneDims = widgetEditor.getSnapshotDashZoneDims();
+    editorSingletons.widgetEditor.updateSnapshotDashZoneDims(); //GHI #239
+    const snapshotDashZoneDims = editorSingletons.widgetEditor.getSnapshotDashZoneDims();
 
     sizeX = (snapshotDashZoneDims.widthPx - 22) / 48;
     sizeY = (snapshotDashZoneDims.heightPx - 4) / 24;
@@ -49,4 +50,4 @@ function gridMgrClass() {
   }
 }
 
-var gridMgr = new gridMgrClass();
+export const gridMgr = new gridMgrClass();

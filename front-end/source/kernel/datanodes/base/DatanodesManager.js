@@ -6,25 +6,46 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Licensed under the MIT license.                                    │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// │ Copyright © 2016-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ + authors(s): Abir EL FEKI, Mongi BEN GAID                         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var datanodesManager = (function () {
+import { xDashConfig } from 'config.js';
+import _ from 'lodash';
+import ko from 'knockout';
+import angular from 'angular';
+import FreeboardUI from 'kernel/base/gui/FreeboardUI';
+import { DatanodesListModel } from './DatanodesListModel';
+import { DatanodeDependency } from '../execution-engine/DatanodeDependency';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { JSONEdit } from 'kernel/datanodes/gui/json-edit';
+import { JSEditor } from 'kernel/datanodes/gui/JSEditor';
+import { PluginEditor } from 'kernel/datanodes/gui/PluginEditor';
+import { TimeManager } from '../execution-engine/TimeManager';
+import { urlQueryEntry } from 'kernel/general/interfaces/query-url-entry';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { DialogBoxForData } from 'kernel/datanodes/gui/DialogBox';
+import { GraphVisu } from 'kernel/datanodes/gui/GraphVisu';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { xdsjson } from 'kernel/datanodes/export/xdsjson';
+import { offSchedLogUser } from 'kernel/base/main-common';
+import { schedulerProfiling } from 'kernel/datanodes/execution-engine/DatanodeScheduler';
+import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
+import {
+  EVENTS_EDITOR_DATANODE_CREATED,
+  EVENTS_EDITOR_DATANODE_DELETED,
+  EVENTS_EDITOR_DATANODE_UPDATED,
+} from 'angular/modules/editor/editor.events';
+
+export const datanodesManager = (function () {
   var datanodePlugins = {};
   var datanodesDependency = new DatanodeDependency(); // new instance from DatanodeDependency
 
   var graphVisu;
-  if (typeof execOutsideEditor === 'undefined') {
-    this.execOutsideEditor = false;
-  } else if (execOutsideEditor) {
-    this.execOutsideEditor = true;
-  } else {
-    this.execOutsideEditor = false;
-  }
-  if (!this.execOutsideEditor) {
+  if (!window.dashboardConfig?.execOutsideEditor) {
+    // FIXME really should not be here
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }
   var timeManager = new TimeManager();
@@ -84,7 +105,7 @@ var datanodesManager = (function () {
     //AEF: recompute graphs after deleting a datanode
     datanodesDependency.updateDisconnectedGraphsList(dnName, 'delete');
 
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs after delete: ', datanodesDependency.getAllDisconnectedGraphs());
     //
 
@@ -113,7 +134,7 @@ var datanodesManager = (function () {
   }
 
   function deleteDataNode(viewModel, type, title) {
-    [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
+    const [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
     if (type == 'datanode' && bFoundConnection) {
       let wdList = [];
       for (let i = 0; i < prop.length; i++) {
@@ -141,7 +162,7 @@ var datanodesManager = (function () {
             let $body = angular.element(document.body);
             let $rootScope = $body.scope().$root;
             if ($rootScope.bIsPlayMode) {
-              for (key in widgetConnector.widgetsConnection) {
+              for (const key in widgetConnector.widgetsConnection) {
                 widgetPreview.plotConstantData(key, false);
               }
             }
@@ -194,7 +215,7 @@ var datanodesManager = (function () {
 
     //AEF: recompute graphs after adding a new datanode
     datanodesDependency.updateDisconnectedGraphsList(newViewModel.name(), 'add');
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs after add: ', datanodesDependency.getAllDisconnectedGraphs());
     //
 
@@ -236,7 +257,7 @@ var datanodesManager = (function () {
       // handle dependencies
       if (datanodesDependency.hasSuccessors(viewModel.name())) {
         var successors = Array.from(datanodesDependency.getSuccessors(viewModel.name()));
-        xdashNotifications.manageNotification(
+        runtimeSingletons.xdashNotifications.manageNotification(
           'info',
           viewModel.name(),
           'Update new name "' + newSettings.settings.name + '" in script of "' + successors + '"'
@@ -259,7 +280,7 @@ var datanodesManager = (function () {
           } else if (datanodesManager.getDataNodeByName(successors[prop]).type() === 'JSON_delay_plugin') {
             script = datanodesManager.getDataNodeByName(successors[prop]).settings().json_input;
           }
-          replacedScript = script
+          const replacedScript = script
             .replace(new RegExp('dataNodes\\["' + oldName + '"\\]', 'g'), 'dataNodes["' + newName + '"]')
             .replace(new RegExp('dataNodes\\.' + oldName, 'g'), 'dataNodes.' + newName);
 
@@ -281,7 +302,7 @@ var datanodesManager = (function () {
       }
 
       // handle widget connection
-      [bFoundConnection, prop] = isConnectedWithWidgt(viewModel.name());
+      let [bFoundConnection, prop_] = isConnectedWithWidgt(viewModel.name());
       if (bFoundConnection) {
         let wdList = [];
         for (let prop in widgetConnector.widgetsConnection) {
@@ -292,7 +313,7 @@ var datanodesManager = (function () {
             }
           }
         }
-        xdashNotifications.manageNotification(
+        runtimeSingletons.xdashNotifications.manageNotification(
           'info',
           viewModel.name(),
           'Update new name "' + newSettings.settings.name + '" in connected widgets "' + wdList.join('\n') + '"'
@@ -334,7 +355,7 @@ var datanodesManager = (function () {
 
     //AEF: recompute graphs after renaming and/or editing datanode
     datanodesDependency.computeAllDisconnectedGraphs();
-    if (!offSchedLogUser && !xDashConfig.disableSchedulerLog)
+    if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog)
       console.log('All disconnected Graphs after rename: ', datanodesDependency.getAllDisconnectedGraphs()); //To optimize after
     //
     if (!_.isUndefined(newSettings.settings.sampleTime)) {
@@ -511,7 +532,7 @@ var datanodesManager = (function () {
       var datanodes = datanodesListModel.datanodes();
 
       // Find the datanode with the name specified
-      datanode = _.find(datanodes, function (datanodeModel) {
+      const datanode = _.find(datanodes, function (datanodeModel) {
         return datanodeModel.name() === datanodeName;
       });
 
@@ -531,7 +552,7 @@ var datanodesManager = (function () {
       return datanodesListModel.datanodes();
     },
     clear: function () {
-      schedulerProfiling = {}; // GHI for issue #188
+      for (const key in schedulerProfiling) delete schedulerProfiling[key];
 
       const allDnNames = datanodesListModel.datanodes().map((_) => _.name());
       datanodesListModel.clear();
@@ -542,7 +563,8 @@ var datanodesManager = (function () {
     },
     showDepGraph: function (name) {
       graphVisu.showDepGraph(name);
-      let scopeDepGraph = angular.element(document.getElementById('dependency__graph--container')).scope();
+      const element = document.getElementById('dependency__graph--container');
+      let scopeDepGraph = angular.element(element).scope();
       scopeDepGraph.getUniqTypes();
     },
     editNodeFromGraph: function (dataNode) {
@@ -558,6 +580,22 @@ var datanodesManager = (function () {
     closeGraph: function () {
       graphVisu.closeGraph();
     },
+    exportGraph: function () {
+      graphVisu.exportGraph();
+    },
+    zoomOutGraph: function () {
+      graphVisu.zoomOut();
+    },
+    zoomInGraph: function () {
+      graphVisu.zoomIn();
+    },
+    openFullScreenGraph: function () {
+      graphVisu.openFullScreen();
+    },
+    searchGraph: function (text) {
+      graphVisu.searchGraph(text);
+    },
+
     isSingletonNode: function (name) {
       var isSingle = datanodesDependency.isSingletonNode(name);
       return isSingle;
@@ -566,12 +604,12 @@ var datanodesManager = (function () {
       var zombieDatanodeList = [];
       var SingletonNodeList = datanodesDependency.getAllsingletonNodes();
       for (let i in SingletonNodeList) {
-        [bFoundConnection, prop] = isConnectedWithWidgt(SingletonNodeList[i]);
+        const [bFoundConnection, prop] = isConnectedWithWidgt(SingletonNodeList[i]);
         if (!bFoundConnection) {
           zombieDatanodeList.push(SingletonNodeList[i]);
         }
       }
-      if (!offSchedLogUser && !xDashConfig.disableSchedulerLog) console.log('zombie: ', zombieDatanodeList);
+      if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log('zombie: ', zombieDatanodeList);
 
       var dataToDelete = [];
       var bFound = false;

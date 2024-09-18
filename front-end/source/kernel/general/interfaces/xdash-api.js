@@ -1,13 +1,16 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ xDashApi                                                           │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// │ Copyright © 2016-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var xDashApi = (function () {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { chalkit } from 'kernel/general/interfaces/chalkit-api';
+
+export const xDashApi = (function () {
   function setVariable(dataNodeName, varJsonValue) {
     const dN = datanodesManager.getDataNodeByName(dataNodeName);
     dN.notificationCallback('warning', dataNodeName, "Deprecated feature: please rename 'xDashApi' by 'chalkit'");

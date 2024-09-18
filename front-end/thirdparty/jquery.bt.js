@@ -771,7 +771,7 @@ jQuery.bt = {version: '0.9.7'};
   
     function drawIt(points, strokeWidth) {
       this.moveTo(points[0].x, points[0].y);
-      for (i=1;i<points.length;i++) {
+      for (var i=1;i<points.length;i++) {
         if (points[i-1].type == 'arcStart') {
           // if we're creating a rounded corner
           //ctx.arc(round5(points[i].x), round5(points[i].y), points[i].startAngle, points[i].endAngle, opts.cornerRadius, false);

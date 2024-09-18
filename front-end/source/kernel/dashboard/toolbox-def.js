@@ -1,7 +1,7 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ widgetsEditorToolboxDefinition                                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2019-2023 IFPEN                                        │ \\
+// │ Copyright © 2019-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ghiles HIDEUR   │ \\
@@ -9,7 +9,7 @@
 
 // Define here how widgets are associated to callpses for display in editor toolbox
 
-var widgetsEditorToolboxDefinition = {
+export const widgetsEditorToolboxDefinition = {
   'collapse-basic': {
     name: 'Basic inputs & controls',
     widgets: [
@@ -54,9 +54,8 @@ var widgetsEditorToolboxDefinition = {
       'plotly3dSurface',
       'plotlyGeneric',
       'plotlyPyGeneric',
-      'matplotlib',      
+      'matplotlib',
       'plotlyRealTime',
-      'vegaGeneric',
       'echartsGeneric',
     ],
   },

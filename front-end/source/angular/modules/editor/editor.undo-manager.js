@@ -1,7 +1,7 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ editor.undo-manager                                                                │ \\
 // ├────────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2021-2023 IFPEN                                                        │ \\
+// │ Copyright © 2021-2024 IFPEN                                                        │ \\
 // | Licensed under the Apache License, Version 2.0                                     │ \\
 // ├────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                             │ \\
@@ -10,7 +10,7 @@
 /**
  * Interface of actions for the UndoManager
  */
-class UndoableAction {
+export class UndoableAction {
   constructor() {}
 
   /**
@@ -66,7 +66,7 @@ class UndoableAction {
   dispose() {}
 }
 
-class UndoManager {
+export class UndoManager {
   static UNDO_STACK_CHANGE_EVENT = 'UndoStackChange';
 
   /**

@@ -1,11 +1,17 @@
 ﻿// +--------------------------------------------------------------------+ \\
 // ¦ file manager                                                       ¦ \\
 // +--------------------------------------------------------------------¦ \\
-// ¦ Copyright © 2017-2023 IFPEN                                        ¦ \\
+// ¦ Copyright © 2017-2024 IFPEN                                        ¦ \\
 // ¦ Licensed under the Apache License, Version 2.0                     ¦ \\
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
+import _ from 'lodash';
+import PNotify from 'pnotify';
+import { saveAs } from 'file-saver';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
@@ -13,7 +19,7 @@
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
 
-var fileManager = (function () {
+export const fileManager = (function () {
   const is_xDash = true;
   let managerCallback = null;
   let endAction;
@@ -268,7 +274,7 @@ var fileManager = (function () {
     const fileExtension = FileMngrInst.GetFileExt(fileType);
     if (!_.isUndefined(xdashFileSerialized)) xdashFile = xdashFileSerialized;
     else {
-      const temp = xdash.serialize();
+      const temp = runtimeSingletons.xdash.serialize();
       xdashFile = JSON.stringify(temp, null, '\t');
     }
     const $rootScope = angular.element(document.body).scope().$root;

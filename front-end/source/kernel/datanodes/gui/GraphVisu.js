@@ -1,13 +1,21 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ GraphVisu                                                          │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// │ Copyright © 2016-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mondher AJIMI, Abir EL FEKI                   │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { DataSet, Network } from 'vis-network/standalone';
 
-function GraphVisu(datanodesDependency) {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { PREVIEW_JSON_FORMAT, jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/utils';
+
+// FIXME
+// import { assertEditorOnly } from 'kernel/utils/asserts';
+// assertEditorOnly();
+
+export function GraphVisu(datanodesDependency) {
   var offsetx, offsety, scale, duration, easingFunction;
   var network = null;
   var nodesGlobal = [];
@@ -27,11 +35,11 @@ function GraphVisu(datanodesDependency) {
   function buildGraphHtml() {
     var graph = new Graph();
     var ds;
-    for (ds in dependencyStructure) {
+    for (const ds in datanodesDependency.dependencyStructure) {
       var node = ds;
       // var edges = Array.from(dependencyMatrix[ds]); // MBG remove EC6
       var edges = [];
-      dependencyStructure[ds].forEach(function (value) {
+      datanodesDependency.dependencyStructure[ds].forEach(function (value) {
         edges.push(value);
       });
       //
@@ -104,8 +112,8 @@ function GraphVisu(datanodesDependency) {
       }
     }
 
-    nodesGlobal = new vis.DataSet(nodes);
-    edgesGlobal = new vis.DataSet(edges);
+    nodesGlobal = new DataSet(nodes);
+    edgesGlobal = new DataSet(edges);
 
     startNetwork({ nodes: nodesGlobal, edges: edgesGlobal }, selectedNodeName);
   }
@@ -158,7 +166,7 @@ function GraphVisu(datanodesDependency) {
         timestep: 0.1,
       },
     };
-    network = new vis.Network(container, data, options);
+    network = new Network(container, data, options);
     //todo adds an id to the canvas, which is used when downloading pictures, and should be placed after new vis.Network(container, data, options); otherwise the value will not be obtained
     $('#dependencyGraphBody canvas').attr('id', 'canvas');
 
@@ -183,7 +191,7 @@ function GraphVisu(datanodesDependency) {
       selectNodebyName(selectedNodeName);
     });
 
-    vis.Network.prototype.setScale = function (scale) {
+    Network.prototype.setScale = function (scale) {
       var animationOptions = {
         position: { x: 0, y: 0 },
         scale: scale,
@@ -343,8 +351,8 @@ function GraphVisu(datanodesDependency) {
     offsety = 0;
     duration = 1000;
     scale = 3.0;
-    positionx = 300;
-    positiony = 300;
+    // positionx = 300;
+    // positiony = 300;
     easingFunction = 'easeInOutQuint';
   }
 
@@ -376,9 +384,7 @@ function GraphVisu(datanodesDependency) {
     document.getElementById('notconnectedtowidget').classList.remove('active');
   }
 
-  $('#inputSearchGraph').on('input', function (e) {
-    var input = $(this);
-    var val = input.val();
+  function searchGraph(val) {
     var tmpNode;
     countFoundedNode = 0;
     for (let k = 0; k < nodesTmp.length; k++) {
@@ -404,9 +410,9 @@ function GraphVisu(datanodesDependency) {
     } else {
       fitAnimated();
     }
-  });
+  }
 
-  $('#exportGraph').on('click', function () {
+  function exportGraph() {
     var mynetworkCanvas = document.getElementById('canvas');
     console.log('mynetworkCanvas', mynetworkCanvas);
     mynetworkCanvas.toBlob(function (blob) {
@@ -416,9 +422,14 @@ function GraphVisu(datanodesDependency) {
       a.href = window.URL.createObjectURL(blob);
       a.click();
     });
-  });
-
-  $('#openFullScreen').on('click', function () {
+  }
+  function zoomOut() {
+    network.setScale(network.getScale() - 0.3);
+  }
+  function zoomIn() {
+    network.setScale(network.getScale() + 0.3);
+  }
+  function openFullScreen() {
     var elem = document.getElementById('dependencyGraphBody');
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
@@ -429,15 +440,7 @@ function GraphVisu(datanodesDependency) {
       /* IE11 */
       elem.msRequestFullscreen();
     }
-  });
-
-  $('#zoomIn').on('click', function () {
-    network.setScale(network.getScale() + 0.3);
-  });
-
-  $('#zoomOut').on('click', function () {
-    network.setScale(network.getScale() - 0.3);
-  });
+  }
 
   // public methods
   return {
@@ -446,5 +449,10 @@ function GraphVisu(datanodesDependency) {
     selectNodeFromTagList,
     selectConnectedWithWidget,
     closeGraph,
+    exportGraph,
+    zoomOut,
+    zoomIn,
+    openFullScreen,
+    searchGraph,
   };
 }

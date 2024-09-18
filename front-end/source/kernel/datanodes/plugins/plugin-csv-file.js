@@ -1,3 +1,9 @@
+import _ from 'lodash';
+import Papa from 'papaparse';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { b64EncodeUnicode, b64DecodeUnicode } from 'kernel/datanodes/plugins/thirdparty/utils';
+
 (function () {
   var error = false;
   // ## A Datanode Plugin
@@ -339,7 +345,7 @@
         let newData = {};
         if (currentSettings.pluck) {
           for (let i = 0; i < parsedData.meta.fields.length; i++) {
-            colName = parsedData.meta.fields[i];
+            const colName = parsedData.meta.fields[i];
             newData[colName] = _.map(newDataRaw, colName);
           }
         } else {

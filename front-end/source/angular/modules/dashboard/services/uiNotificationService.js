@@ -1,11 +1,13 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ modules.notifications                                                              │ \\
 // ├────────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                                        │ \\
+// │ Copyright © 2022-2024 IFPEN                                                        │ \\
 // | Licensed under the Apache License, Version 2.0                                     │ \\
 // ├────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                             │ \\
 // └────────────────────────────────────────────────────────────────────────────────────┘ \\
+
+import PNotify from 'pnotify';
 
 const DEFAULT_DELAY = 8000;
 const DEFAULT_TYPE = 'info';
@@ -13,7 +15,7 @@ const DEFAULT_TYPE = 'info';
 /**
  * Displays ephemeral notification messages on the page
  */
-class UiNotifications {
+export class UiNotifications {
   static TYPE_NOTICE = 'notice';
   static TYPE_INFO = 'info';
   static TYPE_SUCCESS = 'success';
@@ -39,7 +41,7 @@ class UiNotifications {
    * @param {boolean} dismissable if true, message can be dismissed with a click
    */
   notify(notification, dismissable = true) {
-    new PNotify({
+    const notice = new PNotify({
       type: DEFAULT_TYPE,
       delay: DEFAULT_DELAY,
       styling: 'bootstrap3',

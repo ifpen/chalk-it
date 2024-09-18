@@ -50,10 +50,6 @@
     @include icon-background('checkbox.svg', 'widget');
   }
 
-  &.icn-clock {
-    @include icon-background('clock.svg', 'widget');
-  }
-
   &.icn-compass {
     @include icon-background('compass.svg', 'widget');
   }
@@ -182,9 +178,10 @@
     @include icon-background('progress-bar.svg', 'widget');
   }
 
-  &.icn-range {
-    @include icon-background('range.svg', 'widget');
-  }
+  // FIXME
+  //&.icn-range {
+  //  @include icon-background('range.svg', 'widget');
+  //}
 
   &.icn-select {
     @include icon-background('select.svg', 'widget');
@@ -192,6 +189,10 @@
 
   &.icn-semi-circular-gauge {
     @include icon-background('semi-circular-gauge.svg', 'widget');
+  }
+
+  &.icn-simple-clock {
+    @include icon-background('simple-clock.svg', 'widget');
   }
 
   &.icn-simple-meter {

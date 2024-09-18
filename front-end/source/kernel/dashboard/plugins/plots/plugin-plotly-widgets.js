@@ -1,12 +1,18 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                    │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2017-2023 IFPEN                                        │ \\
+// │ Copyright © 2017-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI, Benoît LEHMAN,  │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
+import { WidgetActuatorDescription, WidgetActuatorValidationError } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import Plotly from 'plotly.js/dist/plotly';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -529,7 +535,7 @@ function plotlyWidgetsPluginClass() {
      */
     this.getTransformedText = function (text) {
       if (text && !$('<div>').html(text).children().length) {
-          const parser = new DOMParser();
+        const parser = new DOMParser();
         text = parser.parseFromString(`<!doctype html><body>${text}`, 'text/html').body.textContent;
       }
       return text;
@@ -563,8 +569,8 @@ function plotlyWidgetsPluginClass() {
           } else {
             _.forIn(param.value, (value, key) => {
               if (_.has(hiddenLayout, key) && _.isEqual(hiddenLayout[key], value)) {
-                  _.unset(hiddenLayout, key);
-                }
+                _.unset(hiddenLayout, key);
+              }
             });
           }
         });
@@ -590,7 +596,7 @@ function plotlyWidgetsPluginClass() {
           if (this.checkNested(modelLayout, ...path)) {
             const finalValue = isColor ? this.getColorValueFromCSSProperty(value) : value;
             _.set(hiddenLayout, path, finalValue);
-        }
+          }
         };
 
         updateHiddenLayout(
@@ -706,22 +712,22 @@ function plotlyWidgetsPluginClass() {
             });
 
             const selectionDescriptor = dataSelected.map((selection, index) => ({
-                trace: index,
+              trace: index,
               selection: selection,
-                customdata: customSelected[index],
+              customdata: customSelected[index],
             }));
 
             self.selection.setValue(selectionDescriptor);
             self.selection.updateCallback(self.selection, self.selection.getValue());
           } else {
-            //      graphDiv.emit('plotly_deselect', null)
-            //  self.selection.setValue({ "range": {} });
-            //self.selection.updateCallback(self.selection, self.selection.getValue());
+            // graphDiv.emit('plotly_deselect', null)
+            // self.selection.setValue({ "range": {} });
+            // self.selection.updateCallback(self.selection, self.selection.getValue());
           }
         };
 
         const handlePlotlyDeselect = () => {
-          //     Plotly.restyle(graphDiv, { selectedpoints: [null] });
+          // Plotly.restyle(graphDiv, { selectedpoints: [null] });
           self.selection.setValue({ range: {} });
           self.selection.updateCallback(self.selection, self.selection.getValue());
         };
@@ -1210,6 +1216,7 @@ function plotlyWidgetsPluginClass() {
       'Plotly selection',
       WidgetActuatorDescription.WRITE
     );
+
     this.getActuatorDescriptions = function () {
       return [_DATA_DESCRIPTOR, _LAYOUT_DESCRIPTOR, _SELECTION_DESCRIPTOR];
     };
@@ -1272,6 +1279,7 @@ function plotlyWidgetsPluginClass() {
       'Plotly selection',
       WidgetActuatorDescription.WRITE
     );
+
     this.getActuatorDescriptions = function () {
       return [_FIG_DESCRIPTOR, _SELECTION_DESCRIPTOR];
     };
@@ -1470,7 +1478,7 @@ function plotlyWidgetsPluginClass() {
   };
 }
 
-const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
+export const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

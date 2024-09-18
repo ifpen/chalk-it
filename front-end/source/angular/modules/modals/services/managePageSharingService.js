@@ -1,13 +1,18 @@
 // ┌──────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ ManagePageSharingService                                                         │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                      │ \\
+// │ Copyright © 2016-2024 IFPEN                                                      │ \\
 // | Licensed under the Apache License, Version 2.0                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI                                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import PNotify from 'pnotify';
+import { modalsModule } from '../modals';
+import { fileManager } from 'kernel/general/backend/file-management';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { htmlExport } from 'kernel/general/export/html-export';
 
-angular.module('modules').service('ManagePageSharingService', [
+modalsModule.service('ManagePageSharingService', [
   '$rootScope',
   function ($rootScope) {
     const self = this;
@@ -32,8 +37,8 @@ angular.module('modules').service('ManagePageSharingService', [
       }
     };
 
-    function _savePage() {
-      var txt = htmlExport.createDashboardDocument($rootScope.infoPage.name);
+    async function _savePage() {
+      const txt = await htmlExport.createDashboardDocument($rootScope.infoPage.name);
       fileManager.getFileListExtended('page', $rootScope.infoPage.name, txt);
       $rootScope.infoPage.isManagePageOpen = false;
     }

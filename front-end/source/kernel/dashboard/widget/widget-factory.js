@@ -2,11 +2,27 @@
 // │  widgetFactory : absract factory class for buidling widgets        │ \\
 // │                                                                    │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// │ Copyright © 2016-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import PNotify from 'pnotify';
+
+import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { editorSingletons } from 'kernel/editor-singletons';
+import {
+  computeMainDivLayout,
+  pxToViewPort,
+  computeContainerRelativeLayout,
+  enforceConstraints,
+  enforceMinConsistency,
+  applyLayout,
+} from 'kernel/dashboard/widget/widget-placement';
+import { convertViewportToPx } from 'kernel/dashboard/scaling/scaling-utils';
+import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
 
 function widgetFactoryClass() {
   const POSSIBLE_ANSI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // (62 characters)
@@ -57,7 +73,7 @@ function widgetFactoryClass() {
         cln.id +
         '" onclick="widgetEditor.showHideWidgMenu(this)" style="z-index:999999;margin:0"><a id="ed_a_' +
         cln.id +
-        '" tilte="edit widget"><i id="showHideWidgetMenu" class="basic icn-edit"></i></a></li>'
+        '" title="edit widget"><i id="showHideWidgetMenu" class="basic icn-edit"></i></a></li>'
     ).appendTo(menu);
 
     // generate containerDiv id
@@ -100,7 +116,7 @@ function widgetFactoryClass() {
    */
   function createNewDiv(modelJsonId, targetDiv, wLayout) {
     var cln = document.createElement('div'); // mainDiv
-    var targetDiv = widgetContainer.putAndGetTargetDiv(cln, targetDiv);
+    targetDiv = widgetContainer.putAndGetTargetDiv(cln, targetDiv);
     var layoutViewport = computeMainDivLayout(wLayout, modelJsonId);
 
     // Default zIndex : can be overloaded later
@@ -108,7 +124,7 @@ function widgetFactoryClass() {
 
     // Conversions to work in px
     var widgetLayoutPx = convertViewportToPx(layoutViewport);
-    var containerLayoutPx = layoutMgr.getTargetDivLayoutPx(targetDiv);
+    var containerLayoutPx = editorSingletons.layoutMgr.getTargetDivLayoutPx(targetDiv);
     // Enforce size is into container and place correctly newly drag and dropped widget
     var relativeContainerLayoutPx = computeContainerRelativeLayout(containerLayoutPx);
     var relativeWidgetLayoutPx = enforceConstraints(widgetLayoutPx, relativeContainerLayoutPx);
@@ -137,8 +153,8 @@ function widgetFactoryClass() {
    * @param {any} modelJsonId
    */
   this.createUniqueInstanceId = function (modelJsonId) {
-    const modelsIdLength = widgetEditor.modelsId.length;
-    const usedIds = new Set(widgetEditor.modelsId);
+    const modelsIdLength = editorSingletons.widgetEditor.modelsId.length;
+    const usedIds = new Set(editorSingletons.widgetEditor.modelsId);
     const makeid = (charset) => charset.charAt(Math.floor(Math.random() * charset.length));
     const ids = [
       ...POSSIBLE_ANSI,
@@ -168,10 +184,10 @@ function widgetFactoryClass() {
       // TODO throw an error
     } else {
       usedIds.add(instanceId);
-      widgetEditor.modelsId[modelsIdLength] = instanceId;
+      editorSingletons.widgetEditor.modelsId[modelsIdLength] = instanceId;
     }
     return instanceId;
   };
 }
 
-var widgetFactory = new widgetFactoryClass();
+export const widgetFactory = new widgetFactoryClass();

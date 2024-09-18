@@ -6,8 +6,15 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { xDashConfig } from 'config.js';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
+import { inputHandler } from 'kernel/general/interfaces/input-params';
+import { modelsParameters } from 'kernel/base/widgets-states';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 
-var chalkit = (function () {
+export const chalkit = (function () {
   function setVariable(dataNodeName, varJsonValue) {
     const val = JSON.parse(JSON.stringify(varJsonValue));
     const currentDN = datanodesManager.getCurrentDataNode();
@@ -160,7 +167,7 @@ var chalkit = (function () {
     swal(title, msg, type);
   }
 
-  scheduler = (function () {
+  const scheduler = (function () {
     function setVariable(dataNodeName, varJsonValue) {
       chalkit.setVariable(dataNodeName, varJsonValue);
     }
@@ -185,7 +192,7 @@ var chalkit = (function () {
     };
   })();
 
-  dashboard = (function () {
+  const dashboard = (function () {
     function viewPage(pageUrl, inputVals, bNewTab) {
       chalkit.viewPage(pageUrl, inputVals, bNewTab);
     }
@@ -218,7 +225,7 @@ var chalkit = (function () {
     };
   })();
 
-  notification = (function () {
+  const notification = (function () {
     function notify(dataNodeName, msg, type) {
       chalkit.notify(dataNodeName, msg, type);
     }

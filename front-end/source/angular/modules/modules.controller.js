@@ -1,11 +1,17 @@
 ﻿// ┌──────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ modules.controller                                                               │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                      │ \\
+// │ Copyright © 2016-2024 IFPEN                                                      │ \\
 // | Licensed under the Apache License, Version 2.0                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ameur HAMDOUNI, Abir EL FEKI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import angular from 'angular';
+import FreeboardUI from 'kernel/base/gui/FreeboardUI';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { fileManager } from 'kernel/general/backend/file-management';
+import { initXdashEditor } from 'kernel/editor-singletons';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
 
 angular.module('modules').controller('ModulesController', [
   '$scope',
@@ -148,37 +154,20 @@ angular.module('modules').controller('ModulesController', [
 
     const freeboardUIInst = new FreeboardUI();
     $rootScope.loadedTemplate = function () {
-      if (!$rootScope.xDashFullVersion) {
-        freeboardUIInst.showLoadingIndicator(true);
-      }
-      head.js(
-        xdashEditorBodyJsList,
-        // *** Load more plugins here ***
-        function () {
-          // Begin fix by Ghiles
-          const startTime = new Date().getTime();
-          const timeLimit = 20000; // in milliseconds
-          let count = 0;
-          // Wait for the datanodeManager to finish loading
-          while (count < timeLimit) {
-            count = new Date().getTime() - startTime;
-            if (typeof datanodesManager !== 'undefined') {
-              break;
-            }
-          }
-          // End fix by Ghiles
-          $rootScope.availableTags = $rootScope.listAvailablesTags;
-          datanodesManager.initialize(false);
-          $rootScope.currentProject = xdash.initMeta();
-          $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
-          if (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) {
-            const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
-            sidebarController.newProject();
-          }
-          freeboardUIInst.showLoadingIndicator(false);
+      setTimeout(() => {
+        initXdashEditor();
+        $rootScope.availableTags = $rootScope.listAvailablesTags;
+        datanodesManager.initialize(false);
+        $rootScope.currentProject = runtimeSingletons.xdash.initMeta();
+        $rootScope.alldatanodes = datanodesManager.getAllDataNodes();
+        if (!$rootScope.xDashFullVersion && $rootScope.isDiscoverDone && !$rootScope.isTemplateOpen) {
+          const sidebarController = angular.element(document.getElementById('sidebar-ctrl')).scope();
+          sidebarController.newProject();
         }
-      );
+        freeboardUIInst.showLoadingIndicator(false);
+      }, 0);
     };
+    window.loadedTemplate = $rootScope.loadedTemplate;
 
     $scope.$watch(
       function () {
