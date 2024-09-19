@@ -16,7 +16,7 @@
     ng-keydown="$event.keyCode === 13 && vm.historySelect()"
   >
     <option ng-repeat="action in vm.history" ng-value="action.value">
-      {{action.value==="-1" ? ("> " + action.label + " <") : action.label}}
+      {{action.value==="-1" ? ("&gt; " + action.label + " &lt;") : action.label}}
     </option>
   </select>
 </div>
