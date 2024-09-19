@@ -1,0 +1,114 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 23:33:42 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "table",
+		"description": "basic table widget connected to variable",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "basic"
+			},
+			{
+				"text": "table"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "paris",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "paris",
+					"json_var": "{\"average temperature [°C]\":[[\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\",\"Jul\",\"Aug\",\"Sep\",\"Oct\",\"Nov\",\"Dec\"],[5,6,9,11,15,16,20,20,16,12,7,5]]}"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwSp",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"flatUiTabled": {
+			"layout": {
+				"top": "1.67822vh",
+				"left": "0.806654vw",
+				"height": "13.258vh",
+				"width": "64.4718vw",
+				"minHeight": "79px",
+				"minWidth": "88px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "flatUiTabled",
+				"instanceId": "flatUiTabled",
+				"modelJsonId": "flatUiTable",
+				"widgetTypeName": "Table(flatUiTabled)"
+			},
+			"modelParameters": {
+				"headerLine": true,
+				"striped": true,
+				"bordered": true,
+				"noBorder": false,
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue"
+			},
+			"modelHiddenParams": {
+				"value": null
+			}
+		}
+	},
+	"connections": {
+		"flatUiTabled": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"average temperature [°C]"
+				],
+				"dataNode": "paris",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

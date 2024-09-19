@@ -20,8 +20,8 @@ Like KPI display, but also provides a memory graph of past values.
 
 Examples :
 
-* [advanced-kpi-py.xprjson](/wdg/basic/advanced-kpi-py.xprjson)
-* [advanced-kpi-js.xprjson](/wdg/basic/advanced-kpi-js.xprjson)
+* [advanced-kpi-py.xprjson](basic/advanced-kpi-py.xprjson)
+* [advanced-kpi-js.xprjson](basic/advanced-kpi-js.xprjson)
 
 ## Status led
 
@@ -31,7 +31,7 @@ For displaying binary status (on/off)
 
 Enables to display a progress over a range. See example :
 
-* [progress-bar.xprjson](/wdg/basic/progress-bar.xprjson)
+* [progress-bar.xprjson](basic/progress-bar.xprjson)
 
 ## Full-circular, semi-circular or arch-circular gauges
 
@@ -41,5 +41,5 @@ The other widgets are adapted for real-time display:
 
 * **Status led** : for displaying binary status (on/off)
 
-More advance displays (like [Label](../../wdg/wdg-annotation-video#label), [Markdown](../../wdg/wdg-annotation-video#markdown) or [HTML](../../wdg/wdg-annotation-video#html)) can be found in the [Annotation & Video] category.
+More advance displays (like [Label](wdg-annotation-video.md#label), [Markdown](wdg-annotation-video.md#markdown) or [HTML](wdg-annotation-video.md#html)) can be found in the [Annotation & Video] category.
 

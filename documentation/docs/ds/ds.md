@@ -8,7 +8,7 @@ Chalk'it maintains a workspace of these objects whose content corresponds to the
 
 Chalk'it allows the user to specify a dataflow diagram of both data and execution dependency relationships between dataNodes. This constitutes the application logic.
 
-* [Basics](../../ds/ds-basics/)
-* [Execution engine](../../ds/ds-execution-engine/)
-* [Reference](../../ds/ds-reference/)
+* [Basics](ds-basics.md)
+* [Execution engine](ds-execution-engine.md)
+* [Reference](ds-reference.md)
   

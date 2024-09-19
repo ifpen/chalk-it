@@ -1,0 +1,169 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Thu Feb 09 2023 21:11:28 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "date-picker",
+		"description": "Data picker (calendar) with date selection and display",
+		"groupName": "Neutral",
+		"tags": [
+			{
+				"text": "Widgets"
+			},
+			{
+				"text": "Geo&Time"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "date",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "date",
+					"json_var": "{\"selected\":\"2019-11-07\"}"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1256,
+		"heightPx": 575,
+		"scrollWidthPx": 1256,
+		"scrollHeightPx": 575,
+		"widthVw": 84.29530201342281,
+		"heightVh": 79.6398891966759,
+		"scrollWidthVw": 84.29530201342281,
+		"scrollHeightVh": 79.6398891966759,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"datepickerSimple8": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "0.806654vw",
+				"height": "5.51855vh",
+				"width": "22.8122vw",
+				"minHeight": "32px",
+				"minWidth": "150px",
+				"z-index": "2"
+			},
+			"container": {
+				"id": "datepickerSimple8",
+				"instanceId": "datepickerSimple8",
+				"modelJsonId": "datepickerSimple",
+				"widgetTypeName": "Simple calender(datepickerSimple8)"
+			},
+			"modelParameters": {
+				"label": "selected",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelWidthProportion": "30%",
+				"valueFontSize": 0.5,
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueColor": "#34495e",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc"
+			},
+			"modelHiddenParams": {
+				"value": "",
+				"visibility": false
+			}
+		},
+		"flatUiTextInputE": {
+			"layout": {
+				"top": "1.38504vh",
+				"left": "25.4512vw",
+				"height": "5.51855vh",
+				"width": "22.8122vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "3"
+			},
+			"container": {
+				"id": "flatUiTextInputE",
+				"instanceId": "flatUiTextInputE",
+				"modelJsonId": "flatUiTextInput",
+				"widgetTypeName": "Text Input(flatUiTextInputE)"
+			},
+			"modelParameters": {
+				"label": "selected",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"valueWidthProportion": "70%",
+				"validationButton": false,
+				"validationOnFocusOut": true,
+				"valueFontSize": 0.5,
+				"valueColor": "#34495e",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"labelColor": "#2154ab",
+				"labelFontFamily": "Helvetica Neue",
+				"valueFontFamily": "Helvetica Neue",
+				"borderColor": "#447bdc",
+				"validationBtnDefaultColor": "#2154ab",
+				"validationBtnHoverColor": "#a9c3ef",
+				"validationBtnActiveColor": "#2154ab"
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		}
+	},
+	"connections": {
+		"datepickerSimple8": {
+			"dateValue": {
+				"name": "dateValue",
+				"dataFields": [
+					"selected"
+				],
+				"dataNode": "date",
+				"dataNodeIndex": 0
+			}
+		},
+		"flatUiTextInputE": {
+			"value": {
+				"name": "value",
+				"dataFields": [
+					"selected"
+				],
+				"dataNode": "date",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

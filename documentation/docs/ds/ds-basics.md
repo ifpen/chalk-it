@@ -1,4 +1,3 @@
-
 # Basics
 
 ## Variable
@@ -12,14 +11,14 @@ A variable is readable and writable : its value can be *modified by a widget*. T
 The user can import a JSON variable from a file, export it to a file, or manually edit the parameters using the tree editor located in the lower portion of its edition panel.
 
 Simple example :
-[simple-json.xprjson](/ds/xprjson/simple-json.xprjson)
+[simple-json.xprjson](xprjson/simple-json.xprjson)
 
 ## Scripts
 
 Script-type dataNode is used to write specific Python or JavaScript code that will be executed on the client side. It may use the output of the other dataNodes (referenced using keyword `dataNodes`). Currently, there types of Script dataNodes exist in Chalk'it :
 
-- [Python Script](../../ds/ds-reference/#python-script)
-- [JavaScript Script (client-side)](../../ds/ds-reference/#javascript-script)
+- [Python Script](ds-reference.md#python-script)
+- [JavaScript Script (client-side)](ds-reference.md#javascript-script)
 
 Below is a screenshot of a Python Script edition panel :
 
@@ -29,10 +28,7 @@ In this example, dataNode `multiply` references the dataNode `input`, specifical
 
 A final `return` statement is required to return the result of the Script evaluation to Chalk'it workspace.
 
-Complete example :
-[py-script.xprjson](/ds/xprjson/py-script.xprjson)
-
-The code is executed according to [Chalk'it runtime rules](../../ds/ds-execution-engine/).
+The code is executed according to [Chalk'it runtime rules](ds-execution-engine.md).
 
 Two run mode are available for Python scripts
 - Using the *Default* runner that executes locally the Python code into a worker

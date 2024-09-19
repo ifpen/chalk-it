@@ -6,7 +6,7 @@ The Iris flower dataset is a multivariate dataset introduced by the British stat
 
 The following tutorial allows to illustrate main Chalk'it features througth this dataset. Expected result is provided in the following project:
 
--   [iris-tutorial.xprjson](/quick-start/xprjson/iris-tutorial.xprjson)
+-   [iris-tutorial.xprjson](xprjson/iris-tutorial.xprjson)
 
 ## 1. Create a projet
 

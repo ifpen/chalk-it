@@ -4,6 +4,6 @@ The default runner executes dataNodes Python code into a local worker. Needed Py
 
 Examples:
 
-* [plotly-python-widget-py-local.xprjson](/py/xprjson/plotly-python-widget-py-local.xprjson)
-* [rest-pandas-pyodide-covid-js-py-local.xprjson](/py/xprjson/rest-pandas-pyodide-covid-js-py-local.xprjson)
+* [plotly-python-widget-py-local.xprjson](xprjson/plotly-python-widget-py-local.xprjson)
+* [rest-pandas-pyodide-covid-js-py-local.xprjson](xprjson/rest-pandas-pyodide-covid-js-py-local.xprjson)
 

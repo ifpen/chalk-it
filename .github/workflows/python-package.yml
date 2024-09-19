@@ -1,0 +1,52 @@
+name: Build Chalk'it Python Package
+
+on:
+  push:
+    branches: [ preprod ]
+  pull_request:
+    branches: [ preprod ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20' # Specify your Node.js version here
+    - name: Install Node.js and Bower dependencies
+      run: |
+        cd front-end
+        npm install
+        npm install -g bower
+        bower install
+
+    - name: Run Python build script
+      run: python build.py
+
+    # Add any other build steps for front-end or back-end as needed
+
+    - name: Upload Python Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: python-package
+        path: build/dist/
+    
+    # Uncomment and adjust if you have front-end artifacts to upload
+    - name: Upload Front-end Artifact
+      uses: actions/upload-artifact@v2
+      with:
+         name: front-end-build
+         path: front-end/build/

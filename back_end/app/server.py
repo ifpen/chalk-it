@@ -40,7 +40,7 @@ class AppConfig:
     def __init__(self, args: Namespace) -> None:
         # Extract arguments and set default values
         self.DEBUG = args.dev
-        self.xprjson = args.xprjson_file
+        self.xprjson_file_path = args.xprjson_file
         self.run_port = args.app_port or 7854
         self.app_ip = args.app_ip or "127.0.0.1"
         self.server_url = f"http://{self.app_ip}:{self.run_port}"
@@ -54,32 +54,32 @@ class AppConfig:
 
     def _setup_paths(self) -> None:
         self.base_dir = Path(__file__).parent.resolve()
+        self.index_file_path = "index.html"
+        self.index_view_file_path = "index-view.html"
         if self.DEBUG:
             # Development mode paths
-            self.project_dir = (Path.cwd() / "..").resolve()
+            self.project_dir = (self.base_dir / ".." / "..").resolve()
             self.templates_dir = (
                 self.base_dir / ".." / ".." / "documentation" / "Templates" / "Projects"
             ).resolve()
             self.images_dir = (
                 self.base_dir / ".." / ".." / "documentation" / "Templates" / "Images"
             ).resolve()
-            self.static_folder = (self.base_dir / ".." / ".." / "front-end").resolve()
+            self.static_folder = (
+                self.base_dir / ".." / ".." / "front-end" / "build"
+            ).resolve()
             self.documentation_dir = (
                 ""  # In develop mode, the doc is served by the webpack dev server
             )
-            self.index_file_path = "./build/index.html"
-            self.index_view_file_path = "./build/index-view.html"
         else:
             # Production mode paths
-            self.project_dir = Path.cwd()
+            self.project_dir = Path.cwd().resolve()
             self.templates_dir = (
                 self.base_dir / ".." / "Templates" / "Projects"
             ).resolve()
             self.images_dir = (self.base_dir / ".." / "Templates" / "Images").resolve()
             self.static_folder = (self.base_dir / "..").resolve()
             self.documentation_dir = (self.static_folder / "doc").resolve()
-            self.index_file_path = "index.html"
-            self.index_view_file_path = "index-view.html"
 
 
 class RootManager:
@@ -395,35 +395,56 @@ class FileManager:
         """
         Handles requests for static files.
         """
+        if self.config.xprjson_file_path is not None:
+            return self.dashboard(self.config.xprjson_file_path)
+
         static_file_directory = Path(self.blueprint.static_folder)
         full_path = (static_file_directory / path).resolve()
 
         if full_path.is_file():
             return send_from_directory(static_file_directory, path)
 
-        if self.config.xprjson is not None:
-            return self.dashboard(self.config.xprjson)
-
         return "Invalid path", 404
 
-    def dashboard(self, xprjson: str) -> str:
-        # Load configuration from JSON file
+    def dashboard(self, xprjson_file_path: str) -> str:
+        """Generates the dashboard HTML content by injecting the config data into the template."""
+
+        config_path = Path(xprjson_file_path)
+        # If the path is relative, resolve it against the project directory
+        if not config_path.is_absolute():
+            config_path = Path.cwd() / config_path
+
+        template_path = self.config.static_folder / self.config.index_view_file_path
+
+        # Load configuration from XPRJSON file
         try:
-            with open(xprjson, "r") as config_file:
+            with config_path.open("r") as config_file:
                 config_data = json.load(config_file)
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            raise ValueError(f"Error loading configuration: {e}")
+        except FileNotFoundError:
+            raise ValueError(f"Configuration file not found: {config_path}")
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Error decoding JSON from {config_path}: {e}")
 
-        # Read the HTML template
+        # Load the HTML template
         try:
-            with open(self.config.index_view_file_path, "r") as template_file:
+            with template_path.open("r") as template_file:
                 template_data = template_file.read()
-        except FileNotFoundError as e:
-            raise ValueError(f"Error loading HTML template: {e}")
+        except FileNotFoundError:
+            raise ValueError(f"HTML template file not found: {template_path}")
 
-        template_data_with_config = template_data.replace(
-            "jsonContent = {};", f"var jsonContent = {json.dumps(config_data)};"
-        )
+        # Prepare the script with dynamic JSON data and inject it into the template
+        script = f"""
+        <script type="text/javascript">
+            try {{
+                window.chalkitLoadDashboard({json.dumps(config_data)});
+            }} catch (error) {{
+                console.error('Error loading dashboard:', error);
+            }}
+        </script>
+        """
+
+        # Inject the script before the closing </body> tag
+        template_data_with_config = template_data.replace("</body>", script + "</body>")
 
         return render_template_string(template_data_with_config)
 
@@ -594,7 +615,7 @@ class Main:
 
     @classmethod
     def _start_application(cls, app: Flask, config: AppConfig) -> None:
-        if (not config.DEBUG) and (config.xprjson is None):
+        if (not config.DEBUG) and (config.xprjson_file_path is None):
             threading.Timer(2, lambda: cls._open_browser(config.server_url)).start()
         app.run(debug=False, port=config.run_port)
 

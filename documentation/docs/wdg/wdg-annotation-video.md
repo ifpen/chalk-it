@@ -18,8 +18,8 @@ See example below.
 
 Example :
 
-* [base64-image-py.xprjson](/wdg/annotation/base64-image-py.xprjson)
-* [base64-image-js.xprjson](/wdg/annotation/base64-image-js.xprjson)
+* [base64-image-py.xprjson](annotation/base64-image-py.xprjson)
+* [base64-image-js.xprjson](annotation/base64-image-js.xprjson)
 
 By default, **keepRatio** parameter is *true*. When set to false, the image ratio is no longer preserved and the image will inherit its container size.
 
@@ -31,8 +31,8 @@ Markdown widget accept a markdown description in the form of string.
 
 Example:
 
-* [markdown-py.xprjson](/wdg/annotation/markdown-py.xprjson)
-* [markdown-js.xprjson](/wdg/annotation/markdown-js.xprjson)
+* [markdown-py.xprjson](annotation/markdown-py.xprjson)
+* [markdown-js.xprjson](annotation/markdown-js.xprjson)
 
 # HTML
 
@@ -40,15 +40,15 @@ HTML widget accepts a HTML document description in the form of string.
 
 Example :
 
-* [generic-html-py.xprjson](/wdg/annotation/generic-html-py.xprjson)
-* [generic-html-js.xprjson](/wdg/annotation/generic-html-js.xprjson)
+* [generic-html-py.xprjson](annotation/generic-html-py.xprjson)
+* [generic-html-js.xprjson](annotation/generic-html-js.xprjson)
 
 ## Camera
 
 The main purpose of this widget  is to use the device's camera.
 
-The widget must be connected to a [variable](../../ds/ds-basics/#variable)-type dataNode and will write information to its **base64Image**, **mimeType** and **imageData** actuators.
+The widget must be connected to a [variable](../ds/ds-basics.md#variable)-type dataNode and will write information to its **base64Image**, **mimeType** and **imageData** actuators.
 
 Example :
 
-* [video-screenshot.xprjson](/wdg/annotation/video-screenshot.xprjson) 
+* [video-screenshot.xprjson](annotation/video-screenshot.xprjson) 
