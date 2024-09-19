@@ -1,12 +1,21 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                    │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2017-2023 IFPEN                                        │ \\
+// │ Copyright © 2017-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir El FEKI, Ghiles HIDEUR   │ \\
 // │ Tristan BARTEMENT, Guillaume CORBELIN                              │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import 'flat-ui.alt';
+import 'mindmup-editabletable';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -957,12 +966,12 @@ function flatUiComplexWidgetsPluginClass() {
     this.value = {
       updateCallback: function () {},
       setValue: function (val) {
-        pastSelect = JSON.stringify(modelsHiddenParams[idInstance].selectedValue);
+        const pastSelect = JSON.stringify(modelsHiddenParams[idInstance].selectedValue);
 
         modelsHiddenParams[idInstance].value = val;
         self.render();
 
-        selected = JSON.stringify(self.selectedValue.getValue());
+        const selected = JSON.stringify(self.selectedValue.getValue());
         if (selected !== pastSelect) {
           //add a test to avoid loop
           self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());

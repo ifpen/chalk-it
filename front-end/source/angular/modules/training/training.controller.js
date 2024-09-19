@@ -1,3 +1,6 @@
+import { xDashConfig } from 'config.js';
+import template from 'angular/modules/training/training.html';
+
 angular
   .module('modules.training')
   .config([
@@ -7,7 +10,7 @@ angular
         userNotAuthenticated: true,
         userAuthenticated: false,
         url: '/',
-        templateUrl: 'source/angular/modules/training/training.html',
+        template,
         controller: 'TrainingController',
       });
     },
@@ -20,21 +23,48 @@ angular
     '$http',
     'SessionUser',
     function ($scope, $rootScope, $state, $http, SessionUser) {
-      var iframe = document.getElementById('trainingFrame');
-      iframe.src = xDashConfig.urlDoc + 'quick-start/quickstart/index.html';
-      iframe.onload = function () {
-        var sidebar = iframe.contentWindow.document.getElementsByClassName('md-sidebar')[0];
-        sidebar.style.display = 'none';
-        var logobutton = iframe.contentWindow.document.getElementsByClassName('md-header__button md-logo')[0];
-        logobutton.style = 'pointer-events: none;';
-        var searchbar = iframe.contentWindow.document.getElementsByClassName('md-search')[0];
-        searchbar.style.display = 'none';
-        var navFooter = iframe.contentWindow.document.getElementsByClassName('md-footer__inner md-grid')[0];
-        navFooter.style.display = 'none';
-        var iBody = iframe.contentWindow.document.body;
-        iBody.style['padding-left'] = '15vw';
-        iBody.style['padding-right'] = '15vw';
+      const iframe = document.getElementById('trainingFrame');
+      iframe.src = `${xDashConfig.urlDoc}quick-start/quickstart/`;
+
+      // Helper function to hide elements by class name
+      const hideElementByClassName = (className) => {
+        const element = iframe.contentWindow.document.getElementsByClassName(className)[0];
+        if (element) {
+          element.style.display = 'none';
+        }
       };
-      return;
+
+      // Helper function to disable pointer events by class name
+      const disablePointerEventsByClassName = (className) => {
+        const element = iframe.contentWindow.document.getElementsByClassName(className)[0];
+        if (element) {
+          element.style.pointerEvents = 'none';
+        }
+      };
+
+      // Function to handle iframe content manipulations
+      const handleIframeContentLoaded = () => {
+        hideElementByClassName('md-sidebar');
+        disablePointerEventsByClassName('md-header__button md-logo');
+        hideElementByClassName('md-search');
+        hideElementByClassName('md-footer__inner md-grid');
+
+        const iBody = iframe.contentWindow.document.body;
+        if (iBody) {
+          iBody.style.paddingLeft = '15vw';
+          iBody.style.paddingRight = '15vw';
+        }
+      };
+
+      // Listen for messages from the iframe
+      window.addEventListener(
+        'message',
+        (event) => {
+          if (event.origin === xDashConfig.urlDoc && event.data === 'contentLoaded') {
+            handleIframeContentLoaded();
+          }
+        },
+        false
+      );
     },
   ]);

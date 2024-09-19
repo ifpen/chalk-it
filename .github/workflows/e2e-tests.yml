@@ -1,0 +1,108 @@
+name: 'Run e2e Tests'
+
+on:
+  push:
+    branches: [ e2e ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: 'true'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.12.x
+          cache: npm
+          cache-dependency-path: '**/package-lock.json'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.6'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+
+      - name: Install build dependencies
+        run: npm ci
+        working-directory: ./front-end
+
+      - name: Build
+        run: |
+          echo "" >> .env.prod
+          echo "URL_LOCAL_SERVER=api/" >> .env.prod
+          npm run build
+        working-directory: ./front-end
+
+      - name: Build
+        id: build
+        working-directory: ./front-end/build
+        run: |
+            BUILD_DIR="$(pwd)"
+            echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_OUTPUT
+
+      - name: Set up Chrome dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev
+          sudo apt-get install -y libgtk-3-0
+          sudo apt-get install -y libnotify-dev
+          sudo apt-get install -y libgconf-2-4
+          sudo apt-get install -y libnss3
+          sudo apt-get install -y libxss1
+          sudo apt-get install -y libasound2
+          sudo apt-get install -y fonts-liberation
+          sudo apt-get install -y xdg-utils
+
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 'stable'
+
+      - name: Install test dependencies
+        run: npm ci
+        working-directory: ./e2e
+
+      - name: Pre-test build
+        run: npm run pre-test-build
+        working-directory: ./e2e
+
+      - name: Check window size (debugging step)
+        run: npm run check-window-size
+        working-directory: ./e2e
+
+      - name: Run e2e tests
+        working-directory: ./e2e
+        env:
+          BROWSER_LIST: chrome
+          LOG_LEVEL: info
+          CHALKIT_DIR: ${{ steps.build.outputs.BUILD_DIR }}
+          WIDTH: 1600
+          HEIGHT: 900
+        run: |
+          echo CHALKIT_DIR="$CHALKIT_DIR"
+          echo BROWSER_LIST="chrome"
+          echo WIDTH=1600
+          echo HEIGHT=900
+          npm run test:run
+
+      - name: Upload test outputs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-outputs
+          path: |
+            ./e2e/outputs/
+            ./e2e/mochawesome-report/
+          retention-days: 5
+          if-no-files-found: error
+
+      - uses: phoenix-actions/test-reporting@v13
+        if: always()
+        with:
+          name: E2e Tests Report
+          path: ./e2e/mochawesome-report/mochawesome.json
+          reporter: mochawesome-json
+          fail-on-error: true

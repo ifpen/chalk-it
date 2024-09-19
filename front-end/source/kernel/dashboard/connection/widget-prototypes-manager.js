@@ -1,13 +1,17 @@
 ﻿// ┌───────────────────────────────────────────────────────────────────────┐ \\
 // │ widget-prototypes-manager                                             │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                           │ \\
+// │ Copyright © 2016-2024 IFPEN                                           │ \\
 // | Licensed under the Apache License, Version 2.0                        │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
-class WidgetPrototypesManager {
+import _ from 'lodash';
+import Ajv from 'ajv';
+import { WidgetActuatorValidationError } from 'kernel/dashboard/plugins/widget-base';
+
+export class WidgetPrototypesManager {
   static SCHEMA_VERSION = 'http://json-schema.org/draft-07/schema#';
   static ID_URI_SCHEME = 'json-schema:';
 
@@ -112,7 +116,7 @@ class WidgetPrototypesManager {
   };
 
   constructor() {
-    this.ajv = new ajv7();
+    this.ajv = new Ajv();
   }
 
   /**
@@ -196,4 +200,4 @@ class WidgetPrototypesManager {
   }
 }
 
-var widgetPrototypesManager = new WidgetPrototypesManager();
+export const widgetPrototypesManager = new WidgetPrototypesManager();

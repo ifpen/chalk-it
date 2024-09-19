@@ -1,4 +1,4 @@
-﻿// ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐ \\
+// ┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ widget-datanode-update                                                                                      │ \\
 // ├─────────────────────────────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Copyright © 2016-2024 IFPEN                                                                                 │ \\
@@ -6,38 +6,40 @@
 // ├─────────────────────────────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Arsène RATSIMBAZAFY, Ghiles HDIEUR                       | \\
 // └─────────────────────────────────────────────────────────────────────────────────────────────────────────────┘ \\
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                         displayLoadSpinner                         | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function displayLoadSpinner(idWidget) {
+export function displayLoadSpinner(idWidget) {
   const self = this;
   const aElement = document.getElementById('button' + idWidget);
   const inputElement = document.getElementById('button' + idWidget + '_select_file');
   const iElement = document.createElement('i');
   let timeoutId;
 
-  this.disableButton = function () {
+  this.disableButton = () => {
     // disable until request finished
     aElement.classList.add('disabled');
     iElement.setAttribute('id', 'icon' + idWidget);
     iElement.setAttribute('class', 'fa fa-spinner fa-spin');
     aElement.append(iElement);
   };
-  this.enableButton = function () {
+  this.enableButton = () => {
     aElement.classList.remove('disabled');
-    if (!!iElement) {
+    if (iElement) {
       iElement.remove();
     }
   };
 
   this.disableButton();
-  inputElement.onchange = function () {
+  inputElement.onchange = () => {
     clearTimeout(timeoutId);
     document.body.focus();
     self.enableButton();
   };
-  document.body.onfocus = function () {
+  document.body.onfocus = () => {
     timeoutId = setTimeout(() => {
       self.enableButton();
       document.body.onfocus = null;
@@ -78,7 +80,7 @@ function _removeSpinner(idInstance, idWidget) {
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                        updateWidgetDataNode                        | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function updateWidgetDataNode(idInstance, idWidget) {
+export function updateWidgetDataNode(idInstance, idWidget) {
   const widgetConnection = widgetConnector.widgetsConnection[idInstance];
   if (!widgetConnection) return;
 
@@ -114,7 +116,7 @@ function updateWidgetDataNode(idInstance, idWidget) {
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                         setFileUploadSpinner                       | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function setFileUploadSpinner(idWidget, status) {
+export function setFileUploadSpinner(idWidget, status) {
   const buttonElement = document.getElementById('button' + idWidget);
   const existingSpinner = document.getElementById('icon' + idWidget);
 

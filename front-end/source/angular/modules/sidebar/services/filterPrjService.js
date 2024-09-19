@@ -1,11 +1,12 @@
 // ┌──────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ FilterPrjService                                                                 │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                      │ \\
+// │ Copyright © 2016-2024 IFPEN                                                      │ \\
 // | Licensed under the Apache License, Version 2.0                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                                │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 
 angular.module('modules.sidebar').service('FilterPrjService', [
   '$rootScope',
@@ -24,7 +25,7 @@ angular.module('modules.sidebar').service('FilterPrjService', [
           $rootScope.pagination.currentPage = 0;
           if (!_.isUndefined(vm.allFilesWithNoGrp[j])) {
             //when no project exist
-            for (var tt = 0; tt < vm.allFilesWithNoGrp[j].FileList.length; tt++) {
+            for (let tt = 0; tt < vm.allFilesWithNoGrp[j].FileList.length; tt++) {
               if (!(vm.allFilesWithNoGrp[j].FileList[tt].Name.toLowerCase().indexOf(tmpStr.toLowerCase()) >= 0)) {
                 vm.allFilesWithNoGrp[j].FileList[tt].hide = true;
               } else {
@@ -47,7 +48,7 @@ angular.module('modules.sidebar').service('FilterPrjService', [
           let tempFile = [];
           if (!_.isUndefined(vm.grpFiles[k])) {
             //when no project exist
-            for (var tt = 0; tt < vm.grpFiles[vm.grpFiles[k]].length; tt++) {
+            for (let tt = 0; tt < vm.grpFiles[vm.grpFiles[k]].length; tt++) {
               if (!(vm.grpFiles[vm.grpFiles[k]][tt].Name.toLowerCase().indexOf(tmpStr.toLowerCase()) >= 0)) {
                 vm.grpFiles[vm.grpFiles[k]][tt].hide = true;
               } else {
@@ -160,8 +161,8 @@ angular.module('modules.sidebar').service('FilterPrjService', [
           if (!_.isUndefined(currentFiles)) {
             //when no project exist
             for (let i in TagList) {
-              var tmpStr = TagList[i];
-              var tempFile = [];
+              const tmpStr = TagList[i];
+              const tempFile = [];
 
               for (let tt = 0; tt < currentFiles.length; tt++) {
                 var hide = true;
@@ -214,8 +215,8 @@ angular.module('modules.sidebar').service('FilterPrjService', [
           if (!_.isUndefined(currentFiles)) {
             //when no project exist
             for (let i in TagList) {
-              var tmpStr = TagList[i];
-              var tempFile = [];
+              const tmpStr = TagList[i];
+              const tempFile = [];
 
               for (let tt = 0; tt < currentFiles.length; tt++) {
                 let hide = true;
@@ -224,7 +225,7 @@ angular.module('modules.sidebar').service('FilterPrjService', [
                 }
 
                 if (currentFiles[tt].Tags) {
-                  for (var tg = 0; tg < currentFiles[tt].Tags.length; tg++) {
+                  for (let tg = 0; tg < currentFiles[tt].Tags.length; tg++) {
                     if (currentFiles[tt].Tags[tg].toLowerCase().indexOf(tmpStr.toLowerCase()) >= 0) {
                       hide = false;
                     }

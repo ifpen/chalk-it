@@ -1,13 +1,15 @@
 // ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ pyodideLib                                                         │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                        │ \\
+// │ Copyright © 2022-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR                                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { pyodideManager } from 'kernel/base/pyodide-loader';
 
-var pyodideLib = (function () {
+export const pyodideLib = (function () {
   /*--------serialize--------*/
   function serialize() {
     const packages = pyodideManager.packages;

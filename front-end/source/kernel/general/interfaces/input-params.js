@@ -1,12 +1,13 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ inputHandler                                                       │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2021-2023 IFPEN                                        │ \\
+// │ Copyright © 2021-2024 IFPEN                                        │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 
-var inputHandler = (function () {
+export const inputHandler = (function () {
   /*--------patchInputVariables--------*/
   function patchInputVariables(jsonContent, projectQueryParams) {
     _.each(projectQueryParams, (parVal) => {

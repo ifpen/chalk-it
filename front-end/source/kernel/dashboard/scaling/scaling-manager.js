@@ -1,7 +1,7 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ scalingManager                                                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// │ Copyright © 2016-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
@@ -16,8 +16,10 @@
 // - it computes the new widget dimensions into the new dashboard according to the scaling method
 // needs to be instantiated with input elements
 // operates in viewport dimensions right now (needs generalization)
+import _ from 'lodash';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 
-var scalingManager = function (srcDashArg, tgDashArg, methodArg) {
+export const scalingManager = function (srcDashArg, tgDashArg, methodArg) {
   var self = this;
   self.srcDash = srcDashArg;
   self.tgDash = tgDashArg;
@@ -233,8 +235,8 @@ var scalingManager = function (srcDashArg, tgDashArg, methodArg) {
       wc.style.top = tgWg.topVh + 'vh';
 
       // apply rescaling to WidgetContainer
-      wcChildren = wc.getElementsByTagName('div');
-      for (k = 0; k < wcChildren.length; k++) {
+      const wcChildren = wc.getElementsByTagName('div');
+      for (let k = 0; k < wcChildren.length; k++) {
         if (wcChildren[k].id.search('WidgetContainer') != -1) {
           wcChildren[k].style.width = tgWg.widthVw - 2 * (100 / document.documentElement.clientWidth) + 'vw';
           wcChildren[k].style.height = tgWg.heightVh - 2 * (100 / document.documentElement.clientHeight) + 'vh';

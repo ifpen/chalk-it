@@ -1,11 +1,18 @@
 // ┌──────────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ dashboard_contentTop.controller                                                      │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                          │ \\
+// │ Copyright © 2016-2024 IFPEN                                                          │ \\
 // | Licensed under the Apache License, Version 2.0                                       │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI, Ghiles HIDEUR                     │ \\
 // └──────────────────────────────────────────────────────────────────────────────────────┘ \\
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import _ from 'lodash';
+import template from 'angular/modules/dashboard/_partials/modals/exportDownloadPage.html';
+import { fileManager } from 'kernel/general/backend/file-management';
+import { htmlExport } from 'kernel/general/export/html-export';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { saveAs } from 'file-saver';
 
 angular.module('modules.dashboard').controller('DashboardContentTopController', [
   '$scope',
@@ -31,7 +38,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
     /*---------- Settings button ----------------*/
     $scope.exportSettings = function () {
       const modalInstance = $uibModal.open({
-        templateUrl: 'source/angular/modules/dashboard/_partials/modals/exportDownloadPage.html',
+        template,
         controller: 'exportSettingDownload',
         scope: $scope,
         resolve: {
@@ -68,7 +75,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
 
     /*---------- Export button   ----------------*/
     $scope.exportProjectToLocal = function () {
-      const xdashFileSerialized = xdash.serialize();
+      const xdashFileSerialized = runtimeSingletons.xdash.serialize();
       const fileName = $('#projectName').val() || 'Untitled';
       saveAs(
         new Blob([JSON.stringify(xdashFileSerialized, null, '\t')], { type: 'application/octet-stream' }),
@@ -160,9 +167,9 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
     };
 
     /*---------- Export button -------------------*/
-    $scope.exportHTMLPage = function (projectName) {
+    $scope.exportHTMLPage = async function (projectName) {
       const _projectName = $rootScope.xDashFullVersion ? projectName : $('#projectName').val() || 'Untitled';
-      const txt = htmlExport.createDashboardDocument(_projectName);
+      const txt = await htmlExport.createDashboardDocument(_projectName);
       const blob = new Blob([txt], { type: 'text/html;charset=utf-8' });
       saveAs(blob, _projectName + '.html');
     };

@@ -6,6 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID , Ghiles HIDEUR                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
 
 class RowToPageRuntime {
   #grid;
@@ -145,4 +146,4 @@ class RowToPageRuntime {
   }
 }
 
-const rowToPageRuntime = new RowToPageRuntime();
+export const rowToPageRuntime = new RowToPageRuntime();

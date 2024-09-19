@@ -1,4 +1,8 @@
-﻿$.ajaxTransport("+binary", function(options, originalOptions, jqXHR) {
+﻿import _ from 'lodash';
+import JSZip from 'jszip';
+
+
+$.ajaxTransport("+binary", function(options, originalOptions, jqXHR) {
     // check for conditions and support for blob / arraybuffer response type
     if (window.FormData && ((options.dataType && (options.dataType == 'binary')) || (options.data && ((window.ArrayBuffer && options.data instanceof ArrayBuffer) || (window.Blob && options.data instanceof Blob))))) {
         return {
@@ -40,7 +44,7 @@
 });
 
 // ABK
-function truncateLongArray(jsonObj, jsonObjSize) {
+export function truncateLongArray(jsonObj, jsonObjSize) {
     for (var prop in jsonObj) {
         if (typeof(jsonObj[prop]) == "object") {
             var jsonObj2 = jsonObj[prop];
@@ -55,7 +59,7 @@ function truncateLongArray(jsonObj, jsonObjSize) {
     }
 }
 
-function syntaxHighlight(json) {
+export function syntaxHighlight(json) {
     // sanity checks
     if (_.isUndefined(json)) return;
 
@@ -96,63 +100,63 @@ function syntaxHighlight(json) {
     //json = '<pre><code class="hljs json">'+json +'</code></pre>'
 
     if (bOverflow) {
-        json = json + '<b>... [preview truncated due to data big size]</b><br/>'
+        json = json + '<b>... [preview truncated due to data big size]</b><br/>';
     }
 
     return json;
 }
 
 
-function base64ArrayBuffer(arrayBuffer) {
-    var base64 = ''
-    var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+export function base64ArrayBuffer(arrayBuffer) {
+    var base64 = '';
+    var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
-    var bytes = new Uint8Array(arrayBuffer)
-    var byteLength = bytes.byteLength
-    var byteRemainder = byteLength % 3
-    var mainLength = byteLength - byteRemainder
+    var bytes = new Uint8Array(arrayBuffer);
+    var byteLength = bytes.byteLength;
+    var byteRemainder = byteLength % 3;
+    var mainLength = byteLength - byteRemainder;
 
-    var a, b, c, d
-    var chunk
+    var a, b, c, d;
+    var chunk;
 
     // Main loop deals with bytes in chunks of 3
     for (var i = 0; i < mainLength; i = i + 3) {
         // Combine the three bytes into a single integer
-        chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
+        chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
 
         // Use bitmasks to extract 6-bit segments from the triplet
-        a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
-        b = (chunk & 258048) >> 12 // 258048   = (2^6 - 1) << 12
-        c = (chunk & 4032) >> 6 // 4032     = (2^6 - 1) << 6
-        d = chunk & 63 // 63       = 2^6 - 1
+        a = (chunk & 16515072) >> 18; // 16515072 = (2^6 - 1) << 18
+        b = (chunk & 258048) >> 12; // 258048   = (2^6 - 1) << 12
+        c = (chunk & 4032) >> 6; // 4032     = (2^6 - 1) << 6
+        d = chunk & 63; // 63       = 2^6 - 1
 
         // Convert the raw binary segments to the appropriate ASCII encoding
-        base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d]
+        base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d];
     }
 
     // Deal with the remaining bytes and padding
     if (byteRemainder == 1) {
-        chunk = bytes[mainLength]
+        chunk = bytes[mainLength];
 
-        a = (chunk & 252) >> 2 // 252 = (2^6 - 1) << 2
+        a = (chunk & 252) >> 2; // 252 = (2^6 - 1) << 2
 
         // Set the 4 least significant bits to zero
-        b = (chunk & 3) << 4 // 3   = 2^2 - 1
+        b = (chunk & 3) << 4; // 3   = 2^2 - 1
 
         base64 += encodings[a] + encodings[b] + '=='
     } else if (byteRemainder == 2) {
-        chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1]
+        chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1];
 
-        a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
-        b = (chunk & 1008) >> 4 // 1008  = (2^6 - 1) << 4
+        a = (chunk & 64512) >> 10; // 64512 = (2^6 - 1) << 10
+        b = (chunk & 1008) >> 4; // 1008  = (2^6 - 1) << 4
 
         // Set the 2 least significant bits to zero
-        c = (chunk & 15) << 2 // 15    = 2^4 - 1
+        c = (chunk & 15) << 2; // 15    = 2^4 - 1
 
-        base64 += encodings[a] + encodings[b] + encodings[c] + '='
+        base64 += encodings[a] + encodings[b] + encodings[c] + '=';
     }
 
-    return base64
+    return base64;
 }
 
 function String2Uint8Array(s) {
@@ -173,7 +177,7 @@ function String2Int8Array(s) {
     return bytes;
 }
 
-function Path2FileName(fakeFilePath) {
+export function Path2FileName(fakeFilePath) {
     if (_.isUndefined(fakeFilePath)) {
         return '';
     }
@@ -194,7 +198,7 @@ function Path2FileName(fakeFilePath) {
 
 }
 
-function getRealMimeType(result) {
+export function getRealMimeType(result) {
     var arr = (new Uint8Array(result)).subarray(0, 4);
     var header = '';
     var realMimeType;
@@ -230,11 +234,11 @@ function getRealMimeType(result) {
 
 // MBG : remove vh, vw, px and convert to number
 // MBG : add securities
-function rmUnit(w) {
+export function rmUnit(w) {
     return Number(w.substring(0, w.length - 2));
 }
 
-function findGetParameter(parameterName) {
+export function findGetParameter(parameterName) {
     var result = null,
         tmp = [];
     var items = location.search.substr(1).split("&");
@@ -245,7 +249,7 @@ function findGetParameter(parameterName) {
     return result;
 } // Fin de findGetParameter
 
-function nFormatter(num, digits) {
+export function nFormatter(num, digits) {
     var si = [
         { value: 1, symbol: "" },
         { value: 1E3, symbol: "k" },
@@ -267,7 +271,7 @@ function nFormatter(num, digits) {
 
 // from https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Set
 
-function isSuperset(set, subset) {
+export function isSuperset(set, subset) {
     for (var elem of subset) {
         if (!set.has(elem)) {
             return false;
@@ -276,7 +280,7 @@ function isSuperset(set, subset) {
     return true;
 }
 
-function union(setA, setB) {
+export function union(setA, setB) {
     var union = new Set(setA);
     for (var elem of setB) {
         union.add(elem);
@@ -294,7 +298,7 @@ function intersection(setA, setB) {
     return intersection;
 }
 
-function difference(setA, setB) {
+export function difference(setA, setB) {
     var difference = new Set(setA);
     for (var elem of setB) {
         difference.delete(elem);
@@ -334,7 +338,7 @@ function detectBrowser() {
 }
 
 // From https://stackoverflow.com/questions/29046635/javascript-es6-cross-browser-detection
-function checkES6() {
+export function checkES6() {
     // ES 2015
     // Check the "arrowFunction": "(_=>_)"
     "use strict";
@@ -344,7 +348,7 @@ function checkES6() {
 }
 
 //From https://github.com/Tokimon/es-feature-detection
-function checkES7() {
+export function checkES7() {
     // ES 2016
     // "Exponentiation operator": "2**3"
     "use strict";
@@ -353,7 +357,7 @@ function checkES7() {
     return true;
 }
 
-function checkES8() {
+export function checkES8() {
     // ES 2017
     // check async/await
     // async function f() { var a = await Promise.resolve(42); return a }; f()"
@@ -363,7 +367,7 @@ function checkES8() {
     return true;
 }
 
-function checkES9() {
+export function checkES9() {
     // ES 2018
     // Check Object Spread Properties
     // var a = {a:1}, b = {b:2}, c = { ...a, ...b }; var { ...d } = c;
@@ -373,7 +377,7 @@ function checkES9() {
     return true;
 }
 
-function checkES10() {
+export function checkES10() {
     // ES 2019
     // Optional Catch Binding
     // try { throw '' } catch { return true; };
@@ -457,22 +461,22 @@ function str2ab(str) {
  * @param {number} [sizeBytes] 
  * @returns {string}
  */
-function formatDataSize(sizeBytes) {
+export function formatDataSize(sizeBytes) {
     if (!sizeBytes) {
-        return "";
+        return '';
     }
 
     let unit = 1;
-    let unitStr = "o";
+    let unitStr = 'o';
     if (sizeBytes > 100_000_000) {
         unit = 1_000_000_000;
-        unitStr = "Go"
+        unitStr = 'Go';
     } else if (sizeBytes > 1_000_000) {
         unit = 1_000_000;
-        unitStr = "Mo"
+        unitStr = 'Mo';
     } else if (sizeBytes > 1_000) {
         unit = 1_000;
-        unitStr = "ko"
+        unitStr = 'ko';
     }
 
     let size = sizeBytes / unit;
@@ -482,7 +486,7 @@ function formatDataSize(sizeBytes) {
 }
 
 
-DEFAULT_JSON_FORMAT = {
+const DEFAULT_JSON_FORMAT = {
     maxLines: 20_000,
     maxChars: 2_000_000,
     maxDepth: 12,
@@ -491,12 +495,12 @@ DEFAULT_JSON_FORMAT = {
     maxStringLength: 120,
     maxLineWidth: 120,
     indentLength: 2,
-}
+};
 
 // Format for small previews.
 // Aims to be fast to format, to not slow the display or use too much memory. Also avoid having a ridiculous scrollbar.
 // Also limits nested depth, array sizes, etc. to fit more of the object's general structure into the total size quota.
-PREVIEW_JSON_FORMAT = {
+export const PREVIEW_JSON_FORMAT = {
     maxLines: 100,
     maxChars: 100_000,
     maxDepth: 8,
@@ -505,12 +509,12 @@ PREVIEW_JSON_FORMAT = {
     maxStringLength: 80,
     maxLineWidth: 100,
     indentLength: 2,
-}
+};
 
 // Format to fully display JSON as the main focus of the view.
 // Priorities are to have few limits, stay readable, and not have the page blow past its memory limit.
 // The display getting a bit slow is acceptable.
-VIEW_JSON_FORMAT = {
+export const VIEW_JSON_FORMAT = {
     maxLines: 50_000,
     maxChars: 5_000_000,
     // Single strings (displayed on the same line) are useless past a certain length as they get impossible to read
@@ -525,7 +529,7 @@ VIEW_JSON_FORMAT = {
  * @param {*} options limits and formating options
  * @returns {HTMLElement}  
  */
-function formatJson(
+export function formatJson(
     data,
     {
         maxLines, // maximum number of lines displayed
@@ -549,7 +553,7 @@ function formatJson(
         span.classList.add(...classes);
         span.innerText = text;
         element.append(span);
-        return { lines, chars: chars + text.length }
+        return { lines, chars: chars + text.length };
     }
 
     function canInlineArray(array, depth, prefixLength = 0) {
@@ -807,7 +811,7 @@ function formatJson(
  * @param {string} b64str base 64 encoded data
  * @returns {number} data size in bytes
  */
-function b64StrSize(b64str) {
+export function b64StrSize(b64str) {
     const len = b64str.length;
     let size = Math.ceil(len / 4 * 3);
     if (b64str.endsWith('==')) {
@@ -818,13 +822,13 @@ function b64StrSize(b64str) {
     return size;
 }
 
-function b64EncodeUnicode(str) {
+export function b64EncodeUnicode(str) {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
         return String.fromCharCode(parseInt(p1, 16));
     }));
 }
 
-function b64DecodeUnicode(str) {
+export function b64DecodeUnicode(str) {
     return decodeURIComponent(
       Array.prototype.map
         .call(atob(str), function (c) {
@@ -835,7 +839,7 @@ function b64DecodeUnicode(str) {
 }
 
 // MIME types of images we expect the browser to be able to display
-const BROWSER_SUPPORTED_IMAGES = [
+export const BROWSER_SUPPORTED_IMAGES = [
     'image/apng',
     'image/avif',
     'image/bmp',
@@ -856,7 +860,7 @@ const MAX_BINARY_DATA_DISPLAY_CHARS = 10;
  * @param {*} options 
  * @returns {HTMLElement}
  */
-function jsonDataToBasicHtmlElement(data, options = undefined) {
+export function jsonDataToBasicHtmlElement(data, options = undefined) {
     if (typeof data === 'string') {
         const span = document.createElement('span');
         span.innerText = data;
@@ -921,7 +925,7 @@ function jsonDataToBasicHtmlElement(data, options = undefined) {
     span.appendChild(formatJson(data, options?.jsonFormat ?? DEFAULT_JSON_FORMAT));
     span.className = 'css-treeview';
     return span;
-};
+}
 
 /**
  * Format file size in bytes to a readable string.
@@ -929,7 +933,7 @@ function jsonDataToBasicHtmlElement(data, options = undefined) {
  * @param {number} fileSize - The file size in bytes.
  * @returns {string} Formatted file size.
  */
-function formatFileSize(fileSize) {
+export function formatFileSize(fileSize) {
     if (fileSize < 1024) {
         return `${fileSize} bytes`;
     } else if (fileSize < 1_048_576) {
@@ -951,7 +955,7 @@ function getFileExtension(fileName) {
     return extension;
 }
 
-async function zipToObject(file, textExtensions = ["txt", "json", "xprjson", "xml", "svg", "html", "css", "js", "ts", "md", "csv"]) {
+export async function zipToObject(file, textExtensions = ["txt", "json", "xprjson", "xml", "svg", "html", "css", "js", "ts", "md", "csv"]) {
     let size = 0;
     let data = null;
     let name = undefined;
@@ -1005,7 +1009,7 @@ async function zipToObject(file, textExtensions = ["txt", "json", "xprjson", "xm
     };
 }
 
-function decodeMimeType(mime) {
+export function decodeMimeType(mime) {
     if(mime) {
         const trimed = mime.trim();
         if(trimed) {
@@ -1018,6 +1022,24 @@ function decodeMimeType(mime) {
     return [undefined, undefined];
 }
 
-function stripUndefined(object) {
+export function stripUndefined(object) {
     return Object.fromEntries(Object.entries(object).filter(([, v]) => v !== undefined));
+}
+
+export function loadJsScripts(scripts, cb) {
+    const nb =  scripts.length;
+    let done = 0;
+    for(const url of scripts) {
+        const script = document.createElement('script');
+        if(cb) {
+            script.onload = () => {
+                done += 1;
+                if(done === nb) {
+                    cb();
+                }
+            };
+        }
+        script.src = url;
+        document.head.appendChild(script);
+    }
 }

@@ -1,12 +1,23 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                    │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2017-2023 IFPEN                                        │ \\
+// │ Copyright © 2017-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir El FEKI, Ghiles HIDEUR   │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import 'flat-ui.alt';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { displayLoadSpinner, updateWidgetDataNode } from 'kernel/dashboard/connection/widget-datanode-update';
 
 // Needed for Flat-Ui
 String.prototype.repeat = function (num) {
@@ -216,20 +227,19 @@ function flatUiWidgetsPluginClass() {
     // Add segments to a slider
     $.fn.addSliderSegments = function () {
       return this.each(function () {
-        var $this = $(this),
+        const $this = $(this),
           option = $this.slider('option'),
           amount = (option.max - option.min) / option.step,
           orientation = option.orientation;
         if ('vertical' === orientation) {
-          var output = '',
-            i;
-          for (var i = 1; i <= amount - 1; i++) {
+          let output = '';
+          for (let i = 1; i <= amount - 1; i++) {
             output += '<div class="ui-slider-segment" style="top:' + (100 / amount) * i + '%;"></div>';
           }
           $this.prepend(output);
         } else {
-          var segmentGap = 100 / amount + '%';
-          var segment = '<div class="ui-slider-segment" style="margin-left: ' + segmentGap + ';"></div>';
+          const segmentGap = 100 / amount + '%';
+          const segment = '<div class="ui-slider-segment" style="margin-left: ' + segmentGap + ';"></div>';
           $this.prepend(segment.repeat(amount - 1));
         }
       });
@@ -324,12 +334,10 @@ function flatUiWidgetsPluginClass() {
       if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
         fontSize = modelsParameters[idInstance].buttonFontSize;
       }
-
-      const styleDef = `style="height: inherit; font-size: calc(7px + ${
+      const styles = `height: inherit; font-size: calc(7px + ${
         fontSize * getFontFactor()
-      }vw + 0.4vh); ${this.buttonFontFamily()}" class="btn btn-table-cell btn-lg ${idInstance}widgetCustomColor ${
-        !this.bIsInteractive ? ' /*disabled*/' : ''
-      }"`;
+      }vw + 0.4vh); ${this.buttonFontFamily()}`;
+      const classes = `btn btn-table-cell btn-lg ${idInstance}widgetCustomColor`;
 
       this.setButtonColorStyle();
 
@@ -343,21 +351,28 @@ function flatUiWidgetsPluginClass() {
         content = icon + ' ' + text;
       }
 
-      let divContent = '';
+      const divContent = document.createElement('a');
+      divContent.innerHTML = content;
+      divContent.id = 'button' + idWidget;
+      divContent.style = styles;
+      divContent.classList = classes;
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
-          const fileInput = `<input onclick="displayLoadSpinner('${idWidget}')" type="file" style="display: none;" id="button${idWidget}_select_file"></input>`;
-          divContent += `<a ${styleDef} id="button${idWidget}">${content}${fileInput}</a>`;
+          const fileInput = document.createElement('input');
+          fileInput.id = `button${idWidget}_select_file`;
+          fileInput.type = 'file';
+          fileInput.style = 'display : none;';
+          fileInput.onclick = () => displayLoadSpinner.bind(this)(idWidget);
+          divContent.appendChild(fileInput);
         } else {
-          divContent += `<a onclick="updateWidgetDataNode('${idInstance}', '${idWidget}')" ${styleDef} id="button${idWidget}">${content}</a>`;
+          divContent.onclick = () => updateWidgetDataNode.bind(this)(idInstance, idWidget);
         }
         self.enable();
       } else {
-        divContent += `<a ${styleDef} id="button${idWidget}">${content}</a>`;
         self.disable();
       }
 
-      widgetHtml.innerHTML = divContent;
+      widgetHtml.replaceChildren(divContent);
       //
       const showWidget = this.showWidget();
       let displayStyle = 'display: table;';
@@ -382,7 +397,7 @@ function flatUiWidgetsPluginClass() {
       const data = model || modelsParameters[idInstance];
 
       const result = [];
-      if (data && data.numberOfTriggers) {
+      if (data?.numberOfTriggers) {
         const isFile = data.fileInput || data.binaryFileInput;
         for (let i = 1; i <= data.numberOfTriggers; i++) {
           const name = 'trigger' + i;
@@ -523,9 +538,9 @@ function flatUiWidgetsPluginClass() {
     };
 
     /* this.computeDimensions = function () {
-             var sliderContainerWidthPx = $('#' + idDivContainer).width();    // in px
+             const sliderContainerWidthPx = $('#' + idDivContainer).width();    // in px
              self.sliderWidthPx = sliderContainerWidthPx;
-             var sliderHeightPx = $('#' + idDivContainer).height();  // in px
+             const sliderHeightPx = $('#' + idDivContainer).height();  // in px
              self.divSliderInputMarginTop = (sliderHeightPx / 2) - 16;
 
              if (modelsParameters[idInstance].displayLabel) {
@@ -666,7 +681,7 @@ function flatUiWidgetsPluginClass() {
       const data = model || modelsParameters[idInstance];
       const result = [_VALUE_DESCRIPTOR];
 
-      if (data && data.rangeActuator) {
+      if (data?.rangeActuator) {
         result.push(_MIN_DESCRIPTOR);
         result.push(_MAX_DESCRIPTOR);
       }
@@ -762,7 +777,7 @@ function flatUiWidgetsPluginClass() {
   // +--------------------------------------------------------------------¦ \\
   this.verticalSliderFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-    var self = this;
+    const self = this;
 
     this.enable = function (updateDataFromWidget) {
       $('#vertical-slider' + idWidget).on('slidestop', function (e, ui) {
@@ -799,9 +814,9 @@ function flatUiWidgetsPluginClass() {
     };
 
     this.render = function () {
-      var widgetHtml = document.createElement('div');
+      const widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('class', 'sliderInput');
-      var widgetCore = document.createElement('div');
+      const widgetCore = document.createElement('div');
       widgetCore.setAttribute('id', 'vertical-slider' + idWidget);
       widgetCore.setAttribute('class', 'v-slider-div-div');
       widgetCore.setAttribute('style', 'height: calc(100% - 24px);');
@@ -828,7 +843,7 @@ function flatUiWidgetsPluginClass() {
 
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
-      var $verticalSlider = $('#vertical-slider' + idWidget);
+      const $verticalSlider = $('#vertical-slider' + idWidget);
       if ($verticalSlider.length > 0) {
         $verticalSlider
           .slider({
@@ -886,7 +901,7 @@ function flatUiWidgetsPluginClass() {
       const data = model || modelsParameters[idInstance];
       const result = [_VALUE_DESCRIPTOR];
 
-      if (data && data.rangeActuator) {
+      if (data?.rangeActuator) {
         result.push(_MIN_DESCRIPTOR);
         result.push(_MAX_DESCRIPTOR);
       }
@@ -928,7 +943,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val != 'number') {
           return;
         }
         modelsParameters[idInstance].max = val;
@@ -949,7 +964,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val != 'number') {
           return;
         }
         modelsParameters[idInstance].min = val;
@@ -977,7 +992,7 @@ function flatUiWidgetsPluginClass() {
   // +--------------------------------------------------------------------¦ \\
   this.progressBarFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-    var self = this;
+    const self = this;
 
     this.enable = function () {
       if (modelsParameters[idInstance].displayValue) {
@@ -1018,11 +1033,11 @@ function flatUiWidgetsPluginClass() {
     };
 
     this.insertValue = function (widgetHtml) {
-      var valueHeightPx;
+      let valueHeightPx;
       if (modelsParameters[idInstance].displayLabel)
         valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 6); // keepRatio
       else valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 8); // keepRatio
-      var valueHtml = document.createElement('div');
+      const valueHtml = document.createElement('div');
       valueHtml.setAttribute('class', 'progress-bar-value-div');
       valueHtml.setAttribute('id', 'div-for-progress-bar-value' + idWidget);
       if (!_.isUndefined(modelsParameters[idInstance].valueWidthProportion)) {
@@ -1030,13 +1045,13 @@ function flatUiWidgetsPluginClass() {
       } else {
         valueHtml.setAttribute('style', 'width:30%;');
       }
-      var progressBarValueCursor = '';
+      let progressBarValueCursor = '';
       if (this.bIsInteractive) {
         progressBarValueCursor = 'cursor: text;';
       } else {
         progressBarValueCursor = 'cursor: inherit;';
       }
-      var valueContent =
+      const valueContent =
         '<input id="progress-bar-value' +
         idWidget +
         '" type="text" placeholder="" class="hslider-input form-control" style="height: ' +
@@ -1054,11 +1069,11 @@ function flatUiWidgetsPluginClass() {
 
     this.updateProgressBarWidth = function () {
       if (!_.isUndefined(modelsHiddenParams[idInstance].value)) {
-        var val = modelsHiddenParams[idInstance].value;
-        var progressBarDiv = $('#progress-bar' + idWidget + ' div');
-        var valMin = modelsParameters[idInstance].min;
-        var valMax = modelsParameters[idInstance].max;
-        var percentWidth;
+        const val = modelsHiddenParams[idInstance].value;
+        const progressBarDiv = $('#progress-bar' + idWidget + ' div');
+        const valMin = modelsParameters[idInstance].min;
+        const valMax = modelsParameters[idInstance].max;
+        let percentWidth;
         if (val <= valMin) {
           percentWidth = 0;
         } else {
@@ -1085,10 +1100,10 @@ function flatUiWidgetsPluginClass() {
     };
 
     this.render = function () {
-      var widgetHtml = document.createElement('div');
+      const widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('class', 'progress-bar-widget');
 
-      var widgetDiv = document.createElement('div');
+      const widgetDiv = document.createElement('div');
       widgetDiv.setAttribute('id', 'progress-bar-div');
 
       if (!_.isUndefined(modelsParameters[idInstance].progressBarWidthProportion)) {
@@ -1097,11 +1112,11 @@ function flatUiWidgetsPluginClass() {
         widgetDiv.setAttribute('style', 'width:50%;');
       }
 
-      var widgetCore = document.createElement('div');
+      const widgetCore = document.createElement('div');
       widgetCore.setAttribute('id', 'progress-bar' + idWidget);
       widgetCore.setAttribute('class', 'progress');
 
-      var widgetCoreDiv = document.createElement('div');
+      const widgetCoreDiv = document.createElement('div');
       widgetCoreDiv.setAttribute('class', 'progress-bar');
       widgetCoreDiv.setAttribute('role', 'progressbar');
 
@@ -1169,7 +1184,7 @@ function flatUiWidgetsPluginClass() {
       const data = model || modelsParameters[idInstance];
       const result = [_VALUE_DESCRIPTOR];
 
-      if (data && data.rangeActuator) {
+      if (data?.rangeActuator) {
         result.push(_MIN_DESCRIPTOR);
         result.push(_MAX_DESCRIPTOR);
       }
@@ -1215,7 +1230,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val != 'number') {
           return;
         }
         modelsParameters[idInstance].max = val;
@@ -1237,7 +1252,7 @@ function flatUiWidgetsPluginClass() {
       updateCallback: function () {},
       setValue: function (valArg) {
         const val = Number(valArg);
-        if (!typeof val === 'number') {
+        if (typeof val != 'number') {
           return;
         }
         modelsParameters[idInstance].min = val;
@@ -1277,7 +1292,7 @@ function flatUiWidgetsPluginClass() {
       const val = $('#' + nameWidget + idWidget)[0].value;
       const oldVal = modelsHiddenParams[idInstance].value;
       const oldValStr = oldVal.toString();
-      return !(val == oldValStr);
+      return val !== oldValStr;
     };
 
     self.enable = function () {
@@ -1446,7 +1461,7 @@ function flatUiWidgetsPluginClass() {
       if (!_.isUndefined(modelsParameters[idInstance].valueTextAlign))
         valueTextAlign = modelsParameters[idInstance].valueTextAlign;
 
-      inputContent =
+      let inputContent =
         '<input ' +
         valuedisabled +
         readOnlyValue +
@@ -1712,7 +1727,7 @@ function flatUiWidgetsPluginClass() {
 flatUiWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var flatUiWidgetsPlugin = new flatUiWidgetsPluginClass();
+export const flatUiWidgetsPlugin = new flatUiWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

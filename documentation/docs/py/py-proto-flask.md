@@ -28,7 +28,7 @@ pip --proxy our-proxy:8082  install numpy
 
 ## Simple template
 
-Download this [simple template](/py/template-python-ws.py) and save it to *template-python-ws.py* file.
+Download this [simple template](template-python-ws.py) and save it to *template-python-ws.py* file.
 
 ```python
 from flask import Flask, request
@@ -76,4 +76,4 @@ your server should be listening on localhost, port 5000.
 
 Open the following simple Chalk'it project to test the python web-service.
 
-* [python-webservice.xprjson](/py/xprjson/python-webservice.xprjson)
+* [python-webservice.xprjson](xprjson/python-webservice.xprjson)

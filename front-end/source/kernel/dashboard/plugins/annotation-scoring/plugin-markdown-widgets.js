@@ -1,11 +1,18 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                            │ \\
 // ├────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                                │ \\
+// │ Copyright © 2022-2024 IFPEN                                                │ \\
 // | Licensed under the Apache License, Version 2.0                             │ \\
 // ├────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Ghiles HIDEUR, Guillaume CORBELIN, Tristan BARTEMENT │ \\
 // └────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { marked } from 'marked';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -58,10 +65,10 @@ function annotationMarkdownWidgetsPluginClass() {
     };
 
     this.render = function () {
-      var widgetHtml = document.createElement('div');
-      var styleCenterVertically = '';
+      const widgetHtml = document.createElement('div');
+      const text = modelsHiddenParams[idInstance].text || '';
 
-      var divContent =
+      const divContent =
         '<div id="annotationMarkdownDiv' +
         idWidget +
         '" class="defaultCSS" style="overflow: auto; background-color: transparent; ' +
@@ -75,10 +82,8 @@ function annotationMarkdownWidgetsPluginClass() {
         this.valueFontFamily() +
         this.border() +
         '">' +
-        '<div style="' +
-        styleCenterVertically +
-        '">' +
-        marked.parse(modelsHiddenParams[idInstance].text || '') +
+        '<div>' +
+        marked.parse(text) +
         '</div></div>';
 
       widgetHtml.innerHTML = divContent;
@@ -105,9 +110,9 @@ function annotationMarkdownWidgetsPluginClass() {
 
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
-      var hasScrollBar = self.hasScrollBar($('#annotationMarkdownDiv' + idWidget));
+      const hasScrollBar = self.hasScrollBar($('#annotationMarkdownDiv' + idWidget));
       if (modelsParameters[idInstance].centerVertically && !hasScrollBar) {
-        styleCenterVertically =
+        const styleCenterVertically =
           ' position: relative; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%);';
         $('#annotationMarkdownDiv' + idWidget + ' div').attr('style', styleCenterVertically);
       }

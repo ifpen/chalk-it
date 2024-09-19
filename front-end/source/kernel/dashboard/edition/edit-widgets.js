@@ -1,14 +1,41 @@
 // ┌────────────────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ widgetEditor                                                                               │ \\
 // ├────────────────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                                │ \\
+// │ Copyright © 2016-2024 IFPEN                                                                │ \\
 // | Licensed under the Apache License, Version 2.0                                             │ \\
 // ├────────────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT, Abir EL FEKI, Mounir MECHERGHUI, Mongi BEN GAID,   │ \\
 // │                      Ameur HAMDOUNI                                                        │ \\
 // └────────────────────────────────────────────────────────────────────────────────────────────┘ \\
+import interact from 'interactjs';
+import _ from 'lodash';
 
-function initEditWidget() {
+import { panelDash } from './panel-dashboard';
+import { rescaleHelper } from 'kernel/dashboard/scaling/rescale-helper';
+import { editorSingletons } from 'kernel/editor-singletons';
+import {
+  EVENTS_EDITOR_SELECTION_CHANGED,
+  EVENTS_EDITOR_ADD_REMOVE_WIDGET,
+  EVENTS_EDITOR_WIDGET_MOVED,
+} from 'angular/modules/editor/editor.events';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { widgetFactory } from 'kernel/dashboard/widget/widget-factory';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { enforceConstraints } from 'kernel/dashboard/widget/widget-placement';
+import { getMedia, isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
+import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
+import { modelsHiddenParams, modelsParameters, models, modelsTempParams } from 'kernel/base/widgets-states';
+import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
+import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { scalingManager } from 'kernel/dashboard/scaling/scaling-manager';
+import { flatUiWidgetsPlugin } from 'kernel/dashboard/plugins/basic/plugin-flat-ui-widgets';
+import { plotlyWidgetsPlugin } from 'kernel/dashboard/plugins/plots/plugin-plotly-widgets';
+import { mapWidgetsPlugin } from 'kernel/dashboard/plugins/geo-time/plugin-map-widgets';
+import { bFirstExec, rescaleWidget } from 'kernel/base/main-common';
+
+export function initEditWidget() {
   var drprD = $('#DropperDroite')[0]; // short alias
   // TODO redundent with widgetContainers ?
   var modelsId = []; // save unique "Instance Id"
@@ -30,7 +57,7 @@ function initEditWidget() {
   var editorDimensionsSnapshot;
   var scalingHelper = new rescaleHelper(editorDimensionsSnapshot, editorScalingMethod, 'edit');
 
-  layoutMgr.setScalingHelper(scalingHelper);
+  editorSingletons.layoutMgr.setScalingHelper(scalingHelper);
 
   var widgetSelectionContext = new Set(); // selection context (Instance Ids of selected widgets)
 
@@ -310,8 +337,8 @@ function initEditWidget() {
           document.body.appendChild(_draggedClone);
 
           const rect = target.getBoundingClientRect();
-          y = rect.top + window.pageYOffset;
-          x = rect.left + window.pageXOffset;
+          const y = rect.top + window.pageYOffset;
+          const x = rect.left + window.pageXOffset;
           _draggedClone.style.left = x + 'px';
           _draggedClone.style.top = y + 'px';
 
@@ -363,7 +390,7 @@ function initEditWidget() {
                 [x, y] = _alignOnGrid([x, y], [0, 0], grid);
               }
 
-              layout = {
+              const layout = {
                 top: unitH(y),
                 left: unitW(x),
               };
@@ -719,7 +746,7 @@ function initEditWidget() {
 
           const grid = gridMgr.getGrid();
 
-          if (layoutMgr.isRowColMode() && container === MAIN_CONTAINER_ID) {
+          if (editorSingletons.layoutMgr.isRowColMode() && container === MAIN_CONTAINER_ID) {
             widgetSelectionContext.forEach((id) => {
               const widget = document.getElementById(id);
               const startPosition = _readStartPosition(widget);
@@ -895,7 +922,7 @@ function initEditWidget() {
           modelHiddenParams: modelsHiddenParams[key],
         };
       } else {
-        emptyModelsHiddenParams = jQuery.extend(true, {}, modelsHiddenParams[val.modelJsonId]);
+        const emptyModelsHiddenParams = jQuery.extend(true, {}, modelsHiddenParams[val.modelJsonId]);
         dashJson[key] = {
           layout: wcLayout,
           container: container,
@@ -927,9 +954,9 @@ function initEditWidget() {
     scalingHelper.setScalingMethod(editorScalingMethod);
 
     // columns rescale
-    layoutMgr.deserialize(deviceObj, scalingObj);
+    editorSingletons.layoutMgr.deserialize(deviceObj, scalingObj);
     scalingHelper.deserialize(scalingObj);
-    layoutMgr.updateColHeight(scalingObj);
+    editorSingletons.layoutMgr.updateColHeight(scalingObj);
     scalingHelper.resizeDashboardCols();
 
     var projectedScalingObj = scalingObj;
@@ -945,7 +972,7 @@ function initEditWidget() {
       var mediaChangeProj = scalingHelper.mediaChangeProjection(
         scalingObj,
         editorDimensionsSnapshot,
-        layoutMgr.getRows()
+        editorSingletons.layoutMgr.getRows()
       );
       /*------------------------------------------------------------------------*/
 
@@ -956,7 +983,7 @@ function initEditWidget() {
 
     var edScalingMgr = new scalingManager(projectedScalingObj, projectedEditorDimensions, editorScalingMethod);
 
-    var wdgDrprMap = layoutMgr.deserializeCols(dashObj, deviceObj);
+    var wdgDrprMap = editorSingletons.layoutMgr.deserializeCols(dashObj, deviceObj);
 
     for (const key in dashObj) {
       modelsParameters[key] = dashObj[key].modelParameters;
@@ -993,7 +1020,7 @@ function initEditWidget() {
 
       var targetDiv = document.getElementById(wdgDrprMap[key]);
 
-      widgetEditor.addWidget(
+      editorSingletons.widgetEditor.addWidget(
         dashObj[key].container.modelJsonId,
         targetDiv,
         dashObj[key].container.instanceId,
@@ -1033,25 +1060,13 @@ function initEditWidget() {
   function resizeOnMediaChange() {
     scalingHelper.resizeDashboardCols();
 
-    var divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
+    const divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
 
-    for (var i = 0; i < divsDropZone.length; i++) {
-      // TODO
-      if ($('#' + divsDropZone[i].id).hasClass('drsElement') && divsDropZone[i].id.substring(0, 6) != 'Widget') {
-        var element = divsDropZone[i];
-        var instanceId = element.id;
-
-        /*-------------------------------------------------------------*/
+    for (let i = 0; i < divsDropZone.length; i++) {
+      const element = divsDropZone[i];
+      if ($(element).hasClass('drsElement') && !element.id.startsWith('Widget')) {
+        const instanceId = element.id;
         scalingHelper.resizeWidgetOnMediaChange(instanceId, instanceId);
-        /*-------------------------------------------------------------*/
-
-        // To better recode in widgetObject structure
-        for (var ch = element.childNodes.length - 1; ch >= 0; ch--) {
-          if (element.childNodes[ch].id.match('WidgetContainer')) {
-            wcId = element.childNodes[ch].id;
-            break;
-          }
-        }
         widgetContainer.replaceWidget(element);
       }
     }
@@ -1059,28 +1074,27 @@ function initEditWidget() {
 
   /*--------rescale--------*/
   function rescale() {
-    layoutMgr.updateMaxTopAndLeft();
+    editorSingletons.layoutMgr.updateMaxTopAndLeft();
 
-    var divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
+    const divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
 
     editorDimensionsSnapshot = getCurrentDashZoneDims();
     scalingHelper.setDimensions(editorDimensionsSnapshot);
     scalingHelper.setScalingMethod(editorScalingMethod);
 
-    var bChanged = false;
-    var mediaChangeObj = isMediaChanged(lastMediaInEdit);
-    bChanged = mediaChangeObj.bChanged;
+    const mediaChangeObj = isMediaChanged(lastMediaInEdit);
+    const bChanged = mediaChangeObj.bChanged;
     lastMediaInEdit = mediaChangeObj.lastMedia;
 
     if (bChanged) {
       resizeOnMediaChange();
     } else {
-      for (var i = 0; i < divsDropZone.length; i++) {
-        if (divsDropZone[i].id) {
-          // TODO
-          if ($('#' + divsDropZone[i].id).hasClass('drsElement') && divsDropZone[i].id.substring(0, 6) != 'Widget') {
-            var element = divsDropZone[i];
-            var instanceId = element.id;
+      for (let i = 0; i < divsDropZone.length; i++) {
+        const zoneId = divsDropZone[i].id;
+        if (zoneId) {
+          if ($(divsDropZone[i]).hasClass('drsElement') && !zoneId.startsWith('Widget')) {
+            const element = divsDropZone[i];
+            const instanceId = element.id;
             rescaleWidget(widgetObject, instanceId);
             widgetContainers.get(instanceId).widgetObj = widgetObject[instanceId];
           }
@@ -1101,11 +1115,11 @@ function initEditWidget() {
 
   /*--------reset--------*/
   function reset() {
-    flatUiWidgetsPlugin.clear();
-    plotlyWidgetsPlugin.clear();
-    mapWidgetsPlugin.clear();
+    flatUiWidgetsPlugin.clear(); // FIXME
+    plotlyWidgetsPlugin.clear(); // FIXME
+    mapWidgetsPlugin.clear(); // FIXME
 
-    for (const [key, val] of widgetContainers) {
+    for (const key in widgetContainers) {
       if (!_.isUndefined(models[key])) {
         delete models[key];
       }
@@ -1125,12 +1139,10 @@ function initEditWidget() {
     }
     modelsId.length = 0;
 
-    bFirstExec = true; //in main-common
+    bFirstExec.value = true; //in main-common
 
     unselectAllWidgets();
     _onAddRmWidget();
-
-    storage = {};
 
     //$('#DropperDroite').html('');
     if ($('#DropperDroite')[0].hasChildNodes()) {
@@ -1144,7 +1156,7 @@ function initEditWidget() {
 
   /*--------clear--------*/
   function clear() {
-    layoutMgr.clear();
+    editorSingletons.layoutMgr.clear();
     var property;
     for (property in widthRatioModels) {
       delete widthRatioModels[property];
@@ -1336,7 +1348,7 @@ function initEditWidget() {
     const menuWidgetMarginTop = 30;
     const menuWidgetMarginBottom = elementHeight - 10;
 
-    const nbRows = layoutMgr.getRows();
+    const nbRows = editorSingletons.layoutMgr.getRows();
 
     let elementOffsetBottom;
     let mainContainerHeight;
@@ -1420,5 +1432,3 @@ function initEditWidget() {
     showHideWidgMenu,
   };
 }
-
-var widgetEditor = initEditWidget();

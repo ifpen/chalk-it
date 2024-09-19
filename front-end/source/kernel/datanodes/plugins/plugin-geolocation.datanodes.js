@@ -1,3 +1,6 @@
+import { xDashConfig } from 'config.js';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
 /**
  * @author AR
  * @description
@@ -23,7 +26,7 @@ if (!(xDashConfig.xDashBasicVersion == 'true')) {
       statusForSchedulerCallback
     ) {
       //initialize error at new instance
-      error = false;
+      errorState = false;
       var self = this;
       self.errorState = false;
       // Good idea to create a variable to hold on to our settings, because they might change in the future. See below.
@@ -149,7 +152,7 @@ if (!(xDashConfig.xDashBasicVersion == 'true')) {
       // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
       description: 'A geolocation plugin',
       // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.
-      external_scripts: [''],
+      external_scripts: [],
       // **settings** : An array of settings that will be displayed for this plugin when the user adds it
       settings: [
         //{

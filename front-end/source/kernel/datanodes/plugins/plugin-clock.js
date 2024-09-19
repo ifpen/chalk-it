@@ -1,4 +1,6 @@
-﻿(function () {
+﻿import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
+(function () {
   var clockDatanode = function (settings, updateCallback, statusCallback) {
     //initialize error at new instance
     error = false;

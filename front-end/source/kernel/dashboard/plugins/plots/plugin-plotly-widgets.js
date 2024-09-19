@@ -1,12 +1,18 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                    │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2017-2023 IFPEN                                        │ \\
+// │ Copyright © 2017-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI, Benoît LEHMAN,  │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
+import { WidgetActuatorDescription, WidgetActuatorValidationError } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import Plotly from 'plotly.js/dist/plotly';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -1472,7 +1478,7 @@ function plotlyWidgetsPluginClass() {
   };
 }
 
-const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
+export const plotlyWidgetsPlugin = new plotlyWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

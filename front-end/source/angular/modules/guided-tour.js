@@ -1,12 +1,15 @@
 // ┌──────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ startIntroGallery                                                                │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                      │ \\
+// │ Copyright © 2016-2024 IFPEN                                                      │ \\
 // | Licensed under the Apache License, Version 2.0                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Mondher AJIMI, Ghiles HIDEUR  │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import { navHelper } from 'angular/modules/navigation-helper';
+import introJs from 'intro.js';
 
+// TODO unused ?
 function startIntroGallery() {
   var intro = introJs();
 
@@ -46,9 +49,9 @@ function startIntroGallery() {
 }
 
 /*--------startIntro --------*/
-function startIntroProject() {
-  var intro = introJs();
-  var options = {
+export function startIntroProject() {
+  const intro = introJs();
+  const options = {
     exitOnOverlayClick: false,
     showBullets: false,
     showStepNumbers: true,
@@ -85,7 +88,7 @@ function startIntroProject() {
         intro: 'DataNodes are added, configured, listed and controlled here',
       },
       {
-        element: '#li_flatUiHorizontalSliderj',
+        element: '#li_annotationLabelT',
         intro: 'This is widget connection and configuration menu',
       },
       {
@@ -134,32 +137,36 @@ function startIntroProject() {
         }
         break;
       case 'editor-datanodes-list':
-        if (this._direction == 'forward') document.getElementById('editor-datanodes-list').click();
+        if (this._direction == 'forward') {
+          document.getElementById('editor-datanodes-list').click();
+        }
         break;
       case 'editor-left-side-panel':
         if (this._direction == 'backward') {
           document.getElementById('showHideWidgetMenu').click();
         }
         break;
-      case 'li_flatUiHorizontalSliderj':
+      case 'li_annotationLabelT':
         if (this._direction == 'forward') document.getElementById('showHideWidgetMenu').click();
         break;
       case 'datanodes-widget-connect':
         if (this._direction == 'backward') {
-          document.getElementById('open-datanodes-widget-connect').click();
           document.getElementById('editor-datanodes-list').click();
           document.getElementById('showHideWidgetMenu').click();
         }
         break;
       case 'panel--right':
-        if (this._direction == 'forward') document.getElementById('open-datanodes-widget-connect').click();
+        if (this._direction == 'forward') {
+          document.getElementById('open-datanodes-widget-connect').click();
+          document.getElementById('showHideWidgetMenu').click();
+        }
         break;
     }
   });
 
-  intro.onafterchange(async function (targetElement) {
-    var el0 = document.querySelectorAll('.introjs-helperLayer')[0];
-    var el1 = document.querySelectorAll('.introjs-tooltipReferenceLayer')[0];
+  intro.onafterchange(function (targetElement) {
+    const el0 = document.querySelectorAll('.introjs-helperLayer')[0];
+    const el1 = document.querySelectorAll('.introjs-tooltipReferenceLayer')[0];
     setTimeout(() => {
       let clientRect = targetElement.getBoundingClientRect();
       el0.style.setProperty('left', parseInt(clientRect.left) - 5 + 'px');
