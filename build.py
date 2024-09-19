@@ -18,6 +18,7 @@ import os
 from dotenv import dotenv_values
 from datetime import datetime
 import json
+import argparse
 
 BUILD_FRONT_END = True
 
@@ -54,24 +55,7 @@ env_file_path = "front-end/.env.prod"
 # Load variables from the .env.prod file
 env_vars = dotenv_values(env_file_path)
 
-# Accessing the variables
-a = str(version_vars["A"])
-b = str(version_vars["B"])
-c = str(version_vars["C"])
 isLiteBuild = env_vars.get("LITE_BUILD")
-
-
-def get_version():
-    if c == "0":
-        date_today = datetime.now()
-        date_start = datetime.strptime("01/01/2000", "%m/%d/%Y")
-        result = abs((date_start - date_today).days)
-        return result
-    else:
-        return c
-
-
-front_end_build_dir_name = "chalkit_" + a + "." + b + "." + str(get_version())
 
 # Get the list of all files and directories in the "build" directory
 file_list = os.listdir(dst_dir)
@@ -106,21 +90,11 @@ if BUILD_FRONT_END:
     ):
         run_npm("npm", "install")
 
-    if not (
-        os.path.exists("./front-end/bower_components")
-        and os.path.isdir("./front-end/bower_components")
-    ):
-        run_npm("bower", "install")
-
     # Run npm build command in front-end directory
-    if isLiteBuild:
-        run_npm("npm", "run", "build:lite")
-    else:
-        run_npm("npm", "run", "build")
+    run_npm("npm", "run", "build")
 
 # Copy build result to ./build/chlkt directory
-build_dir = os.path.join("./front-end/build", front_end_build_dir_name)
-shutil.copytree(build_dir, "./build/chlkt")
+shutil.copytree("./front-end/build", "./build/chlkt")
 
 # Copy .whl file to ./build/chlkt directory
 # Specify the source directory and pattern

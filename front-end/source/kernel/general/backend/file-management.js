@@ -1,11 +1,18 @@
 ﻿// +--------------------------------------------------------------------+ \\
 // ¦ file manager                                                       ¦ \\
 // +--------------------------------------------------------------------¦ \\
-// ¦ Copyright © 2017-2023 IFPEN                                        ¦ \\
+// ¦ Copyright © 2017-2024 IFPEN                                        ¦ \\
 // ¦ Licensed under the Apache License, Version 2.0                     ¦ \\
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Abir EL FEKI                                  ¦ \\
 // +--------------------------------------------------------------------+ \\
+import _ from 'lodash';
+import PNotify from 'pnotify';
+import { saveAs } from 'file-saver';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
@@ -13,7 +20,7 @@
 //-------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------
 
-var fileManager = (function () {
+export const fileManager = (function () {
   const is_xDash = true;
   let managerCallback = null;
   let endAction;
@@ -164,8 +171,8 @@ var fileManager = (function () {
                   else saveFileManager(fileType, inputValue);
                 } else {
                   if (!_.isUndefined(xdashFileSerialized))
-                    saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwrite, openProjectCallback);
-                  else saveOnServer(fileType, inputValue, undefined, is_defaultOverwrite, openProjectCallback);
+                    saveOnServer(fileType, inputValue, xdashFileSerialized, is_defaultOverwrite, undefined);
+                  else saveOnServer(fileType, inputValue, undefined, is_defaultOverwrite, undefined);
                 }
               }
             );
@@ -268,7 +275,7 @@ var fileManager = (function () {
     const fileExtension = FileMngrInst.GetFileExt(fileType);
     if (!_.isUndefined(xdashFileSerialized)) xdashFile = xdashFileSerialized;
     else {
-      const temp = xdash.serialize();
+      const temp = runtimeSingletons.xdash.serialize();
       xdashFile = JSON.stringify(temp, null, '\t');
     }
     const $rootScope = angular.element(document.body).scope().$root;
@@ -390,10 +397,6 @@ var fileManager = (function () {
 
     if (is_defaultOverwrite && checkInputValue) {
       if ($rootScope.autoSave) {
-        taipyManager.endAction = () => {
-          $rootScope.updateFlagDirty(false);
-          $rootScope.$apply();
-        };
         taipyManager.saveFile(xdashFileSerialized);
         return;
       }
@@ -423,9 +426,6 @@ var fileManager = (function () {
             }
             if ($rootScope.taipyLink) {
               datanodesManager.showLoadingIndicator(true);
-              taipyManager.endAction = () => {
-                sendTextCallback('', '', 'success');
-              };
               taipyManager.saveFile(xdashFileSerialized);
             } else {
               getFileListExtended(fileType, inputValue, xdashFileParam, endAction, is_defaultOverwrite);

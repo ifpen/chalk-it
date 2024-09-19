@@ -1,7 +1,7 @@
 ﻿// ┌───────────────────────────────────────────────────────────────────────┐ \\
 // │ Widget base                                                           │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                           │ \\
+// │ Copyright © 2016-2024 IFPEN                                           │ \\
 // | Licensed under the Apache License, Version 2.0                        │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir EL FEKI                     │ \\
@@ -10,7 +10,7 @@
 // +--------------------------------------------------------------------¦ \\
 // |                           Plugin base                              | \\
 // +--------------------------------------------------------------------¦ \\
-function basePlugin(pluginDefinition = undefined) {
+export function basePlugin(pluginDefinition = undefined) {
   if (pluginDefinition) {
     this.pluginDefinition = pluginDefinition;
     // The alternative is legacy behavior and relies on the subclass having defined pluginDefinition before calling the parent constructor.

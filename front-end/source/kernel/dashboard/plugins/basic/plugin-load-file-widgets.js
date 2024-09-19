@@ -1,11 +1,19 @@
 ﻿// ┌──────────────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                              │ \\
 // ├──────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                                  │ \\
+// │ Copyright © 2022-2024 IFPEN                                                  │ \\
 // | Licensed under the Apache License, Version 2.0                               │ \\
 // ├──────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Ghiles HIDEUR, Tristan BARTEMENT, Guillaume CORBELIN   │ \\
 // └──────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import PNotify from 'pnotify';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { b64StrSize, formatFileSize, base64ArrayBuffer } from 'kernel/datanodes/plugins/thirdparty/utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -318,7 +326,7 @@ function loadFileWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       document.styleSheets[0].addRule(
         '#drag-area' + idWidget,
         ' background-color: ' + modelsParameters[idInstance].backgroundColor

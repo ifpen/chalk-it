@@ -1,12 +1,20 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                    │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2019-2023 IFPEN                                        │ \\
+// │ Copyright © 2019-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ameur HAMDOUNI, Mongi BEN GAID,               │ \\
 // │                      Tristan BARTEMENT, Guillaume CORBELIN         │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -139,6 +147,7 @@ function datePickerWidgetsPluginClass() {
       );
       widgetHtml.setAttribute('id', 'div-for-ng-datepicker' + idWidget);
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       var heightCalender = $('#div-for-ng-datepicker' + idWidget).height();
 
       var modelObj = 'datepickerValues.val' + idInstance;
@@ -200,17 +209,17 @@ function datePickerWidgetsPluginClass() {
             '</span>';
         }
       }
-      var dataPickerdisabled = 'disabled';
-      var cursorIcon = 'cursor: inherit; ';
+      let dataPickerdisabled = 'disabled';
+      let cursorIcon = 'cursor: inherit; ';
       if (this.bIsInteractive) {
         dataPickerdisabled = '';
-        var cursorIcon = 'cursor: pointer; ';
+        cursorIcon = 'cursor: pointer; ';
       }
 
-      var border = this.border();
+      const border = this.border();
 
-      var idCalender = 'calender-input' + idWidget;
-      var divDatapicker =
+      const idCalender = 'calender-input' + idWidget;
+      const divDatapicker =
         '<datepicker id="ng-datepicker' +
         idWidget +
         '" date-format="yyyy-MM-dd" datepicker-show="' +

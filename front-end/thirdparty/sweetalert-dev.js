@@ -1,3 +1,5 @@
+// Patched version of sweetalert to allow styling through CSS.
+// TODO either switch to sweetalert 2 or reimplement using angular
 (function (window, document, undefined) {
   "use strict";
 

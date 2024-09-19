@@ -5,6 +5,7 @@
 // ├─────────────────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Author(s) : Abir EL FEKI, Mondher AJIMI                                                         │ \\
 // └─────────────────────────────────────────────────────────────────────────────────────────────────┘ \\
+import { formatJson } from 'kernel/datanodes/plugins/thirdparty/utils';
 
 angular.module('modules.dashboard').directive('jsonDisplay', function jsonDisplay() {
   const NO_OPTIONS = {};

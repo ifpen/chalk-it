@@ -1,24 +1,24 @@
 <header
   ng-controller="DashboardHeaderController"
-  ng-include="'source/angular/modules/dashboard/_partials/headerbar/dashboard_header.html'"
+  ng-include="'angular/modules/dashboard/_partials/headerbar/dashboard_header.html'"
   class="with__brand"
 ></header>
 <div
-  ng-include="'source/angular/modules/modals/info_project.html'"
+  info-project-template
   class="cancel__container"
   js-reset-layer=""
   ng-class="{'open' : info.openProjectInfo}"
   ng-show="info.openProjectInfo"
 ></div>
 <div
-  ng-include="'source/angular/modules/modals/share_project.html'"
+  share-project-template
   class="cancel__container"
   js-reset-layer=""
   ng-class="{'open' : isSharePrjOpen}"
   ng-show="isSharePrjOpen"
 ></div>
 <div
-  ng-include="'source/angular/modules/modals/manage_page_share.html'"
+  manage-page-share-template
   class="cancel__container"
   js-reset-layer=""
   ng-class="{'open' : infoPage.isManagePageOpen}"
@@ -26,7 +26,7 @@
 ></div>
 <div class="project__layout" ng-controller="EditorController as vm">
   <aside
-    ng-include="'source/angular/modules/dashboard/_partials/panels/dashboard_leftSidePanel.html'"
+    dashboard-left-side-panel-template
     id="panel--left"
     class="aside__panel"
     ng-class="{'open':editorView.leftSidePanel.view,'xlarge__panel':(editorView.leftSidePanel.size==1),'large__panel':(editorView.leftSidePanel.size==2),'normal__panel':(editorView.leftSidePanel.size==3)}"
@@ -37,21 +37,21 @@
       id="dash-content-top-ctrl"
       ng-controller="DashboardContentTopController"
       class="main__layout--content--top"
-      ng-include="'source/angular/modules/dashboard/_partials/dashboard_contentTop.html'"
+      ng-include="'angular/modules/dashboard/_partials/dashboard_contentTop.html'"
     ></div>
     <div class="widget__layout">
       <div
         class="widget__layout--wrapper"
-        ng-include="'source/angular/modules/dashboard/_partials/dashboard_content.html'"
         style="border-radius: 15px"
+        dashboard-content-template
       ></div>
     </div>
-    <footer ng-include="'source/angular/modules/dashboard/_partials/dashboard_footer.html'"></footer>
+    <footer dashboard-footer-template></footer>
   </div>
 
   <aside
     ng-controller="DashboardRightSidePanelController as vmd"
-    ng-include="'source/angular/modules/dashboard/_partials/panels/dashboard_rightSidePanel.html'"
+    ng-include="'angular/modules/dashboard/_partials/panels/dashboard_rightSidePanel.html'"
     id="panel--right"
     class="aside__panel"
     ng-class="{'hidden':editorView.checkboxModelView,'open':editorView.rightSidePanel.view,'xlarge__panel':(editorView.rightSidePanel.size==1),'large__panel':(editorView.rightSidePanel.size==2),'normal__panel':(editorView.rightSidePanel.size==3)}"
@@ -64,7 +64,6 @@
   >
     <div
       id="datanode-list"
-      compile="myDataNodeHTML"
       class="add__new__datanode--list"
       ng-class="{hide:!editorView.newDatanodePanel.list}"
     ></div>
@@ -101,8 +100,8 @@
   <div
     id="dependency__graph--container"
     class="dependency__graph--container"
-    ng-controller="DashboardGraphDepController"
-    ng-include="'source/angular/modules/dashboard/_partials/panels/dashboard_depGraph.html'"
+    ng-controller="DashboardGraphDepController as dashGraphDep"
+    ng-include="'angular/modules/dashboard/_partials/panels/dashboard_depGraph.html'"
     ng-class="{show:editorView.showGraphPanel}"
   ></div>
 </div>
@@ -110,7 +109,7 @@
 <div
   ng-if="popup.datanodeNotif"
   ng-controller="DatanodeNotifController"
-  ng-include="'source/angular/modules/dashboard/_partials/modals/datanode_notif.html'"
+  ng-include="'angular/modules/dashboard/_partials/modals/datanode_notif.html'"
   class="cancel__container open"
 ></div>
 

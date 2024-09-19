@@ -1,13 +1,13 @@
 // ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ xdash-load                                                         │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2018-2023 IFPEN                                        │ \\
+// │ Copyright © 2018-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT, Abir EL FEKI               │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-class XdashDataUpdateInformation {
+export class XdashDataUpdateInformation {
   constructor(fromVersion, toVersion, messages) {
     this.fromVersion = fromVersion;
     this.toVersion = toVersion;
@@ -27,7 +27,7 @@ class XdashDataUpdateInformation {
  * Stores a set of update steps and applies them to update data to the current version.
  * Update steps are selected based on their starting version. No two steps can share the same starting version.
  */
-class XdashDataUpdateEngine {
+export class XdashDataUpdateEngine {
   static VERSION_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
   static DEFAULT_VERSION = '0.0';
   static CURRENT_VERSION = '0.3';
@@ -177,7 +177,7 @@ class XdashDataUpdateEngine {
   }
 }
 
-var xdashUpdateEngine = new XdashDataUpdateEngine();
+export const xdashUpdateEngine = new XdashDataUpdateEngine();
 
 (function () {
   function collectWidgetIds(model) {
@@ -246,7 +246,7 @@ var xdashUpdateEngine = new XdashDataUpdateEngine();
         // Old projects
         const device = model.device;
         if (!device.cols.valueRow) {
-          switch (deviceObj.cols.value ?? 'none') {
+          switch (device.cols.value ?? 'none') {
             case 'none':
               device.cols.valueRow = 'none';
               break;
@@ -436,7 +436,8 @@ var xdashUpdateEngine = new XdashDataUpdateEngine();
       });
 
       //if (full) {
-      if (false) { // MBG not needed for fixing issue #309
+      if (false) {
+        // MBG not needed for fixing issue #309
         const idMap = new Map();
         const currentIds = collectWidgetIds(model);
 

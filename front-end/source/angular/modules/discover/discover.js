@@ -1,4 +1,4 @@
-angular.module('modules.discover', []).config([
+export const discoverModule = angular.module('modules.discover', []).config([
   '$stateProvider',
   function ($stateProvider) {
     $stateProvider.state('modules.discover', {
@@ -6,7 +6,7 @@ angular.module('modules.discover', []).config([
       userAuthenticated: false,
       abstract: true,
       url: '/discover',
-      templateUrl: '',
+      template: '<div ui-view></div>',
     });
   },
 ]);

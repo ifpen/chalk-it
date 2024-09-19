@@ -1,13 +1,13 @@
 ﻿// ┌──────────────────────────────────────────────────────────┐ \\
 // │ widgetDefaultLayoutClass                                 │ \\
 // ├──────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2020-2023 IFPEN                              │ \\
+// │ Copyright © 2020-2024 IFPEN                              │ \\
 // | Licensed under the Apache License, Version 2.0           │ \\
 // ├──────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                      │ \\
 // └──────────────────────────────────────────────────────────┘ \\
 
-var widgetDefaultLayoutClass = function () {
+function widgetDefaultLayoutClass() {
   var _widgetDefaultLayout = {
     left: '0vw',
     top: '0vh',
@@ -20,6 +20,6 @@ var widgetDefaultLayoutClass = function () {
   this.get = function () {
     return jQuery.extend(true, {}, _widgetDefaultLayout);
   };
-};
+}
 
-var widgetDefaultLayout = new widgetDefaultLayoutClass();
+export const widgetDefaultLayout = new widgetDefaultLayoutClass();

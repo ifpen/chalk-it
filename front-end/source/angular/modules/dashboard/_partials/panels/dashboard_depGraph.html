@@ -13,7 +13,7 @@
   <div class="panel--content--top">
     <h1>Dependency Graph</h1>
     <div class="content--top__actions">
-      <button id="exportGraph" class="btn btn-rounded-fill btn--icon primary">
+      <button id="exportGraph" class="btn btn-rounded-fill btn--icon primary" ng-click="exportGraph()">
         <i class="basic icn-download"></i>
         Export
       </button>
@@ -30,6 +30,8 @@
         type="search"
         placeholder="Search DataNode names"
         class="dashboard-form__input--search"
+        ng-model="dashGraphDep.inputSearchGraphText"
+        ng-change="onInputSearchGraph()"
       />
       <i class="basic icn-search"></i>
     </div>
@@ -61,13 +63,13 @@
   </div>
 
   <div class="dependency-graph-actions">
-    <button id="zoomOut" class="btn btn-icon-only" title="Zoom out">
+    <button id="zoomOut" class="btn btn-icon-only" title="Zoom out" ng-click="zoomOut()">
       <i class="basic icn-minimize" style="font-size: 2em"></i>
     </button>
-    <button id="zoomIn" class="btn btn-icon-only" title="Zoom in">
+    <button id="zoomIn" class="btn btn-icon-only" title="Zoom in" ng-click="zoomIn()">
       <i class="basic icn-add" style="font-size: 2em"></i>
     </button>
-    <button id="openFullScreen" class="btn btn-icon-only" title="Full screen view">
+    <button id="openFullScreen" class="btn btn-icon-only" title="Full screen view" ng-click="openFullScreen()">
       <i class="basic icn-full-screen" style="font-size: 2em"></i>
     </button>
   </div>

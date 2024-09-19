@@ -1,3 +1,6 @@
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { DatanodeModel } from 'kernel/datanodes/base/DatanodeModel';
+
 (function () {
   var error = false;
   // ## A Datanode Plugin
@@ -17,7 +20,7 @@
     // **description** : A description of the plugin. This description will be displayed when the plugin is selected or within search results (in the future). The description may contain HTML if needed.
     description: 'Memory operator (past value)',
     // **external_scripts** : Any external scripts that should be loaded before the plugin instance is created.
-    external_scripts: [''],
+    external_scripts: [],
     // **settings** : An array of settings that will be displayed for this plugin when the user adds it.
     settings: [
       {
@@ -114,8 +117,8 @@
       let origin_name = currentSettings['datanode_origin'];
       if (!datanodesManager.foundDatanode(origin_name)) {
         const text = "DataNode '" + origin_name + "' does not exist in dataNodes list";
-        datanodeModel.statusCallback('Error', text);
-        datanodeModel.notificationCallback('error', datanodeModel.name(), text);
+        statusCallback('Error', text);
+        DatanodeModel.notificationCallback('error', DatanodeModel.name(), text);
         return false;
       }
 

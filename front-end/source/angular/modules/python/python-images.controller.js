@@ -1,11 +1,14 @@
 ﻿// ┌──────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ PythonImagesListControler                                                        │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                      │ \\
+// │ Copyright © 2016-2024 IFPEN                                                      │ \\
 // | Licensed under the Apache License, Version 2.0                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import template from 'angular/modules/python/python-images.html';
+import { formatDataSize } from 'kernel/datanodes/plugins/thirdparty/utils';
 
 angular
   .module('modules.python-images')
@@ -16,7 +19,7 @@ angular
         userNotAuthenticated: true,
         userAuthenticated: false,
         url: '/',
-        templateUrl: 'source/angular/modules/python/python-images.html',
+        template,
         controller: 'PythonImagesListControler',
         resolve: {
           _images: [
@@ -36,13 +39,10 @@ angular
 
   .controller('PythonImagesListControler', [
     '$scope',
-    '$rootScope',
     '$state',
-    '$http',
-    '$window',
     'PythonImagesManager',
     '_images',
-    function ($scope, $rootScope, $state, $http, $window, PythonImagesManager, _images) {
+    function ($scope, $state, PythonImagesManager, _images) {
       $scope.images = _images;
       $scope.states = {};
       $scope.uploads = {};

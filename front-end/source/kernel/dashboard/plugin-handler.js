@@ -1,10 +1,11 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ widgetsPluginsHandler                                              │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// │ Copyright © 2016-2024 IFPEN                                        │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 
 function widgetsPluginsHandlerClass() {
   var pluginNames = [];
@@ -57,4 +58,4 @@ function widgetsPluginsHandlerClass() {
   };
 }
 
-var widgetsPluginsHandler = new widgetsPluginsHandlerClass();
+export const widgetsPluginsHandler = new widgetsPluginsHandlerClass();

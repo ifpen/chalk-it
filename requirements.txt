@@ -1,6 +1,6 @@
- mkdocs==1.3.0
- mkdocs-material==8.2.15
- mkdocstrings[python-legacy]>=0.20
+ mkdocs==1.6.1 
+ mkdocstrings[python-legacy]
+ mkdocs-material==9.5.34
  flask
  python-dotenv
  pathvalidate

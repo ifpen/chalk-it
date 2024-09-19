@@ -7,6 +7,22 @@
 // ├────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Tristan BARTEMENT, Mongi BEN GAID   │ \\
 // └────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { widgetFactory } from 'kernel/dashboard/widget/widget-factory';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { editorSingletons } from 'kernel/editor-singletons';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+import {
+  getElementLayoutPx,
+  computeContainerRelativeLayout,
+  computeMaxHeightPx,
+  computeMaxWidthPx,
+  enforceConstraints,
+} from 'kernel/dashboard/widget/widget-placement';
+import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
 
 function widgetContainerClass() {
   const minWidgetWidthCst = 32;
@@ -32,7 +48,7 @@ function widgetContainerClass() {
    */
   this.putAndGetTargetDiv = function (cln, targetDiv) {
     if (!targetDiv) {
-      targetDiv = layoutMgr.getDefaultContainer();
+      targetDiv = editorSingletons.layoutMgr.getDefaultContainer();
     }
     targetDiv.appendChild(cln); // put cln in dashboard
     return targetDiv;
@@ -77,13 +93,15 @@ function widgetContainerClass() {
    */
   /*--------Replace current Widget--------*/
   this.replaceWidget = function (element) {
-    var wcId;
-    for (var ch = element.childNodes.length - 1; ch >= 0; ch--) {
-      if (element.childNodes[ch].id.match('WidgetContainer')) {
+    let wcId;
+    for (let ch = element.childNodes.length - 1; ch >= 0; ch--) {
+      const child = element.childNodes[ch];
+      const childId = child.id;
+      if (childId.startsWith('WidgetContainer')) {
         // MBG temp : to move to widget object
-        wcId = element.childNodes[ch].id;
-        element.removeChild(element.childNodes[ch]);
-        break; // true because only one container exist
+        wcId = childId;
+        element.removeChild(child);
+        break; // There should be exactly one "WidgetContainer"
       }
     }
 
@@ -95,18 +113,19 @@ function widgetContainerClass() {
     element.setAttribute('item-width', element.offsetWidth);
     element.setAttribute('item-height', element.offsetHeight);
 
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.style.height = unitH(element.offsetHeight - 2);
     div.style.width = unitW(element.offsetWidth - 2);
     div.style.minWidth = parseFloat(element.style.minWidth) - 5 + 'px';
     div.style.minHeight = parseFloat(element.style.minHeight) - 5 + 'px';
+    div.id = wcId;
 
     element.appendChild(div);
-    div.id = wcId;
-    var modelJsonIdStr = element.id.substring(0, element.id.length - 1);
+    const modelJsonIdStr = element.id.substring(0, element.id.length - 1);
 
-    var instanceId = element.id;
-    var widgetTitle = widgetEditor.widgetContainers.get(instanceId).widgetTitle; //AEF
+    const instanceId = element.id;
+    const widgetEditor = editorSingletons.widgetEditor;
+    const widgetTitle = widgetEditor.widgetContainers.get(instanceId).widgetTitle; //AEF
     widgetEditor.widgetObject[instanceId] = widgetsPluginsHandler.copyWidget(
       wcId,
       modelJsonIdStr,
@@ -157,7 +176,7 @@ function widgetContainerClass() {
    */
   this.getMaxWidth = function (element) {
     const widgetLayoutPx = getElementLayoutPx(element);
-    const container = widgetEditor.getContainer(element);
+    const container = editorSingletons.widgetEditor.getContainer(element);
     const absoluteContainerLayoutPx = getElementLayoutPx(container);
     const maxWidthPx = computeMaxWidthPx(widgetLayoutPx, absoluteContainerLayoutPx);
     return maxWidthPx;
@@ -169,7 +188,7 @@ function widgetContainerClass() {
    */
   this.getMaxHeight = function (element) {
     const widgetLayoutPx = getElementLayoutPx(element);
-    const container = widgetEditor.getContainer(element);
+    const container = editorSingletons.widgetEditor.getContainer(element);
     const absoluteContainerLayoutPx = getElementLayoutPx(container);
     const maxHeightPx = computeMaxHeightPx(widgetLayoutPx, absoluteContainerLayoutPx);
     return maxHeightPx;
@@ -181,7 +200,7 @@ function widgetContainerClass() {
    * @returns FLOATING, FIXED
    */
   this.getFloatingState = function (element) {
-    if (layoutMgr.isRowColMode()) {
+    if (editorSingletons.layoutMgr.isRowColMode()) {
       if (element.parentNode.parentNode.id === 'DropperDroite') {
         return 'FLOATING';
       } else {
@@ -220,9 +239,10 @@ function widgetContainerClass() {
   this.constrainLayout = function _constrainLayout(element, requestedLayoutPx) {
     let containerLayoutPx;
 
+    const layoutMgr = editorSingletons.layoutMgr;
     if (layoutMgr.isRowColMode()) {
       // RowColMode
-      const containerDiv = widgetEditor.getContainer(element);
+      const containerDiv = editorSingletons.widgetEditor.getContainer(element);
       if (this.getFloatingState(element) === 'FIXED') {
         // work in relative coordinates
         containerLayoutPx = getElementLayoutPx(containerDiv);
@@ -285,6 +305,7 @@ function widgetContainerClass() {
     // relative coordinates update
     const $element = $(element);
     const $container = $(element.parentNode.parentNode);
+    const widgetEditor = editorSingletons.widgetEditor;
     if (bIsResize) {
       widgetEditor.widthRatioModels[element.id] = $element.width() / $container.width();
       widgetEditor.heightRatioModels[element.id] = $element.height() / $container.height();
@@ -301,7 +322,7 @@ function widgetContainerClass() {
    */
   this.highlightWidgets = function _highlightWidgets(elementIds) {
     elementIds.forEach((id) => {
-      const elem = widgetEditor.widgetContainers.get(id);
+      const elem = editorSingletons.widgetEditor.widgetContainers.get(id);
       if (elem && elem.divContainer) {
         $(elem.divContainer).fadeOut(30).fadeIn(140);
       }
@@ -352,6 +373,7 @@ function widgetContainerClass() {
     modelsHiddenParams[instanceId] = jQuery.extend(true, {}, modelsHiddenParams[element.id]);
     modelsParameters[instanceId] = jQuery.extend(true, {}, modelsParameters[element.id]);
 
+    const widgetEditor = editorSingletons.widgetEditor;
     const targetDiv = widgetEditor.getContainer(element);
     widgetEditor.addWidget(modelJsonIdStr, targetDiv, instanceId, wLayout);
     return instanceId;
@@ -378,6 +400,7 @@ function widgetContainerClass() {
   function _splitWidgets(elementIds) {
     const sel = [];
     const rest = [];
+    const widgetEditor = editorSingletons.widgetEditor;
     for (const [key, val] of widgetEditor.widgetContainers) {
       if (elementIds.includes(key)) {
         sel.push(val);
@@ -406,6 +429,7 @@ function widgetContainerClass() {
    */
   this.getMaxZIndex = function _getMaxZIndex() {
     let max = null;
+    const widgetEditor = editorSingletons.widgetEditor;
     for (const element of widgetEditor.widgetContainers.values()) {
       const z = element.divModel.style.zIndex;
       if (z !== undefined) {
@@ -423,7 +447,7 @@ function widgetContainerClass() {
    * @param {Map.<string, number>} indices the new zIndexes, stored by widget id
    */
   this.setZIndices = function _setZIndices(indices) {
-    const containers = widgetEditor.widgetContainers;
+    const containers = editorSingletons.widgetEditor.widgetContainers;
     for (const [key, z] of indices) {
       const widget = containers.get(key);
       if (widget && widget.divModel.style.zIndex !== z) {
@@ -438,6 +462,7 @@ function widgetContainerClass() {
    */
   this.getZIndices = function _getZIndices() {
     const indices = new Map();
+    const widgetEditor = editorSingletons.widgetEditor;
     for (const [key, widget] of widgetEditor.widgetContainers) {
       indices.set(key, widget.divModel.style.zIndex);
     }
@@ -467,4 +492,4 @@ function widgetContainerClass() {
   };
 }
 
-widgetContainer = new widgetContainerClass();
+export const widgetContainer = new widgetContainerClass();

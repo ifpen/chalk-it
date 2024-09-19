@@ -1,11 +1,22 @@
 ﻿// ┌──────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ editor.actions                                                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2021-2023 IFPEN                                                      │ \\
+// │ Copyright © 2021-2024 IFPEN                                                      │ \\
 // | Licensed under the Apache License, Version 2.0                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { UndoableAction } from './editor.undo-manager';
+import { EVENTS_EDITOR_WIDGET_MOVED } from './editor.events';
+import { minLeftCst, minTopCst } from 'kernel/dashboard/scaling/layout-mgr';
+import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
+import { getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
+import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { editorSingletons } from 'kernel/editor-singletons';
+import { EVENTS_EDITOR_CONNECTIONS_CHANGED } from 'angular/modules/editor/editor.events';
 
 const UNDO_MOVE_MERGE_WINDO_MS = 1_000;
 
@@ -610,7 +621,7 @@ class DeleteWidgetsAction extends UndoableAction {
       modelsHiddenParams[data.id] = jQuery.extend(true, {}, data.modelsHiddenParams);
       modelsParameters[data.id] = jQuery.extend(true, {}, data.modelsParameters);
 
-      const widget = widgetEditor.addWidget(data.modelJsonId, undefined, data.id, undefined);
+      const widget = editorSingletons.widgetEditor.addWidget(data.modelJsonId, undefined, data.id, undefined);
       $('#' + data.containerID).append(widget.divModel.parentNode);
       widgetContainer.moveResizeWidget(widget.divModel, data.wLayout, false, true);
       this._widgetContainer.setZIndices(this._initialZs);
@@ -757,7 +768,7 @@ class ClearWidgetConnectionsAction extends UndoableAction {
 
     if (label) {
       this._label = label;
-    } else if (elementId.length > 1) {
+    } else if (elementIds.length > 1) {
       this._label = 'Clear widgets connections';
     } else {
       this._label = 'Clear widget connections';
@@ -820,7 +831,7 @@ class ClearWidgetConnectionsAction extends UndoableAction {
         _collectUsedDatasources(oldConnection).forEach((c) => connections.add(c));
       }
     }
-    return _datasou_datanodesExistsrcesExists([...connections]);
+    return _datanodesExists([...connections]);
   }
 
   undo() {
@@ -1551,7 +1562,7 @@ angular.module('modules.editor').service('EditorActionFactory', [
         widgetEditorGetter(),
         widgetConnectorGetter(),
         widgetContainerGetter(),
-        [...widgetEditor.widgetContainers.keys()],
+        [...editorSingletons.widgetEditor.widgetContainers.keys()],
         'Delete all widgets'
       );
     };
@@ -1564,7 +1575,7 @@ angular.module('modules.editor').service('EditorActionFactory', [
         widgetEditorGetter(),
         widgetConnectorGetter(),
         eventCenterService,
-        [...widgetEditor.widgetContainers.keys()],
+        [...editorSingletons.widgetEditor.widgetContainers.keys()],
         'Clear all connections'
       );
     };

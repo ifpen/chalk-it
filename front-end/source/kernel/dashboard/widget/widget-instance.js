@@ -1,11 +1,16 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ widgetInstanceClass                                                │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// │ Copyright © 2016-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI & Mongi BEN GAID                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsTempParams, models } from 'kernel/base/widgets-states';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { editorSingletons } from 'kernel/editor-singletons';
 
 function widgetInstanceClass() {
   /*--------Create Widget obj--------*/
@@ -42,6 +47,7 @@ function widgetInstanceClass() {
     // set editor json
     const elm = element.parentNode;
     if (elm) {
+      const widgetEditor = editorSingletons.widgetEditor;
       while (elm.hasChildNodes()) {
         elm.removeChild(elm.lastChild);
       }
@@ -82,4 +88,4 @@ function widgetInstanceClass() {
   };
 }
 
-var widgetInstance = new widgetInstanceClass();
+export const widgetInstance = new widgetInstanceClass();

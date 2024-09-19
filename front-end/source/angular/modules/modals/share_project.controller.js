@@ -1,13 +1,14 @@
 // ┌─────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ share_project.controller                                                        │ \\
 // ├─────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                     │ \\
+// │ Copyright © 2016-2024 IFPEN                                                     │ \\
 // | Licensed under the Apache License, Version 2.0                                  │ \\
 // ├─────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI                                               │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
+import { modalsModule } from './modals';
 
-angular.module('modules').controller('ShareProjectController', [
+modalsModule.controller('ShareProjectController', [
   '$scope',
   '$rootScope',
   'ManagePrjSharingService',

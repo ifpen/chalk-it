@@ -1,12 +1,26 @@
 ﻿// ┌─────────────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                             │ \\
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2017-2023 IFPEN                                                 │ \\
+// │ Copyright © 2017-2024 IFPEN                                                 │ \\
 // | Licensed under the Apache License, Version 2.0                              │ \\
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Tristan BARTEMENT, Mongi BEN GAID, Abir EL FEKI,      │ \\
 // │                       Guillaume CORBELIN                                    │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import 'jquery.bt';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { getRealMimeType, base64ArrayBuffer } from 'kernel/datanodes/plugins/thirdparty/utils';
+import {
+  inheritWcWidthFromIdInst,
+  inheritWcHeightFromIdInst,
+  unitW,
+  unitH,
+} from 'kernel/dashboard/scaling/scaling-utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -198,7 +212,7 @@ function annotationWidgetsPluginClass() {
       );
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
 
@@ -283,12 +297,12 @@ function annotationWidgetsPluginClass() {
     this.render = function () {
       var widgetHtml = document.createElement('div');
 
-      var displayDiv1 = 'table';
-      var displayDiv2 = 'table-cell';
+      let displayDiv1 = 'table';
+      let displayDiv2 = 'table-cell';
 
       if (!modelsParameters[idInstance].centerVertically) {
-        var displayDiv1 = 'flex';
-        var displayDiv2 = 'table';
+        displayDiv1 = 'flex';
+        displayDiv2 = 'table';
       }
 
       // conversion to enable HTML tags
@@ -352,6 +366,7 @@ function annotationWidgetsPluginClass() {
           enableStyle
       );
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
     };
 
     const _VALUE_DESCRIPTOR = new WidgetActuatorDescription(
@@ -490,7 +505,7 @@ function annotationWidgetsPluginClass() {
 
       widgetHtml.innerHTML = divContent;
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (!self.bIsInteractive && !modelsParameters[idInstance].hideImageURL) {
         var inputElt = document.getElementById('image_import_handle' + idWidget);
 
@@ -824,7 +839,7 @@ function annotationWidgetsPluginClass() {
         videoStyle = videoStyle + 'background-color: lightgrey; opacity: 0.2 ';
       }
 
-      videoHeightPx = $('#' + idDivContainer).height() - 45;
+      const videoHeightPx = $('#' + idDivContainer).height() - 45;
       let divContent =
         '<div id="videoContainer' +
         idWidget +
@@ -915,7 +930,7 @@ function annotationWidgetsPluginClass() {
         'width: inherit; height: inherit; text-align:center; align: center;' + displayStyle + enableStyle
       );
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       this.setButtonColorStyle();
 
       if (this.bIsInteractive) {

@@ -13,6 +13,14 @@
   background: var(--overlay-color);
   opacity: 0.75;
   z-index: $zindex-overlay;
+
+  transition: opacity 500ms;
+
+  &.hidden {
+    transition: opacity 500ms;
+    display: none;
+    opacity: 0;
+  }
 }
 
 // Created with freeboard UI

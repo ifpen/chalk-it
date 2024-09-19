@@ -1,13 +1,17 @@
 // ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ notification-xdash                                                 │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                        │ \\
+// │ Copyright © 2016-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import PNotify from 'pnotify';
 
-var xdashNotifications = (function () {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+
+export const xdashNotifications = (function () {
   var PnotifyStatus = false;
 
   var $body = null;

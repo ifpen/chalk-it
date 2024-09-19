@@ -19,7 +19,7 @@
     <div>
       <ng-include
         ng-controller="SidebarController"
-        src="'source/angular/modules/sidebar/sidebar-basic.html'"
+        src="'angular/modules/sidebar/sidebar-basic.html'"
       ></ng-include>
     </div>
   </div>
@@ -29,8 +29,7 @@
     ng-class="{show:(editorView.leftSidePanel.target==='Widgets')}"
     class="panel--content--wrapper"
   >
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_wdgtLibs.html'"></ng-include>
+    <div dashboard-wdgt-libs-template>
     </div>
   </div>
 
@@ -43,7 +42,7 @@
       <ng-include
         id="dash-datanode-ctrl"
         ng-controller="DashboardDatanodesController as vmDn"
-        src="'source/angular/modules/dashboard/_partials/panels/dashboard_datanodes.html'"
+        src="'angular/modules/dashboard/_partials/panels/dashboard_datanodes.html'"
       ></ng-include>
     </div>
   </div>
@@ -54,14 +53,12 @@
     ng-class="{show:(editorView.leftSidePanel.target==='Libraries')}"
     class="panel--content--wrapper"
   >
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_libraries.html'"></ng-include>
+    <div dashboard-libraries-template>
     </div>
   </div>
 
   <div id="aspect__wrap" ng-class="{show:(editorView.leftSidePanel.target==='Aspect')}" class="panel--content--wrapper">
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_aspects.html'"></ng-include>
+    <div dashboard-aspects-template>
     </div>
   </div>
 
@@ -70,14 +67,12 @@
     ng-class="{show:(editorView.leftSidePanel.target==='Historic')}"
     class="panel--content--wrapper"
   >
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_historic.html'"></ng-include>
+    <div dashboard-historic-template>
     </div>
   </div>
 
   <div id="help__wrap" ng-class="{show:(editorView.leftSidePanel.target==='Help')}" class="panel--content--wrapper">
-    <div>
-      <ng-include src="'source/angular/modules/dashboard/_partials/panels/dashboard_help.html'"></ng-include>
+    <div dashboard-help-template>
     </div>
   </div>
 </div>

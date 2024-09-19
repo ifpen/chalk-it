@@ -20,7 +20,7 @@ Each global shared data is indexed (In the CSV exemple, the index is the lane of
 
 First example :
 
-- [selection-example-1.xprjson](/wdg/selection/selection-example-1.xprjson)
+- [selection-example-1.xprjson](selection-example-1.xprjson)
 
 In this first exemple we :
 
@@ -52,7 +52,7 @@ Now, lets imagine that what you want to draw is defined by the addition of diffe
 
 Example 2:
 
-- [selection-example-2.xprjson](/wdg/selection/selection-example-2.xprjson)
+- [selection-example-2.xprjson](selection-example-2.xprjson)
 
 In Exemple 2
 
@@ -84,7 +84,7 @@ In some case we want a "global" selection" which regroup all selection and that 
 
 Example 3
 
-- [selection-example-3.xprjson](/wdg/selection/selection-example-3.xprjson)
+- [selection-example-3.xprjson](selection-example-3.xprjson)
 
 In this exemple we do 2 scatter plots from the same global data.
 As exemple 2, we use a process node to concatenate the information but on both graphs we want to see all the selected data.
@@ -99,7 +99,7 @@ The additional selected items are not drawn last, so we see clearly a difference
 
 Example 4:
 
-- [selection-example-4.xprjson](/wdg/selection/selection-example-4.xprjson)
+- [selection-example-4.xprjson](selection-example-4.xprjson)
 
 For the moment, in the different exemples we have assumed that the [index] given by the selection is the same that the index of the data.
 
@@ -125,7 +125,7 @@ In the data for plotly Datanode we sort the element but we keep the change in an
 
 Example 5:
 
-- [selection-example-5.xprjson](/wdg/selection/selection-example-5.xprjson)
+- [selection-example-5.xprjson](selection-example-5.xprjson)
 
 in our exemple, selection is in an independant DataNode, and no more only a graphical features.
 
@@ -177,8 +177,10 @@ Chalk'it selection event is one unified selection containing an array for each t
 
 For exemple if you have 2 traces in your Plotly graph, Chalk'it selection would return :
 
+```javascript
 [ 0 : {Data : [1, 10, 120, 123], customData: [1, 10, 120, 123]}]
 [ 1 : {Data : [1, 10, 120, 123], customData: [1, 10, 120, 123]}]
+```
 
 ## Appendix 2 : how to handle all selection behaviors from plotly without creating trouble
 
@@ -196,7 +198,7 @@ When you draw a selection via plotly, each attributes dont used the standard fie
 
 In those cases, data are divided in two groups (selected and unselected) and are drawn according to these fields. If you dont define them, plotly used internal behavior to create them (mainly reducing the tone and the opacity)
 
-- the "regular" way (for exemple [data][marker] in scatter plot) to
+- the "regular" way (for exemple `[data][marker]` in scatter plot) to
   render graph are no more used when graph is in selection
   mode.
 - A "rectangle" or "lasso" selection reset the field "selectionpoints"

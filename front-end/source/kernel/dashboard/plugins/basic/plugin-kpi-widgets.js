@@ -1,11 +1,18 @@
 ﻿// ┌───────────────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                               │ \\
 // ├───────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2019-2023 IFPEN                                                   │ \\
+// │ Copyright © 2019-2024 IFPEN                                                   │ \\
 // | Licensed under the Apache License, Version 2.0                                │ \\
 // ├───────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Mongi BEN GAID, Tristan BARTEMENT, Guillaume CORBELIN   │ \\
 // └───────────────────────────────────────────────────────────────────────────────┘ \\
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+
+import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -120,7 +127,7 @@ function kpiWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       $('#card-value-' + idWidget)[0].innerText = self.valueFormat(modelsHiddenParams[idInstance].value);
 
       unitContent =

@@ -23,24 +23,31 @@ from pathlib import Path
 from typing import Any, Dict
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from ..common import TemplateUtils
+from common import TemplateUtils
 
 
 class RenderApp:
-    XPRJSON_PATH = "dashboard.xprjson"
-    DEBUG = False
-    # Determine the base directory for HTML templates
-    BASE_DIR = (
-        (Path(__file__).parent.parent).resolve()
-    )
-
     def __init__(self) -> None:
+        """Initialize the Flask app, configure paths, and set up routes."""
+        # Instance-specific attributes
+        self.XPRJSON_FILE_PATH = (
+            Path(__file__).resolve().parent.parent.parent / "untitled.xprjson"
+        )
+        self.DEBUG = False
+        # Determine the base directory for HTML templates
+        self.BASE_DIR = (
+            Path(__file__).resolve().parent.parent.parent / "front-end" / "build"
+        )
+
+        # Flask app and blueprint setup
         self.app: Flask = Flask(__name__)
         self.dashboard_bp: Blueprint = Blueprint("dashboard", __name__)
         self.setup_routes()
         self.app.register_blueprint(self.dashboard_bp)
 
     def setup_routes(self) -> None:
+        """Set up all routes and CORS handling for the application."""
+
         @self.dashboard_bp.after_request
         def add_cors_headers(response: Response) -> Response:
             response.headers["Access-Control-Allow-Origin"] = "*"
@@ -51,11 +58,32 @@ class RenderApp:
         @self.dashboard_bp.route("/", defaults={"path": ""})
         @self.dashboard_bp.route("/<path:path>", methods=["GET"])
         def static_files(path: str) -> Any:
-            if path == "" or path.endswith("/"):
-                return TemplateUtils.render_template(
-                    RenderApp.BASE_DIR, RenderApp.XPRJSON_PATH, "index-view"
+            """
+            Serve static files or render the template if the path is empty or ends with "/".
+            """
+            # Check if BASE_DIR is a valid directory
+            if not self.BASE_DIR.is_dir():
+                return make_response(
+                    jsonify(
+                        {
+                            "error": f"Base directory not found or invalid: {self.BASE_DIR}"
+                        }
+                    ),
+                    500,
                 )
-            return send_from_directory(str(RenderApp.BASE_DIR), path)
+
+            if not path or path.endswith("/"):
+                # Check if the XPRJSON file exists
+                if not self.XPRJSON_FILE_PATH.exists():
+                    return make_response(
+                        jsonify({"error": f"File not found: {self.XPRJSON_FILE_PATH}"}),
+                        404,
+                    )
+
+                return TemplateUtils.render_template(
+                    self.BASE_DIR, self.XPRJSON_FILE_PATH, "index-view.html"
+                )
+            return send_from_directory(str(self.BASE_DIR), path)
 
     def throw_error(self, error: str) -> Response:
         """
@@ -74,7 +102,12 @@ class RenderApp:
     def run(self, port: int = 8000) -> None:
         self.app.run(port=port)
 
+
+# Create an instance of the app
 app = RenderApp().app
 
 if __name__ == "__main__":
-    app.run(port=8)
+    # Configure basic logging
+    logging.basicConfig(level=logging.DEBUG if RenderApp().DEBUG else logging.INFO)
+
+    app.run()

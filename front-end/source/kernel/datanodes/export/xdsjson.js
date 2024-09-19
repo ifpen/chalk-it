@@ -1,13 +1,20 @@
 ﻿// +--------------------------------------------------------------------+ \\
 // ¦ xdash                                                              ¦ \\
 // +--------------------------------------------------------------------¦ \\
-// ¦ Copyright © 2016-2023 IFPEN                                        ¦ \\
+// ¦ Copyright © 2016-2024 IFPEN                                        ¦ \\
 // ¦ Licensed under the Apache License, Version 2.0                     ¦ \\
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Mongi BEN GAID; Abir EL FEKI                  ¦ \\
 // +--------------------------------------------------------------------+ \\
+import _ from 'lodash';
 
-var xdsjson = (function () {
+import { fileManager } from 'kernel/general/backend/file-management';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { XdashDataUpdateEngine } from 'kernel/base/xdash-data-updates';
+import { DialogBoxForData } from 'kernel/datanodes/gui/DialogBox';
+import { xdashUpdateEngine } from 'kernel/base/xdash-data-updates';
+
+export const xdsjson = (function () {
   //--------------------------------------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------------------------------
   // Load (open) existing xdsjsonsources (specific functions)

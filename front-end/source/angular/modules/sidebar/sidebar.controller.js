@@ -1,11 +1,19 @@
 // ┌──────────────────────────────────────────────────────────────────────┐ \\
 // │ sidebar.controller                                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                          │ \\
+// │ Copyright © 2016-2024 IFPEN                                          │ \\
 // | Licensed under the Apache License, Version 2.0                       │ \\
 // ├──────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ghiles HIDEUR     │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+
+import { fileManager } from 'kernel/general/backend/file-management';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 angular.module('modules.sidebar').controller('SidebarController', [
   '$scope',
@@ -174,17 +182,18 @@ angular.module('modules.sidebar').controller('SidebarController', [
       $rootScope.origin = 'openProject';
       $rootScope.toggleMenuOptionDisplay('none');
       $state.go('modules', {});
-      xdash.openFile('project', 'local');
+      runtimeSingletons.xdash.openFile('project', 'local');
     };
 
     /*---------- start Taipy project ----------------*/
     $scope.startTaipyProject = function () {
+      // Ghiles
       ManagePrjService.clearForNewProject();
       $rootScope.origin = 'newProject';
       taipyManager.endAction = () => {
         ManagePrjService.openTaipyPage(taipyManager.xprjsonFileName);
       };
-      taipyManager.initTaipyApp();
+      taipyManager.initTaipyApp('studio');
     };
   },
 ]);

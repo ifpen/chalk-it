@@ -105,7 +105,7 @@ chalkit.executeDataNode(dataNodeName);
 
 This API allows to launch the schedule with the source node identified as _dataNodeName_ (the name of the dataNode that must be a string).
 
-This functionality can be useful for a dataNode with [explicit trigger](../ds/ds-execution-engine/#Explicit-Trigger) flag set to true. Its execution can be explicitly triggered by this API, in addition to being triggered by an associated [push button](../wdg/wdg-basic-inputs/#push-button) widget or by clicking on the dataNode update icon ![Update](ds/img/refresh-icon.png "Update") present in the dataNodes list.
+This functionality can be useful for a dataNode with [explicit trigger](ds/ds-execution-engine.md#explicit-trigger) flag set to true. Its execution can be explicitly triggered by this API, in addition to being triggered by an associated [push button](wdg/wdg-basic-inputs.md#push-button) widget or by clicking on the dataNode update icon ![Update](ds/img/refresh-icon.png "Update") present in the dataNodes list.
 
 #### executeDataNodes
 
@@ -121,7 +121,7 @@ The main feature allow navigation between Chalk'it pages with parameter transfer
 
 #### goToPage
 
-In [constrained dashboard mode](../export/export#scaling-methods-for-the-constrained-dashboard), the method:
+In [constrained dashboard mode](export/export.md#scaling-methods-for-the-constrained-dashboard), the method:
 
 ```JavaScript
 chalkit.goToPage(pageNumber)

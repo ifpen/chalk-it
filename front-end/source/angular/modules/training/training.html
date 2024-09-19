@@ -1,7 +1,24 @@
-<iframe
-  id="trainingFrame"
-  frameborder="0"
-  scrolling="yes"
-  seamless="seamless"
-  style="display: block; width: 100%; height: 79vh"
-></iframe>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Training</title>
+  </head>
+  <body>
+    <iframe
+      id="trainingFrame"
+      frameborder="0"
+      scrolling="yes"
+      seamless="seamless"
+      style="display: block; width: 100%; height: 79vh"
+    ></iframe>
+
+    <script>
+      // Notify the parent window when content is fully loaded
+      window.onload = function () {
+        window.parent.postMessage('contentLoaded', '*');
+      };
+    </script>
+  </body>
+</html>

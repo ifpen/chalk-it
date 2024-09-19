@@ -1,7 +1,7 @@
 ﻿// ┌──────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ editor.events                                                                    │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2021-2023 IFPEN                                                      │ \\
+// │ Copyright © 2021-2024 IFPEN                                                      │ \\
 // | Licensed under the Apache License, Version 2.0                                   │ \\
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                           │ \\
@@ -18,7 +18,7 @@
 /**
  * Allows to register listeners for 'events' and post notifications
  */
-class EventCenter {
+export class EventCenter {
   constructor() {
     // Listener sets indexed by topic
     this._listeners = new Map();
@@ -66,19 +66,17 @@ class EventCenter {
   }
 }
 
-angular.module('modules.editor').service('EventCenterService', [EventCenter]);
-
-const EVENTS_EDITOR_WIDGET_MOVED = 'WidgetMovedEvent';
-const EVENTS_EDITOR_SELECTION_CHANGED = 'EditorSelectionChanged';
-const EVENTS_EDITOR_ADD_REMOVE_WIDGET = 'EditorAddRemoveWidget';
-const EVENTS_EDITOR_CONNECTIONS_CHANGED = 'EditorConnectionsChanged';
+export const EVENTS_EDITOR_WIDGET_MOVED = 'WidgetMovedEvent';
+export const EVENTS_EDITOR_SELECTION_CHANGED = 'EditorSelectionChanged';
+export const EVENTS_EDITOR_ADD_REMOVE_WIDGET = 'EditorAddRemoveWidget';
+export const EVENTS_EDITOR_CONNECTIONS_CHANGED = 'EditorConnectionsChanged';
 
 /** Datanode(s) have been added. Message is the array of their names. */
-const EVENTS_EDITOR_DATANODE_CREATED = 'DatanodeCreated';
+export const EVENTS_EDITOR_DATANODE_CREATED = 'DatanodeCreated';
 
 /** Datanode(s) have been deleted. Message is the array of their names. */
-const EVENTS_EDITOR_DATANODE_DELETED = 'DatanodeDeleted';
+export const EVENTS_EDITOR_DATANODE_DELETED = 'DatanodeDeleted';
 
 /** A data node has been updated. Message is an object: '{oldName: str, newName: str}'
  * (both names will be the same if the datanode has not been renamed) */
-const EVENTS_EDITOR_DATANODE_UPDATED = 'DatanodeUpdated';
+export const EVENTS_EDITOR_DATANODE_UPDATED = 'DatanodeUpdated';

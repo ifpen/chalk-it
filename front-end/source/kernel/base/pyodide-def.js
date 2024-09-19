@@ -1,13 +1,13 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │ pyodideDef                                                         │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                        │ \\
+// │ Copyright © 2022-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR, Mongi BEN GAID                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-var standardAvailablePyodideLibs = [
+export const standardAvailablePyodideLibs = [
   'asciitree',
   'astropy',
   'atomicwrites',
@@ -154,7 +154,7 @@ var standardAvailablePyodideLibs = [
   'zarr',
 ];
 
-var microPipAvailablePyodideLibs = [
+export const microPipAvailablePyodideLibs = [
   'plotly',
   'ezdxf',
   'snowballstemmer',

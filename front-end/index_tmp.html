@@ -1,22 +1,44 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
   <head>
+    <base href="{{base_url}}" />
     <link rel="icon" href="source/assets/img/chalk-it-icon.svg" />
     <title>Chalk'it - App</title>
     <meta http-equiv="Cache-control" content="no-store, no-cache, must-revalidate" />
     <meta name="robots" content="nosnippet, noindex" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="source/starter-browser-compatibility.js"></script>
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- third:js -->
-    <!-- endinject -->
+    <script src="./shared.taipy-gui-base.js"></script>
+    <script src="./taipy-gui-base.js"></script>
+    <script src="./designer-adapter.js"></script>
   </head>
 
-  <body ng-app="xCLOUD" ng-class="{'nav-sm':true}" id="app">
-    <div id="loading-overlay" ng-if="isLoading"></div>
+  <body ng-app="xCLOUD" class="nav-sm" id="app">
+    <div id="loading-overlay" ng-class="{'hidden':!isLoading}">
+      <div class="wrapperloading">
+        <div class="loading up"></div>
+        <div class="loading down"></div>
+      </div>
+    </div>
     <div ui-view class="main__layout--content__wrapper"></div>
     <div id="_otherUse"></div>
   </body>
+  <script>
+    let isAvailableCookie = true;
+    const allCookies = document.cookie;
+    if (!allCookies) {
+      isAvailableCookie = false;
+    } else {
+      const cookiesArray = allCookies.split(';');
+      isAvailableCookie = cookiesArray.some((cookie) => {
+        // Trim any leading whitespace and split the cookie into name and value
+        const [name, value] = cookie.trim().split('=');
+        // Check if the cookie name matches the one we're looking for
+        return name === 'tprh';
+      });
+    }
+    if (!isAvailableCookie) {
+      window.location.reload();
+    }
+  </script>
 </html>

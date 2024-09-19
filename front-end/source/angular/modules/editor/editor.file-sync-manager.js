@@ -1,11 +1,20 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ editor.file-sync-manager                                                           │ \\
 // ├────────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2021-2023 IFPEN                                                        │ \\
+// │ Copyright © 2021-2024 IFPEN                                                        │ \\
 // | Licensed under the Apache License, Version 2.0                                     │ \\
 // ├────────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                             │ \\
 // └────────────────────────────────────────────────────────────────────────────────────┘ \\
+
+import { xServConfig } from 'config.js';
+import {
+  EVENTS_EDITOR_DATANODE_CREATED,
+  EVENTS_EDITOR_DATANODE_DELETED,
+  EVENTS_EDITOR_DATANODE_UPDATED,
+} from './editor.events';
+import { b64EncodeUnicode, b64DecodeUnicode } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 /**
  * This service requires a (probably local) server which answers on '/FileSyncURI' with

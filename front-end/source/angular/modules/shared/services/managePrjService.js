@@ -1,11 +1,19 @@
 // ┌─────────────────────────────────────────────────────────────────────────────────┐ \\
 // │ ManagePrjService                                                                │ \\
 // ├─────────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                                     │ \\
+// │ Copyright © 2016-2024 IFPEN                                                     │ \\
 // | Licensed under the Apache License, Version 2.0                                  │ \\
 // ├─────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI, Ghiles HIDEUR                │ \\
 // └─────────────────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import PNotify from 'pnotify';
+
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { fileManager } from 'kernel/general/backend/file-management';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
 
 angular.module('modules').service('ManagePrjService', [
   '$rootScope',
@@ -81,7 +89,7 @@ angular.module('modules').service('ManagePrjService', [
             if ($rootScope.xDashFullVersion && !_.isUndefined(callback)) {
               callback(projectName);
             }
-            xdash.openProjectManager(msg1);
+            runtimeSingletons.xdash.openProjectManager(msg1);
             const notice = new PNotify({
               title: projectName,
               text: "Your project '" + projectName + "' is ready!",
@@ -184,22 +192,25 @@ angular.module('modules').service('ManagePrjService', [
 
     /*---------- clearForNewProject ----------------*/
     self.clearForNewProject = function () {
-      $rootScope.isLiveDemo = false;
-      if ($rootScope.taipyLink) $rootScope.filtredList = [];
       const scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
-      if (!_.isUndefined(scopeDashDn)) {
-        scopeDashDn.searchDatanodeByName = '';
-        scopeDashDn.applyDatanodeFilter();
-      }
+
+      $rootScope.isLiveDemo = false;
+      $rootScope.alldatanodes = [];
+      $rootScope.filtredList = [];
       $rootScope.currentProject = {
         name: '',
         description: '',
         tags: [],
         groupName: '',
       };
-      $rootScope.alldatanodes = [];
+
+      if (!_.isUndefined(scopeDashDn)) {
+        scopeDashDn.searchDatanodeByName = '';
+        scopeDashDn.applyDatanodeFilter();
+      }
+
+      runtimeSingletons.xdash.clear();
       $rootScope.safeApply();
-      xdash.clear();
     };
 
     /*---------- downloadFile ----------------*/
@@ -241,11 +252,11 @@ angular.module('modules').service('ManagePrjService', [
       let bCloseProject = false;
       let fileTypeServer = 'DeleteProject';
       let fileType = 'project';
+      let dataMsg = {};
       self.checkProjectStatus(projectName, 'deleted', function () {
         switch (fType) {
           case 'xprjson':
             fileTypeServer = 'DeleteProject';
-            itemName = 'ProjectName';
             dataMsg = {
               ProjectName: projectName,
             };
@@ -576,7 +587,7 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.oldFileName = currentProjectName;
 
       if ($rootScope.taipyLink) {
-        const fileSerialized = xdash.serialize();
+        const fileSerialized = runtimeSingletons.xdash.serialize();
         fileManager.saveOnServer('project', currentProjectName, fileSerialized, is_defaultOverwrite, callback);
         return;
       }
@@ -804,7 +815,7 @@ angular.module('modules').service('ManagePrjService', [
           function (isConfirm) {
             if (isConfirm) {
               //save the current project
-              const xprjson = xdash.serialize();
+              const xprjson = runtimeSingletons.xdash.serialize();
               $('#projectName').val((index, value) => (value === '' ? 'Untitled' : value));
               taipyManager.endAction = commonActions;
               taipyManager.saveFile(xprjson);
@@ -833,9 +844,9 @@ angular.module('modules').service('ManagePrjService', [
       $rootScope.origin = 'openProject';
       $rootScope.toggleMenuOptionDisplay('none');
       $state.go('modules', {});
-      xdash.openProjectManager(xprjson);
+      runtimeSingletons.xdash.openProjectManager(xprjson);
       taipyManager.processVariableData();
-      const projectName = fileName.replace('.xprjson', '');
+      const projectName = fileName.replace(/\\/g, '/').split('/').pop().replace('.xprjson', '');
       const notice = new PNotify({
         title: projectName,
         text: "Your project '" + projectName + "' is ready!",

@@ -1,13 +1,36 @@
 ﻿// +--------------------------------------------------------------------+ \\
 // ¦ xdash                                                              ¦ \\
 // +--------------------------------------------------------------------¦ \\
-// ¦ Copyright © 2016-2023 IFPEN                                        ¦ \\
+// ¦ Copyright © 2016-2024 IFPEN                                        ¦ \\
 // ¦ Licensed under the Apache License, Version 2.0                     ¦ \\
 // +--------------------------------------------------------------------¦ \\
 // ¦ Original authors(s): Mongi BEN GAID, Abir EL FEKI                  ¦ \\
 // +--------------------------------------------------------------------+ \\
 
-var xdash = (function () {
+import { xDashConfig } from 'config.js';
+
+import _ from 'lodash';
+import PNotify from 'pnotify';
+
+import { fileManager } from 'kernel/general/backend/file-management';
+import { FileMngr, FileMngrFct } from 'kernel/general/backend/FileMngr';
+import { pyodideManager } from 'kernel/base/pyodide-loader';
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { editorSingletons } from 'kernel/editor-singletons';
+import { XdashDataUpdateEngine } from './xdash-data-updates';
+import { offSchedLogUser } from 'kernel/base/main-common';
+import { DialogBox } from 'kernel/datanodes/gui/DialogBox';
+import { dashState } from 'angular/modules/dashboard/dashboard';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { xdsjson } from 'kernel/datanodes/export/xdsjson';
+import { htmlExport } from 'kernel/general/export/html-export';
+import { pyodideLib } from 'kernel/base/pyodide-project';
+import { xdashUpdateEngine } from 'kernel/base/xdash-data-updates';
+import { taipyManager } from 'connectors/taipy/taipy-manager';
+
+export const Xdash = function () {
   const version = xDashConfig.version.fullVersion;
 
   var prjName = ''; //AEF
@@ -28,14 +51,15 @@ var xdash = (function () {
       ]);
 
     datanodesManager.clear();
-    widgetEditor.clear();
+    editorSingletons.widgetEditor.clear();
     if ($rootScope.taipyLink) taipyManager.variableData = {};
-    xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
+    runtimeSingletons.xdashNotifications.clearAllNotifications(); //AEF: put after clearDashbord (after disposing datanodes and abort)
 
     $rootScope.updateFlagDirty(false);
     if (!$rootScope.taipyLink) $('#projectName')[0].value = prjName;
     pyodideManager.reset(true, false);
 
+    const layoutMgr = editorSingletons.layoutMgr;
     layoutMgr.resetDashboardTheme();
     layoutMgr.resetDashBgColor();
     layoutMgr.updateButtonState();
@@ -55,7 +79,7 @@ var xdash = (function () {
       description: '',
       groupName: '',
       tags: [],
-      schedulerLogOff: offSchedLogUser,
+      schedulerLogOff: offSchedLogUser.value,
     };
 
     return meta;
@@ -84,16 +108,17 @@ var xdash = (function () {
     let scale;
     if (
       !$rootScope.moduleOpened &&
-      tabActive == 'widgets' &&
-      modeActive == 'edit-dashboard' &&
-      editorStatus == 'full'
+      dashState.tabActive == 'widgets' &&
+      dashState.modeActive == 'edit-dashboard' &&
+      dashState.editorStatus == 'full'
     ) {
-      scale = widgetEditor.getCurrentDashZoneDims();
+      scale = editorSingletons.widgetEditor.getCurrentDashZoneDims();
     } else {
-      scale = widgetEditor.getSnapshotDashZoneDims();
+      scale = editorSingletons.widgetEditor.getSnapshotDashZoneDims();
     }
 
-    const dash = widgetEditor.serialize();
+    const layoutMgr = editorSingletons.layoutMgr;
+    const dash = editorSingletons.widgetEditor.serialize();
     const deviceCols = layoutMgr.serializeCols();
     const backgroundColor = layoutMgr.serializeDashBgColor();
     const theme = layoutMgr.serializeDashboardTheme();
@@ -102,7 +127,7 @@ var xdash = (function () {
     const defaultRow = layoutMgr.serializeDefaultRow();
 
     const exportOptions = layoutMgr.serializeExportOptions();
-    navBarNotification = htmlExport.navBarNotification;
+    const navBarNotification = htmlExport.navBarNotification;
 
     const xdashPrj = {
       meta: meta,
@@ -151,8 +176,8 @@ var xdash = (function () {
         const date = new Date($rootScope.currentProject.date);
         $rootScope.lastUpdatedDate = `${date.toLocaleDateString('en-US')} at ${date.toLocaleTimeString('en-US')}`;
       }
-      if (!_.isUndefined(jsonObject.meta.schedulerLogOff)) offSchedLogUser = jsonObject.meta.schedulerLogOff;
-      else offSchedLogUser = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
+      if (!_.isUndefined(jsonObject.meta.schedulerLogOff)) offSchedLogUser.value = jsonObject.meta.schedulerLogOff;
+      else offSchedLogUser.value = true; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
       pyodideLib.deserialize(jsonObject);
 
@@ -174,12 +199,13 @@ var xdash = (function () {
         return false;
       }
 
-      widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
+      editorSingletons.widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
       widgetConnector.deserialize(jsonObject.connections);
       widgetPreview.clear();
 
-      widgetEditor.unselectAllWidgets(); //AEF: deselect all widget at project load
+      editorSingletons.widgetEditor.unselectAllWidgets(); //AEF: deselect all widget at project load
 
+      const layoutMgr = editorSingletons.layoutMgr;
       layoutMgr.deserializeDashBgColor(jsonObject.device);
       layoutMgr.deserializeDashboardTheme(jsonObject.device);
 
@@ -215,11 +241,6 @@ var xdash = (function () {
 
   /*--------openFile--------*/
   function openFile(fileType, target) {
-    if (fileType == 'project') {
-      fileText = 'project';
-    } else if (fileType == 'datanode') {
-      fileText = 'xdsjson';
-    }
     if (target === 'local') openFromLocal(fileType);
     else if (target === 'server') openFromServer(fileType, true);
   }
@@ -285,7 +306,7 @@ var xdash = (function () {
         fileTypeText = 'xdsjson';
       }
 
-      contentElement = getFileList(data, 'Please select a ' + fileType + ': ');
+      const contentElement = getFileList(data, 'Please select a ' + fileType + ': ');
 
       new DialogBox(
         contentElement,
@@ -389,7 +410,7 @@ var xdash = (function () {
         }
         //AEF: fix bug add params and test on it
         if (type === 'success') {
-          xdash.openProjectManager(msg1);
+          runtimeSingletons.xdash.openProjectManager(msg1);
           let notice = new PNotify({
             title: projectName,
             text: 'Your ' + fileTypeServer + ' ' + projectName + ' is ready!',
@@ -467,7 +488,7 @@ var xdash = (function () {
       }
     };
     document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
-    if (tabActive == 'widgets') {
+    if (dashState.tabActive == 'widgets') {
       loadFn();
     }
   }
@@ -501,13 +522,14 @@ var xdash = (function () {
     } else if ($rootScope.currentPrjDirty == ' *') {
       const inputName = document.getElementById('projectName').value;
       const fileName = (inputName || 'untitled') + '-recovery';
-      const xprjson = xdash.serialize();
-      xprjson.meta.name = fileName;
+
+      const temp = runtimeSingletons.xdash.serialize();
+      temp.meta.name = fileName;
 
       if ($rootScope.taipyLink) {
-        taipyManager.saveFile(xprjson, 'reload');
+        taipyManager.saveFile(temp, 'reload');
       } else {
-        const xdashFile = JSON.stringify(xprjson, null, '\t');
+        const xdashFile = JSON.stringify(temp, null, '\t');
         const FileMngrInst = new FileMngrFct();
         FileMngrInst.SendText('project', fileName + '.xprjson', xdashFile, undefined);
       }
@@ -535,4 +557,4 @@ var xdash = (function () {
     readFileFromServer: readFileFromServer,
     readFileFromUrl: readFileFromUrl,
   };
-})();
+};

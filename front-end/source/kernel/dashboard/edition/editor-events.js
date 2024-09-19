@@ -1,11 +1,13 @@
 ﻿// ┌───────────────────────────────────────────────────────────────────────┐ \\
 // │ editor-events                                                         │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2016-2023 IFPEN                                           │ \\
+// │ Copyright © 2016-2024 IFPEN                                           │ \\
 // | Licensed under the Apache License, Version 2.0                        │ \\
 // ├───────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Tristan BARTEMENT                                │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import { editorSingletons } from 'kernel/editor-singletons';
 
 window.addEventListener('click', (event) => {
   var $body = angular.element(document.body);
@@ -22,7 +24,7 @@ window.addEventListener('click', (event) => {
   if (scopeDash.editorView.newDatanodePanel.view) {
     //AEF: unselect widget only when editing datanodes
     if (event.target.className !== 'widget-overlay') {
-      widgetEditor.unselectAllWidgets();
+      editorSingletons.widgetEditor.unselectAllWidgets();
     }
   }
 

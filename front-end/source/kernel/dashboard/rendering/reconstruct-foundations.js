@@ -2,13 +2,20 @@
 // │  reconstructFoundations : dashboard "backbone" construction        │ \\
 // │                                                                    │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2019-2023 IFPEN                                        │ \\
+// │ Copyright © 2019-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID                                │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
 
-var reconstructFoundations = (function () {
+import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { findGetParameter } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { loadDashboard } from 'kernel/runtime/xdash-runtime-main';
+import { inputHandler } from 'kernel/general/interfaces/input-params';
+
+export const reconstructFoundations = (function () {
   // base functions
   var idWC = 401;
 
@@ -124,7 +131,7 @@ var reconstructFoundations = (function () {
         document.title = xprjson.meta.name;
       }
     }
-    RuntimeDashboard.loadDashboard(xprjson, exportOptions);
+    loadDashboard(xprjson, exportOptions);
   }
 
   /*--------preprocessXprjson--------*/

@@ -1,0 +1,112 @@
+{
+	"meta": {
+		"version": "2.410.8418",
+		"date": "Wed Feb 08 2023 16:34:40 GMT+0100 (heure normale d’Europe centrale)",
+		"name": "markdown-js",
+		"description": "",
+		"groupName": "JavaScript",
+		"tags": [
+			{
+				"text": "Widget"
+			},
+			{
+				"text": "Annotation&Video"
+			}
+		],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "str",
+				"type": "JSON_formula_plugin",
+				"settings": {
+					"name": "str",
+					"autoStart": true,
+					"explicitTrig": false,
+					"json_var_formula": "// Example: Convert temp from C to F and truncate to 2 decimal places.\n// return (dataNodes[\"MyDataNode\"].sensor.tempInF * 1.8 + 32).toFixed(2);\n\nreturn `\nMarked - Markdown Parser\n========================\n\n[Marked] lets you convert [Markdown] into HTML.  Markdown is a simple text format whose goal is to be very easy to read and write, even when not converted to HTML.  This demo page will let you type anything you like and see how it gets converted.  Live.  No more waiting around.\n\nHow To Use The Demo\n-------------------\n\n1. Type in stuff on the left.\n2. See the live updates on the right.\n\nThat's it.  Pretty simple.  There's also a drop-down option in the upper right to switch between various views:\n\n- **Preview:**  A live display of the generated HTML as it would render in a browser.\n- **HTML Source:**  The generated HTML before your browser makes it pretty.\n- **Lexer Data:**  What [marked] uses internally, in case you like gory stuff like this.\n- **Quick Reference:**  A brief run-down of how to format things using markdown.\n\nWhy Markdown?\n-------------\n\nIt's easy.  It's not overly bloated, unlike HTML.  Also, as the creator of [markdown] says,\n\n> The overriding design goal for Markdown's\n> formatting syntax is to make it as readable\n> as possible. The idea is that a\n> Markdown-formatted document should be\n> publishable as-is, as plain text, without\n> looking like it's been marked up with tags\n> or formatting instructions.\n\nReady to start writing?  Either start changing stuff on the left or\n[clear everything](/demo/?text=) with a simple click.\n\n[Marked]: https://github.com/markedjs/marked/\n[Markdown]: http://daringfireball.net/projects/markdown/\n\n`;"
+				}
+			}
+		],
+		"reIndexMap": [
+			0
+		],
+		"noTopologicalSortAtSerialize": true
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1639,
+		"heightPx": 685,
+		"scrollWidthPx": 1639,
+		"scrollHeightPx": 685,
+		"widthVw": 87.50667378537106,
+		"heightVh": 73.10565635005337,
+		"scrollWidthVw": 87.50667378537106,
+		"scrollHeightVh": 73.10565635005337,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "#ffffff"
+	},
+	"dashboard": {
+		"annotationMarkdownI": {
+			"layout": {
+				"top": "1.70758vh",
+				"left": "2.2932vw",
+				"height": "69.0502vh",
+				"width": "82.6597vw",
+				"minHeight": "32px",
+				"minWidth": "50px",
+				"z-index": "1"
+			},
+			"container": {
+				"id": "annotationMarkdownI",
+				"instanceId": "annotationMarkdownI",
+				"modelJsonId": "annotationMarkdown",
+				"widgetTypeName": "Markdown(annotationMarkdownI)"
+			},
+			"modelParameters": {
+				"fontsize": 0.3,
+				"backgroundColor": "rgba(0, 0, 0, 0)",
+				"textColor": "#000",
+				"valueFontFamily": "Helvetica Neue",
+				"textAlign": "left",
+				"displayBorder": false,
+				"centerVertically": true
+			},
+			"modelHiddenParams": {
+				"text": ""
+			}
+		}
+	},
+	"connections": {
+		"annotationMarkdownI": {
+			"text": {
+				"name": "text",
+				"dataFields": [],
+				"dataNode": "str",
+				"dataNodeIndex": 0
+			}
+		}
+	},
+	"exportOptions": "projectToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}

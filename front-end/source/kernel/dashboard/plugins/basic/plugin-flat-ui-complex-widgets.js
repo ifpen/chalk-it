@@ -1,12 +1,21 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
 // │                                                                    │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2017-2023 IFPEN                                        │ \\
+// │ Copyright © 2017-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Mongi BEN GAID, Abir El FEKI, Ghiles HIDEUR   │ \\
 // │ Tristan BARTEMENT, Guillaume CORBELIN                              │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+import _ from 'lodash';
+import 'flat-ui.alt';
+import 'mindmup-editabletable';
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -235,7 +244,7 @@ function flatUiComplexWidgetsPluginClass() {
       );
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (this.bIsInteractive) {
         self.enable();
       } else {
@@ -461,12 +470,14 @@ function flatUiComplexWidgetsPluginClass() {
           const msg1 = '"keys" must be an array (in widget' + idInstance + ')';
           const msg2 = 'Example: ["choice1","choice2"]';
           if (!Array.isArray(val)) {
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           if (val.length && typeof val[0] === 'object') {
             //AEF: prevent old format here [{},{}]
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           modelsHiddenParams[idInstance].keys = val;
@@ -490,12 +501,14 @@ function flatUiComplexWidgetsPluginClass() {
             val = modelsHiddenParams[idInstance].keys; //AEF: values are optional, take keys if not provided
           }
           if (!Array.isArray(val)) {
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           if (val.length && typeof val[0] === 'object') {
             //AEF: prevent old format here [{},{}]
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           modelsHiddenParams[idInstance].values = val;
@@ -521,13 +534,15 @@ function flatUiComplexWidgetsPluginClass() {
           const msg2 =
             'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
           if (!Array.isArray(val)) {
-            swal(msg1, msg2, 'info');
+            //swal(msg1, msg2, 'info');
+            console.log(msg1 + '. ' + msg2);
             return;
           }
           for (const item of val) {
             if (_.isUndefined(item.key)) {
               //AEF: key is mandatory
-              swal(msg1, msg2, 'info');
+              //swal(msg1, msg2, 'info');
+              console.log(msg1 + '. ' + msg2);
               return;
             }
 
@@ -641,7 +656,7 @@ function flatUiComplexWidgetsPluginClass() {
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       const hasScrollBar = self.hasScrollBar($('#multi-select' + idWidget));
       if (!hasScrollBar) {
         $('#multi-select' + idWidget + '.multi-select-div').css('align-content', 'center');
@@ -896,6 +911,7 @@ function flatUiComplexWidgetsPluginClass() {
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
       $('#' + idDivContainer).html(widgetHtml);
+      this.applyDisplayOnWidget();
       //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
       const isMobileOrTablet = window.mobileAndTabletCheck();
       const touchDevice = 'ontouchstart' in document.documentElement; // Only mobiles
@@ -950,12 +966,12 @@ function flatUiComplexWidgetsPluginClass() {
     this.value = {
       updateCallback: function () {},
       setValue: function (val) {
-        pastSelect = JSON.stringify(modelsHiddenParams[idInstance].selectedValue);
+        const pastSelect = JSON.stringify(modelsHiddenParams[idInstance].selectedValue);
 
         modelsHiddenParams[idInstance].value = val;
         self.render();
 
-        selected = JSON.stringify(self.selectedValue.getValue());
+        const selected = JSON.stringify(self.selectedValue.getValue());
         if (selected !== pastSelect) {
           //add a test to avoid loop
           self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
@@ -1200,7 +1216,7 @@ function flatUiComplexWidgetsPluginClass() {
       widgetHtml.setAttribute('style', displayStyle + displayStyle2 + enableStyle);
 
       $('#' + idDivContainer).html(widgetHtml);
-
+      this.applyDisplayOnWidget();
       if (this.bIsInteractive) {
         self.enable();
       } else {

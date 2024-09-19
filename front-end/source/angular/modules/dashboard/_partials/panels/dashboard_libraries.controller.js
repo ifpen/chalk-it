@@ -1,11 +1,15 @@
 ﻿// ┌───────────────────────────────────────────────────────────────────────────────┐ \\
 // │ dashboard_libraries.controller                                                │ \\
 // ├───────────────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2022-2023 IFPEN                                                   │ \\
+// │ Copyright © 2022-2024 IFPEN                                                   │ \\
 // | Licensed under the Apache License, Version 2.0                                │ \\
 // ├───────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Ghiles HIDEUR, Abir EL FEKI                              │ \\
 // └───────────────────────────────────────────────────────────────────────────────┘ \\
+
+import _ from 'lodash';
+import { pyodideManager, PyodideManager } from 'kernel/base/pyodide-loader';
+import { standardAvailablePyodideLibs, microPipAvailablePyodideLibs } from 'kernel/base/pyodide-def';
 
 angular.module('modules.dashboard').controller('DashboardLibrariesController', [
   '$scope',
