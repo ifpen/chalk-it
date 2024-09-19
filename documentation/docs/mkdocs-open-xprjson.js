@@ -1,25 +1,10 @@
 let xdashAddr = "";
-let xdashDocAddr = "";
 let bIsBasicVersion = "false";
 
 // ** Insert configuration here ** // Do not remove
 
-// Ensure protocol consistency to avoid browser security blocking
-const currentProtocol = location.protocol;
-
-const ensureProtocolCoherency = (url) => {
-	if (!url.includes(currentProtocol)) {
-		const urlObj = new URL(url);
-		return url.replace(urlObj.protocol, currentProtocol);
-	}
-	return url;
-};
-
-xdashDocAddr = ensureProtocolCoherency(xdashDocAddr);
-xdashAddr = ensureProtocolCoherency(xdashAddr);
-
 function openXprjsonInNewTab(resource) {
-	const addr = `${xdashAddr}?projectUrl=${encodeURI(resource)}`;
+	const addr = `${xdashAddr}index.html?projectUrl=${encodeURI(resource)}`;
 	window.open(addr, "_blank");
 }
 
