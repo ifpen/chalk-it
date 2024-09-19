@@ -50,6 +50,7 @@ module.exports = (env) => ({
         // TODO change file names
         //test: /\.worker\.js$/,
         test: /-worker\.js$/i,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'worker-loader',
@@ -62,7 +63,7 @@ module.exports = (env) => ({
       },
       {
         test: /\.css$/,
-        use: [devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader'],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.s[ac]ss$/i,
