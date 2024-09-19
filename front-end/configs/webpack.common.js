@@ -50,6 +50,7 @@ module.exports = (env) => ({
         // TODO change file names
         //test: /\.worker\.js$/,
         test: /-worker\.js$/i,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'worker-loader',
