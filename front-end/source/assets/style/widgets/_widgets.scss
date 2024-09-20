@@ -168,6 +168,11 @@ html {
   --widget-table-color: var(--widget-color-0);
   --widget-table-caption-color: var(--widget-subtext-color);
   --widget-table-value-color: var(--widget-color);
+  --widget-table-pagination-color: var(--widget-color-0);
+  --widget-table-pagination-focus-color: #555;
+  --widget-table-pagination-hover-color: #888;
+  --widget-table-pagination-value-color: #fff;
+  --widget-table-pagination-arrow-color: #354a5f;
   // --widget-table-border-color: #{darken(map-get($widget-default-colors, 0), 13%)}; // inside calculated colors
   // --widget-table-striped-odd: #{darken(map-get($widget-default-colors, 0), 2%)}; // inside calculated colors
   // --widget-table-striped-hover: #{darken(map-get($widget-default-colors, 0), 4%)}; // inside calculated colors
