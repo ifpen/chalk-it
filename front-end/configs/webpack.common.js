@@ -127,12 +127,14 @@ module.exports = (env) => ({
       template: './index_tmp.html',
       title: 'Webpack: AngularJS configuration',
       chunks: ['editor'],
+      favicon: 'source/assets/img/chalk-it-icon.ico',
     }),
     new HTMLWebpackPlugin({
       template: './index_view_tmp.html',
       title: 'Webpack: AngularJS configuration',
       filename: 'index-view.html',
       chunks: ['dashboard'],
+      favicon: 'source/assets/img/chalk-it-icon.ico',
     }),
     new MomentLocalesPlugin(),
     new CopyWebpackPlugin([
