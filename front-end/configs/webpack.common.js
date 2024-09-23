@@ -37,7 +37,7 @@ module.exports = (env) => ({
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /(node_modules|doc)/,
         use: 'babel-loader',
       },
       {
@@ -50,7 +50,7 @@ module.exports = (env) => ({
         // TODO change file names
         //test: /\.worker\.js$/,
         test: /-worker\.js$/i,
-        exclude: /node_modules/,
+        exclude: /(node_modules|doc)/,
         use: [
           {
             loader: 'worker-loader',
@@ -63,7 +63,8 @@ module.exports = (env) => ({
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        exclude: /\.min\.css$/,
+        use: [devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.s[ac]ss$/i,
@@ -85,6 +86,7 @@ module.exports = (env) => ({
       },
       {
         test: /\.html$/,
+        exclude: /(node_modules|doc)/,
         use: 'html-loader',
       },
     ],
@@ -112,14 +114,14 @@ module.exports = (env) => ({
       template: './index_tmp.html',
       title: 'Webpack: AngularJS Configuration',
       chunks: ['editor'],
-      favicon: devMode ? 'source/assets/img/chalk-it-icon.ico' : 'assets/img/chalk-it-icon.ico',
+      favicon: 'source/assets/img/chalk-it-icon.ico',
     }),
     new HTMLWebpackPlugin({
       template: './index_view_tmp.html',
       title: 'Webpack: AngularJS Configuration',
       filename: 'index-view.html',
       chunks: ['dashboard'],
-      favicon: devMode ? 'source/assets/img/chalk-it-icon.ico' : 'assets/img/chalk-it-icon.ico',
+      favicon: 'source/assets/img/chalk-it-icon.ico',
     }),
     new MomentLocalesPlugin(),
     new CopyWebpackPlugin({

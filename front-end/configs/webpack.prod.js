@@ -22,9 +22,9 @@ module.exports = (env) =>
       },
       minimize: true,
       minimizer: [
-        '...', // Extend existing minimizers (i.e. `terser-webpack-plugin`)
+        // '...', // Extend existing minimizers (i.e. `terser-webpack-plugin`)
         new CssMinimizerPlugin({
-          test: /\.css$/i,
+          exclude: /\.min\.css$/i,
           minimizerOptions: {
             preset: [
               'default',
