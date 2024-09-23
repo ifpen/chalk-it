@@ -93,6 +93,9 @@ modelsParameters.flatUiTable = {
     primary: 'var(--widget-color-0)',
     secondary: 'var(--widget-table-striped-odd)',
   },
+  paginationMinNbr: 5,
+  paginationOptions: '[2, 5, 10, 50, 100, 500]',
+  paginationDefaultValue: 10,
 };
 modelsParameters.flatUiEditableTable = {
   headerLine: false,
@@ -109,6 +112,9 @@ modelsParameters.flatUiEditableTable = {
     primary: 'var(--widget-color-0)',
     secondary: 'var(--widget-table-striped-odd)',
   },
+  paginationMinNbr: 5,
+  paginationOptions: '[2, 5, 10, 50, 100, 500]',
+  paginationDefaultValue: 10,
 };
 
 // Layout (default dimensions)
@@ -1036,6 +1042,88 @@ function flatUiComplexWidgetsPluginClass() {
   this.tableFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
+    const nbminPerPagination = modelsParameters[idInstance].paginationMinNbr;
+    const options = JSON.parse(modelsParameters[idInstance].paginationOptions);
+    let defaultValue = modelsParameters[idInstance].paginationDefaultValue;
+    if (!options.includes(defaultValue)) defaultValue = options[0];
+
+    let currentPage = 1;
+    function sortTable(cell, columnIndex, isAscending) {
+      const tbody = cell.parent().parent().parents()[0].tBodies[0];
+      const rows = Array.from(tbody.getElementsByTagName('tr'));
+      const headerRow = modelsHiddenParams[idInstance].value[0];
+      const dataRows = modelsHiddenParams[idInstance].value.slice(1);
+
+      const sortedData = dataRows.sort((a, b) => {
+        let valueA = a[columnIndex];
+        let valueB = b[columnIndex];
+
+        // Remove <b> tags if present
+        if (typeof valueA === 'string' && valueA.includes('<b>')) {
+          valueA = valueA.replace(/<\/?[^>]+(>|$)/g, '');
+        }
+
+        if (typeof valueB === 'string' && valueB.includes('<b>')) {
+          valueB = valueB.replace(/<\/?[^>]+(>|$)/g, '');
+        }
+
+        const compareA = isNaN(valueA) ? valueA.toLowerCase() : parseFloat(valueA);
+        const compareB = isNaN(valueB) ? valueB.toLowerCase() : parseFloat(valueB);
+
+        if (compareA < compareB) return isAscending ? -1 : 1;
+        if (compareA > compareB) return isAscending ? 1 : -1;
+        return 0;
+      });
+      modelsHiddenParams[idInstance].value = [headerRow, ...sortedData];
+      while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+      }
+      sortedData.forEach((sortedRow) => {
+        const tr = document.createElement('tr');
+        sortedRow.forEach((cellValue, cellIndex) => {
+          const td = document.createElement('td');
+          td.style.textAlign = 'left';
+          if (cellIndex === 0) {
+            td.innerHTML = `<b>${cellValue}</b>`;
+          } else {
+            td.innerHTML = `<span>${cellValue}</span>`;
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateSortArrows(cell, activeHeader, isAscending) {
+      const headers = $('#table' + idWidget)[0].querySelectorAll("th[data-sortable='true']");
+      headers.forEach((header) => {
+        //header.removeAttribute('data-sort');
+        header.setAttribute('data-sort', '');
+      });
+      cell[0].setAttribute('data-sort', isAscending ? 'asc' : 'desc');
+    }
+
+    function updateTable() {
+      let totalRows = _.isNull(modelsHiddenParams[idInstance].value) ? 0 : modelsHiddenParams[idInstance].value.length;
+      if (modelsParameters[idInstance].headerLine && totalRows != 0) {
+        totalRows--;
+      }
+      const rowsPerPage = $('#rows-per-page' + idWidget).val();
+      const totalPages = Math.ceil(totalRows / rowsPerPage);
+      $('#table' + idWidget + ' tbody')
+        .find('tr')
+        .hide();
+      $('#table' + idWidget + ' tbody')
+        .find('tr')
+        .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
+        .show();
+
+      $('#page-info' + idWidget).text('Page ' + currentPage + ' of ' + totalPages);
+      $('#first-page' + idWidget).prop('disabled', currentPage === 1);
+      $('#prev-page' + idWidget).prop('disabled', currentPage === 1);
+      $('#next-page' + idWidget).prop('disabled', currentPage === totalPages);
+      $('#last-page' + idWidget).prop('disabled', currentPage === totalPages);
+    }
 
     this.enable = function () {
       $('#table' + idWidget).editableTableWidget();
@@ -1067,6 +1155,52 @@ function flatUiComplexWidgetsPluginClass() {
         );
         self.value.updateCallback(self.value, self.value.getValue());
       });
+
+      $('#table' + idWidget + ' th').on('click', function () {
+        const cell = $(this);
+        const columnIndex = cell.index();
+        const isAscending = cell[0].getAttribute('data-sort') !== 'asc';
+
+        sortTable(cell, columnIndex, isAscending);
+        updateSortArrows(cell, columnIndex, isAscending);
+        self.value.updateCallback(self.value, self.value.getValue());
+        updateTable();
+      });
+
+      $('#rows-per-page' + idWidget).on('click', function () {
+        currentPage = 1;
+        updateTable();
+      });
+
+      $('#first-page' + idWidget).on('click', function () {
+        currentPage = 1;
+        updateTable();
+      });
+
+      $('#prev-page' + idWidget).on('click', function () {
+        if (currentPage > 1) {
+          currentPage--;
+          updateTable();
+        }
+      });
+
+      $('#next-page' + idWidget).on('click', function () {
+        const totalRows = modelsHiddenParams[idInstance].value.length;
+        const rowsPerPage = $('#rows-per-page' + idWidget).val();
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          updateTable();
+        }
+      });
+
+      $('#last-page' + idWidget).on('click', function () {
+        const totalRows = modelsHiddenParams[idInstance].value.length;
+        const rowsPerPage = $('#rows-per-page' + idWidget).val();
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+        currentPage = totalPages;
+        updateTable();
+      });
     };
 
     this.disable = function () {
@@ -1089,22 +1223,32 @@ function flatUiComplexWidgetsPluginClass() {
           if (modelsParameters[idInstance].headerLine) {
             startIndex = 1;
             tableContent += '<thead><tr>';
+            const thElements = $('#table' + idWidget + ' th');
             for (const element of val[0]) {
+              let dSort = thElements.length ? thElements[val[0].indexOf(element)].getAttribute('data-sort') : '';
               tableContent +=
-                '<th style="' +
+                '<th data-sortable="true" data-sort="' +
+                dSort +
+                '" style="' +
                 this.valueAlign() +
                 '"><span style="' +
                 this.valueColor() +
                 this.valueFontFamily() +
                 ' font-size: calc(7px + ' +
                 fontSize * getFontFactor() +
-                'vw);"><b>' +
+                'vw);padding-right:15px"><b>' +
                 element +
-                '</b></span></th>';
+                '</b></span><span class="sort-arrow"></span></th>';
             }
             tableContent += '</tr></thead>';
           }
-          tableContent += '<tbody>';
+          const sortAsc = _.isUndefined($('#table' + idWidget)[0])
+            ? 'true'
+            : $('#table' + idWidget + ' tbody')[0].getAttribute('data-sort-asc');
+          const sortCol = _.isUndefined($('#table' + idWidget)[0])
+            ? '0'
+            : $('#table' + idWidget + ' tbody')[0].getAttribute('data-sort-column');
+          tableContent += '<tbody data-sort-asc="' + sortAsc + '" data-sort-column="' + sortCol + '">';
           for (let i = startIndex; i < val.length; i++) {
             if (modelsParameters[idInstance].striped) {
               if (i % 2 !== 0) {
@@ -1185,25 +1329,97 @@ function flatUiComplexWidgetsPluginClass() {
       this.render();
     };
 
+    this.buildPagination = function () {
+      let fontSize = 0.5;
+      if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
+        fontSize = modelsParameters[idInstance].tableValueFontSize;
+      }
+      let strFontSize = 'font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)';
+
+      defaultValue = _.isUndefined($('#rows-per-page' + idWidget)[0])
+        ? defaultValue
+        : parseInt($('#rows-per-page' + idWidget).val());
+
+      let optionsHTML = '';
+      options.forEach((value) => {
+        optionsHTML += `<option value="${value}"${value === defaultValue ? ' selected' : ''}>${value}</option>`;
+      });
+      const divPagination =
+        '<div id="pagination-controls" >' +
+        '  <label for="rows-per-page" style="' +
+        this.valueColor() +
+        this.valueFontFamily() +
+        strFontSize +
+        '">Rows per page:</label>' +
+        ' <div class="custom-select-wrapper">' +
+        '  <select name="rows-per-page" id="rows-per-page' +
+        idWidget +
+        '" style="' +
+        strFontSize +
+        '">' +
+        optionsHTML +
+        '  </select>' +
+        ' </div>' +
+        ' <button id="first-page' +
+        idWidget +
+        '" disabled>|&lt;</button>' +
+        '  <button id="prev-page' +
+        idWidget +
+        '" disabled>&lt;</button>' +
+        '  <span id="page-info' +
+        idWidget +
+        '" style="' +
+        this.valueColor() +
+        this.valueFontFamily() +
+        strFontSize +
+        '">Page 1 of 1</span>' +
+        '  <button id="next-page' +
+        idWidget +
+        '">&gt;</button>' +
+        '<button id="last-page' +
+        idWidget +
+        '">&gt;|</button>' +
+        '</div>';
+      return divPagination;
+    };
+
     this.render = function () {
+      const val = modelsHiddenParams[idInstance].value;
+      let length = 0;
+      if (!_.isNull(modelsHiddenParams[idInstance].value)) length = modelsHiddenParams[idInstance].value.length;
+      let insideTable = self.buildTable(val);
+      let isTableEmpty = false;
+      let tableWidth = '75%';
+      if (insideTable === '') {
+        insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
+        isTableEmpty = true;
+        tableWidth = '100%';
+      }
+      if (length < nbminPerPagination) {
+        tableWidth = '100%';
+      }
+
       const widgetHtml = document.createElement('div');
       const displayStyle =
         'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto;';
-      let divContent = `<table style="margin: 0; height: 100%; ${this.tableBackgroundColor('primary')}" class="table`;
+      let divContent =
+        `<table style="margin: 0; height: ` + tableWidth + `; ${this.tableBackgroundColor('primary')}" class="table`;
       if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
       if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
       divContent += ' table-responsive" id="table' + idWidget + '" >';
-      const val = modelsHiddenParams[idInstance].value;
-      let insideTable = self.buildTable(val);
-      if (insideTable === '') {
-        insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
-      }
+
       divContent += insideTable + '</table>';
+      //pagination
+      if (!isTableEmpty && length >= nbminPerPagination) {
+        divContent += self.buildPagination();
+      }
+      //divContent += '</div>';
+      //end pagination
       widgetHtml.innerHTML = divContent;
 
       //
       const showWidget = this.showWidget();
-      let displayStyle2 = 'display: inherit;';
+      let displayStyle2 = 'display: block;';
       if (!showWidget) {
         displayStyle2 = 'display: none;';
       }
@@ -1219,6 +1435,10 @@ function flatUiComplexWidgetsPluginClass() {
       this.applyDisplayOnWidget();
       if (this.bIsInteractive) {
         self.enable();
+        if (length >= nbminPerPagination) {
+          currentPage = 1;
+          updateTable();
+        }
       } else {
         self.disable();
       }
