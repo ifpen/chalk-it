@@ -195,11 +195,11 @@ $icon-urls: (
 @mixin icon-background($icon-name, $type) {
   @media (prefers-color-scheme: light) {
     $icon-url: map-get(map-get($icon-urls, $type), 'light');
-    background-image: url('/assets/#{$icon-url}#{$icon-name}');
+    background-image: url('assets/#{$icon-url}#{$icon-name}');
   }
 
   @media (prefers-color-scheme: dark) {
     $icon-url: map-get(map-get($icon-urls, $type), 'dark');
-    background-image: url('/assets/#{$icon-url}#{$icon-name}');
+    background-image: url('assets/#{$icon-url}#{$icon-name}');
   }
 }
