@@ -166,4 +166,110 @@
       border-bottom: 0;
     }
   }
+  .sort-arrow {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    font-size: 0.75em;
+    color: #354a5f;
+  }
+
+  th:hover .sort-arrow {
+    opacity: 0.5;
+  }
+
+  th[data-sort='asc'] .sort-arrow {
+    opacity: 1;
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  th[data-sort='desc'] .sort-arrow {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+
+  .sort-arrow::before {
+    content: '';
+    border: solid var(--widget-table-pagination-arrow-color);
+    border-width: 0 4px 4px 0;
+    display: inline-block;
+    padding: 4px;
+    transform: rotate(45deg);
+    vertical-align: middle;
+  }
+
+  #pagination-controls {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  #pagination-controls label {
+    margin-right: 10px;
+    font-size: calc(7px + 0.5vw);
+  }
+
+  #pagination-controls select {
+    padding: 5px 10px;
+  }
+
+  #pagination-controls button {
+    margin: 0 10px;
+    padding: 0px 10px;
+    background-color: var(--widget-table-value-color);
+    color: var(--widget-table-pagination-value-color);
+    border: none;
+    cursor: pointer;
+  }
+
+  #pagination-controls button:disabled {
+    background-color: var(--widget-table-border-color);
+    cursor: not-allowed;
+  }
+
+  #pagination-controls [class^='page-info'] {
+    font-size: calc(7px + 0.5vw);
+    color: var(--widget-table-pagination-color);
+  }
+
+  .custom-select-wrapper {
+    position: relative;
+    width: 80px;
+    margin-right: 20px;
+  }
+
+  [id^='rows-per-page'] {
+    width: 100%;
+    padding: 10px;
+    appearance: none;
+    background-color: var(--widget-table-pagination-value-color);
+    border: 1px solid var(--widget-table-border-color);
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    padding-right: 30px;
+  }
+
+  .custom-select-wrapper::after {
+    content: '▼';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 14px;
+    color: var(--widget-table-pagination-focus-color);
+  }
+
+  [id^='rows-per-page']:hover {
+    border-color: var(--widget-table-pagination-hover-color);
+  }
+
+  [id^='rows-per-page']:focus {
+    outline: none;
+    border-color: var(--widget-table-pagination-focus-color);
+  }
 }
