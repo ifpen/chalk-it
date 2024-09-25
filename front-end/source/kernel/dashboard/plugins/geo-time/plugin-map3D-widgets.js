@@ -6,8 +6,11 @@
 // ├─────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Benoit LEHMAN                                          │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
-import { Deck } from '@deck.gl/core';
-// import { MapboxLayer } from '@deck.gl/mapbox';
+
+import { ScatterplotLayer } from '@deck.gl/layers';
+import { MapboxOverlay } from '@deck.gl/mapbox';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
@@ -57,21 +60,39 @@ function map3DWidgetPluginClass() {
       const newDivId = 'div-for-map3D' + idWidget;
       widgetHtml.setAttribute('id', newDivId);
       $('#' + idDivContainer).html(widgetHtml);
-      const deckGlInstance = new Deck({
-        mapStyle: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-        mapboxApiAccessToken: 'your-mapbox-access-token',
+                    
+   
+      // 1 - Create The Mapbox Map
+      // Need a valid Token
+
+      const map = new mapboxgl.Map({
         container: newDivId,
-        controller: true,
-        initialViewState: {
-          longitude: -0.6414350308477879,
-          latitude: 43.412733329460025,
-          zoom: 18,
-          minZoom: 5,
-          maxZoom: 30,
-          pitch: 40.5,
-        },
+        accessToken: 'valid token',
+        style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+        center: [-122.45, 37.78],
+        zoom: 12,
       });
-      $('.mapboxgl-control-container').remove();
+
+      // 2 - Create a mapboxOverlay on the map for DeckGL layer
+
+      map.once('load', () => {
+        const deckOverlay = new MapboxOverlay({
+          interleaved: true,
+          layers: [
+            new ScatterplotLayer({
+              id: 'deckgl-circle',
+              data: [
+                {position: [-122.45, 37.78]}
+              ],
+              getPosition: d => d.position,
+              getFillColor: [255, 0, 0, 100],
+              getRadius: 1000,
+            })
+          ]
+        });
+      
+        map.addControl(deckOverlay);
+      });
     };
 
     self.render();
