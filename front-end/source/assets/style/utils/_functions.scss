@@ -1,4 +1,5 @@
 @use 'sass:math';
+@use 'sass:color';
 
 // Replace `$search` with `$replace` in `$string`
 // Used on our SVG icon backgrounds for custom forms.
@@ -21,9 +22,9 @@
 
 // Color contrast
 @function color-yiq($color, $dark: #333, $light: #fff) {
-  $r: red($color);
-  $g: green($color);
-  $b: blue($color);
+  $r: color.channel($color, 'red');
+  $g: color.channel($color, 'green');
+  $b: color.channel($color, 'blue');
 
   $yiq: math.div(($r * 299) + ($g * 587) + ($b * 114), 1000);
 

@@ -1,19 +1,14 @@
-// Monkey-patch to get around https://github.com/webpack/webpack/issues/13572
-const crypto = require('crypto');
-const crypto_orig_createHash = crypto.createHash;
-crypto.createHash = (algorithm) => crypto_orig_createHash(algorithm == 'md4' ? 'sha256' : algorithm);
-
 const path = require('path');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
-console.log(`production build: ${!devMode}`);
+console.log(`Production build: ${!devMode}`);
 
 require('dotenv').config({ path: devMode ? '.env.dev' : '.env.prod' });
 
@@ -32,24 +27,30 @@ module.exports = (env) => ({
   resolve: {
     modules: ['source', 'thirdparty', 'node_modules'],
   },
-  mode: 'development',
   output: {
     filename: '[name]-bundle.js',
     path: path.resolve(__dirname, '../build'),
     publicPath: '',
-    pathinfo: false,
+    clean: true,
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        use: [{ loader: 'babel-loader' }],
+        exclude: /(node_modules|doc)/,
+        use: 'babel-loader',
+      },
+      {
+        test: /\.(js|mjs|ts)$/,
+        resolve: {
+          fullySpecified: false,
+        },
       },
       {
         // TODO change file names
         //test: /\.worker\.js$/,
         test: /-worker\.js$/i,
+        exclude: /(node_modules|doc)/,
         use: [
           {
             loader: 'worker-loader',
@@ -57,50 +58,36 @@ module.exports = (env) => ({
               filename: devMode ? '[name].js' : '[name].[contenthash].js',
             },
           },
-          { loader: 'babel-loader' },
+          'babel-loader',
         ],
       },
       {
         test: /\.css$/,
-        use: [devMode ? 'style-loader' : MiniCssExtractPlugin.loader, { loader: 'css-loader' }],
+        exclude: /\.min\.css$/,
+        use: [devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          { loader: 'css-loader' },
-          { loader: 'sass-loader' },
-        ],
+        use: [devMode ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(jpeg|jpg|svg|gif|png|ico)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: 'assets/[path][name].[ext]',
-              context: 'source/assets/',
-              publicPath: '',
-            },
-          },
-        ],
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[path][name][ext]',
+        },
       },
       {
         test: /\.(eot|ttf|woff|woff2)$/i,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: 'assets/[path][name].[ext]',
-              context: 'source/assets/',
-              publicPath: '',
-            },
-          },
-        ],
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[path][name][ext]',
+        },
       },
       {
         test: /\.html$/,
-        use: [{ loader: 'html-loader' }],
+        exclude: /(node_modules|doc)/,
+        use: 'html-loader',
       },
     ],
   },
@@ -112,7 +99,7 @@ module.exports = (env) => ({
             filename: '[name].[contenthash].css',
           }),
         ]),
-    ...(env.enableEslintPlugin ? [new ESLintPlugin({})] : []),
+    ...(env.enableEslintPlugin ? [new ESLintPlugin()] : []),
     new webpack.DefinePlugin({
       ...confDic,
     }),
@@ -121,34 +108,36 @@ module.exports = (env) => ({
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
       'window.$': 'jquery',
+      process: 'process/browser',
     }),
     new HTMLWebpackPlugin({
       template: './index_tmp.html',
-      title: 'Webpack: AngularJS configuration',
+      title: 'Webpack: AngularJS Configuration',
       chunks: ['editor'],
+      favicon: 'source/assets/img/chalk-it-icon.ico',
     }),
     new HTMLWebpackPlugin({
       template: './index_view_tmp.html',
-      title: 'Webpack: AngularJS configuration',
+      title: 'Webpack: AngularJS Configuration',
       filename: 'index-view.html',
       chunks: ['dashboard'],
+      favicon: 'source/assets/img/chalk-it-icon.ico',
     }),
     new MomentLocalesPlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: 'chalkit_python_api-*.whl',
-      },
-      {
-        context: 'source/assets/',
-        from: '**/*.{jpeg,jpg,gif,png,ico,eot,svg,ttf,woff,woff2}',
-        to: 'assets/',
-        flatten: false, // Ensure folder structure is preserved
-      },
-      {
-        context: path.resolve(__dirname, '../../documentation/site/'),
-        from: '**/*.*',
-        to: 'doc/',
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'chalkit_python_api-*.whl' },
+        {
+          context: 'source/assets/',
+          from: '**/*.{jpeg,jpg,gif,png,ico,eot,svg,ttf,woff,woff2}',
+          to: 'assets/',
+        },
+        {
+          context: path.resolve(__dirname, '../../documentation/site/'),
+          from: '**/*.*',
+          to: 'doc/',
+        },
+      ],
+    }),
   ],
 });
