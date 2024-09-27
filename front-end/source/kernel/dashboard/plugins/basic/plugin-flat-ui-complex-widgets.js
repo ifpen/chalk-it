@@ -112,8 +112,8 @@ modelsParameters.flatUiEditableTable = {
     primary: 'var(--widget-color-0)',
     secondary: 'var(--widget-table-striped-odd)',
   },
-  paginationMinNbr: 5,
-  paginationOptions: '[2, 5, 10, 50, 100, 500]',
+  paginationMinNbr: 10,
+  paginationOptions: '[10, 50, 100, 500]',
   paginationDefaultValue: 10,
 };
 
