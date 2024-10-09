@@ -96,7 +96,7 @@
     "ng-tags-input": "^3.2.0",
     "papaparse": "^4.6.3",
     "path": "^0.12.7",
-    "plotly.js": "2.6.3",
+    "plotly.js": "2.25.2",
     "pnotify": "^3.2.1",
     "pyodide": "^0.23.4",
     "simpleheat": "^0.4.0",
