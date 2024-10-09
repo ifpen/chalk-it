@@ -94,7 +94,7 @@ modelsParameters.flatUiTable = {
     secondary: 'var(--widget-table-striped-odd)',
   },
   paginationMinNbr: 10,
-  paginationOptions: '[50, 100, 500]',
+  paginationOptions: '[10, 50, 100, 500]',
   paginationDefaultValue: 10,
 };
 modelsParameters.flatUiEditableTable = {
@@ -1167,7 +1167,7 @@ function flatUiComplexWidgetsPluginClass() {
         updateTable();
       });
 
-      $('#rows-per-page' + idWidget).on('click', function () {
+      $('#rows-per-page' + idWidget).on('change', function () {
         currentPage = 1;
         updateTable();
       });
