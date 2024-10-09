@@ -8,8 +8,15 @@
       
       
       
+      
+        <link rel="prev" href="../ds-execution-engine/">
+      
+      
+        <link rel="next" href="../../wdg/wdg/">
+      
+      
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
     
     
       
@@ -17,13 +24,14 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
       
-        
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
-        
       
+
+
     
+    
+      
     
     
       
@@ -31,23 +39,18 @@
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
+    
   </head>
   
   
-    
-    
-    
-    
-    
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr">
   
-    
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -67,7 +70,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Chalk&#39;it Documentation" class="md-header__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
       
@@ -75,7 +80,8 @@
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -95,9 +101,13 @@
     </div>
     
     
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
     
       <label class="md-header__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
       </label>
       <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
@@ -105,24 +115,27 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
       </nav>
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
           </div>
-          <ol class="md-search-result__list"></ol>
+          <ol class="md-search-result__list" role="presentation"></ol>
         </div>
       </div>
     </div>
@@ -152,6 +165,7 @@
                     
 
 
+
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Chalk&#39;it Documentation" class="md-nav__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
@@ -166,14 +180,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../.." class="md-nav__link">
-        Welcome
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+  
+
       </a>
     </li>
   
@@ -181,14 +200,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../quick-start/quickstart/" class="md-nav__link">
-        Quickstart
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
       </a>
     </li>
   
@@ -196,14 +220,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../basics/" class="md-nav__link">
-        Basics
+        
+  
+  <span class="md-ellipsis">
+    Basics
+  </span>
+  
+
       </a>
     </li>
   
@@ -211,98 +240,139 @@
     
       
       
-      
-
   
   
     
   
   
+  
+    
+    
+    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_4">
-          DataNodes
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="DataNodes" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
-          <span class="md-nav__icon md-icon"></span>
-          DataNodes
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
           
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DataNodes
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            DataNodes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../ds/" class="md-nav__link">
-        Introduction
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../ds-basics/" class="md-nav__link">
-        Basics
+        
+  
+  <span class="md-ellipsis">
+    Basics
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../ds-execution-engine/" class="md-nav__link">
-        Execution engine
+        
+  
+  <span class="md-ellipsis">
+    Execution engine
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
   
   
     
   
   
+  
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
         
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Reference
+          
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Reference
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
       </a>
       
         
@@ -322,21 +392,27 @@
       
         <li class="md-nav__item">
   <a href="#python-script" class="md-nav__link">
-    Python Script
+    <span class="md-ellipsis">
+      Python Script
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#javascript-script" class="md-nav__link">
-    JavaScript Script
+    <span class="md-ellipsis">
+      JavaScript Script
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#rest-web-services" class="md-nav__link">
-    REST web-services
+    <span class="md-ellipsis">
+      REST web-services
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="REST web-services">
@@ -344,7 +420,9 @@
         
           <li class="md-nav__item">
   <a href="#parameters" class="md-nav__link">
-    Parameters
+    <span class="md-ellipsis">
+      Parameters
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -352,14 +430,18 @@
         
           <li class="md-nav__item">
   <a href="#url" class="md-nav__link">
-    URL
+    <span class="md-ellipsis">
+      URL
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#xproxy" class="md-nav__link">
-    xProxy
+    <span class="md-ellipsis">
+      xProxy
+    </span>
   </a>
   
 </li>
@@ -371,7 +453,9 @@
         
           <li class="md-nav__item">
   <a href="#some-examples" class="md-nav__link">
-    Some examples
+    <span class="md-ellipsis">
+      Some examples
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Some examples">
@@ -379,49 +463,63 @@
         
           <li class="md-nav__item">
   <a href="#simple-get" class="md-nav__link">
-    Simple GET
+    <span class="md-ellipsis">
+      Simple GET
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#simple-post" class="md-nav__link">
-    Simple POST
+    <span class="md-ellipsis">
+      Simple POST
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-with-arguments" class="md-nav__link">
-    GET with arguments
+    <span class="md-ellipsis">
+      GET with arguments
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-with-arguments-from-another-datanode" class="md-nav__link">
-    GET with arguments from another dataNode
+    <span class="md-ellipsis">
+      GET with arguments from another dataNode
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-of-a-binary-file" class="md-nav__link">
-    GET of a binary file
+    <span class="md-ellipsis">
+      GET of a binary file
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#post-with-arguments-from-another-datanode" class="md-nav__link">
-    POST with arguments from another dataNode
+    <span class="md-ellipsis">
+      POST with arguments from another dataNode
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#triggered-post" class="md-nav__link">
-    Triggered POST
+    <span class="md-ellipsis">
+      Triggered POST
+    </span>
   </a>
   
 </li>
@@ -438,49 +536,63 @@
       
         <li class="md-nav__item">
   <a href="#csv-file-reader" class="md-nav__link">
-    CSV file reader
+    <span class="md-ellipsis">
+      CSV file reader
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#csv-file-player" class="md-nav__link">
-    CSV file player
+    <span class="md-ellipsis">
+      CSV file player
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#delay" class="md-nav__link">
-    Delay
+    <span class="md-ellipsis">
+      Delay
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#memory" class="md-nav__link">
-    Memory
+    <span class="md-ellipsis">
+      Memory
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#clock" class="md-nav__link">
-    Clock
+    <span class="md-ellipsis">
+      Clock
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#geolocation" class="md-nav__link">
-    Geolocation
+    <span class="md-ellipsis">
+      Geolocation
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#websocket" class="md-nav__link">
-    WebSocket
+    <span class="md-ellipsis">
+      WebSocket
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="WebSocket">
@@ -488,21 +600,27 @@
         
           <li class="md-nav__item">
   <a href="#websocket-receive" class="md-nav__link">
-    WebSocket receive
+    <span class="md-ellipsis">
+      WebSocket receive
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#websocket-send" class="md-nav__link">
-    WebSocket send
+    <span class="md-ellipsis">
+      WebSocket send
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
-    Example
+    <span class="md-ellipsis">
+      Example
+    </span>
   </a>
   
 </li>
@@ -519,307 +637,430 @@
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
     
       
       
-      
-
+  
   
   
   
     
+    
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_5">
-          Widgets
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Widgets" data-md-level="1">
-        <label class="md-nav__title" for="__nav_5">
-          <span class="md-nav__icon md-icon"></span>
-          Widgets
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
           
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Widgets
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Widgets
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../wdg/wdg/" class="md-nav__link">
-        Introduction
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../wdg/wdg-common-concept/" class="md-nav__link">
-        Common concepts
+        
+  
+  <span class="md-ellipsis">
+    Common concepts
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../wdg/wdg-basic-inputs/" class="md-nav__link">
-        Basic inputs
+        
+  
+  <span class="md-ellipsis">
+    Basic inputs
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../wdg/wdg-basic-displays/" class="md-nav__link">
-        Basic displays
+        
+  
+  <span class="md-ellipsis">
+    Basic displays
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../wdg/wdg-plots/" class="md-nav__link">
-        Plots
+        
+  
+  <span class="md-ellipsis">
+    Plots
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../wdg/wdg-geo-time/" class="md-nav__link">
-        Geo & Time
+        
+  
+  <span class="md-ellipsis">
+    Geo & Time
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../wdg/wdg-annotation-video/" class="md-nav__link">
-        Annotation & Video
+        
+  
+  <span class="md-ellipsis">
+    Annotation & Video
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     
+    
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_5_8">
-          Additions
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Additions" data-md-level="2">
-        <label class="md-nav__title" for="__nav_5_8">
-          <span class="md-nav__icon md-icon"></span>
-          Additions
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
+        
           
+          <label class="md-nav__link" for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Additions
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8">
+            <span class="md-nav__icon md-icon"></span>
+            Additions
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../wdg/selection/plot-selection/" class="md-nav__link">
-        Selection
+        
+  
+  <span class="md-ellipsis">
+    Selection
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../wdg/plot-themes/" class="md-nav__link">
-        Themes
+        
+  
+  <span class="md-ellipsis">
+    Themes
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
     
       
       
-      
-
   
   
   
+  
+    
+    
+    
     
     <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_6">
-          Python support
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Python support" data-md-level="1">
-        <label class="md-nav__title" for="__nav_6">
-          <span class="md-nav__icon md-icon"></span>
-          Python support
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
           
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Python support
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Python support
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../py/py-index/" class="md-nav__link">
-        Introduction
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../py/py-default/" class="md-nav__link">
-        Local runner
+        
+  
+  <span class="md-ellipsis">
+    Local runner
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../py/py-pyodide/" class="md-nav__link">
-        Pyodide
+        
+  
+  <span class="md-ellipsis">
+    Pyodide
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../py/py-proto-flask/" class="md-nav__link">
-        Local prototyping with Flask
+        
+  
+  <span class="md-ellipsis">
+    Local prototyping with Flask
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../chalkitapi/" class="md-nav__link">
-        Chalk'it APIs
+        
+  
+  <span class="md-ellipsis">
+    Chalk'it APIs
+  </span>
+  
+
       </a>
     </li>
   
@@ -827,14 +1068,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../export/export/" class="md-nav__link">
-        Export
+        
+  
+  <span class="md-ellipsis">
+    Export
+  </span>
+  
+
       </a>
     </li>
   
@@ -842,48 +1088,63 @@
     
       
       
-      
-
+  
   
   
   
     
+    
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_9">
-          Recipes & interfaces
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Recipes & interfaces" data-md-level="1">
-        <label class="md-nav__title" for="__nav_9">
-          <span class="md-nav__icon md-icon"></span>
-          Recipes & interfaces
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
           
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Recipes & interfaces
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Recipes & interfaces
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../recipes/" class="md-nav__link">
-        Recipes
+        
+  
+  <span class="md-ellipsis">
+    Recipes
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -916,21 +1177,27 @@
       
         <li class="md-nav__item">
   <a href="#python-script" class="md-nav__link">
-    Python Script
+    <span class="md-ellipsis">
+      Python Script
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#javascript-script" class="md-nav__link">
-    JavaScript Script
+    <span class="md-ellipsis">
+      JavaScript Script
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#rest-web-services" class="md-nav__link">
-    REST web-services
+    <span class="md-ellipsis">
+      REST web-services
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="REST web-services">
@@ -938,7 +1205,9 @@
         
           <li class="md-nav__item">
   <a href="#parameters" class="md-nav__link">
-    Parameters
+    <span class="md-ellipsis">
+      Parameters
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -946,14 +1215,18 @@
         
           <li class="md-nav__item">
   <a href="#url" class="md-nav__link">
-    URL
+    <span class="md-ellipsis">
+      URL
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#xproxy" class="md-nav__link">
-    xProxy
+    <span class="md-ellipsis">
+      xProxy
+    </span>
   </a>
   
 </li>
@@ -965,7 +1238,9 @@
         
           <li class="md-nav__item">
   <a href="#some-examples" class="md-nav__link">
-    Some examples
+    <span class="md-ellipsis">
+      Some examples
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Some examples">
@@ -973,49 +1248,63 @@
         
           <li class="md-nav__item">
   <a href="#simple-get" class="md-nav__link">
-    Simple GET
+    <span class="md-ellipsis">
+      Simple GET
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#simple-post" class="md-nav__link">
-    Simple POST
+    <span class="md-ellipsis">
+      Simple POST
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-with-arguments" class="md-nav__link">
-    GET with arguments
+    <span class="md-ellipsis">
+      GET with arguments
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-with-arguments-from-another-datanode" class="md-nav__link">
-    GET with arguments from another dataNode
+    <span class="md-ellipsis">
+      GET with arguments from another dataNode
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#get-of-a-binary-file" class="md-nav__link">
-    GET of a binary file
+    <span class="md-ellipsis">
+      GET of a binary file
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#post-with-arguments-from-another-datanode" class="md-nav__link">
-    POST with arguments from another dataNode
+    <span class="md-ellipsis">
+      POST with arguments from another dataNode
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#triggered-post" class="md-nav__link">
-    Triggered POST
+    <span class="md-ellipsis">
+      Triggered POST
+    </span>
   </a>
   
 </li>
@@ -1032,49 +1321,63 @@
       
         <li class="md-nav__item">
   <a href="#csv-file-reader" class="md-nav__link">
-    CSV file reader
+    <span class="md-ellipsis">
+      CSV file reader
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#csv-file-player" class="md-nav__link">
-    CSV file player
+    <span class="md-ellipsis">
+      CSV file player
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#delay" class="md-nav__link">
-    Delay
+    <span class="md-ellipsis">
+      Delay
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#memory" class="md-nav__link">
-    Memory
+    <span class="md-ellipsis">
+      Memory
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#clock" class="md-nav__link">
-    Clock
+    <span class="md-ellipsis">
+      Clock
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#geolocation" class="md-nav__link">
-    Geolocation
+    <span class="md-ellipsis">
+      Geolocation
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#websocket" class="md-nav__link">
-    WebSocket
+    <span class="md-ellipsis">
+      WebSocket
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="WebSocket">
@@ -1082,21 +1385,27 @@
         
           <li class="md-nav__item">
   <a href="#websocket-receive" class="md-nav__link">
-    WebSocket receive
+    <span class="md-ellipsis">
+      WebSocket receive
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#websocket-send" class="md-nav__link">
-    WebSocket send
+    <span class="md-ellipsis">
+      WebSocket send
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#example" class="md-nav__link">
-    Example
+    <span class="md-ellipsis">
+      Example
+    </span>
   </a>
   
 </li>
@@ -1114,17 +1423,15 @@
               </div>
             
           
-          <div class="md-content" data-md-component="content">
-            <article class="md-content__inner md-typeset">
-              
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
                 
+                  
 
 
-<ol>
-<li>Play</li>
-</ol>
 <h1 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h1>
-<p>DataNodes of type <a href="../../ds/ds-basics/#variable">Variable</a> was described in the basics section.</p>
+<p>DataNodes of type <a href="../ds-basics/#variable">Variable</a> was described in the basics section.</p>
 <p>In the following, we describe the remaining dataNode types of Chalk'it.</p>
 <table>
 <thead>
@@ -1134,7 +1441,7 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../../ds/ds-basics/#variable">Variable</a></td>
+<td><a href="../ds-basics/#variable">Variable</a></td>
 </tr>
 <tr>
 <td><a href="#python-script">Python Script</a></td>
@@ -1184,28 +1491,16 @@
 <p>It allows the evaluation of a Python script in a local runner (default runner) or in client-side using <a href="https://pyodide.org/">Pyodide</a>. Executed Python in client-side code may use the librairies available for installation in the <em>Project librairies</em> main tab. For further information, please read the <a href="../../py/py-pyodide/">Client-side execution with Pyodide</a></p>
 <p>Some examples:</p>
 <ul>
-<li><a href="/ds/xprjson/formula-py.xprjson">formula-py.xprjson</a></li>
-<li><a href="/py/xprjson/rest-pandas-pyodide-covid-js-py.xprjson">rest-pandas-pyodide-covid.xprjson</a></li>
-<li><a href="/py/xprjson/plotly-python-widget-py.xprjson">plotly-python-widget-py.xprjson</a></li>
+<li><a href="../xprjson/formula-py.xprjson">formula-py.xprjson</a></li>
+<li><a href="../../py/xprjson/rest-pandas-pyodide-covid-js-py.xprjson">rest-pandas-pyodide-covid.xprjson</a></li>
+<li><a href="../../py/xprjson/plotly-python-widget-py.xprjson">plotly-python-widget-py.xprjson</a></li>
 </ul>
 <h2 id="javascript-script">JavaScript Script<a class="headerlink" href="#javascript-script" title="Permanent link">&para;</a></h2>
 <p>Similar to Python Script-type dataNodes, it is possible to write JavaScript code referencing other dataNodes, and producing JSON output to the workspace.</p>
 <p><img alt="JSON formula" src="../img/json-script.png" title="JSON formula" /></p>
-<p>All JavaScript librairies loaded by Chalk'it are available for use. The following ones are particularly of interest:</p>
-<ul>
-<li>Underscore.js</li>
-<li>Turf.js</li>
-<li>d3.js</li>
-<li>geoConversion</li>
-<li>gpx.js</li>
-<li>jQuery</li>
-<li>leaflet</li>
-<li>PapaParse</li>
-<li>SweetAlert</li>
-</ul>
 <p>Simple example :</p>
 <ul>
-<li><a href="/ds/xprjson/formula-js.xprjson">formula-js.xprjson</a></li>
+<li><a href="../xprjson/formula-js.xprjson">formula-js.xprjson</a></li>
 </ul>
 <h2 id="rest-web-services">REST web-services<a class="headerlink" href="#rest-web-services" title="Permanent link">&para;</a></h2>
 <p>The dataNode type <strong>REST Web-service</strong> is used to call functions exposed as <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST web-services</a>. Input arguments may come from Chalk'it workspaces (referenced using keyword <code>dataNodes</code>). The response is then evaluated in the workspace, if the call was successful.</p>
@@ -1221,31 +1516,31 @@
 <h3 id="some-examples">Some examples<a class="headerlink" href="#some-examples" title="Permanent link">&para;</a></h3>
 <h4 id="simple-get">Simple GET<a class="headerlink" href="#simple-get" title="Permanent link">&para;</a></h4>
 <ul>
-<li><a href="/ds/xprjson/webservice-get.xprjson">webservice-get.xprjson</a> : this is a simple GET example with no input arguments.</li>
+<li><a href="../xprjson/webservice-get.xprjson">webservice-get.xprjson</a> : this is a simple GET example with no input arguments.</li>
 </ul>
 <h4 id="simple-post">Simple POST<a class="headerlink" href="#simple-post" title="Permanent link">&para;</a></h4>
 <ul>
-<li><a href="/ds/xprjson/webservice-post-simple-js.xprjson">webservice-post-simple-js.xprjson</a>: this is a simple POST example with <em>body</em> as a JSON.</li>
+<li><a href="../xprjson/webservice-post-simple-js.xprjson">webservice-post-simple-js.xprjson</a>: this is a simple POST example with <em>body</em> as a JSON.</li>
 </ul>
 <h4 id="get-with-arguments">GET with arguments<a class="headerlink" href="#get-with-arguments" title="Permanent link">&para;</a></h4>
 <ul>
-<li><a href="/ds/xprjson/webservice-get-args-js.xprjson">webservice-get-args-js.xprjson</a>: this example illustrates a GET call where arguments (custom path and query arguments) are defined using the <em>urlAppend</em> object in the <em>body</em> field.</li>
+<li><a href="../xprjson/webservice-get-args-js.xprjson">webservice-get-args-js.xprjson</a>: this example illustrates a GET call where arguments (custom path and query arguments) are defined using the <em>urlAppend</em> object in the <em>body</em> field.</li>
 </ul>
 <h4 id="get-with-arguments-from-another-datanode">GET with arguments from another dataNode<a class="headerlink" href="#get-with-arguments-from-another-datanode" title="Permanent link">&para;</a></h4>
 <ul>
-<li><a href="/ds/xprjson/webservice-get-input-py.xprjson">webservice-get-input-py.xprjson</a> and <a href="/ds/xprjson/webservice-get-input-js.xprjson">webservice-get-input-js.xprjson</a>: in this example, two variables defined in a <a href="#variable">variable</a> dataNode are used as inputs to the GET web-service call.</li>
+<li><a href="../xprjson/webservice-get-input-py.xprjson">webservice-get-input-py.xprjson</a> and <a href="../xprjson/webservice-get-input-js.xprjson">webservice-get-input-js.xprjson</a>: in this example, two variables defined in a <a href="../ds-basics/#variable">variable</a> dataNode are used as inputs to the GET web-service call.</li>
 </ul>
 <h4 id="get-of-a-binary-file">GET of a binary file<a class="headerlink" href="#get-of-a-binary-file" title="Permanent link">&para;</a></h4>
 <ul>
-<li><a href="/recipes/xls-from-url-to-json-py.xprjson">xls-from-url-to-json-py.xprjson</a> : an excel file is read from a remote URL and its content displayed.</li>
+<li><a href="../../recipes/xls-from-url-to-json-py.xprjson">xls-from-url-to-json-py.xprjson</a> : an excel file is read from a remote URL and its content displayed.</li>
 </ul>
 <h4 id="post-with-arguments-from-another-datanode">POST with arguments from another dataNode<a class="headerlink" href="#post-with-arguments-from-another-datanode" title="Permanent link">&para;</a></h4>
 <ul>
-<li><a href="/ds/xprjson/webservice-post-input-py.xprjson">webservice-post-input-py.xprjson</a> and <a href="/ds/xprjson/webservice-post-input-js.xprjson">webservice-post-input-js.xprjson</a>: in this example, two variables defined in a <a href="#variable">variable</a> dataNode are used as inputs to the POST web-service call.</li>
+<li><a href="../xprjson/webservice-post-input-py.xprjson">webservice-post-input-py.xprjson</a> and <a href="../xprjson/webservice-post-input-js.xprjson">webservice-post-input-js.xprjson</a>: in this example, two variables defined in a <a href="../ds-basics/#variable">variable</a> dataNode are used as inputs to the POST web-service call.</li>
 </ul>
 <h4 id="triggered-post">Triggered POST<a class="headerlink" href="#triggered-post" title="Permanent link">&para;</a></h4>
 <ul>
-<li><a href="/ds/xprjson/webservice-post-input-triggered-py.xprjson">webservice-post-input-triggered-py.xprjson</a> and <a href="/ds/xprjson/webservice-post-input-triggered-js.xprjson">webservice-post-input-triggered-js.xprjson</a>: if the <a href="../../ds/ds-execution-engine/#explicit-trig">explicit trigger</a> option is checked, the dataNode is only executed when an explicit click is performed (using a connected <a href="../../wdg/wdg-basic-inputs/#push-button">push button</a> widget or the update button). When predecessors change, the dataNode execution is no longer triggered. This feature is useful for building form-like interfaces. See also <a href="../../ds/ds-execution-engine/#execution-flow-control-parameters">Execution flow control parameters</a></li>
+<li><a href="../xprjson/webservice-post-input-triggered-py.xprjson">webservice-post-input-triggered-py.xprjson</a> and <a href="../xprjson/webservice-post-input-triggered-js.xprjson">webservice-post-input-triggered-js.xprjson</a>: if the <a href="../ds-execution-engine/#explicit-trigger">explicit trigger</a> option is checked, the dataNode is only executed when an explicit click is performed (using a connected <a href="../../wdg/wdg-basic-inputs/#push-button">push button</a> widget or the update button). When predecessors change, the dataNode execution is no longer triggered. This feature is useful for building form-like interfaces. See also <a href="../ds-execution-engine/#execution-flow-control-parameters">Execution flow control parameters</a></li>
 </ul>
 <p><img alt="Triggered POST Example" src="../img/rest-explicit-trig.png" title="Triggered POST example" /></p>
 <h2 id="csv-file-reader">CSV file reader<a class="headerlink" href="#csv-file-reader" title="Permanent link">&para;</a></h2>
@@ -1253,11 +1548,11 @@
 <ul>
 <li>If set to <em>true</em>, each row of the CSV file will be placed into a JavaScript Array.</li>
 </ul>
-<p>See example: <a href="/ds/xprjson/csv-array.xprjson">csv-array.xprjson</a></p>
+<p>See example: <a href="../xprjson/csv-array.xprjson">csv-array.xprjson</a></p>
 <ul>
 <li>Otherwise, if set to <em>false</em>, content is parsed as an array of JSON objects.</li>
 </ul>
-<p>See example: <a href="/ds/xprjson/csv-json.xprjson">csv-json.xprjson</a></p>
+<p>See example: <a href="../xprjson/csv-json.xprjson">csv-json.xprjson</a></p>
 <p>The following CSV:</p>
 <div class="highlight"><pre><span></span><code>&quot;lat&quot;,&quot;lng&quot;,&quot;CH4&quot;
 48.876684, 2.175765, 1.94
@@ -1320,14 +1615,14 @@
 <span class="w">  </span><span class="p">},</span>
 <span class="p">];</span>
 </code></pre></div>
-<p>An example of table display of this CSV file is given here: <a href="/apps/xprjson/csv-array-table-display.xprjson">csv-array-table-display.xprjson</a>.</p>
-<p>It combines a <a href="#csv-file-reader">CSV file reader</a> as well as a <a href="../../ds/ds-basics/#formula">formula</a> using the <a href="https://underscorejs.org/">underscore.js library</a>.</p>
+<p>An example of table display of this CSV file is given here: <a href="../../apps/xprjson/csv-array-table-display.xprjson">csv-array-table-display.xprjson</a>.</p>
+<p>It combines a <a href="#csv-file-reader">CSV file reader</a> as well as a <a href="#javascript-script">JavaScript Script</a> using the <a href="https://lodash.com/">Lodash library</a>.</p>
 <p><img alt="csv-array-table-display" src="../../apps/png/csv-array-table-display.png" /></p>
 <h2 id="csv-file-player">CSV file player<a class="headerlink" href="#csv-file-player" title="Permanent link">&para;</a></h2>
 <p>Acts as a player of CSV file. Its behaviour depends on the <em>TIME INCLUDED</em> parameter:</p>
 <ul>
 <li>
-<p>If set to <em>false</em>, play starts from the first row. On each <em>SAMPLING TIME</em>, the current row is output in JSON format and the pointer moves to the next row. See example <a href="/ds/xprjson/csv-player.xprjson">csv-player.xprjson</a>.</p>
+<p>If set to <em>false</em>, play starts from the first row. On each <em>SAMPLING TIME</em>, the current row is output in JSON format and the pointer moves to the next row. See example <a href="../xprjson/csv-player.xprjson">csv-player.xprjson</a>.</p>
 </li>
 <li>
 <p>Otherwise (i.e. <em>TIME INCLUDED</em>), the first row is considered as a time vector.</p>
@@ -1336,13 +1631,13 @@
 <h2 id="delay">Delay<a class="headerlink" href="#delay" title="Permanent link">&para;</a></h2>
 <p>Applies a one-step delay to its input defined in the <strong>INPUT SIGNAL</strong> field.</p>
 <p>On the first execution, its output is set to the JSON value defined in the <strong>INIT VALUE</strong> field.</p>
-<p>Example with <a href="#clock">Clock</a> and <a href="#delay">Delay</a> : <a href="/apps/xprjson/clock-and-delay.xprjson">clock-and-delay.xprjson</a>.</p>
+<p>Example with <a href="#clock">Clock</a> and <a href="#delay">Delay</a> : <a href="../../apps/xprjson/clock-and-delay.xprjson">clock-and-delay.xprjson</a>.</p>
 <h2 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">&para;</a></h2>
 <p>Gets the previous value of a dataNode defined in the selected value of the <strong>DATANODE ORIGIN</strong> combobox. Its name is automatically generated by adding the prefix _pastValue__.</p>
 <p>On the first execution, its output is set to the JSON value defined in the <strong>INIT VALUE</strong> field.</p>
 <p>This special dataNode exhibits a distinct behavior compared to other dataNodes, as it doesn't follow the typical data flow execution. Specifically, when its <strong>DATANODE ORIGIN</strong> is executed, the memory is initiated at the subsequent scheduler start (of the same disconnected graph).</p>
 <p>With Memory dataNode, user can create counters for example, without adding real cycles in the graph.</p>
-<p>See example: <a href="/ds/xprjson/memory.xprjson">memory.xprjson</a>.</p>
+<p>See example: <a href="../xprjson/memory.xprjson">memory.xprjson</a>.</p>
 <p>In this example, the cycle between "<em>counter</em>" and "<em>pastValue_counter</em>" is a non-algebraic cycle, because of the special memory type.</p>
 <p><img alt="non-algebraic cycle" src="../img/ds-graph-cycle.png" title="non-algebraic cycle" /></p>
 <h2 id="clock">Clock<a class="headerlink" href="#clock" title="Permanent link">&para;</a></h2>
@@ -1355,7 +1650,7 @@
 <span class="w">    </span><span class="s2">&quot;date_object&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2019-05-03T15:48:20.713Z&quot;</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Example with <a href="#clock">Clock</a> and <a href="#delay">Delay</a> : <a href="/apps/xprjson/clock-and-delay.xprjson">clock-and-delay.xprjson</a>.</p>
+<p>Example with <a href="#clock">Clock</a> and <a href="#delay">Delay</a> : <a href="../../apps/xprjson/clock-and-delay.xprjson">clock-and-delay.xprjson</a>.</p>
 <h2 id="geolocation">Geolocation<a class="headerlink" href="#geolocation" title="Permanent link">&para;</a></h2>
 <p>This dataNode gets the current geographical position of the device, using the GPS sensors if available.</p>
 <p>For privacy reasons, authorization is requested from the user to report its position. It also requires Chalk'it to operate under the https protocole.</p>
@@ -1363,7 +1658,7 @@
 <p>DataNode produces the following output.</p>
 <p><img alt="Geolocation Preview" src="../img/geolocation-preview.png" /></p>
 <p>Its output value is updated automatically according to the device position and movement.</p>
-<p>Example with <strong>Geolocation</strong> dataNode and <a href="../../wdg/wdg-geo-time/#leaflet-maps">Leaflet Maps</a> widget which displays your location : <a href="/apps/xprjson/osm-geojson-geolocation.full.xprjson">osm-geojson-geolocation.xprjson</a> .</p>
+<p>Example with <strong>Geolocation</strong> dataNode and <a href="../../wdg/wdg-geo-time/#leaflet-maps">Leaflet Maps</a> widget which displays your location : <a href="../../apps/xprjson/osm-geojson-geolocation.full.xprjson">osm-geojson-geolocation.xprjson</a> .</p>
 <h2 id="websocket">WebSocket<a class="headerlink" href="#websocket" title="Permanent link">&para;</a></h2>
 <p>These dataNodes offers support for the <a href="https://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>, which is supported by most web browsers to offert real-time data exchange capabilities. It provides full-duplex communication channels over a single TCP connection.
 WebSocket in Chalk'it is implemented as client. It needs to communicate with remote WebSocket server.</p>
@@ -1438,7 +1733,7 @@ WebSocket in Chalk'it is implemented as client. It needs to communicate with rem
 <p>Follow instructions below to first build a WebSockets test server.</p>
 <ul>
 <li>Install Node.js from <a href="https://nodejs.org/">https://nodejs.org/</a></li>
-<li>Download Node.js server example <a href="/ds/ws/simpleWS.js">simpleWS.js</a></li>
+<li>Download Node.js server example <a href="../ws/simpleWS.js">simpleWS.js</a></li>
 <li>Install <em>ws</em> library used in <em>simpleWS.js</em> server</li>
 </ul>
 <div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>ws
@@ -1454,7 +1749,7 @@ WebSocket in Chalk'it is implemented as client. It needs to communicate with rem
 <p><img alt="server listening" src="../ws/server-listening.png" /></p>
 <ul>
 <li>
-<p>Open the <a href="/ds/ws/websocket-demo.xprjson">websocket-demo.xprjson</a> example with Chalk'it.</p>
+<p>Open the <a href="../ws/websocket-demo.xprjson">websocket-demo.xprjson</a> example with Chalk'it.</p>
 </li>
 <li>
 <p>Switch to <strong>View</strong> mode.</p>
@@ -1472,49 +1767,28 @@ WebSocket in Chalk'it is implemented as client. It needs to communicate with rem
 </li>
 </ul>
 
-              
-            </article>
-          </div>
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
       </main>
       
         <footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
-      
-        
-        <a href="../ds-execution-engine/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Execution engine" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Execution engine
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../../wdg/wdg/" class="md-footer__link md-footer__link--next" aria-label="Next: Introduction" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Introduction
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1536,10 +1810,12 @@ WebSocket in Chalk'it is implemented as client. It needs to communicate with rem
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.a6c66575.min.js"></script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
       
         <script src="../../mkdocs-open-xprjson.js"></script>
       

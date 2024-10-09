@@ -8,8 +8,15 @@
       
       
       
+      
+        <link rel="prev" href="../wdg-plots/">
+      
+      
+        <link rel="next" href="../wdg-annotation-video/">
+      
+      
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
     
     
       
@@ -17,13 +24,14 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
       
-        
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
-        
       
+
+
     
+    
+      
     
     
       
@@ -31,23 +39,18 @@
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
+    
   </head>
   
   
-    
-    
-    
-    
-    
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+    <body dir="ltr">
   
-    
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -67,7 +70,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Chalk&#39;it Documentation" class="md-header__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
       
@@ -75,7 +80,8 @@
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -95,9 +101,13 @@
     </div>
     
     
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
     
       <label class="md-header__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
       </label>
       <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
@@ -105,24 +115,27 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
       </nav>
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
           </div>
-          <ol class="md-search-result__list"></ol>
+          <ol class="md-search-result__list" role="presentation"></ol>
         </div>
       </div>
     </div>
@@ -152,6 +165,7 @@
                     
 
 
+
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Chalk&#39;it Documentation" class="md-nav__button md-logo" aria-label="Chalk'it Documentation" data-md-component="logo">
@@ -166,14 +180,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../.." class="md-nav__link">
-        Welcome
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+  
+
       </a>
     </li>
   
@@ -181,14 +200,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../quick-start/quickstart/" class="md-nav__link">
-        Quickstart
+        
+  
+  <span class="md-ellipsis">
+    Quickstart
+  </span>
+  
+
       </a>
     </li>
   
@@ -196,14 +220,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../basics/" class="md-nav__link">
-        Basics
+        
+  
+  <span class="md-ellipsis">
+    Basics
+  </span>
+  
+
       </a>
     </li>
   
@@ -211,216 +240,307 @@
     
       
       
-      
-
+  
   
   
   
     
+    
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_4">
-          DataNodes
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="DataNodes" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
-          <span class="md-nav__icon md-icon"></span>
-          DataNodes
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
           
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    DataNodes
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            DataNodes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../ds/ds/" class="md-nav__link">
-        Introduction
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../ds/ds-basics/" class="md-nav__link">
-        Basics
+        
+  
+  <span class="md-ellipsis">
+    Basics
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../ds/ds-execution-engine/" class="md-nav__link">
-        Execution engine
+        
+  
+  <span class="md-ellipsis">
+    Execution engine
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../ds/ds-reference/" class="md-nav__link">
-        Reference
+        
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
     
       
       
-      
-
   
   
     
   
   
+  
+    
+    
+    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_5">
-          Widgets
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Widgets" data-md-level="1">
-        <label class="md-nav__title" for="__nav_5">
-          <span class="md-nav__icon md-icon"></span>
-          Widgets
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
           
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Widgets
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Widgets
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../wdg/" class="md-nav__link">
-        Introduction
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../wdg-common-concept/" class="md-nav__link">
-        Common concepts
+        
+  
+  <span class="md-ellipsis">
+    Common concepts
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../wdg-basic-inputs/" class="md-nav__link">
-        Basic inputs
+        
+  
+  <span class="md-ellipsis">
+    Basic inputs
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../wdg-basic-displays/" class="md-nav__link">
-        Basic displays
+        
+  
+  <span class="md-ellipsis">
+    Basic displays
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../wdg-plots/" class="md-nav__link">
-        Plots
+        
+  
+  <span class="md-ellipsis">
+    Plots
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
   
   
     
   
   
+  
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
         
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Geo & Time
+          
+  
+  <span class="md-ellipsis">
+    Geo & Time
+  </span>
+  
+
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Geo & Time
+        
+  
+  <span class="md-ellipsis">
+    Geo & Time
+  </span>
+  
+
       </a>
       
         
@@ -440,7 +560,9 @@
       
         <li class="md-nav__item">
   <a href="#leaflet-maps" class="md-nav__link">
-    Leaflet maps
+    <span class="md-ellipsis">
+      Leaflet maps
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Leaflet maps">
@@ -448,7 +570,9 @@
         
           <li class="md-nav__item">
   <a href="#geojson-layers" class="md-nav__link">
-    geoJson layers
+    <span class="md-ellipsis">
+      geoJson layers
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="geoJson layers">
@@ -456,21 +580,27 @@
         
           <li class="md-nav__item">
   <a href="#point" class="md-nav__link">
-    Point
+    <span class="md-ellipsis">
+      Point
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#line" class="md-nav__link">
-    Line
+    <span class="md-ellipsis">
+      Line
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#polygon" class="md-nav__link">
-    Polygon
+    <span class="md-ellipsis">
+      Polygon
+    </span>
   </a>
   
 </li>
@@ -482,42 +612,54 @@
         
           <li class="md-nav__item">
   <a href="#heatmap-layers" class="md-nav__link">
-    heatMap layers
+    <span class="md-ellipsis">
+      heatMap layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#lineheatmap-layers" class="md-nav__link">
-    lineHeatMap layers
+    <span class="md-ellipsis">
+      lineHeatMap layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#choropleth-layers" class="md-nav__link">
-    Choropleth layers
+    <span class="md-ellipsis">
+      Choropleth layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#imageoverlay-layers" class="md-nav__link">
-    imageOverlay layers
+    <span class="md-ellipsis">
+      imageOverlay layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#svgoverlay-layers" class="md-nav__link">
-    svgOverlay layers
+    <span class="md-ellipsis">
+      svgOverlay layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#drawing-features" class="md-nav__link">
-    Drawing features
+    <span class="md-ellipsis">
+      Drawing features
+    </span>
   </a>
   
 </li>
@@ -529,42 +671,54 @@
       
         <li class="md-nav__item">
   <a href="#folium-maps" class="md-nav__link">
-    Folium Maps
+    <span class="md-ellipsis">
+      Folium Maps
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#address-autocompletion" class="md-nav__link">
-    Address autocompletion
+    <span class="md-ellipsis">
+      Address autocompletion
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#simple-calendar" class="md-nav__link">
-    Simple calendar
+    <span class="md-ellipsis">
+      Simple calendar
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#date-range-calendar" class="md-nav__link">
-    Date-range calendar
+    <span class="md-ellipsis">
+      Date-range calendar
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#d3-year-heatmap-caldendar" class="md-nav__link">
-    D3 year heatmap caldendar
+    <span class="md-ellipsis">
+      D3 year heatmap caldendar
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#simple-clock" class="md-nav__link">
-    Simple clock
+    <span class="md-ellipsis">
+      Simple clock
+    </span>
   </a>
   
 </li>
@@ -576,189 +730,262 @@
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../wdg-annotation-video/" class="md-nav__link">
-        Annotation & Video
+        
+  
+  <span class="md-ellipsis">
+    Annotation & Video
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     
+    
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_5_8">
-          Additions
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Additions" data-md-level="2">
-        <label class="md-nav__title" for="__nav_5_8">
-          <span class="md-nav__icon md-icon"></span>
-          Additions
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
+        
           
+          <label class="md-nav__link" for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Additions
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8">
+            <span class="md-nav__icon md-icon"></span>
+            Additions
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../selection/plot-selection/" class="md-nav__link">
-        Selection
+        
+  
+  <span class="md-ellipsis">
+    Selection
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../plot-themes/" class="md-nav__link">
-        Themes
+        
+  
+  <span class="md-ellipsis">
+    Themes
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
     
       
       
-      
-
   
   
   
+  
+    
+    
+    
     
     <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_6">
-          Python support
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Python support" data-md-level="1">
-        <label class="md-nav__title" for="__nav_6">
-          <span class="md-nav__icon md-icon"></span>
-          Python support
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
           
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Python support
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Python support
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../py/py-index/" class="md-nav__link">
-        Introduction
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../py/py-default/" class="md-nav__link">
-        Local runner
+        
+  
+  <span class="md-ellipsis">
+    Local runner
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../py/py-pyodide/" class="md-nav__link">
-        Pyodide
+        
+  
+  <span class="md-ellipsis">
+    Pyodide
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../py/py-proto-flask/" class="md-nav__link">
-        Local prototyping with Flask
+        
+  
+  <span class="md-ellipsis">
+    Local prototyping with Flask
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../chalkitapi/" class="md-nav__link">
-        Chalk'it APIs
+        
+  
+  <span class="md-ellipsis">
+    Chalk'it APIs
+  </span>
+  
+
       </a>
     </li>
   
@@ -766,14 +993,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../export/export/" class="md-nav__link">
-        Export
+        
+  
+  <span class="md-ellipsis">
+    Export
+  </span>
+  
+
       </a>
     </li>
   
@@ -781,48 +1013,63 @@
     
       
       
-      
-
+  
   
   
   
     
+    
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_9">
-          Recipes & interfaces
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Recipes & interfaces" data-md-level="1">
-        <label class="md-nav__title" for="__nav_9">
-          <span class="md-nav__icon md-icon"></span>
-          Recipes & interfaces
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
           
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Recipes & interfaces
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Recipes & interfaces
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
     <li class="md-nav__item">
       <a href="../../recipes/" class="md-nav__link">
-        Recipes
+        
+  
+  <span class="md-ellipsis">
+    Recipes
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -855,7 +1102,9 @@
       
         <li class="md-nav__item">
   <a href="#leaflet-maps" class="md-nav__link">
-    Leaflet maps
+    <span class="md-ellipsis">
+      Leaflet maps
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Leaflet maps">
@@ -863,7 +1112,9 @@
         
           <li class="md-nav__item">
   <a href="#geojson-layers" class="md-nav__link">
-    geoJson layers
+    <span class="md-ellipsis">
+      geoJson layers
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="geoJson layers">
@@ -871,21 +1122,27 @@
         
           <li class="md-nav__item">
   <a href="#point" class="md-nav__link">
-    Point
+    <span class="md-ellipsis">
+      Point
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#line" class="md-nav__link">
-    Line
+    <span class="md-ellipsis">
+      Line
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#polygon" class="md-nav__link">
-    Polygon
+    <span class="md-ellipsis">
+      Polygon
+    </span>
   </a>
   
 </li>
@@ -897,42 +1154,54 @@
         
           <li class="md-nav__item">
   <a href="#heatmap-layers" class="md-nav__link">
-    heatMap layers
+    <span class="md-ellipsis">
+      heatMap layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#lineheatmap-layers" class="md-nav__link">
-    lineHeatMap layers
+    <span class="md-ellipsis">
+      lineHeatMap layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#choropleth-layers" class="md-nav__link">
-    Choropleth layers
+    <span class="md-ellipsis">
+      Choropleth layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#imageoverlay-layers" class="md-nav__link">
-    imageOverlay layers
+    <span class="md-ellipsis">
+      imageOverlay layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#svgoverlay-layers" class="md-nav__link">
-    svgOverlay layers
+    <span class="md-ellipsis">
+      svgOverlay layers
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#drawing-features" class="md-nav__link">
-    Drawing features
+    <span class="md-ellipsis">
+      Drawing features
+    </span>
   </a>
   
 </li>
@@ -944,42 +1213,54 @@
       
         <li class="md-nav__item">
   <a href="#folium-maps" class="md-nav__link">
-    Folium Maps
+    <span class="md-ellipsis">
+      Folium Maps
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#address-autocompletion" class="md-nav__link">
-    Address autocompletion
+    <span class="md-ellipsis">
+      Address autocompletion
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#simple-calendar" class="md-nav__link">
-    Simple calendar
+    <span class="md-ellipsis">
+      Simple calendar
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#date-range-calendar" class="md-nav__link">
-    Date-range calendar
+    <span class="md-ellipsis">
+      Date-range calendar
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#d3-year-heatmap-caldendar" class="md-nav__link">
-    D3 year heatmap caldendar
+    <span class="md-ellipsis">
+      D3 year heatmap caldendar
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#simple-clock" class="md-nav__link">
-    Simple clock
+    <span class="md-ellipsis">
+      Simple clock
+    </span>
   </a>
   
 </li>
@@ -992,10 +1273,11 @@
               </div>
             
           
-          <div class="md-content" data-md-component="content">
-            <article class="md-content__inner md-typeset">
-              
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
                 
+                  
 
 
 <h1 id="geo-time">Geo &amp; Time<a class="headerlink" href="#geo-time" title="Permanent link">&para;</a></h1>
@@ -1111,10 +1393,10 @@
 </ul>
 <p>Examples :</p>
 <ul>
-<li>Single point : <a href="/wdg/maps/osm-geojson-point.xprjson">osm-geojson-point.xprjson</a></li>
-<li>Multiple points : <a href="/wdg/maps/osm-geojson-points.xprjson">osm-geojson-points.xprjson</a></li>
-<li>Awesome markers : <a href="/wdg/maps/osm-geojson-point-awesome-marker.xprjson">osm-geojson-point-awesome-marker.xprjson</a></li>
-<li>Disable autoscale with geoJSON point : <a href="/wdg/maps/osm-geojson-point-disable-autoscale.xprjson">osm-geojson-point-disable-autoscale.xprjson</a></li>
+<li>Single point : <a href="../maps/osm-geojson-point.xprjson">osm-geojson-point.xprjson</a></li>
+<li>Multiple points : <a href="../maps/osm-geojson-points.xprjson">osm-geojson-points.xprjson</a></li>
+<li>Awesome markers : <a href="../maps/osm-geojson-point-awesome-marker.xprjson">osm-geojson-point-awesome-marker.xprjson</a></li>
+<li>Disable autoscale with geoJSON point : <a href="../maps/osm-geojson-point-disable-autoscale.xprjson">osm-geojson-point-disable-autoscale.xprjson</a></li>
 </ul>
 <h4 id="line">Line<a class="headerlink" href="#line" title="Permanent link">&para;</a></h4>
 <p>Single line on a single layer of the map</p>
@@ -1154,8 +1436,8 @@
 <p><img alt="osm-geojson-line" src="../maps/osm-geojson-line.png" /></p>
 <p>Examples :</p>
 <ul>
-<li>Single line : <a href="/wdg/maps/osm-geojson-line.xprjson">osm-geojson-line.xprjson</a></li>
-<li>Multiple lines : <a href="/wdg/maps/osm-geojson-lines.xprjson">osm-geojson-lines.xprjson</a></li>
+<li>Single line : <a href="../maps/osm-geojson-line.xprjson">osm-geojson-line.xprjson</a></li>
+<li>Multiple lines : <a href="../maps/osm-geojson-lines.xprjson">osm-geojson-lines.xprjson</a></li>
 </ul>
 <h4 id="polygon">Polygon<a class="headerlink" href="#polygon" title="Permanent link">&para;</a></h4>
 <p>A polygon on a single layer of the map</p>
@@ -1203,7 +1485,7 @@
 <p><img alt="osm-geojson-polygon" src="../maps/osm-geojson-polygon.png" /></p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/maps/osm-geojson-polygon.xprjson">osm-geojson-polygon.xprjson</a></li>
+<li><a href="../maps/osm-geojson-polygon.xprjson">osm-geojson-polygon.xprjson</a></li>
 </ul>
 <p>See also : <a href="https://leafletjs.com/examples/geojson/">Using GeoJSON with Leaflet</a></p>
 <h3 id="heatmap-layers">heatMap layers<a class="headerlink" href="#heatmap-layers" title="Permanent link">&para;</a></h3>
@@ -1237,7 +1519,7 @@
 <p><img alt="osm-heatmap" src="../maps/osm-heatmap.png" /></p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/maps/osm-heatmap-view.xprjson">osm-heatmap-view.xprjson</a></li>
+<li><a href="../maps/osm-heatmap-view.xprjson">osm-heatmap-view.xprjson</a></li>
 </ul>
 <p>Several parameters control the display of the heatmap, in particular :</p>
 <ul>
@@ -1245,9 +1527,9 @@
 <p><strong>sampledDisplay</strong> : allows to feed the map in real-time with instantaneous measures (single heatmap point). The config of the first point will be used. See corresponding examples:</p>
 </li>
 <li>
-<p><a href="/wdg/maps/osm-heatmap-play-py.xprjson">osm-heatmap-play-py.xprjson</a></p>
+<p><a href="../maps/osm-heatmap-play-py.xprjson">osm-heatmap-play-py.xprjson</a></p>
 </li>
-<li><a href="/wdg/maps/osm-heatmap-play-js.xprjson">osm-heatmap-play-js.xprjson</a></li>
+<li><a href="../maps/osm-heatmap-play-js.xprjson">osm-heatmap-play-js.xprjson</a></li>
 </ul>
 <h3 id="lineheatmap-layers">lineHeatMap layers<a class="headerlink" href="#lineheatmap-layers" title="Permanent link">&para;</a></h3>
 <p><em>lineHeatMap1</em> to <em>lineHeatMap8</em> inputs expect a JSON object like the following one :</p>
@@ -1296,7 +1578,7 @@
 <p><img alt="osm-lineheatmap" src="../maps/osm-lineheatmap.png" /></p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/maps/osm-lineheatmap.xprjson">osm-lineheatmap.xprjson</a></li>
+<li><a href="../maps/osm-lineheatmap.xprjson">osm-lineheatmap.xprjson</a></li>
 </ul>
 <h3 id="choropleth-layers">Choropleth layers<a class="headerlink" href="#choropleth-layers" title="Permanent link">&para;</a></h3>
 <p><em>choropleth1</em> to <em>choropleth8</em> inputs expect a JSON object like the following one :</p>
@@ -1363,8 +1645,8 @@
 <p><img alt="osm-choropleth" src="../maps/osm-choropleth.png" /></p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/maps/osm-choropleth-py.xprjson">osm-choropleth-py.xprjson</a></li>
-<li><a href="/wdg/maps/osm-choropleth-js.xprjson">osm-choropleth-js.xprjson</a></li>
+<li><a href="../maps/osm-choropleth-py.xprjson">osm-choropleth-py.xprjson</a></li>
+<li><a href="../maps/osm-choropleth-js.xprjson">osm-choropleth-js.xprjson</a></li>
 </ul>
 <h3 id="imageoverlay-layers">imageOverlay layers<a class="headerlink" href="#imageoverlay-layers" title="Permanent link">&para;</a></h3>
 <p><em>imageOverlay1</em> to <em>imageOverlay8</em> inputs expect a geoJson object like the following one :</p>
@@ -1382,7 +1664,7 @@
 <em>overlay</em> which adds a checkbox control, or <em>baseLayer</em> which adds a radio button control.</p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/maps/osm-image-overlay.xprjson">osm-image-overlay.xprjson</a></li>
+<li><a href="../maps/osm-image-overlay.xprjson">osm-image-overlay.xprjson</a></li>
 </ul>
 <h3 id="svgoverlay-layers">svgOverlay layers<a class="headerlink" href="#svgoverlay-layers" title="Permanent link">&para;</a></h3>
 <p><em>svgOverlay1</em> to <em>svgOverlay8</em> inputs expect a JSON object like the following one :</p>
@@ -1414,7 +1696,7 @@
 <p><img alt="osm-svg-layer-view" src="../maps/osm-svg-layer-view.png" /></p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/maps/osm-svg-layer-view-js.xprjson">osm-svg-layer-view-js.xprjson</a></li>
+<li><a href="../maps/osm-svg-layer-view-js.xprjson">osm-svg-layer-view-js.xprjson</a></li>
 </ul>
 <h3 id="drawing-features">Drawing features<a class="headerlink" href="#drawing-features" title="Permanent link">&para;</a></h3>
 <p>It is possible to allow the user to manually select points, lines, rectangles or polygon regions in the map. This is possible by enable the <em>drawingFeatures</em> option.</p>
@@ -1422,14 +1704,14 @@
 <p>Selection result will be written to the <em>selectedGeoJson</em> actuator.</p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/maps/osm-drawing-features.xprjson">osm-drawing-features.xprjson</a></li>
+<li><a href="../maps/osm-drawing-features.xprjson">osm-drawing-features.xprjson</a></li>
 </ul>
 <h2 id="folium-maps">Folium Maps<a class="headerlink" href="#folium-maps" title="Permanent link">&para;</a></h2>
 <p><a href="https://python-visualization.github.io/folium/">Folium</a> is a Python library used for visualizing geospatial data. It leverages the power of the Leaflet.js library and provides a simple way to create interactive maps. Folium can be used to create various types of maps such as choropleth maps, bubble maps, and scatter maps, and provides an easy-to-use interface for adding markers, popups, and other interactive features to the maps.</p>
 <p>Folium is built on top of the Python data analysis library pandas, which makes it easy to manipulate and visualize large datasets. It also supports several tilesets such as OpenStreetMap, Mapbox, and Stamen, which can be used to customize the look and feel of the maps.</p>
 <p>Usage examples:</p>
 <ul>
-<li><a href="/wdg/maps/folium-point.xprjson">folium-point.xprjson</a></li>
+<li><a href="../maps/folium-point.xprjson">folium-point.xprjson</a></li>
 </ul>
 <h2 id="address-autocompletion">Address autocompletion<a class="headerlink" href="#address-autocompletion" title="Permanent link">&para;</a></h2>
 <p>This widget uses the <a href="https://developer.here.com/documentation/geocoder-autocomplete/dev_guide/topics/example-location-id.html">here geocoder autocomplete API</a> to provide suggestion as the user types an address location.</p>
@@ -1439,7 +1721,7 @@
 <p><img alt="calendar" src="../date-time/calendar.png" /></p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/date-time/date-picker.xprjson">date-picker.xprjson</a></li>
+<li><a href="../date-time/date-picker.xprjson">date-picker.xprjson</a></li>
 </ul>
 <h2 id="date-range-calendar">Date-range calendar<a class="headerlink" href="#date-range-calendar" title="Permanent link">&para;</a></h2>
 <p>Enables the selection of a date interval.</p>
@@ -1448,59 +1730,38 @@
 <p><img alt="D3 year heatmap caldendar" src="../date-time/d3-year-heatmap-calendar.png" /></p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/date-time/d3-year-heatmap-calendar.xprjson">d3-year-heatmap-calendar.xprjson</a></li>
+<li><a href="../date-time/d3-year-heatmap-calendar.xprjson">d3-year-heatmap-calendar.xprjson</a></li>
 </ul>
 <h2 id="simple-clock">Simple clock<a class="headerlink" href="#simple-clock" title="Permanent link">&para;</a></h2>
 <p>Use the <em>Simple clock</em> widget to select a time.</p>
 <p><img alt="clock" src="../date-time/clock.png" /></p>
 <p>Example :</p>
 <ul>
-<li><a href="/wdg/date-time/time-picker.xprjson">time-picker.xprjson</a></li>
+<li><a href="../date-time/time-picker.xprjson">time-picker.xprjson</a></li>
 </ul>
 
-              
-            </article>
-          </div>
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
       </main>
       
         <footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
-      
-        
-        <a href="../wdg-plots/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Plots" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Plots
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../wdg-annotation-video/" class="md-footer__link md-footer__link--next" aria-label="Next: Annotation &amp; Video" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Annotation & Video
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -1522,10 +1783,12 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.a6c66575.min.js"></script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
       
         <script src="../../mkdocs-open-xprjson.js"></script>
       
