@@ -94,7 +94,7 @@
     "moment": "^2.18.1",
     "ng-sanitize": "^0.0.2",
     "ng-tags-input": "^3.2.0",
-    "papaparse": "^4.6.3",
+    "papaparse": "^5.2.0",
     "path": "^0.12.7",
     "plotly.js": "2.35.2",
     "pnotify": "^3.2.1",
