@@ -27,7 +27,7 @@
     "imagemin-svgo": "^9.0.0",
     "jsdom-global": "^3.0.2",
     "mini-css-extract-plugin": "^2.7.6",
-    "mocha": "^8.2.1",
+    "mocha": "^10.7.3",
     "mochapack": "^2.1.4",
     "moment-locales-webpack-plugin": "^1.2.0",
     "prettier": "2.8.2",
