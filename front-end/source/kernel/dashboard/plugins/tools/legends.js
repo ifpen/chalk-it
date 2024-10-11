@@ -60,13 +60,19 @@ this.createLegend = function (idLegend,color, length, colorStops, min, max, feat
 this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitle, colorScale) {
   if(min == max) return;
   if(_.isUndefined(featureTitle) || featureTitle == "none") return;
-
+  const numberOfDigits = 1
   featureTitle = featureTitle ? featureTitle.charAt(0).toUpperCase() + featureTitle.toLowerCase().slice(1) : ""
   var legend = L.control({ position: 'topleft' });
   var min = Number(min);
   var max = Number(max);
 
   legend.onAdd = function (map) {
+
+    const x = d3.scaleLinear([min, max],[min, max]).nice(8);
+    min = x.domain()[0];
+    max = x.domain()[1];
+
+
     var step = (max - min) / 8;
     var div = L.DomUtil.create('div', 'info legend');
     div.setAttribute('id', idLegend); 
@@ -74,7 +80,6 @@ this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitl
     var labels = [],
       from,
       to;
-      f = d3.format(".1s")
       labels.push('<div style="display:flex;flex-direction:column;row-gap:2px;">')
       labels.push('<h2 style="margin-bottom: 4px;">'+featureTitle+'</h2>')
     //   div.innerHTML += '<h6>              </h6>';
@@ -86,7 +91,7 @@ this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitl
           '<div style="display:flex;flex-direction:row;justify-content:space-between;"><i style="background:' +
             getColor(min, max, from + 1, colorScale) +
             ';margin-left:0px;"></i> ' +
-            '<span>' + d3.format("~s")(from) + (to ? '&ndash;' +  d3.format("~s")(to) : '+') + 
+            '<span>' + from+ (to ? '&ndash;' +  to : '+') + 
             '</span> </div>'
         )  ; 
     }
