@@ -59,8 +59,7 @@ this.createLegend = function (idLegend,color, length, colorStops, min, max, feat
 
 this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitle, colorScale) {
   if(min == max) return;
-  if(_.isUndefined(featureTitle) || featureTitle == "none") return;
-  const numberOfDigits = 1
+  if(_.isUndefined(featureTitle) || featureTitle == "none") return; 
   featureTitle = featureTitle ? featureTitle.charAt(0).toUpperCase() + featureTitle.toLowerCase().slice(1) : ""
   var legend = L.control({ position: 'topleft' });
   var min = Number(min);
@@ -87,11 +86,20 @@ this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitl
       for (var i = 0; i < grades.length; i++) {
         from = grades[i];
         to = grades[i + 1];
+        const DEFAULT_LOCALE = 'en-US';
+        const formatter = Intl.NumberFormat(DEFAULT_LOCALE, {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 0,
+          notation: 'compact',
+          compactDisplay: 'short',
+        })
+        const fromFormatted = formatter.format(from)
+        const toFormatted = to ?  formatter.format(to) : null
         labels.push(
           '<div style="display:flex;flex-direction:row;justify-content:space-between;"><i style="background:' +
             getColor(min, max, from + 1, colorScale) +
             ';margin-left:0px;"></i> ' +
-            '<span>' + from+ (to ? '&ndash;' +  to : '+') + 
+            '<span>' + fromFormatted+ (toFormatted ? '&ndash;' +  toFormatted : '+') + 
             '</span> </div>'
         )  ; 
     }
