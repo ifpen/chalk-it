@@ -29,7 +29,7 @@ this.mouseoverHandler = (self, geoJSON, leafletIndex) => {
     let properties = style.tooltip.properties;
     _.each(properties, (property) => {
       popupContent =
-        popupContent + '<p> <strong>' + property + '</strong> : ' + e.target.feature.properties[property] + '</p>';
+        popupContent + '<p> <strong>' + property + '</strong> : ' + geoJsonTools.formatProperty(e.target.feature.properties[property])  + '</p>';
     });
     popupContent = popupContent + '</div>';
     popup.setLatLng(bounds.getCenter());

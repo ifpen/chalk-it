@@ -203,6 +203,24 @@ function geoJsonChanged(geojsonList, geojsonOldList, geojsonStyle) {
   }
   return false;
 }
+function getNumberFormatter(){
+  const DEFAULT_LOCALE = 'en-US';
+  const formatter = Intl.NumberFormat(DEFAULT_LOCALE, {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+    notation: 'compact',
+    compactDisplay: 'short',
+  })
+  return formatter;
+}
+function formatProperty(property) {
+  if(typeof property ==="number") {
+    const formatter = getNumberFormatter()
+    return formatter.format(property)
+  }
+  return property
+}
+
 var geoJsonTools = (function () {
   return {
     findPropertiesWithNumber,
@@ -213,6 +231,8 @@ var geoJsonTools = (function () {
     compareSharedKeys,
     getFillColor,
     getMinMaxProperty,
-    geoJsonChanged
+    geoJsonChanged,
+    getNumberFormatter,
+    formatProperty
   };
 })();

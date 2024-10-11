@@ -86,13 +86,7 @@ this.createChoroplethLegend = function (idLegend,getColor, min, max, featureTitl
       for (var i = 0; i < grades.length; i++) {
         from = grades[i];
         to = grades[i + 1];
-        const DEFAULT_LOCALE = 'en-US';
-        const formatter = Intl.NumberFormat(DEFAULT_LOCALE, {
-          maximumFractionDigits: 2,
-          minimumFractionDigits: 0,
-          notation: 'compact',
-          compactDisplay: 'short',
-        })
+        const formatter = geoJsonTools.getNumberFormatter()
         const fromFormatted = formatter.format(from)
         const toFormatted = to ?  formatter.format(to) : null
         labels.push(
