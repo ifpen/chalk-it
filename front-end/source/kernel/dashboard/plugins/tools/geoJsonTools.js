@@ -220,6 +220,42 @@ function formatProperty(property) {
   }
   return property
 }
+function isValidGeoJSON(geojson) {
+  // Vérifie si l'objet est un objet JavaScript valide
+  if (typeof geojson !== 'object' || geojson === null) {
+    return false;
+  }
+
+  // Vérifie si le GeoJSON a une propriété 'type'
+  const validTypes = ['Feature', 'FeatureCollection', 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon', 'GeometryCollection'];
+  if (!geojson.hasOwnProperty('type') || !validTypes.includes(geojson.type)) {
+    return false;
+  }
+
+  // Vérifie le contenu selon le type de GeoJSON
+  switch (geojson.type) {
+    case 'Feature':
+      if (!geojson.hasOwnProperty('geometry') || !geojson.hasOwnProperty('properties')) {
+        return false;
+      }
+      return isValidGeoJSON(geojson.geometry);
+    
+    case 'FeatureCollection':
+      if (!geojson.hasOwnProperty('features') || !Array.isArray(geojson.features)) {
+        return false;
+      }
+      return geojson.features.every(feature => isValidGeoJSON(feature));
+    
+    case 'GeometryCollection':
+      if (!geojson.hasOwnProperty('geometries') || !Array.isArray(geojson.geometries)) {
+        return false;
+      }
+      return geojson.geometries.every(geometry => isValidGeoJSON(geometry));
+
+    default:
+      return true;
+  }
+}
 
 var geoJsonTools = (function () {
   return {
@@ -233,6 +269,7 @@ var geoJsonTools = (function () {
     getMinMaxProperty,
     geoJsonChanged,
     getNumberFormatter,
-    formatProperty
+    formatProperty,
+    isValidGeoJSON
   };
 })();

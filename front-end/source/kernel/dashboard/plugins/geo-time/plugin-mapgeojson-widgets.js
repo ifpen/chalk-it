@@ -69,21 +69,18 @@ function mapGeoJsonWidgetsPluginClass() {
               if (index < modelsHiddenParams[idInstance].GeoJSONStyle.style.length) {
                 if (
                   geoJsonTools.findFeatureType(item) !== modelsHiddenParams[idInstance].GeoJSONStyle.style[index].type
-                )
-                  modelsHiddenParams[idInstance].GeoJSONStyle.style = []; // reset when old/previous geojson changed type
+                ){
+                  modelsHiddenParams[idInstance].GeoJSONStyle.style[index] = self.createTemplateStyle(self, item, index); // reset when old/previous geojson changed type
+                } else if(JSON.stringify(geoJsonTools.findAllProperties(item)) !== JSON.stringify(modelsHiddenParams[idInstance].GeoJSONStyle.style[index].allProperties)){
+                  modelsHiddenParams[idInstance].GeoJSONStyle.style[index] = self.createTemplateStyle(self, item, index); 
+                }
+              } else {
+                modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self, item, index))
               }
             });
-          }
-
-          //  if (!_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)) {
-          modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
-            if (index >= modelsHiddenParams[idInstance].GeoJSONStyle.style.length)
-              modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self, item, index)); //add new geojson style
-          });
-          //  }
+          } 
         }
       }
-
       self.GeoJSONStyle.updateCallback(self.GeoJSONStyle, self.GeoJSONStyle.getValue());
     };
 
@@ -416,11 +413,22 @@ function mapGeoJsonWidgetsPluginClass() {
     this.GeoJSON = {
       updateCallback: function () {},
       setValue: function (val) {
+        modelsHiddenParams[idInstance].GeoJSON=[]
         if (!Array.isArray(val)) {
-          modelsHiddenParams[idInstance].GeoJSON = [];
-          modelsHiddenParams[idInstance].GeoJSON.push(val);
+          if(geoJsonTools.isValidGeoJSON(val)){
+            modelsHiddenParams[idInstance].GeoJSON.push(val);
+          }else {
+            throw new Error("Invalid GeoJSON ");
+          }
         } else {
-          modelsHiddenParams[idInstance].GeoJSON = val;
+          for (let index = 0; index < val.length; index++) {
+            const geojson = val[index];
+          if(geoJsonTools.isValidGeoJSON(geojson)){
+            modelsHiddenParams[idInstance].GeoJSON.push(geojson);
+          }else {
+            throw new Error("Invalid GeoJSON at index = " + index);
+          }
+          }
         }
 
         self.render();
