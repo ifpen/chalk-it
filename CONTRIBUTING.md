@@ -21,8 +21,6 @@ To run Chalk'it from sources, use:
 ```sh
 cd front-end
 npm start
-cd ..
-python main.py --dev
 ```
 
 ## Build
