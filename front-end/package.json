@@ -77,7 +77,7 @@
     "graph-data-structure": "^1.0.0",
     "interactjs": "1.10.11",
     "intro.js": "^4.1.0",
-    "jquery": "^2.0.3",
+    "jquery": "^3.7.1",
     "jshint": "^2.13.6",
     "jsoneditor": "^9.5.7",
     "jszip": "^3.10.1",
