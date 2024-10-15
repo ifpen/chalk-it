@@ -22,7 +22,7 @@ import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { widgetFactory } from 'kernel/dashboard/widget/widget-factory';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { enforceConstraints } from 'kernel/dashboard/widget/widget-placement';
-import { getMedia, isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
 import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
 import { modelsHiddenParams, modelsParameters, models, modelsTempParams } from 'kernel/base/widgets-states';
@@ -33,7 +33,7 @@ import { scalingManager } from 'kernel/dashboard/scaling/scaling-manager';
 import { flatUiWidgetsPlugin } from 'kernel/dashboard/plugins/basic/plugin-flat-ui-widgets';
 import { plotlyWidgetsPlugin } from 'kernel/dashboard/plugins/plots/plugin-plotly-widgets';
 import { mapWidgetsPlugin } from 'kernel/dashboard/plugins/geo-time/plugin-map-widgets';
-import { bFirstExec, rescaleWidget } from 'kernel/base/main-common';
+import { bFirstExec } from 'kernel/base/main-common';
 
 export function initEditWidget() {
   var drprD = $('#DropperDroite')[0]; // short alias
@@ -42,17 +42,11 @@ export function initEditWidget() {
 
   // all indexed by widgetObject "Instance Id"
   var widgetObject = []; // widgetObject object from plugin
-  // relative widget coordinates. Used for media change rescale
-  var widthRatioModels = [];
-  var heightRatioModels = [];
-  var leftRatioModels = [];
-  var topRatioModels = [];
 
   var widgetContainers = new Map();
 
   // scaling stuff
   const bNoteBookMode = false; // save or not widgets cache (to be read from the project)
-  var lastMediaInEdit = '';
   var editorScalingMethod = 'scaleTwh';
   var editorDimensionsSnapshot;
   var scalingHelper = new rescaleHelper(editorDimensionsSnapshot, editorScalingMethod, 'edit');
@@ -976,7 +970,6 @@ export function initEditWidget() {
       );
       /*------------------------------------------------------------------------*/
 
-      lastMediaInEdit = mediaChangeProj.lastMedia;
       projectedScalingObj = mediaChangeProj.referenceFrame;
       projectedEditorDimensions = mediaChangeProj.targetFrame;
     }
@@ -1030,46 +1023,10 @@ export function initEditWidget() {
       i = i + 1;
     }
 
-    for (const key in dashObj) {
-      computeWidgetsRatio(dashObj[key].container.instanceId);
-    }
-
     editorDimensionsSnapshot = getCurrentDashZoneDims(); // update editor dimensions
 
     // update needed information by scalingHelper
     scalingHelper.setDimensions(editorDimensionsSnapshot);
-  }
-
-  /*--------computeWidgetsRatio--------*/
-  function computeWidgetsRatio(instanceId) {
-    if (!_.isUndefined($('#' + instanceId)[0])) {
-      //AEF: fix bug, must be to be tested if creation has been failed
-      widthRatioModels[instanceId] =
-        $('#' + instanceId).width() / $('#' + $('#' + instanceId)[0].parentNode.parentNode.id).width();
-      heightRatioModels[instanceId] =
-        $('#' + instanceId).height() / $('#' + $('#' + instanceId)[0].parentNode.parentNode.id).height();
-      leftRatioModels[instanceId] =
-        $('#' + instanceId).position().left / $('#' + $('#' + instanceId)[0].parentNode.parentNode.id).width();
-      topRatioModels[instanceId] =
-        $('#' + instanceId).position().top / $('#' + $('#' + instanceId)[0].parentNode.parentNode.id).height();
-      lastMediaInEdit = getMedia();
-    }
-  }
-
-  /*--------resizeOnMediaChange--------*/
-  function resizeOnMediaChange() {
-    scalingHelper.resizeDashboardCols();
-
-    const divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
-
-    for (let i = 0; i < divsDropZone.length; i++) {
-      const element = divsDropZone[i];
-      if ($(element).hasClass('drsElement') && !element.id.startsWith('Widget')) {
-        const instanceId = element.id;
-        scalingHelper.resizeWidgetOnMediaChange(instanceId, instanceId);
-        widgetContainer.replaceWidget(element);
-      }
-    }
   }
 
   /*--------rescale--------*/
@@ -1081,26 +1038,6 @@ export function initEditWidget() {
     editorDimensionsSnapshot = getCurrentDashZoneDims();
     scalingHelper.setDimensions(editorDimensionsSnapshot);
     scalingHelper.setScalingMethod(editorScalingMethod);
-
-    const mediaChangeObj = isMediaChanged(lastMediaInEdit);
-    const bChanged = mediaChangeObj.bChanged;
-    lastMediaInEdit = mediaChangeObj.lastMedia;
-
-    if (bChanged) {
-      resizeOnMediaChange();
-    } else {
-      for (let i = 0; i < divsDropZone.length; i++) {
-        const zoneId = divsDropZone[i].id;
-        if (zoneId) {
-          if ($(divsDropZone[i]).hasClass('drsElement') && !zoneId.startsWith('Widget')) {
-            const element = divsDropZone[i];
-            const instanceId = element.id;
-            rescaleWidget(widgetObject, instanceId);
-            widgetContainers.get(instanceId).widgetObj = widgetObject[instanceId];
-          }
-        }
-      }
-    }
   }
 
   /*--------resizeDashboard--------*/
@@ -1157,20 +1094,6 @@ export function initEditWidget() {
   /*--------clear--------*/
   function clear() {
     editorSingletons.layoutMgr.clear();
-    var property;
-    for (property in widthRatioModels) {
-      delete widthRatioModels[property];
-    }
-    for (property in heightRatioModels) {
-      delete heightRatioModels[property];
-    }
-    for (property in leftRatioModels) {
-      delete leftRatioModels[property];
-    }
-    for (property in topRatioModels) {
-      delete topRatioModels[property];
-    }
-    lastMediaInEdit = '';
     editorScalingMethod = 'scaleTwh'; // MBG 14/02/2022
 
     reset();
@@ -1192,7 +1115,6 @@ export function initEditWidget() {
       scrollWidthVw: (100 * $('#drop-zone')[0].scrollWidth) / document.documentElement.clientWidth,
       scrollHeightVh: (100 * $('#drop-zone')[0].scrollHeight) / document.documentElement.clientHeight,
       scalingMethod: editorScalingMethod,
-      media: getMedia(),
       colDims: scalingHelper.getCurrentDropperDims(),
     };
     return curDashZone;
@@ -1212,16 +1134,6 @@ export function initEditWidget() {
   function setScalingMethod(scalingArg) {
     editorScalingMethod = scalingArg;
     scalingHelper.setScalingMethod(editorScalingMethod);
-  }
-
-  /*--------getWidgetsRelativeDims--------*/
-  function getWidgetsRelativeDims() {
-    return {
-      width: widthRatioModels,
-      height: heightRatioModels,
-      left: leftRatioModels,
-      top: topRatioModels,
-    };
   }
 
   /*--------unselectWidget--------*/
@@ -1289,11 +1201,6 @@ export function initEditWidget() {
           eventCenterService.sendEvent(EVENTS_EDITOR_WIDGET_MOVED);
         },
       ]);
-  }
-
-  /*--------setLastMedia--------*/
-  function setLastMedia(val) {
-    lastMediaInEdit = val;
   }
 
   /*----------showHideWidgMenu------------*/
@@ -1412,13 +1319,7 @@ export function initEditWidget() {
     getSnapshotDashZoneDims,
     updateSnapshotDashZoneDims,
     computeDropperMaxWidth,
-    setLastMedia,
-    getWidgetsRelativeDims,
     setScalingMethod,
-    widthRatioModels,
-    heightRatioModels,
-    leftRatioModels,
-    topRatioModels,
     selectWidget,
     selectAllWidgets,
     unselectWidget,

@@ -39,10 +39,6 @@ export function showPlayMode(bDoRescale) {
 
 function switchToEditMode(bDoRescale, successCallback) {
   const widgetEditor = editorSingletons.widgetEditor;
-  if (bFirstExec.value) {
-    const val = getMedia();
-    widgetEditor.setLastMedia(val);
-  }
   if (bDoRescale) {
     widgetEditor.resizeDashboard();
   }

@@ -9,8 +9,6 @@
 import _ from 'lodash';
 
 import { editorSingletons } from 'kernel/editor-singletons';
-import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
-import { isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { scalingManager } from 'kernel/dashboard/scaling/scaling-manager';
 
@@ -67,46 +65,6 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
         return $('#drop-zone')[0].getElementsByTagName('div');
       case 'preview':
         return $('#dashboard-zone')[0].getElementsByTagName('div');
-    }
-  }
-
-  /*--------getRelativeWidgetsWidth--------*/
-  function getRelativeWidgetsWidth() {
-    switch (self.mode) {
-      case 'edit':
-        return editorSingletons.widgetEditor.getWidgetsRelativeDims().width;
-      case 'preview':
-        return widgetPreview.getWidgetsRelativeDims().width;
-    }
-  }
-
-  /*--------getRelativeWidgetsHeight--------*/
-  function getRelativeWidgetsHeight() {
-    switch (self.mode) {
-      case 'edit':
-        return editorSingletons.widgetEditor.getWidgetsRelativeDims().height;
-      case 'preview':
-        return widgetPreview.getWidgetsRelativeDims().height;
-    }
-  }
-
-  /*--------getRelativeWidgetsLeft--------*/
-  function getRelativeWidgetsLeft() {
-    switch (self.mode) {
-      case 'edit':
-        return editorSingletons.widgetEditor.getWidgetsRelativeDims().left;
-      case 'preview':
-        return widgetPreview.getWidgetsRelativeDims().left;
-    }
-  }
-
-  /*--------getRelativeWidgettsTop--------*/
-  function getRelativeWidgetsTop() {
-    switch (self.mode) {
-      case 'edit':
-        return editorSingletons.widgetEditor.getWidgetsRelativeDims().top;
-      case 'preview':
-        return widgetPreview.getWidgetsRelativeDims().top;
     }
   }
 
@@ -249,41 +207,7 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
 
   /*--------resizeOnMediaChange--------*/
   function resizeWidgetOnMediaChange(instanceId, id) {
-    const widthRatioModels = getRelativeWidgetsWidth(); // MBG TODO : optimize
-    const heightRatioModels = getRelativeWidgetsHeight(); // MBG TODO : optimize
-    const leftRatioModels = getRelativeWidgetsLeft(); // MBG TODO : optimize
-    const topRatioModels = getRelativeWidgetsTop(); // MBG TODO : optimize
-
-    const widget = $('#' + id)[0];
-
-    let widthCurrentPx = 0;
-    let heightCurrentPx = 0;
-    let leftCurrentPx = 0;
-    let topCurrentPx = 0;
-    switch (self.mode) {
-      case 'edit':
-        widthCurrentPx = $(widget.parentNode.parentNode).width() * widthRatioModels[instanceId] + 2;
-        heightCurrentPx = $(widget.parentNode.parentNode).height() * heightRatioModels[instanceId] + 2;
-        leftCurrentPx = $(widget.parentNode.parentNode).width() * leftRatioModels[instanceId];
-        topCurrentPx = $(widget.parentNode.parentNode).height() * topRatioModels[instanceId];
-        break;
-      case 'preview':
-        widthCurrentPx = $(widget.parentNode).width() * widthRatioModels[instanceId] + 2;
-        heightCurrentPx = $(widget.parentNode).height() * heightRatioModels[instanceId] + 2;
-        leftCurrentPx = $(widget.parentNode).width() * leftRatioModels[instanceId];
-        topCurrentPx = $(widget.parentNode).height() * topRatioModels[instanceId];
-        break;
-    }
-
-    const widthCurrentVw = rmUnit(unitW(widthCurrentPx));
-    const heightCurrentVh = rmUnit(unitH(heightCurrentPx));
-    const leftCurrentVw = rmUnit(unitW(leftCurrentPx));
-    const topCurrentVh = rmUnit(unitH(topCurrentPx));
-
-    widget.style.left = leftCurrentVw + 'vw';
-    widget.style.top = topCurrentVh + 'vh';
-    widget.style.width = widthCurrentVw + 'vw';
-    widget.style.height = heightCurrentVh + 'vh';
+    // TODO rm
   }
 
   /*--------mediaChangeProjection--------*/
@@ -293,12 +217,8 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
   // => a reference coordinate change is needed when media is changed
   //
   function mediaChangeProjection(scalingObj, targetFrame, rows) {
-    var bChanged = false;
     var lastMedia;
     var referenceFrame = scalingObj;
-    var mediaChangeObj = isMediaChanged(scalingObj.media);
-    bChanged = mediaChangeObj.bChanged;
-    lastMedia = mediaChangeObj.lastMedia;
 
     if (!rows) {
       return { lastMedia: lastMedia, referenceFrame: referenceFrame, targetFrame: targetFrame };

@@ -12,7 +12,7 @@ import { rescaleHelper } from 'kernel/dashboard/scaling/rescale-helper';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { getMedia, isMediaChanged, unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
+import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { htmlExport } from 'kernel/general/export/html-export';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
 import { editorSingletons } from 'kernel/editor-singletons';
@@ -31,14 +31,6 @@ export const widgetPreview = (function () {
   var targetRows = 0;
   var targetCols = 1;
   var scalingHelper = new rescaleHelper(previewDimensionsSnapshot, targetScalingMethod, 'preview');
-
-  // relative widget's height and width : needed when browser's window size changes for rescale
-  var widthRatioModels = [];
-  var heightRatioModels = [];
-  var leftRatioModels = [];
-  var topRatioModels = [];
-
-  var lastMediaInPreview = '';
 
   var widgetsErrorState = {}; // MBG for issue #92
 
@@ -182,10 +174,6 @@ export const widgetPreview = (function () {
     });
 
     scalingHelper.updateCellsProportions();
-
-    _.each(_.keys(widget), (instanceId) => {
-      computeWidgetsRatio(instanceId, instanceId + 'c');
-    });
   }
 
   /**
@@ -379,6 +367,7 @@ export const widgetPreview = (function () {
         widgetPreview.clearDataFromWidget(instanceId, actuatorName, actuator, true);
       } else {
         if (slider.name.substring(0, 1) === 'D') {
+          // TODO
           //for Digits
           try {
             actuator.setText(varInter);
@@ -475,16 +464,6 @@ export const widgetPreview = (function () {
     }
   }
 
-  /*--------computeWidgetsRatio--------*/
-  function computeWidgetsRatio(instanceId, id) {
-    widthRatioModels[instanceId] = $('#' + id).width() / $('#' + $('#' + id)[0].parentNode.id).width();
-    heightRatioModels[instanceId] = $('#' + id).height() / $('#' + $('#' + id)[0].parentNode.id).height();
-    leftRatioModels[instanceId] = $('#' + id).position().left / $('#' + $('#' + id)[0].parentNode.id).width();
-    topRatioModels[instanceId] = $('#' + id).position().top / $('#' + $('#' + id)[0].parentNode.id).height();
-
-    lastMediaInPreview = getMedia();
-  }
-
   /**
    * Resize dashboard function
    * @param {any} target
@@ -563,27 +542,9 @@ export const widgetPreview = (function () {
     previewDimensionsSnapshot = getCurrentDashZoneDims();
     scalingHelper.setDimensions(previewDimensionsSnapshot);
 
-    var bChanged = false;
-
-    var mediaChangeObj = isMediaChanged(lastMediaInPreview);
-    bChanged = mediaChangeObj.bChanged;
-    lastMediaInPreview = mediaChangeObj.lastMedia;
-
-    if (bChanged) {
-      _.each(_.keys(widget), (instanceId) => {
-        let elementId = instanceId + 'c';
-        scalingHelper.resizeWidgetOnMediaChange(instanceId, elementId);
-        rebuildWidgetInPreviewMode(instanceId);
-        if (widgetConnector.widgetsConnection[instanceId] != null) {
-          widgetConnector.widgetsConnection[instanceId].widgetObjConnect = widget[instanceId];
-          plotConstantData(instanceId);
-        }
-      });
-    } else {
-      _.each(_.keys(widget), (instanceId) => {
-        rescaleWidget(widget, instanceId);
-      });
-    }
+    _.each(_.keys(widget), (instanceId) => {
+      rescaleWidget(widget, instanceId);
+    });
   }
 
   /*--------reset--------*/
@@ -592,20 +553,6 @@ export const widgetPreview = (function () {
       delete widget[property];
     }
     $('#dashboard-zone').html('');
-
-    for (const property in widthRatioModels) {
-      delete widthRatioModels[property];
-    }
-    for (const property in heightRatioModels) {
-      delete heightRatioModels[property];
-    }
-    for (const property in leftRatioModels) {
-      delete leftRatioModels[property];
-    }
-    for (const property in topRatioModels) {
-      delete topRatioModels[property];
-    }
-    lastMediaInPreview = '';
   }
 
   /*--------clear--------*/
@@ -735,14 +682,6 @@ export const widgetPreview = (function () {
     getCurrentDashZoneDims: getCurrentDashZoneDims,
     getSnapshotDashZoneDims: function () {
       return previewDimensionsSnapshot;
-    },
-    getWidgetsRelativeDims: function () {
-      return {
-        width: widthRatioModels,
-        height: heightRatioModels,
-        left: leftRatioModels,
-        top: topRatioModels,
-      };
     },
     setScalingInformation: setScalingInformation,
     getCols: function () {

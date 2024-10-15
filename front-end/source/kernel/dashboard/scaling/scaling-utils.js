@@ -92,22 +92,6 @@ export function getMedia() {
   return lastMedia;
 }
 
-/*--------isMediaChanged --------*/
-export function isMediaChanged(lastMedia) {
-  var bChanged = false;
-
-  if (lastMedia == 'small' && window.matchMedia('(min-width: 768px)').matches) {
-    lastMedia = 'large';
-    bChanged = true;
-  } else if (lastMedia == 'large' && window.matchMedia('(max-width: 767px)').matches) {
-    lastMedia = 'small';
-    bChanged = true;
-  } else {
-    bChanged = false;
-  }
-  return { bChanged: bChanged, lastMedia: lastMedia };
-}
-
 /*--------getFontFactor --------*/
 export function getFontFactor() {
   if (dashState.tabActive == 'play') {

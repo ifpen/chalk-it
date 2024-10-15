@@ -63,11 +63,6 @@ function widgetInstanceClass() {
         }
       }
 
-      delete widgetEditor.widthRatioModels[element.id];
-      delete widgetEditor.heightRatioModels[element.id];
-      delete widgetEditor.leftRatioModels[element.id];
-      delete widgetEditor.topRatioModels[element.id];
-
       widgetEditor.widgetContainers.delete(element.id);
     }
 

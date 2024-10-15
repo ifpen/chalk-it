@@ -104,28 +104,6 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     // --- <Toolbox> ---
-    // Panels
-    vm.POSITION_ID = 'position';
-    vm.RESIZE_ID = 'resize';
-    vm.ALIGN_ID = 'align';
-    vm.GRID_ID = 'grid';
-    vm.DEVICE_ID = 'device';
-    vm.SCALING_ID = 'scaling';
-    vm.HISTORY_ID = 'history';
-
-    // Buttons
-    vm.DUPLICATE_ID = 'duplicateWidg';
-    vm.FOREGROUND_ID = 'foregroundWidg';
-    vm.BACKGROUND_ID = 'backgroundWidg';
-    vm.CLEAR_DASH_ID = 'clearDashboard';
-    vm.TRASH_ID = 'iconTrashId';
-    vm.BORDERS_ID = 'borderWidg';
-    vm.UNDO_ID = 'undoBtn';
-    vm.REDO_ID = 'redoBtn';
-    vm.TOUR_ID = 'tourBtn';
-
-    vm.toolboxHover = null;
-    vm.toolboxPanel = null;
     vm.borderInWidgets = true;
     vm.showGrid = false;
 
@@ -137,88 +115,6 @@ angular.module('modules.editor').controller('EditorController', [
     vm.updateShowGrid = function () {
       if (vm.showGrid) $('#DropperDroite').addClass('show-grid');
       else $('#DropperDroite').removeClass('show-grid');
-    };
-
-    vm.getStyleClass = function (cat) {
-      return "'show-grid': cat.showGrid";
-    };
-
-    vm.toolboxMessage = function _toolboxMessage() {
-      switch (vm.toolboxHover) {
-        case null:
-        case undefined:
-          return 'Select option';
-
-        case vm.POSITION_ID:
-          return 'Widget position';
-        case vm.RESIZE_ID:
-          return 'Resize widget';
-        case vm.ALIGN_ID:
-          return 'Align widgets';
-        case vm.GRID_ID:
-          return 'Dashboard grid';
-        case vm.DEVICE_ID:
-          return 'Responsive layout';
-        case vm.SCALING_ID:
-          return 'Widget scaling options';
-        case vm.HISTORY_ID:
-          return 'Display editor history';
-
-        case vm.DUPLICATE_ID:
-          return 'Duplicate widget (Alt+D)';
-        case vm.FOREGROUND_ID:
-          return 'Put widget at foreground';
-        case vm.BACKGROUND_ID:
-          return 'Put widget at background';
-        case vm.CLEAR_DASH_ID:
-          return 'Clear dashboard';
-        case vm.TRASH_ID:
-          return 'Clear all dataNode connections';
-        case vm.BORDERS_ID:
-          return "Add/Remove widgets' border";
-        case vm.UNDO_ID:
-          return 'Undo';
-        case vm.REDO_ID:
-          return 'Redo';
-        case vm.TOUR_ID:
-          return 'Guided tour';
-
-        default:
-          console.error('Unknown hovered component: ' + vm.toolboxHover);
-          return '';
-      }
-    };
-
-    vm.togglePanel = function _togglePanel(panel) {
-      if (vm.toolboxPanel === panel) {
-        vm.toolboxPanel = null;
-      } else {
-        vm.toolboxPanel = panel;
-      }
-    };
-
-    vm.buttonToggleClass = function _buttonToggleClass(button) {
-      if (vm.toolboxPanel === button) {
-        return ['btn-success'];
-      } else if (vm.toolboxHover === button) {
-        return ['btn-info'];
-      } else {
-        return [];
-      }
-    };
-
-    vm.buttonClass = function _buttonClass(button) {
-      if (vm.toolboxHover === button) {
-        return ['btn-info'];
-      } else {
-        return [];
-      }
-    };
-
-    vm.panelStyle = function _panelClass(panel) {
-      return {
-        display: panel === vm.toolboxPanel ? 'block' : 'none',
-      };
     };
 
     // --- </Toolbox> ---
@@ -669,14 +565,6 @@ angular.module('modules.editor').controller('EditorController', [
 
     ////////////////////
     function _hideWidgMenu() {
-      const elementIds = _getSelection();
-      const idElm = elementIds[0];
-      const idList = 'menuWidget';
-
-      if ($('#' + idList)[0].getAttribute('name') !== idElm) {
-        $('#' + idList).attr('name', idElm);
-        console.log('target changed');
-      }
       vm.menuWidgetVisible = false;
     }
 

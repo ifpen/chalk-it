@@ -305,12 +305,6 @@ class WidgetContainer {
     const $element = $(element);
     const $container = $(element.parentNode.parentNode);
     const widgetEditor = editorSingletons.widgetEditor;
-    if (bIsResize) {
-      widgetEditor.widthRatioModels[element.id] = $element.width() / $container.width();
-      widgetEditor.heightRatioModels[element.id] = $element.height() / $container.height();
-    }
-    widgetEditor.leftRatioModels[element.id] = $element.position().left / $container.width();
-    widgetEditor.topRatioModels[element.id] = $element.position().top / $container.height();
 
     return consTranslatedWidgetPx;
   }
