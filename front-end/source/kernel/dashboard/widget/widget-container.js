@@ -24,42 +24,41 @@ import {
 import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
 
-function widgetContainerClass() {
-  const minWidgetWidthCst = 32;
-  const minWidgetHeightCst = 32;
+const minWidgetWidthCst = 32;
+const minWidgetHeightCst = 32;
 
-  // "Class" (global) variables (for all widgets)
-  var wcNum = 100;
+class WidgetContainer {
+  constructor() {
+    this.wcNum = 100;
+  }
 
   /**
    * @description Get an ID for containerDiv (such WidgetContainer1xx)
    */
-  this.getWidgetContainerId = function () {
-    wcNum = wcNum + 1;
-    var idName = 'WidgetContainer';
-    var wcId = idName + parseInt(wcNum);
-    return wcId;
-  };
+  getWidgetContainerId() {
+    this.wcNum = this.wcNum + 1;
+    return `WidgetContainer${this.wcNum}`;
+  }
 
   /**
    * @description Puts cln on targetDiv
    * @param {any} cln (mandatory) mainDiv
    * @param {any} targetDiv (optional) where to put mainDiv
    */
-  this.putAndGetTargetDiv = function (cln, targetDiv) {
+  putAndGetTargetDiv(cln, targetDiv) {
     if (!targetDiv) {
       targetDiv = editorSingletons.layoutMgr.getDefaultContainer();
     }
     targetDiv.appendChild(cln); // put cln in dashboard
     return targetDiv;
-  };
+  }
 
   /**
    * @description Propagates mainDiv layout to containerDiv layout
    * @param {any} cln mainDiv DOM element
    * @param {any} div containerDiv DOM element
    */
-  this.computeAndApplyContainerDivLayout = function (cln, div) {
+  computeAndApplyContainerDivLayout(cln, div) {
     var w =
       parseFloat(cln.style.width.substring(0, cln.style.width.length - 2)) -
       2 * (100 / document.documentElement.clientWidth);
@@ -85,14 +84,14 @@ function widgetContainerClass() {
           parseFloat(div.style.height)
         ) + 'vh';
     }
-  };
+  }
 
   /**
    * @description Replace current widget by a new one when edition, resizing, changing json parameter,...
    * @param {any} element
    */
   /*--------Replace current Widget--------*/
-  this.replaceWidget = function (element) {
+  replaceWidget(element) {
     let wcId;
     for (let ch = element.childNodes.length - 1; ch >= 0; ch--) {
       const child = element.childNodes[ch];
@@ -144,62 +143,62 @@ function widgetContainerClass() {
       widgetTitle: widgetTitle, //AEF
     });
     return div;
-  };
+  }
 
   /**
    * @description Gets the minWidth property of the element in px
    * @param {any} element
    */
-  this.getMinWidth = function (element) {
+  getMinWidth(element) {
     var minWidth = minWidgetWidthCst;
     if (element.style.minWidth != '') {
       minWidth = parseFloat(rmUnit(element.style.minWidth));
     }
     return minWidth;
-  };
+  }
 
   /**
    * @description Gets the minHeight property of the element in px
    * @param {any} element
    */
-  this.getMinHeight = function (element) {
+  getMinHeight(element) {
     var minHeight = minWidgetHeightCst;
     if (element.style.minHeight != '') {
       minHeight = parseFloat(rmUnit(element.style.minHeight));
     }
     return minHeight;
-  };
+  }
 
   /**
    * @description Computes the maxWidth property of widget considering its container
    * @param {any} element
    */
-  this.getMaxWidth = function (element) {
+  getMaxWidth(element) {
     const widgetLayoutPx = getElementLayoutPx(element);
     const container = editorSingletons.widgetEditor.getContainer(element);
     const absoluteContainerLayoutPx = getElementLayoutPx(container);
     const maxWidthPx = computeMaxWidthPx(widgetLayoutPx, absoluteContainerLayoutPx);
     return maxWidthPx;
-  };
+  }
 
   /**
    * @description Computes the maxHeight property of widget considering its container
    * @param {any} element
    */
-  this.getMaxHeight = function (element) {
+  getMaxHeight(element) {
     const widgetLayoutPx = getElementLayoutPx(element);
     const container = editorSingletons.widgetEditor.getContainer(element);
     const absoluteContainerLayoutPx = getElementLayoutPx(container);
     const maxHeightPx = computeMaxHeightPx(widgetLayoutPx, absoluteContainerLayoutPx);
     return maxHeightPx;
-  };
+  }
 
   /**
    * /@description Gets widget floating state
    * @param {any} element
    * @returns FLOATING, FIXED
    */
-  this.getFloatingState = function (element) {
+  getFloatingState(element) {
     if (editorSingletons.layoutMgr.isRowColMode()) {
       if (element.parentNode.parentNode.id === 'DropperDroite') {
         return 'FLOATING';
@@ -209,14 +208,14 @@ function widgetContainerClass() {
     } else {
       return 'FIXED';
     }
-  };
+  }
 
   /**
    * @description applies a translation to a widget enforcing constraints
    * @param {any} element
    * @param {any} translationPx
    */
-  this.translateWidgetPx = function (element, translationPx) {
+  translateWidgetPx(element, translationPx) {
     // work on px
     var widgetLayoutPx = getElementLayoutPx(element);
     // translate !
@@ -228,7 +227,7 @@ function widgetContainerClass() {
     };
 
     this.moveResizeWidget(element, requestedLayoutPx);
-  };
+  }
 
   /**
    * @description applies positioning constraints to a position
@@ -236,7 +235,7 @@ function widgetContainerClass() {
    * @param {{left: number, top: number, width: number, height: number}} requestedLayoutPx layout to contrain
    * @returns {{left: number, top: number, width: number, height: number}} a corrected layout containing constrained values
    */
-  this.constrainLayout = function _constrainLayout(element, requestedLayoutPx) {
+  constrainLayout(element, requestedLayoutPx) {
     let containerLayoutPx;
 
     const layoutMgr = editorSingletons.layoutMgr;
@@ -274,14 +273,14 @@ function widgetContainerClass() {
     }
 
     return enforceConstraints(requestedLayoutPx, containerLayoutPx);
-  };
+  }
 
   /**
    * @description applies a requested position to a widget enforcing constraints
    * @param {any} element
    * @param {{left: number, top: number, width: number, height: number}} requestedLayoutPx
    */
-  this.moveResizeWidget = function _moveResizeWidget(element, requestedLayoutPx, bDontReact, bIsResize) {
+  moveResizeWidget(element, requestedLayoutPx, bDontReact, bIsResize) {
     let consTranslatedWidgetPx = null;
 
     if (!bDontReact) {
@@ -314,36 +313,36 @@ function widgetContainerClass() {
     widgetEditor.topRatioModels[element.id] = $element.position().top / $container.height();
 
     return consTranslatedWidgetPx;
-  };
+  }
 
   /**
    * Flashes a group of widgets
    * @param {Array<string>} elementIds
    */
-  this.highlightWidgets = function _highlightWidgets(elementIds) {
+  highlightWidgets(elementIds) {
     elementIds.forEach((id) => {
       const elem = editorSingletons.widgetEditor.widgetContainers.get(id);
       if (elem && elem.divContainer) {
         $(elem.divContainer).fadeOut(30).fadeIn(140);
       }
     });
-  };
+  }
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                        duplication functions                       | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
 
   /*--------duplicateWidgetWithConnection--------*/
-  this.duplicateWidgetWithConnection = function (element, instanceId) {
+  duplicateWidgetWithConnection(element, instanceId) {
     instanceId = this.duplicateWidget(element, instanceId);
     if (!_.isUndefined(widgetConnector.widgetsConnection[element.id])) {
       widgetConnector.duplicateConnection(instanceId, element);
     }
     return instanceId;
-  };
+  }
 
   /*--------duplicateWidget--------*/
-  this.duplicateWidget = function (element, instanceId) {
+  duplicateWidget(element, instanceId) {
     // TODO check id not used
 
     const modelJsonIdStr = element.id.substring(0, element.id.length - 1);
@@ -377,7 +376,7 @@ function widgetContainerClass() {
     const targetDiv = widgetEditor.getContainer(element);
     widgetEditor.addWidget(modelJsonIdStr, targetDiv, instanceId, wLayout);
     return instanceId;
-  };
+  }
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                    fore/background functions                       | \\
@@ -388,7 +387,7 @@ function widgetContainerClass() {
    * @param {Array.<Object>} elements Array of widgets to sort
    * @returns {Array.<Object>} the sorted array
    */
-  function _sortByZ(elements) {
+  static #sortByZ(elements) {
     return elements.sort((a, b) => a.divModel.style.zIndex - b.divModel.style.zIndex);
   }
 
@@ -397,7 +396,7 @@ function widgetContainerClass() {
    * @param {Array.<string>} elementIds a selection of widget ids
    * @returns {Array.<Array.<Object>>} two arrays containing respectively the selection and the rest
    */
-  function _splitWidgets(elementIds) {
+  static #splitWidgets(elementIds) {
     const sel = [];
     const rest = [];
     const widgetEditor = editorSingletons.widgetEditor;
@@ -416,7 +415,7 @@ function widgetContainerClass() {
    * @param {Array.<Object>} elements An ordered array of widgets
    * @returns {Map.<string, number>} A map of widget ids to Z value
    */
-  function _renumberZ(elements) {
+  static #renumberZ(elements) {
     let z = 1;
     const indices = new Map();
     elements.forEach((element) => indices.set(element.instanceId, z++));
@@ -427,7 +426,7 @@ function widgetContainerClass() {
    * Gets the maximum zIndex of all widgets in the widgetEditor
    * @returns {?number} A map of widget ids to Z value
    */
-  this.getMaxZIndex = function _getMaxZIndex() {
+  getMaxZIndex() {
     let max = null;
     const widgetEditor = editorSingletons.widgetEditor;
     for (const element of widgetEditor.widgetContainers.values()) {
@@ -440,13 +439,13 @@ function widgetContainerClass() {
       }
     }
     return max;
-  };
+  }
 
   /**
    * Sets the zIndex of widgets in the widgetEditor
    * @param {Map.<string, number>} indices the new zIndexes, stored by widget id
    */
-  this.setZIndices = function _setZIndices(indices) {
+  setZIndices(indices) {
     const containers = editorSingletons.widgetEditor.widgetContainers;
     for (const [key, z] of indices) {
       const widget = containers.get(key);
@@ -454,42 +453,42 @@ function widgetContainerClass() {
         widget.divModel.style.zIndex = z;
       }
     }
-  };
+  }
 
   /**
    * Get the current zIndex of widgets in the widgetEditor
    * @returns {Map.<string, number>} A map of widget ids to Z value
    */
-  this.getZIndices = function _getZIndices() {
+  getZIndices() {
     const indices = new Map();
     const widgetEditor = editorSingletons.widgetEditor;
     for (const [key, widget] of widgetEditor.widgetContainers) {
       indices.set(key, widget.divModel.style.zIndex);
     }
     return indices;
-  };
+  }
 
   /**
    * Move widgets to the foreground, keeping their relative order
    * @param {Array.<string>} elementIds the ids of widgets to move to the foreground
    */
-  this.putWidgetAtForeground = function _putWidgetAtForeground(elementIds) {
-    const [sel, rest] = _splitWidgets(elementIds);
-    const newOrder = [..._sortByZ(rest), ..._sortByZ(sel)];
-    const newZs = _renumberZ(newOrder);
+  putWidgetAtForeground(elementIds) {
+    const [sel, rest] = WidgetContainer.#splitWidgets(elementIds);
+    const newOrder = [...WidgetContainer.#sortByZ(rest), ...WidgetContainer.#sortByZ(sel)];
+    const newZs = WidgetContainer.#renumberZ(newOrder);
     this.setZIndices(newZs);
-  };
+  }
 
   /**
    * Move widgets to the background, keeping their relative order
    * @param {Array.<string>} elementIds the ids of widgets to move to the background
    */
-  this.putWidgetAtBackground = function _putWidgetAtBackground(elementIds) {
-    const [sel, rest] = _splitWidgets(elementIds);
-    const newOrder = [..._sortByZ(sel), ..._sortByZ(rest)];
-    const newZs = _renumberZ(newOrder);
+  putWidgetAtBackground(elementIds) {
+    const [sel, rest] = WidgetContainer.#splitWidgets(elementIds);
+    const newOrder = [...WidgetContainer.#sortByZ(sel), ...WidgetContainer.#sortByZ(rest)];
+    const newZs = WidgetContainer.#renumberZ(newOrder);
     this.setZIndices(newZs);
-  };
+  }
 }
 
-export const widgetContainer = new widgetContainerClass();
+export const widgetContainer = new WidgetContainer();
