@@ -1,12 +1,12 @@
 {
   "name": "xdash",
-  "version": "3.0",
+  "version": "3",
   "description": "xDash front-end build tools",
-  "author": "Chalk'it Team",
-  "updater": "AR (migration to gulp v4 && use node >= 12.x.x)",
+  "author": "xDash & Chalk'it Team",
+  "updater": "xDash & Chalk'it Team",
   "engines": {
-    "node": ">=12.18.2",
-    "npm": ">=6.14.5"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.22.15",
