@@ -1511,12 +1511,6 @@ function flatUiComplexWidgetsPluginClass() {
             },
           },
         },
-        {
-          type: 'object',
-          items: {
-            anyOf: [{ type: 'array' }],
-          },
-        },
       ],
     };
     const _VALUE_DESCRIPTOR_R = new WidgetActuatorDescription(
