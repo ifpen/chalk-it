@@ -1,122 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Gallery</title>
     <style>
-      body {
-        background-color: rgb(255, 255, 255);
-        color: rgb(0, 0, 0);
-      }
-      .gallery {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .gallery__container {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid rgb(107, 107, 107);
-      }
+        body {
+            background-color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
+        }
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .gallery__container {
+            display: flex; 
+            flex-direction: row; 
+            align-items:center;
+            justify-content: center;
+            border: 1px solid rgb(107, 107, 107);
+        }
 
-      .gallery__container img {
-        margin: 10px;
-        max-width: 500px;
-        max-height: 300px;
-      }
+        .gallery__container img {
+            margin: 10px;
+            max-width: 500px;
+            max-height: 300px;
+        }
 
-      .gallery__container span {
-        color: rgb(85, 85, 85);
-        margin-right: 50px;
-      }
+        .gallery__container span {
+            color: rgb(85, 85, 85);
+            margin-right: 50px;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <h1>Image Gallery</h1>
     <div class="gallery">
-      <div class="gallery__container">
-        <span>clock.svg</span>
-        <img src="./clock.svg" alt="clock.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>csv-player.svg</span>
-        <img src="./csv-player.svg" alt="csv-player.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>csv-reader.svg</span>
-        <img src="./csv-reader.svg" alt="csv-reader.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>delay.svg</span>
-        <img src="./delay.svg" alt="delay.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>memory.png</span>
-        <img src="./memory.png" alt="memory.png" />
-      </div>
-
-      <div class="gallery__container">
-        <span>file-reader.svg</span>
-        <img src="./file-reader.svg" alt="file-reader.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>fmi.svg</span>
-        <img src="./fmi.svg" alt="fmi.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>geolocation.svg</span>
-        <img src="./geolocation.svg" alt="geolocation.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>json-formula.svg</span>
-        <img src="./json-formula.svg" alt="json-formula.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>json-variable.svg</span>
-        <img src="./json-variable.svg" alt="json-variable.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>mqtt.svg</span>
-        <img src="./mqtt.svg" alt="mqtt.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>python.svg</span>
-        <img src="./python.svg" alt="python.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>text-file-reader.svg</span>
-        <img src="./text-file-reader.svg" alt="text-file-reader.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>web-service-datasource.svg</span>
-        <img src="./web-service-datasource.svg" alt="web-service-data-source.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>web-service-json-editor.svg</span>
-        <img src="./web-service-json-editor.svg" alt="web-service-json-editor.svg" />
-      </div>
-
-      <div class="gallery__container">
-        <span>websocket.svg</span>
-        <img src="./websocket.svg" alt="websocket.svg" />
-      </div>
+        
+        <div class="gallery__container">
+            <span>clock.svg</span>
+             <img src="./clock.svg" alt="clock.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>csv-player.svg</span>
+             <img src="./csv-player.svg" alt="csv-player.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>csv-reader.svg</span>
+             <img src="./csv-reader.svg" alt="csv-reader.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>delay.svg</span>
+             <img src="./delay.svg" alt="delay.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>file-reader.svg</span>
+             <img src="./file-reader.svg" alt="file-reader.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>fmi.svg</span>
+             <img src="./fmi.svg" alt="fmi.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>geolocation.svg</span>
+             <img src="./geolocation.svg" alt="geolocation.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>json-formula.svg</span>
+             <img src="./json-formula.svg" alt="json-formula.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>json-variable.svg</span>
+             <img src="./json-variable.svg" alt="json-variable.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>mqtt.svg</span>
+             <img src="./mqtt.svg" alt="mqtt.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>python.svg</span>
+             <img src="./python.svg" alt="python.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>text-file-reader.svg</span>
+             <img src="./text-file-reader.svg" alt="text-file-reader.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>web-service-datasource.svg</span>
+             <img src="./web-service-datasource.svg" alt="web-service-data-source.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>web-service-json-editor.svg</span>
+             <img src="./web-service-json-editor.svg" alt="web-service-json-editor.svg">
+        </div>
+        
+        <div class="gallery__container">
+            <span>websocket.svg</span>
+             <img src="./websocket.svg" alt="websocket.svg">
+        </div>
+        
     </div>
-  </body>
+</body>
 </html>

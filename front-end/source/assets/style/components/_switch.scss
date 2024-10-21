@@ -23,7 +23,7 @@ label.onoffswitch-label {
   overflow: hidden;
   cursor: pointer;
   border: 1px solid var(--switch-wrapper-background-color);
-  border-radius: br('full');
+  border-radius: br("full");
   padding: 0;
   margin: 0;
 }
@@ -40,18 +40,18 @@ label.onoffswitch-label {
     height: 34px;
     padding: 0;
     line-height: 34px;
-    font-size: fs('md');
+    font-size: fs("md");
     box-sizing: border-box;
   }
 
   .on {
-    padding-left: 0.75em;
+    padding-left: .75em;
     background-color: var(--checked-switch-background-color);
     color: var(--checked-switch-text-color);
   }
 
   .off {
-    padding-right: 0.75em;
+    padding-right: .75em;
     background-color: var(--switch-wrapper-background-color);
     color: var(--switch-wrapper-text-color);
     text-align: right;
@@ -65,7 +65,7 @@ label.onoffswitch-label {
   right: 42px;
   width: 26px;
   margin: 4px;
-  border-radius: br('full');
+  border-radius: br("full");
   background-color: var(--switch-background-color);
   transition: var(--default-transition);
 }
@@ -115,7 +115,7 @@ label.onoffswitch-label {
   transition: background-color 0.4s ease-in-out;
 
   &::before {
-    content: '';
+    content: "";
     width: 26px;
     height: 26px;
     left: 4px;
@@ -126,10 +126,10 @@ label.onoffswitch-label {
     transition: transform 0.4s ease-in-out;
   }
   &.round {
-    border-radius: br('full');
+    border-radius: br("full");
   }
   &.round:before {
-    border-radius: br('full');
+    border-radius: br("full");
   }
 }
 

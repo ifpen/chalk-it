@@ -63,6 +63,7 @@ export const widgetsEditorToolboxDefinition = {
     name: 'Geo & Time',
     widgets: [
       'openStreetMaps',
+      'mapGeoJson',
       'foliumMaps',
       'flatUiHereAutocompleteValue',
       'datepickerSimple',

@@ -54,7 +54,9 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
     newInstance: function (settings, newInstanceCallback, updateCallback, statusCallback, notificationCallback) {
       // csvFilePlugin is defined below.
       if (!newInstanceCallback(new jsonFormulaPlugin(settings, updateCallback, statusCallback, notificationCallback)))
-        if (error) return false;
+        if (error)
+          //ABK
+          return false;
         else return true;
     },
   });

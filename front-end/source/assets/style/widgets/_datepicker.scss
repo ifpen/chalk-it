@@ -97,11 +97,11 @@ datepicker,
 }
 
 ._720kb-datepicker-calendar-header-closed-pagination::after {
-  content: ' \25BE';
+  content: " \25BE";
 }
 
 ._720kb-datepicker-calendar-header-opened-pagination::after {
-  content: ' \25BE';
+  content: " \25BE";
   margin-left: 4px;
   position: relative;
   bottom: -3px;
@@ -225,8 +225,10 @@ datepicker,
 ._720kb-datepicker-calendar-day._720kb-datepicker-disabled:hover,
 ._720kb-datepicker-calendar-years-pagination a._720kb-datepicker-disabled,
 ._720kb-datepicker-calendar-years-pagination a._720kb-datepicker-disabled:hover,
-._720kb-datepicker-calendar-years-pagination a._720kb-datepicker-active._720kb-datepicker-disabled,
-._720kb-datepicker-calendar-years-pagination a._720kb-datepicker-active._720kb-datepicker-disabled:hover {
+._720kb-datepicker-calendar-years-pagination
+  a._720kb-datepicker-active._720kb-datepicker-disabled,
+._720kb-datepicker-calendar-years-pagination
+  a._720kb-datepicker-active._720kb-datepicker-disabled:hover {
   color: rgba(0, 0, 0, 0.2);
   background: rgba(25, 2, 0, 0.02);
   cursor: default;
