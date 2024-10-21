@@ -1,13 +1,41 @@
-// ┌────────────────────────────────────────────────────────────────────┐ \\
-// │                                                                    │ \\
-// ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Copyright © 2019-2023 IFPEN                                        │ \\
-// ├────────────────────────────────────────────────────────────────────┤ \\
-// │ Author(s) : Benoit LEHMAN & Mongi BEN GAID & Mohamed ERRAHALI      │ \\
-// └────────────────────────────────────────────────────────────────────┘ \\
+// ┌────────────────────────────────────────────────────────────────────────────────┐ \\
+// │                                                                                │ \\
+// ├────────────────────────────────────────────────────────────────────────────────┤ \\
+// │ Copyright © 2019-2024 IFPEN                                                    │ \\
+// ├────────────────────────────────────────────────────────────────────────────────┤ \\
+// │ Author(s) : Benoit LEHMAN & Mongi BEN GAID & Abir EL FEKI & Mohamed ERRAHALI   │ \\
+// └────────────────────────────────────────────────────────────────────────────────┘ \\
 
 // Important Style Behavior : Style will be available as out from the map first only in View mode
 // The contact between the widget and out properties is only done at first enable
+import 'leaflet';
+import L from 'leaflet';
+
+// !! Order matters, a lot !!
+import 'simpleheat';
+import 'leaflet-modal';
+import 'idb';
+import 'leaflet.offline';
+import '@geoman-io/leaflet-geoman-free';
+import 'leaflet.markercluster';
+import 'leaflet.awesome-markers';
+
+import { bbox } from '@turf/turf';
+
+import _ from 'lodash';
+
+import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
+import { modelsHiddenParams, modelsLayout } from 'kernel/base/widgets-states';
+import { basePlugin } from '../plugin-base';
+import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
+
+import { colorScaleManager } from 'kernel/dashboard/plugins/tools/colorScaleManager';
+import { tileServers } from 'kernel/dashboard/plugins/tools/tileServers';
+import { geoJsonTools } from 'kernel/dashboard/plugins/tools/geoJsonTools';
+import { legends } from 'kernel/dashboard/plugins/tools/legends';
+import { styleManager } from 'kernel/dashboard/plugins/tools/styleManager';
+import { eventsManager } from 'kernel/dashboard/plugins/tools/eventsManager';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -137,7 +165,7 @@ function mapGeoJsonWidgetsPluginClass() {
       // Drawing the map
       // TODO : Report all map possibilites from map
 
-      config = self.defaultConfig;
+      let config = self.defaultConfig;
       if (
         !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
         !_.isEmpty(modelsHiddenParams[idInstance].GeoJSONStyle) &&
@@ -148,10 +176,10 @@ function mapGeoJsonWidgetsPluginClass() {
       }
       self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true });
       if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) && modelsHiddenParams[idInstance].GeoJSON.length > 0) {
-        let bbox = turf.bbox(modelsHiddenParams[idInstance].GeoJSON[0]);
+        let bboxCoords = bbox(modelsHiddenParams[idInstance].GeoJSON[0]);
         let bounds = [
-          [bbox[1], bbox[0]],
-          [bbox[3], bbox[2]],
+          [bboxCoords[1], bboxCoords[0]],
+          [bboxCoords[3], bboxCoords[2]],
         ];
         self.map.fitBounds(bounds);
       } else {
@@ -163,18 +191,18 @@ function mapGeoJsonWidgetsPluginClass() {
           !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image.imageBounds)
         ) {
           config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
-          let bbox = config.image.imageBounds;
+          let bboxCoords = config.image.imageBounds;
           //validate bounds :
           if (
-            !_.isUndefined(bbox) &&
-            Array.isArray(bbox) &&
-            bbox.length == 2 &&
-            Array.isArray(bbox[0]) &&
-            Array.isArray(bbox[1]) &&
-            bbox[0].length == 2 &&
-            bbox[1].length == 2
+            !_.isUndefined(bboxCoords) &&
+            Array.isArray(bboxCoords) &&
+            bboxCoords.length == 2 &&
+            Array.isArray(bboxCoords[0]) &&
+            Array.isArray(bboxCoords[1]) &&
+            bboxCoords[0].length == 2 &&
+            bboxCoords[1].length == 2
           ) {
-            self.map.fitBounds(bbox);
+            self.map.fitBounds(bboxCoords);
           }
         }
       }
@@ -268,14 +296,14 @@ function mapGeoJsonWidgetsPluginClass() {
     this.getColor = colorScaleManager.getColor;
 
     this.createChoroplethLegend = function (legendId, min, max, featureTitle, colorScale) {
-      legend = legends.createChoroplethLegend(legendId, self.getColor, min, max, featureTitle, colorScale);
+      let legend = legends.createChoroplethLegend(legendId, self.getColor, min, max, featureTitle, colorScale);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }
       return legend;
     };
     this.createLegend = function (legendId, color, length, colorStops, min, max, featureTitle) {
-      legend = legends.createLegend(legendId, color, length, colorStops, min, max, featureTitle);
+      let legend = legends.createLegend(legendId, color, length, colorStops, min, max, featureTitle);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }
@@ -286,9 +314,9 @@ function mapGeoJsonWidgetsPluginClass() {
     this.styleChanged = false;
     // Set style on layers called when input style
     this.style = function () {
-      config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
-      ts = 'MapboxStreets';
-      defaultCenter = self.defaultConfig.defaultCenter;
+      let config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
+      let ts = 'MapboxStreets';
+      let defaultCenter = self.defaultConfig.defaultCenter;
       if (!_.isUndefined(config)) {
         // defaultCenter = config.defaultCenter;
         ts = config.tileServer;
@@ -308,15 +336,15 @@ function mapGeoJsonWidgetsPluginClass() {
           modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom ||
           _.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom)
         ) {
-          let bbox = undefined;
+          let bboxCoords = undefined;
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
             modelsHiddenParams[idInstance].GeoJSON.length > 0
           ) {
-            bbox = turf.bbox(modelsHiddenParams[idInstance].GeoJSON[0]);
-            bbox = [
-              [bbox[1], bbox[0]],
-              [bbox[3], bbox[2]],
+            bboxCoords = bbox(modelsHiddenParams[idInstance].GeoJSON[0]);
+            bboxCoords = [
+              [bboxCoords[1], bboxCoords[0]],
+              [bboxCoords[3], bboxCoords[2]],
             ];
           } else {
             if (
@@ -326,14 +354,14 @@ function mapGeoJsonWidgetsPluginClass() {
               !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image.imageBounds)
             ) {
               config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
-              bbox = config.image.imageBounds;
+              bboxCoords = config.image.imageBounds;
             }
           }
           // let bounds = [[bbox[1],bbox[0]],[bbox[3],bbox[2]]]
           let height = $('#' + idInstance).height();
           let width = $('#' + idInstance).width();
-          self.map.fitBounds(bbox);
-          let zoom = self.map.getBoundsZoom(bbox, false, [width, height]);
+          self.map.fitBounds(bboxCoords);
+          let zoom = self.map.getBoundsZoom(bboxCoords, false, [width, height]);
           modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.zoom = zoom;
           //self.map.setZoom(zoom);
         } else {
@@ -572,7 +600,7 @@ function mapGeoJsonWidgetsPluginClass() {
 
   // Plugin definition
   this.pluginDefinition = {
-    name: 'mapGeoJson',
+    name: 'Maps',
     widgetsDefinitionList: {
       mapGeoJson: {
         factory: 'mapGeoJsonWidgets',

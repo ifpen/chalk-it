@@ -6,10 +6,12 @@
 // │ Author(s) : Mohamed ERRAHALI                     │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-this.tileServersList = function () {
+import _ from 'lodash';
+
+function tileServersList() {
   var azureMapboxUrl = 'https://xdashgateway.azure-api.net/mapbox/tiles?z={z}&x={x}&y={y}';
   var azureMapboxUrlGeneral = 'https://xdashgateway.azure-api.net/mapbox/tilesgeneral?z={z}&x={x}&y={y}&id={id}';
-  tileServersOptions = {};
+  let tileServersOptions = {};
   tileServersOptions['MapboxStreets'] = {
     url: azureMapboxUrl,
     attribution: 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -51,7 +53,7 @@ this.tileServersList = function () {
   return tileServersOptions;
 }
 
-this.getTileServerConf = function  (ts) {
+function getTileServerConf(ts) {
   var tileServersObj = tileServersList();
   var tileConf = {
     url: tileServersObj[ts].url,
@@ -89,12 +91,12 @@ this.getTileServerConf = function  (ts) {
   if (!_.isUndefined(tileServersObj[ts].zoomOffset)) {
     tileConf.zoomOffset = tileServersObj[ts].zoomOffset;
   }
-  return tileConf 
-};
+  return tileConf;
+}
 
-var tileServers = (function() {
-    return {
-        list : tileServersList,
-        getTileServerConf :(ts)=> getTileServerConf(ts)
-    }
-})()
+export function tileServers() {
+  return {
+    list: tileServersList,
+    getTileServerConf: (ts) => getTileServerConf(ts),
+  };
+}
