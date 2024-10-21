@@ -20,8 +20,7 @@ import '@geoman-io/leaflet-geoman-free';
 import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 
-import { bbox } from '@turf/turf';
-
+import { bbox } from '@turf/bbox';
 import _ from 'lodash';
 
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
@@ -600,7 +599,7 @@ function mapGeoJsonWidgetsPluginClass() {
 
   // Plugin definition
   this.pluginDefinition = {
-    name: 'Maps',
+    name: 'MapGeoJson',
     widgetsDefinitionList: {
       mapGeoJson: {
         factory: 'mapGeoJsonWidgets',
@@ -618,7 +617,7 @@ function mapGeoJsonWidgetsPluginClass() {
 mapGeoJsonWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var mapGeoJsonWidgetsPlugin = new mapGeoJsonWidgetsPluginClass();
+export const mapGeoJsonWidgetsPlugin = new mapGeoJsonWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/
