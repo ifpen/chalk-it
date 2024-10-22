@@ -13,6 +13,10 @@ import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import MyComponent from './MyComponent';
+
 /*******************************************************************/
 /*************************** plugin data ***************************/
 /*******************************************************************/
@@ -66,56 +70,9 @@ function genericHtmlWidgetPluginClass() {
     this.render = function () {
       var widgetHtml = document.createElement('div');
       var styleCenterVertically = '';
-
-      var divContent =
-        '<div id="htmlDiv' +
-        idWidget +
-        '" class="defaultCSS" style="overflow: auto; background-color: transparent; ' +
-        'box-shadow: none; width: inherit; height: inherit; ' +
-        'color:' +
-        modelsParameters[idInstance].textColor +
-        '; text-align: ' +
-        modelsParameters[idInstance].textAlign +
-        '; padding: 4px; resize: inherit; border-radius: 6px; ' +
-        this.fontSize() +
-        this.valueFontFamily() +
-        this.border() +
-        '">' +
-        '<div style="' +
-        styleCenterVertically +
-        '">' +
-        modelsHiddenParams[idInstance].html +
-        '</div></div>';
-
-      widgetHtml.innerHTML = divContent;
-      //
-      const showWidget = this.showWidget();
-      let displayStyle = 'display: inherit;';
-      if (!showWidget) {
-        displayStyle = 'display: none;';
-      }
-      const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      widgetHtml.setAttribute(
-        'style',
-        'width: inherit; height: inherit; background-color:' +
-          modelsParameters[idInstance].backgroundColor +
-          ';' +
-          displayStyle +
-          enableStyle
-      );
+      ReactDOM.render(<MyComponent />, widgetHtml);
       $('#' + idDivContainer).html(widgetHtml);
-      this.applyDisplayOnWidget();
-      var hasScrollBar = self.hasScrollBar($('#htmlDiv' + idWidget));
-      if (modelsParameters[idInstance].centerVertically && !hasScrollBar) {
-        styleCenterVertically =
-          ' position: relative; top: 50%; -webkit-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%);';
-        $('#htmlDiv' + idWidget + ' div').attr('style', styleCenterVertically);
-      }
+
     };
 
     const _HTML_DESCRIPTOR = new WidgetActuatorDescription(
