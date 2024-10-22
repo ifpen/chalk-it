@@ -22,12 +22,12 @@ import _ from 'lodash';
 import { modelsHiddenParams } from 'kernel/base/widgets-states';
 
 import { toggleLegend} from 'kernel/dashboard/plugins/tools/legends';
-import { eventsManager } from 'kernel/dashboard/plugins/tools/eventsManager';
-import { getColorScalefindPropertiesWithNumber,getColorScalefindAllProperties,findFeatureType,equivalenceTypes } from 'kernel/dashboard/plugins/tools/geoJsonTools';
+import { configureEvents } from 'kernel/dashboard/plugins/tools/eventsManager';
+import { findPropertiesWithNumber,findAllProperties,findFeatureType,equivalenceTypes } from 'kernel/dashboard/plugins/tools/geoJsonTools';
 
 export function createTemplateStyle(self, geoJSON, index, typeLayer = undefined) {
-  let prop = getColorScalefindPropertiesWithNumber(geoJSON);
-  let allProp = getColorScalefindAllProperties(geoJSON);
+  let prop = findPropertiesWithNumber(geoJSON);
+  let allProp = findAllProperties(geoJSON);
   let JSONtype = findFeatureType(geoJSON);
   let baseStyle = {
     type: JSONtype,
@@ -321,7 +321,7 @@ export function setStyle(self, layerIndex, style) {
       });
 
       //events
-      eventsManager.configureEvents(self, geoJSONinLayer, leafLetLayer, layerIndex);
+      configureEvents(self, geoJSONinLayer, leafLetLayer, layerIndex);
     }
   }
   leafLetLayer.eachLayer(function (layer) {
