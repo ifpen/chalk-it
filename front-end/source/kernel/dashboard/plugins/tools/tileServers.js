@@ -8,7 +8,7 @@
 
 import _ from 'lodash';
 
-function tileServersList() {
+export function tileServersList() {
   var azureMapboxUrl = 'https://xdashgateway.azure-api.net/mapbox/tiles?z={z}&x={x}&y={y}';
   var azureMapboxUrlGeneral = 'https://xdashgateway.azure-api.net/mapbox/tilesgeneral?z={z}&x={x}&y={y}&id={id}';
   let tileServersOptions = {};
@@ -53,7 +53,7 @@ function tileServersList() {
   return tileServersOptions;
 }
 
-function getTileServerConf(ts) {
+export function getTileServerConf(ts) {
   var tileServersObj = tileServersList();
   var tileConf = {
     url: tileServersObj[ts].url,
@@ -92,11 +92,4 @@ function getTileServerConf(ts) {
     tileConf.zoomOffset = tileServersObj[ts].zoomOffset;
   }
   return tileConf;
-}
-
-export function tileServers() {
-  return {
-    list: tileServersList,
-    getTileServerConf: (ts) => getTileServerConf(ts),
-  };
 }

@@ -9,7 +9,7 @@
 // Important Style Behavior : Style will be available as out from the map first only in View mode
 // The contact between the widget and out properties is only done at first enable
 import 'leaflet';
-import L from 'leaflet';
+import * as L from 'leaflet';
 
 // !! Order matters, a lot !!
 import 'simpleheat';
@@ -29,12 +29,12 @@ import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
-import { colorScaleManager } from 'kernel/dashboard/plugins/tools/colorScaleManager';
-import { tileServers } from 'kernel/dashboard/plugins/tools/tileServers';
-import { geoJsonTools } from 'kernel/dashboard/plugins/tools/geoJsonTools';
-import { legends } from 'kernel/dashboard/plugins/tools/legends';
-import { styleManager } from 'kernel/dashboard/plugins/tools/styleManager';
-import { eventsManager } from 'kernel/dashboard/plugins/tools/eventsManager';
+import { getColor,getColorScaleFromStyle,getColorScale } from 'kernel/dashboard/plugins/tools/colorScaleManager';
+import { getTileServerConf } from 'kernel/dashboard/plugins/tools/tileServers';
+import { findAllProperties,findFeatureType,getFillColor,isValidGeoJSON } from 'kernel/dashboard/plugins/tools/geoJsonTools';
+import { createLegend,createChoroplethLegend} from 'kernel/dashboard/plugins/tools/legends';
+import { createTemplateStyle,setStyle } from 'kernel/dashboard/plugins/tools/styleManager';
+import { configureEvents } from 'kernel/dashboard/plugins/tools/eventsManager';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -95,25 +95,25 @@ function mapGeoJsonWidgetsPluginClass() {
             modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
               if (index < modelsHiddenParams[idInstance].GeoJSONStyle.style.length) {
                 if (
-                  geoJsonTools.findFeatureType(item) !== modelsHiddenParams[idInstance].GeoJSONStyle.style[index].type
+                  findFeatureType(item) !== modelsHiddenParams[idInstance].GeoJSONStyle.style[index].type
                 ) {
-                  modelsHiddenParams[idInstance].GeoJSONStyle.style[index] = self.createTemplateStyle(
+                  modelsHiddenParams[idInstance].GeoJSONStyle.style[index] = createTemplateStyle(
                     self,
                     item,
                     index
                   ); // reset when old/previous geojson changed type
                 } else if (
-                  JSON.stringify(geoJsonTools.findAllProperties(item)) !==
+                  JSON.stringify(findAllProperties(item)) !==
                   JSON.stringify(modelsHiddenParams[idInstance].GeoJSONStyle.style[index].allProperties)
                 ) {
-                  modelsHiddenParams[idInstance].GeoJSONStyle.style[index] = self.createTemplateStyle(
+                  modelsHiddenParams[idInstance].GeoJSONStyle.style[index] = createTemplateStyle(
                     self,
                     item,
                     index
                   );
                 }
               } else {
-                modelsHiddenParams[idInstance].GeoJSONStyle.style.push(self.createTemplateStyle(self, item, index));
+                modelsHiddenParams[idInstance].GeoJSONStyle.style.push(createTemplateStyle(self, item, index));
               }
             });
           }
@@ -124,8 +124,8 @@ function mapGeoJsonWidgetsPluginClass() {
 
     this.rescale = function () {};
 
-    this.getColorScale = colorScaleManager.getColorScale;
-    this.getColorScaleFromStyle = colorScaleManager.getColorScaleFromStyle;
+    this.getColorScale =  getColorScale;
+    this.getColorScaleFromStyle = getColorScaleFromStyle;
     this.addImageOverlay = function (imgStruct) {
       //securities
       if (_.isUndefined(imgStruct)) return;
@@ -262,7 +262,7 @@ function mapGeoJsonWidgetsPluginClass() {
       }
     };
 
-    this.getFillColor = geoJsonTools.getFillColor;
+    this.getFillColor = getFillColor;
 
     // Create a Layer from a GeoJSON
     // Simple function dont take into account the style
@@ -280,7 +280,7 @@ function mapGeoJsonWidgetsPluginClass() {
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
       let leafletIndex = self.getLefletIndex(leafletLayer);
-      eventsManager.configureEvents(self, geoJSON, leafletLayer, leafletIndex);
+      configureEvents(self, geoJSON, leafletLayer, leafletIndex);
       //add layer
       //TO DO check GeoJSON Type :
       //radio button
@@ -291,18 +291,17 @@ function mapGeoJsonWidgetsPluginClass() {
 
     // Create the style object that will be in out JSON for a geoJSON
     // typeLayer is used for marker or circle
-    this.createTemplateStyle = styleManager.createTemplateStyle;
-    this.getColor = colorScaleManager.getColor;
+    this.getColor = getColor;
 
     this.createChoroplethLegend = function (legendId, min, max, featureTitle, colorScale) {
-      let legend = legends.createChoroplethLegend(legendId, self.getColor, min, max, featureTitle, colorScale);
+      let legend = createChoroplethLegend(legendId, self.getColor, min, max, featureTitle, colorScale);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }
       return legend;
     };
     this.createLegend = function (legendId, color, length, colorStops, min, max, featureTitle) {
-      let legend = legends.createLegend(legendId, color, length, colorStops, min, max, featureTitle);
+      let legend = createLegend(legendId, color, length, colorStops, min, max, featureTitle);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }
@@ -315,17 +314,13 @@ function mapGeoJsonWidgetsPluginClass() {
     this.style = function () {
       let config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
       let ts = 'MapboxStreets';
-      let defaultCenter = self.defaultConfig.defaultCenter;
       if (!_.isUndefined(config)) {
         // defaultCenter = config.defaultCenter;
         ts = config.tileServer;
       }
-      if (!_.isUndefined(tileServers)) {
-        //update tile server
-        var tileConf = tileServers.getTileServerConf(ts);
-        self.baseLayer = L.tileLayer(tileConf.url, tileConf);
-        self.baseLayer.addTo(self.map);
-      }
+      var tileConf = getTileServerConf(ts);
+      self.baseLayer = L.tileLayer(tileConf.url, tileConf);
+      self.baseLayer.addTo(self.map);
 
       //update view
       // setZoom
@@ -373,7 +368,7 @@ function mapGeoJsonWidgetsPluginClass() {
       //update style
       if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style))
         modelsHiddenParams[idInstance].GeoJSONStyle.style.forEach(function (d, index) {
-          self.setStyle(self, index, d);
+          setStyle(self, index, d);
         });
 
       if (self.styleChanged) {
@@ -382,8 +377,6 @@ function mapGeoJsonWidgetsPluginClass() {
       }
     };
 
-    // Set Style on GeoJSON layer
-    this.setStyle = styleManager.setStyle;
     // GeoJSON Schema V0.7
 
     const _SCHEMA_GEOJSON_INPUT = {
@@ -453,7 +446,7 @@ function mapGeoJsonWidgetsPluginClass() {
       setValue: function (val) {
         modelsHiddenParams[idInstance].GeoJSON = [];
         if (!Array.isArray(val)) {
-          if (geoJsonTools.isValidGeoJSON(val)) {
+          if (isValidGeoJSON(val)) {
             modelsHiddenParams[idInstance].GeoJSON.push(val);
           } else {
             throw new Error('Invalid GeoJSON ');
@@ -461,7 +454,7 @@ function mapGeoJsonWidgetsPluginClass() {
         } else {
           for (let index = 0; index < val.length; index++) {
             const geojson = val[index];
-            if (geoJsonTools.isValidGeoJSON(geojson)) {
+            if (isValidGeoJSON(geojson)) {
               modelsHiddenParams[idInstance].GeoJSON.push(geojson);
             } else {
               throw new Error('Invalid GeoJSON at index = ' + index);
