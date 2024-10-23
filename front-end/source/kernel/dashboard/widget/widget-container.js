@@ -9,81 +9,272 @@
 // └────────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'lodash';
 
-import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { widgetFactory } from 'kernel/dashboard/widget/widget-factory';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
-import { editorSingletons } from 'kernel/editor-singletons';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { getElementLayoutPx, applyGeometry } from 'kernel/dashboard/widget/widget-placement';
+import { convertVhtoPx, convertVwtoPx } from 'kernel/dashboard/scaling/scaling-utils';
 import {
-  getElementLayoutPx,
-  computeContainerRelativeLayout,
-  computeMaxHeightPx,
-  computeMaxWidthPx,
-  enforceConstraints,
-} from 'kernel/dashboard/widget/widget-placement';
-import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
-import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
+  modelsHiddenParams,
+  modelsParameters,
+  modelsTempParams,
+  modelsLayout,
+  models,
+} from 'kernel/base/widgets-states';
+import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
 
 const minWidgetWidthCst = 32;
 const minWidgetHeightCst = 32;
 
-class WidgetContainer {
+const DEFAULT_HEIGHT = 743;
+const DEFAULT_WIDTH = 1679;
+
+export class WidgetContainer {
   constructor() {
     this.wcNum = 100;
+
+    /*
+        widget id => {
+          layout: { top: number, left: number, width: number, height: number, zIndex: number, page?: number },
+          containerDiv: HTMLElement,
+          modelJsonId: string,
+          widgetDivId: string,
+          widgetDiv: HTMLElement,
+          instance : baseWidget,
+        }
+     */
+    this.widgetsInfo = new Map();
+
+    this.currentPage = undefined;
+    this.pageNames = undefined;
+
+    this.width = DEFAULT_WIDTH;
+    this.height = DEFAULT_HEIGHT; // TODO infinite
+
+    this.drpd = document.getElementById('DropperDroite');
+
+    this.setMargins(10);
+  }
+
+  setMargins(value) {
+    this.margins = value;
+    this.drpd.style.padding = `${value}px`;
+
+    // TODO resize
+  }
+
+  delete(instanceId) {
+    const widgetInfo = this.widgetsInfo.get(instanceId);
+
+    this.widgetsInfo.delete(instanceId);
+    widgetInfo.containerDiv.parentNode.remove();
+    this.#deleteData(instanceId);
+  }
+
+  clear() {
+    for (const instanceId in this.widgetsInfo.keys()) {
+      this.#deleteData(instanceId);
+    }
+
+    this.widgetsInfo.clear();
+    this.drpd.innerHTML = '';
+  }
+
+  #deleteData(instanceId) {
+    if (!_.isUndefined(modelsParameters[instanceId])) {
+      delete modelsParameters[instanceId];
+    }
+    if (!_.isUndefined(models[instanceId])) {
+      delete models[instanceId];
+    }
+    if (!_.isUndefined(modelsHiddenParams[instanceId])) {
+      delete modelsHiddenParams[instanceId];
+    }
+    if (!_.isUndefined(modelsTempParams[instanceId])) {
+      delete modelsTempParams[instanceId];
+    }
   }
 
   /**
    * @description Get an ID for containerDiv (such WidgetContainer1xx)
    */
-  getWidgetContainerId() {
+  #nextWidgetContainerId() {
     this.wcNum = this.wcNum + 1;
     return `WidgetContainer${this.wcNum}`;
   }
 
   /**
-   * @description Puts cln on targetDiv
-   * @param {any} cln (mandatory) mainDiv
-   * @param {any} targetDiv (optional) where to put mainDiv
+   *
+   * @param {String} modelJsonId model template ID
+   * @param {object=} wLayout
+   * @param {number=} wzIndex (optional) used if provided, last widget has highest zIndex otherwise
+   * @param {number=} page (optional)
+   * @returns {object} layout
    */
-  putAndGetTargetDiv(cln, targetDiv) {
-    if (!targetDiv) {
-      targetDiv = editorSingletons.layoutMgr.getDefaultContainer();
+  createLayout(modelJsonId, wLayout, wzIndex, page) {
+    wLayout ??= {};
+    wLayout.zIndex = wzIndex ?? this.nextZIndex();
+    if (this.pageNames) {
+      wLayout.page = page ?? this.currentPage ?? 0;
+      wLayout.page = Math.min(wLayout.page, this.pageNames.length - 1);
     }
-    targetDiv.appendChild(cln); // put cln in dashboard
-    return targetDiv;
+
+    const defaults = this.defaultLayoutPx(modelJsonId);
+    wLayout.top ??= 0;
+    wLayout.left ??= 0;
+    wLayout.width ??= defaults.width ?? minWidgetWidthCst;
+    wLayout.height ??= defaults.height ?? minWidgetHeightCst;
+
+    if (defaults.minWidth) {
+      wLayout.width = Math.max(wLayout.width, defaults.minWidth);
+    }
+    if (defaults.minHeight) {
+      wLayout.height = Math.max(wLayout.height, defaults.minHeight);
+    }
+
+    // TODO coords constrain
+
+    return wLayout;
+  }
+
+  defaultLayoutPx(modelJsonId) {
+    const result = {};
+    for (let [k, v] of Object.entries(modelsLayout[modelJsonId])) {
+      if (typeof v === 'string') {
+        if (v.endsWith('vh')) {
+          v = convertVhtoPx(v);
+        } else if (v.endsWith('vw')) {
+          v = convertVwtoPx(v);
+        } else {
+          v = rmUnit(v);
+        }
+
+        result[k] = Math.round(v);
+      }
+    }
+    return result;
+  }
+
+  minimumSize(instanceId) {
+    const widgetInfo = this.widgetsInfo.get(instanceId);
+    if (widgetInfo) {
+      const defaults = this.defaultLayoutPx(widgetInfo.modelJsonId);
+      return {
+        minWidth: defaults.minWidth ?? minWidgetWidthCst,
+        minHeight: defaults.minHeight ?? minWidgetHeightCst,
+      };
+    } else {
+      throw new Error(`Instance not found ${instanceId}`);
+    }
+  }
+
+  availableSpace() {
+    return {
+      width: this.width - 2 * this.margins,
+      height: this.height - 2 * this.margins,
+    };
+  }
+
+  get widgetIds() {
+    return new Set(this.widgetsInfo.keys());
   }
 
   /**
-   * @description Propagates mainDiv layout to containerDiv layout
-   * @param {any} cln mainDiv DOM element
-   * @param {any} div containerDiv DOM element
+   * Widget abstract factory
+   * @param {any} modelJsonId  model template ID
+   * @param {String=} instanceId  used if provided, will be created otherwise
+   * @param {HTMLElement} cln
+   * @param {any=} wLayout  used if provided, defaults used otherwise
+   * @param {number=} wzIndex  used if provided, last widget has highest zIndex otherwise
+   * @param {number=} page
    */
-  computeAndApplyContainerDivLayout(cln, div) {
-    var w =
-      parseFloat(cln.style.width.substring(0, cln.style.width.length - 2)) -
-      2 * (100 / document.documentElement.clientWidth);
-    var h =
-      parseFloat(cln.style.height.substring(0, cln.style.height.length - 2)) -
-      2 * (100 / document.documentElement.clientHeight);
-    div.style.width = w.toString() + 'vw';
-    div.style.height = h.toString() + 'vh';
+  createWidget(modelJsonId, instanceId, cln, wLayout, wzIndex, page) {
+    wLayout = this.createLayout(modelJsonId, wLayout, wzIndex, page);
 
-    if (cln.style.minWidth != '') {
-      div.style.minWidth = parseFloat(cln.style.minWidth) - 5 + 'px';
-      div.style.width =
-        Math.max(
-          parseFloat(div.style.minWidth) * (100 / document.documentElement.clientWidth),
-          parseFloat(div.style.width)
-        ) + 'vw';
+    // add widgetTitle to identify widget type with tooltip
+    let widgetTitle = widgetsPluginsHandler.widgetToolbarDefinitions[modelJsonId].title ?? '';
+    if (widgetTitle) widgetTitle += ' ';
+
+    const aElement = document.createElement('a');
+    aElement.id = `DIV_${instanceId}`;
+    aElement.title = `${widgetTitle}(${instanceId})`;
+    aElement.appendChild(cln);
+
+    // generate containerDiv id
+    const wcId = this.#nextWidgetContainerId();
+    const div = document.createElement('div');
+    div.id = wcId;
+    cln.appendChild(div);
+
+    this.#applyLayout(cln, wLayout);
+
+    this.drpd.appendChild(aElement);
+
+    try {
+      const wo = widgetInstance.createWidget(wcId, modelJsonId, instanceId);
+      this.widgetsInfo.set(instanceId, {
+        layout: wLayout,
+        containerDiv: cln,
+        modelJsonId,
+        widgetDivId: wcId,
+        widgetDiv: div,
+        instance: wo,
+      });
+    } catch (ex) {
+      aElement.remove();
+      throw ex;
     }
-    if (cln.style.minHeight != '') {
-      div.style.minHeight = parseFloat(cln.style.minHeight) - 5 + 'px';
-      div.style.height =
-        Math.max(
-          parseFloat(div.style.minHeight) * (100 / document.documentElement.clientHeight),
-          parseFloat(div.style.height)
-        ) + 'vh';
+  }
+
+  getWidgetContainerDiv(instanceId) {
+    const info = this.widgetsInfo.get(instanceId);
+    return info?.containerDiv;
+  }
+
+  getWidgetLayout(instanceId) {
+    const info = this.widgetsInfo.get(instanceId);
+    return info ? { ...info.layout } : undefined;
+  }
+
+  getCurrentWidgetGeometry(instanceId) {
+    const info = this.widgetsInfo.get(instanceId);
+    if (info) {
+      return getElementLayoutPx(info.containerDiv);
+    } else {
+      return undefined;
     }
+  }
+
+  getRecordedGeometry(instanceId) {
+    const { top, left, height, width } = this.getWidgetLayout(instanceId);
+    return { top, left, height, width };
+  }
+
+  changeWidgetGeometry(instanceId, geometry) {
+    const containerDiv = this.getWidgetContainerDiv(instanceId);
+    this.#changeDivGeometry(containerDiv, geometry);
+  }
+
+  resetWidgetGeometry(instanceId) {
+    this.changeWidgetGeometry(instanceId, this.getRecordedGeometry(instanceId));
+  }
+
+  #applyLayout(container, layout) {
+    this.#changeDivGeometry(container, layout);
+
+    if (layout.zIndex !== undefined) {
+      container.style.zIndex = layout.zIndex;
+    }
+
+    const show = this.currentPage === undefined || this.currentPage === layout.page;
+    container.style.display = show ? 'block' : 'none';
+  }
+
+  #changeDivGeometry(containerDiv, geometry) {
+    applyGeometry(containerDiv, geometry);
+
+    // Needed for CSS rule on ".widget" displaying the size
+    containerDiv.setAttribute('item-width', geometry.width);
+    containerDiv.setAttribute('item-height', geometry.height);
   }
 
   /**
@@ -91,188 +282,82 @@ class WidgetContainer {
    * @param {any} element
    */
   /*--------Replace current Widget--------*/
-  replaceWidget(element) {
-    let wcId;
-    for (let ch = element.childNodes.length - 1; ch >= 0; ch--) {
-      const child = element.childNodes[ch];
-      const childId = child.id;
-      if (childId.startsWith('WidgetContainer')) {
-        // MBG temp : to move to widget object
-        wcId = childId;
-        element.removeChild(child);
-        break; // There should be exactly one "WidgetContainer"
-      }
-    }
+  replaceWidget(elementId) {
+    const widgetInfo = this.widgetsInfo.get(elementId);
 
-    element.style.top = unitH(element.offsetTop);
-    element.style.left = unitW(element.offsetLeft);
-    element.style.height = unitH(element.offsetHeight);
-    element.style.width = unitW(element.offsetWidth);
-
-    element.setAttribute('item-width', element.offsetWidth);
-    element.setAttribute('item-height', element.offsetHeight);
-
+    widgetInfo.widgetDiv.remove();
     const div = document.createElement('div');
-    div.style.height = unitH(element.offsetHeight - 2);
-    div.style.width = unitW(element.offsetWidth - 2);
-    div.style.minWidth = parseFloat(element.style.minWidth) - 5 + 'px';
-    div.style.minHeight = parseFloat(element.style.minHeight) - 5 + 'px';
-    div.id = wcId;
+    div.id = widgetInfo.widgetDivId;
+    widgetInfo.containerDiv.appendChild(div);
+    widgetInfo.widgetDiv = div;
 
-    element.appendChild(div);
-    const modelJsonIdStr = element.id.substring(0, element.id.length - 1);
-
-    const instanceId = element.id;
-    const widgetEditor = editorSingletons.widgetEditor;
-    const widgetTitle = widgetEditor.widgetContainers.get(instanceId).widgetTitle; //AEF
-    widgetEditor.widgetObject[instanceId] = widgetsPluginsHandler.copyWidget(
-      wcId,
-      modelJsonIdStr,
-      widgetEditor.widgetObject[instanceId],
-      instanceId,
+    widgetInfo.instance = widgetsPluginsHandler.copyWidget(
+      widgetInfo.widgetDivId,
+      widgetInfo.modelJsonId,
+      widgetInfo.instance,
+      elementId,
       false
     );
-    widgetEditor.widgetContainers.set(instanceId, {
-      id: instanceId,
-      instanceId: instanceId,
-      modelJsonId: modelJsonIdStr,
-      name: instanceId,
-      divContainer: div,
-      divModel: element,
-      widgetObj: widgetEditor.widgetObject[instanceId],
-      widgetTitle: widgetTitle, //AEF
-    });
-    return div;
   }
 
   /**
-   * @description Gets the minWidth property of the element in px
-   * @param {any} element
+   * @description Enforces that widget layout respects container constraints in terms of:
+   * - width and height (always inside container)
+   * - left and top
+   * @param {any} widgetLayoutPx
+   * @param {any} containerLayoutPx (with no margins)
    */
-  getMinWidth(element) {
-    var minWidth = minWidgetWidthCst;
-    if (element.style.minWidth != '') {
-      minWidth = parseFloat(rmUnit(element.style.minWidth));
-    }
-    return minWidth;
-  }
+  enforceConstraints(widgetLayoutPx) {
+    const available = this.availableSpace();
 
-  /**
-   * @description Gets the minHeight property of the element in px
-   * @param {any} element
-   */
-  getMinHeight(element) {
-    var minHeight = minWidgetHeightCst;
-    if (element.style.minHeight != '') {
-      minHeight = parseFloat(rmUnit(element.style.minHeight));
-    }
-    return minHeight;
-  }
+    // Simplified notation
+    let w_t = widgetLayoutPx.top,
+      w_l = widgetLayoutPx.left,
+      w_h = widgetLayoutPx.height,
+      w_w = widgetLayoutPx.width;
+    let c_t = 0,
+      c_l = 0,
+      c_h = available.height,
+      c_w = available.width;
 
-  /**
-   * @description Computes the maxWidth property of widget considering its container
-   * @param {any} element
-   */
-  getMaxWidth(element) {
-    const widgetLayoutPx = getElementLayoutPx(element);
-    const container = editorSingletons.widgetEditor.getContainer(element);
-    const absoluteContainerLayoutPx = getElementLayoutPx(container);
-    const maxWidthPx = computeMaxWidthPx(widgetLayoutPx, absoluteContainerLayoutPx);
-    return maxWidthPx;
-  }
+    // Deduced variables
+    let w_b = w_t + w_h;
+    let w_r = w_l + w_w;
+    let c_b = c_t + c_h;
+    let c_r = c_l + c_w;
 
-  /**
-   * @description Computes the maxHeight property of widget considering its container
-   * @param {any} element
-   */
-  getMaxHeight(element) {
-    const widgetLayoutPx = getElementLayoutPx(element);
-    const container = editorSingletons.widgetEditor.getContainer(element);
-    const absoluteContainerLayoutPx = getElementLayoutPx(container);
-    const maxHeightPx = computeMaxHeightPx(widgetLayoutPx, absoluteContainerLayoutPx);
-    return maxHeightPx;
-  }
+    // Dimension rules
+    if (w_h > c_h) {
+      w_h = c_h;
+      w_b = w_t + c_h;
+    } // max widget height equals container height
+    if (w_w > c_w) {
+      w_w = c_w;
+      w_r = w_l + c_w;
+    } // max widget width equals container width
 
-  /**
-   * /@description Gets widget floating state
-   * @param {any} element
-   * @returns FLOATING, FIXED
-   */
-  getFloatingState(element) {
-    if (editorSingletons.layoutMgr.isRowColMode()) {
-      if (element.parentNode.parentNode.id === 'DropperDroite') {
-        return 'FLOATING';
-      } else {
-        return 'FIXED';
-      }
-    } else {
-      return 'FIXED';
-    }
-  }
+    // Position rules
+    if (w_t < c_t) {
+      w_t = c_t;
+    } // no top overflow
+    if (w_l < c_l) {
+      w_l = c_l;
+    } // no left overflow
+    if (w_b > c_b) {
+      w_t = c_b - w_h;
+      w_b = c_b;
+    } // no bottom overflow
+    if (w_r > c_r) {
+      w_l = c_r - w_w;
+      w_r = c_r;
+    } // no right overflow
 
-  /**
-   * @description applies a translation to a widget enforcing constraints
-   * @param {any} element
-   * @param {any} translationPx
-   */
-  translateWidgetPx(element, translationPx) {
-    // work on px
-    var widgetLayoutPx = getElementLayoutPx(element);
-    // translate !
-    var requestedLayoutPx = {
-      top: widgetLayoutPx.top + translationPx.top,
-      left: widgetLayoutPx.left + translationPx.left,
-      width: widgetLayoutPx.width,
-      height: widgetLayoutPx.height,
+    return {
+      top: w_t,
+      left: w_l,
+      width: w_w,
+      height: w_h,
     };
-
-    this.moveResizeWidget(element, requestedLayoutPx);
-  }
-
-  /**
-   * @description applies positioning constraints to a position
-   * @param {any} element widget for which the constraining is to be done
-   * @param {{left: number, top: number, width: number, height: number}} requestedLayoutPx layout to contrain
-   * @returns {{left: number, top: number, width: number, height: number}} a corrected layout containing constrained values
-   */
-  constrainLayout(element, requestedLayoutPx) {
-    let containerLayoutPx;
-
-    const layoutMgr = editorSingletons.layoutMgr;
-    if (layoutMgr.isRowColMode()) {
-      // RowColMode
-      const containerDiv = editorSingletons.widgetEditor.getContainer(element);
-      if (this.getFloatingState(element) === 'FIXED') {
-        // work in relative coordinates
-        containerLayoutPx = getElementLayoutPx(containerDiv);
-
-        // Make container relative
-        containerLayoutPx = computeContainerRelativeLayout(containerLayoutPx);
-      } else {
-        // work in absolute coordinates
-        if (containerDiv.id === 'DropperDroite') {
-          // getElementLayoutPx fails because DropperDroite has an offset we don't care about
-          containerLayoutPx = {
-            left: 0,
-            top: 0,
-            width: layoutMgr.maxLeftCst,
-            height: layoutMgr.maxTopCst,
-          };
-        } else {
-          containerLayoutPx = getElementLayoutPx(containerDiv);
-        }
-      }
-    } else {
-      // NotebookMode
-      containerLayoutPx = {
-        left: 0,
-        top: 0,
-        width: layoutMgr.maxLeftCst,
-        height: layoutMgr.maxTopCst,
-      };
-    }
-
-    return enforceConstraints(requestedLayoutPx, containerLayoutPx);
   }
 
   /**
@@ -280,33 +365,18 @@ class WidgetContainer {
    * @param {any} element
    * @param {{left: number, top: number, width: number, height: number}} requestedLayoutPx
    */
-  moveResizeWidget(element, requestedLayoutPx, bDontReact, bIsResize) {
-    let consTranslatedWidgetPx = null;
+  moveResizeWidget(elementId, requestedLayoutPx) {
+    const info = this.widgetsInfo.get(elementId);
 
-    if (!bDontReact) {
-      // safety when called from dragResize
-      if (element.parentNode.parentNode == null) return null;
+    requestedLayoutPx = { ...info.layout, ...requestedLayoutPx }; // Accept partial updates
+    const layout = this.enforceConstraints(requestedLayoutPx);
+    const isResize = layout.width !== info.layout.width || layout.height !== info.layout.height;
 
-      // enforce constaints ;)
-      consTranslatedWidgetPx = this.constrainLayout(element, requestedLayoutPx);
-
-      // apply
-      element.style.top = unitH(consTranslatedWidgetPx.top);
-      element.style.left = unitW(consTranslatedWidgetPx.left);
-      element.style.height = unitH(consTranslatedWidgetPx.height);
-      element.style.width = unitW(consTranslatedWidgetPx.width);
-
-      if (bIsResize) {
-        widgetContainer.replaceWidget(element);
-      }
+    info.layout = { ...info.layout, ...layout }; // enforceConstraints strip the non geometric parts
+    this.#applyLayout(this.getWidgetContainerDiv(elementId), layout, this.currentPage);
+    if (isResize) {
+      this.replaceWidget(elementId);
     }
-
-    // relative coordinates update
-    const $element = $(element);
-    const $container = $(element.parentNode.parentNode);
-    const widgetEditor = editorSingletons.widgetEditor;
-
-    return consTranslatedWidgetPx;
   }
 
   /**
@@ -315,61 +385,11 @@ class WidgetContainer {
    */
   highlightWidgets(elementIds) {
     elementIds.forEach((id) => {
-      const elem = editorSingletons.widgetEditor.widgetContainers.get(id);
-      if (elem && elem.divContainer) {
-        $(elem.divContainer).fadeOut(30).fadeIn(140);
+      const divContainer = this.getWidgetContainerDiv(id);
+      if (divContainer) {
+        $(divContainer).fadeOut(30).fadeIn(140);
       }
     });
-  }
-
-  // ├────────────────────────────────────────────────────────────────────┤ \\
-  // |                        duplication functions                       | \\
-  // ├────────────────────────────────────────────────────────────────────┤ \\
-
-  /*--------duplicateWidgetWithConnection--------*/
-  duplicateWidgetWithConnection(element, instanceId) {
-    instanceId = this.duplicateWidget(element, instanceId);
-    if (!_.isUndefined(widgetConnector.widgetsConnection[element.id])) {
-      widgetConnector.duplicateConnection(instanceId, element);
-    }
-    return instanceId;
-  }
-
-  /*--------duplicateWidget--------*/
-  duplicateWidget(element, instanceId) {
-    // TODO check id not used
-
-    const modelJsonIdStr = element.id.substring(0, element.id.length - 1);
-    // work on px
-    const widgetLayoutPx = getElementLayoutPx(element);
-    // translate !
-    const requestedLayoutPx = {
-      top: widgetLayoutPx.top + 20,
-      left: widgetLayoutPx.left + 20,
-      width: widgetLayoutPx.width,
-      height: widgetLayoutPx.height,
-    };
-    const constrainedLayout = this.constrainLayout(element, requestedLayoutPx);
-    let wLayout = {};
-    wLayout.top = unitH(constrainedLayout.top);
-    wLayout.left = unitW(constrainedLayout.left);
-    wLayout.height = unitH(constrainedLayout.height);
-    wLayout.width = unitW(constrainedLayout.width);
-
-    // MBG : TODO : factory have to automatically create instance ID
-    if (!instanceId) {
-      instanceId = widgetFactory.createUniqueInstanceId(modelJsonIdStr);
-    }
-    // MBG : TODO : extend factory to transmit modelsHiddenParams
-    // MBG : TODO : rename globally modelsHiddenParams to instanceHiddenParams
-    // MBG : TODO : rename globally modelsParameters to instanceParameters
-    modelsHiddenParams[instanceId] = jQuery.extend(true, {}, modelsHiddenParams[element.id]);
-    modelsParameters[instanceId] = jQuery.extend(true, {}, modelsParameters[element.id]);
-
-    const widgetEditor = editorSingletons.widgetEditor;
-    const targetDiv = widgetEditor.getContainer(element);
-    widgetEditor.addWidget(modelJsonIdStr, targetDiv, instanceId, wLayout);
-    return instanceId;
   }
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
@@ -378,27 +398,27 @@ class WidgetContainer {
 
   /**
    * Sorts widgets by their zIndex
-   * @param {Array.<Object>} elements Array of widgets to sort
-   * @returns {Array.<Object>} the sorted array
+   * @param {Array.<string>} elements Array of widgets ids to sort
+   * @returns {Array.<string>} the sorted array
    */
-  static #sortByZ(elements) {
-    return elements.sort((a, b) => a.divModel.style.zIndex - b.divModel.style.zIndex);
+  #sortByZ(elements) {
+    const zIndex = this.getZIndices();
+    return elements.sort((a, b) => zIndex.get(a) - zIndex.get(b));
   }
 
   /**
    * Separates the widgets of the widgetEditor into a selected array and an unselected array
    * @param {Array.<string>} elementIds a selection of widget ids
-   * @returns {Array.<Array.<Object>>} two arrays containing respectively the selection and the rest
+   * @returns {Array.<Array.<string>>} two arrays containing respectively the selection and the rest
    */
-  static #splitWidgets(elementIds) {
+  #splitWidgets(elementIds) {
     const sel = [];
     const rest = [];
-    const widgetEditor = editorSingletons.widgetEditor;
-    for (const [key, val] of widgetEditor.widgetContainers) {
+    for (const key of this.widgetIds) {
       if (elementIds.includes(key)) {
-        sel.push(val);
+        sel.push(key);
       } else {
-        rest.push(val);
+        rest.push(key);
       }
     }
     return [sel, rest];
@@ -406,33 +426,29 @@ class WidgetContainer {
 
   /**
    * Reaffect Zs to widgets using the provided order
-   * @param {Array.<Object>} elements An ordered array of widgets
+   * @param {Array.<string>} elements An ordered array of widget ids
    * @returns {Map.<string, number>} A map of widget ids to Z value
    */
   static #renumberZ(elements) {
     let z = 1;
     const indices = new Map();
-    elements.forEach((element) => indices.set(element.instanceId, z++));
+    elements.forEach((element) => indices.set(element, z++));
     return indices;
   }
 
   /**
    * Gets the maximum zIndex of all widgets in the widgetEditor
-   * @returns {?number} A map of widget ids to Z value
+   * @returns {?number} the max zIndex, or 0 when there are no widgets
    */
-  getMaxZIndex() {
-    let max = null;
-    const widgetEditor = editorSingletons.widgetEditor;
-    for (const element of widgetEditor.widgetContainers.values()) {
-      const z = element.divModel.style.zIndex;
-      if (z !== undefined) {
-        const zVal = parseInt(z, 10);
-        if (!isNaN(zVal) && (max === null || max < zVal)) {
-          max = zVal;
-        }
-      }
-    }
-    return max;
+  #getMaxZIndex() {
+    return this.widgetsInfo.size ? Math.max(...this.widgetsInfo.values().map((l) => l.layout.zIndex)) : null;
+  }
+
+  /**
+   * @returns {number} appropriate zIndex to place a new widget above all previous ones
+   */
+  nextZIndex() {
+    return (this.#getMaxZIndex() ?? 0) + 1;
   }
 
   /**
@@ -440,11 +456,20 @@ class WidgetContainer {
    * @param {Map.<string, number>} indices the new zIndexes, stored by widget id
    */
   setZIndices(indices) {
-    const containers = editorSingletons.widgetEditor.widgetContainers;
     for (const [key, z] of indices) {
-      const widget = containers.get(key);
-      if (widget && widget.divModel.style.zIndex !== z) {
-        widget.divModel.style.zIndex = z;
+      const layout = this.getWidgetLayout(key);
+      if (layout) {
+        if (layout.zIndex !== z) {
+          layout.zIndex = z;
+          const div = this.getWidgetContainerDiv(key);
+          if (div) {
+            div.style.zIndex = z;
+          } else {
+            throw new Error(`No widgetContainers for ${key}`);
+          }
+        }
+      } else {
+        throw new Error(`No widgetLayouts for ${key}`);
       }
     }
   }
@@ -455,9 +480,8 @@ class WidgetContainer {
    */
   getZIndices() {
     const indices = new Map();
-    const widgetEditor = editorSingletons.widgetEditor;
-    for (const [key, widget] of widgetEditor.widgetContainers) {
-      indices.set(key, widget.divModel.style.zIndex);
+    for (const [key, info] of this.widgetsInfo) {
+      indices.set(key, info.layout.zIndex);
     }
     return indices;
   }
@@ -467,8 +491,8 @@ class WidgetContainer {
    * @param {Array.<string>} elementIds the ids of widgets to move to the foreground
    */
   putWidgetAtForeground(elementIds) {
-    const [sel, rest] = WidgetContainer.#splitWidgets(elementIds);
-    const newOrder = [...WidgetContainer.#sortByZ(rest), ...WidgetContainer.#sortByZ(sel)];
+    const [sel, rest] = this.#splitWidgets(elementIds);
+    const newOrder = [...this.#sortByZ(rest), ...this.#sortByZ(sel)];
     const newZs = WidgetContainer.#renumberZ(newOrder);
     this.setZIndices(newZs);
   }
@@ -478,11 +502,9 @@ class WidgetContainer {
    * @param {Array.<string>} elementIds the ids of widgets to move to the background
    */
   putWidgetAtBackground(elementIds) {
-    const [sel, rest] = WidgetContainer.#splitWidgets(elementIds);
-    const newOrder = [...WidgetContainer.#sortByZ(sel), ...WidgetContainer.#sortByZ(rest)];
+    const [sel, rest] = this.#splitWidgets(elementIds);
+    const newOrder = [...this.#sortByZ(sel), ...this.#sortByZ(rest)];
     const newZs = WidgetContainer.#renumberZ(newOrder);
     this.setZIndices(newZs);
   }
 }
-
-export const widgetContainer = new WidgetContainer();

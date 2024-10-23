@@ -14,10 +14,9 @@ import {
   EVENTS_EDITOR_SELECTION_CHANGED,
   EVENTS_EDITOR_ADD_REMOVE_WIDGET,
   EVENTS_EDITOR_CONNECTIONS_CHANGED,
+  EVENTS_EDITOR_WIDGET_TOGGLE_MENU,
 } from './editor.events';
-import { keyShift, minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
-import { getWidgetLayoutPx, getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
-import { editorSingletons } from 'kernel/editor-singletons';
+import { keyShift } from 'kernel/dashboard/scaling/layout-mgr';
 
 angular.module('modules.editor').controller('EditorController', [
   '$scope',
@@ -46,18 +45,24 @@ angular.module('modules.editor').controller('EditorController', [
   ) {
     $rootScope.moduleOpened = true; //AEF
 
+    // TODO have initEditWidget here in a $postLink()
+
     const vm = this;
 
     const selection_event = EVENTS_EDITOR_SELECTION_CHANGED;
     const add_remove_widget_event = EVENTS_EDITOR_ADD_REMOVE_WIDGET;
     const connnection_update_event = EVENTS_EDITOR_CONNECTIONS_CHANGED;
+    const widget_menu_event = EVENTS_EDITOR_WIDGET_TOGGLE_MENU;
 
-    var copiedWidget;
+    let copiedWidgets;
 
     vm.selection = [];
     vm.widgetExists = false;
     vm.connectionsExists = false;
+
     vm.menuWidgetVisible = false;
+    vm.menuWidgetTargetId = null;
+    eventCenterService.addListener(widget_menu_event, _toggleWidgMenu);
 
     function _getSelection() {
       const widgetEditor = widgetEditorGetter();
@@ -85,7 +90,7 @@ angular.module('modules.editor').controller('EditorController', [
 
     eventCenterService.addListener(selection_event, _selectionCallback);
 
-    const _addRmCallback = () => $timeout((vm.widgetExists = !!widgetEditorGetter().widgetContainers.size));
+    const _addRmCallback = () => $timeout((vm.widgetExists = !!widgetEditorGetter().widgetContainer.widgetIds.size));
     eventCenterService.addListener(add_remove_widget_event, _addRmCallback);
 
     const _connectionsChangedCallback = () => $timeout((vm.connectionsExists = _hasConnection()));
@@ -108,11 +113,13 @@ angular.module('modules.editor').controller('EditorController', [
     vm.showGrid = false;
 
     vm.updateBorderInWidgets = function () {
+      // TODO bind
       if (vm.borderInWidgets) $('#DropperDroite').addClass('show-widget-borders');
       else $('#DropperDroite').removeClass('show-widget-borders');
     };
 
     vm.updateShowGrid = function () {
+      // TODO bind
       if (vm.showGrid) $('#DropperDroite').addClass('show-grid');
       else $('#DropperDroite').removeClass('show-grid');
     };
@@ -347,7 +354,7 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.clearDashboard = function _clearDashboard() {
       const widgetEditor = widgetEditorGetter();
-      if (widgetEditor.widgetContainers.size) {
+      if (widgetEditor.widgetContainer.widgetIds.size) {
         swal(
           {
             title: 'Are you sure?',
@@ -382,7 +389,7 @@ angular.module('modules.editor').controller('EditorController', [
       const elementIds = _getSelection();
       if (elementIds && elementIds.length) {
         const textToCopy = elementIds[0];
-        navigator.clipboard
+        navigator.clipboard // TODO clipboard undef iof not HTTPS
           .writeText(textToCopy)
           .then(() => {
             const notice = new PNotify({
@@ -411,10 +418,11 @@ angular.module('modules.editor').controller('EditorController', [
     // <Alignement>
     vm.alignTop = function _alignTop() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const target = elementIds[elementIds.length - 1];
         const action = editorActionFactory.createAlignementTopAction(
-          target,
+          targetId,
           elementIds.filter((it) => it !== target)
         );
         undoManagerService.execute(action);
@@ -423,11 +431,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignBottom = function _alignBottom() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementBottomAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -435,11 +443,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignHorizontal = function _alignHorizontal() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementHorizontalAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -447,11 +455,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignLeft = function _alignLeft() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementLeftAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -459,11 +467,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignVertical = function _alignVertical() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementVerticalAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -471,11 +479,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignRight = function _alignRight() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementRightAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -499,20 +507,19 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.resizeSame = function _resizeSame(param) {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const targetId = elementIds[0];
-        const target = editorSingletons.widgetEditor.widgetContainers.get(targetId).divModel;
-        const targetPos = getElementLayoutPx(target);
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
+        const targetPos = widgetEditor.widgetContainer.getRecordedGeometry(targetId);
         if (param == 'HeightWidth') {
-          const action1 = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width, false);
-          const action2 = editorActionFactory.createSetWidgetHeightAction(elementIds, targetPos.height, false);
+          const action1 = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width);
+          const action2 = editorActionFactory.createSetWidgetHeightAction(elementIds, targetPos.height);
           undoManagerService.execute(action1);
           undoManagerService.execute(action2);
         } else if (param == 'Height') {
-          const action = editorActionFactory.createSetWidgetHeightAction(elementIds, targetPos.height, false);
+          const action = editorActionFactory.createSetWidgetHeightAction(elementIds, targetPos.height);
           undoManagerService.execute(action);
         } else if (param == 'Width') {
-          const action = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width, false);
+          const action = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width);
           undoManagerService.execute(action);
         }
       }
@@ -530,25 +537,22 @@ angular.module('modules.editor').controller('EditorController', [
     vm.copyWidg = function _copyWidg() {
       const elementIds = _getSelection();
       if (elementIds && elementIds.length) {
-        copiedWidget = elementIds;
+        copiedWidgets = elementIds;
       }
-    };
-
-    vm.pasteWidg = function _pasteWidg() {
-      const action = editorActionFactory.createDuplicateWidgetsWithConnectionAction(copiedWidget);
-      undoManagerService.execute(action);
     };
 
     vm.copyWidg = function _copyWidg() {
       const elementIds = _getSelection();
       if (elementIds && elementIds.length) {
-        copiedWidget = elementIds;
+        copiedWidgets = elementIds;
       }
     };
 
     vm.pasteWidg = function _pasteWidg() {
-      const action = editorActionFactory.createDuplicateWidgetsWithConnectionAction(copiedWidget);
-      undoManagerService.execute(action);
+      if (copiedWidgets?.length) {
+        const action = editorActionFactory.createDuplicateWidgetsWithConnectionAction(copiedWidgets);
+        undoManagerService.execute(action);
+      }
     };
 
     vm.deleteWidg = function _deleteWidg() {
@@ -564,16 +568,106 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     ////////////////////
+
+    vm.editorClick = function _editorClick(evt) {
+      _hideWidgMenu();
+    };
+
+    function _toggleWidgMenu(id) {
+      if (vm.menuWidgetTargetId === id && vm.menuWidgetVisible) {
+        _hideWidgMenu();
+        return;
+      } else {
+        vm.menuWidgetTargetId = id;
+        vm.menuWidgetVisible = true;
+      }
+
+      // TODO coords rm
+      let connectedDataNodes = [];
+      let cnxs = widgetConnector.widgetsConnection;
+
+      if (!_.isUndefined(cnxs[id])) {
+        _.each(_.keys(cnxs[id].sliders), (slider) => {
+          let dsName = cnxs[id].sliders[slider].dataNode;
+          if (connectedDataNodes.indexOf(dsName) === -1) {
+            //fix issue#23
+            connectedDataNodes.push(dsName);
+          }
+        });
+      }
+
+      // FIXME dubious
+      const openGraphFromWidget = document.getElementById('openGraphFromWidget');
+      openGraphFromWidget?.setAttribute('name', JSON.stringify(connectedDataNodes));
+
+      const idList = 'menuWidget';
+      const menuElm = document.getElementById(idList);
+
+      // TODO parent ?
+      const mainContainerOffsetHeight = document.getElementById('DropperDroite').offsetHeight;
+
+      // TOODO scale
+      const elm = document.getElementById(id);
+
+      const elementWidth = elm.clientWidth;
+      const elementHeight = elm.clientHeight;
+      const elementOffsetTop = elm.offsetTop;
+      const elementOffsetLeft = elm.offsetLeft;
+
+      const menuWidgetWidth = 247.047; // px
+      const menuWidgetHeight = 443; // px
+      const menuWidgetMarginTop = 30;
+      const menuWidgetMarginBottom = elementHeight - 10;
+
+      const mainContainerHeight = mainContainerOffsetHeight;
+      const elementOffsetBottom = mainContainerOffsetHeight - (elementOffsetTop + elementHeight);
+
+      // TODO fix
+      if (
+        elementOffsetTop + menuWidgetMarginTop + menuWidgetHeight >= mainContainerOffsetHeight &&
+        elementOffsetBottom + menuWidgetMarginBottom + menuWidgetHeight >= mainContainerOffsetHeight
+      ) {
+        menuElm.style.bottom = '10px';
+        menuElm.style.top = 'auto';
+        document.styleSheets[0].addRule('#menuWidget::after', 'top: -5px; transform: rotate(0deg)'); // TODO rules
+      } else if (elementOffsetTop + menuWidgetMarginTop + menuWidgetHeight >= mainContainerHeight) {
+        menuElm.style.bottom = (menuWidgetMarginBottom + elementOffsetBottom).toString() + 'px';
+        menuElm.style.top = 'auto';
+        document.styleSheets[0].addRule(
+          '#menuWidget::after',
+          'top: ' + menuWidgetHeight + 'px; transform: rotate(180deg)'
+        );
+      } else {
+        menuElm.style.top = (elementOffsetTop + menuWidgetMarginTop).toString() + 'px';
+        menuElm.style.bottom = 'auto';
+        document.styleSheets[0].addRule('#menuWidget::after', 'top: -5px; transform: rotate(0deg)');
+      }
+
+      if ((elementWidth + elementOffsetLeft).toString() <= menuWidgetWidth) {
+        menuElm.style.left = '7px';
+        document.styleSheets[0].addRule(
+          '#menuWidget::after',
+          'left: ' + (elementOffsetLeft + elementWidth - 30) + 'px'
+        );
+      } else {
+        menuElm.style.left = (elementWidth + elementOffsetLeft - menuWidgetWidth).toString() + 'px';
+        document.styleSheets[0].addRule('#menuWidget::after', 'left: auto; right: 20px');
+      }
+      menuElm.style.right = 'auto';
+    }
+
     function _hideWidgMenu() {
       vm.menuWidgetVisible = false;
+      vm.menuWidgetTargetId = null;
     }
 
     function _reselectWidg(event) {
+      // TODO coords rm
       //modif to have zndex of menu high
       //put list at dropperD level (for zindex issues). However selection is lost, so we need to put it back
-      const id = 'menuWidget';
-      const name = $('#' + id)[0].getAttribute('name');
-      editorSingletons.widgetEditor.selectWidget($('#' + name)[0]);
+      // const id = 'menuWidget';
+      // const name = $('#' + id)[0].getAttribute('name');
+      // editorSingletons.widgetEditor.selectWidget($('#' + name)[0]);
     }
 
     function _clickOnDataConnection(check) {
@@ -642,7 +736,7 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     vm.getWidgetName = function _getWidgetName() {
-      _reselectWidg();
+      // _reselectWidg();
       _hideWidgMenu();
       _getWidgName();
     };
@@ -714,22 +808,12 @@ angular.module('modules.editor').controller('EditorController', [
       const activeId = _getSelectedActive();
       if (activeId) {
         const widgetEditor = widgetEditorGetter();
-        const widget = widgetEditor.widgetContainers.get(activeId);
-        if (widget && widget.divModel) {
+        const widgetContainer = widgetEditor.widgetContainer;
+        const currentGeometry = widgetContainer.getCurrentWidgetGeometry(activeId);
+        if (currentGeometry) {
           const oldValues = vm.widgetGeometry;
-          const divModel = widget.divModel;
-          vm.widgetGeometry = getWidgetLayoutPx(divModel);
+          vm.widgetGeometry = currentGeometry;
           vm._originalWidgetGeometry = { ...vm.widgetGeometry };
-
-          // Accurate local position for dragged elements. Their position is not usable directly while dragged.
-          const dispX = divModel.getAttribute(widgetEditor.DATA_ATTR_DISPLAY_X);
-          if (dispX) {
-            vm.widgetGeometry.left = parseInt(dispX, 10) - minLeftCst;
-          }
-          const dispY = divModel.getAttribute(widgetEditor.DATA_ATTR_DISPLAY_Y);
-          if (dispY) {
-            vm.widgetGeometry.top = parseInt(dispY, 10) - minTopCst;
-          }
 
           // Do not change a value the user is currently typing! (typing the first digit only to have it
           // replaced with the minimum value is infuriating)
@@ -738,16 +822,16 @@ angular.module('modules.editor').controller('EditorController', [
           if (vm.heigthFocused) vm.widgetGeometry.height = oldValues.height;
           if (vm.widthFocused) vm.widgetGeometry.width = oldValues.width;
 
-          vm.widgetGeometryConstraints.width.min = parseInt(divModel.style['min-width'] || minWidthCst + 'px', 10);
-          vm.widgetGeometryConstraints.height.min = parseInt(divModel.style['min-height'] || minHeightCst + 'px', 10);
+          const minSize = widgetContainer.minimumSize(activeId);
+          const available = widgetContainer.availableSpace();
 
-          const container = widgetEditor.getContainer(divModel);
-          if (container && container.id !== widgetEditor.MAIN_CONTAINER_ID) {
-            vm.widgetGeometryConstraints.top.max = container.offsetHeight - 2 * minTopCst - divModel.offsetHeight;
-            vm.widgetGeometryConstraints.left.max = container.offsetWidth - 2 * minLeftCst - divModel.offsetWidth;
-            vm.widgetGeometryConstraints.height.max = container.offsetHeight - 2 * minTopCst - vm.widgetGeometry.top;
-            vm.widgetGeometryConstraints.width.max = container.offsetWidth - 2 * minLeftCst - vm.widgetGeometry.left;
-          }
+          vm.widgetGeometryConstraints.width.min = minSize.width;
+          vm.widgetGeometryConstraints.height.min = minSize.height;
+
+          vm.widgetGeometryConstraints.top.max = available.height - currentGeometry.height;
+          vm.widgetGeometryConstraints.left.max = available.width - currentGeometry.width;
+          vm.widgetGeometryConstraints.height.max = available.height - currentGeometry.top;
+          vm.widgetGeometryConstraints.width.max = available.width - currentGeometry.left;
 
           return;
         }
@@ -800,7 +884,6 @@ angular.module('modules.editor').controller('EditorController', [
       const geom = vm.widgetGeometry;
       if (
         widgetEditorGetter &&
-        widgetContainerGetter &&
         geom.top !== null &&
         geom.top !== undefined &&
         geom.left !== null &&
@@ -810,9 +893,8 @@ angular.module('modules.editor').controller('EditorController', [
         geom.width !== null &&
         geom.width !== undefined
       ) {
-        const widgetContainer = widgetContainerGetter();
         const widgetEditor = widgetEditorGetter();
-        if (widgetContainer && widgetEditor) {
+        if (widgetEditor) {
           const elementIds = _getSelection();
           if (elementIds && elementIds.length) {
             fct(geom, elementIds);

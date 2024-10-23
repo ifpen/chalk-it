@@ -29,13 +29,13 @@ export function unitH(value) {
 }
 
 /*--------convert vw to px--------*/
-function convertVwtoPx(value) {
+export function convertVwtoPx(value) {
   value = rmUnit(value);
   return (value / 100) * document.documentElement.clientWidth;
 }
 
 /*--------convert vh to px--------*/
-function convertVhtoPx(value) {
+export function convertVhtoPx(value) {
   value = rmUnit(value);
   return (value / 100) * document.documentElement.clientHeight;
 }

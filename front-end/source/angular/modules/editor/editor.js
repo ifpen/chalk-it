@@ -12,7 +12,6 @@ import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { editorSingletons } from 'kernel/editor-singletons';
 import { EventCenter } from './editor.events';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
 
 export const editorModule = angular.module('modules.editor', [dashboardModule.name]).config([
   '$stateProvider',
@@ -32,4 +31,4 @@ editorModule
   .value('WidgetsPluginsHandlerGetter', () => widgetsPluginsHandler)
   .value('WidgetConnectorGetter', () => widgetConnector)
   .value('WidgetEditorGetter', () => editorSingletons.widgetEditor)
-  .value('WidgetContainerGetter', () => widgetContainer);
+  .value('WidgetContainerGetter', () => editorSingletons.widgetEditor.widgetContainer); // TODO coords remove

@@ -6,6 +6,7 @@
 
 // Overrides all container rules
 .container {
+  // TODO coords unused
   width: 100%;
   padding: 0;
 }
@@ -22,4 +23,25 @@ div[id*='div-for-ng-gauge'] {
   background-color: var(--widget-color-0);
   @include make-row();
   @extend .no-gutters;
+}
+
+.dashboard-parent-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.dashboard-page-container {
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.dashboard-content-container {
+  position: relative;
+  overflow: visible;
+
+  .widget {
+    position: absolute;
+  }
 }

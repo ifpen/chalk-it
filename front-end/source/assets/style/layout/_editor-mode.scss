@@ -72,15 +72,17 @@
 }
 
 .dropperR .drsElement {
-  border: 1px solid rgba(255, 255, 255, 0);
+  // TODO coords
+  // border: 1px solid rgba(255, 255, 255, 0);
 }
 
-.dropperR.show-widget-borders:not(#DropperDroitec) .drsElement {
-  border: 1px dashed rgba(0, 0, 0, 0.5);
+.dropperR.show-widget-borders:not([id='DropperDroitec']) .drsElement {
+  outline: 1px dashed rgba(0, 0, 0, 0.5);
 }
 
 .dropperR.show-grid:not(.has-device-col):not(#DropperDroitec),
 .dropperR.show-grid:not(#DropperDroitec) .device-col {
+  background-origin: content-box;
   background-size: 20px 20px;
   background-attachment: local;
   background-image: linear-gradient(to right, #e6e6e6 1px, transparent 1px),
@@ -169,45 +171,32 @@ div > .draggable::-webkit-scrollbar-thumb {
   transition: background-color 0.3s;
 }
 
-#dashboard-editor .drag-drop-move:hover .widget-overlay {
+#dashboard-editor div.drag-drop-move:hover .widget-overlay {
   background-color: rgb(var(--light-color-text-rgb) / 0.1);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected .widget-overlay {
+#dashboard-editor div.drag-drop-move.widget-selected .widget-overlay {
   background-color: rgb(var(--success-color-rgb) / 0.17);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected:hover .widget-overlay {
+#dashboard-editor div.drag-drop-move.widget-selected:hover .widget-overlay {
   background-color: rgb(var(--success-color-rgb) / 0.4);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected {
+#dashboard-editor div.drag-drop-move.widget-selected {
   outline: 2px solid var(--success-color);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected.widget-selected-last .widget-overlay {
+#dashboard-editor div.drag-drop-move.widget-selected.widget-selected-last .widget-overlay {
   background-color: rgb(var(--primary-color-rgb) / 0.17);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected.widget-selected-last:hover .widget-overlay {
+#dashboard-editor div.drag-drop-move.widget-selected.widget-selected-last:hover .widget-overlay {
   background-color: rgb(var(--primary-color-rgb) / 0.4);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected.widget-selected-last {
+#dashboard-editor div.drag-drop-move.widget-selected.widget-selected-last {
   outline: 2px solid var(--primary-color);
-}
-
-.drop-zone-col {
-  // background-color: white;
-  transition: background-color 0.3s;
-}
-
-.drop-zone-col.drop-possible {
-  // background-color: white;
-}
-
-.drop-zone-col.drop-over {
-  // background-color: white;
 }
 
 .dragged-new-widget {
@@ -215,6 +204,7 @@ div > .draggable::-webkit-scrollbar-thumb {
   background: white;
   z-index: 999999;
   pointer-events: none;
+  border: 1px solid black;
 }
 .drag-drop-new {
   cursor: grab;

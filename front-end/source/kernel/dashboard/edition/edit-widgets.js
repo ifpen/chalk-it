@@ -17,17 +17,15 @@ import {
   EVENTS_EDITOR_SELECTION_CHANGED,
   EVENTS_EDITOR_ADD_REMOVE_WIDGET,
   EVENTS_EDITOR_WIDGET_MOVED,
+  EVENTS_EDITOR_WIDGET_TOGGLE_MENU,
 } from 'angular/modules/editor/editor.events';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { widgetFactory } from 'kernel/dashboard/widget/widget-factory';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
-import { enforceConstraints } from 'kernel/dashboard/widget/widget-placement';
-import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
-import { minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
-import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
-import { modelsHiddenParams, modelsParameters, models, modelsTempParams } from 'kernel/base/widgets-states';
+import { getGeometryChanges } from 'kernel/dashboard/widget/widget-placement';
+import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
 import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
-import { widgetContainer } from 'kernel/dashboard/widget/widget-container';
+import { WidgetContainer } from 'kernel/dashboard/widget/widget-container';
+import { createUniqueInstanceId } from 'kernel/dashboard/widget/widget-factory';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { scalingManager } from 'kernel/dashboard/scaling/scaling-manager';
 import { flatUiWidgetsPlugin } from 'kernel/dashboard/plugins/basic/plugin-flat-ui-widgets';
@@ -36,14 +34,10 @@ import { mapWidgetsPlugin } from 'kernel/dashboard/plugins/geo-time/plugin-map-w
 import { bFirstExec } from 'kernel/base/main-common';
 
 export function initEditWidget() {
-  var drprD = $('#DropperDroite')[0]; // short alias
-  // TODO redundent with widgetContainers ?
-  var modelsId = []; // save unique "Instance Id"
+  const drprD = $('#DropperDroite')[0]; // short alias
+  drprD.innerHTML = '';
 
-  // all indexed by widgetObject "Instance Id"
-  var widgetObject = []; // widgetObject object from plugin
-
-  var widgetContainers = new Map();
+  const widgetContainer = new WidgetContainer();
 
   // scaling stuff
   const bNoteBookMode = false; // save or not widgets cache (to be read from the project)
@@ -68,89 +62,7 @@ export function initEditWidget() {
   const SELECTED_CLASS = 'widget-selected';
   const LAST_SELECTED_CLASS = 'widget-selected-last';
 
-  const DATA_ATTR_X = 'data-x';
-  const DATA_ATTR_Y = 'data-y';
-  const DATA_ATTR_X0 = 'data-x0';
-  const DATA_ATTR_Y0 = 'data-y0';
-
-  const DATA_ATTR_HEIGHT = 'data-height';
-  const DATA_ATTR_WIDTH = 'data-width';
-  const DATA_ATTR_HEIGHT0 = 'data-height0';
-  const DATA_ATTR_WIDTH0 = 'data-width0';
-
-  const DATA_ATTR_MIN_RATIO_X = 'data-minRatioX';
-  const DATA_ATTR_MIN_RATIO_Y = 'data-minRatioY';
-  const DATA_ATTR_MAX_RATIO_X = 'data-maxRatioX';
-  const DATA_ATTR_MAX_RATIO_Y = 'data-maxRatioY';
-
-  const DATA_ATTR_DISPLAY_X = 'data-display-x';
-  const DATA_ATTR_DISPLAY_Y = 'data-display-y';
-
-  function _removeDragDropDataAttr(element) {
-    element.removeAttribute(DATA_ATTR_X);
-    element.removeAttribute(DATA_ATTR_Y);
-    element.removeAttribute(DATA_ATTR_X0);
-    element.removeAttribute(DATA_ATTR_Y0);
-
-    element.removeAttribute(DATA_ATTR_HEIGHT);
-    element.removeAttribute(DATA_ATTR_WIDTH);
-    element.removeAttribute(DATA_ATTR_HEIGHT0);
-    element.removeAttribute(DATA_ATTR_WIDTH0);
-
-    element.removeAttribute(DATA_ATTR_MIN_RATIO_X);
-    element.removeAttribute(DATA_ATTR_MIN_RATIO_Y);
-    element.removeAttribute(DATA_ATTR_MAX_RATIO_X);
-    element.removeAttribute(DATA_ATTR_MAX_RATIO_Y);
-
-    element.removeAttribute(DATA_ATTR_DISPLAY_X);
-    element.removeAttribute(DATA_ATTR_DISPLAY_Y);
-  }
-
-  function _readStartPosition(element) {
-    return {
-      left: parseFloat(element.getAttribute(DATA_ATTR_X0)) || 0,
-      top: parseFloat(element.getAttribute(DATA_ATTR_Y0)) || 0,
-      height: parseFloat(element.getAttribute(DATA_ATTR_HEIGHT0)) || 1,
-      width: parseFloat(element.getAttribute(DATA_ATTR_WIDTH0)) || 1,
-    };
-  }
-
-  // cleanup when dropper is not empty and has a text node
-  if ($('#DropperDroite')[0].hasChildNodes()) {
-    var div = $('#DropperDroite')[0];
-    var L = div.childNodes.length;
-    for (var i = L - 1; i >= 0; i--) {
-      if (div.childNodes[i].id != 'menuWidget') div.childNodes[i].remove();
-    }
-  }
-
-  function _getContainerId(element) {
-    if (element.parentNode && element.parentNode.parentNode) {
-      const id = element.parentNode.parentNode.id;
-      if (id && id.startsWith('dpr')) {
-        return id;
-      }
-    }
-    return MAIN_CONTAINER_ID;
-  }
-
-  function getContainer(element) {
-    return document.getElementById(_getContainerId(element));
-  }
-
-  function _toGlobal(containerId, position) {
-    if (containerId === MAIN_CONTAINER_ID) {
-      return position;
-    } else {
-      const offset = $('#' + containerId).offset();
-      return {
-        ...position,
-        top: position.top + offset.top,
-        left: position.left + offset.left,
-      };
-    }
-  }
-
+  // TODO coords remove ?
   function _toLocal(containerId, position) {
     if (containerId === MAIN_CONTAINER_ID) {
       return position;
@@ -171,9 +83,107 @@ export function initEditWidget() {
     return [Math.round((x - x0) / grid.sizeX) * grid.sizeX + x0, Math.round((y - y0) / grid.sizeY) * grid.sizeY + y0];
   }
 
+  // Creation
+  /**
+   * Widget abstract factory
+   * @param {any} modelJsonId (mandatory) model template ID
+   * @param {String=} instanceId (optional) used if provided, will be created otherwise
+   * @param {any=} wLayout (optional) used if provided, defaults used otherwise
+   * @param {number=} wzIndex (optional) used if provided, last widget has highest zIndex otherwise
+   * @param {number=} page (optional)
+   * @returns {string} widgetId
+   */
+  function _build(modelJsonId, instanceId, wLayout, wzIndex, page) {
+    if (!instanceId) {
+      // create unique key for the instance
+      instanceId = createUniqueInstanceId(modelJsonId, (id) => widgetContainer.widgetsInfo.has(id));
+    }
+
+    // create mainDiv and containerDiv
+    const cln = _createNewDiv(instanceId);
+
+    widgetContainer.createWidget(modelJsonId, instanceId, cln, wLayout, wzIndex, page);
+
+    return instanceId;
+  }
+
+  /**
+   * @description Creates "MainDiv"(cln) and his child "ContainerDiv"(div)
+   * @param {String} instanceId  used if provided, will be created otherwise
+   * @param {{top: number, ledt: number, width: number, height: number, zIndex: number, page?: number}} wLayout  widget layout
+   * Default modelJsonId layout used if undefined
+   */
+  function _createNewDiv(instanceId) {
+    const cln = document.createElement('div');
+    cln.id = instanceId;
+    // TODO clean
+    // add editable widget css classes
+    cln.classList.add('drsElement');
+    cln.classList.add('drag-drop-move');
+    cln.classList.add('widget');
+    cln.classList.add('widget__layout--item');
+
+    const overlay = document.createElement('div');
+    overlay.classList.add('widget-overlay');
+    cln.appendChild(overlay);
+
+    //
+    const menu = document.createElement('ul');
+    menu.classList.add('actions__list');
+    cln.appendChild(menu);
+
+    const liElement = document.createElement('li');
+    const menuA = document.createElement('a');
+    menuA.title = 'edit widget';
+    const menuIcon = document.createElement('i');
+    menuIcon.classList.add('basic');
+    menuIcon.classList.add('icn-edit');
+    menuA.appendChild(menuIcon);
+    liElement.appendChild(menuA);
+    menu.appendChild(liElement);
+
+    liElement.addEventListener('click', (evt) => {
+      _notifyWidgMenu(instanceId);
+      evt.stopPropagation();
+    });
+
+    return cln;
+  }
+
+  function duplicateWidgetWithConnection(elementId, newWidgetId = null) {
+    const info = widgetContainer.widgetsInfo.get(elementId);
+
+    const widgetLayoutPx = info.layout;
+    // translate !
+    const requestedLayoutPx = {
+      top: widgetLayoutPx.top + 20,
+      left: widgetLayoutPx.left + 20,
+      width: widgetLayoutPx.width,
+      height: widgetLayoutPx.height,
+    };
+
+    newWidgetId ??= createUniqueInstanceId(info.modelJsonId, (id) => widgetContainer.widgetsInfo.has(id));
+
+    // MBG : TODO : extend factory to transmit modelsHiddenParams
+    // MBG : TODO : rename globally modelsHiddenParams to instanceHiddenParams
+    // MBG : TODO : rename globally modelsParameters to instanceParameters
+    modelsHiddenParams[newWidgetId] = jQuery.extend(true, {}, modelsHiddenParams[elementId]);
+    modelsParameters[newWidgetId] = jQuery.extend(true, {}, modelsParameters[elementId]);
+    addWidget(info.modelJsonId, newWidgetId, requestedLayoutPx);
+
+    if (!_.isUndefined(widgetConnector.widgetsConnection[elementId])) {
+      widgetConnector.duplicateConnection(newWidgetId, elementId);
+    }
+    return newWidgetId;
+  }
+
   // Selection
-  var _selectionLasso = null;
-  var _selectionInitialState = [];
+  let _selectionLasso = null;
+  let _selectionInitialState = [];
+  let lassoX0 = 0;
+  let lassoY0 = 0;
+  let lassoX = 0;
+  let lassoY = 0;
   interact('#DropperDroite')
     .draggable({
       cursorChecker(action, interactable, element, interacting) {
@@ -187,36 +197,23 @@ export function initEditWidget() {
           _selectionLasso.classList.add('dragged-editor-selection-lasso');
           document.body.appendChild(_selectionLasso);
 
-          const x = event.clientX0 + window.pageXOffset;
-          const y = event.clientY0 + window.pageYOffset;
-          _selectionLasso.style.left = x + 'px';
-          _selectionLasso.style.top = y + 'px';
+          lassoX = lassoX0 = event.clientX0 + window.scrollX;
+          lassoY = lassoY0 = event.clientY0 + window.scrollY;
 
+          _selectionLasso.style.left = lassoX0 + 'px';
+          _selectionLasso.style.top = lassoY0 + 'px';
           _selectionLasso.style.width = '0px';
           _selectionLasso.style.height = '0px';
-
-          _selectionLasso.setAttribute(DATA_ATTR_X, x);
-          _selectionLasso.setAttribute(DATA_ATTR_Y, y);
-          _selectionLasso.setAttribute(DATA_ATTR_X0, x);
-          _selectionLasso.setAttribute(DATA_ATTR_Y0, y);
         },
 
         move(event) {
-          const x0 = parseFloat(_selectionLasso.getAttribute(DATA_ATTR_X0)) || 0;
-          const y0 = parseFloat(_selectionLasso.getAttribute(DATA_ATTR_Y0)) || 0;
-          let x = parseFloat(_selectionLasso.getAttribute(DATA_ATTR_X)) || 0;
-          let y = parseFloat(_selectionLasso.getAttribute(DATA_ATTR_Y)) || 0;
+          lassoX += event.dx;
+          lassoY += event.dy;
 
-          x += event.dx;
-          y += event.dy;
-
-          _selectionLasso.setAttribute(DATA_ATTR_X, x);
-          _selectionLasso.setAttribute(DATA_ATTR_Y, y);
-
-          const xMin = Math.min(x0, x);
-          const xMax = Math.max(x0, x);
-          const yMin = Math.min(y0, y);
-          const yMax = Math.max(y0, y);
+          const xMin = Math.min(lassoX0, lassoX);
+          const xMax = Math.max(lassoX0, lassoX);
+          const yMin = Math.min(lassoY0, lassoY);
+          const yMax = Math.max(lassoY0, lassoY);
 
           _selectionLasso.style.left = xMin + 'px';
           _selectionLasso.style.width = xMax - xMin + 'px';
@@ -229,9 +226,9 @@ export function initEditWidget() {
           if (ctrlKey) {
             _selectionInitialState.forEach((id) => widgetSelectionContext.add(id));
           }
-          for (const id of widgetContainers.keys()) {
+          for (const id of widgetContainer.widgetIds) {
             if (!widgetSelectionContext.has(id)) {
-              const element = $('#' + id);
+              const element = $('#' + id); // TODO
               if (element) {
                 const offset = element.offset();
                 const left = offset.left;
@@ -259,7 +256,8 @@ export function initEditWidget() {
         end() {
           _selectionInitialState = [];
           if (_selectionLasso) {
-            _selectionLasso.parentNode.removeChild(_selectionLasso);
+            //_selectionLasso.parentNode.removeChild(_selectionLasso);
+            _selectionLasso.remove();
             _selectionLasso = null;
           }
         },
@@ -270,8 +268,7 @@ export function initEditWidget() {
     });
 
   // Drop zone highlights
-  var _currentDropZone = null; // Ugly but not available on move events, it seems
-  interact('#DropperDroite .drop-zone-col').dropzone({
+  interact('#DropperDroite').dropzone({
     // When dropping new widgets or moves, but not selection
     accept: '.drag-drop-new, .drag-drop-move',
     ondropactivate(event) {
@@ -279,17 +276,14 @@ export function initEditWidget() {
     },
     ondragenter(event) {
       event.target.classList.add(DROP_OVER_CLASS);
-      _currentDropZone = event.target;
     },
     ondragleave(event) {
       event.target.classList.remove(DROP_OVER_CLASS);
-      _currentDropZone = null;
     },
     ondrop(event) {},
     ondropdeactivate(event) {
       event.target.classList.remove(DROP_POSSIBLE_CLASS);
       event.target.classList.remove(DROP_OVER_CLASS);
-      _currentDropZone = null;
     },
   });
 
@@ -313,9 +307,11 @@ export function initEditWidget() {
   });
 
   // New widgets
-  var _draggedClone = null;
-  var _newId = null;
-  interact('.drag-drop-new')
+  let _draggedClone = null;
+  let _newId = null;
+  let _ddOffsetX = 0;
+  let _ddOffsetY = 0;
+  interact('.drag-drop-new') // TODO target ?
     .draggable({
       cursorChecker(action, interactable, element, interacting) {
         return interacting ? 'grabbing' : 'grab';
@@ -325,39 +321,26 @@ export function initEditWidget() {
           const target = event.target;
           _newId = target.id;
           _draggedClone = target.cloneNode(true);
-          _draggedClone.id = 'dragged-new-widget';
           _draggedClone.classList.add('dragged-new-widget');
 
           document.body.appendChild(_draggedClone);
 
           const rect = target.getBoundingClientRect();
-          const y = rect.top + window.pageYOffset;
-          const x = rect.left + window.pageXOffset;
-          _draggedClone.style.left = x + 'px';
-          _draggedClone.style.top = y + 'px';
-
-          _draggedClone.setAttribute(DATA_ATTR_X, x);
-          _draggedClone.setAttribute(DATA_ATTR_Y, y);
+          _ddOffsetX = rect.left - event.client.x;
+          _ddOffsetY = rect.top - event.client.y;
+          _draggedClone.style.left = rect.left + 'px';
+          _draggedClone.style.top = rect.top + 'px';
         },
 
         move(event) {
-          let x = parseFloat(_draggedClone.getAttribute(DATA_ATTR_X)) || 0;
-          let y = parseFloat(_draggedClone.getAttribute(DATA_ATTR_Y)) || 0;
-
-          x += event.dx;
-          y += event.dy;
-
-          _draggedClone.setAttribute(DATA_ATTR_X, x);
-          _draggedClone.setAttribute(DATA_ATTR_Y, y);
+          let x = event.client.x + _ddOffsetX;
+          let y = event.client.y + _ddOffsetY;
 
           const grid = gridMgr.getGrid();
           if (grid) {
-            let container = MAIN_CONTAINER_ID;
-            if (_currentDropZone && _currentDropZone.id) {
-              container = _currentDropZone.id;
-            }
-            const offset = $('#' + container).offset();
-            [x, y] = _alignOnGrid([x, y], [offset.left, offset.top], grid);
+            const offset = $(drprD).offset();
+            // TODO get margin
+            [x, y] = _alignOnGrid([x, y], [offset.left + 10, offset.top + 10], grid);
           }
 
           _draggedClone.style.left = x + 'px';
@@ -365,28 +348,28 @@ export function initEditWidget() {
         },
 
         end(event) {
-          let x = parseFloat(_draggedClone.getAttribute(DATA_ATTR_X)) || 0;
-          let y = parseFloat(_draggedClone.getAttribute(DATA_ATTR_Y)) || 0;
-          _draggedClone.parentNode.removeChild(_draggedClone);
-          _removeDragDropDataAttr(_draggedClone);
+          let x = event.client.x + _ddOffsetX;
+          let y = event.client.y + _ddOffsetY;
+
+          _draggedClone.remove();
           _draggedClone = null;
 
           const dropZone = event.relatedTarget;
           if (dropZone && dropZone.id) {
             const dropId = dropZone.id;
-            if (dropId === MAIN_CONTAINER_ID || dropId.startsWith('dpr')) {
+            if (dropId === MAIN_CONTAINER_ID) {
               const rect = dropZone.getBoundingClientRect();
 
-              x -= rect.left - window.pageXOffset;
-              y -= rect.top - window.pageYOffset;
+              x -= rect.left;
+              y -= rect.top;
               const grid = gridMgr.getGrid();
               if (grid) {
                 [x, y] = _alignOnGrid([x, y], [0, 0], grid);
               }
 
               const layout = {
-                top: unitH(y),
-                left: unitW(x),
+                top: y,
+                left: x,
               };
 
               angular
@@ -425,76 +408,54 @@ export function initEditWidget() {
     });
 
   // Widgets interactions
+  const resizeParameters = new Map();
   interact('#DropperDroite .drag-drop-move')
     .resizable({
       edges: { left: true, right: true, bottom: true, top: true },
       margin: RESIZE_MARGIN,
       listeners: {
         start(event) {
+          resizeParameters.clear();
           const target = event.target;
           const targetId = target.id;
 
           // When grabbed widget is not selected, it becomes the selection
-          if (targetId && widgetContainers.has(targetId) && !widgetSelectionContext.has(targetId)) {
+          if (targetId && widgetContainer.widgetIds.has(targetId) && !widgetSelectionContext.has(targetId)) {
             widgetSelectionContext.clear();
             widgetSelectionContext.add(targetId);
             _onSelectionChange();
           }
 
+          const availableSpace = widgetContainer.availableSpace();
+
           widgetSelectionContext.forEach((id) => {
-            const widget = document.getElementById(id);
-            const x = widget.offsetLeft;
-            const y = widget.offsetTop;
-            const height = widget.offsetHeight || 1;
-            const width = widget.offsetWidth || 1;
+            const widgetPosition = widgetContainer.getCurrentWidgetGeometry(id);
+            const x = widgetPosition.left;
+            const y = widgetPosition.top;
+            const height = widgetPosition.height || 1;
+            const width = widgetPosition.width || 1;
 
-            widget.setAttribute(DATA_ATTR_X0, x);
-            widget.setAttribute(DATA_ATTR_Y0, y);
-            widget.setAttribute(DATA_ATTR_HEIGHT0, height);
-            widget.setAttribute(DATA_ATTR_WIDTH0, width);
+            const { minWidth, minHeight } = widgetContainer.minimumSize(id);
 
-            widget.setAttribute(DATA_ATTR_X, x);
-            widget.setAttribute(DATA_ATTR_Y, y);
-            widget.setAttribute(DATA_ATTR_HEIGHT, height);
-            widget.setAttribute(DATA_ATTR_WIDTH, width);
+            const minRatioX = minWidth / width;
+            const minRatioY = minHeight / height;
 
-            const minWidth = parseInt(widget.style['min-width'] || minWidthCst + 'px', 10);
-            const minHeight = parseInt(widget.style['min-height'] || minHeightCst + 'px', 10);
+            // TODO infinite ?
+            const maxWidth = event.edges.left ? x + width : availableSpace.width - x;
+            const maxHeight = event.edges.top ? y + height : availableSpace.height - y; // TODO opt
 
-            widget.setAttribute(DATA_ATTR_MIN_RATIO_X, minWidth / width);
-            widget.setAttribute(DATA_ATTR_MIN_RATIO_Y, minHeight / height);
-
-            const containerId = _getContainerId(widget);
-            let maxRatioX = Infinity;
-            let maxRatioY = Infinity;
-
-            if (containerId !== MAIN_CONTAINER_ID) {
-              const container = document.getElementById(containerId);
-              if (!event.edges.left) {
-                const availableX = container.offsetWidth - x - minLeftCst;
-                maxRatioX = Math.min(maxRatioX, availableX / width);
-              }
-              if (!event.edges.top) {
-                const availableY = container.offsetHeight - y - minTopCst;
-                maxRatioY = Math.min(maxRatioY, availableY / height);
-              }
-            }
-            if (event.edges.left) {
-              const availableX = x + width - minLeftCst;
-              maxRatioX = Math.min(maxRatioX, availableX / width);
-            }
-            if (event.edges.top) {
-              const availableY = y + height - minTopCst;
-              maxRatioY = Math.min(maxRatioY, availableY / height);
-            }
-            widget.setAttribute(DATA_ATTR_MAX_RATIO_X, maxRatioX);
-            widget.setAttribute(DATA_ATTR_MAX_RATIO_Y, maxRatioY);
+            resizeParameters.set(id, {
+              minRatioX,
+              minRatioY,
+              maxRatioX: maxWidth / width,
+              maxRatioY: maxHeight / height,
+            });
           });
         },
         move(event) {
           const target = event.target;
 
-          const targetStartPosition = _readStartPosition(target);
+          const targetStartPosition = widgetContainer.getRecordedGeometry(target.id);
 
           const changeX = event.edges.left || event.edges.right;
           const changeY = event.edges.top || event.edges.bottom;
@@ -510,16 +471,10 @@ export function initEditWidget() {
           }
 
           const grid = gridMgr.getGrid();
-          widgetSelectionContext.forEach((id) => {
-            const widget = document.getElementById(id);
+          for (const [id, params] of resizeParameters.entries()) {
+            const { minRatioX, minRatioY, maxRatioX, maxRatioY } = params;
 
-            const startPosition = _readStartPosition(widget);
-
-            const minRatioX = parseFloat(widget.getAttribute(DATA_ATTR_MIN_RATIO_X)) || 0;
-            const minRatioY = parseFloat(widget.getAttribute(DATA_ATTR_MIN_RATIO_Y)) || 0;
-            const maxRatioX = parseFloat(widget.getAttribute(DATA_ATTR_MAX_RATIO_X)) || Infinity;
-            const maxRatioY = parseFloat(widget.getAttribute(DATA_ATTR_MAX_RATIO_Y)) || Infinity;
-
+            const startPosition = widgetContainer.getRecordedGeometry(id);
             const position = { ...startPosition };
 
             let widgetRatioX = ratioX;
@@ -552,54 +507,39 @@ export function initEditWidget() {
             widgetRatioY = Math.max(widgetRatioY, minRatioY);
 
             if (changeX) {
-              position.width *= widgetRatioX;
+              position.width = Math.round(position.width * widgetRatioX);
               if (moveX) {
                 position.left -= position.width - startPosition.width;
               }
             }
 
             if (changeY) {
-              position.height *= widgetRatioY;
+              position.height = Math.round(position.height * widgetRatioY);
               if (moveY) {
                 position.top -= position.height - startPosition.height;
               }
             }
 
-            // update the element's style
-            widget.style.left = position.left + 'px';
-            widget.style.top = position.top + 'px';
-            widget.style.width = position.width + 'px';
-            widget.style.height = position.height + 'px';
-
-            widget.setAttribute(DATA_ATTR_X, position.left);
-            widget.setAttribute(DATA_ATTR_Y, position.top);
-            widget.setAttribute(DATA_ATTR_HEIGHT, position.height);
-            widget.setAttribute(DATA_ATTR_WIDTH, position.width);
-          });
-
+            widgetContainer.changeWidgetGeometry(id, position);
+          }
           _notifyMove();
         },
         end(event) {
           const resizes = new Map();
 
           widgetSelectionContext.forEach((id) => {
-            const widget = document.getElementById(id);
-
-            let toPosition = {
-              left: parseFloat(widget.getAttribute(DATA_ATTR_X)) || 0,
-              top: parseFloat(widget.getAttribute(DATA_ATTR_Y)) || 0,
-              height: parseFloat(widget.getAttribute(DATA_ATTR_HEIGHT)) || 0,
-              width: parseFloat(widget.getAttribute(DATA_ATTR_WIDTH)) || 0,
-            };
-            const startPosition = _readStartPosition(widget);
+            const toPosition = widgetContainer.getCurrentWidgetGeometry(id);
+            const startPosition = widgetContainer.getRecordedGeometry(id);
 
             if (!angular.equals(startPosition, toPosition)) {
               // Sketchy, but only immediate alternative would be providing the action with the original position...
-              widgetContainer.moveResizeWidget(widget, startPosition, false, true);
+              // TODO coords rm
+              // widgetContainer.moveResizeWidget(id, startPosition, true);
               resizes.set(id, toPosition);
             }
 
-            _removeDragDropDataAttr(widget);
+            // Should not do anything, but make doubly sure we have no discrepency
+            widgetContainer.resetWidgetGeometry(id);
           });
 
           if (resizes.size > 0) {
@@ -631,156 +571,61 @@ export function initEditWidget() {
           const targetId = target.id;
 
           // When grabbed widget is not selected, it becomes the selection
-          if (targetId && widgetContainers.has(targetId) && !widgetSelectionContext.has(targetId)) {
+          if (targetId && widgetContainer.widgetIds.has(targetId) && !widgetSelectionContext.has(targetId)) {
             widgetSelectionContext.clear();
             widgetSelectionContext.add(targetId);
             _onSelectionChange();
           }
-
-          widgetSelectionContext.forEach((id) => {
-            const widget = document.getElementById(id);
-            const x = widget.offsetLeft;
-            const y = widget.offsetTop;
-            const height = widget.offsetHeight || 1;
-            const width = widget.offsetWidth || 1;
-
-            widget.setAttribute(DATA_ATTR_X0, x);
-            widget.setAttribute(DATA_ATTR_Y0, y);
-            widget.setAttribute(DATA_ATTR_HEIGHT0, height);
-            widget.setAttribute(DATA_ATTR_WIDTH0, width);
-
-            widget.setAttribute(DATA_ATTR_X, x);
-            widget.setAttribute(DATA_ATTR_Y, y);
-          });
         },
 
         move(event) {
-          let container = MAIN_CONTAINER_ID;
-          if (_currentDropZone && _currentDropZone.id) {
-            container = _currentDropZone.id;
-          }
-
           const grid = gridMgr.getGrid();
 
+          const varX = event.client.x - event.clientX0;
+          const varY = event.client.y - event.clientY0;
+
           widgetSelectionContext.forEach((id) => {
-            const widget = document.getElementById(id);
-            const currentContainerId = _getContainerId(widget);
+            let position = { ...widgetContainer.getRecordedGeometry(id) };
+            position.left += varX;
+            position.top += varY;
 
-            const position = {
-              left: parseFloat(widget.getAttribute(DATA_ATTR_X)) || 0,
-              top: parseFloat(widget.getAttribute(DATA_ATTR_Y)) || 0,
-              height: parseFloat(widget.getAttribute(DATA_ATTR_HEIGHT0)) || 0,
-              width: parseFloat(widget.getAttribute(DATA_ATTR_WIDTH0)) || 0,
-            };
-
-            position.left += event.dx;
-            position.top += event.dy;
-
-            widget.setAttribute(DATA_ATTR_X, position.left);
-            widget.setAttribute(DATA_ATTR_Y, position.top);
-
-            let toPosition = position;
-            if (currentContainerId !== MAIN_CONTAINER_ID) {
-              toPosition = _toGlobal(currentContainerId, toPosition);
+            if (grid) {
+              [position.left, position.top] = _alignOnGrid([position.left, position.top], [0, 0], grid);
             }
+            position = widgetContainer.enforceConstraints(position);
 
-            if (container === MAIN_CONTAINER_ID) {
-              if (grid) {
-                [toPosition.left, toPosition.top] = _alignOnGrid([toPosition.left, toPosition.top], [0, 0], grid);
-              }
-
-              toPosition.left = Math.max(minLeftCst, toPosition.left);
-              toPosition.top = Math.max(minTopCst, toPosition.top);
-            } else {
-              const c = $('#' + container);
-              const offset = c.offset();
-              const containerLayout = {
-                left: offset.left,
-                top: offset.top,
-                height: c.height(),
-                width: c.width(),
-              };
-
-              if (grid) {
-                [toPosition.left, toPosition.top] = _alignOnGrid(
-                  [toPosition.left, toPosition.top],
-                  [containerLayout.left, containerLayout.top],
-                  grid
-                );
-              }
-
-              toPosition = enforceConstraints(toPosition, containerLayout);
-            }
-
-            // Store "local" position (relative to the drop zone) for display in the "position" fields. Much easier to compute here than in the angular controler.
-            const locPos = _toLocal(container, toPosition);
-            widget.setAttribute(DATA_ATTR_DISPLAY_X, locPos.left);
-            widget.setAttribute(DATA_ATTR_DISPLAY_Y, locPos.top);
-
-            if (currentContainerId !== MAIN_CONTAINER_ID) {
-              toPosition = _toLocal(currentContainerId, toPosition);
-            }
-            widget.style.left = toPosition.left + 'px';
-            widget.style.top = toPosition.top + 'px';
-            widget.style.width = toPosition.width + 'px';
-            widget.style.height = toPosition.height + 'px';
+            widgetContainer.changeWidgetGeometry(id, position);
           });
 
           _notifyMove();
         },
 
         end(event) {
+          const varX = event.client.x - event.clientX0;
+          const varY = event.client.y - event.clientY0;
+
           const moves = new Map();
-
-          const dropZone = event.relatedTarget;
-          let container = MAIN_CONTAINER_ID;
-          if (dropZone && dropZone.id) {
-            container = dropZone.id;
-          }
-
           const grid = gridMgr.getGrid();
 
-          if (editorSingletons.layoutMgr.isRowColMode() && container === MAIN_CONTAINER_ID) {
-            widgetSelectionContext.forEach((id) => {
-              const widget = document.getElementById(id);
-              const startPosition = _readStartPosition(widget);
-
-              widgetContainer.moveResizeWidget(widget, startPosition, false, false);
-
-              _removeDragDropDataAttr(widget);
-            });
-            return;
-          }
-
           widgetSelectionContext.forEach((id) => {
-            const widget = document.getElementById(id);
+            const startPosition = widgetContainer.getRecordedGeometry(id);
 
-            const currentContainer = _getContainerId(widget);
-            let x = parseFloat(widget.getAttribute(DATA_ATTR_X)) || 0;
-            let y = parseFloat(widget.getAttribute(DATA_ATTR_Y)) || 0;
-
-            const startPosition = _readStartPosition(widget);
-
-            let toPosition = {
-              left: x,
-              top: y,
-            };
-            if (container !== currentContainer) {
-              toPosition = _toGlobal(currentContainer, toPosition);
-              toPosition = _toLocal(container, toPosition);
-            }
+            let position = { ...startPosition };
+            position.left += varX;
+            position.top += varY;
 
             if (grid) {
-              [toPosition.left, toPosition.top] = _alignOnGrid([toPosition.left, toPosition.top], [0, 0], grid);
+              [position.left, position.top] = _alignOnGrid([position.left, position.top], [0, 0], grid);
+            }
+            position = widgetContainer.enforceConstraints(position);
+
+            const changes = getGeometryChanges(startPosition, position);
+            if (Object.keys(changes).length) {
+              moves.set(id, changes);
             }
 
-            if (!angular.equals(startPosition, toPosition)) {
-              // Sketchy, but only immediate alternative would be providing the action with the original position...
-              widgetContainer.moveResizeWidget(widget, startPosition, false, false);
-              moves.set(id, toPosition);
-            }
-
-            _removeDragDropDataAttr(widget);
+            // Should not do anything, but make doubly sure we have no discrepency
+            widgetContainer.resetWidgetGeometry(id);
           });
 
           if (moves.size > 0) {
@@ -791,8 +636,7 @@ export function initEditWidget() {
                 'UndoManagerService',
                 'EditorActionFactory',
                 (undoManagerService, editorActionFactory) => {
-                  const action = editorActionFactory.createDropToCellAction(
-                    container,
+                  const action = editorActionFactory.createSetGeometryAction(
                     moves,
                     'Move widget' + (moves.size > 1 ? 's' : '')
                   );
@@ -807,7 +651,7 @@ export function initEditWidget() {
       const ctrlKey = event.ctrlKey;
       const target = event.currentTarget;
       const targetId = target.id;
-      if (targetId && widgetContainers.has(targetId)) {
+      if (targetId && widgetContainer.widgetIds.has(targetId)) {
         if (ctrlKey) {
           if (widgetSelectionContext.has(targetId)) {
             widgetSelectionContext.delete(targetId);
@@ -827,53 +671,47 @@ export function initEditWidget() {
     });
 
   function _applySelectionClasses() {
-    for (const id of widgetContainers.keys()) {
-      $('#' + id).removeClass(SELECTED_CLASS);
-      $('#' + id).removeClass(LAST_SELECTED_CLASS);
+    for (const info of widgetContainer.widgetsInfo.values()) {
+      const div = info.containerDiv;
+      div.classList.remove(SELECTED_CLASS);
+      div.classList.remove(LAST_SELECTED_CLASS);
     }
 
     let widget = null;
     widgetSelectionContext.forEach((id) => {
-      widget = $('#' + id);
-      widget.addClass(SELECTED_CLASS);
+      widget = widgetContainer.getWidgetContainerDiv(id);
+      widget.classList.add(SELECTED_CLASS);
     });
     if (widget) {
-      widget.addClass(LAST_SELECTED_CLASS);
+      widget.classList.add(LAST_SELECTED_CLASS);
     }
   }
 
   /*--------computeDropperMaxWidth--------*/
   function computeDropperMaxWidth() {
+    // TODO rm
     panelDash.fullScreenWidth = Math.ceil(((drprD.offsetWidth + 25) / 0.75) * 0.975 - 25); //first computation of fullScreenWidth: approximation
   }
 
   /*--------Widget add function--------*/
-  function addWidget(modelJsonId, targetDiv, instanceId, wLayout, wzIndex) {
-    const builtWidget = widgetFactory.build(modelJsonId, targetDiv, instanceId, wLayout, wzIndex);
-    widgetObject[builtWidget.instanceId] = builtWidget.widgetObj;
+  function addWidget(modelJsonId, instanceId, wLayout, wzIndex) {
+    // TODO coords page
+    instanceId = _build(modelJsonId, instanceId, wLayout, wzIndex);
 
-    widgetContainers.set(builtWidget.instanceId, builtWidget);
+    _onAddRmWidget();
 
-    if (widgetObject[builtWidget.instanceId].constructor.name == 'createWidget') {
-      // creation failed
-      widgetInstance.deleteWidget(builtWidget.divModel);
-    } else {
-      _onAddRmWidget();
+    widgetSelectionContext.clear();
+    widgetSelectionContext.add(instanceId);
+    _onSelectionChange();
 
-      widgetSelectionContext.clear();
-      widgetSelectionContext.add(builtWidget.instanceId);
-      _onSelectionChange();
-
-      return builtWidget;
-    }
+    return instanceId;
   }
 
   function deleteWidget(instanceId) {
-    const widget = widgetContainers.get(instanceId);
-    const element = widget.divModel;
-    widgetInstance.deleteWidget(element);
-    unselectWidget(element);
-    element.remove();
+    unselectWidget(instanceId);
+
+    delete widgetConnector.widgetsConnection[instanceId]; // delete connection
+    widgetContainer.delete(instanceId);
 
     _onAddRmWidget();
   }
@@ -895,6 +733,7 @@ export function initEditWidget() {
     const dashJson = {};
     for (const [key, val] of widgetContainers) {
       const wcLayout = {
+        // TODO
         top: $('#' + val.id)[0].style.top,
         left: $('#' + val.id)[0].style.left,
         height: $('#' + val.id)[0].style.height,
@@ -990,7 +829,6 @@ export function initEditWidget() {
           modelsHiddenParams[key] = dashObj[key].modelHiddenParams;
         }
       }
-      modelsId[i] = key;
 
       top = rmUnit(dashObj[key].layout.top);
       left = rmUnit(dashObj[key].layout.left);
@@ -1015,7 +853,6 @@ export function initEditWidget() {
 
       editorSingletons.widgetEditor.addWidget(
         dashObj[key].container.modelJsonId,
-        targetDiv,
         dashObj[key].container.instanceId,
         wLayout,
         dashObj[key].layout['z-index']
@@ -1031,6 +868,7 @@ export function initEditWidget() {
 
   /*--------rescale--------*/
   function rescale() {
+    // TODO
     editorSingletons.layoutMgr.updateMaxTopAndLeft();
 
     const divsDropZone = $('#drop-zone')[0].getElementsByTagName('div');
@@ -1056,39 +894,12 @@ export function initEditWidget() {
     plotlyWidgetsPlugin.clear(); // FIXME
     mapWidgetsPlugin.clear(); // FIXME
 
-    for (const key in widgetContainers) {
-      if (!_.isUndefined(models[key])) {
-        delete models[key];
-      }
-      if (!_.isUndefined(modelsParameters[key])) {
-        delete modelsParameters[key];
-      }
-      if (!_.isUndefined(modelsHiddenParams[key])) {
-        delete modelsHiddenParams[key];
-      }
-      if (!_.isUndefined(modelsTempParams[key])) {
-        delete modelsTempParams[key];
-      }
-    }
-    widgetContainers.clear();
-    for (const property in widgetObject) {
-      delete widgetObject[property];
-    }
-    modelsId.length = 0;
+    widgetContainer.clear();
 
     bFirstExec.value = true; //in main-common
 
     unselectAllWidgets();
     _onAddRmWidget();
-
-    //$('#DropperDroite').html('');
-    if ($('#DropperDroite')[0].hasChildNodes()) {
-      var div = $('#DropperDroite')[0];
-      var L = div.childNodes.length;
-      for (var i = L - 1; i >= 0; i--) {
-        if (div.childNodes[i].id != 'menuWidget') div.childNodes[i].remove();
-      }
-    }
   }
 
   /*--------clear--------*/
@@ -1137,22 +948,20 @@ export function initEditWidget() {
   }
 
   /*--------unselectWidget--------*/
-  function selectWidget(element) {
-    widgetSelectionContext.add(element.id);
+  function selectWidget(elementId) {
+    widgetSelectionContext.add(elementId);
     _onSelectionChange();
   }
 
   function selectAllWidgets() {
     widgetSelectionContext.clear();
-    for (const id of widgetContainers.keys()) {
-      widgetSelectionContext.add(id);
-    }
+    widgetContainer.widgetIds.forEach((id) => widgetSelectionContext.add(id));
     _onSelectionChange();
   }
 
   /*--------unselectWidget--------*/
-  function unselectWidget(element) {
-    widgetSelectionContext.delete(element.id);
+  function unselectWidget(elementId) {
+    widgetSelectionContext.delete(elementId);
     _onSelectionChange();
   }
 
@@ -1203,112 +1012,23 @@ export function initEditWidget() {
       ]);
   }
 
-  /*----------showHideWidgMenu------------*/
-
-  function showHideWidgMenu(event) {
-    let sameTarget = true;
-    const elm = event.parentElement.parentElement;
-    const idElm = elm.id;
-
-    let connectedDataNodes = [];
-    let cnxs = widgetConnector.widgetsConnection;
-
-    if (!_.isUndefined(cnxs[idElm])) {
-      _.each(_.keys(cnxs[idElm].sliders), (slider) => {
-        let dsName = cnxs[idElm].sliders[slider].dataNode;
-        if (connectedDataNodes.indexOf(dsName) === -1) {
-          //fix issue#23
-          connectedDataNodes.push(dsName);
-        }
-      });
-    }
-
-    const openGraphFromWidget = document.getElementById('openGraphFromWidget');
-    openGraphFromWidget?.setAttribute('name', JSON.stringify(connectedDataNodes));
-
-    const idList = 'menuWidget';
-
-    if ($('#' + idList)[0].getAttribute('name') !== idElm) {
-      $('#' + idList).attr('name', idElm);
-      sameTarget = false;
-    }
-
-    const vm = angular.element(document.getElementById('dashboard-editor')).scope().vm;
-    if (vm.menuWidgetVisible) {
-      if (sameTarget) vm.menuWidgetVisible = false;
-    } else vm.menuWidgetVisible = true;
-
-    const containerId = _getContainerId(elm);
-
-    const mainContainerOffsetHeight = $('#' + MAIN_CONTAINER_ID)[0].offsetHeight;
-
-    const containerOffsetTop = $('#' + containerId)[0].offsetTop;
-    const containerOffsetLeft = $('#' + containerId)[0].offsetLeft;
-
-    const elementWidth = $('#' + idElm)[0].clientWidth;
-    const elementHeight = $('#' + idElm)[0].clientHeight;
-    const elementOffsetTop = $('#' + idElm)[0].offsetTop;
-    const elementOffsetLeft = $('#' + idElm)[0].offsetLeft;
-
-    const menuWidgetWidth = 247.047; // px
-    const menuWidgetHeight = 443; // px
-    const menuWidgetMarginTop = 30;
-    const menuWidgetMarginBottom = elementHeight - 10;
-
-    const nbRows = editorSingletons.layoutMgr.getRows();
-
-    let elementOffsetBottom;
-    let mainContainerHeight;
-
-    if (containerId !== MAIN_CONTAINER_ID) {
-      mainContainerHeight = mainContainerOffsetHeight * nbRows;
-      elementOffsetBottom = mainContainerOffsetHeight - (elementHeight + elementOffsetTop + containerOffsetTop);
-    } else {
-      mainContainerHeight = mainContainerOffsetHeight;
-      elementOffsetBottom = mainContainerOffsetHeight - (elementOffsetTop + elementHeight);
-    }
-
-    if (
-      nbRows <= 1 &&
-      containerOffsetTop + elementOffsetTop + menuWidgetMarginTop + menuWidgetHeight >= mainContainerOffsetHeight &&
-      elementOffsetBottom + menuWidgetMarginBottom + menuWidgetHeight >= mainContainerOffsetHeight
-    ) {
-      $('#' + idList)[0].style.bottom = '10px';
-      $('#' + idList)[0].style.top = 'auto';
-      document.styleSheets[0].addRule('#menuWidget::after', 'top: -5px; transform: rotate(0deg)');
-    } else if (containerOffsetTop + elementOffsetTop + menuWidgetMarginTop + menuWidgetHeight >= mainContainerHeight) {
-      $('#' + idList)[0].style.bottom = (menuWidgetMarginBottom + elementOffsetBottom).toString() + 'px';
-      $('#' + idList)[0].style.top = 'auto';
-      document.styleSheets[0].addRule(
-        '#menuWidget::after',
-        'top: ' + menuWidgetHeight + 'px; transform: rotate(180deg)'
-      );
-    } else {
-      $('#' + idList)[0].style.top = (containerOffsetTop + elementOffsetTop + menuWidgetMarginTop).toString() + 'px';
-      $('#' + idList)[0].style.bottom = 'auto';
-      document.styleSheets[0].addRule('#menuWidget::after', 'top: -5px; transform: rotate(0deg)');
-    }
-
-    if ((elementWidth + elementOffsetLeft).toString() <= menuWidgetWidth && containerOffsetLeft == 0) {
-      $('#' + idList)[0].style.left = '7px';
-      document.styleSheets[0].addRule('#menuWidget::after', 'left: ' + (elementOffsetLeft + elementWidth - 30) + 'px');
-    } else {
-      $('#' + idList)[0].style.left =
-        (elementWidth + elementOffsetLeft + containerOffsetLeft - menuWidgetWidth).toString() + 'px';
-      document.styleSheets[0].addRule('#menuWidget::after', 'left: auto; right: 20px');
-    }
-    $('#' + idList)[0].style.right = 'auto';
+  function _notifyWidgMenu(instanceId) {
+    angular
+      .element(document.body)
+      .injector()
+      .invoke([
+        'EventCenterService',
+        (eventCenterService) => {
+          eventCenterService.sendEvent(EVENTS_EDITOR_WIDGET_TOGGLE_MENU, instanceId);
+        },
+      ]);
   }
-
-  /*----------------------------------*/
 
   // Public functions
   return {
     addWidget,
+    duplicateWidgetWithConnection,
     deleteWidget,
-    widgetObject,
-    widgetContainers,
-    modelsId,
     serialize,
     deserialize,
     rescale,
@@ -1326,10 +1046,6 @@ export function initEditWidget() {
     unselectAllWidgets,
     getSelectedActive,
     getSelection,
-    getContainer,
-    MAIN_CONTAINER_ID,
-    DATA_ATTR_DISPLAY_X,
-    DATA_ATTR_DISPLAY_Y,
-    showHideWidgMenu,
+    widgetContainer,
   };
 }

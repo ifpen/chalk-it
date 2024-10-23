@@ -36,18 +36,19 @@ export const widgetConnector = (function () {
 
     // Purge missing widgets
     for (const idx in widgetsConnection) {
-      if (!widgetEditor.widgetContainers.get(widgetsConnection[idx].id)) {
+      if (!widgetEditor.widgetContainer.widgetIds.has(widgetsConnection[idx].id)) {
         delete widgetsConnection[idx];
       }
     }
 
     // Create missing connections
-    for (const [key, widget] of widgetEditor.widgetContainers) {
+    for (const [key, widgetInfo] of widgetEditor.widgetContainer.widgetsInfo) {
+      const widgetObject = widgetInfo.instance;
       if (widgetsConnection[key]) {
-        if (widgetEditor.widgetObject[key]) {
-          if (!_.isNull(widgetsConnection[key].widgetObjEdit) && !_.isNull(widgetEditor.widgetObject[key])) {
-            let len =
-              widgetsConnection[key].widgetObjEdit.numberOfTriggers - widgetEditor.widgetObject[key].numberOfTriggers;
+        if (widgetObject) {
+          if (!_.isNull(widgetsConnection[key].widgetObjEdit)) {
+            // TODO coords
+            let len = widgetsConnection[key].widgetObjEdit.numberOfTriggers - widgetObject.numberOfTriggers;
             while (len > 0) {
               // widgetsConnection[key].sliders.pop();
               let keys = Object.keys(widgetsConnection[key].sliders);
@@ -56,16 +57,16 @@ export const widgetConnector = (function () {
             }
           }
           // TODO dedicated update ?
-          widgetsConnection[key].widgetObjEdit = widgetEditor.widgetObject[key];
+          widgetsConnection[key].widgetObjEdit = widgetObject;
         }
       } else {
         widgetsConnection[key] = {
           name: key, //key is instanceId
           id: key,
           instanceId: key,
-          modelJsonId: widget.modelJsonId,
+          modelJsonId: widgetInfo.modelJsonId,
           sliders: [],
-          widgetObjEdit: widgetEditor.widgetObject[key],
+          widgetObjEdit: widgetObject,
           widgetObjConnect: null,
         };
       }
@@ -152,8 +153,8 @@ export const widgetConnector = (function () {
   }
 
   /*--------duplicateConnection--------*/
-  function duplicateConnection(instanceId, element) {
-    widgetsConnection[instanceId] = jQuery.extend(true, {}, widgetsConnection[element.id]);
+  function duplicateConnection(instanceId, originalElementId) {
+    widgetsConnection[instanceId] = jQuery.extend(true, {}, widgetsConnection[originalElementId]);
     widgetsConnection[instanceId].id = instanceId;
     widgetsConnection[instanceId].name = instanceId;
     widgetsConnection[instanceId].instanceId = instanceId;

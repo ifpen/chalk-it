@@ -9,9 +9,8 @@
 import _ from 'lodash';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsTempParams, models } from 'kernel/base/widgets-states';
-import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { editorSingletons } from 'kernel/editor-singletons';
 
+// TODO coords remove ?
 function widgetInstanceClass() {
   /*--------Create Widget obj--------*/
   this.createWidget = function (wcIdStr, modelJsonIdStr, instanceId) {
@@ -38,48 +37,6 @@ function widgetInstanceClass() {
     widgetObj = new widgetsPluginsHandler.createWidget(wcIdStr, modelJsonIdStr, instanceId, bInteractive);
 
     return widgetObj;
-  };
-
-  /*--------Delete Widget--------*/
-  this.deleteWidget = function (element) {
-    delete widgetConnector.widgetsConnection[element.id]; // delete connection
-
-    // set editor json
-    const elm = element.parentNode;
-    if (elm) {
-      const widgetEditor = editorSingletons.widgetEditor;
-      while (elm.hasChildNodes()) {
-        elm.removeChild(elm.lastChild);
-      }
-      if (elm.parentNode) {
-        elm.parentNode.removeChild(elm);
-      }
-      delete widgetEditor.widgetObject[element.id];
-
-      for (let i = widgetEditor.modelsId.length - 1; i >= 0; i--) {
-        if (widgetEditor.modelsId[i] === element.id) {
-          widgetEditor.modelsId.splice(i, 1);
-          break; // found and deleted
-        }
-      }
-
-      widgetEditor.widgetContainers.delete(element.id);
-    }
-
-    // delete instance
-    const instanceId = element.id;
-    if (!_.isUndefined(modelsParameters[instanceId])) {
-      delete modelsParameters[instanceId];
-    }
-    if (!_.isUndefined(models[instanceId])) {
-      delete models[instanceId];
-    }
-    if (!_.isUndefined(modelsHiddenParams[instanceId])) {
-      delete modelsHiddenParams[instanceId];
-    }
-    if (!_.isUndefined(modelsTempParams[instanceId])) {
-      delete modelsTempParams[instanceId];
-    }
   };
 }
 

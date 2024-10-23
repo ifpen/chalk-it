@@ -443,7 +443,7 @@
 }
 
 .widget__layout--item {
-  width: 100%;
+  width: 100%; // TODO coords rm ?
   height: 79vh;
   max-width: unset;
   padding: unset;
@@ -506,8 +506,6 @@
 
 // A "widget" is what is shown in the edit mode after drag and drop
 .widget {
-  border: 1px solid var(--surface-b);
-
   &:after {
     content: attr(item-width) ' x ' attr(item-height);
     position: absolute;
@@ -526,6 +524,19 @@
     &:after {
       opacity: 1;
     }
+  }
+
+  .actions__list {
+    padding: 0;
+
+    li {
+      z-index: 999999;
+    }
+  }
+
+  & > div[id^='WidgetContainer'] {
+    height: inherit;
+    width: inherit;
   }
 }
 
