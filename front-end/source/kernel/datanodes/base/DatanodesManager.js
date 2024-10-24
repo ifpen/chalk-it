@@ -45,7 +45,7 @@ export const datanodesManager = (function () {
 
   var graphVisu;
   if (!window.dashboardConfig?.execOutsideEditor) {
-    // FIXME really should not be here
+    // FIXME really should not be here. Move to DashboardGraphDepController
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }
   var timeManager = new TimeManager();

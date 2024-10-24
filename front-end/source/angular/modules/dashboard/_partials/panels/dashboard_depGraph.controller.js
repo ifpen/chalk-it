@@ -55,12 +55,6 @@ angular.module('modules.dashboard').controller('DashboardGraphDepController', [
       DepGraphService.getUniqTypes(scopeDash);
     };
 
-    /*---------- seeInDepGraph ----------------*/
-    $scope.seeInDepGraph = function (event) {
-      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      DepGraphService.seeInDepGraph(event, scopeDash);
-    };
-
     /*---------- selectNodeFromTagList ----------------*/
     $scope.selectNodeFromTagList = function (type) {
       DepGraphService.selectNodeFromTagList(type);

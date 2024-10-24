@@ -21,27 +21,25 @@ import { keyShift } from 'kernel/dashboard/scaling/layout-mgr';
 angular.module('modules.editor').controller('EditorController', [
   '$scope',
   '$rootScope',
-  '$state',
   '$timeout',
   'UndoManagerService',
   'EditorActionFactory',
-  'WidgetContainerGetter',
   'WidgetEditorGetter',
   'EventCenterService',
   'DashboardActiveTabGetter',
   'DashboardActiveModeGetter',
+  'DepGraphService',
   function (
     $scope,
     $rootScope,
-    $state,
     $timeout,
     undoManagerService,
     editorActionFactory,
-    widgetContainerGetter,
     widgetEditorGetter,
     eventCenterService,
     dashboardActiveTabGetter,
-    dashboardActiveModeGetter
+    dashboardActiveModeGetter,
+    depGraphService
   ) {
     $rootScope.moduleOpened = true; //AEF
 
@@ -582,31 +580,13 @@ angular.module('modules.editor').controller('EditorController', [
         vm.menuWidgetVisible = true;
       }
 
-      // TODO coords rm
-      let connectedDataNodes = [];
-      let cnxs = widgetConnector.widgetsConnection;
-
-      if (!_.isUndefined(cnxs[id])) {
-        _.each(_.keys(cnxs[id].sliders), (slider) => {
-          let dsName = cnxs[id].sliders[slider].dataNode;
-          if (connectedDataNodes.indexOf(dsName) === -1) {
-            //fix issue#23
-            connectedDataNodes.push(dsName);
-          }
-        });
-      }
-
-      // FIXME dubious
-      const openGraphFromWidget = document.getElementById('openGraphFromWidget');
-      openGraphFromWidget?.setAttribute('name', JSON.stringify(connectedDataNodes));
-
       const idList = 'menuWidget';
       const menuElm = document.getElementById(idList);
 
       // TODO parent ?
       const mainContainerOffsetHeight = document.getElementById('DropperDroite').offsetHeight;
 
-      // TOODO scale
+      // TODO scale
       const elm = document.getElementById(id);
 
       const elementWidth = elm.clientWidth;
@@ -698,31 +678,22 @@ angular.module('modules.editor').controller('EditorController', [
     vm.seeInDepGraph = function _seeInDepGraph(event) {
       _reselectWidg();
       _hideWidgMenu();
-      let scopeDepGraph = angular.element(document.getElementById('dependency__graph--container')).scope();
-      scopeDepGraph.seeInDepGraph(event);
+
+      const elementId = _getSelectedActive();
+      const connectedDataNodes = widgetConnector.findDatanodesConnectedToWidget(elementId);
+      depGraphService.showDepGraph(connectedDataNodes);
     };
 
     vm.editDatanodeCode = function _editDatanodeCode() {
       _reselectWidg();
       _hideWidgMenu();
 
-      const elementIds = _getSelection();
-      let connectedDataNodeS = [];
-      let cnxs = widgetConnector.widgetsConnection;
+      const elementId = _getSelectedActive();
+      const connectedDataNodes = widgetConnector.findDatanodesConnectedToWidget(elementId);
 
-      if (!_.isUndefined(cnxs[elementIds[0]])) {
-        _.each(_.keys(cnxs[elementIds[0]].sliders), (slider) => {
-          let dsName = cnxs[elementIds[0]].sliders[slider].dataNode;
-          if (connectedDataNodeS.indexOf(dsName) === -1) {
-            //fix issue#23
-            connectedDataNodeS.push(dsName);
-          }
-        });
-      }
-
-      if (connectedDataNodeS.length) {
-        var data = datanodesManager.getDataNodeByName(connectedDataNodeS[0]);
-        let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
+      if (connectedDataNodes.length) {
+        const data = datanodesManager.getDataNodeByName(connectedDataNodes[0]);
+        const scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
         $scope.resetPanelStateR();
         scopeDashDn.openDataNode(data);
       }

@@ -190,10 +190,20 @@ export const widgetConnector = (function () {
     //
   }
 
+  function findDatanodesConnectedToWidget(widgetId) {
+    const connections = widgetsConnection[widgetId];
+    if (connections) {
+      const names = Object.values(connections.sliders).map((slider) => slider.dataNode);
+      return _.uniq(names);
+    } else {
+      return [];
+    }
+  }
+
   // Public functions
   return {
-    widgetsConnection: widgetsConnection,
-    updateWidgetsConnections: updateWidgetsConnections,
+    widgetsConnection,
+    updateWidgetsConnections,
     effectiveSliders: function () {
       let effSlr = [];
       _.each(_.keys(widgetsConnection), (wdId) => {
@@ -206,11 +216,12 @@ export const widgetConnector = (function () {
       });
       return _.uniq(effSlr);
     },
-    resetSingleMatchingBox: resetSingleMatchingBox,
-    serialize: serialize,
-    deserialize: deserialize,
-    clear: clear,
-    duplicateConnection: duplicateConnection,
-    refreshDatanodeConsumers: refreshDatanodeConsumers,
+    resetSingleMatchingBox,
+    serialize,
+    deserialize,
+    clear,
+    duplicateConnection,
+    refreshDatanodeConsumers,
+    findDatanodesConnectedToWidget,
   };
 })();

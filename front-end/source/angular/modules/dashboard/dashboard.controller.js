@@ -269,7 +269,7 @@ dashboardModule
 
       /*---------- show graph button ----------------*/
       $scope.showDepGraph = function (name) {
-        DepGraphService.showDepGraph(name, $scope);
+        DepGraphService.showDepGraph(name);
       };
 
       /*******************************************************/
