@@ -247,11 +247,22 @@ export class WidgetContainer {
     return { top, left, height, width };
   }
 
+  /**
+   * Changes a widget's geometry without recording the changes. Meant for transient UI changes like the drag&drop.
+   * Should always result in a call to "resetWidgetGeometry" when done.
+   * @param {string} instanceId
+   * @param {{ top: number, left: number, width: number, height: number }} geometry in pixels
+   */
   changeWidgetGeometry(instanceId, geometry) {
     const containerDiv = this.getWidgetContainerDiv(instanceId);
     this.#changeDivGeometry(containerDiv, geometry);
   }
 
+  /**
+   * (Re)apply a widget's expected geometry to its DOM element. Only needed when the elements were (temporarily)
+   * manipulated directly.
+   * @param {string} instanceId
+   */
   resetWidgetGeometry(instanceId) {
     this.changeWidgetGeometry(instanceId, this.getRecordedGeometry(instanceId));
   }
