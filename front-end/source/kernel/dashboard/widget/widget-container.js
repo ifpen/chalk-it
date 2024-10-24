@@ -131,9 +131,7 @@ export class WidgetContainer {
       wLayout.height = Math.max(wLayout.height, defaults.minHeight);
     }
 
-    // TODO coords constrain
-
-    return wLayout;
+    return this.enforceConstraints(wLayout);
   }
 
   defaultLayoutPx(modelJsonId) {
