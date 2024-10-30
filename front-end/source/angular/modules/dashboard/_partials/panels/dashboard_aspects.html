@@ -355,26 +355,9 @@
   <a class="aspect__col-left" title=""><i class="aspects icn-border"></i>Widget's border</a>
   <div class="aspect__col-right">
     <label class="switch" ng-attr-title="{{vm.borderInWidgets ? 'Hide widget borders' : 'Show widget borders'}}">
-      <input type="checkbox" ng-click="vm.borderInWidgets=!vm.borderInWidgets;vm.updateBorderInWidgets()" checked />
+      <input type="checkbox" ng-model="vm.borderInWidgets" />
       <span class="slider round"></span>
     </label>
   </div>
 </div>
-<!--<div class="aspect__row">
-    <a class="aspect__col-left" title=""><i class="aspects icn-stretch"></i>Stretch width</a>
-    <div class="aspect__col-right">
-        <label class="switch">
-            <input type="checkbox" id="stretchWidth">
-            <span class="slider round"></span>
-        </label>
-    </div>
-</div>
-<div class="aspect__row">
-    <a class="aspect__col-left" title=""><i class="aspects icn-scale"></i>Keep proportion</a>
-    <div class="aspect__col-right">
-        <label class="switch">
-            <input type="checkbox" id="keepProportion">
-            <span class="slider round"></span>
-        </label>
-    </div>
-</div>-->
+

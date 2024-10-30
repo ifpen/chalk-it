@@ -135,12 +135,6 @@ angular.module('modules.editor').controller('EditorController', [
     vm.gridX = 0;
     vm.gridY = 0;
 
-    vm.updateBorderInWidgets = function () {
-      // TODO bind
-      if (vm.borderInWidgets) $('#DropperDroite').addClass('show-widget-borders');
-      else $('#DropperDroite').removeClass('show-widget-borders');
-    };
-
     vm.gridChanged = function () {
       const widgetEditor = widgetEditorGetter();
       widgetEditor.setGrid(vm.gridX, vm.gridY);
