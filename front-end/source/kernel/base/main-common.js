@@ -8,7 +8,6 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 import { editorSingletons } from 'kernel/editor-singletons';
 import { dashState } from 'angular/modules/dashboard/dashboard';
-import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { showEditMode, bRescaleNeededForModeSwitch } from 'angular/modules/dashboard/services/edit-play-switch';
 
@@ -87,7 +86,6 @@ export function onResize() {
     if (dashState.tabActive == 'widgets') {
       if (dashState.modeActive == 'edit-dashboard') {
         editorSingletons.widgetEditor.resizeDashboard();
-        gridMgr.updateGrid();
       } else if (dashState.modeActive == 'play-dashboard') {
         widgetPreview.resizeDashboard();
       }

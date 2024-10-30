@@ -75,10 +75,13 @@ angular.module('modules.editor').controller('EditorController', [
 
     function _onDashboardReady() {
       _onAspectChange();
+      const grid = widgetEditorGetter().getGrid();
+      vm.gridX = grid.sizeX;
+      vm.gridY = grid.sizeY;
     }
 
     function _onAspectChange() {
-      vm.pages = [...widgetEditor.widgetContainer.pageNames];
+      vm.pages = [...widgetEditorGetter().widgetContainer.pageNames];
       vm.pagesNumber = vm.pages.length;
     }
 
@@ -129,6 +132,8 @@ angular.module('modules.editor').controller('EditorController', [
     // --- <Toolbox> ---
     vm.borderInWidgets = true;
     vm.showGrid = false;
+    vm.gridX = 0;
+    vm.gridY = 0;
 
     vm.updateBorderInWidgets = function () {
       // TODO bind
@@ -136,10 +141,10 @@ angular.module('modules.editor').controller('EditorController', [
       else $('#DropperDroite').removeClass('show-widget-borders');
     };
 
-    vm.updateShowGrid = function () {
-      // TODO bind
-      if (vm.showGrid) $('#DropperDroite').addClass('show-grid');
-      else $('#DropperDroite').removeClass('show-grid');
+    vm.gridChanged = function () {
+      const widgetEditor = widgetEditorGetter();
+      widgetEditor.setGrid(vm.gridX, vm.gridY);
+      widgetEditor.setUseGrid(vm.showGrid);
     };
 
     // --- </Toolbox> ---
@@ -357,6 +362,10 @@ angular.module('modules.editor').controller('EditorController', [
 
     // Dashboard configuration
     // TODO
+    vm.updateGrid = function _updateGrid() {
+      const widgetEditor = widgetEditorGetter();
+      widgetEditor.widgetContainer.updateGrid(vm.gridX, vm.gridY);
+    };
 
     vm.canApplyPages = function _canApplyPages() {
       const widgetEditor = widgetEditorGetter();

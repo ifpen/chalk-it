@@ -1,6 +1,5 @@
 ﻿import _ from 'lodash';
 
-import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { dashState } from 'angular/modules/dashboard/dashboard';
 import { bFirstExec, tabWidgetsLoadedEvt, tabPlayLoadedEvt } from 'kernel/base/main-common';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';

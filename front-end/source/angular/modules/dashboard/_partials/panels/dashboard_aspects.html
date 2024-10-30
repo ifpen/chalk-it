@@ -32,15 +32,23 @@
   <a class="aspect__col-left" title=""><i class="aspects icn-grid"></i>Dashboard grid</a>
   <div class="aspect__col-right">
     <label class="switch">
-      <input type="checkbox" ng-click="vm.showGrid=!vm.showGrid;vm.updateShowGrid()" />
+      <input type="checkbox" ng-model="vm.showGrid" ng-change="vm.gridChanged()" />
       <span class="slider round"></span>
     </label>
   </div>
 </div>
 <div class="aspect__row">
-  <a class="aspect__col-left" title=""><i class="aspects icn-board"></i>Responsive layout</a>
+  <div class="aspect__col-left"></div>
+  <div class="aspect__col-right">
+    <input type="number" min="1" max="1000" step="1" title="X" ng-model="vm.gridX" ng-change="vm.gridChanged()"/>
+    <input type="number" min="1" max="1000" step="1" title="Y" ng-model="vm.gridY" ng-change="vm.gridChanged()"/>
+  </div>
 </div>
 
+
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-board"></i>Layout</a>
+</div>
 <form class="dashboard-form Table" style="padding-top: 5px; padding-bottom: 5px; display: block">
   <div class="Row">
     <div class="CellH">

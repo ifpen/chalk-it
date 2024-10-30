@@ -12,6 +12,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { fileManager } from 'kernel/general/backend/file-management';
 import { initXdashEditor } from 'kernel/editor-singletons';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { EVENTS_EDITOR_DASHBOARD_READY } from 'angular/modules/editor/editor.events';
 
 angular.module('modules').controller('ModulesController', [
   '$scope',
@@ -20,7 +21,8 @@ angular.module('modules').controller('ModulesController', [
   '_settings',
   'ManagePageSharingService',
   'ManageDatanodeService',
-  function ($scope, $rootScope, $state, _settings, ManagePgSharingService, ManageDatanodeService) {
+  'EventCenterService',
+  function ($scope, $rootScope, $state, _settings, ManagePgSharingService, ManageDatanodeService, eventCenterService) {
     $rootScope.allSettings = _settings;
 
     //AEF TMP CHANGE FOR SETTINGS
@@ -156,6 +158,8 @@ angular.module('modules').controller('ModulesController', [
     $rootScope.loadedTemplate = function () {
       setTimeout(() => {
         initXdashEditor();
+        eventCenterService.sendEvent(EVENTS_EDITOR_DASHBOARD_READY);
+
         $rootScope.availableTags = $rootScope.listAvailablesTags;
         datanodesManager.initialize(false);
         $rootScope.currentProject = runtimeSingletons.xdash.initMeta();

@@ -10,7 +10,6 @@ import _ from 'lodash';
 import { panelDash } from '../edition/panel-dashboard';
 import { editorSingletons } from 'kernel/editor-singletons';
 import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
-import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
 import { htmlExport } from 'kernel/general/export/html-export';
 
@@ -36,18 +35,12 @@ export class LayoutMgrClass {
     }
     this.maxLeftCst = panelDash.fullScreenWidth - minLeftCst; // max left of the dashboard, can be modified
 
-    this.scalingHelper = undefined;
-
     // Dashboard background color
     this.defaultBgColor = 'var(--widget-color-0)';
     this.dashBgColor = '';
     this.inheritThemeBgColor = true;
     this.dashboardTheme = 'default';
     this.$rootScope = angular.element(document.body).scope().$root;
-  }
-
-  setScalingHelper(scalingHelper) {
-    this.scalingHelper = scalingHelper;
   }
 
   updateMaxTopAndLeft() {
@@ -80,123 +73,6 @@ export class LayoutMgrClass {
       }
       this.maxLeftCst = this.drprD.offsetWidth - minLeftCst - 14; // webkit-scrollbar width: 14px
       this.maxTopCst = this.drprD.childNodes[0].offsetHeight * this.rows - minTopCst;
-    }
-  }
-
-  /*--------applyCells--------*/
-  applyCells() {
-    const newRows = this._readRows();
-    const newCols = newRows ? this._readCols() : 0;
-
-    $('#DropperDroite')[0].scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'auto',
-    });
-
-    this._updateNewHeightCols(newRows);
-
-    angular
-      .element(document.body)
-      .injector()
-      .invoke([
-        'UndoManagerService',
-        'EditorActionFactory',
-        (undoManagerService, editorActionFactory) => {
-          const action = editorActionFactory.createUpdateLayoutAction(newRows, newCols, this.newHeightCols);
-          undoManagerService.execute(action);
-        },
-      ]);
-
-    this._updateExportOptions();
-    this.updateDashBgColor();
-    this._updateRowNames();
-  }
-
-  setLayout(newRows, newColls, newHeights, ui = false) {
-    const cellsChange = this.rows !== newRows || this.cols !== newColls;
-    const heightsChange = !angular.equals(this.heightCols, newHeights);
-
-    this.rows = newRows;
-    this.cols = newColls;
-    this.newHeightCols = [...newHeights];
-    this.heightCols = [...newHeights];
-
-    if (cellsChange) {
-      this.cleanColumns();
-
-      this.scalingHelper.setRows(this.rows);
-      this.scalingHelper.setCols(this.cols);
-      const classType = this._getClassType(this.cols);
-      this._createColumn(classType);
-
-      if (this.rows !== 0) {
-        _.each(editorSingletons.widgetEditor.modelsId, (instanceId) => {
-          const element = document.getElementById(instanceId);
-          this.putWidgetInTheRightCol(element, 10, 10); // minLeftCst=10, minTopCst=10 // to coordinate
-        });
-      }
-    } else if (heightsChange) {
-      this._applyHeights();
-      this.scalingHelper.updateCellsProportions();
-
-      // TODO get all widgets
-      // TODO get the new height of drop zone
-      // TODO get the element in each drp div
-      // TODO rescale each element in drp div
-      // TODO find other element not inside drp div
-    }
-
-    if (ui && this.rows) {
-      const cell = $('#dpr1'); // TODO reach row
-      if (parseInt(cell.css('min-height')) > cell.height()) {
-        swal(
-          cell[0].style.height + ' is too small considering the size of your screen!',
-          "The minimum allowed height '" + cell.css('min-height') + "' will be applied.",
-          'warning'
-        );
-      }
-    }
-
-    this.updateMaxTopAndLeft();
-    editorSingletons.widgetEditor.updateSnapshotDashZoneDims();
-
-    $('select[name=select-rows]').val(this.rows);
-    $('select[name=select-cols]').val(this.cols || 1);
-  }
-
-  /*--------create Column--------*/
-  _createColumn(classType) {
-    this._createCols(classType);
-    this._applyHeights();
-    this.scalingHelper.updateCellsProportions();
-  }
-
-  _applyHeights() {
-    for (let i = 0; i < this.rows; i++) {
-      const rowHeight = this._getRowHeight(i);
-      const rowStart = i * this.cols + 1;
-      const rowEnd = rowStart + this.cols;
-      for (let j = rowStart; j < rowEnd; j++) {
-        $('#dpr' + j)[0].style.height = rowHeight + '%';
-      }
-    }
-  }
-
-  /*--------createCols--------*/
-  _createCols(classType) {
-    if (this.rows) {
-      this.drprD.classList.add('has-device-col');
-
-      const nb = this.rows * this.cols;
-      for (let i = 1; i <= nb; i++) {
-        const dprCol = document.createElement('div');
-        dprCol.setAttribute('class', classType + ' device-col drop-zone-col');
-        dprCol.setAttribute('id', 'dpr' + i);
-        this.drprD.appendChild(dprCol);
-      }
-
-      gridMgr.updateGrid();
     }
   }
 

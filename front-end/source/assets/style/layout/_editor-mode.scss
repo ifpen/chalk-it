@@ -80,8 +80,7 @@
   outline: 1px dashed rgba(0, 0, 0, 0.5);
 }
 
-.dropperR.show-grid:not(.has-device-col):not(#DropperDroitec),
-.dropperR.show-grid:not(#DropperDroitec) .device-col {
+.dropperR.show-grid:not(#DropperDroitec) {
   background-origin: content-box;
   background-size: 20px 20px;
   background-attachment: local;

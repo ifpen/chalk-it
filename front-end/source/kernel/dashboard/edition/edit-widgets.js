@@ -23,7 +23,6 @@ import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { getGeometryChanges } from 'kernel/dashboard/widget/widget-placement';
 import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
-import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { WidgetContainer } from 'kernel/dashboard/widget/widget-container';
 import { createUniqueInstanceId } from 'kernel/dashboard/widget/widget-factory';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
@@ -45,8 +44,6 @@ export function initEditWidget() {
   var editorDimensionsSnapshot;
   var scalingHelper = new rescaleHelper(editorDimensionsSnapshot, editorScalingMethod, 'edit');
 
-  editorSingletons.layoutMgr.setScalingHelper(scalingHelper);
-
   var widgetSelectionContext = new Set(); // selection context (Instance Ids of selected widgets)
 
   const RESIZE_MARGIN = 7;
@@ -62,6 +59,28 @@ export function initEditWidget() {
   const SELECTED_CLASS = 'widget-selected';
   const LAST_SELECTED_CLASS = 'widget-selected-last';
 
+  const DEFAULT_GRID_PX = 20;
+  let grid = { sizeX: DEFAULT_GRID_PX, sizeY: DEFAULT_GRID_PX };
+  let useGrid = false;
+
+  function getGrid() {
+    return { ...grid };
+  }
+
+  /**
+   * @description updates the size of the grid
+   */
+  function setGrid(sizeX, sizeY) {
+    sizeX = Math.max(1, Math.round(sizeX));
+    sizeY = Math.max(1, Math.round(sizeY));
+    grid = { sizeX, sizeY };
+    drprD.style['background-size'] = `${grid.sizeX}px ${grid.sizeY}px`;
+  }
+
+  function setUseGrid(_useGrid) {
+    return (useGrid = _useGrid);
+  }
+
   // TODO coords remove ?
   function _toLocal(containerId, position) {
     if (containerId === MAIN_CONTAINER_ID) {
@@ -76,7 +95,7 @@ export function initEditWidget() {
     }
   }
 
-  function _alignOnGrid(xy, offsets, grid) {
+  function _alignOnGrid(xy, offsets) {
     let [x, y] = xy;
     let [x0, y0] = offsets;
 
@@ -336,11 +355,10 @@ export function initEditWidget() {
           let x = event.client.x + _ddOffsetX;
           let y = event.client.y + _ddOffsetY;
 
-          const grid = gridMgr.getGrid();
-          if (grid) {
+          if (useGrid) {
             const offset = $(drprD).offset();
             // TODO get margin
-            [x, y] = _alignOnGrid([x, y], [offset.left + 10, offset.top + 10], grid);
+            [x, y] = _alignOnGrid([x, y], [offset.left + 10, offset.top + 10]);
           }
 
           _draggedClone.style.left = x + 'px';
@@ -359,9 +377,9 @@ export function initEditWidget() {
             const rect = dropZone.getBoundingClientRect();
             x -= rect.left;
             y -= rect.top;
-            const grid = gridMgr.getGrid();
-            if (grid) {
-              [x, y] = _alignOnGrid([x, y], [0, 0], grid);
+
+            if (useGrid) {
+              [x, y] = _alignOnGrid([x, y], [0, 0]);
             }
 
             const layout = {
@@ -465,7 +483,6 @@ export function initEditWidget() {
             ratioX = ratioY = ratio;
           }
 
-          const grid = gridMgr.getGrid();
           for (const [id, params] of resizeParameters.entries()) {
             const { minRatioX, minRatioY, maxRatioX, maxRatioY } = params;
 
@@ -480,13 +497,13 @@ export function initEditWidget() {
               widgetRatioX = widgetRatioY = ratio;
             }
 
-            if (grid) {
+            if (useGrid) {
               const width = position.width * widgetRatioX;
               const height = position.height * widgetRatioY;
               const px0 = position.left + (moveX ? startPosition.width - width : width);
               const py0 = position.top + (moveY ? startPosition.height - height : height);
 
-              const [px, py] = _alignOnGrid([px0, py0], [0, 0], grid);
+              const [px, py] = _alignOnGrid([px0, py0], [0, 0]);
               if (changeX) {
                 widgetRatioX = (width + (px - px0) * (moveX ? -1 : 1)) / position.width;
               }
@@ -571,8 +588,6 @@ export function initEditWidget() {
         },
 
         move(event) {
-          const grid = gridMgr.getGrid();
-
           const varX = event.client.x - event.clientX0;
           const varY = event.client.y - event.clientY0;
 
@@ -581,8 +596,8 @@ export function initEditWidget() {
             position.left += varX;
             position.top += varY;
 
-            if (grid) {
-              [position.left, position.top] = _alignOnGrid([position.left, position.top], [0, 0], grid);
+            if (useGrid) {
+              [position.left, position.top] = _alignOnGrid([position.left, position.top], [0, 0]);
             }
             position = widgetContainer.enforceConstraints(position);
 
@@ -597,7 +612,6 @@ export function initEditWidget() {
           const varY = event.client.y - event.clientY0;
 
           const moves = new Map();
-          const grid = gridMgr.getGrid();
 
           widgetSelectionContext.forEach((id) => {
             const startPosition = widgetContainer.getRecordedGeometry(id);
@@ -606,8 +620,8 @@ export function initEditWidget() {
             position.left += varX;
             position.top += varY;
 
-            if (grid) {
-              [position.left, position.top] = _alignOnGrid([position.left, position.top], [0, 0], grid);
+            if (useGrid) {
+              [position.left, position.top] = _alignOnGrid([position.left, position.top], [0, 0]);
             }
             position = widgetContainer.enforceConstraints(position);
 
@@ -896,7 +910,6 @@ export function initEditWidget() {
 
   /*--------clear--------*/
   function clear() {
-    editorSingletons.layoutMgr.clear();
     editorScalingMethod = 'scaleTwh'; // MBG 14/02/2022
 
     reset();
@@ -1055,5 +1068,8 @@ export function initEditWidget() {
     validateSelectionVisibility,
     changePage,
     widgetContainer,
+    getGrid,
+    setGrid,
+    setUseGrid,
   };
 }
