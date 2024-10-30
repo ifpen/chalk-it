@@ -169,7 +169,7 @@ export function initEditWidget() {
     // MBG : TODO : rename globally modelsParameters to instanceParameters
     modelsHiddenParams[newWidgetId] = jQuery.extend(true, {}, modelsHiddenParams[elementId]);
     modelsParameters[newWidgetId] = jQuery.extend(true, {}, modelsParameters[elementId]);
-    addWidget(info.modelJsonId, newWidgetId, requestedLayoutPx);
+    addWidget(info.modelJsonId, newWidgetId, requestedLayoutPx, undefined, info.layout.page);
 
     if (!_.isUndefined(widgetConnector.widgetsConnection[elementId])) {
       widgetConnector.duplicateConnection(newWidgetId, elementId);
@@ -355,37 +355,32 @@ export function initEditWidget() {
           _draggedClone = null;
 
           const dropZone = event.relatedTarget;
-          if (dropZone && dropZone.id) {
-            const dropId = dropZone.id;
-            if (dropId === MAIN_CONTAINER_ID) {
-              const rect = dropZone.getBoundingClientRect();
-
-              x -= rect.left;
-              y -= rect.top;
-              const grid = gridMgr.getGrid();
-              if (grid) {
-                [x, y] = _alignOnGrid([x, y], [0, 0], grid);
-              }
-
-              const layout = {
-                top: y,
-                left: x,
-              };
-
-              angular
-                .element(document.body)
-                .injector()
-                .invoke([
-                  'UndoManagerService',
-                  'EditorActionFactory',
-                  (undoManagerService, editorActionFactory) => {
-                    const action = editorActionFactory.createCreateWidgetdAction(_newId, dropId, layout);
-                    undoManagerService.execute(action);
-                  },
-                ]);
+          if (dropZone) {
+            const rect = dropZone.getBoundingClientRect();
+            x -= rect.left;
+            y -= rect.top;
+            const grid = gridMgr.getGrid();
+            if (grid) {
+              [x, y] = _alignOnGrid([x, y], [0, 0], grid);
             }
-          }
 
+            const layout = {
+              top: y,
+              left: x,
+            };
+
+            angular
+              .element(document.body)
+              .injector()
+              .invoke([
+                'UndoManagerService',
+                'EditorActionFactory',
+                (undoManagerService, editorActionFactory) => {
+                  const action = editorActionFactory.createCreateWidgetAction(_newId, layout);
+                  undoManagerService.execute(action);
+                },
+              ]);
+          }
           _newId = null;
         },
       },
@@ -400,7 +395,7 @@ export function initEditWidget() {
             'UndoManagerService',
             'EditorActionFactory',
             (undoManagerService, editorActionFactory) => {
-              const action = editorActionFactory.createCreateWidgetdAction(targetId);
+              const action = editorActionFactory.createCreateWidgetAction(targetId);
               undoManagerService.execute(action);
             },
           ]);
@@ -532,9 +527,6 @@ export function initEditWidget() {
             const startPosition = widgetContainer.getRecordedGeometry(id);
 
             if (!angular.equals(startPosition, toPosition)) {
-              // Sketchy, but only immediate alternative would be providing the action with the original position...
-              // TODO coords rm
-              // widgetContainer.moveResizeWidget(id, startPosition, true);
               resizes.set(id, toPosition);
             }
 
@@ -694,9 +686,8 @@ export function initEditWidget() {
   }
 
   /*--------Widget add function--------*/
-  function addWidget(modelJsonId, instanceId, wLayout, wzIndex) {
-    // TODO coords page
-    instanceId = _build(modelJsonId, instanceId, wLayout, wzIndex);
+  function addWidget(modelJsonId, instanceId, wLayout, wzIndex, page) {
+    instanceId = _build(modelJsonId, instanceId, wLayout, wzIndex, page);
 
     _onAddRmWidget();
 
@@ -851,7 +842,8 @@ export function initEditWidget() {
 
       var targetDiv = document.getElementById(wdgDrprMap[key]);
 
-      editorSingletons.widgetEditor.addWidget(
+      // TODO coords page
+      addWidget(
         dashObj[key].container.modelJsonId,
         dashObj[key].container.instanceId,
         wLayout,
@@ -915,7 +907,6 @@ export function initEditWidget() {
 
   /*--------getCurrentDashZoneDims--------*/
   function getCurrentDashZoneDims() {
-    //console.log("getCurrentDashZoneDims at editor");
     var curDashZone = {
       widthPx: $('#drop-zone').width(),
       heightPx: $('#drop-zone').height(),
@@ -955,7 +946,9 @@ export function initEditWidget() {
 
   function selectAllWidgets() {
     widgetSelectionContext.clear();
-    widgetContainer.widgetIds.forEach((id) => widgetSelectionContext.add(id));
+    [...widgetContainer.widgetIds]
+      .filter((id) => widgetContainer.isVisible(id))
+      .forEach((id) => widgetSelectionContext.add(id));
     _onSelectionChange();
   }
 
@@ -998,6 +991,19 @@ export function initEditWidget() {
           eventCenterService.sendEvent(EVENTS_EDITOR_SELECTION_CHANGED);
         },
       ]);
+  }
+
+  function changePage(pageNb) {
+    widgetContainer.changePage(pageNb);
+    validateSelectionVisibility();
+  }
+
+  function validateSelectionVisibility() {
+    getSelection()
+      .filter((elementId) => !widgetContainer.isVisible(elementId))
+      .forEach((elementId) => widgetSelectionContext.delete(elementId));
+
+    _onSelectionChange();
   }
 
   function _notifyMove() {
@@ -1046,6 +1052,8 @@ export function initEditWidget() {
     unselectAllWidgets,
     getSelectedActive,
     getSelection,
+    validateSelectionVisibility,
+    changePage,
     widgetContainer,
   };
 }

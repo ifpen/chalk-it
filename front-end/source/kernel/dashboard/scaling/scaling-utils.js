@@ -81,17 +81,6 @@ export function inheritWcHeightFromIdInst(idInstance) {
   return inheritWcHeightFromPx($('#' + elt).height);
 }
 
-/*--------match Media--------*/
-export function getMedia() {
-  var lastMedia = '';
-  if (window.matchMedia('(min-width: 768px)').matches) {
-    lastMedia = 'large';
-  } else {
-    lastMedia = 'small';
-  }
-  return lastMedia;
-}
-
 /*--------getFontFactor --------*/
 export function getFontFactor() {
   if (dashState.tabActive == 'play') {

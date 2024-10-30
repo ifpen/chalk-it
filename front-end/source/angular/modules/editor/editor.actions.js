@@ -15,7 +15,10 @@ import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states
 import { getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { editorSingletons } from 'kernel/editor-singletons';
-import { EVENTS_EDITOR_CONNECTIONS_CHANGED } from 'angular/modules/editor/editor.events';
+import {
+  EVENTS_EDITOR_CONNECTIONS_CHANGED,
+  EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED,
+} from 'angular/modules/editor/editor.events';
 
 const UNDO_MOVE_MERGE_WINDO_MS = 1_000;
 
@@ -145,60 +148,40 @@ class ToBackgroundAction extends UndoableAction {
 }
 
 /**
- * Move widget to an other cell
+ * Move widget to an other page
  */
-class MoveToCellAction extends UndoableAction {
-  // TODO coords => change page
+class MoveWidgetsToPageAction extends UndoableAction {
   /**
    *
    * @param {*} widgetEditor
    * @param {EventCenter} eventCenter Used to notify when widgets moved
-   * @param {string} containerId id of the new parent cell
-   * @param {Map.<string,{left: number, top: number, width: (number|undefined), height:(number|undefined)}>} geometries new geometries (not including margins) per widget id
-   * @param {string=} label
+   * @param {Array.<string>} elementIds ids of the elements to move
+   * @param {number} page target page
    */
-  constructor(widgetEditor, eventCenter, containerId, geometries, label) {
+  constructor(widgetEditor, eventCenter, elementIds, page) {
     super();
     this._widgetEditor = widgetEditor;
     this._eventCenter = eventCenter;
-    this._containerId = containerId;
-    this._geometries = geometries;
-    this._label = label ? label : 'Move widget to container';
+    this._elementIds = elementIds;
+    this._page = page;
 
-    this._initialGeometries = undefined;
-    this._initialContainers = undefined;
+    this._initialPages = undefined;
   }
 
   label() {
-    return this._label;
+    return `Move widget${this._elementIds.length > 1 ? 's' : ''} to page ${this._page + 1}`;
   }
 
   run() {
-    this._initialGeometries = new Map();
-    this._initialContainers = new Map();
+    const container = this._widgetEditor.widgetContainer;
+    this._initialPages = container.collectWidgetPages();
 
-    const containers = this._widgetEditor.widgetContainers;
-    for (const [elementId, geometry] of this._geometries) {
-      const element = containers.get(elementId);
-      if (element) {
-        const divModel = element.divModel;
-        if (divModel) {
-          this._initialContainers.set(elementId, 'DropperDroite');
-          if (divModel.parentNode && divModel.parentNode.parentNode) {
-            const cellId = divModel.parentNode.parentNode.id;
-            if (cellId && cellId.startsWith('dpr')) {
-              this._initialContainers.set(elementId, cellId);
-            }
-          }
-          const initialGeometry = getElementLayoutPx(divModel);
-          this._initialGeometries.set(elementId, initialGeometry);
-
-          const newPosition = { ...initialGeometry, ...geometry };
-          widgetContainer.moveResizeWidget(elementId, newPosition);
-        }
-      }
+    const pages = new Map();
+    for (const elementId of this._elementIds) {
+      pages.set(elementId, this._page);
     }
 
+    container.setWidgetPages(pages);
     this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
   }
 
@@ -209,29 +192,12 @@ class MoveToCellAction extends UndoableAction {
 
   canUndo() {
     // TODO check Ids
-    return this._initialGeometries !== undefined && this._initialContainers !== undefined;
+    return this._initialPages !== undefined;
   }
 
   undo() {
-    const containers = this._widgetEditor.widgetContainers;
-
-    for (const [elementId, geometry] of this._initialGeometries) {
-      const initialContainer = this._initialContainers.get(elementId);
-
-      const element = containers.get(elementId);
-      if (element) {
-        const divModel = element.divModel;
-        if (divModel) {
-          if (initialContainer) {
-            $('#' + initialContainer).append(divModel.parentNode); // TODO coords
-          }
-          widgetContainer.moveResizeWidget(elementId, geometry);
-        }
-      }
-    }
-
-    this._initialGeometries = undefined;
-    this._initialContainers = undefined;
+    this._widgetEditor.widgetContainer.setWidgetPages(this._initialPages);
+    this._initialPages = undefined;
     this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
   }
 }
@@ -393,38 +359,27 @@ class CreateWidgetAction extends UndoableAction {
    * @param {*} widgetEditor
    * @param {string} modelJsonId id of the widget type to create
    * @param {=string} label action label for the history.
-   * @param {undefined|HTMLElement|string} containerDivOrId Optional. Used when droping from the toolbar. Can be an html element or its id.
-   * @param {undefined|{left: (number|undefined), top: (number|undefined), width: (number|undefined), height:(number|undefined), minWidth: (number|undefined), minHeight: (number|undefined)}} layout Optional. Where to place the widget.
+   * @param {undefined|{left: (number|undefined), top: (number|undefined), width: (number|undefined), height:(number|undefined), page: (number|undefined)}} layout Optional. Where to place the widget.
    */
-  constructor(widgetEditor, modelJsonId, label, containerDivOrId, layout) {
-    // Coords TODO page
+  constructor(widgetEditor, modelJsonId, label, layout) {
     super();
     this._widgetEditor = widgetEditor;
     this._modelJsonId = modelJsonId;
     this._label = label || 'Add widget';
-    this._containerDivOrId = containerDivOrId;
     this._layout = layout;
 
     this._widgetId = undefined;
+    this._actualLayout = undefined;
   }
 
   label() {
     return this._label;
   }
 
-  _getContainerDivOrId() {
-    if (this._containerDivOrId && typeof this._containerDivOrId === 'string') {
-      const div = document.getElementById(this._containerDivOrId);
-      if (div) {
-        return div;
-      }
-    }
-    return this._containerDivOrId;
-  }
-
   run() {
-    const instanceId = this._widgetEditor.addWidget(this._modelJsonId, null, this._layout);
+    const instanceId = this._widgetEditor.addWidget(this._modelJsonId, undefined, this._layout);
     this._widgetId = instanceId;
+    this._actualLayout = this._widgetEditor.widgetContainer.getWidgetLayout(this._widgetId);
   }
 
   canRedo() {
@@ -433,7 +388,13 @@ class CreateWidgetAction extends UndoableAction {
   }
 
   redo() {
-    const instanceId = this._widgetEditor.addWidget(this._modelJsonId, this._widgetId, this._layout);
+    const instanceId = this._widgetEditor.addWidget(
+      this._modelJsonId,
+      this._widgetId,
+      this._actualLayout,
+      undefined,
+      this._actualLayout.page
+    );
     this._widgetId = instanceId;
   }
 
@@ -529,7 +490,6 @@ class DeleteWidgetsAction extends UndoableAction {
     for (const elementId of this._elementIds) {
       const info = container.widgetsInfo.get(elementId);
 
-      // TODO coords pages
       const _modelsHiddenParams = jQuery.extend(true, {}, modelsHiddenParams[elementId]);
       const _modelsParameters = jQuery.extend(true, {}, modelsParameters[elementId]);
       const _widgetsConnection = jQuery.extend(true, {}, this._widgetConnector.widgetsConnection[elementId]);
@@ -537,7 +497,7 @@ class DeleteWidgetsAction extends UndoableAction {
       const data = {
         id: elementId,
         modelJsonId: info.modelJsonId,
-        layout: info.layout,
+        layout: { ...info.layout },
         modelsHiddenParams: _modelsHiddenParams,
         modelsParameters: _modelsParameters,
         widgetsConnection: _widgetsConnection,
@@ -572,12 +532,12 @@ class DeleteWidgetsAction extends UndoableAction {
       modelsHiddenParams[data.id] = jQuery.extend(true, {}, data.modelsHiddenParams);
       modelsParameters[data.id] = jQuery.extend(true, {}, data.modelsParameters);
 
-      // TODO coords add pages
-      const widgetId = editorSingletons.widgetEditor.addWidget(
+      editorSingletons.widgetEditor.addWidget(
         data.modelJsonId,
         data.id,
         data.layout,
-        data.layout.zIndex
+        data.layout.zIndex,
+        data.layout.page
       );
       if (data.widgetsConnection) {
         this._widgetConnector.widgetsConnection[data.id] = jQuery.extend(true, {}, data.widgetsConnection);
@@ -777,66 +737,38 @@ class ClearWidgetConnectionsAction extends UndoableAction {
 }
 
 /**
- * Changes the responsive rows/columns/heights
+ * Changes number of pages or their names
  */
-class UpdateLayoutAction extends UndoableAction {
+class UpdatePagesAction extends UndoableAction {
+  static EDITOR_DASHBOARD_ASPECT_CHANGED = EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED;
+
   /**
    * @param {*} widgetEditor
-   * @param {*} layoutMgr
    * @param {EventCenter} eventCenter Used to notify when widgets moved
-   * @param {number} rows new number of rows
-   * @param {number} cols new number of columns
-   * @param {Array.<number>} heights heights of the rows. Length should be "rows" (or 1 for the time being).
+   * @param {Array.<string>} pages heights of the rows. Length should be "rows" (or 1 for the time being).
    */
-  constructor(widgetEditor, layoutMgr, eventCenter, rows, cols, heights) {
-    // TODO coords page
+  constructor(widgetEditor, eventCenter, pages) {
     super();
     this._widgetEditor = widgetEditor;
-    this._layoutMgr = layoutMgr;
     this._eventCenter = eventCenter;
 
-    this._oldLayout = undefined;
-    this._initialGeometries = undefined;
+    this._oldPages = undefined;
+    this._initialWidgetPages = undefined;
 
-    this._rows = rows;
-    this._cols = cols;
-    this._heights = [...heights];
+    this.pages = [...pages];
   }
 
   label() {
-    return 'Change layout';
-  }
-
-  _apply(ui = false) {
-    this._oldLayout = {
-      heights: this._layoutMgr.getHeightCols(),
-      rows: this._layoutMgr.getRows(),
-      cols: this._layoutMgr.getCols(),
-    };
-
-    // Neccessary as widget may be moved
-    this._initialGeometries = new Map();
-    const container = this._widgetEditor.widgetContainer;
-    for (const elementId of container.widgetIds) {
-      const oldPosition = container.getRecordedGeometry(elementId);
-      if (this._oldLayout.rows > 0 && divModel.parentNode && divModel.parentNode.parentNode) {
-        const cellId = divModel.parentNode.parentNode.id;
-        // TODO coords page
-        if (cellId && cellId.startsWith('dpr')) {
-          oldPosition.cellId = cellId;
-        }
-      }
-
-      this._initialGeometries.set(elementId, { ...oldPosition });
-    }
-
-    this._layoutMgr.setLayout(this._rows, this._cols, [...this._heights], ui);
-
-    this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
+    return 'Change pages';
   }
 
   run() {
-    this._apply(true);
+    this._oldPages = [...this._widgetEditor.widgetContainer.pageNames];
+    this._initialWidgetPages = this._widgetEditor.widgetContainer.collectWidgetPages();
+
+    this._widgetEditor.widgetContainer.updatePages(this.pages);
+
+    this._eventCenter.sendEvent(UpdatePagesAction.EDITOR_DASHBOARD_ASPECT_CHANGED);
   }
 
   canRedo() {
@@ -844,32 +776,21 @@ class UpdateLayoutAction extends UndoableAction {
   }
 
   redo() {
-    this._apply();
+    this.run();
   }
 
   canUndo() {
-    return !!this._oldLayout;
+    return !!this._oldPages;
   }
 
   undo() {
-    this._layoutMgr.setLayout(this._oldLayout.rows, this._oldLayout.cols, [...this._oldLayout.heights]);
-    // TODO coords page
-    const container = this._widgetEditor.widgetContainer;
-    for (const [elementid, oldPosition] of this._initialGeometries) {
-      const element = containers.get(elementid);
-      if (element) {
-        const divModel = element.divModel;
-        if (divModel) {
-          if (oldPosition.cellId) {
-            $('#' + oldPosition.cellId).append(divModel.parentNode);
-          }
-          widgetContainer.moveResizeWidget(elementid, oldPosition);
-        }
-      }
-    }
-    this._initialGeometries = undefined;
+    this._widgetEditor.widgetContainer.updatePages(this._oldPages);
+    this._widgetEditor.widgetContainer.setWidgetPages(this._initialWidgetPages);
 
-    this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
+    this._oldPages = undefined;
+    this._initialWidgetPages = undefined;
+
+    this._eventCenter.sendEvent(UpdatePagesAction.EDITOR_DASHBOARD_ASPECT_CHANGED);
   }
 }
 
@@ -879,17 +800,13 @@ angular.module('modules.editor').service('EditorActionFactory', [
   'WidgetEditorGetter',
   'WidgetConnectorGetter',
   'EventCenterService',
-  'LayoutMgrGetter',
   function (
     widgetsPluginsHandlerGetter,
     widgetContainerGetter,
     widgetEditorGetter,
     widgetConnectorGetter,
-    eventCenterService,
-    layoutMgrGetter
+    eventCenterService
   ) {
-    this.WIDGET_MOVED_EVENT = UpdateGeometryAction.WIDGET_MOVED_EVENT;
-
     // --------------------
     // -- Widgets placement
     // --------------------
@@ -1383,25 +1300,18 @@ angular.module('modules.editor').service('EditorActionFactory', [
     // -----------------------------
     /**
      * @param {string} modelJsonId id of the widget type to create
-     * @param {undefined|HTMLElement|string} containerDivOrId Optional. Used when droping from the toolbar. Can be an html element or its id.
-     * @param {undefined|{left: (number|undefined), top: (number|undefined), width: (number|undefined), height:(number|undefined), minWidth: (number|undefined), minHeight: (number|undefined)}} layout Optional. Where to place the widget.
+     * @param {undefined|{left: (number|undefined), top: (number|undefined), width: (number|undefined), height:(number|undefined), page: (number|undefined)}} layout Optional. Where to place the widget.
      */
-    this.createCreateWidgetdAction = function _createCreateWidgetdAction(modelJsonId, containerDivOrId, layout) {
+    this.createCreateWidgetAction = function _createCreateWidgetAction(modelJsonId, layout) {
       const widgetsPluginsHandler = widgetsPluginsHandlerGetter();
       if (widgetsPluginsHandler && widgetsPluginsHandler.widgetToolbarDefinitions) {
         const def = widgetsPluginsHandler.widgetToolbarDefinitions[modelJsonId];
         if (def && def.title) {
-          return new CreateWidgetAction(
-            widgetEditorGetter(),
-            modelJsonId,
-            `Add "${def.title}"`,
-            containerDivOrId, // TODO coords page
-            layout
-          );
+          return new CreateWidgetAction(widgetEditorGetter(), modelJsonId, `Add "${def.title}"`, layout);
         }
       }
-      // TODO coords ???
-      return new CreateWidgetAction(widgetEditorGetter(), modelJsonId);
+
+      return new CreateWidgetAction(widgetEditorGetter(), modelJsonId, undefined, layout);
     };
 
     /**
@@ -1462,13 +1372,21 @@ angular.module('modules.editor').service('EditorActionFactory', [
 
     /**
      *
-     * @param {number} rows
-     * @param {number} cols
-     * @param {Array.<number>} heights
+     * @param {Array.<string>} newPages
      * @returns
      */
-    this.createUpdateLayoutAction = function _createUpdateLayoutAction(rows, cols, heights) {
-      return new UpdateLayoutAction(widgetEditorGetter(), layoutMgrGetter(), eventCenterService, rows, cols, heights);
+    this.createUpdatePagesAction = function _createUpdatePagesAction(newPages) {
+      return new UpdatePagesAction(widgetEditorGetter(), eventCenterService, newPages);
+    };
+
+    /**
+     *
+     * @param {Array.<string>} elementIds ids of the elements to move
+     * @param {number} page target page
+     * @returns
+     */
+    this.createMoveWidgetsToPageAction = function _createMoveWidgetsToPageAction(elementIds, page) {
+      return new MoveWidgetsToPageAction(widgetEditorGetter(), eventCenterService, elementIds, page);
     };
 
     return this;

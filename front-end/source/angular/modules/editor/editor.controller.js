@@ -8,15 +8,20 @@
 import _ from 'lodash';
 import PNotify from 'pnotify';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { UndoableAction, UndoManager } from './editor.undo-manager';
 import {
   EVENTS_EDITOR_SELECTION_CHANGED,
   EVENTS_EDITOR_ADD_REMOVE_WIDGET,
+  EVENTS_EDITOR_WIDGET_MOVED,
   EVENTS_EDITOR_CONNECTIONS_CHANGED,
   EVENTS_EDITOR_WIDGET_TOGGLE_MENU,
+  EVENTS_EDITOR_DASHBOARD_READY,
+  EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED,
 } from './editor.events';
 import { keyShift } from 'kernel/dashboard/scaling/layout-mgr';
+import angular from 'angular';
 
 angular.module('modules.editor').controller('EditorController', [
   '$scope',
@@ -54,6 +59,9 @@ angular.module('modules.editor').controller('EditorController', [
 
     let copiedWidgets;
 
+    vm.pagesNumber = 0;
+    vm.pages = [];
+
     vm.selection = [];
     vm.widgetExists = false;
     vm.connectionsExists = false;
@@ -61,6 +69,18 @@ angular.module('modules.editor').controller('EditorController', [
     vm.menuWidgetVisible = false;
     vm.menuWidgetTargetId = null;
     eventCenterService.addListener(widget_menu_event, _toggleWidgMenu);
+
+    eventCenterService.addListener(EVENTS_EDITOR_DASHBOARD_READY, _onDashboardReady);
+    eventCenterService.addListener(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED, _onAspectChange);
+
+    function _onDashboardReady() {
+      _onAspectChange();
+    }
+
+    function _onAspectChange() {
+      vm.pages = [...widgetEditor.widgetContainer.pageNames];
+      vm.pagesNumber = vm.pages.length;
+    }
 
     function _getSelection() {
       const widgetEditor = widgetEditorGetter();
@@ -153,7 +173,17 @@ angular.module('modules.editor').controller('EditorController', [
 
       let handled = false;
 
-      if (e.ctrlKey) {
+      if (e.shiftKey) {
+        if (e.keyCode == 33) {
+          // PageUp
+          vm.previousPage();
+          handled = true;
+        } else if (e.keyCode == 34) {
+          // PageDown
+          vm.nextPage();
+          handled = true;
+        }
+      } else if (e.ctrlKey) {
         if (e.key === 'y' || e.key === 'Y' || (e.shiftKey && (e.key === 'z' || e.key === 'Z'))) {
           if (vm.canRedo()) {
             vm.redo();
@@ -324,6 +354,100 @@ angular.module('modules.editor').controller('EditorController', [
 
       return false;
     }
+
+    // Dashboard configuration
+    // TODO
+
+    vm.canApplyPages = function _canApplyPages() {
+      const widgetEditor = widgetEditorGetter();
+      return !angular.equals(widgetEditor?.widgetContainer?.pageNames, vm.pages);
+    };
+
+    vm.applyPages = function _applyPages() {
+      const action = editorActionFactory.createUpdatePagesAction(vm.pages);
+      undoManagerService.execute(action);
+    };
+
+    vm.pagesNumberChanged = function _pagesNumberChanged() {
+      while (vm.pages.length > vm.pagesNumber) {
+        vm.pages.pop();
+      }
+      while (vm.pages.length < vm.pagesNumber) {
+        vm.pages.push(`Page ${vm.pages.length + 1}`);
+      }
+    };
+
+    // Page navigation
+    vm.previousPage = function () {
+      const widgetEditor = widgetEditorGetter();
+      const widgetContainer = widgetEditor.widgetContainer;
+      const newPage = widgetContainer.currentPage - 1;
+
+      if (newPage >= 0) {
+        widgetEditor.changePage(newPage);
+      }
+    };
+
+    vm.nextPage = function () {
+      const widgetEditor = widgetEditorGetter();
+      const widgetContainer = widgetEditor.widgetContainer;
+      const newPage = widgetContainer.currentPage + 1;
+
+      if (newPage < widgetContainer.pageNames.length) {
+        widgetEditor.changePage(newPage);
+      }
+    };
+
+    vm.getCurrentPageNames = function () {
+      const widgetEditor = widgetEditorGetter();
+      return widgetEditor?.widgetContainer?.pageNames ?? [];
+    };
+
+    vm.getCurrentPage = function () {
+      const widgetEditor = widgetEditorGetter();
+      return widgetEditor.widgetContainer.currentPage;
+    };
+
+    vm.editPageNames = function () {
+      if (!vm.pages.length) {
+        // Button should only be visible when rows >= 1, so this should not happen.
+        return;
+      }
+
+      const contentElement = document.createElement('div');
+      contentElement.style.display = 'inline-block';
+      contentElement.style.width = '100%';
+
+      const inputs = [];
+      vm.pages.forEach((name, i) => {
+        const divRow = document.createElement('div');
+        divRow.classList.add('dashboard-form__group');
+        divRow.classList.add('dashboard-form__group--inline');
+
+        const divLabel = document.createElement('div');
+        divLabel.classList.add('dashboard-form__label');
+
+        const label = document.createElement('label');
+        label.innerText = `Page ${i + 1}`;
+        divLabel.appendChild(label);
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = name;
+
+        divRow.appendChild(divLabel);
+        divRow.appendChild(input);
+
+        contentElement.appendChild(divRow);
+        inputs.push(input);
+      });
+
+      new DialogBoxForToolboxEdit(contentElement, "Configuration of each page's name", 'OK', 'Cancel', function () {
+        for (let i = 0; i < inputs.length; i++) {
+          vm.pages[i] = inputs[i].value;
+        }
+      });
+    };
 
     // Button actions
     vm.clearAllConnections = function _clearAllConnections() {
@@ -558,6 +682,33 @@ angular.module('modules.editor').controller('EditorController', [
       if (elementIds && elementIds.length) {
         const action = editorActionFactory.createDeleteWidgetsAction(elementIds);
         undoManagerService.execute(action);
+      }
+    };
+
+    vm.selectPage = async function _selectPage() {
+      // TODO proper dialog
+      const pageStr = prompt('Enter a page number', '1');
+      const page = parseInt(pageStr, 10) - 1;
+      if (isNaN(page)) {
+        return null;
+      }
+
+      const widgetEditor = widgetEditorGetter();
+      if (page >= 0 && page < widgetEditor.widgetContainer.pageNames.length) {
+        return page;
+      } else {
+        return null;
+      }
+    };
+
+    vm.widgetsToPage = async function _widgetsToPage() {
+      const elementIds = _getSelection();
+      if (elementIds && elementIds.length) {
+        const targetPage = await vm.selectPage();
+        if (targetPage !== null) {
+          const action = editorActionFactory.createMoveWidgetsToPageAction(elementIds, targetPage);
+          undoManagerService.execute(action);
+        }
       }
     };
 
@@ -816,8 +967,13 @@ angular.module('modules.editor').controller('EditorController', [
       vm._originalWidgetGeometry = { ...vm.widgetGeometry };
     };
 
-    const _updateGeometryFromSelectionCallback = () => $timeout(() => vm.updateGeometryFromSelection());
-    eventCenterService.addListener(editorActionFactory.WIDGET_MOVED_EVENT, _updateGeometryFromSelectionCallback);
+    const _updateGeometryFromSelectionCallback = () => {
+      $timeout(() => {
+        widgetEditorGetter().validateSelectionVisibility();
+        vm.updateGeometryFromSelection();
+      });
+    };
+    eventCenterService.addListener(EVENTS_EDITOR_WIDGET_MOVED, _updateGeometryFromSelectionCallback);
 
     // On blur, if the input's value is an actual number, we always update the widget's
     // position. In all cases, widgetGeometry is updated afterward using the widget's position

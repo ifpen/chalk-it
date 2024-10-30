@@ -97,11 +97,6 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
     self.cols = colsArg;
   }
 
-  /*--------getCols--------*/
-  function getCols() {
-    return self.cols;
-  }
-
   /*--------resizeDashboardCols--------*/
   // travels accross macro columns and applies scaling algorithms
   // TODO complete according to scaling method
@@ -359,9 +354,6 @@ export function rescaleHelper(dashboardDimensionsArg, scalingMethodArg, modeArg)
   return {
     setDimensions: setDimensions,
     setScalingMethod: setScalingMethod,
-    setRows: setRows,
-    setCols: setCols,
-    getCols: getCols,
     resizeDashboard: resizeDashboard,
     resizeWidgetOnMediaChange: resizeWidgetOnMediaChange,
     getCurrentDropperDims: getCurrentDropperDims,

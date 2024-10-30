@@ -61,7 +61,6 @@ export const Xdash = function () {
     const layoutMgr = editorSingletons.layoutMgr;
     layoutMgr.resetDashboardTheme();
     layoutMgr.resetDashBgColor();
-    layoutMgr.updateButtonState();
 
     const $scopeDash = angular.element(document.getElementById('help__wrap')).scope();
     $scopeDash.initFrame();
@@ -219,7 +218,7 @@ export const Xdash = function () {
                   }*/ // MBG 21/09/2021 : simplify export
       return true;
     } catch (ex) {
-      console.log(ex);
+      console.error(ex);
       return false;
     }
   }

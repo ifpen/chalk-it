@@ -519,8 +519,6 @@ export const widgetPreview = (function () {
     }
 
     scalingHelper.setScalingMethod(targetScalingMethod);
-    scalingHelper.setRows(targetRows);
-    scalingHelper.setCols(targetCols);
     scalingHelper.resizeDashboard(target);
 
     rescale();
@@ -684,9 +682,6 @@ export const widgetPreview = (function () {
       return previewDimensionsSnapshot;
     },
     setScalingInformation: setScalingInformation,
-    getCols: function () {
-      return scalingHelper.getCols();
-    },
     mediaChangeProjection: mediaChangeProjection,
     toPng: toPng,
     elevateZIndex: elevateZIndex,

@@ -27,7 +27,6 @@ export const editorModule = angular.module('modules.editor', [dashboardModule.na
 
 editorModule
   .service('EventCenterService', [EventCenter])
-  .value('LayoutMgrGetter', () => editorSingletons.layoutMgr)
   .value('WidgetsPluginsHandlerGetter', () => widgetsPluginsHandler)
   .value('WidgetConnectorGetter', () => widgetConnector)
   .value('WidgetEditorGetter', () => editorSingletons.widgetEditor)

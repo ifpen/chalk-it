@@ -8,7 +8,6 @@
 // └──────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'lodash';
 import { panelDash } from '../edition/panel-dashboard';
-import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { editorSingletons } from 'kernel/editor-singletons';
 import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
 import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
@@ -30,13 +29,6 @@ export class LayoutMgrClass {
     // Alias
     this.drprD = $('#DropperDroite')[0];
 
-    // Device rows & columns
-    this.rows = 0;
-    this.cols = 0;
-
-    this.heightCols = [];
-    this.newHeightCols = [];
-
     this.maxTopCst = this.drprD.offsetHeight * 15; // TODO : coordinate with dragresize
     if (this.maxTopCst == 0) {
       //AEF: temp modif --> drpD is not loaded yet
@@ -46,50 +38,12 @@ export class LayoutMgrClass {
 
     this.scalingHelper = undefined;
 
-    this.rowNames = [];
-    this.defaultRow = {};
-
     // Dashboard background color
     this.defaultBgColor = 'var(--widget-color-0)';
     this.dashBgColor = '';
     this.inheritThemeBgColor = true;
     this.dashboardTheme = 'default';
     this.$rootScope = angular.element(document.body).scope().$root;
-  }
-
-  findAllCells() {
-    return $("#DropperDroite [id^='dpr']");
-  }
-
-  updateButtonState() {
-    const newRows = this._readRows();
-    const newCols = newRows ? this._readCols() : 0;
-
-    if (newRows === 0) {
-      // $('#row-device-col')[0].style.display = "none";
-      // $('#height-row-button')[0].style.display = "none";
-      $('#select-cols').attr('disabled', true);
-      $('#height-row-button').attr('disabled', true);
-      $('#select-cols').val('1');
-      //$("#select-cols")[0].value = "None";
-    } else {
-      $('#select-cols').attr('disabled', false);
-      $('#height-row-button').attr('disabled', false);
-      //$('#row-device-col')[0].style.display = "table-row";
-      //$('#height-row-button')[0].style.display = "table-cell";
-    }
-
-    const canApply =
-      this.rows !== newRows || this.cols !== newCols || !angular.equals(this.heightCols, this.newHeightCols);
-    $('#buttonDevice').prop('disabled', !canApply);
-  }
-
-  isRowColMode() {
-    return this.rows >= 1;
-  }
-
-  getDefaultContainer() {
-    return this.isRowColMode() ? $('#dpr1')[0] : this.drprD;
   }
 
   setScalingHelper(scalingHelper) {
@@ -127,133 +81,6 @@ export class LayoutMgrClass {
       this.maxLeftCst = this.drprD.offsetWidth - minLeftCst - 14; // webkit-scrollbar width: 14px
       this.maxTopCst = this.drprD.childNodes[0].offsetHeight * this.rows - minTopCst;
     }
-  }
-
-  _updateNewHeightCols(newRows) {
-    if (newRows === 0) {
-      this.newHeightCols = [];
-    } else {
-      //const defaultValue = Math.ceil(100 / newRows);
-      const defaultValue = 100; // MBG 12/09/2022
-      if (MULTIPLE_HEIGHT) {
-        if (
-          newRows !== this.rows &&
-          this.heightCols.length > 0 &&
-          angular.equals(this.heightCols, this.newHeightCols)
-        ) {
-          let sum = 0;
-          this.heightCols.forEach((v) => {
-            if (v !== undefined) {
-              sum += v;
-            }
-          });
-          if (sum >= 99 && sum <= 101) {
-            this.newHeightCols = [];
-            for (let i = 0; i < newRows; i++) {
-              this.newHeightCols.push(defaultValue);
-            }
-          }
-        }
-
-        // Sanitize
-        if (this.newHeightCols.length > newRows) {
-          this.newHeightCols = this.newHeightCols.slice(0, newRows);
-        }
-
-        let placeholderValue = this.newHeightCols.find((it) => !!it) || defaultValue; // Missing values are replaced with the first valid one, or 100%/rows.
-        for (let i = 0; i < this.newHeightCols.length; i++) {
-          // i <= nbRows for original general version
-          if (_.isUndefined(this.newHeightCols[i])) {
-            this.newHeightCols[i] = placeholderValue;
-          } else {
-            // When adding rows, the last value is repeated.
-            placeholderValue = this.newHeightCols[i];
-          }
-        }
-      } else {
-        if (this.newHeightCols.length !== 1) {
-          // Should catch 0, but will also get incorrect sizes
-          this.newHeightCols = [defaultValue];
-        } else if (newRows !== this.rows && this.heightCols.length === 1) {
-          const previous = this.heightCols[0];
-          const value = this.newHeightCols[0];
-          const height = this.rows * previous;
-          if (previous === value && height >= 99 && height <= 101) {
-            // Height not changed yet, and in ~100% total
-            this.newHeightCols = [defaultValue];
-          }
-        }
-      }
-    }
-  }
-
-  /*--------configureRowHeight--------*/
-  /*--MBG : impose same row height right now--*/
-  configureRowHeight() {
-    const nbRows = this._readRows();
-    if (!nbRows) {
-      // Button should only be visible when rows >= 1, so this should not happen.
-      return;
-    }
-
-    this._updateNewHeightCols(nbRows);
-
-    let divContent = '';
-    const nbValues = MULTIPLE_HEIGHT ? nbRows : 1;
-    for (let i = 0; i < nbValues; i++) {
-      // i <= nbRows for original general version
-      divContent += '<div class="Row">';
-      divContent +=
-        '<div class="CellH"><label style="font-size: calc(8px + 0.4vw);font-weight: bold;">Height (%) of rows</label></div>'; // of row n° '+ i +' for general version
-      divContent += '<div class="Cell">';
-      divContent +=
-        '<input type="number" min="15" max="150" name="height-cols_' +
-        i +
-        '" style="height:25px;width:100%" id="heightCols_' +
-        i +
-        '" value=' +
-        this.newHeightCols[i] +
-        ' />';
-      divContent += '</div>'; // Cell
-      divContent += '</div>'; // Row
-    }
-    divContent += '</div>';
-
-    const contentElement = document.createElement('div');
-    contentElement.innerHTML = divContent;
-    contentElement.setAttribute('style', 'display: inline-block');
-
-    const self = this;
-    new DialogBoxForToolboxEdit(contentElement, "Configuration of each height's row", 'OK', 'Cancel', function () {
-      // Read heights
-      for (let i = 0; i < nbValues; i++) {
-        const value = parseInt($('#heightCols_' + i).val(), 10);
-        if (value !== undefined && value > 0) {
-          // Discard invalid values
-          self.newHeightCols[i] = value;
-        }
-      }
-
-      //self.updateButtonState();
-    });
-  }
-
-  getRows() {
-    return this.rows;
-  }
-
-  getHeightCols() {
-    return [...this.heightCols];
-  }
-
-  _readRows() {
-    const strRows = $('#select-rows').val();
-    return parseInt(strRows, 10);
-  }
-
-  _readCols() {
-    const strCols = $('#select-cols').val();
-    return parseInt(strCols, 10);
   }
 
   /*--------applyCells--------*/
@@ -336,87 +163,6 @@ export class LayoutMgrClass {
 
     $('select[name=select-rows]').val(this.rows);
     $('select[name=select-cols]').val(this.cols || 1);
-    this.updateButtonState();
-  }
-
-  /*--------getCols--------*/
-  getCols() {
-    return this.cols;
-  }
-
-  /*--------getClassType--------*/
-  _getClassType(value) {
-    let classType = '';
-    if (value === 0) {
-      classType = '';
-    } else if (value === 1) {
-      classType = 'col-md-12';
-    } else if (value === 2) {
-      classType = 'col-md-6';
-    } else if (value === 3) {
-      classType = 'col-md-4';
-    } else if (value === 4) {
-      classType = 'col-md-3';
-    }
-    return classType;
-  }
-
-  getTargetDivLayoutPx(targetDiv) {
-    if (this.isRowColMode()) {
-      return getElementLayoutPx(targetDiv);
-    } else {
-      return {
-        top: minTopCst,
-        left: minLeftCst,
-        height: this.maxTopCst,
-        width: this.maxLeftCst,
-      };
-    }
-  }
-
-  /*--------clean Columns--------*/
-  cleanColumns() {
-    const cells = this.findAllCells();
-
-    cells.each((i, div) => {
-      const position = $(div).position();
-      const dprTop = position.top;
-      const dprLeft = position.left;
-
-      // A temporary array is needed as appending to an other node
-      // changes "div.childNodes", corrupting the iteration loop
-      const children = [];
-      div.childNodes.forEach((child) => children.push(child));
-      children.forEach((child) => {
-        const widget = child.firstChild;
-        const widgetPosition = $(widget).position();
-        const wcTop = widgetPosition.top;
-        const wcLeft = widgetPosition.left;
-        $(child).appendTo($('#DropperDroite'));
-        widget.style.top = unitH(dprTop + wcTop);
-        widget.style.left = unitW(dprLeft + wcLeft);
-      });
-    });
-
-    cells.remove();
-
-    this.drprD.classList.remove('has-device-col');
-  }
-
-  _getRowHeight(i) {
-    if (MULTIPLE_HEIGHT) {
-      if (i < this.heightCols.length) {
-        return this.heightCols[i];
-      }
-    } else if (this.heightCols[0] !== undefined) {
-      return this.heightCols[0];
-    } else if (this.heightCols[1] !== undefined) {
-      // Legacy opt
-      return this.heightCols[1];
-    }
-
-    // Safeguard
-    return 100;
   }
 
   /*--------create Column--------*/
@@ -452,105 +198,6 @@ export class LayoutMgrClass {
 
       gridMgr.updateGrid();
     }
-  }
-
-  /*--------putWidgetInDrprD--------*/
-  putWidgetInDrprD(element) {
-    if (this.isRowColMode() && element && element.parentNode) {
-      const cell = element.parentNode.parentNode;
-      if (cell && cell.id.startsWith('dpr')) {
-        const left = element.offsetLeft + cell.offsetLeft;
-        const top = element.offsetTop + cell.offsetTop;
-        $(this.drprD).append(element.parentNode);
-        element.style.left = unitW(left);
-        element.style.top = unitH(top);
-      }
-    }
-  }
-
-  /*--------putWidgetInTheRightCol--------*/
-  putWidgetInTheRightCol(element, minLeftCst, minTopCst) {
-    if (this.isRowColMode()) {
-      const offsetLeft = element.offsetLeft;
-      for (let i = 1; i <= this.cols; i++) {
-        const cell = $('#dpr' + i)[0];
-        const isRightOfCell = offsetLeft - minLeftCst >= cell.offsetLeft;
-        if (
-          (i === 1 || isRightOfCell) &&
-          (i === this.cols || offsetLeft - minLeftCst < $('#dpr' + (i + 1))[0].offsetLeft)
-        ) {
-          this._putWidgetInTheRightRow(element, i, minLeftCst, minTopCst);
-          break;
-        }
-      }
-    }
-  }
-
-  /*--------putWidgetInTheRightRow--------*/
-  _putWidgetInTheRightRow(element, i, minLeftCst, minTopCst) {
-    const top = element.offsetTop - minTopCst;
-    for (let r = 0; r < this.rows; r++) {
-      // i is 1-based
-      const cellIdx = this.cols * r + i;
-      const cell = $('#dpr' + cellIdx)[0];
-
-      const aboveBottom = top < cell.offsetTop + cell.offsetHeight;
-      const belowTop = top >= cell.offsetTop;
-
-      if ((aboveBottom || r === this.rows - 1) && (belowTop || r === 0)) {
-        this._dropWidgetAndUpdatePosition(element, cell, minLeftCst, minTopCst);
-        break;
-      }
-    }
-  }
-
-  /*--------dropWidgetAndUpdatePosition--------*/
-  _dropWidgetAndUpdatePosition(element, cell, minLeftCst, minTopCst) {
-    cell.append(element.parentNode);
-    const left = element.offsetLeft - cell.offsetLeft;
-    const top = element.offsetTop - cell.offsetTop;
-    element.style.left = unitW(left);
-    element.style.top = unitH(top);
-
-    const maxLeft = cell.offsetWidth - minLeftCst;
-    const maxTop = cell.offsetHeight - minTopCst;
-    // overpass limits
-    if (element.offsetTop > maxTop - element.offsetHeight) {
-      element.style.top = unitH(maxTop - element.offsetHeight);
-    }
-    if (element.offsetLeft > maxLeft - element.offsetWidth) {
-      element.style.left = unitW(maxLeft - element.offsetWidth);
-    }
-  }
-
-  /*--------makeColsTrasparent--------*/
-  makeColsTrasparent() {
-    for (let i = 1; i <= this.rows * this.cols; i++) {
-      if (!$('#dpr' + i + 'c').hasClass('col-invisible')) {
-        $('#dpr' + i + 'c').addClass('col-invisible');
-      }
-    }
-  }
-
-  /*--------clear--------*/
-  clear() {
-    this.clearCols();
-  }
-
-  /*--------clearCols--------*/
-  clearCols() {
-    this.cols = 0;
-    this.rows = 0;
-    this.scalingHelper.setRows(this.rows);
-    this.scalingHelper.setCols(this.cols);
-
-    $('select[name="select-rows"]').val(this.rows);
-    $('select[name="select-cols"]').val(1);
-    this.heightCols = [];
-    this.newHeightCols = [];
-    this.rowNames = [];
-    this.defaultRow = {};
-    this.updateMaxTopAndLeft();
   }
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
@@ -691,94 +338,6 @@ export class LayoutMgrClass {
   }
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
-  // |                           Row Names                                | \\
-  // ├────────────────────────────────────────────────────────────────────┤ \\
-  /*--------configureRowName--------*/
-  configureRowName() {
-    const nbRows = this.getRows();
-    if (!nbRows) {
-      // Button should only be visible when nbRows >= 1
-      return;
-    }
-
-    this._updateRowNames();
-
-    const divContent = Array.from(
-      { length: nbRows },
-      (_, i) => `
-            <div class="dashboard-form__group dashboard-form__group--inline">
-                <div class="dashboard-form__label">
-                    <label>row ${i + 1}</label>
-                </div>
-                <input type="text" name="row_${i + 1}" id="row_${i + 1}" value="${this.rowNames[i]}" />
-            </div>
-        `
-    ).join('');
-
-    const contentElement = document.createElement('div');
-    contentElement.innerHTML = divContent;
-    contentElement.setAttribute('style', 'display: inline-block; width: 100%;');
-
-    new DialogBoxForToolboxEdit(
-      contentElement,
-      "Configuration of each row's name",
-      'OK',
-      'Cancel',
-      function () {
-        const nbRowNames = this.rowNames.length;
-        for (let i = 0; i < nbRowNames; i++) {
-          const rowName = $('#row_' + (i + 1)).val();
-          this.rowNames[i] = rowName;
-        }
-      }.bind(this)
-    );
-  }
-
-  /*--------_updateRowNames--------*/
-  _updateRowNames() {
-    const nbRows = this.getRows();
-    this.rowNames.length = nbRows;
-
-    for (let i = 0; i < nbRows; i++) {
-      if (!this.rowNames[i]) {
-        this.rowNames[i] = 'Page ' + (i + 1);
-      }
-    }
-  }
-
-  /*--------_getRowNames--------*/
-  _getRowNames() {
-    this._updateRowNames();
-    return this.rowNames;
-  }
-
-  /*--------getRowNamesObj--------*/
-  getRowNamesObj() {
-    const rowNames = this._getRowNames();
-    const rowNamesObj = rowNames.map((name, i) => ({
-      id: i + 1,
-      name,
-    }));
-
-    return rowNamesObj;
-  }
-
-  /*--------serializeRowNames--------*/
-  serializeRowNames() {
-    const rowNames = this._getRowNames();
-    return {
-      pageNames: rowNames,
-    };
-  }
-
-  /*--------deserializeRowNames--------*/
-  deserializeRowNames(pageObj) {
-    if (!_.isUndefined(pageObj.pageNames)) {
-      this.rowNames = pageObj.pageNames;
-    }
-  }
-
-  // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                           Default Row                              | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\
   /*--------_getDefaultRow--------*/
@@ -839,8 +398,6 @@ export class LayoutMgrClass {
     this.cleanColumns();
     const classType = this._getClassType(this.cols);
     this._createColumn(classType);
-
-    this.updateButtonState();
 
     //scaling method, with also backward compatibility
     if (!_.isUndefined(scalingObj)) {

@@ -3,7 +3,6 @@
 import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
 import { dashState } from 'angular/modules/dashboard/dashboard';
 import { bFirstExec, tabWidgetsLoadedEvt, tabPlayLoadedEvt } from 'kernel/base/main-common';
-import { getMedia } from 'kernel/dashboard/scaling/scaling-utils';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
 import { editorSingletons } from 'kernel/editor-singletons';

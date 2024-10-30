@@ -45,7 +45,7 @@ export class WidgetContainer {
     this.widgetsInfo = new Map();
 
     this.currentPage = undefined;
-    this.pageNames = undefined;
+    this.pageNames = [];
 
     this.width = DEFAULT_WIDTH;
     this.height = DEFAULT_HEIGHT; // TODO infinite
@@ -113,7 +113,7 @@ export class WidgetContainer {
   createLayout(modelJsonId, wLayout, wzIndex, page) {
     wLayout ??= {};
     wLayout.zIndex = wzIndex ?? this.nextZIndex();
-    if (this.pageNames) {
+    if (this.pageNames.length) {
       wLayout.page = page ?? this.currentPage ?? 0;
       wLayout.page = Math.min(wLayout.page, this.pageNames.length - 1);
     }
@@ -131,7 +131,10 @@ export class WidgetContainer {
       wLayout.height = Math.max(wLayout.height, defaults.minHeight);
     }
 
-    return this.enforceConstraints(wLayout);
+    return {
+      ...wLayout,
+      ...this.enforceConstraints(wLayout),
+    };
   }
 
   defaultLayoutPx(modelJsonId) {
@@ -286,6 +289,67 @@ export class WidgetContainer {
     containerDiv.setAttribute('item-height', geometry.height);
   }
 
+  #applyCurrentPage() {
+    this.widgetsInfo.values().forEach((info) => {
+      const show = this.currentPage === undefined || this.currentPage === info.layout.page;
+      info.containerDiv.style.display = show ? 'block' : 'none';
+    });
+  }
+
+  changePage(pageNb) {
+    if (this.pageNames.length) {
+      if (pageNb < 0 || pageNb >= this.pageNames.length) {
+        throw new Error(`Invalid page: ${pageNb}`);
+      }
+
+      this.currentPage = pageNb;
+      this.#applyCurrentPage();
+    } else throw new Error('There are no pages');
+  }
+
+  updatePages(newPages) {
+    this.pageNames = [...newPages];
+    if (this.pageNames.length) {
+      this.currentPage ??= 0;
+      this.currentPage = Math.min(this.currentPage, this.pageNames.length - 1);
+
+      this.widgetsInfo.values().forEach((info) => {
+        info.layout.page =
+          info.layout.page === undefined ? this.currentPage : Math.min(info.layout.page, this.pageNames.length - 1);
+      });
+    } else {
+      this.currentPage = undefined;
+      this.widgetsInfo.values().forEach((info) => {
+        info.layout.page = undefined;
+      });
+    }
+
+    this.#applyCurrentPage();
+  }
+
+  collectWidgetPages() {
+    const pages = new Map();
+    for (const [key, info] of this.widgetsInfo) {
+      if (info.layout.page !== undefined) {
+        pages.set(key, info.layout.page);
+      }
+    }
+    return pages;
+  }
+
+  setWidgetPages(widgetPages) {
+    for (const [key, page] of widgetPages) {
+      const info = this.widgetsInfo.get(key);
+      info.layout.page = page;
+    }
+    this.#applyCurrentPage();
+  }
+
+  isVisible(widgetId) {
+    const info = this.widgetsInfo.get(widgetId);
+    return this.currentPage === undefined || this.currentPage === info.layout.page;
+  }
+
   /**
    * @description Replace current widget by a new one when edition, resizing, changing json parameter,...
    * @param {any} element
@@ -382,7 +446,7 @@ export class WidgetContainer {
     const isResize = layout.width !== info.layout.width || layout.height !== info.layout.height;
 
     info.layout = { ...info.layout, ...layout }; // enforceConstraints strip the non geometric parts
-    this.#applyLayout(this.getWidgetContainerDiv(elementId), layout, this.currentPage);
+    this.#applyLayout(this.getWidgetContainerDiv(elementId), info.layout);
     if (isResize) {
       this.replaceWidget(elementId);
     }

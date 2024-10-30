@@ -40,6 +40,10 @@
           <a title="Send widget backward" ng-click="vm.backgroundWidget()">
             <i class="basic icn-sendbackword"></i>Send backward</a>
         </li>
+        <li ng-if="vm.pages.length">
+          <a title="Send widget to page..." ng-click="vm.widgetsToPage()">
+            <i class="basic icn-tag"><!-- TODO proper icon --></i>Send widget to page...</a>
+        </li>
         <hr />
         <li>
           <a title="Duplicate widget" ng-click="vm.duplicateWidget()">

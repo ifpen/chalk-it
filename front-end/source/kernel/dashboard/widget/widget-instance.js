@@ -14,7 +14,6 @@ import { modelsHiddenParams, modelsParameters, modelsTempParams, models } from '
 function widgetInstanceClass() {
   /*--------Create Widget obj--------*/
   this.createWidget = function (wcIdStr, modelJsonIdStr, instanceId) {
-    //console.log('Instance : createWidget')
     var bInteractive = false;
     var widgetObj = {};
 

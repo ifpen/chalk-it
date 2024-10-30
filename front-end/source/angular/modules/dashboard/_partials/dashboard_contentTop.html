@@ -163,6 +163,18 @@
     </button>
   </div>
 
+  <!-- Page change -->
+  <!-- TODO dedicated CSS -->
+  <div ng-if="vm.getCurrentPageNames().length" class="undo-redo" ng-class="{hidden:editorView.checkboxModelView}">
+    <button class="btn btn-icon-only" title="previous page (shift + page up)" ng-click="vm.previousPage();" ng-disabled="vm.getCurrentPage()<=0">
+      <i class="fa fa-arrow-left"></i>
+    </button>
+    {{ vm.getCurrentPage() + 1 }} / {{ vm.getCurrentPageNames().length }}
+    <button class="btn btn-icon-only" title="next page (shift + page down)" ng-click="vm.nextPage();" ng-disabled="vm.getCurrentPage()>=vm.getCurrentPageNames().length-1">
+      <i class="fa fa-arrow-right"></i>
+    </button>
+  </div>
+
   <!-- for future version -->
   <!-- desktop/mobile/tablet start -->
   <ul ng-show="false" class="view-mode" js-view-mode ng-class="{hidden:!editorView.checkboxModelView}">
