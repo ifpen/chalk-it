@@ -5,6 +5,9 @@
  * 
  */
 
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
 // Global forms rules
 .dashboard-form {
   ::placeholder {

@@ -5,6 +5,9 @@
  * 
  */
 
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
 .daterangepicker {
   position: absolute;
   background-color: #fff;

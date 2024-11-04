@@ -4,7 +4,7 @@
  * 
  */
 
-@import '../components/tabs';
+@use '../components/tabs' as *;
 
 .brand {
   display: flex;

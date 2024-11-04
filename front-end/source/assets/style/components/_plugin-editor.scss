@@ -4,6 +4,8 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+
 $form-label-width: 145px;
 
 .form-table td {

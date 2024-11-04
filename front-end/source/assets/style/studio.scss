@@ -4,45 +4,45 @@
  */
 
 // Base file
-@import './style.scss';
+@use './style.scss' as *;
 
 // Custom Icons
-@import './icons/xdash-icons';
-@import './icons/widgets-icons';
-@import './icons/datanodes-icons';
-@import './icons/scaling-icons';
+@use './icons/xdash-icons' as *;
+@use './icons/widgets-icons' as *;
+@use './icons/datanodes-icons' as *;
+@use './icons/scaling-icons' as *;
 
 // Dashboard components
-//@import './components/dashboard-forms';
-//@import './components/sweet-alert';
-@import './components/cancel-box';
-@import './components/divider';
-@import './components/filters';
-@import './components/tags';
-@import './components/notifications';
-@import './components/pagination';
-@import './components/switch';
-@import './components/pnotify';
-@import './components/jsoneditor';
-@import './components/loading-bar';
-@import './components/introjs';
-@import './components/loader';
-@import './components/plugin-editor';
-@import './components/dashboard-dropdown';
-@import './components/dropdown';
-@import './components/tooltips';
-@import './components/data-list';
+// @use './components/dashboard-forms' as *;
+// @use './components/sweet-alert' as *;
+@use './components/cancel-box' as *;
+@use './components/divider' as *;
+@use './components/filters' as *;
+@use './components/tags' as *;
+@use './components/notifications' as *;
+@use './components/pagination' as *;
+@use './components/switch' as *;
+@use './components/pnotify' as *;
+@use './components/jsoneditor' as *;
+@use './components/loading-bar' as *;
+@use './components/introjs' as *;
+@use './components/loader' as *;
+@use './components/plugin-editor' as *;
+@use './components/dashboard-dropdown' as *;
+@use './components/dropdown' as *;
+@use './components/tooltips' as *;
+@use './components/data-list' as *;
 
 // Layout parts
-@import './layout/wrapper';
-@import './layout/header';
-@import './layout/aside';
-@import './layout/sidebar';
-@import './layout/main';
-@import './layout/footer';
-@import './layout/editor-mode';
-@import './layout/view-mode';
-@import './layout/login';
+@use './layout/wrapper' as *;
+@use './layout/header' as *;
+@use './layout/aside' as *;
+@use './layout/sidebar' as *;
+@use './layout/main' as *;
+@use './layout/footer' as *;
+@use './layout/editor-mode' as *;
+@use './layout/view-mode' as *;
+@use './layout/login' as *;
 
 // Utils
-@import './utils';
+@use './utils' as *;

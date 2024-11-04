@@ -5,10 +5,12 @@
 */
 
 @use 'sass:math';
+@use 'sass:map';
+@use './variables' as *;
 
 // Responsive mixins - We only use media up as it is better to start from mobile-first
 @function breakpoint-min($name, $breakpoints: $breakpoints) {
-  $min: map-get($breakpoints, $name);
+  $min: map.get($breakpoints, $name);
   @return if($min != 0, $min, null);
 }
 
@@ -29,25 +31,25 @@
 
 // Border radius mixin
 @function br($name, $br: $border-radiuses) {
-  $size: map-get($br, $name);
+  $size: map.get($br, $name);
   @return $size;
 }
 
 // Fonts size mixin
 @function fs($name, $fs: $font-sizes) {
-  $size: map-get($fs, $name);
+  $size: map.get($fs, $name);
   @return if($size != 0, $size, $font-size);
 }
 
 // Fonts weight mixin
 @function fw($name, $fw: $font-weights) {
-  $size: map-get($fw, $name);
+  $size: map.get($fw, $name);
   @return if($size != 0, $size, $font-weight);
 }
 
 // Spacers mixin
 @function spacer($name, $spacers: $spacers) {
-  $size: map-get($spacers, $name);
+  $size: map.get($spacers, $name);
   @return $size;
 }
 
@@ -194,12 +196,12 @@ $icon-urls: (
 
 @mixin icon-background($icon-name, $type) {
   @media (prefers-color-scheme: light) {
-    $icon-url: map-get(map-get($icon-urls, $type), 'light');
+    $icon-url: map.get(map.get($icon-urls, $type), 'light');
     background-image: url('assets/#{$icon-url}#{$icon-name}');
   }
 
   @media (prefers-color-scheme: dark) {
-    $icon-url: map-get(map-get($icon-urls, $type), 'dark');
+    $icon-url: map.get(map.get($icon-urls, $type), 'dark');
     background-image: url('assets/#{$icon-url}#{$icon-name}');
   }
 }

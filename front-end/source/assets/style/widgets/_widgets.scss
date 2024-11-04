@@ -1,11 +1,12 @@
-@use 'sass:color';
-
 /* 
  * Main Widgets theme file
  * 
  * @description: All widgets related variables for theming. ONLY FOR WIDGETS inside the drag and drop zone
  * 
  */
+
+@use 'sass:color';
+@use 'sass:map';
 
 $themes: (
   'default': (
@@ -142,7 +143,7 @@ html {
   // Global
   --widget-font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   --widget-color: var(--widget-color-1);
-  // --widget-subtext-color: #{color.scale(map-get($widget-default-colors, 1), $lightness: 20%)}; // inside calculated colors
+  // --widget-subtext-color: #{color.scale(map.get($widget-default-colors, 1), $lightness: 20%)}; // inside calculated colors
   --widget-border-color: var(--widget-color-2);
   --widget-label-color: var(--widget-color-3);
   --widget-label-font-size: calc(7px + 0.5vw + 0.4vh);
@@ -158,9 +159,9 @@ html {
   --widget-handle-active-color: var(--widget-color-4);
 
   // Dropzone
-  // --widget-dropzone-background-color: #{color.scale(map-get($widget-default-colors, 0), $lightness: -6%)}; // inside calculated colors
-  // --widget-dropzone-label-background-color: #{color.scale(map-get($widget-default-colors, 0), $lightness: -3%)}; // inside calculated colors
-  // --widget-delete-button-default-color: #{color.scale(map-get($widget-default-colors, 0), $lightness: -6%)}; // inside calculated colors
+  // --widget-dropzone-background-color: #{color.scale(map.get($widget-default-colors, 0), $lightness: -6%)}; // inside calculated colors
+  // --widget-dropzone-label-background-color: #{color.scale(map.get($widget-default-colors, 0), $lightness: -3%)}; // inside calculated colors
+  // --widget-delete-button-default-color: #{color.scale(map.get($widget-default-colors, 0), $lightness: -6%)}; // inside calculated colors
   --widget-delete-button-active-color: var(--widget-color-danger);
   --widget-delete-button-hover-color: var(--widget-color-danger);
   --widget-delete-button-icon-color: var(--widget-color-danger);
@@ -175,44 +176,44 @@ html {
   --widget-table-pagination-hover-color: #888;
   --widget-table-pagination-value-color: #fff;
   --widget-table-pagination-arrow-color: #354a5f;
-  // --widget-table-border-color: #{color.scale(map-get($widget-default-colors, 0), $lightness: -13%)}; // inside calculated colors
-  // --widget-table-striped-odd: #{color.scale(map-get($widget-default-colors, 0), $lightness: -2%)}; // inside calculated colors
-  // --widget-table-striped-hover: #{color.scale(map-get($widget-default-colors, 0), $lightness: -4%)}; // inside calculated colors
-  // --widget-table-active: #{color.scale(map-get($widget-default-colors, 0), $lightness: -4%)}; // inside calculated colors
-  // --widget-table-active-hover: #{color.scale(map-get($widget-default-colors, 0), $lightness: -9%)}; // inside calculated colors
+  // --widget-table-border-color: #{color.scale(map.get($widget-default-colors, 0), $lightness: -13%)}; // inside calculated colors
+  // --widget-table-striped-odd: #{color.scale(map.get($widget-default-colors, 0), $lightness: -2%)}; // inside calculated colors
+  // --widget-table-striped-hover: #{color.scale(map.get($widget-default-colors, 0), $lightness: -4%)}; // inside calculated colors
+  // --widget-table-active: #{color.scale(map.get($widget-default-colors, 0), $lightness: -4%)}; // inside calculated colors
+  // --widget-table-active-hover: #{color.scale(map.get($widget-default-colors, 0), $lightness: -9%)}; // inside calculated colors
 
   // Forms
   --widget-input-color: var(--widget-color-0);
   --widget-input-text: var(--widget-color-1);
   --widget-input-font-size: calc(7px + 0.5vw + 0.4vh);
-  // --widget-placeholder-text: #{color.scale(map-get($widget-default-colors, 1), $lightness: 30%)}; // inside calculated colors
+  // --widget-placeholder-text: #{color.scale(map.get($widget-default-colors, 1), $lightness: 30%)}; // inside calculated colors
   --widget-input-disabled-color: var(--widget-color-neutral);
   --widget-input-disabled-opacity: 0.7;
   --widget-input-unchecked-color: var(--widget-color-neutral);
   --widget-input-checked-color: var(--widget-color-2);
   --widget-input-checked-text: var(--widget-input-checked-text);
-  // --widget-input-checked-disabled-text: #{color.scale(map-get($widget-default-colors, 1), $lightness: 30%)}; // inside calculated colors
+  // --widget-input-checked-disabled-text: #{color.scale(map.get($widget-default-colors, 1), $lightness: 30%)}; // inside calculated colors
   --widget-input-checked-indeterminate-text: var(--widget-color-neutral);
   --widget-input-group-color: var(--widget-color-2);
   --widget-input-group-hover-color: var(--widget-color-4);
   --widget-input-group-active-color: var(--widget-color-3);
   --widget-input-group-disabled-color: var(--widget-color-neutral);
-  // --widget-input-group-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  // --widget-input-group-text: #{color-yiq(map.get($widget-default-colors, 2))}; // inside calculated colors
 
   // Buttons
   --widget-button-color: var(--widget-color-2);
-  // --widget-button-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  // --widget-button-text: #{color-yiq(map.get($widget-default-colors, 2))}; // inside calculated colors
   --widget-button-active-color: var(--widget-color-3);
   --widget-button-primary-hover-color: var(--widget-color-4);
   --widget-button-primary-color: var(--widget-color-2);
-  // --widget-button-primary-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  // --widget-button-primary-text: #{color-yiq(map.get($widget-default-colors, 2))}; // inside calculated colors
   --widget-button-primary-active-color: var(--widget-color-3);
   --widget-button-hover-color: var(--widget-color-4);
   --widget-button-disabled-color: var(--widget-color-neutral);
   --widget-button-default-color: var(--widget-color-neutral);
-  // --widget-button-default-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
-  // --widget-button-default-active-color: #{color.scale(map-get($widget-default-colors, 2), $lightness: -10%)}; // inside calculated colors
-  // --widget-button-default-hover-color: #{color.scale(map-get($widget-default-colors, 2), $lightness: -5%)}; // inside calculated colors
+  // --widget-button-default-text: #{color-yiq(map.get($widget-default-colors, 2))}; // inside calculated colors
+  // --widget-button-default-active-color: #{color.scale(map.get($widget-default-colors, 2), $lightness: -10%)}; // inside calculated colors
+  // --widget-button-default-hover-color: #{color.scale(map.get($widget-default-colors, 2), $lightness: -5%)}; // inside calculated colors
   --widget-button-success-color: #2ecc71;
   --widget-button-success-text: #fff;
   --widget-button-success-active-color: #27ad60;
@@ -231,21 +232,21 @@ html {
   --widget-button-danger-hover-color: #ec7063;
 
   // Select2 dropdowns are created as direct children of the body element
-  // --widget-select-drop-color: #{color.scale(map-get($widget-default-colors, 0), $lightness: -3%)}; // inside calculated colors
+  // --widget-select-drop-color: #{color.scale(map.get($widget-default-colors, 0), $lightness: -3%)}; // inside calculated colors
   --widget-select-drop-text: var(--widget-color-1);
   --widget-select-option-highlighted-color: var(--widget-color-2);
-  // --widget-select-option-highlighted-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  // --widget-select-option-highlighted-text: #{color-yiq(map.get($widget-default-colors, 2))}; // inside calculated colors
   --widget-select-option-hover-color: var(--widget-color-3);
-  // --widget-select-option-hover-text: #{color-yiq(map-get($widget-default-colors, 3))}; // inside calculated colors
+  // --widget-select-option-hover-text: #{color-yiq(map.get($widget-default-colors, 3))}; // inside calculated colors
 
   // Multi Select
   --widget-multiselect-text: var(--widget-color-3);
   --widget-multiselect-color: var(--widget-color-0);
   --widget-multiselect-border-color: var(--widget-color-3);
-  // --widget-multiselect-hover-text: #{color-yiq(map-get($widget-default-colors, 2))}; // inside calculated colors
+  // --widget-multiselect-hover-text: #{color-yiq(map.get($widget-default-colors, 2))}; // inside calculated colors
   --widget-multiselect-hover-color: var(--widget-color-2);
   --widget-multiselect-hover--border-color: var(--widget-color-2);
-  // --widget-multiselect-checked-text: #{color-yiq(map-get($widget-default-colors, 3))}; // inside calculated colors
+  // --widget-multiselect-checked-text: #{color-yiq(map.get($widget-default-colors, 3))}; // inside calculated colors
   --widget-multiselect-checked-color: var(--widget-color-3);
   --widget-multiselect-checked-border-color: var(--widget-color-3);
 
@@ -271,82 +272,82 @@ html {
 
   // Calculated colors
   html[data-theme='#{$key}'] {
-    @if (map-get($theme, 'hue') == 'light') {
+    @if (map.get($theme, 'hue') == 'light') {
       // Global
-      --widget-subtext-color: #{color.scale(map-get($theme, 1), $lightness: -20%)};
+      --widget-subtext-color: #{color.scale(map.get($theme, 1), $lightness: -20%)};
 
       // Dropzone
-      --widget-dropzone-background-color: #{color.scale(map-get($theme, 0), $lightness: -6%)};
-      --widget-dropzone-label-background-color: #{color.scale(map-get($theme, 0), $lightness: -3%)};
-      --widget-delete-button-default-color: #{color.scale(map-get($theme, 0), $lightness: -6%)};
+      --widget-dropzone-background-color: #{color.scale(map.get($theme, 0), $lightness: -6%)};
+      --widget-dropzone-label-background-color: #{color.scale(map.get($theme, 0), $lightness: -3%)};
+      --widget-delete-button-default-color: #{color.scale(map.get($theme, 0), $lightness: -6%)};
 
       // Tables
-      --widget-table-border-color: #{color.scale(map-get($theme, 0), $lightness: -13%)};
-      --widget-table-striped-odd: #{color.scale(map-get($theme, 0), $lightness: -2%)};
-      --widget-table-striped-hover: #{color.scale(map-get($theme, 0), $lightness: -4%)};
-      --widget-table-active: #{color.scale(map-get($theme, 0), $lightness: -4%)};
-      --widget-table-active-hover: #{color.scale(map-get($theme, 0), $lightness: -9%)};
+      --widget-table-border-color: #{color.scale(map.get($theme, 0), $lightness: -13%)};
+      --widget-table-striped-odd: #{color.scale(map.get($theme, 0), $lightness: -2%)};
+      --widget-table-striped-hover: #{color.scale(map.get($theme, 0), $lightness: -4%)};
+      --widget-table-active: #{color.scale(map.get($theme, 0), $lightness: -4%)};
+      --widget-table-active-hover: #{color.scale(map.get($theme, 0), $lightness: -9%)};
 
       // Forms
-      --widget-placeholder-text: #{color.scale(map-get($theme, 1), $lightness: -30%)};
-      --widget-input-checked-disabled-text: #{color.scale(map-get($theme, 1), $lightness: -30%)};
+      --widget-placeholder-text: #{color.scale(map.get($theme, 1), $lightness: -30%)};
+      --widget-input-checked-disabled-text: #{color.scale(map.get($theme, 1), $lightness: -30%)};
 
       // Buttons
-      --widget-button-default-active-color: #{color.scale(map-get($theme, 2), $lightness: -10%)};
-      --widget-button-default-hover-color: #{color.scale(map-get($theme, 2), $lightness: -5%)};
+      --widget-button-default-active-color: #{color.scale(map.get($theme, 2), $lightness: -10%)};
+      --widget-button-default-hover-color: #{color.scale(map.get($theme, 2), $lightness: -5%)};
 
       // Select2 dropdowns are created as direct children of the body element
-      --widget-select-drop-color: #{color.scale(map-get($theme, 0), $lightness: -3%)};
+      --widget-select-drop-color: #{color.scale(map.get($theme, 0), $lightness: -3%)};
 
       // Plotly
-      --widget-plotly-background-color: #{color.scale(map-get($theme, 0), $lightness: -3%)};
+      --widget-plotly-background-color: #{color.scale(map.get($theme, 0), $lightness: -3%)};
     } @else {
       // Global
-      --widget-subtext-color: #{color.scale(map-get($theme, 1), $lightness: -20%)};
+      --widget-subtext-color: #{color.scale(map.get($theme, 1), $lightness: -20%)};
 
       // Dropzone
-      --widget-dropzone-background-color: #{color.scale(map-get($theme, 0), $lightness: 6%)};
-      --widget-dropzone-label-background-color: #{color.scale(map-get($theme, 0), $lightness: 3%)};
-      --widget-delete-button-default-color: #{color.scale(map-get($theme, 0), $lightness: 6%)};
+      --widget-dropzone-background-color: #{color.scale(map.get($theme, 0), $lightness: 6%)};
+      --widget-dropzone-label-background-color: #{color.scale(map.get($theme, 0), $lightness: 3%)};
+      --widget-delete-button-default-color: #{color.scale(map.get($theme, 0), $lightness: 6%)};
 
       // Tables
-      --widget-table-border-color: #{color.scale(map-get($theme, 0), $lightness: 13%)};
-      --widget-table-striped-odd: #{color.scale(map-get($theme, 0), $lightness: 2%)};
-      --widget-table-striped-hover: #{color.scale(map-get($theme, 0), $lightness: 4%)};
-      --widget-table-active: #{color.scale(map-get($theme, 0), $lightness: 4%)};
-      --widget-table-active-hover: #{color.scale(map-get($theme, 0), $lightness: 9%)};
+      --widget-table-border-color: #{color.scale(map.get($theme, 0), $lightness: 13%)};
+      --widget-table-striped-odd: #{color.scale(map.get($theme, 0), $lightness: 2%)};
+      --widget-table-striped-hover: #{color.scale(map.get($theme, 0), $lightness: 4%)};
+      --widget-table-active: #{color.scale(map.get($theme, 0), $lightness: 4%)};
+      --widget-table-active-hover: #{color.scale(map.get($theme, 0), $lightness: 9%)};
 
       // Forms
-      --widget-placeholder-text: #{color.scale(map-get($theme, 1), $lightness: 30%)};
-      --widget-input-checked-disabled-text: #{color.scale(map-get($theme, 1), $lightness: 30%)};
+      --widget-placeholder-text: #{color.scale(map.get($theme, 1), $lightness: 30%)};
+      --widget-input-checked-disabled-text: #{color.scale(map.get($theme, 1), $lightness: 30%)};
 
       // Buttons
-      --widget-button-default-active-color: #{color.scale(map-get($theme, 2), $lightness: 10%)};
-      --widget-button-default-hover-color: #{color.scale(map-get($theme, 2), $lightness: 5%)};
+      --widget-button-default-active-color: #{color.scale(map.get($theme, 2), $lightness: 10%)};
+      --widget-button-default-hover-color: #{color.scale(map.get($theme, 2), $lightness: 5%)};
 
       // Select2 dropdowns are created as direct children of the body element
-      --widget-select-drop-color: #{color.scale(map-get($theme, 0), $lightness: 3%)};
+      --widget-select-drop-color: #{color.scale(map.get($theme, 0), $lightness: 3%)};
 
       // Plotly
-      --widget-plotly-background-color: #{color.scale(map-get($theme, 0), $lightness: 3%)};
+      --widget-plotly-background-color: #{color.scale(map.get($theme, 0), $lightness: 3%)};
     }
 
     // Contrasted text color
     // Forms
-    --widget-input-group-text: #{color-yiq(map-get($theme, 2))};
+    --widget-input-group-text: #{color-yiq(map.get($theme, 2))};
 
     // Buttons
-    --widget-button-text: #{color-yiq(map-get($theme, 2))};
-    --widget-button-primary-text: #{color-yiq(map-get($theme, 2))};
-    --widget-button-default-text: #{color-yiq(map-get($theme, 2))};
+    --widget-button-text: #{color-yiq(map.get($theme, 2))};
+    --widget-button-primary-text: #{color-yiq(map.get($theme, 2))};
+    --widget-button-default-text: #{color-yiq(map.get($theme, 2))};
 
     // Select2 dropdowns are created as direct children of the body element
-    --widget-select-option-highlighted-text: #{color-yiq(map-get($theme, 2))};
-    --widget-select-option-hover-text: #{color-yiq(map-get($theme, 3))};
+    --widget-select-option-highlighted-text: #{color-yiq(map.get($theme, 2))};
+    --widget-select-option-hover-text: #{color-yiq(map.get($theme, 3))};
 
     // Multi Select
-    --widget-multiselect-hover-text: #{color-yiq(map-get($theme, 2))};
-    --widget-multiselect-checked-text: #{color-yiq(map-get($theme, 3))};
+    --widget-multiselect-hover-text: #{color-yiq(map.get($theme, 2))};
+    --widget-multiselect-checked-text: #{color-yiq(map.get($theme, 3))};
   }
 }
 

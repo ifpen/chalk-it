@@ -5,6 +5,9 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+
 .cancel {
   &__container {
     position: fixed;

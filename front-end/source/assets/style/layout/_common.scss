@@ -4,6 +4,8 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+
 // Overrides all container rules
 .container {
   width: 100%;
