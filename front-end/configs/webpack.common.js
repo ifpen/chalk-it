@@ -25,6 +25,7 @@ module.exports = (env) => ({
     dashboard: ['kernel/utils/runtime-asserts.js', ...PLUGINS, './source/main-dashboard.js'],
   },
   resolve: {
+    extensions: ['.js', '.jsx'],  // Add .jsx as a resolvable extension
     modules: ['source', 'thirdparty', 'node_modules'],
   },
   output: {
@@ -36,9 +37,14 @@ module.exports = (env) => ({
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /(node_modules|doc)/,
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],  // Ensure the React preset is applied
+          },
+        },
       },
       {
         test: /\.(js|mjs|ts)$/,
