@@ -796,17 +796,10 @@ class UpdatePagesAction extends UndoableAction {
 
 angular.module('modules.editor').service('EditorActionFactory', [
   'WidgetsPluginsHandlerGetter',
-  'WidgetContainerGetter',
   'WidgetEditorGetter',
   'WidgetConnectorGetter',
   'EventCenterService',
-  function (
-    widgetsPluginsHandlerGetter,
-    widgetContainerGetter,
-    widgetEditorGetter,
-    widgetConnectorGetter,
-    eventCenterService
-  ) {
+  function (widgetsPluginsHandlerGetter, widgetEditorGetter, widgetConnectorGetter, eventCenterService) {
     // --------------------
     // -- Widgets placement
     // --------------------
@@ -816,7 +809,9 @@ angular.module('modules.editor').service('EditorActionFactory', [
      * @returns {ToForegroundAction} the action
      */
     this.createToForegroundAction = function _createToForegroundAction(elementIds) {
-      return new ToForegroundAction(widgetContainerGetter(), elementIds);
+      const widgetEditor = widgetEditorGetter();
+      const widgetContainer = widgetEditor.widgetContainer;
+      return new ToForegroundAction(widgetContainer, elementIds);
     };
 
     /**
@@ -824,7 +819,9 @@ angular.module('modules.editor').service('EditorActionFactory', [
      * @returns {ToBackgroundAction} the action
      */
     this.createToBackgroundAction = function _createToBackgroundAction(elementIds) {
-      return new ToBackgroundAction(widgetContainerGetter(), elementIds);
+      const widgetEditor = widgetEditorGetter();
+      const widgetContainer = widgetEditor.widgetContainer;
+      return new ToBackgroundAction(widgetContainer, elementIds);
     };
 
     // -- place & resize widget

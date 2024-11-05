@@ -1,6 +1,6 @@
-<div ng-show="!(bIsPlayMode)" id="dashboard-editor-div" class="x_panel"
+<div ng-show="!editorView.isPlayMode" id="dashboard-editor-div" class="x_panel"
   style="border-radius: 10px; filter: var(--dashboard-filter)">
-  <div class="x_contentEditor dashboard-parent-container" id="drop-zone"> <!-- TODO rm drop-zone -->
+  <div class="x_contentEditor dashboard-parent-container">
     <div class="dashboard-page-container">
       <ul class="dashboard-dropdown" id="menuWidget" style="position: absolute; z-index: 1000"
         ng-class="{'visible':vm.menuWidgetVisible}">
@@ -62,7 +62,11 @@
     </div>
   </div>
 </div>
-<div ng-show="bIsPlayMode" id="dashboard-preview-div" class="x_panel" style="border-radius: 10px">
-  <div class="x_contentEditor" id="dashboard-zone"></div>
-  <div id="scaling-helper" style="display: none"></div> <!-- TODO rm -->
+<div ng-show="editorView.isPlayMode" id="dashboard-preview-div" class="x_panel" style="border-radius: 10px">
+  <div class="x_contentEditor dashboard-parent-container">
+    <div class="dashboard-page-container">
+      <div id="DropperDroitec" class="dropperR dashboard-content-container" style="z-index: 0; border-radius: 10px">
+      </div>
+    </div>
+  </div>
 </div>

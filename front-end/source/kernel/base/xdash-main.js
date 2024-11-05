@@ -101,26 +101,12 @@ export const Xdash = function () {
 
     const data = datanodesManager.serialize();
     const libraries = pyodideLib.serialize();
-    let scale;
-    if (
-      !$rootScope.moduleOpened &&
-      dashState.tabActive == 'widgets' &&
-      dashState.modeActive == 'edit-dashboard' &&
-      dashState.editorStatus == 'full'
-    ) {
-      scale = editorSingletons.widgetEditor.getCurrentDashZoneDims();
-    } else {
-      scale = editorSingletons.widgetEditor.getSnapshotDashZoneDims();
-    }
 
     const layoutMgr = editorSingletons.layoutMgr;
     const dash = editorSingletons.widgetEditor.serialize();
-    const deviceCols = layoutMgr.serializeCols();
     const backgroundColor = layoutMgr.serializeDashBgColor();
     const theme = layoutMgr.serializeDashboardTheme();
     const conn = widgetConnector.serialize();
-    const rowNames = layoutMgr.serializeRowNames();
-    const defaultRow = layoutMgr.serializeDefaultRow();
 
     const exportOptions = layoutMgr.serializeExportOptions();
     const navBarNotification = htmlExport.navBarNotification;
@@ -129,12 +115,11 @@ export const Xdash = function () {
       meta: meta,
       data: data,
       libraries: libraries,
-      scaling: scale,
-      device: { ...deviceCols, ...backgroundColor, ...theme },
+      device: { ...backgroundColor, ...theme },
       dashboard: dash,
       connections: conn,
       exportOptions: exportOptions,
-      pages: { ...rowNames, ...defaultRow },
+      // pages: { ...rowNames, ...defaultRow }, // TODO coords
       checkExportOptions: true, //AEF //MBG 21/09/2021
       navBarNotification: navBarNotification,
     };
@@ -191,7 +176,7 @@ export const Xdash = function () {
 
       editorSingletons.widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
       widgetConnector.deserialize(jsonObject.connections);
-      widgetPreview.clear();
+      widgetPreview.reset();
 
       editorSingletons.widgetEditor.unselectAllWidgets(); //AEF: deselect all widget at project load
 
@@ -463,24 +448,24 @@ export const Xdash = function () {
 
     initRootScopeCurrentProjectObject(jsonObject);
     let bOk = false;
-    let loadFn = function (e) {
+    function loadFn(e) {
       const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       scopeDash.reset();
       clear(); // MBG 01/08/2018 : important to do
       bOk = deserialize(jsonObject);
       datanodesManager.showLoadingIndicator(false);
-      document.removeEventListener('widgets-tab-loaded', loadFn);
+      // TODO coords remove ?
+      // document.removeEventListener('widgets-tab-loaded', loadFn);
       jsonObject = undefined; //ABK in case of  missed synchronization a second loadFn cannot be made
       if (!bOk) {
         //ABK
         swal('Unable to load your project', 'Project loading will be interrupted.', 'error');
         return false;
       }
-    };
-    document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
-    if (dashState.tabActive == 'widgets') {
-      loadFn();
     }
+    // TODO coords remove ?
+    // document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
+    loadFn();
   }
 
   //-------------------------------------------------------------------------------------------------------------------

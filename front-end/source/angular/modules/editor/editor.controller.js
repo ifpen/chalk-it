@@ -31,8 +31,6 @@ angular.module('modules.editor').controller('EditorController', [
   'EditorActionFactory',
   'WidgetEditorGetter',
   'EventCenterService',
-  'DashboardActiveTabGetter',
-  'DashboardActiveModeGetter',
   'DepGraphService',
   function (
     $scope,
@@ -42,8 +40,6 @@ angular.module('modules.editor').controller('EditorController', [
     editorActionFactory,
     widgetEditorGetter,
     eventCenterService,
-    dashboardActiveTabGetter,
-    dashboardActiveModeGetter,
     depGraphService
   ) {
     $rootScope.moduleOpened = true; //AEF
@@ -145,7 +141,7 @@ angular.module('modules.editor').controller('EditorController', [
 
     // Keybindings
     function _onkeydown(e) {
-      if ($rootScope.moduleOpened) {
+      if ($rootScope.moduleOpened || $scope.editorView.isPlayMode) {
         // Only handle keys when the editor is active
         // TODO should probably be handled using a different $state and controler's lifecycle
         return;
@@ -163,10 +159,6 @@ angular.module('modules.editor').controller('EditorController', [
       }
       if (e.target.className.indexOf('jsoneditor-value') >= 0) {
         // Do not capture keys when the active element is jsoneditor
-        return;
-      }
-
-      if (dashboardActiveTabGetter() !== 'widgets' || dashboardActiveModeGetter() !== 'edit-dashboard') {
         return;
       }
 
@@ -382,21 +374,15 @@ angular.module('modules.editor').controller('EditorController', [
 
     // Page navigation
     vm.previousPage = function () {
-      const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
-      const newPage = widgetContainer.currentPage - 1;
-
-      if (newPage >= 0) {
-        widgetEditor.changePage(newPage);
-      }
+      vm._setCurrentPage(vm.getCurrentPage() - 1);
     };
 
     vm.nextPage = function () {
-      const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
-      const newPage = widgetContainer.currentPage + 1;
+      vm._setCurrentPage(vm.getCurrentPage() + 1);
+    };
 
-      if (newPage < widgetContainer.pageNames.length) {
+    vm._setCurrentPage = function (newPage) {
+      if (newPage >= 0 && newPage < widgetEditorGetter().widgetContainer.pageNames.length) {
         widgetEditor.changePage(newPage);
       }
     };

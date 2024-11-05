@@ -8,119 +8,118 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'lodash';
 
-import { rescaleHelper } from 'kernel/dashboard/scaling/rescale-helper';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
-import { htmlExport } from 'kernel/general/export/html-export';
+import { applyGeometry } from 'kernel/dashboard/widget/widget-placement';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
-import { editorSingletons } from 'kernel/editor-singletons';
-
-import { reconstructFoundations } from 'kernel/dashboard/rendering/reconstruct-foundations';
-import { rescaleWidget } from 'kernel/base/main-common';
 import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
 import { rowToTabRuntime } from 'kernel/runtime/row-to-tab-runtime';
 import { rowToPageRuntime } from 'kernel/runtime/row-to-page-runtime';
 
-export const widgetPreview = (function () {
-  var widget = [];
-  var previewDimensionsSnapshot;
-  var targetScalingMethod = 'scaleTwh';
+const DISPLAY_CONTAINER_ID = 'DropperDroitec';
 
-  var targetRows = 0;
-  var targetCols = 1;
-  var scalingHelper = new rescaleHelper(previewDimensionsSnapshot, targetScalingMethod, 'preview');
+class WidgetPreview {
+  constructor() {
+    this.idWC = 401;
 
-  var widgetsErrorState = {}; // MBG for issue #92
+    /*
+        widget id => {
+          layout: { top: number, left: number, width: number, height: number, zIndex: number, page?: number },
+          containerDiv: HTMLElement,
+          instance : baseWidget,
+        }
+     */
+    this.widgetsInfo = new Map();
 
-  /**
-   * Returns the current dimensions of 'DropperDroitec' div
-   * */
-  function getCurrentDashZoneDims() {
-    //console.log("getCurrentDashZoneDims at player");
+    this.currentPage = undefined;
+    this.pageNames = [];
 
-    var curDashZone = {
-      widthPx: $('#dashboard-zone').width(),
-      heightPx: $('#dashboard-zone').height(),
-      scrollWidthPx: $('#dashboard-zone')[0].scrollWidth,
-      scrollHeightPx: $('#dashboard-zone')[0].scrollHeight,
-      widthVw: (100 * $('#dashboard-zone').width()) / document.documentElement.clientWidth,
-      heightVh: (100 * $('#dashboard-zone').height()) / document.documentElement.clientHeight,
-      scrollWidthVw: (100 * $('#dashboard-zone')[0].scrollWidth) / document.documentElement.clientWidth,
-      scrollHeightVh: (100 * $('#dashboard-zone')[0].scrollHeight) / document.documentElement.clientHeight,
-      scalingMethod: targetScalingMethod,
-    };
-    return curDashZone;
+    // TODO padding
+
+    this.widgetsOnErrorState = new Set();
   }
 
   /**
-   * Rebuilds Widget in Preview Mode
-   * Uses widgets pluging's "copy" method instead of create
-   * @param {str} instanceId
+   * @description Get an ID for containerDiv (such WidgetContainer1xx)
    */
-  function rebuildWidgetInPreviewMode(instanceId) {
-    const elementId = instanceId + 'c';
-    const element = document.getElementById(elementId);
-    const modelJsonIdStr = elementId.substring(0, elementId.length - 2);
-    const widgetContainer = element.firstElementChild;
-    const wcId = widgetContainer.id;
-
-    for (let ch = element.childNodes.length - 1; ch >= 0; ch--) element.removeChild(element.childNodes[ch]);
-
-    const div = document.createElement('div');
-    div.style.height = unitH(element.offsetHeight - 2);
-    div.style.width = unitW(element.offsetWidth - 2);
-    div.style.minWidth = parseFloat(element.style.minWidth) - 5 + 'px';
-    div.style.minHeight = parseFloat(element.style.minHeight) - 5 + 'px';
-    div.id = wcId;
-    element.appendChild(div);
-
-    widget[instanceId] = widgetsPluginsHandler.copyWidget(wcId, modelJsonIdStr, widget[instanceId], instanceId, true);
-    widgetsErrorState[instanceId] = false;
-    return instanceId;
+  #nextWidgetContainerId() {
+    this.idWC = this.idWC + 1;
+    return `WidgetContainer${this.idWC}c`;
   }
 
-  /**
-   * Prepares preview mode containers 'dashboard-zone' & 'DropperDroitec'
-   * */
-  function preparePreviewModeContainer() {
-    var xprjson = runtimeSingletons.xdash.serialize();
-    xprjson.scaling = editorSingletons.widgetEditor.getSnapshotDashZoneDims(); // patch
-    var divDest = document.getElementById('dashboard-zone');
-    var dprDc = document.createElement('div');
-    dprDc.id = 'DropperDroitec';
-    dprDc.className = 'dropperR';
-    dprDc.style.zIndex = 0; //AEF
-    dprDc.style.borderRadius = '10px'; //AEF
-    divDest.appendChild(dprDc);
-    reconstructFoundations.buildDivsFromXprjson(xprjson);
+  createWidget(modelJsonId, instanceId, layout) {
+    const containerDiv = document.createElement('div');
+    containerDiv.id = instanceId + 'c';
 
-    return xprjson;
+    containerDiv.classList.add('widget');
+    containerDiv.classList.add('widget__layout--item');
+
+    const wcId = this.#nextWidgetContainerId();
+    const div = document.createElement('div');
+    div.id = wcId;
+    containerDiv.appendChild(div);
+
+    applyGeometry(containerDiv, layout);
+    if (layout.zIndex !== undefined) {
+      containerDiv.style.zIndex = layout.zIndex;
+    }
+
+    document.getElementById(DISPLAY_CONTAINER_ID).appendChild(containerDiv);
+
+    const show = this.currentPage === undefined || this.currentPage === layout.page;
+    containerDiv.style.display = show ? 'block' : 'none';
+
+    let instance;
+    try {
+      instance = widgetsPluginsHandler.createWidget(wcId, modelJsonId, instanceId, true);
+      this.widgetsInfo.set(instanceId, {
+        layout,
+        containerDiv,
+        instance,
+      });
+    } catch (ex) {
+      aElement.remove();
+      throw ex;
+    }
+
+    if (widgetConnector.widgetsConnection[instanceId] != null) {
+      widgetConnector.widgetsConnection[instanceId].widgetObjEdit = null;
+      widgetConnector.widgetsConnection[instanceId].widgetObjConnect = instance;
+
+      // TODO coords check needed at runtime
+      this.plotConstantData(instanceId, false); //on preview mode
+    }
+  }
+
+  setCurrentPage(newPage) {
+    this.currentPage = newPage;
+    this.#applyCurrentPage();
+  }
+
+  #applyCurrentPage() {
+    this.widgetsInfo.values().forEach((info) => {
+      const show = this.currentPage === undefined || this.currentPage === info.layout.page;
+      info.containerDiv.style.display = show ? 'block' : 'none';
+    });
   }
 
   /**
    * LoadPlayMode is an editor only function, when preview (play) mode is requested
-   * */
-  function loadPlayMode() {
+   */
+  loadPlayMode() {
     // cleanup : here make a reset not a clear
-    reset();
-    // get preview dimensions for scaling
-    previewDimensionsSnapshot = editorSingletons.widgetEditor.getSnapshotDashZoneDims();
+    this.reset();
 
-    // set scaling information
-    scalingHelper.setDimensions(previewDimensionsSnapshot);
-    scalingHelper.setScalingMethod(targetScalingMethod);
-    scalingHelper.setRows(targetRows);
-    scalingHelper.setCols(targetCols);
+    const xprjson = runtimeSingletons.xdash.serialize();
 
-    // build Preview Mode Tab
-    let xprjson = preparePreviewModeContainer();
-    renderDashboardWidgets(xprjson, false);
+    for (const [instanceId, desc] of Object.entries(xprjson.dashboard)) {
+      this.createWidget(desc.container.modelJsonId, instanceId, desc.layout);
+    }
 
     // assign change value handlers
     if (datanodesManager.getAllDataNodes().length != 0) {
-      assignValueChangeHandlers();
+      this.assignValueChangeHandlers();
     }
   }
 
@@ -128,52 +127,41 @@ export const widgetPreview = (function () {
    * Assigns change value handlers to all widgets : which allows
    * each concerned widget to write on connected dataNodes
    * */
-  function assignValueChangeHandlers() {
-    for (let propName in widget) {
-      for (let sliderName of widgetConnector.effectiveSliders()) {
-        if (widget[propName] != null) {
-          if (widget[propName].getByName(sliderName) != null) {
-            //getting slider object
-            const slider = widget[propName].getByName(sliderName);
-            slider.addValueChangedHandler(updateDataFromWidget);
-          }
+  assignValueChangeHandlers() {
+    for (const widgetInfo of this.widgetsInfo.values()) {
+      const instance = widgetInfo.instance;
+      for (const sliderName of widgetConnector.effectiveSliders()) {
+        const slider = instance.getByName(sliderName);
+        if (slider != null) {
+          //getting slider object
+          slider.addValueChangedHandler((sender, e) => this.updateDataFromWidget(sender, e));
         }
       }
     }
   }
 
   /**
-   * Draws preview mode widget's border
-   * @param {any} instanceId
-   */
-  function handleWidgetBorder(instanceId) {
-    $('#' + instanceId + 'c')[0].style.position = 'absolute';
-    $('#' + instanceId + 'c')[0].style.border = '1px solid rgba(255, 255, 255, 0)'; // MBG 02/05/2020
-  }
-
-  /**
    * Main dashboard global rendering function. Works both for editor and runtime
    * @param {any} xprjson : xprjson definition to be rendered
    */
-  function renderDashboardWidgets(xprjson, bCreate) {
+  renderDashboardWidgets(xprjson) {
+    // TODO coords put in deserialize ?
     _.each(_.keys(xprjson.dashboard), (instanceId) => {
       let element = document.getElementById(instanceId + 'c');
       let modelJsonId = instanceId.substring(0, instanceId.length - 1);
       let wcId = element.firstElementChild.id;
-      if (bCreate) {
-        widget[instanceId] = widgetsPluginsHandler.createWidget(wcId, modelJsonId, instanceId, true);
-      } else {
-        widget[instanceId] = widgetsPluginsHandler.copyWidget(wcId, modelJsonId, null, instanceId, true);
-      }
-      handleWidgetBorder(instanceId);
+
+      widget[instanceId] = widgetsPluginsHandler.createWidget(wcId, modelJsonId, instanceId, true);
       if (widgetConnector.widgetsConnection[instanceId] != null) {
         widgetConnector.widgetsConnection[instanceId].widgetObjEdit = null;
         widgetConnector.widgetsConnection[instanceId].widgetObjConnect = widget[instanceId];
-        plotConstantData(instanceId, false); //on preview mode
+        this.plotConstantData(instanceId, false); //on preview mode
       }
     });
+  }
 
-    scalingHelper.updateCellsProportions();
+  reRenderWidget(instanceId) {
+    this.widgetsInfo.get(instanceId)?.render(true);
   }
 
   /**
@@ -182,7 +170,7 @@ export const widgetPreview = (function () {
    * @param {any} connectObj
    */
   // MBG : TODO refactor together with widget connection
-  function deserialize(connectObj) {
+  deserialize(connectObj) {
     _.each(_.keys(connectObj), (instanceId) => {
       let modelJsonIdStr = instanceId.substring(0, instanceId.length - 1);
       let elementId = instanceId + 'c';
@@ -210,9 +198,11 @@ export const widgetPreview = (function () {
     for (key in widgetConnector.widgetsConnection) {
       try {
         // MBG temporary fix to handle pb of long requests
-        widgetPreview.plotConstantData(key, false);
+        this.plotConstantData(key, false);
         widgetConnector.widgetsConnection[key].widgetObjEdit = null;
-      } catch (exc) {}
+      } catch (exc) {
+        // TODO nope
+      }
     }
   }
 
@@ -221,7 +211,7 @@ export const widgetPreview = (function () {
    * (necessary for constant value exp: data from csv reader or static json file)
    * @param {string} instanceId : widget's instanceId
    */
-  function plotConstantData(instanceId, bCaptionManuallyChanged) {
+  plotConstantData(instanceId, bCaptionManuallyChanged) {
     const widgetConnection = widgetConnector.widgetsConnection[instanceId];
     if (!_.isUndefined(widgetConnection)) {
       for (const actuatorName in widgetConnection.sliders) {
@@ -242,7 +232,7 @@ export const widgetPreview = (function () {
                 const newData = dataNode.latestData();
                 const status = dataNode.status();
                 const last_updated = dataNode.last_updated();
-                setDataOnWidget(
+                this.setDataOnWidget(
                   instanceId,
                   actuatorName,
                   actuator,
@@ -253,10 +243,10 @@ export const widgetPreview = (function () {
                 );
               } else {
                 const msg = 'Invalid connection with data';
-                displayErrorOnWidget(instanceId, actuatorName, msg);
+                this.displayErrorOnWidget(instanceId, actuatorName, msg);
               }
             } else {
-              widgetPreview.clearDataFromWidget(instanceId, actuatorName, actuator, true);
+              this.clearDataFromWidget(actuator, true);
             }
           }
         }
@@ -272,28 +262,21 @@ export const widgetPreview = (function () {
    * @param {number} i
    * @param {string} msg
    */
-  function displayErrorOnWidget(instanceId, i, msg) {
-    if (!widgetsErrorState[instanceId]) {
-      var divId = widgetConnector.widgetsConnection[instanceId].instanceId + 'c';
-      if (!_.isUndefined($('#' + divId)[0])) {
-        if ($('#' + divId)[0].style.border != '3px groove #e40000') {
-          const w = parseFloat($('#' + divId)[0].style.width) + 1;
-          const h = parseFloat($('#' + divId)[0].style.height) + 1;
-          $('#' + divId)[0].style.width = w + 'vw';
-          $('#' + divId)[0].style.height = h + 'vh';
-          $('#' + divId)[0].style.border = '3px groove #e40000';
-          $('#' + divId)[0].style.borderRadius = '6px';
-          $('#' + divId)[0].style.background = 'rgba(255, 0, 0, 0.26)';
-          $('#' + divId).append(
-            '<br/><span style="color:red">' +
-              msg +
-              ' "' +
-              widgetConnector.widgetsConnection[instanceId].sliders[i].dataNode +
-              '" !</span>'
-          );
-        }
-      }
-      widgetsErrorState[instanceId] = true;
+  displayErrorOnWidget(instanceId, i, msg) {
+    const info = this.widgetsInfo.get(instanceId);
+    if (info && !this.widgetsOnErrorState.has(instanceId)) {
+      const containerDiv = info.containerDiv;
+      containerDiv.style.outline = '4px groove #e40000';
+      containerDiv.style.borderRadius = '6px';
+      containerDiv.style.background = 'rgba(255, 0, 0, 0.26)';
+
+      const span = document.createElement('span');
+      span.style.color = 'red';
+      span.innerText = `${msg} "${widgetConnector.widgetsConnection[instanceId].sliders[i].dataNode}" !`;
+      containerDiv.appendChild(document.createElement('br'));
+      containerDiv.appendChild(span);
+
+      this.widgetsOnErrorState.add(instanceId);
     }
   }
 
@@ -301,24 +284,22 @@ export const widgetPreview = (function () {
    * Removes error display on widget
    * @param {string} instanceId
    */
-  function removeDisplayErrorOnWidget(instanceId) {
-    var divId = widgetConnector.widgetsConnection[instanceId].instanceId + 'c';
-    if (!_.isUndefined($('#' + divId)[0])) {
-      if ($('#' + divId)[0].style.border != '1px solid rgba(255, 255, 255, 0)') {
-        //AEF: fix border
-        const w = parseFloat($('#' + divId)[0].style.width) - 1;
-        const h = parseFloat($('#' + divId)[0].style.height) - 1;
-        $('#' + divId)[0].style.width = w + 'vw';
-        $('#' + divId)[0].style.height = h + 'vh';
-        $('#' + divId)[0].style.border = '1px solid rgba(255, 255, 255, 0)'; //AEF: fix border
-        $('#' + divId)[0].style.borderRadius = '';
-        $('#' + divId)[0].style.background = '';
-        for (var j = 0; j < $('#' + divId)[0].childNodes.length; j++) {
-          if ($('#' + divId)[0].childNodes[j].localName == 'span') $('#' + divId)[0].childNodes[j].remove();
-        }
-      }
+  removeDisplayErrorOnWidget(instanceId) {
+    const info = this.widgetsInfo.get(instanceId);
+    if (info) {
+      const containerDiv = info.containerDiv;
+
+      containerDiv.style.removeProperty('outline');
+      containerDiv.style.removeProperty('borderRadius');
+      containerDiv.style.removeProperty('background');
+
+      const containerDiv$ = $(containerDiv);
+
+      containerDiv$.children('span').remove();
+      containerDiv$.children('br').remove();
     }
-    widgetsErrorState[instanceId] = false;
+
+    this.widgetsOnErrorState.delete(instanceId);
   }
 
   /**
@@ -330,15 +311,15 @@ export const widgetPreview = (function () {
    * @param {any} status
    * @param {any} last_updated
    */
-  function setDataOnWidget(instanceId, actuatorName, actuator, newData, status, last_updated, bCaptionManuallyChanged) {
+  setDataOnWidget(instanceId, actuatorName, actuator, newData, status, last_updated, bCaptionManuallyChanged) {
     if ((_.isUndefined(newData) && last_updated != 'never') || status == 'Error') {
       // MBG
       const msg = 'Invalid data';
-      displayErrorOnWidget(instanceId, actuatorName, msg);
+      this.displayErrorOnWidget(instanceId, actuatorName, msg);
       return; // MBG : security. To invalidate widgets instead
     }
 
-    removeDisplayErrorOnWidget(instanceId);
+    this.removeDisplayErrorOnWidget(instanceId);
 
     if (!(_.isUndefined(newData) || _.isNull(newData))) {
       // ABK: fix bug after MBG modif of &&(status!="None") // MBG 30/10/2018 add check on isNull following test "Gecoair UserTripso no JWT (6).html"
@@ -364,7 +345,7 @@ export const widgetPreview = (function () {
       if (varInter === null) {
         // data parsing has changed
         // MBG TODO : invalidate widget
-        widgetPreview.clearDataFromWidget(instanceId, actuatorName, actuator, true);
+        this.clearDataFromWidget(actuator, true);
       } else {
         if (slider.name.substring(0, 1) === 'D') {
           // TODO
@@ -396,22 +377,15 @@ export const widgetPreview = (function () {
 
   /**
    *
-   * @param {string} instanceId
-   * @param {number} i : slider index
    * @param {any} actuator
    * @param {any} bCaption : clear caption (true or false)
    */
-  function clearDataFromWidget(instanceId, actuatorName, actuator, bCaption) {
-    if (widgetConnector.widgetsConnection[instanceId].sliders[actuatorName].name.substring(0, 1) === 'D') {
-      //for Digits
-      actuator.setText('');
-    } else {
-      if (!_.isUndefined(actuator.clearCaption) && bCaption) {
-        actuator.clearCaption();
-      }
-      if (!_.isUndefined(actuator.setValue)) {
-        actuator.setValue(null); // MBG attention, set to null
-      }
+  clearDataFromWidget(actuator, bCaption) {
+    if (!_.isUndefined(actuator.clearCaption) && bCaption) {
+      actuator.clearCaption();
+    }
+    if (!_.isUndefined(actuator.setValue)) {
+      actuator.setValue(null); // MBG attention, set to null
     }
   }
 
@@ -420,7 +394,7 @@ export const widgetPreview = (function () {
    * @param {*} actuator
    * @returns
    */
-  function findBindingFromActuator(actuator) {
+  #findBindingFromActuator(actuator) {
     for (let widgetId in widgetConnector.widgetsConnection) {
       const widgetConnections = widgetConnector.widgetsConnection[widgetId];
       if (widgetConnections.widgetObjConnect) {
@@ -441,8 +415,8 @@ export const widgetPreview = (function () {
    * @param {any} sender
    * @param {any} e
    */
-  function updateDataFromWidget(sender, e) {
-    let binding = findBindingFromActuator(sender);
+  updateDataFromWidget(sender, e) {
+    const binding = this.#findBindingFromActuator(sender);
     if (binding) {
       if (binding.dataNode !== 'None') {
         const dataNode = datanodesManager.getDataNodeByName(binding.dataNode);
@@ -468,7 +442,8 @@ export const widgetPreview = (function () {
    * Resize dashboard function
    * @param {any} target
    */
-  function resizeDashboard(target) {
+  resizeDashboard(target) {
+    // TODO coords
     // Prepare rescale for rowToPage mode
     if (window.dashboardConfig?.execOutsideEditor) {
       const scalingSrc = window.scaling;
@@ -521,8 +496,6 @@ export const widgetPreview = (function () {
     scalingHelper.setScalingMethod(targetScalingMethod);
     scalingHelper.resizeDashboard(target);
 
-    rescale();
-
     // Finish rescale for rowToPage
     if (window.dashboardConfig?.execOutsideEditor) {
       if (window.exportOptions == 'rowToPage')
@@ -530,37 +503,17 @@ export const widgetPreview = (function () {
     }
   }
 
-  /*--------mediaChangeProjection--------*/
-  function mediaChangeProjection(scalingObj, projectedDashDimensions, rows) {
-    return scalingHelper.mediaChangeProjection(scalingObj, projectedDashDimensions, rows);
-  }
-
-  /*--------rescale--------*/
-  function rescale() {
-    previewDimensionsSnapshot = getCurrentDashZoneDims();
-    scalingHelper.setDimensions(previewDimensionsSnapshot);
-
-    _.each(_.keys(widget), (instanceId) => {
-      rescaleWidget(widget, instanceId);
-    });
-  }
-
-  /*--------reset--------*/
-  function reset() {
-    for (const property in widget) {
-      delete widget[property];
+  reset() {
+    for (const info of this.widgetsInfo.values()) {
+      info.containerDiv.remove();
     }
-    $('#dashboard-zone').html('');
+    this.widgetsInfo.clear();
+    this.widgetsOnErrorState.clear();
+
+    document.getElementById(DISPLAY_CONTAINER_ID).scrollTop = 0;
   }
 
-  /*--------clear--------*/
-  function clear() {
-    reset();
-    htmlExport.exportOptions = 'ajustToTargetWindow';
-  }
-
-  /*--------getDashboardExtent--------*/
-  function getDashboardExtent() {
+  #getDashboardExtent() {
     var right = 0;
     var bottom = 0;
     var offsetLeft = $('#dashboard-zone').offset().left;
@@ -585,21 +538,22 @@ export const widgetPreview = (function () {
   }
 
   /**
-   * Converts the 'dashboard-zone' to png
+   * Converts the dashboard's content to png
    * Currently unused
    * */
-  function toPng() {
-    var dashExt = getDashboardExtent();
-    var originalHTML = document.getElementById('dashboard-zone');
-    var origHeight = originalHTML.style.height;
-    var origWidth = originalHTML.style.width;
+  toPng() {
+    const dashExt = this.#getDashboardExtent();
+
+    const originalHTML = document.getElementById('DropperDroitec');
+    const origHeight = originalHTML.style.height;
+    const origWidth = originalHTML.style.width;
     originalHTML.style.height = dashExt.bottom + 'px';
     originalHTML.style.width = dashExt.right + 'px';
 
     html2canvas(originalHTML, { allowTaint: false, useCORS: true }).then(function (canvas) {
-      var png = Canvas2Image.convertToPNG(canvas, dashExt.right, dashExt.bottom);
+      const png = Canvas2Image.convertToPNG(canvas, dashExt.right, dashExt.bottom);
 
-      var link = document.createElement('a');
+      const link = document.createElement('a');
       link.setAttribute('download', $('#projectName')[0].value + '.png');
       link.setAttribute('href', png.src.replace('image/png', 'image/octet-stream'));
       link.click();
@@ -610,46 +564,13 @@ export const widgetPreview = (function () {
   }
 
   /**
-   * Sets the scaling information for the associated scalingHelper
-   * @param {any} srcDims
-   * @param {any} tgScalMethod
-   * @param {any} tgRows
-   * @param {any} tgCols
-   */
-  // when null is passed as argument, no corresponding update will be performed
-  function setScalingInformation(srcDims, tgScalMethod, tgRows, tgCols) {
-    if (srcDims != null) {
-      scalingHelper.setDimensions(srcDims);
-      if (srcDims.colDims != null) {
-        scalingHelper.deserialize(srcDims);
-      }
-    }
-    if (tgScalMethod != null) {
-      targetScalingMethod = tgScalMethod;
-      scalingHelper.setScalingMethod(targetScalingMethod);
-    }
-    if (tgRows != null) {
-      targetRows = tgRows;
-      scalingHelper.setRows(targetRows);
-    }
-    if (tgCols != null) {
-      targetCols = tgCols;
-      scalingHelper.setCols(targetCols);
-    }
-  }
-
-  /*--------resizeDashboardCols--------*/
-  function resizeDashboardCols() {
-    scalingHelper.resizeDashboardCols();
-  }
-
-  /**
    * Put z-index of selected widget on top of all widgets
    * MBG from AEF work for autocomplete
    * @param {string} idInstance
    * @param {any} e
    */
-  function elevateZIndex(idInstance, e) {
+  elevateZIndex(idInstance, e) {
+    // TODO
     var maxZIindex = 0;
     // find highest z-index
     _.each(Object.keys(widget), function (w) {
@@ -661,29 +582,7 @@ export const widgetPreview = (function () {
     // assign highest z-index
     $('#' + idInstance + 'c')[0].style['z-index'] = maxZIindex + 1;
   }
+}
 
-  // Public functions
-  return {
-    loadPlayMode: loadPlayMode,
-    renderDashboardWidgets,
-    updateDataFromWidget: updateDataFromWidget,
-    resizeDashboard: resizeDashboard,
-    resizeDashboardCols: resizeDashboardCols,
-    widget: widget,
-    plotConstantData: plotConstantData,
-    assignValueChangeHandlers: assignValueChangeHandlers,
-    rescale: rescale,
-    clear: clear,
-    deserialize: deserialize,
-    setDataOnWidget: setDataOnWidget,
-    clearDataFromWidget: clearDataFromWidget,
-    getCurrentDashZoneDims: getCurrentDashZoneDims,
-    getSnapshotDashZoneDims: function () {
-      return previewDimensionsSnapshot;
-    },
-    setScalingInformation: setScalingInformation,
-    mediaChangeProjection: mediaChangeProjection,
-    toPng: toPng,
-    elevateZIndex: elevateZIndex,
-  };
-})();
+// TODO rename
+export const widgetPreview = new WidgetPreview();

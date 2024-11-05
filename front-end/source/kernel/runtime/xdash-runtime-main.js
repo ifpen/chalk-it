@@ -123,7 +123,7 @@ function initContainers(jsonContent, exportOptions) {
 
   // Cache the selectors and initialize heights
   const $navMenu = $('#nav-menu').get(0);
-  const $dashboardZone = $('#dashboard-zone').get(0);
+  const $dashboardZone = $('#dashboard-zone').get(0); // TODO coords rm
   const $dropperDroitec = $('#DropperDroitec').get(0);
 
   let navMenuHeightPx = 0;
@@ -177,28 +177,6 @@ function initContainers(jsonContent, exportOptions) {
     width: '100%',
     'overflow-y': 'auto',
   });
-
-  // Calculate rows based on max cells and columns
-  const {
-    cols: { maxCols },
-    cols: { maxCells },
-  } = jsonContent.device;
-  const rows = maxCells / (maxCols || 1);
-
-  // Scaling and preview updates
-  let projectedScalingObj = jQuery.extend(true, {}, scalingSrc);
-  let projectedPreviewDimensions = widgetPreview.getCurrentDashZoneDims();
-
-  widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, maxCols);
-  widgetPreview.resizeDashboardCols();
-
-  const mediaChangeProj = widgetPreview.mediaChangeProjection(projectedScalingObj, projectedPreviewDimensions, rows);
-
-  projectedScalingObj = mediaChangeProj.referenceFrame;
-  projectedPreviewDimensions = mediaChangeProj.targetFrame;
-
-  widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, maxCols);
-  widgetPreview.resizeDashboard(projectedPreviewDimensions);
 }
 
 export function loadDashboard(jsonContent, exportOptions) {

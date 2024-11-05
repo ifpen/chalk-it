@@ -21,6 +21,7 @@ import {
   models,
 } from 'kernel/base/widgets-states';
 import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
+import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 
 const minWidgetWidthCst = 32;
 const minWidgetHeightCst = 32;
@@ -294,6 +295,8 @@ export class WidgetContainer {
       const show = this.currentPage === undefined || this.currentPage === info.layout.page;
       info.containerDiv.style.display = show ? 'block' : 'none';
     });
+
+    widgetPreview.setCurrentPage(this.currentPage);
   }
 
   changePage(pageNb) {

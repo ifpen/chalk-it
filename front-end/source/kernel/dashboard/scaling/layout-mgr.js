@@ -8,9 +8,6 @@
 // └──────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'lodash';
 import { panelDash } from '../edition/panel-dashboard';
-import { editorSingletons } from 'kernel/editor-singletons';
-import { unitW, unitH } from 'kernel/dashboard/scaling/scaling-utils';
-import { getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
 import { htmlExport } from 'kernel/general/export/html-export';
 
 /*constants*/
@@ -19,9 +16,6 @@ export const minLeftCst = 10; // cst; min left of the dashboard
 export const minTopCst = 10; // cst; min top of the dashboard
 export const minHeightCst = 10; // cst; min height of a widget, can be modified
 export const minWidthCst = 10; // cst; min width of a widget, can be modified
-
-// Toggles entering one height per row; not quite functionnal yet
-const MULTIPLE_HEIGHT = false;
 
 export class LayoutMgrClass {
   constructor() {
@@ -150,7 +144,6 @@ export class LayoutMgrClass {
     $('#current-theme').attr('data-theme', this.dashboardTheme);
     this.updateDashBgColor();
     // TODO Open Sweet alert to ask the user if he wants to reset styles for all components
-    editorSingletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
     this.$rootScope.updateFlagDirty(true);
   }
 
@@ -294,86 +287,5 @@ export class LayoutMgrClass {
             }*/
       // MBG dead code 12/02/2022
     }
-  }
-
-  /*--------updateColHeight--------*/
-  updateColHeight(scalingObj) {
-    this.heightCols = [];
-    this.newHeightCols = [];
-    if (_.isUndefined(scalingObj) || scalingObj.colDims === null) {
-      return;
-    }
-
-    let ch;
-    if (_.isUndefined(scalingObj.colDims.rowHeightPercent)) {
-      ch = this.scalingHelper.computeRelativeColHeigth(scalingObj);
-    } else {
-      ch = scalingObj.colDims.rowHeightPercent;
-    }
-
-    const nbValues = MULTIPLE_HEIGHT ? this.rows : 1;
-    for (let i = 0; i < nbValues; i++) {
-      this.heightCols.push(ch);
-      this.newHeightCols.push(ch);
-    }
-
-    this.updateMaxTopAndLeft();
-    this._applyHeights();
-  }
-
-  /*--------serializeCols--------*/
-  serializeCols() {
-    const deviceDroppers = {};
-    const classType = this._getClassType(this.cols);
-
-    const valueRow = this.rows ? this.rows.toString() : 'none';
-    const valueCol = this.rows && this.cols ? this.cols.toString() : '1';
-    const maxCells = this.rows * this.cols;
-
-    const deviceCols = {
-      valueRow: valueRow,
-      valueCol: valueCol,
-      maxCells: maxCells,
-      maxCols: this.cols,
-      classType: classType,
-    };
-
-    for (let i = 1; i <= maxCells; i++) {
-      const drpName = {};
-      const dpr = $('#dpr' + i)[0];
-      if (dpr.hasChildNodes()) {
-        for (let j = 0; j < dpr.childNodes.length; j++) {
-          const child = dpr.childNodes[j];
-          drpName['component' + j] = child.childNodes[0].id; //$("#dpr" + i)[0].childNodes[j].id == DIV_element
-        }
-      }
-      deviceDroppers['dpr' + i] = drpName;
-    }
-    const device = {
-      cols: deviceCols,
-      droppers: deviceDroppers,
-    };
-    return device;
-  }
-
-  /*--------deserializeCols--------*/
-  deserializeCols(dashObj, deviceObj) {
-    const widgetsDroppersMap = {};
-    if (deviceObj.cols.maxCells == 0) {
-      const dprWidgets = _.values(dashObj);
-      _.each(dprWidgets, (wdg) => {
-        widgetsDroppersMap[wdg] = 'DropperDroite';
-      });
-    } else {
-      const droppers = deviceObj.droppers;
-      const drprs = _.keys(droppers);
-      for (let i = 0; i < drprs.length; i++) {
-        const dprWidgets = _.values(droppers[drprs[i]]);
-        _.each(dprWidgets, (wdg) => {
-          widgetsDroppersMap[wdg] = drprs[i];
-        });
-      }
-    }
-    return widgetsDroppersMap;
   }
 }

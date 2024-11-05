@@ -17,10 +17,6 @@ import { urlBase } from 'config.js';
 import { pythonImagesModule } from 'angular/modules/python/python-images.module';
 import { initXdashRuntime } from 'kernel/runtime-singletons';
 import { onAngularReady } from 'kernel/runtime/xdash-runtime-main';
-import { dashState } from 'angular/modules/dashboard/dashboard';
-
-// TODO contant
-dashState.modeActive = 'play-dashboard';
 
 export const angularModule = angular.module('xCLOUD', [
   'angularjs-gauge',

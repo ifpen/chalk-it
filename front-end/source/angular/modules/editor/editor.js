@@ -29,5 +29,4 @@ editorModule
   .service('EventCenterService', [EventCenter])
   .value('WidgetsPluginsHandlerGetter', () => widgetsPluginsHandler)
   .value('WidgetConnectorGetter', () => widgetConnector)
-  .value('WidgetEditorGetter', () => editorSingletons.widgetEditor)
-  .value('WidgetContainerGetter', () => editorSingletons.widgetEditor.widgetContainer); // TODO coords remove
+  .value('WidgetEditorGetter', () => editorSingletons.widgetEditor);

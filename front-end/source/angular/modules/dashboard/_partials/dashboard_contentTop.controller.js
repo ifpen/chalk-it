@@ -21,16 +21,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
   'ManagePrjService',
   'ManagePrjSharingService',
   'ManagePageSharingService',
-  'EditPlaySwitchService',
-  function (
-    $scope,
-    $rootScope,
-    $uibModal,
-    ManagePrjService,
-    ManagePrjSharingService,
-    ManagePgSharingService,
-    EditPlaySwitchService
-  ) {
+  function ($scope, $rootScope, $uibModal, ManagePrjService, ManagePrjSharingService, ManagePgSharingService) {
     /***********************************************************************************/
     /*******************dashboard_contentTop: menu under project name*******************/
     /***********************************************************************************/
@@ -147,15 +138,6 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
         }
       }
     );
-
-    /**********************************************************************/
-    /*******************dashboard_contentTop: Edit mode********************/
-    /**********************************************************************/
-
-    /*---------- Switch button    ----------------*/
-    $scope.onEditPlaySwitch = function () {
-      EditPlaySwitchService.onEditPlaySwitch();
-    };
 
     /*********************************************************************/
     /*******************dashboard_contentTop: View mode*******************/

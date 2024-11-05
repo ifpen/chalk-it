@@ -130,7 +130,7 @@ export const chalkit = (function () {
   }
 
   function goToPage(numPage) {
-    customNavigationRuntime.customNavigationGoToPage(numPage);
+    customNavigationRuntime.goToPage(numPage);
   }
 
   function enableWidget(widgetName) {
@@ -150,7 +150,7 @@ export const chalkit = (function () {
 
   function hideWidget(widgetName) {
     modelsParameters[widgetName].showWidget = false;
-    widgetPreview.widget[widgetName].render(true);
+    widgetPreview.reRenderWidget(widgetName);
   }
 
   function notify(dataNodeName, msg, type) {
