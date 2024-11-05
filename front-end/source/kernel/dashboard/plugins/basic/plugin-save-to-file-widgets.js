@@ -27,6 +27,7 @@ modelsHiddenParams.saveToFileButton = {
 modelsParameters.saveToFileButton = {
   text: 'Save to file',
   fileName: 'export.txt',
+  enableBase64Export: false,
   buttonFontSize: 0.3,
   buttonFontFamily: 'var(--widget-font-family)',
   buttonTextColor: 'var(--widget-button-primary-text)',
@@ -45,22 +46,28 @@ modelsLayout.saveToFileButton = { height: '6vh', width: '8vw', minWidth: '55px',
 function saveToFileButtonWidgetsPluginClass() {
   this.buttonSaveToFileWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-    var self = this;
+    const self = this;
 
     this.enable = function () {};
 
     this.disable = function () {};
 
     this.saveFile = function () {
-      const filename = modelsParameters[idInstance].fileName;
-      let str = modelsHiddenParams[idInstance].value;
+      const instanceParams = modelsParameters[idInstance];
+      const hiddenParams = modelsHiddenParams[idInstance];
+      const fileName = instanceParams.fileName;
+      const str = hiddenParams.value;
+      instanceParams.enableBase64Export ??= false;
+
       if (!str) return;
 
-      str = 'data:text/plain;charset=utf-8,' + str;
-      const data = encodeURI(str);
+      const dataUrl = instanceParams.enableBase64Export
+        ? `data:text/plain;base64,${btoa(unescape(encodeURIComponent(str)))}`
+        : `data:text/plain;charset=utf-8,${encodeURIComponent(str)}`;
+
       const link = document.createElement('a');
-      link.setAttribute('href', data);
-      link.setAttribute('download', filename);
+      link.href = dataUrl;
+      link.download = fileName;
       link.click();
     };
 
@@ -69,52 +76,49 @@ function saveToFileButtonWidgetsPluginClass() {
     };
 
     this.render = function () {
-      var widgetHtml = document.createElement('div');
-      widgetHtml.setAttribute('id', 'button-save-to-file-widget-html' + idWidget);
-      widgetHtml.setAttribute('class', 'button-widget-html');
-      var valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
-      var fontSize = 0.5;
-      if (!_.isUndefined(modelsParameters[idInstance].buttonFontSize)) {
-        fontSize = modelsParameters[idInstance].buttonFontSize;
-      }
-      var styleDef =
-        'style="text-align: center; vertical-align: middle;' +
-        'font-size: calc(7px + ' +
-        fontSize * getFontFactor() +
-        'vw + 0.4vh); height: ' +
-        valueHeightPx +
-        'px; display:table-cell; ' +
-        this.buttonFontFamily() +
-        '" class="btn btn-block btn-lg ' +
-        idInstance +
-        'widgetCustomColor';
+      const $widgetHtml = $('<div>', {
+        id: 'button-save-to-file-widget-html' + idWidget,
+        class: 'button-widget-html',
+      });
+      const $container = $('#' + idDivContainer);
+      const valueHeightPx = Math.min($container.height(), $container.width() / 2); // keepRatio
+
+      const fontSize = modelsParameters[idInstance]?.buttonFontSize || 0.5;
+      const fontFactor = fontSize * getFontFactor();
+
+      const styles = `
+        text-align: center;
+        vertical-align: middle;
+        font-size: calc(7px + ${fontFactor}vw + 0.4vh);
+        height: ${valueHeightPx}px;
+        display: table-cell;
+        ${this.buttonFontFamily()}
+      `;
+      const classes = `btn btn-block btn-lg ${idInstance}widgetCustomColor`;
 
       this.setButtonColorStyle();
 
-      // conversion to enable HTML tags
       const text = this.getTransformedText('text');
+      const divContent = `<a style="${styles}" class="${classes}" id="button-save-to-file${idWidget}">${text}</a>`;
 
-      var divContent = '';
-      divContent = '<a ' + styleDef + '" id="button-save-to-file' + idWidget + '">' + '  ' + text + '  ' + '</a>';
+      $widgetHtml.html(divContent);
 
-      widgetHtml.innerHTML = divContent;
-      //
       const showWidget = this.showWidget();
-      let displayStyle = 'display: table;';
-      if (!showWidget) {
-        displayStyle = 'display: none;';
-      }
       const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      widgetHtml.setAttribute('style', 'height: ' + valueHeightPx + 'px;' + displayStyle + enableStyle);
-      $('#' + idDivContainer).html(widgetHtml);
+
+      $widgetHtml.css({
+        height: valueHeightPx + 'px',
+        display: showWidget ? 'table' : 'none',
+        'pointer-events': enableWidget ? 'initial' : 'none',
+        opacity: enableWidget ? 'none' : '0.5',
+      });
+
+      $('#' + idDivContainer).html($widgetHtml);
+
       this.applyDisplayOnWidget();
-      $('#button-save-to-file' + idWidget).on('click', function () {
-        self.saveFile();
+
+      $('#button-save-to-file' + idWidget).on('click', () => {
+        this.saveFile();
       });
     };
 
@@ -171,7 +175,7 @@ function saveToFileButtonWidgetsPluginClass() {
 saveToFileButtonWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var saveToFileButtonWidgetsPlugin = new saveToFileButtonWidgetsPluginClass();
+const saveToFileButtonWidgetsPlugin = new saveToFileButtonWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/
