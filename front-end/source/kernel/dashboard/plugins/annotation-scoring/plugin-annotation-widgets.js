@@ -8,7 +8,8 @@
 // │                       Guillaume CORBELIN                                    │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
 import _ from 'lodash';
-import 'jquery.bt';
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
@@ -133,7 +134,7 @@ function annotationWidgetsPluginClass() {
   // ├────────────────────────────────────────────────────────────────────┤ \\
   this.iconInfoAnnotationWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
-    var self = this;
+    const self = this;
 
     this.enable = function () {};
 
@@ -144,99 +145,96 @@ function annotationWidgetsPluginClass() {
     };
 
     this.render = function () {
-      //AEF
-      var iconHeight = 20; // default value in class icons of flatui
-      var iconWidth = 20; // default value in class icons of flatui
-      if (!_.isNull($('.icons').height())) {
-        iconHeight = $('.icons').height();
-      }
-      if (!_.isNull($('.icons').width())) {
-        iconWidth = $('.icons').width();
-      }
-      var divContainerHeightPx = $('#' + idDivContainer).height(); // in px
-      var divContainerWidthPx = $('#' + idDivContainer).width(); // in px
+      let iconHeight = 20; // default value in class icons of flatui
+      let iconWidth = 20; // default value in class icons of flatui
 
-      //var padding = modelsParameters[idInstance].iconSize * iconWidth + 12;
-      var lineHeight = modelsParameters[idInstance].iconSize * iconHeight;
-      //
-      var labelHeight = iconHeight * modelsParameters[idInstance].iconSize;
-      var divMarginTop = (divContainerHeightPx - labelHeight) / 2;
-      //
-      //   var transformedText = modelsParameters[idInstance].text.replace(
-      //     "\n",
-      //     "&#10;"
-      //   ); //conversion to enable mutiline
-      var widgetHtml = document.createElement('div');
-      // [FontAwesome]
-      var divContent =
-        '<i class="fa fa-' +
-        modelsParameters[idInstance].iconSign +
-        '" style="line-height:normal;zoom:' +
-        modelsParameters[idInstance].iconSize +
-        '"></i>';
-      // [glyphicon]
-      // var divContent = '<i class="glyphicon glyphicon-' + modelsParameters[idInstance].iconSign + '" style="line-height:normal;zoom:' + modelsParameters[idInstance].iconSize + '"></i>';
-      // [flatui]
-      // var divContent = '<span class="fui-' + modelsParameters[idInstance].iconSign + '" style="line-height:normal;zoom:' + modelsParameters[idInstance].iconSize + '"></span>';
+      // Update icon dimensions if elements are present
+      const iconElement = $('.icons');
+      iconHeight = iconElement.height() ?? iconHeight;
+      iconWidth = iconElement.width() ?? iconWidth;
+
+      // Get container dimensions
+      const divContainer = $('#' + idDivContainer);
+      const divContainerHeightPx = divContainer.height();
+      const divContainerWidthPx = divContainer.width();
+
+      // Calculate dimensions and alignment
+      const instanceParams = modelsParameters[idInstance];
+      const lineHeight = instanceParams.iconSize * iconHeight;
+      const labelHeight = iconHeight * instanceParams.iconSize;
+      const divMarginTop = (divContainerHeightPx - labelHeight) / 2;
+
+      // Create icon content based on FontAwesome, glyphicon, or flatui
+      const iconClass = 'fa fa-' + instanceParams.iconSign; // [FontAwesome]
+      // const iconClass = 'fui-' + modelsParameters[idInstance].iconSign; // [flatui]
+      // const iconClass = 'glyphicon glyphicon-' + modelsParameters[idInstance].iconSign; // [glyphicon]
+      const iconStyle = `line-height:normal; zoom:${instanceParams.iconSize};`;
+      const divContent = `<i class="${iconClass}" style="${iconStyle}"></i>`;
+
+      // Create widget container
+      const widgetHtml = document.createElement('div');
+      widgetHtml.className = 'btn';
+      widgetHtml.id = 'annotationiconInfo' + idWidget;
       widgetHtml.innerHTML = divContent;
-      widgetHtml.setAttribute('class', 'btn');
-      widgetHtml.setAttribute('id', 'annotationiconInfo' + idWidget);
-      //widgetHtml.setAttribute("title", modelsParameters[idInstance].text);
-      //
-      const showWidget = this.showWidget();
-      let displayStyle = 'display: inherit;';
-      if (!showWidget) {
-        displayStyle = 'display: none;';
-      }
-      const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
+      // widgetHtml.title = modelsParameters[idInstance].text;
+
+      // Configure display and enable styles
+      const displayStyle = this.showWidget() ? 'display: inherit;' : 'display: none;';
+      const enableStyle = this.enableWidget()
+        ? 'pointer-events: initial; opacity: 1;'
+        : 'pointer-events: none; opacity: 0.5;';
+
+      // Set widget styles using template literals for readability
       widgetHtml.setAttribute(
         'style',
-        'width: ' +
-          divContainerWidthPx +
-          'px; height:' +
-          divContainerHeightPx +
-          'px; cursor: pointer; margin: auto; color:' +
-          modelsParameters[idInstance].iconColor +
-          '; line-height:' +
-          lineHeight +
-          'px;padding-top: ' +
-          divMarginTop +
-          'px; ' +
-          displayStyle +
-          enableStyle
+        `
+          width: ${divContainerWidthPx}px;
+          height: ${divContainerHeightPx}px;
+          cursor: pointer;
+          margin: auto;
+          color: ${instanceParams.iconColor};
+          line-height: ${lineHeight}px;
+          padding-top: ${divMarginTop}px;
+          ${displayStyle}
+          ${enableStyle}
+        `
       );
 
-      $('#' + idDivContainer).html(widgetHtml);
+      // Insert widget into container
+      divContainer.html(widgetHtml);
+
       this.applyDisplayOnWidget();
+
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
 
-      $('#annotationiconInfo' + idWidget).bt(text, {
-        fill: this.tipBackgroundColor(),
-        cssStyles: {
-          color: modelsParameters[idInstance].textColor,
-          fontWeight: modelsParameters[idInstance].fontWeight,
-          fontSize: modelsParameters[idInstance].fontSize,
-          fontFamily: modelsParameters[idInstance].fontFamily,
+      // Select the target element for the tooltip by ID
+      const tooltipTarget = document.getElementById('annotationiconInfo' + idWidget);
+
+      // Configure and apply Tippy.js tooltip with dynamic styles and options
+      tippy(tooltipTarget, {
+        content: text, // Tooltip text/content
+        theme: 'custom', // Define a custom theme in CSS for background color and styles
+        allowHTML: true,
+        // maxWidth: modelsParameters[idInstance].tipWidth + 'px', // Set maximum tooltip width
+        interactive: true, // Allow the tooltip to respond to user interactions
+        // placement: modelsParameters[idInstance].tipPositions, // Tooltip position
+        // trigger: modelsParameters[idInstance].tipEventTrigger, // Tooltip activation event
+
+        // Define custom tooltip styles with the `onShow` lifecycle hook
+        onShow(instance) {
+          const styles = {
+            color: modelsParameters[idInstance].textColor,
+            fontWeight: modelsParameters[idInstance].fontWeight,
+            fontSize: modelsParameters[idInstance].fontSize,
+            fontFamily: modelsParameters[idInstance].fontFamily,
+            padding: modelsParameters[idInstance].textPadding,
+            borderRadius: modelsParameters[idInstance].cornerRadius + 'px',
+            boxShadow: `0 4px 8px rgba(0, 0, 0, 0.3)`,
+            backgroundColor: self.tipBackgroundColor(),
+          };
+          Object.assign(instance.popper.children[0].style, styles);
         },
-        width: modelsParameters[idInstance].tipWidth,
-        shrinkToFit: true,
-        padding: modelsParameters[idInstance].textPadding,
-        cornerRadius: modelsParameters[idInstance].cornerRadius,
-        spikeLength: modelsParameters[idInstance].spikeLength,
-        spikeGirth: modelsParameters[idInstance].spikeGirth,
-        strokeStyle: this.tipBorderColor(),
-        // shadowBlur: 8,
-        shadowColor: 'rgba(0,0,0,.9)',
-        //shadowOverlap: false,
-        // noShadowOpts: { strokeStyle: '#999', strokeWidth: 2 },
-        positions: modelsParameters[idInstance].tipPositions,
-        trigger: modelsParameters[idInstance].tipEventTrigger,
       });
     };
 
