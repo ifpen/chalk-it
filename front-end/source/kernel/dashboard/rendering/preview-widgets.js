@@ -347,28 +347,18 @@ class WidgetPreview {
         // MBG TODO : invalidate widget
         this.clearDataFromWidget(actuator, true);
       } else {
-        if (slider.name.substring(0, 1) === 'D') {
-          // TODO
-          //for Digits
+        if (!_.isUndefined(actuator.setCaption)) {
           try {
-            actuator.setText(varInter);
+            actuator.setCaption(varName, bCaptionManuallyChanged);
           } catch (e) {
-            console.log("setText got exception with data '" + slider.dataNode + "'. " + e);
+            console.log("setCaption got exception with data '" + slider.dataNode + "'. " + e);
           }
-        } else {
-          if (!_.isUndefined(actuator.setCaption)) {
-            try {
-              actuator.setCaption(varName, bCaptionManuallyChanged);
-            } catch (e) {
-              console.log("setCaption got exception with data '" + slider.dataNode + "'. " + e);
-            }
-          }
-          if (!_.isUndefined(actuator.setValue)) {
-            try {
-              actuator.setValue(varInter);
-            } catch (e) {
-              console.log("setValue got exception with data '" + slider.dataNode + "'. " + e);
-            }
+        }
+        if (!_.isUndefined(actuator.setValue)) {
+          try {
+            actuator.setValue(varInter);
+          } catch (e) {
+            console.log("setValue got exception with data '" + slider.dataNode + "'. " + e);
           }
         }
       }
