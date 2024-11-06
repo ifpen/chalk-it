@@ -1266,6 +1266,10 @@ function flatUiComplexWidgetsPluginClass() {
         let bodyContent = `<tbody data-sort-asc="${sortAsc}" data-sort-column="${sortCol}">`;
 
         dataRows.forEach((row, i) => {
+          if (typeof row === 'string') {
+            row = [row];
+          }
+          
           const rowStyle =
             modelsParameters[idInstance].striped && i % 2 !== 0
               ? ` style="${this.tableBackgroundColor('secondary')}"`
