@@ -1293,17 +1293,20 @@ function flatUiComplexWidgetsPluginClass() {
 
       // Helper: determine if a cell is editable
       const isCellEditable = (colIndex) => {
-        const editableCols =
-          modelsParameters[idInstance].editableCols === '*'
-            ? Array.from({ length: val[0].length }, (_, i) => i)
-            : (() => {
-                try {
-                  return JSON.parse(modelsParameters[idInstance].editableCols);
-                } catch (e) {
-                  console.error('Invalid editableCols format:', e);
-                  return [];
-                }
-              })();
+        let editableCols;
+
+        if (modelsParameters[idInstance].editableCols === '*') {
+          editableCols = Array.from({ length: val[0].length }, (_, i) => i);
+        } else {
+          editableCols = (() => {
+            try {
+              return JSON.parse(modelsParameters[idInstance].editableCols);
+            } catch (e) {
+              console.error('Invalid editableCols format:', e);
+              return [];
+            }
+          })();
+        }
 
         return editableCols.includes(colIndex) ? 'true' : 'false';
       };
