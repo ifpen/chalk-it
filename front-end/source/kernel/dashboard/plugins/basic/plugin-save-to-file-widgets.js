@@ -26,7 +26,7 @@ modelsHiddenParams.saveToFileButton = {
 modelsParameters.saveToFileButton = {
   text: 'Save to file',
   fileName: 'export.txt',
-  enableBase64Export: false,
+  binaryExport: false,
   buttonFontSize: 0.3,
   buttonFontFamily: 'var(--widget-font-family)',
   buttonTextColor: 'var(--widget-button-primary-text)',
@@ -66,10 +66,10 @@ function saveToFileButtonWidgetsPluginClass() {
       const fileName = instanceParams.fileName;
       const contentData = dataValue.content ?? dataValue;
       const mimeType = dataValue.type ?? '';
-      const enableBase64Export = instanceParams.enableBase64Export ?? false;
+      const isBinaryExport = instanceParams.binaryExport ?? false;
       let dataUrl;
 
-      if (enableBase64Export) {
+      if (isBinaryExport) {
         const blob = self.base64ToBlob(contentData, mimeType);
         dataUrl = URL.createObjectURL(blob);
       } else {
@@ -83,7 +83,7 @@ function saveToFileButtonWidgetsPluginClass() {
       link.click();
 
       // Release resources
-      if (enableBase64Export) {
+      if (isBinaryExport) {
         URL.revokeObjectURL(dataUrl);
       }
     };
