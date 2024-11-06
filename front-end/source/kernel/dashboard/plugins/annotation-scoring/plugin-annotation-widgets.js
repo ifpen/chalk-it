@@ -56,9 +56,9 @@ modelsParameters.annotationIconInfo = {
   textPadding: 10,
   tipBackgroundColor: 'var(--widget-button-color)',
   tipBorderColor: 'var(--widget-button-text)',
-  tipWidth: 200,
-  tipPositions: ['right'], // can choose 1 to 4 options together ['right', 'bottom', 'left', 'top']
-  tipEventTrigger: 'hover', //1 event: hover or click or 2 events (in and out):['mouseover', 'click'] or ['focus', 'blur']
+  tipWidth: 'auto',
+  tipPositions: 'right', // Options: "top", "bottom", "left", "right", plus variations like "top-start" or "bottom-end"...
+  tipEventTrigger: 'mouseenter', // "mouseenter", "mouseleave", "focus", "blur", "click", "manual", Combine events with spaces, e.g., "mouseenter focus"
   iconColor: 'var(--widget-label-color)',
   iconSize: 1,
   iconSign: 'info-circle', //info-circle or question-circle or exclamation-circle [FontAwesome]
@@ -153,12 +153,10 @@ function annotationWidgetsPluginClass() {
       iconHeight = iconElement.height() ?? iconHeight;
       iconWidth = iconElement.width() ?? iconWidth;
 
-      // Get container dimensions
       const divContainer = $('#' + idDivContainer);
       const divContainerHeightPx = divContainer.height();
       const divContainerWidthPx = divContainer.width();
 
-      // Calculate dimensions and alignment
       const instanceParams = modelsParameters[idInstance];
       const lineHeight = instanceParams.iconSize * iconHeight;
       const labelHeight = iconHeight * instanceParams.iconSize;
@@ -171,7 +169,6 @@ function annotationWidgetsPluginClass() {
       const iconStyle = `line-height:normal; zoom:${instanceParams.iconSize};`;
       const divContent = `<i class="${iconClass}" style="${iconStyle}"></i>`;
 
-      // Create widget container
       const widgetHtml = document.createElement('div');
       widgetHtml.className = 'btn';
       widgetHtml.id = 'annotationiconInfo' + idWidget;
@@ -184,7 +181,6 @@ function annotationWidgetsPluginClass() {
         ? 'pointer-events: initial; opacity: 1;'
         : 'pointer-events: none; opacity: 0.5;';
 
-      // Set widget styles using template literals for readability
       widgetHtml.setAttribute(
         'style',
         `
@@ -200,7 +196,6 @@ function annotationWidgetsPluginClass() {
         `
       );
 
-      // Insert widget into container
       divContainer.html(widgetHtml);
 
       this.applyDisplayOnWidget();
@@ -208,18 +203,39 @@ function annotationWidgetsPluginClass() {
       // conversion to enable HTML tags
       const text = this.getTransformedText('text');
 
-      // Select the target element for the tooltip by ID
       const tooltipTarget = document.getElementById('annotationiconInfo' + idWidget);
+
+      // Retrocompatibility
+      if (Array.isArray(modelsParameters[idInstance].tipPositions)) {
+        modelsParameters[idInstance].tipPositions = 'right';
+        modelsParameters[idInstance].tipWidth = 'auto';
+        modelsParameters[idInstance].tipEventTrigger = 'mouseenter';
+      }
+
+      // $('#annotationiconInfo' + idWidget).bt(text, {
+      //   fill: this.tipBackgroundColor(),
+      //   cssStyles: {
+      //
+      //   },
+      //   shrinkToFit: true,
+      //   padding: modelsParameters[idInstance].textPadding,
+      //   spikeLength: modelsParameters[idInstance].spikeLength,
+      //   spikeGirth: modelsParameters[idInstance].spikeGirth,
+      //   strokeStyle: this.tipBorderColor(),
+      //   // shadowBlur: 8,
+      //   shadowColor: 'rgba(0,0,0,.9)',
+      //   //shadowOverlap: false,
+      //   // noShadowOpts: { strokeStyle: '#999', strokeWidth: 2 },
+      // });
 
       // Configure and apply Tippy.js tooltip with dynamic styles and options
       tippy(tooltipTarget, {
-        content: text, // Tooltip text/content
-        theme: 'custom', // Define a custom theme in CSS for background color and styles
+        content: text,
+        theme: 'custom',
         allowHTML: true,
-        // maxWidth: modelsParameters[idInstance].tipWidth + 'px', // Set maximum tooltip width
-        interactive: true, // Allow the tooltip to respond to user interactions
-        // placement: modelsParameters[idInstance].tipPositions, // Tooltip position
-        // trigger: modelsParameters[idInstance].tipEventTrigger, // Tooltip activation event
+        interactive: true,
+        placement: modelsParameters[idInstance].tipPositions,
+        trigger: modelsParameters[idInstance].tipEventTrigger,
 
         // Define custom tooltip styles with the `onShow` lifecycle hook
         onShow(instance) {
@@ -229,6 +245,7 @@ function annotationWidgetsPluginClass() {
             fontSize: modelsParameters[idInstance].fontSize,
             fontFamily: modelsParameters[idInstance].fontFamily,
             padding: modelsParameters[idInstance].textPadding,
+            width: modelsParameters[idInstance].tipWidth + 'px',
             borderRadius: modelsParameters[idInstance].cornerRadius + 'px',
             boxShadow: `0 4px 8px rgba(0, 0, 0, 0.3)`,
             backgroundColor: self.tipBackgroundColor(),
