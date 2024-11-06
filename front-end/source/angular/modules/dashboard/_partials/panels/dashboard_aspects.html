@@ -37,11 +37,11 @@
     </label>
   </div>
 </div>
-<div class="aspect__row">
+<div class="aspect__row dashboard-form">
   <div class="aspect__col-left"></div>
   <div class="aspect__col-right">
-    <input type="number" min="1" max="1000" step="1" title="X" ng-model="vm.gridX" ng-change="vm.gridChanged()"/>
-    <input type="number" min="1" max="1000" step="1" title="Y" ng-model="vm.gridY" ng-change="vm.gridChanged()"/>
+    <input type="number" min="1" max="1000" step="1" title="Grid X" ng-model="vm.gridX" ng-change="vm.gridChanged()" />
+    <input type="number" min="1" max="1000" step="1" title="Grid Y" ng-model="vm.gridY" ng-change="vm.gridChanged()" />
   </div>
 </div>
 
@@ -104,6 +104,62 @@
     </div>
   </div>
 </form>
+
+
+<form class="dashboard-form Table" style="padding-top: 5px; padding-bottom: 5px; display: block">
+  <div class="aspect__row">
+    <div class="aspect__col-left">Size</div>
+    <div class="aspect__col-right">
+      <input type="number" min="1" step="1" title="width" ng-model="vm.dashboardSize.width" />
+      <input type="number" min="1" step="1" title="height" ng-model="vm.dashboardSize.height" />
+    </div>
+  </div>
+  <div class="aspect__row">
+    <div class="aspect__col-right">
+      <button class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitWidth()">
+        Fit width
+      </button>
+      <button class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitHeight()">
+        Fit height
+      </button>
+    </div>
+  </div>
+  <div class="aspect__row">
+    <div class="aspect__col-left">Limit height</div>
+    <div class="aspect__col-right">
+      <label class="switch">
+        <input type="checkbox" ng-model="vm.dashboardSize.enforceHeightLimit" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+  <div class="aspect__row">
+    <div class="aspect__col-left">Margins</div>
+    <div class="aspect__col-right">
+      <input type="number" min="1" step="1" title="Margin X" ng-model="vm.dashboardSize.marginX" />
+      <input type="number" min="1" step="1" title="Margin Y" ng-model="vm.dashboardSize.marginY" />
+    </div>
+  </div>
+  <div class="aspect__row">
+    <div class="aspect__col-left"> </div>
+    <div class="aspect__col-right">
+      <button class="btn btn-rounded-fill secondary" style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.resetDashboardSize()" ng-disabled="!vm.dashboardSizeChanged()">
+        Reset
+      </button>
+      <button class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.applyDashboardSize(true)" ng-disabled="!vm.dashboardSizeChanged()">
+        Scale
+      </button>
+      <button class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.applyDashboardSize(false)" ng-disabled="!vm.dashboardSizeChanged()">
+        Resize
+      </button>
+    </div>
+  </div>
+</form>
+
+
 <h2>About the colors</h2>
 <div class="aspect__row">
   <div class="aspect__col-left"><i class="aspects icn-dashboard-color" aria-hidden="true"></i>Theme</div>
@@ -337,7 +393,7 @@
   >
     <i class="icn-horizontal-distribute"></i>
   </button>
-  
+
   <button
     class="btn"
     style="width: 30px; height: 30px; color: #333"

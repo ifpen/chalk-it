@@ -115,3 +115,31 @@ export function applyGeometry(element, layout) {
   element.style.width = layout.width + 'px';
   element.style.height = layout.height + 'px';
 }
+
+/**
+ * constrain a 1D geometry defined by a position and a size to fit in limited space
+ * @param {number} available available space
+ * @param {{position: number, size: number}} geometry
+ * @returns {{position: number, size: number}}
+ */
+export function constrain(available, { position, size }) {
+  if (size >= available) {
+    size = available;
+    position = 0;
+  } else if (position + size > available) {
+    position = available - size;
+  }
+  return { position, size };
+}
+
+/**
+ * Scale a 1D geometry defined by a position and a size to match a change in a reference size (like its container)
+ * @param {number} oldDim old reference size
+ * @param {number} newDim new reference size
+ * @param {{position: number, size: number}} geometry
+ * @returns {{position: number, size: number}}
+ */
+export function scale(oldDim, newDim, { position, size }) {
+  const ratio = newDim / oldDim;
+  return { position: Math.round(position * ratio), size: Math.round(size * ratio) };
+}

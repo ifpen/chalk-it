@@ -21,7 +21,7 @@ import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { getGeometryChanges } from 'kernel/dashboard/widget/widget-placement';
 import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
-import { WidgetContainer } from 'kernel/dashboard/widget/widget-container';
+import { WidgetContainer, MAIN_CONTAINER_ID } from 'kernel/dashboard/widget/widget-container';
 import { createUniqueInstanceId } from 'kernel/dashboard/widget/widget-factory';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { flatUiWidgetsPlugin } from 'kernel/dashboard/plugins/basic/plugin-flat-ui-widgets';
@@ -30,8 +30,6 @@ import { mapWidgetsPlugin } from 'kernel/dashboard/plugins/geo-time/plugin-map-w
 import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
 
 export function initEditWidget() {
-  const MAIN_CONTAINER_ID = 'DropperDroite';
-
   const drprD = document.getElementById(MAIN_CONTAINER_ID);
   drprD.innerHTML = '';
 
@@ -193,7 +191,7 @@ export function initEditWidget() {
   let lassoY0 = 0;
   let lassoX = 0;
   let lassoY = 0;
-  interact('#DropperDroite')
+  interact(drprD)
     .draggable({
       cursorChecker(action, interactable, element, interacting) {
         return interacting ? 'pointer' : 'default';
@@ -216,6 +214,8 @@ export function initEditWidget() {
         },
 
         move(event) {
+          const container = drprD.getBoundingClientRect();
+
           lassoX += event.dx;
           lassoY += event.dy;
 
@@ -237,25 +237,23 @@ export function initEditWidget() {
           }
           for (const id of widgetContainer.widgetIds) {
             if (!widgetSelectionContext.has(id)) {
-              const element = $('#' + id); // TODO
-              if (element) {
-                const offset = element.offset();
-                const left = offset.left;
-                const top = offset.top;
-                const right = left + element.width();
-                const bottom = top + element.height();
-                if (
-                  left >= xMin &&
-                  left <= xMax &&
-                  right >= xMin &&
-                  right <= xMax &&
-                  top >= yMin &&
-                  top <= yMax &&
-                  bottom >= yMin &&
-                  bottom <= yMax
-                ) {
-                  widgetSelectionContext.add(id);
-                }
+              const geom = widgetContainer.getRecordedGeometry(id);
+              const left = container.left + geom.left + widgetContainer.marginX;
+              const top = container.top + geom.top + widgetContainer.marginY;
+              container;
+              const right = left + geom.width;
+              const bottom = top + geom.height;
+              if (
+                left >= xMin &&
+                left <= xMax &&
+                right >= xMin &&
+                right <= xMax &&
+                top >= yMin &&
+                top <= yMax &&
+                bottom >= yMin &&
+                bottom <= yMax
+              ) {
+                widgetSelectionContext.add(id);
               }
             }
           }
@@ -265,7 +263,6 @@ export function initEditWidget() {
         end() {
           _selectionInitialState = [];
           if (_selectionLasso) {
-            //_selectionLasso.parentNode.removeChild(_selectionLasso);
             _selectionLasso.remove();
             _selectionLasso = null;
           }
@@ -277,7 +274,7 @@ export function initEditWidget() {
     });
 
   // Drop zone highlights
-  interact('#DropperDroite').dropzone({
+  interact(drprD).dropzone({
     // When dropping new widgets or moves, but not selection
     accept: '.drag-drop-new, .drag-drop-move',
     ondropactivate(event) {
@@ -296,7 +293,7 @@ export function initEditWidget() {
     },
   });
 
-  interact('#DropperDroite').dropzone({
+  interact(drprD).dropzone({
     // Only when dropping new widgets, not for moves
     accept: '.drag-drop-new',
     ondropactivate(event) {
@@ -346,9 +343,11 @@ export function initEditWidget() {
           let y = event.client.y + _ddOffsetY;
 
           if (useGrid) {
-            const offset = $(drprD).offset();
-            // TODO get margin
-            [x, y] = _alignOnGrid([x, y], [offset.left + 10, offset.top + 10]);
+            const offset = drprD.getBoundingClientRect();
+            [x, y] = _alignOnGrid(
+              [x, y],
+              [offset.left + widgetContainer.marginX, offset.top + widgetContainer.marginY]
+            );
           }
 
           _draggedClone.style.left = x + 'px';
@@ -365,8 +364,8 @@ export function initEditWidget() {
           const dropZone = event.relatedTarget;
           if (dropZone) {
             const rect = dropZone.getBoundingClientRect();
-            x -= rect.left;
-            y -= rect.top;
+            x -= rect.left + widgetContainer.marginX;
+            y -= rect.top + widgetContainer.marginY;
 
             if (useGrid) {
               [x, y] = _alignOnGrid([x, y], [0, 0]);
@@ -412,7 +411,7 @@ export function initEditWidget() {
 
   // Widgets interactions
   const resizeParameters = new Map();
-  interact('#DropperDroite .drag-drop-move')
+  interact(`#${MAIN_CONTAINER_ID} .drag-drop-move`)
     .resizable({
       edges: { left: true, right: true, bottom: true, top: true },
       margin: RESIZE_MARGIN,
@@ -443,9 +442,9 @@ export function initEditWidget() {
             const minRatioX = minWidth / width;
             const minRatioY = minHeight / height;
 
-            // TODO infinite ?
+            // availableSpace can be infinite
             const maxWidth = event.edges.left ? x + width : availableSpace.width - x;
-            const maxHeight = event.edges.top ? y + height : availableSpace.height - y; // TODO opt
+            const maxHeight = event.edges.top ? y + height : availableSpace.height - y;
 
             resizeParameters.set(id, {
               minRatioX,

@@ -26,11 +26,16 @@ import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 const minWidgetWidthCst = 32;
 const minWidgetHeightCst = 32;
 
-const DEFAULT_HEIGHT = 743;
-const DEFAULT_WIDTH = 1679;
+const DEFAULT_MARGIN = 10;
+const DEFAULT_HEIGHT = 743 - 2 * DEFAULT_MARGIN;
+const DEFAULT_WIDTH = 1679 - 2 * DEFAULT_MARGIN;
+
+export const MAIN_CONTAINER_ID = 'DropperDroite';
 
 export class WidgetContainer {
   constructor() {
+    this.drpd = document.getElementById(MAIN_CONTAINER_ID);
+
     this.wcNum = 100;
 
     /*
@@ -49,18 +54,59 @@ export class WidgetContainer {
     this.pageNames = [];
 
     this.width = DEFAULT_WIDTH;
-    this.height = DEFAULT_HEIGHT; // TODO infinite
+    this.height = DEFAULT_HEIGHT;
 
-    this.drpd = document.getElementById('DropperDroite');
+    this.enforceHeightLimit = true;
 
-    this.setMargins(10);
+    this.setMargins(DEFAULT_MARGIN, DEFAULT_MARGIN);
   }
 
-  setMargins(value) {
-    this.margins = value;
-    this.drpd.style.padding = `${value}px`;
+  /**
+   * @returns {{ width: number, height: number }} the size necessary to accomodate all contained widgets
+   */
+  getContentSize() {
+    let width = 0;
+    let height = 0;
 
-    // TODO resize
+    this.widgetsInfo.values().forEach((info) => {
+      const layout = info.layout;
+      width = Math.max(width, layout.left + layout.width);
+      height = Math.max(height, layout.top + layout.height);
+    });
+
+    return { width, height };
+  }
+
+  /**
+   * @param {boolean} includeOverflow if true, return the total size of the dashboard, independently of any scrolling (for when enforceHeightLimit is not set)
+   * @returns {{ width: number, height: number }} the total size of the dashboard, including margins.
+   */
+  getDisplaySize(includeOverflow = false) {
+    const { width, height } = includeOverflow ? this.getContentSize() : { width: this.width, height: this.height };
+    return { width: width + this.marginX, height: height + this.marginY };
+  }
+
+  /**
+   * Update the dashboard's size (meaning the size available for widgets).
+   * @param {number} width
+   * @param {number} height
+   */
+  setSize(width, height) {
+    this.width = width;
+    this.height = height;
+    // TODO
+  }
+
+  /**
+   * Update the dashboard's margins.
+   * Changes the dashboard's exterior size, but not the space available for widgets.
+   * @param {number} valueX
+   * @param {number} valueY
+   */
+  setMargins(valueX, valueY) {
+    this.marginX = valueX;
+    this.marginY = valueY;
+    this.drpd.style.padding = `${this.marginY}px ${this.marginX}px`;
   }
 
   delete(instanceId) {
@@ -156,6 +202,10 @@ export class WidgetContainer {
     return result;
   }
 
+  /**
+   * @param {string} instanceId
+   * @returns {minWidth: number, minHeight: number} the minimum allowed size for a widget
+   */
   minimumSize(instanceId) {
     const widgetInfo = this.widgetsInfo.get(instanceId);
     if (widgetInfo) {
@@ -169,10 +219,13 @@ export class WidgetContainer {
     }
   }
 
+  /**
+   * @returns {width: number, height: number} the total available space for widgets. May be infinite.
+   */
   availableSpace() {
     return {
-      width: this.width - 2 * this.margins,
-      height: this.height - 2 * this.margins,
+      width: this.width,
+      height: this.enforceHeightLimit ? this.height : Infinity,
     };
   }
 
@@ -381,7 +434,7 @@ export class WidgetContainer {
    * - width and height (always inside container)
    * - left and top
    * @param {any} widgetLayoutPx
-   * @param {any} containerLayoutPx (with no margins)
+   * @param {any} containerLayoutPx
    */
   enforceConstraints(widgetLayoutPx) {
     const available = this.availableSpace();

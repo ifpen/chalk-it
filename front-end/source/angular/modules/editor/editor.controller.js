@@ -10,6 +10,7 @@ import PNotify from 'pnotify';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { MAIN_CONTAINER_ID } from 'kernel/dashboard/widget/widget-container';
 import { UndoableAction, UndoManager } from './editor.undo-manager';
 import {
   EVENTS_EDITOR_SELECTION_CHANGED,
@@ -58,6 +59,14 @@ angular.module('modules.editor').controller('EditorController', [
     vm.pagesNumber = 0;
     vm.pages = [];
 
+    vm.dashboardSize = {
+      width: -1,
+      height: -1,
+      marginX: -1,
+      marginY: -1,
+      enforceHeightLimit: true,
+    };
+
     vm.selection = [];
     vm.widgetExists = false;
     vm.connectionsExists = false;
@@ -77,8 +86,17 @@ angular.module('modules.editor').controller('EditorController', [
     }
 
     function _onAspectChange() {
-      vm.pages = [...widgetEditorGetter().widgetContainer.pageNames];
+      const widgetContainer = widgetEditorGetter().widgetContainer;
+      vm.pages = [...widgetContainer.pageNames];
       vm.pagesNumber = vm.pages.length;
+
+      vm.dashboardSize = {
+        width: widgetContainer.width,
+        height: widgetContainer.height,
+        marginX: widgetContainer.marginX,
+        marginY: widgetContainer.marginY,
+        enforceHeightLimit: widgetContainer.enforceHeightLimit,
+      };
     }
 
     function _getSelection() {
@@ -347,7 +365,6 @@ angular.module('modules.editor').controller('EditorController', [
     }
 
     // Dashboard configuration
-    // TODO
     vm.updateGrid = function _updateGrid() {
       const widgetEditor = widgetEditorGetter();
       widgetEditor.widgetContainer.updateGrid(vm.gridX, vm.gridY);
@@ -436,6 +453,60 @@ angular.module('modules.editor').controller('EditorController', [
           vm.pages[i] = inputs[i].value;
         }
       });
+    };
+
+    // Dashboard size
+    /**
+     * Sets the edited dashboard width to match the contained widgets
+     */
+    vm.fitWidth = function _fitWidth() {
+      const widgetEditor = widgetEditorGetter();
+      vm.dashboardSize.width = widgetEditor.widgetContainer.getContentSize().width;
+    };
+
+    /**
+     * Sets the edited dashboard height to match the contained widgets
+     */
+    vm.fitHeight = function _fitHeight() {
+      const widgetEditor = widgetEditorGetter();
+      vm.dashboardSize.height = widgetEditor.widgetContainer.getContentSize().height;
+    };
+
+    /**
+     * @returns {boolean} true if the edited dashboard size has changed
+     */
+    vm.dashboardSizeChanged = function _dashboardSizeChanged() {
+      const widgetContainer = widgetEditorGetter()?.widgetContainer;
+      return (
+        widgetContainer &&
+        (vm.dashboardSize.width !== widgetContainer.width ||
+          vm.dashboardSize.height !== widgetContainer.height ||
+          vm.dashboardSize.marginX !== widgetContainer.marginX ||
+          vm.dashboardSize.marginY !== widgetContainer.marginY ||
+          vm.dashboardSize.enforceHeightLimit !== widgetContainer.enforceHeightLimit)
+      );
+    };
+
+    /**
+     * Reset edited dashboard size to the current parameter
+     */
+    vm.resetDashboardSize = function _resetDashboardSize() {
+      const widgetContainer = widgetEditorGetter().widgetContainer;
+      vm.dashboardSize = {
+        width: widgetContainer.width,
+        height: widgetContainer.height,
+        marginX: widgetContainer.marginX,
+        marginY: widgetContainer.marginY,
+        enforceHeightLimit: widgetContainer.enforceHeightLimit,
+      };
+    };
+
+    /**
+     * @param {boolean} scale if true, widget's geometry will scale with the dashboard size
+     */
+    vm.applyDashboardSize = function _applyDashboardSize(scale) {
+      const action = editorActionFactory.createResizeDashboardAction(vm.dashboardSize, scale);
+      undoManagerService.execute(action);
     };
 
     // Button actions
@@ -724,7 +795,7 @@ angular.module('modules.editor').controller('EditorController', [
       const menuElm = document.getElementById(idList);
 
       // TODO parent ?
-      const mainContainerOffsetHeight = document.getElementById('DropperDroite').offsetHeight;
+      const mainContainerOffsetHeight = document.getElementById(MAIN_CONTAINER_ID).offsetHeight;
 
       // TODO scale
       const elm = document.getElementById(id);

@@ -12,7 +12,7 @@ import { UndoableAction } from './editor.undo-manager';
 import { EVENTS_EDITOR_WIDGET_MOVED } from './editor.events';
 import { minLeftCst, minTopCst } from 'kernel/dashboard/scaling/layout-mgr';
 import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
-import { getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
+import { scale, constrain } from 'kernel/dashboard/widget/widget-placement';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { editorSingletons } from 'kernel/editor-singletons';
 import {
@@ -794,6 +794,114 @@ class UpdatePagesAction extends UndoableAction {
   }
 }
 
+/**
+ * Changes the size of the dashboard
+ */
+class ResizeDashboardAction extends UndoableAction {
+  static EDITOR_DASHBOARD_ASPECT_CHANGED = EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED;
+
+  /**
+   * @param {*} widgetEditor
+   * @param {EventCenter} eventCenter Used to notify when widgets moved
+   * @param {{width: number, height: number, marginX: number, marginY: number, enforceHeightLimit: boolean}} dashboardSize
+   * @param {boolean} scale if true, widgets will be scaled to match the new size
+   */
+  constructor(widgetEditor, eventCenter, newDashboardSize, scale) {
+    super();
+    this._widgetEditor = widgetEditor;
+    this._eventCenter = eventCenter;
+
+    this._oldDashboardSize = undefined;
+    this._initialGeometries = undefined;
+
+    this._newDashboardSize = { ...newDashboardSize };
+    this._scale = scale;
+  }
+
+  label() {
+    return `${this._scale ? 'Rescale' : 'Resize'} dashboard`;
+  }
+
+  run() {
+    const widgetContainer = this._widgetEditor.widgetContainer;
+    this._oldDashboardSize = {
+      width: widgetContainer.width,
+      height: widgetContainer.height,
+      marginX: widgetContainer.marginX,
+      marginY: widgetContainer.marginY,
+      enforceHeightLimit: widgetContainer.enforceHeightLimit,
+    };
+
+    widgetContainer.enforceHeightLimit = this._newDashboardSize.enforceHeightLimit;
+    widgetContainer.setMargins(this._newDashboardSize.marginX, this._newDashboardSize.marginY);
+    widgetContainer.setSize(this._newDashboardSize.width, this._newDashboardSize.height);
+
+    this._initialGeometries = new Map();
+    for (const elementId of widgetContainer.widgetIds) {
+      const oldPosition = widgetContainer.getRecordedGeometry(elementId);
+
+      let horizDim = { position: oldPosition.left, size: oldPosition.width };
+      let vertDim = { position: oldPosition.top, size: oldPosition.height };
+      if (this._scale) {
+        horizDim = scale(this._oldDashboardSize.width, this._newDashboardSize.width, horizDim);
+        vertDim = scale(this._oldDashboardSize.height, this._newDashboardSize.height, vertDim);
+
+        const { minWidth, minHeight } = widgetContainer.minimumSize(elementId);
+        horizDim = Math.max(horizDim, minWidth);
+        vertDim = Math.max(vertDim, minHeight);
+      }
+
+      // Always constrain in case of rounding errors or min size pushed the widget out of bounds
+      horizDim = constrain(this._newDashboardSize.width, horizDim);
+
+      if (widgetContainer.enforceHeightLimit) {
+        vertDim = constrain(this._newDashboardSize.height, vertDim);
+      }
+
+      const newPosition = {
+        left: horizDim.position,
+        top: vertDim.position,
+        width: horizDim.size,
+        height: vertDim.size,
+      };
+
+      this._initialGeometries.set(elementId, { ...oldPosition });
+      widgetContainer.moveResizeWidget(elementId, newPosition);
+    }
+
+    this._eventCenter.sendEvent(UpdatePagesAction.EDITOR_DASHBOARD_ASPECT_CHANGED);
+  }
+
+  canRedo() {
+    return true;
+  }
+
+  redo() {
+    this.run();
+  }
+
+  canUndo() {
+    return !!this._oldDashboardSize;
+  }
+
+  undo() {
+    const widgetContainer = this._widgetEditor.widgetContainer;
+
+    widgetContainer.enforceHeightLimit = this._oldDashboardSize.enforceHeightLimit;
+    widgetContainer.setMargins(this._oldDashboardSize.marginX, this._oldDashboardSize.marginY);
+    widgetContainer.setSize(this._oldDashboardSize.width, this._oldDashboardSize.height);
+
+    for (const [elementid, oldPosition] of this._initialGeometries) {
+      widgetContainer.moveResizeWidget(elementid, oldPosition);
+    }
+
+    this._oldDashboardSize = undefined;
+    this._initialGeometries = undefined;
+
+    this._eventCenter.sendEvent(UpdatePagesAction.EDITOR_DASHBOARD_ASPECT_CHANGED);
+  }
+}
+
 angular.module('modules.editor').service('EditorActionFactory', [
   'WidgetsPluginsHandlerGetter',
   'WidgetEditorGetter',
@@ -1384,6 +1492,16 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createMoveWidgetsToPageAction = function _createMoveWidgetsToPageAction(elementIds, page) {
       return new MoveWidgetsToPageAction(widgetEditorGetter(), eventCenterService, elementIds, page);
+    };
+
+    /**
+     *
+     * @param {{width: number, height: number, marginX: number, marginY: number, enforceHeightLimit: boolean}} dashboardSize
+     * @param {boolean} scale if true, widgets will be scaled to match the new size
+     * @returns an action that changes the size of the dashboard
+     */
+    this.createResizeDashboardAction = function _createResizeDashboardAction(dashboardSize, scale) {
+      return new ResizeDashboardAction(widgetEditorGetter(), eventCenterService, dashboardSize, scale);
     };
 
     return this;
