@@ -53,7 +53,7 @@ modelsParameters.annotationIconInfo = {
   fontWeight: 'bold',
   fontFamily: 'var(--widget-font-family)',
   textColor: 'var(--widget-button-text)',
-  textPadding: 10,
+  textPadding: 0,
   tipBackgroundColor: 'var(--widget-button-color)',
   tipBorderColor: 'var(--widget-button-text)',
   tipWidth: 'auto',
@@ -64,9 +64,7 @@ modelsParameters.annotationIconInfo = {
   iconSign: 'info-circle', //info-circle or question-circle or exclamation-circle [FontAwesome]
   //iconSign: "info-sign", //info-sign or question-sign or exclamation-sign [glyphicon]
   //"iconSign": "info-circle" //question-circle; alert_circle [flatui]
-  cornerRadius: 10, //arrondi des coins
-  spikeLength: 15, //longueur de la pointe
-  spikeGirth: 5, //circonférence de la pointe
+  cornerRadius: 10,
 };
 modelsParameters.annotationLabel = {
   text: 'Type texte',
@@ -212,29 +210,23 @@ function annotationWidgetsPluginClass() {
         modelsParameters[idInstance].tipEventTrigger = 'mouseenter';
       }
 
-      // $('#annotationiconInfo' + idWidget).bt(text, {
-      //   fill: this.tipBackgroundColor(),
-      //   cssStyles: {
-      //
-      //   },
-      //   shrinkToFit: true,
-      //   padding: modelsParameters[idInstance].textPadding,
-      //   spikeLength: modelsParameters[idInstance].spikeLength,
-      //   spikeGirth: modelsParameters[idInstance].spikeGirth,
-      //   strokeStyle: this.tipBorderColor(),
-      //   // shadowBlur: 8,
-      //   shadowColor: 'rgba(0,0,0,.9)',
-      //   //shadowOverlap: false,
-      //   // noShadowOpts: { strokeStyle: '#999', strokeWidth: 2 },
-      // });
+      if (modelsParameters[idInstance].spikeLength) {
+        delete modelsParameters[idInstance].spikeLength;
+      }
+
+      if (modelsParameters[idInstance].spikeGirth) {
+        delete modelsParameters[idInstance].spikeGirth;
+      }
 
       // Configure and apply Tippy.js tooltip with dynamic styles and options
       tippy(tooltipTarget, {
         content: text,
         theme: 'custom',
         allowHTML: true,
-        interactive: true,
         placement: modelsParameters[idInstance].tipPositions,
+        arrow: true,
+        animation: 'false',
+        interactive: true,
         trigger: modelsParameters[idInstance].tipEventTrigger,
 
         // Define custom tooltip styles with the `onShow` lifecycle hook
@@ -244,13 +236,20 @@ function annotationWidgetsPluginClass() {
             fontWeight: modelsParameters[idInstance].fontWeight,
             fontSize: modelsParameters[idInstance].fontSize,
             fontFamily: modelsParameters[idInstance].fontFamily,
-            padding: modelsParameters[idInstance].textPadding,
+            padding: modelsParameters[idInstance].textPadding + 'px',
             width: modelsParameters[idInstance].tipWidth + 'px',
             borderRadius: modelsParameters[idInstance].cornerRadius + 'px',
-            boxShadow: `0 4px 8px rgba(0, 0, 0, 0.3)`,
             backgroundColor: self.tipBackgroundColor(),
           };
+
+          // Apply styles to the tooltip content
           Object.assign(instance.popper.children[0].style, styles);
+
+          // Style the arrow to match the tooltip background color
+          const arrowElement = instance.popper.querySelector('.tippy-arrow');
+          if (arrowElement) {
+            arrowElement.style.color = self.tipBackgroundColor(); // Set arrow color
+          }
         },
       });
     };
