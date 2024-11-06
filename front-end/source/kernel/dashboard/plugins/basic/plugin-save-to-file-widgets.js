@@ -6,7 +6,6 @@
 // ├──────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s):  Ghiles HIDEUR, Tristan BARTEMENT, Guillaume CORBELIN   │ \\
 // └──────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'lodash';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
@@ -52,23 +51,41 @@ function saveToFileButtonWidgetsPluginClass() {
 
     this.disable = function () {};
 
+    this.base64ToBlob = function (base64, mimeType = 'application/octet-stream') {
+      const byteCharacters = atob(base64); // Remove "data:<mimeType>;base64," part
+      const byteArray = Uint8Array.from(byteCharacters, (char) => char.charCodeAt(0));
+      return new Blob([byteArray], { type: mimeType });
+    };
+
     this.saveFile = function () {
       const instanceParams = modelsParameters[idInstance];
-      const hiddenParams = modelsHiddenParams[idInstance];
+      const dataValue = modelsHiddenParams[idInstance].value;
+
+      if (!dataValue) return;
+
       const fileName = instanceParams.fileName;
-      const str = hiddenParams.value;
-      instanceParams.enableBase64Export ??= false;
+      const contentData = dataValue.content ?? dataValue;
+      const mimeType = dataValue.type ?? '';
+      const enableBase64Export = instanceParams.enableBase64Export ?? false;
+      let dataUrl;
 
-      if (!str) return;
-
-      const dataUrl = instanceParams.enableBase64Export
-        ? `data:text/plain;base64,${btoa(unescape(encodeURIComponent(str)))}`
-        : `data:text/plain;charset=utf-8,${encodeURIComponent(str)}`;
+      if (enableBase64Export) {
+        const blob = self.base64ToBlob(contentData, mimeType);
+        dataUrl = URL.createObjectURL(blob);
+      } else {
+        const dataStr = typeof dataValue === 'string' ? dataValue : JSON.stringify(dataValue, null, 2);
+        dataUrl = `data:text/plain;charset=utf-8,${encodeURIComponent(dataStr)}`;
+      }
 
       const link = document.createElement('a');
       link.href = dataUrl;
       link.download = fileName;
       link.click();
+
+      // Release resources
+      if (enableBase64Export) {
+        URL.revokeObjectURL(dataUrl);
+      }
     };
 
     this.rescale = function () {
