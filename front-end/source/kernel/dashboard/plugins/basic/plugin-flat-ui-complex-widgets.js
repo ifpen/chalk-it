@@ -1042,31 +1042,36 @@ function flatUiComplexWidgetsPluginClass() {
   this.tableFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
-    const nbminPerPagination = modelsParameters[idInstance].paginationMinNbr;
-    const options = JSON.parse(modelsParameters[idInstance].paginationOptions);
-    let defaultValue = modelsParameters[idInstance].paginationDefaultValue;
-    if (!options.includes(defaultValue)) defaultValue = options[0];
+    const nbminPerPagination = modelsParameters[idInstance]?.paginationMinNbr ?? 10;
+    const options = JSON.parse(modelsParameters[idInstance]?.paginationOptions ?? "[10, 50, 100, 500]");
 
     let currentPage = 1;
+    let totalRows = 0;
+    let defaultValue = modelsParameters[idInstance]?.paginationDefaultValue ?? 10;
+
+    if (!options.includes(defaultValue)) {
+      defaultValue = options[0];
+    }
+
     function sortTable(cell, columnIndex, isAscending) {
       const tbody = cell.parent().parent().parents()[0].tBodies[0];
       const rows = Array.from(tbody.getElementsByTagName('tr'));
-      const headerRow = modelsHiddenParams[idInstance].value[0];
-      const dataRows = modelsHiddenParams[idInstance].value.slice(1);
+      const [headerRow, ...dataRows] = modelsHiddenParams[idInstance].value;
 
+      // Helper function to remove HTML tags (like <b>)
+      const cleanHTML = (value) => {
+        if (typeof value === 'string') {
+          return value.replace(/<\/?[^>]+(>|$)/g, '');
+        }
+        return value;
+      };
+
+      // Sort the dataRows based on the columnIndex
       const sortedData = dataRows.sort((a, b) => {
-        let valueA = a[columnIndex];
-        let valueB = b[columnIndex];
+        let valueA = cleanHTML(a[columnIndex]);
+        let valueB = cleanHTML(b[columnIndex]);
 
-        // Remove <b> tags if present
-        if (typeof valueA === 'string' && valueA.includes('<b>')) {
-          valueA = valueA.replace(/<\/?[^>]+(>|$)/g, '');
-        }
-
-        if (typeof valueB === 'string' && valueB.includes('<b>')) {
-          valueB = valueB.replace(/<\/?[^>]+(>|$)/g, '');
-        }
-
+        // Handle numeric and string comparison
         const compareA = isNaN(valueA) ? valueA.toLowerCase() : parseFloat(valueA);
         const compareB = isNaN(valueB) ? valueB.toLowerCase() : parseFloat(valueB);
 
@@ -1074,20 +1079,19 @@ function flatUiComplexWidgetsPluginClass() {
         if (compareA > compareB) return isAscending ? 1 : -1;
         return 0;
       });
+
+      // Update modelsHiddenParams with sorted data
       modelsHiddenParams[idInstance].value = [headerRow, ...sortedData];
-      while (tbody.firstChild) {
-        tbody.removeChild(tbody.firstChild);
-      }
+
+      // Clear the tbody efficiently
+      tbody.innerHTML = '';
+
+      // Append the sorted rows back to the table
       sortedData.forEach((sortedRow) => {
         const tr = document.createElement('tr');
         sortedRow.forEach((cellValue, cellIndex) => {
           const td = document.createElement('td');
-          td.style.textAlign = 'left';
-          if (cellIndex === 0) {
-            td.innerHTML = `<b>${cellValue}</b>`;
-          } else {
-            td.innerHTML = `<span>${cellValue}</span>`;
-          }
+          td.innerHTML = cellIndex === 0 ? `<b>${cellValue}</b>` : `<span>${cellValue}</span>`;
           tr.appendChild(td);
         });
         tbody.appendChild(tr);
@@ -1104,101 +1108,119 @@ function flatUiComplexWidgetsPluginClass() {
     }
 
     function updateTable() {
-      let totalRows = _.isNull(modelsHiddenParams[idInstance].value) ? 0 : modelsHiddenParams[idInstance].value.length;
-      if (modelsParameters[idInstance].headerLine && totalRows != 0) {
-        totalRows--;
-      }
-      const rowsPerPage = $('#rows-per-page' + idWidget).val();
-      const totalPages = Math.ceil(totalRows / rowsPerPage);
-      $('#table' + idWidget + ' tbody')
-        .find('tr')
-        .hide();
-      $('#table' + idWidget + ' tbody')
-        .find('tr')
+      const adjustedTotalRows = modelsParameters[idInstance].headerLine && totalRows > 0 ? totalRows - 1 : totalRows;
+
+      // Get rows per page and calculate total pages
+      const rowsPerPage = Number($(`#rows-per-page${idWidget}`).val()) || 1;
+      const totalPages = Math.ceil(adjustedTotalRows / rowsPerPage);
+
+      // Cache table body for better performance
+      const $tableBody = $(`#table${idWidget} tbody`);
+      const $rows = $tableBody.find('tr');
+
+      // Hide all rows, then show the relevant rows for the current page
+      $rows
+        .hide()
         .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
         .show();
 
-      $('#page-info' + idWidget).text('Page ' + currentPage + ' of ' + totalPages);
-      $('#first-page' + idWidget).prop('disabled', currentPage === 1);
-      $('#prev-page' + idWidget).prop('disabled', currentPage === 1);
-      $('#next-page' + idWidget).prop('disabled', currentPage === totalPages);
-      $('#last-page' + idWidget).prop('disabled', currentPage === totalPages);
+      // Update page info
+      $(`#page-info${idWidget}`).text(`Page ${currentPage} of ${totalPages}`);
+
+      // Enable/disable pagination buttons
+      const isFirstPage = currentPage === 1;
+      const isLastPage = currentPage === totalPages;
+
+      $(`#first-page${idWidget}`).prop('disabled', isFirstPage);
+      $(`#prev-page${idWidget}`).prop('disabled', isFirstPage);
+      $(`#next-page${idWidget}`).prop('disabled', isLastPage);
+      $(`#last-page${idWidget}`).prop('disabled', isLastPage);
     }
 
     this.enable = function () {
-      $('#table' + idWidget).editableTableWidget();
-      $('#table' + idWidget + ' td').on('change', function (evt, newValue) {
+      const tableSelector = `#table${idWidget}`;
+      const rowsPerPageSelector = `#rows-per-page${idWidget}`;
+      const tableElement = $(tableSelector);
+
+      // Initialize editable table widget
+      tableElement.editableTableWidget();
+
+      // Handle cell change event
+      tableElement.find('td').on('change', function (evt, newValue) {
         const cell = $(this);
         const parent = cell.parent();
-        const column = cell.index();
         let row = parent.index();
-        let fontSize = 0.5;
-        if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
-          fontSize = modelsParameters[idInstance].tableValueFontSize;
-        }
+        const column = cell.index();
+        const fontSize = modelsParameters[idInstance]?.tableValueFontSize ?? 0.5;
+
         if (modelsParameters[idInstance].headerLine) {
           row += 1;
         }
 
-        if (!_.isNaN(Number(newValue))) newValue = Number(newValue); // MBG : very basic type handling. To extend
+        // Basic type handling, convert to number if applicable
+        newValue = !isNaN(Number(newValue)) ? Number(newValue) : newValue;
 
+        // Update the hidden model data
         modelsHiddenParams[idInstance].value[row][column] = newValue;
-        cell.html(
-          '<span style="' +
-            self.valueColor() +
-            self.valueFontFamily() +
-            ' font-size: calc(7px + ' +
-            fontSize * getFontFactor() +
-            'vw)">' +
-            newValue +
-            '<span>'
-        );
+
+        // Update cell content with styled value
+        cell.html(`
+          <span style="${self.valueColor()} ${self.valueFontFamily()} font-size: calc(7px + ${fontSize * getFontFactor()}vw);">
+            ${newValue}
+          </span>
+        `);
+
+        // Trigger the update callback
         self.value.updateCallback(self.value, self.value.getValue());
       });
 
-      $('#table' + idWidget + ' th').on('click', function () {
+      // Handle header sorting click event
+      tableElement.find('th').on('click', function (evt) {
+        // evt.preventDefault(); // Prevent default behavior
         const cell = $(this);
         const columnIndex = cell.index();
-        const isAscending = cell[0].getAttribute('data-sort') !== 'asc';
+        const isAscending = cell.attr('data-sort') !== 'asc';
 
         sortTable(cell, columnIndex, isAscending);
         updateSortArrows(cell, columnIndex, isAscending);
         self.value.updateCallback(self.value, self.value.getValue());
-        updateTable();
+        if (totalRows >= nbminPerPagination) {
+          updateTable();
+        }
       });
 
-      $('#rows-per-page' + idWidget).on('change', function () {
+      // Handle pagination events
+      $(rowsPerPageSelector).on('change', () => {
         currentPage = 1;
         updateTable();
       });
 
-      $('#first-page' + idWidget).on('click', function () {
+      $('#first-page' + idWidget).on('click', () => {
         currentPage = 1;
         updateTable();
       });
 
-      $('#prev-page' + idWidget).on('click', function () {
+      $('#prev-page' + idWidget).on('click', () => {
         if (currentPage > 1) {
           currentPage--;
           updateTable();
         }
       });
 
-      $('#next-page' + idWidget).on('click', function () {
-        const totalRows = modelsHiddenParams[idInstance].value.length;
-        const rowsPerPage = $('#rows-per-page' + idWidget).val();
+      $('#next-page' + idWidget).on('click', () => {
+        const rowsPerPage = $(rowsPerPageSelector).val();
         const totalPages = Math.ceil(totalRows / rowsPerPage);
+
         if (currentPage < totalPages) {
           currentPage++;
           updateTable();
         }
       });
 
-      $('#last-page' + idWidget).on('click', function () {
-        const totalRows = modelsHiddenParams[idInstance].value.length;
-        const rowsPerPage = $('#rows-per-page' + idWidget).val();
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
-        currentPage = totalPages;
+      $('#last-page' + idWidget).on('click', () => {
+        const rowsPerPage = $(rowsPerPageSelector).val();
+        const adjustedTotalRows = modelsParameters[idInstance].headerLine && totalRows > 0 ? totalRows - 1 : totalRows;
+        currentPage = Math.ceil(adjustedTotalRows / rowsPerPage);
         updateTable();
       });
     };
@@ -1209,124 +1231,154 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.buildTable = function (val) {
       let tableContent = '';
+      const fontSize = modelsParameters[idInstance]?.tableValueFontSize ?? 0.5;
       let startIndex = 0;
-      let isEditable;
-      let fontSize = 0.5;
-      if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
-        fontSize = modelsParameters[idInstance].tableValueFontSize;
-      }
-      let bIsArray = Array.isArray(val);
-      if (bIsArray) {
-        let token = val[0];
-        bIsArray = Array.isArray(token);
-        if (bIsArray) {
-          if (modelsParameters[idInstance].headerLine) {
-            startIndex = 1;
-            tableContent += '<thead><tr>';
-            const thElements = $('#table' + idWidget + ' th');
-            for (const element of val[0]) {
-              let dSort = thElements.length ? thElements[val[0].indexOf(element)].getAttribute('data-sort') : '';
-              tableContent +=
-                '<th data-sortable="true" data-sort="' +
-                dSort +
-                '" style="' +
-                this.valueAlign() +
-                '"><span style="' +
-                this.valueColor() +
-                this.valueFontFamily() +
-                ' font-size: calc(7px + ' +
-                fontSize * getFontFactor() +
-                'vw);padding-right:15px"><b>' +
-                element +
-                '</b></span><span class="sort-arrow"></span></th>';
-            }
-            tableContent += '</tr></thead>';
-          }
-          const sortAsc = _.isUndefined($('#table' + idWidget)[0])
-            ? 'true'
-            : $('#table' + idWidget + ' tbody')[0].getAttribute('data-sort-asc');
-          const sortCol = _.isUndefined($('#table' + idWidget)[0])
-            ? '0'
-            : $('#table' + idWidget + ' tbody')[0].getAttribute('data-sort-column');
-          tableContent += '<tbody data-sort-asc="' + sortAsc + '" data-sort-column="' + sortCol + '">';
-          for (let i = startIndex; i < val.length; i++) {
-            if (modelsParameters[idInstance].striped) {
-              if (i % 2 !== 0) {
-                tableContent += '<tr style="' + this.tableBackgroundColor('secondary') + '">';
-              }
-            } else {
-              tableContent += '<tr>';
-            }
 
-            for (let j = 0; j < val[i].length; j++) {
-              let ParsedEditableCols = [];
-              try {
-                if (modelsParameters[idInstance].editableCols == '*') {
-                  if (!modelsParameters[idInstance].indexColumn) ParsedEditableCols = _.range(val[i].length);
-                  else ParsedEditableCols = _.range(1, val[i].length);
-                } else {
-                  ParsedEditableCols = JSON.parse(modelsParameters[idInstance].editableCols);
-                }
-              } catch (e) {}
+      // Helper: Get the calculated font size
+      const getCalculatedFontSize = () => `font-size: calc(7px + ${fontSize * getFontFactor()}vw);`;
 
-              let cursorEditable = '';
-              if (_.indexOf(ParsedEditableCols, j) == -1) {
-                isEditable = 'false';
-              } else {
-                isEditable = 'true';
-                if (this.bIsInteractive) {
-                  cursorEditable = 'cursor: cell;';
-                }
-              }
-              tableContent +=
-                '<td style="' +
-                cursorEditable +
-                this.valueAlign() +
-                '" data-editable="' +
-                isEditable +
-                '"><span style="' +
-                this.valueColor() +
-                this.valueFontFamily() +
-                ' font-size: calc(7px + ' +
-                fontSize * getFontFactor() +
-                'vw)">' +
-                val[i][j] +
-                '</span></td>';
-            }
-            tableContent += '</tr>';
+      // Helper: build table header
+      const buildTableHeader = (headers) => {
+        const thElements = $('#table' + idWidget + ' th');
+        return `
+          <thead><tr>
+            ${headers
+              .map((header, i) => {
+                const dSort = thElements.length ? thElements[i].getAttribute('data-sort') : '';
+                return `
+                <th data-sortable="true" data-sort="${dSort}" style="${this.valueAlign()}">
+                  <span style="${this.valueColor()} ${this.valueFontFamily()} ${getCalculatedFontSize()} padding-right:15px">
+                    <b>${header}</b>
+                  </span>
+                  <span class="sort-arrow"></span>
+                </th>
+              `;
+              })
+              .join('')}
+          </tr></thead>
+        `;
+      };
+
+      // Helper: build table body
+      const buildTableBody = (dataRows) => {
+        const sortAsc = $('#table' + idWidget)[0]?.getAttribute('data-sort-asc') || 'true';
+        const sortCol = $('#table' + idWidget)[0]?.getAttribute('data-sort-column') || '0';
+        let bodyContent = `<tbody data-sort-asc="${sortAsc}" data-sort-column="${sortCol}">`;
+
+        dataRows.forEach((row, i) => {
+          if (typeof row === 'string') {
+            row = [row];
           }
-          tableContent += '</tbody>';
-        } else {
-          /* 1D table*/
-          /*if (modelsParameters[idInstance].headerLine) {
+          
+          const rowStyle =
+            modelsParameters[idInstance].striped && i % 2 !== 0
+              ? ` style="${this.tableBackgroundColor('secondary')}"`
+              : '';
+
+          bodyContent += `<tr${rowStyle}>`;
+          row.forEach((cellValue, j) => {
+            const isEditable = isCellEditable(j);
+            const cursorEditable = isEditable && this.bIsInteractive ? 'cursor: cell;' : '';
+
+            bodyContent += `
+              <td style="${cursorEditable} ${this.valueAlign()}" data-editable="${isEditable}">
+                <span style="${this.valueColor()} ${this.valueFontFamily()} ${getCalculatedFontSize()}">
+                  ${cellValue}
+                </span>
+              </td>
+            `;
+          });
+          bodyContent += '</tr>';
+        });
+
+        bodyContent += '</tbody>';
+        return bodyContent;
+      };
+
+      // Helper: determine if a cell is editable
+      const isCellEditable = (colIndex) => {
+        const editableCols =
+          modelsParameters[idInstance].editableCols === '*'
+            ? Array.from({ length: val[0].length }, (_, i) => i)
+            : (() => {
+                try {
+                  return JSON.parse(modelsParameters[idInstance].editableCols);
+                } catch (e) {
+                  console.error('Invalid editableCols format:', e);
+                  return [];
+                }
+              })();
+
+        return editableCols.includes(colIndex) ? 'true' : 'false';
+      };
+
+      // Handle array or DataFrame-like content
+      if (Array.isArray(val) || modelsHiddenParams[idInstance].isDataFrame) {
+        if (modelsParameters[idInstance].headerLine) {
+          startIndex = 1;
+          tableContent += buildTableHeader(val[0]);
+        }
+
+        tableContent += buildTableBody(val.slice(startIndex));
+      } else if (val && val.length > 0) {
+        /* 1D table*/
+        /*if (modelsParameters[idInstance].headerLine) {
                         startIndex = 1;
                         tableContent = tableContent + '<thead><tr>';
                         tableContent = tableContent + '<th><span style="color: #2154ab; font-size: calc(7px + .5vw)"><b>' + val[0] + '</b></span></th>';
                         tableContent = tableContent + '</tr></thead>';
                     }*/ // MBG : does-it make sense to have header in 1D ?
-          tableContent += '<tbody><tr>';
-          for (let i = startIndex; i < val.length; i++) {
-            token = val[i];
-            tableContent +=
-              '<td style="' +
-              this.valueAlign() +
-              '"><span style="' +
-              this.valueColor() +
-              this.valueFontFamily() +
-              ' font-size: calc(7px + ' +
-              fontSize * getFontFactor() +
-              'vw)">' +
-              token +
-              '</span></td>';
-          }
-          tableContent += '</tr></tbody>';
-        }
+        tableContent += '<tbody><tr>';
+        val.slice(startIndex).forEach((token) => {
+          tableContent += `
+            <td style="${this.valueAlign()}">
+              <span style="${this.valueColor()} ${this.valueFontFamily()} ${getCalculatedFontSize()}">
+                ${token}
+              </span>
+            </td>
+          `;
+        });
+        tableContent += '</tr></tbody>';
       }
+
       return tableContent;
     };
 
-    this.rescale = function () {
-      this.render();
+    this.buildPagination = function () {
+      const fontSize = modelsParameters[idInstance].tableValueFontSize ?? 0.5;
+      const strFontSize = `font-size: calc(7px + ${fontSize * getFontFactor()}vw);`;
+      const styleAttributes = `${this.valueColor()} ${this.valueFontFamily()} ${strFontSize}`;
+
+      // Get or default rows per page
+      const _defaultValue = $('#rows-per-page' + idWidget)?.val() ?? defaultValue;
+
+      // Build options for rows per page dropdown
+      const optionsHTML = options
+        .map(
+          (value) => `<option value="${value}"${value === parseInt(_defaultValue) ? ' selected' : ''}>${value}</option>`
+        )
+        .join('');
+
+      // Construct the pagination controls
+      return `
+        <div id="pagination-controls">
+          <label for="rows-per-page" style="${styleAttributes}">
+            Rows per page:
+          </label>
+          <div class="custom-select-wrapper">
+            <select name="rows-per-page" id="rows-per-page${idWidget}" style="${strFontSize}">
+              ${optionsHTML}
+            </select>
+          </div>
+          <button id="first-page${idWidget}" disabled>|&lt;</button>
+          <button id="prev-page${idWidget}" disabled>&lt;</button>
+          <span id="page-info${idWidget}" style="${styleAttributes}">
+            Page 1 of 1
+          </span>
+          <button id="next-page${idWidget}">&gt;</button>
+          <button id="last-page${idWidget}">&gt;|</button>
+        </div>
+      `;
     };
 
     this.buildPagination = function () {
@@ -1383,59 +1435,59 @@ function flatUiComplexWidgetsPluginClass() {
       return divPagination;
     };
 
+    this.rescale = function () {
+      this.render();
+    };
+
     this.render = function () {
-      const val = modelsHiddenParams[idInstance].value;
-      let length = 0;
-      if (!_.isNull(modelsHiddenParams[idInstance].value)) length = modelsHiddenParams[idInstance].value.length;
+      const val = modelsHiddenParams[idInstance]?.value;
+      totalRows = val?.length ?? 0;
       let insideTable = self.buildTable(val);
-      let isTableEmpty = false;
-      let tableWidth = '75%';
-      if (insideTable === '') {
+      const isTableEmpty = insideTable === '';
+      const tableWidth = isTableEmpty || totalRows < nbminPerPagination ? '100%' : '75%';
+
+      if (isTableEmpty) {
         insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
-        isTableEmpty = true;
-        tableWidth = '100%';
-      }
-      if (length < nbminPerPagination) {
-        tableWidth = '100%';
       }
 
       const widgetHtml = document.createElement('div');
       const displayStyle =
         'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto;';
-      let divContent =
-        `<table style="margin: 0; height: ` + tableWidth + `; ${this.tableBackgroundColor('primary')}" class="table`;
-      if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
-      if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
-      divContent += ' table-responsive" id="table' + idWidget + '" >';
 
-      divContent += insideTable + '</table>';
-      //pagination
-      if (!isTableEmpty && length >= nbminPerPagination) {
+      let tableClass = 'table';
+      if (modelsParameters[idInstance].bordered) tableClass += ' table-bordered';
+      if (modelsParameters[idInstance].noBorder) tableClass += ' no-border';
+      tableClass += ' table-responsive';
+
+      let divContent = `
+      <table style="margin: 0; height: ${tableWidth}; ${this.tableBackgroundColor('primary')}" 
+             class="${tableClass}" id="table${idWidget}">
+        ${insideTable}
+      </table>`;
+
+      // Append pagination if applicable
+      if (!isTableEmpty && totalRows >= nbminPerPagination) {
         divContent += self.buildPagination();
       }
-      //divContent += '</div>';
-      //end pagination
+
       widgetHtml.innerHTML = divContent;
 
-      //
       const showWidget = this.showWidget();
-      let displayStyle2 = 'display: block;';
-      if (!showWidget) {
-        displayStyle2 = 'display: none;';
-      }
       const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      widgetHtml.setAttribute('style', displayStyle + displayStyle2 + enableStyle);
+
+      const displayStyle2 = showWidget ? 'display: block;' : 'display: none;';
+      const enableStyle = enableWidget
+        ? 'pointer-events: initial; opacity:initial;'
+        : 'pointer-events: none; opacity:0.5;';
+
+      widgetHtml.setAttribute('style', `${displayStyle}${displayStyle2}${enableStyle}`);
 
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
+
       if (this.bIsInteractive) {
         self.enable();
-        if (length >= nbminPerPagination) {
+        if (totalRows >= nbminPerPagination) {
           currentPage = 1;
           updateTable();
         }
@@ -1545,7 +1597,7 @@ function flatUiComplexWidgetsPluginClass() {
 flatUiComplexWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var flatUiComplexWidgetsPlugin = new flatUiComplexWidgetsPluginClass();
+const flatUiComplexWidgetsPlugin = new flatUiComplexWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/
