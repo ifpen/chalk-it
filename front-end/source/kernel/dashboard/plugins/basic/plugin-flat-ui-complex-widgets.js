@@ -1042,12 +1042,12 @@ function flatUiComplexWidgetsPluginClass() {
   this.tableFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
-    const nbminPerPagination = modelsParameters[idInstance]?.paginationMinNbr;
-    const options = JSON.parse(modelsParameters[idInstance]?.paginationOptions);
+    const nbminPerPagination = modelsParameters[idInstance]?.paginationMinNbr ?? 10;
+    const options = JSON.parse(modelsParameters[idInstance]?.paginationOptions ?? "[10, 50, 100, 500]");
 
     let currentPage = 1;
     let totalRows = 0;
-    let defaultValue = modelsParameters[idInstance]?.paginationDefaultValue;
+    let defaultValue = modelsParameters[idInstance]?.paginationDefaultValue ?? 10;
 
     if (!options.includes(defaultValue)) {
       defaultValue = options[0];
