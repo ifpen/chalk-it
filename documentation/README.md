@@ -1,4 +1,4 @@
-# User manual of chalk-it
+# User manual of Chalk'it
 
 The documentation is built using MkDocs
 
@@ -10,12 +10,8 @@ Then, install MkDocs
 
 ```sh
 pip install mkdocs==1.3.0
-```
-
-and MkDocs Material
-
-```sh
-pip install  mkdocs-material==8.2.15
+pip install mkdocs-material==8.2.15
+pip install mkdocstrings[python-legacy]
 ```
 
 ## Template build
@@ -27,7 +23,6 @@ python copy_templates.py
 ```
 
 ## Serve when writing
-
 
 ```sh
 mkdocs serve
