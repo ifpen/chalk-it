@@ -854,15 +854,6 @@ angular.module('modules.editor').controller('EditorController', [
       vm.menuWidgetTargetId = null;
     }
 
-    function _reselectWidg(event) {
-      // TODO coords rm
-      //modif to have zndex of menu high
-      //put list at dropperD level (for zindex issues). However selection is lost, so we need to put it back
-      // const id = 'menuWidget';
-      // const name = $('#' + id)[0].getAttribute('name');
-      // editorSingletons.widgetEditor.selectWidget($('#' + name)[0]);
-    }
-
     function _clickOnDataConnection(check) {
       let scope = angular.element(document.getElementById('panel--right')).scope();
       let modalCtrl = scope.vmd;
@@ -883,13 +874,11 @@ angular.module('modules.editor').controller('EditorController', [
     }
 
     vm.connectWidget = function _connectWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       _clickOnDataConnection();
     };
 
     vm.seeInDepGraph = function _seeInDepGraph(event) {
-      _reselectWidg();
       _hideWidgMenu();
 
       const elementId = _getSelectedActive();
@@ -898,7 +887,6 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     vm.editDatanodeCode = function _editDatanodeCode() {
-      _reselectWidg();
       _hideWidgMenu();
 
       const elementId = _getSelectedActive();
@@ -913,38 +901,32 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     vm.graphicalProperties = function _graphicalProperties() {
-      _reselectWidg();
       _hideWidgMenu();
       let scope = angular.element(document.getElementById('panel--right')).scope();
       $scope.setRightContent('Graphical Properties', scope.vmd);
     };
 
     vm.getWidgetName = function _getWidgetName() {
-      // _reselectWidg();
       _hideWidgMenu();
       _getWidgName();
     };
 
     vm.foregroundWidget = function _foregroundWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       vm.foregroundWidg();
     };
 
     vm.backgroundWidget = function _backgroundWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       vm.backgroundWidg();
     };
 
     vm.duplicateWidget = function _duplicateWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       vm.duplicateWidg();
     };
 
     vm.deleteWidget = function _deleteWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       vm.deleteWidg();
     };
