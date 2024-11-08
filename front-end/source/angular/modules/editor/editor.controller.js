@@ -762,6 +762,8 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     vm.widgetsToPage = async function _widgetsToPage() {
+      _hideWidgMenu();
+
       const elementIds = _getSelection();
       if (elementIds && elementIds.length) {
         const targetPage = await vm.selectPage();
