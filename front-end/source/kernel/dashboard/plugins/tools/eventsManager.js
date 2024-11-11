@@ -6,9 +6,18 @@
 // │ Author(s) :  Mohamed ERRAHALI & Abir EL FEKI                                   │ \\
 // └────────────────────────────────────────────────────────────────────────────────┘ \\
 
-import * as L from 'leaflet';
+import 'leaflet';
 import _ from 'lodash';
+import 'leaflet';
 
+// !! Order matters, a lot !!
+import 'simpleheat';
+import 'leaflet-modal';
+import 'idb';
+import 'leaflet.offline';
+import '@geoman-io/leaflet-geoman-free';
+import 'leaflet.markercluster';
+import 'leaflet.awesome-markers';
 import { modelsHiddenParams } from 'kernel/base/widgets-states';
 import { findFeatureType,equivalenceTypes,formatProperty  } from 'kernel/dashboard/plugins/tools/geoJsonTools';
 
@@ -37,8 +46,6 @@ export  function mouseoverHandler(self, geoJSON, leafletIndex) {
     e.target.setStyle(eventStyle);
     e.target.bringToFront();
     //create popup
-    let popup = new L.Popup();
-    var bounds = e.target.getBounds();
     let popupContent = '<div>';
     let properties = style.tooltip.properties;
     _.each(properties, (property) => {
@@ -51,12 +58,8 @@ export  function mouseoverHandler(self, geoJSON, leafletIndex) {
         '</p>';
     });
     popupContent = popupContent + '</div>';
-    popup.setLatLng(bounds.getCenter());
-    popup.setContent(popupContent);
-    //open popup
-    if (!_.isUndefined(properties) && properties.length > 0) {
-      self.map.openPopup(popup);
-    }
+    e.target.bindPopup(popupContent);
+    e.target.openPopup();
   };
 }
 

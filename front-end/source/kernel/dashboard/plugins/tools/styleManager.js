@@ -6,7 +6,6 @@
 // │ Author(s) : Mohamed ERRAHALI & Benoit LEHMAN & Abir EL FEKI        │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 import 'leaflet';
-import * as L from 'leaflet';
 
 // !! Order matters, a lot !!
 import 'simpleheat';
@@ -140,7 +139,7 @@ export function updateLayerStyle(self, layer, styleForObject, geoJSONinLayer) {
   let style = { ...styleForObject };
   if (
     findFeatureType(geoJSONinLayer) !== equivalenceTypes.MultiPoint ||
-    style.pointAreMarker
+    !style.pointAreMarker
   )  {
     //calcul fill Color according to value
     var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
@@ -214,7 +213,8 @@ export function setStyle(self, layerIndex, style) {
     //if the pointsAreMarker
     if (styleForObject.pointAreMarker) {
       let LMarkers = leafLetLayer.getLayers().map(function (layer) {
-        const marker = L.marker(layer.getLatLng());
+        const latlng = [layer.getLatLng().lat,layer.getLatLng().lng];
+        const marker = L.marker(latlng);
         marker.feature = layer.feature;
         return marker;
       });
@@ -222,10 +222,7 @@ export function setStyle(self, layerIndex, style) {
       self.ctrl.removeLayer(leafLetLayer);
       self.map.removeLayer(leafLetLayer);
       if (styleForObject.markerCluster) {
-        leafLetLayer = L.markerClusterGroup();
-        LMarkers.forEach(function (layerMarker) {
-          leafLetLayer.addLayer(layerMarker);
-        });
+        leafLetLayer = self.createCluster(LMarkers);
       } else {
         leafLetLayer = L.geoJSON(geoJSONinLayer);
       }

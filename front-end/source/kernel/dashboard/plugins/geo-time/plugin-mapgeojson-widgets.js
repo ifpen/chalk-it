@@ -9,7 +9,6 @@
 // Important Style Behavior : Style will be available as out from the map first only in View mode
 // The contact between the widget and out properties is only done at first enable
 import 'leaflet';
-import * as L from 'leaflet';
 
 // !! Order matters, a lot !!
 import 'simpleheat';
@@ -19,7 +18,6 @@ import 'leaflet.offline';
 import '@geoman-io/leaflet-geoman-free';
 import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
-
 import { bbox } from '@turf/bbox';
 import _ from 'lodash';
 
@@ -91,7 +89,7 @@ function mapGeoJsonWidgetsPluginClass() {
             modelsHiddenParams[idInstance].GeoJSONStyle.style = []; // reset when geojson has less item
           }
 
-          if (modelsHiddenParams[idInstance].GeoJSONStyle.style.length) {
+          if (modelsHiddenParams[idInstance].GeoJSONStyle.style.length>=0) {
             modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
               if (index < modelsHiddenParams[idInstance].GeoJSONStyle.style.length) {
                 if (
@@ -263,7 +261,13 @@ function mapGeoJsonWidgetsPluginClass() {
     };
 
     this.getFillColor = getFillColor;
-
+    this.createCluster = (LMarkers)=>{
+      let leafLetLayer = L.markerClusterGroup();
+      LMarkers.forEach(function (layerMarker) {
+        leafLetLayer.addLayer(layerMarker);
+      });
+      return leafLetLayer;
+    };
     // Create a Layer from a GeoJSON
     // Simple function dont take into account the style
     this.getLefletIndex = (leafletLayer) => {
