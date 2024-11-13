@@ -77,46 +77,60 @@ function mapGeoJsonWidgetsPluginClass() {
     this.updateValue = function (e) {
       // Create new TempleStyle if old has not the same size
       // TODO : Check all style compatible with all element of model
+      const geojsons = modelsHiddenParams[idInstance].GeoJSON;
+      const geojsonStyle =modelsHiddenParams[idInstance].GeoJSONStyle;
       if (
-        !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
-        !_.isEmpty(modelsHiddenParams[idInstance].GeoJSON)
+        !_.isUndefined(geojsons) &&
+        !_.isEmpty(geojsons)
       ) {
-        if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle)) {
-          if (
-            !Array.isArray(modelsHiddenParams[idInstance].GeoJSONStyle.style) ||
-            modelsHiddenParams[idInstance].GeoJSON.length < modelsHiddenParams[idInstance].GeoJSONStyle.style.length
-          ) {
-            modelsHiddenParams[idInstance].GeoJSONStyle.style = []; // reset when geojson has less item
+        if (!_.isUndefined(geojsonStyle)) {
+          let styles = geojsonStyle.style;
+          //test if styles is an array
+          if(!Array.isArray(styles)){
+            styles=[];
           }
-
-          if (modelsHiddenParams[idInstance].GeoJSONStyle.style.length>=0) {
-            modelsHiddenParams[idInstance].GeoJSON.forEach((item, index) => {
-              if (index < modelsHiddenParams[idInstance].GeoJSONStyle.style.length) {
-                if (
-                  findFeatureType(item) !== modelsHiddenParams[idInstance].GeoJSONStyle.style[index].type
-                ) {
-                  modelsHiddenParams[idInstance].GeoJSONStyle.style[index] = createTemplateStyle(
+          //text if the length of geojson less than length of styles
+          if(geojsons.length < styles.length){
+            let newStyles =[];
+            for (let i = 0; i < geojsons.length; i++) {
+              newStyles.push(styles[i]);
+            }
+            styles=newStyles;
+          }
+          geojsons.forEach((geojson,index)=>{
+           
+            //test if the style exist
+            if(styles.length>=index+1){
+              const style = styles[index];
+              //test if they have the same type
+              if(findFeatureType(geojson) == style.type) {
+                //test if properties are not changed
+                if(JSON.stringify(findAllProperties(geojson)) !==
+                JSON.stringify(style.allProperties)){
+                  //create template style
+                  styles[index] = createTemplateStyle(
                     self,
-                    item,
-                    index
-                  ); // reset when old/previous geojson changed type
-                } else if (
-                  JSON.stringify(findAllProperties(item)) !==
-                  JSON.stringify(modelsHiddenParams[idInstance].GeoJSONStyle.style[index].allProperties)
-                ) {
-                  modelsHiddenParams[idInstance].GeoJSONStyle.style[index] = createTemplateStyle(
-                    self,
-                    item,
+                    geojson,
                     index
                   );
                 }
               } else {
-                modelsHiddenParams[idInstance].GeoJSONStyle.style.push(createTemplateStyle(self, item, index));
+                //replace with template style
+                styles[index] = createTemplateStyle(
+                  self,
+                  geojson,
+                  index
+                );
               }
-            });
-          }
-        }
-      }
+              
+            }else{
+              //add template style for the element
+              styles.push(createTemplateStyle(self, geojson, index));
+            }
+          });
+          modelsHiddenParams[idInstance].GeoJSONStyle.style = styles;
+        } 
+      } 
       self.GeoJSONStyle.updateCallback(self.GeoJSONStyle, self.GeoJSONStyle.getValue());
     };
 
@@ -326,6 +340,15 @@ function mapGeoJsonWidgetsPluginClass() {
       self.baseLayer = L.tileLayer(tileConf.url, tileConf);
       self.baseLayer.addTo(self.map);
 
+      //update view
+      // setZoom
+      let zoom = function () {
+        //Zoom
+        if (
+          modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom ||
+          _.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom)
+        ) {
+          let bboxCoords = undefined;
       //update view
       // setZoom
       let zoom = function () {
