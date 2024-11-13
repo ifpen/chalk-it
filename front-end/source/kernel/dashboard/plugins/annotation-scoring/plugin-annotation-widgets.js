@@ -15,12 +15,7 @@ import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 import { getRealMimeType, base64ArrayBuffer } from 'kernel/datanodes/plugins/thirdparty/utils';
-import {
-  inheritWcWidthFromIdInst,
-  inheritWcHeightFromIdInst,
-  unitW,
-  unitH,
-} from 'kernel/dashboard/scaling/scaling-utils';
+import { inheritWcWidthFromIdInst, inheritWcHeightFromIdInst } from 'kernel/dashboard/scaling/scaling-utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/

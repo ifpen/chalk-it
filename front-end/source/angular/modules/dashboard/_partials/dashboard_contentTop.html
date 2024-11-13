@@ -175,6 +175,18 @@
     </button>
   </div>
 
+  <!-- Zoom change -->
+  <!-- TODO dedicated CSS -->
+  <div class="undo-redo">
+    <button class="btn" title="1:1" ng-click="vm.zoomNone();" ng-disabled="vm.displayRatio===1.0">
+      1:1
+    </button>
+    <button class="btn" title="Fit" ng-click="vm.zoomFit();" ng-disabled="vm.displayFit">
+      Fit
+    </button>
+    <input type="number" min="0.1" max="4.0"  ng-model="vm.displayRatio" ng-change="vm.displayRatioChanged()" />
+  </div>
+
   <!-- for future version -->
   <!-- desktop/mobile/tablet start -->
   <ul ng-show="false" class="view-mode" js-view-mode ng-class="{hidden:!editorView.isPlayMode}">

@@ -35,7 +35,8 @@ class WidgetPreview {
     this.currentPage = undefined;
     this.pageNames = [];
 
-    // TODO padding
+    this.marginX = 0;
+    this.marginY = 0;
 
     this.widgetsOnErrorState = new Set();
   }
@@ -48,19 +49,39 @@ class WidgetPreview {
     return `WidgetContainer${this.idWC}c`;
   }
 
+  /**
+   * Update the dashboard's margins.
+   * @param {number} valueX
+   * @param {number} valueY
+   */
+  setMargins(valueX, valueY) {
+    document.getElementById(DISPLAY_CONTAINER_ID).style.padding = `${valueX}px ${valueY}px`;
+    this.marginX = valueX;
+    this.marginY = valueY;
+
+    this.widgetsInfo.values().forEach((info) => {
+      this.updateWidgetPosition(info.containerDiv, info.layout);
+    });
+  }
+
+  updateWidgetPosition(containerDiv, { top, left, width, height }) {
+    left += this.marginX;
+    top += this.marginY;
+    applyGeometry(containerDiv, { top, left, width, height });
+  }
+
   createWidget(modelJsonId, instanceId, layout) {
     const containerDiv = document.createElement('div');
     containerDiv.id = instanceId + 'c';
 
     containerDiv.classList.add('widget');
-    containerDiv.classList.add('widget__layout--item');
 
     const wcId = this.#nextWidgetContainerId();
     const div = document.createElement('div');
     div.id = wcId;
     containerDiv.appendChild(div);
 
-    applyGeometry(containerDiv, layout);
+    this.updateWidgetPosition(containerDiv, layout);
     if (layout.zIndex !== undefined) {
       containerDiv.style.zIndex = layout.zIndex;
     }
@@ -92,11 +113,18 @@ class WidgetPreview {
     }
   }
 
+  /**
+   * Changes the currently displayed page
+   * @param {number} newPage page number (0 based)
+   */
   setCurrentPage(newPage) {
     this.currentPage = newPage;
     this.#applyCurrentPage();
   }
 
+  /**
+   * Filter displayed widgets according to the "currentPage"
+   */
   #applyCurrentPage() {
     this.widgetsInfo.values().forEach((info) => {
       const show = this.currentPage === undefined || this.currentPage === info.layout.page;

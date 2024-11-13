@@ -11,7 +11,7 @@ import _ from 'lodash';
 
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
-import { getElementLayoutPx, applyGeometry } from 'kernel/dashboard/widget/widget-placement';
+import { getElementLayoutPx, applyGeometry, enforceConstraints } from 'kernel/dashboard/widget/widget-placement';
 import { convertVhtoPx, convertVwtoPx } from 'kernel/dashboard/scaling/scaling-utils';
 import {
   modelsHiddenParams,
@@ -82,8 +82,14 @@ export class WidgetContainer {
    * @returns {{ width: number, height: number }} the total size of the dashboard, including margins.
    */
   getDisplaySize(includeOverflow = false) {
-    const { width, height } = includeOverflow ? this.getContentSize() : { width: this.width, height: this.height };
-    return { width: width + this.marginX, height: height + this.marginY };
+    let width = this.width;
+    let height = this.height;
+    if (includeOverflow) {
+      const content = this.getContentSize();
+      width = Math.max(width, content.width);
+      height = Math.max(height, content.height);
+    }
+    return { width: width + this.marginX * 2, height: height + this.marginY * 2 };
   }
 
   /**
@@ -107,6 +113,8 @@ export class WidgetContainer {
     this.marginX = valueX;
     this.marginY = valueY;
     this.drpd.style.padding = `${this.marginY}px ${this.marginX}px`;
+
+    widgetPreview.setMargins(valueX, valueY);
   }
 
   delete(instanceId) {
@@ -180,7 +188,7 @@ export class WidgetContainer {
 
     return {
       ...wLayout,
-      ...this.enforceConstraints(wLayout),
+      ...this.constrainLayout(wLayout),
     };
   }
 
@@ -220,7 +228,7 @@ export class WidgetContainer {
   }
 
   /**
-   * @returns {width: number, height: number} the total available space for widgets. May be infinite.
+   * @returns {{width: number, height: number}} the total available space for widgets. May be infinite.
    */
   availableSpace() {
     return {
@@ -430,63 +438,29 @@ export class WidgetContainer {
   }
 
   /**
-   * @description Enforces that widget layout respects container constraints in terms of:
+   * @description Enforces that a widget layout respects container constraints in terms of:
+   * - integer coordinates
    * - width and height (always inside container)
    * - left and top
-   * @param {any} widgetLayoutPx
-   * @param {any} containerLayoutPx
+   * @param {{top: number, left: number, width: number, height: number}}
    */
-  enforceConstraints(widgetLayoutPx) {
-    const available = this.availableSpace();
-
-    // Simplified notation
-    let w_t = widgetLayoutPx.top,
-      w_l = widgetLayoutPx.left,
-      w_h = widgetLayoutPx.height,
-      w_w = widgetLayoutPx.width;
-    let c_t = 0,
-      c_l = 0,
-      c_h = available.height,
-      c_w = available.width;
-
-    // Deduced variables
-    let w_b = w_t + w_h;
-    let w_r = w_l + w_w;
-    let c_b = c_t + c_h;
-    let c_r = c_l + c_w;
-
-    // Dimension rules
-    if (w_h > c_h) {
-      w_h = c_h;
-      w_b = w_t + c_h;
-    } // max widget height equals container height
-    if (w_w > c_w) {
-      w_w = c_w;
-      w_r = w_l + c_w;
-    } // max widget width equals container width
-
-    // Position rules
-    if (w_t < c_t) {
-      w_t = c_t;
-    } // no top overflow
-    if (w_l < c_l) {
-      w_l = c_l;
-    } // no left overflow
-    if (w_b > c_b) {
-      w_t = c_b - w_h;
-      w_b = c_b;
-    } // no bottom overflow
-    if (w_r > c_r) {
-      w_l = c_r - w_w;
-      w_r = c_r;
-    } // no right overflow
-
-    return {
-      top: w_t,
-      left: w_l,
-      width: w_w,
-      height: w_h,
+  constrainLayout(widgetLayoutPx) {
+    const widgetLayoutInt = {
+      top: Math.round(widgetLayoutPx.top),
+      left: Math.round(widgetLayoutPx.left),
+      height: Math.round(widgetLayoutPx.height),
+      width: Math.round(widgetLayoutPx.width),
     };
+
+    const { width, height } = this.availableSpace();
+    const containerLayoutPx = {
+      top: 0,
+      left: 0,
+      height,
+      width,
+    };
+
+    return enforceConstraints(widgetLayoutInt, containerLayoutPx);
   }
 
   /**
@@ -498,10 +472,10 @@ export class WidgetContainer {
     const info = this.widgetsInfo.get(elementId);
 
     requestedLayoutPx = { ...info.layout, ...requestedLayoutPx }; // Accept partial updates
-    const layout = this.enforceConstraints(requestedLayoutPx);
+    const layout = this.constrainLayout(requestedLayoutPx);
     const isResize = layout.width !== info.layout.width || layout.height !== info.layout.height;
 
-    info.layout = { ...info.layout, ...layout }; // enforceConstraints strip the non geometric parts
+    info.layout = { ...info.layout, ...layout }; // constrainLayout strips the non geometric parts
     this.#applyLayout(this.getWidgetContainerDiv(elementId), info.layout);
     if (isResize) {
       this.replaceWidget(elementId);

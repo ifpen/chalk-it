@@ -10,7 +10,7 @@ import PNotify from 'pnotify';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { MAIN_CONTAINER_ID } from 'kernel/dashboard/widget/widget-container';
+import { ZoomControler } from 'kernel/dashboard/scaling/zoom-controler';
 import { UndoableAction, UndoManager } from './editor.undo-manager';
 import {
   EVENTS_EDITOR_SELECTION_CHANGED,
@@ -23,6 +23,8 @@ import {
 } from './editor.events';
 import { keyShift } from 'kernel/dashboard/scaling/layout-mgr';
 import angular from 'angular';
+
+const EDIT_ZONE_MARGIN = 1;
 
 angular.module('modules.editor').controller('EditorController', [
   '$scope',
@@ -56,6 +58,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     let copiedWidgets;
 
+    vm.displayFit = false;
+    vm.displayRatio = 1.0;
+    vm.editorZoom = null;
+    vm.viewerZoom = null;
+
     vm.pagesNumber = 0;
     vm.pages = [];
 
@@ -79,8 +86,26 @@ angular.module('modules.editor').controller('EditorController', [
     eventCenterService.addListener(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED, _onAspectChange);
 
     function _onDashboardReady() {
+      const widgetEditor = widgetEditorGetter();
+      vm.editorZoom = new ZoomControler(document.getElementById('dashboard-editor-div'), (ratio) => {
+        if (!$scope.editorView.isPlayMode) {
+          vm.displayRatio = ratio;
+          widgetEditor.setZoomRatio(ratio);
+        }
+      });
+      vm.editorZoom.setRatio(1.0);
+
+      vm.viewerZoom = new ZoomControler(document.getElementById('dashboard-preview-div'), (ratio) => {
+        if ($scope.editorView.isPlayMode) {
+          vm.displayRatio = ratio;
+          widgetEditor.setZoomRatio(ratio);
+        }
+      });
+      vm.viewerZoom.setRatio(1.0);
+
       _onAspectChange();
-      const grid = widgetEditorGetter().getGrid();
+
+      const grid = widgetEditor.getGrid();
       vm.gridX = grid.sizeX;
       vm.gridY = grid.sizeY;
     }
@@ -97,6 +122,13 @@ angular.module('modules.editor').controller('EditorController', [
         marginY: widgetContainer.marginY,
         enforceHeightLimit: widgetContainer.enforceHeightLimit,
       };
+
+      const { width, height } = widgetContainer.getDisplaySize(true);
+      vm.editorZoom.setFitHeight(widgetContainer.enforceHeightLimit);
+      vm.editorZoom.setSize(width + 2 * EDIT_ZONE_MARGIN, height + 2 * EDIT_ZONE_MARGIN);
+
+      vm.viewerZoom.setFitHeight(widgetContainer.enforceHeightLimit);
+      vm.viewerZoom.setSize(width + 2 * EDIT_ZONE_MARGIN, height + 2 * EDIT_ZONE_MARGIN);
     }
 
     function _getSelection() {
@@ -455,6 +487,25 @@ angular.module('modules.editor').controller('EditorController', [
       });
     };
 
+    // Zoom
+    vm.zoomNone = function _zoomNone() {
+      vm.displayFit = false;
+      vm.editorZoom.setRatio(1.0);
+      vm.viewerZoom.setRatio(1.0);
+    };
+
+    vm.zoomFit = function _zoomFit() {
+      vm.displayFit = true;
+      vm.editorZoom.setFit(true);
+      vm.viewerZoom.setFit(true);
+    };
+
+    vm.displayRatioChanged = function _displayRatioChanged() {
+      vm.displayFit = false;
+      vm.editorZoom.setRatio(vm.displayRatio);
+      vm.viewerZoom.setRatio(vm.displayRatio);
+    };
+
     // Dashboard size
     /**
      * Sets the edited dashboard width to match the contained widgets
@@ -796,26 +847,23 @@ angular.module('modules.editor').controller('EditorController', [
       const idList = 'menuWidget';
       const menuElm = document.getElementById(idList);
 
-      // TODO parent ?
-      const mainContainerOffsetHeight = document.getElementById(MAIN_CONTAINER_ID).offsetHeight;
+      const mainContainerOffsetHeight = menuElm.parentElement.offsetHeight;
 
-      // TODO scale
       const elm = document.getElementById(id);
 
-      const elementWidth = elm.clientWidth;
-      const elementHeight = elm.clientHeight;
-      const elementOffsetTop = elm.offsetTop;
-      const elementOffsetLeft = elm.offsetLeft;
+      const elementWidth = elm.clientWidth * vm.displayRatio;
+      const elementHeight = elm.clientHeight * vm.displayRatio;
+      const elementOffsetTop = elm.offsetTop * vm.displayRatio;
+      const elementOffsetLeft = elm.offsetLeft * vm.displayRatio;
 
       const menuWidgetWidth = 247.047; // px
       const menuWidgetHeight = 443; // px
-      const menuWidgetMarginTop = 30;
-      const menuWidgetMarginBottom = elementHeight - 10;
+      const menuWidgetMarginTop = 30 * vm.displayRatio;
+      const menuWidgetMarginBottom = elementHeight - 10 * vm.displayRatio;
 
       const mainContainerHeight = mainContainerOffsetHeight;
       const elementOffsetBottom = mainContainerOffsetHeight - (elementOffsetTop + elementHeight);
 
-      // TODO fix
       if (
         elementOffsetTop + menuWidgetMarginTop + menuWidgetHeight >= mainContainerOffsetHeight &&
         elementOffsetBottom + menuWidgetMarginBottom + menuWidgetHeight >= mainContainerOffsetHeight

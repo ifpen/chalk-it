@@ -1,71 +1,70 @@
-<div ng-show="!editorView.isPlayMode" id="dashboard-editor-div" class="x_panel"
-  style="border-radius: 10px; filter: var(--dashboard-filter)">
-  <div class="x_contentEditor dashboard-parent-container">
+<div ng-show="!editorView.isPlayMode" id="dashboard-editor-div" class="x_panel">
+  <div class="dashboard-parent-container">
+
+    <ul class="dashboard-dropdown" id="menuWidget" style="position: absolute; z-index: 1000"
+      ng-class="{'visible':vm.menuWidgetVisible}">
+      <li>
+        <a title="Connect widget" ng-click="vm.connectWidget()" id="datanodes-widget-connect">
+          <i class="specific icn-data-connection"></i>Connect widget
+        </a>
+      </li>
+      <li>
+        <a id="openGraphFromWidget" name="" title="See in the graph" ng-click="vm.seeInDepGraph($event)">
+          <i class="specific icn-graph"></i>See in the graph
+        </a>
+      </li>
+      <li>
+        <a title="Get widget name" ng-click="vm.getWidgetName()">
+          <i class="specific icn-tag"></i>Copy widget name
+        </a>
+      </li>
+      <hr />
+      <li>
+        <a title="See code" ng-click="vm.editDatanodeCode()">
+          <i class="basic icn-edit"></i>Edit Datanode code
+        </a>
+      </li>
+      <li>
+        <a title="Graphical properties" ng-click="vm.graphicalProperties()">
+          <i class="specific icn-graphical-properties right-panel-toggle"></i>Graphical properties
+        </a>
+      </li>
+      <hr />
+      <li>
+        <a title="Bring widget forward" ng-click="vm.foregroundWidget()">
+          <i class="basic icn-bringforward"></i> Bring forward
+        </a>
+      </li>
+      <li>
+        <a title="Send widget backward" ng-click="vm.backgroundWidget()">
+          <i class="basic icn-sendbackword"></i>Send backward</a>
+      </li>
+      <li ng-if="vm.pages.length">
+        <a title="Send widget to page..." ng-click="vm.widgetsToPage()">
+          <i class="basic icn-tag"><!-- TODO proper icon --></i>Send widget to page...</a>
+      </li>
+      <hr />
+      <li>
+        <a title="Duplicate widget" ng-click="vm.duplicateWidget()">
+          <i class="basic icn-duplicate"></i>Duplicate
+        </a>
+      </li>
+      <li>
+        <a title="Delete widget" ng-click="vm.deleteWidget()"><i class="basic icn-delete"></i>Delete
+        </a>
+      </li>
+    </ul>
     <div class="dashboard-page-container">
-      <ul class="dashboard-dropdown" id="menuWidget" style="position: absolute; z-index: 1000"
-        ng-class="{'visible':vm.menuWidgetVisible}">
-        <li>
-          <a title="Connect widget" ng-click="vm.connectWidget()" id="datanodes-widget-connect">
-            <i class="specific icn-data-connection"></i>Connect widget
-          </a>
-        </li>
-        <li>
-          <a id="openGraphFromWidget" name="" title="See in the graph" ng-click="vm.seeInDepGraph($event)">
-            <i class="specific icn-graph"></i>See in the graph
-          </a>
-        </li>
-        <li>
-          <a title="Get widget name" ng-click="vm.getWidgetName()">
-            <i class="specific icn-tag"></i>Copy widget name
-          </a>
-        </li>
-        <hr />
-        <li>
-          <a title="See code" ng-click="vm.editDatanodeCode()">
-            <i class="basic icn-edit"></i>Edit Datanode code
-          </a>
-        </li>
-        <li>
-          <a title="Graphical properties" ng-click="vm.graphicalProperties()">
-            <i class="specific icn-graphical-properties right-panel-toggle"></i>Graphical properties
-          </a>
-        </li>
-        <hr />
-        <li>
-          <a title="Bring widget forward" ng-click="vm.foregroundWidget()">
-            <i class="basic icn-bringforward"></i> Bring forward
-          </a>
-        </li>
-        <li>
-          <a title="Send widget backward" ng-click="vm.backgroundWidget()">
-            <i class="basic icn-sendbackword"></i>Send backward</a>
-        </li>
-        <li ng-if="vm.pages.length">
-          <a title="Send widget to page..." ng-click="vm.widgetsToPage()">
-            <i class="basic icn-tag"><!-- TODO proper icon --></i>Send widget to page...</a>
-        </li>
-        <hr />
-        <li>
-          <a title="Duplicate widget" ng-click="vm.duplicateWidget()">
-            <i class="basic icn-duplicate"></i>Duplicate
-          </a>
-        </li>
-        <li>
-          <a title="Delete widget" ng-click="vm.deleteWidget()"><i class="basic icn-delete"></i>Delete
-          </a>
-        </li>
-      </ul>
-      <div id="DropperDroite" style="z-index: 0; border-radius: 10px" class="dropperR dashboard-content-container"
-        ng-click="vm.editorClick($event)"
+      <div id="DropperDroite" class="dropperR dashboard-content-container" ng-click="vm.editorClick($event)"
         ng-class="{'show-widget-borders': vm.borderInWidgets, 'show-grid': vm.showGrid, }">
       </div>
     </div>
   </div>
 </div>
-<div ng-show="editorView.isPlayMode" id="dashboard-preview-div" class="x_panel" style="border-radius: 10px">
-  <div class="x_contentEditor dashboard-parent-container">
+<div ng-show="editorView.isPlayMode" id="dashboard-preview-div" class="x_panel">
+  <div class="dashboard-parent-container">
     <div class="dashboard-page-container">
-      <div id="DropperDroitec" class="dropperR dashboard-content-container" style="z-index: 0; border-radius: 10px">
+      <div id="DropperDroitec" class="dropperR dashboard-content-container" style="z-index: 0;">
       </div>
     </div>
   </div>

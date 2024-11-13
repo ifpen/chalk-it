@@ -12,62 +12,15 @@ import { htmlExport } from 'kernel/general/export/html-export';
 
 /*constants*/
 export const keyShift = 5; // cst; size in px of keyboard shift using arrows, can be modified
-export const minLeftCst = 10; // cst; min left of the dashboard
-export const minTopCst = 10; // cst; min top of the dashboard
-export const minHeightCst = 10; // cst; min height of a widget, can be modified
-export const minWidthCst = 10; // cst; min width of a widget, can be modified
 
 export class LayoutMgrClass {
   constructor() {
-    // Alias
-    this.drprD = $('#DropperDroite')[0];
-
-    this.maxTopCst = this.drprD.offsetHeight * 15; // TODO : coordinate with dragresize
-    if (this.maxTopCst == 0) {
-      //AEF: temp modif --> drpD is not loaded yet
-      this.maxTopCst = $('#DropperDroite').height() * 15;
-    }
-    this.maxLeftCst = panelDash.fullScreenWidth - minLeftCst; // max left of the dashboard, can be modified
-
     // Dashboard background color
     this.defaultBgColor = 'var(--widget-color-0)';
     this.dashBgColor = '';
     this.inheritThemeBgColor = true;
     this.dashboardTheme = 'default';
     this.$rootScope = angular.element(document.body).scope().$root;
-  }
-
-  updateMaxTopAndLeft() {
-    const container = $(this.drprD);
-    if (this.rows === 0) {
-      if (!container.hasClass('overflow-type1')) {
-        container.addClass('overflow-type1');
-        container.removeClass('overflow-type2');
-        container.removeClass('overflow-type3');
-      }
-      this.maxLeftCst = panelDash.fullScreenWidth - minLeftCst; //- 14 webkit-scrollbar width: 14px
-      this.maxTopCst = this.drprD.offsetHeight * 15;
-      if (this.maxTopCst == 0) {
-        //AEF: temp modif --> drpD is not loaded yet
-        this.maxTopCst = $('#DropperDroite').height() * 15;
-      }
-    } else if (this.rows === 1) {
-      if (!container.hasClass('overflow-type2')) {
-        container.addClass('overflow-type2');
-        container.removeClass('overflow-type1');
-        container.removeClass('overflow-type3');
-      }
-      this.maxLeftCst = this.drprD.offsetWidth - minLeftCst - 14; // webkit-scrollbar width: 14px
-      this.maxTopCst = this.drprD.childNodes[0].offsetHeight - minTopCst;
-    } else if (this.rows > 1) {
-      if (!container.hasClass('overflow-type3')) {
-        container.addClass('overflow-type3');
-        container.removeClass('overflow-type1');
-        container.removeClass('overflow-type2');
-      }
-      this.maxLeftCst = this.drprD.offsetWidth - minLeftCst - 14; // webkit-scrollbar width: 14px
-      this.maxTopCst = this.drprD.childNodes[0].offsetHeight * this.rows - minTopCst;
-    }
   }
 
   // ├────────────────────────────────────────────────────────────────────┤ \\
@@ -151,7 +104,6 @@ export class LayoutMgrClass {
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
     this.updateDashBgColor();
-    editorSingletons.widgetEditor.resizeDashboard(); // Resize event triggers widget generation (usefull for graphs or gauges with colors)
   }
 
   resetDashboardTheme() {

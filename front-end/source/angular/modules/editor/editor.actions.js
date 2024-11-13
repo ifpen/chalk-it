@@ -10,7 +10,6 @@ import _ from 'lodash';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { UndoableAction } from './editor.undo-manager';
 import { EVENTS_EDITOR_WIDGET_MOVED } from './editor.events';
-import { minLeftCst, minTopCst } from 'kernel/dashboard/scaling/layout-mgr';
 import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
 import { scale, constrain } from 'kernel/dashboard/widget/widget-placement';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
@@ -847,8 +846,8 @@ class ResizeDashboardAction extends UndoableAction {
         vertDim = scale(this._oldDashboardSize.height, this._newDashboardSize.height, vertDim);
 
         const { minWidth, minHeight } = widgetContainer.minimumSize(elementId);
-        horizDim = Math.max(horizDim, minWidth);
-        vertDim = Math.max(vertDim, minHeight);
+        horizDim.size = Math.max(horizDim.size, minWidth);
+        vertDim.size = Math.max(vertDim.size, minHeight);
       }
 
       // Always constrain in case of rounding errors or min size pushed the widget out of bounds
@@ -961,7 +960,7 @@ angular.module('modules.editor').service('EditorActionFactory', [
         widgetEditorGetter(),
         eventCenterService,
         elementIds,
-        { left: left + minLeftCst },
+        { left },
         `Set widget${plural} X to ${left}`,
         false,
         canMerge ? Date.now() + UNDO_MOVE_MERGE_WINDO_MS : undefined
@@ -980,7 +979,7 @@ angular.module('modules.editor').service('EditorActionFactory', [
         widgetEditorGetter(),
         eventCenterService,
         elementIds,
-        { top: top + minTopCst },
+        { top },
         `Set widget${plural} Y to ${top}`,
         false,
         canMerge ? Date.now() + UNDO_MOVE_MERGE_WINDO_MS : undefined

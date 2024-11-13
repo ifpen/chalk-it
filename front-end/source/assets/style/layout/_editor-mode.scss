@@ -63,20 +63,21 @@
 }
 
 // Used in editor.html& grid-mgr ...
+.dashboard-page-container {
+  border-radius: 10px;
+  border: 1px grey dotted;
+}
+
 .dropperR {
-  width: 100%;
   position: relative;
-  height: calc(207px + 51vh);
   color: var(--light-color-text);
-  overflow: auto;
+
+  z-index: 0;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
 }
 
-.dropperR .drsElement {
-  // TODO coords
-  // border: 1px solid rgba(255, 255, 255, 0);
-}
-
-.dropperR.show-widget-borders:not([id='DropperDroitec']) .drsElement {
+.dropperR.show-widget-borders:not([id='DropperDroitec']) .widget {
   outline: 1px dashed rgba(0, 0, 0, 0.5);
 }
 
@@ -86,19 +87,6 @@
   background-attachment: local;
   background-image: linear-gradient(to right, #e6e6e6 1px, transparent 1px),
     linear-gradient(to bottom, #e6e6e6 1px, transparent 1px);
-}
-
-.overflow-type1 {
-  overflow: auto;
-}
-
-.overflow-type2 {
-  overflow: hidden;
-}
-
-.overflow-type3 {
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 // Used in edit-widgets
@@ -126,10 +114,6 @@ div > .draggable::-webkit-scrollbar-thumb {
 }
 
 // Apply the element you want to drag/resize
-.drsElement {
-  position: absolute;
-}
-
 #screenshot {
   position: absolute;
   border: 1px solid #ccc;
