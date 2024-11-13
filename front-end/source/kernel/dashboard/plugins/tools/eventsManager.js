@@ -178,7 +178,7 @@ export  function clickHandler(self, geoJSON, leafletLayer, leafletIndex) {
         //case : unselect event (double click)
         if (self.state.selectedElement == e.target) {
           if (!_.isUndefined(e.target.feature.properties) && style.property in e.target.feature.properties) {
-            let fillColor = self.getFillColor(
+            fillColor = self.getFillColor(
               geoJSON,
               { ...style },
               e.target.feature.properties[style.property],
