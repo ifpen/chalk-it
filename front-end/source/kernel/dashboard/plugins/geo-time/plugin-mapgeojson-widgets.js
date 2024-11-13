@@ -349,15 +349,6 @@ function mapGeoJsonWidgetsPluginClass() {
           _.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom)
         ) {
           let bboxCoords = undefined;
-      //update view
-      // setZoom
-      let zoom = function () {
-        //Zoom
-        if (
-          modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom ||
-          _.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom)
-        ) {
-          let bboxCoords = undefined;
           if (
             !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
             modelsHiddenParams[idInstance].GeoJSON.length > 0
