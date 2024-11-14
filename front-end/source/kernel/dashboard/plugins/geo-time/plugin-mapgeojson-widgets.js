@@ -27,7 +27,7 @@ import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
-import { getColor,getColorScaleFromStyle } from 'kernel/dashboard/plugins/tools/colorScaleManager';
+import { getColorScaleFromStyle } from 'kernel/dashboard/plugins/tools/colorScaleManager';
 import { getTileServerConf } from 'kernel/dashboard/plugins/tools/tileServers';
 import { findAllProperties,findFeatureType,getFillColor,isValidGeoJSON } from 'kernel/dashboard/plugins/tools/geoJsonTools';
 import { createLegend,createChoroplethLegend} from 'kernel/dashboard/plugins/tools/legends';
@@ -308,10 +308,9 @@ function mapGeoJsonWidgetsPluginClass() {
 
     // Create the style object that will be in out JSON for a geoJSON
     // typeLayer is used for marker or circle
-    this.getColor = getColor;
 
     this.createChoroplethLegend = function (legendId, min, max, featureTitle, colorScale) {
-      let legend = createChoroplethLegend(legendId, self.getColor, min, max, featureTitle, colorScale);
+      let legend = createChoroplethLegend(legendId, min, max, featureTitle, colorScale);
       if (!_.isUndefined(legend)) {
         legend.addTo(self.map);
       }

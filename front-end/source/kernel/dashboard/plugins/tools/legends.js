@@ -12,6 +12,7 @@ import * as d3 from 'd3';
 
 import { nFormatter } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { getMinMaxProperty,getNumberFormatter,equivalenceTypes,findFeatureType } from 'kernel/dashboard/plugins/tools/geoJsonTools';
+import { getColor } from 'kernel/dashboard/plugins/tools/colorScaleManager';
 
 export function createLegend(idLegend, color, length, colorStops, min_, max_, featureTitle) {
   var legend = L.control({ position: 'topleft' });
@@ -62,7 +63,7 @@ export function createLegend(idLegend, color, length, colorStops, min_, max_, fe
   return legend;
 }
 
-export  function createChoroplethLegend(idLegend, getColor, min_, max_, featureTitle, colorScale) {
+export  function createChoroplethLegend(idLegend,min_, max_, featureTitle, colorScale) {
   if (min_ == max_) return;
   if (_.isUndefined(featureTitle) || featureTitle == 'none') return;
   featureTitle = featureTitle ? featureTitle.charAt(0).toUpperCase() + featureTitle.toLowerCase().slice(1) : '';
