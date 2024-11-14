@@ -55,47 +55,40 @@ export function getHomogeneousColorScale(name) {
 }
 
 export function getColorScale(colorScaleName, min, max) {
-  // First remove the _r which means that the colorScale is reversed
+  // Fonction pour créer une échelle de couleurs
+  // Vérifier si le scaleType est un interpolateur continu
+  let domain = [min,max];
   let reverseColorScale = false;
-  let domain = [0, 1];
-  let colorScale;
   if (colorScaleName.endsWith('_r')) {
     reverseColorScale = true;
     colorScaleName = colorScaleName.slice(0, -2);
   }
-
-  // check internal private colorScale
-
+  if (reverseColorScale) {
+    domain.reverse();
+  }
   if (getPrivateColorScale(colorScaleName) != null) {
-    let privateColorScale = getPrivateColorScale(colorScaleName);
-    colorScale = privateColorScale
+    var privateColorScale = getPrivateColorScale(colorScaleName);
+    return privateColorScale
       .scale()
       .interpolate(privateColorScale.interpolator)
+      .domain(privateColorScale.domain)
       .range(privateColorScale.colors);
-    domain = privateColorScale.domain;
-  } else if (getD3colorScale(colorScaleName) != null) {
-    let interpolator = getD3colorScale(colorScaleName);
-    colorScale = d3.scaleSequential().interpolator(interpolator);
-  } else if (getHomogeneousColorScale(colorScaleName)) {
+  }else if (getD3colorScale(colorScaleName) != null) {
+    var interpolator = getD3colorScale(colorScaleName);
+    return d3.scaleSequential().interpolator(interpolator).domain(domain);
+  }
+  else if (getD3ColorScaleFromScheme(colorScaleName)) {
+    const colorScheme = d3[colorScaleName];
+    const colorScale = d3.scaleQuantize() // Utilise une échelle quantisée pour mapper aux couleurs
+      .domain(domain)
+      .range(colorScheme[8]);
+    return colorScale;
+  } 
+  else if (getHomogeneousColorScale(colorScaleName)) {
     let interpolator = getHomogeneousColorScale(colorScaleName);
-    colorScale = d3.scaleSequential().interpolator(interpolator);
-  } else if (getD3ColorScaleFromScheme(colorScaleName)) {
-    let interpolator = getD3ColorScaleFromScheme(colorScaleName);
-    colorScale = d3.scaleOrdinal(d3.schemeAccent);
-  } else {
-    return null;
+    return d3.scaleSequential().interpolator(interpolator).domain(domain);
   }
-
-  let delta = max - min;
-
-  let minMaxReal = domain.map(function (d) {
-    return min + d * delta;
-  });
-  if (reverseColorScale) {
-    minMaxReal.reverse();
-  }
-
-  return colorScale.domain(minMaxReal);
+  throw new Error("Paramètres d'entrée non valides : fournissez un interpolateur, un schéma, ou une liste de couleurs.");
 }
 export function getColorScaleFromStyle(style) {
   let color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
@@ -116,3 +109,7 @@ export function getColor(min, max, d, colorScale) {
   let categoryIndex  = Math.floor((d - min) / categorySize);
   return colorScale(min + categoryIndex * categorySize);
 }
+
+
+
+
