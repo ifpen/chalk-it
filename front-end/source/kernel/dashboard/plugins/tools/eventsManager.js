@@ -115,6 +115,9 @@ export  function mouseoutHandler(self, geoJSON, leafletIndex) {
     if (_.isUndefined(eventStyle.fillOpacity)) {
       eventStyle.fillOpacity = style.fillOpacity;
     }
+    if (_.isUndefined(eventStyle.opacity)) {
+      eventStyle.opacity = style.opacity;
+    }
     if (_.isUndefined(eventStyle.color)) {
       eventStyle.color = style.color;
     }

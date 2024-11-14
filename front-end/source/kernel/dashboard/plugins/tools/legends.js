@@ -28,7 +28,7 @@ export function createLegend(idLegend, color, length, colorStops, min_, max_, fe
     div.setAttribute('id', idLegend);
     var rects = '';
     for (var i = 0; i < length; i++) {
-      rects = rects + '<rect height="10" x="' + i * 4 + '" width="4" style="fill: ' + color(i) + ';"></rect>';
+      rects = rects + '<rect height="10" x="' + i * 4 + '" width="4" style="fill: ' + color((i*(max_-min_))/100) + ';"></rect>';
     }
     var svg = '<svg  width="450" height="50"><g class="key" transform="translate(25,16)">' + rects;
     var bTicksFormat = true;

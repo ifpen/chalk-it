@@ -73,7 +73,7 @@ export function getColorScale(colorScaleName, min, max) {
       .interpolate(privateColorScale.interpolator)
       .domain(privateColorScale.domain)
       .range(privateColorScale.colors);
-  }else if (getD3colorScale(colorScaleName) != null) {
+  } else if (getD3colorScale(colorScaleName) != null) {
     var interpolator = getD3colorScale(colorScaleName);
     return d3.scaleSequential().interpolator(interpolator).domain(domain);
   }
@@ -88,7 +88,7 @@ export function getColorScale(colorScaleName, min, max) {
     let interpolator = getHomogeneousColorScale(colorScaleName);
     return d3.scaleSequential().interpolator(interpolator).domain(domain);
   }
-  throw new Error("Paramètres d'entrée non valides : fournissez un interpolateur, un schéma, ou une liste de couleurs.");
+  throw new Error("Paramètres d'entrée non valides : fournissez un interpolateur, un schéma, ou une couleur.");
 }
 export function getColorScaleFromStyle(style) {
   let color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;

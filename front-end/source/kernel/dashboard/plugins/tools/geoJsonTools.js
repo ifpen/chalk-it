@@ -161,8 +161,7 @@ export  function getFillColor(geoJSON, style, value, colorScale) {
     return getColor(min, max, value, colorScale);
   } else if (findFeatureType(geoJSON) == equivalenceTypes.MultiLineString) {
     if (!_.isUndefined(colorScale)) {
-      let pct = ((value - min) / (max - min)) * 100;
-      return colorScale(pct);
+      return getColor(min, max, value, colorScale);
     }
   } else {
     return getColor(min, max, value, colorScale);
