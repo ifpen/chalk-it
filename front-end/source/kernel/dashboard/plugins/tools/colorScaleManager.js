@@ -107,8 +107,8 @@ export function getColorScaleFromStyle(style) {
   return colorScale;
 }
 export function getColor(min, max, d, colorScale) {
-  var step = (max - min) / 8.0;
+  var categorySize  = (max - min) / 8.0;
 
-  var stepDraw = Math.floor((d - min) / step);
-  return colorScale(stepDraw * (1.0 / 8.0) * 100);
+  var categoryIndex  = Math.floor((d - min) / categorySize);
+  return colorScale(min + categoryIndex * categorySize);
 }

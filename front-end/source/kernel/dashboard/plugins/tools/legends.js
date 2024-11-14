@@ -86,6 +86,7 @@ export  function createChoroplethLegend(idLegend, getColor, min_, max_, featureT
       min + step * 4,
       min + step * 5,
       min + step * 6,
+      min + step * 7,
       max,
     ];
     var labels = [],
@@ -121,16 +122,17 @@ export  function createChoroplethLegend(idLegend, getColor, min_, max_, featureT
 
 export  function toggleLegend(self, layerIndex, styleForObject, geoJSONinLayer) {
   if (!_.isUndefined(styleForObject.pointAreMarker) && styleForObject.pointAreMarker == true) return;
-  //calcul color scale
-  let colorScale = undefined;
-  var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
-  if (!_.isUndefined(color)) {
-    colorScale = self.getColorScale(color, 0, 100);
-  }
+  
   //get Min Max
   let minMax = getMinMaxProperty(styleForObject, geoJSONinLayer);
   let min = minMax[0],
     max = minMax[1];
+    //calcul color scale
+  let colorScale = undefined;
+  var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
+  if (!_.isUndefined(color)) {
+    colorScale = self.getColorScale(color, min, max);
+  }
   var length = 100;
   var colorStops = [0, 25, 50, 75, 100];
   if (self.map.hasLayer(self.layers[layerIndex])) {
