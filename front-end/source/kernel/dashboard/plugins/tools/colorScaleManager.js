@@ -59,7 +59,7 @@ export function getColorScale(colorScaleName, min, max) {
   // First remove the _r which means that the colorScale is reversed
   let reverseColorScale = false;
   let domain = [0, 1];
-  var colorScale;
+  let colorScale;
   if (colorScaleName.endsWith('_r')) {
     reverseColorScale = true;
     colorScaleName = colorScaleName.slice(0, -2);
@@ -68,14 +68,14 @@ export function getColorScale(colorScaleName, min, max) {
   // check internal private colorScale
 
   if (getPrivateColorScale(colorScaleName) != null) {
-    var privateColorScale = getPrivateColorScale(colorScaleName);
+    let privateColorScale = getPrivateColorScale(colorScaleName);
     colorScale = privateColorScale
       .scale()
       .interpolate(privateColorScale.interpolator)
       .range(privateColorScale.colors);
     domain = privateColorScale.domain;
   } else if (getD3colorScale(colorScaleName) != null) {
-    var interpolator = getD3colorScale(colorScaleName);
+    let interpolator = getD3colorScale(colorScaleName);
     colorScale = d3.scaleSequential().interpolator(interpolator);
   } else if (getHomogeneousColorScale(colorScaleName)) {
     let interpolator = getHomogeneousColorScale(colorScaleName);
@@ -87,9 +87,9 @@ export function getColorScale(colorScaleName, min, max) {
     return null;
   }
 
-  var delta = max - min;
+  let delta = max - min;
 
-  var minMaxReal = domain.map(function (d) {
+  let minMaxReal = domain.map(function (d) {
     return min + d * delta;
   });
   if (reverseColorScale) {
@@ -99,8 +99,8 @@ export function getColorScale(colorScaleName, min, max) {
   return colorScale.domain(minMaxReal);
 }
 export function getColorScaleFromStyle(style) {
-  var color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
-  var colorScale = undefined;
+  let color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
+  let colorScale = undefined;
   if (!_.isUndefined(color)) {
     colorScale = getColorScale(color, 0, 100);
   }
