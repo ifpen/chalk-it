@@ -107,8 +107,8 @@ export function getColorScaleFromStyle(style) {
   return colorScale;
 }
 export function getColor(min, max, d, colorScale) {
-  var categorySize  = (max - min) / 8.0;
+  let categorySize  = (max - min) / 8.0;
 
-  var categoryIndex  = Math.floor((d - min) / categorySize);
+  let categoryIndex  = Math.floor((d - min) / categorySize);
   return colorScale(min + categoryIndex * categorySize);
 }
