@@ -128,11 +128,7 @@ export  function toggleLegend(self, layerIndex, styleForObject, geoJSONinLayer) 
   let min = minMax[0],
     max = minMax[1];
     //calcul color scale
-  let colorScale = undefined;
-  var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
-  if (!_.isUndefined(color)) {
-    colorScale = self.getColorScale(color, min, max);
-  }
+  let colorScale =  self.getColorScaleFromStyle(styleForObject);
   var length = 100;
   var colorStops = [0, 25, 50, 75, 100];
   if (self.map.hasLayer(self.layers[layerIndex])) {

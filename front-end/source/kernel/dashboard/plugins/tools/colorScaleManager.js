@@ -40,7 +40,6 @@ export function getD3colorScale(name) {
   return null;
 }
 export function getD3ColorScaleFromScheme(name) {
-  const color = d3.scaleOrdinal(d3.schemeAccent);
   if (!_.isUndefined(d3[name]) && name.includes('scheme')) {
     return d3[name];
   }
@@ -102,7 +101,12 @@ export function getColorScaleFromStyle(style) {
   let color = !_.isUndefined(style.fillColor) ? style.fillColor : style.color;
   let colorScale = undefined;
   if (!_.isUndefined(color)) {
-    colorScale = getColorScale(color, 0, 100);
+    let minMaxAuto = style.possibleProperties[style.property];
+    if (!_.isUndefined(minMaxAuto) && Array.isArray(minMaxAuto) && minMaxAuto.length > 1) {
+      let min = minMaxAuto[0];
+      let max = minMaxAuto[1];
+      colorScale = getColorScale(color, min, max);
+    }
   }
   return colorScale;
 }

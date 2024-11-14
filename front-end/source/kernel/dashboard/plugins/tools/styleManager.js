@@ -142,11 +142,7 @@ export function updateLayerStyle(self, layer, styleForObject, geoJSONinLayer) {
     !style.pointAreMarker
   )  {
     //calcul fill Color according to value
-    var color = !_.isUndefined(styleForObject.fillColor) ? styleForObject.fillColor : styleForObject.color;
-    var colorScale = undefined;
-    if (!_.isUndefined(color)) {
-      colorScale = self.getColorScale(color, 0, 100);
-    }
+    let colorScale = self.getColorScaleFromStyle(styleForObject);
     if (!_.isUndefined(layer.feature.properties) && styleForObject.property in layer.feature.properties) {
       var fillColor = self.getFillColor(
         geoJSONinLayer,

@@ -27,7 +27,7 @@ import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
-import { getColor,getColorScaleFromStyle,getColorScale } from 'kernel/dashboard/plugins/tools/colorScaleManager';
+import { getColor,getColorScaleFromStyle } from 'kernel/dashboard/plugins/tools/colorScaleManager';
 import { getTileServerConf } from 'kernel/dashboard/plugins/tools/tileServers';
 import { findAllProperties,findFeatureType,getFillColor,isValidGeoJSON } from 'kernel/dashboard/plugins/tools/geoJsonTools';
 import { createLegend,createChoroplethLegend} from 'kernel/dashboard/plugins/tools/legends';
@@ -136,7 +136,6 @@ function mapGeoJsonWidgetsPluginClass() {
 
     this.rescale = function () {};
 
-    this.getColorScale =  getColorScale;
     this.getColorScaleFromStyle = getColorScaleFromStyle;
     this.addImageOverlay = function (imgStruct) {
       //securities
