@@ -1101,8 +1101,10 @@ angular.module('modules.editor').service('EditorActionFactory', [
     function _collectOtherWidgetsPotision(widgetContainer, elementIds) {
       const result = [];
       for (const key of widgetContainer.widgetIds) {
-        if (!elementIds.includes(key)) {
-          result.push(widgetContainer.getRecordedGeometry(key));
+        if (widgetContainer.currentPage === widgetContainer.getWidgetLayout(key).page) {
+          if (!elementIds.includes(key)) {
+            result.push(widgetContainer.getRecordedGeometry(key));
+          }
         }
       }
       return result;
