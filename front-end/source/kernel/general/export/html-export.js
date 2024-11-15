@@ -16,11 +16,9 @@ import {
   DASHBOARD_DATA_TYPE,
   DASHBOARD_CONFIG_ID,
   DASHBOARD_CONFIG_TYPE,
-} from 'kernel/runtime/xdash-runtime-main';
-
-export const PAGE_MODE_PAGES = 'pages';
-export const PAGE_MODE_TABS = 'tabs';
-export const PAGE_MODE_CUSTOM = 'custom';
+  PAGE_MODE_PAGES,
+  PAGE_MODE_TABS,
+} from 'kernel/general/export/export-constants';
 
 class HtmlExport {
   #pageMode;

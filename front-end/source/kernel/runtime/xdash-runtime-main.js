@@ -14,14 +14,13 @@ import { modelsHiddenParams, modelsParameters, modelsTempParams } from 'kernel/b
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { pyodideLib } from 'kernel/base/pyodide-project';
 import { inputHandler } from 'kernel/general/interfaces/input-params';
-import { PAGE_MODE_PAGES } from 'kernel/general/export/html-export';
-
-export const DASHBOARD_URL_PARAMETER = 'projectUrl';
-export const DASHBOARD_DATA_ID = 'dashboard_data';
-export const DASHBOARD_CONFIG_ID = 'dashboard_config';
-
-export const DASHBOARD_DATA_TYPE = 'application/json';
-export const DASHBOARD_CONFIG_TYPE = DASHBOARD_DATA_TYPE;
+import {
+  DASHBOARD_DATA_ID,
+  DASHBOARD_DATA_TYPE,
+  DASHBOARD_CONFIG_ID,
+  DASHBOARD_CONFIG_TYPE,
+  PAGE_MODE_PAGES,
+} from 'kernel/general/export/export-constants';
 
 // Runtime only
 

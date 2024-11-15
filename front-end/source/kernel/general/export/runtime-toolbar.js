@@ -1,5 +1,5 @@
 ﻿import { xDashConfig } from 'config.js';
-import { PAGE_MODE_PAGES, PAGE_MODE_TABS } from 'kernel/general/export/html-export';
+import { PAGE_MODE_PAGES, PAGE_MODE_TABS } from 'kernel/general/export/export-constants';
 
 class RuntimeToolbar {
   constructor() {

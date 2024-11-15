@@ -1,4 +1,4 @@
-import { PAGE_MODE_PAGES, PAGE_MODE_TABS, PAGE_MODE_CUSTOM } from 'kernel/general/export/html-export';
+import { PAGE_MODE_PAGES, PAGE_MODE_TABS, PAGE_MODE_CUSTOM } from 'kernel/general/export/export-constants';
 import { editorSingletons } from 'kernel/editor-singletons';
 
 angular.module('modules').controller('exportSettingDownload', [
