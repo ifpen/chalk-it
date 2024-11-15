@@ -1043,7 +1043,7 @@ function flatUiComplexWidgetsPluginClass() {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
     const nbminPerPagination = modelsParameters[idInstance]?.paginationMinNbr ?? 10;
-    const options = JSON.parse(modelsParameters[idInstance]?.paginationOptions ?? "[10, 50, 100, 500]");
+    const options = JSON.parse(modelsParameters[idInstance]?.paginationOptions ?? '[10, 50, 100, 500]');
 
     let currentPage = 1;
     let totalRows = 0;
@@ -1269,7 +1269,7 @@ function flatUiComplexWidgetsPluginClass() {
           if (typeof row === 'string') {
             row = [row];
           }
-          
+
           const rowStyle =
             modelsParameters[idInstance].striped && i % 2 !== 0
               ? ` style="${this.tableBackgroundColor('secondary')}"`
@@ -1379,60 +1379,6 @@ function flatUiComplexWidgetsPluginClass() {
           <button id="last-page${idWidget}">&gt;|</button>
         </div>
       `;
-    };
-
-    this.buildPagination = function () {
-      let fontSize = 0.5;
-      if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
-        fontSize = modelsParameters[idInstance].tableValueFontSize;
-      }
-      let strFontSize = 'font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)';
-
-      defaultValue = _.isUndefined($('#rows-per-page' + idWidget)[0])
-        ? defaultValue
-        : parseInt($('#rows-per-page' + idWidget).val());
-
-      let optionsHTML = '';
-      options.forEach((value) => {
-        optionsHTML += `<option value="${value}"${value === defaultValue ? ' selected' : ''}>${value}</option>`;
-      });
-      const divPagination =
-        '<div id="pagination-controls" >' +
-        '  <label for="rows-per-page" style="' +
-        this.valueColor() +
-        this.valueFontFamily() +
-        strFontSize +
-        '">Rows per page:</label>' +
-        ' <div class="custom-select-wrapper">' +
-        '  <select name="rows-per-page" id="rows-per-page' +
-        idWidget +
-        '" style="' +
-        strFontSize +
-        '">' +
-        optionsHTML +
-        '  </select>' +
-        ' </div>' +
-        ' <button id="first-page' +
-        idWidget +
-        '" disabled>|&lt;</button>' +
-        '  <button id="prev-page' +
-        idWidget +
-        '" disabled>&lt;</button>' +
-        '  <span id="page-info' +
-        idWidget +
-        '" style="' +
-        this.valueColor() +
-        this.valueFontFamily() +
-        strFontSize +
-        '">Page 1 of 1</span>' +
-        '  <button id="next-page' +
-        idWidget +
-        '">&gt;</button>' +
-        '<button id="last-page' +
-        idWidget +
-        '">&gt;|</button>' +
-        '</div>';
-      return divPagination;
     };
 
     this.rescale = function () {
