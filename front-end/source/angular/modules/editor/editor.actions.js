@@ -328,6 +328,9 @@ class UpdateGeometryAction extends UndoableAction {
       }
     }
     this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
+    if (!widgetContainer.enforceHeightLimit) {
+      this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+    }
   }
 
   canRedo() {
@@ -347,6 +350,9 @@ class UpdateGeometryAction extends UndoableAction {
     }
     this._initialGeometries = undefined;
     this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
+    if (!widgetContainer.enforceHeightLimit) {
+      this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+    }
   }
 }
 
@@ -356,13 +362,15 @@ class UpdateGeometryAction extends UndoableAction {
 class CreateWidgetAction extends UndoableAction {
   /**
    * @param {*} widgetEditor
+   * @param {EventCenter} eventCenter
    * @param {string} modelJsonId id of the widget type to create
    * @param {=string} label action label for the history.
    * @param {undefined|{left: (number|undefined), top: (number|undefined), width: (number|undefined), height:(number|undefined), page: (number|undefined)}} layout Optional. Where to place the widget.
    */
-  constructor(widgetEditor, modelJsonId, label, layout) {
+  constructor(widgetEditor, eventCenter, modelJsonId, label, layout) {
     super();
     this._widgetEditor = widgetEditor;
+    this._eventCenter = eventCenter;
     this._modelJsonId = modelJsonId;
     this._label = label || 'Add widget';
     this._layout = layout;
@@ -379,6 +387,10 @@ class CreateWidgetAction extends UndoableAction {
     const instanceId = this._widgetEditor.addWidget(this._modelJsonId, undefined, this._layout);
     this._widgetId = instanceId;
     this._actualLayout = this._widgetEditor.widgetContainer.getWidgetLayout(this._widgetId);
+
+    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+      this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+    }
   }
 
   canRedo() {
@@ -404,6 +416,9 @@ class CreateWidgetAction extends UndoableAction {
 
   undo() {
     this._widgetEditor.deleteWidget(this._widgetId);
+    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+      this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+    }
   }
 }
 
@@ -413,11 +428,13 @@ class CreateWidgetAction extends UndoableAction {
 class DuplicateWidgetsWithConnectionAction extends UndoableAction {
   /**
    * @param {*} widgetEditor
+   * @param {EventCenter} eventCenter
    * @param {Array.<string>} elementIds ids of the widgets to duplicate
    */
-  constructor(widgetEditor, elementIds) {
+  constructor(widgetEditor, eventCenter, elementIds) {
     super();
     this._widgetEditor = widgetEditor;
+    this._eventCenter = eventCenter;
     this._elementIds = elementIds;
 
     this._widgetIds = undefined;
@@ -433,6 +450,9 @@ class DuplicateWidgetsWithConnectionAction extends UndoableAction {
       const newWidgetId = this._widgetEditor.duplicateWidgetWithConnection(elementid);
       this._widgetIds.set(elementid, newWidgetId);
     }
+    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+      this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+    }
   }
 
   canRedo() {
@@ -445,6 +465,9 @@ class DuplicateWidgetsWithConnectionAction extends UndoableAction {
       const newwidgetId = this._widgetEditor.duplicateWidgetWithConnection(elementid, newWidgetId);
       this._widgetIds.set(elementid, newwidgetId);
     }
+    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+      this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+    }
   }
 
   canUndo() {
@@ -456,6 +479,9 @@ class DuplicateWidgetsWithConnectionAction extends UndoableAction {
     for (const elementid of this._widgetIds.values()) {
       this._widgetEditor.deleteWidget(elementid);
     }
+    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+      this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+    }
   }
 }
 
@@ -465,12 +491,14 @@ class DuplicateWidgetsWithConnectionAction extends UndoableAction {
 class DeleteWidgetsAction extends UndoableAction {
   /**
    * @param {*} widgetEditor
+   * @param {EventCenter} eventCenter
    * @param {*} widgetConnector
    * @param {Array.<string>} elementIds ids of the widgets to delete
    */
-  constructor(widgetEditor, widgetConnector, elementIds, label = undefined) {
+  constructor(widgetEditor, eventCenter, widgetConnector, elementIds, label = undefined) {
     super();
     this._widgetEditor = widgetEditor;
+    this._eventCenter = eventCenter;
     this._widgetConnector = widgetConnector;
     this._elementIds = elementIds;
     this._label = label ? label : this._elementIds.length > 1 ? 'Delete widgets' : 'Delete widget';
@@ -504,6 +532,10 @@ class DeleteWidgetsAction extends UndoableAction {
 
       this._widgetEditor.deleteWidget(elementId);
       this._widgetsData.push(data);
+    }
+
+    if (!container.enforceHeightLimit) {
+      this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
   }
 
@@ -541,6 +573,11 @@ class DeleteWidgetsAction extends UndoableAction {
       if (data.widgetsConnection) {
         this._widgetConnector.widgetsConnection[data.id] = jQuery.extend(true, {}, data.widgetsConnection);
       }
+    }
+
+    const container = this._widgetEditor.widgetContainer;
+    if (!container.enforceHeightLimit) {
+      this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
   }
 }
@@ -739,8 +776,6 @@ class ClearWidgetConnectionsAction extends UndoableAction {
  * Changes number of pages or their names
  */
 class UpdatePagesAction extends UndoableAction {
-  static EDITOR_DASHBOARD_ASPECT_CHANGED = EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED;
-
   /**
    * @param {*} widgetEditor
    * @param {EventCenter} eventCenter Used to notify when widgets moved
@@ -767,7 +802,7 @@ class UpdatePagesAction extends UndoableAction {
 
     this._widgetEditor.widgetContainer.updatePages(this.pages);
 
-    this._eventCenter.sendEvent(UpdatePagesAction.EDITOR_DASHBOARD_ASPECT_CHANGED);
+    this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
   }
 
   canRedo() {
@@ -797,8 +832,6 @@ class UpdatePagesAction extends UndoableAction {
  * Changes the size of the dashboard
  */
 class ResizeDashboardAction extends UndoableAction {
-  static EDITOR_DASHBOARD_ASPECT_CHANGED = EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED;
-
   /**
    * @param {*} widgetEditor
    * @param {EventCenter} eventCenter Used to notify when widgets moved
@@ -868,7 +901,7 @@ class ResizeDashboardAction extends UndoableAction {
       widgetContainer.moveResizeWidget(elementId, newPosition);
     }
 
-    this._eventCenter.sendEvent(UpdatePagesAction.EDITOR_DASHBOARD_ASPECT_CHANGED);
+    this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
   }
 
   canRedo() {
@@ -1413,25 +1446,31 @@ angular.module('modules.editor').service('EditorActionFactory', [
       if (widgetsPluginsHandler && widgetsPluginsHandler.widgetToolbarDefinitions) {
         const def = widgetsPluginsHandler.widgetToolbarDefinitions[modelJsonId];
         if (def && def.title) {
-          return new CreateWidgetAction(widgetEditorGetter(), modelJsonId, `Add "${def.title}"`, layout);
+          return new CreateWidgetAction(
+            widgetEditorGetter(),
+            eventCenterService,
+            modelJsonId,
+            `Add "${def.title}"`,
+            layout
+          );
         }
       }
 
-      return new CreateWidgetAction(widgetEditorGetter(), modelJsonId, undefined, layout);
+      return new CreateWidgetAction(widgetEditorGetter(), eventCenterService, modelJsonId, undefined, layout);
     };
 
     /**
      * @param {Array.<string>} elementIds ids of the widgets to duplicate
      */
     this.createDuplicateWidgetsWithConnectionAction = function _createDuplicateWidgetsWithConnectionAction(elementIds) {
-      return new DuplicateWidgetsWithConnectionAction(widgetEditorGetter(), elementIds);
+      return new DuplicateWidgetsWithConnectionAction(widgetEditorGetter(), eventCenterService, elementIds);
     };
 
     /**
      * @param {Array.<string>} elementIds ids of the widgets to delete
      */
     this.createDeleteWidgetsAction = function _createDeleteWidgetsAction(elementIds) {
-      return new DeleteWidgetsAction(widgetEditorGetter(), widgetConnectorGetter(), elementIds);
+      return new DeleteWidgetsAction(widgetEditorGetter(), eventCenterService, widgetConnectorGetter(), elementIds);
     };
 
     /**
@@ -1439,7 +1478,12 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createDeleteAllWidgetsAction = function _createDeleteWidgetsAction() {
       const widgetEditor = widgetEditorGetter();
-      return new DeleteWidgetsAction(widgetEditor, [...widgetEditor.widgetContainer.widgetIds], 'Delete all widgets');
+      return new DeleteWidgetsAction(
+        widgetEditor,
+        eventCenterService,
+        [...widgetEditor.widgetContainer.widgetIds],
+        'Delete all widgets'
+      );
     };
 
     /**
