@@ -89,7 +89,7 @@ function datePickerWidgetsPluginClass() {
 
     this.enable = function () {
       $('#' + idInstance + 'c').on('click', function (e, ui) {
-        widgetPreview.elevateZIndex(idInstance, e);
+        widgetPreview.elevateZIndex(idInstance);
         self.dateFieldShow();
       });
     };

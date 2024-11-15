@@ -491,20 +491,16 @@ class WidgetPreview {
    * Put z-index of selected widget on top of all widgets
    * MBG from AEF work for autocomplete
    * @param {string} idInstance
-   * @param {any} e
    */
-  elevateZIndex(idInstance, e) {
-    // TODO
-    var maxZIindex = 0;
+  elevateZIndex(idInstance) {
     // find highest z-index
-    _.each(Object.keys(widget), function (w) {
-      var wZIndex = Number($('#' + w + 'c')[0].style['z-index']);
-      if (wZIndex > maxZIindex) {
-        maxZIindex = wZIndex;
-      }
-    });
+    let maxZIindex = 0;
+    for (const info of this.widgetsInfo.values()) {
+      maxZIindex = Math.max(maxZIindex, info.layout.zIndex);
+    }
+
     // assign highest z-index
-    $('#' + idInstance + 'c')[0].style['z-index'] = maxZIindex + 1;
+    this.widgetsInfo.get(idInstance).containerDiv.style['z-index'] = maxZIindex + 1;
   }
 }
 

@@ -82,7 +82,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
       // when click on one of autocompletevalue widgets, put its zIndex on top of the others
       //TO DO: correction and improvements have to be done on the well-use of the pluggin of flatui.js as it is done for select
       $('#ac-value' + idWidget).on('click', function (e, ui) {
-        widgetPreview.elevateZIndex(idInstance, e);
+        widgetPreview.elevateZIndex(idInstance);
       });
 
       self.initTypeahead();
