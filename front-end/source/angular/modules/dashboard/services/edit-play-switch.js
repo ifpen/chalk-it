@@ -15,7 +15,10 @@ export function showPlayMode() {
   widgetEditor.setAllowPageChangeFromScript(true);
 
   try {
-    widgetPreview.loadPlayMode();
+    const { dashboard } = editorSingletons.widgetEditor.serialize();
+
+    widgetPreview.reset();
+    widgetPreview.renderDashboardWidgets(dashboard);
   } catch (e) {
     console.error(e);
     // FIXME ?

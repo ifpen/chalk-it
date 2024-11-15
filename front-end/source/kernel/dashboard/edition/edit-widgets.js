@@ -16,6 +16,7 @@ import {
   EVENTS_EDITOR_ADD_REMOVE_WIDGET,
   EVENTS_EDITOR_WIDGET_MOVED,
   EVENTS_EDITOR_WIDGET_TOGGLE_MENU,
+  EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED,
 } from 'angular/modules/editor/editor.events';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
@@ -727,7 +728,7 @@ export function initEditWidget() {
 
   /*--------serialize--------*/
   function serialize() {
-    const dashJson = {};
+    const dashboard = {};
     for (const [instanceId, info] of widgetContainer.widgetsInfo.entries()) {
       const layout = {
         top: info.layout.top,
@@ -746,7 +747,7 @@ export function initEditWidget() {
       };
       // TODO : gérer de façon abstraite
       if (bNoteBookMode || info.modelJsonId == 'annotationLabel' || info.modelJsonId == 'annotationImage') {
-        dashJson[instanceId] = {
+        dashboard[instanceId] = {
           layout,
           container,
           modelParameters: modelsParameters[instanceId],
@@ -754,7 +755,7 @@ export function initEditWidget() {
         };
       } else {
         const emptyModelsHiddenParams = jQuery.extend(true, {}, modelsHiddenParams[info.modelJsonId]);
-        dashJson[instanceId] = {
+        dashboard[instanceId] = {
           layout,
           container,
           modelParameters: modelsParameters[instanceId],
@@ -762,66 +763,65 @@ export function initEditWidget() {
         };
       }
     }
-    return dashJson;
+
+    const layoutMgr = editorSingletons.layoutMgr;
+    const display = {
+      ...layoutMgr.serialize(),
+      marginX: widgetContainer.marginX,
+      marginY: widgetContainer.marginY,
+      width: widgetContainer.width,
+      height: widgetContainer.height,
+      enforceHeightLimit: widgetContainer.enforceHeightLimit,
+    };
+
+    const pageNames = widgetContainer.pageNames;
+    const pages = pageNames.length ? { pageNames } : undefined;
+    return { dashboard, display, pages };
   }
 
   /*--------deserialize--------*/
-  function deserialize(dashObj, scalingObj, deviceObj) {
+  function deserialize({ dashboard, display, pages }) {
     clear();
 
-    var i = 0;
-    var wLayout, w1Layout, w2Layout;
-    var left, top, width, height;
+    widgetContainer.setMargins(display.marginX, display.marginY);
+    widgetContainer.setSize(display.width, display.height);
+    widgetContainer.enforceHeightLimit = display.enforceHeightLimit;
 
-    // columns rescale
-    editorSingletons.layoutMgr.deserialize(deviceObj, scalingObj);
-    scalingHelper.deserialize(scalingObj);
+    const layoutMgr = editorSingletons.layoutMgr;
+    layoutMgr.deserialize(display);
 
-    var wdgDrprMap = editorSingletons.layoutMgr.deserializeCols(dashObj, deviceObj);
+    if (pages) {
+      widgetContainer.pageNames = [...pages.pageNames];
+      widgetContainer.currentPage = 0;
+    } else {
+      widgetContainer.pageNames = [];
+      widgetContainer.currentPage = undefined;
+    }
 
-    for (const key in dashObj) {
-      modelsParameters[key] = dashObj[key].modelParameters;
+    for (const widget of Object.values(dashboard)) {
+      const { instanceId, modelJsonId } = widget.container;
 
-      if (
-        bNoteBookMode ||
-        dashObj[key].container.modelJsonId == 'annotationLabel' ||
-        dashObj[key].container.modelJsonId == 'annotationImage'
-      ) {
-        if (!_.isEmpty(dashObj[key].modelHiddenParams)) {
-          modelsHiddenParams[key] = dashObj[key].modelHiddenParams;
+      modelsParameters[instanceId] = widget.modelParameters;
+
+      if (bNoteBookMode || modelJsonId == 'annotationLabel' || modelJsonId == 'annotationImage') {
+        if (!_.isEmpty(widget.modelHiddenParams)) {
+          modelsHiddenParams[instanceId] = widget.modelHiddenParams;
         }
       }
 
-      top = rmUnit(dashObj[key].layout.top);
-      left = rmUnit(dashObj[key].layout.left);
-      width = rmUnit(dashObj[key].layout.width);
-      height = rmUnit(dashObj[key].layout.height);
-
-      w1Layout = {
-        topVh: top,
-        leftVw: left,
-        widthVw: width,
-        heightVh: height,
-      };
-      w2Layout = edScalingMgr.scale(w1Layout);
-      wLayout = {
-        top: w2Layout.topVh + 'vh',
-        left: w2Layout.leftVw + 'vw',
-        width: w2Layout.widthVw + 'vw',
-        height: w2Layout.heightVh + 'vh',
-      };
-
-      var targetDiv = document.getElementById(wdgDrprMap[key]);
-
       // TODO coords page
-      addWidget(
-        dashObj[key].container.modelJsonId,
-        dashObj[key].container.instanceId,
-        wLayout,
-        dashObj[key].layout['z-index']
-      );
-      i = i + 1;
+      addWidget(modelJsonId, instanceId, widget.layout, widget.layout['z-index'], widget.layout.page);
     }
+
+    angular
+      .element(document.body)
+      .injector()
+      .invoke([
+        'EventCenterService',
+        (eventCenterService) => {
+          eventCenterService.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+        },
+      ]);
   }
 
   /*--------reset--------*/

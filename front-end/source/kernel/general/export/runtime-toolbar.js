@@ -1,4 +1,5 @@
 ﻿import { xDashConfig } from 'config.js';
+import { PAGE_MODE_PAGES, PAGE_MODE_TABS } from 'kernel/general/export/html-export';
 
 class RuntimeToolbar {
   constructor() {
@@ -6,6 +7,7 @@ class RuntimeToolbar {
     this.iconUrl = `${xDashConfig.urlBaseForExport}assets/chalk-it-icon.svg`;
   }
 
+  // TODO template file with controler
   get toolbarTemplate() {
     return `
       <div class="top-nav">
@@ -17,21 +19,21 @@ class RuntimeToolbar {
                 <img src="${this.iconUrl}" alt="Chalk'it Icon"/>
               </a>
             </li>
-            <li ng-if="showPagination && exportOptions === 'rowToPage'" class="top-nav__nav-item top-nav__nav-item--row-to-page">
-              <button class="top-nav__btn top-nav__btn--rounded" ng-click="rowToPageChange('previous')">
+            <li ng-if="pageMode === '${PAGE_MODE_PAGES}'" class="top-nav__nav-item top-nav__nav-item--row-to-page">
+              <button class="top-nav__btn top-nav__btn--rounded" ng-click="changePage(pageNumber-1)">
                 <i class="fa fa-chevron-left" aria-hidden="true"></i>
               </button>
-              <div class="top-nav__title">Page {{pageNumber}} / {{totalPages}}</div>
-              <button class="top-nav__btn top-nav__btn--rounded" ng-click="rowToPageChange('next')">
+              <div class="top-nav__title">Page {{pageNumber+1}} / {{pageNames.length}}</div>
+              <button class="top-nav__btn top-nav__btn--rounded" ng-click="changePage(pageNumber+1)">
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
               </button>
             </li>
-            <li ng-if="showPagination && exportOptions === 'rowToTab'" class="top-nav__nav-item top-nav__nav-item--row-to-tab">
+            <li ng-if="pageMode === '${PAGE_MODE_TABS}'" class="top-nav__nav-item top-nav__nav-item--row-to-tab">
               <div class="top-nav__btn-wrapper" ng-repeat="pageName in pageNames">
                 <button id="btn-page-{{$index + 1}}" 
                         class="btn btn-rounded-fill primary" 
-                        ng-class="{'cancel': pageNumber !== $index + 1}" 
-                        ng-click="rowToTabChange($index + 1)">
+                        ng-class="{'cancel': pageNumber !== $index}" 
+                        ng-click="changePage($index)">
                   {{pageName}}
                 </button>
               </div>

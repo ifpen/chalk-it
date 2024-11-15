@@ -21,10 +21,11 @@ import {
   EVENTS_EDITOR_DASHBOARD_READY,
   EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED,
 } from './editor.events';
-import { keyShift } from 'kernel/dashboard/scaling/layout-mgr';
 import angular from 'angular';
 
 const EDIT_ZONE_MARGIN = 1;
+
+export const keyShift = 5; // cst; size in px of keyboard shift using arrows, can be modified
 
 angular.module('modules.editor').controller('EditorController', [
   '$scope',

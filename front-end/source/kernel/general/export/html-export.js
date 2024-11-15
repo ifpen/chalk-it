@@ -18,15 +18,19 @@ import {
   DASHBOARD_CONFIG_TYPE,
 } from 'kernel/runtime/xdash-runtime-main';
 
+export const PAGE_MODE_PAGES = 'pages';
+export const PAGE_MODE_TABS = 'tabs';
+export const PAGE_MODE_CUSTOM = 'custom';
+
 class HtmlExport {
-  #exportOptions;
+  #pageMode;
+  #initialPage;
   #navBarNotification;
-  #checkExportOptions;
 
   constructor() {
-    this.#exportOptions = 'ajustToTargetWindow';
+    this.#pageMode = undefined;
+    this.#initialPage = undefined;
     this.#navBarNotification = false;
-    this.#checkExportOptions = true;
   }
 
   /**
@@ -34,16 +38,13 @@ class HtmlExport {
    *
    * @param {Object} xprjson - JSON data for the dashboard.
    * @param {string} projectName - Name of the project.
-   * @param {boolean} bNoExportModal - Flag to bypass the export modal.
    */
-  previewDashboard(xprjson, projectName, bNoExportModal) {
+  previewDashboard(xprjson, projectName) {
     const $rootScope = angular.element(document.body).scope().$root;
     const _projectName = $rootScope.xDashFullVersion ? projectName : $('#projectName').val() || 'Untitled';
     const param = xprjson && _projectName ? [xprjson, _projectName] : null;
 
-    if (this.checkExportOptions || bNoExportModal) {
-      this.previewDashboardCallback(param);
-    }
+    this.previewDashboardCallback(param);
   }
 
   /**
@@ -54,14 +55,6 @@ class HtmlExport {
   async previewDashboardCallback(param) {
     const dashboardName = param?.[1] || $('#projectName').val();
     const xprjson = param?.[0];
-
-    if ($('#select-export-settings')[0]) {
-      this.exportOptions = $('#select-export-settings')[0].value;
-    }
-
-    if ($('#check-scale-export')[0]) {
-      this.checkExportOptions = $('#check-scale-export')[0].checked;
-    }
 
     const tab = window.open('about:blank', '_blank');
     const txt = await this.createDashboardDocument(dashboardName, xprjson);
@@ -89,14 +82,6 @@ class HtmlExport {
    */
   saveDashboard() {
     const dashboardName = $('#projectName').val();
-
-    if ($('#select-export-settings')[0]) {
-      this.exportOptions = $('#select-export-settings')[0].value;
-    }
-
-    if ($('#check-scale-export')[0]) {
-      this.checkExportOptions = $('#check-scale-export')[0].checked;
-    }
 
     this.#selectDashboardName(dashboardName);
   }
@@ -171,7 +156,9 @@ class HtmlExport {
 
     doc.title = name;
     this.#insertScripts(doc, xdashPrj, config);
-    this.#insertNavBar(doc, showNavBar);
+    if (showNavBar) {
+      this.#insertNavBar(doc);
+    }
   }
 
   /**
@@ -182,10 +169,11 @@ class HtmlExport {
    * @private
    */
   #shouldShowNavBar(xdashPrj) {
-    const { exportOptions, navBarNotification = this.navBarNotification } = xdashPrj;
-    const validExportOptions = ['rowToPage', 'rowToTab'];
-
-    return validExportOptions.includes(exportOptions) || navBarNotification;
+    const notifications = xdashPrj.navBarNotification ?? this.navBarNotification;
+    const hasPages = !!xdashPrj?.pages?.pageNames?.length;
+    const pageMode = xdashPrj?.pages?.pageMode ?? PAGE_MODE_PAGES;
+    const pageModesWithNavBar = [PAGE_MODE_PAGES, PAGE_MODE_TABS];
+    return notifications || (hasPages && pageModesWithNavBar.includes(pageMode));
   }
 
   /**
@@ -215,16 +203,11 @@ class HtmlExport {
    * Inserts the navbar into the document if it should be shown.
    *
    * @param {Document} doc - HTML document.
-   * @param {boolean} showNavBar - Whether to show the navbar.
    * @private
    */
-  #insertNavBar(doc, showNavBar) {
+  #insertNavBar(doc) {
     const navBar = doc.getElementById('nav_bar');
-
-    if (showNavBar) {
-      navBar.style.display = 'none';
-      navBar.innerHTML = runtimeToolbar.toolbarTemplate;
-    }
+    navBar.innerHTML = runtimeToolbar.toolbarTemplate;
   }
 
   /**
@@ -236,13 +219,6 @@ class HtmlExport {
   #selectDashboardName(dashboardName) {
     const $rootScope = angular.element(document.body).scope().$root;
 
-    // $rootScope.infoPage.exportPage = true;
-    // $rootScope.infoPage.name = dashboardName;
-    // $rootScope.infoPage.title = "HTML page export";
-    // $rootScope.infoPage.btnTxt = "Save";
-    // $rootScope.infoPage.isPrivatePage = $rootScope.securedLink ? "True" : "False";
-    // $rootScope.infoPage.isManagePageOpen = true;
-
     $rootScope.infoPage = {
       isPrivatePage: $rootScope.securedLink === 'True',
       name: dashboardName,
@@ -251,16 +227,22 @@ class HtmlExport {
       exportPage: true,
       isManagePageOpen: true,
     };
-
-    //$rootScope.infoPage.isManagePageOpen = true;
   }
 
-  get exportOptions() {
-    return this.#exportOptions;
+  get pageMode() {
+    return this.#pageMode;
   }
 
-  set exportOptions(value) {
-    this.#exportOptions = value;
+  set pageMode(value) {
+    this.#pageMode = value;
+  }
+
+  get initialPage() {
+    return this.#initialPage;
+  }
+
+  set initialPage(value) {
+    this.#initialPage = value;
   }
 
   get navBarNotification() {
@@ -269,14 +251,6 @@ class HtmlExport {
 
   set navBarNotification(value) {
     this.#navBarNotification = value;
-  }
-
-  get checkExportOptions() {
-    return this.#checkExportOptions;
-  }
-
-  set checkExportOptions(value) {
-    this.#checkExportOptions = value;
   }
 }
 

@@ -495,6 +495,16 @@ export class WidgetContainer {
     });
   }
 
+  rerenderWidgets() {
+    this.widgetsInfo.values().forEach((info) => {
+      try {
+        info.instance.render();
+      } catch (e) {
+        console.error('Widget render failed', e);
+      }
+    });
+  }
+
   // ├────────────────────────────────────────────────────────────────────┤ \\
   // |                    fore/background functions                       | \\
   // ├────────────────────────────────────────────────────────────────────┤ \\

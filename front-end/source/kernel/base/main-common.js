@@ -47,10 +47,6 @@ Date.prototype.timeNow = function () {
   );
 };
 
-// MBG detecting Android for handling issue #93
-const ua = navigator.userAgent.toLowerCase();
-export const isAndroid = ua.indexOf('android') > -1; //&& ua.indexOf("mobile");
-
 function _isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 }

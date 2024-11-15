@@ -22,7 +22,6 @@ import { editorSingletons } from 'kernel/editor-singletons';
 import { XdashDataUpdateEngine } from './xdash-data-updates';
 import { offSchedLogUser } from 'kernel/base/main-common';
 import { DialogBox } from 'kernel/datanodes/gui/DialogBox';
-import { dashState } from 'angular/modules/dashboard/dashboard';
 import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
 import { xdsjson } from 'kernel/datanodes/export/xdsjson';
 import { htmlExport } from 'kernel/general/export/html-export';
@@ -104,27 +103,26 @@ export const Xdash = function () {
     const data = datanodesManager.serialize();
     const libraries = pyodideLib.serialize();
 
-    const layoutMgr = editorSingletons.layoutMgr;
-    const dash = editorSingletons.widgetEditor.serialize();
-    const backgroundColor = layoutMgr.serializeDashBgColor();
-    const theme = layoutMgr.serializeDashboardTheme();
-    const conn = widgetConnector.serialize();
-
-    const exportOptions = layoutMgr.serializeExportOptions();
+    const { dashboard, display, pages } = editorSingletons.widgetEditor.serialize();
+    const connections = widgetConnector.serialize();
     const navBarNotification = htmlExport.navBarNotification;
 
     const xdashPrj = {
-      meta: meta,
-      data: data,
-      libraries: libraries,
-      device: { ...backgroundColor, ...theme },
-      dashboard: dash,
-      connections: conn,
-      exportOptions: exportOptions,
-      // pages: { ...rowNames, ...defaultRow }, // TODO coords
-      checkExportOptions: true, //AEF //MBG 21/09/2021
-      navBarNotification: navBarNotification,
+      meta,
+      data,
+      libraries,
+      dashboard,
+      connections,
+      display,
+      navBarNotification,
     };
+
+    if (pages) {
+      xdashPrj.pages = pages;
+      pages.pageMode = htmlExport.pageMode;
+      pages.initialPage = htmlExport.initialPage;
+    }
+
     return xdashPrj;
   }
 
@@ -176,33 +174,21 @@ export const Xdash = function () {
         return false;
       }
 
-      editorSingletons.widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
-      widgetConnector.deserialize(jsonObject.connections);
       widgetPreview.reset();
 
-      editorSingletons.widgetEditor.unselectAllWidgets(); //AEF: deselect all widget at project load
+      editorSingletons.widgetEditor.deserialize(jsonObject);
+      widgetConnector.deserialize(jsonObject.connections);
 
-      const layoutMgr = editorSingletons.layoutMgr;
-      layoutMgr.deserializeDashBgColor(jsonObject.device);
-      layoutMgr.deserializeDashboardTheme(jsonObject.device);
-
-      if (!_.isUndefined(jsonObject.pages)) {
-        layoutMgr.deserializeRowNames(jsonObject.pages);
-        layoutMgr.deserializeDefaultRow(jsonObject.pages);
-      }
-
-      layoutMgr.deserializeExportOptions(jsonObject.exportOptions);
-
-      if (!_.isUndefined(jsonObject.navBarNotification)) {
-        // MBG 21/09/2021
-        htmlExport.navBarNotification = jsonObject.navBarNotification;
+      if (jsonObject.pages) {
+        htmlExport.initialPage = jsonObject.pages.initialPage;
+        htmlExport.pageMode = jsonObject.pages.pageMode;
       } else {
-        htmlExport.navBarNotification = false; // when not existing assume it false
+        htmlExport.initialPage = undefined;
+        htmlExport.pageMode = undefined;
       }
 
-      /*if (!_.isUndefined(jsonObject.checkExportOptions)) {
-                      htmlExport.checkExportOptions = jsonObject.checkExportOptions;
-                  }*/ // MBG 21/09/2021 : simplify export
+      htmlExport.navBarNotification = jsonObject.navBarNotification ?? false;
+
       return true;
     } catch (ex) {
       console.error(ex);

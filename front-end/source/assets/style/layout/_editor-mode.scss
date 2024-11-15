@@ -124,19 +124,6 @@ div > .draggable::-webkit-scrollbar-thumb {
   font-size: fs('xs');
 }
 
-// Dropper columns
-.device-col {
-  border: 1px dashed black;
-  height: 100%;
-  padding: 0px;
-}
-
-.device-col.col-invisible {
-  border: 1px dashed transparent;
-  height: 100%;
-  padding: 0px;
-}
-
 // Drag and drop
 .dragged-editor-selection-lasso {
   position: absolute;

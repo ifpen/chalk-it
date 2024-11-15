@@ -32,6 +32,7 @@ div[id*='div-for-ng-gauge'] {
 .dashboard-content-container {
   position: relative;
   overflow: visible;
+  z-index: 0;
 
   .widget {
     position: absolute;

@@ -12,10 +12,6 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { applyGeometry } from 'kernel/dashboard/widget/widget-placement';
-import { runtimeSingletons } from 'kernel/runtime-singletons';
-import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
-import { rowToTabRuntime } from 'kernel/runtime/row-to-tab-runtime';
-import { rowToPageRuntime } from 'kernel/runtime/row-to-page-runtime';
 
 const DISPLAY_CONTAINER_ID = 'DropperDroitec';
 
@@ -60,17 +56,17 @@ class WidgetPreview {
     this.marginY = valueY;
 
     this.widgetsInfo.values().forEach((info) => {
-      this.updateWidgetPosition(info.containerDiv, info.layout);
+      this.#updateWidgetPosition(info.containerDiv, info.layout);
     });
   }
 
-  updateWidgetPosition(containerDiv, { top, left, width, height }) {
+  #updateWidgetPosition(containerDiv, { top, left, width, height }) {
     left += this.marginX;
     top += this.marginY;
     applyGeometry(containerDiv, { top, left, width, height });
   }
 
-  createWidget(modelJsonId, instanceId, layout) {
+  #createWidget(modelJsonId, instanceId, layout) {
     const containerDiv = document.createElement('div');
     containerDiv.id = instanceId + 'c';
 
@@ -81,7 +77,7 @@ class WidgetPreview {
     div.id = wcId;
     containerDiv.appendChild(div);
 
-    this.updateWidgetPosition(containerDiv, layout);
+    this.#updateWidgetPosition(containerDiv, layout);
     if (layout.zIndex !== undefined) {
       containerDiv.style.zIndex = layout.zIndex;
     }
@@ -133,25 +129,6 @@ class WidgetPreview {
   }
 
   /**
-   * LoadPlayMode is an editor only function, when preview (play) mode is requested
-   */
-  loadPlayMode() {
-    // cleanup : here make a reset not a clear
-    this.reset();
-
-    const xprjson = runtimeSingletons.xdash.serialize();
-
-    for (const [instanceId, desc] of Object.entries(xprjson.dashboard)) {
-      this.createWidget(desc.container.modelJsonId, instanceId, desc.layout);
-    }
-
-    // assign change value handlers
-    if (datanodesManager.getAllDataNodes().length != 0) {
-      this.assignValueChangeHandlers();
-    }
-  }
-
-  /**
    * Assigns change value handlers to all widgets : which allows
    * each concerned widget to write on connected dataNodes
    * */
@@ -170,68 +147,76 @@ class WidgetPreview {
 
   /**
    * Main dashboard global rendering function. Works both for editor and runtime
-   * @param {any} xprjson : xprjson definition to be rendered
+   * @param {any} dashboard : dashboard definition to be rendered
    */
-  renderDashboardWidgets(xprjson) {
-    // TODO coords put in deserialize ?
-    _.each(_.keys(xprjson.dashboard), (instanceId) => {
-      let element = document.getElementById(instanceId + 'c');
-      let modelJsonId = instanceId.substring(0, instanceId.length - 1);
-      let wcId = element.firstElementChild.id;
+  renderDashboardWidgets(dashboard) {
+    for (const [instanceId, desc] of Object.entries(dashboard)) {
+      this.#createWidget(desc.container.modelJsonId, instanceId, desc.layout);
+    }
 
-      widget[instanceId] = widgetsPluginsHandler.createWidget(wcId, modelJsonId, instanceId, true);
-      if (widgetConnector.widgetsConnection[instanceId] != null) {
-        widgetConnector.widgetsConnection[instanceId].widgetObjEdit = null;
-        widgetConnector.widgetsConnection[instanceId].widgetObjConnect = widget[instanceId];
-        this.plotConstantData(instanceId, false); //on preview mode
-      }
-    });
+    // assign change value handlers
+    if (datanodesManager.getAllDataNodes().length != 0) {
+      this.assignValueChangeHandlers();
+    }
   }
 
   reRenderWidget(instanceId) {
     this.widgetsInfo.get(instanceId)?.render(true);
   }
 
+  #deserializeConnections(jsonContent) {
+    const types = new Map();
+    for (const widget of Object.values(jsonContent.dashboard)) {
+      types.set(widget.container.instanceId, widget.container.modelJsonId);
+    }
+
+    for (const [instanceId, connections] of Object.entries(jsonContent.connections)) {
+      const elementId = instanceId + 'c';
+      const modelJsonId = types.get(instanceId);
+      if (!modelJsonId) {
+        throw new Error(`No definition for ${modelJsonId}`);
+      }
+      const sliders = []; // TODO should be an object
+
+      widgetConnector.widgetsConnection[instanceId] = {
+        name: elementId,
+        id: elementId,
+        instanceId,
+        modelJsonId,
+        sliders,
+        widgetObjEdit: null,
+        widgetObjConnect: null,
+      };
+      for (const [actuator, actuatorDef] of Object.entries(connections)) {
+        sliders[actuator] = actuatorDef;
+      }
+    }
+  }
+
   /**
    * Deserialisation of widget's connections at runtime mode
    * Only called from runtime mode (not editor mode)
-   * @param {any} connectObj
+   * @param {any} jsonContent
    */
-  // MBG : TODO refactor together with widget connection
-  deserialize(connectObj) {
-    _.each(_.keys(connectObj), (instanceId) => {
-      let modelJsonIdStr = instanceId.substring(0, instanceId.length - 1);
-      let elementId = instanceId + 'c';
+  deserialize(jsonContent) {
+    const display = jsonContent.display;
+    this.setMargins(display.marginX, display.marginY);
 
-      if (widgetConnector.widgetsConnection[instanceId] == null) {
-        //Add connection
-        widgetConnector.widgetsConnection[instanceId] = {
-          name: elementId,
-          id: elementId,
-          instanceId: instanceId,
-          modelJsonId: modelJsonIdStr,
-          sliders: [],
-          widgetObjEdit: null,
-          widgetObjConnect: null,
-        };
-      }
-    });
+    // Set the theme
+    // Theme must be set before we create the widgets
+    $('html').attr('data-theme', display.theme);
+    $('.dropperR').css('background-color', display.backgroundColor);
 
-    let key;
-    for (key in widgetConnector.widgetsConnection) {
-      for (var actuator in connectObj[key]) {
-        widgetConnector.widgetsConnection[key].sliders[actuator] = connectObj[key][actuator];
-      }
-    }
-    for (key in widgetConnector.widgetsConnection) {
-      try {
-        // MBG temporary fix to handle pb of long requests
-        this.plotConstantData(key, false);
-        widgetConnector.widgetsConnection[key].widgetObjEdit = null;
-      } catch (exc) {
-        // TODO nope
-      }
-    }
+    this.#deserializeConnections(jsonContent);
+    this.renderDashboardWidgets(jsonContent.dashboard);
+
+    const { width, height } = this.#getDashboardExtent(display.width, display.height);
+    const pageDiv$ = $('.dashboard-page-container');
+    pageDiv$.width(width);
+    pageDiv$.height(height);
+    const contentDiv$ = $('.dashboard-content-container');
+    contentDiv$.width(width);
+    contentDiv$.height(height);
   }
 
   /**
@@ -274,7 +259,7 @@ class WidgetPreview {
                 this.displayErrorOnWidget(instanceId, actuatorName, msg);
               }
             } else {
-              this.clearDataFromWidget(actuator, true);
+              this.#clearDataFromWidget(actuator, true);
             }
           }
         }
@@ -312,7 +297,7 @@ class WidgetPreview {
    * Removes error display on widget
    * @param {string} instanceId
    */
-  removeDisplayErrorOnWidget(instanceId) {
+  #removeDisplayErrorOnWidget(instanceId) {
     const info = this.widgetsInfo.get(instanceId);
     if (info) {
       const containerDiv = info.containerDiv;
@@ -347,7 +332,7 @@ class WidgetPreview {
       return; // MBG : security. To invalidate widgets instead
     }
 
-    this.removeDisplayErrorOnWidget(instanceId);
+    this.#removeDisplayErrorOnWidget(instanceId);
 
     if (!(_.isUndefined(newData) || _.isNull(newData))) {
       // ABK: fix bug after MBG modif of &&(status!="None") // MBG 30/10/2018 add check on isNull following test "Gecoair UserTripso no JWT (6).html"
@@ -373,7 +358,7 @@ class WidgetPreview {
       if (varInter === null) {
         // data parsing has changed
         // MBG TODO : invalidate widget
-        this.clearDataFromWidget(actuator, true);
+        this.#clearDataFromWidget(actuator, true);
       } else {
         if (!_.isUndefined(actuator.setCaption)) {
           try {
@@ -398,7 +383,7 @@ class WidgetPreview {
    * @param {any} actuator
    * @param {any} bCaption : clear caption (true or false)
    */
-  clearDataFromWidget(actuator, bCaption) {
+  #clearDataFromWidget(actuator, bCaption) {
     if (!_.isUndefined(actuator.clearCaption) && bCaption) {
       actuator.clearCaption();
     }
@@ -456,71 +441,6 @@ class WidgetPreview {
     }
   }
 
-  /**
-   * Resize dashboard function
-   * @param {any} target
-   */
-  resizeDashboard(target) {
-    // TODO coords
-    // Prepare rescale for rowToPage mode
-    if (window.dashboardConfig?.execOutsideEditor) {
-      const scalingSrc = window.scaling;
-      let navMenuHeightPx = 0;
-
-      if ($('#nav-menu')[0]) {
-        navMenuHeightPx = parseInt($('#nav-menu')[0].style.height);
-        if (isNaN(navMenuHeightPx)) navMenuHeightPx = 0; // MBG 18/05/2021 : piste pour pb NG ??
-      }
-
-      switch (window.exportOptions) {
-        case 'rowToPage':
-          rowToPageRuntime.rowToPagePrepareRescale(targetRows, targetCols);
-          break;
-        case 'rowToTab':
-          rowToTabRuntime.rowToTabPrepareRescale(targetRows, targetCols);
-          break;
-        case 'customNavigation':
-          customNavigationRuntime.customNavigationPrepareRescale(targetRows, targetCols);
-          break;
-        case 'keepOriginalWidth': {
-          const $dashboardZone = $('#dashboard-zone');
-          const bodyHeight = document.body.clientHeight;
-          const bodyWidth = document.body.clientWidth;
-          $dashboardZone.css({
-            top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
-            left: bodyWidth / 2 - $dashboardZone.outerWidth() / 2 + 'px',
-            position: 'absolute',
-            height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
-            width: scalingSrc.scrollWidthPx + 'px',
-          });
-          break;
-        }
-        case 'adjustToFullWidth': {
-          const $dashboardZone = $('#dashboard-zone');
-          const bodyHeight = document.body.clientHeight;
-          $dashboardZone.css({
-            top: bodyHeight / 2 - $dashboardZone.outerHeight() / 2 + 'px',
-            position: 'absolute',
-            height: scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
-          });
-          break;
-        }
-        default:
-          $('#dashboard-zone')[0].style.height = document.body.clientHeight - navMenuHeightPx + 'px';
-          break;
-      }
-    }
-
-    scalingHelper.setScalingMethod(targetScalingMethod);
-    scalingHelper.resizeDashboard(target);
-
-    // Finish rescale for rowToPage
-    if (window.dashboardConfig?.execOutsideEditor) {
-      if (window.exportOptions == 'rowToPage')
-        setTimeout(rowToPageRuntime.rowToPageFinishRescale, 500, targetRows, targetCols); // MBG temp hack
-    }
-  }
-
   reset() {
     for (const info of this.widgetsInfo.values()) {
       info.containerDiv.remove();
@@ -531,28 +451,14 @@ class WidgetPreview {
     document.getElementById(DISPLAY_CONTAINER_ID).scrollTop = 0;
   }
 
-  #getDashboardExtent() {
-    var right = 0;
-    var bottom = 0;
-    var offsetLeft = $('#dashboard-zone').offset().left;
-    var offsetTop = $('#dashboard-zone').offset().top;
-    var maxHeight = $('#dashboard-zone').height();
-    var rightExtent;
-    var bottomExtent;
-    for (var propName in widget) {
-      rightExtent = $('#' + propName + 'c').offset().left - offsetLeft + $('#' + propName + 'c').width();
-      if (rightExtent > right) {
-        right = rightExtent;
-      }
-      bottomExtent = $('#' + propName + 'c').offset().top - offsetTop + $('#' + propName + 'c').height();
-      if (bottomExtent > bottom) {
-        bottom = bottomExtent;
-      }
+  #getDashboardExtent(width = 0, height = 0) {
+    this.widgetsInfo.values().forEach((info) => {
+      const layout = info.layout;
+      width = Math.max(width, layout.left + layout.width);
+      height = Math.max(height, layout.top + layout.height);
+    });
 
-      if (bottom > maxHeight) bottom = maxHeight; // saturation
-    }
-
-    return { right: right, bottom: bottom };
+    return { width: width + this.marginX * 2, height: height + this.marginY * 2 };
   }
 
   /**
@@ -565,11 +471,11 @@ class WidgetPreview {
     const originalHTML = document.getElementById('DropperDroitec');
     const origHeight = originalHTML.style.height;
     const origWidth = originalHTML.style.width;
-    originalHTML.style.height = dashExt.bottom + 'px';
-    originalHTML.style.width = dashExt.right + 'px';
+    originalHTML.style.height = dashExt.height + 'px';
+    originalHTML.style.width = dashExt.width + 'px';
 
     html2canvas(originalHTML, { allowTaint: false, useCORS: true }).then(function (canvas) {
-      const png = Canvas2Image.convertToPNG(canvas, dashExt.right, dashExt.bottom);
+      const png = Canvas2Image.convertToPNG(canvas, dashExt.width, dashExt.height);
 
       const link = document.createElement('a');
       link.setAttribute('download', $('#projectName')[0].value + '.png');

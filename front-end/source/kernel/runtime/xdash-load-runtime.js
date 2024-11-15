@@ -34,9 +34,6 @@ angularModule.run([
     $rootScope.notificationFilterDataValue = '';
     $rootScope.listNotifications = [];
     $rootScope.nbNotifications = 0;
-    $rootScope.pageNumber = 1;
-    $rootScope.totalPages = 1;
-    $rootScope.pageNames = [];
 
     $rootScope.loadingBarStart = (fn = () => {}) => fn(); // Arrow function with default param
     $rootScope.loadingBarStop = (fn = () => {}) => fn();
