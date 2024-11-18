@@ -18,7 +18,7 @@ angular.module('modules').controller('exportSettingDownload', [
     exportCtrl.initialPageIndex = options.initialPageIndex;
     exportCtrl.navBarNotification = options.navBarNotification ?? false;
 
-    exportCtrl.pageNames = [...editorSingletons.widgetEditor.widgetContainer.pageNames];
+    exportCtrl.pageNames = [...editorSingletons.widgetEditor.widgetEditorViewer.pageNames];
 
     if (exportCtrl.pageNames.length) {
       exportCtrl.pageMode ??= PAGE_MODE_PAGES;

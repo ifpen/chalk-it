@@ -12,7 +12,7 @@ import { UndoableAction } from './editor.undo-manager';
 import { EVENTS_EDITOR_WIDGET_MOVED } from './editor.events';
 import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
 import { scale, constrain } from 'kernel/dashboard/widget/widget-placement';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { editorSingletons } from 'kernel/editor-singletons';
 import {
   EVENTS_EDITOR_CONNECTIONS_CHANGED,
@@ -81,9 +81,9 @@ function _collectUsedDatasources(widgetConnections) {
 }
 
 class ToForegroundAction extends UndoableAction {
-  constructor(widgetContainer, elementIds) {
+  constructor(widgetEditorViewer, elementIds) {
     super();
-    this._widgetContainer = widgetContainer;
+    this._widgetEditorViewer = widgetEditorViewer;
     this._elementIds = elementIds;
     this._initialZs = undefined;
   }
@@ -93,8 +93,8 @@ class ToForegroundAction extends UndoableAction {
   }
 
   run() {
-    this._initialZs = this._widgetContainer.getZIndices();
-    this._widgetContainer.putWidgetAtForeground(this._elementIds);
+    this._initialZs = this.widgetEditorViewer.getZIndices();
+    this._widgetEditorViewer.putWidgetAtForeground(this._elementIds);
   }
 
   canRedo() {
@@ -108,15 +108,15 @@ class ToForegroundAction extends UndoableAction {
   }
 
   undo() {
-    this._widgetContainer.setZIndices(this._initialZs);
+    this._widgetEditorViewer.setZIndices(this._initialZs);
     this._initialZs = undefined;
   }
 }
 
 class ToBackgroundAction extends UndoableAction {
-  constructor(widgetContainer, elementIds) {
+  constructor(widgetEditorViewer, elementIds) {
     super();
-    this._widgetContainer = widgetContainer;
+    this._widgetEditorViewer = widgetEditorViewer;
     this._elementIds = elementIds;
     this._initialZs = undefined;
   }
@@ -126,8 +126,8 @@ class ToBackgroundAction extends UndoableAction {
   }
 
   run() {
-    this._initialZs = this._widgetContainer.getZIndices();
-    this._widgetContainer.putWidgetAtBackground(this._elementIds);
+    this._initialZs = this._widgetEditorViewer.getZIndices();
+    this._widgetEditorViewer.putWidgetAtBackground(this._elementIds);
   }
 
   canRedo() {
@@ -141,7 +141,7 @@ class ToBackgroundAction extends UndoableAction {
   }
 
   undo() {
-    this._widgetContainer.setZIndices(this._initialZs);
+    this._widgetEditorViewer.setZIndices(this._initialZs);
     this._initialZs = undefined;
   }
 }
@@ -172,7 +172,7 @@ class MoveWidgetsToPageAction extends UndoableAction {
   }
 
   run() {
-    const container = this._widgetEditor.widgetContainer;
+    const viewer = this._widgetEditor.widgetEditorViewer;
     this._initialPages = container.collectWidgetPages();
 
     const pages = new Map();
@@ -180,7 +180,7 @@ class MoveWidgetsToPageAction extends UndoableAction {
       pages.set(elementId, this._page);
     }
 
-    container.setWidgetPages(pages);
+    viewer.setWidgetPages(pages);
     this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
   }
 
@@ -195,7 +195,7 @@ class MoveWidgetsToPageAction extends UndoableAction {
   }
 
   undo() {
-    this._widgetEditor.widgetContainer.setWidgetPages(this._initialPages);
+    this._widgetEditor.widgetEditorViewer.setWidgetPages(this._initialPages);
     this._initialPages = undefined;
     this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
   }
@@ -306,11 +306,11 @@ class UpdateGeometryAction extends UndoableAction {
   }
 
   run() {
-    const widgetContainer = this._widgetEditor.widgetContainer;
+    const widgetEditorViewer = this._widgetEditor.widgetEditorViewer;
     this._initialGeometries = new Map();
 
     for (const [elementid, update] of this._geometryUpdates) {
-      let oldPosition = widgetContainer.getRecordedGeometry(elementid);
+      let oldPosition = widgetEditorViewer.getRecordedGeometry(elementid);
       if (oldPosition) {
         let newPosition;
         if (this._relative) {
@@ -324,11 +324,11 @@ class UpdateGeometryAction extends UndoableAction {
 
         this._initialGeometries.set(elementid, { ...oldPosition });
 
-        widgetContainer.moveResizeWidget(elementid, newPosition);
+        widgetEditorViewer.moveResizeWidget(elementid, newPosition);
       }
     }
     this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
-    if (!widgetContainer.enforceHeightLimit) {
+    if (!widgetEditorViewer.enforceHeightLimit) {
       this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
   }
@@ -344,13 +344,13 @@ class UpdateGeometryAction extends UndoableAction {
   }
 
   undo() {
-    const widgetContainer = this._widgetEditor.widgetContainer;
+    const widgetEditorViewer = this._widgetEditor.widgetEditorViewer;
     for (const [elementid, oldPosition] of this._initialGeometries) {
-      widgetContainer.moveResizeWidget(elementid, oldPosition);
+      widgetEditorViewer.moveResizeWidget(elementid, oldPosition);
     }
     this._initialGeometries = undefined;
     this._eventCenter.sendEvent(UpdateGeometryAction.WIDGET_MOVED_EVENT);
-    if (!widgetContainer.enforceHeightLimit) {
+    if (!widgetEditorViewer.enforceHeightLimit) {
       this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
   }
@@ -386,9 +386,9 @@ class CreateWidgetAction extends UndoableAction {
   run() {
     const instanceId = this._widgetEditor.addWidget(this._modelJsonId, undefined, this._layout);
     this._widgetId = instanceId;
-    this._actualLayout = this._widgetEditor.widgetContainer.getWidgetLayout(this._widgetId);
+    this._actualLayout = this._widgetEditor.widgetEditorViewer.getWidgetLayout(this._widgetId);
 
-    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+    if (!this._widgetEditor.widgetEditorViewer.enforceHeightLimit) {
       this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
   }
@@ -416,7 +416,7 @@ class CreateWidgetAction extends UndoableAction {
 
   undo() {
     this._widgetEditor.deleteWidget(this._widgetId);
-    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+    if (!this._widgetEditor.widgetEditorViewer.enforceHeightLimit) {
       this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
   }
@@ -450,7 +450,7 @@ class DuplicateWidgetsWithConnectionAction extends UndoableAction {
       const newWidgetId = this._widgetEditor.duplicateWidgetWithConnection(elementid);
       this._widgetIds.set(elementid, newWidgetId);
     }
-    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+    if (!this._widgetEditor.widgetEditorViewer.enforceHeightLimit) {
       this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
   }
@@ -465,7 +465,7 @@ class DuplicateWidgetsWithConnectionAction extends UndoableAction {
       const newwidgetId = this._widgetEditor.duplicateWidgetWithConnection(elementid, newWidgetId);
       this._widgetIds.set(elementid, newwidgetId);
     }
-    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+    if (!this._widgetEditor.widgetEditorViewer.enforceHeightLimit) {
       this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
   }
@@ -479,7 +479,7 @@ class DuplicateWidgetsWithConnectionAction extends UndoableAction {
     for (const elementid of this._widgetIds.values()) {
       this._widgetEditor.deleteWidget(elementid);
     }
-    if (!this._widgetEditor.widgetContainer.enforceHeightLimit) {
+    if (!this._widgetEditor.widgetEditorViewer.enforceHeightLimit) {
       this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
   }
@@ -511,7 +511,7 @@ class DeleteWidgetsAction extends UndoableAction {
   }
 
   run() {
-    const container = this._widgetEditor.widgetContainer;
+    const container = this._widgetEditor.widgetEditorViewer;
 
     this._widgetsData = [];
     for (const elementId of this._elementIds) {
@@ -575,7 +575,7 @@ class DeleteWidgetsAction extends UndoableAction {
       }
     }
 
-    const container = this._widgetEditor.widgetContainer;
+    const container = this._widgetEditor.widgetEditorViewer;
     if (!container.enforceHeightLimit) {
       this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
     }
@@ -585,15 +585,15 @@ class DeleteWidgetsAction extends UndoableAction {
 function _postChangeUpdates(widgetEditor, eventCenterService, elementIds, highlight = false, bCaptionManuallyChanged) {
   // TODO coords
   for (const elementId of elementIds) {
-    widgetPreview.plotConstantData(elementId, bCaptionManuallyChanged); //on tab2
-    widgetEditor.widgetContainer.replaceWidget(elementId);
+    widgetViewer.plotConstantData(elementId, bCaptionManuallyChanged); //on tab2
+    widgetEditor.widgetEditorViewer.replaceWidget(elementId);
   }
 
   eventCenterService.sendEvent(EVENTS_EDITOR_CONNECTIONS_CHANGED);
 
   if (highlight) {
     // TODO should be done in the editor to flash only once on multi-undo
-    widgetContainer.highlightWidgets(elementIds);
+    widgetEditor.widgetEditorViewer.highlightWidgets(elementIds);
   }
 }
 
@@ -797,10 +797,10 @@ class UpdatePagesAction extends UndoableAction {
   }
 
   run() {
-    this._oldPages = [...this._widgetEditor.widgetContainer.pageNames];
-    this._initialWidgetPages = this._widgetEditor.widgetContainer.collectWidgetPages();
+    this._oldPages = [...this._widgetEditor.widgetEditorViewer.pageNames];
+    this._initialWidgetPages = this._widgetEditor.widgetEditorViewer.collectWidgetPages();
 
-    this._widgetEditor.widgetContainer.updatePages(this.pages);
+    this._widgetEditor.widgetEditorViewer.updatePages(this.pages);
 
     this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
   }
@@ -818,8 +818,8 @@ class UpdatePagesAction extends UndoableAction {
   }
 
   undo() {
-    this._widgetEditor.widgetContainer.updatePages(this._oldPages);
-    this._widgetEditor.widgetContainer.setWidgetPages(this._initialWidgetPages);
+    this._widgetEditor.widgetEditorViewer.updatePages(this._oldPages);
+    this._widgetEditor.widgetEditorViewer.setWidgetPages(this._initialWidgetPages);
 
     this._oldPages = undefined;
     this._initialWidgetPages = undefined;
@@ -855,22 +855,22 @@ class ResizeDashboardAction extends UndoableAction {
   }
 
   run() {
-    const widgetContainer = this._widgetEditor.widgetContainer;
+    const widgetEditorViewer = this._widgetEditor.widgetEditorViewer;
     this._oldDashboardSize = {
-      width: widgetContainer.width,
-      height: widgetContainer.height,
-      marginX: widgetContainer.marginX,
-      marginY: widgetContainer.marginY,
-      enforceHeightLimit: widgetContainer.enforceHeightLimit,
+      width: widgetEditorViewer.width,
+      height: widgetEditorViewer.height,
+      marginX: widgetEditorViewer.marginX,
+      marginY: widgetEditorViewer.marginY,
+      enforceHeightLimit: widgetEditorViewer.enforceHeightLimit,
     };
 
-    widgetContainer.enforceHeightLimit = this._newDashboardSize.enforceHeightLimit;
-    widgetContainer.setMargins(this._newDashboardSize.marginX, this._newDashboardSize.marginY);
-    widgetContainer.setSize(this._newDashboardSize.width, this._newDashboardSize.height);
+    widgetEditorViewer.enforceHeightLimit = this._newDashboardSize.enforceHeightLimit;
+    widgetEditorViewer.setMargins(this._newDashboardSize.marginX, this._newDashboardSize.marginY);
+    widgetEditorViewer.setSize(this._newDashboardSize.width, this._newDashboardSize.height);
 
     this._initialGeometries = new Map();
-    for (const elementId of widgetContainer.widgetIds) {
-      const oldPosition = widgetContainer.getRecordedGeometry(elementId);
+    for (const elementId of widgetEditorViewer.widgetIds) {
+      const oldPosition = widgetEditorViewer.getRecordedGeometry(elementId);
 
       let horizDim = { position: oldPosition.left, size: oldPosition.width };
       let vertDim = { position: oldPosition.top, size: oldPosition.height };
@@ -878,7 +878,7 @@ class ResizeDashboardAction extends UndoableAction {
         horizDim = scale(this._oldDashboardSize.width, this._newDashboardSize.width, horizDim);
         vertDim = scale(this._oldDashboardSize.height, this._newDashboardSize.height, vertDim);
 
-        const { minWidth, minHeight } = widgetContainer.minimumSize(elementId);
+        const { minWidth, minHeight } = widgetEditorViewer.minimumSize(elementId);
         horizDim.size = Math.max(horizDim.size, minWidth);
         vertDim.size = Math.max(vertDim.size, minHeight);
       }
@@ -886,7 +886,7 @@ class ResizeDashboardAction extends UndoableAction {
       // Always constrain in case of rounding errors or min size pushed the widget out of bounds
       horizDim = constrain(this._newDashboardSize.width, horizDim);
 
-      if (widgetContainer.enforceHeightLimit) {
+      if (widgetEditorViewer.enforceHeightLimit) {
         vertDim = constrain(this._newDashboardSize.height, vertDim);
       }
 
@@ -898,7 +898,7 @@ class ResizeDashboardAction extends UndoableAction {
       };
 
       this._initialGeometries.set(elementId, { ...oldPosition });
-      widgetContainer.moveResizeWidget(elementId, newPosition);
+      widgetEditorViewer.moveResizeWidget(elementId, newPosition);
     }
 
     this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
@@ -917,14 +917,14 @@ class ResizeDashboardAction extends UndoableAction {
   }
 
   undo() {
-    const widgetContainer = this._widgetEditor.widgetContainer;
+    const widgetEditorViewer = this._widgetEditor.widgetEditorViewer;
 
-    widgetContainer.enforceHeightLimit = this._oldDashboardSize.enforceHeightLimit;
-    widgetContainer.setMargins(this._oldDashboardSize.marginX, this._oldDashboardSize.marginY);
-    widgetContainer.setSize(this._oldDashboardSize.width, this._oldDashboardSize.height);
+    widgetEditorViewer.enforceHeightLimit = this._oldDashboardSize.enforceHeightLimit;
+    widgetEditorViewer.setMargins(this._oldDashboardSize.marginX, this._oldDashboardSize.marginY);
+    widgetEditorViewer.setSize(this._oldDashboardSize.width, this._oldDashboardSize.height);
 
     for (const [elementid, oldPosition] of this._initialGeometries) {
-      widgetContainer.moveResizeWidget(elementid, oldPosition);
+      widgetEditorViewer.moveResizeWidget(elementid, oldPosition);
     }
 
     this._oldDashboardSize = undefined;
@@ -950,8 +950,8 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createToForegroundAction = function _createToForegroundAction(elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
-      return new ToForegroundAction(widgetContainer, elementIds);
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
+      return new ToForegroundAction(widgetEditorViewer, elementIds);
     };
 
     /**
@@ -960,8 +960,8 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createToBackgroundAction = function _createToBackgroundAction(elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
-      return new ToBackgroundAction(widgetContainer, elementIds);
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
+      return new ToBackgroundAction(widgetEditorViewer, elementIds);
     };
 
     // -- place & resize widget
@@ -1131,12 +1131,12 @@ angular.module('modules.editor').service('EditorActionFactory', [
     };
 
     // -- aligned movement
-    function _collectOtherWidgetsPotision(widgetContainer, elementIds) {
+    function _collectOtherWidgetsPotision(widgetEditorViewer, elementIds) {
       const result = [];
-      for (const key of widgetContainer.widgetIds) {
-        if (widgetContainer.currentPage === widgetContainer.getWidgetLayout(key).page) {
+      for (const key of widgetEditorViewer.widgetIds) {
+        if (widgetEditorViewer.currentPage === widgetEditorViewer.getWidgetLayout(key).page) {
           if (!elementIds.includes(key)) {
-            result.push(widgetContainer.getRecordedGeometry(key));
+            result.push(widgetEditorViewer.getRecordedGeometry(key));
           }
         }
       }
@@ -1149,12 +1149,12 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignedMoveDownAction = function _createAlignedMoveDownAction(elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const positions = _collectOtherWidgetsPotision(widgetContainer, elementIds)
+      const positions = _collectOtherWidgetsPotision(widgetEditorViewer, elementIds)
         .map((g) => g.top)
         .sort();
-      const current = widgetContainer.getRecordedGeometry(elementIds[elementIds.length - 1]).top;
+      const current = widgetEditorViewer.getRecordedGeometry(elementIds[elementIds.length - 1]).top;
       const target = Math.min(...positions.filter((p) => p > current));
       const top = isFinite(target) ? target : current;
 
@@ -1174,12 +1174,12 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignedMoveUpAction = function _createAlignedMoveUpAction(elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const positions = _collectOtherWidgetsPotision(widgetContainer, elementIds)
+      const positions = _collectOtherWidgetsPotision(widgetEditorViewer, elementIds)
         .map((g) => g.top)
         .sort();
-      const current = widgetContainer.getRecordedGeometry(elementIds[elementIds.length - 1]).top;
+      const current = widgetEditorViewer.getRecordedGeometry(elementIds[elementIds.length - 1]).top;
       const top = Math.max(0, Math.max(...positions.filter((p) => p < current)));
 
       const plural = elementIds.length > 1 ? 's' : '';
@@ -1198,12 +1198,12 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignedMoveLeftAction = function _createAlignedMoveLeftAction(elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const positions = _collectOtherWidgetsPotision(widgetContainer, elementIds)
+      const positions = _collectOtherWidgetsPotision(widgetEditorViewer, elementIds)
         .map((g) => g.left)
         .sort();
-      const current = widgetContainer.getRecordedGeometry(elementIds[elementIds.length - 1]).left;
+      const current = widgetEditorViewer.getRecordedGeometry(elementIds[elementIds.length - 1]).left;
       const left = Math.max(0, Math.max(...positions.filter((p) => p < current)));
 
       const plural = elementIds.length > 1 ? 's' : '';
@@ -1222,12 +1222,12 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignedMoveRightAction = function _createAlignedMoveRightAction(elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const positions = _collectOtherWidgetsPotision(widgetContainer, elementIds)
+      const positions = _collectOtherWidgetsPotision(widgetEditorViewer, elementIds)
         .map((g) => g.left)
         .sort();
-      const current = widgetContainer.getRecordedGeometry(elementIds[elementIds.length - 1]).left;
+      const current = widgetEditorViewer.getRecordedGeometry(elementIds[elementIds.length - 1]).left;
       const target = Math.min(...positions.filter((p) => p > current));
       const left = isFinite(target) ? target : current;
 
@@ -1249,9 +1249,9 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignementTopAction = function _createAlignementTopAction(targetId, elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const top = widgetContainer.getRecordedGeometry(targetId).top;
+      const top = widgetEditorViewer.getRecordedGeometry(targetId).top;
 
       return UpdateGeometryAction.CreateSimpleUpdate(
         widgetEditor,
@@ -1269,14 +1269,14 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignementHorizontalAction = function _createAlignementHorizontalAction(targetId, elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const targetPos = widgetContainer.getRecordedGeometry(targetId);
+      const targetPos = widgetEditorViewer.getRecordedGeometry(targetId);
       const targetVert = targetPos.left + targetPos.width / 2;
 
       const geometries = new Map();
       for (const elementId of elementIds) {
-        const elementPos = widgetContainer.getRecordedGeometry(elementId);
+        const elementPos = widgetEditorViewer.getRecordedGeometry(elementId);
         const left = targetVert - elementPos.width / 2;
         geometries.set(elementId, { left });
       }
@@ -1291,14 +1291,14 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignementBottomAction = function _createAlignementBottomAction(targetId, elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const targetPos = widgetContainer.getRecordedGeometry(targetId);
+      const targetPos = widgetEditorViewer.getRecordedGeometry(targetId);
       const targetBottom = targetPos.top + targetPos.height;
 
       const geometries = new Map();
       for (const elementId of elementIds) {
-        const elementPos = widgetContainer.getRecordedGeometry(elementId);
+        const elementPos = widgetEditorViewer.getRecordedGeometry(elementId);
         const top = targetBottom - elementPos.height;
         geometries.set(elementId, { top });
       }
@@ -1313,9 +1313,9 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignementLeftAction = function _createAlignementLeftAction(targetId, elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const left = widgetContainer.getRecordedGeometry(targetId).left;
+      const left = widgetEditorViewer.getRecordedGeometry(targetId).left;
 
       return UpdateGeometryAction.CreateSimpleUpdate(
         widgetEditor,
@@ -1333,14 +1333,14 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignementVerticalAction = function _createAlignementVerticalAction(targetId, elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const targetPos = widgetContainer.getRecordedGeometry(targetId);
+      const targetPos = widgetEditorViewer.getRecordedGeometry(targetId);
       const targetHoriz = targetPos.top + targetPos.height / 2;
 
       const geometries = new Map();
       for (const elementId of elementIds) {
-        const elementPos = widgetContainer.getRecordedGeometry(elementId);
+        const elementPos = widgetEditorViewer.getRecordedGeometry(elementId);
         const top = targetHoriz - elementPos.height / 2;
         geometries.set(elementId, { top });
       }
@@ -1355,14 +1355,14 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createAlignementRightAction = function _createAlignementRightAction(targetId, elementIds) {
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
-      const targetPos = widgetContainer.getRecordedGeometry(targetId);
+      const targetPos = widgetEditorViewer.getRecordedGeometry(targetId);
       const targetRight = targetPos.left + targetPos.width;
 
       const geometries = new Map();
       for (const elementId of elementIds) {
-        const elementPos = widgetContainer.getRecordedGeometry(elementId);
+        const elementPos = widgetEditorViewer.getRecordedGeometry(elementId);
         const left = targetRight - elementPos.width;
         geometries.set(elementId, { left });
       }
@@ -1379,10 +1379,10 @@ angular.module('modules.editor').service('EditorActionFactory', [
         throw new Error('At least 2 elements are needed');
       }
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
       const positions = elementIds.map((elementId) => {
-        const elementPos = widgetContainer.getRecordedGeometry(elementId);
+        const elementPos = widgetEditorViewer.getRecordedGeometry(elementId);
         return {
           elementId,
           position: elementPos.left,
@@ -1414,10 +1414,10 @@ angular.module('modules.editor').service('EditorActionFactory', [
         throw new Error('At least 2 elements are needed');
       }
       const widgetEditor = widgetEditorGetter();
-      const widgetContainer = widgetEditor.widgetContainer;
+      const widgetEditorViewer = widgetEditor.widgetEditorViewer;
 
       const positions = elementIds.map((elementId) => {
-        const elementPos = widgetContainer.getRecordedGeometry(elementId);
+        const elementPos = widgetEditorViewer.getRecordedGeometry(elementId);
         return {
           elementId,
           position: elementPos.top,
@@ -1481,7 +1481,7 @@ angular.module('modules.editor').service('EditorActionFactory', [
       return new DeleteWidgetsAction(
         widgetEditor,
         eventCenterService,
-        [...widgetEditor.widgetContainer.widgetIds],
+        [...widgetEditor.widgetEditorViewer.widgetIds],
         'Delete all widgets'
       );
     };
@@ -1495,7 +1495,7 @@ angular.module('modules.editor').service('EditorActionFactory', [
         widgetEditor,
         widgetConnectorGetter(),
         eventCenterService,
-        [...widgetEditor.widgetContainer.widgetIds],
+        [...widgetEditor.widgetEditorViewer.widgetIds],
         'Clear all connections'
       );
     };

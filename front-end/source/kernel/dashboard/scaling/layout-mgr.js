@@ -104,7 +104,7 @@ export class LayoutMgrClass {
     $('#current-theme').attr('data-theme', this.dashboardTheme);
     this.updateDashBgColor();
 
-    widgetEditor.widgetContainer.rerenderWidgets();
+    widgetEditor.widgetEditorViewer.rerenderWidgets();
   }
 
   resetDashboardTheme() {

@@ -22,7 +22,7 @@ import { editorSingletons } from 'kernel/editor-singletons';
 import { XdashDataUpdateEngine } from './xdash-data-updates';
 import { offSchedLogUser } from 'kernel/base/main-common';
 import { DialogBox } from 'kernel/datanodes/gui/DialogBox';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { xdsjson } from 'kernel/datanodes/export/xdsjson';
 import { htmlExport } from 'kernel/general/export/html-export';
 import { pyodideLib } from 'kernel/base/pyodide-project';
@@ -174,7 +174,7 @@ export const Xdash = function () {
         return false;
       }
 
-      widgetPreview.reset();
+      widgetViewer.reset();
 
       editorSingletons.widgetEditor.deserialize(jsonObject);
       widgetConnector.deserialize(jsonObject.connections);

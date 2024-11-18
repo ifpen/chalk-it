@@ -112,23 +112,23 @@ angular.module('modules.editor').controller('EditorController', [
     }
 
     function _onAspectChange() {
-      const widgetContainer = widgetEditorGetter().widgetContainer;
-      vm.pages = [...widgetContainer.pageNames];
+      const widgetEditorViewer = widgetEditorGetter().widgetEditorViewer;
+      vm.pages = [...widgetEditorViewer.pageNames];
       vm.pagesNumber = vm.pages.length;
 
       vm.dashboardSize = {
-        width: widgetContainer.width,
-        height: widgetContainer.height,
-        marginX: widgetContainer.marginX,
-        marginY: widgetContainer.marginY,
-        enforceHeightLimit: widgetContainer.enforceHeightLimit,
+        width: widgetEditorViewer.width,
+        height: widgetEditorViewer.height,
+        marginX: widgetEditorViewer.marginX,
+        marginY: widgetEditorViewer.marginY,
+        enforceHeightLimit: widgetEditorViewer.enforceHeightLimit,
       };
 
-      const { width, height } = widgetContainer.getDisplaySize(true);
-      vm.editorZoom.setFitHeight(widgetContainer.enforceHeightLimit);
+      const { width, height } = widgetEditorViewer.getDisplaySize(true);
+      vm.editorZoom.setFitHeight(widgetEditorViewer.enforceHeightLimit);
       vm.editorZoom.setSize(width + 2 * EDIT_ZONE_MARGIN, height + 2 * EDIT_ZONE_MARGIN);
 
-      vm.viewerZoom.setFitHeight(widgetContainer.enforceHeightLimit);
+      vm.viewerZoom.setFitHeight(widgetEditorViewer.enforceHeightLimit);
       vm.viewerZoom.setSize(width + 2 * EDIT_ZONE_MARGIN, height + 2 * EDIT_ZONE_MARGIN);
     }
 
@@ -158,7 +158,7 @@ angular.module('modules.editor').controller('EditorController', [
 
     eventCenterService.addListener(selection_event, _selectionCallback);
 
-    const _addRmCallback = () => $timeout((vm.widgetExists = !!widgetEditorGetter().widgetContainer.widgetIds.size));
+    const _addRmCallback = () => $timeout((vm.widgetExists = !!widgetEditorGetter().widgetEditorViewer.widgetIds.size));
     eventCenterService.addListener(add_remove_widget_event, _addRmCallback);
 
     const _connectionsChangedCallback = () => $timeout((vm.connectionsExists = _hasConnection()));
@@ -400,12 +400,12 @@ angular.module('modules.editor').controller('EditorController', [
     // Dashboard configuration
     vm.updateGrid = function _updateGrid() {
       const widgetEditor = widgetEditorGetter();
-      widgetEditor.widgetContainer.updateGrid(vm.gridX, vm.gridY);
+      widgetEditor.widgetEditorViewer.updateGrid(vm.gridX, vm.gridY);
     };
 
     vm.canApplyPages = function _canApplyPages() {
       const widgetEditor = widgetEditorGetter();
-      return !angular.equals(widgetEditor?.widgetContainer?.pageNames, vm.pages);
+      return !angular.equals(widgetEditor?.widgetEditorViewer?.pageNames, vm.pages);
     };
 
     vm.applyPages = function _applyPages() {
@@ -432,19 +432,19 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     vm._setCurrentPage = function (newPage) {
-      if (newPage >= 0 && newPage < widgetEditorGetter().widgetContainer.pageNames.length) {
+      if (newPage >= 0 && newPage < widgetEditorGetter().widgetEditorViewer.pageNames.length) {
         widgetEditor.changePage(newPage);
       }
     };
 
     vm.getCurrentPageNames = function () {
       const widgetEditor = widgetEditorGetter();
-      return widgetEditor?.widgetContainer?.pageNames ?? [];
+      return widgetEditor?.widgetEditorViewer?.pageNames ?? [];
     };
 
     vm.getCurrentPage = function () {
       const widgetEditor = widgetEditorGetter();
-      return widgetEditor.widgetContainer.currentPage;
+      return widgetEditor.widgetEditorViewer.currentPage;
     };
 
     vm.editPageNames = function () {
@@ -513,7 +513,7 @@ angular.module('modules.editor').controller('EditorController', [
      */
     vm.fitWidth = function _fitWidth() {
       const widgetEditor = widgetEditorGetter();
-      vm.dashboardSize.width = widgetEditor.widgetContainer.getContentSize().width;
+      vm.dashboardSize.width = widgetEditor.widgetEditorViewer.getContentSize().width;
     };
 
     /**
@@ -521,21 +521,21 @@ angular.module('modules.editor').controller('EditorController', [
      */
     vm.fitHeight = function _fitHeight() {
       const widgetEditor = widgetEditorGetter();
-      vm.dashboardSize.height = widgetEditor.widgetContainer.getContentSize().height;
+      vm.dashboardSize.height = widgetEditor.widgetEditorViewer.getContentSize().height;
     };
 
     /**
      * @returns {boolean} true if the edited dashboard size has changed
      */
     vm.dashboardSizeChanged = function _dashboardSizeChanged() {
-      const widgetContainer = widgetEditorGetter()?.widgetContainer;
+      const widgetEditorViewer = widgetEditorGetter()?.widgetEditorViewer;
       return (
-        widgetContainer &&
-        (vm.dashboardSize.width !== widgetContainer.width ||
-          vm.dashboardSize.height !== widgetContainer.height ||
-          vm.dashboardSize.marginX !== widgetContainer.marginX ||
-          vm.dashboardSize.marginY !== widgetContainer.marginY ||
-          vm.dashboardSize.enforceHeightLimit !== widgetContainer.enforceHeightLimit)
+        widgetEditorViewer &&
+        (vm.dashboardSize.width !== widgetEditorViewer.width ||
+          vm.dashboardSize.height !== widgetEditorViewer.height ||
+          vm.dashboardSize.marginX !== widgetEditorViewer.marginX ||
+          vm.dashboardSize.marginY !== widgetEditorViewer.marginY ||
+          vm.dashboardSize.enforceHeightLimit !== widgetEditorViewer.enforceHeightLimit)
       );
     };
 
@@ -543,13 +543,13 @@ angular.module('modules.editor').controller('EditorController', [
      * Reset edited dashboard size to the current parameter
      */
     vm.resetDashboardSize = function _resetDashboardSize() {
-      const widgetContainer = widgetEditorGetter().widgetContainer;
+      const widgetEditorViewer = widgetEditorGetter().widgetEditorViewer;
       vm.dashboardSize = {
-        width: widgetContainer.width,
-        height: widgetContainer.height,
-        marginX: widgetContainer.marginX,
-        marginY: widgetContainer.marginY,
-        enforceHeightLimit: widgetContainer.enforceHeightLimit,
+        width: widgetEditorViewer.width,
+        height: widgetEditorViewer.height,
+        marginX: widgetEditorViewer.marginX,
+        marginY: widgetEditorViewer.marginY,
+        enforceHeightLimit: widgetEditorViewer.enforceHeightLimit,
       };
     };
 
@@ -588,7 +588,7 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.clearDashboard = function _clearDashboard() {
       const widgetEditor = widgetEditorGetter();
-      if (widgetEditor.widgetContainer.widgetIds.size) {
+      if (widgetEditor.widgetEditorViewer.widgetIds.size) {
         swal(
           {
             title: 'Are you sure?',
@@ -743,7 +743,7 @@ angular.module('modules.editor').controller('EditorController', [
       const elementIds = _getSelection();
       const targetId = _getSelectedActive();
       if (targetId && elementIds && elementIds.length > 1) {
-        const targetPos = widgetEditor.widgetContainer.getRecordedGeometry(targetId);
+        const targetPos = widgetEditor.widgetEditorViewer.getRecordedGeometry(targetId);
         if (param == 'HeightWidth') {
           const action1 = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width);
           const action2 = editorActionFactory.createSetWidgetHeightAction(elementIds, targetPos.height);
@@ -806,7 +806,7 @@ angular.module('modules.editor').controller('EditorController', [
       }
 
       const widgetEditor = widgetEditorGetter();
-      if (page >= 0 && page < widgetEditor.widgetContainer.pageNames.length) {
+      if (page >= 0 && page < widgetEditor.widgetEditorViewer.pageNames.length) {
         return page;
       } else {
         return null;
@@ -1023,8 +1023,8 @@ angular.module('modules.editor').controller('EditorController', [
       const activeId = _getSelectedActive();
       if (activeId) {
         const widgetEditor = widgetEditorGetter();
-        const widgetContainer = widgetEditor.widgetContainer;
-        const currentGeometry = widgetContainer.getCurrentWidgetGeometry(activeId);
+        const widgetEditorViewer = widgetEditor.widgetEditorViewer;
+        const currentGeometry = widgetEditorViewer.getCurrentWidgetGeometry(activeId);
         if (currentGeometry) {
           const oldValues = vm.widgetGeometry;
           vm.widgetGeometry = currentGeometry;
@@ -1037,8 +1037,8 @@ angular.module('modules.editor').controller('EditorController', [
           if (vm.heigthFocused) vm.widgetGeometry.height = oldValues.height;
           if (vm.widthFocused) vm.widgetGeometry.width = oldValues.width;
 
-          const minSize = widgetContainer.minimumSize(activeId);
-          const available = widgetContainer.availableSpace();
+          const minSize = widgetEditorViewer.minimumSize(activeId);
+          const available = widgetEditorViewer.availableSpace();
 
           vm.widgetGeometryConstraints.width.min = minSize.width;
           vm.widgetGeometryConstraints.height.min = minSize.height;

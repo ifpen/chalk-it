@@ -9,7 +9,7 @@
 import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { editorSingletons } from 'kernel/editor-singletons';
 import { EVENTS_EDITOR_CONNECTIONS_CHANGED } from 'angular/modules/editor/editor.events';
 
@@ -36,13 +36,13 @@ export const widgetConnector = (function () {
 
     // Purge missing widgets
     for (const idx in widgetsConnection) {
-      if (!widgetEditor.widgetContainer.widgetIds.has(widgetsConnection[idx].id)) {
+      if (!widgetEditor.widgetEditorViewer.widgetIds.has(widgetsConnection[idx].id)) {
         delete widgetsConnection[idx];
       }
     }
 
     // Create missing connections
-    for (const [key, widgetInfo] of widgetEditor.widgetContainer.widgetsInfo) {
+    for (const [key, widgetInfo] of widgetEditor.widgetEditorViewer.widgetsInfo) {
       const widgetObject = widgetInfo.instance;
       if (widgetsConnection[key]) {
         if (widgetObject) {
@@ -133,7 +133,7 @@ export const widgetConnector = (function () {
     for (let key in widgetsConnection) {
       try {
         // MBG tmp to handle pb of long requests
-        widgetPreview.plotConstantData(key, false);
+        widgetViewer.plotConstantData(key, false);
         // widgetsConnection[key].widgetObjEdit = null; //AEF: comment  for issue#152
       } catch (exc) {
         console.error(exc);
@@ -177,9 +177,9 @@ export const widgetConnector = (function () {
           if (actuator != null) {
             if (slider.dataNode === dsName) {
               if (datanodesManager.getDataNodeByName(dsName).type() == 'Python_pyodide_plugin' && i === 'fig') {
-                widgetPreview.setDataOnWidget(e, i, actuator, dsName, dsStatus, dsLastUpdated, false); // transfer name instead of value
+                widgetViewer.setDataOnWidget(e, i, actuator, dsName, dsStatus, dsLastUpdated, false); // transfer name instead of value
               } else {
-                widgetPreview.setDataOnWidget(e, i, actuator, newData, dsStatus, dsLastUpdated, false);
+                widgetViewer.setDataOnWidget(e, i, actuator, newData, dsStatus, dsLastUpdated, false);
               }
             } else if (slider.dataNode === 'None') {
             }

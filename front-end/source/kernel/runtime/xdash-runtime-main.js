@@ -11,7 +11,7 @@ import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { modelsHiddenParams, modelsParameters, modelsTempParams } from 'kernel/base/widgets-states';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { pyodideLib } from 'kernel/base/pyodide-project';
 import { inputHandler } from 'kernel/general/interfaces/input-params';
 import {
@@ -27,7 +27,7 @@ import {
 function initPageRuntime(pages) {
   const $rootScope = angular.element(document.body).scope().$root;
 
-  widgetPreview.pageNames = pages.pageNames;
+  widgetViewer.pageNames = pages.pageNames;
 
   $rootScope.safeApply(() => {
     $rootScope.pageNames = pages.pageNames;
@@ -35,7 +35,7 @@ function initPageRuntime(pages) {
     $rootScope.changePage = function (page) {
       if (page >= 0 && page < $rootScope.pageNames.length) {
         $rootScope.pageNumber = page;
-        widgetPreview.setCurrentPage(page);
+        widgetViewer.setCurrentPage(page);
       }
     };
 
@@ -192,7 +192,7 @@ export function loadDashboard(jsonContent, exportOptions) {
       }
     });
 
-    widgetPreview.deserialize(jsonContent);
+    widgetViewer.deserialize(jsonContent);
   };
 
   // Main logic begins here

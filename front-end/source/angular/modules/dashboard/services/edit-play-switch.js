@@ -1,5 +1,5 @@
 ﻿import { tabPlayLoadedEvt } from 'kernel/base/main-common';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { editorSingletons } from 'kernel/editor-singletons';
 
 export function showEditMode() {
@@ -17,8 +17,8 @@ export function showPlayMode() {
   try {
     const { dashboard } = editorSingletons.widgetEditor.serialize();
 
-    widgetPreview.reset();
-    widgetPreview.renderDashboardWidgets(dashboard);
+    widgetViewer.reset();
+    widgetViewer.renderDashboardWidgets(dashboard);
   } catch (e) {
     console.error(e);
     // FIXME ?

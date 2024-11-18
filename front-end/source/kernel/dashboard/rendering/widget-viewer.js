@@ -1,5 +1,5 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────┐ \\
-// │ widgetPreview                                                      │ \\
+// │ widgetViewer                                                      │ \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Copyright © 2016-2024 IFPEN                                        │ \\
 // | Licensed under the Apache License, Version 2.0                     │ \\
@@ -15,7 +15,10 @@ import { applyGeometry } from 'kernel/dashboard/widget/widget-placement';
 
 const DISPLAY_CONTAINER_ID = 'DropperDroitec';
 
-class WidgetPreview {
+/**
+ * Display widgets for the editor's view mode and for deployed dashboards.
+ */
+class WidgetWiewer {
   constructor() {
     this.idWC = 401;
 
@@ -104,8 +107,7 @@ class WidgetPreview {
       widgetConnector.widgetsConnection[instanceId].widgetObjEdit = null;
       widgetConnector.widgetsConnection[instanceId].widgetObjConnect = instance;
 
-      // TODO coords check needed at runtime
-      this.plotConstantData(instanceId, false); //on preview mode
+      this.plotConstantData(instanceId, false);
     }
   }
 
@@ -348,7 +350,7 @@ class WidgetPreview {
           // pass through ranges
           varName = field;
           if (_.isNull(varInter) || _.isUndefined(varInter)) {
-            // TODO ???
+            // TODO seems harmful ???
             varInter = newData[varName];
           } else {
             varInter = varInter[varName];
@@ -466,6 +468,7 @@ class WidgetPreview {
    * Currently unused
    * */
   toPng() {
+    // FIXME unused
     const dashExt = this.#getDashboardExtent();
 
     const originalHTML = document.getElementById('DropperDroitec');
@@ -504,5 +507,4 @@ class WidgetPreview {
   }
 }
 
-// TODO rename
-export const widgetPreview = new WidgetPreview();
+export const widgetViewer = new WidgetWiewer();

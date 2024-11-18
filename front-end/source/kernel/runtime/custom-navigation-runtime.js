@@ -7,8 +7,8 @@
 // │ Original authors(s): Ghiles HIDEUR                                 │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 
 export const customNavigationRuntime = {
-  goToPage: (page) => widgetPreview.setCurrentPage(page),
+  goToPage: (page) => widgetViewer.setCurrentPage(page),
 };

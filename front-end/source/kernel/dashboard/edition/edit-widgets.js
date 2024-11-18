@@ -19,12 +19,11 @@ import {
   EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED,
 } from 'angular/modules/editor/editor.events';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
-import { rmUnit } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { getGeometryChanges } from 'kernel/dashboard/widget/widget-placement';
 import { modelsHiddenParams, modelsParameters } from 'kernel/base/widgets-states';
-import { WidgetContainer, MAIN_CONTAINER_ID } from 'kernel/dashboard/widget/widget-container';
+import { WidgetEditorViewer, MAIN_CONTAINER_ID } from 'kernel/dashboard/rendering/widget-editor-viewer';
 import { createUniqueInstanceId } from 'kernel/dashboard/widget/widget-factory';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { flatUiWidgetsPlugin } from 'kernel/dashboard/plugins/basic/plugin-flat-ui-widgets';
 import { plotlyWidgetsPlugin } from 'kernel/dashboard/plugins/plots/plugin-plotly-widgets';
 import { mapWidgetsPlugin } from 'kernel/dashboard/plugins/geo-time/plugin-map-widgets';
@@ -34,7 +33,7 @@ export function initEditWidget() {
   const drprD = document.getElementById(MAIN_CONTAINER_ID);
   drprD.innerHTML = '';
 
-  const widgetContainer = new WidgetContainer();
+  const widgetEditorViewer = new WidgetEditorViewer();
 
   // scaling stuff
   const bNoteBookMode = false; // save or not widgets cache (to be read from the project)
@@ -114,13 +113,13 @@ export function initEditWidget() {
   function _build(modelJsonId, instanceId, wLayout, wzIndex, page) {
     if (!instanceId) {
       // create unique key for the instance
-      instanceId = createUniqueInstanceId(modelJsonId, (id) => widgetContainer.widgetsInfo.has(id));
+      instanceId = createUniqueInstanceId(modelJsonId, (id) => widgetEditorViewer.widgetsInfo.has(id));
     }
 
     // create mainDiv and containerDiv
     const cln = _createNewDiv(instanceId);
 
-    widgetContainer.createWidget(modelJsonId, instanceId, cln, wLayout, wzIndex, page);
+    widgetEditorViewer.createWidget(modelJsonId, instanceId, cln, wLayout, wzIndex, page);
 
     return instanceId;
   }
@@ -166,7 +165,7 @@ export function initEditWidget() {
   }
 
   function duplicateWidgetWithConnection(elementId, newWidgetId = null) {
-    const info = widgetContainer.widgetsInfo.get(elementId);
+    const info = widgetEditorViewer.widgetsInfo.get(elementId);
 
     const widgetLayoutPx = info.layout;
     // translate !
@@ -177,7 +176,7 @@ export function initEditWidget() {
       height: widgetLayoutPx.height,
     };
 
-    newWidgetId ??= createUniqueInstanceId(info.modelJsonId, (id) => widgetContainer.widgetsInfo.has(id));
+    newWidgetId ??= createUniqueInstanceId(info.modelJsonId, (id) => widgetEditorViewer.widgetsInfo.has(id));
 
     // MBG : TODO : extend factory to transmit modelsHiddenParams
     // MBG : TODO : rename globally modelsHiddenParams to instanceHiddenParams
@@ -243,11 +242,11 @@ export function initEditWidget() {
           if (ctrlKey) {
             _selectionInitialState.forEach((id) => widgetSelectionContext.add(id));
           }
-          for (const id of widgetContainer.widgetIds) {
+          for (const id of widgetEditorViewer.widgetIds) {
             if (!widgetSelectionContext.has(id)) {
-              const geom = widgetContainer.getRecordedGeometry(id);
-              const left = container.left + geom.left + widgetContainer.marginX;
-              const top = container.top + geom.top + widgetContainer.marginY;
+              const geom = widgetEditorViewer.getRecordedGeometry(id);
+              const left = container.left + geom.left + widgetEditorViewer.marginX;
+              const top = container.top + geom.top + widgetEditorViewer.marginY;
               container;
               const right = left + geom.width;
               const bottom = top + geom.height;
@@ -354,7 +353,10 @@ export function initEditWidget() {
             const offset = drprD.getBoundingClientRect();
             [x, y] = _alignOnGlobalGrid(
               [x, y],
-              [offset.left + widgetContainer.marginX * zoomRatio, offset.top + widgetContainer.marginY * zoomRatio]
+              [
+                offset.left + widgetEditorViewer.marginX * zoomRatio,
+                offset.top + widgetEditorViewer.marginY * zoomRatio,
+              ]
             );
           }
 
@@ -372,8 +374,8 @@ export function initEditWidget() {
           const dropZone = event.relatedTarget;
           if (dropZone) {
             const rect = dropZone.getBoundingClientRect();
-            x -= rect.left + widgetContainer.marginX * zoomRatio;
-            y -= rect.top + widgetContainer.marginY * zoomRatio;
+            x -= rect.left + widgetEditorViewer.marginX * zoomRatio;
+            y -= rect.top + widgetEditorViewer.marginY * zoomRatio;
             x /= zoomRatio;
             y /= zoomRatio;
 
@@ -432,22 +434,22 @@ export function initEditWidget() {
           const targetId = target.id;
 
           // When grabbed widget is not selected, it becomes the selection
-          if (targetId && widgetContainer.widgetIds.has(targetId) && !widgetSelectionContext.has(targetId)) {
+          if (targetId && widgetEditorViewer.widgetIds.has(targetId) && !widgetSelectionContext.has(targetId)) {
             widgetSelectionContext.clear();
             widgetSelectionContext.add(targetId);
             _onSelectionChange();
           }
 
-          const availableSpace = widgetContainer.availableSpace();
+          const availableSpace = widgetEditorViewer.availableSpace();
 
           widgetSelectionContext.forEach((id) => {
-            const widgetPosition = widgetContainer.getCurrentWidgetGeometry(id);
+            const widgetPosition = widgetEditorViewer.getCurrentWidgetGeometry(id);
             const x = widgetPosition.left;
             const y = widgetPosition.top;
             const height = widgetPosition.height || 1;
             const width = widgetPosition.width || 1;
 
-            const { minWidth, minHeight } = widgetContainer.minimumSize(id);
+            const { minWidth, minHeight } = widgetEditorViewer.minimumSize(id);
 
             const minRatioX = minWidth / width;
             const minRatioY = minHeight / height;
@@ -467,7 +469,7 @@ export function initEditWidget() {
         move(event) {
           const target = event.target;
 
-          const targetStartPosition = widgetContainer.getRecordedGeometry(target.id);
+          const targetStartPosition = widgetEditorViewer.getRecordedGeometry(target.id);
 
           const changeX = event.edges.left || event.edges.right;
           const changeY = event.edges.top || event.edges.bottom;
@@ -485,7 +487,7 @@ export function initEditWidget() {
           for (const [id, params] of resizeParameters.entries()) {
             const { minRatioX, minRatioY, maxRatioX, maxRatioY } = params;
 
-            const startPosition = widgetContainer.getRecordedGeometry(id);
+            const startPosition = widgetEditorViewer.getRecordedGeometry(id);
             const position = { ...startPosition };
 
             let widgetRatioX = ratioX;
@@ -531,7 +533,7 @@ export function initEditWidget() {
               }
             }
 
-            widgetContainer.changeWidgetGeometry(id, position);
+            widgetEditorViewer.changeWidgetGeometry(id, position);
           }
           _notifyMove();
         },
@@ -539,15 +541,15 @@ export function initEditWidget() {
           const resizes = new Map();
 
           widgetSelectionContext.forEach((id) => {
-            const toPosition = widgetContainer.getCurrentWidgetGeometry(id);
-            const startPosition = widgetContainer.getRecordedGeometry(id);
+            const toPosition = widgetEditorViewer.getCurrentWidgetGeometry(id);
+            const startPosition = widgetEditorViewer.getRecordedGeometry(id);
 
             if (!angular.equals(startPosition, toPosition)) {
               resizes.set(id, toPosition);
             }
 
             // Should not do anything, but make doubly sure we have no discrepency
-            widgetContainer.resetWidgetGeometry(id);
+            widgetEditorViewer.resetWidgetGeometry(id);
           });
 
           if (resizes.size > 0) {
@@ -579,7 +581,7 @@ export function initEditWidget() {
           const targetId = target.id;
 
           // When grabbed widget is not selected, it becomes the selection
-          if (targetId && widgetContainer.widgetIds.has(targetId) && !widgetSelectionContext.has(targetId)) {
+          if (targetId && widgetEditorViewer.widgetIds.has(targetId) && !widgetSelectionContext.has(targetId)) {
             widgetSelectionContext.clear();
             widgetSelectionContext.add(targetId);
             _onSelectionChange();
@@ -591,16 +593,16 @@ export function initEditWidget() {
           const varY = (event.client.y - event.clientY0) / zoomRatio;
 
           widgetSelectionContext.forEach((id) => {
-            let position = { ...widgetContainer.getRecordedGeometry(id) };
+            let position = { ...widgetEditorViewer.getRecordedGeometry(id) };
             position.left += varX;
             position.top += varY;
 
             if (useGrid) {
               [position.left, position.top] = _alignOnLocalGrid([position.left, position.top]);
             }
-            position = widgetContainer.constrainLayout(position);
+            position = widgetEditorViewer.constrainLayout(position);
 
-            widgetContainer.changeWidgetGeometry(id, position);
+            widgetEditorViewer.changeWidgetGeometry(id, position);
           });
 
           _notifyMove();
@@ -613,7 +615,7 @@ export function initEditWidget() {
           const moves = new Map();
 
           widgetSelectionContext.forEach((id) => {
-            const startPosition = widgetContainer.getRecordedGeometry(id);
+            const startPosition = widgetEditorViewer.getRecordedGeometry(id);
 
             let position = { ...startPosition };
             position.left += varX;
@@ -622,7 +624,7 @@ export function initEditWidget() {
             if (useGrid) {
               [position.left, position.top] = _alignOnLocalGrid([position.left, position.top]);
             }
-            position = widgetContainer.constrainLayout(position);
+            position = widgetEditorViewer.constrainLayout(position);
 
             const changes = getGeometryChanges(startPosition, position);
             if (Object.keys(changes).length) {
@@ -630,7 +632,7 @@ export function initEditWidget() {
             }
 
             // Should not do anything, but make doubly sure we have no discrepency
-            widgetContainer.resetWidgetGeometry(id);
+            widgetEditorViewer.resetWidgetGeometry(id);
           });
 
           if (moves.size > 0) {
@@ -656,7 +658,7 @@ export function initEditWidget() {
       const ctrlKey = event.ctrlKey;
       const target = event.currentTarget;
       const targetId = target.id;
-      if (targetId && widgetContainer.widgetIds.has(targetId)) {
+      if (targetId && widgetEditorViewer.widgetIds.has(targetId)) {
         if (ctrlKey) {
           if (widgetSelectionContext.has(targetId)) {
             widgetSelectionContext.delete(targetId);
@@ -676,7 +678,7 @@ export function initEditWidget() {
     });
 
   function _applySelectionClasses() {
-    for (const info of widgetContainer.widgetsInfo.values()) {
+    for (const info of widgetEditorViewer.widgetsInfo.values()) {
       const div = info.containerDiv;
       div.classList.remove(SELECTED_CLASS);
       div.classList.remove(LAST_SELECTED_CLASS);
@@ -684,7 +686,7 @@ export function initEditWidget() {
 
     let widget = null;
     widgetSelectionContext.forEach((id) => {
-      widget = widgetContainer.getWidgetContainerDiv(id);
+      widget = widgetEditorViewer.getWidgetContainerDiv(id);
       widget.classList.add(SELECTED_CLASS);
     });
     if (widget) {
@@ -709,7 +711,7 @@ export function initEditWidget() {
     unselectWidget(instanceId);
 
     delete widgetConnector.widgetsConnection[instanceId]; // delete connection
-    widgetContainer.delete(instanceId);
+    widgetEditorViewer.delete(instanceId);
 
     _onAddRmWidget();
   }
@@ -729,7 +731,7 @@ export function initEditWidget() {
   /*--------serialize--------*/
   function serialize() {
     const dashboard = {};
-    for (const [instanceId, info] of widgetContainer.widgetsInfo.entries()) {
+    for (const [instanceId, info] of widgetEditorViewer.widgetsInfo.entries()) {
       const layout = {
         top: info.layout.top,
         left: info.layout.left,
@@ -767,14 +769,14 @@ export function initEditWidget() {
     const layoutMgr = editorSingletons.layoutMgr;
     const display = {
       ...layoutMgr.serialize(),
-      marginX: widgetContainer.marginX,
-      marginY: widgetContainer.marginY,
-      width: widgetContainer.width,
-      height: widgetContainer.height,
-      enforceHeightLimit: widgetContainer.enforceHeightLimit,
+      marginX: widgetEditorViewer.marginX,
+      marginY: widgetEditorViewer.marginY,
+      width: widgetEditorViewer.width,
+      height: widgetEditorViewer.height,
+      enforceHeightLimit: widgetEditorViewer.enforceHeightLimit,
     };
 
-    const pageNames = widgetContainer.pageNames;
+    const pageNames = widgetEditorViewer.pageNames;
     const pages = pageNames.length ? { pageNames } : undefined;
     return { dashboard, display, pages };
   }
@@ -783,19 +785,19 @@ export function initEditWidget() {
   function deserialize({ dashboard, display, pages }) {
     clear();
 
-    widgetContainer.setMargins(display.marginX, display.marginY);
-    widgetContainer.setSize(display.width, display.height);
-    widgetContainer.enforceHeightLimit = display.enforceHeightLimit;
+    widgetEditorViewer.setMargins(display.marginX, display.marginY);
+    widgetEditorViewer.setSize(display.width, display.height);
+    widgetEditorViewer.enforceHeightLimit = display.enforceHeightLimit;
 
     const layoutMgr = editorSingletons.layoutMgr;
     layoutMgr.deserialize(display);
 
     if (pages) {
-      widgetContainer.pageNames = [...pages.pageNames];
-      widgetContainer.currentPage = 0;
+      widgetEditorViewer.pageNames = [...pages.pageNames];
+      widgetEditorViewer.currentPage = 0;
     } else {
-      widgetContainer.pageNames = [];
-      widgetContainer.currentPage = undefined;
+      widgetEditorViewer.pageNames = [];
+      widgetEditorViewer.currentPage = undefined;
     }
 
     for (const widget of Object.values(dashboard)) {
@@ -830,7 +832,7 @@ export function initEditWidget() {
     plotlyWidgetsPlugin.clear(); // FIXME
     mapWidgetsPlugin.clear(); // FIXME
 
-    widgetContainer.clear();
+    widgetEditorViewer.clear();
 
     unselectAllWidgets();
     _onAddRmWidget();
@@ -841,7 +843,7 @@ export function initEditWidget() {
     reset();
 
     widgetConnector.clear();
-    widgetPreview.reset();
+    widgetViewer.reset();
   }
 
   /*--------unselectWidget--------*/
@@ -852,8 +854,8 @@ export function initEditWidget() {
 
   function selectAllWidgets() {
     widgetSelectionContext.clear();
-    [...widgetContainer.widgetIds]
-      .filter((id) => widgetContainer.isVisible(id))
+    [...widgetEditorViewer.widgetIds]
+      .filter((id) => widgetEditorViewer.isVisible(id))
       .forEach((id) => widgetSelectionContext.add(id));
     _onSelectionChange();
   }
@@ -900,13 +902,13 @@ export function initEditWidget() {
   }
 
   function changePage(pageNb) {
-    widgetContainer.changePage(pageNb);
+    widgetEditorViewer.changePage(pageNb);
     validateSelectionVisibility();
   }
 
   function validateSelectionVisibility() {
     getSelection()
-      .filter((elementId) => !widgetContainer.isVisible(elementId))
+      .filter((elementId) => !widgetEditorViewer.isVisible(elementId))
       .forEach((elementId) => widgetSelectionContext.delete(elementId));
 
     _onSelectionChange();
@@ -953,7 +955,7 @@ export function initEditWidget() {
     getSelection,
     validateSelectionVisibility,
     changePage,
-    widgetContainer,
+    widgetEditorViewer,
     getGrid,
     setGrid,
     setUseGrid,

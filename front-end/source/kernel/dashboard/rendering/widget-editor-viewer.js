@@ -1,6 +1,6 @@
 ﻿// ┌────────────────────────────────────────────────────────────────────────┐ \\
-// │   widgetContainer : handles the div containing widget, and its         │ \\
-// │                     interactions with containing divs                  │ \\
+// │   widgetEditorViewer : handles the div containing widget, and its      │ \\
+// │                        interactions with containing divs               │ \\
 // ├────────────────────────────────────────────────────────────────────────┤ \\
 // │ Copyright © 2016-2021 IFPEN                                            │ \\
 // | Licensed under the Apache License, Version 2.0                         │ \\
@@ -21,7 +21,7 @@ import {
   models,
 } from 'kernel/base/widgets-states';
 import { widgetInstance } from 'kernel/dashboard/widget/widget-instance';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 
 const minWidgetWidthCst = 32;
 const minWidgetHeightCst = 32;
@@ -32,7 +32,10 @@ const DEFAULT_WIDTH = 1679 - 2 * DEFAULT_MARGIN;
 
 export const MAIN_CONTAINER_ID = 'DropperDroite';
 
-export class WidgetContainer {
+/**
+ * Display the dashboard and its widgets for the editor. Keeps track of their instances, geometries, etc.
+ */
+export class WidgetEditorViewer {
   constructor() {
     this.drpd = document.getElementById(MAIN_CONTAINER_ID);
 
@@ -100,7 +103,6 @@ export class WidgetContainer {
   setSize(width, height) {
     this.width = width;
     this.height = height;
-    // TODO
   }
 
   /**
@@ -114,7 +116,7 @@ export class WidgetContainer {
     this.marginY = valueY;
     this.drpd.style.padding = `${this.marginY}px ${this.marginX}px`;
 
-    widgetPreview.setMargins(valueX, valueY);
+    widgetViewer.setMargins(valueX, valueY);
   }
 
   delete(instanceId) {
@@ -357,7 +359,7 @@ export class WidgetContainer {
       info.containerDiv.style.display = show ? 'block' : 'none';
     });
 
-    widgetPreview.setCurrentPage(this.currentPage);
+    widgetViewer.setCurrentPage(this.currentPage);
   }
 
   changePage(pageNb) {
@@ -606,7 +608,7 @@ export class WidgetContainer {
   putWidgetAtForeground(elementIds) {
     const [sel, rest] = this.#splitWidgets(elementIds);
     const newOrder = [...this.#sortByZ(rest), ...this.#sortByZ(sel)];
-    const newZs = WidgetContainer.#renumberZ(newOrder);
+    const newZs = WidgetEditorViewer.#renumberZ(newOrder);
     this.setZIndices(newZs);
   }
 
@@ -617,7 +619,7 @@ export class WidgetContainer {
   putWidgetAtBackground(elementIds) {
     const [sel, rest] = this.#splitWidgets(elementIds);
     const newOrder = [...this.#sortByZ(sel), ...this.#sortByZ(rest)];
-    const newZs = WidgetContainer.#renumberZ(newOrder);
+    const newZs = WidgetEditorViewer.#renumberZ(newOrder);
     this.setZIndices(newZs);
   }
 }

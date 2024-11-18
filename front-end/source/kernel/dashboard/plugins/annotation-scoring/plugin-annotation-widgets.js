@@ -15,7 +15,6 @@ import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 import { getRealMimeType, base64ArrayBuffer } from 'kernel/datanodes/plugins/thirdparty/utils';
-import { inheritWcWidthFromIdInst, inheritWcHeightFromIdInst } from 'kernel/dashboard/scaling/scaling-utils';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -411,7 +410,7 @@ function annotationWidgetsPluginClass() {
     // MBG : attention, cela ne marche qu'en édition
     this.renderOriginalSize = function (w, h) {
       var topContainer = $('#' + idInstance);
-      topContainer.width(unitW(w + 2));
+      topContainer.width(unitW(w + 2)); // TODO fail
       topContainer.height(unitH(h + 2));
       var divContainer = $('#' + idDivContainer);
       divContainer.width(unitW(w));
@@ -458,10 +457,11 @@ function annotationWidgetsPluginClass() {
           divContent = divContent + 'object-fit: fill; ';
         }
 
-        divContainer.width(inheritWcWidthFromIdInst(idInstance));
-        divContainer.height(inheritWcHeightFromIdInst(idInstance));
-        divContainer.css('left', 0 + 'px');
-        divContainer.css('top', 0 + 'px');
+        // TODO
+        // divContainer.width(inheritWcWidthFromIdInst(idInstance));
+        // divContainer.height(inheritWcHeightFromIdInst(idInstance));
+        // divContainer.css('left', 0 + 'px');
+        // divContainer.css('top', 0 + 'px');
 
         if (!self.bIsInteractive) {
           divContent = divContent + ' opacity: 0.75';
