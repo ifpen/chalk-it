@@ -407,20 +407,6 @@ function annotationWidgetsPluginClass() {
 
     this.disable = function () {};
 
-    // MBG : attention, cela ne marche qu'en édition
-    this.renderOriginalSize = function (w, h) {
-      var topContainer = $('#' + idInstance);
-      topContainer.width(unitW(w + 2)); // TODO fail
-      topContainer.height(unitH(h + 2));
-      var divContainer = $('#' + idDivContainer);
-      divContainer.width(unitW(w));
-      divContainer.height(unitH(h));
-      divContainer.css('left', 0 + 'px');
-      divContainer.css('top', 0 + 'px');
-      var imgContainer = $('#' + 'imgContainer' + idWidget);
-      imgContainer.attr('style', 'width: ' + unitW(w) + '; ' + 'height: ' + unitH(h) + ';');
-    };
-
     this.rescale = function () {
       this.render();
     };
@@ -448,7 +434,6 @@ function annotationWidgetsPluginClass() {
       var divContent = '';
       if (modelsHiddenParams[idInstance].fileContentBase64 != '') {
         divContent = divContent + '<img id="img' + idWidget + '" style="position: relative;';
-        var divContainer = $('#' + idDivContainer);
         divContent = divContent + 'width: inherit; height: inherit; ';
 
         if (modelsParameters[idInstance].keepRatio) {
@@ -456,12 +441,6 @@ function annotationWidgetsPluginClass() {
         } else {
           divContent = divContent + 'object-fit: fill; ';
         }
-
-        // TODO
-        // divContainer.width(inheritWcWidthFromIdInst(idInstance));
-        // divContainer.height(inheritWcHeightFromIdInst(idInstance));
-        // divContainer.css('left', 0 + 'px');
-        // divContainer.css('top', 0 + 'px');
 
         if (!self.bIsInteractive) {
           divContent = divContent + ' opacity: 0.75';
@@ -528,12 +507,7 @@ function annotationWidgetsPluginClass() {
                     modelsHiddenParams[idInstance].fileContentBase64 = encodeURIComponent(
                       base64ArrayBuffer(imageFile.result)
                     );
-                    var i = new Image();
-
-                    i.onload = function () {
-                      self.renderOriginalSize(i.width, i.height);
-                    };
-
+                    const i = new Image();
                     i.src =
                       'data:' +
                       modelsHiddenParams[idInstance].mimeType +
