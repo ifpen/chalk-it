@@ -1042,12 +1042,12 @@ function flatUiComplexWidgetsPluginClass() {
   this.tableFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
-    const nbminPerPagination = modelsParameters[idInstance]?.paginationMinNbr;
-    const options = JSON.parse(modelsParameters[idInstance]?.paginationOptions);
+    const nbminPerPagination = modelsParameters[idInstance]?.paginationMinNbr ?? 10;
+    const options = JSON.parse(modelsParameters[idInstance]?.paginationOptions ?? '[10, 50, 100, 500]');
 
     let currentPage = 1;
     let totalRows = 0;
-    let defaultValue = modelsParameters[idInstance]?.paginationDefaultValue;
+    let defaultValue = modelsParameters[idInstance]?.paginationDefaultValue ?? 10;
 
     if (!options.includes(defaultValue)) {
       defaultValue = options[0];
@@ -1055,7 +1055,6 @@ function flatUiComplexWidgetsPluginClass() {
 
     function sortTable(cell, columnIndex, isAscending) {
       const tbody = cell.parent().parent().parents()[0].tBodies[0];
-      const rows = Array.from(tbody.getElementsByTagName('tr'));
       const [headerRow, ...dataRows] = modelsHiddenParams[idInstance].value;
 
       // Helper function to remove HTML tags (like <b>)
@@ -1087,15 +1086,8 @@ function flatUiComplexWidgetsPluginClass() {
       tbody.innerHTML = '';
 
       // Append the sorted rows back to the table
-      sortedData.forEach((sortedRow) => {
-        const tr = document.createElement('tr');
-        sortedRow.forEach((cellValue, cellIndex) => {
-          const td = document.createElement('td');
-          td.innerHTML = cellIndex === 0 ? `<b>${cellValue}</b>` : `<span>${cellValue}</span>`;
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
+      const bodyContent = self.buildTableBody(sortedData);
+      tbody.insertAdjacentHTML('beforeend', bodyContent);
     }
 
     function updateSortArrows(cell, activeHeader, isAscending) {
@@ -1164,11 +1156,11 @@ function flatUiComplexWidgetsPluginClass() {
         modelsHiddenParams[idInstance].value[row][column] = newValue;
 
         // Update cell content with styled value
-        cell.html(`
-          <span style="${self.valueColor()} ${self.valueFontFamily()} font-size: calc(7px + ${fontSize * getFontFactor()}vw);">
-            ${newValue}
-          </span>
-        `);
+        cell.html(
+          `<span style="${self.valueColor()} ${self.valueFontFamily()} font-size: calc(7px + ${
+            fontSize * getFontFactor()
+          }vw);">${newValue}</span>`
+        );
 
         // Trigger the update callback
         self.value.updateCallback(self.value, self.value.getValue());
@@ -1229,113 +1221,104 @@ function flatUiComplexWidgetsPluginClass() {
       $('#table' + idWidget + ' td').on('change', function (evt, newValue) {});
     };
 
-    this.buildTable = function (val) {
-      let tableContent = '';
+    // Helper: Get the calculated font size
+    this.getCalculatedFontSize = () => {
       const fontSize = modelsParameters[idInstance]?.tableValueFontSize ?? 0.5;
-      let startIndex = 0;
+      return `font-size: calc(7px + ${fontSize * getFontFactor()}vw);`;
+    };
 
-      // Helper: Get the calculated font size
-      const getCalculatedFontSize = () => `font-size: calc(7px + ${fontSize * getFontFactor()}vw);`;
+    // Helper: build table header
+    this.buildTableHeader = (headers) => {
+      const thElements = $('#table' + idWidget + ' th');
+      let tableHeader = '<thead><tr>';
 
-      // Helper: build table header
-      const buildTableHeader = (headers) => {
-        const thElements = $('#table' + idWidget + ' th');
-        return `
-          <thead><tr>
-            ${headers
-              .map((header, i) => {
-                const dSort = thElements.length ? thElements[i].getAttribute('data-sort') : '';
-                return `
-                <th data-sortable="true" data-sort="${dSort}" style="${this.valueAlign()}">
-                  <span style="${this.valueColor()} ${this.valueFontFamily()} ${getCalculatedFontSize()} padding-right:15px">
-                    <b>${header}</b>
-                  </span>
-                  <span class="sort-arrow"></span>
-                </th>
-              `;
-              })
-              .join('')}
-          </tr></thead>
-        `;
-      };
+      headers.forEach((header, i) => {
+        const dSort = thElements.length ? thElements[i].getAttribute('data-sort') : '';
+        tableHeader += `<th data-sortable="true" data-sort="${dSort}" style="${this.valueAlign()}">`;
+        tableHeader += `<span style="${this.valueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()} padding-right:15px">`;
+        tableHeader += '<b>' + header + '</b>';
+        tableHeader += `</span><span class="sort-arrow"></span></th>`;
+      });
 
-      // Helper: build table body
-      const buildTableBody = (dataRows) => {
-        const sortAsc = $('#table' + idWidget)[0]?.getAttribute('data-sort-asc') || 'true';
-        const sortCol = $('#table' + idWidget)[0]?.getAttribute('data-sort-column') || '0';
-        let bodyContent = `<tbody data-sort-asc="${sortAsc}" data-sort-column="${sortCol}">`;
+      tableHeader += '</tr></thead>';
+      return tableHeader;
+    };
 
-        dataRows.forEach((row, i) => {
-          const rowStyle =
-            modelsParameters[idInstance].striped && i % 2 !== 0
-              ? ` style="${this.tableBackgroundColor('secondary')}"`
-              : '';
-
-          bodyContent += `<tr${rowStyle}>`;
-          row.forEach((cellValue, j) => {
-            const isEditable = isCellEditable(j);
-            const cursorEditable = isEditable && this.bIsInteractive ? 'cursor: cell;' : '';
-
-            bodyContent += `
-              <td style="${cursorEditable} ${this.valueAlign()}" data-editable="${isEditable}">
-                <span style="${this.valueColor()} ${this.valueFontFamily()} ${getCalculatedFontSize()}">
-                  ${cellValue}
-                </span>
-              </td>
-            `;
-          });
-          bodyContent += '</tr>';
-        });
-
-        bodyContent += '</tbody>';
-        return bodyContent;
-      };
-
+    // Helper: build table body
+    this.buildTableBody = (dataRows) => {
       // Helper: determine if a cell is editable
       const isCellEditable = (colIndex) => {
-        let editableCols;
-
-        if (modelsParameters[idInstance].editableCols === '*') {
-          editableCols = Array.from({ length: val[0].length }, (_, i) => i);
-        } else {
-          editableCols = (() => {
-            try {
-              return JSON.parse(modelsParameters[idInstance].editableCols);
-            } catch (e) {
-              console.error('Invalid editableCols format:', e);
-              return [];
-            }
-          })();
-        }
+        const val = modelsHiddenParams[idInstance]?.value;
+        const editableCols =
+          modelsParameters[idInstance].editableCols === '*'
+            ? Array.from({ length: val[0].length }, (_, i) => i)
+            : (() => {
+                try {
+                  return JSON.parse(modelsParameters[idInstance].editableCols);
+                } catch (e) {
+                  console.error('Invalid editableCols format:', e);
+                  return [];
+                }
+              })();
 
         return editableCols.includes(colIndex) ? 'true' : 'false';
       };
+
+      const sortAsc = $('#table' + idWidget)[0]?.getAttribute('data-sort-asc') || 'true';
+      const sortCol = $('#table' + idWidget)[0]?.getAttribute('data-sort-column') || '0';
+      let bodyContent = `<tbody data-sort-asc="${sortAsc}" data-sort-column="${sortCol}">`;
+
+      dataRows.forEach((row, i) => {
+        if (typeof row === 'string') {
+          row = [row];
+        }
+
+        const rowStyle =
+          modelsParameters[idInstance].striped && i % 2 !== 0
+            ? `style="${this.tableBackgroundColor('secondary')}"`
+            : '';
+
+        bodyContent += `<tr ${rowStyle}>`;
+        row.forEach((cellValue, j) => {
+          const isEditable = isCellEditable(j);
+          const cursorEditable = isEditable && this.bIsInteractive ? 'cursor: cell;' : '';
+
+          bodyContent += `<td style="${cursorEditable} ${this.valueAlign()}" data-editable="${isEditable}" tabindex="0">`;
+          bodyContent += `<span style="${this.valueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${cellValue}</span>`;
+          bodyContent += `</td>`;
+        });
+        bodyContent += '</tr>';
+      });
+
+      bodyContent += '</tbody>';
+      return bodyContent;
+    };
+
+    this.buildTable = function (val) {
+      let tableContent = '';
+      let startIndex = 0;
 
       // Handle array or DataFrame-like content
       if (Array.isArray(val) || modelsHiddenParams[idInstance].isDataFrame) {
         if (modelsParameters[idInstance].headerLine) {
           startIndex = 1;
-          tableContent += buildTableHeader(val[0]);
+          tableContent += self.buildTableHeader(val[0]);
         }
 
-        tableContent += buildTableBody(val.slice(startIndex));
+        tableContent += self.buildTableBody(val.slice(startIndex));
       } else if (val && val.length > 0) {
         /* 1D table*/
         /*if (modelsParameters[idInstance].headerLine) {
                         startIndex = 1;
-                        tableContent = tableContent + '<thead><tr>';
-                        tableContent = tableContent + '<th><span style="color: #2154ab; font-size: calc(7px + .5vw)"><b>' + val[0] + '</b></span></th>';
-                        tableContent = tableContent + '</tr></thead>';
+                        tableContent += '<thead><tr>';
+                        tableContent += '<th><span style="color: #2154ab; font-size: calc(7px + .5vw)"><b>' + val[0] + '</b></span></th>';
+                        tableContent += '</tr></thead>';
                     }*/ // MBG : does-it make sense to have header in 1D ?
         tableContent += '<tbody><tr>';
         val.slice(startIndex).forEach((token) => {
-          tableContent += `
-            <td style="${this.valueAlign()}">
-              <span style="${this.valueColor()} ${this.valueFontFamily()} ${getCalculatedFontSize()}">
-                ${token}
-              </span>
-            </td>
-          `;
+          tableContent += `<td style="${this.valueAlign()}">`;
+          tableContent += `<span style="${this.valueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${token}</span>`;
+          tableContent += `</td>`;
         });
         tableContent += '</tr></tbody>';
       }
@@ -1380,60 +1363,6 @@ function flatUiComplexWidgetsPluginClass() {
       `;
     };
 
-    this.buildPagination = function () {
-      let fontSize = 0.5;
-      if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
-        fontSize = modelsParameters[idInstance].tableValueFontSize;
-      }
-      let strFontSize = 'font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)';
-
-      defaultValue = _.isUndefined($('#rows-per-page' + idWidget)[0])
-        ? defaultValue
-        : parseInt($('#rows-per-page' + idWidget).val());
-
-      let optionsHTML = '';
-      options.forEach((value) => {
-        optionsHTML += `<option value="${value}"${value === defaultValue ? ' selected' : ''}>${value}</option>`;
-      });
-      const divPagination =
-        '<div id="pagination-controls" >' +
-        '  <label for="rows-per-page" style="' +
-        this.valueColor() +
-        this.valueFontFamily() +
-        strFontSize +
-        '">Rows per page:</label>' +
-        ' <div class="custom-select-wrapper">' +
-        '  <select name="rows-per-page" id="rows-per-page' +
-        idWidget +
-        '" style="' +
-        strFontSize +
-        '">' +
-        optionsHTML +
-        '  </select>' +
-        ' </div>' +
-        ' <button id="first-page' +
-        idWidget +
-        '" disabled>|&lt;</button>' +
-        '  <button id="prev-page' +
-        idWidget +
-        '" disabled>&lt;</button>' +
-        '  <span id="page-info' +
-        idWidget +
-        '" style="' +
-        this.valueColor() +
-        this.valueFontFamily() +
-        strFontSize +
-        '">Page 1 of 1</span>' +
-        '  <button id="next-page' +
-        idWidget +
-        '">&gt;</button>' +
-        '<button id="last-page' +
-        idWidget +
-        '">&gt;|</button>' +
-        '</div>';
-      return divPagination;
-    };
-
     this.rescale = function () {
       this.render();
     };
@@ -1458,9 +1387,9 @@ function flatUiComplexWidgetsPluginClass() {
       if (modelsParameters[idInstance].noBorder) tableClass += ' no-border';
       tableClass += ' table-responsive';
 
-      let divContent = `
-      <table style="margin: 0; height: ${tableWidth}; ${this.tableBackgroundColor('primary')}" 
-             class="${tableClass}" id="table${idWidget}">
+      let divContent = `<table style="margin: 0; height: ${tableWidth}; ${this.tableBackgroundColor(
+        'primary'
+      )}" class="${tableClass}" id="table${idWidget}">
         ${insideTable}
       </table>`;
 
