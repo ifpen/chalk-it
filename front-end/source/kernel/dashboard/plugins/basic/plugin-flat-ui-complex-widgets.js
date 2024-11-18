@@ -1055,7 +1055,6 @@ function flatUiComplexWidgetsPluginClass() {
 
     function sortTable(cell, columnIndex, isAscending) {
       const tbody = cell.parent().parent().parents()[0].tBodies[0];
-      const rows = Array.from(tbody.getElementsByTagName('tr'));
       const [headerRow, ...dataRows] = modelsHiddenParams[idInstance].value;
 
       // Helper function to remove HTML tags (like <b>)
@@ -1087,15 +1086,8 @@ function flatUiComplexWidgetsPluginClass() {
       tbody.innerHTML = '';
 
       // Append the sorted rows back to the table
-      sortedData.forEach((sortedRow) => {
-        const tr = document.createElement('tr');
-        sortedRow.forEach((cellValue, cellIndex) => {
-          const td = document.createElement('td');
-          td.innerHTML = cellIndex === 0 ? `<b>${cellValue}</b>` : `<span>${cellValue}</span>`;
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
+      const bodyContent = self.buildTableBody(sortedData);
+      tbody.insertAdjacentHTML('beforeend', bodyContent);
     }
 
     function updateSortArrows(cell, activeHeader, isAscending) {
@@ -1164,11 +1156,11 @@ function flatUiComplexWidgetsPluginClass() {
         modelsHiddenParams[idInstance].value[row][column] = newValue;
 
         // Update cell content with styled value
-        cell.html(`
-          <span style="${self.valueColor()} ${self.valueFontFamily()} font-size: calc(7px + ${fontSize * getFontFactor()}vw);">
-            ${newValue}
-          </span>
-        `);
+        cell.html(
+          `<span style="${self.valueColor()} ${self.valueFontFamily()} font-size: calc(7px + ${
+            fontSize * getFontFactor()
+          }vw);">${newValue}</span>`
+        );
 
         // Trigger the update callback
         self.value.updateCallback(self.value, self.value.getValue());
@@ -1229,74 +1221,34 @@ function flatUiComplexWidgetsPluginClass() {
       $('#table' + idWidget + ' td').on('change', function (evt, newValue) {});
     };
 
-    this.buildTable = function (val) {
-      let tableContent = '';
+    // Helper: Get the calculated font size
+    this.getCalculatedFontSize = () => {
       const fontSize = modelsParameters[idInstance]?.tableValueFontSize ?? 0.5;
-      let startIndex = 0;
+      return `font-size: calc(7px + ${fontSize * getFontFactor()}vw);`;
+    };
 
-      // Helper: Get the calculated font size
-      const getCalculatedFontSize = () => `font-size: calc(7px + ${fontSize * getFontFactor()}vw);`;
+    // Helper: build table header
+    this.buildTableHeader = (headers) => {
+      const thElements = $('#table' + idWidget + ' th');
+      let tableHeader = '<thead><tr>';
 
-      // Helper: build table header
-      const buildTableHeader = (headers) => {
-        const thElements = $('#table' + idWidget + ' th');
-        return `
-          <thead><tr>
-            ${headers
-              .map((header, i) => {
-                const dSort = thElements.length ? thElements[i].getAttribute('data-sort') : '';
-                return `
-                <th data-sortable="true" data-sort="${dSort}" style="${this.valueAlign()}">
-                  <span style="${this.valueColor()} ${this.valueFontFamily()} ${getCalculatedFontSize()} padding-right:15px">
-                    <b>${header}</b>
-                  </span>
-                  <span class="sort-arrow"></span>
-                </th>
-              `;
-              })
-              .join('')}
-          </tr></thead>
-        `;
-      };
+      headers.forEach((header, i) => {
+        const dSort = thElements.length ? thElements[i].getAttribute('data-sort') : '';
+        tableHeader += `<th data-sortable="true" data-sort="${dSort}" style="${this.valueAlign()}">`;
+        tableHeader += `<span style="${this.valueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()} padding-right:15px">`;
+        tableHeader += '<b>' + header + '</b>';
+        tableHeader += `</span><span class="sort-arrow"></span></th>`;
+      });
 
-      // Helper: build table body
-      const buildTableBody = (dataRows) => {
-        const sortAsc = $('#table' + idWidget)[0]?.getAttribute('data-sort-asc') || 'true';
-        const sortCol = $('#table' + idWidget)[0]?.getAttribute('data-sort-column') || '0';
-        let bodyContent = `<tbody data-sort-asc="${sortAsc}" data-sort-column="${sortCol}">`;
+      tableHeader += '</tr></thead>';
+      return tableHeader;
+    };
 
-        dataRows.forEach((row, i) => {
-          if (typeof row === 'string') {
-            row = [row];
-          }
-
-          const rowStyle =
-            modelsParameters[idInstance].striped && i % 2 !== 0
-              ? ` style="${this.tableBackgroundColor('secondary')}"`
-              : '';
-
-          bodyContent += `<tr${rowStyle}>`;
-          row.forEach((cellValue, j) => {
-            const isEditable = isCellEditable(j);
-            const cursorEditable = isEditable && this.bIsInteractive ? 'cursor: cell;' : '';
-
-            bodyContent += `
-              <td style="${cursorEditable} ${this.valueAlign()}" data-editable="${isEditable}">
-                <span style="${this.valueColor()} ${this.valueFontFamily()} ${getCalculatedFontSize()}">
-                  ${cellValue}
-                </span>
-              </td>
-            `;
-          });
-          bodyContent += '</tr>';
-        });
-
-        bodyContent += '</tbody>';
-        return bodyContent;
-      };
-
+    // Helper: build table body
+    this.buildTableBody = (dataRows) => {
       // Helper: determine if a cell is editable
       const isCellEditable = (colIndex) => {
+        const val = modelsHiddenParams[idInstance]?.value;
         const editableCols =
           modelsParameters[idInstance].editableCols === '*'
             ? Array.from({ length: val[0].length }, (_, i) => i)
@@ -1312,31 +1264,61 @@ function flatUiComplexWidgetsPluginClass() {
         return editableCols.includes(colIndex) ? 'true' : 'false';
       };
 
+      const sortAsc = $('#table' + idWidget)[0]?.getAttribute('data-sort-asc') || 'true';
+      const sortCol = $('#table' + idWidget)[0]?.getAttribute('data-sort-column') || '0';
+      let bodyContent = `<tbody data-sort-asc="${sortAsc}" data-sort-column="${sortCol}">`;
+
+      dataRows.forEach((row, i) => {
+        if (typeof row === 'string') {
+          row = [row];
+        }
+
+        const rowStyle =
+          modelsParameters[idInstance].striped && i % 2 !== 0
+            ? `style="${this.tableBackgroundColor('secondary')}"`
+            : '';
+
+        bodyContent += `<tr ${rowStyle}>`;
+        row.forEach((cellValue, j) => {
+          const isEditable = isCellEditable(j);
+          const cursorEditable = isEditable && this.bIsInteractive ? 'cursor: cell;' : '';
+
+          bodyContent += `<td style="${cursorEditable} ${this.valueAlign()}" data-editable="${isEditable}" tabindex="0">`;
+          bodyContent += `<span style="${this.valueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${cellValue}</span>`;
+          bodyContent += `</td>`;
+        });
+        bodyContent += '</tr>';
+      });
+
+      bodyContent += '</tbody>';
+      return bodyContent;
+    };
+
+    this.buildTable = function (val) {
+      let tableContent = '';
+      let startIndex = 0;
+
       // Handle array or DataFrame-like content
       if (Array.isArray(val) || modelsHiddenParams[idInstance].isDataFrame) {
         if (modelsParameters[idInstance].headerLine) {
           startIndex = 1;
-          tableContent += buildTableHeader(val[0]);
+          tableContent += self.buildTableHeader(val[0]);
         }
 
-        tableContent += buildTableBody(val.slice(startIndex));
+        tableContent += self.buildTableBody(val.slice(startIndex));
       } else if (val && val.length > 0) {
         /* 1D table*/
         /*if (modelsParameters[idInstance].headerLine) {
                         startIndex = 1;
-                        tableContent = tableContent + '<thead><tr>';
-                        tableContent = tableContent + '<th><span style="color: #2154ab; font-size: calc(7px + .5vw)"><b>' + val[0] + '</b></span></th>';
-                        tableContent = tableContent + '</tr></thead>';
+                        tableContent += '<thead><tr>';
+                        tableContent += '<th><span style="color: #2154ab; font-size: calc(7px + .5vw)"><b>' + val[0] + '</b></span></th>';
+                        tableContent += '</tr></thead>';
                     }*/ // MBG : does-it make sense to have header in 1D ?
         tableContent += '<tbody><tr>';
         val.slice(startIndex).forEach((token) => {
-          tableContent += `
-            <td style="${this.valueAlign()}">
-              <span style="${this.valueColor()} ${this.valueFontFamily()} ${getCalculatedFontSize()}">
-                ${token}
-              </span>
-            </td>
-          `;
+          tableContent += `<td style="${this.valueAlign()}">`;
+          tableContent += `<span style="${this.valueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${token}</span>`;
+          tableContent += `</td>`;
         });
         tableContent += '</tr></tbody>';
       }
@@ -1405,9 +1387,9 @@ function flatUiComplexWidgetsPluginClass() {
       if (modelsParameters[idInstance].noBorder) tableClass += ' no-border';
       tableClass += ' table-responsive';
 
-      let divContent = `
-      <table style="margin: 0; height: ${tableWidth}; ${this.tableBackgroundColor('primary')}" 
-             class="${tableClass}" id="table${idWidget}">
+      let divContent = `<table style="margin: 0; height: ${tableWidth}; ${this.tableBackgroundColor(
+        'primary'
+      )}" class="${tableClass}" id="table${idWidget}">
         ${insideTable}
       </table>`;
 
