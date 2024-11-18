@@ -490,9 +490,13 @@ export class WidgetEditorViewer {
    */
   highlightWidgets(elementIds) {
     elementIds.forEach((id) => {
-      const divContainer = this.getWidgetContainerDiv(id);
-      if (divContainer) {
-        $(divContainer).fadeOut(30).fadeIn(140);
+      const info = this.widgetsInfo.get(id);
+      if (info) {
+        if (this.currentPage === info.layout.page) {
+          $(info.containerDiv).fadeOut(30).fadeIn(140);
+        } else {
+          $(info.containerDiv).fadeIn(30).fadeOut(140);
+        }
       }
     });
   }

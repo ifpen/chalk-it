@@ -811,7 +811,6 @@ export function initEditWidget() {
         }
       }
 
-      // TODO coords page
       addWidget(modelJsonId, instanceId, widget.layout, widget.layout['z-index'], widget.layout.page);
     }
 

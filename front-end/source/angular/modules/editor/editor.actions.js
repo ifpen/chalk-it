@@ -583,7 +583,6 @@ class DeleteWidgetsAction extends UndoableAction {
 }
 
 function _postChangeUpdates(widgetEditor, eventCenterService, elementIds, highlight = false, bCaptionManuallyChanged) {
-  // TODO coords
   for (const elementId of elementIds) {
     widgetViewer.plotConstantData(elementId, bCaptionManuallyChanged); //on tab2
     widgetEditor.widgetEditorViewer.replaceWidget(elementId);
