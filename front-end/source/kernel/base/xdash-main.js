@@ -435,25 +435,17 @@ export const Xdash = function () {
     }
 
     initRootScopeCurrentProjectObject(jsonObject);
-    let bOk = false;
-    function loadFn(e) {
-      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      scopeDash.reset();
-      clear(); // MBG 01/08/2018 : important to do
-      bOk = deserialize(jsonObject);
-      datanodesManager.showLoadingIndicator(false);
-      // TODO coords remove ?
-      // document.removeEventListener('widgets-tab-loaded', loadFn);
-      jsonObject = undefined; //ABK in case of  missed synchronization a second loadFn cannot be made
-      if (!bOk) {
-        //ABK
-        swal('Unable to load your project', 'Project loading will be interrupted.', 'error');
-        return false;
-      }
+
+    const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+    scopeDash.reset();
+    clear(); // MBG 01/08/2018 : important to do
+    let bOk = deserialize(jsonObject);
+    datanodesManager.showLoadingIndicator(false);
+    if (!bOk) {
+      //ABK
+      swal('Unable to load your project', 'Project loading will be interrupted.', 'error');
+      return false;
     }
-    // TODO coords remove ?
-    // document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
-    loadFn();
   }
 
   //-------------------------------------------------------------------------------------------------------------------

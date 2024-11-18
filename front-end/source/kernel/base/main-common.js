@@ -14,7 +14,6 @@
 
 export const offSchedLogUser = { value: true }; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
-export const tabWidgetsLoadedEvt = new Event('widgets-tab-loaded');
 export const tabPlayLoadedEvt = new Event('play-tab-loaded');
 
 /* MBG refactored from xdash-main.js because needed by runtime */

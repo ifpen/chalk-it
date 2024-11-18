@@ -3,9 +3,6 @@ import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { editorSingletons } from 'kernel/editor-singletons';
 
 export function showEditMode() {
-  // TODO coords check if we do need that
-  // document.dispatchEvent(tabWidgetsLoadedEvt);
-
   const widgetEditor = editorSingletons.widgetEditor;
   widgetEditor.setAllowPageChangeFromScript(false);
 }
