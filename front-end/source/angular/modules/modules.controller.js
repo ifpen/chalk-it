@@ -38,8 +38,6 @@ angular.module('modules').controller('ModulesController', [
     $scope.displayedShowIndex = 0; //AEF: toggle window of dataNode result
     $rootScope.displayedNavIndex = -1; //AEF: toggle window of dataNode actions
 
-    $rootScope.mySelectedPrj = {};
-
     $rootScope.readOnly = false;
     $rootScope.isPageExist = false;
     $rootScope.securedLink = 'False';
@@ -65,11 +63,6 @@ angular.module('modules').controller('ModulesController', [
     };
 
     $rootScope.moduleOpened = false;
-
-    $rootScope.selectedTags = [];
-    $rootScope.categories = {
-      tags: $rootScope.listAvailablesTags,
-    };
 
     $rootScope.getAvailableState = function () {
       if ($rootScope.xDashFullVersion) {
@@ -160,7 +153,6 @@ angular.module('modules').controller('ModulesController', [
         initXdashEditor();
         eventCenterService.sendEvent(EVENTS_EDITOR_DASHBOARD_READY);
 
-        $rootScope.availableTags = $rootScope.listAvailablesTags;
         datanodesManager.initialize(false);
         $rootScope.currentProject = runtimeSingletons.xdash.initMeta();
         $rootScope.alldatanodes = datanodesManager.getAllDataNodes();

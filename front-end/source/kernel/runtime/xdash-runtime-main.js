@@ -136,7 +136,7 @@ function getDashboardConfig() {
   };
 })(jQuery);
 
-export function loadDashboard(jsonContent, exportOptions) {
+export function loadDashboard(jsonContent) {
   const decodeHtmlEntities = (str) => {
     const txt = document.createElement('textarea');
     txt.innerHTML = str;
@@ -227,7 +227,7 @@ async function fullLoadDashboard(xprjson, parameters = {}) {
     document.title = xprjson.meta.name;
   }
 
-  loadDashboard(xprjson, xprjson.exportOptions);
+  loadDashboard(xprjson);
 }
 
 export async function onAngularReady() {
