@@ -30,7 +30,7 @@ export class XdashDataUpdateInformation {
 export class XdashDataUpdateEngine {
   static VERSION_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
   static DEFAULT_VERSION = '0.0';
-  static CURRENT_VERSION = '0.3';
+  static CURRENT_VERSION = '0.4';
 
   static VERSION_METADATA_KEY = 'fileFormatVersion';
 
@@ -628,6 +628,120 @@ export const xdashUpdateEngine = new XdashDataUpdateEngine();
             break;
         }
       });
+    }),
+    //
+    // 0.3 -> 0.4
+    // use PX coordinates for widgets
+    // rows replaced by pages
+    //
+    XdashDataUpdateEngine.createStep('0.3', '0.4', (model, full) => {
+      if (!full) return;
+
+      const device = model.device;
+      const scaling = model.scaling;
+      const exportOptions = model.checkExportOptions;
+      const oldPages = model.pages;
+      delete model.scaling;
+      delete model.device;
+      delete model.checkExportOptions;
+      delete model.exportOptions;
+      delete model.pages;
+
+      const width = scaling.widthPx;
+      const height = scaling.heightPx;
+      const margin = 10;
+
+      function readVh(str) {
+        const val = parseFloat(str.replaceAll('vh', ''));
+        return Math.round((height * val) / 100);
+      }
+
+      function readVw(str) {
+        const val = parseFloat(str.replaceAll('vw', ''));
+        return Math.round((width * val) / 100);
+      }
+
+      Object.values(model.dashboard).forEach((widget) => {
+        const oldLayout = widget.layout;
+
+        const top = readVh(oldLayout.top) - margin;
+        const left = readVw(oldLayout.left) - margin;
+        const height = readVh(oldLayout.height);
+        const width = readVw(oldLayout.width);
+
+        widget.layout = {
+          top,
+          left,
+          height,
+          width,
+          'z-index': oldLayout['z-index'],
+        };
+      });
+
+      const maxCells = device.cols.maxCells;
+      if (maxCells) {
+        const rows = parseInt(device.cols.valueRow, 10);
+        const cols = parseInt(device.cols.valueCol, 10);
+        const colWidth = scaling.colDims.widthPx;
+
+        const needPages = rows > 1 || oldPages?.pageNames?.length;
+
+        let cell = 1;
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            const widgets = Object.values(device.droppers[`dpr${cell}`]);
+            for (const widgetId of widgets) {
+              const widget = model.dashboard[widgetId];
+              widget.layout.left = widget.layout.left + col * colWidth;
+              if (needPages) {
+                widget.layout.page = row;
+              }
+            }
+            cell += 1;
+          }
+        }
+
+        if (needPages) {
+          let pageNames = [];
+          if (oldPages?.pageNames?.length) {
+            pageNames = oldPages.pageNames;
+          }
+          for (let row = pageNames.length; row < rows; row++) {
+            pageNames.push(`Page ${row + 1}`);
+          }
+
+          model.pages = {
+            pageNames,
+            pageMode: 'pages',
+          };
+
+          if (exportOptions === 'customNavigation') {
+            model.pages.pageMode = 'custom';
+
+            let initialPage = 0;
+            const defaultPage = oldPages?.defaultPage?.id;
+            if (defaultPage) {
+              initialPage = parseInt(defaultPage, 10);
+            }
+
+            pages.pages.initialPage = initialPage;
+          } else if (exportOptions === 'rowToTab') {
+            model.pages.pageMode = 'tabs';
+          }
+        }
+      }
+
+      model.display = {
+        theme: device.theme,
+        backgroundColor: device.backgroundColor,
+        inheritThemeBackgroundColor: device.inheritThemeBackgroundColor ?? true,
+
+        marginX: margin,
+        marginY: margin,
+        width,
+        height,
+        enforceHeightLimit: false,
+      };
     }),
   ];
 
