@@ -99,7 +99,7 @@ class WidgetWiewer {
         instance,
       });
     } catch (ex) {
-      aElement.remove();
+      containerDiv.remove();
       throw ex;
     }
 
