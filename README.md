@@ -58,7 +58,7 @@ Use this Dockerfile:
 FROM python:3.11
 
 # assume your application is named application.xprjson
-COPY application.xprjson application.xprjson
+COPY dashboard.xprjson dashboard.xprjson
 
 # install py-chalk-it and gunicorn
 RUN pip install py-chalk-it gunicorn
