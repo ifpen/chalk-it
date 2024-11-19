@@ -647,18 +647,18 @@ export const xdashUpdateEngine = new XdashDataUpdateEngine();
       delete model.exportOptions;
       delete model.pages;
 
-      const width = scaling.widthPx;
-      const height = scaling.heightPx;
+      let width = scaling.widthPx;
+      let height = scaling.heightPx;
       const margin = 10;
 
       function readVh(str) {
         const val = parseFloat(str.replaceAll('vh', ''));
-        return Math.round((height * val) / 100);
+        return Math.round((window.innerHeight * val) / 100);
       }
 
       function readVw(str) {
         const val = parseFloat(str.replaceAll('vw', ''));
-        return Math.round((width * val) / 100);
+        return Math.round((window.innerWidth * val) / 100);
       }
 
       Object.values(model.dashboard).forEach((widget) => {
@@ -682,7 +682,7 @@ export const xdashUpdateEngine = new XdashDataUpdateEngine();
       if (maxCells) {
         const rows = parseInt(device.cols.valueRow, 10);
         const cols = parseInt(device.cols.valueCol, 10);
-        const colWidth = scaling.colDims.widthPx;
+        const colWidth = Math.round(window.innerWidth / cols);
 
         const needPages = rows > 1 || oldPages?.pageNames?.length;
 
@@ -730,6 +730,12 @@ export const xdashUpdateEngine = new XdashDataUpdateEngine();
           }
         }
       }
+
+      Object.values(model.dashboard).forEach((widget) => {
+        const layout = widget.layout;
+        width = Math.max(width, layout.left + layout.width);
+        height = Math.max(height, layout.top + layout.height);
+      });
 
       model.display = {
         theme: device.theme,
