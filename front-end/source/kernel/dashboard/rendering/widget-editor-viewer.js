@@ -424,19 +424,23 @@ export class WidgetEditorViewer {
   replaceWidget(elementId) {
     const widgetInfo = this.widgetsInfo.get(elementId);
 
-    widgetInfo.widgetDiv.remove();
     const div = document.createElement('div');
     div.id = widgetInfo.widgetDivId;
-    widgetInfo.containerDiv.appendChild(div);
+    widgetInfo.widgetDiv.replaceWith(div);
     widgetInfo.widgetDiv = div;
 
-    widgetInfo.instance = widgetsPluginsHandler.copyWidget(
-      widgetInfo.widgetDivId,
-      widgetInfo.modelJsonId,
-      widgetInfo.instance,
-      elementId,
-      false
-    );
+    try {
+      widgetInfo.instance = widgetsPluginsHandler.copyWidget(
+        widgetInfo.widgetDivId,
+        widgetInfo.modelJsonId,
+        widgetInfo.instance,
+        elementId,
+        false
+      );
+    } catch (ex) {
+      // Protect against any failure from the widget's implementation
+      console.error(`Failed to recreate an instance of ${elementId}`, ex);
+    }
   }
 
   /**
