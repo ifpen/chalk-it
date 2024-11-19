@@ -929,7 +929,7 @@ class ResizeDashboardAction extends UndoableAction {
     this._oldDashboardSize = undefined;
     this._initialGeometries = undefined;
 
-    this._eventCenter.sendEvent(UpdatePagesAction.EDITOR_DASHBOARD_ASPECT_CHANGED);
+    this._eventCenter.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
   }
 }
 
