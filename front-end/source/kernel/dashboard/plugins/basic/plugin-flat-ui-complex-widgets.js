@@ -807,59 +807,60 @@ function flatUiComplexWidgetsPluginClass() {
     const self = this;
 
     this.enable = function () {
-      let fired = false; //fire keyup event only once
-      let lastkeyup = false; //click+ctrl then ctrl+a
+      let fired = false; // Track whether the keyup event is fired
+      let lastKeyUp = false; // Track the last keyup for specific scenarios
 
-      $('#list' + idWidget).on('keyup', function (e) {
-        if (lastkeyup) {
-          // in case of: click+ctrl then ctrl+a, no click event between two ctrl keyup events
-          if (e.keyCode == 65 || e.keyCode == 97 || e.keyCode == 17) {
-            // 'A' or 'a' or 'ctrl'
-            self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-            lastkeyup = false;
-            //console.log('ctrl+ctrl+a');
-          }
+      const listElement = $('#list' + idWidget);
+
+      // Handle keyup event
+      listElement.on('keyup', function (e) {
+        // in case of: click+ctrl then ctrl+a, no click event between two ctrl keyup events
+        if (lastKeyUp && (e.keyCode === 65 || e.keyCode === 97 || e.keyCode === 17)) {
+          // 'A', 'a', or 'Ctrl' after a previous Ctrl keyup
+          self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+          lastKeyUp = false;
         }
       });
 
-      $('#list' + idWidget).on('click keyup', function (e) {
-        lastkeyup = false;
+      // Handle click and keyup events
+      listElement.on('click keyup', function (e) {
+        lastKeyUp = false;
+
         if (e.ctrlKey) {
-          //is ctrl + click  (for multiple selection with mouse (click))
+          // Handle Ctrl + click for multiple selection
           if (!fired) {
             fired = true;
-            $('#list' + idWidget).one('keyup', function (e) {
+            listElement.one('keyup', function () {
               self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
               fired = false;
-              lastkeyup = true;
-              //console.log('ctrl+click');
+              lastKeyUp = true;
             });
           }
         } else {
-          // normal click
+          // Normal click
           self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-          // if click + ctrl+a (for all selection with keyboard (ctrl+a))
+
+          // Handle Ctrl + A selection (for all selection)
           if (!fired) {
             fired = true;
-            $('#list' + idWidget).one('keyup', function (e) {
-              if (e.keyCode == 65 || e.keyCode == 97 || e.keyCode == 17) {
-                // 'A' or 'a' or 'ctrl'
+            listElement.one('keyup', function (e) {
+              if (e.keyCode === 65 || e.keyCode === 97 || e.keyCode === 17) {
+                // 'A', 'a', or 'Ctrl'
                 self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
                 fired = false;
-                lastkeyup = true;
-                //console.log('click+ctrl+a');
+                lastKeyUp = true;
               }
             });
           }
         }
       });
-      //$("#list" + idWidget).prop("disabled", false); // MBG : fix du problème qui l'empêche d'être bougée
-      $('#list' + idWidget)[0].style.opacity = '1'; //ABK instead to enable list
+
+      // Enable the list visually
+      listElement[0].style.opacity = '1';
     };
 
     this.disable = function () {
-      //$("#list" + idWidget).prop("disabled", true); // MBG : fix du problème qui l'empêche d'être bougée
-      $('#list' + idWidget)[0].style.opacity = '0.7'; //ABK instead to disable list
+      $('#list' + idWidget)[0].style.opacity = '0.7'; // Semi-transparent to indicate disabled state
     };
 
     this.rescale = function () {
@@ -869,72 +870,80 @@ function flatUiComplexWidgetsPluginClass() {
     this.render = function () {
       const widgetHtml = document.createElement('div');
       const valueHeightPx = $('#' + idDivContainer).height();
-      widgetHtml.setAttribute('style', 'width: inherit; height: ' + valueHeightPx + 'px; cursor: inherit;');
 
-      const border = this.border();
+      // Set widget styles
+      widgetHtml.style.width = 'inherit';
+      widgetHtml.style.height = `${valueHeightPx}px`;
+      widgetHtml.style.cursor = 'inherit';
 
-      let divContent =
-        '<select class="form-control" id="list' +
-        idWidget +
-        '" multiple size="10" style="width: 100%; height: ' +
-        valueHeightPx +
-        'px;/*background-color: rgba(255, 255, 255, 0)*/; border-radius: 6px; color: ' +
-        modelsParameters[idInstance].listValueColor +
-        '; ' +
-        border +
-        '; ' +
-        this.valueFontFamily() +
-        'box-sizing: border-box; font-size: calc(7px + ' +
-        modelsParameters[idInstance].listValueFontSize * getFontFactor() +
-        'vw + 0.4vh); ' +
-        'cursor: inherit; max-width : 2000px">';
+      const borderStyle = this.border();
+      const fontFactor = getFontFactor();
+      const fontSize = modelsParameters[idInstance].listValueFontSize * fontFactor;
 
-      const val = modelsHiddenParams[idInstance].value;
-      let cursorElem = '';
-      if (this.bIsInteractive) {
-        cursorElem = 'cursor: pointer; ';
-      } else {
-        cursorElem = 'cursor: inherit; ';
-      }
+      // Build <select> content
+      const val = modelsHiddenParams[idInstance].value || [];
+      let options = '';
+
       if (Array.isArray(val)) {
         for (const option of val) {
-          divContent += '<option style="' + cursorElem + '">' + option + '</option>';
+          options += `<option style="cursor: ${this.bIsInteractive ? 'pointer' : 'inherit'};">${option}</option>`;
         }
       }
-      divContent += '</select>';
-      widgetHtml.innerHTML = divContent;
-      //
-      const showWidget = this.showWidget();
-      let displayStyle = 'display: initial;';
-      if (!showWidget) {
-        displayStyle = 'display: none;';
-      }
-      const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      widgetHtml.setAttribute('style', displayStyle + enableStyle);
+
+      const selectHtml = `
+        <select 
+          class="form-control" 
+          id="list${idWidget}" 
+          multiple 
+          size="10" 
+          style="
+            width: 100%; 
+            height: ${valueHeightPx}px; 
+            border-radius: 6px; 
+            color: ${modelsParameters[idInstance].listValueColor}; 
+            ${borderStyle}; 
+            ${this.valueFontFamily()}
+            box-sizing: border-box; 
+            font-size: calc(7px + ${fontSize}vw + 0.4vh); 
+            cursor: inherit; 
+            max-width: 2000px;"
+        >
+          ${options}
+        </select>`;
+
+      widgetHtml.innerHTML = selectHtml;
+
+      // Set display and interactivity styles
+      widgetHtml.style.display = this.showWidget() ? 'initial' : 'none';
+      widgetHtml.style.pointerEvents = this.enableWidget() ? 'initial' : 'none';
+      widgetHtml.style.opacity = this.enableWidget() ? '1' : '0.5';
+
+      // Insert widget into the container
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
-      //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
+
+      // Adjust height for mobile/tablet devices
+      const touchDevice = 'ontouchstart' in document.documentElement;
       const isMobileOrTablet = window.mobileAndTabletCheck();
-      const touchDevice = 'ontouchstart' in document.documentElement; // Only mobiles
-      // var touchDevice = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement); // desktops with a touch screen and mobiles
-      //AEF: can keep only one isMobileOrTablet or touchDevice
+      // const touchDevice = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement); // desktops with a touch screen and mobiles
+
       if (touchDevice || isMobileOrTablet) {
-        $('#list' + idWidget)[0].style.height = 'auto';
-      }
-      if (!_.isEmpty(modelsHiddenParams[idInstance].selectedValue)) {
-        // MBG for issue #214
-        $('#list' + idWidget).val(modelsHiddenParams[idInstance].selectedValue);
+        document.getElementById(`list${idWidget}`).style.height = 'auto';
       }
 
-      document.styleSheets[0].addRule('#list' + idWidget + ' option', modelsParameters[idInstance].listValueColor);
-      document.styleSheets[0].addRule('#list' + idWidget + ' option', this.listBackgroundColor());
-      document.styleSheets[0].addRule('#list' + idWidget + ' option:checked', this.selectValueColor());
-      document.styleSheets[0].addRule('#list' + idWidget + ' option:checked', this.selectValueBackgroundColor());
+      // Set selected value if any
+      const selectedValue = modelsHiddenParams[idInstance]?.selectedValue || null;
+      if (selectedValue) {
+        $(`#list${idWidget}`).val(selectedValue);
+      }
+
+      // Add custom stylesheet rules
+      const stylesheet = document.styleSheets[0];
+      const listId = `#list${idWidget}`;
+      stylesheet.addRule(`${listId} option`, modelsParameters[idInstance].listValueColor);
+      stylesheet.addRule(`${listId} option`, this.listBackgroundColor());
+      stylesheet.addRule(`${listId} option:checked`, this.selectValueColor());
+      stylesheet.addRule(`${listId} option:checked`, this.selectValueBackgroundColor());
 
       if (this.bIsInteractive) {
         self.enable();
@@ -1001,26 +1010,24 @@ function flatUiComplexWidgetsPluginClass() {
         modelsHiddenParams[idInstance].selectedValue = val;
       },
       getValue: function () {
-        const x = document.getElementById('list' + idWidget);
+        const listElement = document.getElementById('list' + idWidget);
         const selectedVal = $('#list' + idWidget).val();
-        //var selectedIndex = x.selectedIndex;
-        const selectedOptions = x.selectedOptions;
-        let listLength = 0;
-        if (Array.isArray(modelsHiddenParams[idInstance].value)) {
-          listLength = modelsHiddenParams[idInstance].value.length;
-        }
+        // const selectedIndex = x.selectedIndex;
+        const selectedOptions = listElement?.selectedOptions || [];
+        const valuesArray = modelsHiddenParams[idInstance]?.value || [];
+        const listLength = Array.isArray(valuesArray) ? valuesArray.length : 0;
+
+        // Return empty string if no options are selected
         if (selectedOptions.length === 0) return '';
+
+        // Validate the indices of the selected options
         for (const option of selectedOptions) {
-          if (option.index < 0 || option.index >= listLength) return '';
+          if (option.index < 0 || option.index >= listLength) {
+            return '';
+          }
         }
 
-        return selectedVal;
-
-        // old code
-        //if ((selectedIndex < 0) || (selectedIndex >= listLength))
-        //    return "";
-        // else
-        //return modelsHiddenParams[idInstance].value[selectedIndex];
+        return selectedVal || '';
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
