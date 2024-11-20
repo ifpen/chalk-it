@@ -24,7 +24,7 @@ import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
 // Models
 modelsHiddenParams.flatUiSelect = { keys: [], values: [], selectedValue: '' };
 modelsHiddenParams.flatUiMultiSelect = { value: [], selectedValue: '' };
-modelsHiddenParams.flatUiList = { value: [], selectedValue: '' };
+modelsHiddenParams.flatUiList = { value: [], selectedValue: '', valueColor: [] };
 modelsHiddenParams.flatUiEditableTable = { value: null };
 modelsHiddenParams.flatUiTable = { value: null };
 
@@ -871,10 +871,15 @@ function flatUiComplexWidgetsPluginClass() {
       const widgetHtml = document.createElement('div');
       const valueHeightPx = $('#' + idDivContainer).height();
 
-      // Set widget styles
-      widgetHtml.style.width = 'inherit';
-      widgetHtml.style.height = `${valueHeightPx}px`;
-      widgetHtml.style.cursor = 'inherit';
+      // Configure widget container styles
+      Object.assign(widgetHtml.style, {
+        width: 'inherit',
+        height: `${valueHeightPx}px`,
+        cursor: 'inherit',
+        display: this.showWidget() ? 'initial' : 'none',
+        pointerEvents: 'none',
+        opacity: this.enableWidget() ? '1' : '0.5',
+      });
 
       const borderStyle = this.border();
       const fontFactor = getFontFactor();
@@ -916,11 +921,6 @@ function flatUiComplexWidgetsPluginClass() {
 
       widgetHtml.innerHTML = selectHtml;
 
-      // Set display and interactivity styles
-      widgetHtml.style.display = this.showWidget() ? 'initial' : 'none';
-      widgetHtml.style.pointerEvents = 'none';
-      widgetHtml.style.opacity = this.enableWidget() ? '1' : '0.5';
-
       // Insert widget into the container
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
@@ -946,7 +946,20 @@ function flatUiComplexWidgetsPluginClass() {
       stylesheet.addRule(`${listId} option`, modelsParameters[idInstance].listValueColor);
       stylesheet.addRule(`${listId} option`, this.listBackgroundColor());
       stylesheet.addRule(`${listId} option:checked`, this.selectValueColor());
-      stylesheet.addRule(`${listId} option:checked`, this.selectValueBackgroundColor());
+
+      const colors = modelsHiddenParams[idInstance]?.valueColor;
+      if (Array.isArray(colors) && colors.length > 0) {
+        const colors = modelsHiddenParams[idInstance].valueColor;
+        const numColors = colors.length;
+
+        document.querySelectorAll(`${listId} option`).forEach((_, index) => {
+          const color = colors[index % numColors]; // Loop through colors
+          const rule = `${listId} option:nth-child(${index + 1}):checked { background-color: ${color}; }`;
+          stylesheet.insertRule(rule, stylesheet.cssRules.length);
+        });
+      } else {
+        stylesheet.addRule(`${listId} option:checked`, this.selectValueBackgroundColor());
+      }
 
       if (this.bIsInteractive) {
         self.enable();
@@ -977,8 +990,15 @@ function flatUiComplexWidgetsPluginClass() {
         ],
       }
     );
+    const _VALUE_COLOR_DESCRIPTOR = new WidgetActuatorDescription(
+      'valueColor',
+      'Colors of selected choices',
+      WidgetActuatorDescription.READ,
+      WidgetPrototypesManager.SCHEMA_PRIMITIVE_ARRAY
+    );
+
     this.getActuatorDescriptions = function () {
-      return [_VALUE_DESCRIPTOR, _SELECTED_DESCRIPTOR];
+      return [_VALUE_DESCRIPTOR, _SELECTED_DESCRIPTOR, _VALUE_COLOR_DESCRIPTOR];
     };
 
     this.value = {
@@ -1035,6 +1055,21 @@ function flatUiComplexWidgetsPluginClass() {
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
       },
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+      setCaption: function (caption, bCaptionManuallyChanged) {},
+      clearCaption: function () {},
+    };
+
+    this.valueColor = {
+      updateCallback: function () {},
+      setValue: function (valColor) {
+        modelsHiddenParams[idInstance].valueColor = valColor;
+        self.render();
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].valueColor;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {},
       removeValueChangedHandler: function (updateDataFromWidget) {},
       setCaption: function (caption, bCaptionManuallyChanged) {},
       clearCaption: function () {},
