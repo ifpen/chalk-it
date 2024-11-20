@@ -885,8 +885,11 @@ function flatUiComplexWidgetsPluginClass() {
       let options = '';
 
       if (Array.isArray(val)) {
+        const pointerEvents = this.enableWidget() ? 'initial' : 'none';
+        const cursorStyle = this.bIsInteractive ? 'pointer' : 'inherit';
+
         for (const option of val) {
-          options += `<option style="cursor: ${this.bIsInteractive ? 'pointer' : 'inherit'};">${option}</option>`;
+          options += `<option style="cursor: ${cursorStyle}; pointer-events: ${pointerEvents};">${option}</option>`;
         }
       }
 
@@ -915,7 +918,7 @@ function flatUiComplexWidgetsPluginClass() {
 
       // Set display and interactivity styles
       widgetHtml.style.display = this.showWidget() ? 'initial' : 'none';
-      widgetHtml.style.pointerEvents = this.enableWidget() ? 'initial' : 'none';
+      widgetHtml.style.pointerEvents = 'none';
       widgetHtml.style.opacity = this.enableWidget() ? '1' : '0.5';
 
       // Insert widget into the container
