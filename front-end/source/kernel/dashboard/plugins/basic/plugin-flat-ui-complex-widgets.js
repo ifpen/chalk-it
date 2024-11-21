@@ -746,6 +746,8 @@ function flatUiComplexWidgetsPluginClass() {
     this.selectedValue = {
       updateCallback: function () {},
       setValue: function (val) {
+        if (!Array.isArray(val)) return;
+
         const checkboxes = document.querySelectorAll(`#multi-select${idWidget} > label > input[type='checkbox']`);
 
         checkboxes.forEach((checkbox) => {
