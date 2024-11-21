@@ -121,7 +121,7 @@ export function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     return fc;
   };
 
-  this.valueColor = function () {
+  this.getValueColor = function () {
     const color = this.setColorValueFromModelParameters('valueColor', 'var(--widget-color)');
     const fc = 'color:' + color + '; ';
     return fc;

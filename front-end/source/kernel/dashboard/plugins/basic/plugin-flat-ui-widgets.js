@@ -524,7 +524,7 @@ function flatUiWidgetsPluginClass() {
         valueHeightPx +
         'px; ' +
         this.valueFontSize() +
-        this.valueColor() +
+        this.getValueColor() +
         this.valueFontFamily() +
         hsliderValueCursor +
         '" disabled></input>';
@@ -1058,7 +1058,7 @@ function flatUiWidgetsPluginClass() {
         valueHeightPx +
         'px; ' +
         this.valueFontSize() +
-        this.valueColor() +
+        this.getValueColor() +
         this.valueFontFamily() +
         progressBarValueCursor +
         '" disabled></input>';
@@ -1484,7 +1484,7 @@ function flatUiWidgetsPluginClass() {
         valueHeightPx +
         'px; ' +
         opacityValue +
-        this.valueColor() +
+        this.getValueColor() +
         this.backgroundColor() +
         this.valueFontFamily() +
         this.border() +
