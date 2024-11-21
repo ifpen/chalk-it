@@ -29,9 +29,12 @@ function initPageRuntime(pages) {
 
   widgetViewer.pageNames = pages.pageNames;
 
+  const initialPage = pages.initialPage ?? 0;
+  widgetViewer.setCurrentPage(initialPage);
+
   $rootScope.safeApply(() => {
     $rootScope.pageNames = pages.pageNames;
-    $rootScope.pageNumber = pages.initialPage ?? 0;
+    $rootScope.pageNumber = initialPage;
     $rootScope.changePage = function (page) {
       if (page >= 0 && page < $rootScope.pageNames.length) {
         $rootScope.pageNumber = page;
