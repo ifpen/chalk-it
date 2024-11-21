@@ -173,7 +173,7 @@ class MoveWidgetsToPageAction extends UndoableAction {
 
   run() {
     const viewer = this._widgetEditor.widgetEditorViewer;
-    this._initialPages = container.collectWidgetPages();
+    this._initialPages = viewer.collectWidgetPages();
 
     const pages = new Map();
     for (const elementId of this._elementIds) {
