@@ -746,25 +746,31 @@ function flatUiComplexWidgetsPluginClass() {
     this.selectedValue = {
       updateCallback: function () {},
       setValue: function (val) {
-        $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
-          for (const selectedValue of val) {
-            if ($(this).val() === selectedValue) {
-              $(this).attr('checked', true);
-            }
+        const checkboxes = document.querySelectorAll(`#multi-select${idWidget} > label > input[type='checkbox']`);
+
+        checkboxes.forEach((checkbox) => {
+          if (val.includes(checkbox.value)) {
+            checkbox.checked = true;
           }
         });
+
+        // Update the selected values
         modelsHiddenParams[idInstance].selectedValue = val;
       },
       getValue: function () {
         const selectedVal = [];
-        $('#multi-select' + idWidget + " > label > input[type='checkbox']:checked").each(function () {
-          if (modelsParameters[idInstance].isNumber) {
-            selectedVal.push(Number($(this).val()));
-          } else if (modelsParameters[idInstance].isBoolean) {
-            const sval = $(this).val() === 'false' ? false : Boolean($(this).val());
-            selectedVal.push(sval);
+        const checkboxes = document.querySelectorAll(
+          `#multi-select${idWidget} > label > input[type='checkbox']:checked`
+        );
+
+        checkboxes.forEach((checkbox) => {
+          const value = checkbox.value;
+          if (modelsParameters[idInstance]?.isNumber) {
+            selectedVal.push(Number(value));
+          } else if (modelsParameters[idInstance]?.isBoolean) {
+            selectedVal.push(value !== 'false' && Boolean(value));
           } else {
-            selectedVal.push($(this).val());
+            selectedVal.push(value);
           }
         });
 
