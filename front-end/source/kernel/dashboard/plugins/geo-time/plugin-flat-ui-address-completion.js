@@ -227,7 +227,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
         border +
         '; float: right; ' +
         this.valueFontSize() +
-        this.valueColor() +
+        this.getValueColor() +
         this.valueFontFamily() +
         this.backgroundColor() +
         'text-align: left;">';

@@ -944,22 +944,21 @@ function flatUiComplexWidgetsPluginClass() {
       const stylesheet = document.styleSheets[0];
       const listId = `#list${idWidget}`;
       stylesheet.addRule(`${listId} option`, modelsParameters[idInstance].listValueColor);
-      stylesheet.addRule(`${listId} option`, this.listBackgroundColor());
-      stylesheet.addRule(`${listId} option:checked`, this.selectValueColor());
-
       const colors = modelsHiddenParams[idInstance]?.valueColor;
       if (Array.isArray(colors) && colors.length > 0) {
         const colors = modelsHiddenParams[idInstance].valueColor;
         const numColors = colors.length;
-
         document.querySelectorAll(`${listId} option`).forEach((_, index) => {
           const color = colors[index % numColors]; // Loop through colors
-          const rule = `${listId} option:nth-child(${index + 1}):checked { background-color: ${color}; }`;
+          const rule = `${listId} option:nth-child(${index + 1}) { background-color: ${color}; }`;
           stylesheet.insertRule(rule, stylesheet.cssRules.length);
         });
       } else {
-        stylesheet.addRule(`${listId} option:checked`, this.selectValueBackgroundColor());
+        stylesheet.addRule(`${listId} option`, this.listBackgroundColor());
       }
+
+      stylesheet.addRule(`${listId} option:checked`, this.selectValueColor());
+      stylesheet.addRule(`${listId} option:checked`, this.selectValueBackgroundColor());
 
       if (this.bIsInteractive) {
         self.enable();
@@ -1280,7 +1279,7 @@ function flatUiComplexWidgetsPluginClass() {
       headers.forEach((header, i) => {
         const dSort = thElements.length ? thElements[i].getAttribute('data-sort') : '';
         tableHeader += `<th data-sortable="true" data-sort="${dSort}" style="${this.valueAlign()}">`;
-        tableHeader += `<span style="${this.valueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()} padding-right:15px">`;
+        tableHeader += `<span style="${this.getValueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()} padding-right:15px">`;
         tableHeader += '<b>' + header + '</b>';
         tableHeader += `</span><span class="sort-arrow"></span></th>`;
       });
@@ -1329,7 +1328,7 @@ function flatUiComplexWidgetsPluginClass() {
           const cursorEditable = isEditable && this.bIsInteractive ? 'cursor: cell;' : '';
 
           bodyContent += `<td style="${cursorEditable} ${this.valueAlign()}" data-editable="${isEditable}" tabindex="0">`;
-          bodyContent += `<span style="${this.valueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${cellValue}</span>`;
+          bodyContent += `<span style="${this.getValueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${cellValue}</span>`;
           bodyContent += `</td>`;
         });
         bodyContent += '</tr>';
@@ -1362,7 +1361,7 @@ function flatUiComplexWidgetsPluginClass() {
         tableContent += '<tbody><tr>';
         val.slice(startIndex).forEach((token) => {
           tableContent += `<td style="${this.valueAlign()}">`;
-          tableContent += `<span style="${this.valueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${token}</span>`;
+          tableContent += `<span style="${this.getValueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${token}</span>`;
           tableContent += `</td>`;
         });
         tableContent += '</tr></tbody>';
@@ -1374,7 +1373,7 @@ function flatUiComplexWidgetsPluginClass() {
     this.buildPagination = function () {
       const fontSize = modelsParameters[idInstance].tableValueFontSize ?? 0.5;
       const strFontSize = `font-size: calc(7px + ${fontSize * getFontFactor()}vw);`;
-      const styleAttributes = `${this.valueColor()} ${this.valueFontFamily()} ${strFontSize}`;
+      const styleAttributes = `${this.getValueColor()} ${this.valueFontFamily()} ${strFontSize}`;
 
       // Get or default rows per page
       const _defaultValue = $('#rows-per-page' + idWidget)?.val() ?? defaultValue;
