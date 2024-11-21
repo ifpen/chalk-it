@@ -192,7 +192,7 @@ angular.module('modules.editor').controller('EditorController', [
 
     // Keybindings
     function _onkeydown(e) {
-      if ($rootScope.moduleOpened || $scope.editorView.isPlayMode) {
+      if ($rootScope.moduleOpened) {
         // Only handle keys when the editor is active
         // TODO should probably be handled using a different $state and controler's lifecycle
         return;
@@ -213,19 +213,27 @@ angular.module('modules.editor').controller('EditorController', [
         return;
       }
 
-      let handled = false;
-
       if (e.shiftKey) {
         if (e.keyCode == 33) {
           // PageUp
           vm.previousPage();
-          handled = true;
+          e.stopPropagation();
+          e.preventDefault();
         } else if (e.keyCode == 34) {
           // PageDown
           vm.nextPage();
-          handled = true;
+          e.stopPropagation();
+          e.preventDefault();
         }
-      } else if (e.ctrlKey) {
+      }
+
+      if ($scope.editorView.isPlayMode) {
+        // Do not move, delete, etc. widgets when in view mode
+        return;
+      }
+
+      let handled = false;
+      if (e.ctrlKey) {
         if (e.key === 'y' || e.key === 'Y' || (e.shiftKey && (e.key === 'z' || e.key === 'Z'))) {
           if (vm.canRedo()) {
             vm.redo();
