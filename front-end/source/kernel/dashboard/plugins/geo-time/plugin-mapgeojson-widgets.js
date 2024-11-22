@@ -174,15 +174,6 @@ function mapGeoJsonWidgetsPluginClass() {
 
       // Drawing the map
       // TODO : Report all map possibilites from map
-      let ts = 'MapboxStreets';
-      if (!_.isUndefined(config)) {
-        // defaultCenter = config.defaultCenter;
-        ts = config.tileServer;
-      }
-      var tileConf = getTileServerConf(ts);
-      L.tileLayer(tileConf.url, tileConf).addTo(self.map);
-
-
       self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true });
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
@@ -315,8 +306,10 @@ function mapGeoJsonWidgetsPluginClass() {
       //checkbox
       self.ctrl.addOverlay(leafletLayer, name);
     };
+
     // Create the style object that will be in out JSON for a geoJSON
     // typeLayer is used for marker or circle
+
     this.createChoroplethLegend = function (legendId, min, max, featureTitle, colorScale) {
       let legend = createChoroplethLegend(legendId, min, max, featureTitle, colorScale);
       if (!_.isUndefined(legend)) {
@@ -336,8 +329,6 @@ function mapGeoJsonWidgetsPluginClass() {
     this.styleChanged = false;
     // Set style on layers called when input style
     this.style = function () {
-      // update global config 
-
       let config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
       let ts = 'MapboxStreets';
       if (!_.isUndefined(config)) {
@@ -345,7 +336,9 @@ function mapGeoJsonWidgetsPluginClass() {
         ts = config.tileServer;
       }
       var tileConf = getTileServerConf(ts);
-      L.tileLayer(tileConf.url, tileConf).addTo(self.map);
+      self.baseLayer = L.tileLayer(tileConf.url, tileConf);
+      self.baseLayer.addTo(self.map);
+
       //update view
       // setZoom
       let zoom = function () {
@@ -394,7 +387,13 @@ function mapGeoJsonWidgetsPluginClass() {
         modelsHiddenParams[idInstance].GeoJSONStyle.style.forEach(function (d, index) {
           setStyle(self, index, d);
         });
+
+      if (self.styleChanged) {
+        self.styleChanged = false;
+        //  self.updateValue();
+      }
     };
+
 
     this.GeoJSON = {
       updateCallback: function () {},
@@ -521,85 +520,6 @@ function mapGeoJsonWidgetsPluginClass() {
       removeValueChangedHandler: function (updateDataFromWidget) {},
     };
 
-    // GeoJSON Schema V0.7
-
-    const _SCHEMA_GEOJSON_INPUT = {
-      $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-      $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:GOEJSON_input',
-      type: 'object',
-      properties: {
-        type: { type: 'string', enum: ['FeatureCollection'] },
-        features: {
-          type: 'array',
-          items: { $ref: '#/definitions/feature' },
-        },
-      },
-      required: ['type', 'features'],
-      additionalProperties: true,
-      patternProperties: {
-        '^.*$': {},
-      },
-      definitions: {
-        feature: {
-          type: 'object',
-          properties: {
-            type: { type: 'string', enum: ['Feature'] },
-            geometry: { $ref: '#/definitions/geometry' },
-            properties: { type: 'object' },
-            id: { anyOf: [{ type: 'string' }, { type: 'number' }] },
-          },
-          required: ['type', 'geometry'],
-          additionalProperties: false,
-        },
-        geometry: {
-          type: 'object',
-          properties: {
-            type: { type: 'string' },
-            coordinates: {},
-          },
-          required: ['type', 'coordinates'],
-          additionalProperties: false,
-        },
-      },
-    };
-
-    const _SCHEMA_GEOJSON_ARRAY = {
-      $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-      $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:GOEJSON_input_array',
-
-      type: 'array',
-      items: { $ref: _SCHEMA_GEOJSON_INPUT.$id },
-    };
-
-    const _SCHEMA_GEOJSON_ONE_OF = {
-      $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-      $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:GOEJSON_input_oneof',
-
-      oneOf: [_SCHEMA_GEOJSON_INPUT, _SCHEMA_GEOJSON_ARRAY],
-    };
-
-    const _GEOJSON_DESCRIPTOR = new WidgetActuatorDescription(
-      'GeoJSON',
-      'Geometry and Properties in GEOJSON Format',
-      WidgetActuatorDescription.READ,
-      _SCHEMA_GEOJSON_ONE_OF
-    );
-
-
-    const _GEOJSON_STYLE_DESCRIPTOR = new WidgetActuatorDescription(
-      'GeoJSONStyle',
-      'Properties for GEOJSON',
-      WidgetActuatorDescription.READ_WRITE,
-      WidgetPrototypesManager.SCHEMA_ANYTHING
-    );
-
-    //add selected actuator
-    const _SELECTED_DESCRIPTOR = new WidgetActuatorDescription(
-      'Selected',
-      'Selected value',
-      WidgetActuatorDescription.READ_WRITE,
-      WidgetPrototypesManager.SCHEMA_ANYTHING
-    );
     this.getActuatorDescriptions = function () {
       return [_GEOJSON_DESCRIPTOR, _GEOJSON_STYLE_DESCRIPTOR, _SELECTED_DESCRIPTOR];
     };
