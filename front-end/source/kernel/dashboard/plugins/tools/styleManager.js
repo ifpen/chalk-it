@@ -183,8 +183,8 @@ export function updateLayerStyle(self, layer, styleForObject, geoJSONinLayer) {
 
 export function setStyle(self, layerIndex, style) {
   // Get GeoJSON
-  var geoJSONinLayer = modelsHiddenParams[self.idInstance].GeoJSON[layerIndex];
-  var leafLetLayer = self.layers[layerIndex];
+  let geoJSONinLayer = modelsHiddenParams[self.idInstance].GeoJSON[layerIndex];
+  let leafLetLayer = self.layers[layerIndex];
   if (_.isUndefined(leafLetLayer)) {
     return;
   }
