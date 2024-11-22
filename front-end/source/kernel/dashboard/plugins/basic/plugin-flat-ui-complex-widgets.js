@@ -78,6 +78,7 @@ modelsParameters.flatUiList = {
   valueFontFamily: 'var(--widget-font-family)',
   borderColor: 'var(--widget-border-color)',
   displayBorder: true,
+  maxSelected: '*',
 };
 modelsParameters.flatUiTable = {
   headerLine: false,
@@ -820,52 +821,47 @@ function flatUiComplexWidgetsPluginClass() {
     const self = this;
 
     this.enable = function () {
-      let fired = false; // Track whether the keyup event is fired
-      let lastKeyUp = false; // Track the last keyup for specific scenarios
-
+      const maxSelected = modelsParameters[idInstance]?.maxSelected ?? '*';
       const listElement = $('#list' + idWidget);
+      let selectedOptions = [];
 
-      // Handle keyup event
-      listElement.on('keyup', function (e) {
-        // in case of: click+ctrl then ctrl+a, no click event between two ctrl keyup events
-        if (lastKeyUp && (e.keyCode === 65 || e.keyCode === 97 || e.keyCode === 17)) {
-          // 'A', 'a', or 'Ctrl' after a previous Ctrl keyup
-          self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-          lastKeyUp = false;
-        }
-      });
+      const updateSelection = () => {
+        const allSelectedOptions = Array.from(listElement.find(':selected'));
 
-      // Handle click and keyup events
-      listElement.on('click keyup', function (e) {
-        lastKeyUp = false;
-
-        if (e.ctrlKey) {
-          // Handle Ctrl + click for multiple selection
-          if (!fired) {
-            fired = true;
-            listElement.one('keyup', function () {
-              self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-              fired = false;
-              lastKeyUp = true;
-            });
+        // Add newly selected options to the array in order
+        allSelectedOptions.forEach((option) => {
+          if (!selectedOptions.includes(option)) {
+            selectedOptions.push(option);
           }
-        } else {
-          // Normal click
-          self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+        });
 
-          // Handle Ctrl + A selection (for all selection)
-          if (!fired) {
-            fired = true;
-            listElement.one('keyup', function (e) {
-              if (e.keyCode === 65 || e.keyCode === 97 || e.keyCode === 17) {
-                // 'A', 'a', or 'Ctrl'
-                self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-                fired = false;
-                lastKeyUp = true;
-              }
-            });
+        // Remove deselected options from the array
+        selectedOptions = selectedOptions.filter((option) => allSelectedOptions.includes(option));
+
+        if (maxSelected !== '*' && selectedOptions.length > maxSelected) {
+          // Remove the first (oldest) option to maintain the limit
+          const removedOption = selectedOptions.shift();
+          $(removedOption).prop('selected', false);
+        }
+
+        // Update callback with the current selected values
+        const selectedValues = selectedOptions.map((option) => $(option).val());
+        self.selectedValue.updateCallback(self.selectedValue, selectedValues);
+      };
+
+      listElement.on('keydown change', function (e) {
+        // Handle Ctrl + A (Select All) only if maxSelected is "*"
+        if (e.ctrlKey && (e.key === 'a' || e.key === 'A' || e.keyCode === 65)) {
+          e.preventDefault();
+
+          if (maxSelected === '*') {
+            // Select all options if no limit
+            listElement.find('option').prop('selected', true);
+            return;
           }
         }
+
+        updateSelection();
       });
 
       // Enable the list visually
@@ -959,7 +955,6 @@ function flatUiComplexWidgetsPluginClass() {
 
       const colors = modelsHiddenParams[idInstance]?.valueColor;
       if (Array.isArray(colors) && colors.length > 0) {
-        const colors = modelsHiddenParams[idInstance].valueColor;
         const numColors = colors.length;
         document.querySelectorAll(`${listId} option`).forEach((_, index) => {
           const color = colors[index % numColors]; // Loop through colors
