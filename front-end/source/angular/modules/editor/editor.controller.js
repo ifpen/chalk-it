@@ -8,56 +8,129 @@
 import _ from 'lodash';
 import PNotify from 'pnotify';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
+import { ZoomControler } from 'kernel/dashboard/scaling/zoom-controler';
 import { UndoableAction, UndoManager } from './editor.undo-manager';
 import {
   EVENTS_EDITOR_SELECTION_CHANGED,
   EVENTS_EDITOR_ADD_REMOVE_WIDGET,
+  EVENTS_EDITOR_WIDGET_MOVED,
   EVENTS_EDITOR_CONNECTIONS_CHANGED,
+  EVENTS_EDITOR_WIDGET_TOGGLE_MENU,
+  EVENTS_EDITOR_DASHBOARD_READY,
+  EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED,
 } from './editor.events';
-import { keyShift, minLeftCst, minTopCst, minHeightCst, minWidthCst } from 'kernel/dashboard/scaling/layout-mgr';
-import { getWidgetLayoutPx, getElementLayoutPx } from 'kernel/dashboard/widget/widget-placement';
-import { editorSingletons } from 'kernel/editor-singletons';
+import angular from 'angular';
+
+const EDIT_ZONE_MARGIN = 1;
+
+export const keyShift = 5; // cst; size in px of keyboard shift using arrows, can be modified
 
 angular.module('modules.editor').controller('EditorController', [
   '$scope',
   '$rootScope',
-  '$state',
   '$timeout',
   'UndoManagerService',
   'EditorActionFactory',
-  'WidgetContainerGetter',
   'WidgetEditorGetter',
   'EventCenterService',
-  'DashboardActiveTabGetter',
-  'DashboardActiveModeGetter',
+  'DepGraphService',
   function (
     $scope,
     $rootScope,
-    $state,
     $timeout,
     undoManagerService,
     editorActionFactory,
-    widgetContainerGetter,
     widgetEditorGetter,
     eventCenterService,
-    dashboardActiveTabGetter,
-    dashboardActiveModeGetter
+    depGraphService
   ) {
     $rootScope.moduleOpened = true; //AEF
+
+    // TODO have initEditWidget here in a $postLink()
 
     const vm = this;
 
     const selection_event = EVENTS_EDITOR_SELECTION_CHANGED;
     const add_remove_widget_event = EVENTS_EDITOR_ADD_REMOVE_WIDGET;
     const connnection_update_event = EVENTS_EDITOR_CONNECTIONS_CHANGED;
+    const widget_menu_event = EVENTS_EDITOR_WIDGET_TOGGLE_MENU;
 
-    var copiedWidget;
+    let copiedWidgets;
+
+    vm.displayFit = false;
+    vm.displayRatio = 1.0;
+    vm.editorZoom = null;
+    vm.viewerZoom = null;
+
+    vm.pagesNumber = 0;
+    vm.pages = [];
+
+    vm.dashboardSize = {
+      width: -1,
+      height: -1,
+      marginX: -1,
+      marginY: -1,
+      enforceHeightLimit: true,
+    };
 
     vm.selection = [];
     vm.widgetExists = false;
     vm.connectionsExists = false;
+
     vm.menuWidgetVisible = false;
+    vm.menuWidgetTargetId = null;
+    eventCenterService.addListener(widget_menu_event, _toggleWidgMenu);
+
+    eventCenterService.addListener(EVENTS_EDITOR_DASHBOARD_READY, _onDashboardReady);
+    eventCenterService.addListener(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED, _onAspectChange);
+
+    function _onDashboardReady() {
+      const widgetEditor = widgetEditorGetter();
+      vm.editorZoom = new ZoomControler(document.getElementById('dashboard-editor-div'), (ratio) => {
+        if (!$scope.editorView.isPlayMode) {
+          vm.displayRatio = ratio;
+          widgetEditor.setZoomRatio(ratio);
+        }
+      });
+      vm.editorZoom.setRatio(1.0);
+
+      vm.viewerZoom = new ZoomControler(document.getElementById('dashboard-preview-div'), (ratio) => {
+        if ($scope.editorView.isPlayMode) {
+          vm.displayRatio = ratio;
+          widgetEditor.setZoomRatio(ratio);
+        }
+      });
+      vm.viewerZoom.setRatio(1.0);
+
+      _onAspectChange();
+
+      const grid = widgetEditor.getGrid();
+      vm.gridX = grid.sizeX;
+      vm.gridY = grid.sizeY;
+    }
+
+    function _onAspectChange() {
+      const widgetEditorViewer = widgetEditorGetter().widgetEditorViewer;
+      vm.pages = [...widgetEditorViewer.pageNames];
+      vm.pagesNumber = vm.pages.length;
+
+      vm.dashboardSize = {
+        width: widgetEditorViewer.width,
+        height: widgetEditorViewer.height,
+        marginX: widgetEditorViewer.marginX,
+        marginY: widgetEditorViewer.marginY,
+        enforceHeightLimit: widgetEditorViewer.enforceHeightLimit,
+      };
+
+      const { width, height } = widgetEditorViewer.getDisplaySize(true);
+      vm.editorZoom.setFitHeight(widgetEditorViewer.enforceHeightLimit);
+      vm.editorZoom.setSize(width + 2 * EDIT_ZONE_MARGIN, height + 2 * EDIT_ZONE_MARGIN);
+
+      vm.viewerZoom.setFitHeight(widgetEditorViewer.enforceHeightLimit);
+      vm.viewerZoom.setSize(width + 2 * EDIT_ZONE_MARGIN, height + 2 * EDIT_ZONE_MARGIN);
+    }
 
     function _getSelection() {
       const widgetEditor = widgetEditorGetter();
@@ -85,7 +158,7 @@ angular.module('modules.editor').controller('EditorController', [
 
     eventCenterService.addListener(selection_event, _selectionCallback);
 
-    const _addRmCallback = () => $timeout((vm.widgetExists = !!widgetEditorGetter().widgetContainers.size));
+    const _addRmCallback = () => $timeout((vm.widgetExists = !!widgetEditorGetter().widgetEditorViewer.widgetIds.size));
     eventCenterService.addListener(add_remove_widget_event, _addRmCallback);
 
     const _connectionsChangedCallback = () => $timeout((vm.connectionsExists = _hasConnection()));
@@ -104,121 +177,15 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     // --- <Toolbox> ---
-    // Panels
-    vm.POSITION_ID = 'position';
-    vm.RESIZE_ID = 'resize';
-    vm.ALIGN_ID = 'align';
-    vm.GRID_ID = 'grid';
-    vm.DEVICE_ID = 'device';
-    vm.SCALING_ID = 'scaling';
-    vm.HISTORY_ID = 'history';
-
-    // Buttons
-    vm.DUPLICATE_ID = 'duplicateWidg';
-    vm.FOREGROUND_ID = 'foregroundWidg';
-    vm.BACKGROUND_ID = 'backgroundWidg';
-    vm.CLEAR_DASH_ID = 'clearDashboard';
-    vm.TRASH_ID = 'iconTrashId';
-    vm.BORDERS_ID = 'borderWidg';
-    vm.UNDO_ID = 'undoBtn';
-    vm.REDO_ID = 'redoBtn';
-    vm.TOUR_ID = 'tourBtn';
-
-    vm.toolboxHover = null;
-    vm.toolboxPanel = null;
     vm.borderInWidgets = true;
     vm.showGrid = false;
+    vm.gridX = 0;
+    vm.gridY = 0;
 
-    vm.updateBorderInWidgets = function () {
-      if (vm.borderInWidgets) $('#DropperDroite').addClass('show-widget-borders');
-      else $('#DropperDroite').removeClass('show-widget-borders');
-    };
-
-    vm.updateShowGrid = function () {
-      if (vm.showGrid) $('#DropperDroite').addClass('show-grid');
-      else $('#DropperDroite').removeClass('show-grid');
-    };
-
-    vm.getStyleClass = function (cat) {
-      return "'show-grid': cat.showGrid";
-    };
-
-    vm.toolboxMessage = function _toolboxMessage() {
-      switch (vm.toolboxHover) {
-        case null:
-        case undefined:
-          return 'Select option';
-
-        case vm.POSITION_ID:
-          return 'Widget position';
-        case vm.RESIZE_ID:
-          return 'Resize widget';
-        case vm.ALIGN_ID:
-          return 'Align widgets';
-        case vm.GRID_ID:
-          return 'Dashboard grid';
-        case vm.DEVICE_ID:
-          return 'Responsive layout';
-        case vm.SCALING_ID:
-          return 'Widget scaling options';
-        case vm.HISTORY_ID:
-          return 'Display editor history';
-
-        case vm.DUPLICATE_ID:
-          return 'Duplicate widget (Alt+D)';
-        case vm.FOREGROUND_ID:
-          return 'Put widget at foreground';
-        case vm.BACKGROUND_ID:
-          return 'Put widget at background';
-        case vm.CLEAR_DASH_ID:
-          return 'Clear dashboard';
-        case vm.TRASH_ID:
-          return 'Clear all dataNode connections';
-        case vm.BORDERS_ID:
-          return "Add/Remove widgets' border";
-        case vm.UNDO_ID:
-          return 'Undo';
-        case vm.REDO_ID:
-          return 'Redo';
-        case vm.TOUR_ID:
-          return 'Guided tour';
-
-        default:
-          console.error('Unknown hovered component: ' + vm.toolboxHover);
-          return '';
-      }
-    };
-
-    vm.togglePanel = function _togglePanel(panel) {
-      if (vm.toolboxPanel === panel) {
-        vm.toolboxPanel = null;
-      } else {
-        vm.toolboxPanel = panel;
-      }
-    };
-
-    vm.buttonToggleClass = function _buttonToggleClass(button) {
-      if (vm.toolboxPanel === button) {
-        return ['btn-success'];
-      } else if (vm.toolboxHover === button) {
-        return ['btn-info'];
-      } else {
-        return [];
-      }
-    };
-
-    vm.buttonClass = function _buttonClass(button) {
-      if (vm.toolboxHover === button) {
-        return ['btn-info'];
-      } else {
-        return [];
-      }
-    };
-
-    vm.panelStyle = function _panelClass(panel) {
-      return {
-        display: panel === vm.toolboxPanel ? 'block' : 'none',
-      };
+    vm.gridChanged = function () {
+      const widgetEditor = widgetEditorGetter();
+      widgetEditor.setGrid(vm.gridX, vm.gridY);
+      widgetEditor.setUseGrid(vm.showGrid);
     };
 
     // --- </Toolbox> ---
@@ -246,12 +213,26 @@ angular.module('modules.editor').controller('EditorController', [
         return;
       }
 
-      if (dashboardActiveTabGetter() !== 'widgets' || dashboardActiveModeGetter() !== 'edit-dashboard') {
+      if (e.shiftKey) {
+        if (e.keyCode == 33) {
+          // PageUp
+          vm.previousPage();
+          e.stopPropagation();
+          e.preventDefault();
+        } else if (e.keyCode == 34) {
+          // PageDown
+          vm.nextPage();
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      }
+
+      if ($scope.editorView.isPlayMode) {
+        // Do not move, delete, etc. widgets when in view mode
         return;
       }
 
       let handled = false;
-
       if (e.ctrlKey) {
         if (e.key === 'y' || e.key === 'Y' || (e.shiftKey && (e.key === 'z' || e.key === 'Z'))) {
           if (vm.canRedo()) {
@@ -424,6 +405,170 @@ angular.module('modules.editor').controller('EditorController', [
       return false;
     }
 
+    // Dashboard configuration
+    vm.updateGrid = function _updateGrid() {
+      const widgetEditor = widgetEditorGetter();
+      widgetEditor.widgetEditorViewer.updateGrid(vm.gridX, vm.gridY);
+    };
+
+    vm.canApplyPages = function _canApplyPages() {
+      const widgetEditor = widgetEditorGetter();
+      return !angular.equals(widgetEditor?.widgetEditorViewer?.pageNames, vm.pages);
+    };
+
+    vm.applyPages = function _applyPages() {
+      const action = editorActionFactory.createUpdatePagesAction(vm.pages);
+      undoManagerService.execute(action);
+    };
+
+    vm.pagesNumberChanged = function _pagesNumberChanged() {
+      while (vm.pages.length > vm.pagesNumber) {
+        vm.pages.pop();
+      }
+      while (vm.pages.length < vm.pagesNumber) {
+        vm.pages.push(`Page ${vm.pages.length + 1}`);
+      }
+    };
+
+    // Page navigation
+    vm.previousPage = function () {
+      vm._setCurrentPage(vm.getCurrentPage() - 1);
+    };
+
+    vm.nextPage = function () {
+      vm._setCurrentPage(vm.getCurrentPage() + 1);
+    };
+
+    vm._setCurrentPage = function (newPage) {
+      if (newPage >= 0 && newPage < widgetEditorGetter().widgetEditorViewer.pageNames.length) {
+        widgetEditor.changePage(newPage);
+      }
+    };
+
+    vm.getCurrentPageNames = function () {
+      const widgetEditor = widgetEditorGetter();
+      return widgetEditor?.widgetEditorViewer?.pageNames ?? [];
+    };
+
+    vm.getCurrentPage = function () {
+      const widgetEditor = widgetEditorGetter();
+      return widgetEditor.widgetEditorViewer.currentPage;
+    };
+
+    vm.editPageNames = function () {
+      if (!vm.pages.length) {
+        // Button should only be visible when rows >= 1, so this should not happen.
+        return;
+      }
+
+      const contentElement = document.createElement('div');
+      contentElement.style.display = 'inline-block';
+      contentElement.style.width = '100%';
+
+      const inputs = [];
+      vm.pages.forEach((name, i) => {
+        const divRow = document.createElement('div');
+        divRow.classList.add('dashboard-form__group');
+        divRow.classList.add('dashboard-form__group--inline');
+
+        const divLabel = document.createElement('div');
+        divLabel.classList.add('dashboard-form__label');
+
+        const label = document.createElement('label');
+        label.innerText = `Page ${i + 1}`;
+        divLabel.appendChild(label);
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = name;
+
+        divRow.appendChild(divLabel);
+        divRow.appendChild(input);
+
+        contentElement.appendChild(divRow);
+        inputs.push(input);
+      });
+
+      new DialogBoxForToolboxEdit(contentElement, "Configuration of each page's name", 'OK', 'Cancel', function () {
+        for (let i = 0; i < inputs.length; i++) {
+          vm.pages[i] = inputs[i].value;
+        }
+      });
+    };
+
+    // Zoom
+    vm.zoomNone = function _zoomNone() {
+      vm.displayFit = false;
+      vm.editorZoom.setRatio(1.0);
+      vm.viewerZoom.setRatio(1.0);
+    };
+
+    vm.zoomFit = function _zoomFit() {
+      vm.displayFit = true;
+      vm.editorZoom.setFit(true);
+      vm.viewerZoom.setFit(true);
+    };
+
+    vm.displayRatioChanged = function _displayRatioChanged() {
+      vm.displayFit = false;
+      vm.editorZoom.setRatio(vm.displayRatio);
+      vm.viewerZoom.setRatio(vm.displayRatio);
+    };
+
+    // Dashboard size
+    /**
+     * Sets the edited dashboard width to match the contained widgets
+     */
+    vm.fitWidth = function _fitWidth() {
+      const widgetEditor = widgetEditorGetter();
+      vm.dashboardSize.width = widgetEditor.widgetEditorViewer.getContentSize().width;
+    };
+
+    /**
+     * Sets the edited dashboard height to match the contained widgets
+     */
+    vm.fitHeight = function _fitHeight() {
+      const widgetEditor = widgetEditorGetter();
+      vm.dashboardSize.height = widgetEditor.widgetEditorViewer.getContentSize().height;
+    };
+
+    /**
+     * @returns {boolean} true if the edited dashboard size has changed
+     */
+    vm.dashboardSizeChanged = function _dashboardSizeChanged() {
+      const widgetEditorViewer = widgetEditorGetter()?.widgetEditorViewer;
+      return (
+        widgetEditorViewer &&
+        (vm.dashboardSize.width !== widgetEditorViewer.width ||
+          vm.dashboardSize.height !== widgetEditorViewer.height ||
+          vm.dashboardSize.marginX !== widgetEditorViewer.marginX ||
+          vm.dashboardSize.marginY !== widgetEditorViewer.marginY ||
+          vm.dashboardSize.enforceHeightLimit !== widgetEditorViewer.enforceHeightLimit)
+      );
+    };
+
+    /**
+     * Reset edited dashboard size to the current parameter
+     */
+    vm.resetDashboardSize = function _resetDashboardSize() {
+      const widgetEditorViewer = widgetEditorGetter().widgetEditorViewer;
+      vm.dashboardSize = {
+        width: widgetEditorViewer.width,
+        height: widgetEditorViewer.height,
+        marginX: widgetEditorViewer.marginX,
+        marginY: widgetEditorViewer.marginY,
+        enforceHeightLimit: widgetEditorViewer.enforceHeightLimit,
+      };
+    };
+
+    /**
+     * @param {boolean} scale if true, widget's geometry will scale with the dashboard size
+     */
+    vm.applyDashboardSize = function _applyDashboardSize(scale) {
+      const action = editorActionFactory.createResizeDashboardAction(vm.dashboardSize, scale);
+      undoManagerService.execute(action);
+    };
+
     // Button actions
     vm.clearAllConnections = function _clearAllConnections() {
       if (_hasConnection()) {
@@ -451,7 +596,7 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.clearDashboard = function _clearDashboard() {
       const widgetEditor = widgetEditorGetter();
-      if (widgetEditor.widgetContainers.size) {
+      if (widgetEditor.widgetEditorViewer.widgetIds.size) {
         swal(
           {
             title: 'Are you sure?',
@@ -486,7 +631,7 @@ angular.module('modules.editor').controller('EditorController', [
       const elementIds = _getSelection();
       if (elementIds && elementIds.length) {
         const textToCopy = elementIds[0];
-        navigator.clipboard
+        navigator.clipboard // TODO clipboard undef iof not HTTPS
           .writeText(textToCopy)
           .then(() => {
             const notice = new PNotify({
@@ -515,10 +660,11 @@ angular.module('modules.editor').controller('EditorController', [
     // <Alignement>
     vm.alignTop = function _alignTop() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const target = elementIds[elementIds.length - 1];
         const action = editorActionFactory.createAlignementTopAction(
-          target,
+          targetId,
           elementIds.filter((it) => it !== target)
         );
         undoManagerService.execute(action);
@@ -527,11 +673,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignBottom = function _alignBottom() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementBottomAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -539,11 +685,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignHorizontal = function _alignHorizontal() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementHorizontalAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -551,11 +697,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignLeft = function _alignLeft() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementLeftAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -563,11 +709,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignVertical = function _alignVertical() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementVerticalAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -575,11 +721,11 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.alignRight = function _alignRight() {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const target = elementIds[elementIds.length - 1];
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
         const action = editorActionFactory.createAlignementRightAction(
-          target,
-          elementIds.filter((it) => it !== target)
+          targetId,
+          elementIds.filter((it) => it !== targetId)
         );
         undoManagerService.execute(action);
       }
@@ -603,20 +749,19 @@ angular.module('modules.editor').controller('EditorController', [
 
     vm.resizeSame = function _resizeSame(param) {
       const elementIds = _getSelection();
-      if (elementIds && elementIds.length > 1) {
-        const targetId = elementIds[0];
-        const target = editorSingletons.widgetEditor.widgetContainers.get(targetId).divModel;
-        const targetPos = getElementLayoutPx(target);
+      const targetId = _getSelectedActive();
+      if (targetId && elementIds && elementIds.length > 1) {
+        const targetPos = widgetEditor.widgetEditorViewer.getRecordedGeometry(targetId);
         if (param == 'HeightWidth') {
-          const action1 = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width, false);
-          const action2 = editorActionFactory.createSetWidgetHeightAction(elementIds, targetPos.height, false);
+          const action1 = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width);
+          const action2 = editorActionFactory.createSetWidgetHeightAction(elementIds, targetPos.height);
           undoManagerService.execute(action1);
           undoManagerService.execute(action2);
         } else if (param == 'Height') {
-          const action = editorActionFactory.createSetWidgetHeightAction(elementIds, targetPos.height, false);
+          const action = editorActionFactory.createSetWidgetHeightAction(elementIds, targetPos.height);
           undoManagerService.execute(action);
         } else if (param == 'Width') {
-          const action = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width, false);
+          const action = editorActionFactory.createSetWidgetWidthAction(elementIds, targetPos.width);
           undoManagerService.execute(action);
         }
       }
@@ -634,25 +779,22 @@ angular.module('modules.editor').controller('EditorController', [
     vm.copyWidg = function _copyWidg() {
       const elementIds = _getSelection();
       if (elementIds && elementIds.length) {
-        copiedWidget = elementIds;
+        copiedWidgets = elementIds;
       }
-    };
-
-    vm.pasteWidg = function _pasteWidg() {
-      const action = editorActionFactory.createDuplicateWidgetsWithConnectionAction(copiedWidget);
-      undoManagerService.execute(action);
     };
 
     vm.copyWidg = function _copyWidg() {
       const elementIds = _getSelection();
       if (elementIds && elementIds.length) {
-        copiedWidget = elementIds;
+        copiedWidgets = elementIds;
       }
     };
 
     vm.pasteWidg = function _pasteWidg() {
-      const action = editorActionFactory.createDuplicateWidgetsWithConnectionAction(copiedWidget);
-      undoManagerService.execute(action);
+      if (copiedWidgets?.length) {
+        const action = editorActionFactory.createDuplicateWidgetsWithConnectionAction(copiedWidgets);
+        undoManagerService.execute(action);
+      }
     };
 
     vm.deleteWidg = function _deleteWidg() {
@@ -663,29 +805,110 @@ angular.module('modules.editor').controller('EditorController', [
       }
     };
 
+    vm.selectPage = async function _selectPage() {
+      // TODO proper dialog
+      const pageStr = prompt('Enter a page number', '1');
+      const page = parseInt(pageStr, 10) - 1;
+      if (isNaN(page)) {
+        return null;
+      }
+
+      const widgetEditor = widgetEditorGetter();
+      if (page >= 0 && page < widgetEditor.widgetEditorViewer.pageNames.length) {
+        return page;
+      } else {
+        return null;
+      }
+    };
+
+    vm.widgetsToPage = async function _widgetsToPage() {
+      _hideWidgMenu();
+
+      const elementIds = _getSelection();
+      if (elementIds && elementIds.length) {
+        const targetPage = await vm.selectPage();
+        if (targetPage !== null) {
+          const action = editorActionFactory.createMoveWidgetsToPageAction(elementIds, targetPage);
+          undoManagerService.execute(action);
+        }
+      }
+    };
+
     vm.startIntroWidget = function _startIntroWidget() {
       startIntroWidget();
     };
 
     ////////////////////
-    function _hideWidgMenu() {
-      const elementIds = _getSelection();
-      const idElm = elementIds[0];
-      const idList = 'menuWidget';
 
-      if ($('#' + idList)[0].getAttribute('name') !== idElm) {
-        $('#' + idList).attr('name', idElm);
-        console.log('target changed');
+    vm.editorClick = function _editorClick(evt) {
+      _hideWidgMenu();
+    };
+
+    function _toggleWidgMenu(id) {
+      if (vm.menuWidgetTargetId === id && vm.menuWidgetVisible) {
+        _hideWidgMenu();
+        return;
+      } else {
+        vm.menuWidgetTargetId = id;
+        vm.menuWidgetVisible = true;
       }
-      vm.menuWidgetVisible = false;
+
+      const idList = 'menuWidget';
+      const menuElm = document.getElementById(idList);
+
+      const mainContainerOffsetHeight = menuElm.parentElement.offsetHeight;
+
+      const elm = document.getElementById(id);
+
+      const elementWidth = elm.clientWidth * vm.displayRatio;
+      const elementHeight = elm.clientHeight * vm.displayRatio;
+      const elementOffsetTop = elm.offsetTop * vm.displayRatio;
+      const elementOffsetLeft = elm.offsetLeft * vm.displayRatio;
+
+      const menuWidgetWidth = 247.047; // px
+      const menuWidgetHeight = 443; // px
+      const menuWidgetMarginTop = 30 * vm.displayRatio;
+      const menuWidgetMarginBottom = elementHeight - 10 * vm.displayRatio;
+
+      const mainContainerHeight = mainContainerOffsetHeight;
+      const elementOffsetBottom = mainContainerOffsetHeight - (elementOffsetTop + elementHeight);
+
+      if (
+        elementOffsetTop + menuWidgetMarginTop + menuWidgetHeight >= mainContainerOffsetHeight &&
+        elementOffsetBottom + menuWidgetMarginBottom + menuWidgetHeight >= mainContainerOffsetHeight
+      ) {
+        menuElm.style.bottom = '10px';
+        menuElm.style.top = 'auto';
+        document.styleSheets[0].addRule('#menuWidget::after', 'top: -5px; transform: rotate(0deg)'); // TODO rules
+      } else if (elementOffsetTop + menuWidgetMarginTop + menuWidgetHeight >= mainContainerHeight) {
+        menuElm.style.bottom = (menuWidgetMarginBottom + elementOffsetBottom).toString() + 'px';
+        menuElm.style.top = 'auto';
+        document.styleSheets[0].addRule(
+          '#menuWidget::after',
+          'top: ' + menuWidgetHeight + 'px; transform: rotate(180deg)'
+        );
+      } else {
+        menuElm.style.top = (elementOffsetTop + menuWidgetMarginTop).toString() + 'px';
+        menuElm.style.bottom = 'auto';
+        document.styleSheets[0].addRule('#menuWidget::after', 'top: -5px; transform: rotate(0deg)');
+      }
+
+      if ((elementWidth + elementOffsetLeft).toString() <= menuWidgetWidth) {
+        menuElm.style.left = '7px';
+        document.styleSheets[0].addRule(
+          '#menuWidget::after',
+          'left: ' + (elementOffsetLeft + elementWidth - 30) + 'px'
+        );
+      } else {
+        menuElm.style.left = (elementWidth + elementOffsetLeft - menuWidgetWidth).toString() + 'px';
+        document.styleSheets[0].addRule('#menuWidget::after', 'left: auto; right: 20px');
+      }
+      menuElm.style.right = 'auto';
     }
 
-    function _reselectWidg(event) {
-      //modif to have zndex of menu high
-      //put list at dropperD level (for zindex issues). However selection is lost, so we need to put it back
-      const id = 'menuWidget';
-      const name = $('#' + id)[0].getAttribute('name');
-      editorSingletons.widgetEditor.selectWidget($('#' + name)[0]);
+    function _hideWidgMenu() {
+      vm.menuWidgetVisible = false;
+      vm.menuWidgetTargetId = null;
     }
 
     function _clickOnDataConnection(check) {
@@ -708,77 +931,59 @@ angular.module('modules.editor').controller('EditorController', [
     }
 
     vm.connectWidget = function _connectWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       _clickOnDataConnection();
     };
 
     vm.seeInDepGraph = function _seeInDepGraph(event) {
-      _reselectWidg();
       _hideWidgMenu();
-      let scopeDepGraph = angular.element(document.getElementById('dependency__graph--container')).scope();
-      scopeDepGraph.seeInDepGraph(event);
+
+      const elementId = _getSelectedActive();
+      const connectedDataNodes = widgetConnector.findDatanodesConnectedToWidget(elementId);
+      depGraphService.showDepGraph(connectedDataNodes);
     };
 
     vm.editDatanodeCode = function _editDatanodeCode() {
-      _reselectWidg();
       _hideWidgMenu();
 
-      const elementIds = _getSelection();
-      let connectedDataNodeS = [];
-      let cnxs = widgetConnector.widgetsConnection;
+      const elementId = _getSelectedActive();
+      const connectedDataNodes = widgetConnector.findDatanodesConnectedToWidget(elementId);
 
-      if (!_.isUndefined(cnxs[elementIds[0]])) {
-        _.each(_.keys(cnxs[elementIds[0]].sliders), (slider) => {
-          let dsName = cnxs[elementIds[0]].sliders[slider].dataNode;
-          if (connectedDataNodeS.indexOf(dsName) === -1) {
-            //fix issue#23
-            connectedDataNodeS.push(dsName);
-          }
-        });
-      }
-
-      if (connectedDataNodeS.length) {
-        var data = datanodesManager.getDataNodeByName(connectedDataNodeS[0]);
-        let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
+      if (connectedDataNodes.length) {
+        const data = datanodesManager.getDataNodeByName(connectedDataNodes[0]);
+        const scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
         $scope.resetPanelStateR();
         scopeDashDn.openDataNode(data);
       }
     };
 
     vm.graphicalProperties = function _graphicalProperties() {
-      _reselectWidg();
       _hideWidgMenu();
       let scope = angular.element(document.getElementById('panel--right')).scope();
       $scope.setRightContent('Graphical Properties', scope.vmd);
     };
 
     vm.getWidgetName = function _getWidgetName() {
-      _reselectWidg();
       _hideWidgMenu();
       _getWidgName();
     };
 
     vm.foregroundWidget = function _foregroundWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       vm.foregroundWidg();
     };
 
     vm.backgroundWidget = function _backgroundWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       vm.backgroundWidg();
     };
 
     vm.duplicateWidget = function _duplicateWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       vm.duplicateWidg();
     };
 
     vm.deleteWidget = function _deleteWidget() {
-      _reselectWidg();
       _hideWidgMenu();
       vm.deleteWidg();
     };
@@ -826,22 +1031,12 @@ angular.module('modules.editor').controller('EditorController', [
       const activeId = _getSelectedActive();
       if (activeId) {
         const widgetEditor = widgetEditorGetter();
-        const widget = widgetEditor.widgetContainers.get(activeId);
-        if (widget && widget.divModel) {
+        const widgetEditorViewer = widgetEditor.widgetEditorViewer;
+        const currentGeometry = widgetEditorViewer.getCurrentWidgetGeometry(activeId);
+        if (currentGeometry) {
           const oldValues = vm.widgetGeometry;
-          const divModel = widget.divModel;
-          vm.widgetGeometry = getWidgetLayoutPx(divModel);
+          vm.widgetGeometry = currentGeometry;
           vm._originalWidgetGeometry = { ...vm.widgetGeometry };
-
-          // Accurate local position for dragged elements. Their position is not usable directly while dragged.
-          const dispX = divModel.getAttribute(widgetEditor.DATA_ATTR_DISPLAY_X);
-          if (dispX) {
-            vm.widgetGeometry.left = parseInt(dispX, 10) - minLeftCst;
-          }
-          const dispY = divModel.getAttribute(widgetEditor.DATA_ATTR_DISPLAY_Y);
-          if (dispY) {
-            vm.widgetGeometry.top = parseInt(dispY, 10) - minTopCst;
-          }
 
           // Do not change a value the user is currently typing! (typing the first digit only to have it
           // replaced with the minimum value is infuriating)
@@ -850,16 +1045,16 @@ angular.module('modules.editor').controller('EditorController', [
           if (vm.heigthFocused) vm.widgetGeometry.height = oldValues.height;
           if (vm.widthFocused) vm.widgetGeometry.width = oldValues.width;
 
-          vm.widgetGeometryConstraints.width.min = parseInt(divModel.style['min-width'] || minWidthCst + 'px', 10);
-          vm.widgetGeometryConstraints.height.min = parseInt(divModel.style['min-height'] || minHeightCst + 'px', 10);
+          const minSize = widgetEditorViewer.minimumSize(activeId);
+          const available = widgetEditorViewer.availableSpace();
 
-          const container = widgetEditor.getContainer(divModel);
-          if (container && container.id !== widgetEditor.MAIN_CONTAINER_ID) {
-            vm.widgetGeometryConstraints.top.max = container.offsetHeight - 2 * minTopCst - divModel.offsetHeight;
-            vm.widgetGeometryConstraints.left.max = container.offsetWidth - 2 * minLeftCst - divModel.offsetWidth;
-            vm.widgetGeometryConstraints.height.max = container.offsetHeight - 2 * minTopCst - vm.widgetGeometry.top;
-            vm.widgetGeometryConstraints.width.max = container.offsetWidth - 2 * minLeftCst - vm.widgetGeometry.left;
-          }
+          vm.widgetGeometryConstraints.width.min = minSize.width;
+          vm.widgetGeometryConstraints.height.min = minSize.height;
+
+          vm.widgetGeometryConstraints.top.max = available.height - currentGeometry.height;
+          vm.widgetGeometryConstraints.left.max = available.width - currentGeometry.width;
+          vm.widgetGeometryConstraints.height.max = available.height - currentGeometry.top;
+          vm.widgetGeometryConstraints.width.max = available.width - currentGeometry.left;
 
           return;
         }
@@ -873,8 +1068,13 @@ angular.module('modules.editor').controller('EditorController', [
       vm._originalWidgetGeometry = { ...vm.widgetGeometry };
     };
 
-    const _updateGeometryFromSelectionCallback = () => $timeout(() => vm.updateGeometryFromSelection());
-    eventCenterService.addListener(editorActionFactory.WIDGET_MOVED_EVENT, _updateGeometryFromSelectionCallback);
+    const _updateGeometryFromSelectionCallback = () => {
+      $timeout(() => {
+        widgetEditorGetter().validateSelectionVisibility();
+        vm.updateGeometryFromSelection();
+      });
+    };
+    eventCenterService.addListener(EVENTS_EDITOR_WIDGET_MOVED, _updateGeometryFromSelectionCallback);
 
     // On blur, if the input's value is an actual number, we always update the widget's
     // position. In all cases, widgetGeometry is updated afterward using the widget's position
@@ -912,7 +1112,6 @@ angular.module('modules.editor').controller('EditorController', [
       const geom = vm.widgetGeometry;
       if (
         widgetEditorGetter &&
-        widgetContainerGetter &&
         geom.top !== null &&
         geom.top !== undefined &&
         geom.left !== null &&
@@ -922,9 +1121,8 @@ angular.module('modules.editor').controller('EditorController', [
         geom.width !== null &&
         geom.width !== undefined
       ) {
-        const widgetContainer = widgetContainerGetter();
         const widgetEditor = widgetEditorGetter();
-        if (widgetContainer && widgetEditor) {
+        if (widgetEditor) {
           const elementIds = _getSelection();
           if (elementIds && elementIds.length) {
             fct(geom, elementIds);

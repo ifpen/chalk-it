@@ -14,7 +14,7 @@ import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -89,7 +89,7 @@ function datePickerWidgetsPluginClass() {
 
     this.enable = function () {
       $('#' + idInstance + 'c').on('click', function (e, ui) {
-        widgetPreview.elevateZIndex(idInstance, e);
+        widgetViewer.elevateZIndex(idInstance);
         self.dateFieldShow();
       });
     };

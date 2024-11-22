@@ -70,7 +70,7 @@ export function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
 
   this.applyDisplayOnWidget = function () {
     if (bInteractive) {
-      const widgetObj = $('#' + idInstance + 'c');
+      const widgetObj = $(document.getElementById(idDivContainer));
       if (!_.isUndefined(widgetObj)) {
         if (!modelsParameters[idInstance].showWidget) {
           widgetObj.hide();
