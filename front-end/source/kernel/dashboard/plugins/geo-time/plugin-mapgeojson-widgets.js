@@ -455,6 +455,9 @@ function mapGeoJsonWidgetsPluginClass() {
     this.GeoJSONStyle = {
       updateCallback: function () {},
       setValue: function (val) {
+        if(_.isUndefined(val) || val == null){
+          return;
+        }
         modelsHiddenParams[idInstance].GeoJSONStyle = val;
         if (_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)) {
           modelsHiddenParams[idInstance].GeoJSONStyle.config = self.defaultConfig;
