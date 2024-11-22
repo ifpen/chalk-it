@@ -66,6 +66,7 @@ modelsParameters.flatUiMultiSelect = {
   borderColor: 'var(--widget-border-color)',
   isNumber: false,
   isBoolean: false,
+  maxSelected: '*',
 };
 modelsParameters.flatUiList = {
   addControls: false,
@@ -581,9 +582,6 @@ function flatUiComplexWidgetsPluginClass() {
     const self = this;
 
     this.enable = function () {
-      $('#multi-select' + idWidget).on('click', function (e) {
-        self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-      });
       $('#multi-select' + idWidget)[0].style.opacity = '1';
     };
 
@@ -681,6 +679,28 @@ function flatUiComplexWidgetsPluginClass() {
           }
         });
       }
+
+      // Handle selection logic
+      const maxSelected = modelsParameters[idInstance]?.maxSelected ?? '*';
+      const checkboxes = multiSelectElement.querySelectorAll('input[type="checkbox"]');
+      let selectedOptions = [];
+
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) {
+            selectedOptions.push(checkbox);
+
+            if (maxSelected !== '*' && selectedOptions.length > maxSelected) {
+              const firstSelectedCheckbox = selectedOptions.shift(); // Remove the oldest selected
+              firstSelectedCheckbox.checked = false; // Deselect it in the DOM
+            }
+          } else {
+            // Remove the deselected option
+            selectedOptions = selectedOptions.filter((selected) => selected !== checkbox);
+          }
+          self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+        });
+      });
 
       // Apply dynamic styles
       const styleSheet = document.styleSheets[0];
