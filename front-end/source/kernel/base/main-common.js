@@ -6,12 +6,6 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
-import { editorSingletons } from 'kernel/editor-singletons';
-import { dashState } from 'angular/modules/dashboard/dashboard';
-import { gridMgr } from 'kernel/dashboard/edition/grid-mgr';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
-import { showEditMode, bRescaleNeededForModeSwitch } from 'angular/modules/dashboard/services/edit-play-switch';
-import { htmlExport } from 'kernel/general/export/html-export';
 
 // AEF: issue#304
 // disableSchedulerLog is defined in env to disable scheduler log in public xdash. true by default
@@ -20,9 +14,6 @@ import { htmlExport } from 'kernel/general/export/html-export';
 
 export const offSchedLogUser = { value: true }; //AEF: can be set to xDashConfig.disableSchedulerLog by default.
 
-var ratioScroll = 0;
-
-export const tabWidgetsLoadedEvt = new Event('widgets-tab-loaded');
 export const tabPlayLoadedEvt = new Event('play-tab-loaded');
 
 /* MBG refactored from xdash-main.js because needed by runtime */
@@ -55,57 +46,11 @@ Date.prototype.timeNow = function () {
   );
 };
 
-export const bFirstExec = { value: true };
-
-// MBG detecting Android for handling issue #93
-const ua = navigator.userAgent.toLowerCase();
-export const isAndroid = ua.indexOf('android') > -1; //&& ua.indexOf("mobile");
-
 function _isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 }
 
 export const isTouchDevice = _isTouchDevice();
-
-function activeTab() {
-  dashState.tabActive = 'widgets';
-  setEditPlaySwitchDisableStatus(false);
-  if (dashState.modeActive == 'no-dashboard') {
-    bRescaleNeededForModeSwitch.value = true;
-    showEditMode(true, function () {});
-  } else {
-    console.log('tabActive=' + dashState.tabActive + '. modeActive=' + dashState.modeActive);
-  }
-}
-
-export function onResize() {
-  const $rootScope = angular.element(document.body).scope().$root;
-  if (dashState.tabActive == 'play') {
-    if (!(isAndroid || isTouchDevice)) {
-      widgetPreview.resizeDashboard();
-    }
-  } else if (!$rootScope.moduleOpened) {
-    if (dashState.tabActive == 'widgets') {
-      if (dashState.modeActive == 'edit-dashboard') {
-        editorSingletons.widgetEditor.resizeDashboard();
-        gridMgr.updateGrid();
-      } else if (dashState.modeActive == 'play-dashboard') {
-        widgetPreview.resizeDashboard();
-      }
-    }
-  }
-}
-
-export function onOrientationChange() {
-  if (dashState.tabActive == 'play') {
-    widgetPreview.resizeDashboard();
-  }
-}
-
-/*--------Rescale Widget--------*/
-export function rescaleWidget(widget, instanceId) {
-  widget[instanceId].rescale();
-}
 
 /**
  * Sets the dirty flag in context when call can be from editor or runtime
