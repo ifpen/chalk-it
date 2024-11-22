@@ -70,26 +70,19 @@ export  function createChoroplethLegend(idLegend,min_, max_, featureTitle, color
   var legend = L.control({ position: 'topleft' });
   let min = Number(min_);
   let max = Number(max_);
-
+  let nbCategories=8;
   legend.onAdd = function (map) {
     const x = d3.scaleLinear([min, max], [min, max]).nice(8);
     min = x.domain()[0];
     max = x.domain()[1];
 
-    var step = (max - min) / 8;
+    var step = (max - min) / nbCategories;
     var div = L.DomUtil.create('div', 'info legend');
     div.setAttribute('id', idLegend);
-    let grades = [
-      min,
-      min + step,
-      min + step * 2,
-      min + step * 3,
-      min + step * 4,
-      min + step * 5,
-      min + step * 6,
-      min + step * 7,
-      max,
-    ];
+    let grades=[];
+    for (let index = 0; index < nbCategories; index++) {
+      grades.push(min+step*index);
+    } 
     var labels = [],
       from,
       to;
