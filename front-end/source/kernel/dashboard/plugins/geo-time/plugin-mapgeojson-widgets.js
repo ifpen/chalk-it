@@ -294,7 +294,9 @@ function mapGeoJsonWidgetsPluginClass() {
       return undefined;
     };
     this.addGeoJSONlayer = function (geoJSON, name) {
-      var leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
+      var leafletLayer = L.geoJSON(geoJSON,{
+        style : createTemplateStyle(self,geoJSON,self.layers.length)
+      }).addTo(self.map);
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
       let leafletIndex = self.getLefletIndex(leafletLayer);
