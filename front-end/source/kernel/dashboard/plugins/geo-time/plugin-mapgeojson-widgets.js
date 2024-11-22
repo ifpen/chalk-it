@@ -83,7 +83,7 @@ function mapGeoJsonWidgetsPluginClass() {
         !_.isUndefined(geojsons) &&
         !_.isEmpty(geojsons)
       ) {
-        if (!_.isUndefined(geojsonStyle)) {
+        if (!_.isUndefined(geojsonStyle) &&  !_.isEmpty(geojsonStyle)) {
           let styles = geojsonStyle.style;
           //test if styles is an array
           if(!Array.isArray(styles)){
@@ -293,9 +293,7 @@ function mapGeoJsonWidgetsPluginClass() {
       return undefined;
     };
     this.addGeoJSONlayer = function (geoJSON, name) {
-      var leafletLayer = L.geoJSON(geoJSON,{
-        style : createTemplateStyle(self,geoJSON,self.layers.length)
-      }).addTo(self.map);
+      var leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
       let leafletIndex = self.getLefletIndex(leafletLayer);
@@ -306,6 +304,7 @@ function mapGeoJsonWidgetsPluginClass() {
       //self.ctrl.addBaseLayer(leafletLayer, name);
       //checkbox
       self.ctrl.addOverlay(leafletLayer, name);
+      self.style();
     };
 
     // Create the style object that will be in out JSON for a geoJSON
@@ -330,12 +329,22 @@ function mapGeoJsonWidgetsPluginClass() {
     this.styleChanged = false;
     // Set style on layers called when input style
     this.style = function () {
-      let config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
-      let ts = 'MapboxStreets';
-      if (!_.isUndefined(config)) {
-        // defaultCenter = config.defaultCenter;
-        ts = config.tileServer;
+      let GeoJSONStyle = modelsHiddenParams[idInstance].GeoJSONStyle;
+      if(GeoJSONStyle == null || _.isUndefined(GeoJSONStyle) || _.isEmpty(GeoJSONStyle)){
+        if (
+          !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) && Array.isArray(modelsHiddenParams[idInstance].GeoJSON) &&
+          modelsHiddenParams[idInstance].GeoJSON.length > 0
+        ) {
+          //use default style
+          modelsHiddenParams[idInstance].GeoJSON.forEach(function (geojson, index) {
+            setStyle(self, index, createTemplateStyle(self,geojson,index));
+          }); 
+        }
+        return;
       }
+      let config = GeoJSONStyle.config || self.defaultConfig;
+      let ts = 'MapboxStreets';
+      ts = config.tileServer;
       var tileConf = getTileServerConf(ts);
       self.baseLayer = L.tileLayer(tileConf.url, tileConf);
       self.baseLayer.addTo(self.map);
@@ -345,12 +354,12 @@ function mapGeoJsonWidgetsPluginClass() {
       let zoom = function () {
         //Zoom
         if (
-          modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom ||
-          _.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.defaultZoom)
+          GeoJSONStyle.config.defaultCenter.defaultZoom ||
+          _.isUndefined(GeoJSONStyle.config.defaultCenter.defaultZoom)
         ) {
           let bboxCoords = undefined;
           if (
-            !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) &&
+            !_.isUndefined(modelsHiddenParams[idInstance].GeoJSON) && Array.isArray(modelsHiddenParams[idInstance].GeoJSON) &&
             modelsHiddenParams[idInstance].GeoJSON.length > 0
           ) {
             bboxCoords = bbox(modelsHiddenParams[idInstance].GeoJSON[0]);
@@ -360,12 +369,12 @@ function mapGeoJsonWidgetsPluginClass() {
             ];
           } else {
             if (
-              !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) &&
-              !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config) &&
-              !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image) &&
-              !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config.image.imageBounds)
+              !_.isUndefined(GeoJSONStyle) &&
+              !_.isUndefined(GeoJSONStyle.config) &&
+              !_.isUndefined(GeoJSONStyle.config.image) &&
+              !_.isUndefined(GeoJSONStyle.config.image.imageBounds)
             ) {
-              config = modelsHiddenParams[idInstance].GeoJSONStyle.config;
+              config = GeoJSONStyle.config;
               bboxCoords = config.image.imageBounds;
             }
           }
@@ -377,21 +386,16 @@ function mapGeoJsonWidgetsPluginClass() {
           modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.zoom = zoom;
           //self.map.setZoom(zoom);
         } else {
-          self.map.setZoom(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.zoom);
+          self.map.setZoom(GeoJSONStyle.config.defaultCenter.zoom);
         }
       };
       zoom(); 
 
       //update style
-      if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style))
-        modelsHiddenParams[idInstance].GeoJSONStyle.style.forEach(function (d, index) {
+      if (!_.isUndefined(GeoJSONStyle.style) && Array.isArray(GeoJSONStyle.style) )
+        GeoJSONStyle.style.forEach(function (d, index) {
           setStyle(self, index, d);
-        });
-
-      if (self.styleChanged) {
-        self.styleChanged = false;
-        //  self.updateValue();
-      }
+        }); 
     };
 
 
@@ -417,11 +421,10 @@ function mapGeoJsonWidgetsPluginClass() {
                 console.error('Invalid GeoJSON at index = ' + index);
               }
             }
-          }
-  
-          self.render();
-          self.updateValue();
+          } 
         }
+        self.render();
+        self.updateValue();
        
       },
       getValue: function () {
@@ -524,7 +527,83 @@ function mapGeoJsonWidgetsPluginClass() {
       },
       removeValueChangedHandler: function (updateDataFromWidget) {},
     };
+    const _GEOJSON_STYLE_DESCRIPTOR = new WidgetActuatorDescription(
+      'GeoJSONStyle',
+      'Properties for GEOJSON',
+      WidgetActuatorDescription.READ_WRITE,
+      WidgetPrototypesManager.SCHEMA_ANYTHING
+    );
 
+    //add selected actuator
+    const _SELECTED_DESCRIPTOR = new WidgetActuatorDescription(
+      'Selected',
+      'Selected value',
+      WidgetActuatorDescription.READ_WRITE,
+      WidgetPrototypesManager.SCHEMA_ANYTHING
+    );
+    // GeoJSON Schema V0.7
+
+    const _SCHEMA_GEOJSON_INPUT = {
+      $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+      $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:GOEJSON_input',
+      type: 'object',
+      properties: {
+        type: { type: 'string', enum: ['FeatureCollection'] },
+        features: {
+          type: 'array',
+          items: { $ref: '#/definitions/feature' },
+        },
+      },
+      required: ['type', 'features'],
+      additionalProperties: true,
+      patternProperties: {
+        '^.*$': {},
+      },
+      definitions: {
+        feature: {
+          type: 'object',
+          properties: {
+            type: { type: 'string', enum: ['Feature'] },
+            geometry: { $ref: '#/definitions/geometry' },
+            properties: { type: 'object' },
+            id: { anyOf: [{ type: 'string' }, { type: 'number' }] },
+          },
+          required: ['type', 'geometry'],
+          additionalProperties: false,
+        },
+        geometry: {
+          type: 'object',
+          properties: {
+            type: { type: 'string' },
+            coordinates: {},
+          },
+          required: ['type', 'coordinates'],
+          additionalProperties: false,
+        },
+      },
+    };
+
+    const _SCHEMA_GEOJSON_ARRAY = {
+      $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+      $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:GOEJSON_input_array',
+
+      type: 'array',
+      items: { $ref: _SCHEMA_GEOJSON_INPUT.$id },
+    };
+
+    const _SCHEMA_GEOJSON_ONE_OF = {
+      $schema: WidgetPrototypesManager.SCHEMA_VERSION,
+      $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:GOEJSON_input_oneof',
+
+      oneOf: [_SCHEMA_GEOJSON_INPUT, _SCHEMA_GEOJSON_ARRAY],
+    };
+
+    const _GEOJSON_DESCRIPTOR = new WidgetActuatorDescription(
+      'GeoJSON',
+      'Geometry and Properties in GEOJSON Format',
+      WidgetActuatorDescription.READ,
+      _SCHEMA_GEOJSON_ONE_OF
+    );
     this.getActuatorDescriptions = function () {
       return [_GEOJSON_DESCRIPTOR, _GEOJSON_STYLE_DESCRIPTOR, _SELECTED_DESCRIPTOR];
     };

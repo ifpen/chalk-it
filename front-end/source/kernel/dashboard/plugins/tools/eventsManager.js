@@ -20,10 +20,18 @@ import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 import { modelsHiddenParams } from 'kernel/base/widgets-states';
 import { findFeatureType,equivalenceTypes,formatProperty  } from 'kernel/dashboard/plugins/tools/geoJsonTools';
+import { createTemplateStyle } from './styleManager';
 
 export  function mouseoverHandler(self, geoJSON, leafletIndex) {
   return function (e) {
-    let style = modelsHiddenParams[self.idInstance].GeoJSONStyle.style[leafletIndex];
+    let style = undefined;
+    let GeoJSONStyle = modelsHiddenParams[self.idInstance].GeoJSONStyle;
+    if(GeoJSONStyle == null || _.isEmpty(GeoJSONStyle) || _.isUndefined(GeoJSONStyle) ){
+      style = createTemplateStyle(self,modelsHiddenParams[self.idInstance].GeoJSON[leafletIndex],leafletIndex)
+    }else {
+      style = GeoJSONStyle.style[leafletIndex];
+    }
+    
     if (
       _.isUndefined(style) ||
       _.isUndefined(style.events) ||
@@ -65,7 +73,13 @@ export  function mouseoverHandler(self, geoJSON, leafletIndex) {
 
 export  function mouseoutHandler(self, geoJSON, leafletIndex) {
   return function (e) {
-    let style = modelsHiddenParams[self.idInstance].GeoJSONStyle.style[leafletIndex];
+    let style = undefined;
+    let GeoJSONStyle = modelsHiddenParams[self.idInstance].GeoJSONStyle;
+    if(GeoJSONStyle == null || _.isEmpty(GeoJSONStyle) || _.isUndefined(GeoJSONStyle) ){
+      style = createTemplateStyle(self,modelsHiddenParams[self.idInstance].GeoJSON[leafletIndex],leafletIndex)
+    }else {
+      style = GeoJSONStyle.style[leafletIndex];
+    }
     //if the curent layer is the clicked layer, apply click style
     if (e.target == self.state.selectedElement) {
       //apply click style
@@ -136,7 +150,13 @@ export  function mouseoutHandler(self, geoJSON, leafletIndex) {
 
 export  function clickHandler(self, geoJSON, leafletLayer, leafletIndex) {
   return function (e) {
-    let style = modelsHiddenParams[self.idInstance].GeoJSONStyle.style[leafletIndex];
+    let style = undefined;
+    let GeoJSONStyle = modelsHiddenParams[self.idInstance].GeoJSONStyle;
+    if(GeoJSONStyle == null || _.isEmpty(GeoJSONStyle) || _.isUndefined(GeoJSONStyle) ){
+      style = createTemplateStyle(self,modelsHiddenParams[self.idInstance].GeoJSON[leafletIndex],leafletIndex)
+    }else {
+      style = GeoJSONStyle.style[leafletIndex];
+    }
     if (
       _.isUndefined(style) ||
       _.isUndefined(style.events) ||
