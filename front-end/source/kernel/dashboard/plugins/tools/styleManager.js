@@ -34,7 +34,7 @@ export function createTemplateStyle(self, geoJSON, index, typeLayer = undefined)
     name: 'layer ' + (index + 1),
     stroke: true,
     color: 'black',
-    weight: 1,
+    weight: 2,
     opacity: 1,
     fillColor: '#447bdc',
     fillOpacity: 0.7,
