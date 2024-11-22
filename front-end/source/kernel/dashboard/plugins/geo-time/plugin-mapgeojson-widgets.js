@@ -174,11 +174,10 @@ function mapGeoJsonWidgetsPluginClass() {
 
       // Drawing the map
       // TODO : Report all map possibilites from map
-      self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true });
+      self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true }).setView([self.defaultConfig.defaultCenter.longitude, self.defaultConfig.defaultCenter.latitude], self.defaultConfig.defaultCenter.zoom);;
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
-      }).addTo(self.map);
-
+      }).addTo(self.map); 
       self.ctrl = L.control
         .layers(
           {},
@@ -381,8 +380,7 @@ function mapGeoJsonWidgetsPluginClass() {
           self.map.setZoom(modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.zoom);
         }
       };
-      zoom();
-      //self.map.setView([defaultCenter.longitude, defaultCenter.latitude], defaultCenter.zoom);
+      zoom(); 
 
       //update style
       if (!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.style))
@@ -406,7 +404,9 @@ function mapGeoJsonWidgetsPluginClass() {
             if (isValidGeoJSON(val)) {
               modelsHiddenParams[idInstance].GeoJSON.push(val);
             } else {
-              throw new Error('Invalid GeoJSON ');
+              modelsHiddenParams[idInstance].GeoJSON = [];
+              //TODO: show notifications !
+              console.error('Invalid GeoJSON ');
             }
           } else {
             for (let index = 0; index < val.length; index++) {
@@ -414,7 +414,7 @@ function mapGeoJsonWidgetsPluginClass() {
               if (isValidGeoJSON(geojson)) {
                 modelsHiddenParams[idInstance].GeoJSON.push(geojson);
               } else {
-                throw new Error('Invalid GeoJSON at index = ' + index);
+                console.error('Invalid GeoJSON at index = ' + index);
               }
             }
           }
