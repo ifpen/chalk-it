@@ -93,7 +93,7 @@ export  function createChoroplethLegend(idLegend,min_, max_, featureTitle, color
     var labels = [],
       from,
       to;
-    labels.push('<div style="display:flex;flex-direction:column;row-gap:2px;">');
+    labels.push('<div style="display:flex;flex-direction:column;">');
     labels.push('<h2 style="margin-bottom: 4px;">' + featureTitle + '</h2>');
     //   div.innerHTML += '<h6>              </h6>';
 
