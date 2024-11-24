@@ -461,7 +461,84 @@ This actuator stores the data resulting from a click event on the geographic fea
 
    ![alt text](image.png)
 
-   
+### GeoJSONStyle Structure
+
+The **GeoJSONStyle** actuator is a JSON object divided into two main parts:
+
+
+**config**: This section manages the global configuration of the widget. It includes:
+
+-   **defaultCenter**: 
+
+    Defines the default center of the map.
+    To ensure that the zoom property value is applied, the **defaultZoom** property must be set to **false**.
+    If **defaultZoom** is set to **true**, the zoom level is automatically calculated based on the bounds of the GeoJSON data. This allows the map to dynamically adjust its zoom to fit the displayed features. However, when **defaultZoom** is **false**, the zoom level specified in the configuration will take precedence.
+-   **Tile Server**: Specifies the default tile server to be used, along with a list of available tile servers.
+-   **Image Overlay**: Allows adding an overlay image to the map for additional context or customization.
+Style
+This is an array containing style templates, where each template corresponds to a specific GeoJSON layer. These templates define the visual appearance of the associated GeoJSON data, enabling customization of how different data elements are displayed on the map.
+-   ![alt text](image-1.png)
+
+**style** :  
+  This is an array containing style templates, where each template corresponds to a specific GeoJSON layer. These templates define the visual appearance of the associated GeoJSON data, enabling customization of how different data elements are displayed on the map.
+  #### Common Properties  
+  These apply to all GeoJSON types:
+- **color**: Stroke or border color.
+- **opacity**: Stroke transparency level.
+- **fillColor**: Fill color for polygons or shapes.
+- **fillOpacity**: Fill transparency.
+- **weight**: Stroke thickness.
+#### Type-Specific Properties  
+These properties vary depending on the type of GeoJSON feature:
+- **Point**:  
+  - **radius**: Determines the size of the point marker.  
+  - **awesomeMarker**: Provides advanced marker styling using the AwesomeMarkers library. It includes:  
+    - **enabled**: Enables or disables the use of AwesomeMarkers.  
+    - **icon**: Specifies the icon class for the marker (e.g., `fa-asterisk`).  
+    - **prefix**: Defines the icon library prefix (e.g., `fa` for Font Awesome).  
+    - **markerColor**: Sets the marker's color (e.g., `red`, `blue`). 
+    - **markerCluster**: Enables or disables marker clustering (grouping nearby points into clusters on the map).  
+    - **enablePopup**: Activates the display of popups for point markers.  
+    - **clickPopup**: Configures whether the popup opens on marker click.
+    - **popupProperty**: Defines what content is displayed in the popup:  
+    - If set to `"default_tooltip"`, the properties defined in the **tooltip** section of the GeoJSON are displayed.  
+    - Otherwise, the popup will display the specified property and its value from the GeoJSON.
+    - **pointAreMarker**: Toggles the rendering of points as either markers or circles:
+    - If `true`, points are rendered as standard markers.  
+    - If `false`, points are rendered as circles, which allows additional customization such as radius and fill properties.
+
+- **LineString**:  
+  - **dashArray**: Defines the pattern of dashed lines. The value is a string representing the length of dashes and gaps, e.g., `"5,5"` for equal-length dashes and spaces.  
+  - **lineJoin**: Specifies the shape to be used at the junction of two connecting lines. Common values include:  
+    - `"miter"` (default): Creates sharp corners.  
+    - `"round"`: Creates rounded corners.  
+    - `"bevel"`: Creates beveled corners.
+  - **lineCap**: Specifies the shape to be used at the ends of lines. Common values include:  
+    - `"square"` (default): Creates square endings at the line ends.  
+    - `"round"`: Creates rounded endings at the line ends.  
+    - `"butt"`: Cuts the line ends off at the exact endpoint, with no extension beyond the line.
+
+ #### Properties for Geometries with Fill
+
+  For geometries that include a fill (e.g., polygons), you can dynamically calculate the **fillColor** based on the values of a property in the GeoJSON data. The following properties are used to define the color calculation:
+
+- **fillColor**: Defines the fill color for the geometry.
+  - The color can be set using a **normal color** (e.g., `"red"`, `"blue"`) or using a **color scale** from the **d3** library (e.g., `"interpolateViridis"`).
+  - To calculate the fill color dynamically from a property, use the following properties:
+    - **property**: The property in the GeoJSON data used to calculate the color. This property must be of type **number** (e.g., `"arrdt"`).
+    - **propertyMin** and **propertyMax**: Define the minimum and maximum values for the color scale calculation. If set to `"Auto"`, these values are calculated automatically based on the property values.
+    - **possibleProperties**: An object that defines valid properties and their value ranges (min, max) for calculating the color scale.
+### Event Handling
+
+The widget allows you to configure various events that can interact with the geometries (e.g., points, lines, polygons) displayed on the map. You can define specific styles and behaviors for each event, such as **mouseover** and **click** events. The following properties are used to configure event handling:
+
+#### Events Configuration:
+
+- **events**: Defines the events and their corresponding actions.
+  - Each event can have:
+    - **enabled**: A boolean indicating whether the event is active or not.
+    - **style**: Specifies the style to apply when the event is triggered (e.g., on mouseover or click).
+
 ## Folium Maps
 
 [Folium](https://python-visualization.github.io/folium/) is a Python library used for visualizing geospatial data. It leverages the power of the Leaflet.js library and provides a simple way to create interactive maps. Folium can be used to create various types of maps such as choropleth maps, bubble maps, and scatter maps, and provides an easy-to-use interface for adding markers, popups, and other interactive features to the maps.
