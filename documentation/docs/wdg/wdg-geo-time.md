@@ -444,7 +444,24 @@ Selection result will be written to the _selectedGeoJson_ actuator.
 Example :
 
 -   [osm-drawing-features.xprjson](maps/osm-drawing-features.xprjson)
+## Map Geojson 
+The **Map GeoJSON Widget** is an alternative to the traditional Leaflet Map Widget. It provides the core functionalities of Leaflet Map but with a declarative approach, making it easier to use and integrate.
+ 
+The widget is built around three main actuators, which are essential for handling and interacting with geospatial data:
 
+-   **GeoJSON**
+This actuator contains the GeoJSON data that represents the geographic features to be displayed on the map.
+
+-   **GeoJSONStyle**
+When the user switches to View mode, this actuator is automatically populated with a style template based on the characteristics of the provided GeoJSON.
+The user can customize this style template to adjust the appearance of the displayed data.
+
+-   **Selected**
+This actuator stores the data resulting from a click event on the geographic features. It enables interactions or additional processing based on user clicks.
+
+   ![alt text](image.png)
+
+   
 ## Folium Maps
 
 [Folium](https://python-visualization.github.io/folium/) is a Python library used for visualizing geospatial data. It leverages the power of the Leaflet.js library and provides a simple way to create interactive maps. Folium can be used to create various types of maps such as choropleth maps, bubble maps, and scatter maps, and provides an easy-to-use interface for adding markers, popups, and other interactive features to the maps.
