@@ -595,119 +595,102 @@ function flatUiComplexWidgetsPluginClass() {
       this.render();
     };
 
-    this.hasScrollBar = function (element) {
-      return element.get(0).scrollHeight > element.get(0).clientHeight;
-    };
-
     this.render = function () {
+      const container = document.getElementById(idDivContainer);
+      const valueHeightPx = container.offsetHeight;
+
+      // Create the main widget container
       const widgetHtml = document.createElement('div');
-      const valueHeightPx = $('#' + idDivContainer).height();
-      widgetHtml.setAttribute('style', 'width: inherit; height: ' + valueHeightPx + 'px; cursor: inherit;');
+      widgetHtml.className = 'multi-select-widget';
+      widgetHtml.style.width = 'inherit';
+      widgetHtml.style.height = `${valueHeightPx}px`;
+      widgetHtml.style.cursor = this.bIsInteractive ? 'pointer' : 'inherit';
 
-      let divContent =
-        '<div class="multi-select-div" id="multi-select' +
-        idWidget +
-        '" style="height: ' +
-        valueHeightPx +
-        'px; ' +
-        this.valueDefaultColor() +
-        this.border() +
-        '">';
+      // Generate multi-select content
+      const val = modelsHiddenParams[idInstance]?.value || [];
+      const widgetId = `multi-select${idWidget}`;
+      const cursorStyle = this.bIsInteractive ? 'cursor: pointer;' : 'cursor: inherit;';
+      const fontFamily = this.valueFontFamily();
+      const fontSize = this.valueFontSize();
+      const checkboxWidth = this.checkboxWidth();
+      const checkboxHeight = this.checkboxHeight();
 
-      const val = modelsHiddenParams[idInstance].value;
-      let cursorElem = '';
-      if (this.bIsInteractive) {
-        cursorElem = 'cursor: pointer; ';
-      } else {
-        cursorElem = 'cursor: inherit; ';
-      }
-
-      if (_.isUndefined(modelsParameters[idInstance].valueFontSize)) {
-        modelsParameters[idInstance].valueFontSize = 0.4;
-      }
+      let divContent = `
+        <div 
+          class="multi-select-div" 
+          id="${widgetId}"
+          style="height: ${valueHeightPx}px; ${this.valueDefaultColor()} ${this.border()}">
+      `;
 
       if (Array.isArray(val)) {
-        for (const value of val) {
-          divContent += '<label >';
-          divContent += '<input type="checkbox" value="' + value + '" />';
-          divContent +=
-            '<span id="multi-select-label' +
-            idWidget +
-            '" style="' +
-            cursorElem +
-            this.valueFontFamily() +
-            this.valueFontSize() +
-            this.checkboxWidth() +
-            this.checkboxHeight() +
-            '" tabindex="-1">' +
-            value +
-            '</span>';
-          divContent += '</label>';
-        }
+        divContent += val
+          .map(
+            (value) => `
+          <label>
+            <input type="checkbox" value="${value}" />
+            <span 
+              id="multi-select-label${idWidget}" 
+              style="${cursorStyle} ${fontFamily} ${fontSize} ${checkboxWidth} ${checkboxHeight}" 
+              tabindex="-1">
+              ${value}
+            </span>
+          </label>
+        `
+          )
+          .join('');
       }
+
       divContent += '</div>';
       widgetHtml.innerHTML = divContent;
-      //
-      const showWidget = this.showWidget();
-      let displayStyle = 'display: initial;';
-      if (!showWidget) {
-        displayStyle = 'display: none;';
-      }
-      const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      widgetHtml.setAttribute('style', displayStyle + enableStyle);
 
-      $('#' + idDivContainer).html(widgetHtml);
+      // Set display and enable styles
+      widgetHtml.style.display = this.showWidget() ? 'initial' : 'none';
+      widgetHtml.style.pointerEvents = this.enableWidget() ? 'initial' : 'none';
+      widgetHtml.style.opacity = this.enableWidget() ? '1' : '0.5';
+
+      // Append widget to the container
+      container.innerHTML = '';
+      container.appendChild(widgetHtml);
+
       this.applyDisplayOnWidget();
-      const hasScrollBar = self.hasScrollBar($('#multi-select' + idWidget));
-      if (!hasScrollBar) {
-        $('#multi-select' + idWidget + '.multi-select-div').css('align-content', 'center');
-      }
 
-      //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
-      const isMobileOrTablet = window.mobileAndTabletCheck();
-      const touchDevice = 'ontouchstart' in document.documentElement; // Only mobiles
-      //AEF: can keep only one isMobileOrTablet or touchDevice
-      if (touchDevice || isMobileOrTablet) {
-        $('#multi-select' + idWidget)[0].style.height = 'auto';
-      }
-      //uncheck when change list
-      if (!modelsParameters[idInstance].resetPastSelection) {
-        if (!_.isEmpty(modelsHiddenParams[idInstance].selectedValue)) {
-          $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
-            for (const selectedValue of modelsHiddenParams[idInstance].selectedValue) {
-              if ($(this).val() == selectedValue) {
-                $(this).attr('checked', true);
-              }
-            }
-          });
+      // Check for scrollbars and adjust alignment
+      const multiSelectElement = document.getElementById(widgetId);
+      if (multiSelectElement) {
+        const hasScrollBar = multiSelectElement.scrollHeight > multiSelectElement.clientHeight;
+
+        if (!hasScrollBar) {
+          multiSelectElement.style.alignContent = 'center';
         }
       }
 
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget, this.valueDefaultColor());
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget, this.checkboxDefaultColor());
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget, this.checkboxBorder());
+      // Apply additional styles for mobile or tablet
+      const isMobileOrTablet = window.mobileAndTabletCheck();
+      const touchDevice = 'ontouchstart' in document.documentElement; // Only mobiles
+      if ((isMobileOrTablet || touchDevice) && multiSelectElement) {
+        multiSelectElement.style.height = 'auto';
+      }
 
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget + ':hover', this.valueHoverColor());
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget + ':hover', this.checkboxHoverColor());
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget + ':hover', this.checkboxHoverBorderColor());
+      // Restore previous selections if needed
+      if (!modelsParameters[idInstance]?.resetPastSelection) {
+        const selectedValues = modelsHiddenParams[idInstance]?.selectedValue || [];
+        const checkboxes = multiSelectElement.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+          if (selectedValues.includes(checkbox.value)) {
+            checkbox.checked = true;
+          }
+        });
+      }
 
-      document.styleSheets[0].addRule(
-        'input[type="checkbox"]:checked + #multi-select-label' + idWidget,
-        this.valueFocusColor()
-      );
-      document.styleSheets[0].addRule(
-        'input[type="checkbox"]:checked + #multi-select-label' + idWidget,
-        this.checkboxFocusColor()
-      );
-      document.styleSheets[0].addRule(
-        'input[type="checkbox"]:checked + #multi-select-label' + idWidget,
-        this.checkboxFocusBorderColor()
-      );
+      // Apply dynamic styles
+      const styleSheet = document.styleSheets[0];
+      const multiSelectLabelId = `multi-select-label${idWidget}`;
+      const rules = [
+        `#${multiSelectLabelId} { ${this.valueDefaultColor()} ${this.checkboxDefaultColor()} ${this.checkboxBorder()} }`,
+        `#${multiSelectLabelId}:hover { ${this.valueHoverColor()} ${this.checkboxHoverColor()} ${this.checkboxHoverBorderColor()} }`,
+        `input[type="checkbox"]:checked + #${multiSelectLabelId} { ${this.valueFocusColor()} ${this.checkboxFocusColor()} ${this.checkboxFocusBorderColor()} }`,
+      ];
+      rules.forEach((rule) => styleSheet.insertRule(rule, styleSheet.cssRules.length));
 
       if (this.bIsInteractive) {
         self.enable();
@@ -740,15 +723,17 @@ function flatUiComplexWidgetsPluginClass() {
         self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
       },
       getValue: function () {
-        if (modelsParameters[idInstance].isNumber) {
-          return Number(modelsHiddenParams[idInstance].value);
-        } else if (modelsParameters[idInstance].isBoolean) {
-          return modelsHiddenParams[idInstance].value === 'false'
-            ? false
-            : Boolean(modelsHiddenParams[idInstance].value);
-        } else {
-          return modelsHiddenParams[idInstance].value;
+        const value = modelsHiddenParams[idInstance]?.value;
+
+        if (modelsParameters[idInstance]?.isNumber) {
+          return Number(value);
         }
+
+        if (modelsParameters[idInstance]?.isBoolean) {
+          return value !== 'false' && Boolean(value);
+        }
+
+        return value;
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
@@ -761,25 +746,33 @@ function flatUiComplexWidgetsPluginClass() {
     this.selectedValue = {
       updateCallback: function () {},
       setValue: function (val) {
-        $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
-          for (const selectedValue of val) {
-            if ($(this).val() === selectedValue) {
-              $(this).attr('checked', true);
-            }
+        if (!Array.isArray(val)) return;
+
+        const checkboxes = document.querySelectorAll(`#multi-select${idWidget} > label > input[type='checkbox']`);
+
+        checkboxes.forEach((checkbox) => {
+          if (val.includes(checkbox.value)) {
+            checkbox.checked = true;
           }
         });
+
+        // Update the selected values
         modelsHiddenParams[idInstance].selectedValue = val;
       },
       getValue: function () {
         const selectedVal = [];
-        $('#multi-select' + idWidget + " > label > input[type='checkbox']:checked").each(function () {
-          if (modelsParameters[idInstance].isNumber) {
-            selectedVal.push(Number($(this).val()));
-          } else if (modelsParameters[idInstance].isBoolean) {
-            const sval = $(this).val() === 'false' ? false : Boolean($(this).val());
-            selectedVal.push(sval);
+        const checkboxes = document.querySelectorAll(
+          `#multi-select${idWidget} > label > input[type='checkbox']:checked`
+        );
+
+        checkboxes.forEach((checkbox) => {
+          const value = checkbox.value;
+          if (modelsParameters[idInstance]?.isNumber) {
+            selectedVal.push(Number(value));
+          } else if (modelsParameters[idInstance]?.isBoolean) {
+            selectedVal.push(value !== 'false' && Boolean(value));
           } else {
-            selectedVal.push($(this).val());
+            selectedVal.push(value);
           }
         });
 
