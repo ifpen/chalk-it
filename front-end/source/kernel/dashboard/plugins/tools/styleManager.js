@@ -20,9 +20,14 @@ import _ from 'lodash';
 
 import { modelsHiddenParams } from 'kernel/base/widgets-states';
 
-import { toggleLegend} from 'kernel/dashboard/plugins/tools/legends';
+import { toggleLegend } from 'kernel/dashboard/plugins/tools/legends';
 import { configureEvents } from 'kernel/dashboard/plugins/tools/eventsManager';
-import { findPropertiesWithNumber,findAllProperties,findFeatureType,equivalenceTypes } from 'kernel/dashboard/plugins/tools/geoJsonTools';
+import {
+  findPropertiesWithNumber,
+  findAllProperties,
+  findFeatureType,
+  equivalenceTypes,
+} from 'kernel/dashboard/plugins/tools/geoJsonTools';
 
 export function createTemplateStyle(self, geoJSON, index, typeLayer = undefined) {
   let prop = findPropertiesWithNumber(geoJSON);
@@ -129,7 +134,7 @@ export function createTemplateStyle(self, geoJSON, index, typeLayer = undefined)
         ...markerStyle,
       };
     }
-      
+
     default:
       return {};
   }
@@ -137,10 +142,7 @@ export function createTemplateStyle(self, geoJSON, index, typeLayer = undefined)
 
 export function updateLayerStyle(self, layer, styleForObject, geoJSONinLayer) {
   let style = { ...styleForObject };
-  if (
-    findFeatureType(geoJSONinLayer) !== equivalenceTypes.MultiPoint ||
-    !style.pointAreMarker
-  )  {
+  if (findFeatureType(geoJSONinLayer) !== equivalenceTypes.MultiPoint || !style.pointAreMarker) {
     //calcul fill Color according to value
     let colorScale = self.getColorScaleFromStyle(styleForObject);
     if (!_.isUndefined(layer.feature.properties) && styleForObject.property in layer.feature.properties) {
@@ -209,7 +211,7 @@ export function setStyle(self, layerIndex, style) {
     //if the pointsAreMarker
     if (styleForObject.pointAreMarker) {
       let LMarkers = leafLetLayer.getLayers().map(function (layer) {
-        const latlng = [layer.getLatLng().lat,layer.getLatLng().lng];
+        const latlng = [layer.getLatLng().lat, layer.getLatLng().lng];
         const marker = L.marker(latlng);
         marker.feature = layer.feature;
         return marker;
@@ -267,29 +269,33 @@ export function setStyle(self, layerIndex, style) {
           } else if (layer.feature.properties.html) {
             popupText = layer.feature.properties.html;
           } else {
-            popupText = '<div>';
             let properties = style.tooltip.properties;
-            for (let i = 0; i < properties.length; i++) {
-              const prop = properties[i];
-              popupText =
-                popupText + '<p> <strong>' + prop + '</strong> : ' + layer.feature.properties[prop] + '</p>';
-              if (i == properties.length - 1) {
-                popupText = popupText + '</div>';
+            if (!_.isUndefined(properties) && Array.isArray(properties) && properties.length>0) {
+              popupText = '<div>';
+              for (let i = 0; i < properties.length; i++) {
+                const prop = properties[i];
+                popupText =
+                  popupText + '<p> <strong>' + prop + '</strong> : ' + layer.feature.properties[prop] + '</p>';
+                if (i == properties.length - 1) {
+                  popupText = popupText + '</div>';
+                }
               }
             }
           }
-          // Add The popup
-          let mk;
-          if (style.clickPopup) {
-            // Popup on click
-            mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
-          } else {
-            // persistent popup
-            mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
-            mk.on('add', function (event) {
-              event.target.openPopup();
-            });
-            layer.openPopup();
+          if (popupText != '') {
+            // Add The popup
+            let mk;
+            if (style.clickPopup) {
+              // Popup on click
+              mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
+            } else {
+              // persistent popup
+              mk = layer.bindPopup(popupText, { autoClose: false, autoPan: false });
+              mk.on('add', function (event) {
+                event.target.openPopup();
+              });
+              layer.openPopup();
+            }
           }
         }
       });

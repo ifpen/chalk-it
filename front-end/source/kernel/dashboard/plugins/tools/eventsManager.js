@@ -19,19 +19,19 @@ import '@geoman-io/leaflet-geoman-free';
 import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 import { modelsHiddenParams } from 'kernel/base/widgets-states';
-import { findFeatureType,equivalenceTypes,formatProperty  } from 'kernel/dashboard/plugins/tools/geoJsonTools';
+import { findFeatureType, equivalenceTypes, formatProperty } from 'kernel/dashboard/plugins/tools/geoJsonTools';
 import { createTemplateStyle } from './styleManager';
 
-export  function mouseoverHandler(self, geoJSON, leafletIndex) {
+export function mouseoverHandler(self, geoJSON, leafletIndex) {
   return function (e) {
     let style = undefined;
     let GeoJSONStyle = modelsHiddenParams[self.idInstance].GeoJSONStyle;
-    if(GeoJSONStyle == null || _.isEmpty(GeoJSONStyle) || _.isUndefined(GeoJSONStyle) ){
-      style = createTemplateStyle(self,modelsHiddenParams[self.idInstance].GeoJSON[leafletIndex],leafletIndex)
-    }else {
+    if (GeoJSONStyle == null || _.isEmpty(GeoJSONStyle) || _.isUndefined(GeoJSONStyle)) {
+      style = createTemplateStyle(self, modelsHiddenParams[self.idInstance].GeoJSON[leafletIndex], leafletIndex);
+    } else {
       style = GeoJSONStyle.style[leafletIndex];
     }
-    
+
     if (
       _.isUndefined(style) ||
       _.isUndefined(style.events) ||
@@ -54,30 +54,32 @@ export  function mouseoverHandler(self, geoJSON, leafletIndex) {
     e.target.setStyle(eventStyle);
     e.target.bringToFront();
     //create popup
-    let popupContent = '<div>';
     let properties = style.tooltip.properties;
-    _.each(properties, (property) => {
-      popupContent =
-        popupContent +
-        '<p> <strong>' +
-        property +
-        '</strong> : ' +
-        formatProperty(e.target.feature.properties[property]) +
-        '</p>';
-    });
-    popupContent = popupContent + '</div>';
-    e.target.bindPopup(popupContent);
-    e.target.openPopup();
+    if (!_.isUndefined(properties) && Array.isArray(properties) && properties.length>0) {
+      let popupContent = '<div>';
+      _.each(properties, (property) => {
+        popupContent =
+          popupContent +
+          '<p> <strong>' +
+          property +
+          '</strong> : ' +
+          formatProperty(e.target.feature.properties[property]) +
+          '</p>';
+      });
+      popupContent = popupContent + '</div>';
+      e.target.bindPopup(popupContent);
+      e.target.openPopup();
+    }
   };
 }
 
-export  function mouseoutHandler(self, geoJSON, leafletIndex) {
+export function mouseoutHandler(self, geoJSON, leafletIndex) {
   return function (e) {
     let style = undefined;
     let GeoJSONStyle = modelsHiddenParams[self.idInstance].GeoJSONStyle;
-    if(GeoJSONStyle == null || _.isEmpty(GeoJSONStyle) || _.isUndefined(GeoJSONStyle) ){
-      style = createTemplateStyle(self,modelsHiddenParams[self.idInstance].GeoJSON[leafletIndex],leafletIndex)
-    }else {
+    if (GeoJSONStyle == null || _.isEmpty(GeoJSONStyle) || _.isUndefined(GeoJSONStyle)) {
+      style = createTemplateStyle(self, modelsHiddenParams[self.idInstance].GeoJSON[leafletIndex], leafletIndex);
+    } else {
       style = GeoJSONStyle.style[leafletIndex];
     }
     //if the curent layer is the clicked layer, apply click style
@@ -148,13 +150,13 @@ export  function mouseoutHandler(self, geoJSON, leafletIndex) {
   };
 }
 
-export  function clickHandler(self, geoJSON, leafletLayer, leafletIndex) {
+export function clickHandler(self, geoJSON, leafletLayer, leafletIndex) {
   return function (e) {
     let style = undefined;
     let GeoJSONStyle = modelsHiddenParams[self.idInstance].GeoJSONStyle;
-    if(GeoJSONStyle == null || _.isEmpty(GeoJSONStyle) || _.isUndefined(GeoJSONStyle) ){
-      style = createTemplateStyle(self,modelsHiddenParams[self.idInstance].GeoJSON[leafletIndex],leafletIndex)
-    }else {
+    if (GeoJSONStyle == null || _.isEmpty(GeoJSONStyle) || _.isUndefined(GeoJSONStyle)) {
+      style = createTemplateStyle(self, modelsHiddenParams[self.idInstance].GeoJSON[leafletIndex], leafletIndex);
+    } else {
       style = GeoJSONStyle.style[leafletIndex];
     }
     if (
@@ -238,7 +240,7 @@ export  function clickHandler(self, geoJSON, leafletLayer, leafletIndex) {
   };
 }
 
-export  function configureEvents(self, geoJSON, leafletLayer, leafletIndex) {
+export function configureEvents(self, geoJSON, leafletLayer, leafletIndex) {
   //add events :
   // mouseover
   if (!_.isUndefined(leafletIndex)) {
