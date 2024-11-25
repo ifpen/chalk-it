@@ -84,119 +84,135 @@ function flatUiBooleanWidgetsPluginClass() {
     };
 
     this.render = function () {
+      //AEF
       let checkboxHeight = 20; // default value in class icons of flatui
       let checkboxWidth = 20; // default value in class icons of flatui
-
-      // Update icon dimensions if elements are present
-      const iconElement = $('.icons');
-      checkboxHeight = iconElement.height() ?? checkboxHeight;
-      checkboxWidth = iconElement.width() ?? checkboxWidth;
+      if (!_.isNull($('.icons').height())) {
+        checkboxHeight = $('.icons').height();
+      }
+      if (!_.isNull($('.icons').width())) {
+        checkboxWidth = $('.icons').width();
+      }
 
       // backward compatibility
       if (_.isUndefined(modelsParameters[idInstance].checkboxSize)) {
         modelsParameters[idInstance].checkboxSize = 1;
       }
 
-      const checkboxSize = modelsParameters[idInstance].checkboxSize;
-      const padding = checkboxSize * checkboxWidth;
-      const lineHeight = checkboxSize * checkboxHeight;
-      const labelHeight = checkboxHeight * checkboxSize;
-      const divContainerHeightPx = $('#' + idDivContainer).height();
-      //const divMarginTop = (divContainerHeightPx - labelHeight) / 2;
-
-      // Create and configure the main widget container
+      const padding = modelsParameters[idInstance].checkboxSize * checkboxWidth;
+      const lineHeight = modelsParameters[idInstance].checkboxSize * checkboxHeight;
+      //
+      let divContent = '';
       const widgetHtml = document.createElement('div');
-      widgetHtml.id = `checkbox-widget-html${idWidget}`;
-      widgetHtml.style.cssText = `
-        width: inherit;
-        cursor: inherit;
-        display: flex;
-        justify-content: center;
-      `;
+      widgetHtml.setAttribute('id', 'checkbox-widget-html' + idWidget);
+      //
+      const labelHeight = checkboxHeight * modelsParameters[idInstance].checkboxSize;
+      const divContainerHeightPx = $('#' + idDivContainer).height(); // in px
+      //const divMarginTop = (divContainerHeightPx - labelHeight) / 2;
+      widgetHtml.setAttribute(
+        'style',
+        //'padding-top: ' + divMarginTop + 'px; ' +
+        'width: inherit; cursor: inherit; display: flex; justify-content: center;'
+      );
+      //
 
-      // Determine label position and direction
-      const labelPosition = modelsParameters[idInstance].labelPosition === 'right' ? 'right' : 'left';
+      const labelPosition =
+        !_.isUndefined(modelsParameters[idInstance].labelPosition) &&
+        modelsParameters[idInstance].labelPosition === 'right'
+          ? 'right'
+          : 'left';
       const widgetDirection = labelPosition === 'left' ? 'rtl' : 'ltr';
 
       // Dynamically set the direction property to 'ltr' or 'rtl'
-      document.styleSheets[0].addRule(`#checkbox-widget-html${idWidget}`, `direction: ${widgetDirection}`);
-
-      // Construct label and checkbox HTML
-      let divContent = '';
-      const labelText = this.getTransformedText('label');
-      const styleLabelBase = `
-        cursor: inherit;
-        padding-top: ${lineHeight}px;
-      `;
-      const styleLabel =
-        labelPosition === 'right'
-          ? `${styleLabelBase} padding-right: ${padding}px; padding-left: 0px; margin-right: 6px;`
-          : `${styleLabelBase} padding-left: ${padding}px; padding-right: 0px; margin-left: 6px;`;
-
-      const checkboxHtml = `
-        <input
-          type="checkbox"
-          class="nohover"
-          data-toggle="radio"
-          style="zoom: ${checkboxSize}"
-          value=""
-          id="checkbox${idWidget}"
-          disabled
-        />
-      `;
+      document.styleSheets[0].addRule('#checkbox-widget-html' + idWidget, 'direction: ' + widgetDirection);
 
       if (modelsParameters[idInstance].displayLabel) {
-        const styleSpan = `
-          display: flex;
-          align-items: center;
-          ${this.labelFontSize()}
-          ${this.labelColor()}
-          ${this.labelFontFamily()}
-        `;
-        divContent = `
-          <label class="checkbox" id="label${idWidget}" style="${styleLabel}" for="checkbox${idWidget}">
-            ${checkboxHtml}
-          </label>
-          <span id="checkbox-span${idWidget}" class="checkbox-span" style="${styleSpan}">${labelText}</span>
-        `;
+        //ABK
+        // conversion to enable HTML tags
+        const labelText = this.getTransformedText('label');
+        let styleLabel = 'style = "cursor: inherit; padding-top:' + lineHeight + 'px;';
+        if (labelPosition === 'right') {
+          styleLabel += ' padding-right: ' + padding + 'px; padding-left: 0px; margin-right: 6px;"';
+        } else {
+          styleLabel += ' padding-left: ' + padding + 'px; padding-right: 0px; margin-left: 6px;"';
+        }
+
+        divContent +=
+          '<label class="checkbox" id="label' + idWidget + '" ' + styleLabel + ' for="checkbox' + idWidget + '">';
+        divContent +=
+          '<input type="checkbox" class="nohover" data-toggle="radio" style="zoom:' +
+          modelsParameters[idInstance].checkboxSize +
+          '" value="" id="checkbox' +
+          idWidget +
+          '" disabled>';
+        divContent += '</input>';
+        divContent += '</label>';
+
+        const styleSpan =
+          'style="display: flex; align-items: center; ' +
+          this.labelFontSize() +
+          this.labelColor() +
+          this.labelFontFamily() +
+          '"';
+        divContent +=
+          '<span id="checkbox-span' + idWidget + '" class="checkbox-span" ' + styleSpan + '>' + labelText + '</span>';
       } else {
-        divContent = `
-          <label class="checkbox" id="label${idWidget}" style="${styleLabelBase} padding-left: ${padding}px;" for="checkbox${idWidget}">
-            ${checkboxHtml}
-          </label>
-        `;
+        const styleLabel =
+          'style = "cursor: inherit; padding-top:' +
+          lineHeight +
+          'px; padding-left: ' +
+          padding +
+          'px; padding-right: 0px;"';
+
+        divContent +=
+          '<label class="checkbox" id="label' + idWidget + '" ' + styleLabel + ' for="checkbox' + idWidget + '">';
+        divContent +=
+          '<input type="checkbox" class="nohover" data-toggle="radio" style="zoom:' +
+          modelsParameters[idInstance].checkboxSize +
+          ' value="" id="checkbox' +
+          idWidget +
+          '" disabled>';
+        divContent += '</input>';
+        divContent += '</label>';
       }
 
       widgetHtml.innerHTML = divContent;
 
-      // Set widget display and enable/disable styles
+      //
       const showWidget = this.showWidget();
-      const displayStyle = showWidget ? 'display: flex;' : 'display: none;';
+      let displayStyle = 'display: flex;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
       const enableWidget = this.enableWidget();
-      const enableStyle = enableWidget ? 'pointer-events: initial; opacity: 1;' : 'pointer-events: none; opacity: 0.5;';
-
-      widgetHtml.style.cssText += `${displayStyle} ${enableStyle}`;
+      let enableStyle = 'pointer-events: initial; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute(
+        'style',
+        'width: inherit;cursor: inherit;justify-content: center;' + displayStyle + enableStyle
+      );
       $('#' + idDivContainer).html(widgetHtml);
-
       this.applyDisplayOnWidget();
       $('[data-toggle="checkbox"]').radiocheck();
       $('[data-toggle="radio"]').radiocheck();
 
-      // Check or uncheck the checkbox based on the value
-      const checkboxSelector = `#checkbox${idWidget}`;
-      if (modelsHiddenParams[idInstance].value) {
-        $(checkboxSelector).radiocheck('check');
-      } else {
-        $(checkboxSelector).radiocheck('uncheck');
+      //
+      if (modelsHiddenParams[idInstance].value == true) {
+        $('#checkbox' + idWidget).radiocheck('check');
+      } else if (modelsHiddenParams[idInstance].value == false) {
+        $('#checkbox' + idWidget).radiocheck('uncheck');
       }
 
-      // Apply dynamic styles
-      const zoomSize = `zoom: ${checkboxSize}`;
-      document.styleSheets[0].addRule(`#label${idWidget} .icons *`, zoomSize);
-      document.styleSheets[0].addRule(`#label${idWidget} .icons .icon-checked`, this.checkedColor());
-      document.styleSheets[0].addRule(`#label${idWidget} .icons .icon-unchecked`, this.uncheckedColor());
+      document.styleSheets[0].addRule(
+        '#label' + idWidget + ' .icons *',
+        'zoom: ' + modelsParameters[idInstance].checkboxSize
+      );
+      document.styleSheets[0].addRule('#label' + idWidget + ' .icons .icon-checked', this.checkedColor());
+      document.styleSheets[0].addRule('#label' + idWidget + ' .icons .icon-unchecked', this.uncheckedColor());
 
-      // Enable or disable the widget based on interactivity
       if (this.bIsInteractive) {
         self.enable();
       } else {
