@@ -596,7 +596,7 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.render = function () {
       const container = document.getElementById(idDivContainer);
-      const valueHeightPx = container.offsetHeight;
+      const valueHeightPx = $('#' + idDivContainer).height();
 
       // Create the main widget container
       const widgetHtml = document.createElement('div');
