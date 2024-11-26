@@ -172,7 +172,7 @@ function timePickerWidgetsPluginClass() {
         'font-size: ' +
         valueFontSize +
         '; ' +
-        this.valueColor() +
+        this.getValueColor() +
         this.valueFontFamily() +
         this.backgroundColor() +
         '" ' +

@@ -11,13 +11,11 @@ import _ from 'lodash';
 import 'flat-ui.alt';
 import { xDashConfig } from 'config.js';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
-import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
-import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import {
   displayLoadSpinner,
   updateWidgetDataNode,
@@ -553,7 +551,7 @@ function flatUiWidgetsPluginClass() {
         valueHeightPx +
         'px; ' +
         this.valueFontSize() +
-        this.valueColor() +
+        this.getValueColor() +
         this.valueFontFamily() +
         hsliderValueCursor +
         '" disabled></input>';
@@ -1087,7 +1085,7 @@ function flatUiWidgetsPluginClass() {
         valueHeightPx +
         'px; ' +
         this.valueFontSize() +
-        this.valueColor() +
+        this.getValueColor() +
         this.valueFontFamily() +
         progressBarValueCursor +
         '" disabled></input>';
@@ -1513,7 +1511,7 @@ function flatUiWidgetsPluginClass() {
         valueHeightPx +
         'px; ' +
         opacityValue +
-        this.valueColor() +
+        this.getValueColor() +
         this.backgroundColor() +
         this.valueFontFamily() +
         this.border() +

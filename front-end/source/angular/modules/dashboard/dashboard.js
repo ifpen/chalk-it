@@ -9,8 +9,6 @@
 
 export const dashState = {
   tabActive: 'widgets',
-  modeActive: 'edit-dashboard',
-  editorStatus: 'full',
 };
 
 export const dashboardModule = angular.module('modules.dashboard', []).config([

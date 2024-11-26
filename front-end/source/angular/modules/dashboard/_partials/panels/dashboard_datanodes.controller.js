@@ -276,8 +276,7 @@ angular
 
       /*---------- show graph button ----------------*/
       $scope.showDepGraph = function (name) {
-        const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-        DepGraphService.showDepGraph(name, scopeDash);
+        DepGraphService.showDepGraph(name);
       };
 
       /**************************************************************/

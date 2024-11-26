@@ -40,11 +40,7 @@
       ng-include="'angular/modules/dashboard/_partials/dashboard_contentTop.html'"
     ></div>
     <div class="widget__layout">
-      <div
-        class="widget__layout--wrapper"
-        style="border-radius: 15px"
-        dashboard-content-template
-      ></div>
+      <div dashboard-content-template></div>
     </div>
     <footer dashboard-footer-template></footer>
   </div>
@@ -54,7 +50,7 @@
     ng-include="'angular/modules/dashboard/_partials/panels/dashboard_rightSidePanel.html'"
     id="panel--right"
     class="aside__panel"
-    ng-class="{'hidden':editorView.checkboxModelView,'open':editorView.rightSidePanel.view,'xlarge__panel':(editorView.rightSidePanel.size==1),'large__panel':(editorView.rightSidePanel.size==2),'normal__panel':(editorView.rightSidePanel.size==3)}"
+    ng-class="{'hidden':editorView.isPlayMode,'open':editorView.rightSidePanel.view,'xlarge__panel':(editorView.rightSidePanel.size==1),'large__panel':(editorView.rightSidePanel.size==2),'normal__panel':(editorView.rightSidePanel.size==3)}"
   ></aside>
 
   <div

@@ -435,7 +435,7 @@ angular
             if (type === 'success') {
               try {
                 var xprjson = JSON.parse(msg1);
-                htmlExport.previewDashboard(xprjson, projectName, true);
+                htmlExport.previewDashboard(xprjson, projectName);
                 new PNotify({
                   title: projectName,
                   text: "Project '" + projectName + "' was opended in a new tab",

@@ -119,20 +119,6 @@ Example:
 
 - [matplotlib-bar-color-py.xprjson](plots/matplotlib-bar-color-py.xprjson)
 
-## Vega
-
-In the same spirit as [Plotly generic](#plotly-javascript-generic) widget above, you can visualize [Vega](https://vega.github.io/vega/) specifications and connect them to data from other dataNodes.
-
-Browse [Vega examples gallery](https://vega.github.io/vega/examples/). Copy and paste the appropriate visualization to a [JavaScript Formula](../ds/ds-reference.md#javascript-script) dataNode. Finally, connect this dataNode to the **specification** widget actuator.
-
-In this examples gallery, data is typically read from URL referenced sources using the Vega *url* keyword. You can connect to Chalk'it dataNodes using the Vega *values* keyword instead.
-
-Be aware when copying examples that URLS in these examples use relative paths. For proper execution on Chalk'it, the absolute data path needs to be used (e.g. use 'https://vega.github.io/vega/data/movies.json' instead of 'data/movies.json').
-
-Some examples:
-
-* [vega-les-miserables-js.xprjson](plots/vega-les-miserables-js.xprjson)
-
 ## ECharts
 
 Simply, copy and paste the needed visualization from [ECharts examples gallery](https://echarts.apache.org/examples/en/index.html) to a  [JavaScript Script](../ds/ds-reference.md#javascript-script) dataNode. This example shall return an *option* JSON according to ECharts grammar. Finally, connect this dataNode to the **option** widget actuator.

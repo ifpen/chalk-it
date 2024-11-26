@@ -66,10 +66,17 @@ export class EventCenter {
   }
 }
 
+/** Dashboard loaded or (re)created */
+export const EVENTS_EDITOR_DASHBOARD_READY = 'EditorDashboardReady';
+
+/** Dashboard size, margin, etc. updated */
+export const EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED = 'EditorAspectChanged';
+
 export const EVENTS_EDITOR_WIDGET_MOVED = 'WidgetMovedEvent';
 export const EVENTS_EDITOR_SELECTION_CHANGED = 'EditorSelectionChanged';
 export const EVENTS_EDITOR_ADD_REMOVE_WIDGET = 'EditorAddRemoveWidget';
 export const EVENTS_EDITOR_CONNECTIONS_CHANGED = 'EditorConnectionsChanged';
+export const EVENTS_EDITOR_WIDGET_TOGGLE_MENU = 'EditorToggleMenu';
 
 /** Datanode(s) have been added. Message is the array of their names. */
 export const EVENTS_EDITOR_DATANODE_CREATED = 'DatanodeCreated';
