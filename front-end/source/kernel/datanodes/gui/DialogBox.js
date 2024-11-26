@@ -173,16 +173,3 @@ function copyURLtoClipboard() {
     $('#swal-p')[0].style.visibility = 'hidden';
   }, 1500);
 }
-
-function DialogBoxForHtmlExport(contentElement, title, okTitle, cancelTitle, okCallback, param) {
-  DialogBox(contentElement, title, okTitle, cancelTitle, okCallback, param);
-  if (_.isUndefined(param)) {
-    $('#select-export-settings')[0].value = htmlExport.exportOptions;
-    $('#check-scale-export')[0].checked = htmlExport.checkExportOptions;
-  } else {
-    // filled from .xprjson
-    $('#select-export-settings')[0].value = param[0].exportOptions;
-    $('#check-scale-export')[0].checked = param[0].checkExportOptions;
-    $('#check-scale-export').attr('disabled', true); // disable because even if it is changed, user has to save this infi in xprjson
-  }
-}

@@ -9,7 +9,7 @@
 import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { editorSingletons } from 'kernel/editor-singletons';
 import { EVENTS_EDITOR_CONNECTIONS_CHANGED } from 'angular/modules/editor/editor.events';
 
@@ -36,18 +36,19 @@ export const widgetConnector = (function () {
 
     // Purge missing widgets
     for (const idx in widgetsConnection) {
-      if (!widgetEditor.widgetContainers.get(widgetsConnection[idx].id)) {
+      if (!widgetEditor.widgetEditorViewer.widgetIds.has(widgetsConnection[idx].id)) {
         delete widgetsConnection[idx];
       }
     }
 
     // Create missing connections
-    for (const [key, widget] of widgetEditor.widgetContainers) {
+    for (const [key, widgetInfo] of widgetEditor.widgetEditorViewer.widgetsInfo) {
+      const widgetObject = widgetInfo.instance;
       if (widgetsConnection[key]) {
-        if (widgetEditor.widgetObject[key]) {
-          if (!_.isNull(widgetsConnection[key].widgetObjEdit) && !_.isNull(widgetEditor.widgetObject[key])) {
-            let len =
-              widgetsConnection[key].widgetObjEdit.numberOfTriggers - widgetEditor.widgetObject[key].numberOfTriggers;
+        if (widgetObject) {
+          if (!_.isNull(widgetsConnection[key].widgetObjEdit)) {
+            // TODO coords
+            let len = widgetsConnection[key].widgetObjEdit.numberOfTriggers - widgetObject.numberOfTriggers;
             while (len > 0) {
               // widgetsConnection[key].sliders.pop();
               let keys = Object.keys(widgetsConnection[key].sliders);
@@ -56,16 +57,16 @@ export const widgetConnector = (function () {
             }
           }
           // TODO dedicated update ?
-          widgetsConnection[key].widgetObjEdit = widgetEditor.widgetObject[key];
+          widgetsConnection[key].widgetObjEdit = widgetObject;
         }
       } else {
         widgetsConnection[key] = {
           name: key, //key is instanceId
           id: key,
           instanceId: key,
-          modelJsonId: widget.modelJsonId,
+          modelJsonId: widgetInfo.modelJsonId,
           sliders: [],
-          widgetObjEdit: widgetEditor.widgetObject[key],
+          widgetObjEdit: widgetObject,
           widgetObjConnect: null,
         };
       }
@@ -132,7 +133,7 @@ export const widgetConnector = (function () {
     for (let key in widgetsConnection) {
       try {
         // MBG tmp to handle pb of long requests
-        widgetPreview.plotConstantData(key, false);
+        widgetViewer.plotConstantData(key, false);
         // widgetsConnection[key].widgetObjEdit = null; //AEF: comment  for issue#152
       } catch (exc) {
         console.error(exc);
@@ -152,8 +153,8 @@ export const widgetConnector = (function () {
   }
 
   /*--------duplicateConnection--------*/
-  function duplicateConnection(instanceId, element) {
-    widgetsConnection[instanceId] = jQuery.extend(true, {}, widgetsConnection[element.id]);
+  function duplicateConnection(instanceId, originalElementId) {
+    widgetsConnection[instanceId] = jQuery.extend(true, {}, widgetsConnection[originalElementId]);
     widgetsConnection[instanceId].id = instanceId;
     widgetsConnection[instanceId].name = instanceId;
     widgetsConnection[instanceId].instanceId = instanceId;
@@ -176,9 +177,9 @@ export const widgetConnector = (function () {
           if (actuator != null) {
             if (slider.dataNode === dsName) {
               if (datanodesManager.getDataNodeByName(dsName).type() == 'Python_pyodide_plugin' && i === 'fig') {
-                widgetPreview.setDataOnWidget(e, i, actuator, dsName, dsStatus, dsLastUpdated, false); // transfer name instead of value
+                widgetViewer.setDataOnWidget(e, i, actuator, dsName, dsStatus, dsLastUpdated, false); // transfer name instead of value
               } else {
-                widgetPreview.setDataOnWidget(e, i, actuator, newData, dsStatus, dsLastUpdated, false);
+                widgetViewer.setDataOnWidget(e, i, actuator, newData, dsStatus, dsLastUpdated, false);
               }
             } else if (slider.dataNode === 'None') {
             }
@@ -189,10 +190,20 @@ export const widgetConnector = (function () {
     //
   }
 
+  function findDatanodesConnectedToWidget(widgetId) {
+    const connections = widgetsConnection[widgetId];
+    if (connections) {
+      const names = Object.values(connections.sliders).map((slider) => slider.dataNode);
+      return _.uniq(names);
+    } else {
+      return [];
+    }
+  }
+
   // Public functions
   return {
-    widgetsConnection: widgetsConnection,
-    updateWidgetsConnections: updateWidgetsConnections,
+    widgetsConnection,
+    updateWidgetsConnections,
     effectiveSliders: function () {
       let effSlr = [];
       _.each(_.keys(widgetsConnection), (wdId) => {
@@ -205,11 +216,12 @@ export const widgetConnector = (function () {
       });
       return _.uniq(effSlr);
     },
-    resetSingleMatchingBox: resetSingleMatchingBox,
-    serialize: serialize,
-    deserialize: deserialize,
-    clear: clear,
-    duplicateConnection: duplicateConnection,
-    refreshDatanodeConsumers: refreshDatanodeConsumers,
+    resetSingleMatchingBox,
+    serialize,
+    deserialize,
+    clear,
+    duplicateConnection,
+    refreshDatanodeConsumers,
+    findDatanodesConnectedToWidget,
   };
 })();

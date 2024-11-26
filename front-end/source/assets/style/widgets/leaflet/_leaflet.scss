@@ -671,3 +671,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
   margin-left: -12px;
   border-right-color: #fff;
 }
+
+// MBG bug fix
+.leaflet-marker-icon-dummy {
+  background-image: url(../img/leaflet/marker-icon-2x.png);
+}
+.leaflet-marker-shadow-dummy {
+  background-image: url(../img/leaflet/marker-shadow.png);
+}

@@ -66,6 +66,7 @@ modelsParameters.flatUiMultiSelect = {
   borderColor: 'var(--widget-border-color)',
   isNumber: false,
   isBoolean: false,
+  maxSelected: '*',
 };
 modelsParameters.flatUiList = {
   addControls: false,
@@ -77,6 +78,7 @@ modelsParameters.flatUiList = {
   valueFontFamily: 'var(--widget-font-family)',
   borderColor: 'var(--widget-border-color)',
   displayBorder: true,
+  maxSelected: '*',
 };
 modelsParameters.flatUiTable = {
   headerLine: false,
@@ -581,9 +583,6 @@ function flatUiComplexWidgetsPluginClass() {
     const self = this;
 
     this.enable = function () {
-      $('#multi-select' + idWidget).on('click', function (e) {
-        self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-      });
       $('#multi-select' + idWidget)[0].style.opacity = '1';
     };
 
@@ -595,119 +594,124 @@ function flatUiComplexWidgetsPluginClass() {
       this.render();
     };
 
-    this.hasScrollBar = function (element) {
-      return element.get(0).scrollHeight > element.get(0).clientHeight;
-    };
-
     this.render = function () {
+      const container = document.getElementById(idDivContainer);
+      const valueHeightPx = container.offsetHeight;
+
+      // Create the main widget container
       const widgetHtml = document.createElement('div');
-      const valueHeightPx = $('#' + idDivContainer).height();
-      widgetHtml.setAttribute('style', 'width: inherit; height: ' + valueHeightPx + 'px; cursor: inherit;');
+      widgetHtml.className = 'multi-select-widget';
+      widgetHtml.style.width = 'inherit';
+      widgetHtml.style.height = `${valueHeightPx}px`;
+      widgetHtml.style.cursor = this.bIsInteractive ? 'pointer' : 'inherit';
 
-      let divContent =
-        '<div class="multi-select-div" id="multi-select' +
-        idWidget +
-        '" style="height: ' +
-        valueHeightPx +
-        'px; ' +
-        this.valueDefaultColor() +
-        this.border() +
-        '">';
+      // Generate multi-select content
+      const val = modelsHiddenParams[idInstance]?.value || [];
+      const widgetId = `multi-select${idWidget}`;
+      const cursorStyle = this.bIsInteractive ? 'cursor: pointer;' : 'cursor: inherit;';
+      const fontFamily = this.valueFontFamily();
+      const fontSize = this.valueFontSize();
+      const checkboxWidth = this.checkboxWidth();
+      const checkboxHeight = this.checkboxHeight();
 
-      const val = modelsHiddenParams[idInstance].value;
-      let cursorElem = '';
-      if (this.bIsInteractive) {
-        cursorElem = 'cursor: pointer; ';
-      } else {
-        cursorElem = 'cursor: inherit; ';
-      }
-
-      if (_.isUndefined(modelsParameters[idInstance].valueFontSize)) {
-        modelsParameters[idInstance].valueFontSize = 0.4;
-      }
+      let divContent = `
+        <div 
+          class="multi-select-div" 
+          id="${widgetId}"
+          style="height: ${valueHeightPx}px; ${this.valueDefaultColor()} ${this.border()}">
+      `;
 
       if (Array.isArray(val)) {
-        for (const value of val) {
-          divContent += '<label >';
-          divContent += '<input type="checkbox" value="' + value + '" />';
-          divContent +=
-            '<span id="multi-select-label' +
-            idWidget +
-            '" style="' +
-            cursorElem +
-            this.valueFontFamily() +
-            this.valueFontSize() +
-            this.checkboxWidth() +
-            this.checkboxHeight() +
-            '" tabindex="-1">' +
-            value +
-            '</span>';
-          divContent += '</label>';
-        }
+        divContent += val
+          .map(
+            (value) => `
+          <label>
+            <input type="checkbox" value="${value}" />
+            <span 
+              id="multi-select-label${idWidget}" 
+              style="${cursorStyle} ${fontFamily} ${fontSize} ${checkboxWidth} ${checkboxHeight}" 
+              tabindex="-1">
+              ${value}
+            </span>
+          </label>
+        `
+          )
+          .join('');
       }
+
       divContent += '</div>';
       widgetHtml.innerHTML = divContent;
-      //
-      const showWidget = this.showWidget();
-      let displayStyle = 'display: initial;';
-      if (!showWidget) {
-        displayStyle = 'display: none;';
-      }
-      const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      widgetHtml.setAttribute('style', displayStyle + enableStyle);
 
-      $('#' + idDivContainer).html(widgetHtml);
+      // Set display and enable styles
+      widgetHtml.style.display = this.showWidget() ? 'initial' : 'none';
+      widgetHtml.style.pointerEvents = this.enableWidget() ? 'initial' : 'none';
+      widgetHtml.style.opacity = this.enableWidget() ? '1' : '0.5';
+
+      // Append widget to the container
+      container.innerHTML = '';
+      container.appendChild(widgetHtml);
+
       this.applyDisplayOnWidget();
-      const hasScrollBar = self.hasScrollBar($('#multi-select' + idWidget));
-      if (!hasScrollBar) {
-        $('#multi-select' + idWidget + '.multi-select-div').css('align-content', 'center');
-      }
 
-      //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
-      const isMobileOrTablet = window.mobileAndTabletCheck();
-      const touchDevice = 'ontouchstart' in document.documentElement; // Only mobiles
-      //AEF: can keep only one isMobileOrTablet or touchDevice
-      if (touchDevice || isMobileOrTablet) {
-        $('#multi-select' + idWidget)[0].style.height = 'auto';
-      }
-      //uncheck when change list
-      if (!modelsParameters[idInstance].resetPastSelection) {
-        if (!_.isEmpty(modelsHiddenParams[idInstance].selectedValue)) {
-          $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
-            for (const selectedValue of modelsHiddenParams[idInstance].selectedValue) {
-              if ($(this).val() == selectedValue) {
-                $(this).attr('checked', true);
-              }
-            }
-          });
+      // Check for scrollbars and adjust alignment
+      const multiSelectElement = document.getElementById(widgetId);
+      if (multiSelectElement) {
+        const hasScrollBar = multiSelectElement.scrollHeight > multiSelectElement.clientHeight;
+
+        if (!hasScrollBar) {
+          multiSelectElement.style.alignContent = 'center';
         }
       }
 
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget, this.valueDefaultColor());
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget, this.checkboxDefaultColor());
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget, this.checkboxBorder());
+      // Apply additional styles for mobile or tablet
+      const isMobileOrTablet = window.mobileAndTabletCheck();
+      const touchDevice = 'ontouchstart' in document.documentElement; // Only mobiles
+      if ((isMobileOrTablet || touchDevice) && multiSelectElement) {
+        multiSelectElement.style.height = 'auto';
+      }
 
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget + ':hover', this.valueHoverColor());
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget + ':hover', this.checkboxHoverColor());
-      document.styleSheets[0].addRule('#multi-select-label' + idWidget + ':hover', this.checkboxHoverBorderColor());
+      // Restore previous selections if needed
+      if (!modelsParameters[idInstance]?.resetPastSelection) {
+        const selectedValues = modelsHiddenParams[idInstance]?.selectedValue || [];
+        const checkboxes = multiSelectElement.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+          if (selectedValues.includes(checkbox.value)) {
+            checkbox.checked = true;
+          }
+        });
+      }
 
-      document.styleSheets[0].addRule(
-        'input[type="checkbox"]:checked + #multi-select-label' + idWidget,
-        this.valueFocusColor()
-      );
-      document.styleSheets[0].addRule(
-        'input[type="checkbox"]:checked + #multi-select-label' + idWidget,
-        this.checkboxFocusColor()
-      );
-      document.styleSheets[0].addRule(
-        'input[type="checkbox"]:checked + #multi-select-label' + idWidget,
-        this.checkboxFocusBorderColor()
-      );
+      // Handle selection logic
+      const maxSelected = modelsParameters[idInstance]?.maxSelected ?? '*';
+      const checkboxes = multiSelectElement.querySelectorAll('input[type="checkbox"]');
+      let selectedOptions = [];
+
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) {
+            selectedOptions.push(checkbox);
+
+            if (maxSelected !== '*' && selectedOptions.length > maxSelected) {
+              const firstSelectedCheckbox = selectedOptions.shift(); // Remove the oldest selected
+              firstSelectedCheckbox.checked = false; // Deselect it in the DOM
+            }
+          } else {
+            // Remove the deselected option
+            selectedOptions = selectedOptions.filter((selected) => selected !== checkbox);
+          }
+          self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
+        });
+      });
+
+      // Apply dynamic styles
+      const styleSheet = document.styleSheets[0];
+      const multiSelectLabelId = `multi-select-label${idWidget}`;
+      const rules = [
+        `#${multiSelectLabelId} { ${this.valueDefaultColor()} ${this.checkboxDefaultColor()} ${this.checkboxBorder()} }`,
+        `#${multiSelectLabelId}:hover { ${this.valueHoverColor()} ${this.checkboxHoverColor()} ${this.checkboxHoverBorderColor()} }`,
+        `input[type="checkbox"]:checked + #${multiSelectLabelId} { ${this.valueFocusColor()} ${this.checkboxFocusColor()} ${this.checkboxFocusBorderColor()} }`,
+      ];
+      rules.forEach((rule) => styleSheet.insertRule(rule, styleSheet.cssRules.length));
 
       if (this.bIsInteractive) {
         self.enable();
@@ -740,15 +744,17 @@ function flatUiComplexWidgetsPluginClass() {
         self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
       },
       getValue: function () {
-        if (modelsParameters[idInstance].isNumber) {
-          return Number(modelsHiddenParams[idInstance].value);
-        } else if (modelsParameters[idInstance].isBoolean) {
-          return modelsHiddenParams[idInstance].value === 'false'
-            ? false
-            : Boolean(modelsHiddenParams[idInstance].value);
-        } else {
-          return modelsHiddenParams[idInstance].value;
+        const value = modelsHiddenParams[idInstance]?.value;
+
+        if (modelsParameters[idInstance]?.isNumber) {
+          return Number(value);
         }
+
+        if (modelsParameters[idInstance]?.isBoolean) {
+          return value !== 'false' && Boolean(value);
+        }
+
+        return value;
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
@@ -761,25 +767,33 @@ function flatUiComplexWidgetsPluginClass() {
     this.selectedValue = {
       updateCallback: function () {},
       setValue: function (val) {
-        $('#multi-select' + idWidget + " > label > input[type='checkbox']").each(function () {
-          for (const selectedValue of val) {
-            if ($(this).val() === selectedValue) {
-              $(this).attr('checked', true);
-            }
+        if (!Array.isArray(val)) return;
+
+        const checkboxes = document.querySelectorAll(`#multi-select${idWidget} > label > input[type='checkbox']`);
+
+        checkboxes.forEach((checkbox) => {
+          if (val.includes(checkbox.value)) {
+            checkbox.checked = true;
           }
         });
+
+        // Update the selected values
         modelsHiddenParams[idInstance].selectedValue = val;
       },
       getValue: function () {
         const selectedVal = [];
-        $('#multi-select' + idWidget + " > label > input[type='checkbox']:checked").each(function () {
-          if (modelsParameters[idInstance].isNumber) {
-            selectedVal.push(Number($(this).val()));
-          } else if (modelsParameters[idInstance].isBoolean) {
-            const sval = $(this).val() === 'false' ? false : Boolean($(this).val());
-            selectedVal.push(sval);
+        const checkboxes = document.querySelectorAll(
+          `#multi-select${idWidget} > label > input[type='checkbox']:checked`
+        );
+
+        checkboxes.forEach((checkbox) => {
+          const value = checkbox.value;
+          if (modelsParameters[idInstance]?.isNumber) {
+            selectedVal.push(Number(value));
+          } else if (modelsParameters[idInstance]?.isBoolean) {
+            selectedVal.push(value !== 'false' && Boolean(value));
           } else {
-            selectedVal.push($(this).val());
+            selectedVal.push(value);
           }
         });
 
@@ -807,59 +821,55 @@ function flatUiComplexWidgetsPluginClass() {
     const self = this;
 
     this.enable = function () {
-      let fired = false; //fire keyup event only once
-      let lastkeyup = false; //click+ctrl then ctrl+a
+      const maxSelected = modelsParameters[idInstance]?.maxSelected ?? '*';
+      const listElement = $('#list' + idWidget);
+      let selectedOptions = [];
 
-      $('#list' + idWidget).on('keyup', function (e) {
-        if (lastkeyup) {
-          // in case of: click+ctrl then ctrl+a, no click event between two ctrl keyup events
-          if (e.keyCode == 65 || e.keyCode == 97 || e.keyCode == 17) {
-            // 'A' or 'a' or 'ctrl'
-            self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-            lastkeyup = false;
-            //console.log('ctrl+ctrl+a');
+      const updateSelection = () => {
+        const allSelectedOptions = Array.from(listElement.find(':selected'));
+
+        // Add newly selected options to the array in order
+        allSelectedOptions.forEach((option) => {
+          if (!selectedOptions.includes(option)) {
+            selectedOptions.push(option);
+          }
+        });
+
+        // Remove deselected options from the array
+        selectedOptions = selectedOptions.filter((option) => allSelectedOptions.includes(option));
+
+        if (maxSelected !== '*' && selectedOptions.length > maxSelected) {
+          // Remove the first (oldest) option to maintain the limit
+          const removedOption = selectedOptions.shift();
+          $(removedOption).prop('selected', false);
+        }
+
+        // Update callback with the current selected values
+        const selectedValues = selectedOptions.map((option) => $(option).val());
+        self.selectedValue.updateCallback(self.selectedValue, selectedValues);
+      };
+
+      listElement.on('keydown change', function (e) {
+        // Handle Ctrl + A (Select All) only if maxSelected is "*"
+        if (e.ctrlKey && (e.key === 'a' || e.key === 'A' || e.keyCode === 65)) {
+          e.preventDefault();
+
+          if (maxSelected === '*') {
+            // Select all options if no limit
+            listElement.find('option').prop('selected', true);
+            return;
           }
         }
+
+        updateSelection();
       });
 
-      $('#list' + idWidget).on('click keyup', function (e) {
-        lastkeyup = false;
-        if (e.ctrlKey) {
-          //is ctrl + click  (for multiple selection with mouse (click))
-          if (!fired) {
-            fired = true;
-            $('#list' + idWidget).one('keyup', function (e) {
-              self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-              fired = false;
-              lastkeyup = true;
-              //console.log('ctrl+click');
-            });
-          }
-        } else {
-          // normal click
-          self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-          // if click + ctrl+a (for all selection with keyboard (ctrl+a))
-          if (!fired) {
-            fired = true;
-            $('#list' + idWidget).one('keyup', function (e) {
-              if (e.keyCode == 65 || e.keyCode == 97 || e.keyCode == 17) {
-                // 'A' or 'a' or 'ctrl'
-                self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
-                fired = false;
-                lastkeyup = true;
-                //console.log('click+ctrl+a');
-              }
-            });
-          }
-        }
-      });
-      //$("#list" + idWidget).prop("disabled", false); // MBG : fix du problème qui l'empêche d'être bougée
-      $('#list' + idWidget)[0].style.opacity = '1'; //ABK instead to enable list
+      // Enable the list visually
+      listElement[0].style.opacity = '1';
     };
 
     this.disable = function () {
-      //$("#list" + idWidget).prop("disabled", true); // MBG : fix du problème qui l'empêche d'être bougée
-      $('#list' + idWidget)[0].style.opacity = '0.7'; //ABK instead to disable list
+      $('#list' + idWidget)[0].style.opacity = '0.7'; // Semi-transparent to indicate disabled state
     };
 
     this.rescale = function () {
@@ -869,72 +879,95 @@ function flatUiComplexWidgetsPluginClass() {
     this.render = function () {
       const widgetHtml = document.createElement('div');
       const valueHeightPx = $('#' + idDivContainer).height();
-      widgetHtml.setAttribute('style', 'width: inherit; height: ' + valueHeightPx + 'px; cursor: inherit;');
 
-      const border = this.border();
+      // Configure widget container styles
+      Object.assign(widgetHtml.style, {
+        width: 'inherit',
+        height: `${valueHeightPx}px`,
+        cursor: 'inherit',
+        display: this.showWidget() ? 'initial' : 'none',
+        pointerEvents: 'none',
+        opacity: this.enableWidget() ? '1' : '0.5',
+      });
 
-      let divContent =
-        '<select class="form-control" id="list' +
-        idWidget +
-        '" multiple size="10" style="width: 100%; height: ' +
-        valueHeightPx +
-        'px;/*background-color: rgba(255, 255, 255, 0)*/; border-radius: 6px; color: ' +
-        modelsParameters[idInstance].listValueColor +
-        '; ' +
-        border +
-        '; ' +
-        this.valueFontFamily() +
-        'box-sizing: border-box; font-size: calc(7px + ' +
-        modelsParameters[idInstance].listValueFontSize * getFontFactor() +
-        'vw + 0.4vh); ' +
-        'cursor: inherit; max-width : 2000px">';
+      const borderStyle = this.border();
+      const fontFactor = getFontFactor();
+      const fontSize = modelsParameters[idInstance].listValueFontSize * fontFactor;
 
-      const val = modelsHiddenParams[idInstance].value;
-      let cursorElem = '';
-      if (this.bIsInteractive) {
-        cursorElem = 'cursor: pointer; ';
-      } else {
-        cursorElem = 'cursor: inherit; ';
-      }
+      // Build <select> content
+      const val = modelsHiddenParams[idInstance].value || [];
+      let options = '';
+
       if (Array.isArray(val)) {
+        const pointerEvents = this.enableWidget() ? 'initial' : 'none';
+        const cursorStyle = this.bIsInteractive ? 'pointer' : 'inherit';
+
         for (const option of val) {
-          divContent += '<option style="' + cursorElem + '">' + option + '</option>';
+          options += `<option style="cursor: ${cursorStyle}; pointer-events: ${pointerEvents};">${option}</option>`;
         }
       }
-      divContent += '</select>';
-      widgetHtml.innerHTML = divContent;
-      //
-      const showWidget = this.showWidget();
-      let displayStyle = 'display: initial;';
-      if (!showWidget) {
-        displayStyle = 'display: none;';
-      }
-      const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      widgetHtml.setAttribute('style', displayStyle + enableStyle);
+
+      const selectHtml = `
+        <select 
+          class="form-control" 
+          id="list${idWidget}" 
+          multiple 
+          size="10" 
+          style="
+            width: 100%; 
+            height: ${valueHeightPx}px; 
+            border-radius: 6px; 
+            color: ${modelsParameters[idInstance].listValueColor}; 
+            ${borderStyle}; 
+            ${this.valueFontFamily()}
+            box-sizing: border-box; 
+            font-size: calc(7px + ${fontSize}vw + 0.4vh); 
+            cursor: inherit; 
+            max-width: 2000px;"
+        >
+          ${options}
+        </select>`;
+
+      widgetHtml.innerHTML = selectHtml;
+
+      // Insert widget into the container
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
-      //AEF: detect tablets and phones to be able to shorten the height automatically with the device list display
+
+      // Adjust height for mobile/tablet devices
+      const touchDevice = 'ontouchstart' in document.documentElement;
       const isMobileOrTablet = window.mobileAndTabletCheck();
-      const touchDevice = 'ontouchstart' in document.documentElement; // Only mobiles
-      // var touchDevice = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement); // desktops with a touch screen and mobiles
-      //AEF: can keep only one isMobileOrTablet or touchDevice
+      // const touchDevice = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement); // desktops with a touch screen and mobiles
+
       if (touchDevice || isMobileOrTablet) {
-        $('#list' + idWidget)[0].style.height = 'auto';
-      }
-      if (!_.isEmpty(modelsHiddenParams[idInstance].selectedValue)) {
-        // MBG for issue #214
-        $('#list' + idWidget).val(modelsHiddenParams[idInstance].selectedValue);
+        document.getElementById(`list${idWidget}`).style.height = 'auto';
       }
 
-      document.styleSheets[0].addRule('#list' + idWidget + ' option', modelsParameters[idInstance].listValueColor);
-      document.styleSheets[0].addRule('#list' + idWidget + ' option', this.listBackgroundColor());
-      document.styleSheets[0].addRule('#list' + idWidget + ' option:checked', this.selectValueColor());
-      document.styleSheets[0].addRule('#list' + idWidget + ' option:checked', this.selectValueBackgroundColor());
+      // Set selected value if any
+      const selectedValue = modelsHiddenParams[idInstance]?.selectedValue || null;
+      if (selectedValue) {
+        $(`#list${idWidget}`).val(selectedValue);
+      }
+
+      // Add custom stylesheet rules
+      const stylesheet = document.styleSheets[0];
+      const listId = `#list${idWidget}`;
+
+      const colors = modelsHiddenParams[idInstance]?.valueColor;
+      if (Array.isArray(colors) && colors.length > 0) {
+        const numColors = colors.length;
+        document.querySelectorAll(`${listId} option`).forEach((_, index) => {
+          const color = colors[index % numColors]; // Loop through colors
+          const rule = `${listId} option:nth-child(${index + 1}) { color: ${color}; }`;
+          stylesheet.insertRule(rule, stylesheet.cssRules.length);
+        });
+      } else {
+        stylesheet.addRule(`${listId} option`, modelsParameters[idInstance].listValueColor);
+      }
+
+      stylesheet.addRule(`${listId} option`, this.listBackgroundColor());
+      stylesheet.addRule(`${listId} option:checked`, this.selectValueColor());
+      stylesheet.addRule(`${listId} option:checked`, this.selectValueBackgroundColor());
 
       if (this.bIsInteractive) {
         self.enable();
@@ -946,6 +979,12 @@ function flatUiComplexWidgetsPluginClass() {
     const _VALUE_DESCRIPTOR = new WidgetActuatorDescription(
       'value',
       'Available choices',
+      WidgetActuatorDescription.READ,
+      WidgetPrototypesManager.SCHEMA_PRIMITIVE_ARRAY
+    );
+    const _VALUE_COLOR_DESCRIPTOR = new WidgetActuatorDescription(
+      'valueColor',
+      'Colors of selected choices',
       WidgetActuatorDescription.READ,
       WidgetPrototypesManager.SCHEMA_PRIMITIVE_ARRAY
     );
@@ -965,8 +1004,9 @@ function flatUiComplexWidgetsPluginClass() {
         ],
       }
     );
+
     this.getActuatorDescriptions = function () {
-      return [_VALUE_DESCRIPTOR, _SELECTED_DESCRIPTOR];
+      return [_VALUE_DESCRIPTOR, _VALUE_COLOR_DESCRIPTOR, _SELECTED_DESCRIPTOR];
     };
 
     this.value = {
@@ -994,6 +1034,21 @@ function flatUiComplexWidgetsPluginClass() {
       clearCaption: function () {},
     };
 
+    this.valueColor = {
+      updateCallback: function () {},
+      setValue: function (valColor) {
+        modelsHiddenParams[idInstance].valueColor = valColor;
+        self.render();
+      },
+      getValue: function () {
+        return modelsHiddenParams[idInstance].valueColor;
+      },
+      addValueChangedHandler: function (updateDataFromWidget) {},
+      removeValueChangedHandler: function (updateDataFromWidget) {},
+      setCaption: function (caption, bCaptionManuallyChanged) {},
+      clearCaption: function () {},
+    };
+
     this.selectedValue = {
       updateCallback: function () {},
       setValue: function (val) {
@@ -1001,26 +1056,24 @@ function flatUiComplexWidgetsPluginClass() {
         modelsHiddenParams[idInstance].selectedValue = val;
       },
       getValue: function () {
-        const x = document.getElementById('list' + idWidget);
+        const listElement = document.getElementById('list' + idWidget);
         const selectedVal = $('#list' + idWidget).val();
-        //var selectedIndex = x.selectedIndex;
-        const selectedOptions = x.selectedOptions;
-        let listLength = 0;
-        if (Array.isArray(modelsHiddenParams[idInstance].value)) {
-          listLength = modelsHiddenParams[idInstance].value.length;
-        }
+        // const selectedIndex = x.selectedIndex;
+        const selectedOptions = listElement?.selectedOptions || [];
+        const valuesArray = modelsHiddenParams[idInstance]?.value || [];
+        const listLength = Array.isArray(valuesArray) ? valuesArray.length : 0;
+
+        // Return empty string if no options are selected
         if (selectedOptions.length === 0) return '';
+
+        // Validate the indices of the selected options
         for (const option of selectedOptions) {
-          if (option.index < 0 || option.index >= listLength) return '';
+          if (option.index < 0 || option.index >= listLength) {
+            return '';
+          }
         }
 
-        return selectedVal;
-
-        // old code
-        //if ((selectedIndex < 0) || (selectedIndex >= listLength))
-        //    return "";
-        // else
-        //return modelsHiddenParams[idInstance].value[selectedIndex];
+        return selectedVal || '';
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
@@ -1042,31 +1095,35 @@ function flatUiComplexWidgetsPluginClass() {
   this.tableFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
-    const nbminPerPagination = modelsParameters[idInstance].paginationMinNbr;
-    const options = JSON.parse(modelsParameters[idInstance].paginationOptions);
-    let defaultValue = modelsParameters[idInstance].paginationDefaultValue;
-    if (!options.includes(defaultValue)) defaultValue = options[0];
+    const nbminPerPagination = modelsParameters[idInstance]?.paginationMinNbr ?? 10;
+    const options = JSON.parse(modelsParameters[idInstance]?.paginationOptions ?? '[10, 50, 100, 500]');
 
     let currentPage = 1;
+    let totalRows = 0;
+    let defaultValue = modelsParameters[idInstance]?.paginationDefaultValue ?? 10;
+
+    if (!options.includes(defaultValue)) {
+      defaultValue = options[0];
+    }
+
     function sortTable(cell, columnIndex, isAscending) {
       const tbody = cell.parent().parent().parents()[0].tBodies[0];
-      const rows = Array.from(tbody.getElementsByTagName('tr'));
-      const headerRow = modelsHiddenParams[idInstance].value[0];
-      const dataRows = modelsHiddenParams[idInstance].value.slice(1);
+      const [headerRow, ...dataRows] = modelsHiddenParams[idInstance].value;
 
+      // Helper function to remove HTML tags (like <b>)
+      const cleanHTML = (value) => {
+        if (typeof value === 'string') {
+          return value.replace(/<\/?[^>]+(>|$)/g, '');
+        }
+        return value;
+      };
+
+      // Sort the dataRows based on the columnIndex
       const sortedData = dataRows.sort((a, b) => {
-        let valueA = a[columnIndex];
-        let valueB = b[columnIndex];
+        let valueA = cleanHTML(a[columnIndex]);
+        let valueB = cleanHTML(b[columnIndex]);
 
-        // Remove <b> tags if present
-        if (typeof valueA === 'string' && valueA.includes('<b>')) {
-          valueA = valueA.replace(/<\/?[^>]+(>|$)/g, '');
-        }
-
-        if (typeof valueB === 'string' && valueB.includes('<b>')) {
-          valueB = valueB.replace(/<\/?[^>]+(>|$)/g, '');
-        }
-
+        // Handle numeric and string comparison
         const compareA = isNaN(valueA) ? valueA.toLowerCase() : parseFloat(valueA);
         const compareB = isNaN(valueB) ? valueB.toLowerCase() : parseFloat(valueB);
 
@@ -1074,24 +1131,16 @@ function flatUiComplexWidgetsPluginClass() {
         if (compareA > compareB) return isAscending ? 1 : -1;
         return 0;
       });
+
+      // Update modelsHiddenParams with sorted data
       modelsHiddenParams[idInstance].value = [headerRow, ...sortedData];
-      while (tbody.firstChild) {
-        tbody.removeChild(tbody.firstChild);
-      }
-      sortedData.forEach((sortedRow) => {
-        const tr = document.createElement('tr');
-        sortedRow.forEach((cellValue, cellIndex) => {
-          const td = document.createElement('td');
-          td.style.textAlign = 'left';
-          if (cellIndex === 0) {
-            td.innerHTML = `<b>${cellValue}</b>`;
-          } else {
-            td.innerHTML = `<span>${cellValue}</span>`;
-          }
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
+
+      // Clear the tbody efficiently
+      tbody.innerHTML = '';
+
+      // Append the sorted rows back to the table
+      const bodyContent = self.buildTableBody(sortedData);
+      tbody.insertAdjacentHTML('beforeend', bodyContent);
     }
 
     function updateSortArrows(cell, activeHeader, isAscending) {
@@ -1104,101 +1153,119 @@ function flatUiComplexWidgetsPluginClass() {
     }
 
     function updateTable() {
-      let totalRows = _.isNull(modelsHiddenParams[idInstance].value) ? 0 : modelsHiddenParams[idInstance].value.length;
-      if (modelsParameters[idInstance].headerLine && totalRows != 0) {
-        totalRows--;
-      }
-      const rowsPerPage = $('#rows-per-page' + idWidget).val();
-      const totalPages = Math.ceil(totalRows / rowsPerPage);
-      $('#table' + idWidget + ' tbody')
-        .find('tr')
-        .hide();
-      $('#table' + idWidget + ' tbody')
-        .find('tr')
+      const adjustedTotalRows = modelsParameters[idInstance].headerLine && totalRows > 0 ? totalRows - 1 : totalRows;
+
+      // Get rows per page and calculate total pages
+      const rowsPerPage = Number($(`#rows-per-page${idWidget}`).val()) || 1;
+      const totalPages = Math.ceil(adjustedTotalRows / rowsPerPage);
+
+      // Cache table body for better performance
+      const $tableBody = $(`#table${idWidget} tbody`);
+      const $rows = $tableBody.find('tr');
+
+      // Hide all rows, then show the relevant rows for the current page
+      $rows
+        .hide()
         .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
         .show();
 
-      $('#page-info' + idWidget).text('Page ' + currentPage + ' of ' + totalPages);
-      $('#first-page' + idWidget).prop('disabled', currentPage === 1);
-      $('#prev-page' + idWidget).prop('disabled', currentPage === 1);
-      $('#next-page' + idWidget).prop('disabled', currentPage === totalPages);
-      $('#last-page' + idWidget).prop('disabled', currentPage === totalPages);
+      // Update page info
+      $(`#page-info${idWidget}`).text(`Page ${currentPage} of ${totalPages}`);
+
+      // Enable/disable pagination buttons
+      const isFirstPage = currentPage === 1;
+      const isLastPage = currentPage === totalPages;
+
+      $(`#first-page${idWidget}`).prop('disabled', isFirstPage);
+      $(`#prev-page${idWidget}`).prop('disabled', isFirstPage);
+      $(`#next-page${idWidget}`).prop('disabled', isLastPage);
+      $(`#last-page${idWidget}`).prop('disabled', isLastPage);
     }
 
     this.enable = function () {
-      $('#table' + idWidget).editableTableWidget();
-      $('#table' + idWidget + ' td').on('change', function (evt, newValue) {
+      const tableSelector = `#table${idWidget}`;
+      const rowsPerPageSelector = `#rows-per-page${idWidget}`;
+      const tableElement = $(tableSelector);
+
+      // Initialize editable table widget
+      tableElement.editableTableWidget();
+
+      // Handle cell change event
+      tableElement.find('td').on('change', function (evt, newValue) {
         const cell = $(this);
         const parent = cell.parent();
-        const column = cell.index();
         let row = parent.index();
-        let fontSize = 0.5;
-        if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
-          fontSize = modelsParameters[idInstance].tableValueFontSize;
-        }
+        const column = cell.index();
+        const fontSize = modelsParameters[idInstance]?.tableValueFontSize ?? 0.5;
+
         if (modelsParameters[idInstance].headerLine) {
           row += 1;
         }
 
-        if (!_.isNaN(Number(newValue))) newValue = Number(newValue); // MBG : very basic type handling. To extend
+        // Basic type handling, convert to number if applicable
+        newValue = !isNaN(Number(newValue)) ? Number(newValue) : newValue;
 
+        // Update the hidden model data
         modelsHiddenParams[idInstance].value[row][column] = newValue;
+
+        // Update cell content with styled value
         cell.html(
-          '<span style="' +
-            self.valueColor() +
-            self.valueFontFamily() +
-            ' font-size: calc(7px + ' +
-            fontSize * getFontFactor() +
-            'vw)">' +
-            newValue +
-            '<span>'
+          `<span style="${self.valueColor()} ${self.valueFontFamily()} font-size: calc(7px + ${
+            fontSize * getFontFactor()
+          }vw);">${newValue}</span>`
         );
+
+        // Trigger the update callback
         self.value.updateCallback(self.value, self.value.getValue());
       });
 
-      $('#table' + idWidget + ' th').on('click', function () {
+      // Handle header sorting click event
+      tableElement.find('th').on('click', function (evt) {
+        // evt.preventDefault(); // Prevent default behavior
         const cell = $(this);
         const columnIndex = cell.index();
-        const isAscending = cell[0].getAttribute('data-sort') !== 'asc';
+        const isAscending = cell.attr('data-sort') !== 'asc';
 
         sortTable(cell, columnIndex, isAscending);
         updateSortArrows(cell, columnIndex, isAscending);
         self.value.updateCallback(self.value, self.value.getValue());
-        updateTable();
+        if (totalRows >= nbminPerPagination) {
+          updateTable();
+        }
       });
 
-      $('#rows-per-page' + idWidget).on('change', function () {
+      // Handle pagination events
+      $(rowsPerPageSelector).on('change', () => {
         currentPage = 1;
         updateTable();
       });
 
-      $('#first-page' + idWidget).on('click', function () {
+      $('#first-page' + idWidget).on('click', () => {
         currentPage = 1;
         updateTable();
       });
 
-      $('#prev-page' + idWidget).on('click', function () {
+      $('#prev-page' + idWidget).on('click', () => {
         if (currentPage > 1) {
           currentPage--;
           updateTable();
         }
       });
 
-      $('#next-page' + idWidget).on('click', function () {
-        const totalRows = modelsHiddenParams[idInstance].value.length;
-        const rowsPerPage = $('#rows-per-page' + idWidget).val();
+      $('#next-page' + idWidget).on('click', () => {
+        const rowsPerPage = $(rowsPerPageSelector).val();
         const totalPages = Math.ceil(totalRows / rowsPerPage);
+
         if (currentPage < totalPages) {
           currentPage++;
           updateTable();
         }
       });
 
-      $('#last-page' + idWidget).on('click', function () {
-        const totalRows = modelsHiddenParams[idInstance].value.length;
-        const rowsPerPage = $('#rows-per-page' + idWidget).val();
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
-        currentPage = totalPages;
+      $('#last-page' + idWidget).on('click', () => {
+        const rowsPerPage = $(rowsPerPageSelector).val();
+        const adjustedTotalRows = modelsParameters[idInstance].headerLine && totalRows > 0 ? totalRows - 1 : totalRows;
+        currentPage = Math.ceil(adjustedTotalRows / rowsPerPage);
         updateTable();
       });
     };
@@ -1207,235 +1274,201 @@ function flatUiComplexWidgetsPluginClass() {
       $('#table' + idWidget + ' td').on('change', function (evt, newValue) {});
     };
 
+    // Helper: Get the calculated font size
+    this.getCalculatedFontSize = () => {
+      const fontSize = modelsParameters[idInstance]?.tableValueFontSize ?? 0.5;
+      return `font-size: calc(7px + ${fontSize * getFontFactor()}vw);`;
+    };
+
+    // Helper: build table header
+    this.buildTableHeader = (headers) => {
+      const thElements = $('#table' + idWidget + ' th');
+      let tableHeader = '<thead><tr>';
+
+      headers.forEach((header, i) => {
+        const dSort = thElements.length ? thElements[i].getAttribute('data-sort') : '';
+        tableHeader += `<th data-sortable="true" data-sort="${dSort}" style="${this.valueAlign()}">`;
+        tableHeader += `<span style="${this.getValueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()} padding-right:15px">`;
+        tableHeader += '<b>' + header + '</b>';
+        tableHeader += `</span><span class="sort-arrow"></span></th>`;
+      });
+
+      tableHeader += '</tr></thead>';
+      return tableHeader;
+    };
+
+    // Helper: build table body
+    this.buildTableBody = (dataRows) => {
+      // Helper: determine if a cell is editable
+      const isCellEditable = (colIndex) => {
+        const val = modelsHiddenParams[idInstance]?.value;
+        const editableCols =
+          modelsParameters[idInstance].editableCols === '*'
+            ? Array.from({ length: val[0].length }, (_, i) => i)
+            : (() => {
+                try {
+                  return JSON.parse(modelsParameters[idInstance].editableCols);
+                } catch (e) {
+                  console.error('Invalid editableCols format:', e);
+                  return [];
+                }
+              })();
+
+        return editableCols.includes(colIndex) ? 'true' : 'false';
+      };
+
+      const sortAsc = $('#table' + idWidget)[0]?.getAttribute('data-sort-asc') || 'true';
+      const sortCol = $('#table' + idWidget)[0]?.getAttribute('data-sort-column') || '0';
+      let bodyContent = `<tbody data-sort-asc="${sortAsc}" data-sort-column="${sortCol}">`;
+
+      dataRows.forEach((row, i) => {
+        if (typeof row === 'string') {
+          row = [row];
+        }
+
+        const rowStyle =
+          modelsParameters[idInstance].striped && i % 2 !== 0
+            ? `style="${this.tableBackgroundColor('secondary')}"`
+            : '';
+
+        bodyContent += `<tr ${rowStyle}>`;
+        row.forEach((cellValue, j) => {
+          const isEditable = isCellEditable(j);
+          const cursorEditable = isEditable && this.bIsInteractive ? 'cursor: cell;' : '';
+
+          bodyContent += `<td style="${cursorEditable} ${this.valueAlign()}" data-editable="${isEditable}" tabindex="0">`;
+          bodyContent += `<span style="${this.getValueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${cellValue}</span>`;
+          bodyContent += `</td>`;
+        });
+        bodyContent += '</tr>';
+      });
+
+      bodyContent += '</tbody>';
+      return bodyContent;
+    };
+
     this.buildTable = function (val) {
       let tableContent = '';
       let startIndex = 0;
-      let isEditable;
-      let fontSize = 0.5;
-      if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
-        fontSize = modelsParameters[idInstance].tableValueFontSize;
-      }
-      let bIsArray = Array.isArray(val);
-      if (bIsArray) {
-        let token = val[0];
-        bIsArray = Array.isArray(token);
-        if (bIsArray) {
-          if (modelsParameters[idInstance].headerLine) {
-            startIndex = 1;
-            tableContent += '<thead><tr>';
-            const thElements = $('#table' + idWidget + ' th');
-            for (const element of val[0]) {
-              let dSort = thElements.length ? thElements[val[0].indexOf(element)].getAttribute('data-sort') : '';
-              tableContent +=
-                '<th data-sortable="true" data-sort="' +
-                dSort +
-                '" style="' +
-                this.valueAlign() +
-                '"><span style="' +
-                this.valueColor() +
-                this.valueFontFamily() +
-                ' font-size: calc(7px + ' +
-                fontSize * getFontFactor() +
-                'vw);padding-right:15px"><b>' +
-                element +
-                '</b></span><span class="sort-arrow"></span></th>';
-            }
-            tableContent += '</tr></thead>';
-          }
-          const sortAsc = _.isUndefined($('#table' + idWidget)[0])
-            ? 'true'
-            : $('#table' + idWidget + ' tbody')[0].getAttribute('data-sort-asc');
-          const sortCol = _.isUndefined($('#table' + idWidget)[0])
-            ? '0'
-            : $('#table' + idWidget + ' tbody')[0].getAttribute('data-sort-column');
-          tableContent += '<tbody data-sort-asc="' + sortAsc + '" data-sort-column="' + sortCol + '">';
-          for (let i = startIndex; i < val.length; i++) {
-            if (modelsParameters[idInstance].striped) {
-              if (i % 2 !== 0) {
-                tableContent += '<tr style="' + this.tableBackgroundColor('secondary') + '">';
-              }
-            } else {
-              tableContent += '<tr>';
-            }
 
-            for (let j = 0; j < val[i].length; j++) {
-              let ParsedEditableCols = [];
-              try {
-                if (modelsParameters[idInstance].editableCols == '*') {
-                  if (!modelsParameters[idInstance].indexColumn) ParsedEditableCols = _.range(val[i].length);
-                  else ParsedEditableCols = _.range(1, val[i].length);
-                } else {
-                  ParsedEditableCols = JSON.parse(modelsParameters[idInstance].editableCols);
-                }
-              } catch (e) {}
-
-              let cursorEditable = '';
-              if (_.indexOf(ParsedEditableCols, j) == -1) {
-                isEditable = 'false';
-              } else {
-                isEditable = 'true';
-                if (this.bIsInteractive) {
-                  cursorEditable = 'cursor: cell;';
-                }
-              }
-              tableContent +=
-                '<td style="' +
-                cursorEditable +
-                this.valueAlign() +
-                '" data-editable="' +
-                isEditable +
-                '"><span style="' +
-                this.valueColor() +
-                this.valueFontFamily() +
-                ' font-size: calc(7px + ' +
-                fontSize * getFontFactor() +
-                'vw)">' +
-                val[i][j] +
-                '</span></td>';
-            }
-            tableContent += '</tr>';
-          }
-          tableContent += '</tbody>';
-        } else {
-          /* 1D table*/
-          /*if (modelsParameters[idInstance].headerLine) {
-                        startIndex = 1;
-                        tableContent = tableContent + '<thead><tr>';
-                        tableContent = tableContent + '<th><span style="color: #2154ab; font-size: calc(7px + .5vw)"><b>' + val[0] + '</b></span></th>';
-                        tableContent = tableContent + '</tr></thead>';
-                    }*/ // MBG : does-it make sense to have header in 1D ?
-          tableContent += '<tbody><tr>';
-          for (let i = startIndex; i < val.length; i++) {
-            token = val[i];
-            tableContent +=
-              '<td style="' +
-              this.valueAlign() +
-              '"><span style="' +
-              this.valueColor() +
-              this.valueFontFamily() +
-              ' font-size: calc(7px + ' +
-              fontSize * getFontFactor() +
-              'vw)">' +
-              token +
-              '</span></td>';
-          }
-          tableContent += '</tr></tbody>';
+      // Handle array or DataFrame-like content
+      if (Array.isArray(val) || modelsHiddenParams[idInstance].isDataFrame) {
+        if (modelsParameters[idInstance].headerLine) {
+          startIndex = 1;
+          tableContent += self.buildTableHeader(val[0]);
         }
+
+        tableContent += self.buildTableBody(val.slice(startIndex));
+      } else if (val && val.length > 0) {
+        /* 1D table*/
+        /*if (modelsParameters[idInstance].headerLine) {
+                        startIndex = 1;
+                        tableContent += '<thead><tr>';
+                        tableContent += '<th><span style="color: #2154ab; font-size: calc(7px + .5vw)"><b>' + val[0] + '</b></span></th>';
+                        tableContent += '</tr></thead>';
+                    }*/ // MBG : does-it make sense to have header in 1D ?
+        tableContent += '<tbody><tr>';
+        val.slice(startIndex).forEach((token) => {
+          tableContent += `<td style="${this.valueAlign()}">`;
+          tableContent += `<span style="${this.getValueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()}">${token}</span>`;
+          tableContent += `</td>`;
+        });
+        tableContent += '</tr></tbody>';
       }
+
       return tableContent;
+    };
+
+    this.buildPagination = function () {
+      const fontSize = modelsParameters[idInstance].tableValueFontSize ?? 0.5;
+      const strFontSize = `font-size: calc(7px + ${fontSize * getFontFactor()}vw);`;
+      const styleAttributes = `${this.getValueColor()} ${this.valueFontFamily()} ${strFontSize}`;
+
+      // Get or default rows per page
+      const _defaultValue = $('#rows-per-page' + idWidget)?.val() ?? defaultValue;
+
+      // Build options for rows per page dropdown
+      const optionsHTML = options
+        .map(
+          (value) => `<option value="${value}"${value === parseInt(_defaultValue) ? ' selected' : ''}>${value}</option>`
+        )
+        .join('');
+
+      // Construct the pagination controls
+      return `
+        <div id="pagination-controls">
+          <label for="rows-per-page" style="${styleAttributes}">
+            Rows per page:
+          </label>
+          <div class="custom-select-wrapper">
+            <select name="rows-per-page" id="rows-per-page${idWidget}" style="${strFontSize}">
+              ${optionsHTML}
+            </select>
+          </div>
+          <button id="first-page${idWidget}" disabled>|&lt;</button>
+          <button id="prev-page${idWidget}" disabled>&lt;</button>
+          <span id="page-info${idWidget}" style="${styleAttributes}">
+            Page 1 of 1
+          </span>
+          <button id="next-page${idWidget}">&gt;</button>
+          <button id="last-page${idWidget}">&gt;|</button>
+        </div>
+      `;
     };
 
     this.rescale = function () {
       this.render();
     };
 
-    this.buildPagination = function () {
-      let fontSize = 0.5;
-      if (!_.isUndefined(modelsParameters[idInstance].tableValueFontSize)) {
-        fontSize = modelsParameters[idInstance].tableValueFontSize;
-      }
-      let strFontSize = 'font-size: calc(7px + ' + fontSize * getFontFactor() + 'vw)';
-
-      defaultValue = _.isUndefined($('#rows-per-page' + idWidget)[0])
-        ? defaultValue
-        : parseInt($('#rows-per-page' + idWidget).val());
-
-      let optionsHTML = '';
-      options.forEach((value) => {
-        optionsHTML += `<option value="${value}"${value === defaultValue ? ' selected' : ''}>${value}</option>`;
-      });
-      const divPagination =
-        '<div id="pagination-controls" >' +
-        '  <label for="rows-per-page" style="' +
-        this.valueColor() +
-        this.valueFontFamily() +
-        strFontSize +
-        '">Rows per page:</label>' +
-        ' <div class="custom-select-wrapper">' +
-        '  <select name="rows-per-page" id="rows-per-page' +
-        idWidget +
-        '" style="' +
-        strFontSize +
-        '">' +
-        optionsHTML +
-        '  </select>' +
-        ' </div>' +
-        ' <button id="first-page' +
-        idWidget +
-        '" disabled>|&lt;</button>' +
-        '  <button id="prev-page' +
-        idWidget +
-        '" disabled>&lt;</button>' +
-        '  <span id="page-info' +
-        idWidget +
-        '" style="' +
-        this.valueColor() +
-        this.valueFontFamily() +
-        strFontSize +
-        '">Page 1 of 1</span>' +
-        '  <button id="next-page' +
-        idWidget +
-        '">&gt;</button>' +
-        '<button id="last-page' +
-        idWidget +
-        '">&gt;|</button>' +
-        '</div>';
-      return divPagination;
-    };
-
     this.render = function () {
-      const val = modelsHiddenParams[idInstance].value;
-      let length = 0;
-      if (!_.isNull(modelsHiddenParams[idInstance].value)) length = modelsHiddenParams[idInstance].value.length;
+      const val = modelsHiddenParams[idInstance]?.value;
+      totalRows = val?.length ?? 0;
       let insideTable = self.buildTable(val);
-      let isTableEmpty = false;
-      let tableWidth = '75%';
-      if (insideTable === '') {
+      const isTableEmpty = insideTable === '';
+      const tableWidth = isTableEmpty || totalRows < nbminPerPagination ? '100%' : '75%';
+
+      if (isTableEmpty) {
         insideTable = '<tbody><tr><td/><td/><td/></tr><tr><td/><td/><td/></tr></tbody>'; // empty table
-        isTableEmpty = true;
-        tableWidth = '100%';
-      }
-      if (length < nbminPerPagination) {
-        tableWidth = '100%';
       }
 
       const widgetHtml = document.createElement('div');
       const displayStyle =
         'cursor: ' + (this.bIsInteractive ? 'auto' : 'inherit') + '; width: inherit; height: inherit; overflow: auto;';
-      let divContent =
-        `<table style="margin: 0; height: ` + tableWidth + `; ${this.tableBackgroundColor('primary')}" class="table`;
-      if (modelsParameters[idInstance].bordered) divContent += ' table-bordered ';
-      if (modelsParameters[idInstance].noBorder) divContent += ' no-border ';
-      divContent += ' table-responsive" id="table' + idWidget + '" >';
 
-      divContent += insideTable + '</table>';
-      //pagination
-      if (!isTableEmpty && length >= nbminPerPagination) {
+      let tableClass = 'table';
+      if (modelsParameters[idInstance].bordered) tableClass += ' table-bordered';
+      if (modelsParameters[idInstance].noBorder) tableClass += ' no-border';
+      tableClass += ' table-responsive';
+
+      let divContent = `<table style="margin: 0; height: ${tableWidth}; ${this.tableBackgroundColor(
+        'primary'
+      )}" class="${tableClass}" id="table${idWidget}">
+        ${insideTable}
+      </table>`;
+
+      // Append pagination if applicable
+      if (!isTableEmpty && totalRows >= nbminPerPagination) {
         divContent += self.buildPagination();
       }
-      //divContent += '</div>';
-      //end pagination
+
       widgetHtml.innerHTML = divContent;
 
-      //
       const showWidget = this.showWidget();
-      let displayStyle2 = 'display: block;';
-      if (!showWidget) {
-        displayStyle2 = 'display: none;';
-      }
       const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      widgetHtml.setAttribute('style', displayStyle + displayStyle2 + enableStyle);
+
+      const displayStyle2 = showWidget ? 'display: block;' : 'display: none;';
+      const enableStyle = enableWidget
+        ? 'pointer-events: initial; opacity:initial;'
+        : 'pointer-events: none; opacity:0.5;';
+
+      widgetHtml.setAttribute('style', `${displayStyle}${displayStyle2}${enableStyle}`);
 
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
+
       if (this.bIsInteractive) {
         self.enable();
-        if (length >= nbminPerPagination) {
+        if (totalRows >= nbminPerPagination) {
           currentPage = 1;
           updateTable();
         }
@@ -1545,7 +1578,7 @@ function flatUiComplexWidgetsPluginClass() {
 flatUiComplexWidgetsPluginClass.prototype = basePlugin.prototype;
 
 // Instantiate plugin
-var flatUiComplexWidgetsPlugin = new flatUiComplexWidgetsPluginClass();
+const flatUiComplexWidgetsPlugin = new flatUiComplexWidgetsPluginClass();
 
 /*******************************************************************/
 /************************ plugin declaration ***********************/

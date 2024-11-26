@@ -79,15 +79,6 @@ angular
         document.title = "Chalk'it - Lite version";
       }
 
-      $rootScope.listAvailablesTags = [
-        // TODO rm
-        { name: 'tags 1', value: 'tag1' },
-        { name: 'tags 2', value: 'tag2' },
-        { name: 'tags 3', value: 'tag3' },
-        { name: 'tags 4', value: 'tag4' },
-        { name: 'tags 5', value: 'tag5' },
-      ];
-
       $rootScope.DefaultSettings = {
         data: {},
         projects: [],

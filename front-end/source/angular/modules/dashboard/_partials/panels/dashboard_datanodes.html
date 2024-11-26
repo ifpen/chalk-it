@@ -3,7 +3,7 @@
     ng-click="newDataNode()"
     class="btn btn-circle"
     title="Create a new dataNode and add it to the dataNodes list"
-    ng-show="!editorView.checkboxModelView"
+    ng-show="!editorView.isPlayMode"
   >
     <span class="icon__container">
       <i class="basic icn-add"></i>
@@ -17,7 +17,7 @@
     ng-click="openFileData('server');"
     class="btn btn-circle"
     title="Load dataNodes from xdsjson file"
-    ng-show="!editorView.checkboxModelView"
+    ng-show="!editorView.isPlayMode"
   >
     <span class="icon__container alt">
       <i class="basic icn-folder"></i>
