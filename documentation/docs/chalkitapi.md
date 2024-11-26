@@ -193,6 +193,38 @@ chalkit.dashboard.enableWidget(widgetName)
 
 Enables the interaction with a widget.
 
+### Notification features
+
+These features facilitates the creation and delivery of blocking and non-blocking notifications, supporting various types such as error, success, info, and warning.
+
+### swalert
+
+```JavaScript
+chalkit.notification.swalert(title, message, type)
+```
+
+Creates and displays a blocking notification using the SweetAlert library:
+
+![swalert](ds/img/sweet-alert.png "swalert")
+
+- title _(string)_: The title of the notification.
+- message _(string)_: The content of the notification message.
+- type _(string)_: The type of the notification. Accepted values are "error", "success", "warning", or "info".
+
+### notify
+
+```JavaScript
+chalkit.notification.notify(dataNodeName, message, type)
+```
+
+Creates and displays a non-blocking notification, which will appear in the notification window under the bell icon ![Notification](ds/img/bell-icon.png "Notification"):
+
+![Notify window](ds/img/notify-window.png "Notify window")
+
+- dataNodeName _(string)_: The name of the associated dataNode. If dataNodeName is undefined or an empty string, the script source where the API is called will be used as the default.
+- message _(string)_: The content of the notification message.
+- type _(string)_: The type of the notification. Accepted values are "error", "success", "warning", or "info".
+
 ## Python
 
 The Python API deals with input and outputs for Python scripts and also offers a port of the JavaScript API to interact with the scheduler and the dashboard.
