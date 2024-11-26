@@ -195,35 +195,49 @@ Enables the access of the widget (interactive).
 The Python API deals with input and outputs for Python scripts and also offers a port of the JavaScript API to interact with the scheduler and the dashboard.
 
 ### Input/ouputs helpers
+
 ::: chalkit_python_api.public_api.ChalkitApi
-    options:
-      show_source: false
-      heading_level: 4
-      show_signature_annotations: true
-      show_object_full_path: false
-      show_root_toc_entry: false
-      separate_signature: true
-      show_signature_annotations: false
+options:
+show_source: false
+heading_level: 4
+show_signature_annotations: true
+show_object_full_path: false
+show_root_toc_entry: false
+separate_signature: true
+show_signature_annotations: false
 
 ### Scheduler interactions
-::: chalkit_python_api.public_api.SchedulerActions
-    options:
-      show_source: false
-      heading_level: 4
-      show_signature_annotations: true
-      show_object_full_path: false
-      show_root_toc_entry: false
-      separate_signature: true
-      show_signature_annotations: false
 
+::: chalkit_python_api.public_api.SchedulerActions
+options:
+show_source: false
+heading_level: 4
+show_signature_annotations: true
+show_object_full_path: false
+show_root_toc_entry: false
+separate_signature: true
+show_signature_annotations: false
 
 ### Dashboard interactions
+
 ::: chalkit_python_api.public_api.DashboardActions
-    options:
-      show_source: false
-      heading_level: 4
-      show_signature_annotations: true
-      show_object_full_path: false
-      show_root_toc_entry: false
-      separate_signature: true
-      show_signature_annotations: false
+options:
+show_source: false
+heading_level: 4
+show_signature_annotations: true
+show_object_full_path: false
+show_root_toc_entry: false
+separate_signature: true
+show_signature_annotations: false
+
+### Notification interactions
+
+::: chalkit_python_api.public_api.NotificationActions
+options:
+show_source: false
+heading_level: 4
+show_signature_annotations: true
+show_object_full_path: false
+show_root_toc_entry: false
+separate_signature: true
+show_signature_annotations: false
