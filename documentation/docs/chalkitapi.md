@@ -17,7 +17,7 @@ The assessment of these functions is handled at the end of the current schedulin
 #### setVariable
 
 ```JavaScript
-chalkit.setVariable(dataNodeName, dataNodeValue);
+chalkit.scheduler.setVariable(dataNodeName, dataNodeValue);
 ```
 
 This API sets the value _dataNodeValue_ to the dataNode identified by dataNode["_dataNodeName_"].
@@ -37,13 +37,13 @@ For example, if you have a dataNode _info_person_ that contains:
 To modify it by another JSON value, you can use the following code:
 
 ```JavaScript
-chalkit.setVariable("info_person", {"name": "Jane Doe","age": "25"});
+chalkit.scheduler.setVariable("info_person", {"name": "Jane Doe","age": "25"});
 ```
 
 #### setVariableProperty
 
 ```JavaScript
-chalkit.setVariableProperty(dataNodeName, propertyPath, dataNodeValue);
+chalkit.scheduler.setVariableProperty(dataNodeName, propertyPath, dataNodeValue);
 ```
 
 This API allows to modify a specific property within a dataNode (not the entire dataNode). It assigns the value _dataNodeValue_ to the specified property path: dataNode["_dataNodeName_"]._propertyPath_.
@@ -71,13 +71,13 @@ For example, if you have a dataNode _info_address_ that contains:
 To update the value of the street property in the nested structure within _info_address_, you can use the following code:
 
 ```JavaScript
-chalkit.setVariableProperty("info_person", ["address","details","street"], "West 23rd Street");
+chalkit.scheduler.setVariableProperty("info_person", ["address","details","street"], "West 23rd Street");
 ```
 
 #### setVariables
 
 ```JavaScript
-chalkit.setVariables(dataNodeNames, dataNodeValues);
+chalkit.scheduler.setVariables(dataNodeNames, dataNodeValues);
 ```
 
 This API sets each value _dataNodeValues[i]_ to dataNode["_dataNodeNames[i]_"], where i:0 .. length-1 of _dataNodeNames_.
@@ -94,13 +94,13 @@ For example, to modify at the same time the previous dataNode _info_person_ and 
 you can use the following code:
 
 ```JavaScript
-chalkit.setVariables(["info_person","info_gender"], [{"name": "Jane Doe","age": "25"},{"gender": "female"}]);
+chalkit.scheduler.setVariables(["info_person","info_gender"], [{"name": "Jane Doe","age": "25"},{"gender": "female"}]);
 ```
 
 #### executeDataNode
 
 ```JavaScript
-chalkit.executeDataNode(dataNodeName);
+chalkit.scheduler.executeDataNode(dataNodeName);
 ```
 
 This API allows to launch the schedule with the source node identified as _dataNodeName_ (the name of the dataNode that must be a string).
@@ -110,7 +110,7 @@ This functionality can be useful for a dataNode with [explicit trigger](ds/ds-ex
 #### executeDataNodes
 
 ```JavaScript
-chalkit.executeDataNodes(dataNodeNames);
+chalkit.scheduler.executeDataNodes(dataNodeNames);
 ```
 
 This API is similar to _executeDataNode_, except it launches the schedule with multiple source nodes defined in the _dataNodeNames_ array, where each name is represented as a string.
@@ -124,7 +124,7 @@ The main feature allow navigation between Chalk'it pages with parameter transfer
 In [constrained dashboard mode](export/export.md#scaling-methods-for-the-constrained-dashboard), the method:
 
 ```JavaScript
-chalkit.goToPage(pageNumber)
+chalkit.dashboard.goToPage(pageNumber)
 ```
 
 allows to show only the targed page. It is the main method for building multi-page app with custom navigation control.
@@ -132,7 +132,7 @@ allows to show only the targed page. It is the main method for building multi-pa
 #### viewPage
 
 ```JavaScript
-chalkit.viewPage(pageUrl, inputVals, bNewTab)
+chalkit.dashboard.viewPage(pageUrl, inputVals, bNewTab)
 ```
 
 Navigates to _pageUrl_, setting the values of the specified dataNodes in inputVals.
@@ -153,13 +153,13 @@ Navigates to _pageUrl_, setting the values of the specified dataNodes in inputVa
 Similar to view page, but applies for projects.
 
 ```JavaScript
-chalkit.viewProject(projectUrl, inputVals, bNewTab)
+chalkit.dashboard.viewProject(projectUrl, inputVals, bNewTab)
 ```
 
 #### hideWidget
 
 ```JavaScript
-chalkit.hideWidget(widgetName)
+chalkit.dashboard.hideWidget(widgetName)
 ```
 
 Hides the display of the widget.
@@ -169,7 +169,7 @@ Hides the display of the widget.
 #### showWidget
 
 ```JavaScript
-chalkit.showWidget(widgetName)
+chalkit.dashboard.showWidget(widgetName)
 ```
 
 Makes the display of the widget visible.
@@ -177,7 +177,7 @@ Makes the display of the widget visible.
 #### disableWidget
 
 ```JavaScript
-chalkit.disableWidget(widgetName)
+chalkit.dashboard.disableWidget(widgetName)
 ```
 
 Disables the access of the widget. The widget is enabled by default.
@@ -185,7 +185,7 @@ Disables the access of the widget. The widget is enabled by default.
 #### enableWidget
 
 ```JavaScript
-chalkit.enableWidget(widgetName)
+chalkit.dashboard.enableWidget(widgetName)
 ```
 
 Enables the access of the widget (interactive).
