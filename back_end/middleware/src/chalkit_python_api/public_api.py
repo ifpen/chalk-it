@@ -172,7 +172,7 @@ class NotificationActions:
 
     def notify(self, datanode_name: str, message: str, type: str) -> None:
         """
-        add a notification.
+        Add a non-blocking notification.
 
         Args:
             datanode_name: the name of the dataNode
@@ -183,7 +183,7 @@ class NotificationActions:
 
     def swalert(self, title: str,message: str,type: str) -> None:
         """
-        Use sweet alert.
+        Use sweetAlert blocking notification.
 
         Args:
             title: the title of the notification

@@ -13,17 +13,6 @@ export function initXdashEditor() {
   editorSingletons.layoutMgr = new LayoutMgrClass();
   window.layoutMgr = editorSingletons.layoutMgr;
 
-  // FIXME
-  /*--------event on device rows--------*/
-  $('select[name=select-rows]').on('change', function (e) {
-    editorSingletons.layoutMgr.updateButtonState();
-  });
-
-  /*--------event on device columns--------*/
-  $('select[name=select-cols]').on('change', function (e) {
-    editorSingletons.layoutMgr.updateButtonState();
-  });
-
   initXdashRuntime();
 
   editorSingletons.widgetEditor = initEditWidget(); // edit

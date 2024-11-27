@@ -17,10 +17,6 @@ import { urlBase } from 'config.js';
 import { pythonImagesModule } from 'angular/modules/python/python-images.module';
 import { initXdashRuntime } from 'kernel/runtime-singletons';
 import { onAngularReady } from 'kernel/runtime/xdash-runtime-main';
-import { dashState } from 'angular/modules/dashboard/dashboard';
-
-// TODO contant
-dashState.modeActive = 'play-dashboard';
 
 export const angularModule = angular.module('xCLOUD', [
   'angularjs-gauge',
@@ -38,9 +34,6 @@ angularModule.run([
     $rootScope.notificationFilterDataValue = '';
     $rootScope.listNotifications = [];
     $rootScope.nbNotifications = 0;
-    $rootScope.pageNumber = 1;
-    $rootScope.totalPages = 1;
-    $rootScope.pageNames = [];
 
     $rootScope.loadingBarStart = (fn = () => {}) => fn(); // Arrow function with default param
     $rootScope.loadingBarStop = (fn = () => {}) => fn();
