@@ -81,7 +81,7 @@ chalkit.scheduler.setVariableProperty("info_person", ["address","details","stree
 chalkit.scheduler.setVariables(dataNodeNames, dataNodeValues);
 ```
 
-This API sets each value _dataNodeValues[i]_ to dataNode["_dataNodeNames[i]_"], where i:0 .. length-1 of _dataNodeNames_.
+This API sets each value _dataNodeValues[i]_ to dataNode["_dataNodeNames[i]_"], where _i:0 .. length-1_ of _dataNodeNames_.
 
 - dataNodeNames _(array)_: An array of dataNode names.
 - dataNodeValues _(array)_: An array of values, matching the order and size of dataNodeNames.
@@ -138,16 +138,16 @@ allows to show only the targed page. It is the main method for building multi-pa
 chalkit.dashboard.viewPage(pageUrl, inputVals, bNewTab)
 ```
 
-Navigates to _pageUrl_, setting the values of the specified dataNodes in inputVals.
+Navigates to _pageUrl_, setting the values of the specified dataNodes in _inputVals_.
 
 - pageUrl _(string)_: The URL of the target page.
-- inputVals _(array)_: An array of objects with structure
+- inputVals _(array)_: An array of objects with structure.
 
   ```JSON
   {"dsName": "dataNodeName", "dsVal" : "dataNodeValue"}
   ```
 
-  dsName should be of type string. dsVal can be of any JavaScript primitive type (number, string, boolean), array or JSON.
+  _dsName_ should be of type string. _dsVal_ can be of any JavaScript primitive type (number, string, boolean), array or JSON.
 
 - bNewTab _(boolean)_: Opens the page in a new tab if true.
 
@@ -195,7 +195,7 @@ Enables the interaction with a widget.
 
 ### Notification features
 
-These features facilitates the creation and delivery of blocking and non-blocking notifications, supporting various types such as error, success, info, and warning.
+These features facilitate the creation and delivery of blocking and non-blocking notifications, supporting various types such as error, success, info, and warning.
 
 ### swalert
 
@@ -205,7 +205,7 @@ chalkit.notification.swalert(title, message, type)
 
 Creates and displays a blocking notification using the SweetAlert library:
 
-![swalert](ds/img/sweet-alert.png "swalert")
+![sweet alert](ds/img/sweet-alert.PNG "swalert")
 
 - title _(string)_: The title of the notification.
 - message _(string)_: The content of the notification message.
@@ -217,9 +217,10 @@ Creates and displays a blocking notification using the SweetAlert library:
 chalkit.notification.notify(dataNodeName, message, type)
 ```
 
-Creates and displays a non-blocking notification, which will appear in the notification window under the bell icon ![Notification](ds/img/bell-icon.png "Notification"):
+Creates and displays a non-blocking notification, which will appear in the notification window under the bell icon ![bell icon](ds/img/bell-icon.PNG "bell icon
+"):
 
-![Notify window](ds/img/notify-window.png "Notify window")
+![Notification window](ds/img/notify-window.PNG "Notify window")
 
 - dataNodeName _(string)_: The name of the associated dataNode. If dataNodeName is undefined or an empty string, the script source where the API is called will be used as the default.
 - message _(string)_: The content of the notification message.
