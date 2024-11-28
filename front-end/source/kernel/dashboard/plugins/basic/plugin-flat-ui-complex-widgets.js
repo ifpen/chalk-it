@@ -636,14 +636,30 @@ function flatUiComplexWidgetsPluginClass() {
       this.applyDisplayOnWidget();
 
       // Check for scrollbars and adjust alignment
-      const multiSelectElement = document.getElementById(widgetId);
-      if (multiSelectElement) {
-        const hasScrollBar = multiSelectElement.scrollHeight > multiSelectElement.clientHeight;
+      const targetElement = document.getElementById('dashboard-preview-div');
+      if (targetElement) {
+        const observer = new MutationObserver((mutationsList) => {
+          mutationsList.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+              const $multiSelectElement = $('#multi-select' + idWidget);
 
-        if (!hasScrollBar) {
-          multiSelectElement.style.alignContent = 'center';
-        }
+              if ($multiSelectElement.length) {
+                const hasScrollBar = $multiSelectElement[0].scrollHeight > $multiSelectElement[0].clientHeight;
+
+                if (!hasScrollBar) {
+                  $multiSelectElement.filter('.multi-select-div').css('align-content', 'center');
+                }
+              }
+            }
+          });
+        });
+
+        // Observe changes to the class attribute
+        observer.observe(targetElement, { attributes: true });
+        window.addEventListener('unload', () => observer.disconnect());
       }
+
+      const multiSelectElement = document.getElementById(widgetId);
 
       // Apply additional styles for mobile or tablet
       const isMobileOrTablet = window.mobileAndTabletCheck();
@@ -687,13 +703,24 @@ function flatUiComplexWidgetsPluginClass() {
 
       // Apply dynamic styles
       const styleSheet = document.styleSheets[0];
-      const multiSelectLabelId = `multi-select-label${idWidget}`;
-      const rules = [
-        `#${multiSelectLabelId} { ${this.valueDefaultColor()} ${this.checkboxDefaultColor()} ${this.checkboxBorder()} }`,
-        `#${multiSelectLabelId}:hover { ${this.valueHoverColor()} ${this.checkboxHoverColor()} ${this.checkboxHoverBorderColor()} }`,
-        `input[type="checkbox"]:checked + #${multiSelectLabelId} { ${this.valueFocusColor()} ${this.checkboxFocusColor()} ${this.checkboxFocusBorderColor()} }`,
-      ];
-      rules.forEach((rule) => styleSheet.insertRule(rule, styleSheet.cssRules.length));
+      const idSelector = `#multi-select-label${idWidget}`;
+      const checkedSelector = `input[type="checkbox"]:checked + ${idSelector}`;
+      const hoverSelector = `${idSelector}:hover`;
+
+      // Default styles
+      styleSheet.addRule(idSelector, this.valueDefaultColor());
+      styleSheet.addRule(idSelector, this.checkboxDefaultColor());
+      styleSheet.addRule(idSelector, this.checkboxBorder());
+
+      // Hover styles
+      styleSheet.addRule(hoverSelector, this.valueHoverColor());
+      styleSheet.addRule(hoverSelector, this.checkboxHoverColor());
+      styleSheet.addRule(hoverSelector, this.checkboxHoverBorderColor());
+
+      // Checked styles
+      styleSheet.addRule(checkedSelector, this.valueFocusColor());
+      styleSheet.addRule(checkedSelector, this.checkboxFocusColor());
+      styleSheet.addRule(checkedSelector, this.checkboxFocusBorderColor());
 
       if (this.bIsInteractive) {
         self.enable();
