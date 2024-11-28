@@ -201,7 +201,12 @@ function flatUiComplexWidgetsPluginClass() {
       }
 
       // Handle select options
-      const { keys, values, selectedValue } = modelsHiddenParams[idInstance];
+      let { keys, values, selectedValue } = modelsHiddenParams[idInstance];
+
+      if (values?.length === 0 && keys?.length > 0 && !modelsParameters[idInstance]?.isKeyValuePairs) {
+        values = [...keys];
+      }
+
       const nbOptions = Math.min(values.length, keys.length);
       const selectStyle = `style="display: table; height: ${valueHeightPx}px;"`;
 
@@ -264,9 +269,11 @@ function flatUiComplexWidgetsPluginClass() {
       observer.observe(document.body, { childList: true, subtree: true });
 
       // Initialize select2 with the correct value
-      const selectElement = $(`#select${idWidget}`)[0];
-      selectElement.value = String(selectedValue);
-      $(`#select${idWidget}`).select2();
+      const $select = $(`#select${idWidget}`);
+      if ($select?.length) {
+        $select.val(String(selectedValue));
+        $select.select2();
+      }
     };
 
     const _VALUE_NUMBER_DESCRIPTOR = new WidgetActuatorDescription(
@@ -414,25 +421,30 @@ function flatUiComplexWidgetsPluginClass() {
     this.selectedValue = {
       updateCallback: function () {},
       setValue: function (val) {
-        //AEF: modif for issue#61
         modelsHiddenParams[idInstance].selectedValue = val;
         self.render();
       },
       getValue: function () {
-        const val = $('#select' + idWidget)[0].value;
+        const val = $(`#select${idWidget}`).val();
+
         if (modelsParameters[idInstance].isNumber) {
           return Number(val);
-        } else if (modelsParameters[idInstance].isBoolean) {
-          return val === 'false' ? false : Boolean(val);
-        } else {
-          return val;
         }
+
+        if (modelsParameters[idInstance].isBoolean) {
+          return val !== 'false' && Boolean(val);
+        }
+
+        return val;
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
-        if ($('#select' + idWidget)[0].value != '') {
-          updateDataFromWidget(this, $('#select' + idWidget)[0].value);
+
+        const value = $(`#select${idWidget}`).val();
+        if (value != '') {
+          updateDataFromWidget(this, value);
         }
+
         self.enable();
       },
       removeValueChangedHandler: function (updateDataFromWidget) {
@@ -441,7 +453,7 @@ function flatUiComplexWidgetsPluginClass() {
       setCaption: function (caption, bCaptionManuallyChanged) {
         if (modelsParameters[idInstance].inheritLabelFromData) {
           self.captionHelper(caption, self.bIsInteractive, bCaptionManuallyChanged);
-          $('#select-span' + idWidget).text(modelsParameters[idInstance].label);
+          $(`#select-span${idWidget}`).text(modelsParameters[idInstance].label);
         }
       },
       clearCaption: function () {
@@ -459,17 +471,18 @@ function flatUiComplexWidgetsPluginClass() {
         setValue: function (val) {
           const msg1 = '"keys" must be an array (in widget' + idInstance + ')';
           const msg2 = 'Example: ["choice1","choice2"]';
+
           if (!Array.isArray(val)) {
-            //swal(msg1, msg2, 'info');
-            console.log(msg1 + '. ' + msg2);
+            console.log(`${msg1}. ${msg2}`);
             return;
           }
+
           if (val.length && typeof val[0] === 'object') {
-            //AEF: prevent old format here [{},{}]
-            //swal(msg1, msg2, 'info');
-            console.log(msg1 + '. ' + msg2);
+            // Prevent old format like [{}, {}]
+            console.log(`${msg1}. ${msg2}`);
             return;
           }
+
           modelsHiddenParams[idInstance].keys = val;
           self.render();
         },
@@ -487,21 +500,18 @@ function flatUiComplexWidgetsPluginClass() {
         setValue: function (val) {
           const msg1 = '"value" must be an array (in widget' + idInstance + ')';
           const msg2 = 'Example: [1, 2]';
-          if (val === null || val === undefined) {
-            val = modelsHiddenParams[idInstance].keys; //AEF: values are optional, take keys if not provided
-          }
-          if (!Array.isArray(val)) {
-            //swal(msg1, msg2, 'info');
-            console.log(msg1 + '. ' + msg2);
+
+          if (val == null) {
+            // Initialize as an empty array if null or undefined
+            modelsHiddenParams[idInstance].values = [];
+          } else if (!Array.isArray(val) || (val.length && typeof val[0] === 'object')) {
+            // Prevent old format like [{}, {}]
+            console.log(`${msg1}. ${msg2}`);
             return;
+          } else {
+            modelsHiddenParams[idInstance].values = val;
           }
-          if (val.length && typeof val[0] === 'object') {
-            //AEF: prevent old format here [{},{}]
-            //swal(msg1, msg2, 'info');
-            console.log(msg1 + '. ' + msg2);
-            return;
-          }
-          modelsHiddenParams[idInstance].values = val;
+
           self.render();
         },
         getValue: function () {},
@@ -524,14 +534,12 @@ function flatUiComplexWidgetsPluginClass() {
           const msg2 =
             'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
           if (!Array.isArray(val)) {
-            //swal(msg1, msg2, 'info');
             console.log(msg1 + '. ' + msg2);
             return;
           }
           for (const item of val) {
             if (_.isUndefined(item.key)) {
               //AEF: key is mandatory
-              //swal(msg1, msg2, 'info');
               console.log(msg1 + '. ' + msg2);
               return;
             }
