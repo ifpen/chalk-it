@@ -44,8 +44,8 @@ modelsParameters.kpiCard = {
 
 // Layout (default dimensions)
 modelsLayout.kpiCard = {
-  height: '16vh',
-  width: '18vw',
+  height: '120px',
+  width: '180px',
   minWidth: '64px',
   minHeight: '32px',
 };

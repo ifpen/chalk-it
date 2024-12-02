@@ -53,8 +53,8 @@ modelsParameters.datepickerVisible = {
 };
 
 // Layout (default dimensions)
-modelsLayout.datepickerSimple = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '32px' };
-modelsLayout.datepickerVisible = { height: '45vh', width: '22vw', minWidth: '150px', minHeight: '190px' };
+modelsLayout.datepickerSimple = { height: '40px', width: '300px', minWidth: '150px', minHeight: '32px' };
+modelsLayout.datepickerVisible = { height: '300px', width: '300px', minWidth: '150px', minHeight: '190px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

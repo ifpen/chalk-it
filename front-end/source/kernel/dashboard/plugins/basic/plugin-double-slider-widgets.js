@@ -44,7 +44,7 @@ modelsParameters.flatUiDoubleSlider = {
 };
 
 // Layout (default dimensions)
-modelsLayout.flatUiDoubleSlider = { height: '8vh', width: '24vw', minWidth: '200px', minHeight: '24px' };
+modelsLayout.flatUiDoubleSlider = { height: '60px', width: '380px', minWidth: '200px', minHeight: '24px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

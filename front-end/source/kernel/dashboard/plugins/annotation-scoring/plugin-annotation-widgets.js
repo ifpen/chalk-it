@@ -109,12 +109,12 @@ modelsParameters.annotationVideo = {
 };
 
 // Layout (default dimensions)
-modelsLayout.annotationIconInfo = { height: '4vh', width: '2vw' };
-modelsLayout.annotationLabel = { height: '5vh', width: '12vw', minWidth: '5px', minHeight: '5px' };
-modelsLayout.annotationRectangle = { height: '5vh', width: '12vw', minWidth: '5px', minHeight: '5px' };
-modelsLayout.annotationImage = { height: '20vh', width: '17vw' };
-modelsLayout.annotationImageConnected = { height: '20vh', width: '17vw' };
-modelsLayout.annotationVideo = { height: '30vh', width: '20vw' };
+modelsLayout.annotationIconInfo = { height: '40px', width: '40px' };
+modelsLayout.annotationLabel = { height: '40px', width: '200px', minWidth: '5px', minHeight: '5px' };
+modelsLayout.annotationRectangle = { height: '40px', width: '200px', minWidth: '5px', minHeight: '5px' };
+modelsLayout.annotationImage = { height: '200px', width: '260px' };
+modelsLayout.annotationImageConnected = { height: '200px', width: '260px' };
+modelsLayout.annotationVideo = { height: '260px', width: '260px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
