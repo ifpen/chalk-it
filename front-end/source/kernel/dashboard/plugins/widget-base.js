@@ -70,7 +70,7 @@ export function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
 
   this.applyDisplayOnWidget = function () {
     if (bInteractive) {
-      const widgetObj = $('#' + idInstance + 'c');
+      const widgetObj = $(document.getElementById(idDivContainer));
       if (!_.isUndefined(widgetObj)) {
         if (!modelsParameters[idInstance].showWidget) {
           widgetObj.hide();
@@ -121,7 +121,7 @@ export function baseWidget(idDivContainer, idWidget, idInstance, bInteractive) {
     return fc;
   };
 
-  this.valueColor = function () {
+  this.getValueColor = function () {
     const color = this.setColorValueFromModelParameters('valueColor', 'var(--widget-color)');
     const fc = 'color:' + color + '; ';
     return fc;

@@ -15,14 +15,9 @@ angular.module('modules.dashboard').service('DepGraphService', [
     const self = this;
 
     /*---------- showDepGraph ----------------*/
-    self.showDepGraph = function (event, scopeDash) {
+    self.showDepGraph = function (event) {
       datanodesManager.showDepGraph(event);
-      scopeDash.editorView.showGraphPanel = true;
-    };
-
-    /*---------- seeInDepGraph ----------------*/
-    self.seeInDepGraph = function (event, scopeDash) {
-      datanodesManager.showDepGraph(event); //to be changed later
+      let scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
       scopeDash.editorView.showGraphPanel = true;
     };
 

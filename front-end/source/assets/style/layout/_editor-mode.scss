@@ -63,41 +63,30 @@
 }
 
 // Used in editor.html& grid-mgr ...
+.dashboard-page-container {
+  border-radius: 10px;
+  border: 1px grey dotted;
+}
+
 .dropperR {
-  width: 100%;
   position: relative;
-  height: calc(207px + 51vh);
   color: var(--light-color-text);
-  overflow: auto;
+
+  z-index: 0;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
 }
 
-.dropperR .drsElement {
-  border: 1px solid rgba(255, 255, 255, 0);
+.dropperR.show-widget-borders:not([id='DropperDroitec']) .widget {
+  outline: 1px dashed rgba(0, 0, 0, 0.5);
 }
 
-.dropperR.show-widget-borders:not(#DropperDroitec) .drsElement {
-  border: 1px dashed rgba(0, 0, 0, 0.5);
-}
-
-.dropperR.show-grid:not(.has-device-col):not(#DropperDroitec),
-.dropperR.show-grid:not(#DropperDroitec) .device-col {
+.dropperR.show-grid:not(#DropperDroitec) {
+  background-origin: content-box;
   background-size: 20px 20px;
   background-attachment: local;
   background-image: linear-gradient(to right, #e6e6e6 1px, transparent 1px),
     linear-gradient(to bottom, #e6e6e6 1px, transparent 1px);
-}
-
-.overflow-type1 {
-  overflow: auto;
-}
-
-.overflow-type2 {
-  overflow: hidden;
-}
-
-.overflow-type3 {
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 // Used in edit-widgets
@@ -125,10 +114,6 @@ div > .draggable::-webkit-scrollbar-thumb {
 }
 
 // Apply the element you want to drag/resize
-.drsElement {
-  position: absolute;
-}
-
 #screenshot {
   position: absolute;
   border: 1px solid #ccc;
@@ -137,19 +122,6 @@ div > .draggable::-webkit-scrollbar-thumb {
   display: none;
   color: #fff;
   font-size: fs('xs');
-}
-
-// Dropper columns
-.device-col {
-  border: 1px dashed black;
-  height: 100%;
-  padding: 0px;
-}
-
-.device-col.col-invisible {
-  border: 1px dashed transparent;
-  height: 100%;
-  padding: 0px;
 }
 
 // Drag and drop
@@ -169,45 +141,32 @@ div > .draggable::-webkit-scrollbar-thumb {
   transition: background-color 0.3s;
 }
 
-#dashboard-editor .drag-drop-move:hover .widget-overlay {
+#dashboard-editor div.drag-drop-move:hover .widget-overlay {
   background-color: rgb(var(--light-color-text-rgb) / 0.1);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected .widget-overlay {
+#dashboard-editor div.drag-drop-move.widget-selected .widget-overlay {
   background-color: rgb(var(--success-color-rgb) / 0.17);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected:hover .widget-overlay {
+#dashboard-editor div.drag-drop-move.widget-selected:hover .widget-overlay {
   background-color: rgb(var(--success-color-rgb) / 0.4);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected {
+#dashboard-editor div.drag-drop-move.widget-selected {
   outline: 2px solid var(--success-color);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected.widget-selected-last .widget-overlay {
+#dashboard-editor div.drag-drop-move.widget-selected.widget-selected-last .widget-overlay {
   background-color: rgb(var(--primary-color-rgb) / 0.17);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected.widget-selected-last:hover .widget-overlay {
+#dashboard-editor div.drag-drop-move.widget-selected.widget-selected-last:hover .widget-overlay {
   background-color: rgb(var(--primary-color-rgb) / 0.4);
 }
 
-#dashboard-editor .drag-drop-move.widget-selected.widget-selected-last {
+#dashboard-editor div.drag-drop-move.widget-selected.widget-selected-last {
   outline: 2px solid var(--primary-color);
-}
-
-.drop-zone-col {
-  // background-color: white;
-  transition: background-color 0.3s;
-}
-
-.drop-zone-col.drop-possible {
-  // background-color: white;
-}
-
-.drop-zone-col.drop-over {
-  // background-color: white;
 }
 
 .dragged-new-widget {
@@ -215,6 +174,7 @@ div > .draggable::-webkit-scrollbar-thumb {
   background: white;
   z-index: 999999;
   pointer-events: none;
+  border: 1px solid black;
 }
 .drag-drop-new {
   cursor: grab;

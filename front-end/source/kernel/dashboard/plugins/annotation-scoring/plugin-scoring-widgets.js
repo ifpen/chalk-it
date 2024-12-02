@@ -139,7 +139,7 @@ function scoringWidgetsPluginClass() {
         '<ng-gauge id="ng-gauge' +
           idWidget +
           '" style="' +
-          this.valueColor() +
+          this.getValueColor() +
           '" size="' +
           gaugeSize +
           '" type="' +
