@@ -1303,7 +1303,7 @@ function flatUiComplexWidgetsPluginClass() {
       let tableHeader = '<thead><tr>';
 
       headers.forEach((header, i) => {
-        const dSort = thElements.length ? thElements[i].getAttribute('data-sort') : '';
+        const dSort = thElements.length ? thElements[i]?.getAttribute('data-sort') : '';
         tableHeader += `<th data-sortable="true" data-sort="${dSort}" style="${this.valueAlign()}">`;
         tableHeader += `<span style="${this.getValueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()} padding-right:15px">`;
         tableHeader += '<b>' + header + '</b>';
