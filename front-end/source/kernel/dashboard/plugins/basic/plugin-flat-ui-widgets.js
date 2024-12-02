@@ -205,14 +205,14 @@ modelsParameters.flatUiFileInputButton = {
 };
 
 // Layout (default dimensions)
-modelsLayout.flatUiHorizontalSlider = { height: '5vh', width: '24vw', minWidth: '200px', minHeight: '24px' };
-modelsLayout.flatUiVerticalSlider = { height: '20vh', width: '5vw', minWidth: '32px', minHeight: '50px' };
-modelsLayout.flatUiProgressBar = { height: '5vh', width: '24vw', minWidth: '200px', minHeight: '24px' };
-modelsLayout.flatUiTextInput = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
-modelsLayout.flatUiNumericInput = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
-modelsLayout.flatUiValueDisplay = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '24px' };
-modelsLayout.flatUiButton = { height: '7vh', width: '9vw', minWidth: '55px', minHeight: '24px' };
-modelsLayout.flatUiFileInputButton = { height: '7vh', width: '9vw', minWidth: '55px', minHeight: '24px' };
+modelsLayout.flatUiHorizontalSlider = { height: '40px', width: '360px', minWidth: '200px', minHeight: '24px' };
+modelsLayout.flatUiVerticalSlider = { height: '160px', width: '80px', minWidth: '32px', minHeight: '50px' };
+modelsLayout.flatUiProgressBar = { height: '40px', width: '360px', minWidth: '200px', minHeight: '24px' };
+modelsLayout.flatUiTextInput = { height: '40px', width: '300px', minWidth: '150px', minHeight: '24px' };
+modelsLayout.flatUiNumericInput = { height: '40px', width: '300px', minWidth: '150px', minHeight: '24px' };
+modelsLayout.flatUiValueDisplay = { height: '40px', width: '300px', minWidth: '150px', minHeight: '24px' };
+modelsLayout.flatUiButton = { height: '80px', width: '140px', minWidth: '55px', minHeight: '24px' };
+modelsLayout.flatUiFileInputButton = { height: '80px', width: '140px', minWidth: '55px', minHeight: '24px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

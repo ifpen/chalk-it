@@ -49,8 +49,8 @@ modelsParameters.flatUiSwitch = {
 };
 
 // Layout
-modelsLayout.flatUiCheckbox = { height: '5vh', width: '9vw', minWidth: '32px', minHeight: '24px' };
-modelsLayout.flatUiSwitch = { height: '5vh', width: '10vw', minWidth: '50px', minHeight: '24px' };
+modelsLayout.flatUiCheckbox = { height: '40px', width: '140px', minWidth: '32px', minHeight: '24px' };
+modelsLayout.flatUiSwitch = { height: '40px', width: '140px', minWidth: '50px', minHeight: '24px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

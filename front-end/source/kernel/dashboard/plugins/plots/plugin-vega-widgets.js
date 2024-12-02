@@ -40,8 +40,8 @@ modelsHiddenParams.vegaGeneric = {
 
 // Layout (default dimensions)
 modelsLayout.vegaGeneric = {
-  height: '30vh',
-  width: '30vw',
+  height: '300px',
+  width: '540px',
   minWidth: '50px',
   minHeight: '32px',
 };
