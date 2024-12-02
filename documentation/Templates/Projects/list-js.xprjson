@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-02T09:01:06.665Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:20:23.470Z",
     "name": "list-js",
     "description": "list widget with list display and selection",
     "groupName": "JavaScript",
@@ -45,41 +45,13 @@
     ],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwSp",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "annotationLabelA": {
       "layout": {
-        "top": "2.8vh",
-        "left": "0.981675vw",
-        "height": "5.06667vh",
-        "width": "11.9764vw",
-        "minHeight": "5px",
-        "minWidth": "5px",
+        "top": 11,
+        "left": 5,
+        "height": 38,
+        "width": 183,
         "z-index": "5"
       },
       "container": {
@@ -100,18 +72,18 @@
         "displayBorder": false,
         "borderColor": "var(--widget-border-color)",
         "borderWidth": "2px",
-        "centerVertically": true
+        "centerVertically": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {}
     },
     "annotationLabelB": {
       "layout": {
-        "top": "36.2667vh",
-        "left": "0.981675vw",
-        "height": "5.06667vh",
-        "width": "11.9764vw",
-        "minHeight": "5px",
-        "minWidth": "5px",
+        "top": 261,
+        "left": 5,
+        "height": 38,
+        "width": 183,
         "z-index": "6"
       },
       "container": {
@@ -132,18 +104,18 @@
         "displayBorder": false,
         "borderColor": "var(--widget-border-color)",
         "borderWidth": "2px",
-        "centerVertically": true
+        "centerVertically": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {}
     },
     "flatUiListA": {
       "layout": {
-        "top": "9.86667vh",
-        "left": "0.981675vw",
-        "height": "18.6667vh",
-        "width": "18.9791vw",
-        "minHeight": "75px",
-        "minWidth": "80px",
+        "top": 64,
+        "left": 5,
+        "height": 140,
+        "width": 290,
         "z-index": "7"
       },
       "container": {
@@ -160,7 +132,10 @@
         "valueFontFamily": "var(--widget-font-family)",
         "borderColor": "var(--widget-border-color)",
         "displayBorder": true,
-        "borderWidth": "2px"
+        "maxSelected": "*",
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": [],
@@ -169,12 +144,10 @@
     },
     "flatUiTableA": {
       "layout": {
-        "top": "43.2vh",
-        "left": "0.981675vw",
-        "height": "10.5333vh",
-        "width": "18.9791vw",
-        "minHeight": "79px",
-        "minWidth": "88px",
+        "top": 313,
+        "left": 5,
+        "height": 79,
+        "width": 290,
         "z-index": "8"
       },
       "container": {
@@ -195,7 +168,12 @@
         "backgroundColor": {
           "primary": "var(--widget-color-0)",
           "secondary": "var(--widget-table-striped-odd)"
-        }
+        },
+        "paginationMinNbr": 10,
+        "paginationOptions": "[10, 50, 100, 500]",
+        "paginationDefaultValue": 10,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": null
@@ -225,11 +203,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }
