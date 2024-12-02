@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T09:36:44.243Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:30:02.182Z",
     "name": "real-time-kpi-plotly-js",
     "description": "KPI with trend and Plolty real-time widget example",
     "groupName": "JavaScript",
@@ -75,41 +75,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "plotlyRealTimek": {
       "layout": {
-        "top": "7.38782vh",
-        "left": "27.3392vw",
-        "height": "64.1646vh",
-        "width": "53.2462vw",
-        "minHeight": "100px",
-        "minWidth": "100px",
+        "top": 45,
+        "left": 408,
+        "height": 480,
+        "width": 814,
         "z-index": "2"
       },
       "container": {
@@ -121,7 +93,9 @@
         "textColor": "var(--widget-color)",
         "enforceBackgroundTransparency": true,
         "hideModeBar": false,
-        "layout": {}
+        "layout": {},
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "data": [
@@ -169,12 +143,10 @@
     },
     "advancedKpiCardA": {
       "layout": {
-        "top": "16vh",
-        "left": "6.47906vw",
-        "height": "47.0667vh",
-        "width": "15.7068vw",
-        "minHeight": "32px",
-        "minWidth": "64px",
+        "top": 110,
+        "left": 89,
+        "height": 352,
+        "width": 240,
         "z-index": "3"
       },
       "container": {
@@ -197,7 +169,9 @@
         "subLabelColor": "var(--widget-subtext-color)",
         "subLabelFontFamily": "var(--widget-font-family)",
         "borderShadow": false,
-        "graphColor": "var(--widget-label-color)"
+        "graphColor": "var(--widget-label-color)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": "--",
@@ -228,11 +202,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

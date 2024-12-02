@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T10:37:47.472Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:27:25.923Z",
     "name": "osm-lineheatmap",
     "description": "Line heatmap on map with display configuration parameters",
     "groupName": "Neutral",
@@ -38,41 +38,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwSp",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "openStreetMapsq": {
       "layout": {
-        "top": "2.8vh",
-        "left": "1.37435vw",
-        "height": "50.6667vh",
-        "width": "78.7958vw",
-        "minHeight": "20px",
-        "minWidth": "20px",
+        "top": 11,
+        "left": 11,
+        "height": 379,
+        "width": 1204,
         "z-index": "4"
       },
       "container": {
@@ -116,7 +88,9 @@
           "modal": false
         },
         "captureClickEvent": false,
-        "markerCluster": true
+        "markerCluster": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "geoJson": {
@@ -165,12 +139,10 @@
     },
     "flatUiCheckboxA": {
       "layout": {
-        "top": "67.3333vh",
-        "left": "1.40052vw",
-        "height": "6vh",
-        "width": "13.089vw",
-        "minHeight": "24px",
-        "minWidth": "32px",
+        "top": 494,
+        "left": 11,
+        "height": 45,
+        "width": 200,
         "z-index": "6"
       },
       "container": {
@@ -187,7 +159,9 @@
         "labelFontFamily": "var(--widget-font-family)",
         "checkboxSize": 1,
         "checkedColor": "var(--widget-input-checked-color)",
-        "uncheckedColor": "var(--widget-input-unchecked-color)"
+        "uncheckedColor": "var(--widget-input-unchecked-color)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": false
@@ -195,12 +169,10 @@
     },
     "flatUiDoubleSliderA": {
       "layout": {
-        "top": "56.8vh",
-        "left": "1.37435vw",
-        "height": "8vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 415,
+        "left": 11,
+        "height": 60,
+        "width": 367,
         "z-index": "7"
       },
       "container": {
@@ -226,7 +198,9 @@
         "sliderHandleDefaultColor": "var(--widget-handle-default-color)",
         "sliderHandleHoverColor": "var(--widget-handle-hover-color)",
         "sliderHandleActiveColor": "var(--widget-handle-active-color)",
-        "labelFontFamily": "Helvetica Neue"
+        "labelFontFamily": "Helvetica Neue",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "minValue": 25,
@@ -235,12 +209,10 @@
     },
     "flatUiHorizontalSliderA": {
       "layout": {
-        "top": "56.5333vh",
-        "left": "56.2173vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 413,
+        "left": 849,
+        "height": 38,
+        "width": 367,
         "z-index": "8"
       },
       "container": {
@@ -274,7 +246,9 @@
         "valueColor": "var(--widget-color)",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -282,12 +256,10 @@
     },
     "flatUiHorizontalSliderB": {
       "layout": {
-        "top": "65.5467vh",
-        "left": "56.2042vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 480,
+        "left": 849,
+        "height": 38,
+        "width": 367,
         "z-index": "9"
       },
       "container": {
@@ -321,7 +293,9 @@
         "valueColor": "var(--widget-color)",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -386,11 +360,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }
