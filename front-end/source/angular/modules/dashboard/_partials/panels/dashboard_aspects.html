@@ -116,10 +116,10 @@
   </div>
   <div class="aspect__row">
     <div class="aspect__col-right">
-      <button class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitWidth()">
+      <button type="button" class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitWidth()">
         Fit width
       </button>
-      <button class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitHeight()">
+      <button type="button" class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitHeight()">
         Fit height
       </button>
     </div>
@@ -143,15 +143,15 @@
   <div class="aspect__row">
     <div class="aspect__col-left"> </div>
     <div class="aspect__col-right">
-      <button class="btn btn-rounded-fill secondary" style="width: 60px; padding: 0 0.5em; margin: 0"
+      <button type="button" class="btn btn-rounded-fill secondary" style="width: 60px; padding: 0 0.5em; margin: 0"
         ng-click="vm.resetDashboardSize()" ng-disabled="!vm.dashboardSizeChanged()">
         Reset
       </button>
-      <button class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
+      <button type="button" class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
         ng-click="vm.applyDashboardSize(true)" ng-disabled="!vm.dashboardSizeChanged()">
         Scale
       </button>
-      <button class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
+      <button type="button" class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
         ng-click="vm.applyDashboardSize(false)" ng-disabled="!vm.dashboardSizeChanged()">
         Resize
       </button>
