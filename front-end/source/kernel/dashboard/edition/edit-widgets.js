@@ -695,14 +695,16 @@ export function initEditWidget() {
   }
 
   /*--------Widget add function--------*/
-  function addWidget(modelJsonId, instanceId, wLayout, wzIndex, page) {
+  function addWidget(modelJsonId, instanceId, wLayout, wzIndex, page, updateSelection = true) {
     instanceId = _build(modelJsonId, instanceId, wLayout, wzIndex, page);
 
     _onAddRmWidget();
 
-    widgetSelectionContext.clear();
-    widgetSelectionContext.add(instanceId);
-    _onSelectionChange();
+    if (updateSelection) {
+      widgetSelectionContext.clear();
+      widgetSelectionContext.add(instanceId);
+      _onSelectionChange();
+    }
 
     return instanceId;
   }
@@ -811,7 +813,7 @@ export function initEditWidget() {
         }
       }
 
-      addWidget(modelJsonId, instanceId, widget.layout, widget.layout['z-index'], widget.layout.page);
+      addWidget(modelJsonId, instanceId, widget.layout, widget.layout['z-index'], widget.layout.page, false);
     }
 
     angular

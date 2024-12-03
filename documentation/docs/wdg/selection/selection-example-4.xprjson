@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T07:07:36.432Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T21:58:24.279Z",
     "name": "selection-example-4",
     "description": "",
     "groupName": "",
@@ -90,41 +90,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "#bec8c8",
-    "inheritThemeBackgroundColor": false,
-    "theme": "default"
-  },
   "dashboard": {
     "annotationLabel3": {
       "layout": {
-        "top": "3.2vh",
-        "left": "1.63739vw",
-        "height": "4.93333vh",
-        "width": "16.2429vw",
-        "minHeight": "5px",
-        "minWidth": "5px",
+        "top": 14,
+        "left": 15,
+        "height": 37,
+        "width": 248,
         "z-index": "1"
       },
       "container": {
@@ -145,18 +117,18 @@
         "displayBorder": false,
         "borderColor": "var(--widget-border-color)",
         "borderWidth": "2px",
-        "centerVertically": true
+        "centerVertically": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {}
     },
     "plotlyGenericA": {
       "layout": {
-        "top": "13.3333vh",
-        "left": "1.63739vw",
-        "height": "52.2667vh",
-        "width": "25.9362vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 90,
+        "left": 15,
+        "height": 391,
+        "width": 396,
         "z-index": "2"
       },
       "container": {
@@ -168,11 +140,17 @@
         "textColor": "var(--widget-color)",
         "enforceBackgroundTransparency": true,
         "hideModeBar": false,
-        "layout": {}
+        "layout": {},
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "data": [
-          {}
+          {
+            "type": "bar",
+            "x": [],
+            "y": []
+          }
         ],
         "layout": {
           "paper_bgcolor": "rgba(0,0,0,0)",
@@ -213,12 +191,10 @@
     },
     "plotlyGenericW": {
       "layout": {
-        "top": "13.3333vh",
-        "left": "30.0625vw",
-        "height": "52.2667vh",
-        "width": "25.9362vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 90,
+        "left": 449,
+        "height": 391,
+        "width": 396,
         "z-index": "5"
       },
       "container": {
@@ -230,11 +206,17 @@
         "textColor": "var(--widget-color)",
         "enforceBackgroundTransparency": true,
         "hideModeBar": false,
-        "layout": {}
+        "layout": {},
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "data": [
-          {}
+          {
+            "type": "bar",
+            "x": [],
+            "y": []
+          }
         ],
         "layout": {
           "paper_bgcolor": "rgba(0,0,0,0)",
@@ -325,11 +307,15 @@
       }
     }
   },
-  "exportOptions": "ajustToTargetWindow",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "#bec8c8",
+    "inheritThemeBackgroundColor": false,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

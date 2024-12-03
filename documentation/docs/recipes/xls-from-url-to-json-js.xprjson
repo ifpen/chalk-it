@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T13:54:25.671Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:07:57.716Z",
     "name": "xls-from-url-to-json-js",
     "description": "Read xlsx file from URL, convert it to JSON and display it on table",
     "groupName": "JavaScript",
@@ -43,7 +43,7 @@
           "body": "",
           "headers": [],
           "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9hcHAueGRhc2guaW8vcHVibGljLWV4YW1wbGVzL3Zlcnktc2ltcGxlLnhsc3giLCJIb3N0IjoieGRhc2gifQ==",
-          "proxySig": "5TM10MtZYvnW/sf2ZrpNxsx7Jz+k8HgNRDhDWBlJcDHYZzMpS79rsYnIJH3rebDPhA11gAy0mEhudPdNCu5DsZjfZebQTDiJ2HZ+28c14vlSs+G3QHE6kaEmr6o1Xebp"
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxsx7Jz+k8HgNRDhDWBlJcDHYZzMpS79rsYnIJH3rebDPhA11gAy0mEhudPdNCu5DsZjfZebQTDiJ2HZ+28c14vmPuaYwa+MlTnH6CxDfQRvY"
         }
       },
       {
@@ -77,41 +77,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1295,
-    "heightPx": 590,
-    "scrollWidthPx": 1295,
-    "scrollHeightPx": 590,
-    "widthVw": 84.75130890052355,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.75130890052355,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "flatUiTableA": {
       "layout": {
-        "top": "3.94666vh",
-        "left": "3.79581vw",
-        "height": "65.4667vh",
-        "width": "32.7225vw",
-        "minHeight": "79px",
-        "minWidth": "88px",
+        "top": 20,
+        "left": 48,
+        "height": 490,
+        "width": 500,
         "z-index": "1"
       },
       "container": {
@@ -132,7 +104,12 @@
         "backgroundColor": {
           "primary": "var(--widget-color-0)",
           "secondary": "var(--widget-table-striped-odd)"
-        }
+        },
+        "paginationMinNbr": 10,
+        "paginationOptions": "[10, 50, 100, 500]",
+        "paginationDefaultValue": 10,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": null
@@ -148,11 +125,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1295,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

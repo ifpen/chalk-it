@@ -36,7 +36,7 @@ modelsParameters.saveToFileButton = {
 };
 
 // Layout (default dimensions)
-modelsLayout.saveToFileButton = { height: '6vh', width: '8vw', minWidth: '55px', minHeight: '24px' };
+modelsLayout.saveToFileButton = { height: '80px', width: '140px', minWidth: '55px', minHeight: '24px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

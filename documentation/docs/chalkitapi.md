@@ -1,9 +1,10 @@
 # Chalk'it APIs
 
-Chalk'it offers a set of APIs through **_chalkit_** that serve several primary purposes:
+Chalk'it offers a set of APIs through **_chalkit_** that address several primary functionalities:
 
-- Scheduler APIs: Facilitate the scheduling process by enabling the modification of dataNode variables and launching the scheduler.
-- Dashboard APIs: Support the developpement of multi-dashboard applications and the display of widgets.
+- Scheduler APIs: Facilitate the scheduling process by enabling the modification of dataNode variables and triggering the scheduler.
+- Dashboard APIs: Support the developpement of multi-dashboard applications and widget display.
+- Notification APIs: Enable the creation, management, and delivery of real-time alerts and updates to users supporting both blocking (popup) and non-blocking notifications.
 - Datanode IOs
 
 ## JavaScript
@@ -17,15 +18,15 @@ The assessment of these functions is handled at the end of the current schedulin
 #### setVariable
 
 ```JavaScript
-chalkit.setVariable(dataNodeName, dataNodeValue);
+chalkit.scheduler.setVariable(dataNodeName, dataNodeValue);
 ```
 
-This API sets the value _dataNodeValue_ to the dataNode identified by dataNode["_dataNodeName_"].
+This API assigns the value _dataNodeValue_ to the dataNode identified by dataNode["_dataNodeName_"].
 
-- dataNodeName: The name of the dataNode, must be a string.
+- dataNodeName _(string)_: The name of the dataNode.
 - dataNodeValue: The value to be assigned to the dataNode, which can be any JavaScript primitive type (number, string, boolean), array or JSON.
 
-For example, if you have a dataNode _info_person_ that contains:
+For example, to update the following dataNode named _info_person_:
 
 ```JavaScript
 {
@@ -34,25 +35,25 @@ For example, if you have a dataNode _info_person_ that contains:
 }
 ```
 
-To modify it by another JSON value, you can use the following code:
+Use this code:
 
 ```JavaScript
-chalkit.setVariable("info_person", {"name": "Jane Doe","age": "25"});
+chalkit.scheduler.setVariable("info_person", {"name": "Jane Doe","age": "25"});
 ```
 
 #### setVariableProperty
 
 ```JavaScript
-chalkit.setVariableProperty(dataNodeName, propertyPath, dataNodeValue);
+chalkit.scheduler.setVariableProperty(dataNodeName, propertyPath, dataNodeValue);
 ```
 
 This API allows to modify a specific property within a dataNode (not the entire dataNode). It assigns the value _dataNodeValue_ to the specified property path: dataNode["_dataNodeName_"]._propertyPath_.
 
-- dataNodeName: The name of the dataNode, must be a string.
-- propertyPath: The path of the dataNode property to be modified, supporting JavaScript primitive types (number, string, boolean), array or JSON.
+- dataNodeName _(string)_: The name of the dataNode.
+- propertyPath _(array|string)_: The path to the property to be modified, supporting nested structures.
 - dataNodeValue: The value to be set to the dataNode property, can be of any JavaScript primitive type (number, string, boolean), array or JSON.
 
-For example, if you have a dataNode _info_address_ that contains:
+For example, given this dataNode named _info_address_:
 
 ```JavaScript
 {
@@ -71,21 +72,21 @@ For example, if you have a dataNode _info_address_ that contains:
 To update the value of the street property in the nested structure within _info_address_, you can use the following code:
 
 ```JavaScript
-chalkit.setVariableProperty("info_person", ["address","details","street"], "West 23rd Street");
+chalkit.scheduler.setVariableProperty("info_person", ["address","details","street"], "West 23rd Street");
 ```
 
 #### setVariables
 
 ```JavaScript
-chalkit.setVariables(dataNodeNames, dataNodeValues);
+chalkit.scheduler.setVariables(dataNodeNames, dataNodeValues);
 ```
 
-This API sets each value _dataNodeValues[i]_ to dataNode["_dataNodeNames[i]_"], where i:0 .. length-1 of _dataNodeNames_.
+This API sets each value _dataNodeValues[i]_ to dataNode["_dataNodeNames[i]_"], where _i:0 .. length-1_ of _dataNodeNames_.
 
-- dataNodeNames: An array containing the names of dataNodes, each as a string.
-- dataNodeValues: An array containing the corresponding values for the dataNodes, can be of any JavaScript primitive type (number, string, boolean), array or JSON. This array must match the size of dataNodeNames.
+- dataNodeNames _(array)_: An array of dataNode names.
+- dataNodeValues _(array)_: An array of values, matching the order and size of dataNodeNames.
 
-For example, to modify at the same time the previous dataNode _info_person_ and another dataNode _info_gender_ that contains:
+For example, to update _info_person_ and another dataNode _info_gender_:
 
 ```JavaScript
 {"gender": "male"}
@@ -94,23 +95,23 @@ For example, to modify at the same time the previous dataNode _info_person_ and 
 you can use the following code:
 
 ```JavaScript
-chalkit.setVariables(["info_person","info_gender"], [{"name": "Jane Doe","age": "25"},{"gender": "female"}]);
+chalkit.scheduler.setVariables(["info_person","info_gender"], [{"name": "Jane Doe","age": "25"},{"gender": "female"}]);
 ```
 
 #### executeDataNode
 
 ```JavaScript
-chalkit.executeDataNode(dataNodeName);
+chalkit.scheduler.executeDataNode(dataNodeName);
 ```
 
-This API allows to launch the schedule with the source node identified as _dataNodeName_ (the name of the dataNode that must be a string).
+This API triggers the scheduler with the source node identified as _dataNodeName_ (the name of the dataNode that must be a string).
 
 This functionality can be useful for a dataNode with [explicit trigger](ds/ds-execution-engine.md#explicit-trigger) flag set to true. Its execution can be explicitly triggered by this API, in addition to being triggered by an associated [push button](wdg/wdg-basic-inputs.md#push-button) widget or by clicking on the dataNode update icon ![Update](ds/img/refresh-icon.png "Update") present in the dataNodes list.
 
 #### executeDataNodes
 
 ```JavaScript
-chalkit.executeDataNodes(dataNodeNames);
+chalkit.scheduler.executeDataNodes(dataNodeNames);
 ```
 
 This API is similar to _executeDataNode_, except it launches the schedule with multiple source nodes defined in the _dataNodeNames_ array, where each name is represented as a string.
@@ -124,52 +125,54 @@ The main feature allow navigation between Chalk'it pages with parameter transfer
 In [constrained dashboard mode](export/export.md#scaling-methods-for-the-constrained-dashboard), the method:
 
 ```JavaScript
-chalkit.goToPage(pageNumber)
+chalkit.dashboard.goToPage(pageNumber)
 ```
 
 allows to show only the targed page. It is the main method for building multi-page app with custom navigation control.
 
+- pageNumber _(number)_: The target page number.
+
 #### viewPage
 
 ```JavaScript
-chalkit.viewPage(pageUrl, inputVals, bNewTab)
+chalkit.dashboard.viewPage(pageUrl, inputVals, bNewTab)
 ```
 
-Navigates to _pageUrl_, setting the values of the specified dataNodes in inputVals.
+Navigates to _pageUrl_, setting the values of the specified dataNodes in _inputVals_.
 
-- pageUrl: target page URL
-- inputVals: an array of structures of type
+- pageUrl _(string)_: The URL of the target page.
+- inputVals _(array)_: An array of objects with structure.
 
   ```JSON
   {"dsName": "dataNodeName", "dsVal" : "dataNodeValue"}
   ```
 
-  dsName should be of type string. dsVal can be of any JavaScript primitive type (number, string, boolean), array or JSON.
+  _dsName_ should be of type string. _dsVal_ can be of any JavaScript primitive type (number, string, boolean), array or JSON.
 
-- bNewTab: open in new tab when true.
+- bNewTab _(boolean)_: Opens the page in a new tab if true.
 
 #### viewProject
 
 Similar to view page, but applies for projects.
 
 ```JavaScript
-chalkit.viewProject(projectUrl, inputVals, bNewTab)
+chalkit.dashboard.viewProject(projectUrl, inputVals, bNewTab)
 ```
 
 #### hideWidget
 
 ```JavaScript
-chalkit.hideWidget(widgetName)
+chalkit.dashboard.hideWidget(widgetName)
 ```
 
 Hides the display of the widget.
 
-- widgetName: the name of the widget, which can be obtained by hovering over the widget target, in the edit mode. The widget is visible by default.
+- widgetName _(string)_: The name of the widget, which can be obtained by hovering over the widget target, in the edit mode. The widget is visible by default.
 
 #### showWidget
 
 ```JavaScript
-chalkit.showWidget(widgetName)
+chalkit.dashboard.showWidget(widgetName)
 ```
 
 Makes the display of the widget visible.
@@ -177,53 +180,100 @@ Makes the display of the widget visible.
 #### disableWidget
 
 ```JavaScript
-chalkit.disableWidget(widgetName)
+chalkit.dashboard.disableWidget(widgetName)
 ```
 
-Disables the access of the widget. The widget is enabled by default.
+Disables the interaction with a widget. The widget is enabled by default.
 
 #### enableWidget
 
 ```JavaScript
-chalkit.enableWidget(widgetName)
+chalkit.dashboard.enableWidget(widgetName)
 ```
 
-Enables the access of the widget (interactive).
+Enables the interaction with a widget.
+
+### Notification features
+
+These features facilitate the creation and delivery of blocking and non-blocking notifications, supporting various types such as error, success, info, and warning.
+
+### swalert
+
+```JavaScript
+chalkit.notification.swalert(title, message, type)
+```
+
+Creates and displays a blocking notification using the SweetAlert library:
+
+![sweet alert](ds/img/sweet-alert.PNG "swalert")
+
+- title _(string)_: The title of the notification.
+- message _(string)_: The content of the notification message.
+- type _(string)_: The type of the notification. Accepted values are "error", "success", "warning", or "info".
+
+### notify
+
+```JavaScript
+chalkit.notification.notify(dataNodeName, message, type)
+```
+
+Creates and displays a non-blocking notification, which will appear in the notification window under the bell icon ![bell icon](ds/img/bell-icon.PNG "bell icon
+"):
+
+![Notification window](ds/img/notify-window.PNG "Notify window")
+
+- dataNodeName _(string)_: The name of the associated dataNode. If dataNodeName is undefined or an empty string, the script source where the API is called will be used as the default.
+- message _(string)_: The content of the notification message.
+- type _(string)_: The type of the notification. Accepted values are "error", "success", "warning", or "info".
 
 ## Python
 
 The Python API deals with input and outputs for Python scripts and also offers a port of the JavaScript API to interact with the scheduler and the dashboard.
 
 ### Input/ouputs helpers
+
 ::: chalkit_python_api.public_api.ChalkitApi
-    options:
-      show_source: false
-      heading_level: 4
-      show_signature_annotations: true
-      show_object_full_path: false
-      show_root_toc_entry: false
-      separate_signature: true
-      show_signature_annotations: false
+options:
+show_source: false
+heading_level: 4
+show_signature_annotations: true
+show_object_full_path: false
+show_root_toc_entry: false
+separate_signature: true
+show_signature_annotations: false
 
 ### Scheduler interactions
-::: chalkit_python_api.public_api.SchedulerActions
-    options:
-      show_source: false
-      heading_level: 4
-      show_signature_annotations: true
-      show_object_full_path: false
-      show_root_toc_entry: false
-      separate_signature: true
-      show_signature_annotations: false
 
+::: chalkit_python_api.public_api.SchedulerActions
+options:
+show_source: false
+heading_level: 4
+show_signature_annotations: true
+show_object_full_path: false
+show_root_toc_entry: false
+separate_signature: true
+show_signature_annotations: false
 
 ### Dashboard interactions
+
 ::: chalkit_python_api.public_api.DashboardActions
-    options:
-      show_source: false
-      heading_level: 4
-      show_signature_annotations: true
-      show_object_full_path: false
-      show_root_toc_entry: false
-      separate_signature: true
-      show_signature_annotations: false
+options:
+show_source: false
+heading_level: 4
+show_signature_annotations: true
+show_object_full_path: false
+show_root_toc_entry: false
+separate_signature: true
+show_signature_annotations: false
+
+### Notification interactions
+
+::: chalkit_python_api.public_api.NotificationActions
+options:
+show_source: false
+heading_level: 4
+show_signature_annotations: true
+show_object_full_path: false
+show_root_toc_entry: false
+separate_signature: true
+show_signature_annotations: false

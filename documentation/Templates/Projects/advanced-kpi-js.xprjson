@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-02T08:35:26.320Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:19:49.583Z",
     "name": "advanced-kpi-js",
     "description": "",
     "groupName": "JavaScript",
@@ -62,41 +62,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1295,
-    "heightPx": 590,
-    "scrollWidthPx": 1295,
-    "scrollHeightPx": 590,
-    "widthVw": 84.75130890052355,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.75130890052355,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "advancedKpiCardA": {
       "layout": {
-        "top": "9.12vh",
-        "left": "6.03403vw",
-        "height": "35.4667vh",
-        "width": "13.5471vw",
-        "minHeight": "32px",
-        "minWidth": "64px",
+        "top": 58,
+        "left": 82,
+        "height": 265,
+        "width": 207,
         "z-index": "2"
       },
       "container": {
@@ -119,7 +91,9 @@
         "subLabelColor": "var(--widget-subtext-color)",
         "subLabelFontFamily": "var(--widget-font-family)",
         "borderShadow": false,
-        "graphColor": "var(--widget-label-color)"
+        "graphColor": "var(--widget-label-color)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": "--",
@@ -136,11 +110,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1295,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

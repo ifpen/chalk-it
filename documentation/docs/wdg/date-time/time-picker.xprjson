@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-02T09:34:12.482Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:21:24.982Z",
     "name": "time-picker",
     "description": "Time picker (clock) with selection and display",
     "groupName": "Neutral",
@@ -32,41 +32,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "timepickerSimpleA": {
       "layout": {
-        "top": "2.53333vh",
-        "left": "0.65445vw",
-        "height": "5.46667vh",
-        "width": "22.9058vw",
-        "minHeight": "32px",
-        "minWidth": "150px",
+        "top": 9,
+        "left": 0,
+        "height": 41,
+        "width": 350,
         "z-index": "6"
       },
       "container": {
@@ -88,7 +60,9 @@
         "displayBorder": true,
         "borderColor": "var(--widget-border-color)",
         "backgroundColor": "var(--widget-input-color)",
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "timeValue": ""
@@ -96,12 +70,10 @@
     },
     "flatUiValueDisplayA": {
       "layout": {
-        "top": "2.53333vh",
-        "left": "28.1414vw",
-        "height": "5.46667vh",
-        "width": "22.9058vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 9,
+        "left": 420,
+        "height": 41,
+        "width": 350,
         "z-index": "7"
       },
       "container": {
@@ -127,7 +99,9 @@
         "unit": "unitText",
         "displayUnit": false,
         "unitFontSize": 0.5,
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -135,15 +109,6 @@
     }
   },
   "connections": {
-    "flatUiValueDisplayA": {
-      "value": {
-        "name": "value",
-        "dataNode": "time",
-        "dataFields": [
-          "selected"
-        ]
-      }
-    },
     "timepickerSimpleA": {
       "timeValue": {
         "name": "timeValue",
@@ -152,13 +117,26 @@
           "selected"
         ]
       }
+    },
+    "flatUiValueDisplayA": {
+      "value": {
+        "name": "value",
+        "dataNode": "time",
+        "dataFields": [
+          "selected"
+        ]
+      }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8887",
-    "fileFormatVersion": "0.3",
-    "date": "Tue Apr 30 2024 10:55:56 GMT+0200 (heure d\u2019\u00e9t\u00e9 d\u2019Europe centrale)",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:05:08.967Z",
     "name": "clock-and-delay",
     "description": "",
     "groupName": "Neutral",
@@ -45,41 +45,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwSp",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "#ffffff",
-    "inheritThemeBackgroundColor": false,
-    "theme": "default"
-  },
   "dashboard": {
     "flatUiValueDisplayA": {
       "layout": {
-        "top": "4.26667vh",
-        "left": "1.37435vw",
-        "height": "6.8vh",
-        "width": "30.4974vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 22,
+        "left": 11,
+        "height": 51,
+        "width": 466,
         "z-index": "3"
       },
       "container": {
@@ -105,7 +77,9 @@
         "unit": "unitText",
         "displayUnit": false,
         "unitFontSize": 0.5,
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -113,12 +87,10 @@
     },
     "flatUiValueDisplayB": {
       "layout": {
-        "top": "13.7333vh",
-        "left": "1.37435vw",
-        "height": "6.8vh",
-        "width": "30.4974vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 93,
+        "left": 11,
+        "height": 51,
+        "width": 466,
         "z-index": "4"
       },
       "container": {
@@ -144,7 +116,9 @@
         "unit": "unitText",
         "displayUnit": false,
         "unitFontSize": 0.5,
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -171,11 +145,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "#ffffff",
+    "inheritThemeBackgroundColor": false,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

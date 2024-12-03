@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-04T11:24:14.242Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:04:17.764Z",
     "name": "rest-pandas-pyodide-covid-js-py",
     "description": "",
     "groupName": "Mixed",
@@ -76,7 +76,7 @@
             }
           ],
           "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0NTU0VHSVNhbmREYXRhL0NPVklELTE5L21hc3Rlci9jc3NlX2NvdmlkXzE5X2RhdGEvY3NzZV9jb3ZpZF8xOV90aW1lX3Nlcmllcy90aW1lX3Nlcmllc19jb3ZpZDE5X2NvbmZpcm1lZF9nbG9iYWwuY3N2IiwiSG9zdCI6InhkYXNoIn0=",
-          "proxySig": "5TM10MtZYvnW/sf2ZrpNxn/fpTeOoUHXzV23CzlL95mni7uOrscQQSlcUagf1btXos2wf1ZA+eGBSZhc1/bPlk5lyaqX3oHfc4Sq0kUugOLuSZa8ZHH9jyGOBNVXZpzZLBXBrEJXDUTQjJP4Ff5kbg3nxePCRPPNVb6JmHC0QC+UgImzwqbGWkZOxL545KsxsXmCKlOkGYDu2jd6zmLHnShUZI8ODQReB+wKMAnJVWcfEZIzwNWoWRKJcUdr5oK8"
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxn/fpTeOoUHXzV23CzlL95mni7uOrscQQSlcUagf1btXos2wf1ZA+eGBSZhc1/bPlk5lyaqX3oHfc4Sq0kUugOLuSZa8ZHH9jyGOBNVXZpzZLBXBrEJXDUTQjJP4Ff5kbg3nxePCRPPNVb6JmHC0QC+UgImzwqbGWkZOxL545KsxsXmCKlOkGYDu2jd6zmLHnShUZI8ODQReB+wKMAnJVWc65KlTBF/sQDDGihpnyjzd"
         }
       },
       {
@@ -108,7 +108,7 @@
         "type": "JSON_var_plugin",
         "settings": {
           "name": "selectedCountry",
-          "json_var": "[\"France\"]"
+          "json_var": "[\"France\",\"Germany\",\"United Kingdom\"]"
         }
       }
     ]
@@ -120,48 +120,55 @@
     ],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
+    "flatUiListC": {
+      "layout": {
+        "top": 0,
+        "left": 5,
+        "height": 577,
+        "width": 311,
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "flatUiListC",
+        "modelJsonId": "flatUiList"
+      },
+      "modelParameters": {
+        "addControls": false,
+        "listValueFontSize": 0.5,
+        "listValueColor": "#34495e",
+        "listBackgroundColor": "#ffffff",
+        "selectValueColor": "#34495e",
+        "selectValueBackgroundColor": "#cecece",
+        "valueFontFamily": "Helvetica Neue",
+        "borderColor": "#447bdc",
+        "displayBorder": true,
+        "maxSelected": "*",
+        "showWidget": true,
+        "enableWidget": true,
+        "borderWidth": "2px"
+      },
+      "modelHiddenParams": {
+        "value": [],
+        "selectedValue": ""
+      }
+    },
     "echartsGenericK": {
       "layout": {
-        "top": "1.33333vh",
-        "left": "22.8403vw",
-        "height": "76.2667vh",
-        "width": "59.2277vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 0,
+        "left": 338,
+        "height": 577,
+        "width": 901,
         "z-index": "2"
       },
       "container": {
         "instanceId": "echartsGenericK",
         "modelJsonId": "echartsGeneric"
       },
-      "modelParameters": {},
+      "modelParameters": {
+        "showWidget": true,
+        "enableWidget": true
+      },
       "modelHiddenParams": {
         "option": {
           "color": [
@@ -179,40 +186,23 @@
         },
         "selection": {}
       }
-    },
-    "flatUiListA": {
-      "layout": {
-        "top": "1.33333vh",
-        "left": "0.65445vw",
-        "height": "75.7333vh",
-        "width": "20.6806vw",
-        "minHeight": "75px",
-        "minWidth": "80px",
-        "z-index": "3"
-      },
-      "container": {
-        "instanceId": "flatUiListA",
-        "modelJsonId": "flatUiList"
-      },
-      "modelParameters": {
-        "addControls": false,
-        "listValueFontSize": 0.5,
-        "listValueColor": "var(--widget-select-drop-text)",
-        "listBackgroundColor": "var(--widget-select-drop-color)",
-        "selectValueColor": "var(--widget-select-option-highlighted-text)",
-        "selectValueBackgroundColor": "var(--widget-select-option-highlighted-color)",
-        "valueFontFamily": "var(--widget-font-family)",
-        "borderColor": "var(--widget-border-color)",
-        "displayBorder": true,
-        "borderWidth": "2px"
-      },
-      "modelHiddenParams": {
-        "value": [],
-        "selectedValue": ""
-      }
     }
   },
   "connections": {
+    "flatUiListC": {
+      "value": {
+        "name": "value",
+        "dataFields": [],
+        "dataNode": "countriesList",
+        "dataNodeIndex": 0
+      },
+      "selectedValue": {
+        "name": "selectedValue",
+        "dataFields": [],
+        "dataNode": "selectedCountry",
+        "dataNodeIndex": 5
+      }
+    },
     "echartsGenericK": {
       "option": {
         "name": "option",
@@ -226,25 +216,17 @@
         "dataNode": "None",
         "dataNodeIndex": -1
       }
-    },
-    "flatUiListA": {
-      "value": {
-        "name": "value",
-        "dataNode": "countriesList",
-        "dataFields": []
-      },
-      "selectedValue": {
-        "name": "selectedValue",
-        "dataNode": "selectedCountry",
-        "dataFields": []
-      }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1256,
+    "height": 577,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

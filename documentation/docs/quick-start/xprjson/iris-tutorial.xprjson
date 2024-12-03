@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T14:06:14.132Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:07:04.068Z",
     "name": "iris-tutorial",
     "description": "",
     "groupName": "",
@@ -108,41 +108,13 @@
       "plotly"
     ]
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "plotlyGeneric0": {
       "layout": {
-        "top": "1.33333vh",
-        "left": "1.03276vw",
-        "height": "53.4015vh",
-        "width": "35.9398vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 0,
+        "left": 6,
+        "height": 399,
+        "width": 549,
         "z-index": "1"
       },
       "container": {
@@ -153,11 +125,17 @@
         "enforceTextColor": true,
         "textColor": "var(--widget-color)",
         "enforceBackgroundTransparency": true,
-        "hideModeBar": false
+        "hideModeBar": false,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "data": [
-          {}
+          {
+            "type": "bar",
+            "x": [],
+            "y": []
+          }
         ],
         "layout": {
           "paper_bgcolor": "rgba(0,0,0,0)",
@@ -198,12 +176,10 @@
     },
     "flatUiHorizontalSliderA": {
       "layout": {
-        "top": "10.6667vh",
-        "left": "39.9869vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 70,
+        "left": 601,
+        "height": 38,
+        "width": 367,
         "z-index": "7"
       },
       "container": {
@@ -237,7 +213,9 @@
         "valueColor": "var(--widget-color)",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -245,12 +223,10 @@
     },
     "flatUiHorizontalSliderB": {
       "layout": {
-        "top": "16.2667vh",
-        "left": "39.9869vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 112,
+        "left": 601,
+        "height": 38,
+        "width": 367,
         "z-index": "8"
       },
       "container": {
@@ -284,7 +260,9 @@
         "valueColor": "var(--widget-color)",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -292,12 +270,10 @@
     },
     "flatUiHorizontalSliderC": {
       "layout": {
-        "top": "22vh",
-        "left": "39.9869vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 155,
+        "left": 601,
+        "height": 38,
+        "width": 367,
         "z-index": "9"
       },
       "container": {
@@ -331,7 +307,9 @@
         "valueColor": "var(--widget-color)",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -339,12 +317,10 @@
     },
     "flatUiHorizontalSliderD": {
       "layout": {
-        "top": "27.6vh",
-        "left": "39.9869vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 196,
+        "left": 601,
+        "height": 38,
+        "width": 367,
         "z-index": "10"
       },
       "container": {
@@ -378,7 +354,9 @@
         "valueColor": "var(--widget-color)",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -386,12 +364,10 @@
     },
     "kpiCardA": {
       "layout": {
-        "top": "12.5867vh",
-        "left": "66.1649vw",
-        "height": "16vh",
-        "width": "17.9974vw",
-        "minHeight": "32px",
-        "minWidth": "64px",
+        "top": 84,
+        "left": 1001,
+        "height": 120,
+        "width": 275,
         "z-index": "11"
       },
       "container": {
@@ -414,7 +390,9 @@
         "displayUnit": false,
         "unitFontSize": 0.5,
         "unitColor": "var(--widget-label-color)",
-        "borderShadow": false
+        "borderShadow": false,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": "--"
@@ -484,11 +462,15 @@
       }
     }
   },
-  "exportOptions": "ajustToTargetWindow",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

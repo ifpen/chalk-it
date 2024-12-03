@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T13:44:34.089Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:07:38.775Z",
     "name": "json-to-table-columnwise-js",
     "description": "key/value JSON to table (columnwise)",
     "groupName": "JavaScript",
@@ -48,41 +48,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1295,
-    "heightPx": 590,
-    "scrollWidthPx": 1295,
-    "scrollHeightPx": 590,
-    "widthVw": 84.75130890052355,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.75130890052355,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "flatUiTableA": {
       "layout": {
-        "top": "3.86667vh",
-        "left": "0.65445vw",
-        "height": "70vh",
-        "width": "80.2356vw",
-        "minHeight": "79px",
-        "minWidth": "88px",
+        "top": 19,
+        "left": 0,
+        "height": 524,
+        "width": 1226,
         "z-index": "1"
       },
       "container": {
@@ -103,7 +75,12 @@
         "backgroundColor": {
           "primary": "var(--widget-color-0)",
           "secondary": "var(--widget-table-striped-odd)"
-        }
+        },
+        "paginationMinNbr": 10,
+        "paginationOptions": "[10, 50, 100, 500]",
+        "paginationDefaultValue": 10,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": null
@@ -119,11 +96,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1295,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

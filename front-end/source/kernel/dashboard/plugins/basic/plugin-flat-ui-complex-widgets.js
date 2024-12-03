@@ -120,11 +120,11 @@ modelsParameters.flatUiEditableTable = {
 };
 
 // Layout (default dimensions)
-modelsLayout.flatUiSelect = { height: '5vh', width: '19vw', minWidth: '40px', minHeight: '27px' };
-modelsLayout.flatUiMultiSelect = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
-modelsLayout.flatUiList = { height: '16vh', width: '11vw', minWidth: '80px', minHeight: '75px' };
-modelsLayout.flatUiEditableTable = { height: '10vh', width: '11vw', minWidth: '88px', minHeight: '79px' };
-modelsLayout.flatUiTable = { height: '10vh', width: '11vw', minWidth: '88px', minHeight: '79px' };
+modelsLayout.flatUiSelect = { height: '40px', width: '300px', minWidth: '40px', minHeight: '27px' };
+modelsLayout.flatUiMultiSelect = { height: '140px', width: '180px', minWidth: '80px', minHeight: '75px' };
+modelsLayout.flatUiList = { height: '140px', width: '180px', minWidth: '80px', minHeight: '75px' };
+modelsLayout.flatUiEditableTable = { height: '100px', width: '180px', minWidth: '88px', minHeight: '79px' };
+modelsLayout.flatUiTable = { height: '100px', width: '180px', minWidth: '88px', minHeight: '79px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -139,27 +139,25 @@ function flatUiComplexWidgetsPluginClass() {
     const self = this;
 
     this.enable = function () {
-      $('#select' + idWidget)
-        .off('click')
-        .on('click', function (e, ui) {
-          const val = self.selectedValue.getValue();
-          modelsHiddenParams[idInstance].selectedValue = val;
-          self.selectedValue.updateCallback(self.selectedValue, val);
-        });
-      $('#select' + idWidget).prop('disabled', false);
+      const selectElement = $(`#select${idWidget}`);
 
-      document.styleSheets[0].addRule(
-        '#s2id_select' + idWidget + ' > .select2-choice > .select2-chosen',
-        this.selectedValueColor()
-      );
-      document.styleSheets[0].addRule(
-        '#s2id_select' + idWidget + ' > .select2-choice',
-        this.selectedItemDefaultColor()
-      );
-      document.styleSheets[0].addRule(
-        '#s2id_select' + idWidget + ' > .select2-choice:hover',
-        this.selectedItemHoverColor()
-      );
+      // Remove existing click handler and add new one
+      selectElement.off('click').on('click', (e, ui) => {
+        const val = self.selectedValue.getValue();
+        modelsHiddenParams[idInstance].selectedValue = val;
+        self.selectedValue.updateCallback(self.selectedValue, val);
+      });
+
+      // Enable the select element
+      selectElement.prop('disabled', false);
+
+      // Add custom styles to the select2 elements
+      const stylesheet = document.styleSheets[0];
+      const baseSelector = `#s2id_select${idWidget} > .select2-choice`;
+
+      stylesheet.addRule(`${baseSelector} > .select2-chosen`, this.selectedValueColor());
+      stylesheet.addRule(baseSelector, this.selectedItemDefaultColor());
+      stylesheet.addRule(`${baseSelector}:hover`, this.selectedItemHoverColor());
     };
 
     this.disable = function () {
@@ -172,106 +170,95 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.render = function () {
       const widgetHtml = document.createElement('div');
-      widgetHtml.setAttribute('id', 'select-widget-html' + idWidget);
-      widgetHtml.setAttribute('class', 'select-widget-html');
-      let valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 2); // keepRatio
+      widgetHtml.id = `select-widget-html${idWidget}`;
+      widgetHtml.className = 'select-widget-html';
+
+      const container = $(`#${idDivContainer}`);
+      const containerHeight = container.height();
+      const containerWidth = container.width();
+      let valueHeightPx = Math.min(containerHeight, containerWidth / 2);
+
       let divContent = '';
+
+      // Handle label display
       if (modelsParameters[idInstance].displayLabel) {
         // conversion to enable HTML tags
         const labelText = this.getTransformedText('label');
 
-        valueHeightPx = Math.min($('#' + idDivContainer).height(), $('#' + idDivContainer).width() / 4); // keepRatio
-        if (!_.isUndefined(modelsParameters[idInstance].selectWidthProportion)) {
-          const proportion = Math.max(0, 100 - parseFloat(modelsParameters[idInstance].selectWidthProportion)) + '%';
-          divContent =
-            '<span id="select-span' +
-            idWidget +
-            '" class="select-span" style="width:' +
-            proportion +
-            '; ' +
-            this.labelFontSize() +
-            this.labelColor() +
-            this.labelFontFamily() +
-            '">' +
-            labelText +
-            '</span>';
-        } else
-          divContent =
-            '<span id="select-span' +
-            idWidget +
-            '" class="select-span" style="max-width: 45%; ' +
-            this.labelFontSize() +
-            this.labelColor() +
-            this.labelFontFamily() +
-            '">' +
-            labelText +
-            '</span>';
+        valueHeightPx = Math.min(containerHeight, containerWidth / 4);
+
+        const widthProportion = modelsParameters[idInstance].selectWidthProportion;
+        const widthStyle = widthProportion
+          ? `width: ${Math.max(0, 100 - parseFloat(widthProportion))}%;`
+          : 'max-width: 45%;';
+
+        divContent += `
+          <span id="select-span${idWidget}" 
+                class="select-span" 
+                style="${widthStyle} ${this.labelFontSize()} ${this.labelColor()} ${this.labelFontFamily()}">
+              ${labelText}
+          </span>`;
       }
 
-      const keys = modelsHiddenParams[idInstance].keys;
-      const values = modelsHiddenParams[idInstance].values;
-      const nbOptions = Math.min(values.length, keys.length);
-      const styleDef = 'style="display: table; height: ' + valueHeightPx + 'px; "';
+      // Handle select options
+      let { keys, values, selectedValue } = modelsHiddenParams[idInstance];
 
-      divContent +=
-        '<select data-toggle="select" id="select' +
-        idWidget +
-        '" class="select-div form-control select select-primary select-block mbl" ' +
-        styleDef +
-        '>';
+      if (values?.length === 0 && keys?.length > 0 && !modelsParameters[idInstance]?.isKeyValuePairs) {
+        values = [...keys];
+      }
+
+      const nbOptions = Math.min(values.length, keys.length);
+      const selectStyle = `style="display: table; height: ${valueHeightPx}px;"`;
+
+      divContent += `
+          <select data-toggle="select" 
+                  id="select${idWidget}" 
+                  class="select-div form-control select select-primary select-block mbl" 
+                  ${selectStyle}>
+      `;
 
       for (let i = 0; i < nbOptions; i++) {
         divContent += `<option value="${values[i]}">${keys[i]}</option>`;
       }
+
       divContent += '</select>';
 
+      // Apply styles and attributes to the widget container
       widgetHtml.innerHTML = divContent;
-      widgetHtml.setAttribute('id', 'select-div-container' + idWidget);
-      //
-      const showWidget = this.showWidget();
-      let displayStyle = 'display: table;';
-      if (!showWidget) {
-        displayStyle = 'display: none;';
-      }
-      const enableWidget = this.enableWidget();
-      let enableStyle = 'pointer-events: initial; opacity:initial;';
-      if (!enableWidget) {
-        enableStyle = 'pointer-events: none; opacity:0.5;';
-      }
-      //
-      widgetHtml.setAttribute(
-        'style',
-        'height: ' +
-          valueHeightPx +
-          'px; ' +
-          this.selectFontSize() +
-          this.selectValueFontFamily() +
-          ';' +
-          displayStyle +
-          enableStyle
-      );
+      widgetHtml.id = `select-div-container${idWidget}`;
 
-      $('#' + idDivContainer).html(widgetHtml);
+      const showWidget = this.showWidget();
+      const enableWidget = this.enableWidget();
+      const displayStyle = showWidget ? 'display: table;' : 'display: none;';
+      const enableStyle = enableWidget
+        ? 'pointer-events: initial; opacity: initial;'
+        : 'pointer-events: none; opacity: 0.5;';
+
+      widgetHtml.style = `
+        height: ${valueHeightPx}px; 
+        ${this.selectFontSize()} 
+        ${this.selectValueFontFamily()}
+        ${displayStyle} 
+        ${enableStyle}`;
+
+      container.html(widgetHtml);
       this.applyDisplayOnWidget();
+
+      // Enable or disable widget interactivity
       if (this.bIsInteractive) {
         self.enable();
       } else {
         self.disable();
       }
 
-      // Apply CSS to select list
-      // Create a MutationObserver instance
-      const observer = new MutationObserver(function (mutationsList, observer) {
+      // Apply CSS to dynamically created select2 elements
+      const observer = new MutationObserver((mutationsList) => {
         for (const mutation of mutationsList) {
           if (mutation.type === 'childList' && mutation.addedNodes.length) {
-            // Check if the element you are waiting for is added
-            const element = document.querySelector('#s2id_select' + idWidget + ' > a > span:first-child');
+            const element = document.querySelector(`#s2id_select${idWidget} > a > span:first-child`);
             if (element) {
-              const parts = element.getAttribute('id').split('-');
-              // Get the list ID number
-              const idNumber = parts[parts.length - 1];
-              document.styleSheets[0].addRule('#select2-results-' + idNumber, self.selectValueFontFamily());
-              // Stop observing once the element is found
+              const idNumber = element.getAttribute('id').split('-').pop();
+              document.styleSheets[0].addRule(`#select2-results-${idNumber}`, self.selectValueFontFamily());
               observer.disconnect();
             }
           }
@@ -281,12 +268,14 @@ function flatUiComplexWidgetsPluginClass() {
       // Start observing changes in the DOM
       observer.observe(document.body, { childList: true, subtree: true });
 
-      $('#select' + idWidget)[0].value = String(modelsHiddenParams[idInstance].selectedValue);
-
-      $('#select' + idWidget).select2();
+      // Initialize select2 with the correct value
+      const $select = $(`#select${idWidget}`);
+      if ($select?.length) {
+        $select.val(String(selectedValue));
+        $select.select2();
+      }
     };
 
-    // selectedValue
     const _VALUE_NUMBER_DESCRIPTOR = new WidgetActuatorDescription(
       'selectedValue',
       'Selected value',
@@ -432,25 +421,30 @@ function flatUiComplexWidgetsPluginClass() {
     this.selectedValue = {
       updateCallback: function () {},
       setValue: function (val) {
-        //AEF: modif for issue#61
         modelsHiddenParams[idInstance].selectedValue = val;
         self.render();
       },
       getValue: function () {
-        const val = $('#select' + idWidget)[0].value;
+        const val = $(`#select${idWidget}`).val();
+
         if (modelsParameters[idInstance].isNumber) {
           return Number(val);
-        } else if (modelsParameters[idInstance].isBoolean) {
-          return val === 'false' ? false : Boolean(val);
-        } else {
-          return val;
         }
+
+        if (modelsParameters[idInstance].isBoolean) {
+          return val !== 'false' && Boolean(val);
+        }
+
+        return val;
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
-        if ($('#select' + idWidget)[0].value != '') {
-          updateDataFromWidget(this, $('#select' + idWidget)[0].value);
+
+        const value = $(`#select${idWidget}`).val();
+        if (value != '') {
+          updateDataFromWidget(this, value);
         }
+
         self.enable();
       },
       removeValueChangedHandler: function (updateDataFromWidget) {
@@ -459,7 +453,7 @@ function flatUiComplexWidgetsPluginClass() {
       setCaption: function (caption, bCaptionManuallyChanged) {
         if (modelsParameters[idInstance].inheritLabelFromData) {
           self.captionHelper(caption, self.bIsInteractive, bCaptionManuallyChanged);
-          $('#select-span' + idWidget).text(modelsParameters[idInstance].label);
+          $(`#select-span${idWidget}`).text(modelsParameters[idInstance].label);
         }
       },
       clearCaption: function () {
@@ -477,17 +471,18 @@ function flatUiComplexWidgetsPluginClass() {
         setValue: function (val) {
           const msg1 = '"keys" must be an array (in widget' + idInstance + ')';
           const msg2 = 'Example: ["choice1","choice2"]';
+
           if (!Array.isArray(val)) {
-            //swal(msg1, msg2, 'info');
-            console.log(msg1 + '. ' + msg2);
+            console.log(`${msg1}. ${msg2}`);
             return;
           }
+
           if (val.length && typeof val[0] === 'object') {
-            //AEF: prevent old format here [{},{}]
-            //swal(msg1, msg2, 'info');
-            console.log(msg1 + '. ' + msg2);
+            // Prevent old format like [{}, {}]
+            console.log(`${msg1}. ${msg2}`);
             return;
           }
+
           modelsHiddenParams[idInstance].keys = val;
           self.render();
         },
@@ -505,21 +500,18 @@ function flatUiComplexWidgetsPluginClass() {
         setValue: function (val) {
           const msg1 = '"value" must be an array (in widget' + idInstance + ')';
           const msg2 = 'Example: [1, 2]';
-          if (val === null || val === undefined) {
-            val = modelsHiddenParams[idInstance].keys; //AEF: values are optional, take keys if not provided
-          }
-          if (!Array.isArray(val)) {
-            //swal(msg1, msg2, 'info');
-            console.log(msg1 + '. ' + msg2);
+
+          if (val == null) {
+            // Initialize as an empty array if null or undefined
+            modelsHiddenParams[idInstance].values = [];
+          } else if (!Array.isArray(val) || (val.length && typeof val[0] === 'object')) {
+            // Prevent old format like [{}, {}]
+            console.log(`${msg1}. ${msg2}`);
             return;
+          } else {
+            modelsHiddenParams[idInstance].values = val;
           }
-          if (val.length && typeof val[0] === 'object') {
-            //AEF: prevent old format here [{},{}]
-            //swal(msg1, msg2, 'info');
-            console.log(msg1 + '. ' + msg2);
-            return;
-          }
-          modelsHiddenParams[idInstance].values = val;
+
           self.render();
         },
         getValue: function () {},
@@ -542,14 +534,12 @@ function flatUiComplexWidgetsPluginClass() {
           const msg2 =
             'Example1: [{"key":"choice1"}, {"key":"choice2"}] \n or Example2: [{"key":"choice1", "value":"1"}, {"key":"choice2", "value":"2"}]';
           if (!Array.isArray(val)) {
-            //swal(msg1, msg2, 'info');
             console.log(msg1 + '. ' + msg2);
             return;
           }
           for (const item of val) {
             if (_.isUndefined(item.key)) {
               //AEF: key is mandatory
-              //swal(msg1, msg2, 'info');
               console.log(msg1 + '. ' + msg2);
               return;
             }
@@ -596,7 +586,7 @@ function flatUiComplexWidgetsPluginClass() {
 
     this.render = function () {
       const container = document.getElementById(idDivContainer);
-      const valueHeightPx = container.offsetHeight;
+      const valueHeightPx = $('#' + idDivContainer).height();
 
       // Create the main widget container
       const widgetHtml = document.createElement('div');
@@ -654,14 +644,30 @@ function flatUiComplexWidgetsPluginClass() {
       this.applyDisplayOnWidget();
 
       // Check for scrollbars and adjust alignment
-      const multiSelectElement = document.getElementById(widgetId);
-      if (multiSelectElement) {
-        const hasScrollBar = multiSelectElement.scrollHeight > multiSelectElement.clientHeight;
+      const targetElement = document.getElementById('dashboard-preview-div');
+      if (targetElement) {
+        const observer = new MutationObserver((mutationsList) => {
+          mutationsList.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+              const $multiSelectElement = $('#multi-select' + idWidget);
 
-        if (!hasScrollBar) {
-          multiSelectElement.style.alignContent = 'center';
-        }
+              if ($multiSelectElement.length) {
+                const hasScrollBar = $multiSelectElement[0].scrollHeight > $multiSelectElement[0].clientHeight;
+
+                if (!hasScrollBar) {
+                  $multiSelectElement.filter('.multi-select-div').css('align-content', 'center');
+                }
+              }
+            }
+          });
+        });
+
+        // Observe changes to the class attribute
+        observer.observe(targetElement, { attributes: true });
+        window.addEventListener('unload', () => observer.disconnect());
       }
+
+      const multiSelectElement = document.getElementById(widgetId);
 
       // Apply additional styles for mobile or tablet
       const isMobileOrTablet = window.mobileAndTabletCheck();
@@ -705,13 +711,24 @@ function flatUiComplexWidgetsPluginClass() {
 
       // Apply dynamic styles
       const styleSheet = document.styleSheets[0];
-      const multiSelectLabelId = `multi-select-label${idWidget}`;
-      const rules = [
-        `#${multiSelectLabelId} { ${this.valueDefaultColor()} ${this.checkboxDefaultColor()} ${this.checkboxBorder()} }`,
-        `#${multiSelectLabelId}:hover { ${this.valueHoverColor()} ${this.checkboxHoverColor()} ${this.checkboxHoverBorderColor()} }`,
-        `input[type="checkbox"]:checked + #${multiSelectLabelId} { ${this.valueFocusColor()} ${this.checkboxFocusColor()} ${this.checkboxFocusBorderColor()} }`,
-      ];
-      rules.forEach((rule) => styleSheet.insertRule(rule, styleSheet.cssRules.length));
+      const idSelector = `#multi-select-label${idWidget}`;
+      const checkedSelector = `input[type="checkbox"]:checked + ${idSelector}`;
+      const hoverSelector = `${idSelector}:hover`;
+
+      // Default styles
+      styleSheet.addRule(idSelector, this.valueDefaultColor());
+      styleSheet.addRule(idSelector, this.checkboxDefaultColor());
+      styleSheet.addRule(idSelector, this.checkboxBorder());
+
+      // Hover styles
+      styleSheet.addRule(hoverSelector, this.valueHoverColor());
+      styleSheet.addRule(hoverSelector, this.checkboxHoverColor());
+      styleSheet.addRule(hoverSelector, this.checkboxHoverBorderColor());
+
+      // Checked styles
+      styleSheet.addRule(checkedSelector, this.valueFocusColor());
+      styleSheet.addRule(checkedSelector, this.checkboxFocusColor());
+      styleSheet.addRule(checkedSelector, this.checkboxFocusBorderColor());
 
       if (this.bIsInteractive) {
         self.enable();
@@ -1286,7 +1303,7 @@ function flatUiComplexWidgetsPluginClass() {
       let tableHeader = '<thead><tr>';
 
       headers.forEach((header, i) => {
-        const dSort = thElements.length ? thElements[i].getAttribute('data-sort') : '';
+        const dSort = thElements.length ? thElements[i]?.getAttribute('data-sort') : '';
         tableHeader += `<th data-sortable="true" data-sort="${dSort}" style="${this.valueAlign()}">`;
         tableHeader += `<span style="${this.getValueColor()} ${this.valueFontFamily()} ${self.getCalculatedFontSize()} padding-right:15px">`;
         tableHeader += '<b>' + header + '</b>';

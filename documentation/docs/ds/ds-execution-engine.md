@@ -69,7 +69,6 @@ The table below summarizes the _execution flow control parameters_ for the curre
 | [CSV file reader](ds-reference.md#csv-file-reader)                        |                    |                    |                    |
 | [CSV file player](ds-reference.md#csv-file-player)                        |                    | :heavy_check_mark: |                    |
 | Unzip file                                                                |                    |                    |                    |
-| [Geolocation](ds-reference.md#geolocation)                                |                    |                    |                    |
 | [Clock](ds-reference.md#clock)                                            | :heavy_check_mark: | :heavy_check_mark: |                    |
 | [Delay](ds-reference.md#delay)                                            |                    |                    |                    |
 | [Memory](ds-reference.md#memory)                                          |                    |                    |                    |
@@ -144,7 +143,6 @@ The table below summarizes currently available dataNodes in Chalk'it, as well as
 | [CSV file reader](ds-reference.md#csv-file-reader)                      |                       |                      | :heavy_check_mark: |                      |
 | [CSV file player](ds-reference.md#csv-file-player)                      |                       |                      | :heavy_check_mark: |                      |
 | Unzip file                                                              |                       |                      | :heavy_check_mark: |                      |
-| [Geolocation](ds-reference.md#geolocation)                              |                       |                      |                    |                      |
 | [Clock](ds-reference.md#clock)                                          |                       |                      |                    |                      |
 | [Delay](ds-reference.md#delay)                                          |                       |                      |                    |                      |
 | [Memory](ds-reference.md#memory)                                        |                       |                      |                    |                      |

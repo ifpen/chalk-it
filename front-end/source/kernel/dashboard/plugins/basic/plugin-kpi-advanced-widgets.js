@@ -53,8 +53,8 @@ modelsTempParams.advancedKpiCard = {
 
 // Layout (default dimensions)
 modelsLayout.advancedKpiCard = {
-  height: '33vh',
-  width: '14vw',
+  height: '120px',
+  width: '280px',
   minWidth: '64px',
   minHeight: '32px',
 };

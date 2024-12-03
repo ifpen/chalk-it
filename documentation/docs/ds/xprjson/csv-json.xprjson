@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T12:25:08.289Z",
+    "version": "4.000.9102",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:01:17.795Z",
     "name": "csv-json",
     "description": "CSV dataNode example with flat JSON conversion",
     "tags": [
@@ -42,39 +42,17 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1295,
-    "heightPx": 590,
-    "scrollWidthPx": 1295,
-    "scrollHeightPx": 590,
-    "widthVw": 84.75130890052355,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.75130890052355,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {},
   "connections": {},
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1295,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

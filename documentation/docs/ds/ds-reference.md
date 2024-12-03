@@ -14,11 +14,9 @@ In the following, we describe the remaining dataNode types of Chalk'it.
 | Generic binary file reader                            |
 | [CSV file reader](#csv-file-reader)                   |
 | [CSV file player](#csv-file-player)                   |
-| [Geolocation](#geolocation)                           |
 | [Clock](#clock)                                       |
 | [Delay](#delay)                                       |
 | [Memory](#memory)                                     |
-| MQTT                                                  |
 | [WebSocket receive](#websocket-receive)               |
 | [WebSocket send](#websocket-send)                     |
 
@@ -232,22 +230,6 @@ Gets the value of the JavaScript clock from the web-browser which is running the
 ```
 
 Example with [Clock](#clock) and [Delay](#delay) : [clock-and-delay.xprjson](../apps/xprjson/clock-and-delay.xprjson).
-
-## Geolocation
-
-This dataNode gets the current geographical position of the device, using the GPS sensors if available.
-
-For privacy reasons, authorization is requested from the user to report its position. It also requires Chalk'it to operate under the https protocole.
-
-![Geolocation Parameters](img/geolocation-parameters.png)
-
-DataNode produces the following output.
-
-![Geolocation Preview](img/geolocation-preview.png)
-
-Its output value is updated automatically according to the device position and movement.
-
-Example with **Geolocation** dataNode and [Leaflet Maps](../wdg/wdg-geo-time.md#leaflet-maps) widget which displays your location : [osm-geojson-geolocation.xprjson](../apps/xprjson/osm-geojson-geolocation.full.xprjson) .
 
 ## WebSocket
 

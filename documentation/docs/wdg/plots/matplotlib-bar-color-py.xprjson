@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T07:37:24.396Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:53:25.157Z",
     "name": "matplotlib-bar-color-py",
     "description": "",
     "groupName": "Python",
@@ -43,50 +43,28 @@
     ],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "matplotlibA": {
       "layout": {
-        "top": "5.06667vh",
-        "left": "2.88181vw",
-        "height": "68vh",
-        "width": "44.406vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 28,
+        "left": 34,
+        "height": 509,
+        "width": 679,
         "z-index": "1"
       },
       "container": {
         "instanceId": "matplotlibA",
         "modelJsonId": "matplotlib"
       },
-      "modelParameters": {},
+      "modelParameters": {
+        "showWidget": true,
+        "enableWidget": true
+      },
       "modelHiddenParams": {
-        "fig": {}
+        "fig": {
+          "type": "png",
+          "content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        }
       }
     }
   },
@@ -99,11 +77,15 @@
       }
     }
   },
-  "exportOptions": "ajustToTargetWindow",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

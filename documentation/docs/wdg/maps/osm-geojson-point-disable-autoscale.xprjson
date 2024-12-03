@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T10:21:33.114Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:24:53.297Z",
     "name": "osm-geojson-point-disable-autoscale",
     "schedulerLogOff": true
   },
@@ -22,41 +22,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "openStreetMapsm": {
       "layout": {
-        "top": "11.1278vh",
-        "left": "1.13455vw",
-        "height": "54.5742vh",
-        "width": "71.8007vw",
-        "minHeight": "20px",
-        "minWidth": "20px",
+        "top": 73,
+        "left": 7,
+        "height": 408,
+        "width": 1097,
         "z-index": "1"
       },
       "container": {
@@ -100,7 +72,9 @@
           "modal": false
         },
         "captureClickEvent": false,
-        "markerCluster": true
+        "markerCluster": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "geoJson": {
@@ -149,12 +123,10 @@
     },
     "flatUiSwitchA": {
       "layout": {
-        "top": "1.33333vh",
-        "left": "1.83246vw",
-        "height": "6.26667vh",
-        "width": "17.9974vw",
-        "minHeight": "24px",
-        "minWidth": "50px",
+        "top": 0,
+        "left": 18,
+        "height": 47,
+        "width": 275,
         "z-index": "4"
       },
       "container": {
@@ -171,7 +143,9 @@
         "labelFontFamily": "var(--widget-font-family)",
         "switchWidthProportion": "30%",
         "switchOnColor": "var(--widget-input-checked-color)",
-        "switchOffColor": "var(--widget-input-unchecked-color)"
+        "switchOffColor": "var(--widget-input-unchecked-color)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": false
@@ -179,12 +153,10 @@
     },
     "flatUiButtonA": {
       "layout": {
-        "top": "1.33333vh",
-        "left": "21.466vw",
-        "height": "6.26667vh",
-        "width": "9.03141vw",
-        "minHeight": "24px",
-        "minWidth": "55px",
+        "top": 0,
+        "left": 318,
+        "height": 47,
+        "width": 138,
         "z-index": "5"
       },
       "container": {
@@ -203,7 +175,9 @@
         "buttonTextColor": "var(--widget-button-primary-text)",
         "buttonDefaultColor": "var(--widget-button-primary-color)",
         "buttonActiveColor": "var(--widget-button-active-color)",
-        "buttonHoverColor": "var(--widget-button-hover-color)"
+        "buttonHoverColor": "var(--widget-button-hover-color)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {}
     }
@@ -235,11 +209,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

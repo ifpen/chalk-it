@@ -350,13 +350,13 @@ modelsTempParams.plotlyPyGeneric = { lastData: {}, lastLayout: {} };
 modelsTempParams.plotlyRealTime = { lastData: {}, lastLayout: {} };
 
 // Layout (default dimensions)
-modelsLayout.plotlyLine = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
-modelsLayout.plotlyBar = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
-modelsLayout.plotlyPie = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
-modelsLayout.plotly3dSurface = { height: '30vh', width: '30vw', minWidth: '378px', minHeight: '305px' };
-modelsLayout.plotlyGeneric = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
-modelsLayout.plotlyPyGeneric = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
-modelsLayout.plotlyRealTime = { height: '30vh', width: '30vw', minWidth: '100px', minHeight: '100px' };
+modelsLayout.plotlyLine = { height: '300px', width: '540px', minWidth: '100px', minHeight: '100px' };
+modelsLayout.plotlyBar = { height: '300px', width: '540px', minWidth: '100px', minHeight: '100px' };
+modelsLayout.plotlyPie = { height: '300px', width: '540px', minWidth: '100px', minHeight: '100px' };
+modelsLayout.plotly3dSurface = { height: '300px', width: '540px', minWidth: '378px', minHeight: '305px' };
+modelsLayout.plotlyGeneric = { height: '300px', width: '540px', minWidth: '50px', minHeight: '32px' };
+modelsLayout.plotlyPyGeneric = { height: '300px', width: '540px', minWidth: '50px', minHeight: '32px' };
+modelsLayout.plotlyRealTime = { height: '300px', width: '540px', minWidth: '100px', minHeight: '100px' };
 
 const _SCHEMA_PLOTLY_NUMERIC_DATA = {
   $schema: WidgetPrototypesManager.SCHEMA_VERSION,

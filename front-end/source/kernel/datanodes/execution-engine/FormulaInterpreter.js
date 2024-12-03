@@ -248,6 +248,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
             }
             //AEF: remove edges of pastValue to the same datanode
             let match = dsName.match(/pastValue_(.+)/);
+            let add_edge = true;
             if (match) {
               let origin_name = match[1];
               if (datanodeModel.name() == origin_name) add_edge = false;
@@ -365,6 +366,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
           datanodesDependency.addNode(datanodeModel.name());
         }
         //AEF: remove edges from datanode to its pastValue
+        let add_edge = true;
         let match = datanodeModel.name().match(/pastValue_(.+)/);
         if (match) {
           let orig_name = match[1];

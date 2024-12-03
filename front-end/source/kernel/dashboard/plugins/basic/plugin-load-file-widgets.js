@@ -49,8 +49,8 @@ modelsParameters.loadFile = {
 
 // Layout (default dimensions)
 modelsLayout.loadFile = {
-  height: '15vh',
-  width: '20vw',
+  height: '120px',
+  width: '300px',
   minWidth: '95px',
   minHeight: '70px',
 };

@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T10:28:58.635Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:27:41.004Z",
     "name": "osm-heatmap-view",
     "description": "Heat map display on map with display configuration parameters",
     "groupName": "Neutral",
@@ -56,41 +56,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwSp",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "openStreetMapsA": {
       "layout": {
-        "top": "1.69047vh",
-        "left": "0.829746vw",
-        "height": "58.4269vh",
-        "width": "81.8337vw",
-        "minHeight": "20px",
-        "minWidth": "20px",
+        "top": 3,
+        "left": 3,
+        "height": 437,
+        "width": 1250,
         "z-index": "1"
       },
       "container": {
@@ -134,7 +106,9 @@
           "modal": false
         },
         "captureClickEvent": false,
-        "markerCluster": true
+        "markerCluster": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "geoJson": {
@@ -183,12 +157,10 @@
     },
     "flatUiHorizontalSliderA": {
       "layout": {
-        "top": "62.8vh",
-        "left": "1.11257vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 460,
+        "left": 7,
+        "height": 38,
+        "width": 367,
         "z-index": "2"
       },
       "container": {
@@ -222,7 +194,9 @@
         "valueColor": "var(--widget-color)",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -230,12 +204,10 @@
     },
     "flatUiHorizontalSliderB": {
       "layout": {
-        "top": "62.8vh",
-        "left": "29.2539vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 460,
+        "left": 437,
+        "height": 38,
+        "width": 367,
         "z-index": "3"
       },
       "container": {
@@ -269,7 +241,9 @@
         "valueColor": "var(--widget-color)",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -304,11 +278,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

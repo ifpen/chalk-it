@@ -41,7 +41,7 @@ modelsParameters.flatUiHereAutocompleteValue = {
 };
 
 // Layout (default dimensions)
-modelsLayout.flatUiHereAutocompleteValue = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '32px' };
+modelsLayout.flatUiHereAutocompleteValue = { height: '40px', width: '300px', minWidth: '150px', minHeight: '32px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

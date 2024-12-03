@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T07:38:20.480Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:53:30.845Z",
     "name": "matplotlib-bar-py",
     "description": "",
     "groupName": "Python",
@@ -46,50 +46,28 @@
     ],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "matplotlibA": {
       "layout": {
-        "top": "3.6vh",
-        "left": "1.83388vw",
-        "height": "66.4vh",
-        "width": "39.6248vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 17,
+        "left": 18,
+        "height": 497,
+        "width": 605,
         "z-index": "1"
       },
       "container": {
         "instanceId": "matplotlibA",
         "modelJsonId": "matplotlib"
       },
-      "modelParameters": {},
+      "modelParameters": {
+        "showWidget": true,
+        "enableWidget": true
+      },
       "modelHiddenParams": {
-        "fig": {}
+        "fig": {
+          "type": "png",
+          "content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        }
       }
     }
   },
@@ -102,11 +80,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

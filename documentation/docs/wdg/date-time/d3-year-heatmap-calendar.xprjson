@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-02T09:37:59.476Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:21:14.496Z",
     "name": "d3-year-heatmap-calendar",
     "description": "Example with D3.js year calendar",
     "groupName": "JavaScript",
@@ -45,41 +45,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "calendarD3A": {
       "layout": {
-        "top": "2.50667vh",
-        "left": "2.76178vw",
-        "height": "74.1333vh",
-        "width": "44.1099vw",
-        "minHeight": "100px",
-        "minWidth": "100px",
+        "top": 9,
+        "left": 32,
+        "height": 555,
+        "width": 674,
         "z-index": "1"
       },
       "container": {
@@ -88,7 +60,9 @@
       },
       "modelParameters": {
         "AllYearsVisible": true,
-        "UndefinedValueColor": "var(--widget-calendar-d3-undefined-value)"
+        "UndefinedValueColor": "var(--widget-calendar-d3-undefined-value)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "CalendarValues": [],
@@ -97,12 +71,10 @@
     },
     "kpiCardA": {
       "layout": {
-        "top": "25.7333vh",
-        "left": "47.644vw",
-        "height": "16vh",
-        "width": "17.9974vw",
-        "minHeight": "32px",
-        "minWidth": "64px",
+        "top": 182,
+        "left": 718,
+        "height": 120,
+        "width": 275,
         "z-index": "2"
       },
       "container": {
@@ -125,7 +97,9 @@
         "displayUnit": false,
         "unitFontSize": 0.5,
         "unitColor": "var(--widget-label-color)",
-        "borderShadow": false
+        "borderShadow": false,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": "--"
@@ -153,11 +127,15 @@
       }
     }
   },
-  "exportOptions": "ajustToTargetWindow",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

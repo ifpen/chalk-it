@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T13:42:24.242Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:07:33.379Z",
     "name": "csv-read-write-js",
     "description": "CSV read from file then download to file",
     "groupName": "JavaScript",
@@ -96,41 +96,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "flatUiTableA": {
       "layout": {
-        "top": "14.5333vh",
-        "left": "0.78534vw",
-        "height": "60.6667vh",
-        "width": "80.1047vw",
-        "minHeight": "79px",
-        "minWidth": "88px",
+        "top": 99,
+        "left": 2,
+        "height": 454,
+        "width": 1224,
         "z-index": "5"
       },
       "container": {
@@ -151,7 +123,12 @@
         "backgroundColor": {
           "primary": "var(--widget-color-0)",
           "secondary": "var(--widget-table-striped-odd)"
-        }
+        },
+        "paginationMinNbr": 10,
+        "paginationOptions": "[10, 50, 100, 500]",
+        "paginationDefaultValue": 10,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": null
@@ -159,12 +136,10 @@
     },
     "flatUiFileInputButtonA": {
       "layout": {
-        "top": "1.86667vh",
-        "left": "1.11257vw",
-        "height": "7.6vh",
-        "width": "9.68586vw",
-        "minHeight": "24px",
-        "minWidth": "55px",
+        "top": 4,
+        "left": 7,
+        "height": 57,
+        "width": 148,
         "z-index": "6"
       },
       "container": {
@@ -183,18 +158,18 @@
         "buttonTextColor": "var(--widget-button-primary-text)",
         "buttonDefaultColor": "var(--widget-button-primary-color)",
         "buttonActiveColor": "var(--widget-button-active-color)",
-        "buttonHoverColor": "var(--widget-button-hover-color)"
+        "buttonHoverColor": "var(--widget-button-hover-color)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {}
     },
     "flatUiButtonA": {
       "layout": {
-        "top": "1.8vh",
-        "left": "12.2382vw",
-        "height": "7.6vh",
-        "width": "9.68586vw",
-        "minHeight": "24px",
-        "minWidth": "55px",
+        "top": 3,
+        "left": 177,
+        "height": 57,
+        "width": 148,
         "z-index": "7"
       },
       "container": {
@@ -213,18 +188,18 @@
         "buttonTextColor": "var(--widget-button-primary-text)",
         "buttonDefaultColor": "var(--widget-button-primary-color)",
         "buttonActiveColor": "var(--widget-button-active-color)",
-        "buttonHoverColor": "var(--widget-button-hover-color)"
+        "buttonHoverColor": "var(--widget-button-hover-color)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {}
     },
     "flatUiValueDisplayA": {
       "layout": {
-        "top": "2.45333vh",
-        "left": "26.2304vw",
-        "height": "6.4vh",
-        "width": "20.3534vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 8,
+        "left": 391,
+        "height": 48,
+        "width": 311,
         "z-index": "8"
       },
       "container": {
@@ -250,7 +225,9 @@
         "unit": "unitText",
         "displayUnit": false,
         "unitFontSize": 0.5,
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -289,11 +266,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

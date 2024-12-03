@@ -35,7 +35,7 @@ modelsParameters.annotationMarkdown = {
 };
 
 // Layout (default dimensions)
-modelsLayout.annotationMarkdown = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
+modelsLayout.annotationMarkdown = { height: '240px', width: '460px', minWidth: '50px', minHeight: '32px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

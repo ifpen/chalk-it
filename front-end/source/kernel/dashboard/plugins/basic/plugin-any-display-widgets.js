@@ -33,7 +33,7 @@ modelsParameters.anyDisplay = {
 };
 
 // Layout (default dimensions)
-modelsLayout.anyDisplay = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
+modelsLayout.anyDisplay = { height: '240px', width: '460px', minWidth: '50px', minHeight: '32px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

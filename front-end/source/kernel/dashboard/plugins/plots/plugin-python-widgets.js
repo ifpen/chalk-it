@@ -27,7 +27,7 @@ modelsHiddenParams.matplotlib = {
 };
 
 // Layout (default dimensions)
-modelsLayout.matplotlib = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
+modelsLayout.matplotlib = { height: '300px', width: '540px', minWidth: '50px', minHeight: '32px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

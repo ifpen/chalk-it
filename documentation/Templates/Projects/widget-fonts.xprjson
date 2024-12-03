@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-04T10:28:56.414Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:14:12.619Z",
     "name": "widget-fonts",
     "description": "",
     "groupName": "",
@@ -35,41 +35,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1295,
-    "heightPx": 590,
-    "scrollWidthPx": 1295,
-    "scrollHeightPx": 590,
-    "widthVw": 84.75130890052355,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.75130890052355,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "flatUiTextInput0": {
       "layout": {
-        "top": "4.61389vh",
-        "left": "2.00915vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 25,
+        "left": 21,
+        "height": 69,
+        "width": 353,
         "z-index": "1"
       },
       "container": {
@@ -101,7 +73,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -109,12 +83,10 @@
     },
     "flatUiTextInput1": {
       "layout": {
-        "top": "16.1486vh",
-        "left": "2.00915vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 111,
+        "left": 21,
+        "height": 69,
+        "width": 353,
         "z-index": "2"
       },
       "container": {
@@ -146,7 +118,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -154,12 +128,10 @@
     },
     "flatUiTextInput2": {
       "layout": {
-        "top": "27.6832vh",
-        "left": "2.00915vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 197,
+        "left": 21,
+        "height": 69,
+        "width": 353,
         "z-index": "3"
       },
       "container": {
@@ -191,7 +163,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -199,12 +173,10 @@
     },
     "flatUiTextInput3": {
       "layout": {
-        "top": "39.218vh",
-        "left": "2.00915vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 283,
+        "left": 21,
+        "height": 69,
+        "width": 353,
         "z-index": "4"
       },
       "container": {
@@ -236,7 +208,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -244,12 +218,10 @@
     },
     "flatUiTextInput4": {
       "layout": {
-        "top": "50.7527vh",
-        "left": "2.00915vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 370,
+        "left": 21,
+        "height": 69,
+        "width": 353,
         "z-index": "5"
       },
       "container": {
@@ -281,7 +253,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -289,12 +263,10 @@
     },
     "flatUiTextInput5": {
       "layout": {
-        "top": "4.61389vh",
-        "left": "28.1282vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 25,
+        "left": 420,
+        "height": 69,
+        "width": 353,
         "z-index": "6"
       },
       "container": {
@@ -326,7 +298,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -334,12 +308,10 @@
     },
     "flatUiTextInput6": {
       "layout": {
-        "top": "16.1486vh",
-        "left": "28.1282vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 111,
+        "left": 420,
+        "height": 69,
+        "width": 353,
         "z-index": "7"
       },
       "container": {
@@ -371,7 +343,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -379,12 +353,10 @@
     },
     "flatUiTextInput7": {
       "layout": {
-        "top": "27.6832vh",
-        "left": "28.1282vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 197,
+        "left": 420,
+        "height": 69,
+        "width": 353,
         "z-index": "8"
       },
       "container": {
@@ -416,7 +388,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -424,12 +398,10 @@
     },
     "flatUiTextInput8": {
       "layout": {
-        "top": "39.218vh",
-        "left": "28.1282vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 283,
+        "left": 420,
+        "height": 69,
+        "width": 353,
         "z-index": "9"
       },
       "container": {
@@ -461,7 +433,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -469,12 +443,10 @@
     },
     "flatUiTextInput9": {
       "layout": {
-        "top": "50.7527vh",
-        "left": "28.1282vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 370,
+        "left": 420,
+        "height": 69,
+        "width": 353,
         "z-index": "10"
       },
       "container": {
@@ -506,7 +478,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -514,12 +488,10 @@
     },
     "flatUiTextInputB": {
       "layout": {
-        "top": "16.1486vh",
-        "left": "54.2472vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 111,
+        "left": 819,
+        "height": 69,
+        "width": 353,
         "z-index": "12"
       },
       "container": {
@@ -551,7 +523,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -559,12 +533,10 @@
     },
     "flatUiTextInputC": {
       "layout": {
-        "top": "27.6832vh",
-        "left": "54.2472vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 197,
+        "left": 819,
+        "height": 69,
+        "width": 353,
         "z-index": "13"
       },
       "container": {
@@ -596,7 +568,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -604,12 +578,10 @@
     },
     "flatUiTextInputD": {
       "layout": {
-        "top": "39.218vh",
-        "left": "54.2472vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 283,
+        "left": 819,
+        "height": 69,
+        "width": 353,
         "z-index": "14"
       },
       "container": {
@@ -641,7 +613,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -649,12 +623,10 @@
     },
     "flatUiTextInputE": {
       "layout": {
-        "top": "50.7527vh",
-        "left": "54.2472vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 370,
+        "left": 819,
+        "height": 69,
+        "width": 353,
         "z-index": "15"
       },
       "container": {
@@ -686,7 +658,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -694,12 +668,10 @@
     },
     "flatUiTextInputF": {
       "layout": {
-        "top": "62.2873vh",
-        "left": "2.00915vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 456,
+        "left": 21,
+        "height": 69,
+        "width": 353,
         "z-index": "16"
       },
       "container": {
@@ -731,7 +703,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -739,12 +713,10 @@
     },
     "flatUiTextInputA": {
       "layout": {
-        "top": "4.61389vh",
-        "left": "54.2472vw",
-        "height": "9.22776vh",
-        "width": "23.1052vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 25,
+        "left": 819,
+        "height": 69,
+        "width": 353,
         "z-index": "17"
       },
       "container": {
@@ -776,7 +748,9 @@
         "backgroundColor": "#ffffff",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -913,11 +887,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1295,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

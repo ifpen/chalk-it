@@ -27,8 +27,8 @@ modelsParameters.spinnerStatus = {
 
 // Layout (default dimensions)
 modelsLayout.spinnerStatus = {
-  height: '15vh',
-  width: '10vw',
+  height: '60px',
+  width: '60px',
   minWidth: '60px',
   minHeight: '60px',
 };
