@@ -148,11 +148,11 @@
         Reset
       </button>
       <button class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
-        ng-click="vm.applyDashboardSize(true)" ng-disabled="!vm.dashboardSizeChanged()">
+        ng-click="vm.applyDashboardSize(true)" ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()">
         Scale
       </button>
       <button class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
-        ng-click="vm.applyDashboardSize(false)" ng-disabled="!vm.dashboardSizeChanged()">
+        ng-click="vm.applyDashboardSize(false)" ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()">
         Resize
       </button>
     </div>
