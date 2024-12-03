@@ -548,6 +548,18 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     /**
+     * @returns {boolean} true if the edited dashboard size is valid
+     */
+    vm.dashboardSizeValid = function _dashboardSizeValid() {
+      return (
+        vm.dashboardSize.width != undefined &&
+        vm.dashboardSize.height != undefined &&
+        vm.dashboardSize.marginX != undefined &&
+        vm.dashboardSize.marginY != undefined
+      );
+    };
+
+    /**
      * Reset edited dashboard size to the current parameter
      */
     vm.resetDashboardSize = function _resetDashboardSize() {
