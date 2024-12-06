@@ -80,6 +80,8 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
           const valueFct = createScriptFunction(dsEval);
           self.callValueFunction(valueFct);
         } catch (e) {
+          console.error(e);
+
           datanodeModel.statusCallback('Error', e.message);
           const text = 'var ' + dsName + ' in line ' + i + ' : ' + e.message;
           datanodeModel.notificationCallback(
@@ -99,6 +101,8 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
       try {
         returnValue = self.callValueFunction(datanodeModel.calculatedSettingScripts[settingName]);
       } catch (e) {
+        console.error(e);
+        
         datanodeModel.statusCallback('Error', e.message);
         datanodeModel.notificationCallback('error', datanodeModel.settings().name, e.message, 'Parse error');
         returnValue = null;
@@ -116,7 +120,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
             try {
               datanodeModel.datanodeInstance.onCalculatedValueChanged(settingName, undefined); //AEF this line is needed to update datanode value
             } catch (e) {
-              console.log(e.toString());
+              console.error(e);
             }
           } else if (!_.isNull(returnValue)) {
             const lastNotif = true;
@@ -131,7 +135,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
             try {
               datanodeModel.datanodeInstance.onCalculatedValueChanged(settingName, returnValue);
             } catch (e) {
-              console.log(e.toString());
+              console.error(e);
             }
           }
         } else {

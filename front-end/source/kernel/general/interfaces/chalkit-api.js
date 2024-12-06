@@ -133,22 +133,32 @@ export const chalkit = (function () {
     customNavigationRuntime.goToPage(numPage);
   }
 
+  function _checkWidgetExists(widgetName) {
+    if (!(widgetName in modelsParameters)) {
+      throw new Error(`Widget "${widgetName}" not found`);
+    }
+  }
+
   function enableWidget(widgetName) {
+    _checkWidgetExists(widgetName);
     modelsParameters[widgetName].enableWidget = true;
-    widgetViewer.widget[widgetName].render(true);
+    widgetViewer.reRenderWidget(widgetName);
   }
 
   function disableWidget(widgetName) {
+    _checkWidgetExists(widgetName);
     modelsParameters[widgetName].enableWidget = false;
-    widgetViewer.widget[widgetName].render(true);
+    widgetViewer.reRenderWidget(widgetName);
   }
 
   function showWidget(widgetName) {
+    _checkWidgetExists(widgetName);
     modelsParameters[widgetName].showWidget = true;
-    widgetViewer.widget[widgetName].render(true);
+    widgetViewer.reRenderWidget(widgetName);
   }
 
   function hideWidget(widgetName) {
+    _checkWidgetExists(widgetName);
     modelsParameters[widgetName].showWidget = false;
     widgetViewer.reRenderWidget(widgetName);
   }
