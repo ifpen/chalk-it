@@ -81,8 +81,8 @@ class WidgetWiewer {
     containerDiv.appendChild(div);
 
     this.#updateWidgetPosition(containerDiv, layout);
-    if (layout.zIndex !== undefined) {
-      containerDiv.style.zIndex = layout.zIndex;
+    if (layout['z-index'] !== undefined) {
+      containerDiv.style.zIndex = layout['z-index'];
     }
 
     document.getElementById(DISPLAY_CONTAINER_ID).appendChild(containerDiv);
