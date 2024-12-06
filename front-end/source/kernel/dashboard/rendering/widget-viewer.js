@@ -163,7 +163,7 @@ class WidgetWiewer {
   }
 
   reRenderWidget(instanceId) {
-    this.widgetsInfo.get(instanceId)?.render(true);
+    this.widgetsInfo.get(instanceId)?.instance?.render(true);
   }
 
   #deserializeConnections(jsonContent) {
