@@ -93,7 +93,7 @@ class ToForegroundAction extends UndoableAction {
   }
 
   run() {
-    this._initialZs = this.widgetEditorViewer.getZIndices();
+    this._initialZs = this._widgetEditorViewer.getZIndices();
     this._widgetEditorViewer.putWidgetAtForeground(this._elementIds);
   }
 
