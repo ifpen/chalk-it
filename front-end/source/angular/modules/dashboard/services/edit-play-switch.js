@@ -12,10 +12,9 @@ export function showPlayMode() {
   widgetEditor.setAllowPageChangeFromScript(true);
 
   try {
-    const { dashboard } = editorSingletons.widgetEditor.serialize();
-
+    const { dashboard, display, pages } = editorSingletons.widgetEditor.serialize();
     widgetViewer.reset();
-    widgetViewer.renderDashboardWidgets(dashboard);
+    widgetViewer.deserialize({ dashboard, display, pages, connections: {} });
   } catch (e) {
     console.error(e);
     // FIXME ?

@@ -27,12 +27,7 @@ import {
 
 function initPageRuntime(pages) {
   const $rootScope = angular.element(document.body).scope().$root;
-
-  widgetViewer.pageNames = pages.pageNames;
-
   const initialPage = pages.initialPage ?? 0;
-  widgetViewer.setCurrentPage(initialPage);
-
   $rootScope.safeApply(() => {
     $rootScope.pageNames = pages.pageNames;
     $rootScope.pageNumber = initialPage;
