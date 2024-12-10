@@ -196,7 +196,7 @@ class WidgetWiewer {
   }
 
   /**
-   * Deserialisation of widget's connections at runtime mode
+   * Deserialisation of widgets and their connections.
    * Only called from runtime mode (not editor mode)
    * @param {any} jsonContent
    */
