@@ -189,6 +189,8 @@ export const Xdash = function () {
 
       htmlExport.navBarNotification = jsonObject.navBarNotification ?? false;
 
+      datanodesManager.startScheduler();
+
       return true;
     } catch (ex) {
       console.error(ex);

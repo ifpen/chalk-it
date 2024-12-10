@@ -192,6 +192,8 @@ export function loadDashboard(jsonContent) {
     });
 
     widgetViewer.deserialize(jsonContent);
+
+    datanodesManager.startScheduler();
   };
 
   // Main logic begins here
