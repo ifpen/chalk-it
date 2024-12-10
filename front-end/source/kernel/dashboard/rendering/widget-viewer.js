@@ -204,6 +204,12 @@ class WidgetWiewer {
     const display = jsonContent.display;
     this.setMargins(display.marginX, display.marginY);
 
+    const pages = jsonContent.pages;
+    if (pages?.pageNames?.length) {
+      this.pageNames = [...pages.pageNames];
+      this.currentPage = pages.initialPage ?? 0;
+    }
+
     // Set the theme
     // Theme must be set before we create the widgets
     $('html').attr('data-theme', display.theme);
