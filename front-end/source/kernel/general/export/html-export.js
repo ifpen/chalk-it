@@ -117,8 +117,9 @@ class HtmlExport {
     const adjustUrl = (target) => baseUrl + (baseUrl.endsWith('/') || target.startsWith('/') ? '' : '/') + target;
 
     Array.from(doc.getElementsByTagName('link')).forEach((lnk) => {
-      if (lnk.getAttribute('rel') === 'stylesheet' && lnk.hasAttribute('src')) {
-        lnk.setAttribute('src', adjustUrl(lnk.getAttribute('src')));
+      const rel = lnk.getAttribute('rel');
+      if ((rel === 'stylesheet' || rel === 'icon') && lnk.hasAttribute('href')) {
+        lnk.setAttribute('href', adjustUrl(lnk.getAttribute('href')));
       }
     });
 
