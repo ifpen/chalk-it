@@ -54,7 +54,6 @@ class WidgetWiewer {
    * @param {number} valueY
    */
   setMargins(valueX, valueY) {
-    document.getElementById(DISPLAY_CONTAINER_ID).style.padding = `${valueX}px ${valueY}px`;
     this.marginX = valueX;
     this.marginY = valueY;
 
