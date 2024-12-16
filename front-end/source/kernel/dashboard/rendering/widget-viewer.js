@@ -154,11 +154,6 @@ class WidgetWiewer {
     for (const [instanceId, desc] of Object.entries(dashboard)) {
       this.#createWidget(desc.container.modelJsonId, instanceId, desc.layout);
     }
-
-    // assign change value handlers
-    if (datanodesManager.getAllDataNodes().length != 0) {
-      this.assignValueChangeHandlers();
-    }
   }
 
   reRenderWidget(instanceId) {
