@@ -190,6 +190,7 @@ export const Xdash = function () {
       htmlExport.navBarNotification = jsonObject.navBarNotification ?? false;
 
       datanodesManager.startScheduler();
+      widgetViewer.assignValueChangeHandlers();
 
       return true;
     } catch (ex) {

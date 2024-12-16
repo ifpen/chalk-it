@@ -194,6 +194,11 @@ export function loadDashboard(jsonContent) {
     widgetViewer.deserialize(jsonContent);
 
     datanodesManager.startScheduler();
+
+    // Not done during deserialize as we need startScheduler to be done.
+    // Specificaly, datanodes with "constant" values (en short, json variables) must be marked evaluated
+    // so that widgets can read a value instead of setting a default one.
+    widgetViewer.assignValueChangeHandlers();
   };
 
   // Main logic begins here

@@ -15,6 +15,7 @@ export function showPlayMode() {
     const { dashboard, display, pages } = editorSingletons.widgetEditor.serialize();
     widgetViewer.reset();
     widgetViewer.deserialize({ dashboard, display, pages, connections: {} });
+    widgetViewer.assignValueChangeHandlers();
   } catch (e) {
     console.error(e);
     // FIXME ?
