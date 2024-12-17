@@ -580,15 +580,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geolocation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Geolocation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#websocket" class="md-nav__link">
     <span class="md-ellipsis">
       WebSocket
@@ -1365,15 +1356,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geolocation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Geolocation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#websocket" class="md-nav__link">
     <span class="md-ellipsis">
       WebSocket
@@ -1465,9 +1447,6 @@
 <td><a href="#csv-file-player">CSV file player</a></td>
 </tr>
 <tr>
-<td><a href="#geolocation">Geolocation</a></td>
-</tr>
-<tr>
 <td><a href="#clock">Clock</a></td>
 </tr>
 <tr>
@@ -1475,9 +1454,6 @@
 </tr>
 <tr>
 <td><a href="#memory">Memory</a></td>
-</tr>
-<tr>
-<td>MQTT</td>
 </tr>
 <tr>
 <td><a href="#websocket-receive">WebSocket receive</a></td>
@@ -1651,14 +1627,6 @@
 <span class="p">}</span>
 </code></pre></div>
 <p>Example with <a href="#clock">Clock</a> and <a href="#delay">Delay</a> : <a href="../../apps/xprjson/clock-and-delay.xprjson">clock-and-delay.xprjson</a>.</p>
-<h2 id="geolocation">Geolocation<a class="headerlink" href="#geolocation" title="Permanent link">&para;</a></h2>
-<p>This dataNode gets the current geographical position of the device, using the GPS sensors if available.</p>
-<p>For privacy reasons, authorization is requested from the user to report its position. It also requires Chalk'it to operate under the https protocole.</p>
-<p><img alt="Geolocation Parameters" src="../img/geolocation-parameters.png" /></p>
-<p>DataNode produces the following output.</p>
-<p><img alt="Geolocation Preview" src="../img/geolocation-preview.png" /></p>
-<p>Its output value is updated automatically according to the device position and movement.</p>
-<p>Example with <strong>Geolocation</strong> dataNode and <a href="../../wdg/wdg-geo-time/#leaflet-maps">Leaflet Maps</a> widget which displays your location : <a href="../../apps/xprjson/osm-geojson-geolocation.full.xprjson">osm-geojson-geolocation.xprjson</a> .</p>
 <h2 id="websocket">WebSocket<a class="headerlink" href="#websocket" title="Permanent link">&para;</a></h2>
 <p>These dataNodes offers support for the <a href="https://en.wikipedia.org/wiki/WebSocket">WebSocket protocol</a>, which is supported by most web browsers to offert real-time data exchange capabilities. It provides full-duplex communication channels over a single TCP connection.
 WebSocket in Chalk'it is implemented as client. It needs to communicate with remote WebSocket server.</p>

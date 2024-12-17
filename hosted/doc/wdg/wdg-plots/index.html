@@ -601,15 +601,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vega" class="md-nav__link">
-    <span class="md-ellipsis">
-      Vega
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#echarts" class="md-nav__link">
     <span class="md-ellipsis">
       ECharts
@@ -1080,15 +1071,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#vega" class="md-nav__link">
-    <span class="md-ellipsis">
-      Vega
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#echarts" class="md-nav__link">
     <span class="md-ellipsis">
       ECharts
@@ -1116,7 +1098,7 @@
 <p>Plots in Chalk'it may be made either with Python or JavaScript code:</p>
 <ul>
 <li>Python-based plots are available using <a href="https://plotly.com/python/">Plolty Python</a> or <a href="https://matplotlib.org/">Matplotlib</a>, currenly only with the <a href="../../ds/ds-reference/#python-script">Python Script</a>-type dataNode</li>
-<li>JavaScript-based plots are available using  <a href="https://plot.ly/javascript/">Plotly.js</a>, <a href="https://echarts.apache.org/">Apache ECharts</a> or <a href="https://vega.github.io/vega/">Vega</a></li>
+<li>JavaScript-based plots are available using  <a href="https://plot.ly/javascript/">Plotly.js</a> or <a href="https://echarts.apache.org/">Apache ECharts</a></li>
 <li>Simplified usage (array actuators) is available for <a href="#plotly-line">Plotly line</a>, <a href="#plotly-bar">Plotly bar</a> and <a href="#plotly-pie">Plotly pie</a>. Otherwise, use the <a href="#plotly-javascript-generic">Plotly generic</a> for a complete Plotly.js options and configurations.</li>
 </ul>
 <p>Plotly.js-based widgets share common parameters, especially <em>hideModeBar</em> which allows to hide plot options toolbar at dashboard play.</p>
@@ -1205,15 +1187,6 @@
 <p>Example:</p>
 <ul>
 <li><a href="../plots/matplotlib-bar-color-py.xprjson">matplotlib-bar-color-py.xprjson</a></li>
-</ul>
-<h2 id="vega">Vega<a class="headerlink" href="#vega" title="Permanent link">&para;</a></h2>
-<p>In the same spirit as <a href="#plotly-javascript-generic">Plotly generic</a> widget above, you can visualize <a href="https://vega.github.io/vega/">Vega</a> specifications and connect them to data from other dataNodes.</p>
-<p>Browse <a href="https://vega.github.io/vega/examples/">Vega examples gallery</a>. Copy and paste the appropriate visualization to a <a href="../../ds/ds-reference/#javascript-script">JavaScript Formula</a> dataNode. Finally, connect this dataNode to the <strong>specification</strong> widget actuator.</p>
-<p>In this examples gallery, data is typically read from URL referenced sources using the Vega <em>url</em> keyword. You can connect to Chalk'it dataNodes using the Vega <em>values</em> keyword instead.</p>
-<p>Be aware when copying examples that URLS in these examples use relative paths. For proper execution on Chalk'it, the absolute data path needs to be used (e.g. use 'https://vega.github.io/vega/data/movies.json' instead of 'data/movies.json').</p>
-<p>Some examples:</p>
-<ul>
-<li><a href="../plots/vega-les-miserables-js.xprjson">vega-les-miserables-js.xprjson</a></li>
 </ul>
 <h2 id="echarts">ECharts<a class="headerlink" href="#echarts" title="Permanent link">&para;</a></h2>
 <p>Simply, copy and paste the needed visualization from <a href="https://echarts.apache.org/examples/en/index.html">ECharts examples gallery</a> to a  <a href="../../ds/ds-reference/#javascript-script">JavaScript Script</a> dataNode. This example shall return an <em>option</em> JSON according to ECharts grammar. Finally, connect this dataNode to the <strong>option</strong> widget actuator.</p>

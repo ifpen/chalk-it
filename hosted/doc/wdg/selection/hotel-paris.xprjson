@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T06:35:46.633Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T21:57:58.788Z",
     "name": "hotel-paris",
     "description": "Hotel and Selection",
     "groupName": null,
@@ -63,41 +63,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1295,
-    "heightPx": 590,
-    "scrollWidthPx": 1295,
-    "scrollHeightPx": 590,
-    "widthVw": 84.75130890052355,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.75130890052355,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleIdent",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "plotlyGenericA": {
       "layout": {
-        "top": "11.04vh",
-        "left": "1.97644vw",
-        "height": "59.3333vh",
-        "width": "37.1728vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 73,
+        "left": 20,
+        "height": 444,
+        "width": 568,
         "z-index": "1"
       },
       "container": {
@@ -108,11 +80,17 @@
         "enforceTextColor": true,
         "textColor": "var(--widget-color)",
         "enforceBackgroundTransparency": true,
-        "hideModeBar": false
+        "hideModeBar": false,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "data": [
-          {}
+          {
+            "type": "bar",
+            "x": [],
+            "y": []
+          }
         ],
         "layout": {
           "paper_bgcolor": "rgba(0,0,0,0)",
@@ -153,12 +131,10 @@
     },
     "openStreetMapsA": {
       "layout": {
-        "top": "11.0667vh",
-        "left": "43.1283vw",
-        "height": "59.3333vh",
-        "width": "37.1728vw",
-        "minHeight": "20px",
-        "minWidth": "20px",
+        "top": 73,
+        "left": 649,
+        "height": 444,
+        "width": 590,
         "z-index": "2"
       },
       "container": {
@@ -202,7 +178,9 @@
           "modal": false
         },
         "captureClickEvent": false,
-        "markerCluster": true
+        "markerCluster": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "geoJson": {
@@ -251,12 +229,10 @@
     },
     "annotationLabelA": {
       "layout": {
-        "top": "2.8vh",
-        "left": "2.09424vw",
-        "height": "6.13333vh",
-        "width": "36.8455vw",
-        "minHeight": "5px",
-        "minWidth": "5px",
+        "top": 11,
+        "left": 22,
+        "height": 46,
+        "width": 563,
         "z-index": "3"
       },
       "container": {
@@ -277,7 +253,9 @@
         "displayBorder": false,
         "borderColor": "var(--widget-border-color)",
         "borderWidth": "2px",
-        "centerVertically": true
+        "centerVertically": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {}
     }
@@ -309,11 +287,15 @@
     },
     "annotationLabelA": {}
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1295,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

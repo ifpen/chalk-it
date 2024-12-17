@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T10:09:23.527Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:23:25.580Z",
     "name": "osm-geojson-point",
     "description": "Single point display with geoJSON on map",
     "groupName": "Neutral",
@@ -38,41 +38,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "openStreetMapsm": {
       "layout": {
-        "top": "1.33333vh",
-        "left": "0.78534vw",
-        "height": "54.8vh",
-        "width": "70.877vw",
-        "minHeight": "20px",
-        "minWidth": "20px",
+        "top": 0,
+        "left": 2,
+        "height": 410,
+        "width": 1083,
         "z-index": "1"
       },
       "container": {
@@ -116,7 +88,9 @@
           "modal": false
         },
         "captureClickEvent": false,
-        "markerCluster": true
+        "markerCluster": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "geoJson": {
@@ -174,11 +148,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }
