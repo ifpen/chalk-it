@@ -19,6 +19,7 @@ import {
   DASHBOARD_DATA_TYPE,
   DASHBOARD_CONFIG_ID,
   DASHBOARD_CONFIG_TYPE,
+  DASHBOARD_URL_PARAMETER,
   PAGE_MODE_PAGES,
 } from 'kernel/general/export/export-constants';
 
@@ -26,12 +27,7 @@ import {
 
 function initPageRuntime(pages) {
   const $rootScope = angular.element(document.body).scope().$root;
-
-  widgetViewer.pageNames = pages.pageNames;
-
   const initialPage = pages.initialPage ?? 0;
-  widgetViewer.setCurrentPage(initialPage);
-
   $rootScope.safeApply(() => {
     $rootScope.pageNames = pages.pageNames;
     $rootScope.pageNumber = initialPage;
@@ -196,6 +192,13 @@ export function loadDashboard(jsonContent) {
     });
 
     widgetViewer.deserialize(jsonContent);
+
+    datanodesManager.startScheduler();
+
+    // Not done during deserialize as we need startScheduler to be done.
+    // Specificaly, datanodes with "constant" values (en short, json variables) must be marked evaluated
+    // so that widgets can read a value instead of setting a default one.
+    widgetViewer.assignValueChangeHandlers();
   };
 
   // Main logic begins here

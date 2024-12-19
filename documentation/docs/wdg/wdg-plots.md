@@ -3,7 +3,7 @@
 Plots in Chalk'it may be made either with Python or JavaScript code:
 
 * Python-based plots are available using [Plolty Python](https://plotly.com/python/) or [Matplotlib](https://matplotlib.org/), currenly only with the [Python Script](../ds/ds-reference.md#python-script)-type dataNode
-* JavaScript-based plots are available using  [Plotly.js](<https://plot.ly/javascript/>), [Apache ECharts](https://echarts.apache.org/) or [Vega](https://vega.github.io/vega/)
+* JavaScript-based plots are available using  [Plotly.js](<https://plot.ly/javascript/>) or [Apache ECharts](https://echarts.apache.org/)
 * Simplified usage (array actuators) is available for [Plotly line](#plotly-line), [Plotly bar](#plotly-bar) and [Plotly pie](#plotly-pie). Otherwise, use the [Plotly generic](#plotly-javascript-generic) for a complete Plotly.js options and configurations.
 
 Plotly.js-based widgets share common parameters, especially *hideModeBar* which allows to hide plot options toolbar at dashboard play.

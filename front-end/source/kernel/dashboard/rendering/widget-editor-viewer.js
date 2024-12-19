@@ -580,11 +580,11 @@ export class WidgetEditorViewer {
    */
   setZIndices(indices) {
     for (const [key, z] of indices) {
-      const layout = this.getWidgetLayout(key);
-      if (layout) {
-        if (layout.zIndex !== z) {
-          layout.zIndex = z;
-          const div = this.getWidgetContainerDiv(key);
+      const info = this.widgetsInfo.get(key);
+      if (info) {
+        if (info.layout.zIndex !== z) {
+          info.layout.zIndex = z;
+          const div = info.containerDiv;
           if (div) {
             div.style.zIndex = z;
           } else {

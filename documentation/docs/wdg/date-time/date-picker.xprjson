@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-02T09:36:04.259Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:21:19.857Z",
     "name": "date-picker",
     "description": "Data picker (calendar) with date selection and display",
     "groupName": "Neutral",
@@ -32,41 +32,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "#ffffff",
-    "inheritThemeBackgroundColor": false,
-    "theme": "default"
-  },
   "dashboard": {
     "flatUiValueDisplayA": {
       "layout": {
-        "top": "7.33333vh",
-        "left": "23.1675vw",
-        "height": "5.06667vh",
-        "width": "18.9791vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 45,
+        "left": 344,
+        "height": 38,
+        "width": 290,
         "z-index": "4"
       },
       "container": {
@@ -92,7 +64,9 @@
         "unit": "unitText",
         "displayUnit": false,
         "unitFontSize": 0.5,
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -100,12 +74,10 @@
     },
     "datepickerSimpleA": {
       "layout": {
-        "top": "7.33333vh",
-        "left": "1.11257vw",
-        "height": "5.06667vh",
-        "width": "18.9791vw",
-        "minHeight": "32px",
-        "minWidth": "150px",
+        "top": 45,
+        "left": 7,
+        "height": 38,
+        "width": 290,
         "z-index": "5"
       },
       "container": {
@@ -127,7 +99,9 @@
         "borderColor": "var(--widget-border-color)",
         "backgroundColor": "var(--widget-input-color)",
         "labelFontFamily": "Helvetica Neue",
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": "",
@@ -155,11 +129,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "#ffffff",
+    "inheritThemeBackgroundColor": false,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

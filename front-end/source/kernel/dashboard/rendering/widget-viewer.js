@@ -54,7 +54,6 @@ class WidgetWiewer {
    * @param {number} valueY
    */
   setMargins(valueX, valueY) {
-    document.getElementById(DISPLAY_CONTAINER_ID).style.padding = `${valueX}px ${valueY}px`;
     this.marginX = valueX;
     this.marginY = valueY;
 
@@ -81,8 +80,8 @@ class WidgetWiewer {
     containerDiv.appendChild(div);
 
     this.#updateWidgetPosition(containerDiv, layout);
-    if (layout.zIndex !== undefined) {
-      containerDiv.style.zIndex = layout.zIndex;
+    if (layout['z-index'] !== undefined) {
+      containerDiv.style.zIndex = layout['z-index'];
     }
 
     document.getElementById(DISPLAY_CONTAINER_ID).appendChild(containerDiv);
@@ -155,15 +154,10 @@ class WidgetWiewer {
     for (const [instanceId, desc] of Object.entries(dashboard)) {
       this.#createWidget(desc.container.modelJsonId, instanceId, desc.layout);
     }
-
-    // assign change value handlers
-    if (datanodesManager.getAllDataNodes().length != 0) {
-      this.assignValueChangeHandlers();
-    }
   }
 
   reRenderWidget(instanceId) {
-    this.widgetsInfo.get(instanceId)?.render(true);
+    this.widgetsInfo.get(instanceId)?.instance?.render(true);
   }
 
   #deserializeConnections(jsonContent) {
@@ -196,13 +190,19 @@ class WidgetWiewer {
   }
 
   /**
-   * Deserialisation of widget's connections at runtime mode
+   * Deserialisation of widgets and their connections.
    * Only called from runtime mode (not editor mode)
    * @param {any} jsonContent
    */
   deserialize(jsonContent) {
     const display = jsonContent.display;
     this.setMargins(display.marginX, display.marginY);
+
+    const pages = jsonContent.pages;
+    if (pages?.pageNames?.length) {
+      this.pageNames = [...pages.pageNames];
+      this.currentPage = pages.initialPage ?? 0;
+    }
 
     // Set the theme
     // Theme must be set before we create the widgets

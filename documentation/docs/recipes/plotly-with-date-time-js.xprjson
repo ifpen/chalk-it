@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T13:45:42.101Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:07:48.718Z",
     "name": "plotly-with-date-time-js",
     "description": "x-axis with data and time for Plotly scatter plot",
     "groupName": "JavaScript",
@@ -47,41 +47,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "plotlyGenericy": {
       "layout": {
-        "top": "1.3777vh",
-        "left": "0.811663vw",
-        "height": "37.3989vh",
-        "width": "77.7716vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 0,
+        "left": 2,
+        "height": 280,
+        "width": 1188,
         "z-index": "1"
       },
       "container": {
@@ -111,11 +83,17 @@
             ],
             "autorange": true
           }
-        }
+        },
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "data": [
-          {}
+          {
+            "type": "bar",
+            "x": [],
+            "y": []
+          }
         ],
         "layout": {
           "paper_bgcolor": "rgba(0,0,0,0)",
@@ -171,11 +149,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

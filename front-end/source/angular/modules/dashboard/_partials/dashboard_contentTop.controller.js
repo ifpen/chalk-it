@@ -36,7 +36,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
           options: function () {
             return {
               pageMode: htmlExport.pageMode,
-              initialPageIndex: htmlExport.initialPageIndex,
+              initialPageIndex: htmlExport.initialPage,
               navBarNotification: htmlExport.navBarNotification,
             };
           },
@@ -46,7 +46,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
       modalInstance.result.then(
         function (resultFromModal) {
           htmlExport.pageMode = resultFromModal.pageMode;
-          htmlExport.initialPageIndex = resultFromModal.initialPageIndex;
+          htmlExport.initialPage = resultFromModal.initialPageIndex;
           htmlExport.navBarNotification = resultFromModal.navBarNotification;
 
           $rootScope.updateFlagDirty(true);

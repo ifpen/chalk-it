@@ -628,6 +628,27 @@ export const datanodesManager = (function () {
         }
       });
     },
+    startScheduler: function () {
+      /** launch scheduler */
+      let periodicNode = null;
+      let nonPeriodicNode = null;
+      datanodesListModel.datanodes().forEach((datanode) => {
+        if (!_.isUndefined(datanode.settings().sampleTime) && datanode.settings().sampleTime != 0) {
+          periodicNode = datanode;
+          datanode.sampleTime(datanode.settings().sampleTime);
+          timeManager.registerDatanode(datanode.sampleTime(), datanode.name(), 'globalFirstUpdate'); //to compute basePeriod
+        } else {
+          nonPeriodicNode = datanode;
+        }
+      });
+
+      if (periodicNode) {
+        timeManager.registerDatanode(periodicNode.sampleTime(), periodicNode.name()); //to launch Timer
+      }
+      if (nonPeriodicNode) {
+        datanodesListModel.launchGlobalFirstUpdate(nonPeriodicNode); //launch all datanodes P and NP (see modif AEF 23/11/20)
+      }
+    },
     stopSchedule: function () {
       var datanodes = datanodesListModel.datanodes();
 

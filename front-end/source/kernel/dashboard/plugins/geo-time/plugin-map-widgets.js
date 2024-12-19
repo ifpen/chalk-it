@@ -99,7 +99,7 @@ modelsParameters.openStreetMaps = {
 };
 
 // Layout (default dimensions)
-modelsLayout.openStreetMaps = { height: '35vh', width: '35vw' };
+modelsLayout.openStreetMaps = { height: '300px', width: '540px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

@@ -57,6 +57,7 @@ export const xdsjson = (function () {
     };
     if (datanodesManager.getAllDataNodes().length === 0) {
       datanodesManager.load(forUpdate.data, true, refresh);
+      datanodesManager.startScheduler();
     } else {
       swal(
         {
@@ -75,6 +76,7 @@ export const xdsjson = (function () {
         function (isConfirm) {
           const bClear = !isConfirm;
           datanodesManager.load(forUpdate.data, bClear, refresh);
+          datanodesManager.startScheduler();
         }
       );
     }
