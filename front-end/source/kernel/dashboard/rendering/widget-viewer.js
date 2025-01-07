@@ -12,6 +12,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { applyGeometry } from 'kernel/dashboard/widget/widget-placement';
+import { modelsParameters } from 'kernel/base/widgets-states';
 
 const DISPLAY_CONTAINER_ID = 'DropperDroitec';
 
@@ -158,6 +159,11 @@ class WidgetWiewer {
 
   reRenderWidget(instanceId) {
     this.widgetsInfo.get(instanceId)?.instance?.render(true);
+    if (modelsParameters[instanceId].showWidget == false) {
+      $('#'+instanceId+'c').css('z-index', 0);
+    } else {
+      $('#'+instanceId+'c').css('z-index', this.widgetsInfo.get(instanceId)?.layout["z-index"]);
+    }
   }
 
   #deserializeConnections(jsonContent) {
