@@ -21,13 +21,13 @@ import _ from 'lodash';
 import { modelsHiddenParams } from 'kernel/base/widgets-states';
 
 import { toggleLegend } from 'kernel/dashboard/plugins/tools/legends';
-import { configureEvents } from 'kernel/dashboard/plugins/tools/eventsManager';
+import { configureEvents } from 'kernel/dashboard/plugins/tools/events-manager';
 import {
   findPropertiesWithNumber,
   findAllProperties,
   findFeatureType,
   equivalenceTypes,
-} from 'kernel/dashboard/plugins/tools/geoJsonTools';
+} from 'kernel/dashboard/plugins/tools/geoJson-tools';
 
 export function createTemplateStyle(self, geoJSON, index, typeLayer = undefined) {
   let prop = findPropertiesWithNumber(geoJSON);

@@ -11,8 +11,8 @@ import _ from 'lodash';
 import * as d3 from 'd3';
 
 import { nFormatter } from 'kernel/datanodes/plugins/thirdparty/utils';
-import { getMinMaxProperty,getNumberFormatter,equivalenceTypes,findFeatureType } from 'kernel/dashboard/plugins/tools/geoJsonTools';
-import { getColor } from 'kernel/dashboard/plugins/tools/colorScaleManager';
+import { getMinMaxProperty,getNumberFormatter,equivalenceTypes,findFeatureType } from 'kernel/dashboard/plugins/tools/geoJson-tools';
+import { getColor } from 'kernel/dashboard/plugins/tools/color-scale-manager';
 
 export function createLegend(idLegend, color, length, colorStops, min_, max_, featureTitle) {
   var legend = L.control({ position: 'topleft' });

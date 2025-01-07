@@ -7,7 +7,7 @@
 // └────────────────────────────────────────────────────────────────────┘ \\
 
 import _ from 'lodash';
-import { getColor } from 'kernel/dashboard/plugins/tools/colorScaleManager';
+import { getColor } from 'kernel/dashboard/plugins/tools/color-scale-manager';
 
 export  function compareSharedKeys(obj1, obj2) {
   const keys1 = Object.keys(obj1);

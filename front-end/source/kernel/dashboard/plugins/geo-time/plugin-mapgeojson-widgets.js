@@ -27,12 +27,12 @@ import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 
-import { getColorScaleFromStyle } from 'kernel/dashboard/plugins/tools/colorScaleManager';
-import { getTileServerConf } from 'kernel/dashboard/plugins/tools/tileServers';
-import { findAllProperties,findFeatureType,getFillColor,isValidGeoJSON } from 'kernel/dashboard/plugins/tools/geoJsonTools';
+import { getColorScaleFromStyle } from 'kernel/dashboard/plugins/tools/color-scale-manager';
+import { getTileServerConf } from 'kernel/dashboard/plugins/tools/tile-servers';
+import { findAllProperties,findFeatureType,getFillColor,isValidGeoJSON } from 'kernel/dashboard/plugins/tools/geoJson-tools';
 import { createLegend,createChoroplethLegend} from 'kernel/dashboard/plugins/tools/legends';
-import { createTemplateStyle,setStyle } from 'kernel/dashboard/plugins/tools/styleManager';
-import { configureEvents } from 'kernel/dashboard/plugins/tools/eventsManager';
+import { createTemplateStyle,setStyle } from 'kernel/dashboard/plugins/tools/style-manager';
+import { configureEvents } from 'kernel/dashboard/plugins/tools/events-manager';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/

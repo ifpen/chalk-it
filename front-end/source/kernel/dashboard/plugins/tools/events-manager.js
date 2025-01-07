@@ -19,8 +19,8 @@ import '@geoman-io/leaflet-geoman-free';
 import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 import { modelsHiddenParams } from 'kernel/base/widgets-states';
-import { findFeatureType, equivalenceTypes, formatProperty } from 'kernel/dashboard/plugins/tools/geoJsonTools';
-import { createTemplateStyle } from './styleManager';
+import { findFeatureType, equivalenceTypes, formatProperty } from 'kernel/dashboard/plugins/tools/geoJson-tools';
+import { createTemplateStyle } from './style-manager';
 
 export function mouseoverHandler(self, geoJSON, leafletIndex) {
   return function (e) {
