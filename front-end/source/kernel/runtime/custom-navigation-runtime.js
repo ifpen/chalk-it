@@ -10,5 +10,11 @@
 import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 
 export const customNavigationRuntime = {
-  goToPage: (page) => widgetViewer.setCurrentPage(page),
+  goToPage: (page) => { 
+    const $rootScope = angular.element(document.body).scope().$root;
+    if (page >= 0 && page < $rootScope.pageNames.length) {
+      $rootScope.pageNumber = page;
+      widgetViewer.setCurrentPage(page);
+    }
+  }
 };
