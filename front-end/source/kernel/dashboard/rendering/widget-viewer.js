@@ -83,6 +83,9 @@ class WidgetWiewer {
     this.#updateWidgetPosition(containerDiv, layout);
     if (layout['z-index'] !== undefined) {
       containerDiv.style.zIndex = layout['z-index'];
+      if (modelsParameters[instanceId].showWidget == false) {
+        containerDiv.style.zIndex = 0;
+      }
     }
 
     document.getElementById(DISPLAY_CONTAINER_ID).appendChild(containerDiv);
