@@ -5,10 +5,12 @@
 */
 
 @use 'sass:math';
+@use 'sass:map';
+@use './variables' as *;
 
 // Responsive mixins - We only use media up as it is better to start from mobile-first
 @function breakpoint-min($name, $breakpoints: $breakpoints) {
-  $min: map-get($breakpoints, $name);
+  $min: map.get($breakpoints, $name);
   @return if($min != 0, $min, null);
 }
 
@@ -29,25 +31,25 @@
 
 // Border radius mixin
 @function br($name, $br: $border-radiuses) {
-  $size: map-get($br, $name);
+  $size: map.get($br, $name);
   @return $size;
 }
 
 // Fonts size mixin
 @function fs($name, $fs: $font-sizes) {
-  $size: map-get($fs, $name);
+  $size: map.get($fs, $name);
   @return if($size != 0, $size, $font-size);
 }
 
 // Fonts weight mixin
 @function fw($name, $fw: $font-weights) {
-  $size: map-get($fw, $name);
+  $size: map.get($fw, $name);
   @return if($size != 0, $size, $font-weight);
 }
 
 // Spacers mixin
 @function spacer($name, $spacers: $spacers) {
-  $size: map-get($spacers, $name);
+  $size: map.get($spacers, $name);
   @return $size;
 }
 
@@ -71,11 +73,11 @@
 
 @mixin make-col($size, $columns: $grid-columns) {
   $width: math.div($size, $columns);
-  flex: 0 0 percentage($width);
+  flex: 0 0 math.percentage($width);
   // Add a `max-width` to ensure content within each column does not blow out
   // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
   // do not appear to require this.
-  max-width: percentage($width);
+  max-width: math.percentage($width);
 }
 
 @mixin make-col-auto() {
@@ -86,7 +88,7 @@
 
 @mixin make-col-offset($size, $columns: $grid-columns) {
   $num: math.div($size, $columns);
-  margin-left: if($num == 0, 0, percentage($num));
+  margin-left: if($num == 0, 0, math.percentage($num));
 }
 
 @mixin row-cols($count) {
@@ -105,7 +107,7 @@
     padding-left: math.div($gutter, 2);
   }
 
-  @each $breakpoint in map-keys($breakpoints) {
+  @each $breakpoint in map.keys($breakpoints) {
     $infix: breakpoint-infix($breakpoint, $breakpoints);
 
     @if $columns > 0 {
@@ -194,12 +196,12 @@ $icon-urls: (
 
 @mixin icon-background($icon-name, $type) {
   @media (prefers-color-scheme: light) {
-    $icon-url: map-get(map-get($icon-urls, $type), 'light');
+    $icon-url: map.get(map.get($icon-urls, $type), 'light');
     background-image: url('assets/#{$icon-url}#{$icon-name}');
   }
 
   @media (prefers-color-scheme: dark) {
-    $icon-url: map-get(map-get($icon-urls, $type), 'dark');
+    $icon-url: map.get(map.get($icon-urls, $type), 'dark');
     background-image: url('assets/#{$icon-url}#{$icon-name}');
   }
 }

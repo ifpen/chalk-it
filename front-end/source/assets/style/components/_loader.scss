@@ -4,6 +4,8 @@
  * 
  */
 
+@use '../utils/variables' as *;
+
 #loading-overlay {
   position: fixed;
   top: 0;

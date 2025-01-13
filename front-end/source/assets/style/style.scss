@@ -3,49 +3,49 @@
  * 
  */
 
-// Structure variables (SCSS), function and mixins
-@import './utils/variables';
-@import './utils/mixins';
-@import './utils/functions';
+// Structure variables (SCSS), functions, and mixins
+@use './utils/variables' as *;
+@use './utils/mixins' as *;
+@use './utils/functions' as *;
 
 // Themes colors | CSS variables
-@import './themes/themes.scss';
+@use './themes/themes.scss' as *;
 
 // Custom reset and base styles
-@import './base/reset';
-@import './base/fonts';
-@import './base/typography';
-@import './icons/fontawesome';
+@use './base/reset' as *;
+@use './base/fonts' as *;
+@use './base/typography' as *;
+@use './icons/fontawesome' as *;
 
 // Widgets
-@import './widgets/widgets';
-@import './widgets/widgets-tables';
-@import './widgets/widgets-forms';
-@import './widgets/widgets-select2';
-@import './widgets/widgets-buttons';
-@import './widgets/widgets-progress-bars';
-@import './widgets/widgets-sliders';
-@import './widgets/widgets-multiselect';
-@import './widgets/rzslider';
-@import './widgets/map';
-@import './widgets/cards';
-@import './widgets/load-file';
-@import './widgets/led';
-@import './widgets/plots-widgets';
-@import './widgets/editors-widgets-reset';
-@import './widgets/datepicker';
-@import './widgets/daterangepicker';
-@import './widgets/bootstrap-clockpicker';
-@import './widgets/info';
+@use './widgets/widgets' as *;
+@use './widgets/widgets-tables' as *;
+@use './widgets/widgets-forms' as *;
+@use './widgets/widgets-select2' as *;
+@use './widgets/widgets-buttons' as *;
+@use './widgets/widgets-progress-bars' as *;
+@use './widgets/widgets-sliders' as *;
+@use './widgets/widgets-multiselect' as *;
+@use './widgets/rzslider' as *;
+@use './widgets/map' as *;
+@use './widgets/cards' as *;
+@use './widgets/load-file' as *;
+@use './widgets/led' as *;
+@use './widgets/plots-widgets' as *;
+@use './widgets/editors-widgets-reset' as *;
+@use './widgets/datepicker' as *;
+@use './widgets/daterangepicker' as *;
+@use './widgets/bootstrap-clockpicker' as *;
+@use './widgets/info' as *;
 
 // Components
-@import './components/buttons';
-@import './components/popover';
-@import './components/export-messages'; // TODO: check if its really used in both cases (runtime & studio)
-@import './components/popup'; // TODO: check if its really used in both cases (runtime & studio)
-@import './components/dashboard-forms';
-@import './components/sweet-alert';
+@use './components/buttons' as *;
+@use './components/popover' as *;
+@use './components/export-messages' as *; // TODO: check if it's really used in both cases (runtime & studio)
+@use './components/popup' as *; // TODO: check if it's really used in both cases (runtime & studio)
+@use './components/dashboard-forms' as *;
+@use './components/sweet-alert' as *;
 
 // Layout parts
-@import './layout/common';
-@import './layout/bs-grid';
+@use './layout/common' as *;
+@use './layout/bs-grid' as *;

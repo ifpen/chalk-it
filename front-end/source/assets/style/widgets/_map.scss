@@ -4,12 +4,12 @@
  * 
  */
 
-@import 'leaflet/leaflet';
-@import 'leaflet/leaflet-geoman';
-@import 'leaflet/leaflet.awesome-markers';
-@import 'leaflet/leaflet.draw';
-@import 'leaflet/leaflet.modal';
-@import 'leaflet/legend';
+@use 'leaflet/leaflet' as *;
+@use 'leaflet/leaflet-geoman' as *;
+@use 'leaflet/leaflet.awesome-markers' as *;
+@use 'leaflet/leaflet.draw' as *;
+@use 'leaflet/leaflet.modal' as *;
+@use 'leaflet/legend' as *;
 
 .scaleLegend {
   background-color: #fff;

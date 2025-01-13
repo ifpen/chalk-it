@@ -5,6 +5,11 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+@use '../components/dashboard-forms' as *;
+@use '../components/buttons' as *;
+
 // Prevent background scrolling
 body.stop-scrolling {
   height: 100%;

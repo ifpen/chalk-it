@@ -4,6 +4,8 @@
  * 
  */
 
+@use '../utils/variables' as *;
+
 .main__layout {
   display: flex;
   flex-direction: column;

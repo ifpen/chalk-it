@@ -4,6 +4,9 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+@use '../layout/bs-grid' as *;
+
 $aside-panel-max-width: 25em;
 $aside-panel-nav-width: 65px;
 

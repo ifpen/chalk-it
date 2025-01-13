@@ -4,6 +4,8 @@
  * 
  */
 
+@use '../widgets/widgets-forms' as *;
+
 %widget-preview-wrapper {
   .select {
     position: relative;

@@ -4,6 +4,11 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+@use '../layout/bs-grid' as *;
+@use '../widgets/widgets' as *;
+
 // Appearance of draggable widgets
 div[id*='WidgetContainer'],
 div[id*='div-for-ng-gauge'] {

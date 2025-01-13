@@ -6,6 +6,8 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+
 .widgets {
   display: block;
   width: 1.5em;

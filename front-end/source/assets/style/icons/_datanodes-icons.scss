@@ -6,6 +6,8 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+
 .datanodes {
   display: block;
   width: 2rem;

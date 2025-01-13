@@ -4,6 +4,9 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+@use '../components/dashboard-forms' as *;
+
 $form-label-width: 145px;
 
 .form-table td {

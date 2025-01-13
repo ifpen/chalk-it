@@ -4,6 +4,8 @@
  * 
  */
 
+@use '../layout/bs-grid' as *;
+
 .datalist {
   @extend .row;
   @extend .no-gutters;

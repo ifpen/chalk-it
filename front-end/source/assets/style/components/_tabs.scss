@@ -4,6 +4,8 @@
  * 
  */
 
+@use '../components/buttons' as *;
+
 .tabs-container {
   display: flex;
   flex-direction: row;

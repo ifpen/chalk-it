@@ -5,6 +5,8 @@
  * 
  */
 
+@use '../utils/variables' as *;
+
 // From Bootstrap
 .modal-open {
   overflow: hidden;

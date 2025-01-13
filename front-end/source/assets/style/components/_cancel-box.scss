@@ -5,6 +5,11 @@
  * 
  */
 
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+@use '../base/typography' as *;
+@use '../widgets/widgets' as *;
+
 .cancel {
   &__container {
     position: fixed;
