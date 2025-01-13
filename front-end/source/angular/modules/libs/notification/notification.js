@@ -7,18 +7,24 @@ export function XdashNotifications() {
   var $body = angular.element(document.body);
   var $rootScope = $body.scope().$root;
   $rootScope.PnotifyStatus = false;
+  var enablePnotify = true;
 
   function Pnotify(notificationObject) {
-    let notice = new PNotify({
-      title: notificationObject.title,
-      text: notificationObject.text,
-      type: notificationObject.type,
-      delay: 1800,
-      styling: 'bootstrap3',
-    });
-    $('.ui-pnotify-container').on('click', function () {
-      notice.remove();
-    });
+    if ( $rootScope.navBarNotification==false ) {
+      enablePnotify = false;
+    }
+    if (enablePnotify) {
+      let notice = new PNotify({
+        title: notificationObject.title,
+        text: notificationObject.text,
+        type: notificationObject.type,
+        delay: 1800,
+        styling: 'bootstrap3',
+      });
+      $('.ui-pnotify-container').on('click', function () {
+        notice.remove();
+      });
+    }
   }
 
   const self = {
