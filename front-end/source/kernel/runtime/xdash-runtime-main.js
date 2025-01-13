@@ -205,6 +205,8 @@ export function loadDashboard(jsonContent) {
   try {
     const dataJson = processJsonContent(jsonContent);
     window.dashboardConfig = getDashboardConfig();
+    const $rootScope = angular.element(document.body).scope().$root;
+    $rootScope.navBarNotification = window.dashboardConfig?.navBarNotification == true;
 
     if (jsonContent.pages?.pageNames?.length) {
       initPageRuntime(jsonContent.pages);

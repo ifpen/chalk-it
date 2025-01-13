@@ -30,7 +30,6 @@ angularModule.run([
   '$rootScope',
   function ($rootScope) {
     $rootScope.urlBase = urlBase; // TODO
-    $rootScope.navBarNotification = window.dashboardConfig?.navBarNotification === 'true'; //AEF: visible if show notifications is checked // TODO
     $rootScope.notificationFilterDataValue = '';
     $rootScope.listNotifications = [];
     $rootScope.nbNotifications = 0;
