@@ -288,7 +288,7 @@ class WidgetWiewer {
    */
   displayErrorOnWidget(instanceId, i, msg) {
     const info = this.widgetsInfo.get(instanceId);
-    if (info && !this.widgetsOnErrorState.has(instanceId)) {
+    if (!window.dashboardConfig?.execOutsideEditor && info && !this.widgetsOnErrorState.has(instanceId)) {
       const containerDiv = info.containerDiv;
       containerDiv.style.outline = '4px groove #e40000';
       containerDiv.style.borderRadius = '6px';
