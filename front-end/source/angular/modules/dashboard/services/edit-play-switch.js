@@ -16,6 +16,11 @@ export function showPlayMode() {
     widgetViewer.reset();
     widgetViewer.deserialize({ dashboard, display, pages, connections: {} });
     widgetViewer.assignValueChangeHandlers();
+    const widgetEditor = editorSingletons.widgetEditor;
+    const newPage = widgetEditor.widgetEditorViewer.currentPage;
+    if (newPage >= 0 && newPage < widgetEditor.widgetEditorViewer.pageNames.length) {
+      widgetEditor.changePage(newPage);
+    }    
   } catch (e) {
     console.error(e);
     // FIXME ?
