@@ -13,13 +13,13 @@ export class WidgetToolbox {
 
   public async createFlatUiTextInput(): Promise<void> {
     const button = await this.driver.findElement(this.flatUiTextInputWidgetBy);
-    await this.driver.wait(until.elementIsVisible(button));
+    await this.driver.wait(until.elementIsVisible(button),5000);
     return button.click();
   }
 
   public async createFlatUiHorizontalSlider(): Promise<void> {
     const button = await this.driver.findElement(this.flatUiHorizontalSliderWidgetBy);
-    await this.driver.wait(until.elementIsVisible(button));
+    await this.driver.wait(until.elementIsVisible(button),5000);
     return button.click();
   }
 
@@ -64,26 +64,26 @@ export class WidgetToolbox {
         
     const connectWidgetId = await this.driver.findElement(By.css('i.specific.icn-data-connection.right-panel-toggle'));
 
-    //await this.driver.wait(until.elementIsVisible(widget));
+    
     if (connectWidgetId != undefined)
         connectWidgetId.click();
 
     //Waiting for panel datanodes connect display:
-    this.driver.wait(until.elementIsVisible(await this.driver.findElement(By.id('dataconnection__wrap1'))));
+    this.driver.wait(until.elementIsVisible(await this.driver.findElement(By.id('dataconnection__wrap1'))),5000);
     //Select datanode in list and apply
     const selectDatanodeElt = await this.driver.findElement(By.id('DSvalue'));
-    await this.driver.wait(until.elementIsVisible(selectDatanodeElt));
+    await this.driver.wait(until.elementIsVisible(selectDatanodeElt),5000);
     selectDatanodeElt.click();
     selectDatanodeElt.sendKeys(datanodeName);
     selectDatanodeElt.click();
 
     //Waiting for updated Gui WebElement:
-    const element = await this.driver.wait(until.elementLocated(By.id('DF_0_value')), 1000);
-    await this.driver.wait(until.elementIsVisible(element), 1000);        
+    const element = await this.driver.wait(until.elementLocated(By.id('DF_0_value')), 5000);
+    await this.driver.wait(until.elementIsVisible(element), 5000);        
     
     //Select variable in list and apply
     const variableNodeElt = await this.driver.findElement(By.id('DF_0_value'));
-    await this.driver.wait(until.elementIsVisible(variableNodeElt));
+    await this.driver.wait(until.elementIsVisible(variableNodeElt),5000);
     variableNodeElt.click();
     variableNodeElt.sendKeys(variableName);
     variableNodeElt.click();
@@ -99,14 +99,18 @@ export class WidgetToolbox {
 
   public async setValue(widget:  WebElement, val:string): Promise<void>{
 
-    await widget.sendKeys(val);
+    await widget.clear();
+    await widget.sendKeys(val+'\n');
 
+  }
 
+  public async getValue(widget:  WebElement) : Promise<string>{        
+    return await widget.getAttribute('value');    
   }
 
   public async showWidgetMenu(widget:  WebElement): Promise<void>{
 
-    await this.driver.wait(until.elementIsVisible(widget));
+    await this.driver.wait(until.elementIsVisible(widget),5000);
     if(widget != undefined)
       widget.click();
     
@@ -126,7 +130,7 @@ export class DataNodesPanel {
 
     const button = await this.driver.findElement(this.dataNodesToolboxBy);
     //assert.notEqual( button, None);    
-    await this.driver.wait(until.elementIsVisible(button));
+    await this.driver.wait(until.elementIsVisible(button),5000);
     await button.click();
     
     return new DataNodesBox(this.driver);
@@ -158,7 +162,7 @@ export class DataNodesBox {
 
   public async showDatanodesPanel(): Promise<void> {
     const button = await this.driver.findElement(this.btnNewDatanode);
-    await this.driver.wait(until.elementIsVisible(button));
+    await this.driver.wait(until.elementIsVisible(button),5000);
     return button.click();
   }
   
@@ -190,10 +194,10 @@ export class DataNodesBox {
    
   public async createJSONVar(Name:string, Value:string): Promise<void> {
     const button = await this.driver.findElement(this.listJSONVar);
-    await this.driver.wait(until.elementIsVisible(button));
+    await this.driver.wait(until.elementIsVisible(button),5000);
     button.click();
     const form = await this.driver.findElement(this.formJSONVar);
-    await this.driver.wait(until.elementIsVisible(form));
+    await this.driver.wait(until.elementIsVisible(form),5000);
     await this.fillDatanode(Name,Value);
     
     //Find save button form:

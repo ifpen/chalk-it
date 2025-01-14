@@ -58,16 +58,24 @@ describeWithServer('Dynamic widget creation', function (server) {
             await dashboard.toolboxPanel.openWidgetToolbox();
             //Start dashboard:
             await dashboard.runDashBoard();
-
-            const element = await driverFixture().wait(until.elementLocated(By.id('flatUiTextInputA'+'c')), 10000);
-            await driverFixture().wait(until.elementIsVisible(element), 10000);    
-
-            //const inputTextWidget = await driverFixture().findElement(By.id('flatUiTextInputA'+'c'));
-            
+            //Waiting running:
+            const element = await driverFixture().wait(until.elementLocated(By.id('flatUiTextInputA'+'c')), 5000);
+            await driverFixture().wait(until.elementIsVisible(element), 5000);    
+          
+            //Get "input text" widget:
             const inputTextWidget = await driverFixture().findElement(By.css('#flatUiTextInputAc #WidgetContainer401c .value-widget-html #value-no-input-group .value-input'));
-            
-            
-            await widgetToolbox.setValue(inputTextWidget, '5');
+            //Setting value
+            const valueToSet = '5';            
+            await widgetToolbox.setValue(inputTextWidget, valueToSet);
+            //Get "horizontal slider" widget:
+            const horizontalSliderWidget = await driverFixture().findElement(By.css('#flatUiHorizontalSliderAc #WidgetContainer402c .sliderInput .h-slider-value-div .hslider-input'));
+            // Waiting widget to be visible:
+            await driverFixture().wait(until.elementIsVisible(horizontalSliderWidget), 5000);
+            //getting value from widget:            
+            const valueReaded = await widgetToolbox.getValue(horizontalSliderWidget);
+
+            //raise exception if value set is not equal to value readed:
+            assert.notEqual(valueToSet, valueReaded);
 
 
         });
