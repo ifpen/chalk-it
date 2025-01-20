@@ -202,9 +202,6 @@ function mapGeoJsonWidgetsPluginClass() {
           }
         } else {
           self.map.setZoom(self.defaultConfig.defaultCenter.zoom);
-          if(!_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle) && !_.isUndefined(modelsHiddenParams[idInstance].GeoJSONStyle.config)){
-            modelsHiddenParams[idInstance].GeoJSONStyle.config.defaultCenter.zoom = self.defaultConfig.defaultCenter.zoom;
-          }
         }
       } else {
         self.map.setZoom(config.defaultCenter.zoom);
