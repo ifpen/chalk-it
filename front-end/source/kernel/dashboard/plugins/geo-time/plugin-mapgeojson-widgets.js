@@ -319,7 +319,7 @@ function mapGeoJsonWidgetsPluginClass() {
       //checkbox
       self.ctrl.addOverlay(leafletLayer, name);
       //update style
-      setStyle(self, leafletIndex, style);
+      setStyle(self, leafletIndex, {...style});
     };
     // Create the style object that will be in out JSON for a geoJSON
     // typeLayer is used for marker or circle
