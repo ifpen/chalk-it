@@ -207,82 +207,65 @@ function mapGeoJsonWidgetsPluginClass() {
       }
     };
     this.render = function () {
-      var widgetHtml = document.createElement('div');
-      widgetHtml.setAttribute('id', 'mapGeoJson' + idWidget);
-      widgetHtml.setAttribute('style', 'width: inherit; height: inherit');
+      // Create and configure the main widget HTML
+      const widgetHtml = document.createElement('div');
+      widgetHtml.id = `mapGeoJson${idWidget}`;
+      widgetHtml.style.width = 'inherit';
+      widgetHtml.style.height = 'inherit';
+  
       document.addEventListener('play-tab-loaded', self.goToFirstRadioButton);
-      $('#' + idDivContainer).html(widgetHtml);
-
-      
-      //config
-      let config = {...self.defaultConfig};
-      let GeoJSONStyle = {...modelsHiddenParams[idInstance].GeoJSONStyle};
-      if (
-        !_.isUndefined(GeoJSONStyle) &&
-        !_.isEmpty(GeoJSONStyle) &&
-        !_.isUndefined(GeoJSONStyle.config) &&
-        !_.isUndefined(GeoJSONStyle.config.defaultCenter)
-      ) {
-        config = {...GeoJSONStyle.config};
+      document.getElementById(idDivContainer).innerHTML = '';
+      document.getElementById(idDivContainer).appendChild(widgetHtml);
+  
+      // Initialize configuration
+      let config = { ...self.defaultConfig };
+      const geoJSONParams = modelsHiddenParams[idInstance];
+      const geoJSONStyle = geoJSONParams?.GeoJSONStyle || {};
+  
+      if (geoJSONStyle.config?.defaultCenter) {
+        config = { ...geoJSONStyle.config };
       }
-      // Drawing the map
-      // TODO : Report all map possibilites from map
-      self.map = L.map('mapGeoJson' + idWidget, { preferCanvas: true }).setView(
-        [config.defaultCenter.longitude, config.defaultCenter.latitude],
-        config.defaultCenter.zoom
+  
+      // Initialize map
+      self.map = L.map(`mapGeoJson${idWidget}`, { preferCanvas: true }).setView(
+        [config.defaultCenter?.longitude, config.defaultCenter?.latitude],
+        config.defaultCenter?.zoom
       );
-      let ts = 'MapboxStreets';
-      ts = config.tileServer;
-      var tileConf = getTileServerConf(ts);
-      self.baseLayer = L.tileLayer(tileConf.url, tileConf);
-      self.baseLayer.addTo(self.map);
-      self.ctrl = L.control
-        .layers(
-          {},
-          {},
-          {
-            position: 'topright',
-            collapsed: true,
-            autoZIndex: true,
-          }
-        )
-        .addTo(self.map);
-      //set zoom position
+  
+      // Set up tile layer
+      const tileServer = config.tileServer || 'MapboxStreets';
+      const tileConf = getTileServerConf(tileServer);
+      self.baseLayer = L.tileLayer(tileConf.url, tileConf).addTo(self.map);
+  
+      // Add layer control
+      self.ctrl = L.control.layers({}, {}, {
+        position: 'topright',
+        collapsed: true,
+        autoZIndex: true,
+      }).addTo(self.map);
+  
+      // Set zoom control position
       self.map.zoomControl.setPosition('topright');
   
-      //update view
-     
-      let GeoJSONS = modelsHiddenParams[idInstance].GeoJSON;
-      //set bounding box
-      self.zoom(self,config,GeoJSONS); 
-
-      //if image overlay exist
-      if (!_.isUndefined(GeoJSONStyle) && !_.isEmpty(GeoJSONStyle) && !_.isUndefined(GeoJSONStyle.config)) {
-        let image = {...GeoJSONStyle.config.image};
-        self.addImageOverlay(image);
+      // Update map view and set bounding box
+      const geoJSONData = geoJSONParams?.GeoJSON || [];
+      self.zoom(self, config, geoJSONData);
+  
+      // Add image overlay if available
+      if (geoJSONStyle.config?.image) {
+        self.addImageOverlay({ ...geoJSONStyle.config.image });
       }
-
-      // internal layer group L.layerGroup
+  
+      // Initialize internal layers and legends
       self.layers = [];
       self.legends = [];
-
-      if (!_.isUndefined(GeoJSONS) && !_.isEmpty(GeoJSONS) && Array.isArray(GeoJSONS)) {
-        GeoJSONS.forEach((item, index) => {
-          let name = 'layer ' + index;
-          if (
-            !_.isUndefined(GeoJSONStyle) &&
-            !_.isEmpty(GeoJSONStyle) &&
-            !_.isUndefined(GeoJSONStyle.style) &&
-            Array.isArray(GeoJSONStyle.style) &&
-            GeoJSONStyle.style.length > index
-          ) {
-            if (!_.isUndefined(GeoJSONStyle.style[index])) {
-              if (!_.isUndefined(GeoJSONStyle.style[index].name)) {
-                name = GeoJSONStyle.style[index].name;
-              }
-              self.addGeoJSONlayer(item,GeoJSONStyle.style[index], name);
-            }
-          }
+  
+      // Add GeoJSON layers
+      if (Array.isArray(geoJSONData)) {
+        geoJSONData.forEach((item, index) => {
+          const style = geoJSONStyle.style?.[index] || {};
+          const layerName = style.name || `layer ${index}`;
+          self.addGeoJSONlayer(item, style, layerName);
         });
       }
     };
