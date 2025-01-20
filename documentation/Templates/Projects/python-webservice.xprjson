@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8901",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-15T08:34:37.215Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:02:01.039Z",
     "name": "python-webservice",
     "description": "Using Flask via REST API dataNode-type to call Python code",
     "tags": [
@@ -30,11 +30,9 @@
           "name": "vectorFunctions",
           "url": "http://127.0.0.1:5000/basicVect",
           "use_xproxy": false,
-          "sampleTime": 0,
+          "resp_data_type": "JSON",
           "autoStart": false,
           "explicitTrig": false,
-          "req_data_type": "none",
-          "resp_data_type": "JSON",
           "method": "POST",
           "body": "{\n\"A\": [0, 1, 2, 3],\n\"B\": [10, 11, 12, 13] \n}",
           "headers": [
@@ -42,7 +40,9 @@
               "name": "Content-Type",
               "value": "application/json"
             }
-          ]
+          ],
+          "sampleTime": 0,
+          "req_data_type": "none"
         }
       }
     ]
@@ -51,39 +51,17 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwSp",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {},
   "connections": {},
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1045,
+    "height": 605,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

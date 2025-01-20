@@ -42,7 +42,7 @@ modelsParameters.timepickerSimple = {
 };
 
 // Layout (default dimensions)
-modelsLayout.timepickerSimple = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '32px' };
+modelsLayout.timepickerSimple = { height: '40px', width: '300px', minWidth: '150px', minHeight: '32px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -172,7 +172,7 @@ function timePickerWidgetsPluginClass() {
         'font-size: ' +
         valueFontSize +
         '; ' +
-        this.valueColor() +
+        this.getValueColor() +
         this.valueFontFamily() +
         this.backgroundColor() +
         '" ' +

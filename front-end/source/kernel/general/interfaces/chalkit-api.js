@@ -12,7 +12,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
 import { inputHandler } from 'kernel/general/interfaces/input-params';
 import { modelsParameters } from 'kernel/base/widgets-states';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 
 export const chalkit = (function () {
   function setVariable(dataNodeName, varJsonValue) {
@@ -130,27 +130,37 @@ export const chalkit = (function () {
   }
 
   function goToPage(numPage) {
-    customNavigationRuntime.customNavigationGoToPage(numPage);
+    customNavigationRuntime.goToPage(numPage-1);
+  }
+
+  function _checkWidgetExists(widgetName) {
+    if (!(widgetName in modelsParameters)) {
+      throw new Error(`Widget "${widgetName}" not found`);
+    }
   }
 
   function enableWidget(widgetName) {
+    _checkWidgetExists(widgetName);
     modelsParameters[widgetName].enableWidget = true;
-    widgetPreview.widget[widgetName].render(true);
+    widgetViewer.reRenderWidget(widgetName);
   }
 
   function disableWidget(widgetName) {
+    _checkWidgetExists(widgetName);
     modelsParameters[widgetName].enableWidget = false;
-    widgetPreview.widget[widgetName].render(true);
+    widgetViewer.reRenderWidget(widgetName);
   }
 
   function showWidget(widgetName) {
+    _checkWidgetExists(widgetName);
     modelsParameters[widgetName].showWidget = true;
-    widgetPreview.widget[widgetName].render(true);
+    widgetViewer.reRenderWidget(widgetName);
   }
 
   function hideWidget(widgetName) {
+    _checkWidgetExists(widgetName);
     modelsParameters[widgetName].showWidget = false;
-    widgetPreview.widget[widgetName].render(true);
+    widgetViewer.reRenderWidget(widgetName);
   }
 
   function notify(dataNodeName, msg, type) {

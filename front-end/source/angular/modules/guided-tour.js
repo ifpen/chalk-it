@@ -143,7 +143,7 @@ export function startIntroProject() {
         break;
       case 'editor-left-side-panel':
         if (this._direction == 'backward') {
-          document.getElementById('showHideWidgetMenu').click();
+          document.getElementById('showHideWidgetMenu').click(); // TODO coords
         }
         break;
       case 'li_annotationLabelT':

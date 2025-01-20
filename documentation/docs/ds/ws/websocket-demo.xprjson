@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T13:30:08.004Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:52:40.052Z",
     "name": "websocket-demo",
     "description": "",
     "tags": [],
@@ -42,41 +42,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "flatUiValueDisplay0": {
       "layout": {
-        "top": "2.02508vh",
-        "left": "2.73495vw",
-        "height": "4.82905vh",
-        "width": "75.8949vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 5,
+        "left": 32,
+        "height": 36,
+        "width": 1160,
         "z-index": "1"
       },
       "container": {
@@ -105,7 +77,9 @@
         "validationButton": false,
         "validationOnFocusOut": true,
         "isNumber": false,
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -122,11 +96,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

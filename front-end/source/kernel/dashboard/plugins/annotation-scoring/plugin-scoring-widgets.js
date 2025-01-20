@@ -61,9 +61,9 @@ modelsParameters.scoringArchCircularGauge = {
 };
 
 // Layout (default dimensions)
-modelsLayout.scoringFullCircularGauge = { height: '15vh', width: '11vw' };
-modelsLayout.scoringSemiCircularGauge = { height: '15vh', width: '11vw' };
-modelsLayout.scoringArchCircularGauge = { height: '15vh', width: '11vw' };
+modelsLayout.scoringFullCircularGauge = { height: '120px', width: '180px' };
+modelsLayout.scoringSemiCircularGauge = { height: '120px', width: '180px' };
+modelsLayout.scoringArchCircularGauge = { height: '120px', width: '180px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -139,7 +139,7 @@ function scoringWidgetsPluginClass() {
         '<ng-gauge id="ng-gauge' +
           idWidget +
           '" style="' +
-          this.valueColor() +
+          this.getValueColor() +
           '" size="' +
           gaugeSize +
           '" type="' +

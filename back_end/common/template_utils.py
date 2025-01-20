@@ -11,8 +11,6 @@
 
 
 from flask import render_template_string
-import re
-import os
 import json
 from pathlib import Path
 
@@ -50,12 +48,8 @@ class TemplateUtils:
 
         # Prepare the script with dynamic JSON data
         script = f"""
-        <script type="text/javascript">
-            try {{               
-                window.chalkitLoadDashboard({json.dumps(config_data)});
-            }} catch (error) {{
-                console.error('Error loading dashboard:', error);
-            }}
+        <script id="dashboard_data" type="application/json">
+            {json.dumps(config_data)}
         </script>
         """
 

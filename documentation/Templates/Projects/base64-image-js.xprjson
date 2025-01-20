@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-02T08:06:47.899Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:18:19.101Z",
     "name": "base64-image-js",
     "description": "base64-encoded images display example",
     "groupName": "JavaScript",
@@ -61,41 +61,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "annotationImageConnectedA": {
       "layout": {
-        "top": "15.2vh",
-        "left": "5.26178vw",
-        "height": "41.2vh",
-        "width": "23.822vw",
-        "minHeight": "20px",
-        "minWidth": "20px",
+        "top": 104,
+        "left": 70,
+        "height": 308,
+        "width": 364,
         "z-index": "4"
       },
       "container": {
@@ -105,7 +77,9 @@
       "modelParameters": {
         "keepRatio": true,
         "hideImageURL": true,
-        "enableActuator": true
+        "enableActuator": true,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "fileContentBase64": "",
@@ -114,12 +88,10 @@
     },
     "flatUiSelectA": {
       "layout": {
-        "top": "5.86667vh",
-        "left": "5.26178vw",
-        "height": "4.93333vh",
-        "width": "23.822vw",
-        "minHeight": "27px",
-        "minWidth": "40px",
+        "top": 34,
+        "left": 70,
+        "height": 37,
+        "width": 364,
         "z-index": "5"
       },
       "container": {
@@ -141,7 +113,9 @@
         "selectedValueColor": "var(--widget-select-option-highlighted-text)",
         "selectedItemDefaultColor": "var(--widget-select-option-highlighted-color)",
         "selectedItemHoverColor": "var(--widget-select-option-highlighted-color)",
-        "isKeyValuePairs": false
+        "isKeyValuePairs": false,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "keys": [],
@@ -184,11 +158,15 @@
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

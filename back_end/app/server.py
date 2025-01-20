@@ -20,7 +20,7 @@ from flask import (
     make_response,
     request,
     send_from_directory,
-    render_template_string,
+    redirect,
     current_app,
 )
 from base64 import b64decode, b64encode
@@ -28,12 +28,16 @@ from concurrent.futures import Executor, ProcessPoolExecutor
 from pathlib import Path
 from typing import Any, Dict, Optional, Type, Callable
 from argparse import Namespace
+from urllib import parse
 import argparse
 import os
 import json
 import logging
 import webbrowser
 import threading
+
+DASHBOARD_URL_PARAMETER = "projectUrl"
+DASHBOARD_XPRJSON_ENDPOINT = "dashboard"
 
 
 class AppConfig:
@@ -341,18 +345,24 @@ class FileManager:
             RootManager.handle_errors(self.get_python_data_list)
         )
         self.blueprint.route("/heartbeat")(RootManager.handle_errors(self.heartbeat))
-        self.blueprint.add_url_rule(
-            "/<path:path>/",
-            view_func=RootManager.handle_errors(self.static_files),
-            methods=["GET"],
-            endpoint="static_file_with_path",
-            strict_slashes=False,
-        )
+
+        if self.config.xprjson_file_path:
+            # If the path is relative, resolve it against the current directory
+            self.xprjson_path = Path(self.config.xprjson_file_path).absolute()
+
+            if not self.xprjson_path.is_file():
+                raise IOError(f"dashboard file not found: {self.xprjson_path}")
+
+            self.blueprint.add_url_rule(
+                f"/{DASHBOARD_XPRJSON_ENDPOINT}",
+                view_func=RootManager.handle_errors(self.dashboard),
+                methods=["GET"],
+            )
+
         self.blueprint.add_url_rule(
             "/",
-            view_func=RootManager.handle_errors(self.static_files),
+            view_func=RootManager.handle_errors(self.default_route),
             methods=["GET"],
-            defaults={"path": config.index_file_path},
             endpoint="static_file_root",
         )
 
@@ -391,62 +401,15 @@ class FileManager:
             }
         )
 
-    def static_files(self, path: str) -> Response:
-        """
-        Handles requests for static files.
-        """
-        if self.config.xprjson_file_path is not None:
-            return self.dashboard(self.config.xprjson_file_path)
+    def dashboard(self) -> Response:
+        return send_file(self.xprjson_path)
 
-        static_file_directory = Path(self.blueprint.static_folder)
-        full_path = (static_file_directory / path).resolve()
-
-        if full_path.is_file():
-            return send_from_directory(static_file_directory, path)
-
-        return "Invalid path", 404
-
-    def dashboard(self, xprjson_file_path: str) -> str:
-        """Generates the dashboard HTML content by injecting the config data into the template."""
-
-        config_path = Path(xprjson_file_path)
-        # If the path is relative, resolve it against the project directory
-        if not config_path.is_absolute():
-            config_path = Path.cwd() / config_path
-
-        template_path = self.config.static_folder / self.config.index_view_file_path
-
-        # Load configuration from XPRJSON file
-        try:
-            with config_path.open("r") as config_file:
-                config_data = json.load(config_file)
-        except FileNotFoundError:
-            raise ValueError(f"Configuration file not found: {config_path}")
-        except json.JSONDecodeError as e:
-            raise ValueError(f"Error decoding JSON from {config_path}: {e}")
-
-        # Load the HTML template
-        try:
-            with template_path.open("r") as template_file:
-                template_data = template_file.read()
-        except FileNotFoundError:
-            raise ValueError(f"HTML template file not found: {template_path}")
-
-        # Prepare the script with dynamic JSON data and inject it into the template
-        script = f"""
-        <script type="text/javascript">
-            try {{
-                window.chalkitLoadDashboard({json.dumps(config_data)});
-            }} catch (error) {{
-                console.error('Error loading dashboard:', error);
-            }}
-        </script>
-        """
-
-        # Inject the script before the closing </body> tag
-        template_data_with_config = template_data.replace("</body>", script + "</body>")
-
-        return render_template_string(template_data_with_config)
+    def default_route(self) -> Response:
+        if self.config.xprjson_file_path is None:
+            return redirect(self.config.index_file_path)
+        else:
+            params = parse.urlencode({DASHBOARD_URL_PARAMETER: DASHBOARD_XPRJSON_ENDPOINT})
+            return redirect(f"{self.config.index_view_file_path}?{params}")
 
     def get_python_data_list(self) -> Response:
         return RootManager.send_success(

@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T12:45:02.926Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:47:29.244Z",
     "name": "memory",
     "description": "",
     "groupName": "",
@@ -36,41 +36,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "flatUiValueDisplayA": {
       "layout": {
-        "top": "14.2003vh",
-        "left": "7.25879vw",
-        "height": "5.15228vh",
-        "width": "18.9644vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 96,
+        "left": 101,
+        "height": 39,
+        "width": 290,
         "z-index": "2"
       },
       "container": {
@@ -97,7 +69,9 @@
         "displayUnit": false,
         "unitFontSize": 0.5,
         "decimalDigits": 3,
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -105,12 +79,10 @@
     },
     "flatUiButtonA": {
       "layout": {
-        "top": "14.0745vh",
-        "left": "31.324vw",
-        "height": "6.15761vh",
-        "width": "7.97812vw",
-        "minHeight": "24px",
-        "minWidth": "55px",
+        "top": 95,
+        "left": 469,
+        "height": 46,
+        "width": 122,
         "z-index": "3"
       },
       "container": {
@@ -129,18 +101,18 @@
         "buttonTextColor": "var(--widget-button-primary-text)",
         "buttonDefaultColor": "var(--widget-button-primary-color)",
         "buttonActiveColor": "var(--widget-button-active-color)",
-        "buttonHoverColor": "var(--widget-button-hover-color)"
+        "buttonHoverColor": "var(--widget-button-hover-color)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {}
     },
     "flatUiValueDisplayB": {
       "layout": {
-        "top": "3.26731vh",
-        "left": "7.0626vw",
-        "height": "5.15228vh",
-        "width": "18.9644vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
+        "top": 14,
+        "left": 98,
+        "height": 39,
+        "width": 290,
         "z-index": "4"
       },
       "container": {
@@ -167,7 +139,9 @@
         "displayUnit": false,
         "unitFontSize": 0.5,
         "decimalDigits": 3,
-        "borderWidth": "2px"
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": ""
@@ -197,11 +171,15 @@
       }
     }
   },
-  "exportOptions": "ajustToTargetWindow",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

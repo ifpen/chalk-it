@@ -21,7 +21,7 @@
 
     <!-- menu of actions -->
     <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
-      <li ng-class="{hidden:!editorView.checkboxModelView}" js-view-mode>
+      <li ng-class="{hidden:!editorView.isPlayMode}" js-view-mode>
         <a ng-click="exportSettings();isNavOpen=false" title="Setting project export options">
           <i class="basic icn-settings"></i>Settings
         </a>
@@ -63,7 +63,7 @@
   <button
     ng-if="xDashFullVersion"
     class="btn btn__see-more"
-    ng-class="{hidden:editorView.checkboxModelView}"
+    ng-class="{hidden:editorView.isPlayMode}"
     title="Save project"
     ng-disabled="readOnly"
     js-edit-mode
@@ -76,7 +76,7 @@
     ng-if="!xDashFullVersion"
     ng-disabled="isTemplateOpen || isLiveDemo || !enableLocalServer"
     class="btn btn__see-more"
-    ng-class="{hidden:editorView.checkboxModelView}"
+    ng-class="{hidden:editorView.isPlayMode}"
     title="Save project"
     js-edit-mode
     ng-click="saveProjectToLocal();"
@@ -87,7 +87,7 @@
   <!-- view mode start -->
 
   <!-- Export button -->
-  <div class="view-mode__export" ng-class="{hidden:!editorView.checkboxModelView}" js-view-mode>
+  <div class="view-mode__export" ng-class="{hidden:!editorView.isPlayMode}" js-view-mode>
     <div class="btn__see-more__wrapper">
       <button class="btn btn__see-more" title="Preview the HTML page" ng-click="previewDashboard();">Preview</button>
     </div>
@@ -154,7 +154,7 @@
   </div>
 
   <!-- undo/redo button -->
-  <div class="undo-redo" ng-class="{hidden:editorView.checkboxModelView}" js-edit-mode>
+  <div class="undo-redo" ng-class="{hidden:editorView.isPlayMode}" js-edit-mode>
     <button class="btn btn-icon-only" title="undo" ng-click="vm.undo();" ng-disabled="!vm.canUndo()">
       <i class="fa fa-undo"></i>
     </button>
@@ -163,9 +163,33 @@
     </button>
   </div>
 
+  <!-- Page change -->
+  <!-- TODO dedicated CSS -->
+  <div class="undo-redo" ng-if="vm.getCurrentPageNames().length">
+    <button class="btn btn-icon-only" title="previous page (shift + page up)" ng-click="vm.previousPage();" ng-disabled="vm.getCurrentPage()<=0">
+      <i class="fa fa-arrow-left"></i>
+    </button>
+    {{ vm.getCurrentPage() + 1 }} / {{ vm.getCurrentPageNames().length }}
+    <button class="btn btn-icon-only" title="next page (shift + page down)" ng-click="vm.nextPage();" ng-disabled="vm.getCurrentPage()>=vm.getCurrentPageNames().length-1">
+      <i class="fa fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <!-- Zoom change -->
+  <!-- TODO dedicated CSS -->
+  <div class="undo-redo">
+    <button class="btn" title="1:1" ng-click="vm.zoomNone();" ng-disabled="vm.displayRatio===1.0">
+      1:1
+    </button>
+    <button class="btn" title="Fit" ng-click="vm.zoomFit();" ng-disabled="vm.displayFit">
+      Fit
+    </button>
+    <input type="number" min="0.1" max="4.0" step="0.1"  ng-model="vm.displayRatio" ng-change="vm.displayRatioChanged()" />
+  </div>
+
   <!-- for future version -->
   <!-- desktop/mobile/tablet start -->
-  <ul ng-show="false" class="view-mode" js-view-mode ng-class="{hidden:!editorView.checkboxModelView}">
+  <ul ng-show="false" class="view-mode" js-view-mode ng-class="{hidden:!editorView.isPlayMode}">
     <li>
       <a href="#" js-device-view class="active">
         <i class="view-mode__button view-mode__button--desktop"></i>
@@ -193,8 +217,8 @@
 <!-- switch mode -->
 <div class="switch__wrapper">
   <p>Edit</p>
-  <label class="switch" id="switch-label">
-    <input type="checkbox" id="edit-play-switch" ng-model="editorView.checkboxModelView" ng-click="switchEditView()" />
+  <label class="switch">
+    <input type="checkbox" id="edit-play-switch" ng-model="editorView.isPlayMode" ng-change="switchEditView()" />
     <span class="slider round"></span>
   </label>
   <p>View</p>

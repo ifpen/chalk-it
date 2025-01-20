@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8901",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-15T09:04:43.062Z",
+    "version": "4.000.9096",
+    "fileFormatVersion": "0.4",
+    "date": "2024-11-28T10:46:39.993Z",
     "name": "buttons-py",
     "description": "Demonstration of buttons widgets : for execution trigger or file upload",
     "groupName": "Python",
@@ -85,7 +85,7 @@
             }
           ],
           "proxyHash": "eyJBZGRyZXNzIjoiaHR0cHM6Ly9jb21wdXRlMjAxOTA0MjUwNDU0MzUuYXp1cmV3ZWJzaXRlcy5uZXQvQ29tcHV0ZVNlcnZpY2UuYXNteC9TdXJmYWNlIiwiSG9zdCI6InhkYXNoIn0=",
-          "proxySig": "5TM10MtZYvnW/sf2ZrpNxroEC5/u3IzDOTvHwTGaJC7Ve8mvIFTHNTSRJC01sF4++1mTDAzHz2vWI03ypu1tkethTosHJxRjcAnrj3nUMMB9B3vlYUwnXguGTw5Y8ov0G1pelWCQNYxShZXlVsDVTg=="
+          "proxySig": "5TM10MtZYvnW/sf2ZrpNxroEC5/u3IzDOTvHwTGaJC7Ve8mvIFTHNTSRJC01sF4++1mTDAzHz2vWI03ypu1tkethTosHJxRjcAnrj3nUMMB9B3vlYUwnXguGTw5Y8ov0ttWopZ9STYSGixA6zDySNA=="
         }
       }
     ]
@@ -96,45 +96,236 @@
     ],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1295,
-    "heightPx": 590,
-    "scrollWidthPx": 1295,
-    "scrollHeightPx": 590,
-    "widthVw": 84.75130890052355,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.75130890052355,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
-    "loadFileb": {
+    "annotationLabelv": {
       "layout": {
-        "top": "27.5333vh",
-        "left": "13.7435vw",
-        "height": "25.2vh",
-        "width": "28.3377vw",
-        "minHeight": "70px",
-        "minWidth": "95px",
-        "z-index": "5"
+        "top": 0,
+        "left": 0,
+        "height": 162,
+        "width": 1131,
+        "z-index": "2"
       },
       "container": {
-        "instanceId": "loadFileb",
+        "instanceId": "annotationLabelv",
+        "modelJsonId": "annotationLabel"
+      },
+      "modelParameters": {
+        "text": "",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "#daddd984",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "textBold": false,
+        "textUnderline": false,
+        "textItalic": false,
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "borderWidth": "2px",
+        "centerVertically": true,
+        "showWidget": true,
+        "enableWidget": true
+      },
+      "modelHiddenParams": {}
+    },
+    "annotationHtmlj": {
+      "layout": {
+        "top": 399,
+        "left": 19,
+        "height": 237,
+        "width": 1094,
+        "z-index": "8"
+      },
+      "container": {
+        "instanceId": "annotationHtmlj",
+        "modelJsonId": "annotationHtml"
+      },
+      "modelParameters": {
+        "fontsize": 0.3,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "var(--widget-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "displayBorder": false,
+        "centerVertically": true,
+        "showWidget": true,
+        "enableWidget": true
+      },
+      "modelHiddenParams": {
+        "html": ""
+      }
+    },
+    "annotationLabelp": {
+      "layout": {
+        "top": 169,
+        "left": 0,
+        "height": 484,
+        "width": 1131,
+        "z-index": "1"
+      },
+      "container": {
+        "instanceId": "annotationLabelp",
+        "modelJsonId": "annotationLabel"
+      },
+      "modelParameters": {
+        "text": "",
+        "enableActuator": false,
+        "fontsize": 0.5,
+        "backgroundColor": "#daddd984",
+        "textColor": "var(--widget-label-color)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "textAlign": "left",
+        "textBold": false,
+        "textUnderline": false,
+        "textItalic": false,
+        "displayBorder": false,
+        "borderColor": "var(--widget-border-color)",
+        "borderWidth": "2px",
+        "centerVertically": true,
+        "showWidget": true,
+        "enableWidget": true
+      },
+      "modelHiddenParams": {}
+    },
+    "flatUiFileInputButtonA": {
+      "layout": {
+        "top": 251,
+        "left": 28,
+        "height": 78,
+        "width": 144,
+        "z-index": "10"
+      },
+      "container": {
+        "instanceId": "flatUiFileInputButtonA",
+        "modelJsonId": "flatUiFileInputButton"
+      },
+      "modelParameters": {
+        "text": "Load text file here",
+        "numberOfTriggers": 1,
+        "fileInput": true,
+        "binaryFileInput": false,
+        "buttonFontSize": 0.3,
+        "displayIcon": false,
+        "fontAwesomeIcon": "",
+        "buttonFontFamily": "var(--widget-font-family)",
+        "buttonTextColor": "var(--widget-button-primary-text)",
+        "buttonDefaultColor": "var(--widget-button-primary-color)",
+        "buttonActiveColor": "var(--widget-button-active-color)",
+        "buttonHoverColor": "var(--widget-button-hover-color)",
+        "showWidget": true,
+        "enableWidget": true
+      },
+      "modelHiddenParams": {}
+    },
+    "saveToFileButtonA": {
+      "layout": {
+        "top": 251,
+        "left": 679,
+        "height": 78,
+        "width": 144,
+        "z-index": "11"
+      },
+      "container": {
+        "instanceId": "saveToFileButtonA",
+        "modelJsonId": "saveToFileButton"
+      },
+      "modelParameters": {
+        "text": "Save to text file here",
+        "fileName": "export.txt",
+        "binaryExport": false,
+        "buttonFontSize": 0.3,
+        "buttonFontFamily": "var(--widget-font-family)",
+        "buttonTextColor": "var(--widget-button-primary-text)",
+        "buttonDefaultColor": "var(--widget-button-primary-color)",
+        "buttonActiveColor": "var(--widget-button-active-color)",
+        "buttonHoverColor": "var(--widget-button-hover-color)",
+        "showWidget": true,
+        "enableWidget": true
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiValueDisplayA": {
+      "layout": {
+        "top": 60,
+        "left": 273,
+        "height": 38,
+        "width": 371,
+        "z-index": "12"
+      },
+      "container": {
+        "instanceId": "flatUiValueDisplayA",
+        "modelJsonId": "flatUiValueDisplay"
+      },
+      "modelParameters": {
+        "label": "web-service response",
+        "inheritLabelFromData": false,
+        "displayLabel": true,
+        "labelFontSize": 0.5,
+        "labelColor": "var(--widget-label-color)",
+        "labelFontFamily": "var(--widget-font-family)",
+        "labelTextAlign": "left",
+        "valueWidthProportion": "70%",
+        "valueFontSize": 0.5,
+        "valueColor": "var(--widget-input-text)",
+        "valueFontFamily": "var(--widget-font-family)",
+        "valueTextAlign": "left",
+        "displayBorder": true,
+        "borderColor": "var(--widget-border-color)",
+        "backgroundColor": "var(--widget-input-color)",
+        "unit": "unitText",
+        "displayUnit": false,
+        "unitFontSize": 0.5,
+        "borderWidth": "2px",
+        "showWidget": true,
+        "enableWidget": true
+      },
+      "modelHiddenParams": {
+        "value": ""
+      }
+    },
+    "flatUiButtonB": {
+      "layout": {
+        "top": 43,
+        "left": 31,
+        "height": 75,
+        "width": 143,
+        "z-index": "13"
+      },
+      "container": {
+        "instanceId": "flatUiButtonB",
+        "modelJsonId": "flatUiButton"
+      },
+      "modelParameters": {
+        "text": "Run web-service",
+        "numberOfTriggers": 1,
+        "fileInput": false,
+        "binaryFileInput": false,
+        "buttonFontSize": 0.3,
+        "displayIcon": false,
+        "fontAwesomeIcon": "",
+        "buttonFontFamily": "var(--widget-font-family)",
+        "buttonTextColor": "var(--widget-button-primary-text)",
+        "buttonDefaultColor": "var(--widget-button-primary-color)",
+        "buttonActiveColor": "var(--widget-button-active-color)",
+        "buttonHoverColor": "var(--widget-button-hover-color)",
+        "showWidget": true,
+        "enableWidget": true
+      },
+      "modelHiddenParams": {}
+    },
+    "loadFileA": {
+      "layout": {
+        "top": 181,
+        "left": 207,
+        "height": 188,
+        "width": 433,
+        "z-index": 14
+      },
+      "container": {
+        "instanceId": "loadFileA",
         "modelJsonId": "loadFile"
       },
       "modelParameters": {
@@ -161,238 +352,14 @@
         "deleteButtonActiveColor": "#e0807f",
         "deleteButtonHoverColor": "#e0807f",
         "deleteButtonIconColor": "#000000",
-        "deleteButtonIconHoverColor": "#ffffff"
-      },
-      "modelHiddenParams": {}
-    },
-    "annotationLabelv": {
-      "layout": {
-        "top": "1.36811vh",
-        "left": "0.674251vw",
-        "height": "21.6163vh",
-        "width": "74.0327vw",
-        "minHeight": "5px",
-        "minWidth": "5px",
-        "z-index": "2"
-      },
-      "container": {
-        "instanceId": "annotationLabelv",
-        "modelJsonId": "annotationLabel"
-      },
-      "modelParameters": {
-        "text": "",
-        "enableActuator": false,
-        "fontsize": 0.5,
-        "backgroundColor": "#daddd984",
-        "textColor": "var(--widget-label-color)",
-        "valueFontFamily": "var(--widget-font-family)",
-        "textAlign": "left",
-        "textBold": false,
-        "textUnderline": false,
-        "textItalic": false,
-        "displayBorder": false,
-        "borderColor": "var(--widget-border-color)",
-        "borderWidth": "2px",
-        "centerVertically": true
-      },
-      "modelHiddenParams": {}
-    },
-    "annotationHtmlj": {
-      "layout": {
-        "top": "54.7247vh",
-        "left": "1.8879vw",
-        "height": "31.7403vh",
-        "width": "71.6054vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
-        "z-index": "8"
-      },
-      "container": {
-        "instanceId": "annotationHtmlj",
-        "modelJsonId": "annotationHtml"
-      },
-      "modelParameters": {
-        "fontsize": 0.3,
-        "backgroundColor": "rgba(0, 0, 0, 0)",
-        "textColor": "var(--widget-color)",
-        "valueFontFamily": "var(--widget-font-family)",
-        "textAlign": "left",
-        "displayBorder": false,
-        "centerVertically": true
-      },
-      "modelHiddenParams": {
-        "html": ""
-      }
-    },
-    "annotationLabelp": {
-      "layout": {
-        "top": "23.942vh",
-        "left": "0.674251vw",
-        "height": "64.7119vh",
-        "width": "74.0327vw",
-        "minHeight": "5px",
-        "minWidth": "5px",
-        "z-index": "1"
-      },
-      "container": {
-        "instanceId": "annotationLabelp",
-        "modelJsonId": "annotationLabel"
-      },
-      "modelParameters": {
-        "text": "",
-        "enableActuator": false,
-        "fontsize": 0.5,
-        "backgroundColor": "#daddd984",
-        "textColor": "var(--widget-label-color)",
-        "valueFontFamily": "var(--widget-font-family)",
-        "textAlign": "left",
-        "textBold": false,
-        "textUnderline": false,
-        "textItalic": false,
-        "displayBorder": false,
-        "borderColor": "var(--widget-border-color)",
-        "borderWidth": "2px",
-        "centerVertically": true
-      },
-      "modelHiddenParams": {}
-    },
-    "flatUiFileInputButtonA": {
-      "layout": {
-        "top": "34.9333vh",
-        "left": "2.48691vw",
-        "height": "10.4vh",
-        "width": "9.42408vw",
-        "minHeight": "24px",
-        "minWidth": "55px",
-        "z-index": "10"
-      },
-      "container": {
-        "instanceId": "flatUiFileInputButtonA",
-        "modelJsonId": "flatUiFileInputButton"
-      },
-      "modelParameters": {
-        "text": "Load text file here",
-        "numberOfTriggers": 1,
-        "fileInput": true,
-        "binaryFileInput": false,
-        "buttonFontSize": 0.3,
-        "displayIcon": false,
-        "fontAwesomeIcon": "",
-        "buttonFontFamily": "var(--widget-font-family)",
-        "buttonTextColor": "var(--widget-button-primary-text)",
-        "buttonDefaultColor": "var(--widget-button-primary-color)",
-        "buttonActiveColor": "var(--widget-button-active-color)",
-        "buttonHoverColor": "var(--widget-button-hover-color)"
-      },
-      "modelHiddenParams": {}
-    },
-    "saveToFileButtonA": {
-      "layout": {
-        "top": "34.9333vh",
-        "left": "45.0916vw",
-        "height": "10.4vh",
-        "width": "9.42408vw",
-        "minHeight": "24px",
-        "minWidth": "55px",
-        "z-index": "11"
-      },
-      "container": {
-        "instanceId": "saveToFileButtonA",
-        "modelJsonId": "saveToFileButton"
-      },
-      "modelParameters": {
-        "text": "Save to text file here",
-        "fileName": "export.txt",
-        "buttonFontSize": 0.3,
-        "buttonFontFamily": "var(--widget-font-family)",
-        "buttonTextColor": "var(--widget-button-primary-text)",
-        "buttonDefaultColor": "var(--widget-button-primary-color)",
-        "buttonActiveColor": "var(--widget-button-active-color)",
-        "buttonHoverColor": "var(--widget-button-hover-color)"
-      },
-      "modelHiddenParams": {
-        "value": ""
-      }
-    },
-    "flatUiValueDisplayA": {
-      "layout": {
-        "top": "9.33333vh",
-        "left": "18.5209vw",
-        "height": "5.06667vh",
-        "width": "24.2801vw",
-        "minHeight": "24px",
-        "minWidth": "150px",
-        "z-index": "12"
-      },
-      "container": {
-        "instanceId": "flatUiValueDisplayA",
-        "modelJsonId": "flatUiValueDisplay"
-      },
-      "modelParameters": {
-        "label": "web-service response",
-        "inheritLabelFromData": false,
-        "displayLabel": true,
-        "labelFontSize": 0.5,
-        "labelColor": "var(--widget-label-color)",
-        "labelFontFamily": "var(--widget-font-family)",
-        "labelTextAlign": "left",
-        "valueWidthProportion": "70%",
-        "valueFontSize": 0.5,
-        "valueColor": "var(--widget-input-text)",
-        "valueFontFamily": "var(--widget-font-family)",
-        "valueTextAlign": "left",
-        "displayBorder": true,
-        "borderColor": "var(--widget-border-color)",
-        "backgroundColor": "var(--widget-input-color)",
-        "unit": "unitText",
-        "displayUnit": false,
-        "unitFontSize": 0.5,
-        "borderWidth": "2px"
-      },
-      "modelHiddenParams": {
-        "value": ""
-      }
-    },
-    "flatUiButtonB": {
-      "layout": {
-        "top": "7.06667vh",
-        "left": "2.68325vw",
-        "height": "10vh",
-        "width": "9.35864vw",
-        "minHeight": "24px",
-        "minWidth": "55px",
-        "z-index": "13"
-      },
-      "container": {
-        "instanceId": "flatUiButtonB",
-        "modelJsonId": "flatUiButton"
-      },
-      "modelParameters": {
-        "text": "Run web-service",
-        "numberOfTriggers": 1,
-        "fileInput": false,
-        "binaryFileInput": false,
-        "buttonFontSize": 0.3,
-        "displayIcon": false,
-        "fontAwesomeIcon": "",
-        "buttonFontFamily": "var(--widget-font-family)",
-        "buttonTextColor": "var(--widget-button-primary-text)",
-        "buttonDefaultColor": "var(--widget-button-primary-color)",
-        "buttonActiveColor": "var(--widget-button-active-color)",
-        "buttonHoverColor": "var(--widget-button-hover-color)"
+        "deleteButtonIconHoverColor": "#ffffff",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {}
     }
   },
   "connections": {
-    "loadFileb": {
-      "outputFile": {
-        "name": "outputFile",
-        "dataNode": "file",
-        "dataFields": [],
-        "dataNodeIndex": 1
-      }
-    },
     "annotationLabelv": {
       "trigger1": {
         "name": "trigger1",
@@ -448,13 +415,25 @@
         "dataNode": "Surface",
         "dataFields": []
       }
+    },
+    "loadFileA": {
+      "outputFile": {
+        "name": "outputFile",
+        "dataNode": "file",
+        "dataFields": [],
+        "dataNodeIndex": 1
+      }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1295,
+    "height": 653,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

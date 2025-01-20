@@ -22,12 +22,13 @@ import { editorSingletons } from 'kernel/editor-singletons';
 import { XdashDataUpdateEngine } from './xdash-data-updates';
 import { offSchedLogUser } from 'kernel/base/main-common';
 import { DialogBox } from 'kernel/datanodes/gui/DialogBox';
-import { dashState } from 'angular/modules/dashboard/dashboard';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { xdsjson } from 'kernel/datanodes/export/xdsjson';
 import { htmlExport } from 'kernel/general/export/html-export';
 import { pyodideLib } from 'kernel/base/pyodide-project';
 import { xdashUpdateEngine } from 'kernel/base/xdash-data-updates';
+
+// Editor only
 
 export const Xdash = function () {
   const version = xDashConfig.version.fullVersion;
@@ -61,7 +62,6 @@ export const Xdash = function () {
     const layoutMgr = editorSingletons.layoutMgr;
     layoutMgr.resetDashboardTheme();
     layoutMgr.resetDashBgColor();
-    layoutMgr.updateButtonState();
 
     const $scopeDash = angular.element(document.getElementById('help__wrap')).scope();
     $scopeDash.initFrame();
@@ -102,43 +102,27 @@ export const Xdash = function () {
 
     const data = datanodesManager.serialize();
     const libraries = pyodideLib.serialize();
-    let scale;
-    if (
-      !$rootScope.moduleOpened &&
-      dashState.tabActive == 'widgets' &&
-      dashState.modeActive == 'edit-dashboard' &&
-      dashState.editorStatus == 'full'
-    ) {
-      scale = editorSingletons.widgetEditor.getCurrentDashZoneDims();
-    } else {
-      scale = editorSingletons.widgetEditor.getSnapshotDashZoneDims();
-    }
 
-    const layoutMgr = editorSingletons.layoutMgr;
-    const dash = editorSingletons.widgetEditor.serialize();
-    const deviceCols = layoutMgr.serializeCols();
-    const backgroundColor = layoutMgr.serializeDashBgColor();
-    const theme = layoutMgr.serializeDashboardTheme();
-    const conn = widgetConnector.serialize();
-    const rowNames = layoutMgr.serializeRowNames();
-    const defaultRow = layoutMgr.serializeDefaultRow();
-
-    const exportOptions = layoutMgr.serializeExportOptions();
+    const { dashboard, display, pages } = editorSingletons.widgetEditor.serialize();
+    const connections = widgetConnector.serialize();
     const navBarNotification = htmlExport.navBarNotification;
 
     const xdashPrj = {
-      meta: meta,
-      data: data,
-      libraries: libraries,
-      scaling: scale,
-      device: { ...deviceCols, ...backgroundColor, ...theme },
-      dashboard: dash,
-      connections: conn,
-      exportOptions: exportOptions,
-      pages: { ...rowNames, ...defaultRow },
-      checkExportOptions: true, //AEF //MBG 21/09/2021
-      navBarNotification: navBarNotification,
+      meta,
+      data,
+      libraries,
+      dashboard,
+      connections,
+      display,
+      navBarNotification,
     };
+
+    if (pages) {
+      xdashPrj.pages = pages;
+      pages.pageMode = htmlExport.pageMode;
+      pages.initialPage = htmlExport.initialPage;
+    }
+
     return xdashPrj;
   }
 
@@ -190,36 +174,27 @@ export const Xdash = function () {
         return false;
       }
 
-      editorSingletons.widgetEditor.deserialize(jsonObject.dashboard, jsonObject.scaling, jsonObject.device);
+      widgetViewer.reset();
+
+      editorSingletons.widgetEditor.deserialize(jsonObject);
       widgetConnector.deserialize(jsonObject.connections);
-      widgetPreview.clear();
 
-      editorSingletons.widgetEditor.unselectAllWidgets(); //AEF: deselect all widget at project load
-
-      const layoutMgr = editorSingletons.layoutMgr;
-      layoutMgr.deserializeDashBgColor(jsonObject.device);
-      layoutMgr.deserializeDashboardTheme(jsonObject.device);
-
-      if (!_.isUndefined(jsonObject.pages)) {
-        layoutMgr.deserializeRowNames(jsonObject.pages);
-        layoutMgr.deserializeDefaultRow(jsonObject.pages);
-      }
-
-      layoutMgr.deserializeExportOptions(jsonObject.exportOptions);
-
-      if (!_.isUndefined(jsonObject.navBarNotification)) {
-        // MBG 21/09/2021
-        htmlExport.navBarNotification = jsonObject.navBarNotification;
+      if (jsonObject.pages) {
+        htmlExport.initialPage = jsonObject.pages.initialPage;
+        htmlExport.pageMode = jsonObject.pages.pageMode;
       } else {
-        htmlExport.navBarNotification = false; // when not existing assume it false
+        htmlExport.initialPage = undefined;
+        htmlExport.pageMode = undefined;
       }
 
-      /*if (!_.isUndefined(jsonObject.checkExportOptions)) {
-                      htmlExport.checkExportOptions = jsonObject.checkExportOptions;
-                  }*/ // MBG 21/09/2021 : simplify export
+      htmlExport.navBarNotification = jsonObject.navBarNotification ?? false;
+
+      datanodesManager.startScheduler();
+      widgetViewer.assignValueChangeHandlers();
+
       return true;
     } catch (ex) {
-      console.log(ex);
+      console.error(ex);
       return false;
     }
   }
@@ -463,24 +438,16 @@ export const Xdash = function () {
     }
 
     initRootScopeCurrentProjectObject(jsonObject);
-    let bOk = false;
-    let loadFn = function (e) {
-      const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      scopeDash.reset();
-      clear(); // MBG 01/08/2018 : important to do
-      bOk = deserialize(jsonObject);
-      datanodesManager.showLoadingIndicator(false);
-      document.removeEventListener('widgets-tab-loaded', loadFn);
-      jsonObject = undefined; //ABK in case of  missed synchronization a second loadFn cannot be made
-      if (!bOk) {
-        //ABK
-        swal('Unable to load your project', 'Project loading will be interrupted.', 'error');
-        return false;
-      }
-    };
-    document.addEventListener('widgets-tab-loaded', loadFn); //ABK:fix bug: put addEvent here before if/else condition (before the loadFn)
-    if (dashState.tabActive == 'widgets') {
-      loadFn();
+
+    const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
+    scopeDash.reset();
+    clear(); // MBG 01/08/2018 : important to do
+    let bOk = deserialize(jsonObject);
+    datanodesManager.showLoadingIndicator(false);
+    if (!bOk) {
+      //ABK
+      swal('Unable to load your project', 'Project loading will be interrupted.', 'error');
+      return false;
     }
   }
 

@@ -69,24 +69,6 @@ export function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDepend
 
     self.error = ko.observable(false); // MBG 09/07/2018. error better as ko observable
 
-    // TODO UPDATE_CLEANUP
-    for (let i = 0; i < object.datanodes.length; i++) {
-      //compatibility
-      if (object.datanodes[i].type === 'REST_web-service_from_datasource') {
-        //object.datanodes[i].type = "REST_API";
-      } else if (object.datanodes[i].type === 'FMI_web-service_from_datasource') {
-        //object.datanodes[i].type = "FMI_API";
-      } else if (object.datanodes[i].type === 'Map_matching_from_datasource') {
-        //object.datanodes[i].type = "Map_matching";
-      } else if (object.datanodes[i].type === 'Clock_web-service') {
-        //object.datanodes[i].type = "Clock";
-      } else if (object.datanodes[i].type === 'Generic_file_reader_plugin') {
-        //object.datanodes[i].type = "Generic_text_file_reader";
-      } else if (object.datanodes[i].type === 'Geolocation-plugin') {
-        //object.datanodes[i].type = "Geolocation";
-      }
-    }
-
     const newDatanodes = object.datanodes;
 
     //AEF: put "Memory plugin at the end"
@@ -135,26 +117,6 @@ export function DatanodesListModel(datanodePlugins, freeboardUI, datanodesDepend
 
     // compute graphs after loading datanodes
     datanodesDependency.computeAllDisconnectedGraphs();
-
-    // launch scheduler
-    let periodicNode = null;
-    let nonPeriodicNode = null;
-    self.datanodes().forEach((datanode) => {
-      if (!_.isUndefined(datanode.settings().sampleTime) && datanode.settings().sampleTime != 0) {
-        periodicNode = datanode;
-        datanode.sampleTime(datanode.settings().sampleTime);
-        timeManager.registerDatanode(datanode.sampleTime(), datanode.name(), 'globalFirstUpdate'); //to compute basePeriod
-      } else {
-        nonPeriodicNode = datanode;
-      }
-    });
-
-    if (periodicNode) {
-      timeManager.registerDatanode(periodicNode.sampleTime(), periodicNode.name()); //to launch Timer
-    }
-    if (nonPeriodicNode) {
-      self.launchGlobalFirstUpdate(nonPeriodicNode); //launch all datanodes P and NP (see modif AEF 23/11/20)
-    }
 
     if (finishedCallback) {
       finishedCallback();

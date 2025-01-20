@@ -93,7 +93,7 @@
     <ul class="aside__panel--nav--wrapper ltr">
       <li
         id="li_editor-widget-toolbox"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Widgets' && editorView.leftSidePanel.view)}"
+        ng-class="{hidden:editorView.isPlayMode, 'active':(editorView.leftSidePanel.target==='Widgets' && editorView.leftSidePanel.view)}"
         js-edit-mode
       >
         <a id="editor-widget-toolbox" ng-click="setLeftContent('Widgets')">
@@ -112,7 +112,7 @@
       </li>
       <li
         id="editor-datanodes-graph"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.showGraphPanel && editorView.leftSidePanel.view)}"
+        ng-class="{hidden:editorView.isPlayMode, 'active':(editorView.showGraphPanel && editorView.leftSidePanel.view)}"
         js-edit-mode
       >
         <a ng-click="showDepGraph()">
@@ -122,7 +122,7 @@
       </li>
       <li ng-if="enablePyodide"
         id="li_editor-project-libraries"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Libraries' && editorView.leftSidePanel.view)}"
+        ng-class="{hidden:editorView.isPlayMode, 'active':(editorView.leftSidePanel.target==='Libraries' && editorView.leftSidePanel.view)}"
         js-edit-mode
       >
         <a ng-click="setLeftContent('Libraries')">
@@ -132,7 +132,7 @@
       </li>
       <li
         id="editor-dashboard-aspect"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Aspect' && editorView.leftSidePanel.view)}"
+        ng-class="{hidden:editorView.isPlayMode, 'active':(editorView.leftSidePanel.target==='Aspect' && editorView.leftSidePanel.view)}"
         js-edit-mode
       >
         <a ng-click="setLeftContent('Aspect')">
@@ -142,7 +142,7 @@
       </li>
       <li
         id="editor-dashboard-history"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Historic' && editorView.leftSidePanel.view)}"
+        ng-class="{hidden:editorView.isPlayMode, 'active':(editorView.leftSidePanel.target==='Historic' && editorView.leftSidePanel.view)}"
         js-edit-mode
       >
         <a ng-click="setLeftContent('Historic')">
@@ -152,7 +152,7 @@
       </li>
       <li
         id="editor-help"
-        ng-class="{hidden:editorView.checkboxModelView, 'active':(editorView.leftSidePanel.target==='Help' && editorView.leftSidePanel.view)}"
+        ng-class="{hidden:editorView.isPlayMode, 'active':(editorView.leftSidePanel.target==='Help' && editorView.leftSidePanel.view)}"
         js-edit-mode
       >
         <a ng-click="setLeftContent('Help')">

@@ -28,7 +28,7 @@ import { urlQueryEntry } from 'kernel/general/interfaces/query-url-entry';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { DialogBoxForData } from 'kernel/datanodes/gui/DialogBox';
 import { GraphVisu } from 'kernel/datanodes/gui/GraphVisu';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { xdsjson } from 'kernel/datanodes/export/xdsjson';
 import { offSchedLogUser } from 'kernel/base/main-common';
 import { schedulerProfiling } from 'kernel/datanodes/execution-engine/DatanodeScheduler';
@@ -45,7 +45,7 @@ export const datanodesManager = (function () {
 
   var graphVisu;
   if (!window.dashboardConfig?.execOutsideEditor) {
-    // FIXME really should not be here
+    // FIXME really should not be here. Move to DashboardGraphDepController
     graphVisu = new GraphVisu(datanodesDependency); // new instance from GraphVisu
   }
   var timeManager = new TimeManager();
@@ -162,8 +162,9 @@ export const datanodesManager = (function () {
             let $body = angular.element(document.body);
             let $rootScope = $body.scope().$root;
             if ($rootScope.bIsPlayMode) {
+              // TODO coords test
               for (const key in widgetConnector.widgetsConnection) {
-                widgetPreview.plotConstantData(key, false);
+                widgetViewer.plotConstantData(key, false);
               }
             }
           }
@@ -626,6 +627,27 @@ export const datanodesManager = (function () {
           }
         }
       });
+    },
+    startScheduler: function () {
+      /** launch scheduler */
+      let periodicNode = null;
+      let nonPeriodicNode = null;
+      datanodesListModel.datanodes().forEach((datanode) => {
+        if (!_.isUndefined(datanode.settings().sampleTime) && datanode.settings().sampleTime != 0) {
+          periodicNode = datanode;
+          datanode.sampleTime(datanode.settings().sampleTime);
+          timeManager.registerDatanode(datanode.sampleTime(), datanode.name(), 'globalFirstUpdate'); //to compute basePeriod
+        } else {
+          nonPeriodicNode = datanode;
+        }
+      });
+
+      if (periodicNode) {
+        timeManager.registerDatanode(periodicNode.sampleTime(), periodicNode.name()); //to launch Timer
+      }
+      if (nonPeriodicNode) {
+        datanodesListModel.launchGlobalFirstUpdate(nonPeriodicNode); //launch all datanodes P and NP (see modif AEF 23/11/20)
+      }
     },
     stopSchedule: function () {
       var datanodes = datanodesListModel.datanodes();

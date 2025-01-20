@@ -30,14 +30,10 @@ class RenderApp:
     def __init__(self) -> None:
         """Initialize the Flask app, configure paths, and set up routes."""
         # Instance-specific attributes
-        self.XPRJSON_FILE_PATH = (
-            Path(__file__).resolve().parent.parent.parent / "untitled.xprjson"
-        )
+        self.XPRJSON_FILE_PATH = Path("dashboard.xprjson")
         self.DEBUG = False
         # Determine the base directory for HTML templates
-        self.BASE_DIR = (
-            Path(__file__).resolve().parent.parent.parent / "front-end" / "build"
-        )
+        self.BASE_DIR = Path(__file__).parent.parent.resolve()
 
         # Flask app and blueprint setup
         self.app: Flask = Flask(__name__)
