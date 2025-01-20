@@ -480,12 +480,19 @@ The **GeoJSONStyle** actuator is a JSON object divided into two main parts:
 
 ![alt text](image-1.png)
 
+Example :
+
+- Config Example :  [osm-geojson-config.xprjson](maps/osm-geojson-config.xprjson)
+- Image Overlay Example : [osm-geojson-imageoverlay.xprjson](maps/osm-geojson-imageoverlay.xprjson)
+
 **style** :
 This is an array containing style templates, where each template corresponds to a specific GeoJSON layer. These templates define the visual appearance of the associated GeoJSON data, enabling customization of how different data elements are displayed on the map.
 
 #### Common Properties  
 
 These apply to all GeoJSON types:
+
+-   **name**: layer name.
 
 -   **color**: Stroke or border color.
 
@@ -518,6 +525,10 @@ These properties vary depending on the type of GeoJSON feature:
         - If `true`, points are rendered as standard markers.  
         - If `false`, points are rendered as circles, which allows additional customization such as radius and fill properties.
 
+Example :
+
+-   [osm-mapgeojson-points.xprjson](maps/osm-mapgeojson-points.xprjson)
+
 -   **LineString**:  
     - **dashArray**: Defines the pattern of dashed lines. The value is a string representing the length of dashes and gaps, e.g., `"5,5"` for equal-length dashes and spaces.  
     - **lineJoin**: Specifies the shape to be used at the junction of two connecting lines. Common values include:  
@@ -529,6 +540,10 @@ These properties vary depending on the type of GeoJSON feature:
         - `"round"`: Creates rounded endings at the line ends.  
         - `"butt"`: Cuts the line ends off at the exact endpoint, with no extension beyond the line.
 
+Example :
+
+-   [osm-mapgeojson-lines.xprjson](maps/osm-mapgeojson-lines.xprjson)
+
 #### Properties for Geometries with Fill
 
   For geometries that include a fill (e.g., polygons, circles, lines), you can dynamically calculate the **fillColor** based on the values of a property in the GeoJSON data. The following properties are used to define the color calculation:
@@ -539,6 +554,11 @@ These properties vary depending on the type of GeoJSON feature:
     - **property**: The property in the GeoJSON data used to calculate the color. This property must be of type **number**.
     - **propertyMin** and **propertyMax**: Define the minimum and maximum values for the color scale calculation. If set to `"Auto"`, these values are calculated automatically based on the property values.
     - **possibleProperties**: An object that defines valid properties and their value ranges (min, max) for calculating the color scale.
+
+Example :
+
+-   [osm-geojson-choropleth.xprjson](maps/osm-geojson-choropleth.xprjson)
+
 #### Event Handling
 
 The widget allows you to configure various events that can interact with the geometries (e.g., points, lines, polygons) displayed on the map. You can define specific styles and behaviors for each event, such as **mouseover** and **click** events. The following properties are used to configure event handling:
@@ -551,6 +571,12 @@ The widget allows you to configure various events that can interact with the geo
     - **style**: Specifies the style to apply when the event is triggered (e.g., on mouseover or click).
 
 ![alt text](image-2.png)
+
+
+Examples :
+
+-   [osm-geojson-choropleth-events.xprjson](maps/osm-geojson-choropleth-events.xprjson)
+-   [osm-geojson-heatmap.xprjson](maps/osm-geojson-heatmap.xprjson)
 
 #### Legend Configuration
 
