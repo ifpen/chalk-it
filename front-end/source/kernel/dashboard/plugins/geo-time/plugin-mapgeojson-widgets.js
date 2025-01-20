@@ -73,8 +73,6 @@ function mapGeoJsonWidgetsPluginClass() {
 
     var self = this;
     this.idInstance = idInstance;
-    this.legendHeatMap = undefined;
-    this.legendChoroplet = undefined;
     this.enable = function () {};
 
     this.disable = function () {};
@@ -157,32 +155,21 @@ function mapGeoJsonWidgetsPluginClass() {
       else self.ctrl.addBaseLayer(imageLayer, featureTitle);
     };
     // setZoom
-    this.zoom = function (self,config,geojsons) {
+    this.zoom = function (self, config, geojsons) {
       //Zoom
-      if (
-        config.defaultCenter.defaultZoom ||
-        _.isUndefined(config.defaultCenter.defaultZoom)
-      ) {
+      if (config.defaultCenter.defaultZoom || _.isUndefined(config.defaultCenter.defaultZoom)) {
         let bboxCoords = undefined;
-        if (
-          !_.isUndefined(geojsons) &&
-          Array.isArray(geojsons) &&
-          geojsons.length > 0
-        ) {
+        if (!_.isUndefined(geojsons) && Array.isArray(geojsons) && geojsons.length > 0) {
           bboxCoords = bbox(geojsons[0]);
           bboxCoords = [
             [bboxCoords[1], bboxCoords[0]],
             [bboxCoords[3], bboxCoords[2]],
           ];
         } else {
-          if (
-            !_.isUndefined(config) &&
-            !_.isUndefined(config.image) &&
-            !_.isUndefined(config.image.imageBounds)
-          ) {
+          if (!_.isUndefined(config) && !_.isUndefined(config.image) && !_.isUndefined(config.image.imageBounds)) {
             bboxCoords = config.image.imageBounds;
           }
-        } 
+        }
         if (
           !_.isUndefined(bboxCoords) &&
           Array.isArray(bboxCoords) &&
@@ -192,7 +179,7 @@ function mapGeoJsonWidgetsPluginClass() {
           bboxCoords[0].length == 2 &&
           bboxCoords[1].length == 2
         ) {
-          self.map.fitBounds(bboxCoords); 
+          self.map.fitBounds(bboxCoords);
         } else {
           self.map.setZoom(self.defaultConfig.defaultCenter.zoom);
         }
@@ -200,7 +187,8 @@ function mapGeoJsonWidgetsPluginClass() {
         if (
           !_.isUndefined(config) &&
           !_.isUndefined(config.defaultConfig) &&
-          !_.isUndefined(config.defaultConfig.defaultCenter) && !_.isUndefined(config.defaultConfig.defaultCenter.zoom)
+          !_.isUndefined(config.defaultConfig.defaultCenter) &&
+          !_.isUndefined(config.defaultConfig.defaultCenter.zoom)
         ) {
           self.map.setZoom(config.defaultConfig.defaultCenter.zoom);
         }
@@ -212,60 +200,66 @@ function mapGeoJsonWidgetsPluginClass() {
       widgetHtml.id = `mapGeoJson${idWidget}`;
       widgetHtml.style.width = 'inherit';
       widgetHtml.style.height = 'inherit';
-  
+
       document.addEventListener('play-tab-loaded', self.goToFirstRadioButton);
       document.getElementById(idDivContainer).innerHTML = '';
       document.getElementById(idDivContainer).appendChild(widgetHtml);
-  
+
       // Initialize configuration
       let config = { ...self.defaultConfig };
       const geoJSONParams = modelsHiddenParams[idInstance];
       const geoJSONStyle = geoJSONParams?.GeoJSONStyle || {};
-  
+
       if (geoJSONStyle.config?.defaultCenter) {
         config = { ...geoJSONStyle.config };
       }
-  
+
       // Initialize map
       self.map = L.map(`mapGeoJson${idWidget}`, { preferCanvas: true }).setView(
         [config.defaultCenter?.longitude, config.defaultCenter?.latitude],
         config.defaultCenter?.zoom
       );
-  
+
       // Set up tile layer
       const tileServer = config.tileServer || 'MapboxStreets';
       const tileConf = getTileServerConf(tileServer);
       self.baseLayer = L.tileLayer(tileConf.url, tileConf).addTo(self.map);
-  
+
       // Add layer control
-      self.ctrl = L.control.layers({}, {}, {
-        position: 'topright',
-        collapsed: true,
-        autoZIndex: true,
-      }).addTo(self.map);
-  
+      self.ctrl = L.control
+        .layers(
+          {},
+          {},
+          {
+            position: 'topright',
+            collapsed: true,
+            autoZIndex: true,
+          }
+        )
+        .addTo(self.map);
+
       // Set zoom control position
       self.map.zoomControl.setPosition('topright');
-  
+
       // Update map view and set bounding box
       const geoJSONData = geoJSONParams?.GeoJSON || [];
       self.zoom(self, config, geoJSONData);
-  
+
       // Add image overlay if available
       if (geoJSONStyle.config?.image) {
         self.addImageOverlay({ ...geoJSONStyle.config.image });
       }
-  
+
       // Initialize internal layers and legends
       self.layers = [];
       self.legends = [];
-  
+
       // Add GeoJSON layers
       if (Array.isArray(geoJSONData)) {
         geoJSONData.forEach((item, index) => {
           const style = geoJSONStyle.style?.[index] || {};
           const layerName = style.name || `layer ${index}`;
-          self.addGeoJSONlayer(item, style, layerName);
+          self.addGeoJSONLayer(self, item, style, layerName);
         });
       }
     };
@@ -279,31 +273,33 @@ function mapGeoJsonWidgetsPluginClass() {
       return leafLetLayer;
     };
     // Create a Layer from a GeoJSON
-    // Simple function dont take into account the style
-    this.getLefletIndex = (leafletLayer) => {
-      for (let index = 0; index < self.layers.length; index++) {
-        const layer = self.layers[index];
-        if (layer == leafletLayer) {
-          return index;
-        }
-      }
-      return undefined;
+    this.getLeafletIndex = (leafletLayer,layers) => {
+      return layers.findIndex((layer) => layer === leafletLayer);
     };
-    this.addGeoJSONlayer = function (geoJSON,style, name) {
-      var leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
+    this.addGeoJSONLayer = function (self, geoJSON, style, name) {
+      // Create the GeoJSON layer and add it to the map
+      const leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
+    
+      // Add the layer and initialize its legend
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
-      let leafletIndex = self.getLefletIndex(leafletLayer);
-      configureEvents(self, geoJSON, leafletLayer, leafletIndex);
-      //add layer
-      //TO DO check GeoJSON Type :
-      //radio button
-      //self.ctrl.addBaseLayer(leafletLayer, name);
-      //checkbox
-      self.ctrl.addOverlay(leafletLayer, name);
-      //update style
-      setStyle(self, leafletIndex, {...style});
+    
+      // Get the index of the newly added layer
+      const leafletIndex = self.getLeafletIndex(leafletLayer, self.layers);
+    
+      // Proceed only if the layer was added successfully
+      if (leafletIndex !== -1) {
+        // Configure events for the layer
+        configureEvents(self, geoJSON, leafletLayer, leafletIndex);
+    
+        // Add the layer to the map control (currently as an overlay)
+        self.ctrl.addOverlay(leafletLayer, name);
+    
+        // Apply the specified style to the layer
+        setStyle(self, leafletIndex, { ...style });
+      }
     };
+    
     // Create the style object that will be in out JSON for a geoJSON
     // typeLayer is used for marker or circle
 
@@ -323,7 +319,7 @@ function mapGeoJsonWidgetsPluginClass() {
     };
     // Important tag to know if style has changed during the setStyle
     // Typical when circle are changed to marker
-    this.styleChanged = false; 
+    this.styleChanged = false;
 
     this.GeoJSON = {
       updateCallback: function () {},
@@ -386,8 +382,8 @@ function mapGeoJsonWidgetsPluginClass() {
       setValue: function (val) {
         modelsHiddenParams[idInstance].GeoJSONStyle = val;
         const geoJSONStyle = modelsHiddenParams[idInstance].GeoJSONStyle;
-        if ((!_.isNull(geoJSONStyle) && !_.isUndefined(geoJSONStyle)) && _.isUndefined(geoJSONStyle.config)) {
-          modelsHiddenParams[idInstance].GeoJSONStyle.config = {...self.defaultConfig};
+        if (!_.isNull(geoJSONStyle) && !_.isUndefined(geoJSONStyle) && _.isUndefined(geoJSONStyle.config)) {
+          modelsHiddenParams[idInstance].GeoJSONStyle.config = { ...self.defaultConfig };
         }
         self.render();
       },
