@@ -12,6 +12,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { applyGeometry } from 'kernel/dashboard/widget/widget-placement';
+import { modelsParameters } from 'kernel/base/widgets-states';
 
 const DISPLAY_CONTAINER_ID = 'DropperDroitec';
 
@@ -82,6 +83,9 @@ class WidgetWiewer {
     this.#updateWidgetPosition(containerDiv, layout);
     if (layout['z-index'] !== undefined) {
       containerDiv.style.zIndex = layout['z-index'];
+      if (modelsParameters[instanceId].showWidget == false) {
+        containerDiv.style.zIndex = 0;
+      }
     }
 
     document.getElementById(DISPLAY_CONTAINER_ID).appendChild(containerDiv);
@@ -158,6 +162,11 @@ class WidgetWiewer {
 
   reRenderWidget(instanceId) {
     this.widgetsInfo.get(instanceId)?.instance?.render(true);
+    if (modelsParameters[instanceId].showWidget == false) {
+      $('#'+instanceId+'c').css('z-index', 0);
+    } else {
+      $('#'+instanceId+'c').css('z-index', this.widgetsInfo.get(instanceId)?.layout["z-index"]);
+    }
   }
 
   #deserializeConnections(jsonContent) {
@@ -279,7 +288,7 @@ class WidgetWiewer {
    */
   displayErrorOnWidget(instanceId, i, msg) {
     const info = this.widgetsInfo.get(instanceId);
-    if (info && !this.widgetsOnErrorState.has(instanceId)) {
+    if (!window.dashboardConfig?.execOutsideEditor && info && !this.widgetsOnErrorState.has(instanceId)) {
       const containerDiv = info.containerDiv;
       containerDiv.style.outline = '4px groove #e40000';
       containerDiv.style.borderRadius = '6px';
