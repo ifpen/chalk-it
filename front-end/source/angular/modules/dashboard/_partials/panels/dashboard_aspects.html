@@ -45,7 +45,6 @@
   </div>
 </div>
 
-
 <div class="aspect__row">
   <a class="aspect__col-left" title=""><i class="aspects icn-board"></i>Layout</a>
 </div>
@@ -55,7 +54,13 @@
       <label style="font-size: calc(8px + 0.4vw); font-weight: bold">Pages</label>
     </div>
     <div class="Cell">
-      <select class="inputList" style="width: 100px" name="select-pages" ng-model="vm.pagesNumber" ng-change="vm.pagesNumberChanged()">
+      <select
+        class="inputList"
+        style="width: 100px"
+        name="select-pages"
+        ng-model="vm.pagesNumber"
+        ng-change="vm.pagesNumberChanged()"
+      >
         <option ng-value="0">None</option>
         <option ng-value="1">1</option>
         <option ng-value="2">2</option>
@@ -75,11 +80,7 @@
       </select>
     </div>
     <div class="Cell" style="vertical-align: middle">
-      <a
-        href="#"
-        title="Configure pages' names"
-        style="display: table-cell; padding: 4px 8px"
-      >
+      <a href="#" title="Configure pages' names" style="display: table-cell; padding: 4px 8px">
         <button
           class="btn"
           style="width: auto; height: 26px; color: #333; vertical-align: center"
@@ -105,7 +106,6 @@
   </div>
 </form>
 
-
 <form class="dashboard-form Table" style="padding-top: 5px; padding-bottom: 5px; display: block">
   <div class="aspect__row">
     <div class="aspect__col-left">Size</div>
@@ -116,10 +116,20 @@
   </div>
   <div class="aspect__row">
     <div class="aspect__col-right">
-      <button type="button" class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitWidth()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill primary"
+        style="padding: 0 0.5em; margin: 0"
+        ng-click="vm.fitWidth()"
+      >
         Fit width
       </button>
-      <button type="button" class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitHeight()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill primary"
+        style="padding: 0 0.5em; margin: 0"
+        ng-click="vm.fitHeight()"
+      >
         Fit height
       </button>
     </div>
@@ -141,24 +151,38 @@
     </div>
   </div>
   <div class="aspect__row">
-    <div class="aspect__col-left"> </div>
+    <div class="aspect__col-left"></div>
     <div class="aspect__col-right">
-      <button type="button" class="btn btn-rounded-fill secondary" style="width: 60px; padding: 0 0.5em; margin: 0"
-        ng-click="vm.resetDashboardSize()" ng-disabled="!vm.dashboardSizeChanged()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill secondary"
+        style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.resetDashboardSize()"
+        ng-disabled="!vm.dashboardSizeChanged()"
+      >
         Reset
       </button>
-      <button type="button" class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
-        ng-click="vm.applyDashboardSize(true)" ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill primary"
+        style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.applyDashboardSize(true)"
+        ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()"
+      >
         Scale
       </button>
-      <button type="button" class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
-        ng-click="vm.applyDashboardSize(false)" ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill primary"
+        style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.applyDashboardSize(false)"
+        ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()"
+      >
         Resize
       </button>
     </div>
   </div>
 </form>
-
 
 <h2>About the colors</h2>
 <div class="aspect__row">
@@ -310,7 +334,8 @@
     ng-attr-title="{{vm.hasMultiSelection() ? 'Align horizontal' : 'Please select multiple widgets'}}"
     title="Align horizontal"
   >
-    <i class="icn-object-align-vertical"></i> <!-- Icons are reversed -->
+    <i class="icn-object-align-vertical"></i>
+    <!-- Icons are reversed -->
   </button>
   <button
     class="btn"
@@ -320,7 +345,8 @@
     ng-attr-title="{{vm.hasMultiSelection() ? 'Align vertical' : 'Please select multiple widgets'}}"
     title="Please select multiple widgets"
   >
-    <i class="icn-object-align-horizontal"></i> <!-- Icons are reversed -->
+    <i class="icn-object-align-horizontal"></i>
+    <!-- Icons are reversed -->
   </button>
   <button
     class="btn"
@@ -404,7 +430,6 @@
   >
     <i class="icn-tag"><!-- TODO proper icon --></i>
   </button>
-
 </div>
 
 <div class="aspect__row">
@@ -416,4 +441,3 @@
     </label>
   </div>
 </div>
-

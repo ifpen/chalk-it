@@ -273,33 +273,33 @@ function mapGeoJsonWidgetsPluginClass() {
       return leafLetLayer;
     };
     // Create a Layer from a GeoJSON
-    this.getLeafletIndex = (leafletLayer,layers) => {
+    this.getLeafletIndex = (leafletLayer, layers) => {
       return layers.findIndex((layer) => layer === leafletLayer);
     };
     this.addGeoJSONLayer = function (self, geoJSON, style, name) {
       // Create the GeoJSON layer and add it to the map
       const leafletLayer = L.geoJSON(geoJSON).addTo(self.map);
-    
+
       // Add the layer and initialize its legend
       self.layers.push(leafletLayer);
       self.legends.push(undefined);
-    
+
       // Get the index of the newly added layer
       const leafletIndex = self.getLeafletIndex(leafletLayer, self.layers);
-    
+
       // Proceed only if the layer was added successfully
       if (leafletIndex !== -1) {
         // Configure events for the layer
         configureEvents(self, geoJSON, leafletLayer, leafletIndex);
-    
+
         // Add the layer to the map control (currently as an overlay)
         self.ctrl.addOverlay(leafletLayer, name);
-    
+
         // Apply the specified style to the layer
         setStyle(self, leafletIndex, { ...style });
       }
     };
-    
+
     // Create the style object that will be in out JSON for a geoJSON
     // typeLayer is used for marker or circle
 

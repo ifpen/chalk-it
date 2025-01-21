@@ -32,8 +32,7 @@
   -o-transition: -o-transform 0.3s ease-out;
   transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
-  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out,
-    -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out, -o-transform 0.3s ease-out;
 }
 
 .modal.in .modal-dialog {
@@ -60,7 +59,7 @@
   background-clip: padding-box;
   border: 1px solid #999;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: br("4");
+  border-radius: br('4');
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   outline: 0;
@@ -187,7 +186,7 @@
   max-height: 100%;
   margin: 2% auto;
   padding: 5px 20px 13px 20px;
-  border-radius: br("16");
+  border-radius: br('16');
   background-color: var(--surface-a);
   color: var(--text-color);
   overflow: auto;
@@ -216,7 +215,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: .5em;
+  gap: 0.5em;
   margin-top: 1rem;
 }
 
@@ -249,7 +248,7 @@
 .text:hover {
   color: #000;
   background-color: #fff;
-  font-weight: fw("bold");
+  font-weight: fw('bold');
   font-family: var(--font-family-base);
   text-align: center;
   cursor: pointer;
@@ -273,8 +272,8 @@
 }
 
 .Cell p {
-  font-weight: fw("bold");
-  font-size: fs("md");
+  font-weight: fw('bold');
+  font-size: fs('md');
 }
 
 .Cell select {
@@ -282,7 +281,7 @@
 }
 
 .CellH {
-  font-weight: fw("normal");
+  font-weight: fw('normal');
   display: table-cell;
   padding-left: 5px;
   padding-right: 5px;
@@ -290,19 +289,19 @@
 }
 
 .CellH label {
-  font-weight: fw("bold");
-  font-size: fs("md");
+  font-weight: fw('bold');
+  font-size: fs('md');
 }
 
 .bouton {
   width: 100px;
   font-family: var(--font-family-base);
-  font-weight: fw("bold");
+  font-weight: fw('bold');
   text-align: center;
   background: #606061;
   color: #ffffff;
   line-height: 25px;
-  border-radius: br("4");
+  border-radius: br('4');
   -moz-box-shadow: 1px 1px 3px #000;
   -webkit-box-shadow: 1px 1px 3px #000;
   box-shadow: 1px 1px 3px #000;

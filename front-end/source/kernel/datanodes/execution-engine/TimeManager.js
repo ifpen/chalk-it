@@ -174,4 +174,3 @@ export function TimeManager() {
     getCurrentTime,
   };
 }
-

@@ -55,7 +55,7 @@ export function mouseoverHandler(self, geoJSON, leafletIndex) {
     e.target.bringToFront();
     //create popup
     let properties = style.tooltip.properties;
-    if (!_.isUndefined(properties) && Array.isArray(properties) && properties.length>0) {
+    if (!_.isUndefined(properties) && Array.isArray(properties) && properties.length > 0) {
       let popupContent = '<div>';
       _.each(properties, (property) => {
         popupContent =

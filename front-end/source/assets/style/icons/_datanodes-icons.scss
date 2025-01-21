@@ -58,7 +58,7 @@
   &.icn-python {
     @include icon-background('python.svg', 'datanode');
   }
-  
+
   &.icn-python::before {
     content: none; // Same name as xdash-icons' "python" icon
   }

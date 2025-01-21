@@ -102,7 +102,7 @@ export function FormulaInterpreter(datanodesListModel, datanodeModel, datanodePl
         returnValue = self.callValueFunction(datanodeModel.calculatedSettingScripts[settingName]);
       } catch (e) {
         console.error(e);
-        
+
         datanodeModel.statusCallback('Error', e.message);
         datanodeModel.notificationCallback('error', datanodeModel.settings().name, e.message, 'Parse error');
         returnValue = null;

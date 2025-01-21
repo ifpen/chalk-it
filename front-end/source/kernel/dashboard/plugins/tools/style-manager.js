@@ -270,7 +270,7 @@ export function setStyle(self, layerIndex, style) {
             popupText = layer.feature.properties.html;
           } else {
             let properties = style.tooltip.properties;
-            if (!_.isUndefined(properties) && Array.isArray(properties) && properties.length>0) {
+            if (!_.isUndefined(properties) && Array.isArray(properties) && properties.length > 0) {
               popupText = '<div>';
               for (let i = 0; i < properties.length; i++) {
                 const prop = properties[i];

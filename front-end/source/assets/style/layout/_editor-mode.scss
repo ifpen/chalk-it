@@ -13,7 +13,7 @@
   border: 0px solid #e7e7e7;
   background-color: var(--light-color);
   color: var(--light-color-text);
-  font-size: fs("xs");
+  font-size: fs('xs');
   font-family: var(--font-family-mono);
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -58,7 +58,7 @@
 }
 
 .vignette {
-  font-size: fs("sm");
+  font-size: fs('sm');
   line-height: 20px;
 }
 
@@ -110,7 +110,7 @@ div > .draggable ::-webkit-scrollbar {
 
 div > .draggable::-webkit-scrollbar-thumb {
   background: #dedede;
-  border-radius: br("8");
+  border-radius: br('8');
 }
 
 // Apply the element you want to drag/resize
@@ -121,7 +121,7 @@ div > .draggable::-webkit-scrollbar-thumb {
   padding: 5px;
   display: none;
   color: #fff;
-  font-size: fs("xs");
+  font-size: fs('xs');
 }
 
 // Drag and drop

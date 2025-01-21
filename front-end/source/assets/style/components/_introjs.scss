@@ -134,7 +134,7 @@ tr.introjs-showElement > th {
 }
 .introjs-arrow {
   border: 5px solid transparent;
-  content: "";
+  content: '';
   position: absolute;
 }
 .introjs-arrow.top {
@@ -199,7 +199,7 @@ tr.introjs-showElement > th {
   max-width: 300px;
   border-radius: 5px;
   color: var(--light-color-text);
-  font-weight: fw("bold");
+  font-weight: fw('bold');
   -webkit-box-shadow: 0 3px 30px rgba(33, 33, 33, 0.3);
   box-shadow: 0 3px 30px rgba(33, 33, 33, 0.3);
   -webkit-transition: opacity 0.1s ease-out;
@@ -213,7 +213,7 @@ tr.introjs-showElement > th {
   font-size: 18px;
   margin: 0;
   padding: 0;
-  font-weight: fw("bold");
+  font-weight: fw('bold');
   float: left;
   line-height: 32px;
 }
@@ -223,7 +223,7 @@ tr.introjs-showElement > th {
   padding-top: 10px;
 }
 .introjs-tooltip-header:after {
-  content: ".";
+  content: '.';
   visibility: hidden;
   display: block;
   height: 0;
@@ -236,7 +236,7 @@ tr.introjs-showElement > th {
   white-space: nowrap;
 }
 .introjs-tooltipbuttons:after {
-  content: "";
+  content: '';
   visibility: hidden;
   display: block;
   height: 0;
@@ -295,7 +295,7 @@ tr.introjs-showElement > th {
   float: right;
   font-size: 20px;
   cursor: pointer;
-  font-weight: fw("bold");
+  font-weight: fw('bold');
   line-height: 1;
   text-align: center;
   padding: 7px 10px;

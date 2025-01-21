@@ -17,10 +17,7 @@
     class="panel--content--wrapper"
   >
     <div>
-      <ng-include
-        ng-controller="SidebarController"
-        src="'angular/modules/sidebar/sidebar-basic.html'"
-      ></ng-include>
+      <ng-include ng-controller="SidebarController" src="'angular/modules/sidebar/sidebar-basic.html'"></ng-include>
     </div>
   </div>
   <div
@@ -29,8 +26,7 @@
     ng-class="{show:(editorView.leftSidePanel.target==='Widgets')}"
     class="panel--content--wrapper"
   >
-    <div dashboard-wdgt-libs-template>
-    </div>
+    <div dashboard-wdgt-libs-template></div>
   </div>
 
   <div
@@ -53,13 +49,11 @@
     ng-class="{show:(editorView.leftSidePanel.target==='Libraries')}"
     class="panel--content--wrapper"
   >
-    <div dashboard-libraries-template>
-    </div>
+    <div dashboard-libraries-template></div>
   </div>
 
   <div id="aspect__wrap" ng-class="{show:(editorView.leftSidePanel.target==='Aspect')}" class="panel--content--wrapper">
-    <div dashboard-aspects-template>
-    </div>
+    <div dashboard-aspects-template></div>
   </div>
 
   <div
@@ -67,13 +61,11 @@
     ng-class="{show:(editorView.leftSidePanel.target==='Historic')}"
     class="panel--content--wrapper"
   >
-    <div dashboard-historic-template>
-    </div>
+    <div dashboard-historic-template></div>
   </div>
 
   <div id="help__wrap" ng-class="{show:(editorView.leftSidePanel.target==='Help')}" class="panel--content--wrapper">
-    <div dashboard-help-template>
-    </div>
+    <div dashboard-help-template></div>
   </div>
 </div>
 
@@ -120,7 +112,8 @@
         </a>
         <span class="tooltip">Graph</span>
       </li>
-      <li ng-if="enablePyodide"
+      <li
+        ng-if="enablePyodide"
         id="li_editor-project-libraries"
         ng-class="{hidden:editorView.isPlayMode, 'active':(editorView.leftSidePanel.target==='Libraries' && editorView.leftSidePanel.view)}"
         js-edit-mode

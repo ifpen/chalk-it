@@ -9,7 +9,7 @@
 import _ from 'lodash';
 import { getColor } from 'kernel/dashboard/plugins/tools/color-scale-manager';
 
-export  function compareSharedKeys(obj1, obj2) {
+export function compareSharedKeys(obj1, obj2) {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);
   const sharedKeys = keys1.filter((key) => keys2.includes(key));
@@ -22,7 +22,7 @@ export  function compareSharedKeys(obj1, obj2) {
 
   return true;
 }
-export  const equivalenceTypes = {
+export const equivalenceTypes = {
   Point: 'MultiPoint',
   MultiPoint: 'MultiPoint',
   Polygon: 'MultiPolygon',
@@ -31,7 +31,7 @@ export  const equivalenceTypes = {
   MultiLineString: 'MultiLineString',
 };
 
-export  function findPropertiesWithNumber(geoJSON) {
+export function findPropertiesWithNumber(geoJSON) {
   const propertiesWithRange = {};
 
   geoJSON.features.forEach((feature) => {
@@ -56,7 +56,7 @@ export  function findPropertiesWithNumber(geoJSON) {
   return propertiesWithRange;
 }
 
-export  function getMinMaxByProperty(GeoJSON, property) {
+export function getMinMaxByProperty(GeoJSON, property) {
   if (_.isUndefined(GeoJSON)) return;
   if (_.isUndefined(property)) return;
   if (property == 'none') return;
@@ -84,7 +84,7 @@ export  function getMinMaxByProperty(GeoJSON, property) {
 
 // Find All Properties
 // TODO : Try to concatenate code with findPropertiesWithNumber in order to have 1 method
-export  function findAllProperties(geoJSON) {
+export function findAllProperties(geoJSON) {
   var propertiesReturn = [];
 
   geoJSON.features.forEach(function (feature) {
@@ -99,7 +99,7 @@ export  function findAllProperties(geoJSON) {
   return propertiesReturn;
 }
 // Find the feature type of GeoJSON
-export  function findFeatureType(geoJSON) {
+export function findFeatureType(geoJSON) {
   if (geoJSON.type === 'FeatureCollection') {
     const firstFeatureType = geoJSON.features[0].geometry.type;
     const firstFeatureEquivalenceType = equivalenceTypes[firstFeatureType] || firstFeatureType;
@@ -123,7 +123,7 @@ export  function findFeatureType(geoJSON) {
 
   return 'MultiType';
 }
-export  function getFillColor(geoJSON, style, value, colorScale) {
+export function getFillColor(geoJSON, style, value, colorScale) {
   if (_.isUndefined(style) || _.isUndefined(value) || _.isUndefined(geoJSON)) {
     return undefined;
   }
@@ -167,7 +167,7 @@ export  function getFillColor(geoJSON, style, value, colorScale) {
     return getColor(min, max, value, colorScale);
   }
 }
-export  function getMinMaxProperty(style, geoJSONinLayer) {
+export function getMinMaxProperty(style, geoJSONinLayer) {
   if (
     !_.isUndefined(style.property) &&
     !_.isUndefined(style.possibleProperties) &&
@@ -192,7 +192,7 @@ export  function getMinMaxProperty(style, geoJSONinLayer) {
   return [min, max];
 }
 
-export  function geoJsonChanged(geojsonList, geojsonOldList, geojsonStyle) {
+export function geoJsonChanged(geojsonList, geojsonOldList, geojsonStyle) {
   if (
     _.isUndefined(geojsonList) ||
     _.isUndefined(geojsonOldList) ||
@@ -200,8 +200,7 @@ export  function geoJsonChanged(geojsonList, geojsonOldList, geojsonStyle) {
     _.isUndefined(geojsonStyle.style)
   )
     return true;
-  if (!Array.isArray(geojsonList) || !Array.isArray(geojsonOldList) || !Array.isArray(geojsonStyle.style))
-    return true;
+  if (!Array.isArray(geojsonList) || !Array.isArray(geojsonOldList) || !Array.isArray(geojsonStyle.style)) return true;
   if (geojsonList.length != geojsonOldList.length) return true;
   if (geojsonList.length != geojsonStyle.style.length) return true;
   for (let i = 0; i < geojsonList.length; i++) {
@@ -212,7 +211,7 @@ export  function geoJsonChanged(geojsonList, geojsonOldList, geojsonStyle) {
   }
   return false;
 }
-export  function getNumberFormatter() {
+export function getNumberFormatter() {
   const DEFAULT_LOCALE = 'en-US';
   const formatter = Intl.NumberFormat(DEFAULT_LOCALE, {
     maximumFractionDigits: 2,
@@ -222,14 +221,14 @@ export  function getNumberFormatter() {
   });
   return formatter;
 }
-export  function formatProperty(property) {
+export function formatProperty(property) {
   if (typeof property === 'number') {
     const formatter = getNumberFormatter();
     return formatter.format(property);
   }
   return property;
 }
-export   function isValidGeoJSON(geojson) {
+export function isValidGeoJSON(geojson) {
   // Vérifie si l'objet est un objet JavaScript valide
   if (typeof geojson !== 'object' || geojson === null) {
     return false;
@@ -254,19 +253,22 @@ export   function isValidGeoJSON(geojson) {
   // Vérifie le contenu selon le type de GeoJSON
   switch (geojson.type) {
     case 'Feature':
-      if (! Object.prototype.hasOwnProperty.call(geojson, 'geometry') || ! Object.prototype.hasOwnProperty.call(geojson, 'properties')) {
+      if (
+        !Object.prototype.hasOwnProperty.call(geojson, 'geometry') ||
+        !Object.prototype.hasOwnProperty.call(geojson, 'properties')
+      ) {
         return false;
       }
       return isValidGeoJSON(geojson.geometry);
 
     case 'FeatureCollection':
-      if (! Object.prototype.hasOwnProperty.call(geojson, 'features') || !Array.isArray(geojson.features)) {
+      if (!Object.prototype.hasOwnProperty.call(geojson, 'features') || !Array.isArray(geojson.features)) {
         return false;
       }
       return geojson.features.every((feature) => isValidGeoJSON(feature));
 
     case 'GeometryCollection':
-      if (! Object.prototype.hasOwnProperty.call(geojson, 'geometries') || !Array.isArray(geojson.geometries)) {
+      if (!Object.prototype.hasOwnProperty.call(geojson, 'geometries') || !Array.isArray(geojson.geometries)) {
         return false;
       }
       return geojson.geometries.every((geometry) => isValidGeoJSON(geometry));
@@ -275,4 +277,3 @@ export   function isValidGeoJSON(geojson) {
       return true;
   }
 }
- 

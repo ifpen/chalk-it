@@ -85,12 +85,12 @@
     overflow: hidden;
   }
 
-  input[type=text] {
-    border-radius: br('24'); 
-    font-style: italic; 
-    font-size: fs('xl'); 
-    border: none; 
-    box-shadow: none; 
+  input[type='text'] {
+    border-radius: br('24');
+    font-style: italic;
+    font-size: fs('xl');
+    border: none;
+    box-shadow: none;
     padding: 0.3em 0.6em;
     background-color: var(--light-color-darker);
     white-space: nowrap;
@@ -122,7 +122,7 @@
 
 // Cards pages
 .layout__title {
-  font-size: fs("lg");
+  font-size: fs('lg');
   color: var(--text-color-secondary);
 }
 
@@ -157,7 +157,7 @@
 .main__layout--content__grid--card {
   max-width: 305px; //AEF: add this style
   height: 16.75em;
-  border-radius: br("16");
+  border-radius: br('16');
   border: 0.125em solid transparent;
   filter: var(--card-filter);
 
@@ -166,7 +166,7 @@
 
     .card__banner {
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -238,8 +238,8 @@
   h3 {
     margin: 0 0 1em 0;
     padding: 0;
-    font-size: fs("md");
-    font-weight: fw("bold");
+    font-size: fs('md');
+    font-weight: fw('bold');
     color: var(--text-color-secondary);
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -254,7 +254,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  border-radius: br("16");
+  border-radius: br('16');
   background-color: var(--secondary-color);
   color: var(--secondary-color-text);
   transition: var(--default-transition);
@@ -262,7 +262,7 @@
 
   p {
     text-align: center;
-    font-size: fs("lg");
+    font-size: fs('lg');
   }
 
   &:hover {
@@ -272,7 +272,7 @@
 }
 
 .card--create__new--icon {
-  font-size: fs("3xl");
+  font-size: fs('3xl');
 }
 
 // Image for project cards in list
@@ -317,17 +317,17 @@
 .discover__layout--content__grid--full {
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  grid-template-areas: 
-    "item-a item-a item-b item-b item-c item-c" 
-    "item-d item-d item-d item-e item-e item-e";
+  grid-template-areas:
+    'item-a item-a item-b item-b item-c item-c'
+    'item-d item-d item-d item-e item-e item-e';
 }
 
 .discover__layout--content__grid--basic {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  grid-template-areas: 
-    "item-a item-b" 
-    "item-c item-d";
+  grid-template-areas:
+    'item-a item-b'
+    'item-c item-d';
 }
 
 .discover__layout--content__grid--card {
@@ -337,7 +337,7 @@
   align-items: center;
   padding: 2em;
   height: 16.75em;
-  border-radius: br("16");
+  border-radius: br('16');
   border: 0.125em solid transparent;
   background-color: var(--surface-b);
   filter: var(--card-filter);
@@ -356,7 +356,7 @@
 
   h3 {
     margin: 1em 0;
-    font-weight: fw("normal");
+    font-weight: fw('normal');
   }
 
   .card__state {
@@ -367,7 +367,7 @@
     width: 2.75em;
     height: 2.75em;
     line-height: 2.75em;
-    border-radius: br("full");
+    border-radius: br('full');
     background-color: var(--primary-color);
     color: var(--primary-color-text);
 
@@ -506,12 +506,12 @@
 // A "widget" is what is shown in the edit mode after drag and drop
 #dashboard-editor-div .widget {
   &:after {
-    content: attr(item-width) " x " attr(item-height);
+    content: attr(item-width) ' x ' attr(item-height);
     position: absolute;
     background: var(--primary-color);
     color: var(--primary-color-text);
-    border-radius: br("2");
-    font-size: fs("xs");
+    border-radius: br('2');
+    font-size: fs('xs');
     padding: 2px 4px;
     top: calc(100% + 4px);
     left: 50%;
@@ -541,7 +541,7 @@
   bottom: 5em;
   max-width: 21em;
   padding: 1.5625em;
-  border-radius: br("16");
+  border-radius: br('16');
   border-bottom-right-radius: 0;
   background-color: var(--surface-b);
   z-index: $zindex-pnotify;
