@@ -46,7 +46,7 @@ modelsParameters.dateRangePicker = {
 };
 
 // Layout (default dimensions)
-modelsLayout.dateRangePicker = { height: '5vh', width: '24vw', minWidth: '170px', minHeight: '32px' };
+modelsLayout.dateRangePicker = { height: '40px', width: '400px', minWidth: '170px', minHeight: '32px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -176,7 +176,7 @@ function dateRangePickerWidgetsPluginClass() {
         'font-size: ' +
         valueFontSize +
         '; ' +
-        this.valueColor() +
+        this.getValueColor() +
         this.valueFontFamily() +
         this.backgroundColor() +
         '" ' +

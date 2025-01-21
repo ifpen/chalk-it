@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8901",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-15T09:07:17.261Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:01:56.484Z",
     "name": "plotly-python-widget-py-local",
     "description": "",
     "groupName": "Python",
@@ -48,84 +48,63 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "#ffffff",
-    "inheritThemeBackgroundColor": false,
-    "theme": "default"
-  },
   "dashboard": {
-    "plotlyPyGenericA": {
+    "plotlyGeneric0": {
       "layout": {
-        "top": "6.58667vh",
-        "left": "3.35079vw",
-        "height": "56.6667vh",
-        "width": "66.8848vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 30,
+        "left": 25,
+        "height": 443,
+        "width": 778,
         "z-index": "1"
       },
       "container": {
-        "instanceId": "plotlyPyGenericA",
-        "modelJsonId": "plotlyPyGeneric"
+        "instanceId": "plotlyGeneric0",
+        "modelJsonId": "plotlyGeneric"
       },
       "modelParameters": {
         "enforceTextColor": true,
         "textColor": "var(--widget-color)",
         "enforceBackgroundTransparency": true,
-        "hideModeBar": false
+        "hideModeBar": false,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
-        "fig": {
-          "layout": {
-            "paper_bgcolor": "rgba(0,0,0,0)",
-            "plot_bgcolor": "rgba(0,0,0,0)",
-            "template": {
-              "layout": {
-                "xaxis": {
-                  "gridcolor": "var(--widget-plotly-background-color)"
-                },
-                "yaxis": {
-                  "gridcolor": "var(--widget-plotly-background-color)"
-                },
-                "zaxis": {
-                  "gridcolor": "var(--widget-plotly-background-color)"
-                },
-                "colorway": [
-                  "var(--widget-color-2)",
-                  "var(--widget-color-5)",
-                  "var(--widget-color-6)",
-                  "var(--widget-color-7)",
-                  "var(--widget-color-8)",
-                  "var(--widget-color-9)",
-                  "var(--widget-color-10)",
-                  "var(--widget-color-11)",
-                  "var(--widget-color-12)",
-                  "var(--widget-color-13)"
-                ],
-                "font": {
-                  "color": "var(--widget-color)"
-                }
+        "data": [
+          {
+            "type": "bar",
+            "x": [],
+            "y": []
+          }
+        ],
+        "layout": {
+          "paper_bgcolor": "rgba(0,0,0,0)",
+          "plot_bgcolor": "rgba(0,0,0,0)",
+          "template": {
+            "layout": {
+              "xaxis": {
+                "gridcolor": "var(--widget-plotly-background-color)"
+              },
+              "yaxis": {
+                "gridcolor": "var(--widget-plotly-background-color)"
+              },
+              "zaxis": {
+                "gridcolor": "var(--widget-plotly-background-color)"
+              },
+              "colorway": [
+                "var(--widget-color-2)",
+                "var(--widget-color-5)",
+                "var(--widget-color-6)",
+                "var(--widget-color-7)",
+                "var(--widget-color-8)",
+                "var(--widget-color-9)",
+                "var(--widget-color-10)",
+                "var(--widget-color-11)",
+                "var(--widget-color-12)",
+                "var(--widget-color-13)"
+              ],
+              "font": {
+                "color": "var(--widget-color)"
               }
             }
           }
@@ -137,24 +116,34 @@
     }
   },
   "connections": {
-    "plotlyPyGenericA": {
-      "fig": {
-        "name": "fig",
+    "plotlyGeneric0": {
+      "data": {
+        "name": "data",
         "dataNode": "px",
-        "dataFields": []
+        "dataFields": [
+          "data"
+        ],
+        "dataNodeIndex": 0
       },
-      "selection": {
-        "name": "selection",
-        "dataNode": "None",
-        "dataFields": []
+      "layout": {
+        "name": "layout",
+        "dataNode": "px",
+        "dataFields": [
+          "layout"
+        ],
+        "dataNodeIndex": 0
       }
     }
   },
-  "exportOptions": "adjustToFullWidth",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "#ffffff",
+    "inheritThemeBackgroundColor": false,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

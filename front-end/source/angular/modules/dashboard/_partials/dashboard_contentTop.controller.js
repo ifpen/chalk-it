@@ -21,16 +21,7 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
   'ManagePrjService',
   'ManagePrjSharingService',
   'ManagePageSharingService',
-  'EditPlaySwitchService',
-  function (
-    $scope,
-    $rootScope,
-    $uibModal,
-    ManagePrjService,
-    ManagePrjSharingService,
-    ManagePgSharingService,
-    EditPlaySwitchService
-  ) {
+  function ($scope, $rootScope, $uibModal, ManagePrjService, ManagePrjSharingService, ManagePgSharingService) {
     /***********************************************************************************/
     /*******************dashboard_contentTop: menu under project name*******************/
     /***********************************************************************************/
@@ -40,17 +31,25 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
       const modalInstance = $uibModal.open({
         template,
         controller: 'exportSettingDownload',
-        scope: $scope,
+        controllerAs: 'exportCtrl',
         resolve: {
           options: function () {
-            return 'exportSettings';
+            return {
+              pageMode: htmlExport.pageMode,
+              initialPageIndex: htmlExport.initialPage,
+              navBarNotification: htmlExport.navBarNotification,
+            };
           },
         },
       });
 
       modalInstance.result.then(
         function (resultFromModal) {
-          htmlExport.exportOptions = resultFromModal.scalingMethod;
+          htmlExport.pageMode = resultFromModal.pageMode;
+          htmlExport.initialPage = resultFromModal.initialPageIndex;
+          htmlExport.navBarNotification = resultFromModal.navBarNotification;
+
+          $rootScope.updateFlagDirty(true);
         },
         function () {
           console.info('Modal dismissed at: ' + new Date());
@@ -147,15 +146,6 @@ angular.module('modules.dashboard').controller('DashboardContentTopController', 
         }
       }
     );
-
-    /**********************************************************************/
-    /*******************dashboard_contentTop: Edit mode********************/
-    /**********************************************************************/
-
-    /*---------- Switch button    ----------------*/
-    $scope.onEditPlaySwitch = function () {
-      EditPlaySwitchService.onEditPlaySwitch();
-    };
 
     /*********************************************************************/
     /*******************dashboard_contentTop: View mode*******************/

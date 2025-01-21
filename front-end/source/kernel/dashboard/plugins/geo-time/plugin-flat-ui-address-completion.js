@@ -13,7 +13,7 @@ import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/
 import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -41,7 +41,7 @@ modelsParameters.flatUiHereAutocompleteValue = {
 };
 
 // Layout (default dimensions)
-modelsLayout.flatUiHereAutocompleteValue = { height: '5vh', width: '19vw', minWidth: '150px', minHeight: '32px' };
+modelsLayout.flatUiHereAutocompleteValue = { height: '40px', width: '300px', minWidth: '150px', minHeight: '32px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
@@ -82,7 +82,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
       // when click on one of autocompletevalue widgets, put its zIndex on top of the others
       //TO DO: correction and improvements have to be done on the well-use of the pluggin of flatui.js as it is done for select
       $('#ac-value' + idWidget).on('click', function (e, ui) {
-        widgetPreview.elevateZIndex(idInstance, e);
+        widgetViewer.elevateZIndex(idInstance);
       });
 
       self.initTypeahead();
@@ -227,7 +227,7 @@ function flatUiAddressCompletionWidgetsPluginClass() {
         border +
         '; float: right; ' +
         this.valueFontSize() +
-        this.valueColor() +
+        this.getValueColor() +
         this.valueFontFamily() +
         this.backgroundColor() +
         'text-align: left;">';

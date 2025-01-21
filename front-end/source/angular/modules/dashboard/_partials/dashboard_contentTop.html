@@ -1,54 +1,95 @@
 <div class="project__top">
-    <div class="project__top__title">
-        <!-- project name -->
-        <h1 ng-if="xDashFullVersion" title="{{currentProject.name}}" id="projectName">{{currentProject.name | limitTo: 30}}{{currentPrjDirty}}</h1>
-        <h1 ng-if="!xDashFullVersion" title="{{currentProject.name}}">
-                <input type="text" id="projectName" placeholder="Name of the project" value="{{currentProject.name | limitTo: 30}}" autocorrect="off" 
-                ng-disabled="isTemplateOpen || isLiveDemo">
-                <sapn ng-if="!isTemplateOpen && !isLiveDemo && enableLocalServer">{{currentPrjDirty}}</sapn>
-        </h1>
-        <a id="isNavOpen_Project" ng-click="isNavOpen = !isNavOpen" title="More options" style="float:right">
-            <i class="basic icn-miniarrowbottom"></i>
+  <div class="project__top__title">
+    <!-- project name -->
+    <h1 ng-if="xDashFullVersion" title="{{currentProject.name}}" id="projectName">
+      {{currentProject.name | limitTo: 30}}{{currentPrjDirty}}
+    </h1>
+    <h1 ng-if="!xDashFullVersion" title="{{currentProject.name}}">
+      <input
+        type="text"
+        id="projectName"
+        placeholder="Name of the project"
+        value="{{currentProject.name | limitTo: 30}}"
+        autocorrect="off"
+        ng-disabled="isTemplateOpen || isLiveDemo"
+      />
+      <sapn ng-if="!isTemplateOpen && !isLiveDemo && enableLocalServer">{{currentPrjDirty}}</sapn>
+    </h1>
+    <a id="isNavOpen_Project" ng-click="isNavOpen = !isNavOpen" title="More options" style="float: right">
+      <i class="basic icn-miniarrowbottom"></i>
+    </a>
+
+    <!-- menu of actions -->
+    <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
+      <li ng-class="{hidden:!editorView.isPlayMode}" js-view-mode>
+        <a ng-click="exportSettings();isNavOpen=false" title="Setting project export options">
+          <i class="basic icn-settings"></i>Settings
         </a>
-        
-        <!-- menu of actions -->
-        <ul class="dashboard-dropdown visible" ng-init="!isNavOpen" ng-show="isNavOpen">
-            <li ng-class="{hidden:!editorView.checkboxModelView}" js-view-mode>
-                <a ng-click="exportSettings();isNavOpen=false" title="Setting project export options">
-                    <i class="basic icn-settings"></i>Settings
-                </a>
-            </li>
-            <li ng-if="xDashFullVersion" ng-class="{disable:readOnly}">
-                <a ng-click="renameProject(currentProject.name);isNavOpen=false" title="Rename the project file">
-                    <i class="basic icn-rename"></i>Rename
-                </a>
-            </li>
-            <li ng-if="xDashFullVersion">
-                <a ng-click="shareProject(currentProject.name);isNavOpen=false" title="Share the project file">
-                    <i class="basic icn-share-private" aria-hidden="true"></i>Share
-                </a>
-            </li>
-            <li ng-if="xDashFullVersion">
-                <a ng-click="duplicateProject(currentProject.name);isNavOpen=false" title="Duplicate the project file">
-                    <i class="basic icn-duplicate"></i>Duplicate
-                </a>
-            </li>
-            <li>
-                <a ng-click="exportProjectToLocal();isNavOpen=false" title="Export the project file">
-                    <i class="basic icn-download-cloud" aria-hidden="true"></i>Export
-                </a>
-            </li>
-            <li ng-if="xDashFullVersion" ng-class="{disable:readOnly}">
-                <a ng-click="deleteFileInServer(currentProject.name);isNavOpen=false" title="Delete the project file">
-                    <i class="basic icn-delete"></i>Delete
-                </a>
-            </li>
-            <li>
-                <a ng-click="infoProject(currentProject.name);isNavOpen=false" title="Project infos">
-                    <i class="basic icn-info"></i>Infos
-                </a>
-            </li>
-        </ul>
+      </li>
+      <li ng-if="xDashFullVersion" ng-class="{disable:readOnly}">
+        <a ng-click="renameProject(currentProject.name);isNavOpen=false" title="Rename the project file">
+          <i class="basic icn-rename"></i>Rename
+        </a>
+      </li>
+      <li ng-if="xDashFullVersion">
+        <a ng-click="shareProject(currentProject.name);isNavOpen=false" title="Share the project file">
+          <i class="basic icn-share-private" aria-hidden="true"></i>Share
+        </a>
+      </li>
+      <li ng-if="xDashFullVersion">
+        <a ng-click="duplicateProject(currentProject.name);isNavOpen=false" title="Duplicate the project file">
+          <i class="basic icn-duplicate"></i>Duplicate
+        </a>
+      </li>
+      <li>
+        <a ng-click="exportProjectToLocal();isNavOpen=false" title="Export the project file">
+          <i class="basic icn-download-cloud" aria-hidden="true"></i>Export
+        </a>
+      </li>
+      <li ng-if="xDashFullVersion" ng-class="{disable:readOnly}">
+        <a ng-click="deleteFileInServer(currentProject.name);isNavOpen=false" title="Delete the project file">
+          <i class="basic icn-delete"></i>Delete
+        </a>
+      </li>
+      <li>
+        <a ng-click="infoProject(currentProject.name);isNavOpen=false" title="Project infos">
+          <i class="basic icn-info"></i>Infos
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Save button -->
+  <button
+    ng-if="xDashFullVersion"
+    class="btn btn__see-more"
+    ng-class="{hidden:editorView.isPlayMode}"
+    title="Save project"
+    ng-disabled="readOnly"
+    js-edit-mode
+    ng-click="saveProjectInServer();"
+  >
+    Save <i class="gg-chevron-right"></i>
+  </button>
+
+  <button
+    ng-if="!xDashFullVersion"
+    ng-disabled="isTemplateOpen || isLiveDemo || !enableLocalServer"
+    class="btn btn__see-more"
+    ng-class="{hidden:editorView.isPlayMode}"
+    title="Save project"
+    js-edit-mode
+    ng-click="saveProjectToLocal();"
+  >
+    <i class="basic icn-save" style="margin-right: 5px"></i> Save <i class="gg-chevron-right"></i>
+  </button>
+
+  <!-- view mode start -->
+
+  <!-- Export button -->
+  <div class="view-mode__export" ng-class="{hidden:!editorView.isPlayMode}" js-view-mode>
+    <div class="btn__see-more__wrapper">
+      <button class="btn btn__see-more" title="Preview the HTML page" ng-click="previewDashboard();">Preview</button>
     </div>
 
 
@@ -152,16 +193,73 @@
     </ul>
     <!-- desktop/mobile/tablet end -->
 
-    <!-- view mode end -->
+  <!-- undo/redo button -->
+  <div class="undo-redo" ng-class="{hidden:editorView.isPlayMode}" js-edit-mode>
+    <button class="btn btn-icon-only" title="undo" ng-click="vm.undo();" ng-disabled="!vm.canUndo()">
+      <i class="fa fa-undo"></i>
+    </button>
+    <button class="btn btn-icon-only" title="redo" ng-click="vm.redo();" ng-disabled="!vm.canRedo()">
+      <i class="fa fa-repeat"></i>
+    </button>
+  </div>
 
+  <!-- Page change -->
+  <!-- TODO dedicated CSS -->
+  <div class="undo-redo" ng-if="vm.getCurrentPageNames().length">
+    <button class="btn btn-icon-only" title="previous page (shift + page up)" ng-click="vm.previousPage();" ng-disabled="vm.getCurrentPage()<=0">
+      <i class="fa fa-arrow-left"></i>
+    </button>
+    {{ vm.getCurrentPage() + 1 }} / {{ vm.getCurrentPageNames().length }}
+    <button class="btn btn-icon-only" title="next page (shift + page down)" ng-click="vm.nextPage();" ng-disabled="vm.getCurrentPage()>=vm.getCurrentPageNames().length-1">
+      <i class="fa fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <!-- Zoom change -->
+  <!-- TODO dedicated CSS -->
+  <div class="undo-redo">
+    <button class="btn" title="1:1" ng-click="vm.zoomNone();" ng-disabled="vm.displayRatio===1.0">
+      1:1
+    </button>
+    <button class="btn" title="Fit" ng-click="vm.zoomFit();" ng-disabled="vm.displayFit">
+      Fit
+    </button>
+    <input type="number" min="0.1" max="4.0" step="0.1"  ng-model="vm.displayRatio" ng-change="vm.displayRatioChanged()" />
+  </div>
+
+  <!-- for future version -->
+  <!-- desktop/mobile/tablet start -->
+  <ul ng-show="false" class="view-mode" js-view-mode ng-class="{hidden:!editorView.isPlayMode}">
+    <li>
+      <a href="#" js-device-view class="active">
+        <i class="view-mode__button view-mode__button--desktop"></i>
+        <span class="view-mode__label">Desktop</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" js-device-view class="mute">
+        <i class="view-mode__button view-mode__button--mobile"></i>
+        <span class="view-mode__label">Mobile</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" js-device-view class="mute">
+        <i class="view-mode__button view-mode__button--tablet"></i>
+        <span class="view-mode__label">Tablet</span>
+      </a>
+    </li>
+  </ul>
+  <!-- desktop/mobile/tablet end -->
+
+  <!-- view mode end -->
 </div>
 
 <!-- switch mode -->
 <div class="switch__wrapper">
-    <p>Edit</p>
-    <label class="switch" id="switch-label">
-        <input type="checkbox" id="edit-play-switch" ng-model="editorView.checkboxModelView" ng-click="switchEditView()">
-        <span class="slider round"></span>
-    </label>
-    <p>View</p>
+  <p>Edit</p>
+  <label class="switch">
+    <input type="checkbox" id="edit-play-switch" ng-model="editorView.isPlayMode" ng-change="switchEditView()" />
+    <span class="slider round"></span>
+  </label>
+  <p>View</p>
 </div>

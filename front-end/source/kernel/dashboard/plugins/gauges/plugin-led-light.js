@@ -35,7 +35,7 @@ modelsParameters.ledStatus = {
 };
 
 // Layout (default dimensions)
-modelsLayout.ledStatus = { height: '10vh', width: '10vw', minWidth: '40px', minHeight: '40px' };
+modelsLayout.ledStatus = { height: '80px', width: '160px', minWidth: '40px', minHeight: '40px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

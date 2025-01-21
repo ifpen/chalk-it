@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-02T09:16:07.250Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:20:47.278Z",
     "name": "progress-bar",
     "description": "",
     "groupName": "",
@@ -25,41 +25,13 @@
     "pyodideStandard": [],
     "pyodideMicropip": []
   },
-  "scaling": {
-    "widthPx": 1295,
-    "heightPx": 590,
-    "scrollWidthPx": 1295,
-    "scrollHeightPx": 590,
-    "widthVw": 84.75130890052355,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.75130890052355,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "flatUiProgressBarA": {
       "layout": {
-        "top": "18.8vh",
-        "left": "2.74869vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 131,
+        "left": 32,
+        "height": 38,
+        "width": 367,
         "z-index": "2"
       },
       "container": {
@@ -82,9 +54,12 @@
         "labelWidthProportion": "20%",
         "progressBarWidthProportion": "60%",
         "valueWidthProportion": "20%",
+        "progressBarAnimation": false,
         "progressBarRangeColor": "var(--widget-range-color)",
         "progressBarSegmentColor": "var(--widget-segment-color)",
-        "valueColor": "var(--widget-color)"
+        "valueColor": "var(--widget-color)",
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -92,12 +67,10 @@
     },
     "flatUiHorizontalSliderA": {
       "layout": {
-        "top": "8.66667vh",
-        "left": "2.74869vw",
-        "height": "5.06667vh",
-        "width": "24.0183vw",
-        "minHeight": "24px",
-        "minWidth": "200px",
+        "top": 55,
+        "left": 32,
+        "height": 38,
+        "width": 367,
         "z-index": "3"
       },
       "container": {
@@ -131,7 +104,9 @@
         "valueColor": "var(--widget-color)",
         "unit": "unitText",
         "displayUnit": false,
-        "unitFontSize": 0.5
+        "unitFontSize": 0.5,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "value": 0
@@ -154,11 +129,15 @@
       }
     }
   },
-  "exportOptions": "ajustToTargetWindow",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1295,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

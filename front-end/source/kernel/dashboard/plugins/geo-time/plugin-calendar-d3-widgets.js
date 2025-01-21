@@ -31,7 +31,7 @@ modelsParameters.calendarD3 = {
 };
 
 // Layout (default dimensions)
-modelsLayout.calendarD3 = { height: '5vh', width: '19vw', minWidth: '100px', minHeight: '100px' };
+modelsLayout.calendarD3 = { height: '500px', width: '600px', minWidth: '100px', minHeight: '100px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/

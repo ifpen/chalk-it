@@ -11,20 +11,37 @@ import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { modelsHiddenParams, modelsParameters, modelsTempParams } from 'kernel/base/widgets-states';
-import { widgetPreview } from 'kernel/dashboard/rendering/preview-widgets';
+import { widgetViewer } from 'kernel/dashboard/rendering/widget-viewer';
 import { pyodideLib } from 'kernel/base/pyodide-project';
-import { reconstructFoundations } from 'kernel/dashboard/rendering/reconstruct-foundations';
-import { customNavigationRuntime } from 'kernel/runtime/custom-navigation-runtime';
-import { rowToTabRuntime } from 'kernel/runtime/row-to-tab-runtime';
-import { rowToPageRuntime } from 'kernel/runtime/row-to-page-runtime';
 import { inputHandler } from 'kernel/general/interfaces/input-params';
+import {
+  DASHBOARD_DATA_ID,
+  DASHBOARD_DATA_TYPE,
+  DASHBOARD_CONFIG_ID,
+  DASHBOARD_CONFIG_TYPE,
+  DASHBOARD_URL_PARAMETER,
+  PAGE_MODE_PAGES,
+} from 'kernel/general/export/export-constants';
 
-export const DASHBOARD_URL_PARAMETER = 'projectUrl';
-export const DASHBOARD_DATA_ID = 'dashboard_data';
-export const DASHBOARD_CONFIG_ID = 'dashboard_config';
+// Runtime only
 
-export const DASHBOARD_DATA_TYPE = 'application/json';
-export const DASHBOARD_CONFIG_TYPE = DASHBOARD_DATA_TYPE;
+function initPageRuntime(pages) {
+  const $rootScope = angular.element(document.body).scope().$root;
+  const initialPage = pages.initialPage ?? 0;
+  $rootScope.safeApply(() => {
+    $rootScope.pageNames = pages.pageNames;
+    $rootScope.pageNumber = initialPage;
+    $rootScope.changePage = function (page) {
+      if (page >= 0 && page < $rootScope.pageNames.length) {
+        $rootScope.pageNumber = page;
+        widgetViewer.setCurrentPage(page);
+      }
+    };
+
+    $rootScope.pageMode = pages.pageMode ?? PAGE_MODE_PAGES;
+    $rootScope.showPagination;
+  });
+}
 
 function getInlineDashboardData() {
   const dataElement = document.getElementById(DASHBOARD_DATA_ID);
@@ -118,90 +135,7 @@ function getDashboardConfig() {
   };
 })(jQuery);
 
-function initContainers(jsonContent, exportOptions) {
-  const scalingSrc = jQuery.extend(true, {}, jsonContent.scaling); // MBG fix load order
-
-  // Cache the selectors and initialize heights
-  const $navMenu = $('#nav-menu').get(0);
-  const $dashboardZone = $('#dashboard-zone').get(0);
-  const $dropperDroitec = $('#DropperDroitec').get(0);
-
-  let navMenuHeightPx = 0;
-  // Get nav menu height if it exists
-  if ($navMenu) {
-    const height = parseInt($navMenu.style.height, 10);
-    navMenuHeightPx = isNaN(height) ? 0 : height;
-  }
-
-  // Set dashboard zone dimensions based on export options
-  const updateDashboardDimensions = (width, height, method) => {
-    $dashboardZone.style.width = width;
-    $dashboardZone.style.height = height;
-    scalingSrc.scalingMethod = method;
-  };
-
-  switch (exportOptions) {
-    case 'keepOriginalWidth':
-      updateDashboardDimensions(
-        scalingSrc.scrollWidthPx + 'px',
-        scalingSrc.scrollHeightPx + navMenuHeightPx + 'px',
-        'scaleTwSp'
-      );
-      break;
-    case 'adjustToFullWidth':
-      updateDashboardDimensions('100%', scalingSrc.scrollHeightPx - navMenuHeightPx + 'px', 'scaleTwSpWS');
-      break;
-    case 'ajustToTargetWindow':
-      updateDashboardDimensions('100%', document.body.clientHeight - navMenuHeightPx + 'px', 'scaleTwh');
-      break;
-    case 'projectToTargetWindow':
-    case 'customNavigation':
-    case 'rowToTab':
-    case 'rowToPage':
-      updateDashboardDimensions('100%', document.body.clientHeight - navMenuHeightPx - 1 + 'px', 'scaleTwhS');
-      break;
-    default:
-      updateDashboardDimensions('100%', '100%');
-  }
-
-  // Common dashboard zone styles
-  Object.assign($dashboardZone.style, {
-    margin: 'auto',
-    'overflow-x': 'hidden',
-    'overflow-y': 'hidden',
-  });
-
-  // Set DropperDroitec styles
-  Object.assign($dropperDroitec.style, {
-    height: '100%',
-    width: '100%',
-    'overflow-y': 'auto',
-  });
-
-  // Calculate rows based on max cells and columns
-  const {
-    cols: { maxCols },
-    cols: { maxCells },
-  } = jsonContent.device;
-  const rows = maxCells / (maxCols || 1);
-
-  // Scaling and preview updates
-  let projectedScalingObj = jQuery.extend(true, {}, scalingSrc);
-  let projectedPreviewDimensions = widgetPreview.getCurrentDashZoneDims();
-
-  widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, maxCols);
-  widgetPreview.resizeDashboardCols();
-
-  const mediaChangeProj = widgetPreview.mediaChangeProjection(projectedScalingObj, projectedPreviewDimensions, rows);
-
-  projectedScalingObj = mediaChangeProj.referenceFrame;
-  projectedPreviewDimensions = mediaChangeProj.targetFrame;
-
-  widgetPreview.setScalingInformation(projectedScalingObj, scalingSrc.scalingMethod, rows, maxCols);
-  widgetPreview.resizeDashboard(projectedPreviewDimensions);
-}
-
-export function loadDashboard(jsonContent, exportOptions) {
+export function loadDashboard(jsonContent) {
   const decodeHtmlEntities = (str) => {
     const txt = document.createElement('textarea');
     txt.innerHTML = str;
@@ -236,19 +170,6 @@ export function loadDashboard(jsonContent, exportOptions) {
     return scriptTag ? JSON.parse(scriptTag.textContent) : {};
   };
 
-  // Handles the visibility or removal of the navbar based on the dashboard configuration.
-  const handleNavBarVisibility = () => {
-    const navBar = document.getElementById('nav_bar');
-
-    if (navBar) {
-      if (window.dashboardConfig.showNavBar) {
-        navBar.style.display = 'block';
-      } else {
-        navBar.remove();
-      }
-    }
-  };
-
   // Deserialize and load data
   const loadDataNodesAndWidgets = (jsonContent, dataJson) => {
     pyodideLib.deserialize(jsonContent);
@@ -270,50 +191,27 @@ export function loadDashboard(jsonContent, exportOptions) {
       }
     });
 
-    // Set the theme
-    $('html').attr('data-theme', jsonContent.device.theme);
+    widgetViewer.deserialize(jsonContent);
 
-    widgetPreview.deserialize(jsonContent.connections);
-    widgetPreview.renderDashboardWidgets(jsonContent, true);
+    datanodesManager.startScheduler();
 
-    // Set background color
-    $('.dropperR').css('background-color', jsonContent.device.backgroundColor);
-  };
-
-  // Initialize the export option modes
-  const initializeExportOptions = (jsonContent) => {
-    switch (jsonContent.exportOptions) {
-      case 'rowToPage':
-        rowToPageRuntime.rowToPageModeInit(jsonContent);
-        break;
-      case 'rowToTab':
-        rowToTabRuntime.rowToTabModeInit(jsonContent);
-        break;
-      case 'customNavigation':
-        customNavigationRuntime.customNavigationModeInit(jsonContent);
-        break;
-      case 'projectToTargetWindow':
-        customNavigationRuntime.jsonContent = jsonContent;
-        break;
-    }
+    // Not done during deserialize as we need startScheduler to be done.
+    // Specificaly, datanodes with "constant" values (en short, json variables) must be marked evaluated
+    // so that widgets can read a value instead of setting a default one.
+    widgetViewer.assignValueChangeHandlers();
   };
 
   // Main logic begins here
   try {
     const dataJson = processJsonContent(jsonContent);
     window.dashboardConfig = getDashboardConfig();
-    window.exportOptions = exportOptions;
-    window.scaling = { ...jsonContent.scaling };
+    const $rootScope = angular.element(document.body).scope().$root;
+    $rootScope.navBarNotification = window.dashboardConfig?.navBarNotification == true;
 
-    handleNavBarVisibility();
+    if (jsonContent.pages?.pageNames?.length) {
+      initPageRuntime(jsonContent.pages);
+    }
     loadDataNodesAndWidgets(jsonContent, dataJson);
-    initContainers(jsonContent, exportOptions);
-    initializeExportOptions(jsonContent);
-
-    // Assign widget value change handlers after some delay
-    setTimeout(() => {
-      widgetPreview.assignValueChangeHandlers();
-    }, 2000);
   } catch (error) {
     console.error('Error loading dashboard:', error);
   }
@@ -337,8 +235,7 @@ async function fullLoadDashboard(xprjson, parameters = {}) {
     document.title = xprjson.meta.name;
   }
 
-  reconstructFoundations.buildDivsFromXprjson(xprjson);
-  loadDashboard(xprjson, xprjson.exportOptions);
+  loadDashboard(xprjson);
 }
 
 export async function onAngularReady() {

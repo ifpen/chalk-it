@@ -417,34 +417,34 @@
 }
 
 // Editor dropzone
-.widget__layout {
+#dashboard-editor {
   width: 100%;
-  display: flex;
-  // margin-top: 2em;
-  flex-direction: row;
+  height: 100%;
   align-items: center;
-  transition: width 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  //padding-bottom: 2rem;
+
   & > div {
     display: inline-block;
     vertical-align: middle;
   }
 }
 
-.widget__layout--wrapper {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(4.6875em, 1fr));
-  grid-gap: 0.5em;
-  height: auto;
-  background: #e5eaf2;
-  padding: 0.5em;
-  border-radius: br("16");
+.widget__layout {
+  align-items: center;
+  transition: width 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  & > div {
+    width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+
+    transition: width 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: #e5eaf2;
+    padding: 0.5em;
+    border-radius: 15px;
+  }
 }
 
 .widget__layout--item {
-  width: 100%;
-  height: 79vh;
   max-width: unset;
   padding: unset;
 
@@ -482,13 +482,16 @@
 
 // Inside editor dropzone
 .x_panel {
+  height: calc(207px + 51vh);
+
   position: relative;
   width: 100%;
-  /* margin-bottom: 5px; */
-  /* padding: 5px; */
   display: inline-block;
   background: #fff;
   border: 1px solid #e6e9ed;
+  border-radius: 10px;
+  filter: var(--dashboard-filter);
+
   -webkit-column-break-inside: avoid;
   -moz-column-break-inside: avoid;
   column-break-inside: avoid;
@@ -500,14 +503,8 @@
   transition: all 0.2s ease;
 }
 
-.x_contentEditor {
-  width: 100%;
-}
-
 // A "widget" is what is shown in the edit mode after drag and drop
-.widget {
-  border: 1px solid var(--surface-b);
-  
+#dashboard-editor-div .widget {
   &:after {
     content: attr(item-width) " x " attr(item-height);
     position: absolute;
@@ -525,6 +522,14 @@
   &:hover {
     &:after {
       opacity: 1;
+    }
+  }
+
+  .actions__list {
+    padding: 0;
+
+    li {
+      z-index: 999999;
     }
   }
 }

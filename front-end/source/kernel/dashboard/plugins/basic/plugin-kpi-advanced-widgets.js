@@ -53,8 +53,8 @@ modelsTempParams.advancedKpiCard = {
 
 // Layout (default dimensions)
 modelsLayout.advancedKpiCard = {
-  height: '33vh',
-  width: '14vw',
+  height: '120px',
+  width: '280px',
   minWidth: '64px',
   minHeight: '32px',
 };
@@ -243,7 +243,7 @@ function advancedKpiWidgetsPluginClass() {
         '<div id="advanced-card-value-' +
         idWidget +
         '" class="card-value" style="text-align:center; margin-bottom: 1.7rem;';
-      valueContent = valueContent + this.valueFontSize() + this.valueColor() + this.valueFontFamily() + '"></div>';
+      valueContent = valueContent + this.valueFontSize() + this.getValueColor() + this.valueFontFamily() + '"></div>';
 
       var subLabelContent = '';
       subLabelContent =

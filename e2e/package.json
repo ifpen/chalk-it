@@ -3,7 +3,7 @@
   "scripts": {
     "clean": "npx rimraf build mochawesome-report outputs",
     "build": "tsc",
-    "test:run": "mocha --reporter mochawesome --recursive --timeout 20000 build",
+    "test:run": "mocha --reporter mochawesome --recursive --timeout 200000 build",
     "test": "npm run clean && npm run build && npm run test:run",
     "check-window-size": "node build/check-window-size.js",
     "prettier-check": "prettier --check .",

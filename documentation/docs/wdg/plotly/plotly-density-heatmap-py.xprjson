@@ -1,8 +1,8 @@
 {
   "meta": {
-    "version": "3.000.8889",
-    "fileFormatVersion": "0.3",
-    "date": "2024-05-03T09:37:32.143Z",
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T20:29:37.524Z",
     "name": "plotly-density-heatmap-py",
     "description": "Plotly Python widget example based on Pyodide for heatmap display",
     "groupName": "Python",
@@ -46,41 +46,13 @@
       "plotly"
     ]
   },
-  "scaling": {
-    "widthPx": 1294,
-    "heightPx": 590,
-    "scrollWidthPx": 1294,
-    "scrollHeightPx": 590,
-    "widthVw": 84.68586387434554,
-    "heightVh": 78.66666666666667,
-    "scrollWidthVw": 84.68586387434554,
-    "scrollHeightVh": 78.66666666666667,
-    "scalingMethod": "scaleTwh",
-    "media": "large",
-    "colDims": null
-  },
-  "device": {
-    "cols": {
-      "valueRow": "none",
-      "valueCol": "1",
-      "maxCells": 0,
-      "maxCols": 0,
-      "classType": ""
-    },
-    "droppers": {},
-    "backgroundColor": "var(--widget-color-0)",
-    "inheritThemeBackgroundColor": true,
-    "theme": "default"
-  },
   "dashboard": {
     "plotlyGeneric0": {
       "layout": {
-        "top": "5.33333vh",
-        "left": "3.86126vw",
-        "height": "65.6vh",
-        "width": "57.4607vw",
-        "minHeight": "32px",
-        "minWidth": "50px",
+        "top": 30,
+        "left": 49,
+        "height": 491,
+        "width": 878,
         "z-index": "1"
       },
       "container": {
@@ -91,11 +63,17 @@
         "enforceTextColor": true,
         "textColor": "var(--widget-color)",
         "enforceBackgroundTransparency": true,
-        "hideModeBar": false
+        "hideModeBar": false,
+        "showWidget": true,
+        "enableWidget": true
       },
       "modelHiddenParams": {
         "data": [
-          {}
+          {
+            "type": "bar",
+            "x": [],
+            "y": []
+          }
         ],
         "layout": {
           "paper_bgcolor": "rgba(0,0,0,0)",
@@ -155,11 +133,15 @@
       }
     }
   },
-  "exportOptions": "ajustToTargetWindow",
-  "pages": {
-    "pageNames": [],
-    "defaultPage": {}
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1294,
+    "height": 590,
+    "enforceHeightLimit": false
   },
-  "checkExportOptions": true,
   "navBarNotification": false
 }

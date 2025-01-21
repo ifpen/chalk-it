@@ -79,7 +79,7 @@ export function GraphVisu(datanodesDependency) {
   /*-----------------showGraph-----------------*/
   // graphical rendering of the dependency graph
   // mainly based on Vis
-  function showDepGraph(selectedNodeName) {
+  function showDepGraph(selectedNodeNames) {
     let dataNode = datanodesManager.getAllDataNodes();
 
     let nodeNames = [];
@@ -115,10 +115,10 @@ export function GraphVisu(datanodesDependency) {
     nodesGlobal = new DataSet(nodes);
     edgesGlobal = new DataSet(edges);
 
-    startNetwork({ nodes: nodesGlobal, edges: edgesGlobal }, selectedNodeName);
+    startNetwork({ nodes: nodesGlobal, edges: edgesGlobal }, selectedNodeNames);
   }
 
-  function startNetwork(data, selectedNodeName) {
+  function startNetwork(data, selectedNodeNames) {
     var graphViewBody = $(
       '<div id="dependencyGraphBody" class="modal-body" style="vertical-align: middle; overflow: auto; display: block; margin: auto; width: 938px; height: 625px; border: 1px solid lightgray;"></div>'
     );
@@ -188,7 +188,7 @@ export function GraphVisu(datanodesDependency) {
 
     //AEF: fix zoom issue for big graphs // Zoom is done after graph constrution and stabilization
     network.on('stabilizationIterationsDone', function () {
-      selectNodebyName(selectedNodeName);
+      selectNodebyName(selectedNodeNames);
     });
 
     Network.prototype.setScale = function (scale) {
@@ -208,23 +208,24 @@ export function GraphVisu(datanodesDependency) {
     return jsonDataToBasicHtmlElement(data, { jsonFormat: PREVIEW_JSON_FORMAT });
   }
 
-  function selectNodebyName(nodeName) {
-    highlightNodeByWidget = [];
-    if (typeof nodeName === 'string') {
-      nodesGlobal.update([{ id: nodesLabelsIds[nodeName], color: { background: 'orange' } }]);
-      focusOnNode(nodesLabelsIds[nodeName]);
-    } else if (typeof nodeName === 'object') {
-      nodeName = JSON.parse(nodeName.target.attributes.name.value);
-      for (let k = 0; k < nodeName.length; k++) {
-        highlightNodeByWidget.push({
-          id: nodesLabelsIds[nodeName[k]],
+  function selectNodebyName(nodeNames) {
+    if (!nodeNames) {
+      nodeNames = [];
+    } else if (typeof nodeNames === 'string') {
+      nodeNames = [nodeNames];
+    }
+
+    nodesGlobal.update(
+      nodeNames.map((name) => {
+        return {
+          id: nodesLabelsIds[name],
           color: { background: 'orangered' },
-        });
-      }
+        };
+      })
+    );
 
-      nodesGlobal.update(highlightNodeByWidget);
-
-      if (nodeName.length === 1) focusOnNode(nodesLabelsIds[nodeName[0]]);
+    if (nodeNames.length === 1) {
+      focusOnNode(nodesLabelsIds[nodeNames[0]]);
     }
   }
 

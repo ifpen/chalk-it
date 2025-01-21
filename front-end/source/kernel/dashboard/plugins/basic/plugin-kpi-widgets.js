@@ -44,8 +44,8 @@ modelsParameters.kpiCard = {
 
 // Layout (default dimensions)
 modelsLayout.kpiCard = {
-  height: '16vh',
-  width: '18vw',
+  height: '120px',
+  width: '180px',
   minWidth: '64px',
   minHeight: '32px',
 };
@@ -100,7 +100,8 @@ function kpiWidgetsPluginClass() {
       var valueContent = '';
       valueContent =
         valueContent + '<div id="card-value-' + idWidget + '" class="card-value" style="text-align:center;';
-      valueContent = valueContent + this.valueFontSize() + this.valueColor() + this.valueFontFamily() + '">' + '</div>';
+      valueContent =
+        valueContent + this.valueFontSize() + this.getValueColor() + this.valueFontFamily() + '">' + '</div>';
 
       if (modelsParameters[idInstance].valuePosition == 'top') {
         divContent = valueContent + labelContent;

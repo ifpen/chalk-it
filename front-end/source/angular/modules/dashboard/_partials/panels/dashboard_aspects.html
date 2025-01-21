@@ -32,72 +32,63 @@
   <a class="aspect__col-left" title=""><i class="aspects icn-grid"></i>Dashboard grid</a>
   <div class="aspect__col-right">
     <label class="switch">
-      <input type="checkbox" ng-click="vm.showGrid=!vm.showGrid;vm.updateShowGrid()" />
+      <input type="checkbox" ng-model="vm.showGrid" ng-change="vm.gridChanged()" />
       <span class="slider round"></span>
     </label>
   </div>
 </div>
-<div class="aspect__row">
-  <a class="aspect__col-left" title=""><i class="aspects icn-board"></i>Responsive layout</a>
+<div class="aspect__row dashboard-form">
+  <div class="aspect__col-left"></div>
+  <div class="aspect__col-right">
+    <input type="number" min="1" max="1000" step="1" title="Grid X" ng-model="vm.gridX" ng-change="vm.gridChanged()" />
+    <input type="number" min="1" max="1000" step="1" title="Grid Y" ng-model="vm.gridY" ng-change="vm.gridChanged()" />
+  </div>
 </div>
 
-<form class="dashboard-form Table ng-pristine ng-valid" style="padding-top: 5px; padding-bottom: 5px; display: block">
+
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-board"></i>Layout</a>
+</div>
+<form class="dashboard-form Table" style="padding-top: 5px; padding-bottom: 5px; display: block">
   <div class="Row">
     <div class="CellH">
-      <label style="font-size: calc(8px + 0.4vw); font-weight: bold">Row</label>
+      <label style="font-size: calc(8px + 0.4vw); font-weight: bold">Pages</label>
     </div>
     <div class="Cell">
-      <select class="inputList" style="width: 100px" name="select-rows" id="select-rows">
-        <option selected="selected" value="0">None</option>
-        <option value="1" id="row1">1</option>
-        <option value="2" id="row2">2</option>
-        <option value="3" id="row3">3</option>
-        <option value="4" id="row4">4</option>
-        <option value="5" id="row5">5</option>
-        <option value="6" id="row6">6</option>
-        <option value="7" id="row7">7</option>
-        <option value="8" id="row8">8</option>
-        <option value="9" id="row9">9</option>
-        <option value="10" id="row10">10</option>
-        <option value="11" id="row11">11</option>
-        <option value="12" id="row12">12</option>
-        <option value="13" id="row13">13</option>
-        <option value="14" id="row14">14</option>
-        <option value="15" id="row15">15</option>
+      <select class="inputList" style="width: 100px" name="select-pages" ng-model="vm.pagesNumber" ng-change="vm.pagesNumberChanged()">
+        <option ng-value="0">None</option>
+        <option ng-value="1">1</option>
+        <option ng-value="2">2</option>
+        <option ng-value="3">3</option>
+        <option ng-value="4">4</option>
+        <option ng-value="5">5</option>
+        <option ng-value="6">6</option>
+        <option ng-value="7">7</option>
+        <option ng-value="8">8</option>
+        <option ng-value="9">9</option>
+        <option ng-value="10">10</option>
+        <option ng-value="11">11</option>
+        <option ng-value="12">12</option>
+        <option ng-value="13">13</option>
+        <option ng-value="14">14</option>
+        <option ng-value="15">15</option>
       </select>
     </div>
     <div class="Cell" style="vertical-align: middle">
-      <!--<a href="#" title="Configure row's height" onclick="layoutMgr.configureRowHeight()" style="display: table-cell; padding: 4px 8px;">
-                <button id="height-row-button" class="btn" style="width:30px;height:30px;color:#333;" ng-disabled=true><i class="glyphicon-resize-small glyphicon"></i></button>
-            </a>-->
       <a
         href="#"
-        title="Configure row's name"
-        onclick="layoutMgr.configureRowName()"
+        title="Configure pages' names"
         style="display: table-cell; padding: 4px 8px"
       >
         <button
-          id="height-row-button"
           class="btn"
           style="width: auto; height: 26px; color: #333; vertical-align: center"
-          ng-disabled="true"
+          ng-disabled="!vm.pages.length"
+          ng-click="vm.editPageNames()"
         >
           <i class="basic icn-rename"></i>
         </button>
       </a>
-    </div>
-  </div>
-  <div class="Row" id="row-device-col" style="display: table-row">
-    <div class="CellH">
-      <label style="font-size: calc(8px + 0.4vw); font-weight: bold">Column</label>
-    </div>
-    <div class="Cell">
-      <select class="inputList" style="width: 100px" name="select-cols" id="select-cols">
-        <option selected="selected" value="1" id="col1">1</option>
-        <option value="2" id="col2">2</option>
-        <option value="3" id="col3">3</option>
-        <option value="4" id="col4">4</option>
-      </select>
     </div>
   </div>
   <div class="aspect__row">
@@ -105,14 +96,70 @@
       <button
         class="btn btn-rounded-fill primary"
         style="width: 60px; padding: 0 0.5em; margin: 0"
-        onclick="layoutMgr.applyCells()"
-        id="buttonDevice"
+        ng-click="vm.applyPages()"
+        ng-disabled="!vm.canApplyPages()"
       >
         Apply
       </button>
     </div>
   </div>
 </form>
+
+
+<form class="dashboard-form Table" style="padding-top: 5px; padding-bottom: 5px; display: block">
+  <div class="aspect__row">
+    <div class="aspect__col-left">Size</div>
+    <div class="aspect__col-right">
+      <input type="number" min="1" step="1" title="width" ng-model="vm.dashboardSize.width" />
+      <input type="number" min="1" step="1" title="height" ng-model="vm.dashboardSize.height" />
+    </div>
+  </div>
+  <div class="aspect__row">
+    <div class="aspect__col-right">
+      <button type="button" class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitWidth()">
+        Fit width
+      </button>
+      <button type="button" class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitHeight()">
+        Fit height
+      </button>
+    </div>
+  </div>
+  <div class="aspect__row">
+    <div class="aspect__col-left">Limit height</div>
+    <div class="aspect__col-right">
+      <label class="switch">
+        <input type="checkbox" ng-model="vm.dashboardSize.enforceHeightLimit" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+  <div class="aspect__row">
+    <div class="aspect__col-left">Margins</div>
+    <div class="aspect__col-right">
+      <input type="number" min="0" step="1" title="Margin X" ng-model="vm.dashboardSize.marginX" />
+      <input type="number" min="0" step="1" title="Margin Y" ng-model="vm.dashboardSize.marginY" />
+    </div>
+  </div>
+  <div class="aspect__row">
+    <div class="aspect__col-left"> </div>
+    <div class="aspect__col-right">
+      <button type="button" class="btn btn-rounded-fill secondary" style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.resetDashboardSize()" ng-disabled="!vm.dashboardSizeChanged()">
+        Reset
+      </button>
+      <button type="button" class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.applyDashboardSize(true)" ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()">
+        Scale
+      </button>
+      <button type="button" class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.applyDashboardSize(false)" ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()">
+        Resize
+      </button>
+    </div>
+  </div>
+</form>
+
+
 <h2>About the colors</h2>
 <div class="aspect__row">
   <div class="aspect__col-left"><i class="aspects icn-dashboard-color" aria-hidden="true"></i>Theme</div>
@@ -263,7 +310,7 @@
     ng-attr-title="{{vm.hasMultiSelection() ? 'Align horizontal' : 'Please select multiple widgets'}}"
     title="Align horizontal"
   >
-    <i class="icn-object-align-horizontal"></i>
+    <i class="icn-object-align-vertical"></i> <!-- Icons are reversed -->
   </button>
   <button
     class="btn"
@@ -273,7 +320,7 @@
     ng-attr-title="{{vm.hasMultiSelection() ? 'Align vertical' : 'Please select multiple widgets'}}"
     title="Please select multiple widgets"
   >
-    <i class="icn-object-align-vertical"></i>
+    <i class="icn-object-align-horizontal"></i> <!-- Icons are reversed -->
   </button>
   <button
     class="btn"
@@ -346,32 +393,27 @@
   >
     <i class="icn-horizontal-distribute"></i>
   </button>
+
+  <button
+    class="btn"
+    style="width: 30px; height: 30px; color: #333"
+    ng-disabled="!vm.hasSelection() || !vm.pages.length"
+    ng-click="vm.widgetsToPage()"
+    ng-attr-title="{{vm.hasSelection() ? 'Send widget to page...' : 'Please select widgets'}}"
+    title="Please select widgets"
+  >
+    <i class="icn-tag"><!-- TODO proper icon --></i>
+  </button>
+
 </div>
 
 <div class="aspect__row">
   <a class="aspect__col-left" title=""><i class="aspects icn-border"></i>Widget's border</a>
   <div class="aspect__col-right">
     <label class="switch" ng-attr-title="{{vm.borderInWidgets ? 'Hide widget borders' : 'Show widget borders'}}">
-      <input type="checkbox" ng-click="vm.borderInWidgets=!vm.borderInWidgets;vm.updateBorderInWidgets()" checked />
+      <input type="checkbox" ng-model="vm.borderInWidgets" />
       <span class="slider round"></span>
     </label>
   </div>
 </div>
-<!--<div class="aspect__row">
-    <a class="aspect__col-left" title=""><i class="aspects icn-stretch"></i>Stretch width</a>
-    <div class="aspect__col-right">
-        <label class="switch">
-            <input type="checkbox" id="stretchWidth">
-            <span class="slider round"></span>
-        </label>
-    </div>
-</div>
-<div class="aspect__row">
-    <a class="aspect__col-left" title=""><i class="aspects icn-scale"></i>Keep proportion</a>
-    <div class="aspect__col-right">
-        <label class="switch">
-            <input type="checkbox" id="keepProportion">
-            <span class="slider round"></span>
-        </label>
-    </div>
-</div>-->
+

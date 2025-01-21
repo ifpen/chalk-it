@@ -43,7 +43,7 @@ modelsHiddenParams.echartsGeneric = {
 };
 
 // Layout (default dimensions)
-modelsLayout.echartsGeneric = { height: '30vh', width: '30vw', minWidth: '50px', minHeight: '32px' };
+modelsLayout.echartsGeneric = { height: '300px', width: '540px', minWidth: '50px', minHeight: '32px' };
 
 /*******************************************************************/
 /*************************** plugin code ***************************/
