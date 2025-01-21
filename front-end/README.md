@@ -21,7 +21,6 @@ This will install necessary Node.js packages needed by the app.
 
 ### Environment Variables
 
-- `.env.dev` (for development) 
+- `.env.dev` (for development)
 - `.env.prod.pip` (for production to Python package).
 - `.env.prod.hosted` (for production to statically hosted webapp).
-

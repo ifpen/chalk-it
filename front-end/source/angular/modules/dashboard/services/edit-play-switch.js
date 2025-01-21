@@ -20,7 +20,7 @@ export function showPlayMode() {
     const newPage = widgetEditor.widgetEditorViewer.currentPage;
     if (newPage >= 0 && newPage < widgetEditor.widgetEditorViewer.pageNames.length) {
       widgetEditor.changePage(newPage);
-    }    
+    }
   } catch (e) {
     console.error(e);
     // FIXME ?

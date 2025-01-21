@@ -10,7 +10,7 @@ export function XdashNotifications() {
   var enablePnotify = true;
 
   function Pnotify(notificationObject) {
-    if ( $rootScope.navBarNotification==false ) {
+    if ($rootScope.navBarNotification == false) {
       enablePnotify = false;
     }
     if (enablePnotify) {

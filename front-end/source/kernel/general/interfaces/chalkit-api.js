@@ -130,7 +130,7 @@ export const chalkit = (function () {
   }
 
   function goToPage(numPage) {
-    customNavigationRuntime.goToPage(numPage-1);
+    customNavigationRuntime.goToPage(numPage - 1);
   }
 
   function _checkWidgetExists(widgetName) {
