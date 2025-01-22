@@ -6,6 +6,7 @@
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Mondher AJIMI   │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
+
 import _ from 'lodash';
 
 import { widgetsEditorToolboxDefinition } from './toolbox-def';
