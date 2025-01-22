@@ -1,11 +1,8 @@
 <div ng-show="!editorView.isPlayMode" id="dashboard-editor-div" class="x_panel">
   <div class="dashboard-parent-container">
-    <ul
-      class="dashboard-dropdown"
-      id="menuWidget"
-      style="position: absolute; z-index: 1000"
-      ng-class="{'visible':vm.menuWidgetVisible}"
-    >
+
+    <ul class="dashboard-dropdown" id="menuWidget" style="position: absolute; z-index: 1000"
+      ng-class="{'visible':vm.menuWidgetVisible}">
       <li>
         <a title="Connect widget" ng-click="vm.connectWidget()" id="datanodes-widget-connect">
           <i class="specific icn-data-connection"></i>Connect widget
@@ -17,11 +14,15 @@
         </a>
       </li>
       <li>
-        <a title="Get widget name" ng-click="vm.getWidgetName()"> <i class="specific icn-tag"></i>Copy widget name </a>
+        <a title="Get widget name" ng-click="vm.getWidgetName()">
+          <i class="specific icn-tag"></i>Copy widget name
+        </a>
       </li>
       <hr />
       <li>
-        <a title="See code" ng-click="vm.editDatanodeCode()"> <i class="basic icn-edit"></i>Edit Datanode code </a>
+        <a title="See code" ng-click="vm.editDatanodeCode()">
+          <i class="basic icn-edit"></i>Edit Datanode code
+        </a>
       </li>
       <li>
         <a title="Graphical properties" ng-click="vm.graphicalProperties()">
@@ -36,36 +37,35 @@
       </li>
       <li>
         <a title="Send widget backward" ng-click="vm.backgroundWidget()">
-          <i class="basic icn-sendbackword"></i>Send backward</a
-        >
+          <i class="basic icn-sendbackword"></i>Send backward</a>
       </li>
       <li ng-if="vm.pages.length">
         <a title="Send widget to page..." ng-click="vm.widgetsToPage()">
-          <i class="basic icn-tag"><!-- TODO proper icon --></i>Send widget to page...</a
-        >
+          <i class="basic icn-tag"><!-- TODO proper icon --></i>Send widget to page...</a>
       </li>
       <hr />
       <li>
-        <a title="Duplicate widget" ng-click="vm.duplicateWidget()"> <i class="basic icn-duplicate"></i>Duplicate </a>
+        <a title="Duplicate widget" ng-click="vm.duplicateWidget()">
+          <i class="basic icn-duplicate"></i>Duplicate
+        </a>
       </li>
       <li>
-        <a title="Delete widget" ng-click="vm.deleteWidget()"><i class="basic icn-delete"></i>Delete </a>
+        <a title="Delete widget" ng-click="vm.deleteWidget()"><i class="basic icn-delete"></i>Delete
+        </a>
       </li>
     </ul>
     <div class="dashboard-page-container">
-      <div
-        id="DropperDroite"
-        class="dropperR dashboard-content-container"
-        ng-click="vm.editorClick($event)"
-        ng-class="{'show-widget-borders': vm.borderInWidgets, 'show-grid': vm.showGrid, }"
-      ></div>
+      <div id="DropperDroite" class="dropperR dashboard-content-container" ng-click="vm.editorClick($event)"
+        ng-class="{'show-widget-borders': vm.borderInWidgets, 'show-grid': vm.showGrid, }">
+      </div>
     </div>
   </div>
 </div>
 <div ng-show="editorView.isPlayMode" id="dashboard-preview-div" class="x_panel">
   <div class="dashboard-parent-container">
     <div class="dashboard-page-container">
-      <div id="DropperDroitec" class="dropperR dashboard-content-container"></div>
+      <div id="DropperDroitec" class="dropperR dashboard-content-container">
     </div>
   </div>
+</div>
 </div>
