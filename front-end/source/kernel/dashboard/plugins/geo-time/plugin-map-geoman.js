@@ -230,25 +230,26 @@ export function cutLayer(event, modelsHiddenParams, idInstance, self) {
   const selectedGeoJson = modelsHiddenParams[idInstance].selectedGeoJson;
   if (!selectedGeoJson) return;
 
-  const layerId = event.layer._leaflet_id;
+  const layerId = event.originalLayer._leaflet_id;
 
   for (const feature of selectedGeoJson.features) {
     if (feature.properties.layerId === layerId) {
       feature.properties.layerId = layerId;
       feature.geometry.coordinates = event.layer.feature.geometry.coordinates;
       feature.geometry.isCut = true;
+      modelsHiddenParams[idInstance].selectedGeoJson.features.push(feature);
     }
   }
 
   self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
 }
 
-export function updateValue(object, modelsHiddenParams, idInstance, self) {
+export function updateValue(feature, modelsHiddenParams, idInstance, self) {
   if (modelsHiddenParams[idInstance].selectedGeoJson) {
     if (modelsHiddenParams[idInstance].selectedGeoJson.features) {
-      modelsHiddenParams[idInstance].selectedGeoJson.features.push(object);
+      modelsHiddenParams[idInstance].selectedGeoJson.features.push(feature);
     } else {
-      modelsHiddenParams[idInstance].selectedGeoJson = { type: 'FeatureCollection', features: [object] };
+      modelsHiddenParams[idInstance].selectedGeoJson = { type: 'FeatureCollection', features: [feature] };
     }
     self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
   }
