@@ -4,11 +4,11 @@
  * 
  */
 
-@use '../layout/bs-grid' as *;
+@use '../layout/bs-grid' as bs-grid;
 
 .datalist {
-  @extend .row;
-  @extend .no-gutters;
+  //@extend .row;
+  //@extend .no-gutters;
 
   p {
     @extend .col-12;

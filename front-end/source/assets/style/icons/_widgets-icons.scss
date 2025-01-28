@@ -6,7 +6,7 @@
  * 
  */
 
-@use '../utils/mixins' as *;
+@use '../utils/mixins' as mix;
 
 .widgets {
   display: block;
@@ -17,15 +17,15 @@
   background-repeat: no-repeat;
 
   &.icn-address-autocompletion {
-    @include icon-background('address-autocompletion.svg', 'widget');
+    @include mix.icon-background('address-autocompletion.svg', 'widget');
   }
 
   &.icn-arch-circular-gauge {
-    @include icon-background('arch-circular-gauge.svg', 'widget');
+    @include mix.icon-background('arch-circular-gauge.svg', 'widget');
   }
 
   &.icn-board {
-    @include icon-background('board.svg', 'widget');
+    @include mix.icon-background('board.svg', 'widget');
   }
 
   &.icn-board::before {
@@ -33,67 +33,67 @@
   }
 
   &.icn-button {
-    @include icon-background('button.svg', 'widget');
+    @include mix.icon-background('button.svg', 'widget');
   }
 
   &.icn-trigger {
-    @include icon-background('execute-datanode.svg', 'widget');
+    @include mix.icon-background('execute-datanode.svg', 'widget');
   }
 
   &.icn-calendar {
-    @include icon-background('calendar.svg', 'widget');
+    @include mix.icon-background('calendar.svg', 'widget');
   }
 
   &.icn-camera {
-    @include icon-background('camera.svg', 'widget');
+    @include mix.icon-background('camera.svg', 'widget');
   }
 
   &.icn-checkbox {
-    @include icon-background('checkbox.svg', 'widget');
+    @include mix.icon-background('checkbox.svg', 'widget');
   }
 
   &.icn-compass {
-    @include icon-background('compass.svg', 'widget');
+    @include mix.icon-background('compass.svg', 'widget');
   }
 
   &.icn-date-range-calendar {
-    @include icon-background('date-range-calendar.svg', 'widget');
+    @include mix.icon-background('date-range-calendar.svg', 'widget');
   }
 
   &.icn-year-calendar {
-    @include icon-background('year-calendar.svg', 'widget');
+    @include mix.icon-background('year-calendar.svg', 'widget');
   }
 
   &.icn-double-slider {
-    @include icon-background('double-slider.svg', 'widget');
+    @include mix.icon-background('double-slider.svg', 'widget');
   }
 
   &.icn-echarts-generic-javascript {
-    @include icon-background('echarts-generic-javascript.svg', 'widget');
+    @include mix.icon-background('echarts-generic-javascript.svg', 'widget');
   }
 
   &.icn-export-to-file {
-    @include icon-background('export-to-file.svg', 'widget');
+    @include mix.icon-background('export-to-file.svg', 'widget');
   }
 
   &.icn-full-circular-gauge {
-    @include icon-background('full-circular-gauge.svg', 'widget');
+    @include mix.icon-background('full-circular-gauge.svg', 'widget');
   }
 
   &.icn-generic-html {
-    @include icon-background('generic-html.svg', 'widget');
+    @include mix.icon-background('generic-html.svg', 'widget');
   }
 
   &.icn-horizontal-slider {
-    @include icon-background('horizontal-slider.svg', 'widget');
+    @include mix.icon-background('horizontal-slider.svg', 'widget');
   }
 
   &.icn-image {
-    @include icon-background('image.svg', 'widget');
+    @include mix.icon-background('image.svg', 'widget');
   }
 
   &.icn-info {
-    @include icon-background('info.svg', 'widget');
+    @include mix.icon-background('info.svg', 'widget');
   }
 
   &.icn-info::before {
@@ -101,135 +101,135 @@
   }
 
   &.icn-kpi {
-    @include icon-background('kpi.svg', 'widget');
+    @include mix.icon-background('kpi.svg', 'widget');
   }
 
   &.icn-kpi-advanced {
-    @include icon-background('kpi-advanced.svg', 'widget');
+    @include mix.icon-background('kpi-advanced.svg', 'widget');
   }
 
   &.icn-label {
-    @include icon-background('label.svg', 'widget');
+    @include mix.icon-background('label.svg', 'widget');
   }
 
   &.icn-list {
-    @include icon-background('list.svg', 'widget');
+    @include mix.icon-background('list.svg', 'widget');
   }
 
   &.icn-load-file {
-    @include icon-background('load-file.svg', 'widget');
+    @include mix.icon-background('load-file.svg', 'widget');
   }
 
   &.icn-map {
-    @include icon-background('map.svg', 'widget');
+    @include mix.icon-background('map.svg', 'widget');
   }
 
   &.icn-folium {
-    @include icon-background('folium.svg', 'widget');
+    @include mix.icon-background('folium.svg', 'widget');
   }
 
   &.icn-markdown {
-    @include icon-background('markdown.svg', 'widget');
+    @include mix.icon-background('markdown.svg', 'widget');
   }
 
   &.icn-matplolib-generic {
-    @include icon-background('matplolib-generic.svg', 'widget');
+    @include mix.icon-background('matplolib-generic.svg', 'widget');
   }
 
   &.icn-multi-select {
-    @include icon-background('multi-select.svg', 'widget');
+    @include mix.icon-background('multi-select.svg', 'widget');
   }
 
   &.icn-multi-switch {
-    @include icon-background('multi-switch.svg', 'widget');
+    @include mix.icon-background('multi-switch.svg', 'widget');
   }
 
   &.icn-numeric-input {
-    @include icon-background('numeric-input.svg', 'widget');
+    @include mix.icon-background('numeric-input.svg', 'widget');
   }
 
   &.icn-plotly-3D {
-    @include icon-background('plotly-3D.svg', 'widget');
+    @include mix.icon-background('plotly-3D.svg', 'widget');
   }
 
   &.icn-plotly-bar {
-    @include icon-background('plotly-bar.svg', 'widget');
+    @include mix.icon-background('plotly-bar.svg', 'widget');
   }
 
   &.icn-plotly-javascript-generic {
-    @include icon-background('plotly-javascript-generic.svg', 'widget');
+    @include mix.icon-background('plotly-javascript-generic.svg', 'widget');
   }
 
   &.icn-plotly-line {
-    @include icon-background('plotly-line.svg', 'widget');
+    @include mix.icon-background('plotly-line.svg', 'widget');
   }
 
   &.icn-plotly-pie {
-    @include icon-background('plotly-pie.svg', 'widget');
+    @include mix.icon-background('plotly-pie.svg', 'widget');
   }
 
   &.icn-plotly-python-generic {
-    @include icon-background('plotly-python-generic.svg', 'widget');
+    @include mix.icon-background('plotly-python-generic.svg', 'widget');
   }
 
   &.icn-plotly-real-time {
-    @include icon-background('plotly-real-time.svg', 'widget');
+    @include mix.icon-background('plotly-real-time.svg', 'widget');
   }
 
   &.icn-progress-bar {
-    @include icon-background('progress-bar.svg', 'widget');
+    @include mix.icon-background('progress-bar.svg', 'widget');
   }
 
   // FIXME
   //&.icn-range {
-  //  @include icon-background('range.svg', 'widget');
+  //  @include mix.icon-background('range.svg', 'widget');
   //}
 
   &.icn-select {
-    @include icon-background('select.svg', 'widget');
+    @include mix.icon-background('select.svg', 'widget');
   }
 
   &.icn-semi-circular-gauge {
-    @include icon-background('semi-circular-gauge.svg', 'widget');
+    @include mix.icon-background('semi-circular-gauge.svg', 'widget');
   }
 
   &.icn-simple-clock {
-    @include icon-background('simple-clock.svg', 'widget');
+    @include mix.icon-background('simple-clock.svg', 'widget');
   }
 
   &.icn-simple-meter {
-    @include icon-background('simple-meter.svg', 'widget');
+    @include mix.icon-background('simple-meter.svg', 'widget');
   }
 
   &.icn-status {
-    @include icon-background('status.svg', 'widget');
+    @include mix.icon-background('status.svg', 'widget');
   }
 
   &.icn-switch {
-    @include icon-background('switch.svg', 'widget');
+    @include mix.icon-background('switch.svg', 'widget');
   }
 
   &.icn-tachometer {
-    @include icon-background('tachometer.svg', 'widget');
+    @include mix.icon-background('tachometer.svg', 'widget');
   }
 
   &.icn-text-input {
-    @include icon-background('text-input.svg', 'widget');
+    @include mix.icon-background('text-input.svg', 'widget');
   }
 
   &.icn-value {
-    @include icon-background('value.svg', 'widget');
+    @include mix.icon-background('value.svg', 'widget');
   }
 
   &.icn-vega-generic-javascript {
-    @include icon-background('vega-generic-javascript.svg', 'widget');
+    @include mix.icon-background('vega-generic-javascript.svg', 'widget');
   }
 
   &.icn-vertical-slider {
-    @include icon-background('vertical-slider.svg', 'widget');
+    @include mix.icon-background('vertical-slider.svg', 'widget');
   }
 
   &.icn-wind-circle {
-    @include icon-background('wind-circle.svg', 'widget');
+    @include mix.icon-background('wind-circle.svg', 'widget');
   }
 }

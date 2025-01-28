@@ -4,10 +4,9 @@
  * 
  */
 
-@use '../utils/mixins' as *;
-@use '../utils/variables' as *;
-@use '../layout/bs-grid' as *;
-@use '../widgets/widgets' as *;
+@use '../utils/mixins' as mix;
+@use '../utils/variables' as var;
+@use '../widgets/widgets' as wdg;
 
 // Appearance of draggable widgets
 div[id*='WidgetContainer'],
@@ -19,8 +18,8 @@ div[id*='div-for-ng-gauge'] {
 .dropperR {
   @extend %widget-preview-wrapper;
   background-color: var(--widget-color-0);
-  @include make-row();
-  @extend .no-gutters;
+  @include mix.make-row();
+  //@extend .no-gutters;
 }
 
 .dashboard-parent-container {

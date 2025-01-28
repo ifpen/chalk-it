@@ -5,8 +5,8 @@
  * 
  */
 
-@use '../utils/variables' as *;
-@use '../utils/mixins' as *;
+@use '../utils/variables' as var;
+@use '../utils/mixins' as mix;
 
 .daterangepicker {
   position: absolute;
@@ -19,7 +19,7 @@
   margin-top: 7px;
   top: 100px;
   left: 20px;
-  z-index: $zindex-dropdown;
+  z-index: var.$zindex-dropdown;
   display: none;
   font-family: arial;
   font-size: 15px;
@@ -325,7 +325,7 @@
 }
 
 /*  Larger Screen Styling */
-@include media-breakpoint-up('sm') {
+@include mix.media-breakpoint-up('sm') {
   .daterangepicker {
     width: auto;
   }
@@ -383,7 +383,7 @@
   }
 }
 
-@include media-breakpoint-up('md') {
+@include mix.media-breakpoint-up('md') {
   .daterangepicker .ranges {
     width: auto;
   }

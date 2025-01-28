@@ -4,8 +4,7 @@
  * 
  */
 
-@use '../utils/mixins' as *;
-@use '../layout/bs-grid' as *;
+@use '../utils/mixins' as mix;
 
 $aside-panel-max-width: 25em;
 $aside-panel-nav-width: 65px;
@@ -556,13 +555,13 @@ aside {
 
 // Modal Datanodes notifications
 .datanodes__notification-content {
-  @extend .row;
+  //@extend .row;
 
   height: 84%;
   text-align: left;
 
   & > div {
-    @extend .col-md-6;
+    //@extend .col-md-6;
 
     height: 100%;
     overflow-y: auto;
@@ -894,7 +893,7 @@ aside {
   height: 100%;
   padding: 0rem 1rem 1rem 0;
 
-  @include media-breakpoint-up('md') {
+  @include mix.media-breakpoint-up('md') {
     padding: 0rem 3rem 1.25rem;
   }
 }
@@ -904,7 +903,7 @@ aside {
   flex-direction: row;
   gap: 1em;
 
-  @include media-breakpoint-up('md') {
+  @include mix.media-breakpoint-up('md') {
     justify-content: flex-end;
   }
 

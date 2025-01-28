@@ -3,7 +3,7 @@
  * @description: Mostly set the calendar appearance
  * 
  */
-@use '../utils/variables' as *;
+@use '../utils/variables' as var;
 
 datepicker a,
 [datepicker] a,
@@ -57,7 +57,7 @@ datepicker,
   background: white;
   color: #333;
   position: absolute;
-  z-index: $zindex-dropdown;
+  z-index: var.$zindex-dropdown;
   min-width: 220px;
   margin: 0 auto;
   width: 101%;

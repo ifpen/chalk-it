@@ -6,5 +6,5 @@
  * 
  */
 
-@use 'theme-light' as *;
-@use 'theme-dark' as *;
+@forward 'theme-light';
+@forward 'theme-dark';

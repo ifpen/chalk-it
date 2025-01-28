@@ -6,7 +6,7 @@
  * 
  */
 
-@use '../utils/mixins' as *;
+@use '../utils/mixins' as mix;
 
 .datanodes {
   display: block;
@@ -18,50 +18,50 @@
   background-position: center;
 
   &.icn-clock {
-    @include icon-background('clock.svg', 'datanode');
+    @include mix.icon-background('clock.svg', 'datanode');
   }
 
   &.icn-csv-player {
-    @include icon-background('csv-player.svg', 'datanode');
+    @include mix.icon-background('csv-player.svg', 'datanode');
   }
 
   &.icn-csv-reader {
-    @include icon-background('csv-reader.svg', 'datanode');
+    @include mix.icon-background('csv-reader.svg', 'datanode');
   }
 
   &.icn-delay {
-    @include icon-background('delay.svg', 'datanode');
+    @include mix.icon-background('delay.svg', 'datanode');
   }
   &.icn-memory {
-    @include icon-background('memory.png', 'datanode');
+    @include mix.icon-background('memory.png', 'datanode');
   }
 
   &.icn-file-reader {
-    @include icon-background('file-reader.svg', 'datanode');
+    @include mix.icon-background('file-reader.svg', 'datanode');
   }
 
   &.icn-fmi {
-    @include icon-background('fmi.svg', 'datanode');
+    @include mix.icon-background('fmi.svg', 'datanode');
   }
 
   &.icn-geolocation {
-    @include icon-background('geolocation.svg', 'datanode');
+    @include mix.icon-background('geolocation.svg', 'datanode');
   }
 
   &.icn-json-formula {
-    @include icon-background('json-formula.svg', 'datanode');
+    @include mix.icon-background('json-formula.svg', 'datanode');
   }
 
   &.icn-json-variable {
-    @include icon-background('json-variable.svg', 'datanode');
+    @include mix.icon-background('json-variable.svg', 'datanode');
   }
 
   &.icn-mqtt {
-    @include icon-background('mqtt.svg', 'datanode');
+    @include mix.icon-background('mqtt.svg', 'datanode');
   }
 
   &.icn-python {
-    @include icon-background('python.svg', 'datanode');
+    @include mix.icon-background('python.svg', 'datanode');
   }
 
   &.icn-python::before {
@@ -69,18 +69,18 @@
   }
 
   &.icn-text-file-reader {
-    @include icon-background('text-file-reader.svg', 'datanode');
+    @include mix.icon-background('text-file-reader.svg', 'datanode');
   }
 
   &.icn-web-service-datasource {
-    @include icon-background('web-service-datasource.svg', 'datanode');
+    @include mix.icon-background('web-service-datasource.svg', 'datanode');
   }
 
   &.icn-web-service-json-editor {
-    @include icon-background('web-service-json-editor.svg', 'datanode');
+    @include mix.icon-background('web-service-json-editor.svg', 'datanode');
   }
 
   &.icn-websocket {
-    @include icon-background('websocket.svg', 'datanode');
+    @include mix.icon-background('websocket.svg', 'datanode');
   }
 }

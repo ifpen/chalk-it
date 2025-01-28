@@ -4,45 +4,45 @@
  */
 
 // Base file
-@use './style.scss' as *;
+@forward './style.scss';
 
 // Custom Icons
-@use './icons/xdash-icons' as *;
-@use './icons/widgets-icons' as *;
-@use './icons/datanodes-icons' as *;
-@use './icons/scaling-icons' as *;
+@forward './icons/xdash-icons';
+@forward './icons/widgets-icons';
+@forward './icons/datanodes-icons';
+@forward './icons/scaling-icons';
 
 // Dashboard components
-// @use './components/dashboard-forms' as *;
-// @use './components/sweet-alert' as *;
-@use './components/cancel-box' as *;
-@use './components/divider' as *;
-@use './components/filters' as *;
-@use './components/tags' as *;
-@use './components/notifications' as *;
-@use './components/pagination' as *;
-@use './components/switch' as *;
-@use './components/pnotify' as *;
-@use './components/jsoneditor' as *;
-@use './components/loading-bar' as *;
-@use './components/introjs' as *;
-@use './components/loader' as *;
-@use './components/plugin-editor' as *;
-@use './components/dashboard-dropdown' as *;
-@use './components/dropdown' as *;
-@use './components/tooltips' as *;
-@use './components/data-list' as *;
+// @forward './components/dashboard-forms';
+// @forward './components/sweet-alert';
+@forward './components/cancel-box';
+@forward './components/divider';
+@forward './components/filters';
+@forward './components/tags';
+@forward './components/notifications';
+@forward './components/pagination';
+@forward './components/switch';
+@forward './components/pnotify';
+@forward './components/jsoneditor';
+@forward './components/loading-bar';
+@forward './components/introjs';
+@forward './components/loader';
+@forward './components/plugin-editor';
+@forward './components/dashboard-dropdown';
+@forward './components/dropdown';
+@forward './components/tooltips';
+@forward './components/data-list';
 
 // Layout parts
-@use './layout/wrapper' as *;
-@use './layout/header' as *;
-@use './layout/aside' as *;
-@use './layout/sidebar' as *;
-@use './layout/main' as *;
-@use './layout/footer' as *;
-@use './layout/editor-mode' as *;
-@use './layout/view-mode' as *;
-@use './layout/login' as *;
+@forward './layout/wrapper';
+@forward './layout/header';
+@forward './layout/aside';
+@forward './layout/sidebar';
+@forward './layout/main';
+@forward './layout/footer';
+@forward './layout/editor-mode';
+@forward './layout/view-mode';
+@forward './layout/login';
 
 // Utils
-@use './utils' as *;
+@forward './utils';

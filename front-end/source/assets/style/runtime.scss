@@ -4,14 +4,14 @@
  */
 
 // Base file
-@use './style.scss' as *;
+@forward './style.scss';
 
 // Components
-@use './components/runtime-toolbar' as *;
-@use './components/dashboard-forms' as *;
-@use './components/sweet-alert' as *;
-@use './components/pnotify' as *;
-@use './components/loader' as *;
+@forward './components/runtime-toolbar';
+@forward './components/dashboard-forms';
+@forward './components/sweet-alert';
+@forward './components/pnotify';
+@forward './components/loader';
 
 // Utils
-@use './utils' as *;
+@forward './utils';

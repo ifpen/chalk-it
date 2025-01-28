@@ -4,48 +4,48 @@
  */
 
 // Structure variables (SCSS), functions, and mixins
-@use './utils/variables' as *;
-@use './utils/mixins' as *;
-@use './utils/functions' as *;
+@forward './utils/variables';
+@forward './utils/mixins';
+@forward './utils/functions';
 
 // Themes colors | CSS variables
-@use './themes/themes.scss' as *;
+@forward './themes/themes.scss';
 
 // Custom reset and base styles
-@use './base/reset' as *;
-@use './base/fonts' as *;
-@use './base/typography' as *;
-@use './icons/fontawesome' as *;
+@forward './base/reset';
+@forward './base/fonts';
+@forward './base/typography';
+@forward './icons/fontawesome';
 
 // Widgets
-@use './widgets/widgets' as *;
-@use './widgets/widgets-tables' as *;
-@use './widgets/widgets-forms' as *;
-@use './widgets/widgets-select2' as *;
-@use './widgets/widgets-buttons' as *;
-@use './widgets/widgets-progress-bars' as *;
-@use './widgets/widgets-sliders' as *;
-@use './widgets/widgets-multiselect' as *;
-@use './widgets/rzslider' as *;
-@use './widgets/map' as *;
-@use './widgets/cards' as *;
-@use './widgets/load-file' as *;
-@use './widgets/led' as *;
-@use './widgets/plots-widgets' as *;
-@use './widgets/editors-widgets-reset' as *;
-@use './widgets/datepicker' as *;
-@use './widgets/daterangepicker' as *;
-@use './widgets/bootstrap-clockpicker' as *;
-@use './widgets/info' as *;
+@forward './widgets/widgets';
+@forward './widgets/widgets-tables';
+@forward './widgets/widgets-forms';
+@forward './widgets/widgets-select2';
+@forward './widgets/widgets-buttons';
+@forward './widgets/widgets-progress-bars';
+@forward './widgets/widgets-sliders';
+@forward './widgets/widgets-multiselect';
+@forward './widgets/rzslider';
+@forward './widgets/map';
+@forward './widgets/cards';
+@forward './widgets/load-file';
+@forward './widgets/led';
+@forward './widgets/plots-widgets';
+@forward './widgets/editors-widgets-reset';
+@forward './widgets/datepicker';
+@forward './widgets/daterangepicker';
+@forward './widgets/bootstrap-clockpicker';
+@forward './widgets/info';
 
 // Components
-@use './components/buttons' as *;
-@use './components/popover' as *;
-@use './components/export-messages' as *; // TODO: check if it's really used in both cases (runtime & studio)
-@use './components/popup' as *; // TODO: check if it's really used in both cases (runtime & studio)
-@use './components/dashboard-forms' as *;
-@use './components/sweet-alert' as *;
+@forward './components/buttons';
+@forward './components/popover';
+@forward './components/export-messages'; // TODO: check if it's really used in both cases (runtime & studio)
+@forward './components/popup'; // TODO: check if it's really used in both cases (runtime & studio)
+@forward './components/dashboard-forms';
+@forward './components/sweet-alert';
 
 // Layout parts
-@use './layout/common' as *;
-@use './layout/bs-grid' as *;
+@forward './layout/common';
+@forward './layout/bs-grid';

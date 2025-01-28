@@ -5,10 +5,10 @@
  * 
  */
 
-@use '../utils/mixins' as *;
-@use '../utils/variables' as *;
-@use '../base/typography' as *;
-@use '../widgets/widgets' as *;
+@use '../utils/mixins' as mix;
+@use '../utils/variables' as var;
+@use '../base/typography' as typography;
+@use '../widgets/widgets' as wdg;
 
 .cancel {
   &__container {
@@ -113,7 +113,7 @@
 
     &.open {
       height: 100%;
-      z-index: $zindex-overlay;
+      z-index: var.$zindex-overlay;
 
       .cancel__overlay {
         opacity: 0.75;
@@ -133,7 +133,7 @@
   min-width: 495px;
   min-height: 350px;
 
-  @include media-breakpoint-up('md') {
+  @include mix.media-breakpoint-up('md') {
     width: 80%;
     height: 87%;
   }
@@ -148,7 +148,7 @@
 .code-window-header {
   font-size: fs('xs');
 
-  @include media-breakpoint-up('md') {
+  @include mix.media-breakpoint-up('md') {
     font-size: calc(7px + 0.5vw);
   }
 }
@@ -168,5 +168,5 @@
 
 // Overrides the value in show-hint.css. Needed for the hints to show over dialog windows (z=5000)
 .CodeMirror-hints {
-  z-index: $zindex-overlay + 1 !important;
+  z-index: var.$zindex-overlay + 1 !important;
 }

@@ -5,10 +5,10 @@
  * 
  */
 
-@use '../utils/mixins' as *;
-@use '../utils/variables' as *;
-@use '../components/dashboard-forms' as *;
-@use '../components/buttons' as *;
+@use '../utils/mixins' as mix;
+@use '../utils/variables' as var;
+@use '../components/dashboard-forms' as dash-forms;
+@use '../components/buttons' as btn;
 
 // Prevent background scrolling
 body.stop-scrolling {
@@ -26,7 +26,7 @@ body.stop-scrolling {
   display: none;
   background: var(--overlay-color);
   opacity: 0.75 !important; // Overrides Javascript custom fadeIn opacity
-  z-index: $zindex-overlay;
+  z-index: var.$zindex-overlay;
 }
 
 .sweet-alert {
@@ -45,9 +45,9 @@ body.stop-scrolling {
   font-family: var(--font-family-base);
   text-align: center;
   overflow: hidden;
-  z-index: $zindex-overlay + 1;
+  z-index: var.$zindex-overlay + 1;
 
-  @include media-breakpoint-up('md') {
+  @include mix.media-breakpoint-up('md') {
     left: 31%;
     right: 31%;
   }

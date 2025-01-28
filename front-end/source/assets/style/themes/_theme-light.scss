@@ -6,7 +6,7 @@
  */
 
 // Needed as SASS variable for dropdown arrow color
-$text-color: #050038;
+// $text-color: #050038;
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -16,7 +16,7 @@ $text-color: #050038;
     --surface-c: #e5eaf1;
 
     // Text colors
-    --text-color: #{$text-color};
+    --text-color: #050038;
     --text-color-rgb: 5 0 56;
     --text-color-secondary: #5f5c80;
     --text-color-inverted: #ffffff;

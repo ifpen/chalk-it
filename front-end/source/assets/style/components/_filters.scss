@@ -4,7 +4,7 @@
  * 
  */
 
-@use '../utils/variables' as *;
+@use '../utils/variables' as var;
 
 .filters {
   position: absolute;
@@ -16,7 +16,7 @@
   padding: 1rem;
   border-radius: br('8');
   transition: var(--default-transition);
-  z-index: $zindex-dropdown;
+  z-index: var.$zindex-dropdown;
 
   &:not(.open) {
     opacity: 0;

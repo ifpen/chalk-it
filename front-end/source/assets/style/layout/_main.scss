@@ -4,7 +4,7 @@
  * 
  */
 
-@use '../utils/variables' as *;
+@use '../utils/variables' as var;
 
 .main__layout {
   display: flex;
@@ -25,7 +25,7 @@
     padding-right: 5em;
     background-color: var(--header-color);
     filter: var(--header-filter);
-    z-index: $zindex-sticky;
+    z-index: var.$zindex-sticky;
 
     &.with__brand {
       justify-content: space-between;
@@ -546,7 +546,7 @@
   border-radius: br('16');
   border-bottom-right-radius: 0;
   background-color: var(--surface-b);
-  z-index: $zindex-pnotify;
+  z-index: var.$zindex-pnotify;
 
   .help__bubble--title {
     display: flex;
