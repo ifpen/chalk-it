@@ -788,11 +788,11 @@ function flatUiComplexWidgetsPluginClass() {
 
         const checkboxes = document.querySelectorAll(`#multi-select${idWidget} > label > input[type='checkbox']`);
 
-        checkboxes.forEach((checkbox) => {
-          if (val.includes(checkbox.value)) {
-            checkbox.checked = true;
-          }
-        });
+        if (!val.length) {
+          checkboxes.forEach((checkbox) => (checkbox.checked = false));
+        } else {
+          checkboxes.forEach((checkbox) => (checkbox.checked = val.includes(checkbox.value)));
+        }
 
         // Update the selected values
         modelsHiddenParams[idInstance].selectedValue = val;
