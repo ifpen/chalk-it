@@ -65,6 +65,19 @@ export class WidgetEditorViewer {
   }
 
   /**
+   * @returns {{ width: number, height: number }} the size necessary to accomodate maximal canvas as old way in Chalk'it
+   */
+  getMaximalFitCanvasSize() {
+    let width = 0;
+    let height = 0;
+
+    width  = document.getElementById("dashboard-editor-div").clientWidth  -  this.marginX * 2 - 2;
+    height = document.getElementById("dashboard-editor-div").clientHeight -  this.marginY * 2 - 4;
+
+    return { width, height };
+  }
+
+  /**
    * @returns {{ width: number, height: number }} the size necessary to accomodate all contained widgets
    */
   getContentSize() {
