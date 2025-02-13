@@ -59,7 +59,7 @@ export class WidgetEditorViewer {
     this.width = DEFAULT_WIDTH;
     this.height = DEFAULT_HEIGHT;
 
-    this.enforceHeightLimit = true;
+    this.enforceHeightLimit = false; // keep old fashion
 
     this.setMargins(DEFAULT_MARGIN, DEFAULT_MARGIN);
   }
