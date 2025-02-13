@@ -13,6 +13,11 @@ import { FileMngrFct } from 'kernel/general/backend/FileMngr';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
+import { editorSingletons } from 'kernel/editor-singletons';
+
+import {
+  EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED,
+} from 'angular/modules/editor/editor.events';
 
 angular.module('modules.sidebar').controller('SidebarController', [
   '$scope',
@@ -20,7 +25,8 @@ angular.module('modules.sidebar').controller('SidebarController', [
   '$state',
   'FilterPrjService',
   'ManagePrjService',
-  function ($scope, $rootScope, $state, FilterPrjService, ManagePrjService) {
+  '$timeout',
+  function ($scope, $rootScope, $state, FilterPrjService, ManagePrjService, $timeout) {
     /*---------- New project ----------------*/
     $scope.ProjectsFilter = function (tmpStr) {
       const CardsController = angular.element(document.getElementById('cards-ctrl')).scope();
@@ -71,7 +77,21 @@ angular.module('modules.sidebar').controller('SidebarController', [
 
     function _newPrj() {
       const scopeDash = angular.element(document.getElementById('dash-ctrl')).scope();
-      $state.go('modules', {});
+      $state.go('modules', {}).then(function () {
+        $timeout(function () {
+          let canvasSize = editorSingletons.widgetEditor.widgetEditorViewer.getMaximalFitCanvasSize();
+          editorSingletons.widgetEditor.widgetEditorViewer.setSize(canvasSize.width, canvasSize.height);
+          angular
+          .element(document.body)
+          .injector()
+          .invoke([
+            'EventCenterService',
+            (eventCenterService) => {
+              eventCenterService.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+            },
+          ]);
+        }, 0);
+      });
       ManagePrjService.clearForNewProject();
       $rootScope.currentInfoProject = angular.copy($rootScope.currentProject);
       scopeDash.info.tmp = angular.copy($rootScope.currentProject);
