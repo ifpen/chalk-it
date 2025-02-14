@@ -490,9 +490,13 @@ export const Xdash = function () {
   }
 
   /*--------manage leave/refresh page--------*/
-  $(window).bind('beforeunload', async function () {
-    await saveAndClosePrj();
-  });
+  (() => {
+    if (!window.isRuntime) {
+      $(window).bind('beforeunload', async function () {
+        await saveAndClosePrj();
+      });
+    }
+  })();
 
   //-------------------------------------------------------------------------------------------------------------------
 

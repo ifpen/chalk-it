@@ -267,4 +267,6 @@ export async function chalkitLoadDashboard(xprjson, parameters = {}) {
     deferedLoadStatus.toLoad = { xprjson, parameters };
   }
 }
+
+window.isRuntime = true;
 window.chalkitLoadDashboard = chalkitLoadDashboard;
