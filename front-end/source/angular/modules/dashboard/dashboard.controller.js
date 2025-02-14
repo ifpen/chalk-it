@@ -25,6 +25,7 @@ dashboardModule.controller('DashboardController', [
     //         $scope.displayedWdgtIndex = index;
     // };
 
+
     $scope.info = {
       openProjectInfo: false,
       checkboxModelLater: false,

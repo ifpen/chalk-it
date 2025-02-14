@@ -64,7 +64,7 @@
     "angularjs-gauge": "^1.4.0",
     "angularjs-slider": "^7.0.0",
     "assert": "^2.1.0",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^5.0.0",
     "bootstrap-colorpicker": "^3.0.3",
     "clockpicker": "^0.0.7",
     "codemirror": "~5.59.1",
@@ -82,7 +82,7 @@
     "jshint": "^2.13.6",
     "jsoneditor": "^9.5.7",
     "jszip": "^3.10.1",
-    "knockout": "3.4.2",
+    "knockout": "3.5.0",
     "leaflet": "1.5.1",
     "leaflet-modal": "^0.2.0",
     "leaflet.awesome-markers": "^2.0.5",
@@ -106,7 +106,7 @@
     "ui-select": "^0.19.8",
     "vis-network": "^7.0.0",
     "worker-loader": "^3.0.8",
-    "ws": "^7.5.3"
+    "ws": "^8.18.0"
   },
   "scripts": {
     "build": "npm run build:prod",
