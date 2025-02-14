@@ -250,6 +250,9 @@ ul.datasource-input-suffix {
   @include media-breakpoint-up('md') {
     width: 80%;
   }
+  &.disabled {
+    font-style: italic;
+  }
 }
 
 // Errors in JSEditor

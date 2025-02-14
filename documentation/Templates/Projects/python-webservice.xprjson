@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "version": "4.000.9103",
+    "fileFormatVersion": "0.4",
+    "date": "2024-12-02T22:02:01.039Z",
+    "name": "python-webservice",
+    "description": "Using Flask via REST API dataNode-type to call Python code",
+    "tags": [
+      {
+        "text": "DataNodes"
+      },
+      {
+        "text": "Python"
+      },
+      {
+        "text": "Flask"
+      },
+      {
+        "text": "REST-API"
+      }
+    ],
+    "schedulerLogOff": true
+  },
+  "data": {
+    "datanodes": [
+      {
+        "name": "vectorFunctions",
+        "type": "REST_web-service_from_datasource",
+        "settings": {
+          "name": "vectorFunctions",
+          "url": "http://127.0.0.1:5000/basicVect",
+          "use_xproxy": false,
+          "resp_data_type": "JSON",
+          "autoStart": false,
+          "explicitTrig": false,
+          "method": "POST",
+          "body": "{\n\"A\": [0, 1, 2, 3],\n\"B\": [10, 11, 12, 13] \n}",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "sampleTime": 0,
+          "req_data_type": "none"
+        }
+      }
+    ]
+  },
+  "libraries": {
+    "pyodideStandard": [],
+    "pyodideMicropip": []
+  },
+  "dashboard": {},
+  "connections": {},
+  "display": {
+    "theme": "default",
+    "backgroundColor": "var(--widget-color-0)",
+    "inheritThemeBackgroundColor": true,
+    "marginX": 10,
+    "marginY": 10,
+    "width": 1045,
+    "height": 605,
+    "enforceHeightLimit": false
+  },
+  "navBarNotification": false
+}
