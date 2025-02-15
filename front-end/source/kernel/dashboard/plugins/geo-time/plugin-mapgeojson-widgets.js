@@ -262,6 +262,12 @@ function mapGeoJsonWidgetsPluginClass() {
           self.addGeoJSONLayer(self, item, style, layerName);
         });
       }
+
+      // solve tile display issues on startup
+      setTimeout(() => {
+        self.map.invalidateSize();
+      }, 300);
+      
     };
 
     this.getFillColor = getFillColor;

@@ -1710,6 +1710,11 @@ function mapWidgetsPluginClass() {
         console.error(ex);
       }
 
+      // solve tile display issues on startup
+      setTimeout(() => {
+        self.map.invalidateSize();
+      }, 300);
+
       self.map.on('baselayerchange', function (eventLayer) {
         self.showLegend(eventLayer.name);
         self.currentBaseLayer = eventLayer.name;
