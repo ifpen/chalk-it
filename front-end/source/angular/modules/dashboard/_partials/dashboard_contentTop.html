@@ -92,134 +92,146 @@
       <button class="btn btn__see-more" title="Preview the HTML page" ng-click="previewDashboard();">Preview</button>
     </div>
 
-      <div class="btn__see-more__wrapper">
-        <button class="btn btn__see-more" title="Export the HTML page" ng-click="exportHTMLPage(currentProject.name);">
-          Export
-        </button>
-      </div>
+    <div class="btn__see-more__wrapper">
+      <button class="btn btn__see-more" title="Export the HTML page" ng-click="exportHTMLPage(currentProject.name);">
+        Export
+      </button>
+    </div>
 
-      <div ng-if="xDashFullVersion" class="btn__see-more__wrapper">
-        <button
-          id="isExportOpen_Project"
-          class="btn btn__see-more"
-          title="Deploy to HTML page"
-          ng-click="verifyPageExistence(currentProject.name);isExportOpen = !isExportOpen;showForm();"
-        >
-          Deploy
-        </button>
-        <!-- menu of actions -->
-        <!-- <ul class="dashboard-dropdown visible" ng-init="!isExportOpen" ng-show="isExportOpen">
+    <div ng-if="xDashFullVersion" class="btn__see-more__wrapper">
+      <button
+        id="isExportOpen_Project"
+        class="btn btn__see-more"
+        title="Deploy to HTML page"
+        ng-click="verifyPageExistence(currentProject.name);isExportOpen = !isExportOpen;showForm();"
+      >
+        Deploy
+      </button>
+      <!-- menu of actions -->
+      <!-- <ul class="dashboard-dropdown visible" ng-init="!isExportOpen" ng-show="isExportOpen">
                 <li>
                     <a title="Dashboard" ng-click="showForm();">
                         <i class="basic icn-dashboard"></i> Dashboard
                     </a>
                 </li> -->
-        <!-- <li>
+      <!-- <li>
                     <a title="Settings" ng-click="exportSettings();">
                         <i class="basic icn-settings"></i> Settings
                     </a>
                 </li> -->
-        <!-- </ul> -->
-      </div>
-
-      <div ng-if="xDashFullVersion" class="btn__see-more__wrapper">
-        <button
-          ng-class="{disabled:!isPageExist}"
-          id="isShareOpen_Page"
-          class="btn btn__see-more"
-          title="Share '{{currentProject.name}}.html' page"
-          ng-click="verifyPageExistence(currentProject.name);isPageExist?isShareOpen = !isShareOpen:isShareOpen=false"
-        >
-          Share
-        </button>
-        <!-- menu of actions -->
-        <ul class="dashboard-dropdown visible" style="width: 13em" ng-init="!isShareOpen" ng-show="isShareOpen">
-          <li ng-class="{disable:!isPageExist}">
-            <a title="Get HTML page link" ng-click="showPageLink(currentProject.name);isShareOpen=false">
-              <i class="basic icn-share"></i>Get page link
-            </a>
-          </li>
-          <li ng-class="{disable:!isPageExist}">
-            <a title="Set HTML page access" ng-click="openPageAccess(currentProject.name);isShareOpen=false">
-              <i class="basic icn-lock" aria-hidden="true"></i>Set page access
-            </a>
-          </li>
-          <li ng-class="{disable:!isPageExist||securedLink=='False'}">
-            <a title="Manage private sharing" ng-click="shareProject(currentProject.name,'html');isShareOpen=false">
-              <i class="basic icn-share-private" aria-hidden="true"></i>Manage sharing
-            </a>
-          </li>
-        </ul>
-      </div>
+      <!-- </ul> -->
     </div>
 
-    <!-- undo/redo button -->
-    <div class="undo-redo" ng-class="{hidden:editorView.isPlayMode}" js-edit-mode>
-      <button class="btn btn-icon-only" title="undo" ng-click="vm.undo();" ng-disabled="!vm.canUndo()">
-        <i class="fa fa-undo"></i>
+    <div ng-if="xDashFullVersion" class="btn__see-more__wrapper">
+      <button
+        ng-class="{disabled:!isPageExist}"
+        id="isShareOpen_Page"
+        class="btn btn__see-more"
+        title="Share '{{currentProject.name}}.html' page"
+        ng-click="verifyPageExistence(currentProject.name);isPageExist?isShareOpen = !isShareOpen:isShareOpen=false"
+      >
+        Share
       </button>
-      <button class="btn btn-icon-only" title="redo" ng-click="vm.redo();" ng-disabled="!vm.canRedo()">
-        <i class="fa fa-repeat"></i>
-      </button>
+      <!-- menu of actions -->
+      <ul class="dashboard-dropdown visible" style="width: 13em" ng-init="!isShareOpen" ng-show="isShareOpen">
+        <li ng-class="{disable:!isPageExist}">
+          <a title="Get HTML page link" ng-click="showPageLink(currentProject.name);isShareOpen=false">
+            <i class="basic icn-share"></i>Get page link
+          </a>
+        </li>
+        <li ng-class="{disable:!isPageExist}">
+          <a title="Set HTML page access" ng-click="openPageAccess(currentProject.name);isShareOpen=false">
+            <i class="basic icn-lock" aria-hidden="true"></i>Set page access
+          </a>
+        </li>
+        <li ng-class="{disable:!isPageExist||securedLink=='False'}">
+          <a title="Manage private sharing" ng-click="shareProject(currentProject.name,'html');isShareOpen=false">
+            <i class="basic icn-share-private" aria-hidden="true"></i>Manage sharing
+          </a>
+        </li>
+      </ul>
     </div>
-
-    <!-- Page change -->
-    <!-- TODO dedicated CSS -->
-    <div class="undo-redo" ng-if="vm.getCurrentPageNames().length">
-    <button class="btn btn-icon-only" title="previous page (shift + page up)" ng-click="vm.previousPage();" ng-disabled="vm.getCurrentPage()<=0">
-        <i class="fa fa-arrow-left"></i>
-      </button>
-      {{ vm.getCurrentPage() + 1 }} / {{ vm.getCurrentPageNames().length }}
-    <button class="btn btn-icon-only" title="next page (shift + page down)" ng-click="vm.nextPage();" ng-disabled="vm.getCurrentPage()>=vm.getCurrentPageNames().length-1">
-        <i class="fa fa-arrow-right"></i>
-      </button>
-    </div>
-
-    <!-- Zoom change -->
-    <!-- TODO dedicated CSS -->
-    <div class="undo-redo">
-    <button class="btn" title="1:1" ng-click="vm.zoomNone();" ng-disabled="vm.displayRatio===1.0">
-      1:1
-    </button>
-    <button class="btn" title="Fit" ng-click="vm.zoomFit();" ng-disabled="vm.displayFit">
-      Fit
-    </button>
-    <input type="number" min="0.1" max="4.0" step="0.1"  ng-model="vm.displayRatio" ng-change="vm.displayRatioChanged()" />
-    </div>
-
-    <!-- for future version -->
-    <!-- desktop/mobile/tablet start -->
-    <ul ng-show="false" class="view-mode" js-view-mode ng-class="{hidden:!editorView.isPlayMode}">
-      <li>
-        <a href="#" js-device-view class="active">
-          <i class="view-mode__button view-mode__button--desktop"></i>
-          <span class="view-mode__label">Desktop</span>
-        </a>
-      </li>
-      <li>
-        <a href="#" js-device-view class="mute">
-          <i class="view-mode__button view-mode__button--mobile"></i>
-          <span class="view-mode__label">Mobile</span>
-        </a>
-      </li>
-      <li>
-        <a href="#" js-device-view class="mute">
-          <i class="view-mode__button view-mode__button--tablet"></i>
-          <span class="view-mode__label">Tablet</span>
-        </a>
-      </li>
-    </ul>
-    <!-- desktop/mobile/tablet end -->
-
-    <!-- view mode end -->
   </div>
 
-  <!-- switch mode -->
-  <div class="switch__wrapper">
-    <p>Edit</p>
-    <label class="switch">
-      <input type="checkbox" id="edit-play-switch" ng-model="editorView.isPlayMode" ng-change="switchEditView()" />
-      <span class="slider round"></span>
-    </label>
-    <p>View</p>
+  <!-- undo/redo button -->
+  <div class="undo-redo" ng-class="{hidden:editorView.isPlayMode}" js-edit-mode>
+    <button class="btn btn-icon-only" title="undo" ng-click="vm.undo();" ng-disabled="!vm.canUndo()">
+      <i class="fa fa-undo"></i>
+    </button>
+    <button class="btn btn-icon-only" title="redo" ng-click="vm.redo();" ng-disabled="!vm.canRedo()">
+      <i class="fa fa-repeat"></i>
+    </button>
+  </div>
+
+  <!-- Page change -->
+  <!-- TODO dedicated CSS -->
+  <div class="undo-redo" ng-if="vm.getCurrentPageNames().length">
+    <button
+      class="btn btn-icon-only"
+      title="previous page (shift + page up)"
+      ng-click="vm.previousPage();"
+      ng-disabled="vm.getCurrentPage()<=0"
+    >
+      <i class="fa fa-arrow-left"></i>
+    </button>
+    {{ vm.getCurrentPage() + 1 }} / {{ vm.getCurrentPageNames().length }}
+    <button
+      class="btn btn-icon-only"
+      title="next page (shift + page down)"
+      ng-click="vm.nextPage();"
+      ng-disabled="vm.getCurrentPage()>=vm.getCurrentPageNames().length-1"
+    >
+      <i class="fa fa-arrow-right"></i>
+    </button>
+  </div>
+
+  <!-- Zoom change -->
+  <!-- TODO dedicated CSS -->
+  <div class="dashboard-form">
+    <!-- <button class="btn" title="1:1" ng-click="vm.zoomNone();" ng-disabled="vm.displayRatio===1.0">1:1</button>
+    <button class="btn" title="Fit" ng-click="vm.zoomFit();" ng-disabled="vm.displayFit">Fit</button> -->
+    <select
+      ng-model="vm.displayRatio"
+      ng-change="vm.displayRatioChanged()"
+      class="dropdown__current"
+    >
+      <option ng-repeat="ratio in vm.ratios" ng-value="ratio">{{ (ratio * 100) + '%' }}</option>
+    </select>
+  </div>
+
+  <!-- for future version -->
+  <!-- desktop/mobile/tablet start -->
+  <ul ng-show="false" class="view-mode" js-view-mode ng-class="{hidden:!editorView.isPlayMode}">
+    <li>
+      <a href="#" js-device-view class="active">
+        <i class="view-mode__button view-mode__button--desktop"></i>
+        <span class="view-mode__label">Desktop</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" js-device-view class="mute">
+        <i class="view-mode__button view-mode__button--mobile"></i>
+        <span class="view-mode__label">Mobile</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" js-device-view class="mute">
+        <i class="view-mode__button view-mode__button--tablet"></i>
+        <span class="view-mode__label">Tablet</span>
+      </a>
+    </li>
+  </ul>
+  <!-- desktop/mobile/tablet end -->
+
+  <!-- view mode end -->
+</div>
+
+<!-- switch mode -->
+<div class="switch__wrapper">
+  <p>Edit</p>
+  <label class="switch">
+    <input type="checkbox" id="edit-play-switch" ng-model="editorView.isPlayMode" ng-change="switchEditView()" />
+    <span class="slider round"></span>
+  </label>
+  <p>View</p>
 </div>
