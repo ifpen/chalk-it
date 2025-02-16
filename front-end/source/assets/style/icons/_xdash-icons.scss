@@ -321,3 +321,25 @@
 .icn-vertical-distribute:before {
   content: '\e958';
 }
+.icn-canvas-size:before {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 1em;
+  height: 1em;
+  content: '\e959';
+  color: transparent;
+  background: url('../icon/canvas-size.svg') no-repeat center;
+  background-size: contain;
+}
+.icn-canvas-margin:before {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 1em;
+  height: 1em;
+  content: '\e95a';
+  color: transparent;
+  background: url('../icon/canvas-margin.svg') no-repeat center;
+  background-size: contain;
+}

@@ -1,51 +1,5 @@
 <h2>About the dashboard</h2>
 <div class="aspect__row">
-  <a class="aspect__col-left" title=""><i class="basic icn-dashboard"></i>Dashboard</a>
-
-  <div class="aspect__col-right">
-    <button
-      class="btn btn-rounded-fill primary"
-      style="width: 60px; padding: 0 0.5em; margin: 0"
-      ng-disabled="!vm.widgetExists"
-      ng-click="vm.clearDashboard()"
-      title="Clear dashboard to create a new empty one"
-    >
-      Clear
-    </button>
-  </div>
-</div>
-<div class="aspect__row">
-  <a class="aspect__col-left" title=""><i class="aspects icn-data-connection"></i>DataNode connection</a>
-  <div class="aspect__col-right">
-    <button
-      class="btn btn-rounded-fill primary"
-      style="width: 60px; padding: 0 0.5em; margin: 0"
-      ng-disabled="!vm.connectionsExists"
-      ng-click="vm.clearAllConnections()"
-      ng-attr-title="{{vm.connectionsExists ? 'Clear all dataNode connections' : 'All dataNode connections are cleared'}}"
-    >
-      Clear
-    </button>
-  </div>
-</div>
-<div class="aspect__row">
-  <a class="aspect__col-left" title=""><i class="aspects icn-grid"></i>Dashboard grid</a>
-  <div class="aspect__col-right">
-    <label class="switch">
-      <input type="checkbox" ng-model="vm.showGrid" ng-change="vm.gridChanged()" />
-      <span class="slider round"></span>
-    </label>
-  </div>
-</div>
-<div class="aspect__row dashboard-form">
-  <div class="aspect__col-left"></div>
-  <div class="aspect__col-right">
-    <input type="number" min="1" max="1000" step="1" title="Grid X" ng-model="vm.gridX" ng-change="vm.gridChanged()" />
-    <input type="number" min="1" max="1000" step="1" title="Grid Y" ng-model="vm.gridY" ng-change="vm.gridChanged()" />
-  </div>
-</div>
-
-<div class="aspect__row">
   <a class="aspect__col-left" title=""><i class="aspects icn-board"></i>Layout</a>
 </div>
 <form class="dashboard-form Table" style="padding-top: 5px; padding-bottom: 5px; display: block">
@@ -105,10 +59,9 @@
     </div>
   </div>
 </form>
-
 <form class="dashboard-form Table" style="padding-top: 5px; padding-bottom: 5px; display: block">
   <div class="aspect__row">
-    <div class="aspect__col-left">Size</div>
+    <div class="aspect__col-left"><i class="basic icn-canvas-size"></i>Dashboard size</div>
     <div class="aspect__col-right">
       <input type="number" min="1" step="1" title="width" ng-model="vm.dashboardSize.width" />
       <input type="number" min="1" step="1" title="height" ng-model="vm.dashboardSize.height" />
@@ -144,7 +97,7 @@
     </div>
   </div>
   <div class="aspect__row">
-    <div class="aspect__col-left">Margins</div>
+    <div class="aspect__col-left"><i class="basic icn-canvas-margin"></i>Dashboard margins</div>
     <div class="aspect__col-right">
       <input type="number" min="0" step="1" title="Margin X" ng-model="vm.dashboardSize.marginX" />
       <input type="number" min="0" step="1" title="Margin Y" ng-model="vm.dashboardSize.marginY" />
@@ -183,7 +136,22 @@
     </div>
   </div>
 </form>
-
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-grid"></i>Dashboard grid</a>
+  <div class="aspect__col-right">
+    <label class="switch">
+      <input type="checkbox" ng-model="vm.showGrid" ng-change="vm.gridChanged()" />
+      <span class="slider round"></span>
+    </label>
+  </div>
+</div>
+<div class="aspect__row dashboard-form">
+  <div class="aspect__col-left"></div>
+  <div class="aspect__col-right">
+    <input type="number" min="1" max="1000" step="1" title="Grid X" ng-model="vm.gridX" ng-change="vm.gridChanged()" />
+    <input type="number" min="1" max="1000" step="1" title="Grid Y" ng-model="vm.gridY" ng-change="vm.gridChanged()" />
+  </div>
+</div>
 <h2>About the colors</h2>
 <div class="aspect__row">
   <div class="aspect__col-left"><i class="aspects icn-dashboard-color" aria-hidden="true"></i>Theme</div>
@@ -398,7 +366,6 @@
   >
     <i class="icn-resize-horizontal"></i>
   </button>
-
   <button
     class="btn"
     style="width: 30px; height: 30px; color: #333"
@@ -419,7 +386,6 @@
   >
     <i class="icn-horizontal-distribute"></i>
   </button>
-
   <button
     class="btn"
     style="width: 30px; height: 30px; color: #333"
@@ -431,7 +397,6 @@
     <i class="icn-tag"><!-- TODO proper icon --></i>
   </button>
 </div>
-
 <div class="aspect__row">
   <a class="aspect__col-left" title=""><i class="aspects icn-border"></i>Widget's border</a>
   <div class="aspect__col-right">
@@ -439,5 +404,35 @@
       <input type="checkbox" ng-model="vm.borderInWidgets" />
       <span class="slider round"></span>
     </label>
+  </div>
+</div>
+<h2>Global clear</h2>
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="basic icn-dashboard"></i>Dashboard widgets</a>
+
+  <div class="aspect__col-right">
+    <button
+      class="btn btn-rounded-fill primary"
+      style="width: 60px; padding: 0 0.5em; margin: 0"
+      ng-disabled="!vm.widgetExists"
+      ng-click="vm.clearDashboard()"
+      title="Clear dashboard to create a new empty one"
+    >
+      Clear
+    </button>
+  </div>
+</div>
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-data-connection"></i>DataNode connection</a>
+  <div class="aspect__col-right">
+    <button
+      class="btn btn-rounded-fill primary"
+      style="width: 60px; padding: 0 0.5em; margin: 0"
+      ng-disabled="!vm.connectionsExists"
+      ng-click="vm.clearAllConnections()"
+      ng-attr-title="{{vm.connectionsExists ? 'Clear all dataNode connections' : 'All dataNode connections are cleared'}}"
+    >
+      Clear
+    </button>
   </div>
 </div>
