@@ -122,7 +122,7 @@ The main feature allow navigation between Chalk'it pages with parameter transfer
 
 #### goToPage
 
-In [constrained dashboard mode](export/export.md#scaling-methods-for-the-constrained-dashboard), the method:
+The method:
 
 ```JavaScript
 chalkit.dashboard.goToPage(pageNumber)

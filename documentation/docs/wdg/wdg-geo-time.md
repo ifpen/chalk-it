@@ -527,7 +527,7 @@ These properties vary depending on the type of GeoJSON feature:
 
 Example :
 
--   [osm-mapgeojson-points.xprjson](maps/osm-mapgeojson-points.xprjson)
+-   [osm-mapgeojson-points.xprjson](maps/osm-geojson-points.xprjson)
 
 -   **LineString**:  
     - **dashArray**: Defines the pattern of dashed lines. The value is a string representing the length of dashes and gaps, e.g., `"5,5"` for equal-length dashes and spaces.  
