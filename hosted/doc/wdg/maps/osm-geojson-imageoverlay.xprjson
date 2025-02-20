@@ -1,0 +1,388 @@
+{
+	"meta": {
+		"version": "3.301.9152",
+		"fileFormatVersion": "0.3",
+		"date": "2025-01-20T19:45:00.557Z",
+		"name": "osm-geojson-imageoverlay",
+		"description": "",
+		"groupName": "",
+		"tags": [],
+		"schedulerLogOff": true
+	},
+	"data": {
+		"datanodes": [
+			{
+				"name": "Style",
+				"type": "JSON_var_plugin",
+				"settings": {
+					"name": "Style",
+					"json_var": "{\"config\":{\"defaultCenter\":{\"latitude\":2.295,\"longitude\":48.8738,\"defaultZoom\":true,\"zoom\":16},\"tileServer\":\"MapboxStreets\",\"possibleTileServers\":[\"MapboxStreets\",\"MapboxDark\",\"HereSatelliteDay\",\"HereTerrainDay\",\"HereHybridDay\"],\"image\":{\"imageUrl\":\"https://www.ifpenergiesnouvelles.fr/sites/ifpen.fr/files/logo_ifpen_2.jpg\",\"imageBounds\":[[48.874875,2.171738],[48.877923,2.179484]],\"title\":\"IFPEN location\",\"addAs\":\"overlay\"}}}"
+				}
+			}
+		]
+	},
+	"libraries": {
+		"pyodideStandard": [],
+		"pyodideMicropip": []
+	},
+	"scaling": {
+		"widthPx": 1678,
+		"heightPx": 743,
+		"scrollWidthPx": 1678,
+		"scrollHeightPx": 743,
+		"widthVw": 87.76150627615063,
+		"heightVh": 70.76190476190476,
+		"scrollWidthVw": 87.76150627615063,
+		"scrollHeightVh": 70.76190476190476,
+		"scalingMethod": "scaleTwh",
+		"media": "large",
+		"colDims": null
+	},
+	"device": {
+		"cols": {
+			"valueRow": "none",
+			"valueCol": "1",
+			"maxCells": 0,
+			"maxCols": 0,
+			"classType": ""
+		},
+		"droppers": {},
+		"backgroundColor": "var(--widget-color-0)",
+		"inheritThemeBackgroundColor": true,
+		"theme": "default"
+	},
+	"dashboard": {
+		"mapGeoJsonA": {
+			"layout": {
+				"top": "10.5714vh",
+				"left": "1.62134vw",
+				"height": "52.381vh",
+				"width": "49.1109vw",
+				"minHeight": "100px",
+				"minWidth": "100px",
+				"z-index": "2"
+			},
+			"container": {
+				"instanceId": "mapGeoJsonA",
+				"modelJsonId": "mapGeoJson"
+			},
+			"modelParameters": {},
+			"modelHiddenParams": {
+				"GeoJSON": {},
+				"GeoJSONStyle": {}
+			}
+		},
+		"flatUiSwitchA": {
+			"layout": {
+				"top": "2.38095vh",
+				"left": "1.25523vw",
+				"height": "5.04762vh",
+				"width": "9.98954vw",
+				"minHeight": "24px",
+				"minWidth": "50px",
+				"z-index": "4"
+			},
+			"container": {
+				"instanceId": "flatUiSwitchA",
+				"modelJsonId": "flatUiSwitch"
+			},
+			"modelParameters": {
+				"label": "defaultZoom",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelPosition": "right",
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"switchWidthProportion": "30%",
+				"switchOnColor": "var(--widget-input-checked-color)",
+				"switchOffColor": "var(--widget-input-unchecked-color)",
+				"showWidget": true,
+				"enableWidget": true
+			},
+			"modelHiddenParams": {
+				"value": false
+			}
+		},
+		"flatUiHorizontalSliderA": {
+			"layout": {
+				"top": "2.28571vh",
+				"left": "12.2385vw",
+				"height": "5.04762vh",
+				"width": "24.0063vw",
+				"minHeight": "24px",
+				"minWidth": "200px",
+				"z-index": "5"
+			},
+			"container": {
+				"instanceId": "flatUiHorizontalSliderA",
+				"modelJsonId": "flatUiHorizontalSlider"
+			},
+			"modelParameters": {
+				"label": "zoom",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"rangeActuator": false,
+				"min": 0,
+				"max": 16,
+				"step": 1,
+				"displayValue": true,
+				"validationOnFocusOut": true,
+				"valueFontSize": 0.5,
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueBorderColor": "var(--widget-border-color)",
+				"labelWidthProportion": "20%",
+				"sliderWidthProportion": "60%",
+				"valueWidthProportion": "20%",
+				"sliderRangeColor": "var(--widget-range-color)",
+				"sliderSegmentColor": "var(--widget-segment-color)",
+				"sliderHandleDefaultColor": "var(--widget-handle-default-color)",
+				"sliderHandleHoverColor": "var(--widget-handle-hover-color)",
+				"sliderHandleActiveColor": "var(--widget-handle-active-color)",
+				"valueColor": "var(--widget-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"showWidget": true,
+				"enableWidget": true
+			},
+			"modelHiddenParams": {
+				"value": 0
+			}
+		},
+		"flatUiNumericInputA": {
+			"layout": {
+				"top": "2.66667vh",
+				"left": "40.1151vw",
+				"height": "5.04762vh",
+				"width": "18.9854vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "6"
+			},
+			"container": {
+				"instanceId": "flatUiNumericInputA",
+				"modelJsonId": "flatUiNumericInput"
+			},
+			"modelParameters": {
+				"label": "latitude",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"step": 1,
+				"labelTextAlign": "left",
+				"labelTextPosition": "left",
+				"valueWidthProportion": "70%",
+				"validationButton": false,
+				"validationBtnDefaultColor": "var(--widget-button-primary-color)",
+				"validationBtnActiveColor": "var(--widget-button-active-color)",
+				"validationBtnHoverColor": "var(--widget-button-hover-color)",
+				"validationOnFocusOut": true,
+				"valueFontSize": 0.5,
+				"valueColor": "var(--widget-input-text)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"backgroundColor": "var(--widget-input-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"borderWidth": "2px",
+				"showWidget": true,
+				"enableWidget": true
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"flatUiNumericInputB": {
+			"layout": {
+				"top": "2.7619vh",
+				"left": "62.2908vw",
+				"height": "5.04762vh",
+				"width": "18.9854vw",
+				"minHeight": "24px",
+				"minWidth": "150px",
+				"z-index": "7"
+			},
+			"container": {
+				"instanceId": "flatUiNumericInputB",
+				"modelJsonId": "flatUiNumericInput"
+			},
+			"modelParameters": {
+				"label": "longitude",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"step": 1,
+				"labelTextAlign": "left",
+				"labelTextPosition": "left",
+				"valueWidthProportion": "70%",
+				"validationButton": false,
+				"validationBtnDefaultColor": "var(--widget-button-primary-color)",
+				"validationBtnActiveColor": "var(--widget-button-active-color)",
+				"validationBtnHoverColor": "var(--widget-button-hover-color)",
+				"validationOnFocusOut": true,
+				"valueFontSize": 0.5,
+				"valueColor": "var(--widget-input-text)",
+				"valueFontFamily": "var(--widget-font-family)",
+				"valueTextAlign": "left",
+				"displayBorder": true,
+				"borderColor": "var(--widget-border-color)",
+				"backgroundColor": "var(--widget-input-color)",
+				"unit": "unitText",
+				"displayUnit": false,
+				"unitFontSize": 0.5,
+				"borderWidth": "2px",
+				"showWidget": true,
+				"enableWidget": true
+			},
+			"modelHiddenParams": {
+				"value": ""
+			}
+		},
+		"flatUiSelectA": {
+			"layout": {
+				"top": "16vh",
+				"left": "51.7259vw",
+				"height": "5.04762vh",
+				"width": "18.9854vw",
+				"minHeight": "27px",
+				"minWidth": "40px",
+				"z-index": "8"
+			},
+			"container": {
+				"instanceId": "flatUiSelectA",
+				"modelJsonId": "flatUiSelect"
+			},
+			"modelParameters": {
+				"label": "tileServer",
+				"inheritLabelFromData": true,
+				"displayLabel": true,
+				"labelFontSize": 0.5,
+				"labelColor": "var(--widget-label-color)",
+				"labelFontFamily": "var(--widget-font-family)",
+				"selectWidthProportion": "70%",
+				"isNumber": false,
+				"isBoolean": false,
+				"selectValueFontFamily": "var(--widget-font-family)",
+				"selectValueFontSize": 0.5,
+				"selectedValueColor": "var(--widget-select-option-highlighted-text)",
+				"selectedItemDefaultColor": "var(--widget-select-option-highlighted-color)",
+				"selectedItemHoverColor": "var(--widget-select-option-highlighted-color)",
+				"isKeyValuePairs": false,
+				"showWidget": true,
+				"enableWidget": true
+			},
+			"modelHiddenParams": {
+				"keys": [],
+				"values": [],
+				"selectedValue": ""
+			}
+		}
+	},
+	"connections": {
+		"mapGeoJsonA": {
+			"GeoJSON": {
+				"name": "GeoJSON",
+				"dataNode": "None",
+				"dataFields": []
+			},
+			"GeoJSONStyle": {
+				"name": "GeoJSONStyle",
+				"dataNode": "Style",
+				"dataFields": []
+			},
+			"Selected": {
+				"name": "Selected",
+				"dataNode": "None",
+				"dataFields": []
+			}
+		},
+		"flatUiSwitchA": {
+			"value": {
+				"name": "value",
+				"dataNode": "Style",
+				"dataFields": [
+					"config",
+					"defaultCenter",
+					"defaultZoom"
+				]
+			}
+		},
+		"flatUiHorizontalSliderA": {
+			"value": {
+				"name": "value",
+				"dataNode": "Style",
+				"dataFields": [
+					"config",
+					"defaultCenter",
+					"zoom"
+				]
+			}
+		},
+		"flatUiNumericInputA": {
+			"value": {
+				"name": "value",
+				"dataNode": "Style",
+				"dataFields": [
+					"config",
+					"defaultCenter",
+					"latitude"
+				]
+			}
+		},
+		"flatUiNumericInputB": {
+			"value": {
+				"name": "value",
+				"dataNode": "Style",
+				"dataFields": [
+					"config",
+					"defaultCenter",
+					"longitude"
+				]
+			}
+		},
+		"flatUiSelectA": {
+			"keys": {
+				"name": "keys",
+				"dataNode": "Style",
+				"dataFields": [
+					"config",
+					"possibleTileServers"
+				]
+			},
+			"values": {
+				"name": "values",
+				"dataNode": "Style",
+				"dataFields": [
+					"config",
+					"possibleTileServers"
+				]
+			},
+			"selectedValue": {
+				"name": "selectedValue",
+				"dataNode": "Style",
+				"dataFields": [
+					"config",
+					"tileServer"
+				]
+			}
+		}
+	},
+	"exportOptions": "ajustToTargetWindow",
+	"pages": {
+		"pageNames": [],
+		"defaultPage": {}
+	},
+	"checkExportOptions": true,
+	"navBarNotification": false
+}
