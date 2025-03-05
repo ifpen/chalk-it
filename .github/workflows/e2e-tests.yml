@@ -44,17 +44,10 @@ jobs:
             BUILD_DIR="$(pwd)"
             echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_OUTPUT
 
-      - name: Set up Chrome dependencies
+      - name: Set up Chrome dependencies 
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libgbm-dev
-          sudo apt-get install -y libgtk-3-0
-          sudo apt-get install -y libnotify-dev
-          sudo apt-get install -y libnss3
-          sudo apt-get install -y libxss1
-          sudo apt-get install -y libasound2
-          sudo apt-get install -y fonts-liberation
-          sudo apt-get install -y xdg-utils
+            sudo apt-get update
+            sudo apt-get install -y libgbm-dev libgtk-3-0 libnotify-dev libnss3 libxss1 libasound2t64 fonts-liberation xdg-utils
 
       - uses: browser-actions/setup-chrome@v1
         with:
