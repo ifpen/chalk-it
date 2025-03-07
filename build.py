@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(description="Process the build type.")
 # Add the build_type optional argument
 parser.add_argument(
     "--buildtype",
-    choices=["pip", "hosted"],
+    choices=["pip", "hosted", "local"],
     default="pip",
     help="Specify the type of build: 'pip' or 'hosted'.",
 )
@@ -110,6 +110,14 @@ elif BUILD_TYPE == "hosted":
     output_file_path = os.path.join(directory, ".env.prod")
 
     shutil.copy(input_file_path, output_file_path)
+   
+elif BUILD_TYPE == "local":
+    # Define the path to the front-end directory
+    directory = "front-end"
+    input_file_path = os.path.join(directory, ".env.prod.local")
+    output_file_path = os.path.join(directory, ".env.prod")
+
+    shutil.copy(input_file_path, output_file_path)
 
 # Get the list of all files and directories in the "build" directory
 file_list = os.listdir(dst_dir)
@@ -147,7 +155,7 @@ if BUILD_FRONT_END:
     # Run npm build command in front-end directory
     run_npm("npm", "run", "build")
 
-if BUILD_TYPE == "pip":
+if (BUILD_TYPE == "pip" or BUILD_TYPE == "local"):
 
     # Copy build result to ./build/chlkt directory
     shutil.copytree("./front-end/build", "./build/chlkt")
