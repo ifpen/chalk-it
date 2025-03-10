@@ -44,12 +44,14 @@ export function addDrawingFeatures(self, modelsHiddenParams, instanceId) {
 
       var geoJsonLayer = L.geoJSON(selectedGeoJson, {
         onEachFeature: function (feature, layer) {
-     //     layer.pm.enable(); // Enable Geoman on each shape only in geoman2.11+
+        layer.pm.enable(); // Enable Geoman on each shape only in geoman2.11+
         }
       }); 
       
       
       geoJsonLayer.eachLayer(function(layer) {
+
+        // To be sure to add the item in the good layer
         drawnItems.addLayer(layer);
       });
     
@@ -60,31 +62,85 @@ export function addDrawingFeatures(self, modelsHiddenParams, instanceId) {
             drawnItems.addLayer(e.layer);
     });
 
+    self.map.on('pm:remove', function (e) {
+ 
+      drawnItems.removeLayer(e.layer._leaflet_id);
+    });
+
+
+
   //  self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
     self.map.on('pm:create', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
     self.map.on('pm:remove', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
     self.map.on('pm:rotateend', (e) => self.supdateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
-    self.map.on('pm:globaleditmodetoggled', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
-    self.map.on('pm:globaldragmodetoggled', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
-    self.map.on('pm:cut', (e) => self.cutLayer(e, modelsHiddenParams, instanceId, self));
+    drawnItems.on('pm:markerdrag', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
+    drawnItems.on('pm:drag', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
+    self.map.on('pm:cut', (e) => self.cutLayer(e, self.map, self.drawnItems, modelsHiddenParams, instanceId, self));
 }
 
 
-export function cutLayer(event, modelsHiddenParams, idInstance, self) {
-  const selectedGeoJson = modelsHiddenParams[idInstance].selectedGeoJson;
-  if (!selectedGeoJson) return;
 
-  const layerId = event.layer._leaflet_id;
 
-  for (const feature of selectedGeoJson.features) {
-    if (feature.properties.layerId === layerId) {
-      feature.properties.layerId = layerId;
-      feature.geometry.coordinates = event.layer.feature.geometry.coordinates;
-      feature.geometry.isCut = true;
-    }
+export function cutLayer(e, map, drawnItems, modelsHiddenParams, idInstance, self) {
+
+  if (e.layer._layers) {
+    Object.values(e.layer._layers).forEach((layer) => {
+      drawnItems.addLayer(layer);	
+    });
+    
+    drawnItems.removeLayer(e.originalLayer._leaflet_id);
+    drawnItems.removeLayer(e.layer._leaflet_id);
+
+  } else {
+    const geometry = e.layer.feature.geometry;
+
+    // Remove the original polygon from drawnLayers
+    drawnItems.removeLayer(e.layer);
+    map.removeLayer(e.layer);
+    drawnItems.removeLayer(e.originalLayer._leaflet_id);
+    drawnItems.removeLayer(e.layer._leaflet_id);
+  
+    if (geometry.type === "MultiPolygon") {
+      // If it's a MultiPolygon, process each polygon separately
+      geometry.coordinates.forEach((polygonCoords) => {
+        let geoJsonFeature = {
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: polygonCoords, // Each polygon part
+          },
+          properties: e.layer.feature.properties || {}
+        };
+  
+        let newLayer = L.geoJSON(geoJsonFeature, {
+          
+        }); 
+        
+        newLayer.eachLayer(function(layer) {
+          drawnItems.addLayer(layer);
+        });
+      });
+  
+    } else if (geometry.type === "Polygon") {
+      // If it's a Polygon, just add it as a single feature
+      let geoJsonFeature = {
+        type: "Feature",
+        geometry: geometry,
+        properties: e.layer.feature.properties || {}
+      };
+  
+      let newLayer = L.geoJSON(geoJsonFeature, {
+        
+      });
+      
+      newLayer.eachLayer(function(layer) {
+        drawnItems.addLayer(layer);
+      });
+    } 
   }
 
-  self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
+  self.updateSelectedGeoJSON(drawnItems, modelsHiddenParams, idInstance, self)
+  
 }
 
 export function updateSelectedGeoJSON(layer, modelsHiddenParams, idInstance, self) {

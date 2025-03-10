@@ -57,6 +57,7 @@ import {
   getLayerInformation,
   updateLayerInformation,
   addDrawingFeatures,
+  cutLayer,
   updateSelectedGeoJSON
 } from './plugin-map-geoman';
 
@@ -388,6 +389,7 @@ function mapWidgetsPluginClass() {
     this.getLayerInformation = getLayerInformation;
     this.updateLayerInformation = updateLayerInformation;
     this.updateSelectedGeoJSON = updateSelectedGeoJSON;
+    this.cutLayer = cutLayer;
 
     if (captureClickEvent) {
       this.selectedPoint = {
