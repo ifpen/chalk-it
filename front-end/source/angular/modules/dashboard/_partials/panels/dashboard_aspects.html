@@ -1,52 +1,5 @@
 <h2>About the dashboard</h2>
 <div class="aspect__row">
-  <a class="aspect__col-left" title=""><i class="basic icn-dashboard"></i>Dashboard</a>
-
-  <div class="aspect__col-right">
-    <button
-      class="btn btn-rounded-fill primary"
-      style="width: 60px; padding: 0 0.5em; margin: 0"
-      ng-disabled="!vm.widgetExists"
-      ng-click="vm.clearDashboard()"
-      title="Clear dashboard to create a new empty one"
-    >
-      Clear
-    </button>
-  </div>
-</div>
-<div class="aspect__row">
-  <a class="aspect__col-left" title=""><i class="aspects icn-data-connection"></i>DataNode connection</a>
-  <div class="aspect__col-right">
-    <button
-      class="btn btn-rounded-fill primary"
-      style="width: 60px; padding: 0 0.5em; margin: 0"
-      ng-disabled="!vm.connectionsExists"
-      ng-click="vm.clearAllConnections()"
-      ng-attr-title="{{vm.connectionsExists ? 'Clear all dataNode connections' : 'All dataNode connections are cleared'}}"
-    >
-      Clear
-    </button>
-  </div>
-</div>
-<div class="aspect__row">
-  <a class="aspect__col-left" title=""><i class="aspects icn-grid"></i>Dashboard grid</a>
-  <div class="aspect__col-right">
-    <label class="switch">
-      <input type="checkbox" ng-model="vm.showGrid" ng-change="vm.gridChanged()" />
-      <span class="slider round"></span>
-    </label>
-  </div>
-</div>
-<div class="aspect__row dashboard-form">
-  <div class="aspect__col-left"></div>
-  <div class="aspect__col-right">
-    <input type="number" min="1" max="1000" step="1" title="Grid X" ng-model="vm.gridX" ng-change="vm.gridChanged()" />
-    <input type="number" min="1" max="1000" step="1" title="Grid Y" ng-model="vm.gridY" ng-change="vm.gridChanged()" />
-  </div>
-</div>
-
-
-<div class="aspect__row">
   <a class="aspect__col-left" title=""><i class="aspects icn-board"></i>Layout</a>
 </div>
 <form class="dashboard-form Table" style="padding-top: 5px; padding-bottom: 5px; display: block">
@@ -55,7 +8,13 @@
       <label style="font-size: calc(8px + 0.4vw); font-weight: bold">Pages</label>
     </div>
     <div class="Cell">
-      <select class="inputList" style="width: 100px" name="select-pages" ng-model="vm.pagesNumber" ng-change="vm.pagesNumberChanged()">
+      <select
+        class="inputList"
+        style="width: 100px"
+        name="select-pages"
+        ng-model="vm.pagesNumber"
+        ng-change="vm.pagesNumberChanged()"
+      >
         <option ng-value="0">None</option>
         <option ng-value="1">1</option>
         <option ng-value="2">2</option>
@@ -75,11 +34,7 @@
       </select>
     </div>
     <div class="Cell" style="vertical-align: middle">
-      <a
-        href="#"
-        title="Configure pages' names"
-        style="display: table-cell; padding: 4px 8px"
-      >
+      <a href="#" title="Configure pages' names" style="display: table-cell; padding: 4px 8px">
         <button
           class="btn"
           style="width: auto; height: 26px; color: #333; vertical-align: center"
@@ -104,11 +59,9 @@
     </div>
   </div>
 </form>
-
-
 <form class="dashboard-form Table" style="padding-top: 5px; padding-bottom: 5px; display: block">
   <div class="aspect__row">
-    <div class="aspect__col-left">Size</div>
+    <div class="aspect__col-left"><i class="basic icn-canvas-size"></i>Dashboard size</div>
     <div class="aspect__col-right">
       <input type="number" min="1" step="1" title="width" ng-model="vm.dashboardSize.width" />
       <input type="number" min="1" step="1" title="height" ng-model="vm.dashboardSize.height" />
@@ -116,10 +69,20 @@
   </div>
   <div class="aspect__row">
     <div class="aspect__col-right">
-      <button type="button" class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitWidth()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill primary"
+        style="padding: 0 0.5em; margin: 0"
+        ng-click="vm.fitWidth()"
+      >
         Fit width
       </button>
-      <button type="button" class="btn btn-rounded-fill primary" style="padding: 0 0.5em; margin: 0" ng-click="vm.fitHeight()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill primary"
+        style="padding: 0 0.5em; margin: 0"
+        ng-click="vm.fitHeight()"
+      >
         Fit height
       </button>
     </div>
@@ -134,32 +97,61 @@
     </div>
   </div>
   <div class="aspect__row">
-    <div class="aspect__col-left">Margins</div>
+    <div class="aspect__col-left"><i class="basic icn-canvas-margin"></i>Dashboard margins</div>
     <div class="aspect__col-right">
       <input type="number" min="0" step="1" title="Margin X" ng-model="vm.dashboardSize.marginX" />
       <input type="number" min="0" step="1" title="Margin Y" ng-model="vm.dashboardSize.marginY" />
     </div>
   </div>
   <div class="aspect__row">
-    <div class="aspect__col-left"> </div>
+    <div class="aspect__col-left"></div>
     <div class="aspect__col-right">
-      <button type="button" class="btn btn-rounded-fill secondary" style="width: 60px; padding: 0 0.5em; margin: 0"
-        ng-click="vm.resetDashboardSize()" ng-disabled="!vm.dashboardSizeChanged()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill secondary"
+        style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.resetDashboardSize()"
+        ng-disabled="!vm.dashboardSizeChanged()"
+      >
         Reset
       </button>
-      <button type="button" class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
-        ng-click="vm.applyDashboardSize(true)" ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill primary"
+        style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.applyDashboardSize(true)"
+        ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()"
+      >
         Scale
       </button>
-      <button type="button" class="btn btn-rounded-fill primary" style="width: 60px; padding: 0 0.5em; margin: 0"
-        ng-click="vm.applyDashboardSize(false)" ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()">
+      <button
+        type="button"
+        class="btn btn-rounded-fill primary"
+        style="width: 60px; padding: 0 0.5em; margin: 0"
+        ng-click="vm.applyDashboardSize(false)"
+        ng-disabled="!vm.dashboardSizeValid() || !vm.dashboardSizeChanged()"
+      >
         Resize
       </button>
     </div>
   </div>
 </form>
-
-
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-grid"></i>Dashboard grid</a>
+  <div class="aspect__col-right">
+    <label class="switch">
+      <input type="checkbox" ng-model="vm.showGrid" ng-change="vm.gridChanged()" />
+      <span class="slider round"></span>
+    </label>
+  </div>
+</div>
+<div class="aspect__row dashboard-form">
+  <div class="aspect__col-left"></div>
+  <div class="aspect__col-right">
+    <input type="number" min="1" max="1000" step="1" title="Grid X" ng-model="vm.gridX" ng-change="vm.gridChanged()" />
+    <input type="number" min="1" max="1000" step="1" title="Grid Y" ng-model="vm.gridY" ng-change="vm.gridChanged()" />
+  </div>
+</div>
 <h2>About the colors</h2>
 <div class="aspect__row">
   <div class="aspect__col-left"><i class="aspects icn-dashboard-color" aria-hidden="true"></i>Theme</div>
@@ -310,7 +302,8 @@
     ng-attr-title="{{vm.hasMultiSelection() ? 'Align horizontal' : 'Please select multiple widgets'}}"
     title="Align horizontal"
   >
-    <i class="icn-object-align-vertical"></i> <!-- Icons are reversed -->
+    <i class="icn-object-align-vertical"></i>
+    <!-- Icons are reversed -->
   </button>
   <button
     class="btn"
@@ -320,7 +313,8 @@
     ng-attr-title="{{vm.hasMultiSelection() ? 'Align vertical' : 'Please select multiple widgets'}}"
     title="Please select multiple widgets"
   >
-    <i class="icn-object-align-horizontal"></i> <!-- Icons are reversed -->
+    <i class="icn-object-align-horizontal"></i>
+    <!-- Icons are reversed -->
   </button>
   <button
     class="btn"
@@ -372,7 +366,6 @@
   >
     <i class="icn-resize-horizontal"></i>
   </button>
-
   <button
     class="btn"
     style="width: 30px; height: 30px; color: #333"
@@ -393,7 +386,6 @@
   >
     <i class="icn-horizontal-distribute"></i>
   </button>
-
   <button
     class="btn"
     style="width: 30px; height: 30px; color: #333"
@@ -404,9 +396,7 @@
   >
     <i class="icn-tag"><!-- TODO proper icon --></i>
   </button>
-
 </div>
-
 <div class="aspect__row">
   <a class="aspect__col-left" title=""><i class="aspects icn-border"></i>Widget's border</a>
   <div class="aspect__col-right">
@@ -416,4 +406,33 @@
     </label>
   </div>
 </div>
+<h2>Global clear</h2>
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="basic icn-dashboard"></i>Dashboard widgets</a>
 
+  <div class="aspect__col-right">
+    <button
+      class="btn btn-rounded-fill primary"
+      style="width: 60px; padding: 0 0.5em; margin: 0"
+      ng-disabled="!vm.widgetExists"
+      ng-click="vm.clearDashboard()"
+      title="Clear dashboard to create a new empty one"
+    >
+      Clear
+    </button>
+  </div>
+</div>
+<div class="aspect__row">
+  <a class="aspect__col-left" title=""><i class="aspects icn-data-connection"></i>DataNode connection</a>
+  <div class="aspect__col-right">
+    <button
+      class="btn btn-rounded-fill primary"
+      style="width: 60px; padding: 0 0.5em; margin: 0"
+      ng-disabled="!vm.connectionsExists"
+      ng-click="vm.clearAllConnections()"
+      ng-attr-title="{{vm.connectionsExists ? 'Clear all dataNode connections' : 'All dataNode connections are cleared'}}"
+    >
+      Clear
+    </button>
+  </div>
+</div>

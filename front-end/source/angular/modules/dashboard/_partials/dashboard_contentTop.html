@@ -166,25 +166,37 @@
   <!-- Page change -->
   <!-- TODO dedicated CSS -->
   <div class="undo-redo" ng-if="vm.getCurrentPageNames().length">
-    <button class="btn btn-icon-only" title="previous page (shift + page up)" ng-click="vm.previousPage();" ng-disabled="vm.getCurrentPage()<=0">
+    <button
+      class="btn btn-icon-only"
+      title="previous page (shift + page up)"
+      ng-click="vm.previousPage();"
+      ng-disabled="vm.getCurrentPage()<=0"
+    >
       <i class="fa fa-arrow-left"></i>
     </button>
     {{ vm.getCurrentPage() + 1 }} / {{ vm.getCurrentPageNames().length }}
-    <button class="btn btn-icon-only" title="next page (shift + page down)" ng-click="vm.nextPage();" ng-disabled="vm.getCurrentPage()>=vm.getCurrentPageNames().length-1">
+    <button
+      class="btn btn-icon-only"
+      title="next page (shift + page down)"
+      ng-click="vm.nextPage();"
+      ng-disabled="vm.getCurrentPage()>=vm.getCurrentPageNames().length-1"
+    >
       <i class="fa fa-arrow-right"></i>
     </button>
   </div>
 
   <!-- Zoom change -->
   <!-- TODO dedicated CSS -->
-  <div class="undo-redo">
-    <button class="btn" title="1:1" ng-click="vm.zoomNone();" ng-disabled="vm.displayRatio===1.0">
-      1:1
-    </button>
-    <button class="btn" title="Fit" ng-click="vm.zoomFit();" ng-disabled="vm.displayFit">
-      Fit
-    </button>
-    <input type="number" min="0.1" max="4.0" step="0.1"  ng-model="vm.displayRatio" ng-change="vm.displayRatioChanged()" />
+  <div class="dashboard-form">
+    <!-- <button class="btn" title="1:1" ng-click="vm.zoomNone();" ng-disabled="vm.displayRatio===1.0">1:1</button>
+    <button class="btn" title="Fit" ng-click="vm.zoomFit();" ng-disabled="vm.displayFit">Fit</button> -->
+    <select
+      ng-model="vm.displayRatio"
+      ng-change="vm.displayRatioChanged()"
+      class="dropdown__current"
+    >
+      <option ng-repeat="ratio in vm.ratios" ng-value="ratio">{{ (ratio * 100) + '%' }}</option>
+    </select>
   </div>
 
   <!-- for future version -->

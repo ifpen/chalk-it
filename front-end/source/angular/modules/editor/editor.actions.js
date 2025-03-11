@@ -1477,9 +1477,11 @@ angular.module('modules.editor').service('EditorActionFactory', [
      */
     this.createDeleteAllWidgetsAction = function _createDeleteWidgetsAction() {
       const widgetEditor = widgetEditorGetter();
+      const widgetConnector = widgetConnectorGetter();
       return new DeleteWidgetsAction(
         widgetEditor,
         eventCenterService,
+        widgetConnector,
         [...widgetEditor.widgetEditorViewer.widgetIds],
         'Delete all widgets'
       );

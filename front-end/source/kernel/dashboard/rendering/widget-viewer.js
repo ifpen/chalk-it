@@ -163,9 +163,9 @@ class WidgetWiewer {
   reRenderWidget(instanceId) {
     this.widgetsInfo.get(instanceId)?.instance?.render(true);
     if (modelsParameters[instanceId].showWidget == false) {
-      $('#'+instanceId+'c').css('z-index', 0);
+      $('#' + instanceId + 'c').css('z-index', 0);
     } else {
-      $('#'+instanceId+'c').css('z-index', this.widgetsInfo.get(instanceId)?.layout["z-index"]);
+      $('#' + instanceId + 'c').css('z-index', this.widgetsInfo.get(instanceId)?.layout['z-index']);
     }
   }
 

@@ -1,8 +1,9 @@
- mkdocs==1.6.1 
- mkdocstrings[python-legacy]
- mkdocs-material==9.5.34
- flask
- python-dotenv
- pathvalidate
- watchdog
- flask-sock
+mkdocs==1.6.1
+mkdocstrings[python-legacy]==0.27.0
+mkdocstrings-python-legacy==0.2.4
+mkdocs-material==9.5.34
+flask
+python-dotenv
+pathvalidate
+watchdog
+flask-sock
