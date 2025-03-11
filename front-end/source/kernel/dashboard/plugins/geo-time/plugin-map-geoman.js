@@ -67,12 +67,9 @@ export function addDrawingFeatures(self, modelsHiddenParams, instanceId) {
       drawnItems.removeLayer(e.layer._leaflet_id);
     });
 
-
-
-  //  self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
     self.map.on('pm:create', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
     self.map.on('pm:remove', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
-    self.map.on('pm:rotateend', (e) => self.supdateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
+    drawnItems.on('pm:rotate', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
     drawnItems.on('pm:markerdrag', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
     drawnItems.on('pm:drag', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
     self.map.on('pm:cut', (e) => self.cutLayer(e, self.map, self.drawnItems, modelsHiddenParams, instanceId, self));
@@ -140,7 +137,6 @@ export function cutLayer(e, map, drawnItems, modelsHiddenParams, idInstance, sel
   }
 
   self.updateSelectedGeoJSON(drawnItems, modelsHiddenParams, idInstance, self)
-  
 }
 
 export function updateSelectedGeoJSON(layer, modelsHiddenParams, idInstance, self) {
