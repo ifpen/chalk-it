@@ -18,17 +18,50 @@ import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 
 import _ from 'lodash';
-import { xDashConfig } from 'config.js';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout, modelsTempParams } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
 import { baseWidget, WidgetActuatorDescription } from '../widget-base';
-import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 import { widgetConnector } from 'kernel/dashboard/connection/connect-widgets';
 import { nFormatter, syntaxHighlight } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { dashState } from 'angular/modules/dashboard/dashboard';
 import bbox from '@mapbox/geojson-extent';
 import * as d3 from 'd3';
+import { initTileSevers } from './plugin-map-widgets-tiles';
+import { setOfflineSupport } from './plugin-map-widgets-offline';
+
+import {
+  _SCHEMA_SELECTED_POINT,
+  _SCHEMA_IMAGE_OVERLAY,
+  _SCHEMA_SVG_POINT_OVERLAY,
+  _SCHEMA_SVG_OVERLAY,
+  __SCHEMA_VALUED_COORD,
+  __SCHEMA_COORD,
+  __SCHEMA_HEATMAP_DENSITY_CONFIG,
+  __SCHEMA_HEATMAP_CONFIG,
+  _SCHEMA_HEATMAP_DENSITY,
+  _SCHEMA_HEATMAP_DENSITY_SAMPLED,
+  _SCHEMA_HEATMAP,
+  _SCHEMA_HEATMAP_SAMPLED,
+  __SCHEMA_GEOJSON_COORD,
+  __SCHEMA_GEOJSON_COORDINATES,
+  _SCHEMA_LINE_HEATMAP,
+  __SCHEMA_GEOJSON_GEOMETRY_PRIMITIVE,
+  __SCHEMA_GEOJSON_GEOMETRY_ALL,
+  _SCHEMA_CHOROPLETH,
+  _SCHEMA_GEOJSON,
+  _SCHEMA_SELECTED_GEOJSON,
+} from 'kernel/dashboard/plugins/geo-time/plugin-map-widgets-schemas';
+
+import {
+  getLayerInformation,
+  updateLayerInformation,
+  addDrawingFeatures,
+  cutLayer,
+  updateSelectedGeoJSON
+} from './plugin-map-geoman';
+
+
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -105,630 +138,6 @@ modelsLayout.openStreetMaps = { height: '300px', width: '540px' };
 /*************************** plugin code ***************************/
 /*******************************************************************/
 
-const _SCHEMA_SELECTED_POINT = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_imageOverlay',
-  type: 'object',
-  properties: {
-    lat: { type: 'number' },
-    lag: { type: 'number' },
-  },
-  required: ['lat', 'lag'],
-};
-
-const _SCHEMA_IMAGE_OVERLAY = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_imageOverlay',
-  type: 'object',
-  properties: {
-    imageUrl: { type: 'string' },
-    imageBounds: {
-      type: 'array',
-      items: {
-        type: 'array',
-        items: { type: 'number' },
-        minItems: 2,
-        maxItems: 2,
-      },
-      minItems: 2,
-      maxItems: 2,
-    },
-    title: { type: 'string' },
-    addAs: { enum: ['overlay', 'baseLayer'] },
-  },
-  required: ['imageUrl', 'imageBounds', 'title', 'addAs'],
-};
-
-const _SCHEMA_SVG_POINT_OVERLAY = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_svgPointOverlay',
-  type: 'object',
-  properties: {
-    data: {
-      anyOf: [
-        {
-          type: 'object',
-          properties: {
-            lat: { type: 'number' },
-            lng: { type: 'number' },
-            direction: { type: 'number' },
-          },
-          required: ['lat', 'lng'],
-        },
-        {
-          type: 'object',
-          properties: {
-            lat: { type: 'number' },
-            lng: { type: 'number' },
-            rotation: { type: 'number' },
-          },
-          required: ['lat', 'lng'],
-        },
-      ],
-    },
-    config: {
-      type: 'object',
-      properties: {
-        title: { type: 'string' },
-        addAs: { enum: ['overlay', 'baseLayer'] },
-        disableAutoscale: { type: 'boolean' },
-        marker: { enum: ['arrow', 'triangle', 'emptyTriangle', 'fullTriangle', 'circle'] },
-        length: { type: 'number' },
-        color: { type: 'string' },
-      },
-      required: ['title', 'length'],
-    },
-  },
-  required: ['data', 'config'],
-};
-
-const _SCHEMA_SVG_OVERLAY = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_svgOverlay',
-  type: 'object',
-  properties: {
-    data: {
-      type: 'array',
-      items: {
-        anyOf: [
-          {
-            type: 'object',
-            properties: {
-              lat: { type: 'number' },
-              lng: { type: 'number' },
-              direction: { type: 'number' },
-            },
-            required: ['lat', 'lng'],
-          },
-          {
-            type: 'object',
-            properties: {
-              lat: { type: 'number' },
-              lng: { type: 'number' },
-              rotation: { type: 'number' },
-            },
-            required: ['lat', 'lng'],
-          },
-        ],
-      },
-    },
-    config: {
-      type: 'object',
-      properties: {
-        title: { type: 'string' },
-        addAs: { enum: ['overlay', 'baseLayer'] },
-        disableAutoscale: { type: 'boolean' },
-        marker: { enum: ['arrow', 'triangle', 'emptyTriangle', 'fullTriangle', 'circle'] },
-        length: { type: 'number' },
-        color: { type: 'string' },
-      },
-      required: ['title', 'length'],
-    },
-  },
-  required: ['data', 'config'],
-};
-
-const __SCHEMA_VALUED_COORD = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet__valued_coord',
-  anyOf: [
-    {
-      type: 'object',
-      properties: {
-        lat: { type: 'number', minimum: -90, maximum: 90 },
-        lng: { type: 'number', minimum: -180, maximum: 180 },
-      },
-      required: ['lat', 'lng'],
-      minProperties: 3, // Third property provides value and must be a number. It also has to be in third place, which we can't validate because not standard JSON!
-      maxProperties: 3,
-      additionalProperties: { type: 'number' },
-    },
-    {
-      type: 'array',
-      items: [
-        { type: 'number', minimum: -90, maximum: 90 },
-        { type: 'number', minimum: -180, maximum: 180 },
-        { type: 'number' },
-      ],
-      minItems: 3,
-      maxItems: 3,
-    },
-  ],
-};
-
-const __SCHEMA_COORD = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet__coord',
-  anyOf: [
-    {
-      type: 'object',
-      properties: {
-        lat: { type: 'number', minimum: -90, maximum: 90 },
-        lng: { type: 'number', minimum: -180, maximum: 180 },
-      },
-      required: ['lat', 'lng'],
-    },
-    {
-      type: 'array',
-      items: [
-        { type: 'number', minimum: -90, maximum: 90 },
-        { type: 'number', minimum: -180, maximum: 180 },
-      ],
-      minItems: 2,
-      maxItems: 2,
-    },
-  ],
-};
-
-const __SCHEMA_HEATMAP_DENSITY_CONFIG = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet__heatmap_density_config',
-  type: 'object',
-
-  properties: {
-    minOpacity: { type: 'number', minimum: 0, maximum: 1 },
-    maxZoom: { type: 'number', minimum: 0 },
-    radius: { type: 'number', minimum: 0 },
-    blur: { type: 'number', minimum: 0 },
-    disableAutoscale: { type: 'boolean' },
-    colorScale: { type: 'string' },
-    reverseColorScale: { type: 'boolean' },
-  },
-};
-
-const __SCHEMA_HEATMAP_CONFIG = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet__heatmap_config',
-  type: 'object',
-
-  properties: {
-    opacity: { type: 'number', minimum: 0, maximum: 1 },
-    radius: { type: 'number', minimum: 0 },
-    max: { type: 'number' },
-    min: { type: 'number' },
-    disableAutoscale: { type: 'boolean' },
-    addTextLabel: { type: 'boolean' },
-    colorScale: { type: 'string' },
-    reverseColorScale: { type: 'boolean' },
-  },
-};
-
-const _SCHEMA_HEATMAP_DENSITY = [
-  {
-    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_heatmap_density',
-    type: 'object',
-    properties: {
-      data: {
-        type: 'array',
-        items: { $ref: __SCHEMA_VALUED_COORD.$id },
-      },
-      config: { $ref: __SCHEMA_HEATMAP_DENSITY_CONFIG.$id },
-    },
-    required: ['data'],
-  },
-  __SCHEMA_VALUED_COORD,
-  __SCHEMA_HEATMAP_DENSITY_CONFIG,
-];
-
-const _SCHEMA_HEATMAP_DENSITY_SAMPLED = [
-  {
-    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_heatmap_density_sampled',
-    type: 'object',
-    properties: {
-      data: { $ref: __SCHEMA_VALUED_COORD.$id },
-      config: { $ref: __SCHEMA_HEATMAP_DENSITY_CONFIG.$id },
-    },
-    required: ['data'],
-  },
-  __SCHEMA_VALUED_COORD,
-  __SCHEMA_HEATMAP_DENSITY_CONFIG,
-];
-
-const _SCHEMA_HEATMAP = [
-  {
-    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_heatmap',
-    type: 'object',
-    properties: {
-      data: {
-        type: 'array',
-        items: { $ref: __SCHEMA_VALUED_COORD.$id },
-      },
-      config: { $ref: __SCHEMA_HEATMAP_CONFIG.$id },
-    },
-    required: ['data'],
-  },
-  __SCHEMA_VALUED_COORD,
-  __SCHEMA_HEATMAP_CONFIG,
-];
-
-const _SCHEMA_HEATMAP_SAMPLED = [
-  {
-    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_heatmap_sampled',
-    type: 'object',
-    properties: {
-      data: { $ref: __SCHEMA_VALUED_COORD.$id },
-      config: { $ref: __SCHEMA_HEATMAP_CONFIG.$id },
-    },
-    required: ['data'],
-  },
-  __SCHEMA_VALUED_COORD,
-  __SCHEMA_HEATMAP_CONFIG,
-];
-
-const __SCHEMA_GEOJSON_COORD = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_geojson_coord',
-  anyOf: [
-    // [longitude, latitude, elevation]
-    {
-      type: 'array',
-      items: [
-        { type: 'number', minimum: -180, maximum: 180 },
-        { type: 'number', minimum: -90, maximum: 90 },
-      ],
-      minItems: 2,
-      maxItems: 2,
-    },
-    {
-      type: 'array',
-      items: [
-        { type: 'number', minimum: -180, maximum: 180 },
-        { type: 'number', minimum: -90, maximum: 90 },
-        { type: 'number' },
-      ],
-      minItems: 3,
-      maxItems: 3,
-    },
-  ],
-};
-
-const __SCHEMA_GEOJSON_COORDINATES = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_geojson_coordinates',
-  type: 'array',
-  items: { $ref: __SCHEMA_GEOJSON_COORD.$id },
-};
-
-const _SCHEMA_LINE_HEATMAP = [
-  {
-    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_line_heatmap',
-    type: 'object',
-    properties: {
-      data: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            coordinates: {
-              type: 'array',
-              items: { $ref: __SCHEMA_GEOJSON_COORD.$id },
-              minItems: 2,
-            },
-          },
-          required: ['coordinates'],
-          patternProperties: {
-            '^(?!coordinates).*$': { type: 'number' },
-          },
-          minProperties: 2,
-          maxProperties: 2,
-        },
-      },
-      config: {
-        type: 'object',
-        properties: {
-          opacity: { type: 'number', minimum: 0, maximum: 1 },
-          weight: { type: 'number', minimum: 0 },
-          max: { type: 'number' },
-          min: { type: 'number' },
-          disableAutoscale: { type: 'boolean' },
-          colorScale: { type: 'string' },
-          reverseColorScale: { type: 'boolean' },
-        },
-        required: ['weight'],
-      },
-    },
-    required: ['data', 'config'],
-  },
-  __SCHEMA_GEOJSON_COORD,
-];
-
-const __SCHEMA_GEOJSON_GEOMETRY_PRIMITIVE = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_geojson_geometry_primitive',
-  anyOf: [
-    {
-      type: 'object',
-      properties: {
-        type: { const: 'Point' },
-        coordinates: { $ref: __SCHEMA_GEOJSON_COORD.$id },
-      },
-      required: ['type', 'coordinates'],
-    },
-    {
-      type: 'object',
-      properties: {
-        type: { const: 'LineString' },
-        coordinates: { $ref: __SCHEMA_GEOJSON_COORDINATES.$id },
-      },
-      required: ['type', 'coordinates'],
-    },
-    {
-      type: 'object',
-      properties: {
-        type: { const: 'Polygon' },
-        coordinates: {
-          type: 'array',
-          items: { $ref: __SCHEMA_GEOJSON_COORDINATES.$id },
-        },
-      },
-      required: ['type', 'coordinates'],
-    },
-  ],
-};
-
-const __SCHEMA_GEOJSON_GEOMETRY_ALL = {
-  $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-  $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_geojson_geometry_all',
-  anyOf: [
-    { $ref: __SCHEMA_GEOJSON_GEOMETRY_PRIMITIVE.$id },
-    {
-      type: 'object',
-      properties: {
-        type: { const: 'MultiPoint' },
-        coordinates: { $ref: __SCHEMA_GEOJSON_COORDINATES.$id },
-      },
-      required: ['type', 'coordinates'],
-    },
-    {
-      type: 'object',
-      properties: {
-        type: { const: 'MultiLineString' },
-        coordinates: {
-          type: 'array',
-          items: { $ref: __SCHEMA_GEOJSON_COORDINATES.$id },
-        },
-      },
-      required: ['type', 'coordinates'],
-    },
-    {
-      type: 'object',
-      properties: {
-        type: { const: 'MultiPolygon' },
-        coordinates: {
-          type: 'array',
-          items: {
-            type: 'array',
-            items: { $ref: __SCHEMA_GEOJSON_COORDINATES.$id },
-          },
-        },
-      },
-      required: ['type', 'coordinates'],
-    },
-    {
-      type: 'object',
-      properties: {
-        type: { const: 'GeometryCollection' },
-        geometries: {
-          type: 'array',
-          items: { $ref: __SCHEMA_GEOJSON_GEOMETRY_PRIMITIVE.$id },
-        },
-      },
-      required: ['type', 'geometries'],
-    },
-  ],
-};
-
-const _SCHEMA_CHOROPLETH = [
-  {
-    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_choropleth',
-    type: 'object',
-    properties: {
-      data: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            geometry: { $ref: __SCHEMA_GEOJSON_GEOMETRY_ALL.$id },
-          },
-          required: ['geometry'],
-          patternProperties: {
-            '^(?!geometry).*$': { type: 'number' },
-          },
-          minProperties: 2,
-          maxProperties: 2,
-        },
-      },
-      config: {
-        type: 'object',
-        properties: {
-          opacity: { type: 'number', minimum: 0, maximum: 1 },
-          weight: { type: 'number', minimum: 0 },
-          max: { type: 'number' },
-          min: { type: 'number' },
-          disableAutoscale: { type: 'boolean' },
-          colorScale: { type: 'string' },
-          reverseColorScale: { type: 'boolean' },
-        },
-      },
-    },
-    required: ['data'],
-  },
-  __SCHEMA_GEOJSON_COORD,
-  __SCHEMA_GEOJSON_COORDINATES,
-  __SCHEMA_GEOJSON_GEOMETRY_PRIMITIVE,
-  __SCHEMA_GEOJSON_GEOMETRY_ALL,
-];
-
-const _SCHEMA_GEOJSON = [
-  {
-    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_geojson',
-    type: 'object',
-    properties: {
-      type: { const: 'FeatureCollection' },
-      features: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            type: { const: 'Feature' },
-            id: { type: 'string' },
-            geometry: { $ref: __SCHEMA_GEOJSON_GEOMETRY_ALL.$id },
-            properties: {
-              type: 'object',
-              properties: {
-                description: { type: 'string' },
-                style: {
-                  type: 'object',
-                  properties: {
-                    color: { type: 'string' },
-                    weight: { type: 'number' },
-                    opacity: { type: 'number' },
-                  },
-                  additionalProperties: { $ref: WidgetPrototypesManager.SCHEMA_ANY_PRIMITIVE.$id },
-                },
-              },
-            },
-          },
-
-          // Point-specific styling
-          if: {
-            properties: {
-              geometry: {
-                type: 'object',
-                properties: { type: { const: 'Point' } },
-                required: ['type'],
-              },
-            },
-          },
-          then: {
-            properties: {
-              properties: {
-                type: 'object',
-                properties: {
-                  awesomeMarker: {
-                    type: 'object',
-                    properties: {
-                      icon: { type: 'string' },
-                      prefix: { type: 'string' },
-                      markerColor: { type: 'string' },
-                      iconColor: { type: 'string' },
-                      spin: { type: 'boolean' },
-                      extraClasses: { type: 'string' },
-                    },
-                    required: ['icon'],
-                  },
-                  comment: { type: 'string' },
-                  html: { type: 'string' },
-                },
-                anyOf: [
-                  //  comment and html are exclusive
-                  { not: { required: ['comment'] } },
-                  { not: { required: ['html'] } },
-                ],
-              },
-            },
-          },
-          required: ['type', 'geometry', 'properties'],
-        },
-      },
-      properties: {
-        type: 'object',
-        properties: {
-          description: { type: 'string' },
-        },
-      },
-    },
-    required: ['type', 'features'],
-  },
-  __SCHEMA_GEOJSON_COORD,
-  __SCHEMA_GEOJSON_COORDINATES,
-  __SCHEMA_GEOJSON_GEOMETRY_PRIMITIVE,
-  __SCHEMA_GEOJSON_GEOMETRY_ALL,
-  WidgetPrototypesManager.SCHEMA_ANY_PRIMITIVE,
-];
-
-const _SCHEMA_SELECTED_GEOJSON = [
-  {
-    $schema: WidgetPrototypesManager.SCHEMA_VERSION,
-    $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:leaflet_selected_geojson',
-    type: 'object',
-    properties: {
-      type: { const: 'FeatureCollection' },
-      features: {
-        type: 'array',
-        items: {
-          type: 'object',
-          required: ['type', 'geometry', 'properties'],
-          properties: {
-            type: { const: 'Feature' },
-            geometry: { $ref: __SCHEMA_GEOJSON_GEOMETRY_PRIMITIVE.$id },
-            properties: {
-              type: 'object',
-              properties: { layerId: { type: 'number' } },
-              required: ['layerId'],
-            },
-          },
-
-          // Polygon-specific
-          if: {
-            properties: {
-              geometry: {
-                type: 'object',
-                properties: { type: { const: 'Polygon' } },
-                required: ['type'],
-              },
-            },
-          },
-          then: {
-            properties: {
-              geometry: {
-                type: 'object',
-                properties: {
-                  isRectangle: { type: 'boolean' },
-                  isCut: { type: 'boolean' },
-                },
-                required: ['isRectangle', 'isCut'],
-              },
-            },
-          },
-        },
-      },
-    },
-    required: ['type', 'features'],
-  },
-  __SCHEMA_GEOJSON_COORD,
-  __SCHEMA_GEOJSON_COORDINATES,
-  __SCHEMA_GEOJSON_GEOMETRY_PRIMITIVE,
-  WidgetPrototypesManager.SCHEMA_ANY_PRIMITIVE,
-];
-
 function mapWidgetsPluginClass() {
   // MBG : TODO refactor and improve : ajoute du vide en bas du document
   var arrowDef = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -749,10 +158,10 @@ function mapWidgetsPluginClass() {
   // ├────────────────────────────────────────────────────────────────────┤ \\
 
   this.openStreetMapsWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
-    var drawingFeature = modelsParameters[idInstance].drawingFeatures;
-    var captureClickEvent = modelsParameters[idInstance].captureClickEvent;
-    var userMarkerCluster = modelsParameters[idInstance].markerCluster;
-    var drawControlConfig = {
+    let drawingFeatures = modelsParameters[idInstance].drawingFeatures;
+    let captureClickEvent = modelsParameters[idInstance].captureClickEvent;
+    let userMarkerCluster = modelsParameters[idInstance].markerCluster;
+    let drawControlConfig = {
       drawCircle: false,
       drawCircleMarker: false,
       drawMarker: true,
@@ -768,7 +177,7 @@ function mapWidgetsPluginClass() {
       delete instanceOptions.polygone;
     }
 
-    if (drawingFeature) {
+    if (drawingFeatures) {
       drawControlConfig = {
         drawCircle: false,
         drawCircleMarker: false,
@@ -781,8 +190,6 @@ function mapWidgetsPluginClass() {
 
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     var self = this;
-    var map;
-    var idx = 0;
 
     // For HeatMap legends
     // based on old d3 3.3. to upgrade
@@ -977,157 +384,12 @@ function mapWidgetsPluginClass() {
       }
     };
 
-    this.updateValue = function (object) {
-      if (modelsHiddenParams[idInstance].selectedGeoJson) {
-        if (modelsHiddenParams[idInstance].selectedGeoJson.features) {
-          modelsHiddenParams[idInstance].selectedGeoJson.features.push(object);
-        } else {
-          modelsHiddenParams[idInstance].selectedGeoJson = { type: 'FeatureCollection', features: [object] };
-        }
-        self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-      }
-    };
 
-    this.getGeoJsonPoint = function (typeLayers, Points) {
-      var ListPositions = [];
-      if (
-        (typeLayers.geometry.type === 'polygon' || typeLayers.geometry.type === 'Polygon') &&
-        typeLayers.geometry.isCut
-      ) {
-        const my_latlngs = Points._latlngs ? Points._latlngs : Points.pm._layers[0]._latlngs;
 
-        my_latlngs.forEach(function (point) {
-          const _val = [];
-          for (let i = 0; i < point.length; i++) {
-            _val.push([point[i].lng, point[i].lat]);
-          }
-          ListPositions.push(_val);
-        });
-        return ListPositions;
-      } else if (typeLayers.geometry.type === 'LineString' || typeLayers.geometry.type === 'lineString') {
-        for (let leng = 0; leng < Points._latlngs.length; leng++) {
-          const _val = Points._latlngs[leng];
-          ListPositions.push([_val.lng, _val.lat]);
-        }
-        return ListPositions;
-      } else if (
-        (typeLayers.geometry.type === 'polygon' || typeLayers.geometry.type === 'Polygon') &&
-        !typeLayers.geometry.isCut
-      ) {
-        const my_latlngs = Points._latlngs ? Points._latlngs[0] : Points.pm._layers[0]._latlngs[0];
-        for (let leng = 0; leng < my_latlngs.length; leng++) {
-          const _val = my_latlngs[leng];
-          ListPositions.push([_val.lng, _val.lat]);
-        }
-        return [ListPositions];
-      } else if (typeLayers.geometry.type === 'Point' || typeLayers.geometry.type === 'point') {
-        ListPositions = [Points._latlng.lng, Points._latlng.lat];
-        return ListPositions;
-      } else {
-        return [];
-      }
-    };
-
-    this.getGeoJsonPoint1 = function (typeLayers, Points, isRectangle) {
-      var points = [],
-        ListPositions = [];
-      if (typeLayers === 'rectangle' || (typeLayers === 'Polygon' && isRectangle)) {
-        points = Points[0];
-      } else if (typeLayers === 'polygon' || (typeLayers === 'Polygon' && !isRectangle)) {
-        points = Points[0];
-      } else if (typeLayers === 'LineString') {
-        points = Points;
-      } else if (typeLayers === 'Point') {
-        points = [];
-        ListPositions = [Points[1], Points[0]];
-      }
-
-      for (var leng = 0; leng < points.length; leng++) {
-        ListPositions.push([points[leng][1], points[leng][0]]);
-      }
-      return ListPositions;
-    };
-    this.getLayerInformation = function (id) {
-      var infos = {
-        title: '',
-        description: '',
-        timeStamp: '',
-      };
-      if (modelsHiddenParams[idInstance].selectedGeoJson) {
-        for (var lay = 0; lay < modelsHiddenParams[idInstance].selectedGeoJson.features.length; lay++) {
-          if (modelsHiddenParams[idInstance].selectedGeoJson.features[lay]['properties']['layerId'] == id) {
-            if (modelsHiddenParams[idInstance].selectedGeoJson.features[lay]['properties']['information']) {
-              infos.title =
-                modelsHiddenParams[idInstance].selectedGeoJson.features[lay]['properties']['information'].title;
-              infos.description =
-                modelsHiddenParams[idInstance].selectedGeoJson.features[lay]['properties']['information'].description;
-              infos.timeStamp =
-                modelsHiddenParams[idInstance].selectedGeoJson.features[lay]['properties']['information'].timeStamp;
-            }
-          }
-        }
-        self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-      }
-      return infos;
-    };
-    this.updateLayerInformation = function (id, options) {
-      if (modelsHiddenParams[idInstance].selectedGeoJson) {
-        for (var lay = 0; lay < modelsHiddenParams[idInstance].selectedGeoJson.features.length; lay++) {
-          if (modelsHiddenParams[idInstance].selectedGeoJson.features[lay]['properties']['layerId'] == id) {
-            modelsHiddenParams[idInstance].selectedGeoJson.features[lay]['properties']['information'] = options;
-          }
-        }
-        self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-      }
-    };
-    this.editList = function (e) {
-      if (modelsHiddenParams[idInstance].selectedGeoJson) {
-        var listEditedLayers = e.map._layers;
-        var keysEdited = Object.keys(listEditedLayers);
-
-        for (var r = 0; r < keysEdited.length; r++) {
-          for (var rr = 0; rr < modelsHiddenParams[idInstance].selectedGeoJson.features.length; rr++) {
-            if (
-              modelsHiddenParams[idInstance].selectedGeoJson.features[rr]['properties']['layerId'] ==
-              listEditedLayers[keysEdited[r]]._leaflet_id
-            ) {
-              var GeoArray = self.getGeoJsonPoint(
-                modelsHiddenParams[idInstance].selectedGeoJson.features[rr],
-                listEditedLayers[keysEdited[r]]
-              );
-              modelsHiddenParams[idInstance].selectedGeoJson.features[rr].geometry.coordinates = GeoArray;
-            }
-          }
-        }
-        self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-      }
-    };
-
-    this.rotateLayer = function (e) {
-      var my_leaflet_id = e.layer._drawnByGeoman ? e.layer._leaflet_id : e.layer.feature.properties.layerId;
-      if (modelsHiddenParams[idInstance].selectedGeoJson) {
-        for (var rr = 0; rr < modelsHiddenParams[idInstance].selectedGeoJson.features.length; rr++) {
-          if (modelsHiddenParams[idInstance].selectedGeoJson.features[rr]['properties']['layerId'] == my_leaflet_id) {
-            var GeoArray = self.getGeoJsonPoint(modelsHiddenParams[idInstance].selectedGeoJson.features[rr], e.layer);
-            modelsHiddenParams[idInstance].selectedGeoJson.features[rr].geometry.coordinates = GeoArray;
-          }
-        }
-        self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-      }
-    };
-
-    this.deleteLayer = function (e) {
-      var my_leaflet_id = e.layer._drawnByGeoman ? e.layer._leaflet_id : e.layer.feature.properties.layerId;
-
-      if (modelsHiddenParams[idInstance].selectedGeoJson) {
-        for (var rr = 0; rr < modelsHiddenParams[idInstance].selectedGeoJson.features.length; rr++) {
-          if (modelsHiddenParams[idInstance].selectedGeoJson.features[rr]['properties']['layerId'] == my_leaflet_id) {
-            modelsHiddenParams[idInstance].selectedGeoJson.features.splice(rr, 1);
-          }
-        }
-        self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-      }
-    };
+    this.getLayerInformation = getLayerInformation;
+    this.updateLayerInformation = updateLayerInformation;
+    this.updateSelectedGeoJSON = updateSelectedGeoJSON;
+    this.cutLayer = cutLayer;
 
     if (captureClickEvent) {
       this.selectedPoint = {
@@ -1147,7 +409,7 @@ function mapWidgetsPluginClass() {
       };
     }
 
-    if (drawingFeature) {
+    if (drawingFeatures) {
       this.selectedGeoJson = {
         updateCallback: function () {},
         getValue: function () {
@@ -1158,8 +420,7 @@ function mapWidgetsPluginClass() {
         },
         addValueChangedHandler: function (updateDataFromWidget) {
           if (widgetConnector.widgetsConnection[idInstance].sliders.selectedGeoJson.dataNode !== 'None') {
-            this.updateCallback = updateDataFromWidget;
-            self.addDrawingFeatures();
+            this.updateCallback = updateDataFromWidget;            
           }
         },
         removeValueChangedHandler: function (updateDataFromWidget) {},
@@ -1227,7 +488,7 @@ function mapWidgetsPluginClass() {
               options.description = document.getElementById('modalInput2').value;
               var d = new Date();
               options.timeStamp = d.toISOString(); // MBG 10/09/2020
-              self.updateLayerInformation(options.leafletId, options);
+              self.updateLayerInformation(options.leafletId, options, modelsHiddenParams, idInstance, self);
               modal.hide();
             }).on(modal._container.querySelector('.modal-cancel'), 'click', function () {
               modal.hide();
@@ -1237,162 +498,14 @@ function mapWidgetsPluginClass() {
       }
     };
 
-    this.addDrawingFeatures = function () {
-      var drawnItems = new L.FeatureGroup();
-      self.map.addLayer(drawnItems);
-
-      if (this.bIsInteractive) {
-        if (modelsHiddenParams[idInstance].selectedGeoJson) {
-          if (modelsHiddenParams[idInstance].selectedGeoJson.features) {
-            for (var lay = 0; lay < modelsHiddenParams[idInstance].selectedGeoJson.features.length; lay++) {
-              var coordinate = self.getGeoJsonPoint1(
-                modelsHiddenParams[idInstance].selectedGeoJson.features[lay].geometry.type,
-                modelsHiddenParams[idInstance].selectedGeoJson.features[lay].geometry.coordinates,
-                modelsHiddenParams[idInstance].selectedGeoJson.features[lay].geometry.isRectangle
-              );
-              var pol = null;
-              if (modelsHiddenParams[idInstance].selectedGeoJson.features[lay].geometry.type === 'LineString') {
-                pol = L.polyline(coordinate);
-              } else if (modelsHiddenParams[idInstance].selectedGeoJson.features[lay].geometry.type === 'Point') {
-                pol = L.marker(coordinate);
-              } else if (modelsHiddenParams[idInstance].selectedGeoJson.features[lay].geometry.type === 'Polygon') {
-                if (modelsHiddenParams[idInstance].selectedGeoJson.features[lay].geometry.isRectangle) {
-                  pol = L.geoJSON(modelsHiddenParams[idInstance].selectedGeoJson.features[lay], {});
-                } else {
-                  pol = L.geoJSON(modelsHiddenParams[idInstance].selectedGeoJson.features[lay], {});
-                }
-              }
-
-              if (pol) {
-                pol.on('click', function (ee) {
-                  console.log('click pol leaflet_id', ee.target._leaflet_id);
-                  self.modal({ leafletId: ee.target._leaflet_id });
-                });
-                drawnItems.addLayer(pol);
-                modelsHiddenParams[idInstance].selectedGeoJson.features[lay]['properties']['layerId'] = pol._leaflet_id;
-              }
-            }
-            self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-          } else {
-            modelsHiddenParams[idInstance].selectedGeoJson.type = 'FeatureCollection';
-            modelsHiddenParams[idInstance].selectedGeoJson.features = [];
-            self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-          }
-        } else {
-          modelsHiddenParams[idInstance].selectedGeoJson = {
-            type: 'FeatureCollection',
-            features: [],
-          };
-          self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-        }
-        self.map.on('pm:globaleditmodetoggled', function (e) {
-          console.log('pm:globaleditmodetoggled', e);
-          self.editList(e);
-        });
-        self.map.on('pm:globaldragmodetoggled', function (e) {
-          console.log('pm:globaldragmodetoggled', e);
-          self.editList(e);
-        });
-        self.map.on('pm:rotateend', function (e) {
-          console.log('pm:rotateend', e);
-          self.rotateLayer(e);
-        });
-        self.map.on('pm:remove', function (e) {
-          console.log('pm:remove', e);
-          self.deleteLayer(e);
-        });
-        self.map.on('pm:cut', function (e) {
-          console.log('pm:cut', e);
-          var my_leaflet_id = e.originalLayer._drawnByGeoman
-            ? e.originalLayer._leaflet_id
-            : e.originalLayer.feature.properties.layerId;
-          for (var rr = 0; rr < modelsHiddenParams[idInstance].selectedGeoJson.features.length; rr++) {
-            if (modelsHiddenParams[idInstance].selectedGeoJson.features[rr]['properties']['layerId'] == my_leaflet_id) {
-              modelsHiddenParams[idInstance].selectedGeoJson.features[rr].properties.layerId = e.layer._leaflet_id;
-              modelsHiddenParams[idInstance].selectedGeoJson.features[rr].geometry.coordinates =
-                e.layer.feature.geometry.coordinates;
-              modelsHiddenParams[idInstance].selectedGeoJson.features[rr].geometry.isCut = true;
-            }
-          }
-          self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-        });
-        self.map.on('pm:create', (e) => {
-          console.log('pm:create', e);
-          drawnItems.addLayer(e.layer);
-
-          var ListPositions = [];
-          if (modelsHiddenParams[idInstance].selectedGeoJson) {
-            if (e.shape == 'Polygon') {
-              for (let leng = 0; leng < e.layer._latlngs[0].length; leng++) {
-                const _val = e.layer._latlngs[0][leng];
-                ListPositions.push([_val.lng, _val.lat]);
-              }
-              self.updateValue({
-                type: 'Feature',
-                geometry: {
-                  type: 'Polygon',
-                  coordinates: [ListPositions],
-                  isRectangle: false,
-                  isCut: false,
-                },
-                properties: { layerId: e.layer._leaflet_id },
-              });
-            } else if (e.shape == 'Line') {
-              for (let leng = 0; leng < e.layer._latlngs.length; leng++) {
-                const _val = e.layer._latlngs[leng];
-                ListPositions.push([_val.lng, _val.lat]);
-              }
-              self.updateValue({
-                type: 'Feature',
-                geometry: {
-                  type: 'LineString',
-                  coordinates: ListPositions,
-                },
-                properties: { layerId: e.layer._leaflet_id },
-              });
-            } else if (e.shape == 'Rectangle') {
-              for (let leng = 0; leng < e.layer._latlngs[0].length; leng++) {
-                const _val = e.layer._latlngs[0][leng];
-                ListPositions.push([_val.lng, _val.lat]);
-              }
-              self.updateValue({
-                type: 'Feature',
-                geometry: {
-                  type: 'Polygon', // MBG changed from Rectangle to Polygon
-                  coordinates: [ListPositions],
-                  isRectangle: true,
-                  isCut: false,
-                },
-                properties: { layerId: e.layer._leaflet_id },
-              });
-            } else if (e.shape == 'Marker') {
-              ListPositions = [e.layer._latlng.lng, e.layer._latlng.lat];
-              self.updateValue({
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  coordinates: ListPositions,
-                },
-                properties: { layerId: e.layer._leaflet_id },
-              });
-            }
-          }
-        });
-      } else {
-        modelsHiddenParams[idInstance].selectedGeoJson = {
-          type: 'FeatureCollection',
-          features: [],
-        };
-        self.selectedGeoJson.updateCallback(self.selectedGeoJson, self.selectedGeoJson.getValue());
-      }
-    };
+    this.addDrawingFeatures = addDrawingFeatures;
 
     this.render = function (fromApi) {
       var widgetHtml = document.createElement('div');
       widgetHtml.setAttribute('id', 'openStreetMap' + idWidget);
       //
       const showWidget = this.showWidget();
-      let displayStyle = 'display: table;';
+      let displayStyle = 'display: block;';
       if (!showWidget) {
         displayStyle = 'display: none;';
       }
@@ -1448,67 +561,7 @@ function mapWidgetsPluginClass() {
       }
 
       // list of possible tile servers
-      // TODO : better rewrite according to https://leaflet-extras.github.io/leaflet-providers/preview/
-      var tileServers = {};
-      var azureMapboxUrl = 'https://xdashgateway.azure-api.net/mapbox/tiles?z={z}&x={x}&y={y}';
-      var azureMapboxUrlGeneral = 'https://xdashgateway.azure-api.net/mapbox/tilesgeneral?z={z}&x={x}&y={y}&id={id}';
-      //var mapboxUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
-      tileServers['MapboxStreets'] = {
-        url: azureMapboxUrl,
-        attribution: 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18,
-        id: 'streets-v11',
-        tileSize: 512,
-        zoomOffset: -1,
-      };
-      tileServers['MapboxDark'] = {
-        url: azureMapboxUrlGeneral,
-        attribution: 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18,
-        id: 'dark-v10',
-        tileSize: 512,
-        zoomOffset: -1,
-      };
-      // "url": 'https://{s}.aerial.maps.api.here.com/maptile/2.1/maptile/newest/hybrid.day/{z}/{x}/{y}/256/png8?app_id=' + here_app_id + '&app_code=' + here_app_code + '&lg=eng',
-      tileServers['HereSatelliteDay'] = {
-        url: 'https://xdashgateway.azure-api.net/here{s}/maptile?z={z}&x={x}&y={y}' + '&lg=eng',
-        attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
-        id: ' satellite.day',
-        maxZoom: 20,
-        subdomains: '1234',
-      };
-      tileServers['HereTerrainDay'] = {
-        url: 'https://xdashgateway.azure-api.net/here{s}/maptile?z={z}&x={x}&y={y}' + '&lg=eng',
-        attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
-        id: 'terrain.day',
-        maxZoom: 20,
-        subdomains: '1234',
-      };
-      tileServers['HereHybridDay'] = {
-        url: 'https://xdashgateway.azure-api.net/here{s}/maptile?z={z}&x={x}&y={y}' + '&lg=eng',
-        attribution: 'Map &copy; 1987-2014 <a href="http://developer.here.com">HERE</a>',
-        id: ' HERE.hybridDay',
-        maxZoom: 20,
-        subdomains: '1234',
-      };
-      if (!(xDashConfig.xDashBasicVersion == 'true')) {
-        tileServers['EsriWorldImagery'] = {
-          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-          attribution:
-            'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-          id: 'Esri.WorldImagery',
-          maxZoom: 19,
-        };
-        tileServers['GeoportailFrance.orthos'] = {
-          url: 'https://wxs.ign.fr/{apikey}/geoportail/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE={style}&TILEMATRIXSET=PM&FORMAT={format}&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
-          attribution: '<a target="_blank" href="https://www.geoportail.gouv.fr/">Geoportail France</a>',
-          minZoom: 2,
-          maxZoom: 19,
-          apikey: 'choisirgeoportail',
-          format: 'image/jpeg',
-          style: 'normal',
-        };
-      }
+      var tileServers = initTileSevers();
 
       var ts = 'MapboxStreets';
       if (!_.isUndefined(modelsParameters[idInstance].tileServer)) {
@@ -1561,71 +614,7 @@ function mapWidgetsPluginClass() {
       }
 
       if (modelsParameters[idInstance].offlineSupport) {
-        tileConf.attribution =
-          'Progress: <span id="leafletProgress' +
-          idWidget +
-          '"></span> / ' +
-          '<span id="leafletTotal' +
-          idWidget +
-          '"></span>. ' +
-          'Current storage: <span id="leafletStorage' +
-          idWidget +
-          '"></span> files.' +
-          'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-          '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-          tileServers[ts].attribution;
-        self.baseLayer = L.tileLayer.offline(tileServers[ts].url, tileConf);
-        self.baseLayer.addTo(self.map);
-
-        //add buttons to save tiles in area viewed
-        var zoomLevelsToSave = [];
-        if (modelsParameters[idInstance].defaultCenter.zoom <= tileServers[ts].maxZoom) {
-          for (var i = 0; i < tileServers[ts].maxZoom - modelsParameters[idInstance].defaultCenter.zoom; i++) {
-            zoomLevelsToSave[i] = modelsParameters[idInstance].defaultCenter.zoom + i;
-          }
-        } else {
-          zoomLevelsToSave = modelsParameters[idInstance].defaultCenter.zoom;
-        }
-        var control = L.control.savetiles(self.baseLayer, {
-          zoomlevels: zoomLevelsToSave, //optional zoomlevels to save, default current zoomlevel
-          confirm: function (layer, succescallback) {
-            if (window.confirm('Save ' + layer._tilesforSave.length)) {
-              succescallback();
-            }
-          },
-          confirmRemoval: function (layer, successCallback) {
-            if (window.confirm('Remove all the tiles?')) {
-              successCallback();
-            }
-          },
-          saveText: '<i class="icon-download-alt icon" aria-hidden="true"></i>',
-          rmText: '<i class="icon-trash icon" aria-hidden="true"></i>',
-        });
-        control.addTo(self.map);
-        self.baseLayer.on('storagesize', function (e) {
-          document.getElementById('leafletStorage' + idWidget).innerHTML = e.storagesize;
-        });
-
-        control.setPosition('topright'); // MBG 24/09/2019 : avoid disturbing legend view
-
-        //events while saving a tile layer
-        var progress;
-        self.baseLayer.on('savestart', function (e) {
-          progress = 0;
-          document.getElementById('leafletTotal' + idWidget).innerHTML = e._tilesforSave.length;
-        });
-        self.baseLayer.on('savetileend', function (e) {
-          progress++;
-          document.getElementById('leafletProgress' + +idWidget).innerHTML = progress;
-        });
-        self.baseLayer.on('loadend', function (e) {
-          swal('', 'Saved all tiles', 'info');
-        });
-        self.baseLayer.on('tilesremoved', function (e) {
-          document.getElementById('leafletProgress' + +idWidget).innerHTML = '';
-          document.getElementById('leafletTotal' + idWidget).innerHTML = '';
-          swal('', 'Removed all tiles', 'info');
-        });
+        setOfflineSupport(self, tileConf, modelsParameters, idInstance, idWidget, tileServers, ts);
       } else {
         self.baseLayer = L.tileLayer(tileServers[ts].url, tileConf);
         self.baseLayer.addTo(self.map);
@@ -1647,8 +636,9 @@ function mapWidgetsPluginClass() {
         )
         .addTo(self.map);
 
-      if (drawingFeature) {
+      if (drawingFeatures) {
         self.map.pm.addControls(drawControlConfig);
+        self.addDrawingFeatures(self, modelsHiddenParams, idInstance);
       }
 
       try {
@@ -1719,6 +709,7 @@ function mapWidgetsPluginClass() {
         self.showLegend(eventLayer.name);
         self.currentBaseLayer = eventLayer.name;
       }); // MBG : for new heatmap
+      
     };
 
     this.showLegend = function (layerName) {
@@ -1730,7 +721,7 @@ function mapWidgetsPluginClass() {
         });
         modelsHiddenParams[idInstance].legends[layerName].addTo(self.map);
         // Put legend always on top
-        if (drawingFeature) {
+        if (drawingFeatures) {
           self.map.pm.removeControls();
           self.map.pm.addControls(drawControlConfig);
         }
@@ -1739,8 +730,7 @@ function mapWidgetsPluginClass() {
 
     this.rescale = function () {
       try {
-        self.map.invalidateSize(); // MBG : pb with heatMap of leaflet. (with simpleheat lib) ??
-        //self.render(); // MBG : may be too expansive
+        self.map.invalidateSize();
       } catch (e) {
         console.log(e.message);
       }
@@ -2926,13 +1916,13 @@ function mapWidgetsPluginClass() {
             if (heatMapPoint.config.disableAutoscale) {
               // do nothing
             } else {
-              self.map.setView(pointObj); // Virgile: tu peux décommenter cette ligne pour tester le centrage auto
+              self.map.setView(pointObj);
             }
           } else {
-            self.map.setView(pointObj); // Virgile: tu peux décommenter cette ligne pour tester le centrage auto
+            self.map.setView(pointObj);
           }
         } else {
-          self.map.setView(pointObj); // Virgile: tu peux décommenter cette ligne pour tester le centrage auto
+          self.map.setView(pointObj);
         }
       }
     };
@@ -2950,7 +1940,6 @@ function mapWidgetsPluginClass() {
           layerIndex: i,
           updateCallback: function () {},
           setValue: function (val) {
-            //if (modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i - 1] == val) return; // MBG Optimization
             modelsHiddenParams[idInstance].geoJson.geoJsonLayers[this.layerIndex - 1] = val;
             self.addGeoJson(val, this.layerIndex);
           },
@@ -2980,7 +1969,6 @@ function mapWidgetsPluginClass() {
 
             updateCallback: function () {},
             setValue: function (val) {
-              //if (modelsHiddenParams[idInstance].choropleth.choroplethLayers[i - 1] == val) return; // MBG Optimization
               modelsHiddenParams[idInstance].choropleth.choroplethLayers[this.layerIndex - 1] = val;
               self.addChoropleth(val, this.layerIndex);
             },
@@ -3010,7 +1998,6 @@ function mapWidgetsPluginClass() {
             layerIndex: i,
             updateCallback: function () {},
             setValue: function (val) {
-              //if (modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i - 1] == val) return; // MBG Optimization
               modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[this.layerIndex - 1] = val;
               self.addLineHeatMap(val, this.layerIndex);
             },
@@ -3135,8 +2122,6 @@ function mapWidgetsPluginClass() {
             layerIndex: i,
             updateCallback: function () {},
             setValue: function (val) {
-              // if (val == modelsHiddenParams[idInstance].svgOverlay.svgData[this.layerIndex - 1]) return; // MBG optimization not needed (?)
-              // val and modelsHiddenParams[idInstance].svgOverlay.svgData[this.layerIndex - 1] seem to have the same pointer
               modelsHiddenParams[idInstance].svgOverlay.svgData[this.layerIndex - 1] = val;
               self.addSvgOverlay(val, this.layerIndex, false);
             },

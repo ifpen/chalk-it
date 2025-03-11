@@ -127,6 +127,10 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
       // Ensure angular will detect a change for the preview, etc...
       if (Array.isArray(json_var_value)) json_var_value = [...json_var_value];
       else if (json_var_value && json_var_value.contructor === Object) json_var_value = { ...json_var_value };
+
+      currentSettings.json_var = JSON.stringify(json_var_value);
+      self.onSettingsChanged(currentSettings);
+      
     };
 
     // **getValue()** (optional)
