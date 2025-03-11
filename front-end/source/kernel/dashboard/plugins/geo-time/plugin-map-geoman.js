@@ -1,6 +1,5 @@
 import 'leaflet';
 
-
 export function getLayerInformation(layerId, modelsHiddenParams, instanceId, self) {
   const selectedGeoJson = modelsHiddenParams[instanceId].selectedGeoJson;
   if (!selectedGeoJson) return {};
@@ -48,7 +47,6 @@ export function addDrawingFeatures(self, modelsHiddenParams, instanceId) {
         }
       }); 
       
-      
       geoJsonLayer.eachLayer(function(layer) {
 
         // To be sure to add the item in the good layer
@@ -74,9 +72,6 @@ export function addDrawingFeatures(self, modelsHiddenParams, instanceId) {
     drawnItems.on('pm:drag', (e) => self.updateSelectedGeoJSON(self.drawnItems, modelsHiddenParams, instanceId, self));
     self.map.on('pm:cut', (e) => self.cutLayer(e, self.map, self.drawnItems, modelsHiddenParams, instanceId, self));
 }
-
-
-
 
 export function cutLayer(e, map, drawnItems, modelsHiddenParams, idInstance, self) {
 

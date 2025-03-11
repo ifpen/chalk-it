@@ -164,6 +164,7 @@ function mapWidgetsPluginClass() {
     let drawControlConfig = {
       drawCircle: false,
       drawCircleMarker: false,
+      drawText: false,
       drawMarker: true,
       drawPolyline: true,
       drawPolygon: true,
@@ -181,6 +182,7 @@ function mapWidgetsPluginClass() {
       drawControlConfig = {
         drawCircle: false,
         drawCircleMarker: false,
+        drawText: false,
         drawMarker: modelsParameters[idInstance].drawingFeaturesOptions.point,
         drawPolyline: modelsParameters[idInstance].drawingFeaturesOptions.line,
         drawPolygon: modelsParameters[idInstance].drawingFeaturesOptions.polygon,
