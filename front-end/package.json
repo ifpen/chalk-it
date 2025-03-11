@@ -123,7 +123,7 @@
     "lint:prettier": "prettier --ignore-path .prettierignore --check .",
     "start": "concurrently \"npm run start:dev\" \"npm run start:dev:flask\"",
     "start:dev": "npm run build:mkdocs && npm run start:dev:watch",
-    "start:dev:flask": "py ../main.py --dev --port=5000",
+    "start:dev:flask": "python ../main.py --dev --port=5000",
     "start:dev:watch": "webpack-cli serve --config=configs/webpack.dev.js",
     "build:mkdocs": "mkdocs build -c -f \"../documentation/mkdocs.yml\" && node configs/replaceDocConf.mjs",
     "test": "npm run test:mocha",
