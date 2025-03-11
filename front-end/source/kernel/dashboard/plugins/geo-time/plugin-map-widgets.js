@@ -54,17 +54,11 @@ import {
 } from 'kernel/dashboard/plugins/geo-time/plugin-map-widgets-schemas';
 
 import {
-  editList,
-  getGeoJsonPoint,
-  getGeoJsonPoint1,
   getLayerInformation,
   updateLayerInformation,
-  createLayer, 
-  rotateLayer,
-  deleteLayer,
-  cutLayer,
-  updateValue,
   addDrawingFeatures,
+  cutLayer,
+  updateSelectedGeoJSON
 } from './plugin-map-geoman';
 
 
@@ -390,15 +384,11 @@ function mapWidgetsPluginClass() {
       }
     };
 
-    this.createLayer = createLayer;
-    this.updateValue = updateValue;
-    this.getGeoJsonPoint = getGeoJsonPoint;    
-    this.getGeoJsonPoint1 = getGeoJsonPoint1;
+
+
     this.getLayerInformation = getLayerInformation;
     this.updateLayerInformation = updateLayerInformation;
-    this.editList = editList;
-    this.rotateLayer = rotateLayer;
-    this.deleteLayer = deleteLayer;
+    this.updateSelectedGeoJSON = updateSelectedGeoJSON;
     this.cutLayer = cutLayer;
 
     if (captureClickEvent) {
