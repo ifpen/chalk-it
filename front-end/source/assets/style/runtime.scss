@@ -6,6 +6,9 @@
 // Base file
 @import './style.scss';
 
+// Dashboard zone in runtime
+@import './layout/dashboard-runtime';
+
 // Components
 @import './components/runtime-toolbar';
 @import './components/dashboard-forms';

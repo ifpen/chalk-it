@@ -1,0 +1,11 @@
+.panel-body {
+  /* Override padding and use flex to center vertically and horizontally */
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Fill viewport height so flex centering works */
+  min-height: 100vh;
+  /* Allow scrolling if content overflows */
+  overflow-y: auto;
+}
