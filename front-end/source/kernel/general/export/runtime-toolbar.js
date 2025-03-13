@@ -4,7 +4,7 @@ import { PAGE_MODE_PAGES, PAGE_MODE_TABS } from 'kernel/general/export/export-co
 class RuntimeToolbar {
   constructor() {
     this.websiteUrl = xDashConfig.urlWebSite;
-    this.iconUrl = `${xDashConfig.urlBaseForExport}assets/chalk-it-icon.svg`;
+    this.iconUrl = `${xDashConfig.urlBaseForExport}assets/img/chalk-it-icon.svg`;
   }
 
   // TODO template file with controler

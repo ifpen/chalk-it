@@ -207,6 +207,12 @@ export function loadDashboard(jsonContent) {
     window.dashboardConfig = getDashboardConfig();
     const $rootScope = angular.element(document.body).scope().$root;
     $rootScope.navBarNotification = window.dashboardConfig?.navBarNotification == true;
+    let container = document.getElementsByClassName("panel-body");
+
+    const navBar = document.getElementById('nav_bar');
+    const narBarHeight = navBar.offsetHeight;
+    if ($rootScope.navBarNotification)
+      container[0].style.minHeight = `calc(100vh - ${narBarHeight}px)`;
 
     if (jsonContent.pages?.pageNames?.length) {
       initPageRuntime(jsonContent.pages);
