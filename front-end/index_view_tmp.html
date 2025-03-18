@@ -22,9 +22,28 @@
           <div id="DropperDroitec" class="dropperR dashboard-content-container"></div>
         </div>
       </div>
-      <draggable-panel style="display: none" class="monitor-panel" ng-style="{'display': 'block'}" ng-show="panelOpen" start-top="100" start-left="100">
+      <draggable-panel
+        style="display: none"
+        class="monitor-panel"
+        ng-style="{'display': 'block'}"
+        ng-show="panelOpen"
+        start-top="100"
+        start-left="100"
+      >
         <div class="monitor-panel__header drag-handle">Monitor Panel</div>
         <div class="monitor-panel__content">
+          <div class="dashboard-form">
+            <div class="dashboard-form__input-wrapper">
+              <input
+                type="search"
+                placeholder="Search DataNode"
+                class="dashboard-form__input--search"
+                ng-change="applyDatanodeFilter()"
+                ng-model="searchDatanodeByName"
+              />
+              <i class="basic icn-search"></i>
+            </div>
+          </div>
           <div
             class="datanode__card"
             ng-class="{open:displayedShowIndex==$index}"
@@ -32,29 +51,29 @@
             ng-if="!data.hide"
           >
             <div class="datanode__card--top">
-              <div class="datanode__card--top__flags">
+              <div class="datanode__card--top__flags" >
                 <i title="{{data.type()}}" class="datanodes {{data.iconType()}}"></i>
-                <p ng-attr-title="{{data.name()}}">{{data.name()}}</p>
+                <p ng-attr-title="{{data.name()}}" style="max-width: 25em;">{{data.name()}}</p>
                 <ul class="tags__list">
                   <li
                     title="DataNode status"
                     ng-class="{'tag tag--error': data.status()==='Error', 
-                 'tag tag--pending':data.status()==='Pending',
-                 'tag tag--ok': (data.status()==='OK'|| data.status()==='Running'),
-                 'tag tag--none': data.status()==='None'}"
+                           'tag tag--pending':data.status()==='Pending',
+                           'tag tag--ok': (data.status()==='OK'|| data.status()==='Running'),
+                           'tag tag--none': data.status()==='None'}"
                   >
                     {{data.status()}}
                   </li>
                 </ul>
-                <a ng-click="toggleDataNodeDisplay($index)"><i class="basic icn-miniarrowbottom"></i></a>
               </div>
               <div class="datanode__card--top__actions">
                 <div class="datanode__card--top__flags__update">Last update : {{data.last_updated()}}</div>
-                <ul class="datanode__card--top__actions--wrap">
-                  <li>
-                    <div class="css-treeview" format-data="data.latestData()"></div>
-                  </li>
-                </ul>
+              </div>
+            </div>
+            <div class="datanode__card--content" style="height: 140px;">
+              <div class="datanode__card--content__graph" style="height: inherit;">
+                <div class="css-treeview" format-data="data.latestData()" style="background-color: #f8f8f8; user-select: text">
+                </div>
               </div>
             </div>
           </div>

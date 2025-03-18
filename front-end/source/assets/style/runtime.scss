@@ -8,8 +8,11 @@
 
 // Dashboard zone in runtime
 @import './layout/dashboard-runtime';
+// For the dataNodes Panel
 @import './layout/monitor-panel';
 @import './layout/editor-mode';
+@import './components/tags';
+@import './icons/xdash-icons';
 @import './layout/aside';
 
 // Components
