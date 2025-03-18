@@ -1,0 +1,62 @@
+/* _monitor-panel.scss */
+
+//
+// Monitor Panel SCSS - Dark & Larger
+//
+
+// Example color variables (tweak to match your dark theme)
+$monitor-panel-bg:       var(--surface-a);  // Background for the panel
+$monitor-panel-fg:       #{$text-color};  // Text color
+$monitor-panel-border:   #444444;  // Border color (slightly lighter/darker as needed)
+$monitor-panel-shadow:   0 2px 12px rgba(#000, 0.6); // Darker shadow
+$monitor-panel-accent:   #FF5722;  // Accent color for buttons
+
+.monitor-panel {
+  position: absolute; // or fixed, depending on your draggable logic
+  width: 600px;       // Make it wider
+  min-height: 400px;  // Make it taller
+  background-color: $monitor-panel-bg;
+  color: $monitor-panel-fg;
+  border: 1px solid $monitor-panel-border;
+  box-shadow: $monitor-panel-shadow;
+  font-family: sans-serif; // Adjust to match your app’s font
+
+  &__header {
+    // You can keep the header the same color or give it a slight variant
+    background-color: var(--header-color);
+    color: $monitor-panel-fg;
+    padding: 0.75rem 1rem;
+    cursor: move;
+    user-select: none;
+    border-bottom: 1px solid var(--surface-c);
+
+    &.drag-handle {
+      // Additional styles if needed
+    }
+  }
+
+  &__content {
+    padding: 1rem;
+    // If you want the content area slightly lighter or the same color:
+    // background-color: lighten($monitor-panel-bg, 3%);
+    background-color: $monitor-panel-bg;
+    
+    p {
+      margin: 0 0 1rem;
+      color: $monitor-panel-fg;
+    }
+  }
+
+  &__close-button {
+    background-color: $monitor-panel-accent; 
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+
+    &:hover {
+      background-color: darken($monitor-panel-accent, 10%);
+    }
+  }
+}

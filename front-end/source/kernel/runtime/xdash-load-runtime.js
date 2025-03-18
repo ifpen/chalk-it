@@ -17,6 +17,9 @@ import { urlBase } from 'config.js';
 import { pythonImagesModule } from 'angular/modules/python/python-images.module';
 import { initXdashRuntime } from 'kernel/runtime-singletons';
 import { onAngularReady } from 'kernel/runtime/xdash-runtime-main';
+import { jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/utils';
+// Import the draggable panel module
+import { draggablePanelModule } from './monitor-panel.js';
 
 export const angularModule = angular.module('xCLOUD', [
   'angularjs-gauge',
@@ -24,6 +27,7 @@ export const angularModule = angular.module('xCLOUD', [
   '720kb.datepicker',
   'ui.router.state', // TODO only needed for pythonImagesModule
   pythonImagesModule.name,
+  draggablePanelModule.name, // include the draggable panel module here
 ]);
 
 angularModule.run([
@@ -36,6 +40,12 @@ angularModule.run([
 
     $rootScope.loadingBarStart = (fn = () => {}) => fn(); // Arrow function with default param
     $rootScope.loadingBarStop = (fn = () => {}) => fn();
+
+    // Control for showing/hiding the panel
+    $rootScope.panelOpen = false;
+    $rootScope.togglePanel = function () {
+      $rootScope.panelOpen = !$rootScope.panelOpen;
+    };
 
     $rootScope.clearAllNotifications = function (filter) {
       $rootScope.listNotifications = [];
@@ -59,6 +69,27 @@ angularModule.run([
     };
   },
 ]);
+
+// Import your formatting function
+// formatData.directive.js
+
+angularModule.directive('formatData', function () {
+  return {
+    restrict: 'A',
+    scope: {
+      formatData: '=', // Two-way binding for the value passed in
+    },
+    link: function (scope, element) {
+      scope.$watch('formatData', function (newVal) {
+        if (newVal) {
+          element.empty();
+          const formattedElem = jsonDataToBasicHtmlElement(newVal, { jsonFormat: { maxLines: 10, maxLineWidth: 40 } });
+          element.append(formattedElem);
+        }
+      });
+    },
+  };
+});
 
 class DashboardController {
   constructor() {

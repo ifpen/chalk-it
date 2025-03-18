@@ -39,7 +39,11 @@ class RuntimeToolbar {
               </div>
             </li>
           </ul>
-
+          <ul class="top-nav__nav">
+            <li class="top-nav__nav-item">
+              <button ng-click="$root.togglePanel && $root.togglePanel()">Open Panel</button>
+            </li>
+          </ul>
           <ul class="top-nav__nav top-nav__nav--right">
             <li class="top-nav__nav-item dropdown" ng-if="navBarNotification">
               <a class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">

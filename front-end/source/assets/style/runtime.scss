@@ -8,6 +8,9 @@
 
 // Dashboard zone in runtime
 @import './layout/dashboard-runtime';
+@import './layout/monitor-panel';
+@import './layout/editor-mode';
+@import './layout/aside';
 
 // Components
 @import './components/runtime-toolbar';
