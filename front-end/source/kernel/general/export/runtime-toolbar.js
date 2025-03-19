@@ -41,7 +41,7 @@ class RuntimeToolbar {
           </ul>
           <ul class="top-nav__nav">
             <li class="top-nav__nav-item">
-              <button ng-click="$root.togglePanel && $root.togglePanel()">Open Panel</button>
+              <button class="btn btn-rounded-fill primary ng-binding cancel" ng-click="$root.togglePanel && $root.togglePanel()">Monitor Datanodes</button>
             </li>
           </ul>
           <ul class="top-nav__nav top-nav__nav--right">

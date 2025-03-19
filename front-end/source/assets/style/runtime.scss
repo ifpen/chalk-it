@@ -10,13 +10,17 @@
 @import './layout/dashboard-runtime';
 
 // For the dataNodes Panel
+@import './icons/xdash-icons';
+
 @import './layout/monitor-panel';
 @import './layout/editor-mode';
-@import './components/tags';
-@import './icons/xdash-icons';
 @import './layout/aside';
+
+@import './components/tags';
 @import './components/filters';
 @import './components/dashboard-dropdown';
+@import './components/buttons';
+
 
 // Components
 @import './components/runtime-toolbar';

@@ -1,5 +1,10 @@
 <div id="dash-datanode-ctrl" class="panel" ng-transclude>
-  <div class="monitor-panel__header drag-handle">Monitor Panel</div>
+  <div class="monitor-panel__header drag-handle panel--content--top">
+    <h1 id="panel_left_title" class="ng-binding">Monitor panel</h1>
+    <button ng-click="$root.togglePanel()" class="btn btn-icon-only" title="Close panel">
+      <i class="basic icn-close close-aside"></i>
+    </button>
+  </div>
   <div class="monitor-panel__content">
     <div class="datanode__wrap--info">
       <p>{{filtredNodes}} {{filtredNodes == 1 ? 'dataNode' : 'dataNodes'}}</p>
@@ -177,7 +182,5 @@
         </div>
       </div>
     </div>
-    <!-- Use the toggle function passed via the directive's binding -->
-    <button class="monitor-panel__close-button" ng-click="$root.togglePanel()">Close</button>
   </div>
 </div>
