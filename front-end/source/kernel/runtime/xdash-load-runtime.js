@@ -21,14 +21,19 @@ import { jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/
 // Import the draggable panel module
 import { draggablePanelModule } from './monitor-panel.js';
 
-export const angularModule = angular.module('xCLOUD', [
-  'angularjs-gauge',
-  'rzSlider',
-  '720kb.datepicker',
-  'ui.router.state', // TODO only needed for pythonImagesModule
-  pythonImagesModule.name,
-  draggablePanelModule.name, // include the draggable panel module here
-]);
+export const angularModule = angular
+  .module('xCLOUD', [
+    'angularjs-gauge',
+    'rzSlider',
+    '720kb.datepicker',
+    'ui.router.state', // TODO only needed for pythonImagesModule
+    pythonImagesModule.name,
+    draggablePanelModule.name, // include the draggable panel module here
+  ])
+  .config(function ($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+  });
 
 angularModule.run([
   '$rootScope',

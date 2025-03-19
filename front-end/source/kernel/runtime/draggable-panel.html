@@ -7,11 +7,8 @@
   </div>
   <div class="monitor-panel__content">
     <div class="datanode__wrap--info">
-      <p>{{filtredNodes}} {{filtredNodes == 1 ? 'dataNode' : 'dataNodes'}}</p>
+      <p>[[filtredNodes]] [[filtredNodes == 1 ? 'dataNode' : 'dataNodes']]</p>
       <div class="datanode__wrap--info__right">
-        <button class="btn btn-circle-mini" ng-click="getUniqTypes();isFilterOpen = !isFilterOpen">
-          <i class="basic icn-filters"></i>
-        </button>
         <button
           id="isDataSortNavOpen"
           class="btn btn-circle-mini"
@@ -129,8 +126,8 @@
     <div class="datanode__card" ng-class="{open: true}" ng-repeat="data in $root.alldatanodes" ng-if="!data.hide">
       <div class="datanode__card--top">
         <div class="datanode__card--top__flags">
-          <i title="{{data.type()}}" class="datanodes {{data.iconType()}}"></i>
-          <p ng-attr-title="{{data.name()}}" style="max-width: 25em">{{data.name()}}</p>
+          <i title="[[data.type()]]" class="datanodes [[data.iconType()]]"></i>
+          <p ng-attr-title="[[data.name()]]" style="max-width: 25em">[[data.name()]]</p>
           <ul class="tags__list">
             <li
               title="DataNode status"
@@ -139,12 +136,12 @@
                          'tag tag--ok': (data.status()==='OK' || data.status()==='Running'),
                          'tag tag--none': data.status()==='None'}"
             >
-              {{data.status()}}
+              [[data.status()]]
             </li>
           </ul>
         </div>
         <div class="datanode__card--top__actions">
-          <div class="datanode__card--top__flags__update">Last update : {{data.last_updated()}}</div>
+          <div class="datanode__card--top__flags__update">Last update : [[data.last_updated()]]</div>
         </div>
       </div>
       <div class="datanode__card--content" style="height: 140px">
