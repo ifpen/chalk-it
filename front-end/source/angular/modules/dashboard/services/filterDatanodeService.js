@@ -105,6 +105,37 @@ angular.module('datanodes.filter', []).service('FilterDatanodeService', [
       else $('.datanode__wrap--info p').removeAttr('style');
     };
 
+    self.sortNodes = function (value) {
+      switch (value) {
+        case 'typeA':
+          $rootScope.alldatanodes = _.sortBy($rootScope.alldatanodes, (el) => el.type().toLowerCase());
+          break;
+        case 'typeD':
+          $rootScope.alldatanodes = _.sortBy($rootScope.alldatanodes, (el) => el.type().toLowerCase()).reverse();
+          break;
+        case 'nameA':
+          $rootScope.alldatanodes = _.sortBy($rootScope.alldatanodes, (el) => el.name().toLowerCase());
+          break;
+        case 'nameD':
+          $rootScope.alldatanodes = _.sortBy($rootScope.alldatanodes, (el) => el.name().toLowerCase()).reverse();
+          break;
+        case 'statusA':
+          $rootScope.alldatanodes = _.sortBy($rootScope.alldatanodes, (el) => el.status().toLowerCase());
+          break;
+        case 'statusD':
+          $rootScope.alldatanodes = _.sortBy($rootScope.alldatanodes, (el) => el.status().toLowerCase()).reverse();
+          break;
+        case 'lastUpdateA':
+          $rootScope.alldatanodes = _.sortBy($rootScope.alldatanodes, (el) => el.last_updated().toLowerCase());
+          break;
+        case 'lastUpdateD':
+          $rootScope.alldatanodes = _.sortBy($rootScope.alldatanodes, (el) =>
+            el.last_updated().toLowerCase()
+          ).reverse();
+          break;
+      }
+    }
+
     /*---------- applyDatanodeFilter----------------*/
     self.applyDatanodeFilter = function () {
       let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
