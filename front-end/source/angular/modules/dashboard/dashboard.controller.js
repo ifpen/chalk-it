@@ -16,15 +16,6 @@ dashboardModule.controller('DashboardController', [
   'DepGraphService',
   'ManageDatanodeService',
   function ($scope, $rootScope, DepGraphService, ManageDatanodeService) {
-    // //toggle window of widget lib
-    // $scope.displayedWdgtIndex = 0;
-    // $scope.toggleWidgetLibDisplay = function(index) {
-    //     if (index == $scope.displayedWdgtIndex)
-    //         $scope.displayedWdgtIndex = -1;
-    //     else
-    //         $scope.displayedWdgtIndex = index;
-    // };
-
 
     $scope.info = {
       openProjectInfo: false,
@@ -213,7 +204,6 @@ dashboardModule.controller('DashboardController', [
     $scope.reset = function () {
       $scope.resetPanelState();
       $('.datanode__wrap--info p').removeAttr('style');
-      // ManageDatanodeService.applyDatanodeFilter("");
       if ($scope.editorView.isPlayMode) {
         $scope.editorView.isPlayMode = false;
         $scope.switchEditView();

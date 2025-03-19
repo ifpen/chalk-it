@@ -113,7 +113,8 @@ angular
     '$state',
     'DepGraphService',
     'ManageDatanodeService',
-    function ($scope, $rootScope, $state, DepGraphService, ManageDatanodeService) {
+    'FilterDatanodeService',
+    function ($scope, $rootScope, $state, DepGraphService, ManageDatanodeService, FilterDatanodeService) {
       $scope.nodeInfo = {
         name: '',
         data: null,
@@ -153,12 +154,12 @@ angular
 
       /*---------- filter By Type btn --> select ----------------*/
       $scope.filterByType = function (type, element) {
-        ManageDatanodeService.filterByType(type, element);
+        FilterDatanodeService.filterByType(type, element);
       };
 
       /*---------- filter By Type btn  --> cancel ----------------*/
       $scope.resetNodesFilters = function (e) {
-        ManageDatanodeService.resetNodesFilters(e);
+        FilterDatanodeService.resetNodesFilters(e);
       };
       /*---------- sort datanodes ----------------*/
       $scope.sortNodes = function (value) {
@@ -220,7 +221,7 @@ angular
 
       /*---------- applyDatanodeFilter----------------*/
       $scope.applyDatanodeFilter = function (tmpStr) {
-        ManageDatanodeService.applyDatanodeFilter(tmpStr);
+        FilterDatanodeService.applyDatanodeFilter(tmpStr);
       };
 
       /*******************************************************/

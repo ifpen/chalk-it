@@ -4,6 +4,8 @@ import './dashboard.controller';
 import './services/depGraphService';
 import './services/jsonDisplayDirective';
 import './services/manageDatanodeService';
+import './services/filterDatanodeService';
+
 import './services/profGraphService';
 import './services/uiNotificationService';
 
