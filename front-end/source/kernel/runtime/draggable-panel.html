@@ -1,0 +1,183 @@
+<div id="dash-datanode-ctrl" class="panel" ng-transclude>
+  <div class="monitor-panel__header drag-handle">Monitor Panel</div>
+  <div class="monitor-panel__content">
+    <div class="datanode__wrap--info">
+      <p>{{filtredNodes}} {{filtredNodes == 1 ? 'dataNode' : 'dataNodes'}}</p>
+      <div class="datanode__wrap--info__right">
+        <button class="btn btn-circle-mini" ng-click="getUniqTypes();isFilterOpen = !isFilterOpen">
+          <i class="basic icn-filters"></i>
+        </button>
+        <div class="filters open" style="max-width: 16.5em" ng-init="!isFilterOpen" ng-show="isFilterOpen">
+          <div class="filters__section">
+            <div class="filters__section__title">Filter by Type:</div>
+            <ul class="tags__list">
+              <li
+                toggle-class="active"
+                ng-repeat="type in uniqGraphNodesTypes"
+                ng-click="filterByType(type,$event.currentTarget)"
+              >
+                <i class="basic icn-tag"></i>{{type}}
+              </li>
+            </ul>
+          </div>
+          <div class="filters__footer" style="margin-top: 1rem">
+            <button
+              clear-toggle-class="active"
+              class="btn btn-rounded-fill cancel"
+              ng-click="resetNodesFilters($event);"
+            >
+              Reset
+            </button>
+            <button class="btn btn-rounded-fill primary" ng-click="isFilterOpen = !isFilterOpen">Validate</button>
+          </div>
+        </div>
+
+        <button
+          id="isDataSortNavOpen"
+          class="btn btn-circle-mini"
+          ng-click="isDataSortNavOpen=!isDataSortNavOpen;isFilterOpen=false;"
+          ng-init="isDataSortNavOpen"
+        >
+          <i class="basic icn-sorting"></i>
+        </button>
+        <ul class="dashboard-dropdown" style="padding: 1em 0.75em" ng-class="{visible:isDataSortNavOpen}">
+          <form name="myForm">
+            <li>
+              <label style="cursor: pointer">
+                <input
+                  type="radio"
+                  ng-model="editorView.sortValue"
+                  ng-click="sortNodes('typeA');isDataSortNavOpen=false;"
+                  value="typeA"
+                />
+                Type in ascending order
+              </label>
+            </li>
+            <li>
+              <label style="cursor: pointer">
+                <input
+                  type="radio"
+                  ng-model="editorView.sortValue"
+                  ng-click="sortNodes('typeD');isDataSortNavOpen=false;"
+                  value="typeD"
+                />
+                Type in descending order
+              </label>
+            </li>
+            <li>
+              <label style="cursor: pointer">
+                <input
+                  type="radio"
+                  ng-model="editorView.sortValue"
+                  ng-click="sortNodes('nameA');isDataSortNavOpen=false;"
+                  value="nameA"
+                />
+                Name in ascending order
+              </label>
+            </li>
+            <li>
+              <label style="cursor: pointer">
+                <input
+                  type="radio"
+                  ng-model="editorView.sortValue"
+                  ng-click="sortNodes('nameD');isDataSortNavOpen=false;"
+                  value="nameD"
+                />
+                Name in descending order
+              </label>
+            </li>
+            <li>
+              <label style="cursor: pointer">
+                <input
+                  type="radio"
+                  ng-model="editorView.sortValue"
+                  ng-click="sortNodes('statusA');isDataSortNavOpen=false;"
+                  value="statusA"
+                />
+                Status in ascending order
+              </label>
+            </li>
+            <li>
+              <label style="cursor: pointer">
+                <input
+                  type="radio"
+                  ng-model="editorView.sortValue"
+                  ng-click="sortNodes('statusD');isDataSortNavOpen=false;"
+                  value="statusD"
+                />
+                Status in descending order
+              </label>
+            </li>
+            <li>
+              <label style="cursor: pointer">
+                <input
+                  type="radio"
+                  ng-model="editorView.sortValue"
+                  ng-click="sortNodes('lastUpdateA');isDataSortNavOpen=false;"
+                  value="lastUpdateA"
+                />
+                Last update in ascending order
+              </label>
+            </li>
+            <li>
+              <label style="cursor: pointer">
+                <input
+                  type="radio"
+                  ng-model="editorView.sortValue"
+                  ng-click="sortNodes('lastUpdateD');isDataSortNavOpen=false;"
+                  value="lastUpdateD"
+                />
+                Last update in descending order
+              </label>
+            </li>
+          </form>
+        </ul>
+      </div>
+    </div>
+    <div class="dashboard-form">
+      <div class="dashboard-form__input-wrapper">
+        <input
+          type="search"
+          placeholder="Search DataNode"
+          class="dashboard-form__input--search"
+          ng-change="applyDatanodeFilter()"
+          ng-model="searchDatanodeByName"
+        />
+        <i class="basic icn-search"></i>
+      </div>
+    </div>
+    <div class="datanode__card" ng-class="{open: true}" ng-repeat="data in $root.alldatanodes" ng-if="!data.hide">
+      <div class="datanode__card--top">
+        <div class="datanode__card--top__flags">
+          <i title="{{data.type()}}" class="datanodes {{data.iconType()}}"></i>
+          <p ng-attr-title="{{data.name()}}" style="max-width: 25em">{{data.name()}}</p>
+          <ul class="tags__list">
+            <li
+              title="DataNode status"
+              ng-class="{'tag tag--error': data.status()==='Error', 
+                         'tag tag--pending': data.status()==='Pending',
+                         'tag tag--ok': (data.status()==='OK' || data.status()==='Running'),
+                         'tag tag--none': data.status()==='None'}"
+            >
+              {{data.status()}}
+            </li>
+          </ul>
+        </div>
+        <div class="datanode__card--top__actions">
+          <div class="datanode__card--top__flags__update">Last update : {{data.last_updated()}}</div>
+        </div>
+      </div>
+      <div class="datanode__card--content" style="height: 140px">
+        <div class="datanode__card--content__graph" style="height: inherit">
+          <div
+            class="css-treeview"
+            format-data="data.latestData()"
+            style="background-color: #f8f8f8; user-select: text"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <!-- Use the toggle function passed via the directive's binding -->
+    <button class="monitor-panel__close-button" ng-click="$root.togglePanel()">Close</button>
+  </div>
+</div>

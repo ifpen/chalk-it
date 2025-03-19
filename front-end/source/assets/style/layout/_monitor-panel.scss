@@ -13,13 +13,15 @@ $monitor-panel-accent:   #FF5722;  // Accent color for buttons
 
 .monitor-panel {
   position: absolute; // or fixed, depending on your draggable logic
-  width: 600px;       // Make it wider
+  width: 650px;       // Make it wider
   min-height: 400px;  // Make it taller
   background-color: $monitor-panel-bg;
+  height: 60vh;
+  overflow: scroll;
   color: $monitor-panel-fg;
   border: 1px solid $monitor-panel-border;
   box-shadow: $monitor-panel-shadow;
-  font-family: sans-serif; // Adjust to match your app’s font
+  z-index: 10000;
 
   &__header {
     // You can keep the header the same color or give it a slight variant

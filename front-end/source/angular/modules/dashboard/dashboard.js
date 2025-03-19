@@ -11,7 +11,7 @@ export const dashState = {
   tabActive: 'widgets',
 };
 
-export const dashboardModule = angular.module('modules.dashboard', []).config([
+export const dashboardModule = angular.module('modules.dashboard', ['datanodes.filter']).config([
   '$stateProvider',
   function ($stateProvider) {
     $stateProvider.state('modules.dashboard', {

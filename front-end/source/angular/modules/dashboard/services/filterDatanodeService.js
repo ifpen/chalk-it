@@ -1,6 +1,6 @@
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
-angular.module('modules.dashboard').service('FilterDatanodeService', [
+angular.module('datanodes.filter', []).service('FilterDatanodeService', [
   '$rootScope',
   function ($rootScope) {
     const self = this;
