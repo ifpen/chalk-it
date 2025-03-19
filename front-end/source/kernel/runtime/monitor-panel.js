@@ -39,10 +39,8 @@ export const draggablePanelModule = angular
             if (!$rootScope.filtredList) {
               $rootScope.filtredList = [];
             }
-            $scope.filtredList = $rootScope.filtredList;
 
             $rootScope.filtredNodes = $rootScope.alldatanodes.length;
-            $scope.filtredNodes = $rootScope.filtredNodes;
 
             // Expose the filtering function on the isolated scope.
             // Note: The filter service will fetch the search string from the directive's scope.

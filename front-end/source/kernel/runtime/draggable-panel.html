@@ -12,31 +12,6 @@
         <button class="btn btn-circle-mini" ng-click="getUniqTypes();isFilterOpen = !isFilterOpen">
           <i class="basic icn-filters"></i>
         </button>
-        <div class="filters open" style="max-width: 16.5em" ng-init="!isFilterOpen" ng-show="isFilterOpen">
-          <div class="filters__section">
-            <div class="filters__section__title">Filter by Type:</div>
-            <ul class="tags__list">
-              <li
-                toggle-class="active"
-                ng-repeat="type in uniqGraphNodesTypes"
-                ng-click="filterByType(type,$event.currentTarget)"
-              >
-                <i class="basic icn-tag"></i>{{type}}
-              </li>
-            </ul>
-          </div>
-          <div class="filters__footer" style="margin-top: 1rem">
-            <button
-              clear-toggle-class="active"
-              class="btn btn-rounded-fill cancel"
-              ng-click="resetNodesFilters($event);"
-            >
-              Reset
-            </button>
-            <button class="btn btn-rounded-fill primary" ng-click="isFilterOpen = !isFilterOpen">Validate</button>
-          </div>
-        </div>
-
         <button
           id="isDataSortNavOpen"
           class="btn btn-circle-mini"
