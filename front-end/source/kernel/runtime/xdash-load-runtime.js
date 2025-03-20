@@ -12,14 +12,15 @@ import 'angularjs-gauge';
 import 'angularjs-slider';
 import 'angularjs-datepicker';
 
-import { urlBase } from 'config.js';
+import { urlBase, urlWebSite } from 'config.js';
 
 import { pythonImagesModule } from 'angular/modules/python/python-images.module';
 import { initXdashRuntime } from 'kernel/runtime-singletons';
 import { onAngularReady } from 'kernel/runtime/xdash-runtime-main';
 import { jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/utils';
-// Import the draggable panel module
 import { draggablePanelModule } from './monitor-panel.js';
+import navBarTemplate from './nav-bar.html';
+import chalkIcon from 'assets/img/chalk-it-icon.svg'; 
 
 export const angularModule = angular
   .module('xCLOUD', [
@@ -36,12 +37,22 @@ export const angularModule = angular
   });
 
 angularModule.run([
+  '$templateCache',
+  function ($templateCache) {
+    // Register the nav-bar template in the template cache with a chosen key
+    $templateCache.put('nav-bar.html', navBarTemplate);
+  },
+]);
+
+angularModule.run([
   '$rootScope',
   function ($rootScope) {
     $rootScope.urlBase = urlBase; // TODO
+    $rootScope.urlWebSite = urlWebSite;
     $rootScope.notificationFilterDataValue = '';
     $rootScope.listNotifications = [];
     $rootScope.nbNotifications = 0;
+    $rootScope.chalkIcon = chalkIcon;
 
     $rootScope.loadingBarStart = (fn = () => {}) => fn(); // Arrow function with default param
     $rootScope.loadingBarStop = (fn = () => {}) => fn();
