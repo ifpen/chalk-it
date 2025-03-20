@@ -28,15 +28,15 @@ $header-fallback:       #222;
   z-index: 10000;
 
   // Use either the SASS variable or the CSS variable with a fallback:
-  background-color: var(--surface-a, $monitor-panel-bg);
-  color: $monitor-panel-fg;
+  background-color: var(--surface-b, $monitor-panel-bg);
+  color: var(--text-color, $monitor-panel-fg);
   border: 1px solid $monitor-panel-border;
   box-shadow: $monitor-panel-shadow;
 
   &__header {
     // Make header background a CSS variable with fallback:
     background-color: var(--header-color, $header-fallback);
-    color: $monitor-panel-fg;
+    color: var(--text-color-text, $monitor-panel-fg);
     padding: 0.75rem 1rem;
     cursor: move;
     user-select: none;
@@ -51,12 +51,12 @@ $header-fallback:       #222;
 
   &__content {
     // If you want a different color than the main panel, change it here:
-    background-color: $monitor-panel-bg;
+    background-color: var(--surface-c, $monitor-panel-bg);
     padding: 1rem;
 
     p {
       margin: 0 0 1rem;
-      color: $monitor-panel-fg;
+      color: var(-text-color, $monitor-panel-fg);
     }
   }
 }
