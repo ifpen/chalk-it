@@ -1,29 +1,35 @@
-﻿<body ng-app="xCLOUD" class="nav-sm" id="app">
-  <div id="loading-overlay" ng-class="{'hidden':!isLoading}">
-    <div class="wrapperloading">
-      <div class="loading up"></div>
-      <div class="loading down"></div>
-    </div>
-  </div>
-  <div
-    id="nav_bar"
-    ng-include="'nav-bar.html'"
-    ng-style="{'display': 'block'}"
-  ></div>
-  <div class="panel-body" ng-controller="DashboardController">
-    <div class="dashboard-parent-container">
-      <div class="dashboard-page-container" style="margin-left: auto; margin-right: auto">
-        <div id="DropperDroitec" class="dropperR dashboard-content-container"></div>
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Chalk'it - App</title>
+    <meta http-equiv="Cache-control" content="no-store, no-cache, must-revalidate" />
+    <meta name="robots" content="nosnippet, noindex" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body ng-app="xCLOUD" class="nav-sm" id="app">
+    <div id="loading-overlay" ng-class="{'hidden':!isLoading}">
+      <div class="wrapperloading">
+        <div class="loading up"></div>
+        <div class="loading down"></div>
       </div>
     </div>
-    <draggable-panel
-      style="display: none"
-      class="monitor-panel"
-      ng-style="{'display': 'block'}"
-      ng-show="panelOpen"
-      start-top="100"
-      start-left="100"
-    >
-    </draggable-panel>
-  </div>
-</body>
+    <div id="nav_bar" ng-include="'nav-bar.html'" ng-style="{'display': 'block'}"></div>
+    <div class="panel-body" ng-controller="DashboardController">
+      <div class="dashboard-parent-container">
+        <div class="dashboard-page-container" style="margin-left: auto; margin-right: auto">
+          <div id="DropperDroitec" class="dropperR dashboard-content-container"></div>
+        </div>
+      </div>
+      <draggable-panel
+        style="display: none"
+        class="monitor-panel"
+        ng-style="{'display': 'block'}"
+        ng-show="panelOpen"
+        start-top="100"
+        start-left="100"
+      >
+      </draggable-panel>
+    </div>
+  </body>
+</html>
