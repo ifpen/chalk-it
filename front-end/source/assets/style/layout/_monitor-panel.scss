@@ -1,0 +1,62 @@
+/* _monitor-panel.scss */
+
+// ---------------------------------------------------------------------
+//  Monitor Panel SCSS - Dark & Larger
+// ---------------------------------------------------------------------
+// 1) Define real SASS variables or use CSS vars directly.
+// 2) If you want to lighten/darken, they must be real SASS color values.
+// 3) If you prefer CSS variables, remove lighten/darken calls.
+//
+// Example SASS color variables:
+$monitor-panel-bg:      #333;       // or var(--surface-a)
+$monitor-panel-fg:      #fff;       // or var(--text-color)
+$monitor-panel-border:  #444444;
+$monitor-panel-shadow:  0 2px 12px rgba(#000, 0.6);
+$monitor-panel-accent:  #FF5722;
+// If you rely on var(--header-color), provide a fallback:
+$header-fallback:       #222;
+
+// ---------------------------------------------------------------------
+//  Main Panel Styles
+// ---------------------------------------------------------------------
+.monitor-panel {
+  position: absolute;  // or fixed, depending on your draggable logic
+  width: 650px;        // Make it wider
+  min-height: 400px;   // Make it taller
+  height: 60vh;        // 60% of viewport height
+  overflow: auto;      // Scroll if content is large
+  z-index: 10000;
+
+  // Use either the SASS variable or the CSS variable with a fallback:
+  background-color: var(--surface-b, $monitor-panel-bg);
+  color: var(--text-color, $monitor-panel-fg);
+  border: 1px solid $monitor-panel-border;
+  box-shadow: $monitor-panel-shadow;
+
+  &__header {
+    // Make header background a CSS variable with fallback:
+    background-color: var(--header-color, $header-fallback);
+    color: var(--text-color-text, $monitor-panel-fg);
+    padding: 0.75rem 1rem;
+    cursor: move;
+    user-select: none;
+    border-bottom: 1px solid var(--surface-c, #444);
+
+    // Flex layout to place title on the left and close button on the right
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__content {
+    // If you want a different color than the main panel, change it here:
+    background-color: var(--surface-c, $monitor-panel-bg);
+    padding: 1rem;
+
+    p {
+      margin: 0 0 1rem;
+      color: var(-text-color, $monitor-panel-fg);
+    }
+  }
+}

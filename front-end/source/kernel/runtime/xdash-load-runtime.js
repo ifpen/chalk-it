@@ -12,30 +12,56 @@ import 'angularjs-gauge';
 import 'angularjs-slider';
 import 'angularjs-datepicker';
 
-import { urlBase } from 'config.js';
+import { urlBase, urlWebSite } from 'config.js';
 
 import { pythonImagesModule } from 'angular/modules/python/python-images.module';
 import { initXdashRuntime } from 'kernel/runtime-singletons';
 import { onAngularReady } from 'kernel/runtime/xdash-runtime-main';
+import { jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/utils';
+import { draggablePanelModule } from './monitor-panel.js';
+import navBarTemplate from './nav-bar.html';
+import chalkIcon from 'assets/img/chalk-it-icon.svg'; 
 
-export const angularModule = angular.module('xCLOUD', [
-  'angularjs-gauge',
-  'rzSlider',
-  '720kb.datepicker',
-  'ui.router.state', // TODO only needed for pythonImagesModule
-  pythonImagesModule.name,
+export const angularModule = angular
+  .module('xCLOUD', [
+    'angularjs-gauge',
+    'rzSlider',
+    '720kb.datepicker',
+    'ui.router.state', // TODO only needed for pythonImagesModule
+    pythonImagesModule.name,
+    draggablePanelModule.name, // include the draggable panel module here
+  ])
+  .config(function ($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+  });
+
+angularModule.run([
+  '$templateCache',
+  function ($templateCache) {
+    // Register the nav-bar template in the template cache with a chosen key
+    $templateCache.put('nav-bar.html', navBarTemplate);
+  },
 ]);
 
 angularModule.run([
   '$rootScope',
   function ($rootScope) {
     $rootScope.urlBase = urlBase; // TODO
+    $rootScope.urlWebSite = urlWebSite;
     $rootScope.notificationFilterDataValue = '';
     $rootScope.listNotifications = [];
     $rootScope.nbNotifications = 0;
+    $rootScope.chalkIcon = chalkIcon;
 
     $rootScope.loadingBarStart = (fn = () => {}) => fn(); // Arrow function with default param
     $rootScope.loadingBarStop = (fn = () => {}) => fn();
+
+    // Control for showing/hiding the panel
+    $rootScope.panelOpen = false;
+    $rootScope.togglePanel = function () {
+      $rootScope.panelOpen = !$rootScope.panelOpen;
+    };
 
     $rootScope.clearAllNotifications = function (filter) {
       $rootScope.listNotifications = [];
@@ -59,6 +85,27 @@ angularModule.run([
     };
   },
 ]);
+
+// Import your formatting function
+// formatData.directive.js
+
+angularModule.directive('formatData', function () {
+  return {
+    restrict: 'A',
+    scope: {
+      formatData: '=', // Two-way binding for the value passed in
+    },
+    link: function (scope, element) {
+      scope.$watch('formatData', function (newVal) {
+        if (newVal) {
+          element.empty();
+          const formattedElem = jsonDataToBasicHtmlElement(newVal, { jsonFormat: { maxLines: 10, maxLineWidth: 40 } });
+          element.append(formattedElem);
+        }
+      });
+    },
+  };
+});
 
 class DashboardController {
   constructor() {

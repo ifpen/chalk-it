@@ -33,11 +33,6 @@
     </button>
     <div class="filters open" style="max-width: 16.5em" ng-init="!isFilterOpen" ng-show="isFilterOpen">
       <div class="filters__section">
-        <!--<div class="filters__section__title">Filter by Connexion:</div>
-                <ul class="tags__list">
-                    <li toggle-class="active" ng-click="filterByConnection(true,$event.currentTarget)"><i class="basic icn-tag"></i>Singleton Nodes</li>
-                    <li toggle-class="active" ng-click="filterByConnection(false,$event.currentTarget)"><i class="basic icn-tag"></i>Connected Nodes</li>
-                </ul>-->
         <div class="filters__section__title">Filter by Type:</div>
         <ul class="tags__list">
           <li
@@ -157,49 +152,6 @@
         </li>
       </form>
     </ul>
-
-    <!-- <ul class="dashboard-dropdown" ng-class="{visible:isDataListNavOpen}" js-actions>
-            <li>
-                <a title="Type in ascending order" ng-click="isDataListNavOpen=false;">
-                    <i class="basic icn-upload"></i>Type in ascending order
-                </a>
-            </li>
-            <li>
-                <a title="Type in descending order" ng-click="isDataListNavOpen=false;">
-                    <i class="basic icn-download"></i>Type in descending order
-                </a>
-            </li>
-            <li>
-                <a title="Name in ascending order" ng-click="isDataListNavOpen=false;">
-                    <i class="basic icn-sorting"></i>Name in ascending order
-                </a>
-            </li>
-            <li>
-                <a title="Name in descending order" ng-click="isDataListNavOpen=false;">
-                    <i class="basic icn-stop"></i>Name in descending order
-                </a>
-            </li>
-            <li>
-                <a title="Status in ascending order" ng-click="isDataListNavOpen=false;">
-                    <i class="basic icn-delete"></i>Status in ascending order
-                </a>
-            </li>
-            <li>
-                <a title="Status in descending order" ng-click="isDataListNavOpen=false;">
-                    <i class="basic icn-remove"></i>Status in descending order
-                </a>
-            </li>
-            <li>
-                <a title="Last update in ascending order" ng-click="isDataListNavOpen=false;">
-                    <i class="basic icn-delete"></i>Last update in ascending order
-                </a>
-            </li>
-            <li>
-                <a title="Last update in descending order" ng-click="isDataListNavOpen=false;">
-                    <i class="basic icn-remove"></i>Last update in descending order
-                </a>
-            </li>
-        </ul> -->
     <button
       id="dataListDisplay"
       class="btn btn-icon-only"

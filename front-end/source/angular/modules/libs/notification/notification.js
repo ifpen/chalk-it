@@ -3,6 +3,12 @@ import PNotify from 'pnotify';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
+import warningIcon from '../../../../assets/img/flat-icon/warning.png';
+import successIcon from '../../../../assets/img/flat-icon/success.png';
+import errorIcon from '../../../../assets/img/flat-icon/error.png';
+import infoCustomIcon from '../../../../assets/img/flat-icon/info-custom.png';
+import infoIcon from '../../../../assets/img/flat-icon/info.png';
+
 export function XdashNotifications() {
   var $body = angular.element(document.body);
   var $rootScope = $body.scope().$root;
@@ -53,31 +59,31 @@ export function XdashNotifications() {
         case 'warning': {
           type = 'warning';
           title = 'Warning';
-          img = 'source/assets/img/flat-icon/warning.png';
+          img = warningIcon;
           break;
         }
         case 'success': {
           type = 'success';
           title = 'Success';
-          img = 'source/assets/img/flat-icon/success.png';
+          img = successIcon;
           break;
         }
         case 'error': {
           type = 'error';
           title = 'Error';
-          img = 'source/assets/img/flat-icon/error.png';
+          img = errorIcon;
           break;
         }
         case 'info': {
           type = 'info';
           title = 'Info';
-          img = 'source/assets/img/flat-icon/info-custom.png';
+          img = infoCustomIcon;
           break;
         }
         default: {
           type = 'info';
           title = 'Info';
-          img = 'source/assets/img/flat-icon/info.png';
+          img = infoIcon;
           break;
         }
       }

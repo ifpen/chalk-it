@@ -20,9 +20,9 @@ angular.module('modules').controller('ModulesController', [
   '$state',
   '_settings',
   'ManagePageSharingService',
-  'ManageDatanodeService',
+  'FilterDatanodeService',
   'EventCenterService',
-  function ($scope, $rootScope, $state, _settings, ManagePgSharingService, ManageDatanodeService, eventCenterService) {
+  function ($scope, $rootScope, $state, _settings, ManagePgSharingService, FilterDatanodeService, eventCenterService) {
     $rootScope.allSettings = _settings;
 
     //AEF TMP CHANGE FOR SETTINGS
@@ -92,7 +92,7 @@ angular.module('modules').controller('ModulesController', [
 
           let scopeDashDn = angular.element(document.getElementById('dash-datanode-ctrl')).scope();
           scopeDashDn.searchDatanodeByName = '';
-          ManageDatanodeService.applyDatanodeFilter();
+          FilterDatanodeService.applyDatanodeFilter();
 
           if ($rootScope.xDashFullVersion) {
             ManagePgSharingService.verifyPageExistence($rootScope.currentProject.name);

@@ -9,6 +9,21 @@
 // Dashboard zone in runtime
 @import './layout/dashboard-runtime';
 
+// For the dataNodes Panel
+@import './icons/xdash-icons';
+
+@import './layout/monitor-panel';
+@import './layout/editor-mode';
+@import './layout/aside';
+
+@import './components/tags';
+@import './components/filters';
+@import './components/dashboard-dropdown';
+@import './components/buttons';
+
+// Fonts
+@import './icons/fontawesome';
+
 // Components
 @import './components/runtime-toolbar';
 @import './components/dashboard-forms';

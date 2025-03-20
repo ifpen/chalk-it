@@ -10,7 +10,6 @@ import { xDashConfig } from 'config.js';
 import _ from 'lodash';
 
 import { runtimeSingletons } from 'kernel/runtime-singletons';
-import { runtimeToolbar } from 'kernel/general/export/runtime-toolbar';
 import {
   DASHBOARD_DATA_ID,
   DASHBOARD_DATA_TYPE,
@@ -155,9 +154,6 @@ class HtmlExport {
 
     doc.title = name;
     this.#insertScripts(doc, xdashPrj, config);
-    if (showNavBar) {
-      this.#insertNavBar(doc);
-    }
   }
 
   /**
@@ -198,16 +194,6 @@ class HtmlExport {
     body.appendChild(createScript(DASHBOARD_CONFIG_ID, DASHBOARD_CONFIG_TYPE, config));
   }
 
-  /**
-   * Inserts the navbar into the document if it should be shown.
-   *
-   * @param {Document} doc - HTML document.
-   * @private
-   */
-  #insertNavBar(doc) {
-    const navBar = doc.getElementById('nav_bar');
-    navBar.innerHTML = runtimeToolbar.toolbarTemplate;
-  }
 
   /**
    * Selects and sets the dashboard name.
