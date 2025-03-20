@@ -7,7 +7,7 @@
 // │ Original authors(s): Ghiles HIDEUR, Abir EL FEKI                              │ \\
 // └───────────────────────────────────────────────────────────────────────────────┘ \\
 
-import _ from 'lodash';
+
 import { pyodideManager, PyodideManager } from 'kernel/base/pyodide-loader';
 import { standardAvailablePyodideLibs, microPipAvailablePyodideLibs } from 'kernel/base/pyodide-def';
 

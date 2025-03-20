@@ -7,6 +7,7 @@
 // │ Original authors(s): Mongi BEN GAID                                   │ \\
 // └───────────────────────────────────────────────────────────────────────┘ \\
 
+import _ from 'lodash';
 import 'angular/modules/dashboard/services/filterDatanodeService';
 import draggablePanelTemplate from './draggable-panel.html';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';

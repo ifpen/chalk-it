@@ -96,6 +96,7 @@ angular.module('modules.sidebar').service('FilterPrjService', [
 
           if (!_.isUndefined(currentFiles)) {
             //when no project exist
+            var hide = true;
             for (let i in TagList) {
               var tmpStr = TagList[i];
               var tempFile = [];
@@ -105,7 +106,7 @@ angular.module('modules.sidebar').service('FilterPrjService', [
               $rootScope.pagination.endData = vm.perPage;
 
               for (var tt = 0; tt < currentFiles.FileList.length; tt++) {
-                var hide = true;
+                hide = true;
                 if (tmpStr === '') {
                   hide = false;
                 }
@@ -165,7 +166,7 @@ angular.module('modules.sidebar').service('FilterPrjService', [
               const tempFile = [];
 
               for (let tt = 0; tt < currentFiles.length; tt++) {
-                var hide = true;
+                hide = true;
                 if (tmpStr === '') {
                   hide = false;
                 }

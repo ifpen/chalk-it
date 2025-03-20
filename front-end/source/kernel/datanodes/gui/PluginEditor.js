@@ -664,6 +664,7 @@ export function PluginEditor(jsEditor) {
               input = $(content)
                 .appendTo(valueCell)
                 .change(function () {
+                  let prop;
                   if (settingDef.name == 'name') {
                     //ABK limit datanode name length
                     $('<input type="text">')[0].maxLength = 40;
@@ -672,7 +673,7 @@ export function PluginEditor(jsEditor) {
                     newSettings.settings[settingDef.name] = Number($(this).val());
                   } else {
                     let bFoundConnection = false;
-                    for (const prop in widgetConnector.widgetsConnection) {
+                    for (prop in widgetConnector.widgetsConnection) {
                       for (const i in widgetConnector.widgetsConnection[prop].sliders) {
                         if (widgetConnector.widgetsConnection[prop].sliders[i].name != 'None') {
                           if (!_.isUndefined(widgetConnector.widgetsConnection[prop].sliders[i].connectedDataNodeS)) {

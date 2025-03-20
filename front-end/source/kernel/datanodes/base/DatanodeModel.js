@@ -174,6 +174,36 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
   };
 
   this.type = ko.observable();
+
+  function finishLoad (datanodeType, bOK) {
+    // MBG : Add dependency information
+    const dsName = self.name();
+    if (!datanodesDependency.isNode(dsName)) {
+      datanodesDependency.addNode(dsName);
+    }
+
+    if (
+      !datanodeType.newInstance(
+        self.settings(),
+        function (datanodeInstance) {
+          self.datanodeInstance = datanodeInstance;
+          if (!self.formulaInterpreter.updateCalculatedSettings(true, false, false)) {
+            bOK = false;
+            return false;
+          }
+        },
+        self.updateCallback,
+        self.statusCallback,
+        self.notificationCallback,
+        self.statusForSchedulerCallback
+      )
+    ) {
+      bOK = false;
+    }
+    if (!bOK) return false;
+    return true;
+  }
+
   this.type.subscribe(function (newValue) {
     disposeDatanodeInstance();
 
@@ -181,41 +211,12 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
       var datanodeType = datanodePlugins[newValue];
       var bOK = true;
 
-      function finishLoad() {
-        // MBG : Add dependency information
-        const dsName = self.name();
-        if (!datanodesDependency.isNode(dsName)) {
-          datanodesDependency.addNode(dsName);
-        }
-
-        if (
-          !datanodeType.newInstance(
-            self.settings(),
-            function (datanodeInstance) {
-              self.datanodeInstance = datanodeInstance;
-              if (!self.formulaInterpreter.updateCalculatedSettings(true, false, false)) {
-                bOK = false;
-                return false;
-              }
-            },
-            self.updateCallback,
-            self.statusCallback,
-            self.notificationCallback,
-            self.statusForSchedulerCallback
-          )
-        ) {
-          bOK = false;
-        }
-        if (!bOK) return false;
-        return true;
-      }
-
       // Do we need to load any external scripts?
       if (datanodeType.external_scripts && datanodeType.external_scripts.length) {
         //AEF: here pb when external scripts: takes to long to load and it is not defined into callback --> pb of execution order
         loadJsScripts(datanodeType.external_scripts, finishLoad);
       } else {
-        finishLoad();
+        finishLoad(datanodeType, bOK);
       }
       if (!bOK) self.error(true);
     } else {

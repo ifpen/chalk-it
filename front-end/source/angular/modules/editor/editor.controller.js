@@ -440,6 +440,7 @@ angular.module('modules.editor').controller('EditorController', [
     };
 
     vm._setCurrentPage = function (newPage) {
+      const widgetEditor = widgetEditorGetter();
       if (newPage >= 0 && newPage < widgetEditorGetter().widgetEditorViewer.pageNames.length) {
         widgetEditor.changePage(newPage);
       }
@@ -764,6 +765,7 @@ angular.module('modules.editor').controller('EditorController', [
     vm.resizeSame = function _resizeSame(param) {
       const elementIds = _getSelection();
       const targetId = _getSelectedActive();
+      const widgetEditor = widgetEditorGetter();
       if (targetId && elementIds && elementIds.length > 1) {
         const targetPos = widgetEditor.widgetEditorViewer.getRecordedGeometry(targetId);
         if (param == 'HeightWidth') {
@@ -846,10 +848,6 @@ angular.module('modules.editor').controller('EditorController', [
           undoManagerService.execute(action);
         }
       }
-    };
-
-    vm.startIntroWidget = function _startIntroWidget() {
-      startIntroWidget();
     };
 
     ////////////////////
