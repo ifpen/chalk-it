@@ -855,28 +855,42 @@ export const BROWSER_SUPPORTED_IMAGES = [
 const MAX_BINARY_DATA_DISPLAY_CHARS = 10;
 
 /**
- * Provides a minimalistic but hopefully helpful representation of some data. Handles binary data with a MIME type.
+ * Provides a minimalistic but hopefully helpful representation of some data.
+ * Handles binary data with a MIME type.
  * @param {*} data any JSON data
  * @param {*} options 
  * @returns {HTMLElement}
  */
-export function jsonDataToBasicHtmlElement(data, options = undefined) {
+export function jsonDataToBasicHtmlElement(data, options = {}) {
+    // Explicitly handle null
+    if (data === null) {
+        const span = document.createElement('span');
+        span.innerText = 'null';
+        return span;
+    }
+
+    // Handle string data
     if (typeof data === 'string') {
         const span = document.createElement('span');
         span.innerText = data;
-        span.style['white-space'] = 'pre-wrap';
+        span.style.whiteSpace = 'pre-wrap';
         return span;
-    } else if (typeof data === 'number' || typeof data === 'boolean') {
+    }
+
+    // Handle number or boolean data
+    if (typeof data === 'number' || typeof data === 'boolean') {
         const span = document.createElement('span');
         span.innerText = String(data);
         return span;
-    } else if (typeof data === 'object' && data.type && data.content) {
+    }
+
+    // Check that data is a non-null object and has the properties we expect
+    if (data && typeof data === 'object' && 'type' in data && 'content' in data) {
         if (data.type === "application/x-python-pickle") {
             const code = document.createElement('code');
             code.innerText = `<class '${data.name}'> ${formatDataSize(b64StrSize(data.content))}`;
             return code;
-        }
-        else if (['text/html', 'application/pdf'].includes(data.type)) {
+        } else if (['text/html', 'application/pdf'].includes(data.type)) {
             const iframe = document.createElement('iframe');
             iframe.src = `data:${data.type};base64,${data.isBinary ? data.content : b64EncodeUnicode(data.content)}`;
             iframe.style.height = '100%';
@@ -887,7 +901,7 @@ export function jsonDataToBasicHtmlElement(data, options = undefined) {
             const element = document.createElement(monospace ? 'pre' : 'div');
             element.innerText = data.isBinary ? atob(data.content) : data.content;
             if (!monospace) {
-                element.style['white-space'] = 'pre-wrap';
+                element.style.whiteSpace = 'pre-wrap';
             }
             return element;
         } else if (data.isBinary) {
@@ -896,7 +910,7 @@ export function jsonDataToBasicHtmlElement(data, options = undefined) {
                 img.src = `data:${data.type};base64,${data.content}`;
                 img.style.height = '100%';
                 img.style.width = '100%';
-                img.style['object-fit'] = 'contain';
+                img.style.objectFit = 'contain';
                 return img;
             } else if (data.type.startsWith('video/') || data.type.startsWith('audio/')) {
                 const element = document.createElement(data.type.startsWith('video/') ? 'video' : 'audio');
@@ -910,7 +924,6 @@ export function jsonDataToBasicHtmlElement(data, options = undefined) {
                 if (dataStr.length > MAX_BINARY_DATA_DISPLAY_CHARS) {
                     dataStr = dataStr.substring(0, MAX_BINARY_DATA_DISPLAY_CHARS) + '...';
                 }
-
                 const pre = document.createElement('pre');
                 const value = { ...data, content: `${dataStr} <${formatDataSize(b64StrSize(data.content))}>` };
                 pre.innerText = JSON.stringify(value, null, 2);
@@ -919,13 +932,13 @@ export function jsonDataToBasicHtmlElement(data, options = undefined) {
         }
     }
 
-    // application/octet-stream -> hex ?
-
+    // Fallback: attempt to format the JSON representation of the data
     const span = document.createElement('span');
     span.appendChild(formatJson(data, options?.jsonFormat ?? DEFAULT_JSON_FORMAT));
     span.className = 'css-treeview';
     return span;
 }
+
 
 /**
  * Format file size in bytes to a readable string.
