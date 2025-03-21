@@ -89,8 +89,8 @@ export function JSEditor() {
         // Just put => /*jshint esversion: 6 */ at the top of your js file
         // exp:true => if ExpressionStatement should be allowed as Programs
         // asi:true => don't complain about Missing semicolon warning
-        //var value = "/*jshint expr:true, asi:true, esversion:" + es + "*/\n" + editor.getValue();
-        var value = '/*jshint esversion:' + es + '*/\n' + editor.getValue(); // MBG 17/01/2020 restore old feeling
+        var value = "/*jshint expr:true, asi:true, sub:true, esversion:" + es + "*/\n" + editor.getValue();
+        //var value = '/*jshint esversion:' + es + '*/\n' + editor.getValue(); // MBG 17/01/2020 restore old feeling
         JSHINT(value);
 
         for (let i = 0; i < JSHINT.errors.length; ++i) {
@@ -340,8 +340,8 @@ export function JSEditor() {
         // Just put => /*jshint esversion: 6 */ at the top of your js file
         // exp:true => if ExpressionStatement should be allowed as Programs
         // asi:true => don't complain about Missing semicolon warning
-        //var value = "/*jshint expr:true, asi:true, esversion:" + es + "*/\n" + editor.getValue();
-        var value = '/*jshint esversion:' + es + '*/\n' + editor.getValue(); // MBG 17/01/2020 restore old feeling
+        var value = "/*jshint expr:true, asi:true, sub:true, esversion:" + es + "*/\n" + editor.getValue();
+        //var value = '/*jshint esversion:' + es + '*/\n' + editor.getValue(); // MBG 17/01/2020 restore old feeling
         JSHINT(value);
 
         for (let i = 0; i < JSHINT.errors.length; ++i) {
