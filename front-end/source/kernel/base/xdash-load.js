@@ -25,10 +25,8 @@ import 'angular-sanitize';
 
 import 'angular/modules/modules';
 
-import { xServConfig, urlPython, xDashConfig } from 'config.js';
+import { xServConfig, xDashConfig } from 'config.js';
 import { findGetParameter } from '../datanodes/plugins/thirdparty/utils';
-
-var userCode = null; // FIXME
 
 angular
   .module('xCLOUD', [
@@ -50,8 +48,7 @@ angular
     function ($rootScope, $state, $stateParams, SessionUser) {
       $rootScope.safeApply = function (fn) {
         var scopePhase = $rootScope.$root.$$phase;
-        if (scopePhase == '$apply' || scopePhase == '$digest') {
-        } else {
+        if (!(scopePhase == '$apply' || scopePhase == '$digest')) {
           $rootScope.$apply();
         }
       };
@@ -102,7 +99,6 @@ angular
         if (to.name !== 'login.user') {
           if (!$rootScope.UserProfile) {
             if (SessionUser.getUserId() && SessionUser.getUserName() && $rootScope.xDashFullVersion) {
-              userCode = SessionUser.getUserId();
               $rootScope.UserProfile = SessionUser.getUserProfile();
 
               $state.transitionTo('modules', {});
@@ -138,7 +134,6 @@ angular
                   event.preventDefault();
                 } else {
                   $rootScope.UserProfile = {};
-                  userCode = undefined;
                   sessionStorage.removeItem('userId');
                   $state.transitionTo('login.user', {});
                   event.preventDefault();
@@ -151,13 +146,6 @@ angular
               $state.transitionTo('login.user', {});
               event.preventDefault();
             }
-          }
-        } else {
-          if (!$rootScope.UserProfile) {
-            if (SessionUser.getUserId() && SessionUser.getUserName()) {
-            } else {
-            }
-          } else {
           }
         }
 
@@ -253,7 +241,6 @@ angular
 
             if (!$rootScope.UserProfile) {
               if (SessionUser.getUserId() && SessionUser.getUserName() && $rootScope.xDashFullVersion) {
-                userCode = SessionUser.getUserId();
                 $rootScope.UserProfile = SessionUser.getUserProfile();
                 $rootScope.origin = 'reload'; //AEF
                 $state.go('modules');

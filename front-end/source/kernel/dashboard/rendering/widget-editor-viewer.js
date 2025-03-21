@@ -71,8 +71,8 @@ export class WidgetEditorViewer {
     let width = 0;
     let height = 0;
 
-    width  = document.getElementById("dashboard-editor-div").clientWidth  -  this.marginX * 2 - 2;
-    height = document.getElementById("dashboard-editor-div").clientHeight -  this.marginY * 2 - 4;
+    width = document.getElementById('dashboard-editor-div').clientWidth - this.marginX * 2 - 2;
+    height = document.getElementById('dashboard-editor-div').clientHeight - this.marginY * 2 - 4;
 
     return { width, height };
   }

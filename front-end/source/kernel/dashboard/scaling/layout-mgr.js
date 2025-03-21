@@ -6,11 +6,12 @@
 // ├──────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Tristan BARTEMENT │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'lodash';
+
 
 /*constants*/
 const DEFAULT_BG_COLOR = 'var(--widget-color-0)';
 const DEFAULT_THEME = 'default';
+import { editorSingletons } from 'kernel/editor-singletons';
 
 export class LayoutMgrClass {
   constructor() {
@@ -103,7 +104,8 @@ export class LayoutMgrClass {
     $('html').attr('data-theme', this.dashboardTheme);
     $('#current-theme').attr('data-theme', this.dashboardTheme);
     this.updateDashBgColor();
-
+    
+    const widgetEditor = editorSingletons.widgetEditor;
     widgetEditor.widgetEditorViewer.rerenderWidgets();
   }
 

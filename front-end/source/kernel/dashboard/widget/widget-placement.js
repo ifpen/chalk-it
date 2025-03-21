@@ -7,7 +7,7 @@
 // │ Original authors(s): Abir EL FEKI, Mounir MECHERGHUI, Mongi BEN GAID,       │ \\
 // │                      Ameur HAMDOUNI                                         │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'lodash';
+
 
 /**
  * @description Enforces that widget layout respects container constraints in terms of:
@@ -67,19 +67,6 @@ export function enforceConstraints(widgetLayoutPx, containerLayoutPx) {
   };
 }
 
-/**
- * @description Computes relative widget layout in px inside a container
- * @param {any} widgetLayoutPx
- * @param {any} containerLayoutPx
- */
-function computeRelativePxLayout(widgetLayoutPx, containerLayoutPx) {
-  return {
-    top: widgetLayoutPx.top - containerLayoutPx.top,
-    left: widgetLayoutPx.left - containerLayoutPx.left,
-    width: widgetLayoutPx.width,
-    height: widgetLayoutPx.height,
-  };
-}
 
 /**
  * @description Given a DOM element, gets its layout in px

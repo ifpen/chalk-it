@@ -473,33 +473,6 @@ class WidgetWiewer {
   }
 
   /**
-   * Converts the dashboard's content to png
-   * Currently unused
-   * */
-  toPng() {
-    // FIXME unused
-    const dashExt = this.#getDashboardExtent();
-
-    const originalHTML = document.getElementById('DropperDroitec');
-    const origHeight = originalHTML.style.height;
-    const origWidth = originalHTML.style.width;
-    originalHTML.style.height = dashExt.height + 'px';
-    originalHTML.style.width = dashExt.width + 'px';
-
-    html2canvas(originalHTML, { allowTaint: false, useCORS: true }).then(function (canvas) {
-      const png = Canvas2Image.convertToPNG(canvas, dashExt.width, dashExt.height);
-
-      const link = document.createElement('a');
-      link.setAttribute('download', $('#projectName')[0].value + '.png');
-      link.setAttribute('href', png.src.replace('image/png', 'image/octet-stream'));
-      link.click();
-
-      originalHTML.style.height = origHeight;
-      originalHTML.style.width = origWidth;
-    });
-  }
-
-  /**
    * Put z-index of selected widget on top of all widgets
    * MBG from AEF work for autocomplete
    * @param {string} idInstance

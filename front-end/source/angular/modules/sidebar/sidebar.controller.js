@@ -7,7 +7,6 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ghiles HIDEUR     │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
 
-import _ from 'lodash';
 
 import { fileManager } from 'kernel/general/backend/file-management';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';

@@ -404,8 +404,9 @@ export function DatanodeDependency() {
   /*-----------------addCurrentGraphList-----------------*/
   function addCurrentGraphList(dsName, index) {
     if (currentGraphList.has(dsName)) {
+      currentGraphList.set(dsName, index);
     }
-    currentGraphList.set(dsName, index);
+    
   }
 
   /*-----------------clearCurrentGraphList-----------------*/

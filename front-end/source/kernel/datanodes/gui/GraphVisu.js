@@ -23,7 +23,6 @@ export function GraphVisu(datanodesDependency) {
   var nodesLabelsIds = {};
   var tagListTypes = [];
   var nodesTmp = [];
-  let highlightNodeByWidget = [];
   let highlightNodeByType = [];
   let highlightNodeByWidgetConnection = [];
   let countFoundedNode = 0;
@@ -321,7 +320,6 @@ export function GraphVisu(datanodesDependency) {
   }
 
   function closeGraph() {
-    highlightNodeByWidget = [];
     highlightNodeByType = [];
     highlightNodeByWidgetConnection = [];
     countFoundedNode = 0;

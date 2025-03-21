@@ -133,12 +133,6 @@ function calendarD3WidgetPluginClass() {
       let formatDay = (i) => 'SMTWTFS'[i]; // given a day number in [0, 6], the day-of-week label
       let formatMonth = '%b'; // format specifier string for months (above the chart)
       let yFormat = '+%';
-      let colors = d3.interpolateRdYlGn;
-      let timeTrans = 1500;
-      let opacityOther = 1;
-
-      // Internal variable for display
-      let X1; // all possible Date
 
       let X; // Date where there is value;
       let Y; // Values associated with date;
@@ -229,7 +223,6 @@ function calendarD3WidgetPluginClass() {
         // Compute titles.
         formatDate = d3.timeFormat('%B %-d, %Y');
         formatValue = color.tickFormat(100, yFormat);
-        const title = (i) => `${formatDate(X[i])}\n${formatValue(Y[i])}`;
       }
 
       function pathMonth(t) {
