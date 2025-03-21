@@ -81,3 +81,5 @@ ipch/
 .vscode/
 /*.xprjson
 **/__pycache__
+chalkenv/
+chalkenvprod/
