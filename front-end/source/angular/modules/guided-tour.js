@@ -6,47 +6,8 @@
 // ├──────────────────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Mondher AJIMI, Ghiles HIDEUR  │ \\
 // └──────────────────────────────────────────────────────────────────────────────────┘ \\
-import { navHelper } from 'angular/modules/navigation-helper';
+
 import introJs from 'intro.js';
-
-// TODO unused ?
-function startIntroGallery() {
-  var intro = introJs();
-
-  intro.onbeforechange(function (targetElement) {
-    switch (targetElement.id) {
-      case 'my-projects-cards-explorer':
-        navHelper.gotoMyProjects();
-        break;
-    }
-  });
-
-  intro.onafterchange(function (targetElement) {
-    console.log('onafterchange:' + targetElement.id);
-    switch (targetElement.id) {
-      case 'my-projects-cards-explorer':
-        break;
-    }
-  });
-
-  intro.addSteps([
-    {
-      element: '#my-projects-cards-explorer',
-      intro: 'Here you will find all your saved projects',
-      disableInteraction: true,
-    },
-    {
-      element: '#my-personnal-projects-list',
-      intro: 'Projects can be managed here',
-      disableInteraction: true,
-    },
-    {
-      element: '#unexisting',
-      intro: 'live-demo project will be opened',
-      disableInteraction: true,
-    },
-  ]);
-}
 
 /*--------startIntro --------*/
 export function startIntroProject() {
@@ -55,9 +16,7 @@ export function startIntroProject() {
     exitOnOverlayClick: false,
     showBullets: false,
     showStepNumbers: true,
-    //skipLabel: 'Exit',
     tooltipPosition: 'right',
-    //disableInteraction: true,
     steps: [
       {
         element: '#dashboard-editor',
@@ -88,11 +47,11 @@ export function startIntroProject() {
         intro: 'DataNodes are added, configured, listed and controlled here',
       },
       {
-        element: '#li_annotationLabelT',
+        element: '#annotationLabelT li:first-child',
         intro: 'This is widget connection and configuration menu',
       },
       {
-        element: '#datanodes-widget-connect',
+        element: '#menuWidget',
         intro:
           'Widget connection to dataNodes, configuration, placement, z-order, etc. features are provided by this menu',
       },
@@ -142,23 +101,21 @@ export function startIntroProject() {
         }
         break;
       case 'editor-left-side-panel':
-        if (this._direction == 'backward') {
-          document.getElementById('showHideWidgetMenu').click(); // TODO coords
-        }
+        document.querySelector('#annotationLabelT li:first-child').click();
         break;
-      case 'li_annotationLabelT':
-        if (this._direction == 'forward') document.getElementById('showHideWidgetMenu').click();
+      case 'menuWidget':
+        if (this._direction == 'forward') document.querySelector('#annotationLabelT li:first-child').click();
         break;
       case 'datanodes-widget-connect':
         if (this._direction == 'backward') {
           document.getElementById('editor-datanodes-list').click();
-          document.getElementById('showHideWidgetMenu').click();
+          document.getElementById('menuWidget').click();
         }
         break;
       case 'panel--right':
         if (this._direction == 'forward') {
           document.getElementById('open-datanodes-widget-connect').click();
-          document.getElementById('showHideWidgetMenu').click();
+          document.getElementById('menuWidget').click();
         }
         break;
     }

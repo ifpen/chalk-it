@@ -20,11 +20,6 @@ import { JSEditorCompletion } from './JSEditorCompletion';
 import './JSEditorFormatting';
 
 export function JSEditor() {
-  var assetRoot = '';
-
-  function setAssetRoot(_assetRoot) {
-    assetRoot = _assetRoot;
-  }
 
   function displayJSEditor(value, newSettings, settingDef, settingsSavedCallback, callback) {
     var dsName = newSettings.settings.name;
@@ -308,7 +303,6 @@ export function JSEditor() {
   }
 
   function displayMiniJSEditor(input, value, newSettings, callback) {
-    var dsName = newSettings.settings.name;
     var exampleText = '';
     if (newSettings.type === 'JSON_formula_plugin')
       exampleText =
@@ -449,9 +443,6 @@ export function JSEditor() {
     },
     displayMiniJSEditor: function (input, value, newSettings, callback) {
       return displayMiniJSEditor(input, value, newSettings, callback);
-    },
-    setAssetRoot: function (assetRoot) {
-      setAssetRoot(assetRoot);
     },
   };
 }

@@ -399,12 +399,10 @@ export const datanodesManager = (function () {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
       var options = ko.unwrap(valueAccessor());
 
-      var types = {};
       var settings = undefined;
       var title = '';
 
       if (options.type == 'datanode') {
-        types = datanodePlugins;
         title = 'DataNode';
       }
 
@@ -428,12 +426,10 @@ export const datanodesManager = (function () {
             $(element).parent().parent().parent().remove();
           }
         } else {
-          var instanceType = undefined;
           if (options.type == 'datanode') {
             if (options.operation == 'add') {
               settings = {};
             } else {
-              instanceType = viewModel.type();
               settings = viewModel.settings();
               settings.name = viewModel.name();
             }
@@ -443,12 +439,6 @@ export const datanodesManager = (function () {
     },
   };
 
-  ko.virtualElements.allowedBindings.datanodeTypeSettings = true;
-  ko.bindingHandlers.datanodeTypeSettings = {
-    update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-      processPluginSettings(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-    },
-  };
 
   // PUBLIC FUNCTIONS
   return {
@@ -521,10 +511,6 @@ export const datanodesManager = (function () {
     },
     getDataNodePluginTypes: function () {
       return datanodePlugins;
-    },
-    // To be used if datanodesManager is going to load dynamic assets from a different root URL
-    setAssetRoot: function (assetRoot) {
-      jsEditor.setAssetRoot(assetRoot);
     },
     showLoadingIndicator: function (show) {
       freeboardUI.showLoadingIndicator(show);
@@ -613,7 +599,6 @@ export const datanodesManager = (function () {
       if (!offSchedLogUser.value && !xDashConfig.disableSchedulerLog) console.log('zombie: ', zombieDatanodeList);
 
       var dataToDelete = [];
-      var bFound = false;
       var contentElement = xdsjson.getDataList(
         zombieDatanodeList,
         'Unused data is a singleton node that is not connected to any widget.<br>Please check data to be deleted : '
@@ -623,7 +608,6 @@ export const datanodesManager = (function () {
           if ($('#data-checkbox-' + i).is(':checked')) {
             dataToDelete[i] = zombieDatanodeList[i];
             deleteDn(datanodesManager.getDataNodeByName(zombieDatanodeList[i]));
-            bFound = true;
           }
         }
       });

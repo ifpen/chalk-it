@@ -325,7 +325,7 @@ export const xdashUpdateEngine = new XdashDataUpdateEngine();
           delete settings.refreshRate;
 
           //AEF: compatibility with versions before Chalk'it v0.3.7 (xDash 2.890)
-          const versionStr = object.version;
+          const versionStr = model.meta.version;
           const RegEx = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
           const match = RegEx.exec(versionStr);
           if (match) {
@@ -425,7 +425,7 @@ export const xdashUpdateEngine = new XdashDataUpdateEngine();
           warn.add(_.name);
 
           if (_.settings.args) {
-            _.settings.content = 'args = ' + currentSettings.args + '\n' + _.settings.content;
+            _.settings.content = 'args = ' + _.settings.args + '\n' + _.settings.content;
           }
 
           delete _.settings.splat;
@@ -434,80 +434,6 @@ export const xdashUpdateEngine = new XdashDataUpdateEngine();
           delete _.settings.args;
         }
       });
-
-      //if (full) {
-      if (false) {
-        // MBG not needed for fixing issue #309
-        const idMap = new Map();
-        const currentIds = collectWidgetIds(model);
-
-        const dashboard = model.dashboard;
-        const connections = model.connections;
-        Object.entries(dashboard)
-          .filter(([, widget]) => widget.container.modelJsonId === 'plotlyPyGeneric')
-          .forEach(([oldId, widget]) => {
-            const newId = generateId(currentIds, 'plotlyGeneric');
-            currentIds.add(newId);
-            idMap.set(oldId, newId);
-
-            widget.container.modelJsonId = 'plotlyGeneric';
-            widget.modelParameters = { hideModeBar: false };
-            widget.modelHiddenParams = {
-              data: [{}],
-              layout: [{}],
-              selection: [{}],
-            };
-
-            const conns = connections[oldId];
-            if (conns) {
-              const fig = conns.fig;
-              if (fig) {
-                delete conns.fig;
-
-                conns.data = { ...fig };
-                conns.data.name = 'data';
-                conns.data.dataFields ??= [];
-
-                conns.layout = { ...fig };
-                conns.layout.name = 'layout';
-                conns.layout.dataFields ??= [];
-
-                if (fig.dataNode && fig.dataNode !== 'None') {
-                  conns.data.dataFields = [...conns.data.dataFields, 'data'];
-                  conns.layout.dataFields = [...conns.layout.dataFields, 'layout'];
-                }
-              }
-            }
-          });
-
-        Object.entries(dashboard)
-          .filter(([, widget]) => widget.container.modelJsonId === 'matplotlib')
-          .forEach(([oldId, widget]) => {
-            const newId = generateId(currentIds, 'annotationImage');
-            currentIds.add(newId);
-            idMap.set(oldId, newId);
-
-            widget.container.modelJsonId = 'annotationImage';
-            widget.layout.minHeight = '';
-            widget.layout.minWidth = '';
-
-            widget.modelParameters = { keepRatio: true, hideImageURL: true, enableActuator: true };
-            widget.modelHiddenParams = { fileContentBase64: '', mimeType: '' };
-
-            const conns = connections[oldId];
-            if (conns) {
-              const fig = conns.fig;
-              if (fig) {
-                delete conns.fig;
-
-                conns.base64Image = { ...fig };
-                conns.base64Image.name = 'base64Image';
-              }
-            }
-          });
-
-        renameWidgets(model, idMap);
-      }
 
       if (warn.size) {
         const nodes = [...warn]
@@ -724,7 +650,7 @@ export const xdashUpdateEngine = new XdashDataUpdateEngine();
               initialPage = parseInt(defaultPage, 10);
             }
 
-            pages.pages.initialPage = initialPage;
+            model.pages.initialPage = initialPage;
           } else if (exportOptions === 'rowToTab') {
             model.pages.pageMode = 'tabs';
           }

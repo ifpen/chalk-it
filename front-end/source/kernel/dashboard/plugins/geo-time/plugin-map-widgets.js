@@ -386,8 +386,6 @@ function mapWidgetsPluginClass() {
       }
     };
 
-
-
     this.getLayerInformation = getLayerInformation;
     this.updateLayerInformation = updateLayerInformation;
     this.updateSelectedGeoJSON = updateSelectedGeoJSON;

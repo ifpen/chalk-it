@@ -1,3 +1,13 @@
+// ┌─────────────────────────────────────────────────────────────────────────────────┐
+// │ filterDatanodeService                                                           │
+// ├─────────────────────────────────────────────────────────────────────────────────┤
+// │ Copyright © 2016-2024 IFPEN                                                     │
+// | Licensed under the Apache License, Version 2.0                                  │
+// ├─────────────────────────────────────────────────────────────────────────────────┤
+// │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                               │
+// └─────────────────────────────────────────────────────────────────────────────────┘
+
+import _ from 'lodash';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 
 angular.module('datanodes.filter', []).service('FilterDatanodeService', [
@@ -31,19 +41,13 @@ angular.module('datanodes.filter', []).service('FilterDatanodeService', [
             $rootScope.alldatanodes[i].hide = true;
           }
 
-          if (
-            singleton &&
-            datanodesManager.isSingletonNode($rootScope.alldatanodes[i]._serializedData.name)
-          ) {
+          if (singleton && datanodesManager.isSingletonNode($rootScope.alldatanodes[i]._serializedData.name)) {
             if (element.className.includes('active')) {
               _filterNodes($rootScope.alldatanodes[i], 'push');
             } else {
               _filterNodes($rootScope.alldatanodes[i], 'splice');
             }
-          } else if (
-            !singleton &&
-            !datanodesManager.isSingletonNode($rootScope.alldatanodes[i]._serializedData.name)
-          ) {
+          } else if (!singleton && !datanodesManager.isSingletonNode($rootScope.alldatanodes[i]._serializedData.name)) {
             if (element.className.includes('active')) {
               _filterNodes($rootScope.alldatanodes[i], 'push');
             } else {
@@ -134,7 +138,7 @@ angular.module('datanodes.filter', []).service('FilterDatanodeService', [
           ).reverse();
           break;
       }
-    }
+    };
 
     /*---------- applyDatanodeFilter----------------*/
     self.applyDatanodeFilter = function () {
@@ -146,14 +150,11 @@ angular.module('datanodes.filter', []).service('FilterDatanodeService', [
           $rootScope.alldatanodes[i]._serializedData = $rootScope.alldatanodes[i].serialize();
 
           if (
-            !($rootScope.alldatanodes[i]._serializedData.settings.name
-              .toLowerCase()
-              .indexOf(tmpStr.toLowerCase()) >= 0)
+            !($rootScope.alldatanodes[i]._serializedData.settings.name.toLowerCase().indexOf(tmpStr.toLowerCase()) >= 0)
           ) {
             $rootScope.alldatanodes[i].hide = true;
           } else {
-            if ($rootScope.filtredList.length === 0)
-              $rootScope.alldatanodes[i].hide = false;
+            if ($rootScope.filtredList.length === 0) $rootScope.alldatanodes[i].hide = false;
             if ($rootScope.filtredList.indexOf($rootScope.alldatanodes[i]) >= 0)
               $rootScope.alldatanodes[i].hide = false;
           }

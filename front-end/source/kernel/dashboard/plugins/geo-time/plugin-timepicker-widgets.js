@@ -218,12 +218,6 @@ function timePickerWidgetsPluginClass() {
 
       $('#clockpickerInput' + idWidget)[0].value = modelsHiddenParams[idInstance].timeValue;
 
-      // Manually toggle to the minutes view
-      $('#check-minutes').click(function (e) {
-        // Have to stop propagation here
-        e.stopPropagation();
-        input.clockpicker('show').clockpicker('toggleView', 'minutes');
-      });
       if (this.bIsInteractive) {
         self.enable();
       } else {

@@ -6,7 +6,7 @@
 // ├──────────────────────────────────────────────────────────────────────┤ \\
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID, Ghiles HIDEUR     │ \\
 // └──────────────────────────────────────────────────────────────────────┘ \\
-import _ from 'lodash';
+
 
 import { fileManager } from 'kernel/general/backend/file-management';
 import { FileMngrFct } from 'kernel/general/backend/FileMngr';
@@ -15,9 +15,7 @@ import { DialogBoxForToolboxEdit } from 'kernel/datanodes/gui/DialogBox';
 import { runtimeSingletons } from 'kernel/runtime-singletons';
 import { editorSingletons } from 'kernel/editor-singletons';
 
-import {
-  EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED,
-} from 'angular/modules/editor/editor.events';
+import { EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED } from 'angular/modules/editor/editor.events';
 
 angular.module('modules.sidebar').controller('SidebarController', [
   '$scope',
@@ -82,14 +80,14 @@ angular.module('modules.sidebar').controller('SidebarController', [
           let canvasSize = editorSingletons.widgetEditor.widgetEditorViewer.getMaximalFitCanvasSize();
           editorSingletons.widgetEditor.widgetEditorViewer.setSize(canvasSize.width, canvasSize.height);
           angular
-          .element(document.body)
-          .injector()
-          .invoke([
-            'EventCenterService',
-            (eventCenterService) => {
-              eventCenterService.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
-            },
-          ]);
+            .element(document.body)
+            .injector()
+            .invoke([
+              'EventCenterService',
+              (eventCenterService) => {
+                eventCenterService.sendEvent(EVENTS_EDITOR_DASHBOARD_ASPECT_CHANGED);
+              },
+            ]);
         }, 0);
       });
       ManagePrjService.clearForNewProject();

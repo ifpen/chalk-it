@@ -23,58 +23,9 @@ export function GraphVisu(datanodesDependency) {
   var nodesLabelsIds = {};
   var tagListTypes = [];
   var nodesTmp = [];
-  let highlightNodeByWidget = [];
   let highlightNodeByType = [];
   let highlightNodeByWidgetConnection = [];
   let countFoundedNode = 0;
-
-  /*-----------------buildGraphHtml-----------------*/
-  // private function
-  // builds a Graph object from tarjan-graph.js
-  // for GraphViz (solve forbidden chars pb)
-  function buildGraphHtml() {
-    var graph = new Graph();
-    var ds;
-    for (const ds in datanodesDependency.dependencyStructure) {
-      var node = ds;
-      // var edges = Array.from(dependencyMatrix[ds]); // MBG remove EC6
-      var edges = [];
-      datanodesDependency.dependencyStructure[ds].forEach(function (value) {
-        edges.push(value);
-      });
-      //
-      var nodeClean = '"' + node + '"';
-      var edgesClean = [];
-      for (var i in edges) {
-        edgesClean[i] = '"' + edges[i] + '"';
-      }
-      graph.add(nodeClean, edgesClean);
-    }
-    return graph;
-  }
-
-  /*-----------------showGraph-----------------*/
-  // graphical rendering of the dependency graph
-  // mainly based on Viz
-  /*function showGraph() {
-        var graph = buildGraphHtml();
-        var graphViewBody = $('<div id="dependencyGraphBody" class="modal-body" style="vertical-align: middle; overflow: auto; display: block; margin: auto; max-width: 80vw"></div>');
-        DialogBox(graphViewBody, 'DataNodes dependency graph', null, "Close", null);
-        $('#dependencyGraphBody')[0].parentNode.style.width = "80vw"; // added to enlarge dialogbox
-        //AEF: modif to show singleton nodes
-        var graphToDOt = graph.toDot();
-        var array = graphToDOt.split('\n'); //convert string to array
-        for (var ds in dependencyStructure) {
-      var node = ds;
-      if (!hasPredecessors(node) && !hasSuccessors(node))
-          array.splice(array.length - 2, 0, "\"" + node + "\""); // length - 2 because length - 1 is '\n'
-        }
-        var newGraphToDot = array.join('\n'); //convert array to string
-        var graphSvg = Viz(newGraphToDot);
-        //
-        //var graphSvg = Viz(graph.toDot());
-        $('#dependencyGraphBody').html(graphSvg);
-    }*/
 
   /*-----------------showGraph-----------------*/
   // graphical rendering of the dependency graph
@@ -369,7 +320,6 @@ export function GraphVisu(datanodesDependency) {
   }
 
   function closeGraph() {
-    highlightNodeByWidget = [];
     highlightNodeByType = [];
     highlightNodeByWidgetConnection = [];
     countFoundedNode = 0;
@@ -445,7 +395,6 @@ export function GraphVisu(datanodesDependency) {
 
   // public methods
   return {
-    //showGraph,
     showDepGraph,
     selectNodeFromTagList,
     selectConnectedWithWidget,

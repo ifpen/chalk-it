@@ -4,17 +4,14 @@
 import _ from 'lodash';
 
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
-import { htmlExport } from 'kernel/general/export/html-export';
 
 export function DialogBox(contentElement, title, okTitle, cancelTitle, okCallback, cancelCallback) {
   var param;
   var OkClbkParam;
   // Initialize our modal overlay
   var overlay = $('<div class="modalDialog modalDialogOpen" style="z-index:1000"></div>');
-  var _codeMirror = false;
   if (!_.isUndefined($('.code-mirror-wrapper')[0])) {
     $(overlay)[0].style.zIndex = 6000;
-    _codeMirror = true;
   }
   if (!_.isUndefined($('.showSweetAlert')[0])) {
     $(overlay)[0].style.zIndex = 99999;
@@ -163,13 +160,3 @@ export function DialogBoxForDuplicateData(contentElement, title, okTitle, cancel
   }
 }
 
-function copyURLtoClipboard() {
-  var copyText = document.getElementById('swal-input');
-  copyText.select();
-  document.execCommand('copy');
-
-  $('#swal-p')[0].style.visibility = 'visible';
-  setTimeout(function () {
-    $('#swal-p')[0].style.visibility = 'hidden';
-  }, 1500);
-}
