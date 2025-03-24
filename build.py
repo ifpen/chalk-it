@@ -18,6 +18,7 @@ import os
 from datetime import datetime
 import json
 import argparse
+import sys
 
 # Create the parser
 parser = argparse.ArgumentParser(description="Process the build type.")
@@ -209,19 +210,6 @@ if (BUILD_TYPE == "pip" or BUILD_TYPE == "local"):
         dst_path = os.path.join(dst_dir, filename)
         shutil.copy(src_path, dst_path)
 
-    # This function checks if various Python commands exist in the system PATH.
-    def get_python_command():
-        # Need to keep this order
-        commands_to_check = ["python", "python3", "python2", "py"]
-
-        for cmd in commands_to_check:
-            if shutil.which(cmd):
-                # Returns the available command
-                return cmd
-
-        # If no Python command was found
-        raise SystemExit("Python not found. Please install Python.")
-
     def update_version_in_setup_file(file_path, new_version):
         # Define the line prefix to search for
         line_prefix = 'VERSION = "'
@@ -257,7 +245,7 @@ if (BUILD_TYPE == "pip" or BUILD_TYPE == "local"):
     update_version_in_setup_file(file_path, new_version)
 
     # Get available python command
-    python_cmd = get_python_command()
+    python_cmd = sys.executable
 
     # Run setup.py command from ./assets directory
     subprocess.run([python_cmd, "../build/setup.py", "sdist"], cwd="./build/")
