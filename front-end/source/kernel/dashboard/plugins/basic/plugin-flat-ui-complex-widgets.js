@@ -840,49 +840,47 @@ function flatUiComplexWidgetsPluginClass() {
     this.enable = function () {
       const maxSelected = modelsParameters[idInstance]?.maxSelected ?? '*';
       const listElement = $('#list' + idWidget);
-      let selectedOptions = [];
 
-      const updateSelection = () => {
-        const allSelectedOptions = Array.from(listElement.find(':selected'));
+      // -- 1) Prevent selecting more than maxSelected (if not "*") --
+      // We use mousedown so we can block the selection before it happens.
+      if (maxSelected !== '*') {
+        listElement.on('mousedown', 'option', function (e) {
+          // If this option is already selected, allow unselecting.
+          const isAlreadySelected = $(this).is(':selected');
+          // Count how many are currently selected.
+          const currentlySelectedCount = listElement.find('option:selected').length;
 
-        // Add newly selected options to the array in order
-        allSelectedOptions.forEach((option) => {
-          if (!selectedOptions.includes(option)) {
-            selectedOptions.push(option);
+          // If the user is about to select a new one, but the limit is reached, block it.
+          if (!isAlreadySelected && currentlySelectedCount >= maxSelected) {
+            e.preventDefault();
           }
         });
+      }
 
-        // Remove deselected options from the array
-        selectedOptions = selectedOptions.filter((option) => allSelectedOptions.includes(option));
-
-        if (maxSelected !== '*' && selectedOptions.length > maxSelected) {
-          // Remove the first (oldest) option to maintain the limit
-          const removedOption = selectedOptions.shift();
-          $(removedOption).prop('selected', false);
-        }
-
-        // Update callback with the current selected values
-        const selectedValues = selectedOptions.map((option) => $(option).val());
+      // -- 2) Use the change event to update which items are selected --
+      const updateCallback = () => {
+        const selectedValues = listElement.val() || [];
         self.selectedValue.updateCallback(self.selectedValue, selectedValues);
       };
 
-      listElement.on('keydown change', function (e) {
-        // Handle Ctrl + A (Select All) only if maxSelected is "*"
-        if (e.ctrlKey && (e.key === 'a' || e.key === 'A' || e.keyCode === 65)) {
-          e.preventDefault();
-
-          if (maxSelected === '*') {
-            // Select all options if no limit
-            listElement.find('option').prop('selected', true);
-            return;
-          }
-        }
-
-        updateSelection();
+      listElement.on('change', function () {
+        updateCallback();
       });
 
-      // Enable the list visually
-      listElement[0].style.opacity = '1';
+      // -- 3) Handle Ctrl+A to select all (only if maxSelected = "*") --
+      listElement.on('keydown', function (e) {
+        if (e.ctrlKey && (e.key === 'a' || e.key === 'A' || e.keyCode === 65)) {
+          e.preventDefault();
+          if (maxSelected === '*') {
+            listElement.find('option').prop('selected', true);
+            // Make sure to trigger the callback after programmatic select.
+            updateCallback();
+          }
+        }
+      });
+
+      // Finally, enable the list visually
+      listElement.css('opacity', '1');
     };
 
     this.disable = function () {
