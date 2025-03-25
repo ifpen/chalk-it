@@ -129,8 +129,11 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
       else if (json_var_value && json_var_value.contructor === Object) json_var_value = { ...json_var_value };
 
       currentSettings.json_var = JSON.stringify(json_var_value);
-      self.onSettingsChanged(currentSettings);
-      
+      if (self.onSettingsChanged(currentSettings)) {
+        statusCallback('OK');
+      } else {
+        statusCallback('Error');
+      }
     };
 
     // **getValue()** (optional)
