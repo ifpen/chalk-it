@@ -2142,7 +2142,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ChalkitApi</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ChalkitApi</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An instance of `ChalkitApi` is provided to user scripts as `chalkit`. It can be used by scripts to interact</span>
 <span class="sd">     with Chalk&#39;it.</span>
 
@@ -2165,26 +2165,26 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ChalkitState</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ChalkitState</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_scheduler</span> <span class="o">=</span> <span class="n">SchedulerActions</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dashboard</span> <span class="o">=</span> <span class="n">DashboardActions</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_notification</span> <span class="o">=</span> <span class="n">NotificationActions</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">scheduler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SchedulerActions</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scheduler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SchedulerActions</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scheduler</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dashboard</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DashboardActions</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dashboard</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DashboardActions</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dashboard</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">notification</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NotificationActions</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">notification</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NotificationActions</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_notification</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">base64_to_bytes</span><span class="p">(</span><span class="n">b64</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">base64_to_bytes</span><span class="p">(</span><span class="n">b64</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reverts data encoded as a string using base 64 to raw `bytes`.</span>
 
 <span class="sd">        All binary data moved around as JSON in Chalk&#39;it is encoded as base 64 strings. This method is provided</span>
@@ -2196,12 +2196,12 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            the decoded raw binary data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">standard_b64decode</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">base64</span><span class="w"> </span><span class="kn">import</span> <span class="n">standard_b64decode</span>
 
         <span class="k">return</span> <span class="n">standard_b64decode</span><span class="p">(</span><span class="n">b64</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">as_json</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">as_json</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method instructs Chalk&#39;it to convert a result to a JSON representation.</span>
 
@@ -2220,7 +2220,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
         <span class="k">return</span> <span class="n">JsonAdapter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">as_python</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">as_python</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method instructs Chalk&#39;it to pickle a result, the main use case being moving Python objects from a</span>
 <span class="sd">        Python datanode to another.</span>
@@ -2239,7 +2239,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
         <span class="k">return</span> <span class="n">PythonAdapter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">as_image</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">as_image</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method instructs Chalk&#39;it to convert the result (like a plot figure) into an image.</span>
 
@@ -2253,7 +2253,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
         <span class="k">return</span> <span class="n">ImageAdapter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">as_data</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">as_data</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method instructs Chalk&#39;it to output the result as binary data using its JSON convention.</span>
 
@@ -2286,7 +2286,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">DataAdapter</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Provides an alternative way to return data, as opposed to the `return` statement.</span>
 
@@ -2318,7 +2318,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">output_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Same as `chalkit.output(chalkit.as_json(value), key)`.</span>
 
@@ -2328,7 +2328,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">as_json</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">key</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">output_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Same as `chalkit.output(chalkit.as_python(value), key)`.</span>
 
@@ -2338,7 +2338,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">as_python</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">key</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">output_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Same as `chalkit.output(chalkit.as_image(value), key)`.</span>
 
@@ -2348,7 +2348,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">as_image</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">key</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">output_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">output_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Same as `chalkit.output(chalkit.as_data(value), key)`.</span>
 
@@ -2358,7 +2358,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">as_data</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">key</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Output debug information.</span>
 
@@ -2371,7 +2371,7 @@ same as <code>chalkit.output(chalkit.as_json(dataframe))</code>.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_debug</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
         <span class="c1"># TODO</span>
 </code></pre></div>
@@ -2474,7 +2474,7 @@ as a file.</p>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">as_data</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_data</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This method instructs Chalk&#39;it to output the result as binary data using its JSON convention.</span>
 
@@ -2569,7 +2569,7 @@ as a file.</p>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">as_image</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_image</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This method instructs Chalk&#39;it to convert the result (like a plot figure) into an image.</span>
 
@@ -2648,7 +2648,7 @@ as a file.</p>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">as_json</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_json</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This method instructs Chalk&#39;it to convert a result to a JSON representation.</span>
 
@@ -2732,7 +2732,7 @@ un-pickled object.</p>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">as_python</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_python</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OutputAdapter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This method instructs Chalk&#39;it to pickle a result, the main use case being moving Python objects from a</span>
 <span class="sd">    Python datanode to another.</span>
@@ -2813,7 +2813,7 @@ as an easy way to get the data back into a binary form.</p>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">base64_to_bytes</span><span class="p">(</span><span class="n">b64</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">base64_to_bytes</span><span class="p">(</span><span class="n">b64</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Reverts data encoded as a string using base 64 to raw `bytes`.</span>
 
 <span class="sd">    All binary data moved around as JSON in Chalk&#39;it is encoded as base 64 strings. This method is provided</span>
@@ -2825,7 +2825,7 @@ as an easy way to get the data back into a binary form.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        the decoded raw binary data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">standard_b64decode</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">base64</span><span class="w"> </span><span class="kn">import</span> <span class="n">standard_b64decode</span>
 
     <span class="k">return</span> <span class="n">standard_b64decode</span><span class="p">(</span><span class="n">b64</span><span class="p">)</span>
 </code></pre></div>
@@ -2874,7 +2874,7 @@ accurately a <code>logger.debug(value)</code>, with some additional rendering, l
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">debug</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Output debug information.</span>
 
@@ -2956,7 +2956,7 @@ return {&quot;a&quot;: 1, &quot;b&quot;: 2}
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Provides an alternative way to return data, as opposed to the `return` statement.</span>
 
@@ -3036,7 +3036,7 @@ return {&quot;a&quot;: 1, &quot;b&quot;: 2}
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">output_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">output_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Same as `chalkit.output(chalkit.as_data(value), key)`.</span>
 
@@ -3094,7 +3094,7 @@ return {&quot;a&quot;: 1, &quot;b&quot;: 2}
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">output_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">output_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Same as `chalkit.output(chalkit.as_image(value), key)`.</span>
 
@@ -3152,7 +3152,7 @@ return {&quot;a&quot;: 1, &quot;b&quot;: 2}
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">output_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">output_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Same as `chalkit.output(chalkit.as_json(value), key)`.</span>
 
@@ -3211,7 +3211,7 @@ return {&quot;a&quot;: 1, &quot;b&quot;: 2}
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">output_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">output_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Same as `chalkit.output(chalkit.as_python(value), key)`.</span>
 
@@ -3258,17 +3258,17 @@ introduce side effects to data nodes executions. Be especially mindful of not cr
 
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">SchedulerActions</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SchedulerActions</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class provides a port of the javascript API. An instance of it is provided to user scripts as</span>
 <span class="sd">    `chalkit.scheduler`. It allows some interactions with the dashboard&#39;s scheduler. Use with caution as these</span>
 <span class="sd">    introduce side effects to data nodes executions. Be especially mindful of not creating update cycles.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ChalkitState</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ChalkitState</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">state</span>
 
-    <span class="k">def</span> <span class="nf">set_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">json_value</span><span class="p">:</span> <span class="n">JSON</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">json_value</span><span class="p">:</span> <span class="n">JSON</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the value of a dataNode.</span>
 
@@ -3281,7 +3281,7 @@ introduce side effects to data nodes executions. Be especially mindful of not cr
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_variables</span><span class="p">({</span><span class="n">datanode_name</span><span class="p">:</span> <span class="n">json_value</span><span class="p">})</span>
 
-    <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanodes_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JSON</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanodes_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JSON</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the value of multiple dataNodes (see `set_variable`).</span>
 
@@ -3290,7 +3290,7 @@ introduce side effects to data nodes executions. Be especially mindful of not cr
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_side_effect</span><span class="p">(</span><span class="s2">&quot;scheduler.setVariables&quot;</span><span class="p">,</span> <span class="n">datanodes_values</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">set_variable_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">property_path</span><span class="p">:</span> <span class="n">PropertyPath</span><span class="p">,</span> <span class="n">json_value</span><span class="p">:</span> <span class="n">JSON</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_variable_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">property_path</span><span class="p">:</span> <span class="n">PropertyPath</span><span class="p">,</span> <span class="n">json_value</span><span class="p">:</span> <span class="n">JSON</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update part of the value of a dataNode (see `set_variable`).</span>
 
@@ -3305,7 +3305,7 @@ introduce side effects to data nodes executions. Be especially mindful of not cr
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_side_effect</span><span class="p">(</span><span class="s2">&quot;scheduler.setVariableProperty&quot;</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">,</span> <span class="n">property_path</span><span class="p">,</span> <span class="n">json_value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">execute_datanode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_datanode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Schedules the evaluation of a dataNode.</span>
 
@@ -3315,7 +3315,7 @@ introduce side effects to data nodes executions. Be especially mindful of not cr
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">execute_datanodes</span><span class="p">([</span><span class="n">datanode_name</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">execute_datanodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_datanodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Schedules the evaluation of multiple dataNodes (see `execute_datanode).</span>
 
@@ -3375,7 +3375,7 @@ introduce side effects to data nodes executions. Be especially mindful of not cr
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">execute_datanode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">execute_datanode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Schedules the evaluation of a dataNode.</span>
 
@@ -3427,7 +3427,7 @@ introduce side effects to data nodes executions. Be especially mindful of not cr
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">execute_datanodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">execute_datanodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Schedules the evaluation of multiple dataNodes (see `execute_datanode).</span>
 
@@ -3486,7 +3486,7 @@ of downstream dataNodes. Most dataNodes that are not <code>Variable</code> can't
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">set_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">json_value</span><span class="p">:</span> <span class="n">JSON</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">json_value</span><span class="p">:</span> <span class="n">JSON</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Update the value of a dataNode.</span>
 
@@ -3555,7 +3555,7 @@ of downstream dataNodes. Most dataNodes that are not <code>Variable</code> can't
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">set_variable_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">property_path</span><span class="p">:</span> <span class="n">PropertyPath</span><span class="p">,</span> <span class="n">json_value</span><span class="p">:</span> <span class="n">JSON</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_variable_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">property_path</span><span class="p">:</span> <span class="n">PropertyPath</span><span class="p">,</span> <span class="n">json_value</span><span class="p">:</span> <span class="n">JSON</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Update part of the value of a dataNode (see `set_variable`).</span>
 
@@ -3612,7 +3612,7 @@ of downstream dataNodes. Most dataNodes that are not <code>Variable</code> can't
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanodes_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JSON</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanodes_values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JSON</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Update the value of multiple dataNodes (see `set_variable`).</span>
 
@@ -3658,17 +3658,17 @@ effects to data nodes executions.</p>
 
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DashboardActions</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DashboardActions</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class provides a port of the javascript API. An instance of it is provided to user scripts as</span>
 <span class="sd">    `chalkit.dashboard`. It allows some interactions with the dashboard. Use with caution as these introduce side</span>
 <span class="sd">    effects to data nodes executions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ChalkitState</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ChalkitState</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">state</span>
 
-    <span class="k">def</span> <span class="nf">view_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamValues</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">view_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamValues</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Navigates to pageUrl, setting the values of the specified dataNodes in inputVals.</span>
 
@@ -3680,7 +3680,7 @@ effects to data nodes executions.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_side_effect</span><span class="p">(</span><span class="s2">&quot;dashboard.viewPage&quot;</span><span class="p">,</span> <span class="n">page_url</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">view_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamValues</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">view_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamValues</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Similar to `view_page`, but for projects.</span>
 
@@ -3691,7 +3691,7 @@ effects to data nodes executions.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_side_effect</span><span class="p">(</span><span class="s2">&quot;dashboard.viewProject&quot;</span><span class="p">,</span> <span class="n">project_url</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">go_to_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_page</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">go_to_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_page</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Changes the current page in constrained dashboard mode.</span>
 
@@ -3700,7 +3700,7 @@ effects to data nodes executions.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_side_effect</span><span class="p">(</span><span class="s2">&quot;dashboard.goToPage&quot;</span><span class="p">,</span> <span class="n">num_page</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">enable_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enable_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        (re)enables a widget, making it interactive.</span>
 
@@ -3709,7 +3709,7 @@ effects to data nodes executions.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_side_effect</span><span class="p">(</span><span class="s2">&quot;dashboard.enableWidget&quot;</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">disable_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disable_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disables a widget, making it non-interactive. All widgets are initially enabled.</span>
 
@@ -3718,7 +3718,7 @@ effects to data nodes executions.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_side_effect</span><span class="p">(</span><span class="s2">&quot;dashboard.disableWidget&quot;</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">show_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Makes a widget visible. All widgets are initially visible.</span>
 
@@ -3727,7 +3727,7 @@ effects to data nodes executions.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_side_effect</span><span class="p">(</span><span class="s2">&quot;dashboard.showWidget&quot;</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">hide_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hide_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Hides a widget. All widgets are initially visible.</span>
 
@@ -3786,7 +3786,7 @@ effects to data nodes executions.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">disable_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">disable_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Disables a widget, making it non-interactive. All widgets are initially enabled.</span>
 
@@ -3837,7 +3837,7 @@ effects to data nodes executions.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">enable_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    (re)enables a widget, making it interactive.</span>
 
@@ -3888,7 +3888,7 @@ effects to data nodes executions.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">go_to_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_page</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">go_to_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_page</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Changes the current page in constrained dashboard mode.</span>
 
@@ -3939,7 +3939,7 @@ effects to data nodes executions.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">hide_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">hide_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Hides a widget. All widgets are initially visible.</span>
 
@@ -3990,7 +3990,7 @@ effects to data nodes executions.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">show_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">show_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Makes a widget visible. All widgets are initially visible.</span>
 
@@ -4054,7 +4054,7 @@ effects to data nodes executions.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">view_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamValues</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">view_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamValues</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Navigates to pageUrl, setting the values of the specified dataNodes in inputVals.</span>
 
@@ -4120,7 +4120,7 @@ effects to data nodes executions.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">view_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamValues</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">view_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_vals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamValues</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_tab</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Similar to `view_page`, but for projects.</span>
 
@@ -4167,17 +4167,17 @@ show_signature_annotations: false</p>
 
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">NotificationActions</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">NotificationActions</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class provides a port of the javascript API. An instance of it is provided to user scripts as</span>
 <span class="sd">    `chalkit.notification`. It allows some interactions with the notifications. </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ChalkitState</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ChalkitState</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">state</span>
 
 
-    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a non-blocking notification.</span>
 
@@ -4188,7 +4188,7 @@ show_signature_annotations: false</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">add_side_effect</span><span class="p">(</span><span class="s2">&quot;notification.notify&quot;</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">swalert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">swalert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use sweetAlert blocking notification.</span>
 
@@ -4261,7 +4261,7 @@ show_signature_annotations: false</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datanode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add a non-blocking notification.</span>
 
@@ -4326,7 +4326,7 @@ show_signature_annotations: false</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>chalkit_python_api\public_api.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">swalert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">swalert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Use sweetAlert blocking notification.</span>
 

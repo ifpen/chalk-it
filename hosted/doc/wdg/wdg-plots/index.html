@@ -1148,7 +1148,7 @@
 <p>The <strong>selection</strong> actuator is detailed in <a href="../selection/plot-selection/">this topic</a></p>
 <h2 id="plotly-python-generic">Plotly Python Generic<a class="headerlink" href="#plotly-python-generic" title="Permanent link">&para;</a></h2>
 <p>This widget expects a Plotly figure Python object, produced by a <a href="../../ds/ds-reference/#python-script">Python Script</a>-type dataNode. Below a code example: </p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">gapminder</span><span class="p">()</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;country==&#39;Canada&#39;&quot;</span><span class="p">)</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;lifeExp&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Life expectancy in Canada&#39;</span><span class="p">)</span>
@@ -1163,7 +1163,7 @@
 </ul>
 <h2 id="matplotlib">Matplotlib<a class="headerlink" href="#matplotlib" title="Permanent link">&para;</a></h2>
 <p>In the same way as Plotly Python widget, Matplotlib widget expect a figure object as actuator. Below a code example:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 

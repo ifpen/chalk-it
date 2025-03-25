@@ -1220,7 +1220,7 @@
 </li>
 <li>
 <p>Enter <strong>dataset</strong> in the <em>NAME</em> field and copy the following code into the <em>PYTHON SCRIPT</em> field:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span>
 <span class="n">iris</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">()</span>
 <span class="k">return</span> <span class="n">chalkit</span><span class="o">.</span><span class="n">as_python</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
 </code></pre></div>
@@ -1243,7 +1243,7 @@
 <li>Enter <strong>datasetDataframe</strong> in <em>NAME</em> field,</li>
 <li>Copy the following code in <em>PYTHON SCRIPT</em> field.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="n">iris</span> <span class="o">=</span> <span class="n">dataNodes</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span>
 
@@ -1258,7 +1258,7 @@
 </li>
 <li>
 <p>To visualize the dataset using <em>Plotly Python</em> librairy, create a new <em>Script (Pyodide)</em> datanode, name it <strong>plot</strong>, then copy the following code in <em>PYTHON SCRIPT</em> field.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">dataNodes</span><span class="p">[</span><span class="s2">&quot;datasetDataframe&quot;</span><span class="p">]</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;sepal width (cm)&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;sepal length (cm)&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;petal length (cm)&#39;</span><span class="p">,</span> <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;petal width (cm)&#39;</span><span class="p">])</span>
@@ -1299,7 +1299,7 @@
 <p>The goal is now to use the previously trained classifier to predict Iris species based on petal and sepal width and length.</p>
 <h3 id="classifier-training">Classifier training<a class="headerlink" href="#classifier-training" title="Permanent link">&para;</a></h3>
 <p>Following the steps already described in paragraph <strong>2.</strong>, create a <em>Script (Pyodide)</em> datanode named <strong>classifier</strong> and use the following python script as shown in the picture below.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 <span class="n">clf</span><span class="o">=</span><span class="n">RandomForestClassifier</span><span class="p">()</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dataNodes</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">dataNodes</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
 <span class="k">return</span> <span class="n">clf</span>
@@ -1366,8 +1366,8 @@
 <ul>
 <li>
 <p>Add a <em>Script (Pyodide)</em> datanode named <strong>predict</strong> with the following code:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 
 <span class="n">df</span> <span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dataNodes</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">],</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">clf</span> <span class="o">=</span> <span class="n">dataNodes</span><span class="p">[</span><span class="s2">&quot;classifier&quot;</span><span class="p">]</span>
