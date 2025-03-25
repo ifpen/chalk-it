@@ -833,164 +833,259 @@ function flatUiComplexWidgetsPluginClass() {
   // +--------------------------------------------------------------------¦ \\
   // |                              List                                  | \\
   // +--------------------------------------------------------------------¦ \\
+  /**
+   * listFlatUiWidget
+   * A widget that displays a multi-select list with optional color-coding.
+   */
   this.listFlatUiWidget = function (idDivContainer, idWidget, idInstance, bInteractive) {
+    // Inherit from baseWidget
     this.constructor(idDivContainer, idWidget, idInstance, bInteractive);
     const self = this;
 
-    this.enable = function () {
-      const maxSelected = modelsParameters[idInstance]?.maxSelected ?? '*';
-      const listElement = $('#list' + idWidget);
-
-      // -- 1) Prevent selecting more than maxSelected (if not "*") --
-      // We use mousedown so we can block the selection before it happens.
-      if (maxSelected !== '*') {
-        listElement.on('mousedown', 'option', function (e) {
-          // If this option is already selected, allow unselecting.
-          const isAlreadySelected = $(this).is(':selected');
-          // Count how many are currently selected.
-          const currentlySelectedCount = listElement.find('option:selected').length;
-
-          // If the user is about to select a new one, but the limit is reached, block it.
-          if (!isAlreadySelected && currentlySelectedCount >= maxSelected) {
-            e.preventDefault();
-          }
-        });
+    /**
+     * Attach event handlers for user interaction (click, Ctrl+A, etc.).
+     * This method is only called when the widget is interactive.
+     */
+    function _setupEventHandlers() {
+      const $listElement = $('#list' + idWidget);
+      // Preserve the '*' interface for unlimited selection.
+      // Also support numeric values.
+      const maxSelectedSetting = modelsParameters[idInstance]?.maxSelected ?? '*';
+      let numericMaxSelected;
+      if (maxSelectedSetting === '*') {
+        numericMaxSelected = Infinity;
+      } else {
+        numericMaxSelected = parseInt(maxSelectedSetting, 10);
+        if (isNaN(numericMaxSelected)) {
+          numericMaxSelected = Infinity;
+        }
+      }
+      // If user sets <= 0, no items can be selected.
+      if (numericMaxSelected <= 0) {
+        numericMaxSelected = 0;
       }
 
-      // -- 2) Use the change event to update which items are selected --
-      const updateCallback = () => {
-        const selectedValues = listElement.val() || [];
-        self.selectedValue.updateCallback(self.selectedValue, selectedValues);
-      };
+      // Handle mousedown on options to implement custom toggle behavior.
+      // - Simple left-click (without Ctrl) clears all selections and then:
+      //   * Unselects the clicked item if it is already selected.
+      //   * Otherwise, selects only that item.
+      // - Ctrl+left click toggles the clicked option while preserving previous selections,
+      //   provided the maxSelected constraint is not exceeded.
+      $listElement.off('mousedown.optionToggle').on('mousedown.optionToggle', 'option', function (e) {
+        if (e.button !== 0) return; // Only handle left-click
 
-      listElement.on('change', function () {
-        updateCallback();
+        const $option = $(this);
+        // Always prevent default to stop the browser's native selection behavior.
+        e.preventDefault();
+
+        if (!e.ctrlKey) {
+          // Without Ctrl, check if the clicked option is already selected.
+          if ($option.is(':selected')) {
+            // Unselect the option.
+            $option.prop('selected', false);
+          } else {
+            // Clear all selections and select only this option.
+            $listElement.find('option').prop('selected', false);
+            $option.prop('selected', true);
+          }
+          $listElement.trigger('change');
+          return;
+        }
+
+        // With Ctrl pressed, toggle the clicked option.
+        const isSelected = $option.is(':selected');
+        if (!isSelected) {
+          // If not already selected, only select if maxSelected constraint is not exceeded.
+          const currentlySelectedCount = $listElement.find('option:selected').length;
+          if (numericMaxSelected !== Infinity && currentlySelectedCount >= numericMaxSelected) {
+            return;
+          }
+          $option.prop('selected', true);
+        } else {
+          $option.prop('selected', false);
+        }
+        $listElement.trigger('change');
       });
 
-      // -- 3) Handle Ctrl+A to select all (only if maxSelected = "*") --
-      listElement.on('keydown', function (e) {
+      // On change, notify the callback with the new selection.
+      const updateCallback = () => {
+        const selectedValues = $listElement.val() || [];
+        self.selectedValue.updateCallback(self.selectedValue, selectedValues);
+      };
+      $listElement.off('change.selectionUpdate').on('change.selectionUpdate', updateCallback);
+
+      // Handle Ctrl+A (select all) if unlimited selection is allowed.
+      $listElement.off('keydown.ctrlA').on('keydown.ctrlA', function (e) {
         if (e.ctrlKey && (e.key === 'a' || e.key === 'A' || e.keyCode === 65)) {
           e.preventDefault();
-          if (maxSelected === '*') {
-            listElement.find('option').prop('selected', true);
-            // Make sure to trigger the callback after programmatic select.
+          if (maxSelectedSetting === '*') {
+            $listElement.find('option').prop('selected', true);
             updateCallback();
           }
         }
       });
+    }
 
-      // Finally, enable the list visually
+    /**
+     * Enable user interactions and set full opacity.
+     */
+    this.enable = function () {
+      const listElement = $('#list' + idWidget);
       listElement.css('opacity', '1');
+      // Re-attach handlers when the widget is enabled.
+      _setupEventHandlers();
     };
 
+    /**
+     * Disable user interactions (visually and functionally).
+     */
     this.disable = function () {
-      $('#list' + idWidget)[0].style.opacity = '0.7'; // Semi-transparent to indicate disabled state
+      const listElement = $('#list' + idWidget);
+      listElement.css('opacity', '0.7');
+      // Optionally, unbind events.
+      listElement.off('mousedown.optionToggle change.selectionUpdate keydown.ctrlA');
     };
 
+    /**
+     * Rescale or re-render the widget if needed.
+     */
     this.rescale = function () {
       this.render();
     };
 
+    /**
+     * Insert a CSS rule into a stylesheet. If none exists, one is created.
+     * @param {string} selector CSS selector to apply.
+     * @param {string} rule     CSS rule text (e.g., "color: red;").
+     */
+    function _insertCssRule(selector, rule) {
+      let styleSheet = document.styleSheets[0];
+      if (!styleSheet) {
+        const styleEl = document.createElement('style');
+        document.head.appendChild(styleEl);
+        styleSheet = document.styleSheets[document.styleSheets.length - 1];
+      }
+      try {
+        styleSheet.insertRule(`${selector} { ${rule} }`, styleSheet.cssRules.length);
+      } catch (err) {
+        console.warn('Could not insert CSS rule:', selector, rule, err);
+      }
+    }
+
+    /**
+     * Apply custom styles (colors and backgrounds) to list items.
+     */
+    function _applyCustomStyles() {
+      const listId = `#list${idWidget}`;
+      const colors = modelsHiddenParams[idInstance]?.valueColor;
+      if (Array.isArray(colors) && colors.length > 0) {
+        document.querySelectorAll(`${listId} option`).forEach((option, index) => {
+          const color = colors[index % colors.length];
+          _insertCssRule(`${listId} option:nth-child(${index + 1})`, `color: ${color};`);
+        });
+      } else {
+        _insertCssRule(`${listId} option`, `color: ${modelsParameters[idInstance].listValueColor};`);
+      }
+
+      // Apply background color for all options.
+      const bgRule = this.listBackgroundColor();
+      _insertCssRule(`${listId} option`, bgRule);
+
+      // Apply highlight colors for selected options.
+      const fgRuleSelected = this.selectValueColor();
+      const bgRuleSelected = this.selectValueBackgroundColor();
+      _insertCssRule(`${listId} option:checked`, `${fgRuleSelected} ${bgRuleSelected}`);
+    }
+
+    /**
+     * Build and render the widget's DOM structure inside idDivContainer.
+     */
     this.render = function () {
       const widgetHtml = document.createElement('div');
-      const valueHeightPx = $('#' + idDivContainer).height();
+      const containerHeight = $('#' + idDivContainer).height();
 
-      // Configure widget container styles
+      // Style the container.
       Object.assign(widgetHtml.style, {
         width: 'inherit',
-        height: `${valueHeightPx}px`,
+        height: `${containerHeight}px`,
         cursor: 'inherit',
         display: this.showWidget() ? 'initial' : 'none',
         pointerEvents: 'none',
         opacity: this.enableWidget() ? '1' : '0.5',
       });
 
-      const borderStyle = this.border();
+      // Compute font sizing.
       const fontFactor = getFontFactor();
       const fontSize = modelsParameters[idInstance].listValueFontSize * fontFactor;
 
-      // Build <select> content
-      const val = modelsHiddenParams[idInstance].value || [];
-      let options = '';
-
-      if (Array.isArray(val)) {
+      // Build the <option> elements.
+      const valueArray = modelsHiddenParams[idInstance].value || [];
+      let optionsHTML = '';
+      if (Array.isArray(valueArray)) {
         const pointerEvents = this.enableWidget() ? 'initial' : 'none';
         const cursorStyle = this.bIsInteractive ? 'pointer' : 'inherit';
-
-        for (const option of val) {
-          options += `<option style="cursor: ${cursorStyle}; pointer-events: ${pointerEvents};">${option}</option>`;
+        for (const optionText of valueArray) {
+          optionsHTML += `<option style="cursor: ${cursorStyle}; pointer-events: ${pointerEvents};">${optionText}</option>`;
         }
       }
 
+      // Construct the <select> element.
+      const borderStyle = this.border();
+      const fontFamily = this.valueFontFamily();
       const selectHtml = `
-        <select 
-          class="form-control" 
-          id="list${idWidget}" 
-          multiple 
-          size="10" 
-          style="
-            width: 100%; 
-            height: ${valueHeightPx}px; 
-            border-radius: 6px; 
-            color: ${modelsParameters[idInstance].listValueColor}; 
-            ${borderStyle}; 
-            ${this.valueFontFamily()}
-            box-sizing: border-box; 
-            font-size: calc(7px + ${fontSize}vw + 0.4vh); 
-            cursor: inherit; 
-            max-width: 2000px;"
-        >
-          ${options}
-        </select>`;
-
+      <select
+        class="form-control"
+        id="list${idWidget}"
+        multiple
+        size="10"
+        style="
+          width: 100%;
+          height: ${containerHeight}px;
+          border-radius: 6px;
+          ${borderStyle}
+          ${fontFamily}
+          box-sizing: border-box;
+          font-size: calc(7px + ${fontSize}vw + 0.4vh);
+          cursor: inherit;
+          max-width: 2000px;"
+      >
+        ${optionsHTML}
+      </select>
+    `;
       widgetHtml.innerHTML = selectHtml;
 
-      // Insert widget into the container
+      // Insert into the container.
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
 
-      // Adjust height for mobile/tablet devices
-      const touchDevice = 'ontouchstart' in document.documentElement;
-      const isMobileOrTablet = window.mobileAndTabletCheck();
-      // const touchDevice = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement); // desktops with a touch screen and mobiles
-
-      if (touchDevice || isMobileOrTablet) {
+      // Adjust for touch devices.
+      const isTouchDevice = 'ontouchstart' in document.documentElement;
+      const isMobileOrTablet = window.mobileAndTabletCheck?.() || false;
+      if (isTouchDevice || isMobileOrTablet) {
         document.getElementById(`list${idWidget}`).style.height = 'auto';
       }
 
-      // Set selected value if any
-      const selectedValue = modelsHiddenParams[idInstance]?.selectedValue || null;
-      if (selectedValue) {
-        $(`#list${idWidget}`).val(selectedValue);
+      // Restore any previously stored selection.
+      const savedSelection = modelsHiddenParams[idInstance]?.selectedValue || null;
+      if (savedSelection) {
+        const finalSelection = Array.isArray(savedSelection) ? savedSelection : [savedSelection];
+        $(`#list${idWidget}`).val(finalSelection);
       }
 
-      // Add custom stylesheet rules
-      const stylesheet = document.styleSheets[0];
-      const listId = `#list${idWidget}`;
+      // Apply custom styling.
+      _applyCustomStyles.call(this);
 
-      const colors = modelsHiddenParams[idInstance]?.valueColor;
-      if (Array.isArray(colors) && colors.length > 0) {
-        const numColors = colors.length;
-        document.querySelectorAll(`${listId} option`).forEach((_, index) => {
-          const color = colors[index % numColors]; // Loop through colors
-          const rule = `${listId} option:nth-child(${index + 1}) { color: ${color}; }`;
-          stylesheet.insertRule(rule, stylesheet.cssRules.length);
-        });
-      } else {
-        stylesheet.addRule(`${listId} option`, modelsParameters[idInstance].listValueColor);
-      }
-
-      stylesheet.addRule(`${listId} option`, this.listBackgroundColor());
-      stylesheet.addRule(`${listId} option:checked`, this.selectValueColor());
-      stylesheet.addRule(`${listId} option:checked`, this.selectValueBackgroundColor());
-
+      // Enable or disable interaction based on bIsInteractive.
       if (this.bIsInteractive) {
-        self.enable();
+        this.enable();
       } else {
-        self.disable();
+        this.disable();
       }
     };
 
+    // --------------------------------------------------------------------------
+    // Actuator Descriptors
+    // --------------------------------------------------------------------------
     const _VALUE_DESCRIPTOR = new WidgetActuatorDescription(
       'value',
       'Available choices',
@@ -1010,13 +1105,7 @@ function flatUiComplexWidgetsPluginClass() {
       {
         $schema: WidgetPrototypesManager.SCHEMA_VERSION,
         $id: WidgetPrototypesManager.ID_URI_SCHEME + 'xdash:listFlatUiWidget_selectedValue',
-        anyOf: [
-          { type: 'string' },
-          {
-            type: 'array',
-            items: { type: 'string' },
-          },
-        ],
+        anyOf: [{ type: 'string' }, { type: 'array', items: { type: 'string' } }],
       }
     );
 
@@ -1024,17 +1113,17 @@ function flatUiComplexWidgetsPluginClass() {
       return [_VALUE_DESCRIPTOR, _VALUE_COLOR_DESCRIPTOR, _SELECTED_DESCRIPTOR];
     };
 
+    // --------------------------------------------------------------------------
+    // "value" actuator
+    // --------------------------------------------------------------------------
     this.value = {
       updateCallback: function () {},
       setValue: function (val) {
-        const pastSelect = JSON.stringify(modelsHiddenParams[idInstance].selectedValue);
-
+        const oldSelection = JSON.stringify(modelsHiddenParams[idInstance].selectedValue || []);
         modelsHiddenParams[idInstance].value = val;
         self.render();
-
-        const selected = JSON.stringify(self.selectedValue.getValue());
-        if (selected !== pastSelect) {
-          //add a test to avoid loop
+        const newSelection = JSON.stringify(self.selectedValue.getValue());
+        if (newSelection !== oldSelection) {
           self.selectedValue.updateCallback(self.selectedValue, self.selectedValue.getValue());
         }
       },
@@ -1044,11 +1133,14 @@ function flatUiComplexWidgetsPluginClass() {
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
       },
-      removeValueChangedHandler: function (updateDataFromWidget) {},
-      setCaption: function (caption, bCaptionManuallyChanged) {},
+      removeValueChangedHandler: function () {},
+      setCaption: function () {},
       clearCaption: function () {},
     };
 
+    // --------------------------------------------------------------------------
+    // "valueColor" actuator
+    // --------------------------------------------------------------------------
     this.valueColor = {
       updateCallback: function () {},
       setValue: function (valColor) {
@@ -1058,50 +1150,46 @@ function flatUiComplexWidgetsPluginClass() {
       getValue: function () {
         return modelsHiddenParams[idInstance].valueColor;
       },
-      addValueChangedHandler: function (updateDataFromWidget) {},
-      removeValueChangedHandler: function (updateDataFromWidget) {},
-      setCaption: function (caption, bCaptionManuallyChanged) {},
+      addValueChangedHandler: function () {},
+      removeValueChangedHandler: function () {},
+      setCaption: function () {},
       clearCaption: function () {},
     };
 
+    // --------------------------------------------------------------------------
+    // "selectedValue" actuator
+    // --------------------------------------------------------------------------
     this.selectedValue = {
       updateCallback: function () {},
       setValue: function (val) {
-        $('#list' + idWidget).val(val);
-        modelsHiddenParams[idInstance].selectedValue = val;
+        let newVal = val || [];
+        if (!Array.isArray(newVal)) {
+          newVal = [newVal];
+        }
+        const allowedValues = modelsHiddenParams[idInstance].value || [];
+        newVal = newVal.filter((item) => allowedValues.includes(item));
+        $('#list' + idWidget).val(newVal);
+        modelsHiddenParams[idInstance].selectedValue = newVal;
       },
       getValue: function () {
-        const listElement = document.getElementById('list' + idWidget);
-        const selectedVal = $('#list' + idWidget).val();
-        // const selectedIndex = x.selectedIndex;
-        const selectedOptions = listElement?.selectedOptions || [];
-        const valuesArray = modelsHiddenParams[idInstance]?.value || [];
-        const listLength = Array.isArray(valuesArray) ? valuesArray.length : 0;
-
-        // Return empty string if no options are selected
-        if (selectedOptions.length === 0) return '';
-
-        // Validate the indices of the selected options
-        for (const option of selectedOptions) {
-          if (option.index < 0 || option.index >= listLength) {
-            return '';
-          }
-        }
-
-        return selectedVal || '';
+        const $listElement = $('#list' + idWidget);
+        if (!$listElement.length) return '';
+        const selectedVal = $listElement.val();
+        return !selectedVal || selectedVal.length === 0 ? '' : selectedVal;
       },
       addValueChangedHandler: function (updateDataFromWidget) {
         this.updateCallback = updateDataFromWidget;
       },
-      removeValueChangedHandler: function (updateDataFromWidget) {},
-      setCaption: function (caption, bCaptionManuallyChanged) {},
+      removeValueChangedHandler: function () {},
+      setCaption: function () {},
       clearCaption: function () {},
     };
 
-    self.render();
+    // Render immediately upon creation.
+    this.render();
   };
 
-  // Inherit from baseWidget class
+  // Inherit from baseWidget.
   this.listFlatUiWidget.prototype = baseWidget.prototype;
 
   // +--------------------------------------------------------------------¦ \\
