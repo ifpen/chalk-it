@@ -289,7 +289,7 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
     }
 
     function callWebservice(requestURL, reqDataType, body) {
-      let interval = null; //AEF
+      //let interval = null; //AEF
       const useMethod = currentSettings.use_xproxy ? 'POST' : currentSettings.method;
       jqXHR = $.ajax({
         url: requestURL,
@@ -477,27 +477,28 @@ import { base64ArrayBuffer, decodeMimeType, stripUndefined } from 'kernel/datano
         complete: function (xhr, status) {
           //AEF
           //To clear the interval on Complete
-          clearInterval(interval);
+          //clearInterval(interval);
         },
       });
       //AEF: network check for every 1 second
-      interval = setInterval(function () {
-        var isOnLine = navigator.onLine;
-        if (isOnLine) {
-          // online
-        } else {
-          if (!_.isUndefined(jqXHR)) {
-            datanodesManager.getDataNodeByName(currentSettings.name).completeExecution('NOP');
-            datanodesManager.getDataNodeByName(currentSettings.name).schedulerStatus('Stop');
-            notificationCallback(
-              'error',
-              currentSettings.name,
-              "Internet is disconnected. Request of '" + currentSettings.name + "' wil be aborted"
-            );
-            jqXHR.abort();
-          }
-        }
-      }, 1000);
+      //MBG 25/03/2025 : not needed
+      // interval = setInterval(function () {
+      //   var isOnLine = navigator.onLine;
+      //   if (isOnLine) {
+      //     // online
+      //   } else {
+      //     if (!_.isUndefined(jqXHR)) {
+      //       datanodesManager.getDataNodeByName(currentSettings.name).completeExecution('NOP');
+      //       datanodesManager.getDataNodeByName(currentSettings.name).schedulerStatus('Stop');
+      //       notificationCallback(
+      //         'error',
+      //         currentSettings.name,
+      //         "Internet is disconnected. Request of '" + currentSettings.name + "' wil be aborted"
+      //       );
+      //       jqXHR.abort();
+      //     }
+      //   }
+      // }, 1000);
     }
 
     this.onDispose = function () {};
