@@ -541,10 +541,26 @@ function plotlyWidgetsPluginClass() {
       return text;
     };
 
+    /**
+     * Creates a deep clone of the object if the input is a non-null object. If the object contains functions,
+     * their references are copied. Returns the input value for non-object types.
+     *
+     * This function uses Lodash's _.cloneDeep, which handles complex objects including nested structures,
+     * circular references, and maintains function references.
+     *
+     * @method #deepClone
+     * @private
+     * @param {*} value - The value to check and deeply clone.
+     * @returns {*} Deep clone of the input object, or the original value.
+     */
+    this.deepClone = function (value) {
+      return value !== null && typeof value === 'object' ? _.cloneDeep(value) : value;
+    };
+
     this.render = function () {
-      const hiddenData = modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data;
-      let hiddenLayout = modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout;
-      const modelLayout = modelsParameters[idInstance]?.layout ?? hiddenLayout;
+      const hiddenData = this.deepClone(modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data);
+      let hiddenLayout = this.deepClone(modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout);
+      const modelLayout = this.deepClone(modelsParameters[idInstance]?.layout ?? hiddenLayout);
 
       if (hiddenData && this.checkNested(hiddenData, 'textfont', 'color')) {
         hiddenData.textfont.color = this.getColorValueFromCSSProperty(hiddenData.textfont.color);
