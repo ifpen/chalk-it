@@ -83,7 +83,7 @@
     "jsoneditor": "^9.5.7",
     "jszip": "^3.10.1",
     "knockout": "3.5.0",
-    "leaflet": "1.5.1",
+    "leaflet": "1.9.4",
     "leaflet-modal": "^0.2.0",
     "leaflet.awesome-markers": "^2.0.5",
     "leaflet.markercluster": "^1.5.3",
