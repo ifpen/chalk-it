@@ -45,24 +45,22 @@ export function initTileSevers() {
     maxZoom: 20,
     subdomains: '1234',
   };
-  if (!(xDashConfig.xDashBasicVersion == 'true')) {
-    tileServers['EsriWorldImagery'] = {
-      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      attribution:
-        'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-      id: 'Esri.WorldImagery',
-      maxZoom: 19,
-    };
-    tileServers['GeoportailFrance.orthos'] = {
-      url: 'https://wxs.ign.fr/{apikey}/geoportail/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE={style}&TILEMATRIXSET=PM&FORMAT={format}&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
-      attribution: '<a target="_blank" href="https://www.geoportail.gouv.fr/">Geoportail France</a>',
-      minZoom: 2,
-      maxZoom: 19,
-      apikey: 'choisirgeoportail',
-      format: 'image/jpeg',
-      style: 'normal',
-    };
-  }
+  tileServers['EsriWorldImagery'] = {
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attribution:
+      'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+    id: 'Esri.WorldImagery',
+    maxZoom: 19,
+  };
+  tileServers['GeoportailFrance.orthos'] = {
+    url: 'https://wxs.ign.fr/{apikey}/geoportail/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE={style}&TILEMATRIXSET=PM&FORMAT={format}&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
+    attribution: '<a target="_blank" href="https://www.geoportail.gouv.fr/">Geoportail France</a>',
+    minZoom: 2,
+    maxZoom: 19,
+    apikey: 'choisirgeoportail',
+    format: 'image/jpeg',
+    style: 'normal',
+  };
 
   return tileServers;
 }
