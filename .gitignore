@@ -79,3 +79,7 @@ ipch/
 
 # root xprjson
 /*.xprjson
+
+# venv
+chalkenv/
+chalkenvprod/
