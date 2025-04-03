@@ -31,7 +31,7 @@ export function setOfflineSupport(self, tileConf, modelsParameters, idInstance, 
   var control = L.control.savetiles(self.baseLayer, {
     zoomlevels: zoomLevelsToSave, //optional zoomlevels to save, default current zoomlevel
     confirm: function (layer, succescallback) {
-      if (window.confirm('Save ' + layer._tilesforSave.length)) {
+      if (window.confirm('Save ' + layer._tilesforSave.length + ' map tiles on your browser cache')) {
         succescallback();
       }
     },
@@ -40,8 +40,8 @@ export function setOfflineSupport(self, tileConf, modelsParameters, idInstance, 
         successCallback();
       }
     },
-    saveText: '<i class="icon-download-alt icon" aria-hidden="true"></i>',
-    rmText: '<i class="icon-trash icon" aria-hidden="true"></i>',
+    saveText: '<i class="fa fa-save" aria-hidden="true"></i>',
+    rmText: '<i class="fa fa-trash" aria-hidden="true"></i>',
   });
   control.addTo(self.map);
   self.baseLayer.on('storagesize', function (e) {
