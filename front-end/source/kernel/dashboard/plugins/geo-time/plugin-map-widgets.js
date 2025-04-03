@@ -58,10 +58,8 @@ import {
   updateLayerInformation,
   addDrawingFeatures,
   cutLayer,
-  updateSelectedGeoJSON
+  updateSelectedGeoJSON,
 } from './plugin-map-geoman';
-
-
 
 /*******************************************************************/
 /*************************** plugin data ***************************/
@@ -376,6 +374,7 @@ function mapWidgetsPluginClass() {
                   var zeroKey = _.keys(modelsHiddenParams[idInstance].legends)[0];
                   self.showLegend(zeroKey);
                   self.currentBaseLayer = zeroKey;
+                  self.mapInPlayLoaded = true;
                   document.removeEventListener('play-tab-loaded', self.goToFirstRadioButton);
                   return;
                 }
@@ -420,7 +419,7 @@ function mapWidgetsPluginClass() {
         },
         addValueChangedHandler: function (updateDataFromWidget) {
           if (widgetConnector.widgetsConnection[idInstance].sliders.selectedGeoJson.dataNode !== 'None') {
-            this.updateCallback = updateDataFromWidget;            
+            this.updateCallback = updateDataFromWidget;
           }
         },
         removeValueChangedHandler: function (updateDataFromWidget) {},
@@ -522,6 +521,7 @@ function mapWidgetsPluginClass() {
         return;
       }
       document.addEventListener('play-tab-loaded', self.goToFirstRadioButton);
+      self.mapInPlayLoaded = false;
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
       self.map = L.map('openStreetMap' + idWidget, { preferCanvas: true }).setView(
@@ -641,75 +641,73 @@ function mapWidgetsPluginClass() {
         self.addDrawingFeatures(self, modelsHiddenParams, idInstance);
       }
 
-      try {
-        for (let i = 0; i < self.numberOfGeoJsonLayers; i++) {
-          if (
-            !_.isUndefined(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i]) &&
-            !_.isUndefined(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i])
-          ) {
-            self.addGeoJson(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i], i + 1);
-          }
-        }
-
-        for (let i = 0; i < self.numberOfChoroplethLayers; i++) {
-          if (
-            !_.isUndefined(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i]) &&
-            !_.isUndefined(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i])
-          ) {
-            self.addChoropleth(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i], i + 1);
-          }
-        }
-
-        for (let i = 0; i < self.numberOfLineHeatMapLayers; i++) {
-          if (
-            !_.isUndefined(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i]) &&
-            !_.isUndefined(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i])
-          ) {
-            self.addLineHeatMap(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i], i + 1);
-          }
-        }
-
-        for (let i = 0; i < self.numberOfHeatMapLayers; i++) {
-          modelsHiddenParams[idInstance].heatMap.heatMapBuffer[i] = []; // clear heatmap buffer
-          if (
-            !_.isUndefined(modelsHiddenParams[idInstance].heatMap.heatMapData[i]) &&
-            !_.isUndefined(modelsHiddenParams[idInstance].heatMap.heatMapData[i])
-          ) {
-            self.drawHeatMap(modelsHiddenParams[idInstance].heatMap.heatMapData[i], i + 1);
-          }
-        }
-
-        for (let i = 0; i < self.numberOfImageLayers; i++) {
-          if (
-            !_.isUndefined(modelsHiddenParams[idInstance].imageOverlay.imageData[i]) &&
-            !_.isUndefined(modelsHiddenParams[idInstance].imageOverlay.imageData[i])
-          ) {
-            self.addImageOverlay(modelsHiddenParams[idInstance].imageOverlay.imageData[i], i + 1);
-          }
-        }
-
-        for (let i = 0; i < self.numberOfSvgLayers; i++) {
-          if (
-            !_.isUndefined(modelsHiddenParams[idInstance].svgOverlay.svgData[i]) &&
-            !_.isUndefined(modelsHiddenParams[idInstance].svgOverlay.svgData[i])
-          ) {
-            self.addSvgOverlay(modelsHiddenParams[idInstance].svgOverlay.svgData[i], i + 1, false);
-          }
-        }
-      } catch (ex) {
-        console.error(ex);
-      }
-
       // solve tile display issues on startup
       setTimeout(() => {
         self.map.invalidateSize();
-      }, 300);
+        try {
+          for (let i = 0; i < self.numberOfGeoJsonLayers; i++) {
+            if (
+              !_.isUndefined(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i]) &&
+              !_.isUndefined(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i])
+            ) {
+              self.addGeoJson(modelsHiddenParams[idInstance].geoJson.geoJsonLayers[i], i + 1);
+            }
+          }
+
+          for (let i = 0; i < self.numberOfChoroplethLayers; i++) {
+            if (
+              !_.isUndefined(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i]) &&
+              !_.isUndefined(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i])
+            ) {
+              self.addChoropleth(modelsHiddenParams[idInstance].choropleth.choroplethLayers[i], i + 1);
+            }
+          }
+
+          for (let i = 0; i < self.numberOfLineHeatMapLayers; i++) {
+            if (
+              !_.isUndefined(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i]) &&
+              !_.isUndefined(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i])
+            ) {
+              self.addLineHeatMap(modelsHiddenParams[idInstance].lineHeatMap.lineHeatMapLayers[i], i + 1);
+            }
+          }
+
+          for (let i = 0; i < self.numberOfHeatMapLayers; i++) {
+            modelsHiddenParams[idInstance].heatMap.heatMapBuffer[i] = []; // clear heatmap buffer
+            if (
+              !_.isUndefined(modelsHiddenParams[idInstance].heatMap.heatMapData[i]) &&
+              !_.isUndefined(modelsHiddenParams[idInstance].heatMap.heatMapData[i])
+            ) {
+              self.drawHeatMap(modelsHiddenParams[idInstance].heatMap.heatMapData[i], i + 1);
+            }
+          }
+
+          for (let i = 0; i < self.numberOfImageLayers; i++) {
+            if (
+              !_.isUndefined(modelsHiddenParams[idInstance].imageOverlay.imageData[i]) &&
+              !_.isUndefined(modelsHiddenParams[idInstance].imageOverlay.imageData[i])
+            ) {
+              self.addImageOverlay(modelsHiddenParams[idInstance].imageOverlay.imageData[i], i + 1);
+            }
+          }
+
+          for (let i = 0; i < self.numberOfSvgLayers; i++) {
+            if (
+              !_.isUndefined(modelsHiddenParams[idInstance].svgOverlay.svgData[i]) &&
+              !_.isUndefined(modelsHiddenParams[idInstance].svgOverlay.svgData[i])
+            ) {
+              self.addSvgOverlay(modelsHiddenParams[idInstance].svgOverlay.svgData[i], i + 1, false);
+            }
+          }
+        } catch (ex) {
+          console.error(ex);
+        }
+      }, 200);
 
       self.map.on('baselayerchange', function (eventLayer) {
         self.showLegend(eventLayer.name);
         self.currentBaseLayer = eventLayer.name;
       }); // MBG : for new heatmap
-      
     };
 
     this.showLegend = function (layerName) {
@@ -863,7 +861,7 @@ function mapWidgetsPluginClass() {
           }
         }
 
-        if (!disableAutoscale) {
+        if (!disableAutoscale && bounds.isValid()) {
           // Display for the bounding box
           self.map.fitBounds(self.globalLayersBounds());
         }
