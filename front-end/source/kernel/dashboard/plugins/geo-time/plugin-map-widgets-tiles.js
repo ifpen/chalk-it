@@ -23,6 +23,14 @@ export function initTileSevers() {
     tileSize: 512,
     zoomOffset: -1,
   };
+  tileServers['MapboxSatelliteStreets'] = {
+    url: azureMapboxUrlGeneral,
+    attribution: 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'satellite-streets-v12',
+    tileSize: 512,
+    zoomOffset: -1,
+  };
   // "url": 'https://{s}.aerial.maps.api.here.com/maptile/2.1/maptile/newest/hybrid.day/{z}/{x}/{y}/256/png8?app_id=' + here_app_id + '&app_code=' + here_app_code + '&lg=eng',
   tileServers['HereSatelliteDay'] = {
     url: 'https://xdashgateway.azure-api.net/here{s}/maptile?z={z}&x={x}&y={y}' + '&lg=eng',
