@@ -198,6 +198,21 @@ function mapGeoJsonWidgetsPluginClass() {
       // Create and configure the main widget HTML
       const widgetHtml = document.createElement('div');
       widgetHtml.id = `mapGeoJson${idWidget}`;
+
+      //
+      const showWidget = this.showWidget();
+      let displayStyle = 'display: block;';
+      if (!showWidget) {
+        displayStyle = 'display: none;';
+      }
+      const enableWidget = this.enableWidget();
+      let enableStyle = 'pointer-events: inherit; opacity:initial;';
+      if (!enableWidget) {
+        enableStyle = 'pointer-events: none; opacity:0.5;';
+      }
+      //
+      widgetHtml.setAttribute('style', displayStyle + enableStyle);
+      
       widgetHtml.style.width = 'inherit';
       widgetHtml.style.height = 'inherit';
 
