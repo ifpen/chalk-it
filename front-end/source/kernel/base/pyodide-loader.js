@@ -11,12 +11,12 @@
 import PNotify from 'pnotify';
 import { xDashConfig } from 'config.js';
 
-import PyodideWorker from './pyodide-worker.js';
+function createPyodideWorker() {
+  return new Worker(new URL(/* webpackChunkName: 'pyodide.worker' */ './pyodide-worker.js', import.meta.url));
+}
 
 // TODO decide on handling of notifications
 // TODO decide on UI block ?
-
-const WORKER_URL = 'pyodide-worker-dev.js';
 
 function notifyInfo(title, text = '') {
   console.log(`${title}${text !== '' ? ':\n' + text : ''}`);
@@ -173,7 +173,7 @@ export class PyodideManager {
 
     const pyodideNotice = notifyInfo('Starting Pyodide...');
     try {
-      this.pyodideWorker = new PyodideWorker();
+      this.pyodideWorker = createPyodideWorker();
 
       this.callbacks = {};
 
