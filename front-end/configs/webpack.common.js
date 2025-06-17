@@ -30,7 +30,7 @@ module.exports = (env) => ({
   output: {
     filename: '[name]-bundle.js',
     path: path.resolve(__dirname, '../build'),
-    publicPath: '',
+    publicPath: 'auto',
     clean: true,
   },
   module: {
@@ -45,21 +45,6 @@ module.exports = (env) => ({
         resolve: {
           fullySpecified: false,
         },
-      },
-      {
-        // TODO change file names
-        //test: /\.worker\.js$/,
-        test: /-worker\.js$/i,
-        exclude: /(node_modules|doc)/,
-        use: [
-          {
-            loader: 'worker-loader',
-            options: {
-              filename: devMode ? '[name].js' : '[name].[contenthash].js',
-            },
-          },
-          'babel-loader',
-        ],
       },
       {
         test: /\.css$/,

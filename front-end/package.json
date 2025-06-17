@@ -105,7 +105,6 @@
     "tippy.js": "^6.3.7",
     "ui-select": "^0.19.8",
     "vis-network": "^7.0.0",
-    "worker-loader": "^3.0.8",
     "ws": "^8.18.0"
   },
   "scripts": {
