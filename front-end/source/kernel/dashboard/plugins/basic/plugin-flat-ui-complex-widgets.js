@@ -441,7 +441,7 @@ function flatUiComplexWidgetsPluginClass() {
         this.updateCallback = updateDataFromWidget;
 
         const value = $(`#select${idWidget}`).val();
-        if (value != '') {
+        if (value != '' && value != null) {
           updateDataFromWidget(this, value);
         }
 
