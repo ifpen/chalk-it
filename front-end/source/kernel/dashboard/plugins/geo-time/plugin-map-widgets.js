@@ -1606,6 +1606,7 @@ function mapWidgetsPluginClass() {
           maxValue = 1.0; // for single point
         } else {
           maxValue = computedMax;
+          if (maxValue==-Number.MAX_VALUE) maxValue = 1;
         }
       }
       if (_.isUndefined(minValue)) {
@@ -1613,6 +1614,7 @@ function mapWidgetsPluginClass() {
           minValue = 0.0; // for single point
         } else {
           minValue = computedMin;
+          if (minValue==Number.MAX_VALUE) minValue = 0;
         }
       }
 
