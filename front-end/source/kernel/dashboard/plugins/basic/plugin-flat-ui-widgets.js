@@ -258,7 +258,7 @@ function flatUiWidgetsPluginClass() {
     this.disable = function () {};
 
     this.readFileEvt = function () {
-      const input = $('#button' + idWidget + '_select_file');
+      const input = $('#button' + idInstance + idWidget + '_select_file');
       input.on('change', function (e) {
         const reader = new FileReader();
         const file = e.target.files[0];
@@ -357,10 +357,10 @@ function flatUiWidgetsPluginClass() {
       if (this.bIsInteractive) {
         if (modelsParameters[idInstance].fileInput || modelsParameters[idInstance].binaryFileInput) {
           const fileInput = document.createElement('input');
-          fileInput.id = `button${idWidget}_select_file`;
+          fileInput.id = `button${idInstance}${idWidget}_select_file`;
           fileInput.type = 'file';
           fileInput.style = 'display : none;';
-          fileInput.onclick = () => displayLoadSpinner.bind(this)(idWidget);
+          fileInput.onclick = () => displayLoadSpinner.bind(this)(idWidget,idInstance);
           divContent.appendChild(fileInput);
         } else {
           divContent.onclick = () => updateWidgetDataNode.bind(this)(idInstance, idWidget);

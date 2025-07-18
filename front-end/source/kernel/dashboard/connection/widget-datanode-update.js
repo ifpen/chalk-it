@@ -12,10 +12,10 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                         displayLoadSpinner                         | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-export function displayLoadSpinner(idWidget) {
+export function displayLoadSpinner(idWidget,idInstance) {
   const self = this;
   const aElement = document.getElementById('button' + idWidget);
-  const inputElement = document.getElementById('button' + idWidget + '_select_file');
+  const inputElement = document.getElementById('button' + idInstance + idWidget + '_select_file');
   const iElement = document.createElement('i');
   let timeoutId;
 
