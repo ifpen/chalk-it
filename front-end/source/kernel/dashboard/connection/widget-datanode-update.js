@@ -14,7 +14,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 // ├────────────────────────────────────────────────────────────────────┤ \\
 export function displayLoadSpinner(idWidget,idInstance) {
   const self = this;
-  const aElement = document.getElementById('button' + idWidget);
+  const aElement = document.getElementById('button' + idInstance + idWidget);
   const inputElement = document.getElementById('button' + idInstance + idWidget + '_select_file');
   const iElement = document.createElement('i');
   let timeoutId;
@@ -50,8 +50,8 @@ export function displayLoadSpinner(idWidget,idInstance) {
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                             addSpinner                             | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-function _addSpinner(idWidget) {
-  const widgetButton = document.getElementById('button' + idWidget);
+function _addSpinner(idWidget, idInstance) {
+  const widgetButton = document.getElementById('button' + idInstance + idWidget);
   const iElement = document.getElementById('icon' + idWidget) || document.createElement('i');
   iElement.setAttribute('id', 'icon' + idWidget);
 
@@ -69,7 +69,7 @@ function _addSpinner(idWidget) {
 // ├────────────────────────────────────────────────────────────────────┤ \\
 function _removeSpinner(idInstance, idWidget) {
   const iElement = document.getElementById('icon' + idWidget);
-  const widgetButton = document.getElementById('button' + idWidget);
+  const widgetButton = document.getElementById('button' + idInstance + idWidget);
 
   if (iElement) {
     iElement.remove();
@@ -103,7 +103,7 @@ export function updateWidgetDataNode(idInstance, idWidget) {
         const pendings = dnNames.some((name) => datanodesManager.getDataNodeByName(name).status() === 'Pending');
 
         if (pendings) {
-          _addSpinner(idWidget);
+          _addSpinner(idWidget, idInstance);
         } else {
           _removeSpinner(idInstance, idWidget);
           clearInterval(intervalId);
@@ -113,24 +113,4 @@ export function updateWidgetDataNode(idInstance, idWidget) {
   }
 }
 
-// ├────────────────────────────────────────────────────────────────────┤ \\
-// |                         setFileUploadSpinner                       | \\
-// ├────────────────────────────────────────────────────────────────────┤ \\
-export function setFileUploadSpinner(idWidget, status) {
-  const buttonElement = document.getElementById('button' + idWidget);
-  const existingSpinner = document.getElementById('icon' + idWidget);
 
-  if (status == 'remove') {
-    buttonElement.classList.remove('disabled');
-    if (existingSpinner) existingSpinner.remove();
-  } else if (status == 'add') {
-    // disable until request finished
-    buttonElement.classList.add('disabled');
-    if (!existingSpinner) {
-      const spinnerElement = document.createElement('i');
-      spinnerElement.setAttribute('id', 'icon' + idWidget);
-      spinnerElement.setAttribute('class', 'fa fa-spinner fa-spin');
-      buttonElement.appendChild(spinnerElement);
-    }
-  }
-}

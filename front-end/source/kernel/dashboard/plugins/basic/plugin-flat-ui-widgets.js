@@ -305,7 +305,7 @@ function flatUiWidgetsPluginClass() {
           reader.readAsText(file);
         }
       });
-      $('#button' + idWidget).mousedown(function (e) {
+      $('#button' + idInstance + idWidget).mousedown(function (e) {
         e.preventDefault();
         input.trigger('click');
       });
@@ -351,7 +351,7 @@ function flatUiWidgetsPluginClass() {
 
       const divContent = document.createElement('a');
       divContent.innerHTML = content;
-      divContent.id = 'button' + idWidget;
+      divContent.id = 'button' + idInstance + idWidget;
       divContent.style = styles;
       divContent.classList = classes;
       if (this.bIsInteractive) {
