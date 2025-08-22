@@ -1606,7 +1606,7 @@ function mapWidgetsPluginClass() {
           maxValue = 1.0; // for single point
         } else {
           maxValue = computedMax;
-          if (maxValue==-Number.MAX_VALUE) maxValue = 1;
+          if (maxValue == -Number.MAX_VALUE) maxValue = 1;
         }
       }
       if (_.isUndefined(minValue)) {
@@ -1614,7 +1614,7 @@ function mapWidgetsPluginClass() {
           minValue = 0.0; // for single point
         } else {
           minValue = computedMin;
-          if (minValue==Number.MAX_VALUE) minValue = 0;
+          if (minValue == Number.MAX_VALUE) minValue = 0;
         }
       }
 
@@ -1668,6 +1668,7 @@ function mapWidgetsPluginClass() {
         radius: circleRadius,
         minValue: minValue,
         maxValue: maxValue,
+        featureTitle: featureTitle,
       };
 
       const circlesLayerGroup = L.layerGroup(circles);
@@ -1876,38 +1877,58 @@ function mapWidgetsPluginClass() {
               (configNew.circleRadius === undefined || configNew.circleRadius === configOld.circleRadius) &&
               (configNew.maxValue === undefined || configNew.maxValue === configOld.maxValue) &&
               (configNew.minValue === undefined || configNew.minValue === configOld.minValue);
-            if (sameConfig) {
-              let normVal =
-                (100 * (hmp[2] - self.configStore[layerIndex - 1].minValue)) /
-                (self.configStore[layerIndex - 1].maxValue - self.configStore[layerIndex - 1].minValue);
-              // MBG add saturation 25/09/2019
-              if (normVal < 0) normVal = 0;
-              if (normVal > 100) normVal = 100;
 
-              modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1].push(pointObj);
-
-              const circle = L.circle([pointObj.lat, pointObj.lng], {
-                color: self.configStore[layerIndex - 1].color(normVal),
-                fillColor: self.configStore[layerIndex - 1].color(normVal),
-                fillOpacity: self.configStore[layerIndex - 1].fillOpacity,
-                radius: self.configStore[layerIndex - 1].radius,
-                stroke: false, // optim from Benoît Lehman
-              });
-              self.mapLayers.heatMap.heatMapLayers[layerIndex - 1].addLayer(circle);
-            } else {
+            const featureTitle = _.keys(pointObj)[2];
+            // if data name changes, clear the buffter and fix legend
+            if (featureTitle != storedConfig.featureTitle) {
               self.configStore[layerIndex - 1].minValue = toHeatMap.config.min;
               self.configStore[layerIndex - 1].maxValue = toHeatMap.config.max;
               self.configStore[layerIndex - 1].radius = toHeatMap.config.radius;
               self.configStore[layerIndex - 1].fillOpacity = toHeatMap.config.opacity;
+              self.configStore[layerIndex - 1].featureTitle = featureTitle;
               self.clearHeatMapLayer(layerIndex);
 
-              modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1].push(pointObj); // MBG 10/09/2020
+              modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1]=[pointObj];
 
               const heatMapToRedraw = {
                 data: modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1],
                 config: heatMapPoint.config,
               };
               self.drawHeatMap(heatMapToRedraw, layerIndex);
+            } else {
+              if (sameConfig) {
+                let normVal =
+                  (100 * (hmp[2] - self.configStore[layerIndex - 1].minValue)) /
+                  (self.configStore[layerIndex - 1].maxValue - self.configStore[layerIndex - 1].minValue);
+                // MBG add saturation 25/09/2019
+                if (normVal < 0) normVal = 0;
+                if (normVal > 100) normVal = 100;
+
+                modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1].push(pointObj);
+
+                const circle = L.circle([pointObj.lat, pointObj.lng], {
+                  color: self.configStore[layerIndex - 1].color(normVal),
+                  fillColor: self.configStore[layerIndex - 1].color(normVal),
+                  fillOpacity: self.configStore[layerIndex - 1].fillOpacity,
+                  radius: self.configStore[layerIndex - 1].radius,
+                  stroke: false, // optim from Benoît Lehman
+                });
+                self.mapLayers.heatMap.heatMapLayers[layerIndex - 1].addLayer(circle);
+              } else {
+                self.configStore[layerIndex - 1].minValue = toHeatMap.config.min;
+                self.configStore[layerIndex - 1].maxValue = toHeatMap.config.max;
+                self.configStore[layerIndex - 1].radius = toHeatMap.config.radius;
+                self.configStore[layerIndex - 1].fillOpacity = toHeatMap.config.opacity;
+                self.clearHeatMapLayer(layerIndex);
+
+                modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1].push(pointObj); // MBG 10/09/2020
+
+                const heatMapToRedraw = {
+                  data: modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1],
+                  config: heatMapPoint.config,
+                };
+                self.drawHeatMap(heatMapToRedraw, layerIndex);
+              }
             }
           }
         }
