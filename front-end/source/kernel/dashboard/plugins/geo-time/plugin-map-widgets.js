@@ -524,6 +524,9 @@ function mapWidgetsPluginClass() {
       self.mapInPlayLoaded = false;
       $('#' + idDivContainer).html(widgetHtml);
       this.applyDisplayOnWidget();
+      self.map.eachLayer(function (layer) {
+        self.map.removeLayer(layer);
+      });
       self.map = L.map('openStreetMap' + idWidget, { preferCanvas: true }).setView(
         [modelsParameters[idInstance].defaultCenter.latitude, modelsParameters[idInstance].defaultCenter.longitude],
         modelsParameters[idInstance].defaultCenter.zoom
@@ -1888,7 +1891,7 @@ function mapWidgetsPluginClass() {
               self.configStore[layerIndex - 1].featureTitle = featureTitle;
               self.clearHeatMapLayer(layerIndex);
 
-              modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1]=[pointObj];
+              modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1] = [pointObj];
 
               const heatMapToRedraw = {
                 data: modelsHiddenParams[idInstance].heatMap.heatMapBuffer[layerIndex - 1],
