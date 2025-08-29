@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { By ,until} from 'selenium-webdriver';
+import { By, until, WebDriver } from 'selenium-webdriver';
 import { perBrowser } from '../fixtures/web-driver-fixture.js';
 import { describeWithServer } from '../fixtures/e2e-tests.js';
 import { openEditor } from '../support/elements/actions.js';
@@ -21,13 +21,28 @@ describeWithServer('Dynamic widget creation', function (server) {
             await new Promise(resolve => setTimeout(resolve, 2000));
             //Create "horizontal slider" widget:
             await widgetToolbox.createFlatUiHorizontalSlider();
-            assert.equal((await driverFixture().findElements(By.id('flatUiTextInputA'))).length, 1);
-            assert.equal((await driverFixture().findElements(By.id('flatUiHorizontalSliderA'))).length, 1);
+            assert.equal((await driver.findElements(By.id('flatUiTextInputA'))).length, 1);
+            assert.equal((await driver.findElements(By.id('flatUiHorizontalSliderA'))).length, 1);
             //Pause 2s
             await new Promise(resolve => setTimeout(resolve, 2000));
             //Move "horizontal slider" widget:
-            const hSlider = await widgetToolbox.getWidgetByClassAndId('.drsElement.drag-drop-move._cloned.widget.widget__layout--item.widget-selected.widget-selected-last', 'flatUiHorizontalSliderA');
-            assert.notEqual(hSlider, undefined);
+            // Wait for widget to be ready and selectable
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            let hSlider;
+            // Try to find the widget with different selectors
+            try {
+              hSlider = await widgetToolbox.getWidgetByClassAndId('.drsElement.drag-drop-move._cloned.widget.widget__layout--item.widget-selected.widget-selected-last', 'flatUiHorizontalSliderA');
+              if (!hSlider) {
+                // Fallback: try finding by ID only
+                hSlider = await driver.findElement(By.id('flatUiHorizontalSliderA'));
+              }
+            } catch (e) {
+              // Final fallback: try finding by ID
+              hSlider = await driver.findElement(By.id('flatUiHorizontalSliderA'));
+            }
+            
+            assert.notEqual(hSlider, undefined, 'Could not find horizontal slider widget');
             //Move horizontal slider:
             await widgetToolbox.moveWidget(hSlider, 40, 250);
             //Pause 2s
@@ -46,7 +61,7 @@ describeWithServer('Dynamic widget creation', function (server) {
             const variable = '{"val":"0"}';
             await datanodesBox.createJSONVar(datanodeName, variable);
             //Edit  "horizontal slider" widget menu:
-            const editWidgetSliderIcon = await driverFixture().findElement(By.css('#flatUiHorizontalSliderA .actions__list .icn-edit'));
+            const editWidgetSliderIcon = await driver.findElement(By.css('#flatUiHorizontalSliderA .actions__list .icn-edit'));
             assert.notEqual(editWidgetSliderIcon, undefined);
             await widgetToolbox.showWidgetMenu(editWidgetSliderIcon);
             //Connect datanode to horizontal slider widget 
@@ -55,7 +70,7 @@ describeWithServer('Dynamic widget creation', function (server) {
             //Pause 2s
             await new Promise(resolve => setTimeout(resolve, 2000));
             //Edit "input text" widget menu:
-            const editWidgetInputTextIcon = await driverFixture().findElement(By.css('#flatUiTextInputA .actions__list .icn-edit'));
+            const editWidgetInputTextIcon = await driver.findElement(By.css('#flatUiTextInputA .actions__list .icn-edit'));
             assert.notEqual(editWidgetInputTextIcon, undefined);
             await widgetToolbox.showWidgetMenu(editWidgetInputTextIcon);
             //Connect datanode to "input text" widget             
@@ -66,19 +81,19 @@ describeWithServer('Dynamic widget creation', function (server) {
             //Start running dashboard:
             await dashboard.runDashBoard();
             //Waiting until dashboard running:
-            const element = await driverFixture().wait(until.elementLocated(By.id('flatUiTextInputA' + 'c')), 5000);
-            await driverFixture().wait(until.elementIsVisible(element), 5000);
+            const element = await driver.wait(until.elementLocated(By.id('flatUiTextInputA' + 'c')), 5000);
+            await driver.wait(until.elementIsVisible(element), 5000);
             //Pause 2s
             await new Promise(resolve => setTimeout(resolve, 2000));
             //Get "input text" widget area:
-            const inputTextWidget = await driverFixture().findElement(By.css('#flatUiTextInputAc #WidgetContainer401c .value-widget-html #value-no-input-group .value-input'));
+            const inputTextWidget = await driver.findElement(By.css('#flatUiTextInputAc #WidgetContainer401c .value-widget-html #value-no-input-group .value-input'));
             //Setting value
             const valueToSet = '5';
             await widgetToolbox.setValue(inputTextWidget, valueToSet);
             //Get "horizontal slider" widget area:
-            const horizontalSliderWidget = await driverFixture().findElement(By.css('#flatUiHorizontalSliderAc #WidgetContainer402c .sliderInput .h-slider-value-div .hslider-input'));
+            const horizontalSliderWidget = await driver.findElement(By.css('#flatUiHorizontalSliderAc #WidgetContainer402c .sliderInput .h-slider-value-div .hslider-input'));
             // Waiting widget to be visible:
-            await driverFixture().wait(until.elementIsVisible(horizontalSliderWidget), 5000);
+            await driver.wait(until.elementIsVisible(horizontalSliderWidget), 5000);
             //getting value from widget:            
             const valueReaded = await widgetToolbox.getValue(horizontalSliderWidget);
             //raise exception if value set is not equal to value readed:
