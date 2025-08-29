@@ -64,11 +64,11 @@ const PLUGIN_DEFINITION = {
       icn: 'checkbox',
       help: 'wdg/wdg-basics/#checkbox',
     },
-    flatUiSwitch: { 
-      factory: SwitchFlatUiWidget, 
-      title: 'Switch', 
-      icn: 'switch', 
-      help: 'wdg/wdg-basics/#switch' 
+    flatUiSwitch: {
+      factory: SwitchFlatUiWidget,
+      title: 'Switch',
+      icn: 'switch',
+      help: 'wdg/wdg-basics/#switch',
     },
   },
 };

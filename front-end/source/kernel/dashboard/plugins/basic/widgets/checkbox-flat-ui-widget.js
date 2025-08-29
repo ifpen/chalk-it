@@ -172,7 +172,7 @@ export class CheckboxFlatUiWidget extends baseWidget {
     const enableStyle = enableWidget ? 'pointer-events: initial; opacity: 1;' : 'pointer-events: none; opacity: 0.5;';
 
     widgetHtml.style.cssText += `${displayStyle} ${enableStyle}`;
-    
+
     const container = document.getElementById(this.idDivContainer);
     container.innerHTML = '';
     container.appendChild(widgetHtml);

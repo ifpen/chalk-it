@@ -160,7 +160,9 @@ export class SwitchFlatUiWidget extends baseWidget {
       // conversion to enable HTML tags
       const labelText = this.getTransformedText('label');
 
-      divContent += `<span id="switch-span${this.idWidget}" class="switch-span" style="${this.labelFontSize()}${this.labelColor()}${this.labelFontFamily()} text-align: ${labelPosition};">${labelText}</span>`;
+      divContent += `<span id="switch-span${
+        this.idWidget
+      }" class="switch-span" style="${this.labelFontSize()}${this.labelColor()}${this.labelFontFamily()} text-align: ${labelPosition};">${labelText}</span>`;
     }
     widgetHtml.innerHTML = divContent;
 
@@ -168,10 +170,12 @@ export class SwitchFlatUiWidget extends baseWidget {
     const showWidget = this.showWidget();
     const displayStyle = showWidget ? 'display: table;' : 'display: none;';
     const enableWidget = this.enableWidget();
-    const enableStyle = enableWidget ? 'pointer-events: initial; opacity:initial;' : 'pointer-events: none; opacity:0.5;';
+    const enableStyle = enableWidget
+      ? 'pointer-events: initial; opacity:initial;'
+      : 'pointer-events: none; opacity:0.5;';
 
     widgetHtml.setAttribute('style', displayStyle + enableStyle);
-    
+
     const container = document.getElementById(this.idDivContainer);
     container.innerHTML = '';
     container.appendChild(widgetHtml);

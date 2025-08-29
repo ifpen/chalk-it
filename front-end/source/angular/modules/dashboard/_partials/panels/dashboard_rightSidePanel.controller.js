@@ -640,7 +640,16 @@ angular
     'EditorActionFactory',
     'WidgetEditorGetter',
     'EventCenterService',
-    function ($scope, $rootScope, $state, $q, undoManagerService, editorActionFactory, widgetEditorGetter, eventCenterService) {
+    function (
+      $scope,
+      $rootScope,
+      $state,
+      $q,
+      undoManagerService,
+      editorActionFactory,
+      widgetEditorGetter,
+      eventCenterService
+    ) {
       const vm = this;
 
       vm.popup = null; // { title: string, textBtnYes: string, textBtnNo: string, resolve: (boolean) => void }
@@ -803,13 +812,13 @@ angular
         if (vm.widgetId && !vm.dirty) {
           const currentParams = modelsParameters[vm.widgetId];
           const currentConnections = widgetConnector.widgetsConnection[vm.widgetId];
-          
+
           if (currentParams) {
             // Update the original parameters to reflect the current state after undo/redo
             vm.originalWidgetParams = jQuery.extend(true, {}, currentParams);
             vm.currentWidgetParams = jQuery.extend(true, {}, currentParams);
           }
-          
+
           if (currentConnections) {
             // Also update connections in case they changed
             vm.originalWidgetConnection = jQuery.extend(true, {}, currentConnections);

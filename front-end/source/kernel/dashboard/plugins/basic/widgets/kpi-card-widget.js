@@ -22,7 +22,10 @@ class KpiCardValueActuator extends WidgetActuatorBase {
     const cardElement = document.getElementById(`card-value-${this.widget.idWidget}`);
     if (cardElement) {
       cardElement.innerText = this.widget.valueFormat(modelsHiddenParams[this.widget.idInstance].value);
-      if (modelsParameters[this.widget.idInstance].unit !== '' && modelsParameters[this.widget.idInstance].displayUnit) {
+      if (
+        modelsParameters[this.widget.idInstance].unit !== '' &&
+        modelsParameters[this.widget.idInstance].displayUnit
+      ) {
         cardElement.insertAdjacentHTML('beforeend', this.unitContent);
       }
     }
@@ -114,14 +117,16 @@ export class KpiCardWidget extends baseWidget {
     const showWidget = this.showWidget();
     const displayStyle = showWidget ? 'display: inherit;' : 'display: none;';
     const enableWidget = this.enableWidget();
-    const enableStyle = enableWidget ? 'pointer-events: initial; opacity:initial;' : 'pointer-events: none; opacity:0.5;';
+    const enableStyle = enableWidget
+      ? 'pointer-events: initial; opacity:initial;'
+      : 'pointer-events: none; opacity:0.5;';
 
     widgetHtml.setAttribute('style', displayStyle + enableStyle);
-    
+
     const container = document.getElementById(this.idDivContainer);
     container.innerHTML = '';
     container.appendChild(widgetHtml);
-    
+
     this.applyDisplayOnWidget();
 
     const cardValueElement = document.getElementById(`card-value-${this.idWidget}`);
@@ -130,9 +135,17 @@ export class KpiCardWidget extends baseWidget {
     }
 
     // Setup unit content
-    this.value.unitContent = `<span id="unit-span${this.idWidget}" style="text-align: left; color: ${modelsParameters[this.idInstance].unitColor}; font-size: calc(7px + ${modelsParameters[this.idInstance].unitFontSize * getFontFactor()}vw + 0.4vh);">${modelsParameters[this.idInstance].unit}</span>`;
+    this.value.unitContent = `<span id="unit-span${this.idWidget}" style="text-align: left; color: ${
+      modelsParameters[this.idInstance].unitColor
+    }; font-size: calc(7px + ${modelsParameters[this.idInstance].unitFontSize * getFontFactor()}vw + 0.4vh);">${
+      modelsParameters[this.idInstance].unit
+    }</span>`;
 
-    if (modelsParameters[this.idInstance].unit !== '' && modelsParameters[this.idInstance].displayUnit && cardValueElement) {
+    if (
+      modelsParameters[this.idInstance].unit !== '' &&
+      modelsParameters[this.idInstance].displayUnit &&
+      cardValueElement
+    ) {
       cardValueElement.insertAdjacentHTML('beforeend', this.value.unitContent);
     }
 
