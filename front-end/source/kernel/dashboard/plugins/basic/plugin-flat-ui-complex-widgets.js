@@ -13,7 +13,7 @@ import 'mindmup-editabletable';
 import { widgetsPluginsHandler } from 'kernel/dashboard/plugin-handler';
 import { modelsHiddenParams, modelsParameters, modelsLayout } from 'kernel/base/widgets-states';
 import { basePlugin } from '../plugin-base';
-import { baseWidget, WidgetActuatorDescription } from '../widget-base';
+import { baseWidget, WidgetActuatorDescription, WidgetActuatorValidationError } from '../widget-base';
 import { WidgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 import { getFontFactor } from 'kernel/dashboard/scaling/scaling-utils';
 
@@ -301,30 +301,57 @@ function flatUiComplexWidgetsPluginClass() {
       WidgetPrototypesManager.SCHEMA_NUMBER_OR_STRING
     );
 
+    // Validator functions for keys and values consistency
+    const validateKeysValuesConsistency = (currentArray, actuatorName) => {
+      const errors = [];
+      const hiddenParams = modelsHiddenParams[idInstance];
+      
+      if (!hiddenParams) {
+        return errors;
+      }
+      
+      const keys = hiddenParams.keys || [];
+      const values = hiddenParams.values || [];
+      
+      // Only validate if both keys and values exist and have elements
+      if (keys.length > 0 && values.length > 0 && keys.length !== values.length) {
+        const message = actuatorName === 'keys' 
+          ? `Keys array length (${keys.length}) must match values array length (${values.length})`
+          : `Values array length (${values.length}) must match keys array length (${keys.length})`;
+        errors.push(new WidgetActuatorValidationError(message));
+      }
+      
+      return errors;
+    };
+
     // !isKeyValuePairs
     const _KEYS_DESCRIPTOR = new WidgetActuatorDescription(
       'keys',
       'Labels of the selectable options',
       WidgetActuatorDescription.READ,
-      WidgetPrototypesManager.SCHEMA_STRING_ARRAY
+      WidgetPrototypesManager.SCHEMA_STRING_ARRAY,
+      (data) => validateKeysValuesConsistency(data, 'keys')
     );
     const _VALUES_STRING_DESCRIPTOR = new WidgetActuatorDescription(
       'values',
       "Selectable values. Must match 'keys'.",
       WidgetActuatorDescription.READ,
-      WidgetPrototypesManager.SCHEMA_STRING_ARRAY
+      WidgetPrototypesManager.SCHEMA_STRING_ARRAY,
+      (data) => validateKeysValuesConsistency(data, 'values')
     );
     const _VALUES_NUMBER_DESCRIPTOR = new WidgetActuatorDescription(
       'values',
       "Selectable values. Must match 'keys'.",
       WidgetActuatorDescription.READ,
-      WidgetPrototypesManager.SCHEMA_NUMBER_ARRAY
+      WidgetPrototypesManager.SCHEMA_NUMBER_ARRAY,
+      (data) => validateKeysValuesConsistency(data, 'values')
     );
     const _VALUES_BOOLEAN_DESCRIPTOR = new WidgetActuatorDescription(
       'values',
       "Selectable values. Must match 'keys'.",
       WidgetActuatorDescription.READ,
-      WidgetPrototypesManager.SCHEMA_BOOLEAN_ARRAY
+      WidgetPrototypesManager.SCHEMA_BOOLEAN_ARRAY,
+      (data) => validateKeysValuesConsistency(data, 'values')
     );
 
     // isKeyValuePairs
@@ -391,8 +418,8 @@ function flatUiComplexWidgetsPluginClass() {
           data.isNumber
             ? _KEYVALUE_NUMBER_DESCRIPTOR
             : data.isBoolean
-            ? _KEYVALUE_BOOLEAN_DESCRIPTOR
-            : _KEYVALUE_STRING_DESCRIPTOR
+              ? _KEYVALUE_BOOLEAN_DESCRIPTOR
+              : _KEYVALUE_STRING_DESCRIPTOR
         );
       } else {
         result.push(_KEYS_DESCRIPTOR);
@@ -400,8 +427,8 @@ function flatUiComplexWidgetsPluginClass() {
           data && data.isNumber
             ? _VALUES_NUMBER_DESCRIPTOR
             : data.isBoolean
-            ? _VALUES_BOOLEAN_DESCRIPTOR
-            : _VALUES_STRING_DESCRIPTOR
+              ? _VALUES_BOOLEAN_DESCRIPTOR
+              : _VALUES_STRING_DESCRIPTOR
         );
       }
 
@@ -410,8 +437,8 @@ function flatUiComplexWidgetsPluginClass() {
         selectedValue = data.isNumber
           ? _VALUE_NUMBER_DESCRIPTOR
           : data.isBoolean
-          ? _VALUE_BOOLEAN_DESCRIPTOR
-          : _VALUE_STRING_DESCRIPTOR;
+            ? _VALUE_BOOLEAN_DESCRIPTOR
+            : _VALUE_STRING_DESCRIPTOR;
       }
       result.push(selectedValue);
 
@@ -1409,13 +1436,13 @@ function flatUiComplexWidgetsPluginClass() {
           modelsParameters[idInstance].editableCols === '*'
             ? Array.from({ length: val[0].length }, (_, i) => i)
             : (() => {
-                try {
-                  return JSON.parse(modelsParameters[idInstance].editableCols);
-                } catch (e) {
-                  console.error('Invalid editableCols format:', e);
-                  return [];
-                }
-              })();
+              try {
+                return JSON.parse(modelsParameters[idInstance].editableCols);
+              } catch (e) {
+                console.error('Invalid editableCols format:', e);
+                return [];
+              }
+            })();
 
         return editableCols.includes(colIndex) ? 'true' : 'false';
       };
