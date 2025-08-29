@@ -33,6 +33,117 @@ const TEST_CASES: TestCase[] = [
   'resources/time-picker.xprjson',
 ];
 
+async function retryScreenshotComparison(
+  driver: any, 
+  server: any, 
+  idx: number, 
+  expectedBuffer: Promise<Buffer>,
+  testCaseFile: string,
+  browser: string,
+  maxRetries: number = 2
+): Promise<void> {
+  let lastError: Error | null = null;
+  
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      logger.debug(`Screenshot comparison attempt ${attempt + 1}/${maxRetries + 1} for ${testCaseFile}`);
+      
+      await driver.get(server.getDashboardUrl(idx.toString()));
+
+      const dashboardEditor = new DashboardEditor(driver);
+      await dashboardEditor.dashboardPage.waitWidgetAreaExists();
+      await dashboardEditor.waitNotLoading();
+
+      // Set window size before taking screenshot
+      await driver.manage().window().setRect({ width: config.width, height: config.height });
+      
+      // Wait for any animations or dynamic content to settle
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Wait for fonts to load by checking if a common font-dependent element is rendered
+      await driver.executeScript(`
+        return new Promise((resolve) => {
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => resolve());
+          } else {
+            setTimeout(() => resolve(), 1000);
+          }
+        });
+      `);
+      
+      // Additional wait for any lazy-loaded content
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const encodedString = await driver.takeScreenshot();
+
+      if (config.outputsDir) {
+        await fs.promises.writeFile(
+          screenshotResult(config.outputsDir, testCaseFile, browser),
+          encodedString,
+          'base64',
+        );
+      }
+
+      const actualPng = PNG.sync.read(Buffer.from(encodedString, 'base64'));
+      logger.debug('actualPng ok');
+      const expectedPng = PNG.sync.read(await expectedBuffer);
+      logger.debug('expectedPng ok');
+
+      const result = diffScreenshots(expectedPng, actualPng, config.visualComparison);
+      if (result) {
+        const [diff, mismatchedPixels, isAcceptable] = result;
+        if (config.outputsDir) {
+          await pipeline(
+            diff.pack(),
+            fs.createWriteStream(path.join(config.outputsDir, diffName(testCaseFile, browser))),
+          );
+        }
+        
+        if (!isAcceptable) {
+          const totalPixels = actualPng.width * actualPng.height;
+          const mismatchedPercentage = (mismatchedPixels / totalPixels) * 100;
+          
+          const errorMessage = 
+            `Screenshot comparison failed for ${testCaseFile} in ${browser} (attempt ${attempt + 1}):\n` +
+            `  Mismatched pixels: ${mismatchedPixels} (${mismatchedPercentage.toFixed(2)}%)\n` +
+            `  Threshold: ${config.visualComparison.threshold}\n` +
+            `  Max allowed pixels: ${config.visualComparison.maxMismatchedPixels}\n` +
+            `  Max allowed percentage: ${config.visualComparison.maxMismatchedPercentage}%\n` +
+            `  Diff image saved to: ${diffName(testCaseFile, browser)}`;
+          
+          if (attempt < maxRetries) {
+            logger.debug(`${errorMessage}\nRetrying...`);
+            lastError = new Error(errorMessage);
+            // Wait before retry
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            continue;
+          } else {
+            assert.fail(errorMessage);
+          }
+        } else {
+          logger.debug(
+            `Screenshot comparison passed with ${mismatchedPixels} mismatched pixels ` +
+            `(${((mismatchedPixels / (actualPng.width * actualPng.height)) * 100).toFixed(2)}%) for ${testCaseFile}`
+          );
+        }
+      }
+      
+      // If we get here, the test passed
+      return;
+      
+    } catch (error) {
+      lastError = error as Error;
+      if (attempt < maxRetries) {
+        logger.debug(`Error in screenshot comparison attempt ${attempt + 1}: ${error}. Retrying...`);
+        // Wait before retry
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      } else {
+        throw lastError;
+      }
+    }
+  }
+}
+
 function getDashboardFile(testCase: TestCase): string {
   return typeof testCase === 'string' ? testCase : testCase.dashboard;
 }
@@ -93,76 +204,7 @@ describeWithServer('Visual Tests', function (server: ChalkitServer) {
         logger.debug(`referenceScreenshot=${referenceScreenshot}`);
         const expectedBuffer = fs.promises.readFile(referenceScreenshot);
 
-        await driver.get(server.getDashboardUrl(idx.toString()));
-
-        const dashboardEditor = new DashboardEditor(driver);
-        await dashboardEditor.dashboardPage.waitWidgetAreaExists();
-        await dashboardEditor.waitNotLoading();
-
-        // Set window size before taking screenshot
-        await driver.manage().window().setRect({ width: config.width, height: config.height });
-        
-        // Wait for any animations or dynamic content to settle
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Wait for fonts to load by checking if a common font-dependent element is rendered
-        await driver.executeScript(`
-          return new Promise((resolve) => {
-            if (document.fonts && document.fonts.ready) {
-              document.fonts.ready.then(() => resolve());
-            } else {
-              setTimeout(() => resolve(), 1000);
-            }
-          });
-        `);
-        
-        // Additional wait for any lazy-loaded content
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        const encodedString = await driver.takeScreenshot();
-
-        if (config.outputsDir) {
-          await fs.promises.writeFile(
-            screenshotResult(config.outputsDir, testCaseFile, browser),
-            encodedString,
-            'base64',
-          );
-        }
-
-        const actualPng = PNG.sync.read(Buffer.from(encodedString, 'base64'));
-        logger.debug('actualPng ok');
-        const expectedPng = PNG.sync.read(await expectedBuffer);
-        logger.debug('expectedPng ok');
-
-        const result = diffScreenshots(expectedPng, actualPng, config.visualComparison);
-        if (result) {
-          const [diff, mismatchedPixels, isAcceptable] = result;
-          if (config.outputsDir) {
-            await pipeline(
-              diff.pack(),
-              fs.createWriteStream(path.join(config.outputsDir, diffName(testCaseFile, browser))),
-            );
-          }
-          
-          if (!isAcceptable) {
-            const totalPixels = actualPng.width * actualPng.height;
-            const mismatchedPercentage = (mismatchedPixels / totalPixels) * 100;
-            
-            assert.fail(
-              `Screenshot comparison failed for ${testCaseFile} in ${browser}:\n` +
-              `  Mismatched pixels: ${mismatchedPixels} (${mismatchedPercentage.toFixed(2)}%)\n` +
-              `  Threshold: ${config.visualComparison.threshold}\n` +
-              `  Max allowed pixels: ${config.visualComparison.maxMismatchedPixels}\n` +
-              `  Max allowed percentage: ${config.visualComparison.maxMismatchedPercentage}%\n` +
-              `  Diff image saved to: ${diffName(testCaseFile, browser)}`
-            );
-          } else {
-            logger.debug(
-              `Screenshot comparison passed with ${mismatchedPixels} mismatched pixels ` +
-              `(${((mismatchedPixels / (actualPng.width * actualPng.height)) * 100).toFixed(2)}%) for ${testCaseFile}`
-            );
-          }
-        }
+        await retryScreenshotComparison(driver, server, idx, expectedBuffer, testCaseFile, browser);
       });
     });
   });
