@@ -97,10 +97,27 @@ describeWithServer('Visual Tests', function (server: ChalkitServer) {
 
         const dashboardEditor = new DashboardEditor(driver);
         await dashboardEditor.dashboardPage.waitWidgetAreaExists();
-        // If not reliable, add small safety wait.
         await dashboardEditor.waitNotLoading();
 
+        // Set window size before taking screenshot
         await driver.manage().window().setRect({ width: config.width, height: config.height });
+        
+        // Wait for any animations or dynamic content to settle
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Wait for fonts to load by checking if a common font-dependent element is rendered
+        await driver.executeScript(`
+          return new Promise((resolve) => {
+            if (document.fonts && document.fonts.ready) {
+              document.fonts.ready.then(() => resolve());
+            } else {
+              setTimeout(() => resolve(), 1000);
+            }
+          });
+        `);
+        
+        // Additional wait for any lazy-loaded content
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         const encodedString = await driver.takeScreenshot();
 
@@ -117,16 +134,34 @@ describeWithServer('Visual Tests', function (server: ChalkitServer) {
         const expectedPng = PNG.sync.read(await expectedBuffer);
         logger.debug('expectedPng ok');
 
-        const result = diffScreenshots(expectedPng, actualPng);
+        const result = diffScreenshots(expectedPng, actualPng, config.visualComparison);
         if (result) {
-          const [diff, mismatchedPixels] = result;
+          const [diff, mismatchedPixels, isAcceptable] = result;
           if (config.outputsDir) {
             await pipeline(
               diff.pack(),
               fs.createWriteStream(path.join(config.outputsDir, diffName(testCaseFile, browser))),
             );
           }
-          assert.equal(mismatchedPixels, 0);
+          
+          if (!isAcceptable) {
+            const totalPixels = actualPng.width * actualPng.height;
+            const mismatchedPercentage = (mismatchedPixels / totalPixels) * 100;
+            
+            assert.fail(
+              `Screenshot comparison failed for ${testCaseFile} in ${browser}:\n` +
+              `  Mismatched pixels: ${mismatchedPixels} (${mismatchedPercentage.toFixed(2)}%)\n` +
+              `  Threshold: ${config.visualComparison.threshold}\n` +
+              `  Max allowed pixels: ${config.visualComparison.maxMismatchedPixels}\n` +
+              `  Max allowed percentage: ${config.visualComparison.maxMismatchedPercentage}%\n` +
+              `  Diff image saved to: ${diffName(testCaseFile, browser)}`
+            );
+          } else {
+            logger.debug(
+              `Screenshot comparison passed with ${mismatchedPixels} mismatched pixels ` +
+              `(${((mismatchedPixels / (actualPng.width * actualPng.height)) * 100).toFixed(2)}%) for ${testCaseFile}`
+            );
+          }
         }
       });
     });

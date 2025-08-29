@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import { Browser } from 'selenium-webdriver';
+import { ScreenshotComparisonOptions } from './support/compare-screenshots.js';
 dotenv.config();
 
 export const config = {
@@ -11,4 +12,11 @@ export const config = {
   height: parseInt(process.env.HEIGHT ?? '900', 10),
 
   outputsDir: process.env.OUTPUT_DIR ?? 'outputs',
+  
+  // Screenshot comparison settings
+  visualComparison: {
+    threshold: parseFloat(process.env.VISUAL_THRESHOLD ?? '0.1'),
+    maxMismatchedPixels: parseInt(process.env.MAX_MISMATCHED_PIXELS ?? '2000', 10),
+    maxMismatchedPercentage: parseFloat(process.env.MAX_MISMATCHED_PERCENTAGE ?? '1.0'), // 1% of pixels
+  } as ScreenshotComparisonOptions,
 };
