@@ -15,6 +15,7 @@ import { UiNotifications } from 'angular/modules/dashboard/services/uiNotificati
 import { WidgetActuatorDescription } from 'kernel/dashboard/plugins/widget-base';
 import { widgetPrototypesManager } from 'kernel/dashboard/connection/widget-prototypes-manager';
 import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
+import { UndoManager } from 'angular/modules/editor/editor.undo-manager';
 
 angular
   .module('modules.editor')
@@ -638,7 +639,8 @@ angular
     'UndoManagerService',
     'EditorActionFactory',
     'WidgetEditorGetter',
-    function ($scope, $rootScope, $state, $q, undoManagerService, editorActionFactory, widgetEditorGetter) {
+    'EventCenterService',
+    function ($scope, $rootScope, $state, $q, undoManagerService, editorActionFactory, widgetEditorGetter, eventCenterService) {
       const vm = this;
 
       vm.popup = null; // { title: string, textBtnYes: string, textBtnNo: string, resolve: (boolean) => void }
@@ -794,5 +796,36 @@ angular
         // TODO: apply changes into JSONeditor, currently only works after save
         vm.dirty = true;
       };
+
+      /*-------- Refresh widget parameters when undo/redo occurs --------*/
+      function _refreshWidgetParametersFromModel() {
+        // Only refresh if we have a selected widget and the panel is not dirty
+        if (vm.widgetId && !vm.dirty) {
+          const currentParams = modelsParameters[vm.widgetId];
+          const currentConnections = widgetConnector.widgetsConnection[vm.widgetId];
+          
+          if (currentParams) {
+            // Update the original parameters to reflect the current state after undo/redo
+            vm.originalWidgetParams = jQuery.extend(true, {}, currentParams);
+            vm.currentWidgetParams = jQuery.extend(true, {}, currentParams);
+          }
+          
+          if (currentConnections) {
+            // Also update connections in case they changed
+            vm.originalWidgetConnection = jQuery.extend(true, {}, currentConnections);
+            vm.widgetConnection = jQuery.extend(true, {}, currentConnections);
+            vm.currentWidgetConnection = jQuery.extend(true, {}, currentConnections);
+          }
+        }
+      }
+
+      // Listen for undo/redo events to refresh the graphical properties panel
+      const _undoRedoCallback = () => _refreshWidgetParametersFromModel();
+      eventCenterService.addListener(UndoManager.UNDO_STACK_CHANGE_EVENT, _undoRedoCallback);
+
+      // Clean up event listener when scope is destroyed
+      $scope.$on('$destroy', () => {
+        eventCenterService.removeListener(UndoManager.UNDO_STACK_CHANGE_EVENT, _undoRedoCallback);
+      });
     },
   ]);
