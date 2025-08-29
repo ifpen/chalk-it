@@ -212,7 +212,7 @@ function mapGeoJsonWidgetsPluginClass() {
       }
       //
       widgetHtml.setAttribute('style', displayStyle + enableStyle);
-      
+
       widgetHtml.style.width = 'inherit';
       widgetHtml.style.height = 'inherit';
 
@@ -282,7 +282,6 @@ function mapGeoJsonWidgetsPluginClass() {
       setTimeout(() => {
         self.map.invalidateSize();
       }, 300);
-      
     };
 
     this.getFillColor = getFillColor;

@@ -16,7 +16,6 @@ dashboardModule.controller('DashboardController', [
   'DepGraphService',
   'ManageDatanodeService',
   function ($scope, $rootScope, DepGraphService, ManageDatanodeService) {
-
     $scope.info = {
       openProjectInfo: false,
       checkboxModelLater: false,

@@ -8,7 +8,6 @@
 // │ Original authors(s): Abir EL FEKI, Mongi BEN GAID                  │ \\
 // └────────────────────────────────────────────────────────────────────┘ \\
 
-
 import PNotify from 'pnotify';
 
 const POSSIBLE_ANSI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // (62 characters)

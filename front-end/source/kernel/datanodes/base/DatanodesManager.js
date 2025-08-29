@@ -439,7 +439,6 @@ export const datanodesManager = (function () {
     },
   };
 
-
   // PUBLIC FUNCTIONS
   return {
     initialize: function (isHtmlLoad) {

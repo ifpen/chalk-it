@@ -20,7 +20,7 @@ import { onAngularReady } from 'kernel/runtime/xdash-runtime-main';
 import { jsonDataToBasicHtmlElement } from 'kernel/datanodes/plugins/thirdparty/utils';
 import { draggablePanelModule } from './monitor-panel.js';
 import navBarTemplate from './nav-bar.html';
-import chalkIcon from 'assets/img/chalk-it-icon.svg'; 
+import chalkIcon from 'assets/img/chalk-it-icon.svg';
 
 export const angularModule = angular
   .module('xCLOUD', [

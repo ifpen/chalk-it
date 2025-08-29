@@ -175,7 +175,7 @@ export const DatanodeModel = function (datanodesListModel, datanodePlugins, data
 
   this.type = ko.observable();
 
-  function finishLoad (datanodeType, bOK) {
+  function finishLoad(datanodeType, bOK) {
     // MBG : Add dependency information
     const dsName = self.name();
     if (!datanodesDependency.isNode(dsName)) {

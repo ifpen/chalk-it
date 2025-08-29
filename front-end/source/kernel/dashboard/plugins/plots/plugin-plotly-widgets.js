@@ -558,8 +558,12 @@ function plotlyWidgetsPluginClass() {
     };
 
     this.render = function () {
-      const hiddenData = this.deepClone(modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data);
-      let hiddenLayout = this.deepClone(modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout);
+      const hiddenData = this.deepClone(
+        modelsHiddenParams[idInstance].fig?.data ?? modelsHiddenParams[idInstance].data
+      );
+      let hiddenLayout = this.deepClone(
+        modelsHiddenParams[idInstance].fig?.layout ?? modelsHiddenParams[idInstance].layout
+      );
       const modelLayout = this.deepClone(modelsParameters[idInstance]?.layout ?? hiddenLayout);
 
       if (hiddenData && this.checkNested(hiddenData, 'textfont', 'color')) {
