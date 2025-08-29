@@ -360,7 +360,7 @@ function flatUiWidgetsPluginClass() {
           fileInput.id = `button${idInstance}${idWidget}_select_file`;
           fileInput.type = 'file';
           fileInput.style = 'display : none;';
-          fileInput.onclick = () => displayLoadSpinner.bind(this)(idWidget,idInstance);
+          fileInput.onclick = () => displayLoadSpinner.bind(this)(idWidget, idInstance);
           divContent.appendChild(fileInput);
         } else {
           divContent.onclick = () => updateWidgetDataNode.bind(this)(idInstance, idWidget);

@@ -8,7 +8,6 @@
 // │                      Ameur HAMDOUNI                                         │ \\
 // └─────────────────────────────────────────────────────────────────────────────┘ \\
 
-
 /**
  * @description Enforces that widget layout respects container constraints in terms of:
  * - width and height (always inside container)
@@ -66,7 +65,6 @@ export function enforceConstraints(widgetLayoutPx, containerLayoutPx) {
     height: w_h,
   };
 }
-
 
 /**
  * @description Given a DOM element, gets its layout in px

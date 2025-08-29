@@ -8,23 +8,23 @@
 // 3) If you prefer CSS variables, remove lighten/darken calls.
 //
 // Example SASS color variables:
-$monitor-panel-bg:      #333;       // or var(--surface-a)
-$monitor-panel-fg:      #fff;       // or var(--text-color)
-$monitor-panel-border:  #444444;
-$monitor-panel-shadow:  0 2px 12px rgba(#000, 0.6);
-$monitor-panel-accent:  #FF5722;
+$monitor-panel-bg: #333; // or var(--surface-a)
+$monitor-panel-fg: #fff; // or var(--text-color)
+$monitor-panel-border: #444444;
+$monitor-panel-shadow: 0 2px 12px rgba(#000, 0.6);
+$monitor-panel-accent: #ff5722;
 // If you rely on var(--header-color), provide a fallback:
-$header-fallback:       #222;
+$header-fallback: #222;
 
 // ---------------------------------------------------------------------
 //  Main Panel Styles
 // ---------------------------------------------------------------------
 .monitor-panel {
-  position: absolute;  // or fixed, depending on your draggable logic
-  width: 650px;        // Make it wider
-  min-height: 400px;   // Make it taller
-  height: 60vh;        // 60% of viewport height
-  overflow: auto;      // Scroll if content is large
+  position: absolute; // or fixed, depending on your draggable logic
+  width: 650px; // Make it wider
+  min-height: 400px; // Make it taller
+  height: 60vh; // 60% of viewport height
+  overflow: auto; // Scroll if content is large
   z-index: 10000;
 
   // Use either the SASS variable or the CSS variable with a fallback:

@@ -193,7 +193,6 @@ class HtmlExport {
     body.appendChild(createScript(DASHBOARD_CONFIG_ID, DASHBOARD_CONFIG_TYPE, config));
   }
 
-
   /**
    * Selects and sets the dashboard name.
    *

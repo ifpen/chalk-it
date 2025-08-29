@@ -7,7 +7,6 @@
 // │ Original authors(s): Abir EL FEKI, Ameur HAMDOUNI                               │
 // └─────────────────────────────────────────────────────────────────────────────────┘
 
-
 import _ from 'lodash';
 import PNotify from 'pnotify';
 

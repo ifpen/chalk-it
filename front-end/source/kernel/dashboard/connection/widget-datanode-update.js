@@ -12,7 +12,7 @@ import { datanodesManager } from 'kernel/datanodes/base/DatanodesManager';
 // ├────────────────────────────────────────────────────────────────────┤ \\
 // |                         displayLoadSpinner                         | \\
 // ├────────────────────────────────────────────────────────────────────┤ \\
-export function displayLoadSpinner(idWidget,idInstance) {
+export function displayLoadSpinner(idWidget, idInstance) {
   const self = this;
   const aElement = document.getElementById('button' + idInstance + idWidget);
   const inputElement = document.getElementById('button' + idInstance + idWidget + '_select_file');
@@ -112,5 +112,3 @@ export function updateWidgetDataNode(idInstance, idWidget) {
     }
   }
 }
-
-
