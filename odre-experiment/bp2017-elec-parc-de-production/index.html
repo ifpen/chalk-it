@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>bp2017-elec-parc-de-production Dashboard</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Basic page structure and styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #fafafa;
+    }
+
+    h1, h2, h3 {
+      margin: 10px 0;
+    }
+
+    .intro {
+      margin-bottom: 20px;
+      max-width: 750px;
+    }
+
+    .controls {
+      margin: 20px 0;
+    }
+
+    .chart-container {
+      max-width: 800px;
+      margin-bottom: 40px;
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      text-align: right;
+    }
+    th {
+      background: #eee;
+      text-align: center;
+    }
+    td:first-child, th:first-child {
+      text-align: left;
+    }
+
+    .footer-note {
+      font-size: 0.9em;
+      color: #555;
+      margin-top: 30px;
+      max-width: 700px;
+    }
+  </style>
+</head>
+<body>
+  <h1>bp2017-elec-parc-de-production Dashboard</h1>
+  <div class="intro">
+    <p>
+      This interactive dashboard explores the “bp2017-elec-parc-de-production”
+      dataset, illustrating future electricity production capacities under
+      multiple RTE scenarios (Ampère, Hertz, Volt, Watt) for different horizons
+      (2025, 2030, 2035). It uses data published on the ODRE platform and can
+      help stakeholders and researchers understand how France’s electricity mix
+      could evolve, comparing nuclear, renewable, and thermal capacities.
+    </p>
+    <p>
+      Adjust filters below to explore total installed capacities over time and
+      view a detailed breakdown by technology for any specific scenario-year.
+    </p>
+  </div>
+
+  <!-- Filter controls -->
+  <div class="controls">
+    <label for="scenarioSelect">Select Scenario:</label>
+    <select id="scenarioSelect"></select>
+
+    <label for="yearSelect" style="margin-left:20px;">Select Year:</label>
+    <select id="yearSelect"></select>
+  </div>
+
+  <!-- Grouped bar chart for total capacities across all scenarios and years -->
+  <div class="chart-container">
+    <h2>Total Capacity by Year/Scenario</h2>
+    <canvas id="capacityChart" width="800" height="400"></canvas>
+  </div>
+
+  <!-- Donut chart for technology breakdown for selected scenario-year -->
+  <div class="chart-container">
+    <h2>Technology Breakdown</h2>
+    <canvas id="techBreakdownChart" width="800" height="400"></canvas>
+  </div>
+
+  <!-- Table of raw data -->
+  <h2>Data Table</h2>
+  <table id="dataTable">
+    <thead id="tableHeader"></thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <div class="footer-note">
+    <p>
+      Data courtesy of RTE’s Bilan Prévisionnel 2017, accessible via:
+      <a href="https://odre.opendatasoft.com/explore/dataset/bp2017-elec-parc-de-production" target="_blank">
+        ODRE
+      </a>.
+    </p>
+  </div>
+
+  <script>
+    // Global variables for data, charts, and scenario/year lists
+    let allRecords = [];
+    let capacityChart;
+    let techBreakdownChart;
+
+    // On load, fetch data and build the dashboard
+    document.addEventListener("DOMContentLoaded", init);
+
+    async function init() {
+      try {
+        // 1) Fetch data from the Opendatasoft API
+        const url = "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/bp2017-elec-parc-de-production/records?limit=-1";
+        const response = await fetch(url);
+        const jsonData = await response.json();
+
+        // 2) Extract the "results" array
+        allRecords = jsonData.results || [];
+
+        // 3) Initialize UI: scenario select, year select, table
+        populateScenarioAndYearSelects();
+        buildDataTable();
+
+        // 4) Build and update charts
+        buildCapacityChart();
+        updateScenarioYearCharts(); // sets up donut chart for default scenario-year
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    }
+
+    // Builds options for scenario & year selects and sets up event listeners
+    function populateScenarioAndYearSelects() {
+      const scenarioSelect = document.getElementById("scenarioSelect");
+      const yearSelect = document.getElementById("yearSelect");
+
+      // Gather unique scenarios & years
+      const scenarios = [...new Set(allRecords.map(r => r.scenario))].sort();
+      const years = [...new Set(allRecords.map(r => r.annee))].sort();
+
+      // Populate scenario select
+      scenarios.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s;
+        opt.textContent = s;
+        scenarioSelect.appendChild(opt);
+      });
+
+      // Populate year select
+      years.forEach(y => {
+        const opt = document.createElement("option");
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+      });
+
+      // Set default: scenarioSelect first, yearSelect first
+      if (scenarios.length > 0) scenarioSelect.value = scenarios[0];
+      if (years.length > 0) yearSelect.value = years[0];
+
+      scenarioSelect.addEventListener("change", updateScenarioYearCharts);
+      yearSelect.addEventListener("change", updateScenarioYearCharts);
+    }
+
+    // Builds the grouped bar chart of total capacities across (year x scenario)
+    function buildCapacityChart() {
+      const ctx = document.getElementById("capacityChart").getContext("2d");
+
+      // Unique sorted scenarios & years
+      const scenarios = [...new Set(allRecords.map(r => r.scenario))].sort();
+      const years = [...new Set(allRecords.map(r => r.annee))].sort();
+
+      // Prepare data structure: for each scenario, we create a dataset
+      // The data array for that dataset corresponds to each year in "years"
+      const datasets = scenarios.map((scen, idx) => {
+        const scenarioColor = getColor(idx);
+        const dataPerYear = years.map(y => {
+          // sum all capacities for (scenario=scen, annee=y)
+          const record = allRecords.find(r => r.scenario === scen && r.annee === y);
+          if (!record) return 0;
+          // sum across all known technology fields
+          return sumAllTechnologies(record);
+        });
+        return {
+          label: scen,
+          backgroundColor: scenarioColor,
+          data: dataPerYear
+        };
+      });
+
+      capacityChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: years,
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: false
+            },
+            legend: {
+              position: 'top'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const val = context.parsed.y || 0;
+                  return context.dataset.label + ": " + val.toFixed(1) + " GW";
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: 'Total Installed Capacity (GW)'
+              },
+              beginAtZero: true
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Year'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Updates the donut chart for the currently selected scenario & year
+    function updateScenarioYearCharts() {
+      const scenarioSelect = document.getElementById("scenarioSelect").value;
+      const yearSelect = document.getElementById("yearSelect").value;
+
+      // Find the record that matches scenario & year
+      const record = allRecords.find(
+        r => r.scenario === scenarioSelect && r.annee === yearSelect
+      );
+      if (!record) return;
+
+      // Build the donut chart data for each technology
+      const techLabels = [
+        "Nuclear",
+        "CCGT (Gaz)",
+        "Coal",
+        "Fioul Lourd",
+        "Turbines à Combustion",
+        "Cogénérations",
+        "Autres Thermiques",
+        "Hydraulique",
+        "Éolien",
+        "Photovoltaïque",
+        "Bioénergies",
+        "Énergies Marines",
+        "Effacements"
+      ];
+      const techKeys = [
+        "nucleaire_gw",
+        "cycles_combines_au_gaz_gw",
+        "charbon_gw",
+        "fioul_lourd_gw",
+        "turbines_a_combustion_gw",
+        "cogenerations_gw",
+        "autres_moyens_thermiques_gw",
+        "hydraulique_gw",
+        "eolien_gw",
+        "photovoltaique_gw",
+        "bioenergies_gw",
+        "energies_marines_gw",
+        "effacements_gw"
+      ];
+      const techData = techKeys.map(k => record[k] ? +record[k] : 0);
+
+      if (techBreakdownChart) {
+        techBreakdownChart.destroy();
+      }
+
+      const ctx = document.getElementById("techBreakdownChart").getContext("2d");
+      techBreakdownChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: techLabels,
+          datasets: [
+            {
+              data: techData,
+              backgroundColor: techLabels.map((_, i) => getColor(i)),
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: true,
+              text: `Breakdown for ${scenarioSelect.toUpperCase()} - ${yearSelect}`
+            },
+            legend: {
+              position: "right"
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const val = context.parsed || 0;
+                  return context.label + ": " + val.toFixed(2) + " GW";
+                }
+              }
+            }
+          }
+        },
+      });
+    }
+
+    // Builds a table of all fetched data
+    function buildDataTable() {
+      const tableHeader = document.getElementById("tableHeader");
+      const tableBody = document.getElementById("tableBody");
+
+      // Clear old content if any
+      tableHeader.innerHTML = "";
+      tableBody.innerHTML = "";
+
+      // Define columns in display order:
+      const columns = [
+        { key: "scenario", label: "Scenario" },
+        { key: "annee", label: "Year" },
+        { key: "nucleaire_gw", label: "Nuclear (GW)" },
+        { key: "cycles_combines_au_gaz_gw", label: "CCGT (GW)" },
+        { key: "charbon_gw", label: "Coal (GW)" },
+        { key: "fioul_lourd_gw", label: "Fioul Lourd (GW)" },
+        { key: "turbines_a_combustion_gw", label: "Turbines Comb. (GW)" },
+        { key: "cogenerations_gw", label: "Cogénérations (GW)" },
+        { key: "autres_moyens_thermiques_gw", label: "Autres Thermiques (GW)" },
+        { key: "hydraulique_gw", label: "Hydraulique (GW)" },
+        { key: "eolien_gw", label: "Éolien (GW)" },
+        { key: "photovoltaique_gw", label: "Photovoltaïque (GW)" },
+        { key: "bioenergies_gw", label: "Bioénergies (GW)" },
+        { key: "energies_marines_gw", label: "Énergies Marines (GW)" },
+        { key: "effacements_gw", label: "Effacements (GW)" }
+      ];
+
+      // Build table header
+      const headerRow = document.createElement("tr");
+      columns.forEach(col => {
+        const th = document.createElement("th");
+        th.textContent = col.label;
+        headerRow.appendChild(th);
+      });
+      tableHeader.appendChild(headerRow);
+
+      // Build table rows
+      allRecords.forEach(rec => {
+        const row = document.createElement("tr");
+        columns.forEach(col => {
+          const td = document.createElement("td");
+          const val = rec[col.key] !== undefined ? rec[col.key] : "";
+          td.textContent = (typeof val === "number") ? val.toFixed(2) : val;
+          row.appendChild(td);
+        });
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Utility function to sum all technology fields of a record
+    function sumAllTechnologies(r) {
+      const fields = [
+        "nucleaire_gw",
+        "cycles_combines_au_gaz_gw",
+        "charbon_gw",
+        "fioul_lourd_gw",
+        "turbines_a_combustion_gw",
+        "cogenerations_gw",
+        "autres_moyens_thermiques_gw",
+        "hydraulique_gw",
+        "eolien_gw",
+        "photovoltaique_gw",
+        "bioenergies_gw",
+        "energies_marines_gw",
+        "effacements_gw"
+      ];
+      return fields.reduce((acc, f) => acc + (r[f] ? +r[f] : 0), 0);
+    }
+
+    // Simple color palette generator
+    function getColor(index) {
+      // A set of pastel or random-ish colors
+      const palette = [
+        "#4dc9f6","#f67019","#f53794","#537bc4",
+        "#acc236","#166a8f","#00a950","#58595b",
+        "#8549ba","#b1dfbb","#ffa600","#ff6361",
+        "#bc5090","#8338ec","#0081a7","#00afb9"
+      ];
+      return palette[index % palette.length];
+    }
+  </script>
+</body>
+</html>

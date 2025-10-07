@@ -1,0 +1,45 @@
+{
+    "total_count": 199,
+    "results": [
+        {
+            "annee": "2006-01",
+            "nombre_d_acteurs": 16.0
+        },
+        {
+            "annee": "2006-06",
+            "nombre_d_acteurs": 21.0
+        },
+        {
+            "annee": "2006-09",
+            "nombre_d_acteurs": 21.0
+        },
+        {
+            "annee": "2006-10",
+            "nombre_d_acteurs": 23.0
+        },
+        {
+            "annee": "2007-02",
+            "nombre_d_acteurs": 26.0
+        },
+        {
+            "annee": "2007-04",
+            "nombre_d_acteurs": 27.0
+        },
+        {
+            "annee": "2007-06",
+            "nombre_d_acteurs": 28.0
+        },
+        {
+            "annee": "2008-01",
+            "nombre_d_acteurs": 32.0
+        },
+        {
+            "annee": "2008-03",
+            "nombre_d_acteurs": 34.0
+        },
+        {
+            "annee": "2008-04",
+            "nombre_d_acteurs": 36.0
+        }
+    ]
+}

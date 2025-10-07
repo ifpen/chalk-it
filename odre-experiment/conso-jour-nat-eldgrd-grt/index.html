@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gas Consumption Dashboard - conso-jour-nat-eldgrd-grt</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Basic resets and layout */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background: #f8f9fa;
+      color: #333;
+      padding: 2rem;
+    }
+    h1, h2, h3 {
+      margin-bottom: 0.75rem;
+    }
+    h1 {
+      margin-top: 0;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .intro-section {
+      background: #fff;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    .intro-section p {
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    .chart-container {
+      background: #fff;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    canvas {
+      max-height: 400px;
+    }
+    .filters-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .filters-section label {
+      font-weight: bold;
+    }
+    .filters-section input {
+      padding: 0.25rem;
+    }
+    .hint {
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .summary-stats {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #444;
+    }
+    .summary-stats p {
+      margin-bottom: 0.4rem;
+    }
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1>Gas Consumption Dashboard</h1>
+
+    <!-- Introduction / Overview -->
+    <div class="intro-section">
+      <h2>About This Dashboard</h2>
+      <p>
+        This dashboard presents national gross gas consumption data 
+        for the dataset <strong>conso-jour-nat-eldgrd-grt</strong>.
+        It showcases how daily usage evolves over time and offers 
+        insights into consumption patterns and potential seasonal trends.
+      </p>
+      <p>
+        Data Source: 
+        <a href="https://odre.opendatasoft.com/explore/dataset/conso-jour-nat-eldgrd-grt/information/" 
+           target="_blank" 
+           rel="noopener noreferrer">
+          Opendatasoft: conso-jour-nat-eldgrd-grt
+        </a>
+      </p>
+      <p class="hint">Note: The dashboard fetches data directly from the live API endpoint.</p>
+    </div>
+
+    <!-- Filters / Controls Section -->
+    <div class="chart-container">
+      <h3>Filter by Date Range</h3>
+      <div class="filters-section">
+        <label for="start-date">Start date:</label>
+        <input type="date" id="start-date" />
+        <label for="end-date">End date:</label>
+        <input type="date" id="end-date" />
+        <button id="apply-filters">Apply Filters</button>
+      </div>
+      <p class="hint">
+        Adjust the date range to focus on a specific period. 
+        The line chart and summary statistics will update accordingly.
+      </p>
+    </div>
+
+    <!-- Time-Series Chart Section -->
+    <div class="chart-container">
+      <h3>Daily Gas Consumption Over Time</h3>
+      <canvas id="lineChart"></canvas>
+      <div class="summary-stats" id="timeSeriesStats">
+        <!-- This will be populated dynamically -->
+      </div>
+    </div>
+
+    <!-- Operator/Network Comparison (Bar Chart) -->
+    <div class="chart-container">
+      <h3>Operator / Sector Totals</h3>
+      <canvas id="operatorChart"></canvas>
+      <p class="hint">
+        This bar chart sums daily consumption by operator or sector 
+        over the selected date range. 
+        (Note: In the sample data shown, only "NaTran" appears, but 
+        multiple operators may be present in the live dataset.)
+      </p>
+    </div>
+
+    <!-- Seasonal/Monthly Aggregation (Bar Chart) -->
+    <div class="chart-container">
+      <h3>Monthly Consumption (Seasonal Aggregation)</h3>
+      <canvas id="monthlyChart"></canvas>
+      <p class="hint">
+        Aggregated monthly totals can reveal seasonal trends 
+        (winter spikes, summer dips, etc.).
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      Dashboard example © 2023 - Demonstration of conso-jour-nat-eldgrd-grt 
+      <br/>Built with HTML, CSS, and JavaScript (Chart.js)
+    </footer>
+  </div>
+
+  <script>
+    /***********************
+     * GLOBAL VARIABLES
+     ***********************/
+    let rawData = []; // Will hold the records fetched from the API
+    let filteredData = []; // Will hold data after applying date filters
+
+    // Chart instances
+    let lineChartInstance = null;
+    let operatorChartInstance = null;
+    let monthlyChartInstance = null;
+
+    /***********************
+     * HELPER FUNCTIONS
+     ***********************/
+
+    // Parse a date string "YYYY-MM-DD" into a JavaScript Date object
+    function parseDateString(dateStr) {
+      // dateStr is typically "2018-06-02"
+      const [year, month, day] = dateStr.split("-");
+      return new Date(+year, +month - 1, +day);
+    }
+
+    // Format date object as "YYYY-MM-DD"
+    function formatDate(dateObj) {
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const day = String(dateObj.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    // Apply date filter to the raw data
+    function applyDateFilter(startDate, endDate) {
+      return rawData.filter(record => {
+        const recordDate = parseDateString(record.date);
+        return recordDate >= startDate && recordDate <= endDate;
+      });
+    }
+
+    // Return array of objects with { date, consumption }
+    // from the (already daily) data
+    function buildTimeSeries(dataArray) {
+      return dataArray.map(d => ({
+        date: d.date,
+        consumption: d.conso_journaliere_mwh_pcs_0degc
+          ? Number(d.conso_journaliere_mwh_pcs_0degc)
+          : 0
+      }));
+    }
+
+    // Summarize data by operator or sector
+    // Returns an object of { [operatorName]: sumOfConsumption }
+    function summarizeByOperator(dataArray) {
+      const sums = {};
+      dataArray.forEach(d => {
+        const opName = d.operateur || "Unknown";
+        const sectorName = d.secteur_d_activite || "Unknown";
+        // Combine operator + sector if both are available
+        const key = opName + " (" + sectorName + ")";
+        const val = d.conso_journaliere_mwh_pcs_0degc
+          ? Number(d.conso_journaliere_mwh_pcs_0degc)
+          : 0;
+        if (!sums[key]) sums[key] = 0;
+        sums[key] += val;
+      });
+      return sums;
+    }
+
+    // Summarize data monthly
+    // Return an object { "YYYY-MM": sumConsumption }
+    function summarizeMonthly(dataArray) {
+      const monthly = {};
+      dataArray.forEach(d => {
+        const dateObj = parseDateString(d.date);
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+        const monthKey = `${year}-${month}`;
+        if (!monthly[monthKey]) monthly[monthKey] = 0;
+        const val = d.conso_journaliere_mwh_pcs_0degc
+          ? Number(d.conso_journaliere_mwh_pcs_0degc)
+          : 0;
+        monthly[monthKey] += val;
+      });
+      return monthly;
+    }
+
+    // Calculate basic stats from time-series
+    function calculateTimeSeriesStats(tsData) {
+      if (!tsData.length) {
+        return {
+          min: 0,
+          max: 0,
+          avg: 0,
+          total: 0
+        };
+      }
+      let min = tsData[0].consumption;
+      let max = tsData[0].consumption;
+      let sum = 0;
+      tsData.forEach(item => {
+        if (item.consumption < min) min = item.consumption;
+        if (item.consumption > max) max = item.consumption;
+        sum += item.consumption;
+      });
+      return {
+        min,
+        max,
+        avg: sum / tsData.length,
+        total: sum
+      };
+    }
+
+    // Update textual stats in HTML
+    function updateTimeSeriesStatsDisplay(stats, dataCount) {
+      const statsDiv = document.getElementById("timeSeriesStats");
+      if (!dataCount) {
+        statsDiv.innerHTML = "<p>No data available for the selected date range.</p>";
+        return;
+      }
+      statsDiv.innerHTML = `
+        <p><strong>Data points:</strong> ${dataCount}</p>
+        <p><strong>Minimum daily consumption:</strong> ${Math.round(stats.min).toLocaleString()} MWh</p>
+        <p><strong>Maximum daily consumption:</strong> ${Math.round(stats.max).toLocaleString()} MWh</p>
+        <p><strong>Average daily consumption:</strong> ${Math.round(stats.avg).toLocaleString()} MWh</p>
+        <p><strong>Total consumption over period:</strong> ${Math.round(stats.total).toLocaleString()} MWh</p>
+      `;
+    }
+
+    /***********************
+     * CHART DRAWING
+     ***********************/
+
+    // Draw or update the time-series line chart
+    function drawTimeSeriesChart(tsData) {
+      const ctx = document.getElementById("lineChart").getContext("2d");
+      // If chart already exists, destroy it first
+      if (lineChartInstance) {
+        lineChartInstance.destroy();
+      }
+      lineChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: tsData.map(item => item.date),
+          datasets: [
+            {
+              label: "Daily Gas Consumption (MWh)",
+              data: tsData.map(item => item.consumption),
+              borderColor: "#007bff",
+              backgroundColor: "rgba(0, 123, 255, 0.1)",
+              fill: true,
+              pointRadius: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              display: true,
+              title: { display: true, text: "Date" },
+            },
+            y: {
+              display: true,
+              title: { display: true, text: "Consumption (MWh)" },
+              beginAtZero: true,
+            },
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: { mode: "index", intersect: false },
+          },
+        },
+      });
+    }
+
+    // Draw or update the operator/sector bar chart
+    function drawOperatorChart(operatorSums) {
+      const ctx = document.getElementById("operatorChart").getContext("2d");
+
+      const labels = Object.keys(operatorSums);
+      const dataVals = Object.values(operatorSums);
+
+      if (operatorChartInstance) {
+        operatorChartInstance.destroy();
+      }
+      operatorChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Total Consumption (MWh)",
+              data: dataVals,
+              backgroundColor: "#28a745",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              ticks: { autoSkip: false }
+            },
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "MWh" },
+            },
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: { mode: "nearest" },
+          },
+        },
+      });
+    }
+
+    // Draw or update the monthly consumption chart
+    function drawMonthlyChart(monthlySums) {
+      const ctx = document.getElementById("monthlyChart").getContext("2d");
+      const labels = Object.keys(monthlySums).sort(); // sort by YYYY-MM ascending
+      const dataVals = labels.map(key => monthlySums[key]);
+
+      if (monthlyChartInstance) {
+        monthlyChartInstance.destroy();
+      }
+      monthlyChartInstance = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Monthly Consumption (MWh)",
+              data: dataVals,
+              backgroundColor: "#dc3545",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              ticks: { autoSkip: false },
+              title: { display: true, text: "Year-Month" }
+            },
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "MWh" },
+            },
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: { mode: "nearest" },
+          },
+        },
+      });
+    }
+
+    /***********************
+     * MAIN LOGIC
+     ***********************/
+
+    async function fetchDataAndInitialize() {
+      try {
+        const response = await fetch(
+          "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/conso-jour-nat-eldgrd-grt/records?limit=-1"
+        );
+        const jsonData = await response.json();
+
+        if (!jsonData.results) {
+          console.error("No results found in API response. Response:", jsonData);
+          return;
+        }
+
+        // The structure expected: { "results": [ {...}, {...} ], "total_count": 1234, ... }
+        rawData = jsonData.results;
+        
+        // Sort data by date ascending to ensure chronological order
+        rawData.sort((a, b) => parseDateString(a.date) - parseDateString(b.date));
+
+        // Initialize date filters to min -> max from the dataset
+        const minDate = parseDateString(rawData[0].date);
+        const maxDate = parseDateString(rawData[rawData.length - 1].date);
+
+        document.getElementById("start-date").value = formatDate(minDate);
+        document.getElementById("end-date").value = formatDate(maxDate);
+
+        // Default: show entire range
+        handleFilters();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    // Called when user clicks "Apply Filters"
+    function handleFilters() {
+      const startDateVal = document.getElementById("start-date").value;
+      const endDateVal = document.getElementById("end-date").value;
+
+      if (!startDateVal || !endDateVal) return;
+
+      const startDate = parseDateString(startDateVal);
+      const endDate = parseDateString(endDateVal);
+
+      if (startDate > endDate) {
+        alert("Start date cannot be after end date.");
+        return;
+      }
+
+      // Filter the data in the given range
+      filteredData = applyDateFilter(startDate, endDate);
+
+      // Build time-series data
+      const timeSeriesData = buildTimeSeries(filteredData);
+      // Calculate stats
+      const stats = calculateTimeSeriesStats(timeSeriesData);
+      // Update textual stats
+      updateTimeSeriesStatsDisplay(stats, timeSeriesData.length);
+      // Draw line chart
+      drawTimeSeriesChart(timeSeriesData);
+
+      // Summarize by operator
+      const operatorSums = summarizeByOperator(filteredData);
+      drawOperatorChart(operatorSums);
+
+      // Summarize monthly
+      const monthlySums = summarizeMonthly(filteredData);
+      drawMonthlyChart(monthlySums);
+    }
+
+    /***********************
+     * EVENT LISTENERS
+     ***********************/
+    document.getElementById("apply-filters").addEventListener("click", handleFilters);
+
+    // On page load, fetch data from API and render
+    fetchDataAndInitialize();
+  </script>
+</body>
+</html>

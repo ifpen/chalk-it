@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>cccg-nat-annuel-def Dashboard</title>
+  <!-- Chart.js (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* Basic Reset & Layout */
+    * {
+      margin: 0; 
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      color: #333;
+      background: #f8f9fa;
+    }
+
+    h1, h2, h3 {
+      margin-bottom: 1rem;
+    }
+
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #007bff;
+    }
+
+    .summary-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 30px;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 6px;
+      padding: 20px;
+      flex: 1 1 200px;
+      min-width: 180px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: #555;
+    }
+
+    .card p {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    /* Chart Container */
+    #chartContainer {
+      background: #fff;
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Data Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+
+    table thead {
+      background: #007bff;
+      color: #fff;
+    }
+
+    table th, table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    table tbody tr:nth-child(even) {
+      background: #f1f1f1;
+    }
+
+    /* Footer / Sources */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 10px;
+      border-top: 1px solid #ccc;
+      color: #777;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .summary-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+      .card {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    
+    <header>
+      <h1>Consumption Dashboard: cccg-nat-annuel-def</h1>
+      <p>A front-end–only data storytelling experience for Combined Cycle Gas Plants.</p>
+    </header>
+
+    <!-- Summary Cards (High-level Stats) -->
+    <div class="summary-cards" id="summaryCards">
+      <!-- Dynamically populated -->
+    </div>
+
+    <!-- Chart Container -->
+    <div id="chartContainer">
+      <canvas id="annualConsumptionChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Data Table -->
+    <h2>Annual Data</h2>
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Operator</th>
+          <th>Annual Consumption (MWh)</th>
+          <th>Status</th>
+          <th>YoY Change (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamically populated -->
+      </tbody>
+    </table>
+
+    <footer>
+      Data Source: <a href="https://odre.opendatasoft.com/explore/dataset/cccg-nat-annuel-def">ODRE OpenDataSoft</a> |
+      Front-End Demo
+    </footer>
+  </div>
+
+  <script>
+    // Global variables for data storage
+    let apiData = [];
+
+    // Fetch data from endpoint
+    // "limit=-1" fetches all available records
+    fetch('https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/cccg-nat-annuel-def/records?limit=-1')
+      .then(response => response.json())
+      .then(json => {
+        // According to the provided format, the data is in json.results
+        apiData = json.results;
+
+        // Transform and sort data by year ascending
+        // The data has structure: {
+        //   annee, operateur, statut_de_la_donnee, consommation_annuelle_en_mwh, ...
+        // }
+        let transformed = apiData.map(item => {
+          return {
+            year: parseInt(item.annee, 10),
+            operator: item.operateur,
+            status: item.statut_de_la_donnee,
+            consumption_mwh: item.consommation_annuelle_en_mwh
+          };
+        });
+
+        // Sort by year (ascending)
+        transformed.sort((a,b) => a.year - b.year);
+
+        // Calculate Year-over-Year changes in consumption
+        // yoyChange[i] = ( (c[i] - c[i-1]) / c[i-1] ) * 100
+        for(let i = 1; i < transformed.length; i++){
+          let prev = transformed[i-1].consumption_mwh;
+          let current = transformed[i].consumption_mwh;
+          let yoy = ((current - prev) / prev) * 100;
+          transformed[i].yoyChange = yoy;
+        }
+
+        // Build summary stats (total consumption, min, max, etc.)
+        createSummaryCards(transformed);
+
+        // Build the chart
+        buildChart(transformed);
+
+        // Populate the table
+        populateTable(transformed);
+      })
+      .catch(error => {
+        console.error('Error fetching or processing data:', error);
+      });
+
+    /**
+     * Create summary cards (e.g., total consumption, max year, min year, etc.)
+     */
+    function createSummaryCards(dataArray) {
+      const container = document.getElementById('summaryCards');
+
+      // Calculate total consumption
+      let total = dataArray.reduce((acc, curr) => acc + curr.consumption_mwh, 0);
+      // Find min & max consumption & corresponding years
+      let minData = dataArray.reduce((minRec, rec) => rec.consumption_mwh < minRec.consumption_mwh ? rec : minRec, dataArray[0]);
+      let maxData = dataArray.reduce((maxRec, rec) => rec.consumption_mwh > maxRec.consumption_mwh ? rec : maxRec, dataArray[0]);
+
+      // Create Card 1: Total consumption
+      let card1 = document.createElement('div');
+      card1.className = 'card';
+      card1.innerHTML = `
+        <h3>Total Consumption (MWh)</h3>
+        <p>${formatNumber(total.toFixed(0))}</p>
+      `;
+      container.appendChild(card1);
+
+      // Create Card 2: Highest consumption year
+      let card2 = document.createElement('div');
+      card2.className = 'card';
+      card2.innerHTML = `
+        <h3>Peak Year</h3>
+        <p>${maxData.year} : ${formatNumber(maxData.consumption_mwh.toFixed(0))} MWh</p>
+      `;
+      container.appendChild(card2);
+
+      // Create Card 3: Lowest consumption year
+      let card3 = document.createElement('div');
+      card3.className = 'card';
+      card3.innerHTML = `
+        <h3>Lowest Year</h3>
+        <p>${minData.year} : ${formatNumber(minData.consumption_mwh.toFixed(0))} MWh</p>
+      `;
+      container.appendChild(card3);
+
+      // Create Card 4: # of Years
+      let card4 = document.createElement('div');
+      card4.className = 'card';
+      card4.innerHTML = `
+        <h3>Data Points</h3>
+        <p>${dataArray.length} Years</p>
+      `;
+      container.appendChild(card4);
+    }
+
+    /**
+     * Build a time-series (line) chart using Chart.js
+     */
+    function buildChart(dataArray) {
+      const ctx = document.getElementById('annualConsumptionChart').getContext('2d');
+
+      const labels = dataArray.map(item => item.year);
+      const consumptionData = dataArray.map(item => item.consumption_mwh);
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Annual Gas Consumption (MWh)',
+            data: consumptionData,
+            borderColor: 'rgba(75,192,192,1)',
+            borderWidth: 2,
+            backgroundColor: 'rgba(75,192,192,0.2)',
+            fill: true,
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: 'Consumption (MWh)'
+              },
+              beginAtZero: false
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Year'
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  // Show formatted consumption
+                  return ` ${formatNumber(context.parsed.y.toFixed(0))} MWh`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    /**
+     * Populate the table with the dataset.
+     */
+    function populateTable(dataArray) {
+      const tbody = document.querySelector('#dataTable tbody');
+      dataArray.forEach((row) => {
+        const tr = document.createElement('tr');
+
+        const tdYear = document.createElement('td');
+        tdYear.textContent = row.year;
+        tr.appendChild(tdYear);
+
+        const tdOperator = document.createElement('td');
+        tdOperator.textContent = row.operator;
+        tr.appendChild(tdOperator);
+
+        const tdConsumption = document.createElement('td');
+        tdConsumption.textContent = formatNumber(row.consumption_mwh.toFixed(0));
+        tr.appendChild(tdConsumption);
+
+        const tdStatus = document.createElement('td');
+        tdStatus.textContent = row.status;
+        tr.appendChild(tdStatus);
+
+        const tdYoyChange = document.createElement('td');
+        if (row.yoyChange) {
+          tdYoyChange.textContent = row.yoyChange.toFixed(2) + ' %';
+        } else {
+          tdYoyChange.textContent = '-';
+        }
+        tr.appendChild(tdYoyChange);
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    /**
+     * Helper function to format large numbers with commas
+     * @param {string|number} num
+     * @returns {string}
+     */
+    function formatNumber(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Consommation Nationale Horaire de Gaz - Dashboard</title>
+
+  <!-- Chart.js CDN for charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* Basic resets and layout */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+    header {
+      background: #0074D9;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-weight: normal;
+    }
+
+    main {
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h2, h3 {
+      color: #0074D9;
+      margin-top: 2rem;
+    }
+
+    /* Top metrics row */
+    .metrics {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .metric {
+      flex: 1;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .metric h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #555;
+    }
+    .metric p {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Chart containers */
+    .chart-container {
+      background: #fff;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Table of top days */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    table th, table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+    table thead {
+      background: #ddd;
+    }
+
+    .info-text {
+      margin-bottom: 1rem;
+    }
+
+    /* Hour Selector styles */
+    .hour-selector {
+      display: inline-block; 
+      margin: 1rem 0;
+    }
+    .hour-selector select {
+      font-size: 1rem;
+      padding: 0.3rem;
+    }
+
+    /* Responsive layout */
+    @media(max-width: 768px) {
+      .metrics {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Consommation Nationale Horaire de Gaz - Dashboard</h1>
+  </header>
+
+  <main>
+    <p class="info-text">
+      Cette application front-end illustre la consommation horaire de gaz en France pour le secteur industriel connecté au réseau de transport.  
+      Elle utilise les données du jeu “consommation-nationale-horaire-de-gaz-donnees-provisoires-grtgaz-terega-v2” (données issues de l'API)  
+      et offre une vue d’ensemble, des comparaisons temporelles et une exploration interactive.  
+    </p>
+
+    <!-- Top-Level Metrics -->
+    <div class="metrics">
+      <div class="metric">
+        <h3>Nombre total de jours (enregistrements)</h3>
+        <p id="total-records">—</p>
+      </div>
+      <div class="metric">
+        <h3>Consommation journalière moyenne (MWh)</h3>
+        <p id="avg-consumption">—</p>
+      </div>
+      <div class="metric">
+        <h3>Consommation journalière max (MWh)</h3>
+        <p id="max-consumption">—</p>
+      </div>
+    </div>
+
+    <!-- Daily Consumption Chart -->
+    <div class="chart-container">
+      <h2>Évolution de la consommation journalière (MWh)</h2>
+      <canvas id="dailyConsumptionChart"></canvas>
+    </div>
+
+    <!-- Hourly (per selected day) Chart -->
+    <div class="chart-container">
+      <h2>Répartition horaire pour une date sélectionnée</h2>
+      <p>Choisissez une date ci-dessous pour voir la répartition de la consommation par heure (00h à 23h).</p>
+      <div class="hour-selector">
+        <select id="dateSelect">
+          <option value="">Sélectionner une date...</option>
+        </select>
+      </div>
+      <canvas id="hourlyConsumptionChart"></canvas>
+    </div>
+
+    <!-- Top 5 Days by Consumption -->
+    <h2>Jours à la consommation la plus élevée</h2>
+    <div class="chart-container">
+      <table id="topDaysTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Consommation Journalière (MWh)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled dynamically -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Story Conclusion or Next Steps -->
+    <h3>Observations et Prochaines Étapes</h3>
+    <p>
+      Cette analyse met en lumière l’évolution de la consommation de gaz heure par heure et jour après jour.  
+      Observez les pics de consommation journalière qui peuvent être corrélés à des facteurs comme la météo, l’activité industrielle,  
+      ou encore des fluctuations attendues durant les heures de pointe. Pour aller plus loin, il serait possible d’intégrer plus de  
+      données externes (température, secteurs industriels, régions) et d'effectuer des corrélations détaillées.
+    </p>
+
+  </main>
+
+  <script>
+    // Global data references
+    let dailyData = []; // each element: { date, dailyConsumption, hours: { '00_00': val, '01_00': val, ... '23_00': val } }
+    let dailyChart;     // Chart.js instance for daily consumption
+    let hourlyChart;    // Chart.js instance for hourly consumption
+
+    // Fetch real data from the endpoint
+    // The returned format is like:
+    // {
+    //   "total_count": 4852,
+    //   "results": [
+    //       {
+    //           "date": "2018-07-08",
+    //           "operateur": "NaTran",
+    //           "secteur_d_activite": "Industriel",
+    //           "00_00": 13841,
+    //           "01_00": 13907,
+    //           ...
+    //           "consommation_journaliere_mwh_pcs": 327365.0,
+    //           "statut": "Provisoire"
+    //       }, ...
+    //   ]
+    // }
+    const API_URL = "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/consommation-nationale-horaire-de-gaz-donnees-provisoires-grtgaz-terega-v2/records?limit=-1";
+
+    // Utility: parse the raw record into a structured object
+    function parseRecord(rec) {
+      // rec is the raw object from "results"
+      const {
+        date,
+        consommation_journaliere_mwh_pcs,
+        "00_00": h0,
+        "01_00": h1,
+        "02_00": h2,
+        "03_00": h3,
+        "04_00": h4,
+        "05_00": h5,
+        "06_00": h6,
+        "07_00": h7,
+        "08_00": h8,
+        "09_00": h9,
+        "10_00": h10,
+        "11_00": h11,
+        "12_00": h12,
+        "13_00": h13,
+        "14_00": h14,
+        "15_00": h15,
+        "16_00": h16,
+        "17_00": h17,
+        "18_00": h18,
+        "19_00": h19,
+        "20_00": h20,
+        "21_00": h21,
+        "22_00": h22,
+        "23_00": h23
+      } = rec;
+
+      // Hours might be missing or undefined in certain records, so we check
+      const hours = {
+        "00_00": h0 || 0,
+        "01_00": h1 || 0,
+        "02_00": h2 || 0,
+        "03_00": h3 || 0,
+        "04_00": h4 || 0,
+        "05_00": h5 || 0,
+        "06_00": h6 || 0,
+        "07_00": h7 || 0,
+        "08_00": h8 || 0,
+        "09_00": h9 || 0,
+        "10_00": h10 || 0,
+        "11_00": h11 || 0,
+        "12_00": h12 || 0,
+        "13_00": h13 || 0,
+        "14_00": h14 || 0,
+        "15_00": h15 || 0,
+        "16_00": h16 || 0,
+        "17_00": h17 || 0,
+        "18_00": h18 || 0,
+        "19_00": h19 || 0,
+        "20_00": h20 || 0,
+        "21_00": h21 || 0,
+        "22_00": h22 || 0,
+        "23_00": h23 || 0
+      };
+
+      return {
+        date,
+        dailyConsumption: consommation_journaliere_mwh_pcs ? Number(consommation_journaliere_mwh_pcs) : 0,
+        hours
+      };
+    }
+
+    async function fetchData() {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+
+        if (!data || !data.results) {
+          console.error("No data found or 'results' key missing.");
+          return [];
+        }
+
+        return data.results.map(r => parseRecord(r));
+      } catch (err) {
+        console.error("Error while fetching data:", err);
+        return [];
+      }
+    }
+
+    function createDailyChart(data) {
+      const ctx = document.getElementById('dailyConsumptionChart').getContext('2d');
+      // Sort data by date (ascending) to ensure time-series continuity
+      data.sort((a,b) => new Date(a.date) - new Date(b.date));
+
+      const labels = data.map(d => d.date);
+      const values = data.map(d => d.dailyConsumption);
+
+      dailyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Consommation Journalière (MWh)',
+            data: values,
+            borderColor: '#FF4136',
+            backgroundColor: 'rgba(255, 65, 54, 0.1)',
+            tension: 0.2,
+            pointRadius: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Date'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'MWh'
+              },
+              beginAtZero: false
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          }
+        }
+      });
+    }
+
+    function createHourlyChart() {
+      const ctx = document.getElementById('hourlyConsumptionChart').getContext('2d');
+      hourlyChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: Array.from({length: 24}, (_, i) => i.toString().padStart(2, '0') + ":00"),
+          datasets: [{
+            label: 'Consommation Horaire (MWh)',
+            data: [],
+            backgroundColor: '#0074D9'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Heure'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'MWh'
+              },
+              beginAtZero: true
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            }
+          }
+        }
+      });
+    }
+
+    function updateHourlyChart(selectedDate) {
+      const record = dailyData.find(d => d.date === selectedDate);
+      if (!record) return;
+
+      // We have 24 keys in record.hours: "00_00", "01_00", ...
+      const hoursOrdered = Object.keys(record.hours).sort(); // "00_00", "01_00", etc.
+      const consumptionValues = hoursOrdered.map(h => record.hours[h] || 0);
+
+      // Update the chart
+      hourlyChart.data.datasets[0].data = consumptionValues;
+      hourlyChart.update();
+    }
+
+    function populateDateSelector(data) {
+      const dateSelect = document.getElementById('dateSelect');
+      // Sort by date ascending
+      const sorted = data.sort((a,b) => new Date(a.date) - new Date(b.date));
+      sorted.forEach(d => {
+        const option = document.createElement('option');
+        option.value = d.date;
+        option.textContent = d.date;
+        dateSelect.appendChild(option);
+      });
+
+      dateSelect.addEventListener('change', (ev) => {
+        const selected = ev.target.value;
+        if (selected) {
+          updateHourlyChart(selected);
+        }
+      });
+    }
+
+    function fillSummaryMetrics(data) {
+      // total records
+      document.getElementById('total-records').textContent = data.length;
+
+      // average daily consumption
+      const sum = data.reduce((acc, cur) => acc + cur.dailyConsumption, 0);
+      const avg = sum / data.length || 0;
+      document.getElementById('avg-consumption').textContent = Math.round(avg).toLocaleString('fr-FR');
+
+      // max consumption
+      const maxCons = Math.max(...data.map(d => d.dailyConsumption));
+      document.getElementById('max-consumption').textContent = Math.round(maxCons).toLocaleString('fr-FR');
+    }
+
+    function fillTopDaysTable(data) {
+      // Sort by descending daily consumption
+      const sorted = [...data].sort((a,b) => b.dailyConsumption - a.dailyConsumption);
+      const top5 = sorted.slice(0, 5);
+
+      const tbody = document.querySelector('#topDaysTable tbody');
+      tbody.innerHTML = "";
+
+      top5.forEach(d => {
+        const tr = document.createElement('tr');
+        const tdDate = document.createElement('td');
+        tdDate.textContent = d.date;
+        const tdCons = document.createElement('td');
+        tdCons.textContent = Math.round(d.dailyConsumption).toLocaleString('fr-FR');
+        tr.appendChild(tdDate);
+        tr.appendChild(tdCons);
+        tbody.appendChild(tr);
+      });
+    }
+
+    // MAIN
+    (async function initDashboard(){
+      dailyData = await fetchData();
+      if (dailyData.length === 0) {
+        // Show some message or fallback
+        console.warn("No data loaded.");
+        return;
+      }
+
+      // Fill top-level metrics
+      fillSummaryMetrics(dailyData);
+
+      // Create main daily consumption chart
+      createDailyChart(dailyData);
+
+      // Create an empty hourly chart (updates happen on date change)
+      createHourlyChart();
+
+      // Populate the date selector for the hourly chart
+      populateDateSelector(dailyData);
+
+      // Fill the "top days" table
+      fillTopDaysTable(dailyData);
+    })();
+  </script>
+</body>
+</html>

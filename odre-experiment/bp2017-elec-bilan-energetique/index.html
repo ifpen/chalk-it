@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>BP2017 Elec Bilan Energétique Dashboard</title>
+<!-- CDN for Chart.js (for data visualizations) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  /* Basic Reset & Layout */
+  * {
+    margin: 0; 
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 1rem;
+    background: #f5f5f5;
+    color: #333;
+  }
+  h1, h2, h3 {
+    margin: 0.8rem 0;
+  }
+  h1 {
+    font-size: 1.8rem;
+  }
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    background: #fff;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  /* Intro / Info Section */
+  .intro {
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  .info-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .info-card {
+    flex: 1;
+    background: #fafafa;
+    padding: 1rem;
+    border-radius: 4px;
+    min-width: 150px;
+    text-align: center;
+    box-shadow: 0 0 3px rgba(0,0,0,0.05);
+  }
+  .info-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .info-card p {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  /* Charts Section */
+  .charts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .chart-container {
+    flex: 1 1 450px;
+    background: #fafafa;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 0 3px rgba(0,0,0,0.05);
+  }
+  .chart-container canvas {
+    width: 100%;
+    max-width: 600px;
+    height: 300px;
+  }
+
+  /* Tables and Filters */
+  .filters {
+    margin-bottom: 1.5rem;
+  }
+  select {
+    padding: 0.4rem;
+    margin-right: 0.8rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  table th, table td {
+    padding: 0.6rem;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+  table th {
+    background: #eee;
+  }
+  tr:hover {
+    background: #f9f9f9;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .charts {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>BP2017 Elec Bilan Energétique Dashboard</h1>
+  <p class="intro">
+    This interactive dashboard explores France’s future electrical system under different scenarios 
+    (Ampère, Hertz, Volt, Watt) for 2025, 2030, and 2035. It highlights key indicators such as consumption, 
+    CO₂ emissions, and share of nuclear vs. renewables in order to present a “story” of how the 
+    French electrical mix could evolve.
+  </p>
+
+  <!-- KPI/Info cards -->
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>Scenarios</h3>
+      <p>Ampère, Hertz, Volt, Watt</p>
+    </div>
+    <div class="info-card">
+      <h3>Horizons</h3>
+      <p>2025, 2030, 2035</p>
+    </div>
+    <div class="info-card">
+      <h3>Key Measures</h3>
+      <p>Consumption (TWh), Emissions (Mt), Nuclear %, Renewables %</p>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts">
+    <div class="chart-container">
+      <h3>Consumption by Year & Scenario</h3>
+      <canvas id="consumptionChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h3>Share of Nuclear vs. Renewables</h3>
+      <canvas id="shareChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Filter + Table Section -->
+  <div>
+    <h3>Detailed Data Table</h3>
+    <div class="filters">
+      <label for="scenarioFilter">Scenario:</label>
+      <select id="scenarioFilter">
+        <option value="">All</option>
+      </select>
+      <label for="yearFilter">Year:</label>
+      <select id="yearFilter">
+        <option value="">All</option>
+      </select>
+    </div>
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Year</th>
+          <th>Consumption (TWh)</th>
+          <th>CO₂ (Mt)</th>
+          <th>Nuclear %</th>
+          <th>Renewables %</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data rows will be inserted dynamically -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+/***********************************************************************
+  Data Fetch & Global Variables
+***********************************************************************/
+let globalData = [];
+
+/***********************************************************************
+  Color scheme for scenarios
+***********************************************************************/
+const scenarioColors = {
+  ampere: 'rgba(87, 191, 95, 0.8)',  // green
+  hertz: 'rgba(54, 162, 235, 0.8)', // blue
+  volt: 'rgba(255, 159, 64, 0.8)',  // orange
+  watt: 'rgba(153, 102, 255, 0.8)'  // purple
+};
+
+/***********************************************************************
+  Initialization
+***********************************************************************/
+async function initDashboard() {
+  // 1) Fetch data
+  await fetchData();
+
+  // 2) Populate scenario/year filter selects
+  populateFilters();
+
+  // 3) Build initial charts
+  buildConsumptionChart();
+  buildShareChart();
+
+  // 4) Build table
+  updateTable();
+
+  // Add filter event listeners
+  document.getElementById('scenarioFilter').addEventListener('change', updateTable);
+  document.getElementById('yearFilter').addEventListener('change', updateTable);
+}
+
+/***********************************************************************
+  Fetch data from the real endpoint
+***********************************************************************/
+async function fetchData() {
+  const url = 'https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/bp2017-elec-bilan-energetique/records?limit=-1';
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error('Network response was not ok:', response.statusText);
+      return;
+    }
+    const json = await response.json();
+    // The dataset's records are presumably under json.results
+    // We'll store them in globalData
+    globalData = json.results || [];
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
+}
+
+/***********************************************************************
+  Populate scenario/year filters
+***********************************************************************/
+function populateFilters() {
+  const scenarioSelect = document.getElementById('scenarioFilter');
+  const yearSelect = document.getElementById('yearFilter');
+
+  // Get unique scenario and year
+  const scenarios = [...new Set(globalData.map(d => d.scenario))].sort();
+  const years = [...new Set(globalData.map(d => d.annee))].sort();
+
+  scenarios.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s;
+    opt.textContent = capitalize(s);
+    scenarioSelect.appendChild(opt);
+  });
+
+  years.forEach(y => {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  });
+}
+
+/***********************************************************************
+  Build the Consumption Chart (multi-series line by scenario)
+***********************************************************************/
+function buildConsumptionChart() {
+  const ctx = document.getElementById('consumptionChart').getContext('2d');
+
+  // Group data by scenario => [ { scenario, data: [ { x: year, y: consumption } ] },... ]
+  // We'll treat year as numeric so we can see them in ascending order
+  const scenarioMap = {};
+  globalData.forEach(d => {
+    const scn = d.scenario.toLowerCase();
+    if (!scenarioMap[scn]) {
+      scenarioMap[scn] = [];
+    }
+    const yearNum = parseInt(d.annee, 10);
+    scenarioMap[scn].push({ x: yearNum, y: d.consommation_france_twh });
+  });
+
+  // Sort each scenario's array by year
+  const datasets = Object.keys(scenarioMap).map(scn => {
+    scenarioMap[scn].sort((a, b) => a.x - b.x);
+    return {
+      label: capitalize(scn),
+      data: scenarioMap[scn],
+      borderColor: scenarioColors[scn] || 'rgba(0,0,0,0.8)',
+      backgroundColor: scenarioColors[scn] || 'rgba(0,0,0,0.3)',
+      tension: 0.1,
+      fill: false
+    };
+  });
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          type: 'linear',
+          title: { display: true, text: 'Year' },
+          ticks: { precision: 0 }
+        },
+        y: {
+          title: { display: true, text: 'Consumption (TWh)' }
+        }
+      },
+      plugins: {
+        legend: {
+          position: 'bottom'
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return context.dataset.label + ': ' + context.parsed.y + ' TWh';
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+/***********************************************************************
+  Build the Share Chart (stacked bar chart for nuclear vs. renewables)
+***********************************************************************/
+function buildShareChart() {
+  const ctx = document.getElementById('shareChart').getContext('2d');
+
+  // We'll create data by scenario-year, each scenario-year is a "label"
+  // Then we have stacked bars for nuclear vs. renewables
+  // e.g. each row => label: "Ampère 2025", nuclear share, renewables share
+  const labels = [];
+  const nuclearData = [];
+  const renewData = [];
+
+  // Sort globalData by scenario + year for a stable output
+  const sortedData = [...globalData].sort((a, b) => {
+    // Sort by scenario alphabetically, then by year ascending
+    if (a.scenario < b.scenario) return -1;
+    if (a.scenario > b.scenario) return 1;
+    return parseInt(a.annee, 10) - parseInt(b.annee, 10);
+  });
+
+  sortedData.forEach(d => {
+    labels.push(capitalize(d.scenario) + " " + d.annee);
+    nuclearData.push(d.part_du_nucleaire * 100);      // Convert fraction to percentage
+    renewData.push(d.part_des_energies_renouvelables * 100);
+  });
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Nuclear (%)',
+          data: nuclearData,
+          backgroundColor: 'rgba(255, 206, 86, 0.7)', // Yellow-ish
+          stack: 'Stack 0',
+        },
+        {
+          label: 'Renewables (%)',
+          data: renewData,
+          backgroundColor: 'rgba(75, 192, 192, 0.7)', // Teal-ish
+          stack: 'Stack 0',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: { stacked: true },
+        y: {
+          stacked: true,
+          title: { display: true, text: 'Percentage of Total Production' },
+          max: 100
+        }
+      },
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+/***********************************************************************
+  Update the Table based on Filters
+***********************************************************************/
+function updateTable() {
+  const scenarioFilter = document.getElementById('scenarioFilter').value;
+  const yearFilter = document.getElementById('yearFilter').value;
+
+  const tbody = document.querySelector('#dataTable tbody');
+  tbody.innerHTML = ''; // Clear existing
+
+  // Filter data
+  let filteredData = globalData;
+  if (scenarioFilter) {
+    filteredData = filteredData.filter(d => d.scenario.toLowerCase() === scenarioFilter.toLowerCase());
+  }
+  if (yearFilter) {
+    filteredData = filteredData.filter(d => d.annee === yearFilter);
+  }
+
+  // Sort by scenario + year for consistent table output
+  filteredData.sort((a,b) => {
+    if (a.scenario < b.scenario) return -1;
+    if (a.scenario > b.scenario) return 1;
+    return parseInt(a.annee, 10) - parseInt(b.annee, 10);
+  });
+
+  // Append rows
+  filteredData.forEach(d => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${capitalize(d.scenario)}</td>
+      <td>${d.annee}</td>
+      <td>${(d.consommation_france_twh || 0).toFixed(2)}</td>
+      <td>${(d.emissions_c02_mt || 0).toFixed(2)}</td>
+      <td>${((d.part_du_nucleaire || 0)*100).toFixed(1)}%</td>
+      <td>${((d.part_des_energies_renouvelables || 0)*100).toFixed(1)}%</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/***********************************************************************
+  Utility
+***********************************************************************/
+function capitalize(str) {
+  if (typeof str === 'string' && str.length > 0) {
+    return str[0].toUpperCase() + str.slice(1).toLowerCase();
+  }
+  return str;
+}
+
+/***********************************************************************
+  Launch
+***********************************************************************/
+window.addEventListener('DOMContentLoaded', initDashboard);
+</script>
+</body>
+</html>

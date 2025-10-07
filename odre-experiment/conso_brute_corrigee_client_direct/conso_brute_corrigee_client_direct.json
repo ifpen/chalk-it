@@ -1,0 +1,65 @@
+{
+    "total_count": 131,
+    "results": [
+        {
+            "annee_mois": "2024-08",
+            "consommation_brute_mwh": 31074291.508908,
+            "consommation_corrigee_mwh": 30438336.5,
+            "soutirage_clients_direct_autoconsommation_incluse": 5313184.738998
+        },
+        {
+            "annee_mois": "2024-06",
+            "consommation_brute_mwh": 30607648.8678251,
+            "consommation_corrigee_mwh": 30384834.5,
+            "soutirage_clients_direct_autoconsommation_incluse": 5402511.349172
+        },
+        {
+            "annee_mois": "2024-03",
+            "consommation_brute_mwh": 39611683.0291029,
+            "consommation_corrigee_mwh": 41703696.5,
+            "soutirage_clients_direct_autoconsommation_incluse": 5253229.631628
+        },
+        {
+            "annee_mois": "2023-10",
+            "consommation_brute_mwh": 33082219.3,
+            "consommation_corrigee_mwh": 34578847.0,
+            "soutirage_clients_direct_autoconsommation_incluse": 5468625.322
+        },
+        {
+            "annee_mois": "2023-09",
+            "consommation_brute_mwh": 31005746.67,
+            "consommation_corrigee_mwh": 30357621.0,
+            "soutirage_clients_direct_autoconsommation_incluse": 5372911.335
+        },
+        {
+            "annee_mois": "2023-08",
+            "consommation_brute_mwh": 30702810.45,
+            "consommation_corrigee_mwh": 30376929.5,
+            "soutirage_clients_direct_autoconsommation_incluse": 5171308.203
+        },
+        {
+            "annee_mois": "2023-01",
+            "consommation_brute_mwh": 46901796.45,
+            "consommation_corrigee_mwh": 49575457.5,
+            "soutirage_clients_direct_autoconsommation_incluse": 4829576.071
+        },
+        {
+            "annee_mois": "2022-11",
+            "consommation_brute_mwh": 37090549.0,
+            "consommation_corrigee_mwh": 40135577.0,
+            "soutirage_clients_direct_autoconsommation_incluse": 4867722.0
+        },
+        {
+            "annee_mois": "2021-09",
+            "consommation_brute_mwh": 32314805.0,
+            "consommation_corrigee_mwh": 32041107.0,
+            "soutirage_clients_direct_autoconsommation_incluse": 5662914.0
+        },
+        {
+            "annee_mois": "2021-07",
+            "consommation_brute_mwh": 32902771.0,
+            "consommation_corrigee_mwh": 33084275.0,
+            "soutirage_clients_direct_autoconsommation_incluse": 5819888.0
+        }
+    ]
+}

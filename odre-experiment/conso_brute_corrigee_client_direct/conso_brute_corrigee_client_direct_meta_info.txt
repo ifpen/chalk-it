@@ -1,0 +1,1 @@
+Ce jeu de données présente les données mensuelles nationales de consommation brute, corrigée, Corse incluse et des consommations des clients directs de RTE en MWh.Les consommations des clients directs correspondent au soutirage des clients directs sur le réseau de transport, autoconsommation incluse.

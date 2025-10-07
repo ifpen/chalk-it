@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Number of Actors – GRTGaz PEG Dashboard</title>
+  <!-- Use a responsive meta tag to ensure mobile-friendliness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    /* Basic CSS Reset & Layout */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      margin: 20px;
+    }
+    h1, h2, h3 {
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      margin-top: 0;
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+    #dashboard {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .chart-container {
+      position: relative;
+      margin: 2rem 0;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    #filters {
+      margin: 2rem 0;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    label {
+      margin-right: 10px;
+    }
+    select {
+      margin-right: 20px;
+    }
+    #summary {
+      margin-top: 1rem;
+      font-style: italic;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div id="dashboard">
+    <h1>Number of Actors on the French Gas Market (GRTGaz PEG)</h1>
+    <p>
+      Explore how the number of active market participants has evolved over time in France’s gas market.  
+      The data shows monthly counts of actors (suppliers, consumers, traders, producers) at different points in the market.
+    </p>
+    <p id="summary">Loading data...</p>
+
+    <!-- Filter section -->
+    <div id="filters">
+      <label for="yearFilter">Filter by Year:</label>
+      <select id="yearFilter">
+        <option value="all">All Years</option>
+      </select>
+    </div>
+
+    <!-- Time-Series Chart Container -->
+    <div class="chart-container">
+      <h2>Monthly Trend in Number of Actors</h2>
+      <canvas id="actorsTimeSeries"></canvas>
+    </div>
+
+    <!-- Yearly Aggregation Chart Container -->
+    <div class="chart-container">
+      <h2>Yearly Comparison of Actors</h2>
+      <canvas id="actorsYearlyComparison"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // Global chart references
+    let lineChart, barChart;
+
+    // State to store data
+    let allRecords = [];       // all fetched data
+    let filteredRecords = [];  // after applying year filter, if any
+
+    // Fetch data from the real endpoint with limit=-1 to retrieve all records
+    // The data format is expected as per the user-provided sample:
+    // {
+    //   "total_count": <int>,
+    //   "results": [
+    //     { "annee": "YYYY-MM",  "nombre_d_acteurs": <float> },
+    //     ...
+    //   ]
+    // }
+    fetch('https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/jdd-interne-nombre-dacteurs-aux-peg-de-grtgaz/records?limit=-1')
+      .then(response => response.json())
+      .then(jsonData => {
+        // Some Opendatasoft endpoints might return an object with "records" or "results".
+        // For consistency with the sample, we assume "results" here:
+        if (!jsonData.results) {
+          console.error('Unexpected data format:', jsonData);
+          document.getElementById('summary').innerText = 
+            'Error: Unexpected data format. Please check console.';
+          return;
+        }
+
+        // Transform the "results" array into a consistent structure:
+        allRecords = jsonData.results.map(item => {
+          // item.annee: "YYYY-MM"
+          // item.nombre_d_acteurs: number
+          const dateParts = item.annee.split('-');
+          const year = parseInt(dateParts[0], 10);
+          const month = parseInt(dateParts[1], 10) - 1; // zero-based month
+          return {
+            date: new Date(year, month), 
+            year,
+            month: month + 1,
+            actors: item.nombre_d_acteurs
+          };
+        });
+
+        // Sort by date ascending
+        allRecords.sort((a, b) => a.date - b.date);
+
+        // Populate the yearFilter dropdown
+        populateYearFilterOptions(allRecords);
+
+        // Initially show all data
+        filteredRecords = [...allRecords];
+
+        // Render charts
+        renderCharts(filteredRecords);
+
+        // Summaries
+        updateSummary(filteredRecords);
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('summary').innerText = 
+          'Error fetching data. Please check console.';
+      });
+
+    function populateYearFilterOptions(data) {
+      const yearSet = new Set(data.map(d => d.year));
+      const yearFilter = document.getElementById('yearFilter');
+
+      // Sort years
+      const uniqueYears = [...yearSet].sort((a,b) => a - b);
+
+      uniqueYears.forEach(y => {
+        const option = document.createElement('option');
+        option.value = y;
+        option.text = y;
+        yearFilter.appendChild(option);
+      });
+
+      // Add an event listener to filter
+      yearFilter.addEventListener('change', (e) => {
+        const selectedYear = e.target.value;
+        if (selectedYear === 'all') {
+          filteredRecords = [...allRecords];
+        } else {
+          const yearValue = parseInt(selectedYear, 10);
+          filteredRecords = allRecords.filter(r => r.year === yearValue);
+        }
+        // Re-render charts with the filtered data
+        renderCharts(filteredRecords);
+        updateSummary(filteredRecords);
+      });
+    }
+
+    function renderCharts(records) {
+      // If charts exist, destroy them before re-creating
+      if (lineChart) {
+        lineChart.destroy();
+      }
+      if (barChart) {
+        barChart.destroy();
+      }
+
+      // Prepare data for line chart (monthly timeline)
+      const lineLabels = records.map(r => formatMonthYear(r.date));
+      const lineDataCounts = records.map(r => r.actors);
+
+      const timeSeriesCtx = document.getElementById('actorsTimeSeries').getContext('2d');
+      lineChart = new Chart(timeSeriesCtx, {
+        type: 'line',
+        data: {
+          labels: lineLabels,
+          datasets: [{
+            label: 'Number of Actors',
+            data: lineDataCounts,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: '#36A2EB',
+            borderWidth: 2,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false,
+          },
+          scales: {
+            x: {
+              display: true
+            },
+            y: {
+              display: true,
+              beginAtZero: true
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.parsed.y + ' actors';
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Prepare data for yearly comparison – aggregated
+      const yearlyAgg = {};
+      records.forEach(r => {
+        yearlyAgg[r.year] = (yearlyAgg[r.year] || 0) + r.actors;
+      });
+      const years = Object.keys(yearlyAgg).sort();
+      const yearData = years.map(y => yearlyAgg[y]);
+
+      const yearlyComparisonCtx = document.getElementById('actorsYearlyComparison').getContext('2d');
+      barChart = new Chart(yearlyComparisonCtx, {
+        type: 'bar',
+        data: {
+          labels: years,
+          datasets: [{
+            label: 'Total Actors (Yearly)',
+            data: yearData,
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            borderColor: '#FF9F40',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              display: true
+            },
+            y: {
+              display: true,
+              beginAtZero: true
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.parsed.y + ' total actors in ' + context.label;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateSummary(records) {
+      const summaryEl = document.getElementById('summary');
+      if (!records.length) {
+        summaryEl.innerText = 'No data available for selected filter.';
+        return;
+      }
+      const firstDate = records[0].date;
+      const lastDate = records[records.length - 1].date;
+      const minDateStr = formatMonthYear(firstDate);
+      const maxDateStr = formatMonthYear(lastDate);
+
+      // Calculate average or highlight some KPI
+      const totalActors = records.reduce((acc, r) => acc + r.actors, 0);
+      const avg = (totalActors / records.length).toFixed(1);
+
+      summaryEl.innerText = `Displaying ${records.length} monthly points, from ${minDateStr} to ${maxDateStr}. 
+      Average monthly number of actors in this period: ${avg}.`;
+    }
+
+    function formatMonthYear(dateObj) {
+      // Output e.g. "Jan 2006"
+      const options = { year: 'numeric', month: 'short' };
+      return dateObj.toLocaleDateString('en-GB', options);
+    }
+  </script>
+</body>
+</html>

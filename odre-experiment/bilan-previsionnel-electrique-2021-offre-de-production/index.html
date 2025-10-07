@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bilan Prévisionnel Électrique 2021 - Offre de Production Dashboard</title>
+  <!-- Use a responsive viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Include Chart.js from a CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /*
+      Simple, clean styling for a front-end only dashboard.
+      You can adapt and extend as needed.
+    */
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    header, footer {
+      background-color: #21527d;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    h1, h2, h3 {
+      margin: 0.5rem 0;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    .section-block {
+      background-color: #fff;
+      margin: 1rem 0;
+      padding: 1rem;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      margin-top: 1rem;
+    }
+
+    .chart-container-half {
+      width: 100%;
+      height: 400px;
+      margin-top: 1rem;
+    }
+
+    .instructions {
+      font-style: italic;
+      color: #666;
+      margin: 0.5rem 0;
+    }
+
+    .dropdown-scenario {
+      margin-top: 0.5rem;
+    }
+
+    .centered-text {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    .footer-note {
+      font-size: 0.9rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      header, footer {
+        text-align: center;
+      }
+      .chart-container,
+      .chart-container-half {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Bilan Prévisionnel Électrique - 2021 Offre de Production</h1>
+  </header>
+
+  <main>
+    <!--
+      This dashboard is entirely front-end, fetching data from:
+      https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/bilan-previsionnel-electrique-2021-offre-de-production/records?limit=-1
+
+      It will demonstrate:
+      1) An Overview Chart (line chart of total capacity by year, per scenario)
+      2) A Production Type Breakdown (stacked bar, selectable scenario)
+      3) A Scenario Comparison for 2030 (side-by-side bars)
+    -->
+
+    <!-- Overview Section -->
+    <section class="section-block">
+      <h2>1) Vue d’ensemble - Capacité Totale par Année et Scénario</h2>
+      <p>
+        Un aperçu rapide de l’évolution de la capacité totale (GW) en France,
+        regroupant toutes les technologies (nucléaire, gaz, éolien, etc.) par scénario.
+      </p>
+      <div class="chart-container">
+        <canvas id="overviewChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Production Type Breakdown -->
+    <section class="section-block">
+      <h2>2) Répartition par Type de Production</h2>
+      <p>
+        Exploration de la contribution de chaque type (nucléaire, gaz, renouvelables, etc.)
+        dans le scénario sélectionné, sur les années disponibles.
+      </p>
+      <div>
+        <label for="scenarioSelect">Sélectionnez un scénario :</label>
+        <select id="scenarioSelect" class="dropdown-scenario"></select>
+      </div>
+      <div class="chart-container">
+        <canvas id="productionBreakdownChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Scenario Comparison 2030 -->
+    <section class="section-block">
+      <h2>3) Comparaison de Scénarios pour 2030</h2>
+      <p>
+        Comparaison directe des scénarios sur l’horizon 2030-2031, pour visualiser
+        les différences de capacité par type de production (GW).
+      </p>
+      <div class="chart-container-half">
+        <canvas id="scenarioComparisonChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Conclusion Section -->
+    <section class="section-block">
+      <h2>Conclusions & Points Clés</h2>
+      <ul>
+        <li>Visualisation du progrès annuel de différentes technologies de production.</li>
+        <li>Comparaison claire des scénarios 2030 permettant d’identifier des écarts majeurs.</li>
+        <li>Évolution notoire des renouvelables (éolien, solaire) dans le mix énergétique.</li>
+      </ul>
+      <p>
+        Les données présentées proviennent de RTE (Réseau de Transport d’Électricité).
+        Le présent tableau de bord est un exemple de front-end interactif permettant
+        de comprendre rapidement les tendances de la capacité de production future en France.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p class="footer-note">Données : © RTE / ODRE - Bilan Prévisionnel Électrique. Réalisé en front-end pur.</p>
+  </footer>
+
+  <script>
+    /***************************************************************************
+     * 1) GLOBAL FETCH & DATA PREPARATION
+     ***************************************************************************/
+    const API_URL = "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/bilan-previsionnel-electrique-2021-offre-de-production/records?limit=-1";
+
+    // We'll keep a copy of the original data in the global scope
+    let rawData = [];
+
+    // Fields that represent production capacities in GW (excluding scenario, annee)
+    const capacityFields = [
+      "nucleaire_gw",
+      "cycles_combines_au_gaz_gw",
+      "charbon_gw",
+      "fioul_lourd_gw",
+      "turbines_a_combustion_gw",
+      "cogenerations_gw",
+      "autres_moyens_thermiques_gw",
+      "hydraulique_gw",
+      "eolien_gw",
+      "photovoltaique_gw",
+      "bioenergies_gw",
+      "energies_marines_gw",
+      "effacements_gw"
+    ];
+
+    /**
+     * Utility to extract the numeric "start year" from a string like "2021-2022".
+     * Fallback: parseInt(annee.substr(0,4)).
+     */
+    function parseStartYear(anneeString) {
+      if(!anneeString) return null;
+      // Typically something like "2021-2022"
+      const match = anneeString.match(/^\d{4}/);
+      return match ? parseInt(match[0]) : null;
+    }
+
+    /**
+     * Summation of all capacity fields for a given data record.
+     */
+    function getTotalCapacity(record) {
+      let sum = 0;
+      capacityFields.forEach(field => {
+        const val = record[field] ? parseFloat(record[field]) : 0;
+        sum += val;
+      });
+      return sum;
+    }
+
+    /**
+     * Group data by year & scenario to get total capacity (for the overview chart).
+     * Returns something like: { [scenario]: { [year]: totalCapacity } }
+     */
+    function groupByScenarioYear(data) {
+      const grouped = {};
+      data.forEach(item => {
+        const scenario = item.scenario;
+        const annee = item.annee;
+        const yearNum = parseStartYear(annee);
+        const totalCap = getTotalCapacity(item);
+
+        if(!grouped[scenario]) {
+          grouped[scenario] = {};
+        }
+        if(!grouped[scenario][yearNum]) {
+          grouped[scenario][yearNum] = 0;
+        }
+        // If duplicates exist for the same year+scenario, accumulate
+        grouped[scenario][yearNum] += totalCap;
+      });
+      return grouped;
+    }
+
+    /**
+     * For the production breakdown, we want a single scenario, then each year on the x-axis,
+     * with stacked bars for each capacity field. Return data structure suitable for Chart.js
+     * stacked bar usage:
+     *   labels = [year1, year2, ...]
+     *   datasets = [ { label:'nucleaire_gw', data:[val1, val2,...], stack:'prod' }, { label:'gaz', ...}, ... ]
+     */
+    function buildScenarioStackedData(data, scenario) {
+      // Filter data by scenario
+      const filtered = data.filter(d => d.scenario === scenario);
+      // Sort by parsed year
+      filtered.sort((a,b) => parseStartYear(a.annee) - parseStartYear(b.annee));
+
+      // Collect unique label array (year)
+      const labels = filtered.map(d => parseStartYear(d.annee) || d.annee);
+
+      // For each capacity field, build a dataset
+      const datasets = capacityFields.map(field => {
+        return {
+          label: field.replace("_gw","").replace(/_/g," "),
+          stack: "production",
+          data: filtered.map(d => parseFloat(d[field]) || 0)
+        };
+      });
+
+      return { labels, datasets };
+    }
+
+    /**
+     * For 2030 comparison: We want to identify all records for 2030-2031.
+     * Then group them by scenario, extracting each capacity field for side-by-side bars.
+     */
+    function buildComparison2030(data) {
+      // Filter only 2030-2031
+      const filtered2030 = data.filter(d => {
+        return d.annee === "2030-2031";
+      });
+
+      // We want an array of scenario names, e.g.:
+      // ["Atteinte des objectifs PPE/SNBC en fin d’horizon", "Atteinte partielle des objectifs PPE/SNBC", ...]
+      const scenarioNames = [...new Set(filtered2030.map(d => d.scenario))];
+
+      // For the x-axis, we'll use capacityFields as "production types"
+      // We'll create one dataset per scenario, containing capacity for each field
+      const labels = capacityFields.map(f => f.replace("_gw", "").replace(/_/g," "));
+
+      const datasets = scenarioNames.map(scenarioName => {
+        // find the record for that scenario
+        const record = filtered2030.find(d => d.scenario === scenarioName);
+        const dataVals = capacityFields.map(f => record ? parseFloat(record[f]) || 0 : 0);
+        return {
+          label: scenarioName,
+          data: dataVals,
+          // We can assign random colors or a set
+          backgroundColor: getRandomColor(),
+        };
+      });
+
+      return { labels, datasets };
+    }
+
+    /**
+     * Helper: Provide a random pastel color for better bar chart distinction
+     */
+    function getRandomColor() {
+      // produce a random color
+      const r = Math.floor(Math.random() * 200 + 55);
+      const g = Math.floor(Math.random() * 200 + 55);
+      const b = Math.floor(Math.random() * 200 + 55);
+      return `rgba(${r}, ${g}, ${b}, 0.7)`;
+    }
+
+    /***************************************************************************
+     * 2) CHART BUILDING FUNCTIONS
+     ***************************************************************************/
+
+    let overviewChart;           // total capacity line chart
+    let productionBreakdownChart; // stacked bar chart
+    let scenarioComparisonChart;  // side-by-side bar chart for 2030
+
+    function buildOverviewChart(data) {
+      const ctx = document.getElementById("overviewChart").getContext("2d");
+      const grouped = groupByScenarioYear(data);
+
+      // Collect all years across scenarios:
+      let allYears = [];
+      Object.values(grouped).forEach(byYear => {
+        allYears = allYears.concat(Object.keys(byYear));
+      });
+      // unique + sort ascending
+      const uniqueYears = [...new Set(allYears)].sort((a,b) => a - b);
+
+      // For each scenario, build a dataset
+      const scenarioNames = Object.keys(grouped);
+      const datasets = scenarioNames.map((scenarioName, idx) => {
+        const yearCapacityMap = grouped[scenarioName];
+        const dataPoints = uniqueYears.map(y => yearCapacityMap[y] ? yearCapacityMap[y] : 0);
+        return {
+          label: scenarioName,
+          data: dataPoints,
+          borderColor: getRandomColor(),
+          backgroundColor: "rgba(0,0,0,0)",
+          tension: 0.1
+        };
+      });
+
+      overviewChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: uniqueYears,
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            title: {
+              display: false
+            },
+            tooltip: {
+              mode: 'index'
+            },
+            legend: {
+              display: true
+            }
+          },
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: 'Capacité Totale (GW)'
+              },
+              beginAtZero: true
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Année (début)'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function buildProductionBreakdownChart(data, scenario) {
+      // Build data for stacked bar
+      const chartData = buildScenarioStackedData(data, scenario);
+
+      const ctx = document.getElementById("productionBreakdownChart").getContext("2d");
+
+      // If there's an existing chart, destroy it first
+      if(productionBreakdownChart) {
+        productionBreakdownChart.destroy();
+      }
+
+      productionBreakdownChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: chartData.labels,
+          datasets: chartData.datasets.map(ds => ({
+            ...ds,
+            backgroundColor: getRandomColor()
+          }))
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: {
+              mode: 'index'
+            },
+            legend: {
+              display: true
+            }
+          },
+          scales: {
+            x: {
+              stacked: true,
+              title: {
+                display: true,
+                text: 'Année (début)'
+              }
+            },
+            y: {
+              stacked: true,
+              title: {
+                display: true,
+                text: 'Capacité (GW)'
+              },
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    function buildScenarioComparisonChart(data) {
+      // Build 2030 comparison data
+      const chartData = buildComparison2030(data);
+      const ctx = document.getElementById("scenarioComparisonChart").getContext("2d");
+
+      scenarioComparisonChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: chartData.labels,
+          datasets: chartData.datasets
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: {
+              mode: 'index'
+            },
+            legend: {
+              display: true
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Type de Production'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Capacité (GW)'
+              },
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    /***************************************************************************
+     * 3) MAIN APP FLOW
+     ***************************************************************************/
+    async function initDashboard() {
+      try {
+        const response = await fetch(API_URL);
+        const jsonData = await response.json();
+        // The actual records array is found in jsonData.results
+        // Flatten if needed (some fields might be in record.fields in some ODS APIs, 
+        // but here they're directly in results).
+        // The official example shows "results" is already the array of objects we need.
+        rawData = jsonData.results || [];
+
+        // 1) Build the overview line chart
+        buildOverviewChart(rawData);
+
+        // 2) Setup scenario dropdown for the production breakdown
+        setupScenarioDropdown(rawData);
+
+        // 3) Build scenario comparison chart for 2030
+        buildScenarioComparisonChart(rawData);
+
+      } catch (error) {
+        console.error("Error fetching or building dashboard:", error);
+      }
+    }
+
+    /**
+     * Populate scenario dropdown with unique scenario values,
+     * then build the chart with the first scenario by default.
+     */
+    function setupScenarioDropdown(data) {
+      const scenarioSelectEl = document.getElementById("scenarioSelect");
+      // gather unique scenarios
+      const scenarioList = [...new Set(data.map(d=> d.scenario))];
+      scenarioList.forEach(scn => {
+        const opt = document.createElement("option");
+        opt.value = scn;
+        opt.textContent = scn;
+        scenarioSelectEl.appendChild(opt);
+      });
+      // Trigger initial load
+      buildProductionBreakdownChart(data, scenarioList[0]);
+      scenarioSelectEl.value = scenarioList[0];
+
+      // onChange
+      scenarioSelectEl.addEventListener("change", () => {
+        const selectedScn = scenarioSelectEl.value;
+        buildProductionBreakdownChart(data, selectedScn);
+      });
+    }
+
+    // Initialize on page load
+    window.addEventListener("DOMContentLoaded", initDashboard);
+  </script>
+</body>
+</html>

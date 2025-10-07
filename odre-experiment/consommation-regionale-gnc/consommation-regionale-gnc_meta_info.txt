@@ -1,0 +1,1 @@
+Ce jeu de données présente les consommations de l'ensemble des stations GNC (Gaz Naturel Comprimé) raccordées aux réseaux de transport et de distribution en France. Les données sont agglomérées par région administrative.

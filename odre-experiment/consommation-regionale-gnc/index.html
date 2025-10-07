@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GNC Regional Consumption Dashboard</title>
+
+  <!-- LEAFLET MAP LIBRARY (CDN) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  ></script>
+
+  <!-- CHART.JS (CDN) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"
+  ></script>
+
+  <style>
+    html, body {
+      margin: 0; 
+      padding: 0;
+      height: 100%;
+      font-family: sans-serif;
+    }
+    #app-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 10px;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+    }
+    header {
+      grid-column: 1 / 3;
+      margin-bottom: 10px;
+    }
+    #map {
+      width: 100%;
+      height: 500px;
+      background: #eef;
+    }
+    #chartContainer {
+      width: 100%;
+      height: 500px;
+    }
+    #story, #controls {
+      grid-column: 1 / 3;
+      margin-top: 10px;
+    }
+    #controls select {
+      margin-right: 10px;
+      padding: 5px;
+    }
+    .infoPanel {
+      background: white;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .infoPanel h2 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+    .infoPanel p {
+      margin: 0 0 6px 0;
+    }
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 6px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+<div id="app-container">
+  <header>
+    <div class="infoPanel">
+      <h2>GNC Regional Consumption Dashboard</h2>
+      <p>
+        This dashboard shows compressed natural gas (GNC) consumption
+        across different French regions, illustrating how usage changes by year
+        and location. You can select a year, view a color-coded map, and explore
+        the top regions in a bar chart.
+      </p>
+    </div>
+  </header>
+
+  <!-- MAP -->
+  <div id="map"></div>
+
+  <!-- CHART -->
+  <div id="chartContainer">
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <!-- CONTROLS & STORY TEXT -->
+  <div id="controls">
+    <div class="infoPanel">
+      <label for="yearSelect">Select Year:</label>
+      <select id="yearSelect"></select>
+      <p>Use the dropdown to view consumption data for a specific year. Hover on a region in the map or check the bar chart to see GNC consumption figures (in GWh, PCS).</p>
+    </div>
+  </div>
+
+  <div id="story">
+    <div class="infoPanel">
+      <p><strong>Data Story:</strong> Notice that certain regions consistently have higher GNC consumption, reflecting possibly larger transportation usage or station availability. Interact with the map to see how consumption distribution changes year to year.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/**
+ * A single-file front-end example that:
+ * 1) Fetches real data from the Opendatasoft GNC consumption dataset.
+ * 2) Displays an interactive Leaflet map color-coded by consumption.
+ * 3) Shows a bar chart for top regions by consumption for the selected year.
+ * 4) Allows year selection from a dropdown.
+ */
+
+let allData = [];            // Will hold entire dataset
+let yearToRegionData = {};   // year -> { regionName -> { consumption: ..., geometry: ... } }
+let map;
+let geoJsonLayer;
+let barChart;
+const yearSelectEl = document.getElementById('yearSelect');
+
+//-------------------------------------
+// 1) FETCH THE DATA
+//-------------------------------------
+async function fetchData() {
+  try {
+    const url = 'https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/consommation-regionale-gnc/records?limit=-1';
+    const resp = await fetch(url);
+    if(!resp.ok) throw new Error('Network response was not ok');
+    const json = await resp.json();
+
+    // The data we want is in json.results (or sometimes records) with "region", "annee", "consommation_gwh_pcs", "geom"
+    // We'll parse each record into a structured form
+    const records = json.results || [];
+    allData = records.map(r => {
+      return {
+        region: r.region,
+        year: r.annee,
+        consumption: r.consommation_gwh_pcs,
+        geometry: r.geom && r.geom.geometry ? r.geom.geometry : null
+      };
+    });
+
+    prepareDataByYear();
+    populateYearDropdown();
+    initMap();
+    initChart();
+    updateMapAndChart();
+  }
+  catch(err) {
+    console.error('Error fetching data', err);
+  }
+}
+
+//-------------------------------------
+// 2) ORGANIZE DATA BY YEAR & REGION
+//-------------------------------------
+function prepareDataByYear(){
+  yearToRegionData = {};
+  for(const row of allData){
+    const y = row.year;
+    if(!yearToRegionData[y]){
+      yearToRegionData[y] = {};
+    }
+    const reg = row.region || 'Unknown Region';
+    // If multiple records found in same region-year, sum consumption (rare but let's handle it)
+    if(!yearToRegionData[y][reg]){
+      yearToRegionData[y][reg] = {
+        region: reg,
+        consumption: 0,
+        geometry: row.geometry
+      };
+    }
+    yearToRegionData[y][reg].consumption += (row.consumption || 0);
+    // Keep geometry from the last record if exists
+    if(row.geometry){
+      yearToRegionData[y][reg].geometry = row.geometry;
+    }
+  }
+}
+
+//-------------------------------------
+// 3) POPULATE YEAR DROPDOWN
+//-------------------------------------
+function populateYearDropdown(){
+  const years = Object.keys(yearToRegionData).sort();
+  // Populate the select
+  years.forEach(yr => {
+    const opt = document.createElement('option');
+    opt.value = yr;
+    opt.textContent = yr;
+    yearSelectEl.appendChild(opt);
+  });
+  // On change, update map & chart
+  yearSelectEl.addEventListener('change', () => {
+    updateMapAndChart();
+  });
+}
+
+//-------------------------------------
+// 4) LEAFLET MAP SETUP
+//-------------------------------------
+function initMap(){
+  map = L.map('map').setView([46.7, 2.5], 5); // center of France approximate
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom: 19
+  }).addTo(map);
+}
+
+// function to define color scale for consumption
+function getColor(d) {
+  // d is in GWh
+  // simple cutoffs:
+  //  0-10: light color, 10-50: medium, 50-100: deeper, 100+ darkest
+  return d > 100 ? '#800026' :
+         d > 50  ? '#BD0026' :
+         d > 20  ? '#E31A1C' :
+         d > 10  ? '#FD8D3C' :
+         d > 5   ? '#FEB24C' :
+         d > 0   ? '#FED976' :
+                   '#FFEDA0';
+}
+
+// style callback
+function styleFeature(feature){
+  const consumptionValue = feature.properties.consumption || 0;
+  return {
+    fillColor: getColor(consumptionValue),
+    weight: 1,
+    opacity: 1,
+    color: '#999',
+    fillOpacity: 0.7
+  };
+}
+
+// highlight on hover
+function highlightFeature(e){
+  const layer = e.target;
+  layer.setStyle({
+    weight: 2,
+    color: '#666',
+    fillOpacity: 0.7
+  });
+  layer.bringToFront();
+}
+
+// reset highlight
+function resetHighlight(e){
+  geoJsonLayer.resetStyle(e.target);
+}
+
+// on region click or hover, you can show popup or something
+function onEachFeature(feature, layer){
+  const rgn = feature.properties.region;
+  const cns = feature.properties.consumption.toFixed(2) + ' GWh';
+  layer.bindTooltip(`${rgn}<br/>${cns}`, {sticky: true});
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: resetHighlight
+  });
+}
+
+//-------------------------------------
+// 5) CHART.JS SETUP
+//-------------------------------------
+function initChart(){
+  const ctx = document.getElementById('barChart').getContext('2d');
+  barChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: 'Consumption (GWh, PCS)',
+          data: [],
+          backgroundColor: 'rgba(54, 162, 235, 0.6)'
+        }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: 'Top Regions by GNC Consumption' }
+      },
+      scales: {
+        x: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+//-------------------------------------
+// 6) UPDATE MAP & CHART WHEN YEAR CHANGES
+//-------------------------------------
+function updateMapAndChart(){
+  const selectedYear = yearSelectEl.value;
+  if(!selectedYear || !yearToRegionData[selectedYear]) return;
+
+  // 6A) Build a GeoJSON from the region data
+  const features = [];
+  for(const regName in yearToRegionData[selectedYear]){
+    const item = yearToRegionData[selectedYear][regName];
+    if(item.geometry && (item.geometry.type === 'MultiPolygon' || item.geometry.type === 'Polygon')){
+      features.push({
+        type: 'Feature',
+        properties: {
+          region: regName,
+          consumption: item.consumption
+        },
+        geometry: item.geometry
+      });
+    }
+  }
+  const geoJsonObj = {
+    type: 'FeatureCollection',
+    features: features
+  };
+
+  // Clear old layer if any
+  if(geoJsonLayer){
+    map.removeLayer(geoJsonLayer);
+  }
+
+  // Add the new layer
+  geoJsonLayer = L.geoJSON(geoJsonObj, {
+    style: styleFeature,
+    onEachFeature: onEachFeature
+  }).addTo(map);
+
+  // 6B) For the chart, sort regions by consumption desc, take top 10
+  const arr = Object.values(yearToRegionData[selectedYear]);
+  arr.sort((a,b) => b.consumption - a.consumption);
+  const top10 = arr.slice(0,10);
+  // prepare bar chart data
+  const labels = top10.map(x => x.region);
+  const dataVals = top10.map(x => x.consumption.toFixed(2));
+
+  // update chart
+  barChart.data.labels = labels;
+  barChart.data.datasets[0].data = dataVals;
+  barChart.update();
+
+  // optional: fit bounds to the new data if any
+  if(features.length > 0){
+    const layerBounds = geoJsonLayer.getBounds();
+    if(layerBounds.isValid()){
+      map.fitBounds(layerBounds);
+    }
+  }
+}
+
+//-------------------------------------
+// KICK OFF
+//-------------------------------------
+fetchData();
+</script>
+</body>
+</html>

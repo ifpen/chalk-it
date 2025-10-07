@@ -1,0 +1,47 @@
+{
+    "total_count": 6,
+    "results": [
+        {
+            "annee": "2018",
+            "operateur": "NaTran",
+            "statut_de_la_donnee": "D\u00e9finitif",
+            "consommation_annuelle_en_mwh": 34837435.268963024,
+            "consommation_annuelle_en_kwh": 34837435268
+        },
+        {
+            "annee": "2019",
+            "operateur": "NaTran",
+            "statut_de_la_donnee": "D\u00e9finitif",
+            "consommation_annuelle_en_mwh": 49227796.08788999,
+            "consommation_annuelle_en_kwh": 49227796087
+        },
+        {
+            "annee": "2020",
+            "operateur": "NaTran",
+            "statut_de_la_donnee": "D\u00e9finitif",
+            "consommation_annuelle_en_mwh": 43555736.441594,
+            "consommation_annuelle_en_kwh": 43555736441
+        },
+        {
+            "annee": "2023",
+            "operateur": "NaTran",
+            "statut_de_la_donnee": "D\u00e9finitif",
+            "consommation_annuelle_en_mwh": 26641261.03043902,
+            "consommation_annuelle_en_kwh": 26641261030
+        },
+        {
+            "annee": "2021",
+            "operateur": "NaTran",
+            "statut_de_la_donnee": "D\u00e9finitif",
+            "consommation_annuelle_en_mwh": 39295519.298124984,
+            "consommation_annuelle_en_kwh": 39295519298
+        },
+        {
+            "annee": "2022",
+            "operateur": "NaTran",
+            "statut_de_la_donnee": "D\u00e9finitif",
+            "consommation_annuelle_en_mwh": 60659591.03805303,
+            "consommation_annuelle_en_kwh": 60659591038
+        }
+    ]
+}

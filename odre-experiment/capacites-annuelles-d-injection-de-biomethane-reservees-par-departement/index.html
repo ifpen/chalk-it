@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Biomethane Injection Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Leaflet CSS (CDN) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <!-- Chart.js (CDN) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"
+  ></script>
+  <!-- Leaflet JS (CDN) -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  ></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+    }
+    header {
+      background: #003366;
+      color: #fff;
+      padding: 1em;
+      text-align: center;
+    }
+    .dashboard-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin: 0;
+      padding: 1em;
+    }
+    /* Main sections */
+    .section {
+      background: #fff;
+      margin: 0.5em;
+      padding: 1em;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex: 1 1 300px;
+      min-width: 280px;
+    }
+
+    /* Map styling */
+    #map {
+      width: 100%;
+      height: 400px;
+      border-radius: 4px;
+    }
+
+    /* Chart containers */
+    #chart-capacity {
+      width: 100%;
+      height: 300px;
+    }
+    #chart-time-series {
+      width: 100%;
+      height: 300px;
+    }
+
+    /* KPI tiles */
+    .kpi-container {
+      display: flex;
+      gap: 1em;
+      flex-wrap: wrap;
+    }
+    .kpi {
+      background: #003366;
+      color: #fff;
+      padding: 1em;
+      border-radius: 4px;
+      text-align: center;
+      flex: 1 1 auto;
+      min-width: 120px;
+    }
+    .kpi h2 {
+      margin: 0.3em 0;
+    }
+
+    /* Responsive layout for smaller screens */
+    @media (max-width: 900px) {
+      .dashboard-container {
+        flex-direction: column;
+      }
+      .section {
+        min-width: auto;
+        margin: 0.5em 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Biomethane Injection: Annual Reserved Capacities Dashboard</h1>
+</header>
+
+<div class="dashboard-container">
+
+  <!-- Intro & KPI Section -->
+  <div class="section" style="max-width: 100%;">
+    <h2>Overview</h2>
+    <p>
+      Explore the growth of biomethane injection across French departments. This dashboard
+      shows the number of biomethane projects and reserved injection capacities by department.
+    </p>
+    <div class="kpi-container">
+      <div class="kpi">
+        <h3>Total Projects</h3>
+        <h2 id="kpi-total-projects">0</h2>
+      </div>
+      <div class="kpi">
+        <h3>Total Capacity (MWh)</h3>
+        <h2 id="kpi-total-capacity">0</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- Time Series Section (if multiple years/quarters) -->
+  <div class="section" style="max-width: 100%;">
+    <h2>Capacity Over Time</h2>
+    <canvas id="chart-time-series"></canvas>
+    <p style="font-size: 0.85em; color: #555;">
+      Hover over the chart to see total capacity and project count by date.
+    </p>
+  </div>
+
+  <!-- Map & Ranking container -->
+  <div class="section" style="max-width: 100%;">
+    <h2>Geographic Distribution</h2>
+    <div id="map"></div>
+    <p style="font-size: 0.85em; color: #555;">
+      Click a department to see details.
+    </p>
+  </div>
+
+  <div class="section" style="max-width: 100%;">
+    <h2>Top Departments by Capacity</h2>
+    <canvas id="chart-capacity"></canvas>
+    <p style="font-size: 0.85em; color: #555;">Interactive bar chart of leading departments.</p>
+  </div>
+
+</div>
+
+<script>
+  // Global data arrays
+  let allRecords = [];
+  let map;
+  let geoLayer;
+  let chartTimeSeries;
+  let chartCapacity;
+  let aggregatedTimeSeries = {}; // Key: date, value: { totalCapacity, totalProjects }
+  let departmentData = {};       // Key: dept code, { deptName, capacity, projects, geometry }
+
+  // Fetch data from the real API endpoint
+  async function fetchData() {
+    try {
+      const url = "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/capacites-annuelles-d-injection-de-biomethane-reservees-par-departement/records?limit=-1";
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Failed to fetch data");
+      const data = await response.json();
+      allRecords = data.results || [];
+      processData(allRecords);
+      updateKPIs();
+      buildTimeSeriesChart();
+      buildCapacityChart();
+      drawMap();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  // Process the records into aggregated structures
+  function processData(records) {
+    records.forEach(rec => {
+      const dateVal = rec.date || "N/A";
+      const deptCode = rec.code_departement;
+      const deptName = rec.departement || deptCode;
+      const projects = rec.nombre_de_projets || 0;
+      const capacity = rec.capacites_des_projets || 0;
+      const geometry = rec.geom; // departmental polygon
+
+      // Aggregate timeseries
+      if (!aggregatedTimeSeries[dateVal]) {
+        aggregatedTimeSeries[dateVal] = { totalCapacity: 0, totalProjects: 0 };
+      }
+      aggregatedTimeSeries[dateVal].totalCapacity += capacity;
+      aggregatedTimeSeries[dateVal].totalProjects += projects;
+
+      // Aggregate per-department data
+      if (!departmentData[deptCode]) {
+        departmentData[deptCode] = {
+          deptName,
+          code: deptCode,
+          capacity: 0,
+          projects: 0,
+          geometry,
+        };
+      }
+      departmentData[deptCode].capacity += capacity;
+      departmentData[deptCode].projects += projects;
+      // We store geometry once (assuming the same dept code has same geometry)
+      if (geometry) departmentData[deptCode].geometry = geometry;
+    });
+  }
+
+  // Update KPI tiles
+  function updateKPIs() {
+    let totalCap = 0;
+    let totalProj = 0;
+    Object.values(departmentData).forEach(d => {
+      totalCap += d.capacity;
+      totalProj += d.projects;
+    });
+    document.getElementById("kpi-total-projects").textContent = totalProj;
+    document.getElementById("kpi-total-capacity").textContent = totalCap;
+  }
+
+  // Build a time-series chart of total capacity vs date
+  function buildTimeSeriesChart() {
+    const ctx = document.getElementById("chart-time-series").getContext("2d");
+    if (chartTimeSeries) chartTimeSeries.destroy();
+
+    const sortedDates = Object.keys(aggregatedTimeSeries).sort();
+    const capacityData = sortedDates.map(d => aggregatedTimeSeries[d].totalCapacity);
+    const projectData = sortedDates.map(d => aggregatedTimeSeries[d].totalProjects);
+
+    chartTimeSeries = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: sortedDates,
+        datasets: [
+          {
+            label: "Total Capacity (MWh)",
+            data: capacityData,
+            borderColor: "rgba(75, 192, 192, 1)",
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            yAxisID: "y1",
+          },
+          {
+            label: "Total Projects",
+            data: projectData,
+            borderColor: "rgba(255, 99, 132, 1)",
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            yAxisID: "y2",
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        interaction: {
+          mode: "index",
+          intersect: false,
+        },
+        scales: {
+          y1: {
+            type: "linear",
+            display: true,
+            position: "left",
+          },
+          y2: {
+            type: "linear",
+            display: true,
+            position: "right",
+          },
+        },
+      },
+    });
+  }
+
+  // Build bar chart for top departments by capacity
+  function buildCapacityChart() {
+    const ctx = document.getElementById("chart-capacity").getContext("2d");
+    if (chartCapacity) chartCapacity.destroy();
+
+    const deptArray = Object.values(departmentData);
+    deptArray.sort((a, b) => b.capacity - a.capacity);
+    const topDepts = deptArray.slice(0, 10); // top 10 departments
+
+    const labels = topDepts.map(d => d.deptName);
+    const dataCap = topDepts.map(d => d.capacity);
+
+    chartCapacity = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels,
+        datasets: [
+          {
+            label: "Capacity (MWh)",
+            data: dataCap,
+            backgroundColor: "rgba(54, 162, 235, 0.6)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        indexAxis: "y",
+        plugins: {
+          legend: { display: false },
+        },
+        scales: {
+          x: { beginAtZero: true },
+        },
+      },
+    });
+  }
+
+  // Initialize the Leaflet map
+  function drawMap() {
+    // Create map
+    map = L.map("map").setView([46.9, 2.4], 6); // center on France
+
+    // Add base tile layer
+    L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+      }
+    ).addTo(map);
+
+    // A function to color polygons by capacity
+    function getColorByCapacity(cap) {
+      if (cap > 500) return "#08519c";
+      if (cap > 300) return "#3182bd";
+      if (cap > 100) return "#6baed6";
+      if (cap > 0) return "#bdd7e7";
+      return "#f7f7f7";
+    }
+
+    // Create a GeoJSON layer
+    const features = [];
+    Object.values(departmentData).forEach(d => {
+      if (d.geometry && d.geometry.type && d.geometry.geometry) {
+        features.push({
+          type: "Feature",
+          properties: {
+            deptName: d.deptName,
+            capacity: d.capacity,
+            projects: d.projects,
+          },
+          geometry: d.geometry.geometry,
+        });
+      }
+    });
+
+    geoLayer = L.geoJSON(features, {
+      style: feature => {
+        const cap = feature.properties.capacity || 0;
+        return {
+          color: "#555",
+          weight: 1,
+          fillColor: getColorByCapacity(cap),
+          fillOpacity: 0.7,
+        };
+      },
+      onEachFeature: (feature, layer) => {
+        layer.on("click", () => {
+          const { deptName, capacity, projects } = feature.properties;
+          layer.bindPopup(
+            `<b>${deptName}</b><br/>Capacity: ${capacity} MWh<br/>Projects: ${projects}`
+          ).openPopup();
+        });
+      },
+    }).addTo(map);
+  }
+
+  // On page load
+  document.addEventListener("DOMContentLoaded", () => {
+    fetchData();
+  });
+</script>
+
+</body>
+</html>

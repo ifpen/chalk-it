@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Biogas Production in Europe (Eurobserv'ER) Dashboard</title>
+  <!-- Chart.js for charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background-color: #007d79;
+      color: #fff;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .intro {
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .control-group label {
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    select, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    /* Charts grid */
+    .charts {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 900px) {
+      .charts {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .chart-container {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    canvas {
+      max-width: 100%;
+      height: 300px;
+    }
+    .footer-note {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Biogas Production in Europe - Eurobserv'ER</h1>
+  </header>
+
+  <main>
+    <div class="intro">
+      <p>
+        This dashboard explores biogas production in Europe based on data from Eurobserv’ER. The dataset includes biogas production by various methods 
+        (thermal, landfill, anaerobic digestion of sewage sludge, and other anaerobic fermentation) and spans multiple years. Use the interactive filters 
+        and charts below to discover which countries are leading in biogas production, how production methods vary, and how trends evolve over time.
+      </p>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="control-group">
+        <label for="yearSelect">Select Year:</label>
+        <select id="yearSelect"></select>
+      </div>
+      <div class="control-group">
+        <label for="countrySelect">Select Country:</label>
+        <select id="countrySelect"></select>
+      </div>
+      <button id="resetBtn">Reset Filters</button>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts">
+      <!-- Chart: Ranking by Country in Selected Year -->
+      <div class="chart-container">
+        <h3>Top Countries - Total Biogas Production in Selected Year</h3>
+        <canvas id="rankingChart"></canvas>
+      </div>
+      <!-- Chart: Production by Method for Selected Year & Country -->
+      <div class="chart-container">
+        <h3>Production by Method for Selected Year & Country</h3>
+        <canvas id="methodChart"></canvas>
+      </div>
+      <!-- Chart: Trend Over Time for Selected Country -->
+      <div class="chart-container" style="grid-column: 1 / -1;">
+        <h3>Trend Over Time - Selected Country</h3>
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Data Source: 
+      <a href="https://odre.opendatasoft.com/explore/dataset/filiere-de-production-de-biogaz-en-europe-eurobserver/" target="_blank" rel="noopener">
+        Opendatasoft - Eurobserv'ER
+      </a>
+    </div>
+  </main>
+
+  <script>
+    /****************************************************************
+     * CONFIG & GLOBALS
+     ****************************************************************/
+    const API_URL = "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/filiere-de-production-de-biogaz-en-europe-eurobserver/records?limit=-1";
+
+    // We'll store all raw data here
+    let rawData = [];
+    // Chart instances
+    let rankingChartInstance = null;
+    let methodChartInstance = null;
+    let trendChartInstance = null;
+
+    // DOM elements
+    const yearSelect = document.getElementById('yearSelect');
+    const countrySelect = document.getElementById('countrySelect');
+    const resetBtn = document.getElementById('resetBtn');
+
+    /****************************************************************
+     * FETCH & PREPARE DATA
+     ****************************************************************/
+    async function fetchData() {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw new Error("Error fetching data from API");
+        }
+        const data = await response.json();
+        rawData = data.results || [];
+        // Clean or unify any anomalies, e.g., null code_pays
+        /* If code_pays is missing, we might fallback to something like an uppercase or some label. */
+        rawData.forEach(item => {
+          if (!item.code_pays) {
+            // Some fallback if needed
+            item.code_pays = item.pays || "Unknown";
+          }
+        });
+        // Now we initialize the UI components
+        initUI();
+        updateCharts();
+      } catch (error) {
+        console.error("Data fetch error:", error);
+        alert("Failed to retrieve dataset. Check console for details.");
+      }
+    }
+
+    /****************************************************************
+     * INIT UI
+     ****************************************************************/
+    function initUI() {
+      // Build a unique list of years
+      const years = [...new Set(rawData.map(item => item.annee).filter(Boolean))].sort();
+      // Build a unique list of countries
+      const countries = [...new Set(rawData.map(item => item.code_pays).filter(Boolean))].sort();
+
+      // Populate yearSelect
+      yearSelect.innerHTML = "";
+      // Optionally add "All" option
+      /* 
+      const allOpt = document.createElement("option");
+      allOpt.value = "all";
+      allOpt.textContent = "All Years";
+      yearSelect.appendChild(allOpt);
+      */
+      years.forEach(y => {
+        const opt = document.createElement("option");
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+      });
+      // Preselect the most recent year
+      if (years.length > 0) {
+        yearSelect.value = Math.max(...years);
+      }
+
+      // Populate countrySelect
+      countrySelect.innerHTML = "";
+      // Optionally add "All" option
+      /* 
+      const cAllOpt = document.createElement("option");
+      cAllOpt.value = "all";
+      cAllOpt.textContent = "All Countries";
+      countrySelect.appendChild(cAllOpt);
+      */
+      countries.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c; // We could do a country name lookup if needed
+        countrySelect.appendChild(opt);
+      });
+      if (countries.length > 0) {
+        // Default to first in alphabetical
+        countrySelect.value = countries[0];
+      }
+
+      // Event listeners
+      yearSelect.addEventListener('change', updateCharts);
+      countrySelect.addEventListener('change', updateCharts);
+      resetBtn.addEventListener('click', () => {
+        if (years.length > 0) {
+          yearSelect.value = Math.max(...years);
+        }
+        if (countries.length > 0) {
+          countrySelect.value = countries[0];
+        }
+        updateCharts();
+      });
+    }
+
+    /****************************************************************
+     * DATA HELPERS
+     ****************************************************************/
+    function sumProduction(record) {
+      // Sum the four columns
+      return (record.biogaz_thermique_ktep || 0) 
+           + (record.biogaz_de_decharge_ktep || 0) 
+           + (record.biogaz_de_digestion_des_boues_ktep || 0)
+           + (record.autres_biogaz_venant_de_la_fermentation_en_anaerobie_ktep || 0);
+    }
+
+    function getRecordsForYear(year) {
+      return rawData.filter(item => item.annee === Number(year));
+    }
+
+    function getProductionByYearAndCountry(year) {
+      // returns { countryCode: totalProduction, ... }
+      const dataForYear = getRecordsForYear(year);
+      const grouped = {};
+      dataForYear.forEach(item => {
+        const c = item.code_pays;
+        if (!grouped[c]) {
+          grouped[c] = 0;
+        }
+        grouped[c] += sumProduction(item);
+      });
+      return grouped;
+    }
+
+    function getRecordsForCountry(countryCode) {
+      return rawData.filter(item => item.code_pays === countryCode);
+    }
+
+    /****************************************************************
+     * CHART UPDATERS
+     ****************************************************************/
+    function updateRankingChart(year) {
+      // Destroy old instance if exists
+      if (rankingChartInstance) {
+        rankingChartInstance.destroy();
+      }
+
+      const productionMap = getProductionByYearAndCountry(year);
+      const sortedCountries = Object.keys(productionMap)
+        .sort((a, b) => productionMap[b] - productionMap[a]) // descending
+        .slice(0, 10); // top 10 for display
+
+      const labels = sortedCountries;
+      const dataValues = sortedCountries.map(c => productionMap[c]);
+
+      const ctx = document.getElementById('rankingChart').getContext('2d');
+      rankingChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: `Total Biogas (ktep) in ${year}`,
+            data: dataValues,
+            backgroundColor: 'rgba(75, 192, 192, 0.8)'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { title: { display: true, text: 'Country Code' } },
+            y: { title: { display: true, text: 'Biogas (ktep)' }, beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    function updateMethodChart(year, countryCode) {
+      // Destroy old instance if exists
+      if (methodChartInstance) {
+        methodChartInstance.destroy();
+      }
+
+      // Filter data by year & country
+      const dataYear = rawData.filter(item => item.annee === Number(year) && item.code_pays === countryCode);
+      // We'll combine all records for the country-year if they appear multiple times
+      const sumTherm = dataYear.reduce((acc, cur) => acc + (cur.biogaz_thermique_ktep || 0), 0);
+      const sumLandfill = dataYear.reduce((acc, cur) => acc + (cur.biogaz_de_decharge_ktep || 0), 0);
+      const sumSewage = dataYear.reduce((acc, cur) => acc + (cur.biogaz_de_digestion_des_boues_ktep || 0), 0);
+      const sumOther = dataYear.reduce((acc, cur) => acc + (cur.autres_biogaz_venant_de_la_fermentation_en_anaerobie_ktep || 0), 0);
+
+      const methodLabels = [
+        'Thermal Biogas',
+        'Landfill Gas',
+        'Sewage Sludge Gas',
+        'Other Anaerobic Digestion'
+      ];
+      const methodData = [
+        sumTherm,
+        sumLandfill,
+        sumSewage,
+        sumOther
+      ];
+
+      const ctx = document.getElementById('methodChart').getContext('2d');
+      methodChartInstance = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: methodLabels,
+          datasets: [{
+            label: `Biogas Method Share in ${countryCode}, ${year}`,
+            data: methodData,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(255, 206, 86, 0.7)',
+              'rgba(153, 102, 255, 0.7)',
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            tooltip: { callbacks: {
+              label: (context) => {
+                const val = context.parsed;
+                const total = methodData.reduce((acc, v) => acc + v, 0);
+                const pct = total ? ((val / total) * 100).toFixed(1) : 0;
+                return `${context.label}: ${val.toFixed(1)} ktep (${pct}%)`;
+              }
+            }}
+          }
+        }
+      });
+    }
+
+    function updateTrendChart(countryCode) {
+      // Destroy old instance if exists
+      if (trendChartInstance) {
+        trendChartInstance.destroy();
+      }
+
+      // Gather all data for the country over time
+      // We'll sum up production for each year
+      const countryData = getRecordsForCountry(countryCode);
+      const yearMap = {};
+      countryData.forEach(item => {
+        if (!item.annee) return;
+        if (!yearMap[item.annee]) {
+          yearMap[item.annee] = 0;
+        }
+        yearMap[item.annee] += sumProduction(item);
+      });
+      // Sort by year
+      const years = Object.keys(yearMap).map(Number).sort((a,b)=>a-b);
+      const trendValues = years.map(y => yearMap[y]);
+
+      const ctx = document.getElementById('trendChart').getContext('2d');
+      trendChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [{
+            label: `Total Biogas (ktep) - ${countryCode}`,
+            data: trendValues,
+            borderColor: 'rgba(255, 99, 132, 0.8)',
+            fill: false,
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { title: { display: true, text: 'Year' } },
+            y: { title: { display: true, text: 'Biogas (ktep)' }, beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    function updateCharts() {
+      const selectedYear = yearSelect.value;
+      const selectedCountry = countrySelect.value;
+      // Update ranking by country
+      updateRankingChart(selectedYear);
+      // Update production method chart for selected country
+      updateMethodChart(selectedYear, selectedCountry);
+      // Update trend chart
+      updateTrendChart(selectedCountry);
+    }
+
+    /****************************************************************
+     * INITIALIZE
+     ****************************************************************/
+    fetchData();
+  </script>
+</body>
+</html>

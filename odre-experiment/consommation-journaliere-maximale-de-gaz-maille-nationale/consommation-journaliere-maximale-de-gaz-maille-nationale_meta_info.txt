@@ -1,0 +1,1 @@
+Ce jeu de données présente la consommation horaire maximale de gaz (en MWh PCS 0°C) par jour à la maille nationale sur le réseau de NaTran et de Teréga. Les données sont définitives. Les consommations maximum sont complétées par les valeurs des températures de référence et moyenne.

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Gallery - ODRE Open Data</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 400px;
+            color: white;
+            text-align: center;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .card-id {
+            font-size: 0.85em;
+            color: #666;
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .icon {
+            float: right;
+            opacity: 0.3;
+            font-size: 2em;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover .icon {
+            opacity: 0.7;
+            transform: translateX(5px);
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 20px;
+            opacity: 0.8;
+        }
+        
+        .search-box {
+            margin: 30px auto;
+            max-width: 600px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            color: #999;
+        }
+        
+        .no-results {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            margin-top: 50px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Dashboard Gallery</h1>
+            <p class="subtitle">ODRE Open Data Visualizations</p>
+            <div class="stats">
+                <strong>23</strong> Interactive Dashboards Available
+            </div>
+        </header>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search dashboards by title or ID..." />
+            <span class="search-icon">🔍</span>
+        </div>
+        
+        <div class="gallery" id="gallery">
+            <a href="bp2017-elec-bilan-energetique/index.html" class="card" data-title="bilan prévisionnel électrique 2017 - bilans énergétiques" data-id="bp2017-elec-bilan-energetique">
+                <span class="icon">📈</span>
+                <div class="card-title">Bilan prévisionnel électrique 2017 - Bilans énergétiques</div>
+                <div class="card-id">bp2017-elec-bilan-energetique</div>
+            </a>
+            <a href="monitoring-capacites-echanges-nib/index.html" class="card" data-title="monitoring des capacités d'échanges aux frontières françaises de la région italie nord en 2020" data-id="monitoring-capacites-echanges-nib">
+                <span class="icon">📈</span>
+                <div class="card-title">Monitoring des capacités d'échanges aux frontières françaises de la région Italie Nord en 2020</div>
+                <div class="card-id">monitoring-capacites-echanges-nib</div>
+            </a>
+            <a href="bilan-previsionnel-electrique-2019-bilans-energetiques/index.html" class="card" data-title="bilan prévisionnel électrique 2019 - bilans énergétiques" data-id="bilan-previsionnel-electrique-2019-bilans-energetiques">
+                <span class="icon">📈</span>
+                <div class="card-title">Bilan prévisionnel électrique 2019 - Bilans énergétiques</div>
+                <div class="card-id">bilan-previsionnel-electrique-2019-bilans-energetiques</div>
+            </a>
+            <a href="cccg-nat-annuel-def/index.html" class="card" data-title="consommation annuelle de gaz des centrales à cycle combiné gaz (zone natran)" data-id="cccg-nat-annuel-def">
+                <span class="icon">📈</span>
+                <div class="card-title">Consommation annuelle de gaz des Centrales à Cycle Combiné Gaz (zone NaTran)</div>
+                <div class="card-id">cccg-nat-annuel-def</div>
+            </a>
+            <a href="bilan-previsionnel-electrique-2021-offre-de-production/index.html" class="card" data-title="bilan prévisionnel électrique 2021 - offre de production" data-id="bilan-previsionnel-electrique-2021-offre-de-production">
+                <span class="icon">📈</span>
+                <div class="card-title">Bilan prévisionnel électrique 2021 - Offre de production</div>
+                <div class="card-id">bilan-previsionnel-electrique-2021-offre-de-production</div>
+            </a>
+            <a href="consommation-journaliere-maximale-de-gaz-maille-nationale/index.html" class="card" data-title="extremas de consommation quotidienne définitive de gaz relevée sur le réseau de natran et teréga" data-id="consommation-journaliere-maximale-de-gaz-maille-nationale">
+                <span class="icon">📈</span>
+                <div class="card-title">Extremas de consommation quotidienne définitive de gaz relevée sur le réseau de NaTran et Teréga</div>
+                <div class="card-id">consommation-journaliere-maximale-de-gaz-maille-nationale</div>
+            </a>
+            <a href="cccg-annuel-reg/index.html" class="card" data-title="consommation annuelle définitive & régionalisée de gaz des centrales à cycle combiné gaz (zone natran)" data-id="cccg-annuel-reg">
+                <span class="icon">📈</span>
+                <div class="card-title">Consommation annuelle définitive & régionalisée de gaz des Centrales à Cycle Combiné Gaz (zone NaTran)</div>
+                <div class="card-id">cccg-annuel-reg</div>
+            </a>
+            <a href="annuaire-des-transporteurs-de-gaz-en-france-et-en-europe/index.html" class="card" data-title="les transporteurs gaziers en europe (tso)" data-id="annuaire-des-transporteurs-de-gaz-en-france-et-en-europe">
+                <span class="icon">📈</span>
+                <div class="card-title">Les transporteurs gaziers en Europe (TSO)</div>
+                <div class="card-id">annuaire-des-transporteurs-de-gaz-en-france-et-en-europe</div>
+            </a>
+            <a href="bp2017-elec-parc-de-production/index.html" class="card" data-title="bilan prévisionnel électrique 2017 - offre de production" data-id="bp2017-elec-parc-de-production">
+                <span class="icon">📈</span>
+                <div class="card-title">Bilan prévisionnel électrique 2017 - Offre de production</div>
+                <div class="card-id">bp2017-elec-parc-de-production</div>
+            </a>
+            <a href="filiere-de-production-de-biogaz-en-europe-eurobserver/index.html" class="card" data-title="filière de production de biogaz en europe" data-id="filiere-de-production-de-biogaz-en-europe-eurobserver">
+                <span class="icon">📈</span>
+                <div class="card-title">Filière de production de biogaz en Europe</div>
+                <div class="card-id">filiere-de-production-de-biogaz-en-europe-eurobserver</div>
+            </a>
+            <a href="investissement-grt-fr/index.html" class="card" data-title="les programmes d'investissement des gestionnaires de réseau de transport de gaz en france depuis 2007" data-id="investissement-grt-fr">
+                <span class="icon">📈</span>
+                <div class="card-title">Les programmes d'investissement des gestionnaires de réseau de transport de gaz en France depuis 2007</div>
+                <div class="card-id">investissement-grt-fr</div>
+            </a>
+            <a href="jdd-interne-nombre-dacteurs-aux-peg-de-grtgaz/index.html" class="card" data-title="nombre d'acteurs aux peg de natran" data-id="jdd-interne-nombre-dacteurs-aux-peg-de-grtgaz">
+                <span class="icon">📈</span>
+                <div class="card-title">Nombre d'acteurs aux PEG de NaTran</div>
+                <div class="card-id">jdd-interne-nombre-dacteurs-aux-peg-de-grtgaz</div>
+            </a>
+            <a href="bilan-previsionnel-electrique-2021-bilans-energetiques0/index.html" class="card" data-title="bilan prévisionnel électrique 2021 - bilans énergétiques" data-id="bilan-previsionnel-electrique-2021-bilans-energetiques0">
+                <span class="icon">📈</span>
+                <div class="card-title">Bilan prévisionnel électrique 2021 - Bilans énergétiques</div>
+                <div class="card-id">bilan-previsionnel-electrique-2021-bilans-energetiques0</div>
+            </a>
+            <a href="extremas-quotidiens-flux-commerciaux/index.html" class="card" data-title="extremas quotidiens des flux commerciaux" data-id="extremas-quotidiens-flux-commerciaux">
+                <span class="icon">📈</span>
+                <div class="card-title">Extremas quotidiens des flux commerciaux</div>
+                <div class="card-id">extremas-quotidiens-flux-commerciaux</div>
+            </a>
+            <a href="cartographie-acces-biomethane/index.html" class="card" data-title="cartographie biométhane d’accès aux réseaux" data-id="cartographie-acces-biomethane">
+                <span class="icon">📈</span>
+                <div class="card-title">Cartographie biométhane d’accès aux réseaux</div>
+                <div class="card-id">cartographie-acces-biomethane</div>
+            </a>
+            <a href="capacites-annuelles-d-injection-de-biomethane-reservees-par-departement/index.html" class="card" data-title="capacités d'injection de biométhane réservées par département actuellement inscrites au registre" data-id="capacites-annuelles-d-injection-de-biomethane-reservees-par-departement">
+                <span class="icon">📈</span>
+                <div class="card-title">Capacités d'injection de biométhane réservées par département actuellement inscrites au Registre</div>
+                <div class="card-id">capacites-annuelles-d-injection-de-biomethane-reservees-par-departement</div>
+            </a>
+            <a href="conso_brute_corrigee_client_direct/index.html" class="card" data-title="consommation mensuelle brute corrigée et des clients rpt" data-id="conso_brute_corrigee_client_direct">
+                <span class="icon">📈</span>
+                <div class="card-title">Consommation mensuelle brute corrigée et des clients RPT</div>
+                <div class="card-id">conso_brute_corrigee_client_direct</div>
+            </a>
+            <a href="consommation-annuelle-nette-typologie/index.html" class="card" data-title="consommation annuelle finale française d'électricité par typologie de consommateurs (2015 à 2021)" data-id="consommation-annuelle-nette-typologie">
+                <span class="icon">📈</span>
+                <div class="card-title">Consommation annuelle finale française d'électricité par typologie de consommateurs (2015 à 2021)</div>
+                <div class="card-id">consommation-annuelle-nette-typologie</div>
+            </a>
+            <a href="conso-finale-corrigee-par-secteur/index.html" class="card" data-title="consommation finale corrigée par secteur d'activité (2014 à 2024)" data-id="conso-finale-corrigee-par-secteur">
+                <span class="icon">📈</span>
+                <div class="card-title">Consommation finale corrigée par secteur d'activité (2014 à 2024)</div>
+                <div class="card-id">conso-finale-corrigee-par-secteur</div>
+            </a>
+            <a href="consommation-regionale-gnc/index.html" class="card" data-title="consommation régionale de gaz naturel carburant (gnc)" data-id="consommation-regionale-gnc">
+                <span class="icon">📈</span>
+                <div class="card-title">Consommation régionale de Gaz Naturel Carburant (GNC)</div>
+                <div class="card-id">consommation-regionale-gnc</div>
+            </a>
+            <a href="conso-jour-nat-eldgrd-grt/index.html" class="card" data-title="consommation horaire définitive de gaz des distributions publiques à l'interface avec le réseau de transport de gaz" data-id="conso-jour-nat-eldgrd-grt">
+                <span class="icon">📈</span>
+                <div class="card-title">Consommation horaire définitive de gaz des distributions publiques à l'interface avec le réseau de transport de gaz</div>
+                <div class="card-id">conso-jour-nat-eldgrd-grt</div>
+            </a>
+            <a href="consommation-nationale-horaire-de-gaz-donnees-provisoires-grtgaz-terega-v2/index.html" class="card" data-title="consommation horaire provisoire de gaz des clients industriels raccordés sur le réseau de transport de gaz" data-id="consommation-nationale-horaire-de-gaz-donnees-provisoires-grtgaz-terega-v2">
+                <span class="icon">📈</span>
+                <div class="card-title">Consommation horaire provisoire de gaz des clients industriels raccordés sur le réseau de transport de gaz</div>
+                <div class="card-id">consommation-nationale-horaire-de-gaz-donnees-provisoires-grtgaz-terega-v2</div>
+            </a>
+            <a href="equilibre-national-mensuel-prod-conso-brute/index.html" class="card" data-title="equilibre national mensuel production = consommation brute" data-id="equilibre-national-mensuel-prod-conso-brute">
+                <span class="icon">📈</span>
+                <div class="card-title">Equilibre national mensuel production = consommation brute</div>
+                <div class="card-id">equilibre-national-mensuel-prod-conso-brute</div>
+            </a>
+        </div>
+        
+        <div class="no-results" id="noResults">
+            No dashboards found matching your search.
+        </div>
+        
+        <footer>
+            <p>Generated automatically from ODRE Open Data</p>
+            <p>Data source: <a href="https://odre.opendatasoft.com" style="color: white;">odre.opendatasoft.com</a></p>
+        </footer>
+    </div>
+    
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const gallery = document.getElementById('gallery');
+        const noResults = document.getElementById('noResults');
+        const cards = document.querySelectorAll('.card');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                const id = card.getAttribute('data-id');
+                
+                if (title.includes(searchTerm) || id.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+                gallery.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                gallery.style.display = 'grid';
+            }
+        });
+        
+        // Add keyboard shortcut for search (Ctrl/Cmd + K)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+
+Ce jeu de données présente le bilan énergétique du système électrique français pour chaque scénario du bilan prévisionnel 2017 (Ampère, Hertz, Volt et Watt), aux horizons 2025, 2030 et 2035.
+
+
+La demande s'entend au sens large et inclut l'ensemble des débouchés de la production, à savoir la consommation intérieure d'électricité, l'énergie absorbée par le pompage des STEP, le solde des échanges avec l'étranger et éventuellement l'énergie déversée (non injectée sur le réseau, faute de débouchés).
+
+
+complément, des indicateurs sont fournis pour chaque coupe temporelle : émissions de CO2 du système électrique, part des énergies renouvelables et part du nucléaire dans la production.
+
+
+Pour plus d'informations sur les scénarios, le Bilan prévisionnel 2017 est disponible en téléchargement sur le site rte-france.com (https://www.rte-france.com/fr/article/bilan-previsionnel).
+

@@ -1,0 +1,14 @@
+
+Ce jeu de données présente les bilans énergétiques du système électrique français continental du cas de base du bilan prévisionnel 2019, de 2020 à 2025.
+
+
+En complément, des indicateurs sont fournis pour chaque année de étudiée :
+
+
+Emissions de CO2 du système électrique.
+Part des énergies renouvelables.
+Part du nucléaire dans la production.
+
+
+Pour plus d'informations sur les scénarios, le bilan prévisionnel 2019 est disponible en téléchargement sur le site rte-france.com (https://www.rte-france.com/fr/article/bilan-previsionnel).
+

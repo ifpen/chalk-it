@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Investissement GRT FR Dashboard</title>
+  <!-- Load Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* Basic CSS Reset & Layout */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f6f9;
+      color: #333;
+    }
+    h1, h2, h3 {
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    p {
+      margin-bottom: 1rem;
+      line-height: 1.4em;
+    }
+    #dashboard {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .chart-container {
+      margin: 30px 0;
+      background: #fff;
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .chart-container canvas {
+      display: block;
+      max-width: 100%;
+    }
+    .filter-panel {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      display: inline-block;
+    }
+    select {
+      padding: 6px;
+      font-size: 0.9rem;
+    }
+    .intro {
+      background: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #2E86C1;
+    }
+  </style>
+</head>
+<body>
+  <div id="dashboard">
+    <h1>Investissement GRT-FR Dashboard</h1>
+
+    <div class="intro">
+      <p>
+        This interactive dashboard presents how French gas network (GRT) investments have evolved over time,
+        focusing on two major operators: <span class="highlight">GRTgaz</span> and <span class="highlight">Teréga</span>.
+        Use the filters below to explore the annual investment trends, compare between GRTgaz and Teréga,
+        and see how total investments have changed throughout the years.
+      </p>
+      <p>
+        Hover over the charts to explore details, and select a specific year to compare proportionally.
+        The data is fetched in real-time from the official API, ensuring accuracy and scalability for the
+        “investissement-grt-fr” dataset.
+      </p>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-panel">
+      <div class="filter-group">
+        <label for="yearFilter">Select Year</label>
+        <select id="yearFilter">
+          <option value="all" selected>All Years</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Chart 1: Grouped Bar Chart of GRTgaz vs Teréga by Year -->
+    <div class="chart-container">
+      <h2>Investments by Year (GRTgaz vs Teréga)</h2>
+      <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- Chart 2: Donut Chart of GRTgaz vs Teréga for the selected year -->
+    <div class="chart-container">
+      <h2>Proportional Split for Selected Year</h2>
+      <canvas id="donutChart"></canvas>
+    </div>
+
+    <!-- Chart 3: Line Chart of Total Investment Over Time -->
+    <div class="chart-container">
+      <h2>Total Investment Over Time</h2>
+      <canvas id="lineChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // Global Data Variables
+    let rawData = [];
+    let allYears = [];
+    let barChart, donutChart, lineChart;
+
+    // Fetch data on page load
+    document.addEventListener("DOMContentLoaded", async () => {
+      await fetchData();
+      initFilters();
+      drawCharts();
+      updateAllCharts(); // initial render
+    });
+
+    // Fetch function
+    async function fetchData() {
+      try {
+        // Endpoint: https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/investissement-grt-fr/records?limit=-1
+        const res = await fetch("https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/investissement-grt-fr/records?limit=-1");
+        const json = await res.json();
+        
+        // The returned data structure is { total_count: <number>, results: [ ... ] }
+        // Each result in 'results' is expected to have { annee, investissement_grtgaz_meur, investissement_terega_meur }
+        if (json && json.results && Array.isArray(json.results)) {
+          rawData = json.results;
+        } else {
+          rawData = [];
+        }
+        
+        // Sort data by year ascending if possible
+        // Note: Some year can have asterisks (e.g. "2023*"), handle numeric portion
+        rawData.sort((a, b) => parseFloat(a.annee) - parseFloat(b.annee));
+
+        // Collect all unique years, preserving any special formats like "2023*"
+        // We'll store them in allYears array
+        allYears = [...new Set(rawData.map(d => d.annee))];
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    // Initialize filter dropdown
+    function initFilters() {
+      const yearSelect = document.getElementById("yearFilter");
+      // Clear out any existing options except "all"
+      for (let i = yearSelect.options.length - 1; i > 0; i--) {
+        yearSelect.remove(i);
+      }
+      // Add new year options
+      allYears.forEach(yr => {
+        const opt = document.createElement("option");
+        opt.value = yr;
+        opt.textContent = yr;
+        yearSelect.appendChild(opt);
+      });
+      // Listen to changes
+      yearSelect.addEventListener("change", updateAllCharts);
+    }
+
+    // Helper to get data for the bar chart
+    function getBarChartData() {
+      // Each year => { year, GRTgaz, Terega }
+      return rawData.map(d => {
+        return {
+          annee: d.annee,
+          grtgaz: +d.investissement_grtgaz_meur || 0,
+          terega: +d.investissement_terega_meur || 0
+        };
+      });
+    }
+
+    // Helper to get data for the donut chart (for the selected year)
+    function getDonutData(selectedYear) {
+      if (selectedYear === "all") {
+        // Sum across all years
+        let totalGRT = 0, totalTer = 0;
+        rawData.forEach(d => {
+          totalGRT += (+d.investissement_grtgaz_meur || 0);
+          totalTer += (+d.investissement_terega_meur || 0);
+        });
+        return { grtgaz: totalGRT, terega: totalTer };
+      } else {
+        // Filter for that year only
+        const found = rawData.find(d => d.annee === selectedYear);
+        if (found) {
+          return {
+            grtgaz: +found.investissement_grtgaz_meur || 0,
+            terega: +found.investissement_terega_meur || 0
+          };
+        } else {
+          return { grtgaz: 0, terega: 0 };
+        }
+      }
+    }
+
+    // Helper to get data for the line chart (total investment over time)
+    function getLineChartData() {
+      // Output array: each item => { year(num/string), total( number ) }
+      return rawData.map(d => {
+        const total = (+d.investissement_grtgaz_meur || 0) + (+d.investissement_terega_meur || 0);
+        return {
+          annee: d.annee,
+          total: total 
+        };
+      });
+    }
+
+    // Create or update all charts
+    function updateAllCharts() {
+      const selectedYear = document.getElementById("yearFilter").value;
+
+      // Update bar chart
+      const barData = getBarChartData();
+      updateBarChart(barData);
+
+      // Update donut chart
+      const donutValues = getDonutData(selectedYear);
+      updateDonutChart(donutValues);
+
+      // Update line chart
+      const lineData = getLineChartData();
+      updateLineChart(lineData);
+    }
+
+    // Draw initial chart instances
+    function drawCharts() {
+      // Bar Chart
+      const barCtx = document.getElementById("barChart").getContext("2d");
+      barChart = new Chart(barCtx, {
+        type: "bar",
+        data: {
+          labels: [], // we'll set dynamically
+          datasets: [
+            {
+              label: "GRTgaz (M€)",
+              backgroundColor: "#2E86C1",
+              data: []
+            },
+            {
+              label: "Teréga (M€)",
+              backgroundColor: "#73C6B6",
+              data: []
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Year"
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Investment (M€)"
+              },
+              beginAtZero: true
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ": " + context.formattedValue + " M€";
+                }
+              }
+            },
+            legend: {
+              position: 'top'
+            }
+          }
+        }
+      });
+
+      // Donut Chart
+      const donutCtx = document.getElementById("donutChart").getContext("2d");
+      donutChart = new Chart(donutCtx, {
+        type: "doughnut",
+        data: {
+          labels: ["GRTgaz", "Teréga"],
+          datasets: [
+            {
+              data: [],
+              backgroundColor: ["#2E86C1", "#73C6B6"]
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.label + ": " + context.formattedValue + " M€";
+                }
+              }
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+
+      // Line Chart
+      const lineCtx = document.getElementById("lineChart").getContext("2d");
+      lineChart = new Chart(lineCtx, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "Total Investment (M€)",
+              data: [],
+              fill: false,
+              borderColor: "#2E86C1",
+              tension: 0.1
+            }
+          ]
+        },
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Year"
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Total (M€)"
+              },
+              beginAtZero: true
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ": " + context.formattedValue + " M€";
+                }
+              }
+            },
+            legend: {
+              position: 'top'
+            }
+          }
+        }
+      });
+    }
+
+    // Update Bar Chart
+    function updateBarChart(barData) {
+      if (barChart) {
+        const labels = barData.map(d => d.annee);
+        const grtgazValues = barData.map(d => d.grtgaz);
+        const teregaValues = barData.map(d => d.terega);
+
+        barChart.data.labels = labels;
+        barChart.data.datasets[0].data = grtgazValues;
+        barChart.data.datasets[1].data = teregaValues;
+        barChart.update();
+      }
+    }
+
+    // Update Donut Chart
+    function updateDonutChart(donutValues) {
+      if (donutChart) {
+        donutChart.data.datasets[0].data = [donutValues.grtgaz, donutValues.terega];
+        donutChart.update();
+      }
+    }
+
+    // Update Line Chart
+    function updateLineChart(lineData) {
+      if (lineChart) {
+        const labels = lineData.map(d => d.annee);
+        const totals = lineData.map(d => d.total);
+
+        lineChart.data.labels = labels;
+        lineChart.data.datasets[0].data = totals;
+        lineChart.update();
+      }
+    }
+
+  </script>
+</body>
+</html>

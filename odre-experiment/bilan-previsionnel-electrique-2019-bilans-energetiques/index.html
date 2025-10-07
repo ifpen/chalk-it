@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bilan Prévisionnel Électrique 2019 Dashboard</title>
+  <!-- Import a Google Font (optional) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    p {
+      margin-bottom: 16px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    nav {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #007bff;
+      border: 1px solid #ccc;
+      padding: 8px 14px;
+      border-radius: 4px;
+      margin: 0 4px;
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background: #007bff;
+      color: #fff;
+    }
+
+    section {
+      margin: 40px 0;
+      background: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .chartContainer {
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    canvas {
+      max-width: 100%;
+      height: 400px !important;
+      margin: 0 auto;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <a href="#intro">Introduction</a>
+      <a href="#overview">Overall Production</a>
+      <a href="#emissions">CO2 Emissions</a>
+      <a href="#shares">Nuclear vs Renewables</a>
+      <a href="#conclusion">Conclusion</a>
+    </nav>
+
+    <!-- Introduction / Overview of the Dashboard Story -->
+    <section id="intro">
+      <h1>Bilan Prévisionnel Électrique 2019 (Cas de Base)</h1>
+      <p>
+        This interactive dashboard highlights key forecasts from RTE’s “Bilan Prévisionnel Électrique 2019” dataset,
+        focusing on six forecast years between 2020 and 2026. In particular, it explores:
+      </p>
+      <ul>
+        <li>Overall electricity production trends.</li>
+        <li>CO₂ emissions over time.</li>
+        <li>The evolving shares of nuclear vs. renewable energy.</li>
+      </ul>
+      <p>
+        Scroll down to follow the story, or use the navigation links above to jump to a specific section. All data
+        is fetched live from the open data platform (ODRE) at:
+        <a href="https://odre.opendatasoft.com" target="_blank" rel="noopener noreferrer">odre.opendatasoft.com</a>.
+      </p>
+    </section>
+
+    <!-- Chart 1: Total Production Over Time -->
+    <section id="overview">
+      <h2>1) Overview: Total Forecasted Production</h2>
+      <p>
+        Below is the total forecasted electricity production (TWh) for each available year in the base scenario.
+        Though the dataset includes various production sources (nuclear, renewables, fossil fuels), this chart
+        provides a high-level picture of how total generation evolves.
+      </p>
+      <div class="chartContainer">
+        <canvas id="chartOverview"></canvas>
+      </div>
+      <p>
+        Observing overall production is a great starting point to see if electricity output is growing,
+        stagnating, or decreasing, and it serves as a baseline for deeper dives into emissions and energy mixes.
+      </p>
+    </section>
+
+    <!-- Chart 2: CO2 Emissions -->
+    <section id="emissions">
+      <h2>2) CO₂ Emissions Focus</h2>
+      <p>
+        Decarbonization is a key pillar of energy policy. The bar chart below visualizes forecasted CO₂
+        emissions (million metric tons). This metric is important for understanding the environmental impact
+        of electricity generation.
+      </p>
+      <div class="chartContainer">
+        <canvas id="chartEmissions"></canvas>
+      </div>
+      <p>
+        France’s reliance on nuclear energy often keeps emissions lower than in countries heavily dependent on
+        coal or gas. However, natural gas and other thermal sources still contribute to the emissions trajectory
+        over time.
+      </p>
+    </section>
+
+    <!-- Chart 3: Nuclear vs. Renewables -->
+    <section id="shares">
+      <h2>3) Nuclear vs. Renewables</h2>
+      <p>
+        This final chart shows the shares of nuclear and renewable energy in the total electricity mix
+        (reported by the dataset as fractional contributions). Hover over each data point to see exact values.
+      </p>
+      <div class="chartContainer">
+        <canvas id="chartShares"></canvas>
+      </div>
+      <p>
+        Renewable sources include solar, wind, hydro, bioenergies, and (potentially) marine energies. As you can
+        see, France’s famous nuclear fleet is expected to remain a significant portion of the mix, while
+        renewables show notable growth in most scenarios.
+      </p>
+    </section>
+
+    <section id="conclusion">
+      <h3>Key Takeaways & Next Steps</h3>
+      <p>
+        France’s electricity outlook through the mid-2020s, according to this dataset, shows a stable or
+        slightly declining total production, modest CO₂ emissions, a strong nuclear base, and an expanding
+        renewables sector. While nuclear remains prominent, the trajectory suggests a continued push toward
+        renewables in the coming years.
+      </p>
+      <p>
+        Use the dashboard interactivity (tooltips, year-by-year data) to further explore the details. For more
+        context, visit the official ODRE portal for additional scenarios and underlying assumptions.
+      </p>
+    </section>
+
+    <div class="footer">
+      &copy; 2023 - Front-end Dashboard Example
+    </div>
+  </div>
+
+  <script>
+    // 1) Fetch data from the API
+    //    The API returns an object with "results" array containing data records.
+    const apiUrl = "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/bilan-previsionnel-electrique-2019-bilans-energetiques/records?limit=-1";
+
+    // We'll store the parsed data here
+    let records = [];
+
+    // Utility to sum production fields into total production
+    function getTotalProduction(d) {
+      return (
+        (d.nucleaire_twh || 0) +
+        (d.cycles_combines_au_gaz_twh || 0) +
+        (d.charbon_twh || 0) +
+        (d.fioul_twh || 0) +
+        (d.turbines_a_combustion_twh || 0) +
+        (d.cogenerations_twh || 0) +
+        (d.autre_thermique_twh || 0) +
+        (d.hydraulique_twh || 0) +
+        (d.eolien_twh || 0) +
+        (d.photovoltaique_twh || 0) +
+        (d.bioenergies_twh || 0) +
+        (d.energies_marines_twh || 0)
+      );
+    }
+
+    // Sort function to order data by start year
+    function sortByYear(a, b) {
+      // "annee" format is "2020-2021" --> parse the first 4 characters
+      const yearA = parseInt(a.annee.split("-")[0], 10);
+      const yearB = parseInt(b.annee.split("-")[0], 10);
+      return yearA - yearB;
+    }
+
+    // Main function to fetch data and build charts
+    async function initDashboard() {
+      try {
+        let response = await fetch(apiUrl);
+        let data = await response.json();
+
+        // The actual records are stored in data.results
+        records = data.results || [];
+
+        // Sort data by starting year
+        records.sort(sortByYear);
+
+        // Prepare arrays for charts
+        const labels = records.map(d => d.annee);
+        const totalProductionData = records.map(d => getTotalProduction(d));
+        const emissionsData = records.map(d => d.emissions_c02_mt);
+        const nuclearShareData = records.map(d => d.part_du_nucleaire);
+        const renewShareData = records.map(d => d.part_des_energies_renouvelables);
+
+        // Build Chart 1: Overview of Total Production
+        const ctxOverview = document.getElementById("chartOverview").getContext("2d");
+        new Chart(ctxOverview, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Total Production (TWh)",
+                data: totalProductionData,
+                borderColor: "#007bff",
+                backgroundColor: "rgba(0,123,255,0.2)",
+                fill: true,
+                tension: 0.1
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: "TWh"
+                },
+                beginAtZero: true
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "Forecast Years"
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ": " + context.formattedValue + " TWh";
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        // Build Chart 2: CO₂ Emissions
+        const ctxEmissions = document.getElementById("chartEmissions").getContext("2d");
+        new Chart(ctxEmissions, {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "CO₂ Emissions (Mt)",
+                data: emissionsData,
+                backgroundColor: "#dd2c00"
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: "Million tonnes CO₂"
+                },
+                beginAtZero: true
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "Forecast Years"
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ": " + context.formattedValue + " Mt";
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        // Build Chart 3: Nuclear vs Renewables (Two lines)
+        const ctxShares = document.getElementById("chartShares").getContext("2d");
+        new Chart(ctxShares, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Nuclear Share",
+                data: nuclearShareData,
+                borderColor: "#4CAF50",
+                backgroundColor: "rgba(76,175,80,0.2)",
+                fill: false,
+                tension: 0.1,
+                yAxisID: "y"
+              },
+              {
+                label: "Renewables Share",
+                data: renewShareData,
+                borderColor: "#ff9800",
+                backgroundColor: "rgba(255,152,0,0.2)",
+                fill: false,
+                tension: 0.1,
+                yAxisID: "y"
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: "Fraction of total"
+                },
+                beginAtZero: true,
+                max: 1
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "Forecast Years"
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    // Convert fraction (e.g., 0.7) to a percentage string
+                    const perc = (context.raw * 100).toFixed(1) + "%";
+                    return context.dataset.label + ": " + perc;
+                  }
+                }
+              }
+            }
+          }
+        });
+
+      } catch (error) {
+        console.error("Error fetching or processing data:", error);
+      }
+    }
+
+    // Initialize the dashboard once the page is loaded
+    window.addEventListener("DOMContentLoaded", initDashboard);
+  </script>
+</body>
+</html>

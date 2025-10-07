@@ -1,0 +1,1 @@
+Ce jeu de donnée donne la production de biogaz pour les principaux pays producteurs européens, selon les procédés utilisés.Les données proviennent de Eurobserv'ER (https://www.eurobserv-er.org/)*Une réutilisation des données est faîte sur Gas in Focus : https://www.gasinfocus.com/fili%C3%A8res-de-production
