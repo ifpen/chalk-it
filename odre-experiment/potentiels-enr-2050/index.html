@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Potentiels ENR 2050 — Dashboard</title>
+
+  <!-- Inline favicon to avoid 404 in console -->
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAQAQAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8A" />
+
+  <!-- Leaflet CSS (from CDN, no integrity) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    :root{
+      --accent:#0b6efd;
+      --muted:#6b7280;
+      --bg:#f7f8fb;
+      --card:#ffffff;
+      --mapHeight:520px;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{background:var(--bg);color:#111;}
+    .container{max-width:1200px;margin:18px auto;padding:18px;}
+    header{display:flex;align-items:flex-start;gap:16px;margin-bottom:12px;}
+    h1{margin:0;font-size:20px;}
+    p.lead{margin:0;color:var(--muted);font-size:13px;}
+    .layout{display:grid;grid-template-columns:380px 1fr;gap:16px;}
+    .card{background:var(--card);border-radius:10px;padding:12px;box-shadow:0 1px 4px rgba(16,24,40,0.06);}
+    .controls{display:flex;flex-direction:column;gap:12px;}
+    .controls .section-title{font-weight:600;font-size:13px;margin-bottom:6px;}
+    .filters{display:flex;flex-wrap:wrap;gap:6px;}
+    .filters label{display:flex;align-items:center;gap:8px;font-size:13px;color:#111;}
+    select,input[type=checkbox]{cursor:pointer;}
+    #map {height:var(--mapHeight);border-radius:8px;overflow:hidden;}
+    .charts {display:flex;flex-direction:column;gap:12px;}
+    .chart-card{padding:10px;}
+    canvas{display:block; width:100% !important; height:260px !important;} /* fixed canvas heights to avoid Chart.js height bug */
+    .mini{font-size:12px;color:var(--muted);}
+    .topline{display:flex;gap:8px;align-items:center;}
+    .info{font-size:13px;color:var(--muted);}
+    .status{font-size:13px;color:#b91c1c;}
+    .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+    .legend .item{display:flex;gap:6px;align-items:center;font-size:13px;}
+    .dot{width:12px;height:12px;border-radius:3px;}
+    .footer{margin-top:12px;font-size:12px;color:var(--muted);}
+    /* Responsive */
+    @media (max-width:980px){ .layout{grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Potentiels ENR 2050 — France (départements)</h1>
+        <p class="lead">Interactive dashboard summarizing departmental renewable gas potentials (dataset: potentiels-enr-2050). Use filters to explore resource mixes and convert raw potential into “injectable” gas using scenario yields.</p>
+        <p class="mini">Data source: OpenDataSoft — <span id="total-count">loading…</span></p>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="card">
+        <div class="controls">
+          <div>
+            <div class="section-title">Visualisation</div>
+            <div class="topline">
+              <label style="display:flex;align-items:center;gap:8px;">
+                <input id="view-mode" type="checkbox" />
+                Show converted "injectable" potential (apply yields)
+              </label>
+            </div>
+            <div class="mini" style="margin-top:6px;">
+              Yields used: methane 94% · gazéification (bois énergie) 70% · power-to-gas 66%
+            </div>
+          </div>
+
+          <div>
+            <div class="section-title">Resources</div>
+            <div class="filters" id="resource-filters">
+              <!-- checkboxes inserted by JS -->
+            </div>
+            <div class="mini">Toggle resources to include in map & charts.</div>
+          </div>
+
+          <div>
+            <div class="section-title">Top departments</div>
+            <select id="top-n" style="width:100%;padding:6px;border-radius:6px;border:1px solid #e6e9ef;">
+              <option value="10">Top 10</option>
+              <option value="5">Top 5</option>
+              <option value="20">Top 20</option>
+              <option value="94">All</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="section-title">Status</div>
+            <div class="info" id="status">Waiting for data…</div>
+            <div class="status" id="error" style="display:none;"></div>
+          </div>
+
+          <div class="footer">
+            <strong>Notes:</strong> The API returns records with a maximum page size of 100 — this dashboard automatically fetches all pages. If the dataset is very large, you will be notified if we cannot retrieve everything due to API limits.
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <div class="card" style="margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div><strong>Map (Départements)</strong> <span class="mini">Color = total potential (selected resources)</span></div>
+            <div class="mini" id="map-legend-info"></div>
+          </div>
+          <div id="map" aria-hidden="false"></div>
+        </div>
+
+        <div class="charts">
+          <div class="card chart-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><strong>Top departments by potential</strong></div>
+              <div class="mini">Click a bar to zoom to department on map</div>
+            </div>
+            <canvas id="barChart"></canvas>
+          </div>
+
+          <div class="card chart-card" style="display:flex;gap:12px;flex-direction:column;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><strong>National resource mix</strong></div>
+              <div class="mini">Share of selected resources</div>
+            </div>
+            <canvas id="pieChart"></canvas>
+            <div class="legend" id="pieLegend"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Load external libraries from CDN (no integrity attributes) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <script>
+    // Wait for DOM to be fully loaded before executing
+    document.addEventListener('DOMContentLoaded', function () {
+      // Define all top-level variables before use
+      let API_BASE_URL;
+      let DATASET_ID;
+      let PAGE_LIMIT;
+      let selectedResources;
+      let allRecords;
+      let deptGeoJsonLayer;
+      let map;
+      let barChart;
+      let pieChart;
+      let resourceFieldsOrder;
+      let resourceColors;
+      let yields;
+      let statusEl;
+      let errorEl;
+      let totalCountEl;
+      let viewModeCheckbox;
+      let resourceFiltersContainer;
+      let topNSelect;
+      let mapLegendInfo;
+      let fetchedCount;
+
+      // Initialize variables
+      API_BASE_URL = "https://odre.opendatasoft.com/api/explore/v2.1";
+      DATASET_ID = "potentiels-enr-2050";
+      PAGE_LIMIT = 100; // API max page size for records without group_by
+      selectedResources = {}; // map of resource->bool
+      allRecords = [];
+      deptGeoJsonLayer = null;
+      barChart = null;
+      pieChart = null;
+      fetchedCount = 0;
+
+      // Define fields we will request (only needed fields to reduce payload)
+      resourceFieldsOrder = [
+        "potentiel_total_production_methane",
+        "potentiel_bois_energie",
+        "potentiel_electricite_power_to_gas",
+        "energie_recuperation_csr",
+        "energie_recuperation_h2_fatal"
+      ];
+
+      // Additional per-methane breakdown fields (present in dataset)
+      let methaneBreakdownFields = [
+        "cimse",
+        "residus_cultures",
+        "dejections_elevage",
+        "herbe",
+        "residus_iaa",
+        "bio_dechets",
+        "algues"
+      ];
+
+      // Colors for resources
+      resourceColors = {
+        "potentiel_total_production_methane": "#1f77b4",
+        "potentiel_bois_energie": "#2ca02c",
+        "potentiel_electricite_power_to_gas": "#ff7f0e",
+        "energie_recuperation_csr": "#9467bd",
+        "energie_recuperation_h2_fatal": "#8c564b",
+        // methane breakdown
+        "cimse":"#aec7e8","residus_cultures":"#c5b0d5","dejections_elevage":"#ffbb78",
+        "herbe":"#98df8a","residus_iaa":"#f7b6d2","bio_dechets":"#c49c94","algues":"#dbdb8d"
+      };
+
+      // Yields for conversion to "injectable" gas
+      yields = {
+        "potentiel_total_production_methane": 0.94,   // methane: 94%
+        "potentiel_bois_energie": 0.70,               // gazéification: 70%
+        "potentiel_electricite_power_to_gas": 0.66,   // power-to-gas: 66%
+        "energie_recuperation_csr": 1.0,              // assume full (no conversion)
+        "energie_recuperation_h2_fatal": 1.0          // assume full (informational)
+      };
+
+      // DOM elements
+      statusEl = document.getElementById('status');
+      errorEl = document.getElementById('error');
+      totalCountEl = document.getElementById('total-count');
+      viewModeCheckbox = document.getElementById('view-mode');
+      resourceFiltersContainer = document.getElementById('resource-filters');
+      topNSelect = document.getElementById('top-n');
+      mapLegendInfo = document.getElementById('map-legend-info');
+
+      // Setup initial UI and event listeners
+      function setupUI() {
+        // Create resource checkboxes for main resourceFieldsOrder
+        for (let i = 0; i < resourceFieldsOrder.length; i++) {
+          let field = resourceFieldsOrder[i];
+          selectedResources[field] = true; // default include
+          let id = "chk_" + field;
+          let label = document.createElement('label');
+          label.innerHTML = '<input type="checkbox" id="' + id + '" checked /> <span style="display:inline-block;width:10px;background:' + resourceColors[field] + ';height:10px;margin-right:6px;border-radius:2px;"></span> ' + field;
+          resourceFiltersContainer.appendChild(label);
+
+          // Event listener
+          (function(f, checkboxId){
+            document.getElementById(checkboxId).addEventListener('change', function(e){
+              selectedResources[f] = e.target.checked;
+              renderAllVisuals();
+            });
+          })(field, id);
+        }
+
+        // Add methane breakdown toggle (compact)
+        let br = document.createElement('div');
+        br.style.marginTop = "6px";
+        br.innerHTML = '<div style="font-size:13px;font-weight:600;margin-bottom:6px;">Methane breakdown</div>';
+        resourceFiltersContainer.appendChild(br);
+        for (let i = 0; i < methaneBreakdownFields.length; i++) {
+          let field = methaneBreakdownFields[i];
+          // These breakdown fields are not treated as top-level map coloring fields, but allow inclusion/exclusion for charts
+          selectedResources[field] = false; // default off
+          let id = "chk_" + field;
+          let label = document.createElement('label');
+          label.innerHTML = '<input type="checkbox" id="' + id + '" /> <span style="display:inline-block;width:10px;background:' + (resourceColors[field]||'#999') + ';height:10px;margin-right:6px;border-radius:2px;"></span> ' + field;
+          resourceFiltersContainer.appendChild(label);
+
+          (function(f, checkboxId){
+            document.getElementById(checkboxId).addEventListener('change', function(e){
+              selectedResources[f] = e.target.checked;
+              renderAllVisuals();
+            });
+          })(field, id);
+        }
+
+        // View mode toggle
+        viewModeCheckbox.addEventListener('change', function(){
+          renderAllVisuals();
+        });
+
+        // Top N select
+        topNSelect.addEventListener('change', function(){
+          renderBarChart();
+        });
+      }
+
+      // Initialize Leaflet map
+      function initMap() {
+        // create map
+        map = L.map('map', {minZoom:5, maxZoom:12}).setView([46.5, 2.5], 6);
+        // OSM tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+      }
+
+      // Utility: safely read number fields (some may be undefined)
+      function num(v) {
+        if (v === null || v === undefined) return 0;
+        if (typeof v === 'number') return v;
+        let n = parseFloat(v);
+        return isNaN(n) ? 0 : n;
+      }
+
+      // Fetch all records with pagination; uses select to request only needed fields
+      async function fetchAllRecords() {
+        try {
+          statusEl.textContent = "Fetching data...";
+          errorEl.style.display = 'none';
+          totalCountEl.textContent = 'loading…';
+
+          // Build 'select' param: include the fields we need and geo shapes, plus department name and code
+          let selectFields = [
+            "code_departement",
+            "departement",
+            "geo_shape_departement",
+            "geo_point_departement"
+          ];
+          // add resource fields
+          selectFields = selectFields.concat(resourceFieldsOrder);
+          selectFields = selectFields.concat(methaneBreakdownFields);
+          selectFields.push("cimse"); // ensure cimse included (already in methaneBreakdownFields)
+          // join by comma
+          let selectParam = selectFields.join(",");
+
+          // First request to get total_count
+          let offset = 0;
+          let all = [];
+          let total_count = null;
+          // Loop fetching pages
+          while (true) {
+            let url = API_BASE_URL + "/catalog/datasets/" + encodeURIComponent(DATASET_ID) + "/records?select=" + encodeURIComponent(selectParam) + "&limit=" + PAGE_LIMIT + "&offset=" + offset;
+            // add headers and cors mode
+            let resp = await fetch(url, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json'
+              },
+              mode: 'cors',
+              cache: 'no-store'
+            });
+            if (!resp.ok) {
+              throw new Error("API request failed: " + resp.status + " " + resp.statusText);
+            }
+            let json = await resp.json();
+
+            // According to the spec in the prompt, response contains { total_count, results: [...] }
+            // Some Opendatasoft APIs wrap records differently; but our provided example uses this shape.
+            if (total_count === null) {
+              total_count = json.total_count !== undefined ? json.total_count : (json.nhits || null);
+              if (total_count === null) {
+                // fallback: try to infer
+                total_count = json.results ? json.results.length : 0;
+              }
+            }
+
+            // append results
+            if (Array.isArray(json.results)) {
+              for (let r = 0; r < json.results.length; r++) {
+                all.push(json.results[r]);
+              }
+              fetchedCount += json.results.length;
+            } else if (Array.isArray(json.records)) {
+              // Some ODS endpoints return records as array under 'records'
+              for (let r = 0; r < json.records.length; r++) {
+                all.push(json.records[r].fields || json.records[r]);
+              }
+              fetchedCount += json.records.length;
+            } else {
+              // unexpected shape
+              throw new Error("Unexpected API response shape");
+            }
+
+            // Update UI
+            totalCountEl.textContent = (total_count !== null ? total_count : all.length) + " records";
+            statusEl.textContent = "Fetched " + all.length + " / " + total_count + " records";
+
+            // Check if we should continue
+            offset += PAGE_LIMIT;
+            if (all.length >= total_count) {
+              break;
+            }
+            // Safety: avoid infinite loop if API lies
+            if (offset > 10000) {
+              // API limit reached (offset+limit <10000 requirement)
+              errorEl.style.display = 'block';
+              errorEl.textContent = "API pagination limit reached (offset limit). Data may be truncated.";
+              break;
+            }
+          } // end while
+
+          // Store
+          allRecords = all;
+          // Inform user
+          statusEl.textContent = "All data fetched (" + allRecords.length + " records).";
+          totalCountEl.textContent = allRecords.length + " records";
+
+        } catch (err) {
+          console.error(err);
+          errorEl.style.display = 'block';
+          errorEl.textContent = "Error fetching data: " + (err.message || err);
+          statusEl.textContent = "Error";
+        }
+      }
+
+      // Convert a record into standardized object with numeric fields
+      function normalizeRecord(rec) {
+        // The rec might already have fields as top-level (per prompt). We expect fields directly available.
+        let obj = {};
+        obj.code_departement = rec.code_departement || rec.code || rec.code_insee;
+        obj.departement = rec.departement || rec.nom_departement || rec.nom;
+        // Geo shape: depending on response, could be object under geo_shape_departement.geometry
+        obj.geo_shape = rec.geo_shape_departement || rec.geo_shape;
+        obj.geo_point = rec.geo_point_departement || rec.geo_point;
+        // numeric fields
+        for (let i = 0; i < resourceFieldsOrder.length; i++) {
+          let field = resourceFieldsOrder[i];
+          obj[field] = num(rec[field]);
+        }
+        for (let i = 0; i < methaneBreakdownFields.length; i++) {
+          let field = methaneBreakdownFields[i];
+          obj[field] = num(rec[field]);
+        }
+        // precompute raw total (sum of the main resourceFieldsOrder)
+        obj.total_raw = 0;
+        for (let i = 0; i < resourceFieldsOrder.length; i++) {
+          obj.total_raw += obj[resourceFieldsOrder[i]];
+        }
+        // Also total of methane breakdown
+        obj.methane_breakdown_total = 0;
+        for (let i = 0; i < methaneBreakdownFields.length; i++) {
+          obj.methane_breakdown_total += obj[methaneBreakdownFields[i]];
+        }
+        return obj;
+      }
+
+      // Aggregate records by department (should be one record per department already)
+      function computeAggregates() {
+        let aggregated = [];
+        for (let i = 0; i < allRecords.length; i++) {
+          let r = normalizeRecord(allRecords[i]);
+          aggregated.push(r);
+        }
+        return aggregated;
+      }
+
+      // Compute value used for map/color and charts based on selected resources and view mode
+      function computeDeptValue(deptObj) {
+        let includeConverted = viewModeCheckbox.checked;
+        let sum = 0;
+        // if any specific methane breakdown toggles are enabled, they affect charts but map's "methane pot" remains represented by potentiel_total_production_methane
+        for (let i = 0; i < resourceFieldsOrder.length; i++) {
+          let field = resourceFieldsOrder[i];
+          if (selectedResources[field]) {
+            let val = deptObj[field] || 0;
+            if (includeConverted && yields[field] !== undefined) {
+              val = val * yields[field];
+            }
+            sum += val;
+          }
+        }
+        // Additionally, if user toggled methane breakdown fields (like cimse) we might want to include them as override? We'll not add them to map sum to avoid double-counting.
+        return sum;
+      }
+
+      // Build GeoJSON FeatureCollection from aggregated records for use in Leaflet
+      function buildGeoJson(aggregated) {
+        let features = [];
+        for (let i = 0; i < aggregated.length; i++) {
+          let r = aggregated[i];
+          let shape = r.geo_shape;
+          // the dataset sample uses geo_shape_departement with Feature geometry; if present, embed it as feature.
+          if (shape && shape.type && shape.geometry) {
+            // copy shape geometry
+            let feat = {
+              type: "Feature",
+              geometry: shape.geometry,
+              properties: {
+                code_departement: r.code_departement,
+                departement: r.departement,
+                data: r
+              }
+            };
+            features.push(feat);
+          } else {
+            // fallback: create a point from geo_point
+            let gp = r.geo_point;
+            if (gp && gp.lat !== undefined) {
+              let feat = {
+                type: "Feature",
+                geometry: { type: "Point", coordinates: [ gp.lon || gp[0], gp.lat || gp[1] ] },
+                properties: {
+                  code_departement: r.code_departement,
+                  departement: r.departement,
+                  data: r
+                }
+              };
+              features.push(feat);
+            } else {
+              // no geometry; skip
+            }
+          }
+        }
+        return { type: "FeatureCollection", features: features };
+      }
+
+      // Color scale: simple linear between two colors based on value
+      function getColorForValue(value, minv, maxv) {
+        // if min==max avoid division by zero
+        if (maxv <= minv) {
+          return '#ffeda0';
+        }
+        // map value to [0,1]
+        let t = (value - minv) / (maxv - minv);
+        // color ramp from light yellow to deep blue
+        let r1 = 255, g1 = 253, b1 = 208; // light
+        let r2 = 11, g2 = 110, b2 = 253;   // strong blue
+        let r = Math.round(r1 + (r2 - r1) * t);
+        let g = Math.round(g1 + (g2 - g1) * t);
+        let b = Math.round(b1 + (b2 - b1) * t);
+        return "rgb(" + r + "," + g + "," + b + ")";
+      }
+
+      // Render map and layers
+      function renderMap(aggregated) {
+        try {
+          // Remove previous layer if exists
+          if (deptGeoJsonLayer) {
+            deptGeoJsonLayer.remove();
+            deptGeoJsonLayer = null;
+          }
+
+          // Build geoJSON
+          let geojson = buildGeoJson(aggregated);
+
+          // compute values per feature and find min/max for color scaling
+          let values = [];
+          for (let f = 0; f < geojson.features.length; f++) {
+            let data = geojson.features[f].properties.data;
+            let v = computeDeptValue(data);
+            geojson.features[f].properties.computed_value = v;
+            values.push(v);
+          }
+          let minv = Math.min.apply(null, values.length ? values : [0]);
+          let maxv = Math.max.apply(null, values.length ? values : [0]);
+
+          // Info control
+          let info = L.control();
+          info.onAdd = function () {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+          };
+          info.update = function (props) {
+            if (!props) {
+              this._div.innerHTML = '<h4 style="margin:0;">Sélection</h4><div class="mini">Passez la souris sur un département</div>';
+            } else {
+              let d = props.data;
+              let lines = [];
+              lines.push('<b>' + (props.departement || '—') + ' (' + (props.code_departement||'') + ')</b>');
+              lines.push('<div class="mini">Total (selected): ' + props.computed_value.toLocaleString() + ' GWh</div>');
+              // breakdown of main resources
+              lines.push('<div class="mini" style="margin-top:6px;font-weight:600;">Breakdown</div>');
+              for (let k = 0; k < resourceFieldsOrder.length; k++) {
+                let key = resourceFieldsOrder[k];
+                if (selectedResources[key]) {
+                  let val = (d[key] || 0);
+                  if (viewModeCheckbox.checked && yields[key] !== undefined) val = val * yields[key];
+                  lines.push('<div class="mini" style="display:flex;justify-content:space-between;">' +
+                              '<span>' + key + '</span><span>' + Number(val).toLocaleString() + '</span></div>');
+                }
+              }
+              this._div.innerHTML = lines.join("");
+            }
+          };
+
+          // Style function
+          function style(feature) {
+            let v = feature.properties.computed_value || 0;
+            return {
+              fillColor: getColorForValue(v, minv, maxv),
+              weight: 1,
+              opacity: 1,
+              color: 'white',
+              dashArray: '0',
+              fillOpacity: 0.8
+            };
+          }
+
+          // onEachFeature
+          function onEachFeature(feature, layer) {
+            layer.on({
+              mouseover: function (e) {
+                var layer = e.target;
+                layer.setStyle({ weight: 2, color: '#333', fillOpacity: 0.95 });
+                info.update(feature.properties);
+              },
+              mouseout: function (e) {
+                deptGeoJsonLayer.resetStyle(e.target);
+                info.update();
+              },
+              click: function (e) {
+                // zoom to layer bounds if polygon; if point, set view
+                if (e.target.getBounds) {
+                  map.fitBounds(e.target.getBounds(), { maxZoom: 9 });
+                } else if (feature.geometry && feature.geometry.type === 'Point') {
+                  let coords = feature.geometry.coordinates;
+                  map.setView([coords[1], coords[0]], 9);
+                }
+              }
+            });
+            // popup
+            let props = feature.properties;
+            let name = props.departement || props.code_departement;
+            let val = props.computed_value || 0;
+            layer.bindPopup('<b>' + name + '</b><br/>Total (selected): ' + Number(val).toLocaleString() + ' GWh');
+          }
+
+          // Add geoJson layer
+          deptGeoJsonLayer = L.geoJSON(geojson, {
+            style: style,
+            onEachFeature: onEachFeature
+          }).addTo(map);
+
+          // Add info control
+          info.addTo(map);
+
+          // Add legend info text
+          mapLegendInfo.textContent = "Range: " + Math.round(minv) + " — " + Math.round(maxv) + " GWh";
+
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      // Render bar chart for top N departments
+      function renderBarChart() {
+        try {
+          if (!allRecords || !allRecords.length) return;
+          let aggregated = computeAggregates();
+
+          // compute department values based on selected resources
+          let arr = aggregated.map(function(d){ return { name: d.departement || d.code_departement, code: d.code_departement, value: computeDeptValue(d), data: d }; });
+          // sort desc
+          arr.sort(function(a,b){ return b.value - a.value; });
+
+          // top N
+          let topN = parseInt(topNSelect.value || "10");
+          if (topN <= 0) topN = 10;
+          let arrTop = arr.slice(0, topN);
+
+          // prepare Chart.js datasets
+          let labels = arrTop.map(function(x){ return (x.name || x.code).substring(0,30); });
+          let data = arrTop.map(function(x){ return Math.round(x.value); });
+
+          // Destroy old chart if exists
+          if (barChart) {
+            barChart.destroy();
+            barChart = null;
+          }
+
+          let ctx = document.getElementById('barChart').getContext('2d');
+          barChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: viewModeCheckbox.checked ? 'Injectable potential (GWh)' : 'Raw potential (GWh)',
+                data: data,
+                backgroundColor: 'rgba(11,110,253,0.8)'
+              }]
+            },
+            options: {
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: function(ctx) {
+                      let idx = ctx.dataIndex;
+                      let val = ctx.parsed.y;
+                      return ctx.dataset.label + ': ' + Number(val).toLocaleString() + ' GWh';
+                    }
+                  }
+                }
+              },
+              onClick: function(evt, activeEls) {
+                if (activeEls && activeEls.length) {
+                  let idx = activeEls[0].index;
+                  let chosen = arrTop[idx];
+                  // find corresponding geo layer and zoom to it
+                  if (deptGeoJsonLayer) {
+                    deptGeoJsonLayer.eachLayer(function(layer){
+                      try {
+                        let props = layer.feature.properties;
+                        if (props && (props.code_departement == chosen.code || props.departement == chosen.name)) {
+                          if (layer.getBounds) map.fitBounds(layer.getBounds(), { maxZoom: 9 });
+                          else if (layer.getLatLng) map.setView(layer.getLatLng(), 9);
+                          layer.openPopup();
+                        }
+                      } catch(e){}
+                    });
+                  }
+                }
+              }
+            }
+          });
+
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      // Render pie chart for national resource mix
+      function renderPieChart() {
+        try {
+          if (!allRecords || !allRecords.length) return;
+          let aggregated = computeAggregates();
+
+          // Build sums per resource (consider selectedResources flags)
+          let sums = {};
+          // initialize
+          for (let key in selectedResources) {
+            sums[key] = 0;
+          }
+
+          for (let i = 0; i < aggregated.length; i++) {
+            let r = aggregated[i];
+            for (let key in selectedResources) {
+              if (selectedResources[key]) {
+                let val = r[key] || 0;
+                if (viewModeCheckbox.checked && yields[key] !== undefined) {
+                  val = val * yields[key];
+                }
+                sums[key] += val;
+              }
+            }
+          }
+
+          // Prepare data for pie chart: include only selected resource keys with positive value
+          let keys = Object.keys(sums).filter(k => selectedResources[k] && sums[k] > 0);
+          // If none, fallback to main fields to show something
+          if (keys.length === 0) {
+            keys = resourceFieldsOrder.filter(k => true);
+          }
+          let data = keys.map(k => Math.round(sums[k]));
+          let labels = keys.map(k => k);
+          let colors = keys.map(k => resourceColors[k] || '#888');
+
+          // Destroy old chart if exists
+          if (pieChart) {
+            pieChart.destroy();
+            pieChart = null;
+          }
+          let ctx = document.getElementById('pieChart').getContext('2d');
+          pieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+              labels: labels,
+              datasets: [{
+                data: data,
+                backgroundColor: colors,
+                hoverOffset: 6
+              }]
+            },
+            options: {
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: function(ctx) {
+                      let val = ctx.parsed;
+                      let sum = ctx.chart._metasets[ctx.datasetIndex].total;
+                      let pct = sum ? (val / sum * 100).toFixed(1) : '0';
+                      return ctx.label + ': ' + Number(val).toLocaleString() + ' GWh (' + pct + '%)';
+                    }
+                  }
+                }
+              }
+            }
+          });
+
+          // update legend area
+          let legendDiv = document.getElementById('pieLegend');
+          legendDiv.innerHTML = '';
+          for (let i = 0; i < labels.length; i++) {
+            let item = document.createElement('div');
+            item.className = 'item';
+            item.innerHTML = '<span class="dot" style="background:' + colors[i] + ';"></span><span>' + labels[i] + ' — ' + Number(data[i]).toLocaleString() + ' GWh</span>';
+            legendDiv.appendChild(item);
+          }
+
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      // Render all visuals (map + charts)
+      function renderAllVisuals() {
+        try {
+          if (!allRecords || allRecords.length === 0) return;
+          let aggregated = computeAggregates();
+          renderMap(aggregated);
+          renderBarChart();
+          renderPieChart();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      // Main orchestrator
+      async function main() {
+        try {
+          setupUI();
+          initMap();
+          await fetchAllRecords();
+
+          if (!allRecords || allRecords.length === 0) {
+            statusEl.textContent = "No data available.";
+            return;
+          }
+
+          // Initialize map and charts using data
+          renderAllVisuals();
+
+          statusEl.textContent = "Ready.";
+
+        } catch (err) {
+          console.error(err);
+          errorEl.style.display = 'block';
+          errorEl.textContent = "Unhandled error: " + (err.message || err);
+        }
+      }
+
+      // Kick off main
+      main();
+
+    }); // DOMContentLoaded end
+  </script>
+</body>
+</html>

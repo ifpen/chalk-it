@@ -1,0 +1,12 @@
+
+Ce jeu de données présente, depuis le 1er janvier 2019, les valeurs consolidées des soutirages des consommateurs et des producteurs raccordés au réseau de transport d'électricité (RTE), par jour, par région administrative, par secteur d'activité économique, par tension de raccordement et par demi-heure. Ces données sont élaborées à partir des équipements de comptage.
+
+
+Pour chaque demi-heure, la puissance est fournie en MW. L'énergie journalière est exprimée en MWh.
+
+
+Les valeurs d'un mois donné sont publiées en milieu de mois suivant lorsqu'elles ont été consolidées, c'est à dire vérifiées et complétées. Par ailleurs, le non-respect du secret statistique par demi-heure peut conduire à masquer la ligne correspondant à la journée, à la région administrative, au secteur d'activité et la tension de raccordement concernés.
+
+
+Ce jeu de données est publié conformément à l'article D 111-66 du code de l'énergie et en application de l'arrêté du 29 décembre 2017 (Loi pour une République Numérique).
+

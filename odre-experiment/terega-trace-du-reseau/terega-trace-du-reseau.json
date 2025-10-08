@@ -1,0 +1,320 @@
+{
+    "total_count": 1298,
+    "results": [
+        {
+            "region": "Nouvelle-Aquitaine",
+            "code_de_la_region": 75,
+            "nom_du_departement": "Gironde",
+            "code_du_departement": 33,
+            "geo_point_2d": {
+                "lon": -0.9606419208836384,
+                "lat": 44.627418843565465
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            -0.960621486143449,
+                            44.627392822698056,
+                            9.744948357343674
+                        ],
+                        [
+                            -0.960662355623828,
+                            44.62744486443288,
+                            11.15994835831225
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        },
+        {
+            "region": "Occitanie",
+            "code_de_la_region": 76,
+            "nom_du_departement": "Gers",
+            "code_du_departement": 32,
+            "geo_point_2d": {
+                "lon": 0.6158215744866502,
+                "lat": 43.67400216826708
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            0.61576249840862,
+                            43.6739623771088,
+                            136.99995010066777
+                        ],
+                        [
+                            0.61588065056468,
+                            43.67404195942536,
+                            136.2999501004815
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        },
+        {
+            "region": "Nouvelle-Aquitaine",
+            "code_de_la_region": 75,
+            "nom_du_departement": "Pyr\u00e9n\u00e9es-Atlantiques",
+            "code_du_departement": 64,
+            "geo_point_2d": {
+                "lon": -0.5902141094610484,
+                "lat": 43.331127530077794
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            -0.635565770790861,
+                            43.37995459228142,
+                            109.3509506387636
+                        ],
+                        [
+                            -0.572503772329158,
+                            43.32286574471387,
+                            128.98295074235648
+                        ],
+                        [
+                            -0.562270738705839,
+                            43.27238980102125,
+                            171.68095083348453
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        },
+        {
+            "region": "Occitanie",
+            "code_de_la_region": 76,
+            "nom_du_departement": "Haute-Garonne",
+            "code_du_departement": 31,
+            "geo_point_2d": {
+                "lon": 1.081131999546336,
+                "lat": 43.227989490600905
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            1.072216932690937,
+                            43.23849971152024,
+                            258.4129508975893
+                        ],
+                        [
+                            1.090047066401735,
+                            43.217479269681576,
+                            246.22895093727857
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        },
+        {
+            "region": "Nouvelle-Aquitaine",
+            "code_de_la_region": 75,
+            "nom_du_departement": "Pyr\u00e9n\u00e9es-Atlantiques",
+            "code_du_departement": 64,
+            "geo_point_2d": {
+                "lon": -0.13489626263924281,
+                "lat": 43.18885720913099
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            -0.134900003050094,
+                            43.18888505781728,
+                            362.45355098787695
+                        ],
+                        [
+                            -0.134892522228392,
+                            43.18882936044469,
+                            364.9659509882331
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        },
+        {
+            "region": "Nouvelle-Aquitaine",
+            "code_de_la_region": 75,
+            "nom_du_departement": "Gironde",
+            "code_du_departement": 33,
+            "geo_point_2d": {
+                "lon": -0.27183120607040945,
+                "lat": 44.290645107167634
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            -0.271754820544343,
+                            44.29061389800604,
+                            95.14264897443354
+                        ],
+                        [
+                            -0.271907591596476,
+                            44.290676316329225,
+                            97.78794897347689
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        },
+        {
+            "region": "Nouvelle-Aquitaine",
+            "code_de_la_region": 75,
+            "nom_du_departement": "Gironde",
+            "code_du_departement": 33,
+            "geo_point_2d": {
+                "lon": -0.28583700944520074,
+                "lat": 44.32517261991111
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            -0.240674841913176,
+                            44.27215963456342,
+                            105.57294900808483
+                        ],
+                        [
+                            -0.26816206053715,
+                            44.27464502415562,
+                            99.70294900331646
+                        ],
+                        [
+                            -0.288155232377634,
+                            44.34430769668305,
+                            82.1139488760382
+                        ],
+                        [
+                            -0.329826402609958,
+                            44.38951793458374,
+                            54.0179487913847
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        },
+        {
+            "region": "Occitanie",
+            "code_de_la_region": 76,
+            "nom_du_departement": "Aveyron",
+            "code_du_departement": 12,
+            "geo_point_2d": {
+                "lon": 2.2239560790389064,
+                "lat": 44.611917872198084
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            2.219461754807095,
+                            44.54662240641214,
+                            -5.1493756473e-05
+                        ],
+                        [
+                            2.203382425980633,
+                            44.55908243916933,
+                            492.28494848590344
+                        ],
+                        [
+                            2.248398017015126,
+                            44.68298229789507,
+                            -5.1743350923e-05
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        },
+        {
+            "region": "Nouvelle-Aquitaine",
+            "code_de_la_region": 75,
+            "nom_du_departement": "Pyr\u00e9n\u00e9es-Atlantiques",
+            "code_du_departement": 64,
+            "geo_point_2d": {
+                "lon": -0.11839227027296725,
+                "lat": 43.190366767612865
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            -0.198568306541947,
+                            43.2631466223845,
+                            276.2049508532509
+                        ],
+                        [
+                            -0.104684563116535,
+                            43.15387141985687,
+                            401.68495105206966
+                        ],
+                        [
+                            -0.020047435123588,
+                            43.16569356620118,
+                            386.20495103113353
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        },
+        {
+            "region": "Nouvelle-Aquitaine",
+            "code_de_la_region": 75,
+            "nom_du_departement": "Gironde",
+            "code_du_departement": 33,
+            "geo_point_2d": {
+                "lon": -0.19285024809644208,
+                "lat": 44.45619703336246
+            },
+            "geo_shape": {
+                "type": "Feature",
+                "geometry": {
+                    "coordinates": [
+                        [
+                            -0.18865096838932,
+                            44.5179552558665,
+                            55.50494855735451
+                        ],
+                        [
+                            -0.197049527803564,
+                            44.39443881085842,
+                            120.26794878393412
+                        ]
+                    ],
+                    "type": "LineString"
+                },
+                "properties": {}
+            }
+        }
+    ]
+}

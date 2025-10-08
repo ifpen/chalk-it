@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Biomethane Production — prod-def-reg-jour-biom-reseau-grtgrd</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Inline favicon (tiny transparent PNG) to avoid 404 in console -->
+  <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAE0lEQVR42mP8z8BQz0AEYBxVSgAAAwAB/8FQ1QAAAABJRU5ErkJggg==" />
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa7c7;
+      --accent:#2dd4bf;
+      --accent-2:#60a5fa;
+      --glass: rgba(255,255,255,0.03);
+      --padding:14px;
+      --radius:10px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #e6eef8;
+    }
+    html,body{height:100%; margin:0; background:linear-gradient(180deg,#071226 0%, #071827 100%); color:var(--muted);}
+    .app{
+      max-width:1200px; margin:18px auto; padding:18px;
+    }
+    header{display:flex; gap:12px; align-items:center; margin-bottom:12px;}
+    .logo{
+      width:56px; height:56px; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-weight:700; color:#012; font-size:18px;
+      box-shadow:0 6px 18px rgba(3,7,18,0.6);
+    }
+    h1{margin:0;font-size:18px;color:#dff3f0}
+    p.lead{margin:0;color:var(--muted); font-size:13px;}
+    .grid{display:grid; grid-template-columns: 1fr 380px; gap:14px;}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:var(--radius); padding:var(--padding); box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+      min-height:120px;
+    }
+    .controls{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+    label{font-size:12px;color:var(--muted)}
+    select,input[type=date]{background:transparent; border:1px solid rgba(255,255,255,0.06); padding:8px 10px; color:var(--muted); border-radius:8px;}
+    button{background:var(--accent); color:#022; border:none; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:600;}
+    .stats{display:flex; gap:12px; margin-top:8px; flex-wrap:wrap;}
+    .stat{background:var(--glass); padding:10px; border-radius:8px; min-width:120px;}
+    .chart{height:320px;}
+    #bars{height:320px; overflow:auto;}
+    .legend{display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-top:8px;}
+    .legend .item{display:flex; gap:8px; align-items:center; font-size:13px; color:var(--muted)}
+    .dot{width:12px;height:12px;border-radius:3px}
+    .footer-note{font-size:12px;color:#9fb5d1;margin-top:10px}
+    /* tooltip */
+    .tooltip{position:absolute; pointer-events:none; background:#021526; padding:8px 10px; border-radius:6px; color:var(--muted); font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,0.6);}
+    /* make charts responsive */
+    svg{width:100%; height:100%}
+    /* small table */
+    table{width:100%; border-collapse:collapse; font-size:13px; color:var(--muted)}
+    th,td{padding:6px 8px; border-bottom:1px dashed rgba(255,255,255,0.03)}
+    th{color:#cfeef0; text-align:left; font-size:12px}
+    .muted{color:var(--muted)}
+    @media (max-width:960px){
+      .grid{grid-template-columns:1fr; }
+      #bars{height:260px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">Bio</div>
+      <div>
+        <h1>Biomethane injections — Regional daily production</h1>
+        <p class="lead">Dataset: prod-def-reg-jour-biom-reseau-grtgrd — interactive story: growth, regional ranking and daily evolution.</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <label>Filters</label>
+              <div class="controls" style="margin-top:6px;">
+                <div>
+                  <label class="muted">Start</label><br>
+                  <input id="startDate" type="date" />
+                </div>
+                <div>
+                  <label class="muted">End</label><br>
+                  <input id="endDate" type="date" />
+                </div>
+                <div>
+                  <label class="muted">Region</label><br>
+                  <select id="regionSelect"><option value="__all__">All regions</option></select>
+                </div>
+                <div>
+                  <label class="muted">Agg.</label><br>
+                  <select id="aggSelect">
+                    <option value="day">Daily</option>
+                    <option value="month">Monthly</option>
+                  </select>
+                </div>
+                <div style="align-self:end;">
+                  <button id="btnRefresh">Apply</button>
+                </div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <label class="muted">Status</label>
+              <div id="statusBox" style="margin-top:6px; color:var(--muted); font-size:13px">Loading metadata…</div>
+            </div>
+          </div>
+
+          <div class="stats" id="topStats" style="margin-top:12px;">
+            <div class="stat">
+              <div class="muted">Total records</div>
+              <div id="statTotal" style="font-size:20px;color:#b9f1e9">—</div>
+            </div>
+            <div class="stat">
+              <div class="muted">Unique regions</div>
+              <div id="statRegions" style="font-size:20px;color:#bcd7ff">—</div>
+            </div>
+            <div class="stat">
+              <div class="muted">Date range</div>
+              <div id="statRange" style="font-size:14px;color:var(--muted)">—</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <div style="font-size:13px;color:var(--muted)">Timeline — production (selected region)</div>
+            <div id="timeline" class="chart"></div>
+            <div class="legend" id="timelineLegend"></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div><label class="muted">Regional comparison (total in selected range)</label></div>
+            <div><small class="muted">Click a bar to focus region</small></div>
+          </div>
+          <div id="bars" style="height:320px; margin-top:8px;"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="height:100%;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <label class="muted">Details</label>
+              <div style="font-size:16px;color:#dff3f0">Top regions & recent days</div>
+            </div>
+            <div><small class="muted" id="truncatedNotice"></small></div>
+          </div>
+
+          <div style="margin-top:10px;">
+            <div style="display:flex;gap:8px;">
+              <div style="flex:1">
+                <table id="summaryTable">
+                  <thead><tr><th>Region</th><th>Total</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div style="width:200px">
+                <div style="font-size:13px;color:var(--muted)">Recent records</div>
+                <div id="recentList" style="margin-top:6px; max-height:220px; overflow:auto;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-note" id="noteArea">
+            We query the official Opendatasoft Explore API records endpoint. Because the Explore API limits ungrouped queries to 100 results per request, we page using date slices (monthly) to retrieve the full dataset client-side. If the server returns partial data, you will be informed here.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- tooltip -->
+    <div id="tooltip" class="tooltip" style="display:none;"></div>
+  </div>
+
+  <!-- Load D3 from CDN -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <script>
+  // All code runs after DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', () => {
+    // Define constants and variables
+    const API_BASE = 'https://odre.opendatasoft.com/api/explore/v2.1';
+    const DATASET_PATH = '/catalog/datasets/prod-def-reg-jour-biom-reseau-grtgrd/records';
+    const DATA_URL = API_BASE + DATASET_PATH;
+    const SELECT_FIELDS = "date,code_officiel_region,nom_region,production_biomethane,statut,operateur_de_transport";
+    const PAGE_LIMIT = 100; // API limit per docs
+    let allRecords = []; // normalized records
+    let regionsList = [];
+    let fetchedTotal = 0;
+    let expectedTotal = null;
+    let truncated = false;
+
+    // DOM references
+    const startInput = document.getElementById('startDate');
+    const endInput = document.getElementById('endDate');
+    const regionSelect = document.getElementById('regionSelect');
+    const aggSelect = document.getElementById('aggSelect');
+    const btnRefresh = document.getElementById('btnRefresh');
+    const statusBox = document.getElementById('statusBox');
+    const statTotal = document.getElementById('statTotal');
+    const statRegions = document.getElementById('statRegions');
+    const statRange = document.getElementById('statRange');
+    const timelineEl = document.getElementById('timeline');
+    const barsEl = document.getElementById('bars');
+    const tableBody = document.querySelector('#summaryTable tbody');
+    const recentList = document.getElementById('recentList');
+    const truncatedNotice = document.getElementById('truncatedNotice');
+    const noteArea = document.getElementById('noteArea');
+    const tooltip = document.getElementById('tooltip');
+
+    // Utility: safe fetch with fallback to JSONP if needed (CORS)
+    async function safeFetchJson(url) {
+      try {
+        const response = await fetch(url, { method: 'GET' });
+        const json = await response.json();
+        return json;
+      } catch (err) {
+        // Likely CORS or network. Try JSONP fallback if possible.
+        console.warn('Fetch failed, attempting JSONP fallback:', err);
+        try {
+          const jsonp = await jsonpFetch(url);
+          return jsonp;
+        } catch (err2) {
+          throw err; // rethrow original
+        }
+      }
+    }
+
+    function jsonpFetch(url) {
+      return new Promise((resolve, reject) => {
+        const callbackName = 'jsonp_cb_' + Math.random().toString(36).substring(2, 9);
+        window[callbackName] = function(data) {
+          cleanup();
+          resolve(data);
+        };
+        function cleanup() {
+          try { delete window[callbackName]; } catch (e) {}
+          if (script.parentNode) script.parentNode.removeChild(script);
+        }
+        const script = document.createElement('script');
+        // Opendatasoft supports "callback" param for JSONP historically
+        script.src = url + (url.indexOf('?') === -1 ? '?' : '&') + 'callback=' + callbackName;
+        script.async = true;
+        script.onerror = function(e) { cleanup(); reject(new Error('JSONP load error')); };
+        document.body.appendChild(script);
+      });
+    }
+
+    // Helper to build records URL with params
+    function buildUrl(params) {
+      const esc = (s) => encodeURIComponent(s);
+      const keys = Object.keys(params);
+      const qs = keys.map(k => esc(k) + '=' + esc(params[k])).join('&');
+      return DATA_URL + (qs ? '?' + qs : '');
+    }
+
+    // Normalize various possible API shapes into array of plain objects with fields
+    function extractResults(json) {
+      // Per the requirement, one expected shape uses .results array where each item is direct record
+      if (!json) return [];
+      if (Array.isArray(json.results)) {
+        return json.results.map(r => (r && r.production_biomethane !== undefined) ? r : (r && r.fields ? r.fields : r));
+      }
+      // Opendatasoft sometimes returns { records: [ { fields: { ... } } ] }
+      if (Array.isArray(json.records)) {
+        return json.records.map(r => (r.fields ? r.fields : r));
+      }
+      // Some responses may have "data" or "rows"
+      if (Array.isArray(json.data)) return json.data;
+      if (Array.isArray(json.rows)) return json.rows;
+      // Fallback: maybe the response itself is an array
+      if (Array.isArray(json)) return json;
+      return [];
+    }
+
+    // Date utilities
+    function toISODate(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${dd}`;
+    }
+    function lastDayOfMonth(year, monthZeroBased) {
+      return new Date(year, monthZeroBased + 1, 0).getDate();
+    }
+    function monthRange(startDate, endDate) {
+      const res = [];
+      let cur = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+      const end = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
+      while (cur <= end) {
+        const y = cur.getFullYear();
+        const m = cur.getMonth();
+        const start = new Date(y, m, 1);
+        const endD = new Date(y, m, lastDayOfMonth(y, m));
+        res.push({ start, end: endD });
+        cur.setMonth(cur.getMonth() + 1);
+      }
+      return res;
+    }
+
+    // Primary data loader: fetch min and max dates then fetch month-by-month pages
+    async function loadAllData() {
+      // Reset
+      allRecords = [];
+      fetchedTotal = 0;
+      expectedTotal = null;
+      truncated = false;
+      statTotal.textContent = '…';
+      statusBox.textContent = 'Loading metadata...';
+      truncatedNotice.textContent = '';
+
+      try {
+        // 1) Get earliest date
+        const urlMin = buildUrl({ select: 'date', order_by: 'date asc', limit: 1 });
+        const jsonMin = await safeFetchJson(urlMin);
+        const resMin = extractResults(jsonMin);
+        if (!resMin || resMin.length === 0) throw new Error('No records returned to determine min date');
+        const minDateStr = resMin[0].date || resMin[0].fields?.date || resMin[0].result?.date;
+        const minDate = new Date(minDateStr);
+
+        // 2) Get latest date
+        const urlMax = buildUrl({ select: 'date', order_by: 'date desc', limit: 1 });
+        const jsonMax = await safeFetchJson(urlMax);
+        const resMax = extractResults(jsonMax);
+        const maxDateStr = resMax[0].date || resMax[0].fields?.date || resMax[0].result?.date;
+        const maxDate = new Date(maxDateStr);
+
+        // Show date inputs defaults
+        startInput.value = toISODate(minDate);
+        endInput.value = toISODate(maxDate);
+
+        statusBox.textContent = `Data available from ${toISODate(minDate)} to ${toISODate(maxDate)} — fetching month-by-month...`;
+
+        // 3) Iterate months
+        const months = monthRange(minDate, maxDate);
+
+        // For each month, page through results
+        for (let i = 0; i < months.length; i++) {
+          const m = months[i];
+          const whereExpr = `date >= '${toISODate(m.start)}' AND date <= '${toISODate(m.end)}'`;
+          let offset = 0;
+          let localCount = 0;
+          while (true) {
+            const params = {
+              select: SELECT_FIELDS,
+              where: whereExpr,
+              limit: PAGE_LIMIT,
+              offset: offset
+            };
+            const url = buildUrl(params);
+            let json;
+            try {
+              json = await safeFetchJson(url);
+            } catch (err) {
+              console.error('Error fetching page', url, err);
+              throw err;
+            }
+            // Expect result array
+            const items = extractResults(json);
+            if (!items || items.length === 0) break;
+            // Normalize each record: ensure numeric production_biomethane
+            for (let rec of items) {
+              const normalized = {};
+              normalized.date = rec.date || rec.fields?.date || rec.result?.date || rec[0];
+              normalized.code_officiel_region = rec.code_officiel_region || rec.fields?.code_officiel_region || rec.result?.code_officiel_region;
+              normalized.nom_region = rec.nom_region || rec.fields?.nom_region || rec.result?.nom_region;
+              const pb = rec.production_biomethane ?? (rec.fields ? rec.fields.production_biomethane : undefined) ?? rec.result?.production_biomethane;
+              normalized.production_biomethane = (pb === null || pb === undefined) ? 0 : Number(pb);
+              normalized.statut = rec.statut || rec.fields?.statut || rec.result?.statut;
+              normalized.operateur_de_transport = rec.operateur_de_transport || rec.fields?.operateur_de_transport || rec.result?.operateur_de_transport;
+              allRecords.push(normalized);
+            }
+            localCount += items.length;
+            fetchedTotal += items.length;
+
+            // If json contains total_count for the filtered query, update expectedTotal (only for overall query it might not be present)
+            if (json.total_count && expectedTotal === null) expectedTotal = json.total_count;
+
+            // Next page
+            if (items.length < PAGE_LIMIT) break;
+            offset += PAGE_LIMIT;
+            // safety: avoid infinite loops
+            if (offset > 50000) { console.warn('Offset too large, breaking'); break; }
+          } // end paging for month
+          // update UI progress
+          statusBox.textContent = `Fetched ${fetchedTotal} records (month ${i+1}/${months.length})...`;
+          await new Promise(r => setTimeout(r, 50)); // slight yield to keep UI responsive
+        } // end months loop
+
+        // Some datasets may provide global total_count; try to fetch once without where to know expected total
+        try {
+          const metaJson = await safeFetchJson(buildUrl({ select: 'date', limit: 1 }));
+          if (metaJson && typeof metaJson.total_count === 'number') expectedTotal = metaJson.total_count;
+        } catch (e) { /* ignore */ }
+
+        // If expectedTotal known and doesn't match fetched, flag truncated
+        if (expectedTotal !== null && fetchedTotal < expectedTotal) {
+          truncated = true;
+          truncatedNotice.textContent = `Data appears truncated: fetched ${fetchedTotal} of ${expectedTotal} records.`;
+        } else {
+          truncated = false;
+          truncatedNotice.textContent = '';
+        }
+
+        statusBox.textContent = `Fetched ${fetchedTotal} records ${truncated ? '(partial)' : '(complete)'}. Preparing visuals...`;
+
+        // Post-process: derive unique regions and basic stats
+        buildRegionListAndUI();
+
+        // Render initial charts
+        applyFiltersAndRender();
+      } catch (err) {
+        console.error('Error in loadAllData', err);
+        statusBox.textContent = 'Error loading data: ' + (err && err.message ? err.message : String(err));
+        noteArea.textContent += ' — Full fetch failed. Check console for details.';
+      }
+    }
+
+    function buildRegionListAndUI() {
+      // Build region set
+      const regionMap = new Map();
+      for (let r of allRecords) {
+        const name = r.nom_region || ('R' + r.code_officiel_region);
+        if (!regionMap.has(name)) regionMap.set(name, 0);
+        regionMap.set(name, regionMap.get(name) + r.production_biomethane);
+      }
+      regionsList = Array.from(regionMap.keys()).sort();
+      // Populate select
+      regionSelect.innerHTML = '<option value="__all__">All regions</option>';
+      for (let name of regionsList) {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        regionSelect.appendChild(opt);
+      }
+      // Update top stats
+      statTotal.textContent = fetchedTotal.toLocaleString();
+      statRegions.textContent = regionsList.length.toString();
+      // Date range display
+      const dates = allRecords.map(r => r.date).filter(Boolean).sort();
+      if (dates.length > 0) {
+        statRange.textContent = `${dates[0]} → ${dates[dates.length-1]}`;
+      }
+    }
+
+    // Aggregate helpers
+    function aggregateBy(data, groupByFn) {
+      const map = new Map();
+      for (let d of data) {
+        const key = groupByFn(d);
+        if (!map.has(key)) map.set(key, 0);
+        map.set(key, map.get(key) + (Number(d.production_biomethane) || 0));
+      }
+      return map;
+    }
+
+    function parseDateISO(s) {
+      // Expect YYYY-MM-DD, handle if empty
+      if (!s) return null;
+      const parts = s.split('T')[0];
+      return new Date(parts);
+    }
+
+    // Apply filters and render charts and tables
+    function applyFiltersAndRender() {
+      const start = startInput.value ? new Date(startInput.value) : null;
+      const end = endInput.value ? new Date(endInput.value) : null;
+      const region = regionSelect.value;
+      const agg = aggSelect.value;
+
+      // Filter records
+      let filtered = allRecords.filter(r => {
+        const d = parseDateISO(r.date);
+        if (!d) return false;
+        if (start && d < start) return false;
+        if (end && d > end) return false;
+        if (region !== '__all__' && (r.nom_region !== region)) return false;
+        return true;
+      });
+
+      // Update recent list
+      const recent = filtered.slice().sort((a,b)=> new Date(b.date) - new Date(a.date)).slice(0,20);
+      recentList.innerHTML = recent.map(r => `<div style="padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)"><strong style="color:#cfeef0">${r.nom_region}</strong><br><span class="muted">${r.date}</span><div style="font-weight:700;color:${r.production_biomethane>0?'#bdf2d7':'#9aa7c7'}">${Number(r.production_biomethane).toLocaleString()} kWh</div></div>`).join('');
+
+      // Timeline aggregation (by day or by month)
+      const timelineMap = new Map();
+      for (let r of filtered) {
+        const d = parseDateISO(r.date);
+        if (!d) continue;
+        let key;
+        if (agg === 'day') {
+          key = toISODate(d);
+        } else {
+          const y = d.getFullYear();
+          const m = String(d.getMonth() + 1).padStart(2,'0');
+          key = `${y}-${m}`;
+        }
+        timelineMap.set(key, (timelineMap.get(key) || 0) + Number(r.production_biomethane || 0));
+      }
+
+      // Create series array sorted by key
+      const series = Array.from(timelineMap.entries()).map(([k,v]) => ({ k, v })).sort((a,b) => a.k.localeCompare(b.k));
+
+      // Bar chart: total by region (in selected date range)
+      const groupedByRegion = aggregateBy(allRecords.filter(r=>{
+        const d = parseDateISO(r.date);
+        if (!d) return false;
+        if (start && d < start) return false;
+        if (end && d > end) return false;
+        return true;
+      }), r => r.nom_region || ('R' + r.code_officiel_region));
+
+      // Build arrays for bar chart
+      const barsData = Array.from(groupedByRegion.entries()).map(([k,v]) => ({ region: k, value: v })).sort((a,b)=>b.value - a.value);
+
+      // Render charts
+      renderTimeline(series);
+      renderBars(barsData);
+      renderSummaryTable(barsData);
+
+      // Update status
+      statusBox.textContent = `Showing ${filtered.length.toLocaleString()} records (${agg === 'day' ? 'daily' : 'monthly'})${truncated ? ' — source may be truncated' : ''}`;
+    }
+
+    // D3 timeline
+    function renderTimeline(series) {
+      // Clear
+      timelineEl.innerHTML = '';
+      if (!series || series.length === 0) {
+        timelineEl.innerHTML = '<div style="padding:20px;color:var(--muted)">No data for the selected filters.</div>';
+        return;
+      }
+      // Dimensions
+      const width = timelineEl.clientWidth;
+      const height = timelineEl.clientHeight;
+      const margin = { top: 12, right: 18, bottom: 34, left: 52 };
+      const svg = d3.create('svg').attr('viewBox', `0 0 ${width} ${height}`).style('overflow','visible');
+      const g = svg.append('g');
+
+      // Parse x values to Dates depending on granularity (day or month)
+      const parseKey = (k) => {
+        if (k.length === 7) { // YYYY-MM
+          return new Date(k + '-01');
+        } else {
+          return new Date(k);
+        }
+      };
+      const data = series.map(s => ({ date: parseKey(s.k), value: s.v }));
+
+      const x = d3.scaleTime().domain(d3.extent(data, d=>d.date)).range([margin.left, width - margin.right]);
+      const y = d3.scaleLinear().domain([0, d3.max(data, d=>d.value) * 1.08]).nice().range([height - margin.bottom, margin.top]);
+
+      // Area
+      const area = d3.area()
+        .x(d=>x(d.date))
+        .y0(y(0))
+        .y1(d=>y(d.value))
+        .curve(d3.curveMonotoneX);
+
+      g.append('path')
+        .datum(data)
+        .attr('d', area)
+        .attr('fill', 'url(#gradArea)')
+        .attr('opacity', 0.9);
+
+      // Line
+      const line = d3.line().x(d=>x(d.date)).y(d=>y(d.value)).curve(d3.curveMonotoneX);
+      g.append('path').datum(data).attr('d', line).attr('stroke', 'rgba(96,165,250,0.95)').attr('stroke-width',2.2).attr('fill','none');
+
+      // Axes
+      const xAxis = d3.axisBottom(x).ticks(Math.min(8, data.length)).tickFormat(d3.timeFormat('%Y-%m-%d'));
+      const yAxis = d3.axisLeft(y).ticks(4).tickFormat(d3.format('.2s'));
+      g.append('g').attr('transform', `translate(0,${height - margin.bottom})`).call(xAxis).selectAll('text').style('fill', 'var(--muted)').style('font-size','11px').attr('transform','rotate(-28)').attr('text-anchor','end');
+      g.append('g').attr('transform', `translate(${margin.left},0)`).call(yAxis).selectAll('text').style('fill','var(--muted)').style('font-size','11px');
+
+      // Gradient
+      const defs = svg.append('defs');
+      const grad = defs.append('linearGradient').attr('id','gradArea').attr('x1','0').attr('x2','0').attr('y1','0').attr('y2','1');
+      grad.append('stop').attr('offset','0%').attr('stop-color','#60a5fa').attr('stop-opacity','0.18');
+      grad.append('stop').attr('offset','100%').attr('stop-color','#2dd4bf').attr('stop-opacity','0.05');
+
+      // Points for tooltip interaction
+      g.selectAll('circle').data(data).enter().append('circle')
+        .attr('cx', d=>x(d.date)).attr('cy', d=>y(d.value)).attr('r', 3)
+        .attr('fill','#dff3f0').attr('opacity',0.9)
+        .on('mouseenter', (event,d) => {
+          tooltip.style.display = 'block';
+          tooltip.innerHTML = `<strong style="color:#cfeef0">${d3.timeFormat('%Y-%m-%d')(d.date)}</strong><div style="margin-top:6px">${Number(d.value).toLocaleString()} kWh</div>`;
+        })
+        .on('mousemove', (ev) => {
+          tooltip.style.left = (ev.pageX + 14) + 'px';
+          tooltip.style.top = (ev.pageY + 6) + 'px';
+        })
+        .on('mouseleave', () => { tooltip.style.display = 'none'; });
+
+      timelineEl.appendChild(svg.node());
+
+      // Legend
+      const legend = document.getElementById('timelineLegend');
+      legend.innerHTML = `<div class="item"><div class="dot" style="background:#60a5fa"></div><div>Production (${aggSelect.value === 'day' ? 'daily' : 'monthly'})</div></div>`;
+    }
+
+    // Bar chart for regions
+    function renderBars(barsData) {
+      barsEl.innerHTML = '';
+      if (!barsData || barsData.length === 0) {
+        barsEl.innerHTML = '<div style="padding:20px;color:var(--muted)">No regional data for selected range.</div>';
+        return;
+      }
+      // Only show top 30 for readability
+      const top = barsData.slice(0, 30);
+      const width = barsEl.clientWidth;
+      const height = barsEl.clientHeight;
+      const margin = { top: 12, right: 12, bottom: 12, left: 140 };
+      const svg = d3.create('svg').attr('viewBox', `0 0 ${width} ${height}`);
+      const innerHeight = height - margin.top - margin.bottom;
+      const barHeight = Math.max(18, innerHeight / top.length - 6);
+
+      const x = d3.scaleLinear().domain([0, d3.max(top, d=>d.value)]).range([0, width - margin.left - margin.right]);
+      const y = d3.scaleBand().domain(top.map(d=>d.region)).range([margin.top, height - margin.bottom]).padding(0.12);
+
+      // Bars group
+      const g = svg.append('g');
+      // Bars
+      g.selectAll('rect').data(top).enter().append('rect')
+        .attr('x', margin.left)
+        .attr('y', d => y(d.region))
+        .attr('height', y.bandwidth())
+        .attr('width', d => x(d.value))
+        .attr('fill', '#2dd4bf')
+        .attr('rx', 4)
+        .on('mouseenter', (event, d) => {
+          tooltip.style.display = 'block';
+          tooltip.innerHTML = `<strong style="color:#cfeef0">${d.region}</strong><div class="muted" style="margin-top:6px">${Number(d.value).toLocaleString()} kWh</div><div style="margin-top:6px;font-size:12px;color:var(--muted)">Click bar to filter region</div>`;
+        })
+        .on('mousemove', (ev) => {
+          tooltip.style.left = (ev.pageX + 14) + 'px';
+          tooltip.style.top = (ev.pageY + 6) + 'px';
+        })
+        .on('mouseleave', () => tooltip.style.display = 'none')
+        .on('click', (ev, d) => {
+          regionSelect.value = d.region;
+          applyFiltersAndRender();
+        });
+
+      // Region labels
+      g.selectAll('text.region').data(top).enter().append('text')
+        .attr('x', margin.left - 8)
+        .attr('y', d => y(d.region) + y.bandwidth()/2 + 4)
+        .text(d => d.region)
+        .attr('fill', '#cfeef0')
+        .attr('text-anchor', 'end')
+        .style('font-size','12px');
+
+      // Value labels
+      g.selectAll('text.val').data(top).enter().append('text')
+        .attr('x', d => margin.left + x(d.value) + 8)
+        .attr('y', d => y(d.region) + y.bandwidth()/2 + 4)
+        .text(d => Number(d.value).toLocaleString())
+        .attr('fill', 'var(--muted)')
+        .style('font-size','12px');
+
+      // Append SVG
+      barsEl.appendChild(svg.node());
+    }
+
+    function renderSummaryTable(barsData) {
+      tableBody.innerHTML = '';
+      const top5 = barsData.slice(0, 8);
+      for (let row of top5) {
+        const tr = document.createElement('tr');
+        const td1 = document.createElement('td');
+        td1.textContent = row.region;
+        const td2 = document.createElement('td');
+        td2.textContent = Number(row.value).toLocaleString();
+        tr.appendChild(td1); tr.appendChild(td2);
+        tableBody.appendChild(tr);
+      }
+    }
+
+    // Setup event listeners
+    btnRefresh.addEventListener('click', () => {
+      applyFiltersAndRender();
+    });
+
+    // Initialize: start full load
+    loadAllData();
+
+    // Expose for debug (no console errors even if not used)
+    window.__biomethane_dashboard = { loadAllData };
+
+  }); // DOMContentLoaded end
+  </script>
+</body>
+</html>

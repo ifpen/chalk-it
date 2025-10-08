@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Dashboard — Longueurs départementales RTE</title>
+
+  <!-- Inline favicon to avoid 404 console error -->
+  <link rel="icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBAAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" />
+
+  <!-- Leaflet (map) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    /* Basic layout and styling */
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --accent:#2b7cff;
+      --muted:#6b7280;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    body{background:var(--bg);color:#111;}
+    header{display:flex;align-items:center;gap:12px;padding:14px 20px;background:linear-gradient(90deg,#fff,#f7f9ff);box-shadow:0 1px 0 rgba(0,0,0,0.04);position:sticky;top:0;z-index:40;}
+    header h1{margin:0;font-size:16px;}
+    .container{display:grid;grid-template-columns:1fr 520px;gap:18px;padding:18px;align-items:start;}
+    .card{background:var(--card);border-radius:10px;padding:12px;box-shadow:0 6px 18px rgba(16,24,40,0.06);overflow:hidden;}
+    /* Map area */
+    #map{height:640px;border-radius:8px;}
+    .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;}
+    .controls .item{display:flex;gap:8px;align-items:center;}
+    .muted{color:var(--muted);font-size:13px;}
+    .right-column{display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 120px);overflow:auto;padding-bottom:8px;}
+    #nationalChart{height:220px;}
+    #deptChart{height:220px;}
+    #detailChart{height:220px;}
+    .small{font-size:12px;color:var(--muted);}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+    .legend .dot{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:6px;}
+    .footer{font-size:12px;color:var(--muted);margin-top:10px;}
+    .top-list{max-height:220px;overflow:auto;margin-top:8px;}
+    .list-item{display:flex;justify-content:space-between;padding:6px 8px;border-radius:6px;}
+    .list-item:hover{background:#f1f5ff;cursor:pointer;}
+    .badge{background:#eef3ff;color:var(--accent);padding:4px 8px;border-radius:999px;font-weight:600;font-size:12px;}
+    .error{color:#b00020;background:#fff0f0;padding:8px;border-radius:8px;margin-top:8px;}
+    .loading{color:var(--muted);font-size:13px;}
+    input[type="range"]{width:240px;}
+    select, button{padding:6px;border-radius:6px;border:1px solid #e6edf8;background:white;}
+    h2{margin:0;font-size:14px;}
+    @media (max-width:1000px){
+      .container{grid-template-columns:1fr; padding:12px;}
+      #map{height:420px;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img alt="RTE" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><rect rx='6' width='36' height='36' fill='%232b7cff'/><text x='50%' y='54%' font-size='18' font-family='Arial' text-anchor='middle' fill='white'>R</text></svg>" style="width:36px;height:36px;border-radius:6px;"/>
+    <div>
+      <h1>Longueurs départementales annuelles — circuits et files de pylônes (RTE)</h1>
+      <div class="small">Source: odre.opendatasoft.com — dataset: longueurs-departementales-annuelles-de-circuits-et-files-de-pylones-rte</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Left: Map + controls -->
+    <div>
+      <div class="card">
+        <div class="controls" id="controlsTop">
+          <div class="item">
+            <label class="small">Année</label>
+            <input id="yearRange" type="range" min="2014" max="2014" value="2014" />
+            <div id="yearLabel" class="badge">2014</div>
+          </div>
+          <div class="item">
+            <label class="small">Vue</label>
+            <select id="viewSelect" title="Choisir la métrique">
+              <option value="circ_total_ac">Total circuits (km)</option>
+              <option value="circ_aerien_total_ac">Aérien (km)</option>
+              <option value="circ_sout_total_ac">Souterrain (km)</option>
+              <option value="pylone_total">Pylônes (count/km)</option>
+            </select>
+          </div>
+          <div class="item">
+            <label class="small">Top départements</label>
+            <select id="topN">
+              <option value="10">Top 10</option>
+              <option value="20" selected>Top 20</option>
+              <option value="50">Top 50</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="map" aria-label="Carte des départements"></div>
+
+        <div class="footer small" id="dataStatus">Chargement des données…</div>
+        <div id="errorBox" class="error" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Right column: charts -->
+    <aside class="right-column">
+      <div class="card">
+        <h2>Vue nationale par niveau de tension</h2>
+        <div id="nationalChart"></div>
+        <div class="legend" id="nationalLegend"></div>
+        <div class="small">Sélectionnez une année sur la carte pour mettre à jour les détails. Les données sont chargées depuis l'API publique. Si l'import est tronqué, un message s'affichera.</div>
+      </div>
+
+      <div class="card">
+        <h2>Top départements (sélection année)</h2>
+        <div id="deptChart"></div>
+        <div class="top-list" id="topList"></div>
+      </div>
+
+      <div class="card">
+        <h2>Détail département</h2>
+        <div id="detailChart"></div>
+        <div id="deptInfo" class="small muted">Cliquez sur un département sur la carte ou dans la liste pour voir l'évolution annuelle.</div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    // Ensure code runs after DOM loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      // Define variables up front
+      let API_BASE;
+      let DATASET_ID;
+      let SELECT_FIELDS;
+      let LIMIT;
+      let offset;
+      let totalCount;
+      let rawRecords;
+      let normalized;
+      let years;
+      let map;
+      let geoLayer;
+      let nationalChart;
+      let deptChart;
+      let detailChart;
+      let loadingEl;
+      let errorBox;
+      let yearRangeInput;
+      let yearLabel;
+      let viewSelect;
+      let topNSelect;
+      let currentYear;
+      let currentMetric;
+      let featuresByDeptCode;
+      let truncated = false;
+
+      // Initialize variables
+      API_BASE = 'https://odre.opendatasoft.com/api/explore/v2.1';
+      DATASET_ID = 'longueurs-departementales-annuelles-de-circuits-et-files-de-pylones-rte';
+      // select only fields we need (minimize payload)
+      SELECT_FIELDS = [
+        'annee',
+        'code_insee_departement',
+        'departement',
+        'region',
+        'geo_point_departement',
+        'geo_shape_departement',
+        'circ_total_ac',
+        'circ_aerien_total_ac',
+        'circ_sout_total_ac',
+        'pylone_total',
+        'circ_400kv',
+        'circ_225kv',
+        'circ_150kv',
+        'circ_90kv',
+        'circ_63kv'
+      ].join(',');
+      LIMIT = 100; // API max per request (as per swagger)
+      offset = 0;
+      totalCount = 0;
+      rawRecords = [];
+      normalized = [];
+      years = [];
+      featuresByDeptCode = {};
+
+      // DOM refs
+      loadingEl = document.getElementById('dataStatus');
+      errorBox = document.getElementById('errorBox');
+      yearRangeInput = document.getElementById('yearRange');
+      yearLabel = document.getElementById('yearLabel');
+      viewSelect = document.getElementById('viewSelect');
+      topNSelect = document.getElementById('topN');
+
+      // Map and charts init
+      initMap();
+      initCharts();
+
+      // Start data fetch
+      fetchAllData().then(() => {
+        try {
+          if (normalized.length === 0) {
+            throw new Error('Aucune donnée disponible après import.');
+          }
+          postProcessAndRender();
+        } catch (err) {
+          showError(err.message || String(err));
+        }
+      }).catch(function (err) {
+        showError('Erreur durant le chargement: ' + (err && err.message ? err.message : err));
+      });
+
+      // Attach UI events
+      yearRangeInput.addEventListener('input', function () {
+        const v = parseInt(yearRangeInput.value, 10);
+        if (!isNaN(v)) {
+          yearLabel.textContent = v;
+          currentYear = v;
+          updateMapColors();
+          updateDeptView();
+        }
+      });
+      viewSelect.addEventListener('change', function () {
+        currentMetric = viewSelect.value;
+        updateMapColors();
+        updateDeptView();
+      });
+      topNSelect.addEventListener('change', updateDeptView);
+
+      // Functions ------------------------
+
+      function showError(msg) {
+        console.error(msg);
+        errorBox.style.display = 'block';
+        errorBox.textContent = msg;
+        loadingEl.textContent = 'Erreur lors du chargement.';
+      }
+
+      function setStatus(msg) {
+        loadingEl.textContent = msg;
+      }
+
+      async function fetchAllData() {
+        // Fetch in pages of LIMIT using offset until total_count reached
+        try {
+          setStatus('Chargement des données depuis l\'API… (pagination automatique)');
+          truncated = false;
+          offset = 0;
+          rawRecords = [];
+          // We will loop and request until offset >= totalCount
+          while (true) {
+            const url = API_BASE + '/catalog/datasets/' + encodeURIComponent(DATASET_ID) + '/records'
+              + '?limit=' + LIMIT
+              + '&offset=' + offset
+              + '&select=' + encodeURIComponent(SELECT_FIELDS);
+            let response;
+            try {
+              response = await fetch(url, { method: 'GET', mode: 'cors' });
+            } catch (networkErr) {
+              throw new Error('Erreur réseau: ' + networkErr.message);
+            }
+            if (!response.ok) {
+              throw new Error('Erreur API: ' + response.status + ' ' + response.statusText);
+            }
+            let json;
+            try {
+              json = await response.json();
+            } catch (parseErr) {
+              throw new Error('Impossible de parser la réponse JSON: ' + parseErr.message);
+            }
+
+            // The API may return different envelope shapes. Normalize:
+            let pageResults = [];
+            if (Array.isArray(json.results)) {
+              // The dataset sample provided earlier used results[]
+              pageResults = json.results;
+            } else if (Array.isArray(json.records)) {
+              // Opendatasoft typical envelope: records: [{fields:{...}}]
+              pageResults = json.records.map(function (r) { return (r && r.fields) ? r.fields : r; });
+            } else if (Array.isArray(json.data)) {
+              pageResults = json.data;
+            } else {
+              // Unknown shape: try find array in response
+              for (const key in json) {
+                if (Array.isArray(json[key])) {
+                  pageResults = json[key];
+                  break;
+                }
+              }
+            }
+
+            // Append normalized "fields" if needed (when records had fields wrapper)
+            rawRecords = rawRecords.concat(pageResults);
+
+            // Update counters
+            if (typeof json.total_count === 'number') {
+              totalCount = json.total_count;
+            } else if (typeof json.total === 'number') {
+              totalCount = json.total;
+            } else if (rawRecords.length && rawRecords.length < LIMIT) {
+              totalCount = rawRecords.length;
+            } else {
+              // unknown total_count: keep fetching until we get empty results
+              totalCount = null;
+            }
+
+            // progress status
+            setStatus('Chargées: ' + rawRecords.length + (totalCount ? (' / ' + totalCount) : '') + ' enregistrements…');
+
+            // If no total_count reported, stop when pageResults length < LIMIT
+            if (pageResults.length < LIMIT) {
+              break;
+            }
+
+            offset += LIMIT;
+
+            // Respect safety: if offset gets absurdly large, break
+            if (offset > 50000) {
+              truncated = true;
+              console.warn('Stopping fetch due to safety limit.');
+              break;
+            }
+
+            // If totalCount known and we reached it, break
+            if (totalCount && rawRecords.length >= totalCount) {
+              break;
+            }
+          } // end while
+
+          // If API reported total_count but we didn't fetch all (limit on offset), flag truncated
+          if (typeof totalCount === 'number' && rawRecords.length < totalCount) {
+            truncated = true;
+          }
+
+          // Normalize rawRecords into a consistent array of objects with expected fields
+          normalized = rawRecords.map(function (r) {
+            // r might already be fields object (per sample)
+            const obj = {};
+            try {
+              obj.annee = (r.annee !== undefined) ? String(r.annee) : (r.year !== undefined ? String(r.year) : null);
+              obj.code_insee_departement = (r.code_insee_departement !== undefined) ? String(r.code_insee_departement) : (r.code_departement !== undefined ? String(r.code_departement) : null);
+              obj.departement = r.departement || r.department || null;
+              obj.region = r.region || null;
+              obj.geo_point_departement = r.geo_point_departement || null;
+              obj.geo_shape_departement = r.geo_shape_departement || null;
+              obj.circ_total_ac = parseNumber(r.circ_total_ac);
+              obj.circ_aerien_total_ac = parseNumber(r.circ_aerien_total_ac);
+              obj.circ_sout_total_ac = parseNumber(r.circ_sout_total_ac);
+              obj.pylone_total = parseNumber(r.pylone_total);
+              obj.circ_400kv = parseNumber(r.circ_400kv);
+              obj.circ_225kv = parseNumber(r.circ_225kv);
+              obj.circ_150kv = parseNumber(r.circ_150kv);
+              obj.circ_90kv = parseNumber(r.circ_90kv);
+              obj.circ_63kv = parseNumber(r.circ_63kv);
+            } catch (e) {
+              // keep best-effort, log error
+              console.warn('Normalization issue', e, r);
+            }
+            return obj;
+          }).filter(function (o) {
+            // keep only entries with annee and code
+            return o && o.annee && o.code_insee_departement;
+          });
+
+          // Determine years range
+          const yearsSet = new Set();
+          normalized.forEach(function (r) { if (r.annee) yearsSet.add(Number(r.annee)); });
+          years = Array.from(yearsSet).map(Number).filter(Boolean).sort(function (a, b) { return a - b; });
+          if (years.length > 0) {
+            yearRangeInput.min = years[0];
+            yearRangeInput.max = years[years.length - 1];
+            yearRangeInput.value = years[years.length - 1];
+            yearLabel.textContent = yearRangeInput.value;
+            currentYear = Number(yearRangeInput.value);
+          }
+
+          // Prepare featuresByDeptCode for quick access
+          featuresByDeptCode = {};
+          normalized.forEach(function (r) {
+            // if r.geo_shape_departement exists and has type & geometry, convert into GeoJSON feature
+            try {
+              const code = String(r.code_insee_departement);
+              if (!featuresByDeptCode[code]) featuresByDeptCode[code] = { code: code, name: r.departement, region: r.region, geometry: null, points: [] };
+              if (r.geo_shape_departement && r.geo_shape_departement.type && r.geo_shape_departement.geometry) {
+                featuresByDeptCode[code].geometry = r.geo_shape_departement; // whole feature-like object
+              }
+              featuresByDeptCode[code].points.push(r);
+            } catch (e) {
+              // ignore
+            }
+          });
+
+          // If truncated, inform user
+          if (truncated) {
+            setStatus('Données partiellement chargées (limite API). Certaines années/départements peuvent manquer. Essayez l\'export serveur si besoin.');
+          } else {
+            setStatus('Données chargées: ' + normalized.length + ' enregistrements. Années: ' + (years.length ? (years[0] + '–' + years[years.length - 1]) : 'n/a'));
+          }
+
+        } catch (err) {
+          throw err;
+        }
+      }
+
+      function parseNumber(v) {
+        if (v === null || v === undefined) return 0;
+        const n = Number(v);
+        return isNaN(n) ? 0 : n;
+      }
+
+      function initMap() {
+        // Initialize Leaflet map
+        try {
+          map = L.map('map', { zoomControl: true, minZoom: 5 }).setView([46.5, 2.5], 6);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+          }).addTo(map);
+          geoLayer = L.geoJSON(null, {
+            style: styleFeature,
+            onEachFeature: onEachFeature
+          }).addTo(map);
+        } catch (e) {
+          showError('Impossible d\'initialiser la carte: ' + e.message);
+        }
+      }
+
+      function initCharts() {
+        try {
+          nationalChart = echarts.init(document.getElementById('nationalChart'));
+          deptChart = echarts.init(document.getElementById('deptChart'));
+          detailChart = echarts.init(document.getElementById('detailChart'));
+
+          // handle resize on window change
+          window.addEventListener('resize', function () {
+            try { nationalChart.resize(); deptChart.resize(); detailChart.resize(); } catch (e) { /* ignore */ }
+          });
+        } catch (e) {
+          showError('Impossible d\'initialiser les graphiques: ' + e.message);
+        }
+      }
+
+      function postProcessAndRender() {
+        try {
+          // Aggregate national data by year and by voltage-level
+          const byYear = {}; // year -> aggregates
+          normalized.forEach(function (r) {
+            const y = Number(r.annee) || 0;
+            if (!byYear[y]) {
+              byYear[y] = { year: y, total: 0, aerien: 0, sout: 0, pylone: 0, v400: 0, v225: 0, v150: 0, v90: 0, v63: 0 };
+            }
+            byYear[y].total += r.circ_total_ac || 0;
+            byYear[y].aerien += r.circ_aerien_total_ac || 0;
+            byYear[y].sout += r.circ_sout_total_ac || 0;
+            byYear[y].pylone += r.pylone_total || 0;
+            byYear[y].v400 += r.circ_400kv || 0;
+            byYear[y].v225 += r.circ_225kv || 0;
+            byYear[y].v150 += r.circ_150kv || 0;
+            byYear[y].v90 += r.circ_90kv || 0;
+            byYear[y].v63 += r.circ_63kv || 0;
+          });
+          const yearsSorted = Object.keys(byYear).map(Number).sort(function (a, b) { return a - b; });
+          const v400Data = [], v225Data = [], v150Data = [], v90Data = [], v63Data = [], totalData = [];
+          yearsSorted.forEach(function (y) {
+            const d = byYear[y];
+            v400Data.push(Math.round(d.v400 * 100) / 100);
+            v225Data.push(Math.round(d.v225 * 100) / 100);
+            v150Data.push(Math.round(d.v150 * 100) / 100);
+            v90Data.push(Math.round(d.v90 * 100) / 100);
+            v63Data.push(Math.round(d.v63 * 100) / 100);
+            totalData.push(Math.round(d.total * 100) / 100);
+          });
+
+          // Render national chart (stacked by voltage)
+          const optionNational = {
+            title: { text: 'Évolution nationale (km) par niveau de tension', left: 'center', top: 6, textStyle: { fontSize: 13 } },
+            tooltip: { trigger: 'axis' },
+            legend: { data: ['400kV','225kV','150kV','90kV','63kV'], bottom: 6, textStyle: { fontSize: 12 } },
+            grid: { left: '6%', right: '6%', top: 40, bottom: 40 },
+            xAxis: { type: 'category', data: yearsSorted.map(String) },
+            yAxis: { type: 'value', name: 'km' },
+            series: [
+              { name: '400kV', type: 'bar', stack: 'volt', data: v400Data, itemStyle: { color: '#1f77b4' } },
+              { name: '225kV', type: 'bar', stack: 'volt', data: v225Data, itemStyle: { color: '#ff7f0e' } },
+              { name: '150kV', type: 'bar', stack: 'volt', data: v150Data, itemStyle: { color: '#2ca02c' } },
+              { name: '90kV', type: 'bar', stack: 'volt', data: v90Data, itemStyle: { color: '#d62728' } },
+              { name: '63kV', type: 'bar', stack: 'volt', data: v63Data, itemStyle: { color: '#9467bd' } }
+            ]
+          };
+          nationalChart.setOption(optionNational);
+
+          // Legend summary
+          const legendEl = document.getElementById('nationalLegend');
+          legendEl.innerHTML = '';
+          appendLegendPatch(legendEl, '#1f77b4','400kV');
+          appendLegendPatch(legendEl, '#ff7f0e','225kV');
+          appendLegendPatch(legendEl, '#2ca02c','150kV');
+          appendLegendPatch(legendEl, '#d62728','90kV');
+          appendLegendPatch(legendEl, '#9467bd','63kV');
+
+          // Build GeoJSON from featuresByDeptCode (pick geometry from any year)
+          const features = [];
+          Object.keys(featuresByDeptCode).forEach(function (code) {
+            const info = featuresByDeptCode[code];
+            if (info.geometry && info.geometry.geometry) {
+              // feature-like object: geo_shape_departement contains type: 'Feature' and geometry
+              const geom = info.geometry.geometry;
+              const feature = {
+                type: 'Feature',
+                geometry: geom,
+                properties: { code: code, departement: info.name, region: info.region }
+              };
+              features.push(feature);
+            } else if (info.points && info.points.length && info.points[0].geo_point_departement) {
+              // fallback: create tiny point
+              const gp = info.points[0].geo_point_departement;
+              if (gp && gp.lon && gp.lat) {
+                const feature = { type: 'Feature', geometry: { type: 'Point', coordinates: [gp.lon, gp.lat] }, properties: { code: code, departement: info.name, region: info.region } };
+                features.push(feature);
+              }
+            }
+          });
+
+          const geojson = { type: 'FeatureCollection', features: features };
+          geoLayer.clearLayers();
+          geoLayer.addData(geojson);
+          // store features
+          geoLayer.eachLayer(function (layer) {
+            const props = layer.feature && layer.feature.properties ? layer.feature.properties : {};
+            const code = String(props.code || '');
+            layer.options.renderer = layer.options.renderer; // noop to silence linter
+            layer._departement_code = code;
+          });
+
+          // initial metric and year
+          currentMetric = viewSelect.value || 'circ_total_ac';
+          if (!currentYear && years.length) currentYear = years[years.length - 1];
+
+          updateMapColors();
+          updateDeptView();
+
+        } catch (err) {
+          showError('Erreur lors du traitement des données: ' + (err && err.message ? err.message : err));
+        }
+      }
+
+      function appendLegendPatch(parent, color, label) {
+        const d = document.createElement('div');
+        d.style.display = 'flex';
+        d.style.alignItems = 'center';
+        d.style.gap = '8px';
+        const dot = document.createElement('span');
+        dot.className = 'dot';
+        dot.style.background = color;
+        dot.style.width = '14px';
+        dot.style.height = '14px';
+        d.appendChild(dot);
+        const text = document.createElement('div');
+        text.textContent = label;
+        text.style.fontSize = '13px';
+        text.style.color = '#222';
+        d.appendChild(text);
+        parent.appendChild(d);
+      }
+
+      function styleFeature(feature) {
+        // default style; actual color set later by updateMapColors
+        return { color: '#4b5563', weight: 0.8, fillOpacity: 0.7, fillColor: '#eee' };
+      }
+
+      function onEachFeature(feature, layer) {
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: onFeatureClick
+        });
+      }
+
+      function highlightFeature(e) {
+        const layer = e.target;
+        layer.setStyle({ weight: 2.5, color: '#222', fillOpacity: 0.9 });
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+          layer.bringToFront();
+        }
+      }
+
+      function resetHighlight(e) {
+        const layer = e.target;
+        // reset style depends on value
+        geoLayer.resetStyle(layer);
+      }
+
+      function onFeatureClick(e) {
+        const layer = e.target;
+        const props = layer.feature && layer.feature.properties ? layer.feature.properties : {};
+        const code = String(props.code || '');
+        const deptName = props.departement || '—';
+        showDeptDetails(code, deptName);
+      }
+
+      function getMetricValueForFeature(feature, code, year, metric) {
+        // Given code and year, lookup normalized records
+        try {
+          const pts = featuresByDeptCode[code] && featuresByDeptCode[code].points ? featuresByDeptCode[code].points : [];
+          for (let i = 0; i < pts.length; i++) {
+            if (Number(pts[i].annee) === Number(year)) {
+              return pts[i][metric] || 0;
+            }
+          }
+        } catch (e) {}
+        return 0;
+      }
+
+      function updateMapColors() {
+        try {
+          const metric = currentMetric || viewSelect.value || 'circ_total_ac';
+          currentMetric = metric;
+          const selectedYear = Number(currentYear) || Number(yearRangeInput.value);
+          // compute values per dept
+          const values = [];
+          geoLayer.eachLayer(function (layer) {
+            const props = layer.feature && layer.feature.properties ? layer.feature.properties : {};
+            const code = String(props.code || '');
+            const val = getMetricValueForFeature(layer.feature, code, selectedYear, metric);
+            values.push(val || 0);
+            // attach computed value for tooltip
+            layer.feature.properties._val = val || 0;
+          });
+          // compute color scale
+          const max = Math.max.apply(null, values.length ? values : [0]);
+          const min = Math.min.apply(null, values.length ? values : [0]);
+          const ramp = function (v) {
+            // simple blue ramp
+            if (v <= 0) return '#f7fbff';
+            const t = max > 0 ? (v / max) : 0;
+            // interpolate between light and dark
+            const r1 = 230, g1 = 245, b1 = 255; // light
+            const r2 = 18, g2 = 50, b2 = 120; // dark
+            const r = Math.round(r1 + (r2 - r1) * t);
+            const g = Math.round(g1 + (g2 - g1) * t);
+            const b = Math.round(b1 + (b2 - b1) * t);
+            return 'rgb(' + r + ',' + g + ',' + b + ')';
+          };
+          geoLayer.eachLayer(function (layer) {
+            const val = layer.feature && layer.feature.properties ? layer.feature.properties._val || 0 : 0;
+            const c = ramp(val);
+            layer.setStyle({ fillColor: c, fillOpacity: (val > 0 ? 0.8 : 0.12), color: '#ffffff', weight: 0.6 });
+            // bind tooltip
+            const p = layer.feature && layer.feature.properties ? layer.feature.properties : {};
+            const dept = p.departement || '—';
+            const region = p.region || '—';
+            const formattedVal = (Math.round((val || 0) * 100) / 100).toLocaleString();
+            const tip = '<strong>' + dept + '</strong><br/>' + region + '<br/>' + metricLabel(metric) + ': <strong>' + formattedVal + '</strong>';
+            layer.bindTooltip(tip, { sticky: true });
+          });
+
+          // update map legend/status
+          const label = metricLabel(metric);
+          setStatus((truncated ? 'Données partielles. ' : '') + 'Affichage: ' + label + ' — Année: ' + selectedYear);
+        } catch (e) {
+          console.warn('updateMapColors error', e);
+        }
+      }
+
+      function metricLabel(metric) {
+        const map = {
+          circ_total_ac: 'Circuits totaux (km)',
+          circ_aerien_total_ac: 'Aériens (km)',
+          circ_sout_total_ac: 'Souterrains (km)',
+          pylone_total: 'Pylônes (total)'
+        };
+        return map[metric] || metric;
+      }
+
+      function updateDeptView() {
+        try {
+          const topN = Number(topNSelect.value) || 20;
+          const year = Number(currentYear) || Number(yearRangeInput.value);
+          const metric = currentMetric || viewSelect.value;
+          // aggregate per dept for year
+          const perDept = {};
+          normalized.forEach(function (r) {
+            if (Number(r.annee) !== year) return;
+            const code = String(r.code_insee_departement || '');
+            if (!perDept[code]) perDept[code] = { code: code, departement: r.departement || code, region: r.region || '', value: 0 };
+            perDept[code].value += (r[metric] || 0);
+          });
+          const arr = Object.keys(perDept).map(function (k) { return perDept[k]; });
+          arr.sort(function (a, b) { return b.value - a.value; });
+          const top = arr.slice(0, topN);
+
+          // Render top list
+          const listEl = document.getElementById('topList');
+          listEl.innerHTML = '';
+          top.forEach(function (d) {
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = '<div><strong>' + escapeHtml(d.departement || d.code) + '</strong><div class="small muted">' + (d.region || '') + '</div></div><div style="text-align:right"><div class="badge">' + (Math.round(d.value * 100) / 100).toLocaleString() + '</div></div>';
+            item.addEventListener('click', function () {
+              showDeptDetails(d.code, d.departement);
+            });
+            listEl.appendChild(item);
+          });
+
+          // Render deptChart (bars)
+          const optionDept = {
+            title: { text: 'Top ' + top.length + ' départements — ' + metricLabel(metric) + ' (' + year + ')', left: 'center', top: 6, textStyle: { fontSize: 13 } },
+            tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+            grid: { left: '6%', right: '6%', top: 40, bottom: 40 },
+            xAxis: { type: 'value', name: metric.indexOf('circ') === 0 ? 'km' : '' },
+            yAxis: { type: 'category', data: top.map(function (d) { return d.departement; }), inverse: true },
+            series: [{ type: 'bar', data: top.map(function (d) { return Math.round(d.value * 100) / 100; }), itemStyle: { color: '#2b7cff' } }]
+          };
+          deptChart.setOption(optionDept);
+
+        } catch (e) {
+          console.warn('updateDeptView error', e);
+        }
+      }
+
+      function showDeptDetails(code, departementName) {
+        try {
+          // build timeseries for dept code across years
+          const pts = featuresByDeptCode[code] && featuresByDeptCode[code].points ? featuresByDeptCode[code].points : [];
+          if (!pts || pts.length === 0) {
+            setStatus('Aucune donnée pour ce département.');
+            return;
+          }
+          // group by year
+          const byYear = {};
+          pts.forEach(function (p) {
+            const y = Number(p.annee) || 0;
+            if (!byYear[y]) byYear[y] = { year: y, total: 0, aerien: 0, sout: 0, pylone: 0, v400: 0, v225: 0, v150: 0, v90: 0, v63: 0 };
+            byYear[y].total += p.circ_total_ac || 0;
+            byYear[y].aerien += p.circ_aerien_total_ac || 0;
+            byYear[y].sout += p.circ_sout_total_ac || 0;
+            byYear[y].pylone += p.pylone_total || 0;
+            byYear[y].v400 += p.circ_400kv || 0;
+            byYear[y].v225 += p.circ_225kv || 0;
+            byYear[y].v150 += p.circ_150kv || 0;
+            byYear[y].v90 += p.circ_90kv || 0;
+            byYear[y].v63 += p.circ_63kv || 0;
+          });
+          const yearsSorted = Object.keys(byYear).map(Number).sort(function (a, b) { return a - b; });
+          const totals = yearsSorted.map(function (y) { return Math.round(byYear[y].total * 100) / 100; });
+          const aerien = yearsSorted.map(function (y) { return Math.round(byYear[y].aerien * 100) / 100; });
+          const sout = yearsSorted.map(function (y) { return Math.round(byYear[y].sout * 100) / 100; });
+
+          detailChart.setOption({
+            title: { text: departementName + ' — évolution (' + (yearsSorted[0] || '') + '–' + (yearsSorted[yearsSorted.length - 1] || '') + ')', left: 'center', top: 6, textStyle: { fontSize: 13 } },
+            tooltip: { trigger: 'axis' },
+            legend: { data: ['Total','Aérien','Souterrain'], bottom: 6 },
+            grid: { left: '6%', right: '6%', top: 40, bottom: 40 },
+            xAxis: { type: 'category', data: yearsSorted.map(String) },
+            yAxis: { type: 'value', name: 'km' },
+            series: [
+              { name: 'Total', type: 'line', smooth: true, data: totals, itemStyle: { color: '#2b7cff' } },
+              { name: 'Aérien', type: 'line', smooth: true, data: aerien, itemStyle: { color: '#ff7f0e' } },
+              { name: 'Souterrain', type: 'line', smooth: true, data: sout, itemStyle: { color: '#2ca02c' } }
+            ]
+          });
+
+          // Also center map on department if geometry exists
+          const layer = findLayerByDeptCode(code);
+          if (layer) {
+            try {
+              map.fitBounds(layer.getBounds ? layer.getBounds() : layer.getLatLng(), { maxZoom: 8, animate: true });
+            } catch (e) {
+              // ignore
+            }
+          }
+
+          document.getElementById('deptInfo').innerHTML = '<strong>' + escapeHtml(departementName) + '</strong> — code: ' + escapeHtml(code) +
+            '<br/>Cliquez sur la barre de la carte ou la liste pour changer de département.';
+        } catch (e) {
+          console.warn('showDeptDetails error', e);
+        }
+      }
+
+      function findLayerByDeptCode(code) {
+        let found = null;
+        geoLayer.eachLayer(function (layer) {
+          const props = layer.feature && layer.feature.properties ? layer.feature.properties : {};
+          if (String(props.code) === String(code)) found = layer;
+        });
+        return found;
+      }
+
+      function escapeHtml(s) {
+        if (!s) return '';
+        return String(s).replace(/[&<>"']/g, function (m) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
+      }
+
+    }); // end DOMContentLoaded
+  </script>
+</body>
+</html>

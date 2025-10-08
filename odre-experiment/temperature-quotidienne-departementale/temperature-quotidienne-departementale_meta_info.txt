@@ -1,0 +1,6 @@
+
+Ce jeu de données présente les températures minimales, maximales et moyennes quotidiennes (en degré celsius), par département administratif français en métropole, du 1er janvier 2018 à aujourd'hui.
+
+
+Il est basé sur les mesures officielles du réseau de stations météorologiques françaises. La mise à jour de ce jeu de données est mensuelle (début de mois).
+

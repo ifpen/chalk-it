@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stations GNV Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Inline favicon to avoid 404 -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50%25' x='50%25' dominant-baseline='middle' text-anchor='middle' font-size='48'%3E⛽%3C/text%3E%3C/svg%3E" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <!-- MarkerCluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+  <style>
+    :root{
+      --bg:#0b1320;
+      --panel:#121b2d;
+      --panel-2:#0f1727;
+      --text:#e9f0ff;
+      --muted:#9fb2d9;
+      --accent:#3aa56d;
+      --accent-2:#3b82f6;
+      --accent-3:#f59e0b;
+      --danger:#ef4444;
+      --chip:#1e2a44;
+      --chip-br:#25324a;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial;
+      background:linear-gradient(180deg,var(--bg),#0a1221 60%, #0a1020);
+      color:var(--text);
+    }
+    header{
+      padding:16px 20px;
+      background:linear-gradient(90deg,#0e1a2f, #0f1f3a);
+      border-bottom:1px solid #1d2a45;
+      position:sticky;top:0;z-index:40;
+    }
+    header h1{margin:0;font-size:20px;letter-spacing:.3px}
+    header .sub{color:var(--muted);font-size:12px;margin-top:4px}
+    .container{
+      padding:16px 20px 32px;
+      display:grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap:16px;
+    }
+    @media (max-width:1100px){
+      .container{grid-template-columns:1fr}
+    }
+    .panel{
+      background:linear-gradient(180deg,var(--panel),var(--panel-2));
+      border:1px solid #1d2a45;
+      border-radius:10px;
+      box-shadow:0 10px 30px rgba(0,0,0,.3);
+      overflow:hidden;
+    }
+    .panel .head{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:12px 14px;border-bottom:1px solid #1d2a45;background:#0d1628;
+    }
+    .panel .head h2{margin:0;font-size:14px;color:#cfe2ff}
+    .panel .body{padding:12px 14px}
+    .kpis{
+      display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+    }
+    @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:560px){.kpis{grid-template-columns:1fr}}
+    .kpi{
+      background:linear-gradient(180deg,#0f1b2e,#0c1526);
+      border:1px solid #1d2a45;border-radius:10px;padding:12px;
+    }
+    .kpi .label{font-size:12px;color:var(--muted)}
+    .kpi .value{font-weight:700;font-size:20px;margin-top:2px}
+    .row{
+      display:flex;gap:12px;flex-wrap:wrap;align-items:center
+    }
+    .badge{
+      padding:4px 8px;border-radius:999px;font-size:12px;border:1px solid var(--chip-br);
+      background:var(--chip);color:var(--text)
+    }
+    .badge.ok{background:rgba(58,165,109,.15);border-color:rgba(58,165,109,.35);color:#a6f3c8}
+    .badge.warn{background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.35);color:#fde7b0}
+    .badge.danger{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.35);color:#fecaca}
+    .filters{
+      display:flex;gap:10px;flex-wrap:wrap
+    }
+    .filter{
+      background:linear-gradient(180deg,#0f1b2e,#0c1526);
+      border:1px solid #1d2a45;border-radius:8px;padding:8px 10px;
+      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px
+    }
+    .filter input[type="text"], .filter select{
+      background:#0b1320;border:1px solid #1d2a45;color:var(--text);
+      border-radius:6px;padding:6px;font-size:12px
+    }
+    .filter input[type="checkbox"]{transform:scale(1.1)}
+    .btn{
+      background:linear-gradient(180deg,#16335c,#132b4e);color:#e6f0ff;border:1px solid #25406c;
+      border-radius:8px;padding:8px 12px;font-size:12px;cursor:pointer
+    }
+    .btn:hover{filter:brightness(1.05)}
+    #map{height:520px;width:100%}
+    .charts{
+      display:grid;grid-template-columns:1fr;gap:12px
+    }
+    .chart-box{
+      background:linear-gradient(180deg,#0f1b2e,#0c1526);border:1px solid #1d2a45;border-radius:10px;padding:10px
+    }
+    .chart-title{font-size:12px;color:#cfe2ff;margin:2px 2px 6px 2px}
+    .chart-wrap{height:250px;position:relative}
+    .table-wrap{
+      overflow:auto;max-height:420px;border:1px solid #1d2a45;border-radius:8px
+    }
+    table{width:100%;border-collapse:separate;border-spacing:0}
+    thead th{
+      position:sticky;top:0;background:#0d182b;color:#cfe2ff;border-bottom:1px solid #1d2a45;
+      text-align:left;padding:10px;font-size:12px
+    }
+    tbody td{padding:9px 10px;border-bottom:1px solid #132345;font-size:12px;color:#dfe8ff}
+    tbody tr:hover{background:#0d172a}
+    .pagination{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:8px}
+    .tiny{font-size:11px;color:var(--muted)}
+    .muted{color:var(--muted)}
+    .legend{
+      display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:11px;color:var(--muted)
+    }
+    .dot{width:10px;height:10px;border-radius:2px;display:inline-block}
+    .dot.open{background:var(--accent)}
+    .dot.proj{background:var(--accent-3)}
+    .dot.gnc{background:#36c2ff}
+    .dot.gnl{background:#ff6b6b}
+    .loading{
+      padding:8px 10px;border-radius:8px;background:#0f1b2e;border:1px solid #1d2a45;color:#cfe2ff;font-size:12px
+    }
+    .footer-note{padding:10px 20px;color:#9fb2d9;font-size:12px}
+    .nowrap{white-space:nowrap}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Stations GNV en France — Interactive Dashboard</h1>
+    <div class="sub">Live data from Opendatasoft — Dataset: stations-gnv</div>
+  </header>
+
+  <section class="panel" style="margin:16px 20px">
+    <div class="head">
+      <h2>Data status</h2>
+      <div class="legend">
+        <span class="badge" id="loadInfo">Loading…</span>
+        <span class="badge" id="truncInfo">Checking…</span>
+        <span class="badge" id="mapInfo">Map: 0 markers</span>
+      </div>
+    </div>
+    <div class="body">
+      <div class="row" style="justify-content:space-between; align-items:flex-start;">
+        <div class="kpis" style="flex:1;min-width:300px">
+          <div class="kpi"><div class="label">Stations loaded</div><div class="value" id="kpiLoaded">—</div><div class="tiny muted">from API</div></div>
+          <div class="kpi"><div class="label">Visible (after filters)</div><div class="value" id="kpiVisible">—</div><div class="tiny muted">current subset</div></div>
+          <div class="kpi"><div class="label">Open</div><div class="value" id="kpiOpen">—</div><div class="tiny muted">visible</div></div>
+          <div class="kpi"><div class="label">With GNC</div><div class="value" id="kpiGnc">—</div><div class="tiny muted">visible</div></div>
+          <div class="kpi"><div class="label">With GNL</div><div class="value" id="kpiGnl">—</div><div class="tiny muted">visible</div></div>
+        </div>
+        <div class="row" style="gap:10px; align-items:flex-start; flex-wrap:wrap; min-width:260px; justify-content:flex-end;">
+          <div class="loading" id="progressBox">Fetching data…</div>
+          <button class="btn" id="resetFiltersBtn">Reset filters</button>
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div class="filters">
+          <label class="filter"><input type="checkbox" id="fltOpen" checked><span>Open</span></label>
+          <label class="filter"><input type="checkbox" id="fltProject" checked><span>In project</span></label>
+          <label class="filter"><input type="checkbox" id="fltGNC" checked><span>GNC</span></label>
+          <label class="filter"><input type="checkbox" id="fltGNL" checked><span>GNL</span></label>
+          <label class="filter">Region
+            <select id="fltRegion">
+              <option value="">All</option>
+            </select>
+          </label>
+          <label class="filter">Operator
+            <input type="text" id="fltOperator" placeholder="Contains…" />
+          </label>
+        </div>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <div class="legend">
+          <span class="dot open"></span> Open
+          <span class="dot proj"></span> In project
+          <span class="dot gnc"></span> GNC
+          <span class="dot gnl"></span> GNL
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="panel">
+      <div class="head">
+        <h2>Map of stations</h2>
+        <div class="tiny muted nowrap" id="mappableInfo">Mappable: —</div>
+      </div>
+      <div class="body">
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="head">
+        <h2>Insights</h2>
+        <span class="tiny muted">Interacts with filters</span>
+      </div>
+      <div class="body">
+        <div class="charts">
+          <div class="chart-box">
+            <div class="chart-title">Openings by year</div>
+            <div class="chart-wrap"><canvas id="chartYear"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <div class="chart-title">Top operators</div>
+            <div class="chart-wrap"><canvas id="chartOperators"></canvas></div>
+          </div>
+          <div class="chart-box">
+            <div class="chart-title">Payment methods distribution</div>
+            <div class="chart-wrap"><canvas id="chartPayments"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" style="margin:0 20px 20px">
+    <div class="head">
+      <h2>Stations details</h2>
+      <div class="tiny muted" id="tableInfo">—</div>
+    </div>
+    <div class="body">
+      <div class="table-wrap">
+        <table id="stationsTable">
+          <thead>
+            <tr>
+              <th>Operator</th>
+              <th>City</th>
+              <th>Region</th>
+              <th>Status</th>
+              <th>Year</th>
+              <th>Fuels</th>
+              <th>Payments</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span class="tiny" id="pageInfo">Page 1/1</span>
+        <button class="btn" id="prevPage">Prev</button>
+        <button class="btn" id="nextPage">Next</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    Notes: The API has a per-request limit of 100 records. This dashboard automatically paginates to load all records. If the dataset grows beyond 10,000 records (offset+limit constraint), you will see a truncation warning.
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Global state
+      let ALL_ROWS = [];
+      let FILTERED_ROWS = [];
+      let TOTAL_COUNT = 0;
+      let TRUNCATED = false;
+      let MAP = null;
+      let CLUSTER = null;
+      let YEAR_CHART = null;
+      let OPER_CHART = null;
+      let PAY_CHART = null;
+      let CURRENT_PAGE = 1;
+      const PAGE_SIZE = 10;
+
+      // Elements
+      const elLoadInfo = document.getElementById('loadInfo');
+      const elTruncInfo = document.getElementById('truncInfo');
+      const elMapInfo = document.getElementById('mapInfo');
+      const elProgressBox = document.getElementById('progressBox');
+      const elMappableInfo = document.getElementById('mappableInfo');
+      const elKpiLoaded = document.getElementById('kpiLoaded');
+      const elKpiVisible = document.getElementById('kpiVisible');
+      const elKpiOpen = document.getElementById('kpiOpen');
+      const elKpiGnc = document.getElementById('kpiGnc');
+      const elKpiGnl = document.getElementById('kpiGnl');
+      const elFltOpen = document.getElementById('fltOpen');
+      const elFltProject = document.getElementById('fltProject');
+      const elFltGNC = document.getElementById('fltGNC');
+      const elFltGNL = document.getElementById('fltGNL');
+      const elFltRegion = document.getElementById('fltRegion');
+      const elFltOperator = document.getElementById('fltOperator');
+      const elResetFilters = document.getElementById('resetFiltersBtn');
+      const elTableBody = document.querySelector('#stationsTable tbody');
+      const elTableInfo = document.getElementById('tableInfo');
+      const elPageInfo = document.getElementById('pageInfo');
+      const elPrevPage = document.getElementById('prevPage');
+      const elNextPage = document.getElementById('nextPage');
+
+      // Constants
+      const BASE_URL = 'https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/stations-gnv/records';
+      const SELECT_FIELDS = [
+        'statut','annee_ouverture','exploitant','rue','code_postal','commune',
+        'departement','nom_region','carburant','paiement','acces_pl',
+        'gnl','gnc','biognc','geo','kpi_ouverture'
+      ];
+      const LIMIT = 100;
+      const MAX_OFFSET_SUM = 10000; // as per docs for non-group_by queries
+
+      // Helpers
+      function setBadge(el, text, type) {
+        el.textContent = text;
+        el.classList.remove('ok', 'warn', 'danger');
+        if (type) el.classList.add(type);
+      }
+
+      function normStr(v) {
+        if (v === null || v === undefined) return '';
+        return String(v).trim();
+      }
+
+      function parseFuelArray(rec) {
+        // carburant: array like ["GNC"] or ["GNL , GNC"]
+        const arr = Array.isArray(rec.carburant) ? rec.carburant : [];
+        const tokens = [];
+        arr.forEach(s => {
+          if (!s) return;
+          String(s).split(',').forEach(t => {
+            const x = t.replace(/\s+/g,'').toUpperCase();
+            if (x === 'GNC' || x === 'GNL') tokens.push(x);
+          });
+        });
+        // Also fallback to boolean fields
+        if (rec.gnc === 'oui' && !tokens.includes('GNC')) tokens.push('GNC');
+        if (rec.gnl === 'oui' && !tokens.includes('GNL')) tokens.push('GNL');
+        return Array.from(new Set(tokens));
+      }
+
+      function parsePayments(rec) {
+        const arr = Array.isArray(rec.paiement) ? rec.paiement : [];
+        const tokens = [];
+        arr.forEach(s => {
+          if (!s) return;
+          String(s).split(',').forEach(t => {
+            const x = t.trim().toLowerCase();
+            if (x) tokens.push(x);
+          });
+        });
+        // add boolean flags if present
+        if (rec.paiement_cb === 'oui' && !tokens.includes('cb')) tokens.push('cb');
+        if (rec.paiement_cash === 'oui' && !tokens.includes('cash')) tokens.push('cash');
+        if (rec.paiement_carte_abonne === 'oui' && !tokens.includes('carte abonné')) tokens.push('carte abonné');
+        return Array.from(new Set(tokens));
+      }
+
+      function getLatLng(rec) {
+        // prefer geo object
+        if (rec.geo && typeof rec.geo.lat === 'number' && typeof rec.geo.lon === 'number') {
+          return [rec.geo.lat, rec.geo.lon];
+        }
+        // fallback to string lat/long
+        const lat = parseFloat(rec.latitude);
+        const lon = parseFloat(rec.longitude);
+        if (isFinite(lat) && isFinite(lon)) return [lat, lon];
+        return null;
+      }
+
+      function humanStatus(v) {
+        const s = normStr(v).toLowerCase();
+        if (s === 'ouverte' || s === 'ouvert' || s === 'open') return 'Open';
+        if (s.includes('projet')) return 'In project';
+        return s || 'Unknown';
+      }
+
+      function formatFuels(tokens) {
+        return tokens.map(t => `<span class="badge" style="padding:2px 6px">${t}</span>`).join(' ');
+      }
+
+      function formatPayments(tokens) {
+        return tokens.map(t => `<span class="badge" style="padding:2px 6px">${t}</span>`).join(' ');
+      }
+
+      function yearKey(rec) {
+        const y = normStr(rec.annee_ouverture);
+        if (!y) return 'Unknown';
+        return y;
+      }
+
+      // Fetch all pages
+      async function fetchAllRecords() {
+        try {
+          setBadge(elLoadInfo, 'Requesting…', 'warn');
+          const params = new URLSearchParams();
+          params.set('select', SELECT_FIELDS.join(','));
+          params.set('limit', String(LIMIT));
+          params.set('offset', '0');
+
+          const firstUrl = `${BASE_URL}?${params.toString()}`;
+          const firstRes = await fetch(firstUrl, {
+            mode: 'cors',
+            headers: { 'Accept': 'application/json' },
+            credentials: 'omit'
+          });
+          if (!firstRes.ok) throw new Error('Network error: ' + firstRes.status);
+          const firstJson = await firstRes.json();
+          let results = Array.isArray(firstJson.results) ? firstJson.results : [];
+          TOTAL_COUNT = typeof firstJson.total_count === 'number' ? firstJson.total_count : results.length;
+
+          setBadge(elLoadInfo, `Loaded ${Math.min(results.length, TOTAL_COUNT)} / ${TOTAL_COUNT}`, 'warn');
+          elProgressBox.textContent = `Fetching data… 1 / ${Math.ceil(TOTAL_COUNT / LIMIT)}`;
+
+          // More pages
+          let offset = LIMIT;
+          let callIndex = 1;
+          while (results.length < TOTAL_COUNT && (offset + LIMIT) <= MAX_OFFSET_SUM) {
+            const p = new URLSearchParams();
+            p.set('select', SELECT_FIELDS.join(','));
+            p.set('limit', String(LIMIT));
+            p.set('offset', String(offset));
+            const url = `${BASE_URL}?${p.toString()}`;
+            // eslint-disable-next-line no-await-in-loop
+            const res = await fetch(url, {
+              mode: 'cors',
+              headers: { 'Accept': 'application/json' },
+              credentials: 'omit'
+            });
+            if (!res.ok) throw new Error('Network error: ' + res.status);
+            // eslint-disable-next-line no-await-in-loop
+            const json = await res.json();
+            const chunk = Array.isArray(json.results) ? json.results : [];
+            results = results.concat(chunk);
+            offset += LIMIT;
+            callIndex += 1;
+            setBadge(elLoadInfo, `Loaded ${Math.min(results.length, TOTAL_COUNT)} / ${TOTAL_COUNT}`, 'warn');
+            elProgressBox.textContent = `Fetching data… ${callIndex} / ${Math.ceil(TOTAL_COUNT / LIMIT)}`;
+            // Defensive break for safety
+            if (callIndex > 200) break;
+          }
+
+          TRUNCATED = results.length < TOTAL_COUNT;
+          ALL_ROWS = results;
+
+          setBadge(elLoadInfo, `Loaded ${results.length} / ${TOTAL_COUNT}`, TRUNCATED ? 'danger' : 'ok');
+          setBadge(elTruncInfo, TRUNCATED ? 'Data truncated (API paging limit)' : 'All data loaded', TRUNCATED ? 'danger' : 'ok');
+          elProgressBox.textContent = TRUNCATED ? 'Some data could not be loaded (limit reached).' : 'All data fetched.';
+        } catch (err) {
+          console.error(err);
+          setBadge(elLoadInfo, 'Error loading data', 'danger');
+          elProgressBox.textContent = 'Failed to fetch data. Please try again later.';
+        }
+      }
+
+      function buildRegionFilter() {
+        const regions = new Set();
+        ALL_ROWS.forEach(r => {
+          const reg = normStr(r.nom_region);
+          if (reg) regions.add(reg);
+        });
+        const items = Array.from(regions).sort((a,b)=>a.localeCompare(b,'fr'));
+        const frag = document.createDocumentFragment();
+        const optAll = document.createElement('option');
+        optAll.value = '';
+        optAll.textContent = 'All';
+        frag.appendChild(optAll);
+        items.forEach(r => {
+          const opt = document.createElement('option');
+          opt.value = r;
+          opt.textContent = r;
+          frag.appendChild(opt);
+        });
+        elFltRegion.innerHTML = '';
+        elFltRegion.appendChild(frag);
+      }
+
+      function applyFilters() {
+        const wantOpen = elFltOpen.checked;
+        const wantProj = elFltProject.checked;
+        const wantGNC = elFltGNC.checked;
+        const wantGNL = elFltGNL.checked;
+        const region = elFltRegion.value;
+        const operSub = normStr(elFltOperator.value).toLowerCase();
+
+        FILTERED_ROWS = ALL_ROWS.filter(r => {
+          const st = normStr(r.statut).toLowerCase();
+          const isOpen = (st === 'ouverte' || st === 'ouvert' || st === 'open');
+          const isProj = st.includes('projet');
+          if (!( (wantOpen && isOpen) || (wantProj && isProj) )) return false;
+
+          const fuels = parseFuelArray(r);
+          // If both fuels toggled off, nothing matches
+          if (wantGNC || wantGNL) {
+            const hasGNC = fuels.includes('GNC');
+            const hasGNL = fuels.includes('GNL');
+            if (!((wantGNC && hasGNC) || (wantGNL && hasGNL))) return false;
+          }
+
+          if (region && normStr(r.nom_region) !== region) return false;
+
+          if (operSub) {
+            const op = normStr(r.exploitant).toLowerCase();
+            if (!op.includes(operSub)) return false;
+          }
+
+          return true;
+        });
+      }
+
+      function updateKPIs() {
+        const vis = FILTERED_ROWS.length;
+        const openCount = FILTERED_ROWS.filter(r => {
+          const st = normStr(r.statut).toLowerCase();
+          return (st === 'ouverte' || st === 'ouvert' || st === 'open');
+        }).length;
+        const gncCount = FILTERED_ROWS.filter(r => parseFuelArray(r).includes('GNC')).length;
+        const gnlCount = FILTERED_ROWS.filter(r => parseFuelArray(r).includes('GNL')).length;
+
+        elKpiLoaded.textContent = `${ALL_ROWS.length}`;
+        elKpiVisible.textContent = `${vis} / ${ALL_ROWS.length}`;
+        elKpiOpen.textContent = `${openCount}`;
+        elKpiGnc.textContent = `${gncCount}`;
+        elKpiGnl.textContent = `${gnlCount}`;
+      }
+
+      function initMap() {
+        if (MAP) return;
+        MAP = L.map('map', { preferCanvas:true }).setView([46.6, 2.2], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap'
+        }).addTo(MAP);
+        CLUSTER = L.markerClusterGroup();
+        MAP.addLayer(CLUSTER);
+      }
+
+      function updateMap() {
+        if (!MAP || !CLUSTER) return;
+        CLUSTER.clearLayers();
+        let mappable = 0;
+        FILTERED_ROWS.forEach(r => {
+          const pos = getLatLng(r);
+          if (!pos) return;
+          mappable++;
+          const fuels = parseFuelArray(r);
+          const st = normStr(r.statut).toLowerCase();
+          const isOpen = (st === 'ouverte' || st === 'ouvert' || st === 'open');
+          const color = isOpen ? 'var(--accent)' : 'var(--accent-3)';
+
+          const marker = L.marker(pos, {
+            title: `${normStr(r.exploitant)} — ${normStr(r.commune)}`
+          });
+
+          const popup = `
+            <div style="min-width:220px">
+              <div style="font-weight:700;color:#eaf2ff">${normStr(r.exploitant) || '—'}</div>
+              <div class="tiny muted">${normStr(r.commune)}${r.departement ? ' — ' + r.departement : ''}</div>
+              <div class="tiny" style="margin-top:6px">
+                <span class="badge" style="border-color:${isOpen ? 'rgba(58,165,109,.35)' : 'rgba(245,158,11,.35)'};background:${isOpen ? 'rgba(58,165,109,.15)' : 'rgba(245,158,11,.15)'};margin-right:6px">${humanStatus(r.statut)}</span>
+                ${normStr(r.annee_ouverture) ? '<span class="badge">Year '+normStr(r.annee_ouverture)+'</span>' : ''}
+                ${normStr(r.nom_region) ? '<span class="badge">'+normStr(r.nom_region)+'</span>' : ''}
+              </div>
+              <div style="margin-top:6px">${formatFuels(fuels)}</div>
+              <div class="tiny muted" style="margin-top:6px">${formatPayments(parsePayments(r))}</div>
+              ${normStr(r.rue) ? '<div class="tiny muted" style="margin-top:6px">'+normStr(r.rue)+'</div>' : ''}
+            </div>
+          `;
+          marker.bindPopup(popup);
+          CLUSTER.addLayer(marker);
+        });
+        elMappableInfo.textContent = `Mappable: ${mappable} / ${FILTERED_ROWS.length}`;
+        setBadge(elMapInfo, `Map: ${mappable} markers`);
+      }
+
+      // Charts
+      function initCharts() {
+        const ctxYear = document.getElementById('chartYear');
+        const ctxOper = document.getElementById('chartOperators');
+        const ctxPay = document.getElementById('chartPayments');
+
+        YEAR_CHART = new Chart(ctxYear, {
+          type: 'bar',
+          data: { labels: [], datasets: [{ label: 'Openings', data: [], backgroundColor: 'rgba(59,130,246,0.6)' }] },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+              x: { ticks: { color: '#cfe2ff' }, grid: { color: '#1d2a45' } },
+              y: { ticks: { color: '#cfe2ff' }, grid: { color: '#1d2a45' }, beginAtZero: true }
+            }
+          }
+        });
+
+        OPER_CHART = new Chart(ctxOper, {
+          type: 'bar',
+          data: { labels: [], datasets: [{ label: 'Stations', data: [], backgroundColor: 'rgba(58,165,109,0.7)' }] },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            indexAxis: 'y',
+            plugins: {
+              legend: { display: false },
+              tooltip: { mode: 'nearest', intersect: false }
+            },
+            scales: {
+              x: { ticks: { color: '#cfe2ff' }, grid: { color: '#1d2a45' }, beginAtZero: true },
+              y: { ticks: { color: '#cfe2ff' }, grid: { color: '#1d2a45' } }
+            }
+          }
+        });
+
+        PAY_CHART = new Chart(ctxPay, {
+          type: 'doughnut',
+          data: { labels: [], datasets: [{ label: 'Payments', data: [], backgroundColor: ['#60a5fa','#fbbf24','#34d399','#f87171','#a78bfa','#f472b6','#22d3ee'] }] },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+              legend: { position: 'bottom', labels: { color: '#cfe2ff' } }
+            },
+            cutout: '55%'
+          }
+        });
+
+        // Guard against resize height issues
+        window.addEventListener('resize', () => {
+          if (YEAR_CHART) YEAR_CHART.resize();
+          if (OPER_CHART) OPER_CHART.resize();
+          if (PAY_CHART) PAY_CHART.resize();
+        });
+      }
+
+      function updateCharts() {
+        // Openings by year (use available year)
+        const byYear = {};
+        FILTERED_ROWS.forEach(r => {
+          const y = yearKey(r);
+          if (!byYear[y]) byYear[y] = 0;
+          byYear[y] += 1;
+        });
+        const years = Object.keys(byYear).sort((a,b) => {
+          if (a === 'Unknown') return 1;
+          if (b === 'Unknown') return -1;
+          return parseInt(a,10) - parseInt(b,10);
+        });
+        const yearCounts = years.map(y => byYear[y]);
+        YEAR_CHART.data.labels = years;
+        YEAR_CHART.data.datasets[0].data = yearCounts;
+        YEAR_CHART.update();
+
+        // Top operators
+        const byOper = {};
+        FILTERED_ROWS.forEach(r => {
+          const k = normStr(r.exploitant) || 'Unknown';
+          byOper[k] = (byOper[k] || 0) + 1;
+        });
+        const sorted = Object.entries(byOper).sort((a,b) => b[1]-a[1]).slice(0, 10);
+        OPER_CHART.data.labels = sorted.map(x => x[0]);
+        OPER_CHART.data.datasets[0].data = sorted.map(x => x[1]);
+        OPER_CHART.update();
+
+        // Payment methods distribution
+        const pay = {};
+        FILTERED_ROWS.forEach(r => {
+          const arr = parsePayments(r);
+          arr.forEach(p => { pay[p] = (pay[p] || 0) + 1; });
+        });
+        const paySorted = Object.entries(pay).sort((a,b)=>b[1]-a[1]);
+        PAY_CHART.data.labels = paySorted.map(x => x[0]);
+        PAY_CHART.data.datasets[0].data = paySorted.map(x => x[1]);
+        PAY_CHART.update();
+      }
+
+      // Table
+      function renderTable() {
+        const total = FILTERED_ROWS.length;
+        const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+        if (CURRENT_PAGE > totalPages) CURRENT_PAGE = totalPages;
+
+        const start = (CURRENT_PAGE - 1) * PAGE_SIZE;
+        const end = Math.min(start + PAGE_SIZE, total);
+        const slice = FILTERED_ROWS.slice(start, end);
+
+        elTableBody.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        slice.forEach(r => {
+          const tr = document.createElement('tr');
+          const fuels = parseFuelArray(r).join(', ');
+          const pays = parsePayments(r).join(', ');
+          const status = humanStatus(r.statut);
+          const y = normStr(r.annee_ouverture) || '—';
+          const tds = [
+            normStr(r.exploitant) || '—',
+            normStr(r.commune) || '—',
+            normStr(r.nom_region) || '—',
+            status,
+            y,
+            fuels || '—',
+            pays || '—'
+          ];
+          tds.forEach((tx, idx) => {
+            const td = document.createElement('td');
+            td.textContent = tx;
+            if (idx === 3) {
+              td.style.color = status === 'Open' ? '#86efac' : '#fde68a';
+            }
+            if (idx === 5) td.style.color = '#93c5fd';
+            if (idx === 6) td.style.color = '#c4b5fd';
+            tr.appendChild(td);
+          });
+          frag.appendChild(tr);
+        });
+        elTableBody.appendChild(frag);
+        elTableInfo.textContent = `${start + 1}-${end} of ${total} visible`;
+        elPageInfo.textContent = `Page ${CURRENT_PAGE}/${Math.max(1, Math.ceil(total / PAGE_SIZE))}`;
+      }
+
+      function resetFilters() {
+        elFltOpen.checked = true;
+        elFltProject.checked = true;
+        elFltGNC.checked = true;
+        elFltGNL.checked = true;
+        elFltRegion.value = '';
+        elFltOperator.value = '';
+        CURRENT_PAGE = 1;
+        updateAll();
+      }
+
+      function updateAll() {
+        applyFilters();
+        updateKPIs();
+        updateMap();
+        updateCharts();
+        CURRENT_PAGE = 1; // reset page when filters change
+        renderTable();
+      }
+
+      // Pagination handlers
+      elPrevPage.addEventListener('click', () => {
+        if (CURRENT_PAGE > 1) {
+          CURRENT_PAGE -= 1;
+          renderTable();
+        }
+      });
+      elNextPage.addEventListener('click', () => {
+        const total = FILTERED_ROWS.length;
+        const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+        if (CURRENT_PAGE < totalPages) {
+          CURRENT_PAGE += 1;
+          renderTable();
+        }
+      });
+
+      // Filter listeners
+      [elFltOpen, elFltProject, elFltGNC, elFltGNL, elFltRegion].forEach(el => {
+        el.addEventListener('change', () => updateAll());
+      });
+      let opDebounce = null;
+      elFltOperator.addEventListener('input', () => {
+        if (opDebounce) clearTimeout(opDebounce);
+        opDebounce = setTimeout(() => updateAll(), 200);
+      });
+      elResetFilters.addEventListener('click', resetFilters);
+
+      // Bootstrap
+      (async function init() {
+        initMap();
+        initCharts();
+        await fetchAllRecords();
+        if (!ALL_ROWS || ALL_ROWS.length === 0) return; // failed
+        buildRegionFilter();
+        applyFilters();
+        updateKPIs();
+        updateMap();
+        updateCharts();
+        renderTable();
+      })();
+    });
+  </script>
+</body>
+</html>

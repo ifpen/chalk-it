@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Potential Hydrothermal Gasification Dashboard</title>
+<!-- Responsive meta -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Leaflet CSS (for interactive map) -->
+<link 
+  rel="stylesheet" 
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+  crossorigin=""/>
+
+<!-- Chart.js (for bar chart) -->
+<script 
+  src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<!-- Leaflet JS -->
+<script 
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+  crossorigin="">
+</script>
+
+<style>
+  /* Basic resets and style for a single-page dashboard. Feel free to adjust as needed. */
+  html, body {
+    margin: 0; 
+    padding: 0; 
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+  }
+  h1, h2, h3 {
+    margin: 16px 0 8px;
+  }
+  p {
+    margin: 8px 0;
+  }
+  #app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 1em;
+  }
+  #map {
+    height: 500px; 
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  #charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .chart-box {
+    flex: 1 1 400px;
+    background: #fff;
+    border-radius: 4px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  canvas {
+    width: 100%;
+    max-height: 400px;
+  }
+  .loading {
+    text-align: center;
+    margin: 20px 0;
+    font-style: italic;
+    color: #333;
+  }
+  #select-waste-type {
+    margin-bottom: 20px;
+    padding: 6px;
+    font-size: 14px;
+  }
+  footer {
+    text-align: center;
+    margin-top: 2em;
+    color: #888;
+  }
+</style>
+</head>
+<body>
+<div id="app-container">
+
+  <header>
+    <h1>Potential of Biomass Waste for Hydrothermal Gasification</h1>
+    <p>This interactive dashboard explores the 2050 renewable gas potential from various biomass waste streams, by region in France.</p>
+  </header>
+
+  <section>
+    <label for="select-waste-type"><strong>Filter by Waste Type:</strong></label>
+    <select id="select-waste-type">
+      <!-- Dynamically populated -->
+    </select>
+  </section>
+
+  <!-- Map container -->
+  <div id="map"></div>
+
+  <!-- Charts -->
+  <div id="charts-container">
+    <div class="chart-box">
+      <h2>Total Potential by Region</h2>
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+
+  <!-- A loading indicator while we fetch data -->
+  <div id="loading-msg" class="loading">Loading data from API...</div>
+
+  <footer>
+    <p>Data Source: <a href="https://odre.opendatasoft.com/explore/dataset/potentiel_gh-reg-grtgaz" target="_blank" rel="noopener">GRTgaz / Open Data Réseaux Energies</a></p>
+    <p>© 2023 Example Dashboard</p>
+  </footer>
+</div>
+
+<script>
+/******************************************************************************
+ * This script fetches the complete "potentiel_gh-reg-grtgaz" dataset from the
+ * official GRTgaz / ODRE platform, then builds:
+ *   1) A region-based map (Leaflet) highlighting total potential
+ *   2) A bar chart of total potential by region
+ *   3) A waste-type filter to view differences by category
+ * 
+ * All logic is client-side (no server code needed).
+ *****************************************************************************/
+
+// Global references
+let rawRecords = [];
+let map;
+let barChart;
+let regionLayer; // Leaflet GeoJSON layer
+const WASTE_TYPE_SELECT = document.getElementById('select-waste-type');
+
+// Fetch the entire dataset
+const API_URL = 'https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/potentiel_gh-reg-grtgaz/records?limit=-1';
+
+async function fetchDataset() {
+  try {
+    const resp = await fetch(API_URL);
+    const data = await resp.json();
+    // The array of records is in data.results
+    // According to the user-provided sample, it's data.results not data.records
+    if (!data || !data.results) {
+      throw new Error("Unexpected data format from API");
+    }
+    return data.results;
+  } catch (err) {
+    console.error("Error fetching data", err);
+    return [];
+  }
+}
+
+// Prepare the map
+function initMap() {
+  map = L.map('map').setView([46.5, 2], 6); // center on France, approx
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+}
+
+// Build region-based geometry & sum aggregator
+// We want to group by (region + waste type?), then pick only the current filter
+function buildRegionFeatures(wasteTypeFilter) {
+  // Summaries and geometry
+  const regionSummaries = {}; // {regionName: sumValue}
+  const regionGeometries = {}; // {regionName: someGeoJson}
+  
+  rawRecords.forEach(item => {
+    // If a filter is active, skip records that don't match
+    if (wasteTypeFilter && wasteTypeFilter !== 'ALL') {
+      if (item.types_of_waste !== wasteTypeFilter) {
+        return; // skip
+      }
+    }
+
+    const region = item.region;
+    const potential = Number(item.estimation_production_de_gaz_via_gh_2050_gwh_pcs || 0);
+
+    if (!(region in regionSummaries)) {
+      regionSummaries[region] = 0;
+    }
+    regionSummaries[region] += potential;
+
+    // Keep the geometry (we only need one geometry per region)
+    // The data might appear multiple times for the same region (different waste types)
+    if (!regionGeometries[region] && item.geom) {
+      // We'll store the entire geometry structure
+      regionGeometries[region] = item.geom;
+    }
+  });
+
+  // Convert region-level data into a FeatureCollection
+  const features = [];
+  Object.keys(regionSummaries).forEach(region => {
+    const geometry = regionGeometries[region]?.geometry;
+    if (!geometry) {
+      // No geometry for region, skip
+      return;
+    }
+    features.push({
+      type: "Feature",
+      properties: {
+        region: region,
+        value: regionSummaries[region]
+      },
+      geometry: geometry
+    });
+  });
+
+  return {
+    type: "FeatureCollection",
+    features: features,
+    regionSummaries: regionSummaries
+  };
+}
+
+// Color scale for polygons, from light to dark green
+function getColor(value, maxValue) {
+  // A simple ratio
+  const ratio = maxValue ? (value / maxValue) : 0;
+  // We can define start and end color
+  // For instance from #d9f0a3 (light green) to #006837 (dark green)
+  // We'll do a naive interpolation
+  const startColor = [217, 240, 163]; // #d9f0a3
+  const endColor = [0, 104, 55];      // #006837
+  const r = Math.round(startColor[0] + ratio * (endColor[0] - startColor[0]));
+  const g = Math.round(startColor[1] + ratio * (endColor[1] - startColor[1]));
+  const b = Math.round(startColor[2] + ratio * (endColor[2] - startColor[2]));
+  return `rgb(${r},${g},${b})`;
+}
+
+function styleFeature(feature, maxValue) {
+  return {
+    color: '#444',
+    weight: 1,
+    fillOpacity: 0.6,
+    fillColor: getColor(feature.properties.value, maxValue)
+  };
+}
+
+function onEachFeature(feature, layer) {
+  // For the tooltip/popup
+  layer.bindPopup(`
+    <b>${feature.properties.region}</b><br/>
+    Gas Potential: ${feature.properties.value.toFixed(1)} GWh (2050)
+  `);
+}
+
+// Build or update the map layer
+function renderMap(geojson) {
+  // If an existing layer is on the map, remove it
+  if (regionLayer) {
+    map.removeLayer(regionLayer);
+  }
+
+  // find max value
+  let maxVal = 0;
+  geojson.features.forEach(f => {
+    if (f.properties.value > maxVal) {
+      maxVal = f.properties.value;
+    }
+  });
+
+  regionLayer = L.geoJSON(geojson, {
+    style: (feature) => styleFeature(feature, maxVal),
+    onEachFeature: onEachFeature
+  }).addTo(map);
+}
+
+// Build or update bar chart
+function renderBarChart(ctx, regionSummaries) {
+  // regionSummaries is an object: {regionName: value}
+  const labels = Object.keys(regionSummaries).sort();
+  const values = labels.map(r => regionSummaries[r]);
+
+  // If a chart object already exists, destroy it so we can recreate
+  if (barChart) {
+    barChart.destroy();
+  }
+
+  barChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '2050 Gas Potential (GWh)',
+        data: values,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const val = context.formattedValue || '';
+              return val + ' GWh';
+            }
+          }
+        }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+// Populate waste type filter
+function buildWasteTypeOptions(records) {
+  const types = new Set();
+  records.forEach(r => {
+    if (r.types_of_waste) {
+      types.add(r.types_of_waste);
+    }
+  });
+  // Sort + add "ALL"
+  const sorted = Array.from(types).sort();
+  sorted.unshift('ALL');
+  // Fill in the dropdown
+  sorted.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t;
+    opt.textContent = t;
+    WASTE_TYPE_SELECT.appendChild(opt);
+  });
+}
+
+// Called whenever the filter changes
+function onWasteTypeChange() {
+  const currentWaste = WASTE_TYPE_SELECT.value;
+  const { type, features, regionSummaries } = buildRegionFeatures(currentWaste);
+
+  // Re-render map
+  renderMap({type, features});
+  // Re-render bar chart
+  renderBarChart(document.getElementById('barChart').getContext('2d'), regionSummaries);
+}
+
+// Main
+(async function main() {
+  // Initialize the map
+  initMap();
+
+  // Fetch data
+  rawRecords = await fetchDataset();
+
+  // Build initial filter options
+  buildWasteTypeOptions(rawRecords);
+
+  // Hide loading
+  document.getElementById('loading-msg').style.display = 'none';
+
+  // Render for the default (ALL) filter
+  onWasteTypeChange();
+})();
+
+// Listen for filter changes
+WASTE_TYPE_SELECT.addEventListener('change', onWasteTypeChange);
+</script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Biomethane Potentials by French Department – Horizon 2050</title>
+  <!-- Use a responsive meta tag -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Leaflet CSS (CDN) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin=""
+  />
+  <!-- Chart.js (CDN) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <!-- Leaflet JS (CDN) -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    crossorigin=""
+  ></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background: #f7f7f7;
+      padding: 1em;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+    header h1 {
+      margin: 0.2em 0;
+      font-size: 1.3em;
+    }
+    #statsBanner {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+      margin-top: 0.5em;
+    }
+    .statBox {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 0.5em 1em;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+    #dashboardContainer {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      overflow: hidden;
+    }
+    #mapWrapper {
+      flex: 1;
+      position: relative;
+    }
+    #mapid {
+      width: 100%;
+      height: 100%;
+    }
+    #chartWrapper {
+      width: 400px;
+      border-left: 1px solid #ccc;
+      background: #fefefe;
+      display: flex;
+      flex-direction: column;
+    }
+    #barChartContainer {
+      flex: 1;
+      padding: 1em;
+    }
+    footer {
+      text-align: center;
+      padding: 0.5em;
+      background: #f7f7f7;
+      font-size: 0.9em;
+      border-top: 1px solid #ccc;
+    }
+    /* Simple color ramp (light-green to dark-green) */
+    .legend {
+      line-height: 18px;
+      color: #555;
+      background: #fff;
+      padding: 8px;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Biomethane Potentials by French Department – Horizon 2050</h1>
+    <p style="max-width:600px;margin:0 auto;">
+      Explore department-level data on potential biomethane production (GWh/year).  
+      Hover over the map or see the Ranking Chart for more details.
+    </p>
+    <div id="statsBanner">
+      <div class="statBox" id="totalPotentialBox">Total Potential: ...</div>
+      <div class="statBox" id="deptCountBox">Departments: ...</div>
+      <div class="statBox" id="topDeptBox">Top Department: ...</div>
+    </div>
+  </header>
+
+  <div id="dashboardContainer">
+    <div id="mapWrapper">
+      <div id="mapid"></div>
+    </div>
+    <div id="chartWrapper">
+      <div id="barChartContainer">
+        <canvas id="barChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Data Source: 
+    <a href="https://odre.opendatasoft.com/explore/dataset/potentiels-methanisation-2050-dpt/information/" target="_blank">
+      ODRE - potentiels-methanisation-2050-dpt
+    </a>
+  </footer>
+
+  <script>
+    // GLOBALS
+    let map;
+    let barChart;
+
+    // Simple color scale for the polygon fill, from minimal to maximal potential
+    function getColor(value, minVal, maxVal) {
+      // We'll pick a green range. 
+      // The function returns a color from #edf8e9 (low) to #005a32 (high)
+      const fraction = (value - minVal) / (maxVal - minVal + 0.000001);
+      // We'll map fraction onto HSL or just do manual interpolation
+      // For simplicity, we'll do a quick method: 
+      // 0 -> #edf8e9, 1 -> #005a32
+      // let's just define a few steps and interpolate
+      // but to keep it simpler, let's do a single scale approach:
+      // we'll do a gradient from a light green (#c7e9c0) to dark green (#004529).
+      const startColor = [199, 233, 192]; // #c7e9c0
+      const endColor   = [0, 69, 41];     // #004529
+      const r = Math.round(startColor[0] + fraction*(endColor[0]-startColor[0]));
+      const g = Math.round(startColor[1] + fraction*(endColor[1]-startColor[1]));
+      const b = Math.round(startColor[2] + fraction*(endColor[2]-startColor[2]));
+      return `rgb(${r},${g},${b})`;
+    }
+
+    // Initialize Leaflet map
+    function initMap() {
+      map = L.map('mapid').setView([46.8, 2], 6); // roughly center of France
+      L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 19,
+        }
+      ).addTo(map);
+    }
+
+    // Build a legend
+    function createLegend(minVal, maxVal) {
+      const legend = L.control({ position: 'bottomright' });
+      legend.onAdd = function() {
+        const div = L.DomUtil.create('div', 'legend');
+        div.innerHTML = '<strong>Potential (GWh)</strong><br />';
+        // We'll sample 5 steps
+        const steps = 5;
+        for (let i = 0; i <= steps; i++) {
+          const val = minVal + (i * (maxVal - minVal) / steps);
+          const color = getColor(val, minVal, maxVal);
+          div.innerHTML +=
+            '<i style="background:' + color + '"></i> ' +
+            (i===steps ? Math.round(maxVal).toLocaleString('en') + '+' 
+                       : Math.round(val).toLocaleString('en')) +
+            '<br />';
+        }
+        return div;
+      };
+      legend.addTo(map);
+    }
+
+    // Build the bar chart with Chart.js
+    function createBarChart(dataArray) {
+      // dataArray is an array of objects with {deptName, potential}
+      // We'll show top 10
+      dataArray.sort((a,b)=> b.potential - a.potential);
+      const top10 = dataArray.slice(0,10);
+      const labels = top10.map(d=>d.deptName);
+      const values = top10.map(d=>d.potential);
+
+      const ctx = document.getElementById('barChart').getContext('2d');
+      if (barChart) { barChart.destroy(); }
+      barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Top 10 Potentials (GWh/yr)',
+            data: values,
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title:{display:true,text:'GWh/yr'}
+            }
+          }
+        }
+      });
+    }
+
+    // Once data is fetched, create polygons
+    function addDepartmentPolygons(records) {
+      // We'll parse out the sum_potentiel_total_de_production_methane_gwh_pcs_evalue_en_2017 for each
+      // Then find min and max
+      const potentials = records.map(r=>r.sum_potentiel_total_de_production_methane_gwh_pcs_evalue_en_2017||0);
+      const minVal = Math.min(...potentials);
+      const maxVal = Math.max(...potentials);
+
+      createLegend(minVal, maxVal);
+
+      // Create a geojson layer
+      records.forEach((dept) => {
+        const geom = dept.geom; // the Feature object
+        if (!geom || !geom.geometry) return;
+
+        const potential = dept.sum_potentiel_total_de_production_methane_gwh_pcs_evalue_en_2017 || 0;
+        const styleFn = {
+          color: '#333',
+          weight: 1,
+          fillOpacity: 0.7,
+          fillColor: getColor(potential, minVal, maxVal)
+        };
+
+        // Convert the "geom" feature to a valid GeoJSON to add to the map
+        // We'll augment it with the potential
+        const geojsonFeature = {
+          type: 'Feature',
+          geometry: geom.geometry,
+          properties: {
+            deptName: dept.nom_du_departement,
+            codeDept: dept.code_departement,
+            region: dept.region,
+            potential: potential
+          }
+        };
+
+        // Add to map
+        const layer = L.geoJSON(geojsonFeature, {
+          style: styleFn,
+          onEachFeature: (feature, layer) => {
+            layer.bindTooltip(
+              feature.properties.deptName + ': ' +
+              feature.properties.potential.toLocaleString('en') + ' GWh/yr',
+              {sticky:true}
+            );
+          }
+        });
+        layer.addTo(map);
+      });
+    }
+
+    // Utility to update top statistics
+    function updateStats(dataArray) {
+      const total = dataArray.reduce((acc, d)=>acc+d.potential, 0);
+      const deptCount = dataArray.length;
+      let topDept = dataArray[0];
+      for (let i=1;i<dataArray.length;i++){
+        if (dataArray[i].potential>topDept.potential) topDept=dataArray[i];
+      }
+      document.getElementById('totalPotentialBox').innerHTML =
+        'Total Potential: ' + Math.round(total).toLocaleString('en') + ' GWh/yr';
+      document.getElementById('deptCountBox').innerHTML =
+        'Departments: ' + deptCount;
+      document.getElementById('topDeptBox').innerHTML =
+        'Top Department: ' + topDept.deptName + ' (' + Math.round(topDept.potential).toLocaleString('en') + ' GWh/yr)';
+    }
+
+    async function fetchAndBuildDashboard() {
+      try {
+        const url = 'https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/potentiels-methanisation-2050-dpt/records?limit=-1';
+        const resp = await fetch(url);
+        const jsonData = await resp.json();
+        // console.log(jsonData);
+        // The actual records are in jsonData.results
+        const dataRecords = jsonData.results || [];
+        // We build an array of our simplified structure
+        // each record has code_departement, nom_du_departement, sum_potentiel..., region, geom
+        const processed = dataRecords.map(r => {
+          return {
+            code_departement: r.code_departement,
+            nom_du_departement: r.nom_du_departement,
+            sum_potentiel_total_de_production_methane_gwh_pcs_evalue_en_2017: r.sum_potentiel_total_de_production_methane_gwh_pcs_evalue_en_2017,
+            region: r.region,
+            geom: r.geom
+          };
+        });
+
+        // Build quick array for bar chart
+        const dataArray = processed.map(d=>({
+          deptName: d.nom_du_departement || d.code_departement || 'Unknown',
+          potential: d.sum_potentiel_total_de_production_methane_gwh_pcs_evalue_en_2017 || 0
+        }));
+
+        // Sort descending by potential for stats
+        dataArray.sort((a,b)=>b.potential-a.potential);
+
+        // Update top stats
+        updateStats(dataArray);
+
+        // Create bar chart
+        createBarChart(dataArray);
+
+        // Add polygons to the map
+        addDepartmentPolygons(processed);
+      } catch (err) {
+        console.error('Data fetch error:', err);
+      }
+    }
+
+    // MAIN
+    document.addEventListener('DOMContentLoaded', () => {
+      initMap();
+      fetchAndBuildDashboard();
+    });
+  </script>
+</body>
+</html>

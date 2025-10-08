@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NGV Fleet Evolution — vehicules-gnv Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Inline favicon to avoid 404 in console -->
+  <link rel="icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIAAoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAQAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==" />
+  <!-- Basic styling -->
+  <style>
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa7bf;
+      --accent:#4f46e5;
+      --glass: rgba(255,255,255,0.03);
+      --success:#16a34a;
+    }
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef8;background:linear-gradient(180deg,#071025 0%, #07152a 100%);}
+    .wrap{max-width:1200px;margin:24px auto;padding:20px;}
+    header{display:flex;gap:16px;align-items:center;margin-bottom:18px;}
+    h1{font-size:20px;margin:0;color:#fff;}
+    p.lead{margin:0;color:var(--muted);font-size:13px;}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0 18px;}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:10px;padding:14px;color:#dbeafe;box-shadow:0 2px 8px rgba(2,6,23,0.6);}
+    .row{display:flex;gap:12px;}
+    .col{flex:1;}
+    .small{font-size:12px;color:var(--muted)}
+    label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    select,input[type="date"],button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:#dbeafe}
+    button{cursor:pointer;background:var(--accent);border:0;padding:9px 12px;color:white}
+    .stats{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+    .stat{background:var(--glass);padding:12px;border-radius:10px;min-width:160px}
+    .stat h3{margin:0;font-size:18px}
+    .stat p{margin:6px 0 0;font-size:13px;color:var(--muted)}
+    /* charts layout */
+    .grid{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-top:12px}
+    .chart-container{height:360px;padding:10px}
+    canvas{width:100% !important;height:100% !important;display:block}
+    /* table */
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.03);font-size:13px}
+    th{color:var(--muted);font-size:12px}
+    .muted{color:var(--muted)}
+    .notice{background:#1b2a44;padding:10px;border-radius:8px;color:#dbeafe;margin-bottom:12px}
+    .error{background:#3b1621;color:#ffd6d6;padding:10px;border-radius:8px}
+    footer{margin-top:18px;color:var(--muted);font-size:12px}
+    @media(max-width:900px){ .grid{grid-template-columns:1fr} .chart-container{height:300px} }
+  </style>
+  <!-- Chart.js and date adapter from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3"></script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>NGV Fleet Evolution in France (vehicules-gnv)</h1>
+        <p class="lead">Interactive dashboard built from the public OpenDataSoft dataset. Explore time trends, vehicle categories, and recent totals. Data fetched live from the dataset API.</p>
+      </div>
+    </header>
+
+    <div id="status" class="notice card">Initializing dashboard…</div>
+
+    <div class="card">
+      <div class="controls">
+        <div style="min-width:220px">
+          <label for="categorySelect">Vehicle category</label>
+          <select id="categorySelect"><option value="__ALL__">All categories</option></select>
+        </div>
+
+        <div>
+          <label for="fromDate">From</label>
+          <input type="date" id="fromDate" />
+        </div>
+        <div>
+          <label for="toDate">To</label>
+          <input type="date" id="toDate" />
+        </div>
+
+        <div style="align-self:end">
+          <button id="applyBtn">Apply filters</button>
+        </div>
+
+        <div style="flex:1"></div>
+
+        <div style="align-self:end">
+          <button id="downloadBtn">Export visible CSV</button>
+        </div>
+      </div>
+
+      <div class="stats" id="topStats">
+        <div class="stat">
+          <h3 id="latestTotal">—</h3>
+          <p>Latest total vehicles (selected filters)</p>
+        </div>
+        <div class="stat">
+          <h3 id="latestDate">—</h3>
+          <p>Latest data month</p>
+        </div>
+        <div class="stat">
+          <h3 id="topCategory">—</h3>
+          <p>Top vehicle category (latest)</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card chart-container">
+          <canvas id="timeChart"></canvas>
+        </div>
+        <div class="card">
+          <div style="height:180px;padding:10px">
+            <canvas id="barChart" style="height:100%"></canvas>
+          </div>
+
+          <div style="padding:10px">
+            <div class="small muted">Recent records (paginated preview)</div>
+            <div id="tableWrap"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Note: The OpenDataSoft records endpoint returns data in pages (max 100). This dashboard paginates through the API to load all dataset records required. If the dataset is very large, fetching may be limited; you will be notified if data is truncated.
+    </footer>
+  </div>
+
+  <script>
+    // All JS runs after DOM loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      // Define variables before use
+      const API_BASE = 'https://odre.opendatasoft.com/api/explore/v2.1';
+      const DATASET_ID = 'vehicules-gnv';
+      const ENDPOINT = API_BASE + '/catalog/datasets/' + encodeURIComponent(DATASET_ID) + '/records';
+
+      const STATUS_EL = document.getElementById('status');
+      const categorySelect = document.getElementById('categorySelect');
+      const fromDateInput = document.getElementById('fromDate');
+      const toDateInput = document.getElementById('toDate');
+      const applyBtn = document.getElementById('applyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      const latestTotalEl = document.getElementById('latestTotal');
+      const latestDateEl = document.getElementById('latestDate');
+      const topCategoryEl = document.getElementById('topCategory');
+
+      const tableWrap = document.getElementById('tableWrap');
+
+      let rawRecords = []; // will hold normalized records
+      let aggregatedByMonth = {}; // { 'YYYY-MM': { category1: val, ... } }
+      let allCategories = [];
+      let timeChart = null;
+      let barChart = null;
+
+      // Chart defaults to avoid height issues
+      Chart.defaults.font.family = "'Inter', Arial, sans-serif";
+      Chart.defaults.color = '#dbeafe';
+
+      // Helper: safe fetch with try/catch
+      async function safeFetch(url, options) {
+        try {
+          const response = await fetch(url, Object.assign({mode:'cors', headers:{ 'Accept':'application/json' }}, options));
+          if (!response.ok) {
+            throw new Error('HTTP ' + response.status + ' ' + response.statusText);
+          }
+          const json = await response.json();
+          return json;
+        } catch (err) {
+          throw err;
+        }
+      }
+
+      // Fetch all paginated records by iterating offset (limit=100)
+      async function fetchAllRecords() {
+        const limit = 100;
+        let offset = 0;
+        let fetched = 0;
+        let totalCount = null;
+        const selectFields = ['parc_des_vehicules_gnv','date_anneemois','datetrimestre','mois_full_text','nombre_de_vehicule'];
+        const selectParam = selectFields.join(',');
+
+        const accumulated = [];
+
+        try {
+          // Loop until we have all records (or hit API cap)
+          while (true) {
+            const url = ENDPOINT + '?select=' + encodeURIComponent(selectParam) +
+                        '&limit=' + encodeURIComponent(limit) +
+                        '&offset=' + encodeURIComponent(offset) +
+                        '&order_by=' + encodeURIComponent('date_anneemois asc');
+
+            STATUS_EL.textContent = `Fetching records ${offset + 1} to ${offset + limit}...`;
+
+            const json = await safeFetch(url);
+            // The API sometimes returns different key shapes. Normalize:
+            let pageResults = [];
+            if (Array.isArray(json.results)) {
+              pageResults = json.results;
+              if (totalCount === null && typeof json.total_count === 'number') {
+                totalCount = json.total_count;
+              }
+            } else if (Array.isArray(json.records)) {
+              // Standard OpenDataSoft 'records' format, fields under record.fields
+              pageResults = json.records.map(r => (r.fields || {}));
+              if (totalCount === null && typeof json.nhits === 'number') {
+                totalCount = json.nhits;
+              }
+            } else {
+              // unexpected shape
+              throw new Error('Unexpected API response shape');
+            }
+
+            // Map each page result into a normalized simple object
+            pageResults.forEach(function (r) {
+              const obj = {
+                category: r.parc_des_vehicules_gnv || r.parc_des_vehicules || 'Unknown',
+                date_raw: r.date_anneemois || r.date || null,
+                trimestre: r.datetrimestre || null,
+                month_text: r.mois_full_text || null,
+                value: (typeof r.nombre_de_vehicule === 'number') ? r.nombre_de_vehicule : (r.nombre_de_vehicule ? Number(r.nombre_de_vehicule) : null)
+              };
+              accumulated.push(obj);
+            });
+
+            fetched += pageResults.length;
+            offset += limit;
+
+            // Determine termination
+            if (totalCount === null) {
+              // try to infer from lengths
+              if (pageResults.length < limit) {
+                // last page
+                break;
+              }
+            } else {
+              if (fetched >= totalCount) break;
+              // Safety: API docs mention queries with group_by allow larger limits but records endpoint limited.
+              if (offset + limit > 20000) {
+                // cap reached per docs
+                STATUS_EL.innerHTML = '<span class="error">API paging limit reached (possible truncation). Only partial data loaded.</span>';
+                break;
+              }
+            }
+          }
+
+          // Save and return
+          return {records: accumulated, totalCount: totalCount, fetched: accumulated.length};
+        } catch (err) {
+          throw err;
+        }
+      }
+
+      // Normalize and aggregate records by YYYY-MM and category
+      function prepareData(records) {
+        const agg = {}; // { 'YYYY-MM': { category: total } }
+        const categoriesSet = new Set();
+        let minDate = null;
+        let maxDate = null;
+
+        records.forEach(function (r) {
+          // parse date: date_raw can be like "2015-11-01" or "2024-02-28"
+          if (!r.date_raw) return;
+          const d = new Date(r.date_raw);
+          if (isNaN(d.getTime())) return;
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const key = `${yyyy}-${mm}`; // monthly bucket
+          const cat = r.category || 'Unknown';
+          const val = (typeof r.value === 'number' && !isNaN(r.value)) ? r.value : 0;
+
+          if (!agg[key]) agg[key] = {};
+          if (!agg[key][cat]) agg[key][cat] = 0;
+          agg[key][cat] += val;
+
+          categoriesSet.add(cat);
+
+          if (minDate === null || d < minDate) minDate = d;
+          if (maxDate === null || d > maxDate) maxDate = d;
+        });
+
+        // Order months
+        const months = Object.keys(agg).sort();
+
+        return {agg, months, categories: Array.from(categoriesSet).sort(), minDate, maxDate};
+      }
+
+      // Build datasets for Chart.js stacked/line
+      function buildTimeSeriesDatasets(agg, months, categories, chosenCategory) {
+        const datasets = [];
+        const colorPalette = [
+          '#60a5fa','#34d399','#f59e0b','#ef4444','#a78bfa','#06b6d4','#f97316','#c084fc','#22c55e','#fb7185'
+        ];
+        categories.forEach(function (cat, idx) {
+          if (chosenCategory && chosenCategory !== '__ALL__' && chosenCategory !== cat) return;
+          const data = months.map(function (m) {
+            const v = (agg[m] && agg[m][cat]) ? agg[m][cat] : 0;
+            // date label for chart: use first day of month
+            const dt = new Date(m + '-01T00:00:00');
+            return {x: dt, y: v};
+          });
+
+          const ds = {
+            label: cat,
+            data: data,
+            borderColor: colorPalette[idx % colorPalette.length],
+            backgroundColor: colorPalette[idx % colorPalette.length] + '44',
+            tension: 0.2,
+            fill: true,
+            pointRadius: 2,
+            borderWidth: 2
+          };
+          datasets.push(ds);
+        });
+        return datasets;
+      }
+
+      // Render time-series chart
+      function renderTimeChart(months, datasets, minDate, maxDate) {
+        const ctx = document.getElementById('timeChart').getContext('2d');
+        if (timeChart) {
+          try { timeChart.destroy(); } catch(e){/*ignore*/ }
+        }
+
+        timeChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            datasets: datasets
+          },
+          options: {
+            maintainAspectRatio: false,
+            interaction: {mode:'nearest',axis:'x',intersect:false},
+            plugins: {
+              legend: {position:'top', labels:{boxWidth:12}},
+              tooltip: {
+                callbacks: {
+                  title: function(tooltipItems) {
+                    const d = tooltipItems[0].parsed.x;
+                    const date = new Date(d);
+                    return date.toLocaleString(undefined, {year:'numeric', month:'long'});
+                  },
+                  label: function(item) {
+                    return item.dataset.label + ': ' + (item.parsed.y !== null ? item.parsed.y.toLocaleString() : '0');
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                type: 'time',
+                time: {unit: 'month', tooltipFormat: 'MMM yyyy'},
+                min: minDate,
+                max: maxDate,
+                ticks: {color:'#cfe8ff'}
+              },
+              y: {
+                beginAtZero: true,
+                ticks: {color:'#cfe8ff'}
+              }
+            }
+          }
+        });
+      }
+
+      // Render bar chart of totals per category within selected date range
+      function renderBarChart(agg, months, categories, fromMonthKey, toMonthKey) {
+        // Sum across months within range
+        const totals = {};
+        categories.forEach(c => totals[c] = 0);
+        months.forEach(function (m) {
+          if (fromMonthKey && m < fromMonthKey) return;
+          if (toMonthKey && m > toMonthKey) return;
+          const obj = agg[m] || {};
+          categories.forEach(function (c) {
+            totals[c] += (obj[c] || 0);
+          });
+        });
+
+        const labels = Object.keys(totals).sort(function(a,b){return totals[b]-totals[a];});
+        const data = labels.map(l => totals[l]);
+        const colors = labels.map((_,i) => ['#60a5fa','#34d399','#f59e0b','#ef4444','#a78bfa','#06b6d4','#f97316','#c084fc','#22c55e','#fb7185'][i%10]);
+
+        const ctx = document.getElementById('barChart').getContext('2d');
+        if (barChart) {
+          try { barChart.destroy(); } catch(e){/*ignore*/ }
+        }
+
+        barChart = new Chart(ctx, {
+          type: 'bar',
+          data: { labels: labels, datasets: [{ label: 'Total', data: data, backgroundColor: colors }]},
+          options: {
+            indexAxis: 'y',
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {display:false},
+              tooltip: {callbacks:{label: (ctx) => ctx.parsed.x.toLocaleString()}}
+            },
+            scales:{ x:{ticks:{color:'#cfe8ff'}}, y:{ticks:{color:'#cfe8ff'}}}
+          }
+        });
+
+        return {labels, totals};
+      }
+
+      // Populate category dropdown
+      function populateCategorySelect(categories) {
+        // reset
+        categorySelect.innerHTML = '';
+        const allOpt = document.createElement('option');
+        allOpt.value = '__ALL__';
+        allOpt.textContent = 'All categories';
+        categorySelect.appendChild(allOpt);
+        categories.forEach(function (c) {
+          const opt = document.createElement('option');
+          opt.value = c;
+          opt.textContent = c;
+          categorySelect.appendChild(opt);
+        });
+      }
+
+      // Build and show small table of recent records (filtered)
+      function renderTable(recordsFiltered) {
+        // show most recent 10 entries sorted by date desc
+        const rows = recordsFiltered.slice().sort(function(a,b){ return new Date(b.date_raw) - new Date(a.date_raw); }).slice(0,10);
+        const tbl = document.createElement('table');
+        const thead = document.createElement('thead');
+        thead.innerHTML = '<tr><th>Date</th><th>Category</th><th class="muted">Count</th></tr>';
+        tbl.appendChild(thead);
+        const tbody = document.createElement('tbody');
+        rows.forEach(function (r) {
+          const tr = document.createElement('tr');
+          const d = new Date(r.date_raw);
+          const dateStr = isNaN(d.getTime()) ? (r.trimestre || '') : d.toLocaleDateString(undefined, {year:'numeric',month:'short'});
+          tr.innerHTML = '<td>' + dateStr + '</td><td>' + (r.category || '') + '</td><td>' + (r.value !== null ? r.value.toLocaleString() : '') + '</td>';
+          tbody.appendChild(tr);
+        });
+        tbl.appendChild(tbody);
+        tableWrap.innerHTML = '';
+        tableWrap.appendChild(tbl);
+      }
+
+      // CSV export
+      function exportCSV(records) {
+        if (!records || records.length === 0) {
+          alert('No records to export.');
+          return;
+        }
+        const header = ['date','category','count'];
+        const lines = [header.join(',')];
+        records.forEach(function (r) {
+          const date = r.date_raw || '';
+          const cat = '"' + (r.category || '').replace(/"/g,'"') + '"';
+          const val = (r.value !== null ? r.value : '');
+          lines.push([date,cat,val].join(','));
+        });
+        const csv = lines.join('\n');
+        const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'vehicules-gnv-export.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      // Main flow
+      (async function main() {
+        try {
+          STATUS_EL.textContent = 'Fetching dataset...';
+          const result = await fetchAllRecords();
+          rawRecords = result.records || [];
+          const totalCount = result.totalCount;
+          const fetched = result.fetched;
+
+          if (totalCount !== null && fetched < totalCount) {
+            STATUS_EL.innerHTML = '<span class="error">Warning: Data appears truncated. Fetched ' + fetched + ' of ' + totalCount + ' records.</span>';
+          } else {
+            STATUS_EL.innerHTML = '<span>Loaded ' + fetched + ' records from dataset.</span>';
+          }
+
+          // Prepare
+          const prepared = prepareData(rawRecords);
+          aggregatedByMonth = prepared.agg;
+          const months = prepared.months;
+          allCategories = prepared.categories;
+          const minDate = prepared.minDate;
+          const maxDate = prepared.maxDate;
+
+          // populate UI values
+          populateCategorySelect(allCategories);
+
+          // set date inputs
+          if (minDate && maxDate) {
+            // format to yyyy-mm-dd for input[type=date]
+            const yyyy = minDate.getFullYear();
+            const mm = String(minDate.getMonth()+1).padStart(2,'0');
+            const dd = String(minDate.getDate()).padStart(2,'0');
+            fromDateInput.value = yyyy + '-' + mm + '-' + dd;
+
+            const yyyy2 = maxDate.getFullYear();
+            const mm2 = String(maxDate.getMonth()+1).padStart(2,'0');
+            const dd2 = String(maxDate.getDate()).padStart(2,'0');
+            toDateInput.value = yyyy2 + '-' + mm2 + '-' + dd2;
+          }
+
+          // initial render: all categories, full range
+          function refreshVisualization() {
+            const chosenCategory = categorySelect.value;
+            const fromVal = fromDateInput.value ? fromDateInput.value.slice(0,7) : null; // YYYY-MM
+            const toVal = toDateInput.value ? toDateInput.value.slice(0,7) : null;
+
+            // build datasets
+            const ds = buildTimeSeriesDatasets(aggregatedByMonth, months, allCategories, chosenCategory);
+            // compute min/max Date for chart axes from inputs or prepared min/max
+            let minD = prepared.minDate;
+            let maxD = prepared.maxDate;
+            if (fromVal) {
+              const d = new Date(fromVal + '-01T00:00:00');
+              if (!isNaN(d)) minD = d;
+            }
+            if (toVal) {
+              // to get last day of month, set to next month minus one day
+              const parts = toVal.split('-'); let y = Number(parts[0]); let m = Number(parts[1]);
+              const d = new Date(y, m, 0); // last day of month
+              if (!isNaN(d)) maxD = d;
+            }
+
+            renderTimeChart(months, ds, minD, maxD);
+
+            // bar chart totals
+            const fromKey = fromVal;
+            const toKey = toVal;
+            const bar = renderBarChart(aggregatedByMonth, months, allCategories, fromKey, toKey);
+
+            // compute latest totals for cards based on filtered data (use last month within range)
+            const monthsInRange = months.filter(m => (!fromKey || m >= fromKey) && (!toKey || m <= toKey));
+            let latestMonthKey = monthsInRange.length ? monthsInRange[monthsInRange.length-1] : months[months.length-1];
+            let latestTotals = {};
+            allCategories.forEach(function (c) { latestTotals[c] = 0; });
+            monthsInRange.forEach(function (m) {
+              const obj = aggregatedByMonth[m] || {};
+              allCategories.forEach(function (c) { latestTotals[c] += (obj[c] || 0); });
+            });
+            // latest total value
+            const latestTotal = Object.values(latestTotals).reduce((a,b)=>a+b,0);
+            latestTotalEl.textContent = latestTotal.toLocaleString();
+
+            latestDateEl.textContent = latestMonthKey ? (new Date(latestMonthKey + '-01')).toLocaleString(undefined,{month:'short',year:'numeric'}) : '—';
+
+            // top category for latest month (not sum)
+            const latestMonthObj = aggregatedByMonth[latestMonthKey] || {};
+            let topCat = '—';
+            let topVal = 0;
+            Object.keys(latestMonthObj).forEach(function (k) {
+              if (latestMonthObj[k] > topVal) { topVal = latestMonthObj[k]; topCat = k; }
+            });
+            topCategoryEl.textContent = topCat + (topVal ? ' (' + topVal.toLocaleString() + ')' : '');
+
+            // table: show rawRecords filtered by date and category
+            const recsFiltered = rawRecords.filter(function (r) {
+              if (!r.date_raw) return false;
+              const ym = r.date_raw.slice(0,7);
+              if (fromKey && ym < fromKey) return false;
+              if (toKey && ym > toKey) return false;
+              if (chosenCategory !== '__ALL__' && r.category !== chosenCategory) return false;
+              return true;
+            });
+            renderTable(recsFiltered);
+          }
+
+          // initial call
+          refreshVisualization();
+
+          // hook events
+          applyBtn.addEventListener('click', function () {
+            try {
+              refreshVisualization();
+            } catch (err) {
+              console.error(err);
+              STATUS_EL.innerHTML = '<span class="error">Error updating visuals: ' + err.message + '</span>';
+            }
+          });
+
+          downloadBtn.addEventListener('click', function () {
+            try {
+              // export currently visible (filtered) rawRecords
+              const chosenCategory = categorySelect.value;
+              const fromVal = fromDateInput.value ? fromDateInput.value.slice(0,7) : null;
+              const toVal = toDateInput.value ? toDateInput.value.slice(0,7) : null;
+              const recsFiltered = rawRecords.filter(function (r) {
+                if (!r.date_raw) return false;
+                const ym = r.date_raw.slice(0,7);
+                if (fromVal && ym < fromVal) return false;
+                if (toVal && ym > toVal) return false;
+                if (chosenCategory !== '__ALL__' && r.category !== chosenCategory) return false;
+                return true;
+              });
+              exportCSV(recsFiltered);
+            } catch (err) {
+              console.error(err);
+              alert('Export failed: ' + err.message);
+            }
+          });
+
+          STATUS_EL.style.display = 'block';
+        } catch (err) {
+          console.error('Main error', err);
+          STATUS_EL.innerHTML = '<div class="error">Failed to load data: ' + (err.message || err) + '</div>';
+        }
+      })();
+    });
+  </script>
+</body>
+</html>

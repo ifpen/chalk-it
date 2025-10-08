@@ -1,0 +1,9 @@
+
+Volumes annuels d’électricité (MWh) activés (à la hausse ou à la baisse) sur le mécanisme d’ajustement par filière.
+
+
+Sont aussi disponibles dans ce jeu de données :
+
+
+Les coûts moyens (€/MWh) des ajustements
+Le nombre de situations tendues (en demi-journées)Le projet TERRE (Trans-European Replacement Reserve Exchange) correspond à la mise en place d'une plateforme européenne d'échange de produits standards de réserve tertiaire complémentaire activable en 30 minutes (RR : Replacement Reserve) entre gestionnaire de réseau de transport. Les premiers échanges de RTE sur cette plateforme ont débuté le 2 décembre 2020.

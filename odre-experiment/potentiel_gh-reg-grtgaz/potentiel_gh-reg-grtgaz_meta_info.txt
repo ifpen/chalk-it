@@ -1,0 +1,15 @@
+Ce jeu de données provient d'une évaluation des 18 plus importants gisements
+de déchets de biomasse en France réalisée en 2022 par NaTran dont les résultats
+ont été croisés, pour chaque type de gisement, avec des données publiquement
+accessibles d’organismes publiant régulièrement des bases de données faisant référence
+dans la matière. L’analyse a permis d’estimer les quantités de déchets biomasse aujourd’hui
+adressables à la Gazéification Hydrothermale en les projetant à l’horizon 2050.
+L’estimation du potentiel de production de gaz injectable dans le réseau de gaz
+a été réalisée avec des taux de mobilisation conservatifs en prenant en compte
+les solutions de valorisations actuelles existantes. Pour chaque type de
+gisement plusieurs bases des données publiques et recherches ont été référencées
+dans le calcul du productible de gaz afin d’identifier les quantités les plus
+réalistes.
+
+Veuillez consulter le Livre
+Blanc de la GazéificationHydrothermale pour avoir plus d’information.

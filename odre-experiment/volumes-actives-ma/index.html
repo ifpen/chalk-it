@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Volumes Actives MA Dashboard</title>
+
+  <!-- 
+    A SIMPLE, SELF-CONTAINED FRONT-END DASHBOARD FOR "volumes-actives-ma"
+    --------------------------------------------------------------------
+    - Fetches data directly from the Opendatasoft API (limit = -1).
+    - Demonstrates interactive charts using Chart.js.
+    - Provides a high-level summary, time-series visualization, costs, 
+      and “situations tendues” overview.
+    - All HTML, CSS, and JS are integrated into a single file. 
+    - No server-side code required.
+  -->
+
+  <!-- Include Chart.js from CDN (for interactive charts) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* BASIC RESET & LAYOUT */
+    * {
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      background: #f7f7f7;
+      padding: 20px;
+    }
+    h1, h2, h3 {
+      margin-bottom: 10px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .chart-container {
+      width: 100%;
+      margin: 0 auto;
+      min-height: 300px;
+      position: relative;
+      margin-bottom: 30px;
+    }
+    canvas {
+      width: 100% !important;
+      max-height: 400px;
+    }
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .flex-col {
+      flex: 1;
+      min-width: 300px;
+    }
+    .info-box {
+      background: #fafafa;
+      border-left: 4px solid #777;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+    .info-box strong {
+      display: inline-block;
+      width: 170px;
+    }
+    select, .refresh-btn {
+      padding: 6px 10px;
+      font-size: 14px;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+    .refresh-btn {
+      cursor: pointer;
+      background: #2868c7;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    .footer {
+      text-align: center;
+      margin: 40px 0 10px;
+      font-size: 0.9em;
+      color: #666;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #2868c7;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- DASHBOARD HEADER / TITLE -->
+    <section class="section">
+      <h1>Volumes Actives MA Dashboard</h1>
+      <p>
+        This dashboard visualizes electricity volumes and costs from France’s 
+        “mécanisme d’ajustement” (<em>MA</em>), using open data from RTE (via Opendatasoft). 
+        It covers volumes activated upward/downward, average costs, and 
+        the number of half-days under “situations tendues.”
+      </p>
+    </section>
+
+    <!-- LOADING INDICATOR (hidden by default, displayed before charts load) -->
+    <div id="loading-message" class="section" style="display:none;">
+      <h2>Loading data, please wait...</h2>
+    </div>
+
+    <!-- TOP INFO SECTION: HIGH-LEVEL METRICS -->
+    <section id="info-section" class="section" style="display:none;">
+      <h2>Key Highlights</h2>
+      <div class="info-box" id="highlights-box">
+        <!-- Filled dynamically -->
+      </div>
+    </section>
+
+    <!-- TIME-SERIES CHARTS -->
+    <section id="time-series-section" class="section" style="display:none;">
+      <h2>Volumes Over Time</h2>
+      <p>
+        The first chart shows the total <strong>downward</strong> (negative) vs 
+        <strong>upward</strong> (positive) volumes by year. A large negative total 
+        means more electricity was asked to reduce production (or increase consumption), 
+        while a large positive total means more was asked to produce more/consume less.
+      </p>
+      <div class="chart-container">
+        <canvas id="volumeChart"></canvas>
+      </div>
+
+      <h3>Average Costs Over Time</h3>
+      <p>
+        The second chart shows the average cost of downward/upward activation 
+        in €/MWh. Under tension, these costs can change significantly.
+      </p>
+      <div class="chart-container">
+        <canvas id="costChart"></canvas>
+      </div>
+    </section>
+
+    <!-- SITUATIONS TENDUES BAR CHART -->
+    <section id="tendues-section" class="section" style="display:none;">
+      <h2>Situations Tendues by Year</h2>
+      <p>
+        This chart shows how many half-days were marked as “tensed” for 
+        both <strong>baisse</strong> and <strong>hausse</strong>. 
+        A higher count may correlate with spikes in cost or volume adjustments.
+      </p>
+      <div class="chart-container">
+        <canvas id="tenduesChart"></canvas>
+      </div>
+    </section>
+
+    <!-- FILIÈRE-LEVEL BAR CHART + YEAR SELECTOR -->
+    <section id="filiere-section" class="section" style="display:none;">
+      <h2>Filière Contributions</h2>
+      <p>
+        Select a year to see how different production types ("filières") contributed to 
+        the downward/upward volumes. This helps identify whether hydraulique, nucléaire, 
+        thermique, etc., were most used for adjustments.
+      </p>
+      <div>
+        <label for="yearSelect">Choose a year:</label>
+        <select id="yearSelect"></select>
+        <button class="refresh-btn" onclick="updateFiliereChart()">Update</button>
+      </div>
+      <div class="chart-container" style="margin-top: 20px;">
+        <canvas id="filiereChart"></canvas>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      Data Source: 
+      <a href="https://odre.opendatasoft.com/explore/dataset/volumes-actives-ma/" target="_blank">
+        Opendatasoft (RTE)
+      </a>
+    </div>
+  </div>
+
+  <script>
+    /***********************************************************
+     * 1) GLOBAL CONSTANTS & STATE
+     ***********************************************************/
+    const API_URL = "https://odre.opendatasoft.com/api/explore/v2.1/catalog/datasets/volumes-actives-ma/records?limit=-1";
+
+    // We'll store the raw API data here:
+    let rawData = [];
+    // We'll store a summarised/year-based array:
+    let yearSummary = []; 
+    // Sort of a quick dictionary: { year: filiere volumes }
+    let filiereDetailByYear = {};
+
+    // Chart instances
+    let volumeChartInstance = null;
+    let costChartInstance = null;
+    let tenduesChartInstance = null;
+    let filiereChartInstance = null;
+
+    /***********************************************************
+     * 2) ON PAGE LOAD: FETCH DATA & INITIALIZE
+     ***********************************************************/
+    document.addEventListener("DOMContentLoaded", async () => {
+      showLoading(true);
+      await fetchAndProcessData();
+      showLoading(false);
+
+      // Populate the high-level info
+      populateHighlights();
+
+      // Build initial chart visualizations
+      buildVolumeChart();
+      buildCostChart();
+      buildTenduesChart();
+      populateYearSelector();
+      buildFiliereChart(); // defaults to first available year
+
+      // Reveal sections
+      document.getElementById("info-section").style.display = "block";
+      document.getElementById("time-series-section").style.display = "block";
+      document.getElementById("tendues-section").style.display = "block";
+      document.getElementById("filiere-section").style.display = "block";
+    });
+
+    /***********************************************************
+     * 3) DATA FETCH & PREPARATION
+     ***********************************************************/
+    async function fetchAndProcessData() {
+      try {
+        const response = await fetch(API_URL);
+        const jsonData = await response.json();
+
+        // Depending on the response format:
+        // For the sample provided, data is in "results"
+        rawData = jsonData.results || [];
+
+        // 3a) Construct "yearSummary" array:
+        //     For each record, parse year, sum volumes, parse costs, parse tendues
+        //     Example: {annee, totalVAB, totalVAH, costB, costH, tenduesB, tenduesH}
+        
+        // We'll define filières for "baisse" and "hausse" that appear in the dataset:
+        const BAISSE_FILIERS = [
+          "vab_hydraulique",
+          "vab_nucleaire",
+          "vab_thermique",
+          "vab_consommation",
+          "vab_ech_grt_acteur",
+          "vab_ech_grt_grt",
+          "vab_terre"
+        ];
+        const HAUSSE_FILIERS = [
+          "vah_hydraulique",
+          "vah_nucleaire",
+          "vah_thermique",
+          "vah_effacement",
+          "vah_ech_grt_acteur",
+          "vah_ech_grt_grt",
+          "vah_terre"
+        ];
+
+        const tempMap = {}; 
+        // tempMap[year] = { 
+        //   totalVAB: 0, 
+        //   totalVAH: 0, 
+        //   costB: 0, costH: 0,
+        //   tenduesB: 0, tenduesH: 0
+        // }
+
+        // We'll also fill "filiereDetailByYear" for the filiere-level chart
+        // filiereDetailByYear[year] = { 
+        //   baisse:{ hydraulique:0, nucleaire:0, ... }, 
+        //   hausse:{ ... } 
+        // }
+        
+        rawData.forEach(item => {
+          // item might have the form { annee: "2005", vab_hydraulique: -2853178.5, ... }
+          const year = item.annee;
+
+          if (!tempMap[year]) {
+            tempMap[year] = {
+              year: year,
+              totalVAB: 0,
+              totalVAH: 0,
+              costB: null,
+              costH: null,
+              tenduesB: 0,
+              tenduesH: 0
+            };
+          }
+          // If not exist in filiere detail, initialize
+          if (!filiereDetailByYear[year]) {
+            filiereDetailByYear[year] = {
+              baisse: {
+                hydraulique: 0,
+                nucleaire: 0,
+                thermique: 0,
+                consommation: 0,
+                ech_grt_acteur: 0,
+                ech_grt_grt: 0,
+                terre: 0
+              },
+              hausse: {
+                hydraulique: 0,
+                nucleaire: 0,
+                thermique: 0,
+                effacement: 0,
+                ech_grt_acteur: 0,
+                ech_grt_grt: 0,
+                terre: 0
+              }
+            };
+          }
+
+          // Sum up all baisse filière:
+          BAISSE_FILIERS.forEach(field => {
+            const val = item[field];
+            if (val !== null && !isNaN(val)) {
+              tempMap[year].totalVAB += Number(val);
+              // Also track per filière to show in bar chart
+              const filiereName = field.replace("vab_", ""); 
+              if (filiereName in filiereDetailByYear[year].baisse) {
+                filiereDetailByYear[year].baisse[filiereName] += Number(val);
+              }
+            }
+          });
+          // Sum up all hausse filière:
+          HAUSSE_FILIERS.forEach(field => {
+            const val = item[field];
+            if (val !== null && !isNaN(val)) {
+              tempMap[year].totalVAH += Number(val);
+              // Also track per filière to show in bar chart
+              const filiereName = field.replace("vah_", "");
+              if (filiereName in filiereDetailByYear[year].hausse) {
+                filiereDetailByYear[year].hausse[filiereName] += Number(val);
+              }
+            }
+          });
+
+          // Cost
+          if (item.cout_moy_baisse_en_eur_mwh !== null) {
+            tempMap[year].costB = Number(item.cout_moy_baisse_en_eur_mwh);
+          }
+          if (item.cout_moy_hausse_en_eur_mwh !== null) {
+            tempMap[year].costH = Number(item.cout_moy_hausse_en_eur_mwh);
+          }
+
+          // Situations tendues
+          const bTendues = item.nb_situations_tendues_b_en_1_2j;
+          const hTendues = item.nb_situations_tendues_h_en_1_2j;
+          tempMap[year].tenduesB = parseTendues(bTendues);
+          tempMap[year].tenduesH = parseTendues(hTendues);
+        });
+
+        // Now convert tempMap to an array sorted by year ascending
+        yearSummary = Object.values(tempMap).sort((a, b) => {
+          return parseInt(a.year) - parseInt(b.year);
+        });
+      } catch (err) {
+        console.error("Data fetch or processing failed", err);
+      }
+    }
+
+    function parseTendues(val) {
+      if (!val || val === "ND") return 0;
+      const parsed = parseInt(val);
+      return isNaN(parsed) ? 0 : parsed;
+    }
+
+    function showLoading(isLoading) {
+      const loadingEl = document.getElementById("loading-message");
+      if (isLoading) loadingEl.style.display = "block";
+      else loadingEl.style.display = "none";
+    }
+
+    /***********************************************************
+     * 4) POPULATE HIGH-LEVEL HIGHLIGHTS
+     ***********************************************************/
+    function populateHighlights() {
+      const highlightsEl = document.getElementById("highlights-box");
+      if (yearSummary.length === 0) {
+        highlightsEl.innerHTML = "<p>No data found.</p>";
+        return;
+      }
+
+      // Let’s find the latest year in the dataset:
+      const lastObj = yearSummary[yearSummary.length - 1];
+      const minYear = yearSummary[0].year;
+      const maxYear = lastObj.year;
+
+      // Compute total downward & upward volumes across all years:
+      let grandTotalDown = 0;
+      let grandTotalUp = 0;
+      let totalTenduesB = 0;
+      let totalTenduesH = 0;
+      yearSummary.forEach(ys => {
+        grandTotalDown += ys.totalVAB;
+        grandTotalUp   += ys.totalVAH;
+        totalTenduesB  += ys.tenduesB;
+        totalTenduesH  += ys.tenduesH;
+      });
+
+      // Round function
+      const rnd = (val, digits=1) => Math.round(val * Math.pow(10, digits)) / Math.pow(10, digits);
+
+      // Build textual summary 
+      highlightsEl.innerHTML = `
+        <div>
+          <p><strong>Dataset Range:</strong> ${minYear} – ${maxYear}</p>
+          <p><strong>Total Baisse (all years):</strong> ${rnd(grandTotalDown, 2)} MWh</p>
+          <p><strong>Total Hausse (all years):</strong> ${rnd(grandTotalUp, 2)} MWh</p>
+          <p><strong>Sum of "Situations Tendues" Baisse:</strong> ${totalTenduesB}</p>
+          <p><strong>Sum of "Situations Tendues" Hausse:</strong> ${totalTenduesH}</p>
+          <p>
+            The last recorded year <span class="highlight">${maxYear}</span> 
+            shows downward volumes around <span class="highlight">${rnd(lastObj.totalVAB,2)}</span> MWh 
+            and upward volumes around <span class="highlight">${rnd(lastObj.totalVAH,2)}</span> MWh
+            with average costs of <span class="highlight">${lastObj.costB} €/MWh</span> (baisse) & 
+            <span class="highlight">${lastObj.costH} €/MWh</span> (hausse).
+          </p>
+        </div>`;
+    }
+
+    /***********************************************************
+     * 5) BUILD CHARTS
+     ***********************************************************/
+    function buildVolumeChart() {
+      const ctx = document.getElementById("volumeChart").getContext("2d");
+      if (volumeChartInstance) volumeChartInstance.destroy();
+
+      const labels = yearSummary.map(d => d.year);
+      const dataBaisse = yearSummary.map(d => d.totalVAB);
+      const dataHausse = yearSummary.map(d => d.totalVAH);
+
+      volumeChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Volume Baisse (MWh)',
+              data: dataBaisse,
+              borderColor: 'rgba(255, 99, 132, 1)',
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              tension: 0.1
+            },
+            {
+              label: 'Volume Hausse (MWh)',
+              data: dataHausse,
+              borderColor: 'rgba(54, 162, 235, 1)',
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              tension: 0.1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: 'MWh'
+              },
+              beginAtZero: false
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.formattedValue + ' MWh';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function buildCostChart() {
+      const ctx = document.getElementById("costChart").getContext("2d");
+      if (costChartInstance) costChartInstance.destroy();
+
+      const labels = yearSummary.map(d => d.year);
+      const dataCostB = yearSummary.map(d => d.costB);
+      const dataCostH = yearSummary.map(d => d.costH);
+
+      costChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Avg Cost Baisse (€/MWh)',
+              data: dataCostB,
+              borderColor: 'rgba(255, 159, 64, 1)',
+              backgroundColor: 'rgba(255, 159, 64, 0.2)',
+              tension: 0.1
+            },
+            {
+              label: 'Avg Cost Hausse (€/MWh)',
+              data: dataCostH,
+              borderColor: 'rgba(153, 102, 255, 1)',
+              backgroundColor: 'rgba(153, 102, 255, 0.2)',
+              tension: 0.1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: '€/MWh'
+              },
+              beginAtZero: false
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.formattedValue + ' €/MWh';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function buildTenduesChart() {
+      const ctx = document.getElementById("tenduesChart").getContext("2d");
+      if (tenduesChartInstance) tenduesChartInstance.destroy();
+
+      const labels = yearSummary.map(d => d.year);
+      const dataB = yearSummary.map(d => d.tenduesB);
+      const dataH = yearSummary.map(d => d.tenduesH);
+
+      tenduesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Situations Tendues (Baisse)',
+              data: dataB,
+              backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            },
+            {
+              label: 'Situations Tendues (Hausse)',
+              data: dataH,
+              backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: '# of Half-Days'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    /***********************************************************
+     * 6) FILIERE CHART (STACKED BARS FOR BAISSE & HAUSSE)
+     ***********************************************************/
+    function populateYearSelector() {
+      const selectEl = document.getElementById("yearSelect");
+      selectEl.innerHTML = "";
+      yearSummary.forEach(ys => {
+        const option = document.createElement("option");
+        option.value = ys.year;
+        option.textContent = ys.year;
+        selectEl.appendChild(option);
+      });
+      // By default select the last year
+      if (yearSummary.length > 0) {
+        selectEl.value = yearSummary[yearSummary.length - 1].year;
+      }
+    }
+
+    function buildFiliereChart() {
+      const ctx = document.getElementById("filiereChart").getContext("2d");
+      if (filiereChartInstance) filiereChartInstance.destroy();
+
+      const selectedYear = document.getElementById("yearSelect").value;
+      const detail = filiereDetailByYear[selectedYear];
+      if (!detail) {
+        // If no data, create a dummy chart
+        filiereChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: { labels: [], datasets: [] },
+          options: {}
+        });
+        return;
+      }
+
+      // We want to produce a bar chart with the filières on x-axis,
+      // stacked with two bars: baisse and hausse
+      const filieres = Object.keys(detail.baisse); // e.g. ["hydraulique", "nucleaire", ...]
+      const baisseValues = filieres.map(f => detail.baisse[f]);
+      const hausseValues = filieres.map(f => detail.hausse[f]);
+
+      filiereChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: filieres,
+          datasets: [
+            {
+              label: 'Baisse (MWh)',
+              data: baisseValues,
+              backgroundColor: 'rgba(255, 99, 132, 0.6)'
+            },
+            {
+              label: 'Hausse (MWh)',
+              data: hausseValues,
+              backgroundColor: 'rgba(54, 162, 235, 0.6)'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              stacked: false
+            },
+            y: {
+              stacked: false,
+              title: {
+                display: true,
+                text: 'MWh'
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.formattedValue + ' MWh';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function updateFiliereChart() {
+      buildFiliereChart();
+    }
+  </script>
+</body>
+</html>
