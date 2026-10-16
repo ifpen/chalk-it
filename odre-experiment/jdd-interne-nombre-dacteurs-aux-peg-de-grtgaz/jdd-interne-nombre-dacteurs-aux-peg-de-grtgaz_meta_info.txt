@@ -1,1 +1,0 @@
-Les acteurs opérant sur le marché gazier français peuvent s’appuyer sur une zone unique d'échanges. Les acteurs qui réalisent ces échanges peuvent être de natures diverses : consommateurs, fournisseurs, producteurs, traders… Ce jeu de données consolide le nombre d'acteurs identifiés par mois.

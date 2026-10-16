@@ -1,7 +1,0 @@
-
-Transactions commerciales annuelles (MWh) entre responsables d’équilibre (RE).
-
-
-Volumes échangés entre RE via les différents mécanismes mis à leur disposition : PEB RE-RE (échange de blocs de gré à gré), ARENH (Accès Régulé à l’Energie Nucléaire Historique), VPP (Virtual Power Plant), Bourses, Achat des pertes sur le Réseau Public de Transport (RPT)
-Zoom sur les transactions infrajournalières (redéclaration d’échange de PEB à la hausse / à la baisse, Bourse, imports / exports)
-

@@ -1,1 +1,0 @@
-This dataset provides the NGV Vehicle Fleet evolution in France for a specified date.

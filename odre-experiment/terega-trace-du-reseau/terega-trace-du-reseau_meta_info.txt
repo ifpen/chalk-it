@@ -1,5 +1,0 @@
-Ce jeu de données linéaires comporte l’ensemble des canalisations en service du réseau de transport de gaz naturel exploité par Teréga à la date du 01/07/2023. Il est adapté à des usages à l’échelle de régions administratives françaises ou inférieure (nationale par exemple).
-
-Des portions de moins de 250 m peuvent ne pas y figurer.
-
-La déclinaison territoriale du jeu de données (régionale et départementale) est approximative et simplifiée.

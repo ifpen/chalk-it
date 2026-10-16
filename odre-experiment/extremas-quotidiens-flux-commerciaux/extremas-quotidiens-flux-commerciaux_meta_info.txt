@@ -1,2 +1,0 @@
-
-Valeurs minimales et maximales journalières en puissance (MW) du bilan des flux commerciaux sur l'ensemble des frontières contextualisées par la température moyenne journalière.

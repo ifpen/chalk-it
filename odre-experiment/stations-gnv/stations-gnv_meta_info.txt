@@ -1,3 +1,0 @@
-
-	Ce jeu de données présente les stations GNV ouvertes au public et en projet en France avec leurs caractéristiques (année d'ouverture, exploitant, localisation, pompes GNC et/ou GNL, modes de paiements ... etc.)
-

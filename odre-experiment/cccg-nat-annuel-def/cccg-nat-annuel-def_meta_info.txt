@@ -1,1 +1,0 @@
-Ce jeu de données présente les consommations annuelles de gaz (MWh) des Centrales à Cycle Combiné Gaz raccordées au réseau de transport de NaTran,.Les données sont des mesures brutes de quantités livrées de gaz aux points de livraison industriels.Les données sont définitives.

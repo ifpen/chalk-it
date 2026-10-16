@@ -1,6 +1,0 @@
-
-Ce jeu de données présente les données de consommation d’électricité des clients raccordés au réseau public de transport, corrigées des variations saisonnières.
-
-
-Le périmètre étant celui de RTE, la consommation des gestionnaires de réseau de distribution (consommation des PME/PMI, professionnels et particuliers) inclut les pertes relatives à leurs réseaux. La consommation des clients industriels (grande industrie) est hors pertes, puisque directement raccordés au réseau public de transport, hors secteur de l’énergie et hors 29 février. Elle inclut l’autoconsommation et est détaillée par secteur.
-
